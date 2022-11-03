@@ -1,0 +1,9 @@
+#d2c-err {
+  /* This style was copied from Chrome's svg parser error style. */
+  white-space: pre-wrap;
+  border: 2px solid #c77;
+  padding: 15px;
+  margin: 15px;
+  background-color: #fdd;
+  color: black;
+}

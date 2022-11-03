@@ -1,0 +1,157 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestRename/conflict.d2,0:0:0-2:0:8",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestRename/conflict.d2,0:0:0-0:4:4",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/conflict.d2,0:0:0-0:4:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict.d2,0:0:0-0:4:4",
+                    "value": [
+                      {
+                        "string": "la 2",
+                        "raw_string": "la 2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestRename/conflict.d2,1:0:5-1:2:7",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/conflict.d2,1:0:5-1:2:7",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict.d2,1:0:5-1:2:7",
+                    "value": [
+                      {
+                        "string": "la",
+                        "raw_string": "la"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "la 2",
+        "id_val": "la 2",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/conflict.d2,0:0:0-0:4:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict.d2,0:0:0-0:4:4",
+                    "value": [
+                      {
+                        "string": "la 2",
+                        "raw_string": "la 2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "la 2"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "la",
+        "id_val": "la",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/conflict.d2,1:0:5-1:2:7",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict.d2,1:0:5-1:2:7",
+                    "value": [
+                      {
+                        "string": "la",
+                        "raw_string": "la"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "la"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "err": "<nil>"
+}

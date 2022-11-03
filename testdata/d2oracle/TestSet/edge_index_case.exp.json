@@ -1,0 +1,486 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,0:0:0-6:0:54",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,0:0:0-2:1:37",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,0:0:0-0:6:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,0:0:0-0:6:6",
+                    "value": [
+                      {
+                        "string": "Square",
+                        "raw_string": "Square"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,0:8:8-2:0:36",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:2:12-1:25:35",
+                      "edges": [
+                        {
+                          "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:2:12-1:20:30",
+                          "src": {
+                            "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:2:12-1:9:19",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:2:12-1:8:18",
+                                  "value": [
+                                    {
+                                      "string": "Square",
+                                      "raw_string": "Square"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:11:21-1:20:30",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:12:22-1:20:30",
+                                  "value": [
+                                    {
+                                      "string": "Square 2",
+                                      "raw_string": "Square 2"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        }
+                      ],
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:22:32-1:25:35",
+                          "value": [
+                            {
+                              "string": "two",
+                              "raw_string": "two"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,3:0:38-5:1:53",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,3:0:38-3:1:39",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,3:0:38-3:1:39",
+                    "value": [
+                      {
+                        "string": "z",
+                        "raw_string": "z"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,3:3:41-5:0:52",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:2:45-4:8:51",
+                      "edges": [
+                        {
+                          "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:2:45-4:8:51",
+                          "src": {
+                            "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:2:45-4:4:47",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:2:45-4:3:46",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:6:49-4:8:51",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:7:50-4:8:51",
+                                  "value": [
+                                    {
+                                      "string": "y",
+                                      "raw_string": "y"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        }
+                      ],
+                      "primary": {},
+                      "value": {}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": [
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "two"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ],
+    "objects": [
+      {
+        "id": "Square",
+        "id_val": "Square",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,0:0:0-0:6:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,0:0:0-0:6:6",
+                    "value": [
+                      {
+                        "string": "Square",
+                        "raw_string": "Square"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Square"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "z",
+        "id_val": "z",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,3:0:38-3:1:39",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,3:0:38-3:1:39",
+                    "value": [
+                      {
+                        "string": "z",
+                        "raw_string": "z"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "z"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "Square",
+        "id_val": "Square",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:2:12-1:9:19",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:2:12-1:8:18",
+                    "value": [
+                      {
+                        "string": "Square",
+                        "raw_string": "Square"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Square"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "Square 2",
+        "id_val": "Square 2",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:11:21-1:20:30",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:12:22-1:20:30",
+                    "value": [
+                      {
+                        "string": "Square 2",
+                        "raw_string": "Square 2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Square 2"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "x",
+        "id_val": "x",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:2:45-4:4:47",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:2:45-4:3:46",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "y",
+        "id_val": "y",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:6:49-4:8:51",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:7:50-4:8:51",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "y"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "err": "<nil>"
+}

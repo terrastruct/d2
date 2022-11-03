@@ -1,0 +1,15 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/bad_curly.d2,0:0:0-0:7:7",
+    "nodes": null
+  },
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2parser/TestParse/bad_curly.d2,0:3:3-0:4:4",
+        "errmsg": "d2/testdata/d2parser/TestParse/bad_curly.d2:1:4: unexpected map termination character } in file map"
+      }
+    ]
+  }
+}

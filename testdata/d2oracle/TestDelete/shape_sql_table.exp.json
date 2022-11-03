@@ -1,0 +1,483 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,0:0:0-10:0:128",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,0:0:0-9:1:127",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,0:0:0-0:5:5",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,0:0:0-0:5:5",
+                    "value": [
+                      {
+                        "string": "cloud",
+                        "raw_string": "cloud"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,0:7:7-9:0:126",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,1:2:11-4:3:82",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,1:2:11-1:7:16",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,1:2:11-1:7:16",
+                              "value": [
+                                {
+                                  "string": "disks",
+                                  "raw_string": "disks"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,1:9:18-4:2:81",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,2:4:24-2:20:40",
+                                "key": {
+                                  "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,2:4:24-2:9:29",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,2:4:24-2:9:29",
+                                        "value": [
+                                          {
+                                            "string": "shape",
+                                            "raw_string": "shape"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,2:11:31-2:20:40",
+                                    "value": [
+                                      {
+                                        "string": "sql_table",
+                                        "raw_string": "sql_table"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,3:4:45-3:37:78",
+                                "key": {
+                                  "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,3:4:45-3:6:47",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,3:4:45-3:6:47",
+                                        "value": [
+                                          {
+                                            "string": "id",
+                                            "raw_string": "id"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,3:8:49-3:11:52",
+                                    "value": [
+                                      {
+                                        "string": "int",
+                                        "raw_string": "int"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "value": {
+                                  "map": {
+                                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,3:12:53-3:36:77",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,3:13:54-3:36:77",
+                                          "key": {
+                                            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,3:13:54-3:23:64",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,3:13:54-3:23:64",
+                                                  "value": [
+                                                    {
+                                                      "string": "constraint",
+                                                      "raw_string": "constraint"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "unquoted_string": {
+                                              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,3:25:66-3:36:77",
+                                              "value": [
+                                                {
+                                                  "string": "primary_key",
+                                                  "raw_string": "primary_key"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,6:2:88-6:10:96",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,6:2:88-6:10:96",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,6:2:88-6:7:93",
+                              "value": [
+                                {
+                                  "string": "disks",
+                                  "raw_string": "disks"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,6:8:94-6:10:96",
+                              "value": [
+                                {
+                                  "string": "id",
+                                  "raw_string": "id"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:2:100-8:27:125",
+                      "edges": [
+                        {
+                          "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:2:100-8:27:125",
+                          "src": {
+                            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:2:100-8:19:117",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:2:100-8:18:116",
+                                  "value": [
+                                    {
+                                      "string": "AWS S3 Vancouver",
+                                      "raw_string": "AWS S3 Vancouver"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:21:119-8:27:125",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:22:120-8:27:125",
+                                  "value": [
+                                    {
+                                      "string": "disks",
+                                      "raw_string": "disks"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        }
+                      ],
+                      "primary": {},
+                      "value": {}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": [
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ],
+    "objects": [
+      {
+        "id": "cloud",
+        "id_val": "cloud",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,0:0:0-0:5:5",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,0:0:0-0:5:5",
+                    "value": [
+                      {
+                        "string": "cloud",
+                        "raw_string": "cloud"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "cloud"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "disks",
+        "id_val": "disks",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,1:2:11-1:7:16",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,1:2:11-1:7:16",
+                    "value": [
+                      {
+                        "string": "disks",
+                        "raw_string": "disks"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,6:2:88-6:10:96",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,6:2:88-6:7:93",
+                    "value": [
+                      {
+                        "string": "disks",
+                        "raw_string": "disks"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,6:8:94-6:10:96",
+                    "value": [
+                      {
+                        "string": "id",
+                        "raw_string": "id"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:21:119-8:27:125",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:22:120-8:27:125",
+                    "value": [
+                      {
+                        "string": "disks",
+                        "raw_string": "disks"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "sql_table": {
+          "columns": [
+            {
+              "name": "id",
+              "type": "int",
+              "constraint": "primary_key",
+              "reference": ""
+            }
+          ]
+        },
+        "attributes": {
+          "label": {
+            "value": "disks"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "sql_table"
+          }
+        }
+      },
+      {
+        "id": "AWS S3 Vancouver",
+        "id_val": "AWS S3 Vancouver",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:2:100-8:19:117",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:2:100-8:18:116",
+                    "value": [
+                      {
+                        "string": "AWS S3 Vancouver",
+                        "raw_string": "AWS S3 Vancouver"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "AWS S3 Vancouver"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "err": "<nil>"
+}

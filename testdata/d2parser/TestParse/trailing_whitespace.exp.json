@@ -1,0 +1,52 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/trailing_whitespace.d2,0:0:0-2:0:28",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/trailing_whitespace.d2,1:0:1-1:26:27",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/trailing_whitespace.d2,1:0:1-1:7:8",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/trailing_whitespace.d2,1:0:1-1:1:2",
+                  "value": [
+                    {
+                      "string": "s",
+                      "raw_string": "s"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/trailing_whitespace.d2,1:2:3-1:7:8",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {
+            "unquoted_string": {
+              "range": "d2/testdata/d2parser/TestParse/trailing_whitespace.d2,1:9:10-1:19:20",
+              "value": [
+                {
+                  "string": "orochimaru",
+                  "raw_string": "orochimaru"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "err": null
+}

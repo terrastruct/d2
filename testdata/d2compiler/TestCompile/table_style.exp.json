@@ -1,0 +1,220 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,0:0:0-5:0:81",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,0:0:0-4:1:80",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,0:0:0-0:15:15",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,0:0:0-0:15:15",
+                    "value": [
+                      {
+                        "string": "IUserProperties",
+                        "raw_string": "IUserProperties"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,0:17:17-4:0:79",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,1:2:21-1:18:37",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,1:2:21-1:7:26",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,1:2:21-1:7:26",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,1:9:28-1:18:37",
+                          "value": [
+                            {
+                              "string": "sql_table",
+                              "raw_string": "sql_table"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,2:2:40-2:19:57",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,2:2:40-2:11:49",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,2:2:40-2:11:49",
+                              "value": [
+                                {
+                                  "string": "GetType()",
+                                  "raw_string": "GetType()"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,2:13:51-2:19:57",
+                          "value": [
+                            {
+                              "string": "string",
+                              "raw_string": "string"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,3:2:60-3:20:78",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,3:2:60-3:15:73",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,3:2:60-3:7:65",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,3:8:66-3:15:73",
+                              "value": [
+                                {
+                                  "string": "opacity",
+                                  "raw_string": "opacity"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "number": {
+                          "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,3:17:75-3:20:78",
+                          "raw": "0.4",
+                          "value": "2/5"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": [],
+    "objects": [
+      {
+        "id": "IUserProperties",
+        "id_val": "IUserProperties",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,0:0:0-0:15:15",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,0:0:0-0:15:15",
+                    "value": [
+                      {
+                        "string": "IUserProperties",
+                        "raw_string": "IUserProperties"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "sql_table": {
+          "columns": [
+            {
+              "name": "GetType()",
+              "type": "string",
+              "constraint": "",
+              "reference": ""
+            }
+          ]
+        },
+        "attributes": {
+          "label": {
+            "value": "IUserProperties"
+          },
+          "style": {
+            "opacity": {
+              "value": "0.4"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": "sql_table"
+          }
+        }
+      }
+    ]
+  },
+  "err": null
+}

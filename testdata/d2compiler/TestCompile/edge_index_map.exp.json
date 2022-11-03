@@ -1,0 +1,318 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,0:0:0-5:0:114",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,1:0:1-1:6:7",
+            "edges": [
+              {
+                "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,1:0:1-1:6:7",
+                "src": {
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,1:0:1-1:2:3",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,1:0:1-1:1:2",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,1:4:5-1:6:7",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,1:5:6-1:6:7",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,2:0:8-4:1:113",
+            "edges": [
+              {
+                "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,2:1:9-2:7:15",
+                "src": {
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,2:1:9-2:3:11",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,2:1:9-2:2:10",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,2:5:13-2:7:15",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,2:6:14-2:7:15",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "edge_index": {
+              "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,2:8:16-2:11:19",
+              "int": 0,
+              "glob": false
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,2:13:21-4:0:112",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,3:2:25-3:88:111",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,3:2:25-3:7:30",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,3:2:25-3:7:30",
+                              "value": [
+                                {
+                                  "string": "label",
+                                  "raw_string": "label"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "double_quoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,3:9:32-3:88:111",
+                          "value": [
+                            {
+                              "string": "Space: the final frontier.  These are the voyages of the starship Enterprise.",
+                              "raw_string": "Space: the final frontier.  These are the voyages of the starship Enterprise."
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": [
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          },
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Space: the final frontier.  These are the voyages of the starship Enterprise."
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ],
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,1:0:1-1:2:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,1:0:1-1:1:2",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,2:1:9-2:3:11",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,2:1:9-2:2:10",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "y",
+        "id_val": "y",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,1:4:5-1:6:7",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,1:5:6-1:6:7",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,2:5:13-2:7:15",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/edge_index_map.d2,2:6:14-2:7:15",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "y"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "err": null
+}

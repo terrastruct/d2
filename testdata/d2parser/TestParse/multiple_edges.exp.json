@@ -1,0 +1,91 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/multiple_edges.d2,0:0:0-2:0:13",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/multiple_edges.d2,1:0:1-1:11:12",
+          "edges": [
+            {
+              "range": "d2/testdata/d2parser/TestParse/multiple_edges.d2,1:0:1-1:7:8",
+              "src": {
+                "range": "d2/testdata/d2parser/TestParse/multiple_edges.d2,1:0:1-1:2:3",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/multiple_edges.d2,1:0:1-1:1:2",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "d2/testdata/d2parser/TestParse/multiple_edges.d2,1:4:5-1:7:8",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/multiple_edges.d2,1:5:6-1:6:7",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            {
+              "range": "d2/testdata/d2parser/TestParse/multiple_edges.d2,1:4:5-1:11:12",
+              "src": {
+                "range": "d2/testdata/d2parser/TestParse/multiple_edges.d2,1:4:5-1:7:8",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/multiple_edges.d2,1:5:6-1:6:7",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "d2/testdata/d2parser/TestParse/multiple_edges.d2,1:9:10-1:11:12",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/multiple_edges.d2,1:10:11-1:11:12",
+                      "value": [
+                        {
+                          "string": "z",
+                          "raw_string": "z"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            }
+          ],
+          "primary": {},
+          "value": {}
+        }
+      }
+    ]
+  },
+  "err": null
+}

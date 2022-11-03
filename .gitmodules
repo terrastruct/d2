@@ -1,0 +1,3 @@
+[submodule "ci/sub"]
+	path = ci/sub
+	url = https://github.com/terrastruct/ci

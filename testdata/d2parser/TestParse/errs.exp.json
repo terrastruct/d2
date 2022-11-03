@@ -1,0 +1,472 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/errs.d2,0:0:0-27:0:220",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/errs.d2,1:0:1-1:8:9",
+          "edges": [
+            {
+              "range": "d2/testdata/d2parser/TestParse/errs.d2,1:0:1-1:2:3",
+              "src": null,
+              "src_arrow": "",
+              "dst": null,
+              "dst_arrow": ""
+            }
+          ],
+          "primary": {},
+          "value": {
+            "unquoted_string": {
+              "range": "d2/testdata/d2parser/TestParse/errs.d2,1:4:5-1:8:9",
+              "value": [
+                {
+                  "string": "meow",
+                  "raw_string": "meow"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/errs.d2,2:0:14-2:4:18",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/errs.d2,2:0:14-2:4:18",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/errs.d2,2:0:14-2:4:18",
+                  "value": [
+                    {
+                      "string": "meow",
+                      "raw_string": "meow"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {}
+        }
+      },
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/errs.d2,3:0:26-3:16:42",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/errs.d2,3:0:26-3:2:28",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/errs.d2,3:0:26-3:2:28",
+                  "value": [
+                    {
+                      "string": "ok",
+                      "raw_string": "ok"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {
+            "double_quoted_string": {
+              "range": "d2/testdata/d2parser/TestParse/errs.d2,3:4:30-3:16:42",
+              "value": [
+                {
+                  "string": "dmsadmakls",
+                  "raw_string": "dmsadmakls"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/errs.d2,5:0:63-5:26:89",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/errs.d2,5:0:63-5:7:70",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/errs.d2,5:0:63-5:1:64",
+                  "value": [
+                    {
+                      "string": "s",
+                      "raw_string": "s"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/errs.d2,5:2:65-5:7:70",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {
+            "unquoted_string": {
+              "range": "d2/testdata/d2parser/TestParse/errs.d2,5:9:72-5:19:82",
+              "value": [
+                {
+                  "string": "orochimaru",
+                  "raw_string": "orochimaru"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/errs.d2,6:0:90-6:25:115",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/errs.d2,6:0:90-6:7:97",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/errs.d2,6:0:90-6:1:91",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/errs.d2,6:2:92-6:7:97",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {
+            "unquoted_string": {
+              "range": "d2/testdata/d2parser/TestParse/errs.d2,6:9:99-6:18:108",
+              "value": [
+                {
+                  "string": "dasdasdas",
+                  "raw_string": "dasdasdas"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/errs.d2,8:0:117-8:4:121",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/errs.d2,8:0:117-8:3:120",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/errs.d2,8:0:117-8:3:120",
+                  "value": [
+                    {
+                      "string": "wow",
+                      "raw_string": "wow"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {}
+        }
+      },
+      {
+        "block_comment": {
+          "range": "d2/testdata/d2parser/TestParse/errs.d2,16:0:138-18:3:150",
+          "value": "wsup"
+        }
+      },
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/errs.d2,20:0:152-20:1:153",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/errs.d2,20:0:152-20:1:153",
+            "path": [
+              {
+                "single_quoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/errs.d2,20:0:152-20:1:153",
+                  "raw": "",
+                  "value": ""
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {}
+        }
+      },
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/errs.d2,22:0:155-22:11:166",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/errs.d2,22:0:155-22:4:159",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/errs.d2,22:0:155-22:4:159",
+                  "value": [
+                    {
+                      "string": "meow",
+                      "raw_string": "meow"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {
+            "unquoted_string": {
+              "range": "d2/testdata/d2parser/TestParse/errs.d2,22:6:161-22:7:162",
+              "value": [
+                {
+                  "substitution": {
+                    "range": "d2/testdata/d2parser/TestParse/errs.d2,22:6:161-22:11:166",
+                    "spread": false,
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2parser/TestParse/errs.d2,22:8:163-22:10:165",
+                          "value": [
+                            {
+                              "string": "ok",
+                              "raw_string": "ok"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/errs.d2,23:0:167-23:12:179",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/errs.d2,23:0:167-23:5:172",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/errs.d2,23:0:167-23:4:171",
+                  "value": [
+                    {
+                      "string": "meow",
+                      "raw_string": "meow"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "edges": [
+            {
+              "range": "d2/testdata/d2parser/TestParse/errs.d2,23:6:173-23:9:176",
+              "src": {
+                "range": "d2/testdata/d2parser/TestParse/errs.d2,23:6:173-23:7:174",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/errs.d2,23:6:173-23:7:174",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": null,
+              "dst_arrow": ">"
+            }
+          ],
+          "edge_index": {
+            "range": "d2/testdata/d2parser/TestParse/errs.d2,23:10:177-23:11:178",
+            "int": null,
+            "glob": false
+          },
+          "primary": {},
+          "value": {}
+        }
+      },
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/errs.d2,24:0:180-24:6:186",
+          "edges": [
+            {
+              "range": "d2/testdata/d2parser/TestParse/errs.d2,24:0:180-24:6:186",
+              "src": {
+                "range": "d2/testdata/d2parser/TestParse/errs.d2,24:0:180-24:2:182",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/errs.d2,24:0:180-24:1:181",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "d2/testdata/d2parser/TestParse/errs.d2,24:4:184-24:6:186",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/errs.d2,24:5:185-24:6:186",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            }
+          ],
+          "primary": {},
+          "value": {}
+        }
+      },
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/errs.d2,26:0:188-26:5:193",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/errs.d2,26:0:188-26:1:189",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/errs.d2,26:0:188-26:1:189",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {
+            "array": {
+              "range": "d2/testdata/d2parser/TestParse/errs.d2,26:3:191-26:4:192",
+              "nodes": null
+            }
+          }
+        }
+      }
+    ]
+  },
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2parser/TestParse/errs.d2,1:0:1-1:1:2",
+        "errmsg": "d2/testdata/d2parser/TestParse/errs.d2:2:1: connection missing source"
+      },
+      {
+        "range": "d2/testdata/d2parser/TestParse/errs.d2,1:0:1-1:2:3",
+        "errmsg": "d2/testdata/d2parser/TestParse/errs.d2:2:1: connection missing destination"
+      },
+      {
+        "range": "d2/testdata/d2parser/TestParse/errs.d2,1:8:9-1:11:12",
+        "errmsg": "d2/testdata/d2parser/TestParse/errs.d2:2:9: unexpected text after unquoted string"
+      },
+      {
+        "range": "d2/testdata/d2parser/TestParse/errs.d2,2:4:18-2:10:24",
+        "errmsg": "d2/testdata/d2parser/TestParse/errs.d2:3:5: unexpected text after map key"
+      },
+      {
+        "range": "d2/testdata/d2parser/TestParse/errs.d2,3:16:42-3:31:57",
+        "errmsg": "d2/testdata/d2parser/TestParse/errs.d2:4:17: unexpected text after double quoted string"
+      },
+      {
+        "range": "d2/testdata/d2parser/TestParse/errs.d2,8:3:120-8:4:121",
+        "errmsg": "d2/testdata/d2parser/TestParse/errs.d2:9:4: missing value after colon"
+      },
+      {
+        "range": "d2/testdata/d2parser/TestParse/errs.d2,10:0:123-10:1:124",
+        "errmsg": "d2/testdata/d2parser/TestParse/errs.d2:11:1: map value without key"
+      },
+      {
+        "range": "d2/testdata/d2parser/TestParse/errs.d2,10:0:123-10:1:124",
+        "errmsg": "d2/testdata/d2parser/TestParse/errs.d2:11:1: missing value after colon"
+      },
+      {
+        "range": "d2/testdata/d2parser/TestParse/errs.d2,12:0:128-12:2:130",
+        "errmsg": "d2/testdata/d2parser/TestParse/errs.d2:13:1: invalid text beginning unquoted key"
+      },
+      {
+        "range": "d2/testdata/d2parser/TestParse/errs.d2,14:2:134-14:3:135",
+        "errmsg": "d2/testdata/d2parser/TestParse/errs.d2:15:3: invalid text beginning unquoted key"
+      },
+      {
+        "range": "d2/testdata/d2parser/TestParse/errs.d2,14:3:135-14:4:136",
+        "errmsg": "d2/testdata/d2parser/TestParse/errs.d2:15:4: unexpected map termination character } in file map"
+      },
+      {
+        "range": "d2/testdata/d2parser/TestParse/errs.d2,20:0:152-20:1:153",
+        "errmsg": "d2/testdata/d2parser/TestParse/errs.d2:21:1: single quoted strings must be terminated with '"
+      },
+      {
+        "range": "d2/testdata/d2parser/TestParse/errs.d2,23:6:173-23:9:176",
+        "errmsg": "d2/testdata/d2parser/TestParse/errs.d2:24:7: connection missing destination"
+      },
+      {
+        "range": "d2/testdata/d2parser/TestParse/errs.d2,23:10:177-23:11:178",
+        "errmsg": "d2/testdata/d2parser/TestParse/errs.d2:24:11: unexpected character in edge index"
+      },
+      {
+        "range": "d2/testdata/d2parser/TestParse/errs.d2,23:10:177-23:11:178",
+        "errmsg": "d2/testdata/d2parser/TestParse/errs.d2:24:11: unterminated edge index"
+      },
+      {
+        "range": "d2/testdata/d2parser/TestParse/errs.d2,23:11:178-23:12:179",
+        "errmsg": "d2/testdata/d2parser/TestParse/errs.d2:24:12: missing value after colon"
+      },
+      {
+        "range": "d2/testdata/d2parser/TestParse/errs.d2,26:5:193-26:31:219",
+        "errmsg": "d2/testdata/d2parser/TestParse/errs.d2:27:6: unexpected text after array"
+      }
+    ]
+  }
+}

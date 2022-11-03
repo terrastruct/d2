@@ -1,0 +1,97 @@
+name: ci
+on: [push]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  assert-linear:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - run: ./make.sh assert-linear
+        env:
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+  fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: ./go.mod
+          cache: true
+      - run: ./make.sh fmt
+        env:
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: ./go.mod
+          cache: true
+      - run: ./make.sh lint
+        env:
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: ./go.mod
+          cache: true
+      - run: ./make.sh build
+        env:
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: ./go.mod
+          cache: true
+      - run: ./make.sh test
+        env:
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: d2chaos-test
+          path: ./d2chaos/out
+  race:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: ./go.mod
+          cache: true
+      - run: ./make.sh race
+        env:
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: d2chaos-race
+          path: ./d2chaos/out

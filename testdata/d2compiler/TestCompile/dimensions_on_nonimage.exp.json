@@ -1,0 +1,16 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,2:1:28-2:11:38",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2:3:2: width is only applicable to image shapes."
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,3:1:40-3:12:51",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2:4:2: height is only applicable to image shapes."
+      }
+    ]
+  }
+}

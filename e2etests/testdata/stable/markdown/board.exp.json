@@ -1,0 +1,214 @@
+{
+  "name": "",
+  "shapes": [
+    {
+      "id": "hey",
+      "type": "text",
+      "pos": {
+        "x": 0,
+        "y": 226
+      },
+      "width": 535,
+      "height": 191,
+      "level": 1,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#FFFFFF",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "# Every frustum longs to be a cone\n\n- A continuing flow of paper is sufficient to continue the flow of paper\n- Please remain calm, it's no use both of us being hysterical at the same time\n- Visits always give pleasure: if not on arrival, then on the departure\n\n*Festivity Level 1*: Your guests are chatting amiably with each other.",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "markdown",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 535,
+      "labelHeight": 191
+    },
+    {
+      "id": "x",
+      "type": "",
+      "pos": {
+        "x": 211,
+        "y": 0
+      },
+      "width": 113,
+      "height": 126,
+      "level": 1,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#F7F8FE",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "x",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 13,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER"
+    },
+    {
+      "id": "y",
+      "type": "",
+      "pos": {
+        "x": 211,
+        "y": 517
+      },
+      "width": 114,
+      "height": 126,
+      "level": 1,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#F7F8FE",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "y",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 14,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER"
+    }
+  ],
+  "connections": [
+    {
+      "id": "(x -> hey)[0]",
+      "src": "x",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "hey",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 267.5,
+          "y": 126
+        },
+        {
+          "x": 267.5,
+          "y": 166
+        },
+        {
+          "x": 267.5,
+          "y": 186
+        },
+        {
+          "x": 267.5,
+          "y": 226
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null
+    },
+    {
+      "id": "(hey -> y)[0]",
+      "src": "hey",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "y",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 267.5,
+          "y": 417
+        },
+        {
+          "x": 267.5,
+          "y": 457
+        },
+        {
+          "x": 267.5,
+          "y": 477
+        },
+        {
+          "x": 267.5,
+          "y": 517
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null
+    }
+  ]
+}

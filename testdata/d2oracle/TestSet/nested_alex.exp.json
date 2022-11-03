@@ -1,0 +1,350 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,0:0:0-5:0:202",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,0:0:0-4:1:201",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,0:0:0-0:4:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,0:0:0-0:4:4",
+                    "value": [
+                      {
+                        "string": "this",
+                        "raw_string": "this"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,0:6:6-4:0:200",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,1:2:10-1:11:19",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,1:2:10-1:7:15",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,1:2:10-1:7:15",
+                              "value": [
+                                {
+                                  "string": "label",
+                                  "raw_string": "label"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,1:9:17-1:11:19",
+                          "value": [
+                            {
+                              "string": "do",
+                              "raw_string": "do"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:2:22-2:20:40",
+                      "edges": [
+                        {
+                          "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:2:22-2:14:34",
+                          "src": {
+                            "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:2:22-2:7:27",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:2:22-2:6:26",
+                                  "value": [
+                                    {
+                                      "string": "test",
+                                      "raw_string": "test"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:9:29-2:14:34",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:10:30-2:14:34",
+                                  "value": [
+                                    {
+                                      "string": "here",
+                                      "raw_string": "here"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        }
+                      ],
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:16:36-2:20:40",
+                          "value": [
+                            {
+                              "string": "asdf",
+                              "raw_string": "asdf"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,3:2:43-3:158:199",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,3:2:43-3:6:47",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,3:2:43-3:6:47",
+                              "value": [
+                                {
+                                  "string": "here",
+                                  "raw_string": "here"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "double_quoted_string": {
+                          "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,3:8:49-3:158:199",
+                          "value": [
+                            {
+                              "string": "How much of their influence on you is a result of your influence on them?\nA conference is a gathering of important people who singly can do nothing",
+                              "raw_string": "How much of their influence on you is a result of your influence on them?\\nA conference is a gathering of important people who singly can do nothing"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": [
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "asdf"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ],
+    "objects": [
+      {
+        "id": "this",
+        "id_val": "this",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,0:0:0-0:4:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,0:0:0-0:4:4",
+                    "value": [
+                      {
+                        "string": "this",
+                        "raw_string": "this"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "do"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "here",
+        "id_val": "here",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,3:2:43-3:6:47",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,3:2:43-3:6:47",
+                    "value": [
+                      {
+                        "string": "here",
+                        "raw_string": "here"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:9:29-2:14:34",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:10:30-2:14:34",
+                    "value": [
+                      {
+                        "string": "here",
+                        "raw_string": "here"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "How much of their influence on you is a result of your influence on them?\nA conference is a gathering of important people who singly can do nothing"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "test",
+        "id_val": "test",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:2:22-2:7:27",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:2:22-2:6:26",
+                    "value": [
+                      {
+                        "string": "test",
+                        "raw_string": "test"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "test"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "err": "<nil>"
+}

@@ -1,0 +1,31 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/key.d2,0:0:0-2:0:3",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/key.d2,1:0:1-1:1:2",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/key.d2,1:0:1-1:1:2",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/key.d2,1:0:1-1:1:2",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {}
+        }
+      }
+    ]
+  },
+  "err": null
+}

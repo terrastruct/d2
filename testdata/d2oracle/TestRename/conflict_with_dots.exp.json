@@ -1,0 +1,157 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestRename/conflict_with_dots.d2,0:0:0-2:0:14",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestRename/conflict_with_dots.d2,0:0:0-0:5:5",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/conflict_with_dots.d2,0:0:0-0:5:5",
+              "path": [
+                {
+                  "double_quoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_with_dots.d2,0:0:0-0:5:5",
+                    "value": [
+                      {
+                        "string": "a.b",
+                        "raw_string": "a.b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestRename/conflict_with_dots.d2,1:0:6-1:7:13",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/conflict_with_dots.d2,1:0:6-1:7:13",
+              "path": [
+                {
+                  "double_quoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_with_dots.d2,1:0:6-1:7:13",
+                    "value": [
+                      {
+                        "string": "a.b 2",
+                        "raw_string": "a.b 2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "\"a.b\"",
+        "id_val": "a.b",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/conflict_with_dots.d2,0:0:0-0:5:5",
+              "path": [
+                {
+                  "double_quoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_with_dots.d2,0:0:0-0:5:5",
+                    "value": [
+                      {
+                        "string": "a.b",
+                        "raw_string": "a.b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "a.b"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "\"a.b 2\"",
+        "id_val": "a.b 2",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/conflict_with_dots.d2,1:0:6-1:7:13",
+              "path": [
+                {
+                  "double_quoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_with_dots.d2,1:0:6-1:7:13",
+                    "value": [
+                      {
+                        "string": "a.b 2",
+                        "raw_string": "a.b 2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "a.b 2"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "err": "<nil>"
+}

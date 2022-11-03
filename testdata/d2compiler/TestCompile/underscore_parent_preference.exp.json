@@ -1,0 +1,245 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,0:0:0-5:0:174",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,1:0:1-3:1:92",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,1:0:1-1:1:2",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,1:0:1-1:1:2",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,1:3:4-3:0:91",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,2:1:7-2:84:90",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,2:1:7-2:4:10",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,2:1:7-2:2:8",
+                              "value": [
+                                {
+                                  "string": "_",
+                                  "raw_string": "_"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,2:3:9-2:4:10",
+                              "value": [
+                                {
+                                  "string": "y",
+                                  "raw_string": "y"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "double_quoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,2:6:12-2:84:90",
+                          "value": [
+                            {
+                              "string": "All we are given is possibilities -- to make ourselves one thing or another.",
+                              "raw_string": "All we are given is possibilities -- to make ourselves one thing or another."
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,4:0:93-4:80:173",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,4:0:93-4:1:94",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,4:0:93-4:1:94",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "double_quoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,4:3:96-4:80:173",
+                "value": [
+                  {
+                    "string": "But it's real.  And if it's real it can be affected ...  we may not be able",
+                    "raw_string": "But it's real.  And if it's real it can be affected ...  we may not be able"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label": {
+        "value": ""
+      },
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "shape": {
+        "value": ""
+      },
+      "near_key": null,
+      "style": {}
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "label": {
+          "value": "x"
+        },
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,1:0:1-1:1:2",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,1:0:1-1:1:2",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0,
+            "scope_key": ""
+          }
+        ],
+        "shape": {
+          "value": ""
+        },
+        "near_key": null,
+        "style": {}
+      },
+      {
+        "id": "y",
+        "id_val": "y",
+        "label": {
+          "value": "But it's real.  And if it's real it can be affected ...  we may not be able"
+        },
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,2:1:7-2:4:10",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,2:1:7-2:2:8",
+                    "value": [
+                      {
+                        "string": "_",
+                        "raw_string": "_"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,2:3:9-2:4:10",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0,
+            "scope_key": ""
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,4:0:93-4:1:94",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference.d2,4:0:93-4:1:94",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0,
+            "scope_key": ""
+          }
+        ],
+        "shape": {
+          "value": ""
+        },
+        "near_key": null,
+        "style": {}
+      }
+    ]
+  },
+  "err": null
+}

@@ -1,0 +1,184 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/()_keys.d2,0:0:0-3:0:64",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/()_keys.d2,1:0:1-1:17:18",
+          "edges": [
+            {
+              "range": "d2/testdata/d2parser/TestParse/()_keys.d2,1:0:1-1:17:18",
+              "src": {
+                "range": "d2/testdata/d2parser/TestParse/()_keys.d2,1:0:1-1:8:9",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/()_keys.d2,1:0:1-1:7:8",
+                      "value": [
+                        {
+                          "string": "my_fn()",
+                          "raw_string": "my_fn()"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "d2/testdata/d2parser/TestParse/()_keys.d2,1:10:11-1:17:18",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/()_keys.d2,1:11:12-1:17:18",
+                      "value": [
+                        {
+                          "string": "wowa()",
+                          "raw_string": "wowa()"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            }
+          ],
+          "primary": {},
+          "value": {}
+        }
+      },
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/()_keys.d2,2:0:19-2:44:63",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/()_keys.d2,2:0:19-2:5:24",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/()_keys.d2,2:0:19-2:4:23",
+                  "value": [
+                    {
+                      "string": "meow",
+                      "raw_string": "meow"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "edges": [
+            {
+              "range": "d2/testdata/d2parser/TestParse/()_keys.d2,2:6:25-2:13:32",
+              "src": {
+                "range": "d2/testdata/d2parser/TestParse/()_keys.d2,2:6:25-2:8:27",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/()_keys.d2,2:6:25-2:7:26",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "d2/testdata/d2parser/TestParse/()_keys.d2,2:10:29-2:13:32",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/()_keys.d2,2:11:30-2:12:31",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            {
+              "range": "d2/testdata/d2parser/TestParse/()_keys.d2,2:10:29-2:17:36",
+              "src": {
+                "range": "d2/testdata/d2parser/TestParse/()_keys.d2,2:10:29-2:13:32",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/()_keys.d2,2:11:30-2:12:31",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "d2/testdata/d2parser/TestParse/()_keys.d2,2:15:34-2:17:36",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/()_keys.d2,2:16:35-2:17:36",
+                      "value": [
+                        {
+                          "string": "z",
+                          "raw_string": "z"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            }
+          ],
+          "edge_index": {
+            "range": "d2/testdata/d2parser/TestParse/()_keys.d2,2:18:37-2:21:40",
+            "int": 3,
+            "glob": false
+          },
+          "edge_key": {
+            "range": "d2/testdata/d2parser/TestParse/()_keys.d2,2:22:41-2:27:46",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/()_keys.d2,2:22:41-2:27:46",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {
+            "double_quoted_string": {
+              "range": "d2/testdata/d2parser/TestParse/()_keys.d2,2:29:48-2:44:63",
+              "value": [
+                {
+                  "string": "all hail corn",
+                  "raw_string": "all hail corn"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "err": null
+}

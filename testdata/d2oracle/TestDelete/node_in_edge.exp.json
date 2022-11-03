@@ -1,0 +1,470 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:0:0-5:0:34",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:0:0-0:6:6",
+            "edges": [
+              {
+                "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:0:0-0:6:6",
+                "src": {
+                  "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:0:0-0:2:2",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:4:4-0:6:6",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:5:5-0:6:6",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:0:7-1:6:13",
+            "edges": [
+              {
+                "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:0:7-1:6:13",
+                "src": {
+                  "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:0:7-1:2:9",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:0:7-1:1:8",
+                        "value": [
+                          {
+                            "string": "q",
+                            "raw_string": "q"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:4:11-1:6:13",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:5:12-1:6:13",
+                        "value": [
+                          {
+                            "string": "p",
+                            "raw_string": "p"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,2:0:14-4:1:33",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,2:0:14-2:2:16",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,2:0:14-2:2:16",
+                    "value": [
+                      {
+                        "string": "ok",
+                        "raw_string": "ok"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,2:4:18-4:0:32",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,3:2:22-3:11:31",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,3:2:22-3:11:31",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,3:2:22-3:11:31",
+                              "value": [
+                                {
+                                  "string": "what's up",
+                                  "raw_string": "what's up"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": [
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ],
+    "objects": [
+      {
+        "id": "ok",
+        "id_val": "ok",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,2:0:14-2:2:16",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,2:0:14-2:2:16",
+                    "value": [
+                      {
+                        "string": "ok",
+                        "raw_string": "ok"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "ok"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "\"what's up\"",
+        "id_val": "what's up",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,3:2:22-3:11:31",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,3:2:22-3:11:31",
+                    "value": [
+                      {
+                        "string": "what's up",
+                        "raw_string": "what's up"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "what's up"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "x",
+        "id_val": "x",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:0:0-0:2:2",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "y",
+        "id_val": "y",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:4:4-0:6:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:5:5-0:6:6",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "y"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "q",
+        "id_val": "q",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:0:7-1:2:9",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:0:7-1:1:8",
+                    "value": [
+                      {
+                        "string": "q",
+                        "raw_string": "q"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "q"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "p",
+        "id_val": "p",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:4:11-1:6:13",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:5:12-1:6:13",
+                    "value": [
+                      {
+                        "string": "p",
+                        "raw_string": "p"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "p"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "err": "<nil>"
+}

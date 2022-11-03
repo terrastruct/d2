@@ -1,0 +1,26 @@
+name: daily
+on:
+  workflow_dispatch:
+  schedule:
+    # daily at 00:42 to avoid hourly loads in GitHub actions
+    # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule
+    - cron: '42 0 * * *'
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  all:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: ./go.mod
+          cache: true
+      - run: CI_ALL=1 ./make.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}

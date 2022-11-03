@@ -1,0 +1,394 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:0:0-4:0:21",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:0:0-3:1:20",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:0:0-0:5:5",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "1",
+                        "raw_string": "1"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "2",
+                        "raw_string": "2"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:4:4-0:5:5",
+                    "value": [
+                      {
+                        "string": "3",
+                        "raw_string": "3"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:7:7-3:0:19",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,1:2:11-1:5:14",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,1:2:11-1:5:14",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,1:2:11-1:5:14",
+                              "value": [
+                                {
+                                  "string": "5 2",
+                                  "raw_string": "5 2"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,2:2:17-2:3:18",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,2:2:17-2:3:18",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,2:2:17-2:3:18",
+                              "value": [
+                                {
+                                  "string": "5",
+                                  "raw_string": "5"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "1",
+        "id_val": "1",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:0:0-0:5:5",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "1",
+                        "raw_string": "1"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "2",
+                        "raw_string": "2"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:4:4-0:5:5",
+                    "value": [
+                      {
+                        "string": "3",
+                        "raw_string": "3"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "1"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "2",
+        "id_val": "2",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:0:0-0:5:5",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "1",
+                        "raw_string": "1"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "2",
+                        "raw_string": "2"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:4:4-0:5:5",
+                    "value": [
+                      {
+                        "string": "3",
+                        "raw_string": "3"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 1,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "2"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "3",
+        "id_val": "3",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:0:0-0:5:5",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "1",
+                        "raw_string": "1"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "2",
+                        "raw_string": "2"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,0:4:4-0:5:5",
+                    "value": [
+                      {
+                        "string": "3",
+                        "raw_string": "3"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 2,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "3"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "5 2",
+        "id_val": "5 2",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,1:2:11-1:5:14",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,1:2:11-1:5:14",
+                    "value": [
+                      {
+                        "string": "5 2",
+                        "raw_string": "5 2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "5 2"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "5",
+        "id_val": "5",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,2:2:17-2:3:18",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/conflict_2.d2,2:2:17-2:3:18",
+                    "value": [
+                      {
+                        "string": "5",
+                        "raw_string": "5"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "5"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "err": "<nil>"
+}
