@@ -98,13 +98,13 @@ import (
 
 // ...modifying the diagram `x -> y` from above
 // Create a shape with the ID, "meow"
-graph, err = d2oracle.Create(graph "meow")
+graph, err = d2oracle.Create(graph, "meow")
 // Style the shape green
-graph, err = d2oracle.Set(graph "meow.style.fill", "green")
+graph, err = d2oracle.Set(graph, "meow.style.fill", "green")
 // Create a shape with the ID, "cat"
-graph, err = d2oracle.Create(graph "cat")
+graph, err = d2oracle.Create(graph, "cat")
 // Move the shape "meow" inside the container "cat"
-graph, err = d2oracle.Move(graph "meow", "cat.meow")
+graph, err = d2oracle.Move(graph, "meow", "cat.meow")
 // Prints formatted D2 code
 println(d2format.Format(graph.AST))
 ```
