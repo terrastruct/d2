@@ -1,0 +1,322 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,0:0:0-3:0:38",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,0:0:0-0:28:28",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "A",
+                        "raw_string": "A"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,0:3:3-0:27:27",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,0:4:4-0:27:27",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,0:4:4-0:16:16",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,0:4:4-0:9:9",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,0:10:10-0:16:16",
+                              "value": [
+                                {
+                                  "string": "stroke",
+                                  "raw_string": "stroke"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "double_quoted_string": {
+                          "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,0:18:18-0:27:27",
+                          "value": [
+                            {
+                              "string": "#000e3d",
+                              "raw_string": "#000e3d"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,1:0:29-1:1:30",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,1:0:29-1:1:30",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,1:0:29-1:1:30",
+                    "value": [
+                      {
+                        "string": "B",
+                        "raw_string": "B"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,2:0:31-2:6:37",
+            "edges": [
+              {
+                "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,2:0:31-2:6:37",
+                "src": {
+                  "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,2:0:31-2:2:33",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,2:0:31-2:1:32",
+                        "value": [
+                          {
+                            "string": "A",
+                            "raw_string": "A"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,2:4:35-2:6:37",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,2:5:36-2:6:37",
+                        "value": [
+                          {
+                            "string": "B",
+                            "raw_string": "B"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "primary": {},
+            "value": {}
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": [
+      {
+        "index": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ],
+    "objects": [
+      {
+        "id": "A",
+        "id_val": "A",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "A",
+                        "raw_string": "A"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,2:0:31-2:2:33",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,2:0:31-2:1:32",
+                    "value": [
+                      {
+                        "string": "A",
+                        "raw_string": "A"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "A"
+          },
+          "style": {
+            "stroke": {
+              "value": "#000e3d"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "B",
+        "id_val": "B",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,1:0:29-1:1:30",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,1:0:29-1:1:30",
+                    "value": [
+                      {
+                        "string": "B",
+                        "raw_string": "B"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,2:4:35-2:6:37",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/connection_style_and_object_style_2.d2,2:5:36-2:6:37",
+                    "value": [
+                      {
+                        "string": "B",
+                        "raw_string": "B"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "B"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "err": "<nil>"
+}

@@ -1,0 +1,220 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,0:0:0-5:0:82",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,0:0:0-4:1:81",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,0:0:0-0:15:15",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,0:0:0-0:15:15",
+                    "value": [
+                      {
+                        "string": "IUserProperties",
+                        "raw_string": "IUserProperties"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,0:17:17-4:0:80",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,1:2:21-1:16:35",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,1:2:21-1:7:26",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,1:2:21-1:7:26",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "double_quoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,1:9:28-1:16:35",
+                          "value": [
+                            {
+                              "string": "class",
+                              "raw_string": "class"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,2:2:38-2:22:58",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,2:2:38-2:12:48",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,2:2:38-2:12:48",
+                              "value": [
+                                {
+                                  "string": "firstName?",
+                                  "raw_string": "firstName?"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "double_quoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,2:14:50-2:22:58",
+                          "value": [
+                            {
+                              "string": "string",
+                              "raw_string": "string"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,3:2:61-3:20:79",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,3:2:61-3:15:74",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,3:2:61-3:7:66",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,3:8:67-3:15:74",
+                              "value": [
+                                {
+                                  "string": "opacity",
+                                  "raw_string": "opacity"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "number": {
+                          "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,3:17:76-3:20:79",
+                          "raw": "0.4",
+                          "value": "2/5"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": [],
+    "objects": [
+      {
+        "id": "IUserProperties",
+        "id_val": "IUserProperties",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,0:0:0-0:15:15",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/class_style.d2,0:0:0-0:15:15",
+                    "value": [
+                      {
+                        "string": "IUserProperties",
+                        "raw_string": "IUserProperties"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "class": {
+          "fields": [
+            {
+              "name": "firstName?",
+              "type": "string",
+              "visibility": "public"
+            }
+          ],
+          "methods": null
+        },
+        "attributes": {
+          "label": {
+            "value": "IUserProperties"
+          },
+          "style": {
+            "opacity": {
+              "value": "0.4"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": "class"
+          }
+        }
+      }
+    ]
+  },
+  "err": null
+}

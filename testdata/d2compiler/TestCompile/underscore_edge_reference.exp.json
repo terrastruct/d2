@@ -1,0 +1,336 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,0:0:0-5:0:96",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,1:0:1-1:6:7",
+            "edges": [
+              {
+                "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,1:0:1-1:6:7",
+                "src": {
+                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,1:0:1-1:2:3",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,1:0:1-1:1:2",
+                        "value": [
+                          {
+                            "string": "a",
+                            "raw_string": "a"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,1:4:5-1:6:7",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,1:5:6-1:6:7",
+                        "value": [
+                          {
+                            "string": "b",
+                            "raw_string": "b"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,2:0:8-4:1:95",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,2:0:8-2:1:9",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,2:0:8-2:1:9",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,2:3:11-4:0:94",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,3:1:14-3:80:93",
+                      "edges": [
+                        {
+                          "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,3:1:14-3:11:24",
+                          "src": {
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,3:1:14-3:5:18",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,3:1:14-3:2:15",
+                                  "value": [
+                                    {
+                                      "string": "_",
+                                      "raw_string": "_"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,3:3:16-3:4:17",
+                                  "value": [
+                                    {
+                                      "string": "a",
+                                      "raw_string": "a"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,3:7:20-3:11:24",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,3:8:21-3:9:22",
+                                  "value": [
+                                    {
+                                      "string": "_",
+                                      "raw_string": "_"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,3:10:23-3:11:24",
+                                  "value": [
+                                    {
+                                      "string": "b",
+                                      "raw_string": "b"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        }
+                      ],
+                      "primary": {},
+                      "value": {
+                        "double_quoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,3:13:26-3:80:93",
+                          "value": [
+                            {
+                              "string": "Well, it's garish, ugly, and derelicts have used it for a toilet.",
+                              "raw_string": "Well, it's garish, ugly, and derelicts have used it for a toilet."
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label": {
+        "value": ""
+      },
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "shape": {
+        "value": ""
+      },
+      "near_key": null,
+      "style": {}
+    },
+    "edges": [
+      {
+        "index": 0,
+        "label": {
+          "value": ""
+        },
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0,
+            "scope_key": ""
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "label": {
+          "value": "Well, it's garish, ugly, and derelicts have used it for a toilet."
+        },
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0,
+            "scope_key": "x"
+          }
+        ]
+      }
+    ],
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "label": {
+          "value": "x"
+        },
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,2:0:8-2:1:9",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,2:0:8-2:1:9",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0,
+            "scope_key": ""
+          }
+        ],
+        "shape": {
+          "value": ""
+        },
+        "near_key": null,
+        "style": {}
+      },
+      {
+        "id": "a",
+        "id_val": "a",
+        "label": {
+          "value": "a"
+        },
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,1:0:1-1:2:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,1:0:1-1:1:2",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0,
+            "scope_key": ""
+          }
+        ],
+        "shape": {
+          "value": ""
+        },
+        "near_key": null,
+        "style": {}
+      },
+      {
+        "id": "b",
+        "id_val": "b",
+        "label": {
+          "value": "b"
+        },
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,1:4:5-1:6:7",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_reference.d2,1:5:6-1:6:7",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0,
+            "scope_key": ""
+          }
+        ],
+        "shape": {
+          "value": ""
+        },
+        "near_key": null,
+        "style": {}
+      }
+    ]
+  },
+  "err": null
+}

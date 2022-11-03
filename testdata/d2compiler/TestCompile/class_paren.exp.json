@@ -1,0 +1,253 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,0:0:0-6:1:81",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,0:0:0-6:1:81",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,0:0:0-0:7:7",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,0:0:0-0:7:7",
+                    "value": [
+                      {
+                        "string": "_shape_",
+                        "raw_string": "_shape_"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {
+              "double_quoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,0:9:9-0:16:16",
+                "value": [
+                  {
+                    "string": "shape",
+                    "raw_string": "shape"
+                  }
+                ]
+              }
+            },
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,0:17:17-6:0:80",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,1:2:21-1:14:33",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,1:2:21-1:7:26",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,1:2:21-1:7:26",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,1:9:28-1:14:33",
+                          "value": [
+                            {
+                              "string": "class",
+                              "raw_string": "class"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,3:1:36-3:11:46",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,3:1:36-3:11:46",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,3:1:36-3:11:46",
+                              "value": [
+                                {
+                                  "string": "field here",
+                                  "raw_string": "field here"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,4:2:49-4:19:66",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,4:2:49-4:11:58",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,4:2:49-4:11:58",
+                              "value": [
+                                {
+                                  "string": "GetType()",
+                                  "raw_string": "GetType()"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,4:13:60-4:19:66",
+                          "value": [
+                            {
+                              "string": "string",
+                              "raw_string": "string"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,5:2:69-5:12:79",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,5:2:69-5:6:73",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,5:2:69-5:6:73",
+                              "value": [
+                                {
+                                  "string": "Is()",
+                                  "raw_string": "Is()"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,5:8:75-5:12:79",
+                          "value": [
+                            {
+                              "string": "bool",
+                              "raw_string": "bool"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": [],
+    "objects": [
+      {
+        "id": "_shape_",
+        "id_val": "_shape_",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,0:0:0-0:7:7",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,0:0:0-0:7:7",
+                    "value": [
+                      {
+                        "string": "_shape_",
+                        "raw_string": "_shape_"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "class": {
+          "fields": [
+            {
+              "name": "field here",
+              "type": "",
+              "visibility": "public"
+            }
+          ],
+          "methods": [
+            {
+              "name": "GetType()",
+              "return": "string",
+              "visibility": "public"
+            },
+            {
+              "name": "Is()",
+              "return": "bool",
+              "visibility": "public"
+            }
+          ]
+        },
+        "attributes": {
+          "label": {
+            "value": "shape"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "class"
+          }
+        }
+      }
+    ]
+  },
+  "err": null
+}

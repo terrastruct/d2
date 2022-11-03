@@ -1,0 +1,214 @@
+{
+  "name": "",
+  "shapes": [
+    {
+      "id": "md",
+      "type": "text",
+      "pos": {
+        "x": 0,
+        "y": 226
+      },
+      "width": 606,
+      "height": 186,
+      "level": 1,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#FFFFFF",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "\nHere is an example of AppleScript:\n\n    tell application \"Foo\"\n        beep\n    end tell\n\nA code block continues until it reaches a line that is not indented\n(or the end of the article).\n",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "markdown",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 606,
+      "labelHeight": 186
+    },
+    {
+      "id": "a",
+      "type": "",
+      "pos": {
+        "x": 247,
+        "y": 0
+      },
+      "width": 113,
+      "height": 126,
+      "level": 1,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#F7F8FE",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "a",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 13,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER"
+    },
+    {
+      "id": "b",
+      "type": "",
+      "pos": {
+        "x": 247,
+        "y": 512
+      },
+      "width": 113,
+      "height": 126,
+      "level": 1,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#F7F8FE",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "b",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 13,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER"
+    }
+  ],
+  "connections": [
+    {
+      "id": "(a -> md)[0]",
+      "src": "a",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "md",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 303,
+          "y": 126
+        },
+        {
+          "x": 303,
+          "y": 166
+        },
+        {
+          "x": 303,
+          "y": 186
+        },
+        {
+          "x": 303,
+          "y": 226
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null
+    },
+    {
+      "id": "(md -> b)[0]",
+      "src": "md",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "b",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 303,
+          "y": 412
+        },
+        {
+          "x": 303,
+          "y": 452
+        },
+        {
+          "x": 303,
+          "y": 472
+        },
+        {
+          "x": 303,
+          "y": 512
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null
+    }
+  ]
+}

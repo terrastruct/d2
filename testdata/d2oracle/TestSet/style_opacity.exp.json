@@ -1,0 +1,162 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestSet/style_opacity.d2,0:0:0-1:0:29",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestSet/style_opacity.d2,0:0:0-0:28:28",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/style_opacity.d2,0:0:0-0:6:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/style_opacity.d2,0:0:0-0:6:6",
+                    "value": [
+                      {
+                        "string": "square",
+                        "raw_string": "square"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestSet/style_opacity.d2,0:8:8-0:27:27",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestSet/style_opacity.d2,0:9:9-0:27:27",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestSet/style_opacity.d2,0:9:9-0:22:22",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestSet/style_opacity.d2,0:9:9-0:22:22",
+                              "value": [
+                                {
+                                  "string": "style_opacity",
+                                  "raw_string": "style_opacity"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "number": {
+                          "range": "d2/testdata/d2oracle/TestSet/style_opacity.d2,0:24:24-0:27:27",
+                          "raw": "0.2",
+                          "value": "1/5"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "label": {
+        "value": ""
+      },
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "shape": {
+        "value": ""
+      },
+      "near_key": null,
+      "style": {}
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "square",
+        "label": {
+          "value": "square"
+        },
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/style_opacity.d2,0:0:0-0:6:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/style_opacity.d2,0:0:0-0:6:6",
+                    "value": [
+                      {
+                        "string": "square",
+                        "raw_string": "square"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0,
+            "scope_key": ""
+          }
+        ],
+        "shape": {
+          "value": ""
+        },
+        "near_key": null,
+        "style": {}
+      },
+      {
+        "id": "style_opacity",
+        "label": {
+          "value": "0.2"
+        },
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/style_opacity.d2,0:9:9-0:22:22",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/style_opacity.d2,0:9:9-0:22:22",
+                    "value": [
+                      {
+                        "string": "style_opacity",
+                        "raw_string": "style_opacity"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0,
+            "scope_key": "square"
+          }
+        ],
+        "shape": {
+          "value": ""
+        },
+        "near_key": null,
+        "style": {}
+      }
+    ]
+  },
+  "err": "<nil>"
+}

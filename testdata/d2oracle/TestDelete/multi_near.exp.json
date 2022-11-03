@@ -1,0 +1,391 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,0:0:0-9:0:57",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,0:0:0-0:3:3",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "API",
+                        "raw_string": "API"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,1:0:4-3:1:29",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,1:0:4-1:8:12",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,1:0:4-1:8:12",
+                    "value": [
+                      {
+                        "string": "Bluefish",
+                        "raw_string": "Bluefish"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,1:10:14-3:0:28",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,2:2:18-2:11:27",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,2:2:18-2:6:22",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,2:2:18-2:6:22",
+                              "value": [
+                                {
+                                  "string": "near",
+                                  "raw_string": "near"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,2:8:24-2:11:27",
+                          "value": [
+                            {
+                              "string": "API",
+                              "raw_string": "API"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,4:0:30-6:1:50",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,4:0:30-4:2:32",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,4:0:30-4:2:32",
+                    "value": [
+                      {
+                        "string": "Yo",
+                        "raw_string": "Yo"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,4:4:34-6:0:49",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,5:2:38-5:12:48",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,5:2:38-5:6:42",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,5:2:38-5:6:42",
+                              "value": [
+                                {
+                                  "string": "near",
+                                  "raw_string": "near"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,5:8:44-5:12:48",
+                          "value": [
+                            {
+                              "string": "Blah",
+                              "raw_string": "Blah"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,8:0:52-8:4:56",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,8:0:52-8:4:56",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,8:0:52-8:4:56",
+                    "value": [
+                      {
+                        "string": "Blah",
+                        "raw_string": "Blah"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "API",
+        "id_val": "API",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "API",
+                        "raw_string": "API"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "API"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "Bluefish",
+        "id_val": "Bluefish",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,1:0:4-1:8:12",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,1:0:4-1:8:12",
+                    "value": [
+                      {
+                        "string": "Bluefish",
+                        "raw_string": "Bluefish"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Bluefish"
+          },
+          "style": {},
+          "near_key": {
+            "range": ",0:0:0-0:3:3",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:3:3",
+                  "value": [
+                    {
+                      "string": "API",
+                      "raw_string": "API"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "Yo",
+        "id_val": "Yo",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,4:0:30-4:2:32",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,4:0:30-4:2:32",
+                    "value": [
+                      {
+                        "string": "Yo",
+                        "raw_string": "Yo"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Yo"
+          },
+          "style": {},
+          "near_key": {
+            "range": ",0:0:0-0:4:4",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:4:4",
+                  "value": [
+                    {
+                      "string": "Blah",
+                      "raw_string": "Blah"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "Blah",
+        "id_val": "Blah",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,8:0:52-8:4:56",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,8:0:52-8:4:56",
+                    "value": [
+                      {
+                        "string": "Blah",
+                        "raw_string": "Blah"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Blah"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "err": "<nil>"
+}

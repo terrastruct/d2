@@ -1,0 +1,196 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline.d2,0:0:0-4:0:35",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline.d2,0:0:0-3:1:34",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline.d2,0:0:0-0:4:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline.d2,0:0:0-0:4:4",
+                    "value": [
+                      {
+                        "string": "rawr",
+                        "raw_string": "rawr"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline.d2,0:6:6-3:0:33",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline.d2,1:2:10-1:15:23",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline.d2,1:2:10-1:7:15",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline.d2,1:2:10-1:7:15",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline.d2,1:9:17-1:15:23",
+                          "value": [
+                            {
+                              "string": "circle",
+                              "raw_string": "circle"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline.d2,2:2:26-2:8:32",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline.d2,2:2:26-2:8:32",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline.d2,2:2:26-2:8:32",
+                              "value": [
+                                {
+                                  "string": "orange",
+                                  "raw_string": "orange"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "rawr",
+        "id_val": "rawr",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline.d2,0:0:0-0:4:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline.d2,0:0:0-0:4:4",
+                    "value": [
+                      {
+                        "string": "rawr",
+                        "raw_string": "rawr"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "rawr"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "circle"
+          }
+        }
+      },
+      {
+        "id": "orange",
+        "id_val": "orange",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline.d2,2:2:26-2:8:32",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline.d2,2:2:26-2:8:32",
+                    "value": [
+                      {
+                        "string": "orange",
+                        "raw_string": "orange"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "orange"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "err": "<nil>"
+}

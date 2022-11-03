@@ -1,0 +1,20 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/block_comment.d2,0:0:0-16:0:123",
+    "nodes": [
+      {
+        "block_comment": {
+          "range": "d2/testdata/d2parser/TestParse/block_comment.d2,1:0:1-11:7:105",
+          "value": "dmaslkmdlksa\n\ndasmlkdas\nmkdlasdmkas\n  dmsakldmklsadsa\n\n\tdsmakldmaslk\n\tdamklsdmklas\n\n\techo hi\nx"
+        }
+      },
+      {
+        "block_comment": {
+          "range": "d2/testdata/d2parser/TestParse/block_comment.d2,13:0:107-15:3:122",
+          "value": "ok\nmeow"
+        }
+      }
+    ]
+  },
+  "err": null
+}

@@ -1,0 +1,12 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/3d_oval.d2,1:0:23-1:19:42",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/3d_oval.d2:2:1: key \"3d\" can only be applied to squares and rectangles"
+      }
+    ]
+  }
+}

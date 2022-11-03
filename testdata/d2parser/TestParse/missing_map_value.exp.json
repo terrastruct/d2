@@ -1,0 +1,39 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/missing_map_value.d2,0:0:0-2:3:7",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/missing_map_value.d2,1:0:1-1:2:3",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/missing_map_value.d2,1:0:1-1:1:2",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/missing_map_value.d2,1:0:1-1:1:2",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {}
+        }
+      }
+    ]
+  },
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2parser/TestParse/missing_map_value.d2,1:1:2-1:2:3",
+        "errmsg": "d2/testdata/d2parser/TestParse/missing_map_value.d2:2:2: missing value after colon"
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/one_line_comment.d2,0:0:0-2:0:9",
+    "nodes": [
+      {
+        "comment": {
+          "range": "d2/testdata/d2parser/TestParse/one_line_comment.d2,1:0:1-1:7:8",
+          "value": "hello"
+        }
+      }
+    ]
+  },
+  "err": null
+}

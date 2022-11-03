@@ -1,0 +1,390 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,0:0:0-13:0:79",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,0:0:0-0:1:1",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,2:0:3-2:1:4",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,2:0:3-2:1:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,2:0:3-2:1:4",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,4:0:6-12:1:78",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,4:0:6-4:1:7",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,4:0:6-4:1:7",
+                    "value": [
+                      {
+                        "string": "d",
+                        "raw_string": "d"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,4:3:9-12:0:77",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,5:2:13-11:3:76",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,5:2:13-5:3:14",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,5:2:13-5:3:14",
+                              "value": [
+                                {
+                                  "string": "a",
+                                  "raw_string": "a"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,5:5:16-11:2:75",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,6:4:22-8:5:55",
+                                "key": {
+                                  "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,6:4:22-6:9:27",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,6:4:22-6:9:27",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "map": {
+                                    "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,6:11:29-8:4:54",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,7:6:37-7:18:49",
+                                          "key": {
+                                            "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,7:6:37-7:13:44",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,7:6:37-7:13:44",
+                                                  "value": [
+                                                    {
+                                                      "string": "opacity",
+                                                      "raw_string": "opacity"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "number": {
+                                              "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,7:15:46-7:18:49",
+                                              "raw": "0.4",
+                                              "value": "2/5"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,10:4:61-10:15:72",
+                                "key": {
+                                  "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,10:4:61-10:9:66",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,10:4:61-10:9:66",
+                                        "value": [
+                                          {
+                                            "string": "label",
+                                            "raw_string": "label"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "double_quoted_string": {
+                                    "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,10:11:68-10:15:72",
+                                    "value": [
+                                      {
+                                        "string": "yo",
+                                        "raw_string": "yo"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": [],
+    "objects": [
+      {
+        "id": "b",
+        "id_val": "b",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "b"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "c",
+        "id_val": "c",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,2:0:3-2:1:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,2:0:3-2:1:4",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "c"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "d",
+        "id_val": "d",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,4:0:6-4:1:7",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,4:0:6-4:1:7",
+                    "value": [
+                      {
+                        "string": "d",
+                        "raw_string": "d"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "d"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "a",
+        "id_val": "a",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,5:2:13-5:3:14",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/map_transplant.d2,5:2:13-5:3:14",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "yo"
+          },
+          "style": {
+            "opacity": {
+              "value": "0.4"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "err": "<nil>"
+}

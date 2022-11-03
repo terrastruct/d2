@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+. "$(dirname "$0")/../lib.sh"
+
+prefix="$1"
+shift
+
+if [ -z "${COLOR:-}" ]; then
+  COLOR="$(get_rand_color "$prefix")"
+fi
+printf '%s: %s\n' "$(setaf "$COLOR" "$prefix")" "$*"

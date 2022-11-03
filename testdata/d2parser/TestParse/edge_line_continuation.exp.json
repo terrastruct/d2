@@ -1,0 +1,54 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/edge_line_continuation.d2,0:0:0-3:5:77",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/edge_line_continuation.d2,1:0:1-2:41:71",
+          "edges": [
+            {
+              "range": "d2/testdata/d2parser/TestParse/edge_line_continuation.d2,1:0:1-2:41:71",
+              "src": {
+                "range": "d2/testdata/d2parser/TestParse/edge_line_continuation.d2,1:0:1-1:25:26",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/edge_line_continuation.d2,1:0:1-1:24:25",
+                      "value": [
+                        {
+                          "string": "super long shape id here",
+                          "raw_string": "super long shape id here"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "d2/testdata/d2parser/TestParse/edge_line_continuation.d2,2:4:34-2:41:71",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/edge_line_continuation.d2,2:5:35-2:41:71",
+                      "value": [
+                        {
+                          "string": "super long shape id even longer here",
+                          "raw_string": "super long shape id even longer here"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            }
+          ],
+          "primary": {},
+          "value": {}
+        }
+      }
+    ]
+  },
+  "err": null
+}

@@ -1,0 +1,100 @@
+{
+  "id_deltas": [
+    {
+      "type": "node",
+      "before": "x.y.z",
+      "after": "x.z"
+    },
+    {
+      "type": "node",
+      "before": "x.y.z.w",
+      "after": "x.z.w"
+    },
+    {
+      "type": "node",
+      "before": "x.y.z.w.e",
+      "after": "x.z.w.e"
+    },
+    {
+      "type": "node",
+      "before": "x.y.z.w.e.p",
+      "after": "x.z.w.e.p"
+    },
+    {
+      "type": "node",
+      "before": "x.y.z.w.e.p.l",
+      "after": "x.z.w.e.p.l"
+    },
+    {
+      "type": "node",
+      "before": "x.y.z.1",
+      "after": "x.z.1"
+    },
+    {
+      "type": "node",
+      "before": "x.y.z.1.2",
+      "after": "x.z.1.2"
+    },
+    {
+      "type": "node",
+      "before": "x.y.z.1.2.3",
+      "after": "x.z.1.2.3"
+    },
+    {
+      "type": "node",
+      "before": "x.y.z.1.2.3.4",
+      "after": "x.z.1.2.3.4"
+    },
+    {
+      "type": "node",
+      "before": "x.y.3",
+      "after": "x.3"
+    },
+    {
+      "type": "node",
+      "before": "x.y.3.4",
+      "after": "x.3.4"
+    },
+    {
+      "type": "node",
+      "before": "x.y.3.4.5",
+      "after": "x.3.4.5"
+    },
+    {
+      "type": "node",
+      "before": "x.y.3.4.5.6",
+      "after": "x.3.4.5.6"
+    },
+    {
+      "type": "node",
+      "before": "x.y.3.4.6",
+      "after": "x.3.4.6"
+    },
+    {
+      "type": "node",
+      "before": "x.y.3.4.6.7",
+      "after": "x.3.4.6.7"
+    },
+    {
+      "type": "node",
+      "before": "x.y.p",
+      "after": "x.p"
+    },
+    {
+      "type": "edge",
+      "before": "(x.y.p -> x.y.q)[0]",
+      "after": "(x.p -> x.y.q)[0]"
+    },
+    {
+      "type": "node",
+      "before": "x.y.q",
+      "after": "x.q"
+    },
+    {
+      "type": "edge",
+      "before": "(x.y.p -> x.y.q)[0]",
+      "after": "(x.y.p -> x.q)[0]"
+    }
+  ],
+  "err": "<nil>"
+}

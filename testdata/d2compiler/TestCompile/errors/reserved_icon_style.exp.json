@@ -1,0 +1,24 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2,2:8:23-2:27:42",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:3:9: bad icon url \"::????:::%%orange\": parse \"::????:::%%orange\": missing protocol scheme"
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2,3:17:60-3:19:62",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:4:18: expected \"opacity\" to be a number between 0.0 and 1.0"
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2,4:17:80-4:20:83",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:5:18: expected \"opacity\" to be a number between 0.0 and 1.0"
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2,0:0:0-0:1:1",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:1:1: near key \"y\" does not exist. It must be the absolute path to a shape."
+      }
+    ]
+  }
+}

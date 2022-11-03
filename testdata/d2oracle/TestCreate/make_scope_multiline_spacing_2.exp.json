@@ -1,0 +1,322 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,0:0:0-8:0:50",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,0:0:0-0:6:6",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,0:0:0-0:6:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,0:0:0-0:6:6",
+                    "value": [
+                      {
+                        "string": "before",
+                        "raw_string": "before"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,2:0:8-5:1:42",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,2:0:8-2:4:12",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,2:0:8-2:4:12",
+                    "value": [
+                      {
+                        "string": "rawr",
+                        "raw_string": "rawr"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,2:6:14-5:0:41",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,3:2:18-3:15:31",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,3:2:18-3:7:23",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,3:2:18-3:7:23",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,3:9:25-3:15:31",
+                          "value": [
+                            {
+                              "string": "circle",
+                              "raw_string": "circle"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,4:2:34-4:8:40",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,4:2:34-4:8:40",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,4:2:34-4:8:40",
+                              "value": [
+                                {
+                                  "string": "orange",
+                                  "raw_string": "orange"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,7:0:44-7:5:49",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,7:0:44-7:5:49",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,7:0:44-7:5:49",
+                    "value": [
+                      {
+                        "string": "after",
+                        "raw_string": "after"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "before",
+        "id_val": "before",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,0:0:0-0:6:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,0:0:0-0:6:6",
+                    "value": [
+                      {
+                        "string": "before",
+                        "raw_string": "before"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "before"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "rawr",
+        "id_val": "rawr",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,2:0:8-2:4:12",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,2:0:8-2:4:12",
+                    "value": [
+                      {
+                        "string": "rawr",
+                        "raw_string": "rawr"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "rawr"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "circle"
+          }
+        }
+      },
+      {
+        "id": "orange",
+        "id_val": "orange",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,4:2:34-4:8:40",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,4:2:34-4:8:40",
+                    "value": [
+                      {
+                        "string": "orange",
+                        "raw_string": "orange"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "orange"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "after",
+        "id_val": "after",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,7:0:44-7:5:49",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,7:0:44-7:5:49",
+                    "value": [
+                      {
+                        "string": "after",
+                        "raw_string": "after"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "after"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "err": "<nil>"
+}

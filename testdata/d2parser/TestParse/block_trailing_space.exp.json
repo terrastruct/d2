@@ -1,0 +1,44 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/block_trailing_space.d2,0:0:0-6:0:37",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/block_trailing_space.d2,1:0:1-3:1:16",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/block_trailing_space.d2,1:0:1-1:1:2",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/block_trailing_space.d2,1:0:1-1:1:2",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {
+            "block_string": {
+              "range": "d2/testdata/d2parser/TestParse/block_trailing_space.d2,1:3:4-3:1:16",
+              "quote": "",
+              "tag": "md",
+              "value": "meow   "
+            }
+          }
+        }
+      },
+      {
+        "block_comment": {
+          "range": "d2/testdata/d2parser/TestParse/block_trailing_space.d2,4:0:17-5:3:36",
+          "value": "hello    "
+        }
+      }
+    ]
+  },
+  "err": null
+}

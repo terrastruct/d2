@@ -1,0 +1,14 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/multiline_comment.d2,0:0:0-18:0:233",
+    "nodes": [
+      {
+        "comment": {
+          "range": "d2/testdata/d2parser/TestParse/multiline_comment.d2,2:2:4-15:21:230",
+          "value": "hello\nworld\nearth\n\nglobe\nvery good\nnot so bad\n\nyes indeed\nThe good (I am convinced, for one)\nIs but the bad one leaves undone.\nOnce your reputation's done\nYou can live a life of fun.\n   -- Wilhelm Busch"
+        }
+      }
+    ]
+  },
+  "err": null
+}

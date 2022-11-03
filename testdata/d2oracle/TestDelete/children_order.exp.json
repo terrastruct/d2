@@ -1,0 +1,289 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,0:0:0-7:0:34",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,0:0:0-6:1:33",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,0:3:3-6:0:32",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,1:2:7-1:8:13",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,1:2:7-1:8:13",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,1:2:7-1:8:13",
+                              "value": [
+                                {
+                                  "string": "before",
+                                  "raw_string": "before"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,3:2:17-3:7:22",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,3:2:17-3:7:22",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,3:2:17-3:7:22",
+                              "value": [
+                                {
+                                  "string": "congo",
+                                  "raw_string": "congo"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,5:2:26-5:7:31",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,5:2:26-5:7:31",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,5:2:26-5:7:31",
+                              "value": [
+                                {
+                                  "string": "after",
+                                  "raw_string": "after"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "c",
+        "id_val": "c",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "c"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "before",
+        "id_val": "before",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,1:2:7-1:8:13",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,1:2:7-1:8:13",
+                    "value": [
+                      {
+                        "string": "before",
+                        "raw_string": "before"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "before"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "congo",
+        "id_val": "congo",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,3:2:17-3:7:22",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,3:2:17-3:7:22",
+                    "value": [
+                      {
+                        "string": "congo",
+                        "raw_string": "congo"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "congo"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "after",
+        "id_val": "after",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,5:2:26-5:7:31",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/children_order.d2,5:2:26-5:7:31",
+                    "value": [
+                      {
+                        "string": "after",
+                        "raw_string": "after"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "after"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "err": "<nil>"
+}

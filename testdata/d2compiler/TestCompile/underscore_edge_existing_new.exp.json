@@ -1,0 +1,346 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,0:0:0-5:0:167",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,1:0:1-1:77:78",
+            "edges": [
+              {
+                "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,1:0:1-1:6:7",
+                "src": {
+                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,1:0:1-1:2:3",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,1:0:1-1:1:2",
+                        "value": [
+                          {
+                            "string": "a",
+                            "raw_string": "a"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,1:4:5-1:6:7",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,1:5:6-1:6:7",
+                        "value": [
+                          {
+                            "string": "b",
+                            "raw_string": "b"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "primary": {},
+            "value": {
+              "double_quoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,1:8:9-1:77:78",
+                "value": [
+                  {
+                    "string": "Can you imagine how life could be improved if we could do away with",
+                    "raw_string": "Can you imagine how life could be improved if we could do away with"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,2:0:79-4:1:166",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,2:0:79-2:1:80",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,2:0:79-2:1:80",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,2:3:82-4:0:165",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,3:1:85-3:80:164",
+                      "edges": [
+                        {
+                          "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,3:1:85-3:11:95",
+                          "src": {
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,3:1:85-3:5:89",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,3:1:85-3:2:86",
+                                  "value": [
+                                    {
+                                      "string": "_",
+                                      "raw_string": "_"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,3:3:87-3:4:88",
+                                  "value": [
+                                    {
+                                      "string": "a",
+                                      "raw_string": "a"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,3:7:91-3:11:95",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,3:8:92-3:9:93",
+                                  "value": [
+                                    {
+                                      "string": "_",
+                                      "raw_string": "_"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,3:10:94-3:11:95",
+                                  "value": [
+                                    {
+                                      "string": "b",
+                                      "raw_string": "b"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        }
+                      ],
+                      "primary": {},
+                      "value": {
+                        "double_quoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,3:13:97-3:80:164",
+                          "value": [
+                            {
+                              "string": "Well, it's garish, ugly, and derelicts have used it for a toilet.",
+                              "raw_string": "Well, it's garish, ugly, and derelicts have used it for a toilet."
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label": {
+        "value": ""
+      },
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "shape": {
+        "value": ""
+      },
+      "near_key": null,
+      "style": {}
+    },
+    "edges": [
+      {
+        "index": 0,
+        "label": {
+          "value": "Can you imagine how life could be improved if we could do away with"
+        },
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0,
+            "scope_key": ""
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "label": {
+          "value": "Well, it's garish, ugly, and derelicts have used it for a toilet."
+        },
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0,
+            "scope_key": "x"
+          }
+        ]
+      }
+    ],
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "label": {
+          "value": "x"
+        },
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,2:0:79-2:1:80",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,2:0:79-2:1:80",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0,
+            "scope_key": ""
+          }
+        ],
+        "shape": {
+          "value": ""
+        },
+        "near_key": null,
+        "style": {}
+      },
+      {
+        "id": "a",
+        "id_val": "a",
+        "label": {
+          "value": "a"
+        },
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,1:0:1-1:2:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,1:0:1-1:1:2",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0,
+            "scope_key": ""
+          }
+        ],
+        "shape": {
+          "value": ""
+        },
+        "near_key": null,
+        "style": {}
+      },
+      {
+        "id": "b",
+        "id_val": "b",
+        "label": {
+          "value": "b"
+        },
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,1:4:5-1:6:7",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing_new.d2,1:5:6-1:6:7",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0,
+            "scope_key": ""
+          }
+        ],
+        "shape": {
+          "value": ""
+        },
+        "near_key": null,
+        "style": {}
+      }
+    ]
+  },
+  "err": null
+}

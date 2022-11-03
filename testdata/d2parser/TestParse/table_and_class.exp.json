@@ -1,0 +1,1471 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,0:0:0-57:0:1180",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,1:0:1-44:1:1007",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,1:0:1-1:11:12",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,1:0:1-1:11:12",
+                  "value": [
+                    {
+                      "string": "sql_example",
+                      "raw_string": "sql_example"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {
+            "unquoted_string": {
+              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,1:13:14-1:24:25",
+              "value": [
+                {
+                  "string": "sql_example",
+                  "raw_string": "sql_example"
+                }
+              ]
+            }
+          },
+          "value": {
+            "map": {
+              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,1:25:26-44:0:1006",
+              "nodes": [
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,2:2:30-11:3:311",
+                    "key": {
+                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,2:2:30-2:7:35",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,2:2:30-2:7:35",
+                            "value": [
+                              {
+                                "string": "board",
+                                "raw_string": "board"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,2:9:37-11:2:310",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,3:4:43-3:20:59",
+                              "key": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,3:4:43-3:9:48",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,3:4:43-3:9:48",
+                                      "value": [
+                                        {
+                                          "string": "shape",
+                                          "raw_string": "shape"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,3:11:50-3:20:59",
+                                  "value": [
+                                    {
+                                      "string": "sql_table",
+                                      "raw_string": "sql_table"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,4:4:64-4:37:97",
+                              "key": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,4:4:64-4:6:66",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,4:4:64-4:6:66",
+                                      "value": [
+                                        {
+                                          "string": "id",
+                                          "raw_string": "id"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,4:8:68-4:11:71",
+                                  "value": [
+                                    {
+                                      "string": "int",
+                                      "raw_string": "int"
+                                    }
+                                  ]
+                                }
+                              },
+                              "value": {
+                                "map": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,4:12:72-4:36:96",
+                                  "nodes": [
+                                    {
+                                      "map_key": {
+                                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,4:13:73-4:36:96",
+                                        "key": {
+                                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,4:13:73-4:23:83",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,4:13:73-4:23:83",
+                                                "value": [
+                                                  {
+                                                    "string": "constraint",
+                                                    "raw_string": "constraint"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {},
+                                        "value": {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,4:25:85-4:36:96",
+                                            "value": [
+                                              {
+                                                "string": "primary_key",
+                                                "raw_string": "primary_key"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,5:4:102-5:40:138",
+                              "key": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,5:4:102-5:9:107",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,5:4:102-5:9:107",
+                                      "value": [
+                                        {
+                                          "string": "frame",
+                                          "raw_string": "frame"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,5:11:109-5:14:112",
+                                  "value": [
+                                    {
+                                      "string": "int",
+                                      "raw_string": "int"
+                                    }
+                                  ]
+                                }
+                              },
+                              "value": {
+                                "map": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,5:15:113-5:39:137",
+                                  "nodes": [
+                                    {
+                                      "map_key": {
+                                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,5:16:114-5:39:137",
+                                        "key": {
+                                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,5:16:114-5:26:124",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,5:16:114-5:26:124",
+                                                "value": [
+                                                  {
+                                                    "string": "constraint",
+                                                    "raw_string": "constraint"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {},
+                                        "value": {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,5:28:126-5:39:137",
+                                            "value": [
+                                              {
+                                                "string": "foreign_key",
+                                                "raw_string": "foreign_key"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,6:4:143-6:42:181",
+                              "key": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,6:4:143-6:11:150",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,6:4:143-6:11:150",
+                                      "value": [
+                                        {
+                                          "string": "diagram",
+                                          "raw_string": "diagram"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,6:13:152-6:16:155",
+                                  "value": [
+                                    {
+                                      "string": "int",
+                                      "raw_string": "int"
+                                    }
+                                  ]
+                                }
+                              },
+                              "value": {
+                                "map": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,6:17:156-6:41:180",
+                                  "nodes": [
+                                    {
+                                      "map_key": {
+                                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,6:18:157-6:41:180",
+                                        "key": {
+                                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,6:18:157-6:28:167",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,6:18:157-6:28:167",
+                                                "value": [
+                                                  {
+                                                    "string": "constraint",
+                                                    "raw_string": "constraint"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {},
+                                        "value": {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,6:30:169-6:41:180",
+                                            "value": [
+                                              {
+                                                "string": "foreign_key",
+                                                "raw_string": "foreign_key"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,7:4:186-7:24:206",
+                              "key": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,7:4:186-7:17:199",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,7:4:186-7:17:199",
+                                      "value": [
+                                        {
+                                          "string": "board_objects",
+                                          "raw_string": "board_objects"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,7:19:201-7:24:206",
+                                  "value": [
+                                    {
+                                      "string": "jsonb",
+                                      "raw_string": "jsonb"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,8:4:211-8:42:249",
+                              "key": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,8:4:211-8:16:223",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,8:4:211-8:16:223",
+                                      "value": [
+                                        {
+                                          "string": "last_updated",
+                                          "raw_string": "last_updated"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,8:18:225-8:42:249",
+                                  "value": [
+                                    {
+                                      "string": "timestamp with time zone",
+                                      "raw_string": "timestamp with time zone"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,9:4:254-9:43:293",
+                              "key": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,9:4:254-9:17:267",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,9:4:254-9:17:267",
+                                      "value": [
+                                        {
+                                          "string": "last_thumbgen",
+                                          "raw_string": "last_thumbgen"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,9:19:269-9:43:293",
+                                  "value": [
+                                    {
+                                      "string": "timestamp with time zone",
+                                      "raw_string": "timestamp with time zone"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,10:4:298-10:13:307",
+                              "key": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,10:4:298-10:7:301",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,10:4:298-10:7:301",
+                                      "value": [
+                                        {
+                                          "string": "dsl",
+                                          "raw_string": "dsl"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,10:9:303-10:13:307",
+                                  "value": [
+                                    {
+                                      "string": "text",
+                                      "raw_string": "text"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "comment": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,13:2:315-13:11:324",
+                    "value": "Normal."
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,14:2:327-14:30:355",
+                    "edges": [
+                      {
+                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,14:2:327-14:30:355",
+                        "src": {
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,14:2:327-14:16:341",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,14:2:327-14:7:332",
+                                "value": [
+                                  {
+                                    "string": "board",
+                                    "raw_string": "board"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,14:8:333-14:15:340",
+                                "value": [
+                                  {
+                                    "string": "diagram",
+                                    "raw_string": "diagram"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "src_arrow": "",
+                        "dst": {
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,14:18:343-14:30:355",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,14:19:344-14:27:352",
+                                "value": [
+                                  {
+                                    "string": "diagrams",
+                                    "raw_string": "diagrams"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,14:28:353-14:30:355",
+                                "value": [
+                                  {
+                                    "string": "id",
+                                    "raw_string": "id"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "dst_arrow": ">"
+                      }
+                    ],
+                    "primary": {},
+                    "value": {}
+                  }
+                },
+                {
+                  "comment": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,16:2:359-16:21:378",
+                    "value": "Self referential."
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,17:2:381-17:40:419",
+                    "edges": [
+                      {
+                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,17:2:381-17:40:419",
+                        "src": {
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,17:2:381-17:14:393",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,17:2:381-17:10:389",
+                                "value": [
+                                  {
+                                    "string": "diagrams",
+                                    "raw_string": "diagrams"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,17:11:390-17:13:392",
+                                "value": [
+                                  {
+                                    "string": "id",
+                                    "raw_string": "id"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "src_arrow": "",
+                        "dst": {
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,17:16:395-17:40:419",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,17:17:396-17:25:404",
+                                "value": [
+                                  {
+                                    "string": "diagrams",
+                                    "raw_string": "diagrams"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,17:26:405-17:40:419",
+                                "value": [
+                                  {
+                                    "string": "representation",
+                                    "raw_string": "representation"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "dst_arrow": ">"
+                      }
+                    ],
+                    "primary": {},
+                    "value": {}
+                  }
+                },
+                {
+                  "comment": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,19:2:423-19:18:439",
+                    "value": "SrcArrow test."
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,20:2:442-20:30:470",
+                    "edges": [
+                      {
+                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,20:2:442-20:30:470",
+                        "src": {
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,20:2:442-20:14:454",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,20:2:442-20:10:450",
+                                "value": [
+                                  {
+                                    "string": "diagrams",
+                                    "raw_string": "diagrams"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,20:11:451-20:13:453",
+                                "value": [
+                                  {
+                                    "string": "id",
+                                    "raw_string": "id"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "src_arrow": "<",
+                        "dst": {
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,20:16:456-20:30:470",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,20:17:457-20:22:462",
+                                "value": [
+                                  {
+                                    "string": "views",
+                                    "raw_string": "views"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,20:23:463-20:30:470",
+                                "value": [
+                                  {
+                                    "string": "diagram",
+                                    "raw_string": "diagram"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "dst_arrow": ""
+                      }
+                    ],
+                    "primary": {},
+                    "value": {}
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,21:2:473-21:31:502",
+                    "edges": [
+                      {
+                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,21:2:473-21:31:502",
+                        "src": {
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,21:2:473-21:14:485",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,21:2:473-21:10:481",
+                                "value": [
+                                  {
+                                    "string": "diagrams",
+                                    "raw_string": "diagrams"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,21:11:482-21:13:484",
+                                "value": [
+                                  {
+                                    "string": "id",
+                                    "raw_string": "id"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "src_arrow": "<",
+                        "dst": {
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,21:17:488-21:31:502",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,21:18:489-21:23:494",
+                                "value": [
+                                  {
+                                    "string": "steps",
+                                    "raw_string": "steps"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,21:24:495-21:31:502",
+                                "value": [
+                                  {
+                                    "string": "diagram",
+                                    "raw_string": "diagram"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "dst_arrow": ">"
+                      }
+                    ],
+                    "primary": {},
+                    "value": {}
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,23:2:506-27:3:621",
+                    "key": {
+                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,23:2:506-23:10:514",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,23:2:506-23:10:514",
+                            "value": [
+                              {
+                                "string": "diagrams",
+                                "raw_string": "diagrams"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,23:12:516-27:2:620",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,24:4:522-24:20:538",
+                              "key": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,24:4:522-24:9:527",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,24:4:522-24:9:527",
+                                      "value": [
+                                        {
+                                          "string": "shape",
+                                          "raw_string": "shape"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,24:11:529-24:20:538",
+                                  "value": [
+                                    {
+                                      "string": "sql_table",
+                                      "raw_string": "sql_table"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,25:4:543-25:44:583",
+                              "key": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,25:4:543-25:6:545",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,25:4:543-25:6:545",
+                                      "value": [
+                                        {
+                                          "string": "id",
+                                          "raw_string": "id"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "map": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,25:8:547-25:43:582",
+                                  "nodes": [
+                                    {
+                                      "map_key": {
+                                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,25:9:548-25:43:582",
+                                        "key": {
+                                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,25:9:548-25:13:552",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,25:9:548-25:13:552",
+                                                "value": [
+                                                  {
+                                                    "string": "type",
+                                                    "raw_string": "type"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {},
+                                        "value": {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,25:15:554-25:43:582",
+                                            "value": [
+                                              {
+                                                "string": "int, constraint: primary_key",
+                                                "raw_string": "int, constraint: primary_key"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,26:4:588-26:33:617",
+                              "key": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,26:4:588-26:18:602",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,26:4:588-26:18:602",
+                                      "value": [
+                                        {
+                                          "string": "representation",
+                                          "raw_string": "representation"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "map": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,26:20:604-26:32:616",
+                                  "nodes": [
+                                    {
+                                      "map_key": {
+                                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,26:21:605-26:32:616",
+                                        "key": {
+                                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,26:21:605-26:25:609",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,26:21:605-26:25:609",
+                                                "value": [
+                                                  {
+                                                    "string": "type",
+                                                    "raw_string": "type"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {},
+                                        "value": {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,26:27:611-26:32:616",
+                                            "value": [
+                                              {
+                                                "string": "jsonb",
+                                                "raw_string": "jsonb"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,29:2:625-34:3:780",
+                    "key": {
+                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,29:2:625-29:7:630",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,29:2:625-29:7:630",
+                            "value": [
+                              {
+                                "string": "views",
+                                "raw_string": "views"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,29:9:632-34:2:779",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,30:4:638-30:20:654",
+                              "key": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,30:4:638-30:9:643",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,30:4:638-30:9:643",
+                                      "value": [
+                                        {
+                                          "string": "shape",
+                                          "raw_string": "shape"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,30:11:645-30:20:654",
+                                  "value": [
+                                    {
+                                      "string": "sql_table",
+                                      "raw_string": "sql_table"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,31:4:659-31:44:699",
+                              "key": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,31:4:659-31:6:661",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,31:4:659-31:6:661",
+                                      "value": [
+                                        {
+                                          "string": "id",
+                                          "raw_string": "id"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "map": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,31:8:663-31:43:698",
+                                  "nodes": [
+                                    {
+                                      "map_key": {
+                                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,31:9:664-31:43:698",
+                                        "key": {
+                                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,31:9:664-31:13:668",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,31:9:664-31:13:668",
+                                                "value": [
+                                                  {
+                                                    "string": "type",
+                                                    "raw_string": "type"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {},
+                                        "value": {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,31:15:670-31:43:698",
+                                            "value": [
+                                              {
+                                                "string": "int, constraint: primary_key",
+                                                "raw_string": "int, constraint: primary_key"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,32:4:704-32:33:733",
+                              "key": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,32:4:704-32:18:718",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,32:4:704-32:18:718",
+                                      "value": [
+                                        {
+                                          "string": "representation",
+                                          "raw_string": "representation"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "map": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,32:20:720-32:32:732",
+                                  "nodes": [
+                                    {
+                                      "map_key": {
+                                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,32:21:721-32:32:732",
+                                        "key": {
+                                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,32:21:721-32:25:725",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,32:21:721-32:25:725",
+                                                "value": [
+                                                  {
+                                                    "string": "type",
+                                                    "raw_string": "type"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {},
+                                        "value": {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,32:27:727-32:32:732",
+                                            "value": [
+                                              {
+                                                "string": "jsonb",
+                                                "raw_string": "jsonb"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,33:4:738-33:42:776",
+                              "key": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,33:4:738-33:11:745",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,33:4:738-33:11:745",
+                                      "value": [
+                                        {
+                                          "string": "diagram",
+                                          "raw_string": "diagram"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,33:13:747-33:16:750",
+                                  "value": [
+                                    {
+                                      "string": "int",
+                                      "raw_string": "int"
+                                    }
+                                  ]
+                                }
+                              },
+                              "value": {
+                                "map": {
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,33:17:751-33:41:775",
+                                  "nodes": [
+                                    {
+                                      "map_key": {
+                                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,33:18:752-33:41:775",
+                                        "key": {
+                                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,33:18:752-33:28:762",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,33:18:752-33:28:762",
+                                                "value": [
+                                                  {
+                                                    "string": "constraint",
+                                                    "raw_string": "constraint"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {},
+                                        "value": {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,33:30:764-33:41:775",
+                                            "value": [
+                                              {
+                                                "string": "foreign_key",
+                                                "raw_string": "foreign_key"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "comment": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,36:2:784-42:39:983",
+                    "value": "steps: {\nshape: sql_table\nid: {type: int, constraint: primary_key}\nrepresentation: {type: jsonb}\ndiagram: int {constraint: foreign_key}\n}\nUncomment to make autolayout panic:"
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,43:2:986-43:21:1005",
+                    "edges": [
+                      {
+                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,43:2:986-43:21:1005",
+                        "src": {
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,43:2:986-43:7:991",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,43:2:986-43:6:990",
+                                "value": [
+                                  {
+                                    "string": "meow",
+                                    "raw_string": "meow"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "src_arrow": "<",
+                        "dst": {
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,43:9:993-43:21:1005",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,43:10:994-43:18:1002",
+                                "value": [
+                                  {
+                                    "string": "diagrams",
+                                    "raw_string": "diagrams"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,43:19:1003-43:21:1005",
+                                "value": [
+                                  {
+                                    "string": "id",
+                                    "raw_string": "id"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "dst_arrow": ""
+                      }
+                    ],
+                    "primary": {},
+                    "value": {}
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,46:0:1009-56:1:1179",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,46:0:1009-46:13:1022",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,46:0:1009-46:13:1022",
+                  "value": [
+                    {
+                      "string": "D2 AST Parser",
+                      "raw_string": "D2 AST Parser"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {
+            "map": {
+              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,46:15:1024-56:0:1178",
+              "nodes": [
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,47:2:1028-47:14:1040",
+                    "key": {
+                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,47:2:1028-47:7:1033",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,47:2:1028-47:7:1033",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,47:9:1035-47:14:1040",
+                        "value": [
+                          {
+                            "string": "class",
+                            "raw_string": "class"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,49:2:1044-49:17:1059",
+                    "key": {
+                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,49:2:1044-49:11:1053",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,49:2:1044-49:11:1053",
+                            "value": [
+                              {
+                                "string": "+prevRune",
+                                "raw_string": "+prevRune"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,49:13:1055-49:17:1059",
+                        "value": [
+                          {
+                            "string": "rune",
+                            "raw_string": "rune"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,50:2:1062-50:17:1077",
+                    "key": {
+                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,50:2:1062-50:12:1072",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,50:2:1062-50:12:1072",
+                            "value": [
+                              {
+                                "string": "prevColumn",
+                                "raw_string": "prevColumn"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,50:14:1074-50:17:1077",
+                        "value": [
+                          {
+                            "string": "int",
+                            "raw_string": "int"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,52:2:1081-52:44:1123",
+                    "key": {
+                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,52:2:1081-52:29:1108",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,52:2:1081-52:29:1108",
+                            "value": [
+                              {
+                                "string": "+eatSpace(eatNewlines bool)",
+                                "raw_string": "+eatSpace(eatNewlines bool)"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,52:31:1110-52:44:1123",
+                        "value": [
+                          {
+                            "string": "(rune, error)",
+                            "raw_string": "(rune, error)"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,53:2:1126-53:14:1138",
+                    "key": {
+                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,53:2:1126-53:14:1138",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,53:2:1126-53:14:1138",
+                            "value": [
+                              {
+                                "string": "unreadRune()",
+                                "raw_string": "unreadRune()"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {}
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,55:2:1142-55:37:1177",
+                    "key": {
+                      "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,55:2:1142-55:19:1159",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,55:2:1142-55:19:1159",
+                            "value": [
+                              {
+                                "string": "#scanKey(r rune)",
+                                "raw_string": "\\#scanKey(r rune)"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,55:21:1161-55:37:1177",
+                        "value": [
+                          {
+                            "string": "(k Key, _ error)",
+                            "raw_string": "(k Key, _ error)"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "err": null
+}

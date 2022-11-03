@@ -1,0 +1,733 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:0:0-1:0:29",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:0:0-0:28:28",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:0:0-0:5:5",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "l",
+                        "raw_string": "l"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "p",
+                        "raw_string": "p"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:4:4-0:5:5",
+                    "value": [
+                      {
+                        "string": "d",
+                        "raw_string": "d"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:7:7-0:27:27",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:8:8-0:24:24",
+                      "edges": [
+                        {
+                          "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:8:8-0:15:15",
+                          "src": {
+                            "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:8:8-0:10:10",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:8:8-0:9:9",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:12:12-0:15:15",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:13:13-0:14:14",
+                                  "value": [
+                                    {
+                                      "string": "y",
+                                      "raw_string": "y"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
+                        {
+                          "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:12:12-0:20:20",
+                          "src": {
+                            "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:12:12-0:15:15",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:13:13-0:14:14",
+                                  "value": [
+                                    {
+                                      "string": "y",
+                                      "raw_string": "y"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:17:17-0:20:20",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:18:18-0:19:19",
+                                  "value": [
+                                    {
+                                      "string": "z",
+                                      "raw_string": "z"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
+                        {
+                          "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:17:17-0:24:24",
+                          "src": {
+                            "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:17:17-0:20:20",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:18:18-0:19:19",
+                                  "value": [
+                                    {
+                                      "string": "z",
+                                      "raw_string": "z"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:22:22-0:24:24",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:23:23-0:24:24",
+                                  "value": [
+                                    {
+                                      "string": "q",
+                                      "raw_string": "q"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        }
+                      ],
+                      "primary": {},
+                      "value": {}
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:26:26-0:27:27",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:26:26-0:27:27",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:26:26-0:27:27",
+                              "value": [
+                                {
+                                  "string": "p",
+                                  "raw_string": "p"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": [
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 2
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ],
+    "objects": [
+      {
+        "id": "l",
+        "id_val": "l",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:0:0-0:5:5",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "l",
+                        "raw_string": "l"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "p",
+                        "raw_string": "p"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:4:4-0:5:5",
+                    "value": [
+                      {
+                        "string": "d",
+                        "raw_string": "d"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "l"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "p",
+        "id_val": "p",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:0:0-0:5:5",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "l",
+                        "raw_string": "l"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "p",
+                        "raw_string": "p"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:4:4-0:5:5",
+                    "value": [
+                      {
+                        "string": "d",
+                        "raw_string": "d"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 1,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "p"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "d",
+        "id_val": "d",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:0:0-0:5:5",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "l",
+                        "raw_string": "l"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "p",
+                        "raw_string": "p"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:4:4-0:5:5",
+                    "value": [
+                      {
+                        "string": "d",
+                        "raw_string": "d"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 2,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "d"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "p",
+        "id_val": "p",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:26:26-0:27:27",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:26:26-0:27:27",
+                    "value": [
+                      {
+                        "string": "p",
+                        "raw_string": "p"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "p"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "x",
+        "id_val": "x",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:8:8-0:10:10",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:8:8-0:9:9",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "y",
+        "id_val": "y",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:12:12-0:15:15",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:13:13-0:14:14",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:12:12-0:15:15",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:13:13-0:14:14",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "y"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "z",
+        "id_val": "z",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:17:17-0:20:20",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:18:18-0:19:19",
+                    "value": [
+                      {
+                        "string": "z",
+                        "raw_string": "z"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:17:17-0:20:20",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:18:18-0:19:19",
+                    "value": [
+                      {
+                        "string": "z",
+                        "raw_string": "z"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 2
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "z"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      },
+      {
+        "id": "q",
+        "id_val": "q",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:22:22-0:24:24",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/edge_last.d2,0:23:23-0:24:24",
+                    "value": [
+                      {
+                        "string": "q",
+                        "raw_string": "q"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 2
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "q"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "err": "<nil>"
+}

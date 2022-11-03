@@ -1,0 +1,126 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/primary.d2,0:0:0-17:0:743",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/primary.d2,1:0:1-16:1:742",
+          "edges": [
+            {
+              "range": "d2/testdata/d2parser/TestParse/primary.d2,1:0:1-1:6:7",
+              "src": {
+                "range": "d2/testdata/d2parser/TestParse/primary.d2,1:0:1-1:2:3",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/primary.d2,1:0:1-1:1:2",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "d2/testdata/d2parser/TestParse/primary.d2,1:4:5-1:6:7",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/primary.d2,1:5:6-1:6:7",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            }
+          ],
+          "primary": {
+            "unquoted_string": {
+              "range": "d2/testdata/d2parser/TestParse/primary.d2,1:8:9-1:9:10",
+              "value": [
+                {
+                  "substitution": {
+                    "range": "d2/testdata/d2parser/TestParse/primary.d2,1:8:9-1:18:19",
+                    "spread": false,
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2parser/TestParse/primary.d2,1:10:11-1:14:15",
+                          "value": [
+                            {
+                              "string": "meow",
+                              "raw_string": "meow"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2parser/TestParse/primary.d2,1:15:16-1:17:18",
+                          "value": [
+                            {
+                              "string": "ok",
+                              "raw_string": "ok"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "value": {
+            "map": {
+              "range": "d2/testdata/d2parser/TestParse/primary.d2,1:19:20-16:0:741",
+              "nodes": [
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2parser/TestParse/primary.d2,2:1:23-15:1:740",
+                    "key": {
+                      "range": "d2/testdata/d2parser/TestParse/primary.d2,2:1:23-2:6:28",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2parser/TestParse/primary.d2,2:1:23-2:6:28",
+                            "value": [
+                              {
+                                "string": "label",
+                                "raw_string": "label"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "block_string": {
+                        "range": "d2/testdata/d2parser/TestParse/primary.d2,2:8:30-15:1:740",
+                        "quote": "",
+                        "tag": "md",
+                        "value": "\"Hi, I'm Preston A. Mantis, president of Consumers Retail Law Outlet. As you\ncan see by my suit and the fact that I have all these books of equal height\non the shelves behind me, I am a trained legal attorney. Do you have a car\nor a job?  Do you ever walk around?  If so, you probably have the makings of\nan excellent legal case.  Although of course every case is different, I\nwould definitely say that based on my experience and training, there's no\nreason why you shouldn't come out of this thing with at least a cabin\ncruiser.\n\n\"Remember, at the Preston A. Mantis Consumers Retail Law Outlet, our motto\nis: 'It is very difficult to disprove certain kinds of pain.'\"\n\t\t-- Dave Barry, \"Pain and Suffering\""
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "err": null
+}

@@ -1,0 +1,12 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/errors/missing_shape_icon.d2,0:0:0-0:14:14",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/errors/missing_shape_icon.d2:1:1: image shape must include an \"icon\" field"
+      }
+    ]
+  }
+}

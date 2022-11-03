@@ -1,0 +1,90 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/subst.d2,0:0:0-2:0:20",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/subst.d2,1:0:1-1:18:19",
+          "edges": [
+            {
+              "range": "d2/testdata/d2parser/TestParse/subst.d2,1:0:1-1:6:7",
+              "src": {
+                "range": "d2/testdata/d2parser/TestParse/subst.d2,1:0:1-1:2:3",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/subst.d2,1:0:1-1:1:2",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "d2/testdata/d2parser/TestParse/subst.d2,1:4:5-1:6:7",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/subst.d2,1:5:6-1:6:7",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            }
+          ],
+          "primary": {},
+          "value": {
+            "unquoted_string": {
+              "range": "d2/testdata/d2parser/TestParse/subst.d2,1:8:9-1:9:10",
+              "value": [
+                {
+                  "substitution": {
+                    "range": "d2/testdata/d2parser/TestParse/subst.d2,1:8:9-1:18:19",
+                    "spread": false,
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2parser/TestParse/subst.d2,1:10:11-1:14:15",
+                          "value": [
+                            {
+                              "string": "meow",
+                              "raw_string": "meow"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2parser/TestParse/subst.d2,1:15:16-1:17:18",
+                          "value": [
+                            {
+                              "string": "ok",
+                              "raw_string": "ok"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "err": null
+}

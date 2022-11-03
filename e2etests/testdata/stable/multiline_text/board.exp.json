@@ -1,0 +1,44 @@
+{
+  "name": "",
+  "shapes": [
+    {
+      "id": "hey",
+      "type": "",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 202,
+      "height": 158,
+      "level": 1,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#F7F8FE",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "this\ngoes\nmultiple lines",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 102,
+      "labelHeight": 58,
+      "labelPosition": "INSIDE_MIDDLE_CENTER"
+    }
+  ],
+  "connections": []
+}

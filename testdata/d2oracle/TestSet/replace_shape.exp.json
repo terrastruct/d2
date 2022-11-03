@@ -1,0 +1,126 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestSet/replace_shape.d2,0:0:0-1:0:21",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestSet/replace_shape.d2,0:0:0-0:20:20",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/replace_shape.d2,0:0:0-0:12:12",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/replace_shape.d2,0:0:0-0:6:6",
+                    "value": [
+                      {
+                        "string": "square",
+                        "raw_string": "square"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/replace_shape.d2,0:7:7-0:12:12",
+                    "value": [
+                      {
+                        "string": "shape",
+                        "raw_string": "shape"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2oracle/TestSet/replace_shape.d2,0:14:14-0:20:20",
+                "value": [
+                  {
+                    "string": "circle",
+                    "raw_string": "circle"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        }
+      }
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "square",
+        "id_val": "square",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/replace_shape.d2,0:0:0-0:12:12",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/replace_shape.d2,0:0:0-0:6:6",
+                    "value": [
+                      {
+                        "string": "square",
+                        "raw_string": "square"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/replace_shape.d2,0:7:7-0:12:12",
+                    "value": [
+                      {
+                        "string": "shape",
+                        "raw_string": "shape"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "square"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "circle"
+          }
+        }
+      }
+    ]
+  },
+  "err": "<nil>"
+}

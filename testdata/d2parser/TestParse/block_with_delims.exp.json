@@ -1,0 +1,44 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/block_with_delims.d2,0:0:0-8:0:34",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/block_with_delims.d2,1:0:1-3:2:18",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/block_with_delims.d2,1:0:1-1:1:2",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/block_with_delims.d2,1:0:1-1:1:2",
+                  "value": [
+                    {
+                      "string": "a",
+                      "raw_string": "a"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {
+            "block_string": {
+              "range": "d2/testdata/d2parser/TestParse/block_with_delims.d2,1:3:4-3:2:18",
+              "quote": "|",
+              "tag": "md",
+              "value": "|pipe|"
+            }
+          }
+        }
+      },
+      {
+        "block_comment": {
+          "range": "d2/testdata/d2parser/TestParse/block_with_delims.d2,5:0:20-7:3:33",
+          "value": "b: \"\""
+        }
+      }
+    ]
+  },
+  "err": null
+}
