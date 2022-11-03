@@ -40,10 +40,10 @@ type watcher struct {
 	wg      sync.WaitGroup
 	devMode bool
 
-	ms           *xmain.State
-	layoutPlugin d2plugin.Plugin
-	inputPath    string
-	outputPath   string
+	ms         *xmain.State
+	plugins    []d2plugin.Plugin
+	inputPath  string
+	outputPath string
 
 	compileCh chan struct{}
 
@@ -68,7 +68,7 @@ type compileResult struct {
 	SVG string `json:"svg"`
 }
 
-func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plugin, inputPath, outputPath string) (*watcher, error) {
+func newWatcher(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, inputPath, outputPath string) (*watcher, error) {
 	ctx, cancel := context.WithCancel(ctx)
 
 	w := &watcher{
@@ -76,10 +76,10 @@ func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plug
 		cancel:  cancel,
 		devMode: devMode,
 
-		ms:           ms,
-		layoutPlugin: layoutPlugin,
-		inputPath:    inputPath,
-		outputPath:   outputPath,
+		ms:         ms,
+		plugins:    plugins,
+		inputPath:  inputPath,
+		outputPath: outputPath,
 
 		compileCh: make(chan struct{}, 1),
 		wsclients: make(map[*wsclient]struct{}),
@@ -325,7 +325,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			recompiledPrefix = "re"
 		}
 
-		b, err := compile(ctx, w.ms, w.layoutPlugin, w.inputPath, w.outputPath)
+		b, err := compile(ctx, w.ms, w.plugins, w.inputPath, w.outputPath)
 		if err != nil {
 			err = fmt.Errorf("failed to %scompile: %w", recompiledPrefix, err)
 			w.ms.Log.Error.Print(err)

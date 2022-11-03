@@ -36,7 +36,8 @@ import (
 // If any errors occur the binary will exit with a non zero status code and write
 // the error to stderr.
 type execPlugin struct {
-	path string
+	path    string
+	options []string
 }
 
 func (p execPlugin) Info(ctx context.Context) (_ *PluginInfo, err error) {
@@ -113,4 +114,32 @@ func (p execPlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) 
 	}
 
 	return stdout, nil
+}
+
+func (p execPlugin) Options(ctx context.Context) ([]string, error) {
+	if p.options != nil {
+		return p.options, nil
+	}
+	ctx, cancel := context.WithTimeout(ctx, time.Minute)
+	defer cancel()
+
+	cmd := exec.CommandContext(ctx, p.path, "options")
+
+	stdout, err := cmd.Output()
+	if err != nil {
+		ee := &exec.ExitError{}
+		if errors.As(err, &ee) && len(ee.Stderr) > 0 {
+			return nil, fmt.Errorf("%v\nstderr:\n%s", ee, ee.Stderr)
+		}
+		return nil, err
+	}
+
+	var options []string
+	err = json.Unmarshal(stdout, &options)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal json: %w", err)
+	}
+
+	p.options = options
+	return options, nil
 }

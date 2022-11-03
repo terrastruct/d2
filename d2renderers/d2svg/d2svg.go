@@ -236,7 +236,7 @@ func arrowheadAdjustment(start, end *geo.Point, arrowhead d2target.Arrowhead, st
 }
 
 // returns the path's d attribute for the given connection
-func pathData(connection d2target.Connection) string {
+func PathData(connection d2target.Connection) string {
 	var path []string
 	route := connection.Route
 
@@ -414,7 +414,7 @@ func drawConnection(writer io.Writer, connection d2target.Connection, markers ma
 	}
 
 	fmt.Fprintf(writer, `<path d="%s" class="connection" style="fill:none;%s" %s%s%s/>`,
-		pathData(connection),
+		PathData(connection),
 		connectionStyle(connection),
 		markerStart,
 		markerEnd,

@@ -31,6 +31,8 @@ func Serve(p Plugin) func(context.Context, *xmain.State) error {
 			return layout(ctx, p, ms)
 		case "postprocess":
 			return postProcess(ctx, p, ms)
+		case "options":
+			return options(ctx, p, ms)
 		default:
 			return fmt.Errorf("unrecognized command: %s", reqFunc)
 		}
@@ -84,6 +86,24 @@ func postProcess(ctx context.Context, p Plugin, ms *xmain.State) error {
 	}
 
 	out, err := p.PostProcess(ctx, in)
+	if err != nil {
+		return err
+	}
+
+	_, err = ms.Stdout.Write(out)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func options(ctx context.Context, p Plugin, ms *xmain.State) error {
+	options, err := p.Options(ctx)
+	if err != nil {
+		return err
+	}
+
+	out, err := json.Marshal(options)
 	if err != nil {
 		return err
 	}
