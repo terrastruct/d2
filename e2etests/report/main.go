@@ -140,10 +140,10 @@ func main() {
 			Tests: tests,
 		}
 
-		path := "e2e_report.html"
+		path := os.Getenv("REPORT_OUTPUT")
 		f, err := os.Create(path)
 		if err != nil {
-			panic(err)
+			panic(fmt.Errorf("error creating file `%s`. %v", path, err))
 		}
 		if err := tmpl.Execute(f, tmplData); err != nil {
 			panic(err)
