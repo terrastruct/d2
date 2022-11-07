@@ -8,6 +8,14 @@
   font-family: "font-bold";
 }
 
+.md code,
+.md kbd,
+.md pre,
+.md samp {
+  font-family: "font-mono";
+  font-size: 1em;
+}
+
 /* based on https://github.com/sindresorhus/github-markdown-css */
 @media (prefers-color-scheme: dark) {
   .md {
@@ -129,14 +137,6 @@
   max-width: 100%;
   box-sizing: content-box;
   background-color: var(--color-canvas-default);
-}
-
-.md code,
-.md kbd,
-.md pre,
-.md samp {
-  font-family: monospace, monospace;
-  font-size: 1em;
 }
 
 .md figure {
@@ -343,16 +343,12 @@
 
 .md tt,
 .md code {
-  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono,
-    monospace;
   font-size: 12px;
 }
 
 .md pre {
   margin-top: 0;
   margin-bottom: 0;
-  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono,
-    monospace;
   font-size: 12px;
   word-wrap: normal;
 }
