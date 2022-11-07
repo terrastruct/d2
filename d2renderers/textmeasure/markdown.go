@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"math"
 	"strings"
+	"unicode"
 	"unicode/utf8"
 
 	"github.com/PuerkitoBio/goquery"
@@ -38,6 +39,9 @@ const (
 
 	Padding_pre      = 16
 	MarginBottom_pre = 16
+
+	PaddingTopBottom_code_em = 0.2
+	PaddingLeftRight_code_em = 0.4
 
 	PaddingLR_blockquote_em  = 1.
 	MarginBottom_blockquote  = 16
@@ -185,6 +189,11 @@ func hasAncestorElement(n *html.Node, elType string) bool {
 
 // measures node dimensions to match rendering with styles in github-markdown.css
 func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (width, height, marginTop, marginBottom float64) {
+	var parentElementType string
+	if n.Parent != nil && n.Parent.Type == html.ElementNode {
+		parentElementType = n.Parent.Data
+	}
+
 	switch n.Type {
 	case html.TextNode:
 		if strings.TrimSpace(n.Data) == "" {
@@ -196,32 +205,63 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (wid
 		spaceRune, _ := utf8.DecodeRuneInString(" ")
 		// measure will not include leading or trailing whitespace, so we have to add in the space width
 		spaceWidth := ruler.atlases[font].glyph(spaceRune).advance
+		tabWidth := 8 * spaceWidth
 
 		str := n.Data
-		hasCodeParent := n.Parent != nil && n.Parent.Type == html.ElementNode && (n.Parent.Data == "pre" || n.Parent.Data == "code")
-		if !hasCodeParent {
-			str = strings.ReplaceAll(n.Data, "\n", " ")
+
+		htmlWhitespace := true
+		switch parentElementType {
+		case "pre", "code":
+			htmlWhitespace = false
 		}
-		if strings.HasPrefix(str, " ") {
-			str = strings.TrimPrefix(str, " ")
-			if hasPrev(n) {
-				spaceWidths += spaceWidth
+
+		if htmlWhitespace {
+			str = strings.ReplaceAll(str, "\n", " ")
+			str = strings.ReplaceAll(str, "\t", " ")
+			if strings.HasPrefix(str, " ") {
+				str = strings.TrimPrefix(str, " ")
+				if hasPrev(n) {
+					spaceWidths += spaceWidth
+				}
 			}
-		}
-		if strings.HasSuffix(str, " ") {
-			str = strings.TrimSuffix(str, " ")
-			if hasNext(n) {
-				spaceWidths += spaceWidth
+			if strings.HasSuffix(str, " ") {
+				str = strings.TrimSuffix(str, " ")
+				if hasNext(n) {
+					spaceWidths += spaceWidth
+				}
+			}
+		} else {
+			isNotSpace := func(r rune) bool {
+				return !unicode.IsSpace(r)
+			}
+
+			startIndex := strings.IndexFunc(str, isNotSpace)
+			endIndex := strings.LastIndexFunc(str, isNotSpace)
+
+			if startIndex != -1 && endIndex != -1 {
+				for i, r := range str {
+					// skip over runes in middle
+					if i >= startIndex && i <= endIndex {
+						continue
+					}
+
+					// measure width of leading/trailing whitespace
+					switch r {
+					case ' ':
+						spaceWidths += spaceWidth
+					case '\t':
+						spaceWidths += tabWidth
+					}
+				}
+
+				str = str[startIndex : endIndex+1]
 			}
 		}
 
 		w, h := ruler.MeasurePrecise(font, str)
-		w += spaceWidths
-		// fmt.Printf("%d:%s width %v height %v fontStyle %s\n", depth, n.Data, w, h, font.Style)
-		if h > 0 && h < MarkdownLineHeightPx {
-			h = MarkdownLineHeightPx
-		}
-		return w, h, 0, 0
+		// fmt.Printf("%d:'%s' width %v (%v) height %v fontStyle %s fontSize %v family %v\n", depth, n.Data, w, w+spaceWidths, h, font.Style, font.Size, font.Family)
+
+		return w + spaceWidths, h, 0, 0
 	case html.ElementNode:
 		// fmt.Printf("%d: %v node\n", depth, n.Data)
 		switch n.Data {
@@ -237,7 +277,8 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (wid
 		case "b", "strong":
 			font.Style = d2fonts.FONT_STYLE_BOLD
 		case "pre", "code":
-			// TODO monospaced font
+			font.Family = d2fonts.SourceCodePro
+			font.Style = d2fonts.FONT_STYLE_REGULAR
 		}
 
 		if n.FirstChild != nil {
@@ -284,10 +325,10 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (wid
 
 		switch n.Data {
 		case "blockquote":
-			width += float64(font.Size) * (2*PaddingLR_blockquote_em + BorderLeft_blockquote_em)
+			width += (2*PaddingLR_blockquote_em + BorderLeft_blockquote_em) * float64(font.Size)
 			marginBottom = go2.Max(marginBottom, MarginBottom_blockquote)
 		case "p":
-			if n.Parent != nil && n.Parent.Type == html.ElementNode && n.Parent.Data == "li" {
+			if parentElementType == "li" {
 				marginTop = go2.Max(marginTop, MarginTop_li_p)
 			}
 			marginBottom = go2.Max(marginBottom, MarginBottom_p)
@@ -296,7 +337,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (wid
 			marginBottom = go2.Max(marginBottom, MarginBottom_h)
 			switch n.Data {
 			case "h1", "h2":
-				height += float64(HeaderToFontSize[n.Data]) * PaddingBottom_h1_h2_em
+				height += PaddingBottom_h1_h2_em * float64(font.Size)
 			}
 		case "li":
 			width += PaddingLeft_ul_ol
@@ -314,10 +355,19 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (wid
 			width += 2 * Padding_pre
 			height += 2 * Padding_pre
 			marginBottom = go2.Max(marginBottom, MarginBottom_pre)
+		case "code":
+			if parentElementType != "pre" {
+				width += 2 * PaddingLeftRight_code_em * float64(font.Size)
+				height += 2 * PaddingTopBottom_code_em * float64(font.Size)
+			}
 		case "hr":
 			height += Height_hr
 			marginTop = go2.Max(marginTop, MarginTopBottom_hr)
 			marginBottom = go2.Max(marginBottom, MarginTopBottom_hr)
+		}
+
+		if height > 0 && height < MarkdownLineHeightPx {
+			height = MarkdownLineHeightPx
 		}
 		// fmt.Printf("%d:%s width %v height %v mt %v mb %v\n", depth, n.Data, width, height, marginTop, marginBottom)
 	}

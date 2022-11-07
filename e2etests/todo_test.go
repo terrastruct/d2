@@ -13,7 +13,7 @@ func testTodo(t *testing.T) {
 			skip: false,
 			name: "md_code_inline",
 			script: `md: |md
-  ` + "`" + "code`" + `
+` + "`code`" + `
 |
 a -> md -> b
 `,
