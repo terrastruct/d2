@@ -40,7 +40,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	err = ms.FlagSet.Parse(ms.Args)
 
 	if !errors.Is(err, pflag.ErrHelp) && err != nil {
-		return fmt.Errorf("failed to parse flags: %w", err)
+		return xmain.UsageErrorf("failed to parse flags: %v", err)
 	}
 
 	if len(ms.FlagSet.Args()) > 0 {
