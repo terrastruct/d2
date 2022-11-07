@@ -15,12 +15,12 @@ import (
 	"github.com/spf13/pflag"
 
 	"oss.terrastruct.com/d2"
-	"oss.terrastruct.com/d2/cmd/version"
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2renderers/textmeasure"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
+	"oss.terrastruct.com/d2/lib/version"
 	"oss.terrastruct.com/d2/lib/xmain"
 )
 
