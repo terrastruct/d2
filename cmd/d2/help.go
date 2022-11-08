@@ -85,10 +85,12 @@ func longLayoutHelp(ctx context.Context, ms *xmain.State) error {
 		return err
 	}
 
+	if !strings.HasSuffix(pluginInfo.LongHelp, "\n") {
+		pluginInfo.LongHelp += "\n"
+	}
 	fmt.Fprintf(ms.Stdout, `%s (%s):
 
-%s
-`, pluginInfo.Name, pluginLocation, pluginInfo.LongHelp)
+%s`, pluginInfo.Name, pluginLocation, pluginInfo.LongHelp)
 
 	return nil
 }
