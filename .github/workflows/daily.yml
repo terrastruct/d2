@@ -20,7 +20,7 @@ jobs:
         with:
           go-version-file: ./go.mod
           cache: true
-      - run: CI_ALL=1 ./make.sh
+      - run: CI_ALL=1 TERM=xterm-256color ./make.sh
         env:
           GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
