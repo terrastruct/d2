@@ -638,6 +638,41 @@ func RegisterHash(h Hash, f func() hash.Hash) {
 |
 x -> hey -> y`,
 		},
+		{
+			name: "md_code_inline",
+			script: `md: |md
+` + "`code`" + `
+|
+a -> md -> b
+`,
+		},
+		{
+			name: "md_code_block_fenced",
+			script: `md: |md
+` + "```" + `
+{
+	fenced: "block",
+	of: "json",
+}
+` + "```" + `
+|
+a -> md -> b
+`,
+		},
+		{
+			name: "md_code_block_indented",
+			script: `md: |md
+a line of text and an
+
+	{
+		indented: "block",
+		of: "json",
+	}
+
+|
+a -> md -> b
+`,
+		},
 	}
 
 	runa(t, tcs)

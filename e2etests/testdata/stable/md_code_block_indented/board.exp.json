@@ -8,8 +8,8 @@
         "x": 0,
         "y": 226
       },
-      "width": 208,
-      "height": 24,
+      "width": 212,
+      "height": 151,
       "level": 1,
       "opacity": 1,
       "strokeDash": 0,
@@ -27,7 +27,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "{\n    indented: \"block\",\n    of: \"json\",\n}",
+      "label": "a line of text and an\n\n\t{\n\t\tindented: \"block\",\n\t\tof: \"json\",\n\t}\n",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -35,14 +35,14 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 208,
-      "labelHeight": 24
+      "labelWidth": 212,
+      "labelHeight": 151
     },
     {
       "id": "a",
       "type": "",
       "pos": {
-        "x": 48,
+        "x": 50,
         "y": 0
       },
       "width": 113,
@@ -80,8 +80,8 @@
       "id": "b",
       "type": "",
       "pos": {
-        "x": 48,
-        "y": 350
+        "x": 50,
+        "y": 477
       },
       "width": 113,
       "height": 126,
@@ -142,19 +142,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 104,
+          "x": 106,
           "y": 126
         },
         {
-          "x": 104,
+          "x": 106,
           "y": 166
         },
         {
-          "x": 104,
+          "x": 106,
           "y": 186
         },
         {
-          "x": 104,
+          "x": 106,
           "y": 226
         }
       ],
@@ -189,20 +189,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 104,
-          "y": 250
+          "x": 106,
+          "y": 377
         },
         {
-          "x": 104,
-          "y": 290
+          "x": 106,
+          "y": 417
         },
         {
-          "x": 104,
-          "y": 310
+          "x": 106,
+          "y": 437
         },
         {
-          "x": 104,
-          "y": 350
+          "x": 106,
+          "y": 477
         }
       ],
       "isCurve": true,
