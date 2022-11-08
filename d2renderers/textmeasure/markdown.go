@@ -37,8 +37,10 @@ const (
 	Height_hr          = 4
 	MarginTopBottom_hr = 24
 
-	Padding_pre      = 16
-	MarginBottom_pre = 16
+	Padding_pre          = 16
+	MarginBottom_pre     = 16
+	LineHeight_pre       = 1.45
+	FontSize_pre_code_em = 0.85
 
 	PaddingTopBottom_code_em = 0.2
 	PaddingLeftRight_code_em = 0.4
@@ -100,9 +102,11 @@ func MeasureMarkdown(mdText string, ruler *Ruler) (width, height int, err error)
 
 	{
 		originalLineHeight := ruler.LineHeightFactor
+		ruler.boundsWithDot = true
 		ruler.LineHeightFactor = MarkdownLineHeight
 		defer func() {
 			ruler.LineHeightFactor = originalLineHeight
+			ruler.boundsWithDot = false
 		}()
 	}
 
@@ -256,14 +260,20 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (wid
 
 				str = str[startIndex : endIndex+1]
 			}
+
 		}
 
-		if isCode {
-			ruler.boundsWithDot = true
+		if parentElementType == "pre" {
+			originalLineHeight := ruler.LineHeightFactor
+			ruler.LineHeightFactor = LineHeight_pre
+			defer func() {
+				ruler.LineHeightFactor = originalLineHeight
+			}()
 		}
 		w, h := ruler.MeasurePrecise(font, str)
 		if isCode {
-			ruler.boundsWithDot = false
+			w *= FontSize_pre_code_em
+			h *= FontSize_pre_code_em
 		}
 		// fmt.Printf("%d:'%s' width %v (%v) height %v fontStyle %s fontSize %v family %v\n", depth, n.Data, w, w+spaceWidths, h, font.Style, font.Size, font.Family)
 

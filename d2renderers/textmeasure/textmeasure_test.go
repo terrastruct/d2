@@ -88,19 +88,19 @@ _italics are all measured correctly_
 `: {214, 24},
 	`
 **bold is measured correctly**
-`: {187, 24},
+`: {188, 24},
 	`
 **Note:** This document
-`: {141, 24},
+`: {143, 24},
 	`
 **Note:**
-`: {37, 24},
-	`a`:             {7, 24},
+`: {39, 24},
+	`a`:             {9, 24},
 	`w`:             {12, 24},
 	`ww`:            {24, 24},
-	"`inline code`": {119, 27},
-	"`code`":        {52, 27},
-	"`a`":           {23, 27},
+	"`inline code`": {103, 24},
+	"`code`":        {46, 24},
+	"`a`":           {21, 24},
 }
 
 func TestTextMeasureMarkdown(t *testing.T) {

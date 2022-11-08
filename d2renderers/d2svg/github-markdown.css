@@ -639,7 +639,7 @@
 .md tt {
   padding: 0.2em 0.4em;
   margin: 0;
-  /* font-size: 85%; */
+  font-size: 85%;
   background-color: var(--color-neutral-muted);
   border-radius: 6px;
 }
@@ -679,8 +679,8 @@
 .md pre {
   padding: 16px;
   overflow: auto;
-  /* font-size: 85%;
-  line-height: 1.45; */
+  font-size: 85%;
+  line-height: 1.45;
   background-color: var(--color-canvas-subtle);
   border-radius: 6px;
 }
