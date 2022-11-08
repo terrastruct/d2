@@ -14,6 +14,8 @@ import (
 	"oss.terrastruct.com/d2/lib/geo"
 )
 
+const TAB_SIZE = 4
+
 // ASCII is a set of all ASCII runes. These runes are codepoints from 32 to 127 inclusive.
 var ASCII []rune
 
@@ -77,6 +79,9 @@ type Ruler struct {
 	buf    []byte
 	prevR  rune
 	bounds *rect
+
+	// when drawing text also union Ruler.bounds with Dot
+	boundsWithDot bool
 }
 
 // New creates a new Ruler capable of drawing runes contained in the provided atlas. Orig and Dot
@@ -118,7 +123,7 @@ func NewRuler() (*Ruler, error) {
 				atlas := NewAtlas(face, ASCII)
 				atlases[font] = atlas
 				lineHeights[font] = atlas.lineHeight
-				tabWidths[font] = atlas.glyph(' ').advance * 4
+				tabWidths[font] = atlas.glyph(' ').advance * TAB_SIZE
 			}
 		}
 	}
@@ -199,10 +204,15 @@ func (txt *Ruler) drawBuf(font d2fonts.Font) {
 
 		txt.prevR = r
 
-		if txt.bounds.w()*txt.bounds.h() == 0 {
-			txt.bounds = bounds
-		} else {
+		if txt.boundsWithDot {
+			txt.bounds = txt.bounds.union(&rect{txt.Dot, txt.Dot})
 			txt.bounds = txt.bounds.union(bounds)
+		} else {
+			if txt.bounds.w()*txt.bounds.h() == 0 {
+				txt.bounds = bounds
+			} else {
+				txt.bounds = txt.bounds.union(bounds)
+			}
 		}
 	}
 }
