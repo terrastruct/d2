@@ -48,7 +48,13 @@ func shortLayoutHelp(ctx context.Context, ms *xmain.State) error {
 		return err
 	}
 	for _, p := range plugins {
-		pluginLines = append(pluginLines, p.Name+" - "+p.ShortHelp)
+		var l string
+		if p.Type == "bundled" {
+			l = fmt.Sprintf("%s (bundled) - %s", p.Name, p.ShortHelp)
+		} else {
+			l = fmt.Sprintf("%s (%s) - %s", p.Name, humanPath(p.Path), p.ShortHelp)
+		}
+		pluginLines = append(pluginLines, l)
 	}
 	fmt.Fprintf(ms.Stdout, `Available layout engines found:
 
