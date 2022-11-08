@@ -37,7 +37,7 @@ func layoutHelp(ctx context.Context, ms *xmain.State) error {
 	} else if len(ms.FlagSet.Args()) == 2 {
 		return longLayoutHelp(ctx, ms)
 	} else {
-		return xmain.UsageErrorf("too many arguments passed")
+		return pluginSubcommand(ctx, ms)
 	}
 }
 
@@ -85,10 +85,12 @@ func longLayoutHelp(ctx context.Context, ms *xmain.State) error {
 		return err
 	}
 
+	if !strings.HasSuffix(pluginInfo.LongHelp, "\n") {
+		pluginInfo.LongHelp += "\n"
+	}
 	fmt.Fprintf(ms.Stdout, `%s (%s):
 
-%s
-`, pluginInfo.Name, pluginLocation, pluginInfo.LongHelp)
+%s`, pluginInfo.Name, pluginLocation, pluginInfo.LongHelp)
 
 	return nil
 }
@@ -108,6 +110,17 @@ The available options are: %s. For details on each option, run "d2 layout".
 
 For more information on setup, please visit https://github.com/terrastruct/d2.`,
 		layout, strings.Join(names, ", "))
+}
+
+func pluginSubcommand(ctx context.Context, ms *xmain.State) error {
+	layout := ms.FlagSet.Arg(1)
+	plugin, _, err := d2plugin.FindPlugin(ctx, layout)
+	if errors.Is(err, exec.ErrNotFound) {
+		return layoutNotFound(ctx, layout)
+	}
+
+	ms.Args = ms.FlagSet.Args()[2:]
+	return d2plugin.Serve(plugin)(ctx, ms)
 }
 
 func humanPath(fp string) string {
