@@ -205,17 +205,17 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (wid
 		spaceRune, _ := utf8.DecodeRuneInString(" ")
 		// measure will not include leading or trailing whitespace, so we have to add in the space width
 		spaceWidth := ruler.atlases[font].glyph(spaceRune).advance
-		tabWidth := 8 * spaceWidth
+		tabWidth := TAB_SIZE * spaceWidth
 
 		str := n.Data
 
-		htmlWhitespace := true
+		isCode := false
 		switch parentElementType {
 		case "pre", "code":
-			htmlWhitespace = false
+			isCode = true
 		}
 
-		if htmlWhitespace {
+		if !isCode {
 			str = strings.ReplaceAll(str, "\n", " ")
 			str = strings.ReplaceAll(str, "\t", " ")
 			if strings.HasPrefix(str, " ") {
@@ -258,7 +258,13 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (wid
 			}
 		}
 
+		if isCode {
+			ruler.boundsWithDot = true
+		}
 		w, h := ruler.MeasurePrecise(font, str)
+		if isCode {
+			ruler.boundsWithDot = false
+		}
 		// fmt.Printf("%d:'%s' width %v (%v) height %v fontStyle %s fontSize %v family %v\n", depth, n.Data, w, w+spaceWidths, h, font.Style, font.Size, font.Family)
 
 		return w + spaceWidths, h, 0, 0

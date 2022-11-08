@@ -95,6 +95,12 @@ _italics are all measured correctly_
 	`
 **Note:**
 `: {37, 24},
+	`a`:             {7, 24},
+	`w`:             {12, 24},
+	`ww`:            {24, 24},
+	"`inline code`": {119, 27},
+	"`code`":        {52, 27},
+	"`a`":           {23, 27},
 }
 
 func TestTextMeasureMarkdown(t *testing.T) {
