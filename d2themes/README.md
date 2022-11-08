@@ -3,6 +3,10 @@
 `d2themes` defines themes for D2. You can add a new one in `./d2themescatalog`, give a
 unique ID, and specify it in the CLI or library to see it.
 
+# Themes overview
+
+<img src="../docs/assets/themes_overview.png" />
+
 # Color coding guide
 
 <img src="../docs/assets/themes_coding.png" />
