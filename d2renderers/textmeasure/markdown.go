@@ -17,6 +17,7 @@ import (
 
 var markdownRenderer goldmark.Markdown
 
+// these are css values from github-markdown.css so we can accurately compute the rendered dimensions
 const (
 	MarkdownFontSize     = d2fonts.FONT_SIZE_M
 	MarkdownLineHeight   = 1.5
@@ -210,12 +211,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (wid
 		spaceWidth := ruler.atlases[font].glyph(spaceRune).advance
 
 		str := n.Data
-
-		isCode := false
-		switch parentElementType {
-		case "pre", "code":
-			isCode = true
-		}
+		isCode := parentElementType == "pre" || parentElementType == "code"
 
 		if !isCode {
 			str = strings.ReplaceAll(str, "\n", " ")
