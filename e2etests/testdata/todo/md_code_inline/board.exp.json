@@ -5,11 +5,11 @@
       "id": "md",
       "type": "text",
       "pos": {
-        "x": 31,
+        "x": 34,
         "y": 226
       },
-      "width": 52,
-      "height": 27,
+      "width": 46,
+      "height": 24,
       "level": 1,
       "opacity": 1,
       "strokeDash": 0,
@@ -35,8 +35,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 52,
-      "labelHeight": 27
+      "labelWidth": 46,
+      "labelHeight": 24
     },
     {
       "id": "a",
@@ -81,7 +81,7 @@
       "type": "",
       "pos": {
         "x": 0,
-        "y": 353
+        "y": 350
       },
       "width": 113,
       "height": 126,
@@ -190,19 +190,19 @@
       "route": [
         {
           "x": 56.5,
-          "y": 253
+          "y": 250
         },
         {
           "x": 56.5,
-          "y": 293
+          "y": 290
         },
         {
           "x": 56.5,
-          "y": 313
+          "y": 310
         },
         {
           "x": 56.5,
-          "y": 353
+          "y": 350
         }
       ],
       "isCurve": true,
