@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"math"
 	"strings"
-	"unicode"
 	"unicode/utf8"
 
 	"github.com/PuerkitoBio/goquery"
@@ -209,7 +208,6 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (wid
 		spaceRune, _ := utf8.DecodeRuneInString(" ")
 		// measure will not include leading or trailing whitespace, so we have to add in the space width
 		spaceWidth := ruler.atlases[font].glyph(spaceRune).advance
-		tabWidth := TAB_SIZE * spaceWidth
 
 		str := n.Data
 
@@ -234,33 +232,6 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (wid
 					spaceWidths += spaceWidth
 				}
 			}
-		} else {
-			isNotSpace := func(r rune) bool {
-				return !unicode.IsSpace(r)
-			}
-
-			startIndex := strings.IndexFunc(str, isNotSpace)
-			endIndex := strings.LastIndexFunc(str, isNotSpace)
-
-			if startIndex != -1 && endIndex != -1 {
-				for i, r := range str {
-					// skip over runes in middle
-					if i >= startIndex && i <= endIndex {
-						continue
-					}
-
-					// measure width of leading/trailing whitespace
-					switch r {
-					case ' ':
-						spaceWidths += spaceWidth
-					case '\t':
-						spaceWidths += tabWidth
-					}
-				}
-
-				str = str[startIndex : endIndex+1]
-			}
-
 		}
 
 		if parentElementType == "pre" {

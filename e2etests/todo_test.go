@@ -33,10 +33,13 @@ a -> md -> b
 		{
 			name: "md_code_block_indented",
 			script: `md: |md
-    {
-        indented: "block",
-        of: "json",
-    }
+a line of text and an
+
+	{
+		indented: "block",
+		of: "json",
+	}
+
 |
 a -> md -> b
 `,
