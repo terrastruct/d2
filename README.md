@@ -4,7 +4,7 @@
   </h1>
   <p>A modern DSL that turns text into diagrams.</p>
 
-Language docs: [https://d2-lang.com](https://d2-lang.com)
+[Language docs](https://d2-lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf)
 
 [![ci](https://github.com/terrastruct/d2/actions/workflows/ci.yml/badge.svg)](https://github.com/terrastruct/d2/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/v/release/terrastruct/d2)](https://github.com/terrastruct/d2/releases)
