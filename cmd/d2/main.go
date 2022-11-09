@@ -34,7 +34,7 @@ func parseFlagsToEnv(ctx context.Context, ms *xmain.State) error {
 	watchFlag := ms.FlagSet.BoolP(
 		"watch", "w",
 		ms.Env.Getenv("D2_WATCH") == "1" || ms.Env.Getenv("D2_WATCH") == "true",
-		"watch for changes to input and live reload. Use $HOST and $PORT to specify the listening address.\n$D2_HOST and $D2_PORT are also accepted and take priority (default host and port is localhost:0, which is will open on a randomly available local port).",
+		"watch for changes to input and live reload. Use $HOST and $PORT to specify the listening address.\n$D2_HOST and $D2_PORT are also accepted and take priority (default localhost:0, which is will open on a randomly available local port).",
 	)
 	if *watchFlag {
 		ms.Env.Setenv("D2_WATCH", "1")
