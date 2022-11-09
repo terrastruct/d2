@@ -41,6 +41,7 @@
 <!-- tocstop -->
 
 ## Quickstart (CLI)
+
 The most convenient way to use D2 is to just run it as a CLI executable to
 produce SVGs from `.d2` files.
 
@@ -64,6 +65,7 @@ page. D2 will be added to OS-respective package managers soon.
 
 
 ## Quickstart (library)
+
 In addition to being a runnable CLI tool, D2 can also be used to produce diagrams from
 Go programs.
 
