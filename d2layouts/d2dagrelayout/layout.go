@@ -73,7 +73,7 @@ func Layout(ctx context.Context, d2graph *d2graph.Graph) (err error) {
 	loadScript := ""
 	for _, obj := range d2graph.Objects {
 		id := obj.AbsID()
-		loadScript += generateAddNodeLine(id, obj.Attributes.Label.Value, int(obj.Width), int(obj.Height))
+		loadScript += generateAddNodeLine(id, int(obj.Width), int(obj.Height))
 		if obj.Parent != d2graph.Root {
 			loadScript += generateAddParentLine(id, obj.Parent.AbsID())
 		}
@@ -93,7 +93,7 @@ func Layout(ctx context.Context, d2graph *d2graph.Graph) (err error) {
 			// for `b <- a`, edge.Edge is `a -> b` and we expect this routing result
 			src, dst = dst, src
 		}
-		loadScript += generateAddEdgeLine(src.AbsID(), dst.AbsID(), edge.AbsID(), edge.Attributes.Label.Value)
+		loadScript += generateAddEdgeLine(src.AbsID(), dst.AbsID(), edge.AbsID())
 	}
 
 	if debugJS {
@@ -234,15 +234,15 @@ func setGraphAttrs(attrs dagreGraphAttrs) string {
 	)
 }
 
-func generateAddNodeLine(id, label string, width, height int) string {
-	return fmt.Sprintf("g.setNode(`%s`, { label: `%s`,  width: %d, height: %d });\n", id, label, width, height)
+func generateAddNodeLine(id string, width, height int) string {
+	return fmt.Sprintf("g.setNode(`%s`, { width: %d, height: %d });\n", id, width, height)
 }
 
 func generateAddParentLine(childID, parentID string) string {
 	return fmt.Sprintf("g.setParent(`%s`, `%s`);\n", childID, parentID)
 }
 
-func generateAddEdgeLine(fromID, toID, edgeID, label string) string {
+func generateAddEdgeLine(fromID, toID, edgeID string) string {
 	// in dagre v is from, w is to, name is to uniquely identify
-	return fmt.Sprintf("g.setEdge({v:`%s`, w:`%s`, name:`%s`, label:`%s`});\n", fromID, toID, edgeID, label)
+	return fmt.Sprintf("g.setEdge({v:`%s`, w:`%s`, name:`%s` });\n", fromID, toID, edgeID)
 }

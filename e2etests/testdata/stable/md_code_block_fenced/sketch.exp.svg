@@ -2,7 +2,7 @@
 <svg
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="1120" height="1028" viewBox="-100 -100 1120 1028"><style type="text/css">
+width="396" height="763" viewBox="-100 -100 396 763"><style type="text/css">
 <![CDATA[
 .shape {
 	shape-rendering: geometricPrecision;
@@ -788,38 +788,12 @@ width="1120" height="1028" viewBox="-100 -100 1120 1028"><style type="text/css">
 .md .contains-task-list:dir(rtl) .task-list-item-checkbox {
   margin: 0 -1.6em 0.25em 0.2em;
 }
-</style><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="0.000000" y="226.000000" width="920" height="376"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><p>List items may consist of multiple paragraphs. Each subsequent
-paragraph in a list item must be indented by either 4 spaces
-or one tab:</p>
-<ol>
-<li>
-<p>This is a list item with two paragraphs. Lorem ipsum dolor
-sit amet, consectetuer adipiscing elit. Aliquam hendrerit
-mi posuere lectus.</p>
-<p>Vestibulum enim wisi, viverra nec, fringilla in, laoreet
-vitae, risus. Donec sit amet nisl. Aliquam semper ipsum
-sit amet velit.</p>
-</li>
-<li>
-<p>Suspendisse id sem consectetuer libero luctus adipiscing.</p>
-</li>
-</ol>
-<p>It looks nice if you indent every line of the subsequent
-paragraphs, but here again, Markdown will allow you to be
-lazy:</p>
-<ul>
-<li>
-<p>This is a list item with two paragraphs.</p>
-<pre><code>This is the second paragraph in the list item. You're
+</style><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="0.000000" y="226.000000" width="196" height="111"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><pre><code>{
+	fenced: &quot;block&quot;,
+	of: &quot;json&quot;,
+}
 </code></pre>
-<p>only required to indent the first line. Lorem ipsum dolor
-sit amet, consectetuer adipiscing elit.</p>
-</li>
-<li>
-<p>Another item in the same list.</p>
-</li>
-</ul>
-</div></foreignObject></g><rect class="shape" x="404" y="0" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /><text class="text-bold" x="460.500000" y="66.000000" style="text-anchor:middle;font-size:16px;fill:black">a</text><rect class="shape" x="404" y="702" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /><text class="text-bold" x="460.500000" y="768.000000" style="text-anchor:middle;font-size:16px;fill:black">b</text><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="8.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 460.000000 127.000000 C 460.000000 166.000000 460.000000 186.000000 460.000000 223.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" /><path d="M 460.000000 603.000000 C 460.000000 642.000000 460.000000 662.000000 460.000000 699.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" /><style type="text/css"><![CDATA[
+</div></foreignObject></g><rect class="shape" x="42" y="0" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /><text class="text-bold" x="98.500000" y="66.000000" style="text-anchor:middle;font-size:16px;fill:black">a</text><rect class="shape" x="42" y="437" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /><text class="text-bold" x="98.500000" y="503.000000" style="text-anchor:middle;font-size:16px;fill:black">b</text><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="8.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 98.000000 127.000000 C 98.000000 166.000000 98.000000 186.000000 98.000000 223.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" /><path d="M 98.000000 338.000000 C 98.000000 377.000000 98.000000 397.000000 98.000000 434.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" /><style type="text/css"><![CDATA[
 .text {
 	font-family: "font-regular";
 }
