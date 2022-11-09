@@ -207,9 +207,9 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 		width *= 1.1
 	default:
 		if isTarget {
-			refX = width - 3/2*strokeWidth
+			refX = width - 1.5*strokeWidth
 		} else {
-			refX = 3 / 2 * strokeWidth
+			refX = 1.5 * strokeWidth
 		}
 	}
 
@@ -225,10 +225,10 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 }
 
 // compute the (dx, dy) adjustment to apply to get the arrowhead-adjusted end point
-func arrowheadAdjustment(start, end *geo.Point, arrowhead d2target.Arrowhead, strokeWidth int) *geo.Point {
-	distance := float64(strokeWidth) / 2.0
+func arrowheadAdjustment(start, end *geo.Point, arrowhead d2target.Arrowhead, edgeStrokeWidth, shapeStrokeWidth int) *geo.Point {
+	distance := (float64(edgeStrokeWidth) + float64(shapeStrokeWidth)) / 2.0
 	if arrowhead != d2target.NoArrowhead {
-		distance += float64(strokeWidth)
+		distance += float64(edgeStrokeWidth)
 	}
 
 	v := geo.NewVector(end.X-start.X, end.Y-start.Y)
@@ -236,11 +236,13 @@ func arrowheadAdjustment(start, end *geo.Point, arrowhead d2target.Arrowhead, st
 }
 
 // returns the path's d attribute for the given connection
-func pathData(connection d2target.Connection) string {
+func pathData(connection d2target.Connection, idToShape map[string]d2target.Shape) string {
 	var path []string
 	route := connection.Route
+	srcShape := idToShape[connection.Src]
+	dstShape := idToShape[connection.Dst]
 
-	sourceAdjustment := arrowheadAdjustment(route[0], route[1], connection.SrcArrow, connection.StrokeWidth)
+	sourceAdjustment := arrowheadAdjustment(route[0], route[1], connection.SrcArrow, connection.StrokeWidth, srcShape.StrokeWidth)
 	path = append(path, fmt.Sprintf("M %f %f",
 		route[0].X-sourceAdjustment.X,
 		route[0].Y-sourceAdjustment.Y,
@@ -256,7 +258,7 @@ func pathData(connection d2target.Connection) string {
 			))
 		}
 		// final curve target adjustment
-		targetAdjustment := arrowheadAdjustment(route[i+1], route[i+2], connection.DstArrow, connection.StrokeWidth)
+		targetAdjustment := arrowheadAdjustment(route[i+1], route[i+2], connection.DstArrow, connection.StrokeWidth, dstShape.StrokeWidth)
 		path = append(path, fmt.Sprintf("C %f %f %f %f %f %f",
 			route[i].X, route[i].Y,
 			route[i+1].X, route[i+1].Y,
@@ -315,7 +317,7 @@ func pathData(connection d2target.Connection) string {
 		lastPoint := route[len(route)-1]
 		secondToLastPoint := route[len(route)-2]
 
-		targetAdjustment := arrowheadAdjustment(secondToLastPoint, lastPoint, connection.DstArrow, connection.StrokeWidth)
+		targetAdjustment := arrowheadAdjustment(secondToLastPoint, lastPoint, connection.DstArrow, connection.StrokeWidth, dstShape.StrokeWidth)
 		path = append(path, fmt.Sprintf("L %f %f",
 			lastPoint.X+targetAdjustment.X,
 			lastPoint.Y+targetAdjustment.Y,
@@ -344,7 +346,7 @@ func labelMask(id string, connection d2target.Connection, labelTL, tl, br *geo.P
 	}, "\n")
 }
 
-func drawConnection(writer io.Writer, connection d2target.Connection, markers map[string]struct{}) {
+func drawConnection(writer io.Writer, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape) {
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(false, connection)
@@ -414,7 +416,7 @@ func drawConnection(writer io.Writer, connection d2target.Connection, markers ma
 	}
 
 	fmt.Fprintf(writer, `<path d="%s" class="connection" style="fill:none;%s" %s%s%s/>`,
-		pathData(connection),
+		pathData(connection, idToShape),
 		connectionStyle(connection),
 		markerStart,
 		markerEnd,
@@ -772,9 +774,11 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 
 	// SVG has no notion of z-index. The z-index is effectively the order it's drawn.
 	// So draw from the least nested to most nested
+	idToShape := make(map[string]d2target.Shape)
 	highest := 1
 	for _, s := range diagram.Shapes {
 		highest = go2.Max(highest, s.Level)
+		idToShape[s.ID] = s
 	}
 	for i := 1; i <= highest; i++ {
 		for _, s := range diagram.Shapes {
@@ -789,7 +793,7 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 
 	markers := map[string]struct{}{}
 	for _, c := range diagram.Connections {
-		drawConnection(buf, c, markers)
+		drawConnection(buf, c, markers, idToShape)
 	}
 
 	embedFonts(buf)

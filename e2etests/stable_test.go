@@ -637,6 +637,45 @@ func RegisterHash(h Hash, f func() hash.Hash) {
 }
 |
 x -> hey -> y`,
+		}, {
+			name: "arrowhead_adjustment",
+			script: `a <-> b: {
+				style.stroke-width: 6
+				style.stroke-dash: 4
+				source-arrowhead: {
+				  shape: arrow
+				}
+			  }
+			  
+			  c -> b: {
+				style.stroke-width: 7
+				style.stroke: "#20222a"
+			  }
+			  c.style.stroke-width: 7
+			  c.style.stroke: "#b2350d"
+			  c.shape: document
+			  b.style.stroke-width: 8
+			  b.style.stroke: "#0db254"
+			  a.style.border-radius: 10
+			  a.style.stroke-width: 8
+			  a.style.stroke: "#2bc3d8"
+			  Oval: "" {
+				shape: oval
+				style.stroke-width: 6
+				style.stroke: "#a1a4af"
+			  }
+			  a <-> Oval: {
+				style.stroke-width: 6
+				source-arrowhead: {
+				  shape: diamond
+				}
+				target-arrowhead: * {
+				  shape: diamond
+				  style.filled: true
+				}
+			  }
+			  c -- a: {style.stroke-width: 7}
+			  Oval <-> c`,
 		},
 		{
 			name: "md_code_inline",
