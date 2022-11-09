@@ -199,3 +199,13 @@ our testing framework.
 
 - [https://github.com/terrastruct/d2-docs](https://github.com/terrastruct/d2-docs)
 - [https://github.com/terrastruct/text-to-diagram-com](https://github.com/terrastruct/text-to-diagram-com)
+
+## FAQ
+
+- Does D2 collect telemetry?
+  - No, D2 does not use an internet connection after installation, except to check for
+    version updates from Github periodically.
+- I have a question or need help.
+  - The best way to get help is to open an Issue, so that it's searchable by others in the
+    future. If you prefer synchronous or just want to chat, you can pop into the help
+    channel of the [D2 Discord](https://discord.gg/NF6X8K4eDq) as well.
