@@ -717,8 +717,18 @@ func embedFonts(buf *bytes.Buffer) {
 			break
 		}
 	}
-	if strings.Contains(content, `class="text-mono"`) {
-		fmt.Fprintf(buf, `
+
+	triggers = []string{
+		`class="text-mono"`,
+		`<pre>`,
+		`<code>`,
+		`<kbd>`,
+		`<samp>`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			fmt.Fprintf(buf, `
 .text-mono {
 	font-family: "font-mono";
 }
@@ -726,7 +736,9 @@ func embedFonts(buf *bytes.Buffer) {
 	font-family: font-mono;
 	src: url("%s");
 }`,
-			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_REGULAR)])
+				d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_REGULAR)])
+			break
+		}
 	}
 
 	buf.WriteString(`]]></style>`)
