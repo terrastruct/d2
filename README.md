@@ -208,3 +208,5 @@ our testing framework.
   - The best way to get help is to open an Issue, so that it's searchable by others in the
     future. If you prefer synchronous or just want to chat, you can pop into the help
     channel of the [D2 Discord](https://discord.gg/NF6X8K4eDq) as well.
+- I have a private inquiry.
+  - Please reach out at hi@d2lang.com
