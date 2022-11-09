@@ -68,7 +68,7 @@ func shortLayoutHelp(ctx context.Context, ms *xmain.State) error {
 %s
 
 Usage:
-  To use a particular layout engine, set the environment variable D2_LAYOUT=[layout name].
+  To use a particular layout engine, set the environment variable D2_LAYOUT=[name] or flag --layout=[name].
 
 Example:
   D2_LAYOUT=dagre d2 in.d2 out.svg
