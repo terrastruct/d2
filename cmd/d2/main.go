@@ -28,20 +28,77 @@ func main() {
 	xmain.Main(run)
 }
 
-func run(ctx context.Context, ms *xmain.State) (err error) {
-	// :(
-	ctx = xmain.DiscardSlog(ctx)
+func parseFlagsToEnv(ctx context.Context, ms *xmain.State) error {
+	err := ms.FlagSet.Parse(ms.Args)
 
-	watchFlag := ms.FlagSet.BoolP("watch", "w", false, "watch for changes to input and live reload. Use $PORT and $HOST to specify the listening address.\n$D2_PORT and $D2_HOST are also accepted and take priority. Default is localhost:0")
-	themeFlag := ms.FlagSet.Int64P("theme", "t", 0, "set the diagram theme. For a list of available options, see https://oss.terrastruct.com/d2")
-	bundleFlag := ms.FlagSet.BoolP("bundle", "b", true, "bundle all assets and layers into the output svg")
-	versionFlag := ms.FlagSet.BoolP("version", "v", false, "get the version and check for updates")
-	debugFlag := ms.FlagSet.BoolP("debug", "d", false, "print debug logs")
-	err = ms.FlagSet.Parse(ms.Args)
+	watchFlag := ms.FlagSet.BoolP(
+		"watch", "w",
+		ms.Env.Getenv("D2_WATCH") == "1" || ms.Env.Getenv("D2_WATCH") == "true",
+		"watch for changes to input and live reload. Use $HOST and $PORT to specify the listening address.\n$D2_HOST and $D2_PORT are also accepted and take priority (default host and port is localhost:0, which is will open on a randomly available local port).",
+	)
+	if *watchFlag {
+		ms.Env.Setenv("D2_WATCH", "1")
+	} else {
+		ms.Env.Setenv("D2_WATCH", "0")
+	}
+
+	bundleFlag := ms.FlagSet.BoolP(
+		"bundle", "b",
+		!(ms.Env.Getenv("D2_BUNDLE") == "0" || ms.Env.Getenv("D2_BUNDLE") == "false"),
+		"bundle all assets and layers into the output svg.",
+	)
+	if *bundleFlag {
+		ms.Env.Setenv("D2_BUNDLE", "1")
+	} else {
+		ms.Env.Setenv("D2_BUNDLE", "0")
+	}
+
+	debugFlag := ms.FlagSet.BoolP(
+		"debug", "d",
+		ms.Env.Getenv("D2_DEBUG") == "1" || ms.Env.Getenv("D2_DEBUG") == "true",
+		"print debug logs.",
+	)
+	if *debugFlag {
+		ms.Env.Setenv("D2_DEBUG", "1")
+	} else {
+		ms.Env.Setenv("D2_DEBUG", "0")
+	}
+
+	layoutEnvVal := ms.Env.Getenv("D2_LAYOUT")
+	if layoutEnvVal == "" {
+		layoutEnvVal = "dagre"
+	}
+	layoutFlag := ms.FlagSet.StringP("layout", "l", layoutEnvVal, `the layout engine used.`)
+	ms.Env.Setenv("D2_LAYOUT", *layoutFlag)
+
+	ev := ms.Env.Getenv("D2_THEME")
+	var themeEnvVal int64
+	if ev != "" {
+		themeEnvVal, err = strconv.ParseInt(ev, 10, 64)
+	}
+	themeFlag := ms.FlagSet.Int64P("theme", "t", themeEnvVal, "the diagram theme ID. For a list of available options, see https://oss.terrastruct.com/d2")
+	match := d2themescatalog.Find(*themeFlag)
+	if match == (d2themes.Theme{}) {
+		return xmain.UsageErrorf("-t[heme] could not be found. The available options are:\n%s\nYou provided: %d", d2themescatalog.CLIString(), *themeFlag)
+	}
+	ms.Env.Setenv("D2_THEME", fmt.Sprintf("%d", *themeFlag))
 
 	if !errors.Is(err, pflag.ErrHelp) && err != nil {
 		return xmain.UsageErrorf("failed to parse flags: %v", err)
 	}
+
+	return nil
+}
+
+func run(ctx context.Context, ms *xmain.State) (err error) {
+	// :(
+	ctx = xmain.DiscardSlog(ctx)
+
+	if err := parseFlagsToEnv(ctx, ms); err != nil {
+		return err
+	}
+	// Flags that don't make sense to set in env
+	versionFlag := ms.FlagSet.BoolP("version", "v", false, "get the version and check for updates")
 
 	if len(ms.FlagSet.Args()) > 0 {
 		switch ms.FlagSet.Arg(0) {
@@ -53,10 +110,6 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	if errors.Is(err, pflag.ErrHelp) {
 		help(ms)
 		return nil
-	}
-
-	if *debugFlag {
-		ms.Env.Setenv("DEBUG", "1")
 	}
 
 	var inputPath string
@@ -89,20 +142,9 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		}
 	}
 
-	match := d2themescatalog.Find(*themeFlag)
-	if match == (d2themes.Theme{}) {
-		return xmain.UsageErrorf("-t[heme] could not be found. The available options are:\n%s\nYou provided: %d", d2themescatalog.CLIString(), *themeFlag)
-	}
-	ms.Env.Setenv("D2_THEME", fmt.Sprintf("%d", *themeFlag))
-
-	envD2Layout := ms.Env.Getenv("D2_LAYOUT")
-	if envD2Layout == "" {
-		envD2Layout = "dagre"
-	}
-
-	plugin, path, err := d2plugin.FindPlugin(ctx, envD2Layout)
+	plugin, path, err := d2plugin.FindPlugin(ctx, ms.Env.Getenv("D2_LAYOUT"))
 	if errors.Is(err, exec.ErrNotFound) {
-		return layoutNotFound(ctx, envD2Layout)
+		return layoutNotFound(ctx, ms.Env.Getenv("D2_LAYOUT"))
 	} else if err != nil {
 		return err
 	}
@@ -111,9 +153,9 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	if path != "" {
 		pluginLocation = fmt.Sprintf("executable plugin at %s", humanPath(path))
 	}
-	ms.Log.Debug.Printf("using layout plugin %s (%s)", envD2Layout, pluginLocation)
+	ms.Log.Debug.Printf("using layout plugin %s (%s)", ms.Env.Getenv("D2_LAYOUT"), pluginLocation)
 
-	if *watchFlag {
+	if ms.Env.Getenv("D2_WATCH") == "1" {
 		if inputPath == "-" {
 			return xmain.UsageErrorf("-w[atch] cannot be combined with reading input from stdin")
 		}
@@ -128,7 +170,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	if *bundleFlag {
+	if ms.Env.Getenv("D2_BUNDLE") == "1" {
 		_ = 343
 	}
 
