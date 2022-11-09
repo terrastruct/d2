@@ -33,6 +33,8 @@ const (
 	MIN_ARROWHEAD_STROKE_WIDTH = 2
 )
 
+var multipleOffset = geo.NewVector(10, -10)
+
 //go:embed github-markdown.css
 var mdCSS string
 
@@ -440,6 +442,16 @@ func drawConnection(writer io.Writer, connection d2target.Connection, markers ma
 	}
 }
 
+func renderOval(tl *geo.Point, width, height float64, style string) string {
+	rx := width / 2
+	ry := height / 2
+	cx := tl.X + rx
+	cy := tl.Y + ry
+	return fmt.Sprintf(`<ellipse class="shape" cx="%f" cy="%f" rx="%f" ry="%f" style="%s" />`,
+		cx, cy, rx, ry, style,
+	)
+}
+
 func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
@@ -449,6 +461,11 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 
 	s := shape.NewShape(shapeType, geo.NewBox(tl, width, height))
 
+	var multipleTL *geo.Point
+	if targetShape.Multiple {
+		multipleTL = tl.AddVector(multipleOffset)
+	}
+
 	switch targetShape.Type {
 	case d2target.ShapeClass:
 		drawClass(writer, targetShape)
@@ -457,13 +474,10 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 		drawTable(writer, targetShape)
 		return nil
 	case d2target.ShapeOval:
-		rx := width / 2
-		ry := height / 2
-		cx := tl.X + rx
-		cy := tl.Y + ry
-		fmt.Fprintf(writer, `<ellipse class="shape" cx="%f" cy="%f" rx="%f" ry="%f" style="%s" />`,
-			cx, cy, rx, ry, style,
-		)
+		if targetShape.Multiple {
+			fmt.Fprint(writer, renderOval(multipleTL, width, height, style))
+		}
+		fmt.Fprint(writer, renderOval(tl, width, height, style))
 
 	case d2target.ShapeImage:
 		fmt.Fprintf(writer, `<image class="shape" href="%s" x="%d" y="%d" width="%d" height="%d" style="%s" />`,
@@ -473,10 +487,20 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 	case d2target.ShapeCode:
 		// TODO should standardize "" to rectangle
 	case d2target.ShapeRectangle, "":
+		if targetShape.Multiple {
+			fmt.Fprintf(writer, `<rect class="shape" x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+				targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style)
+		}
 		fmt.Fprintf(writer, `<rect class="shape" x="%d" y="%d" width="%d" height="%d" style="%s" />`,
 			targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
 
 	default:
+		if targetShape.Multiple {
+			multiplePathData := shape.NewShape(shapeType, geo.NewBox(multipleTL, width, height)).GetSVGPathData()
+			for _, pathData := range multiplePathData {
+				fmt.Fprintf(writer, `<path class="shape" d="%s" style="%s" />`, pathData, style)
+			}
+		}
 		for _, pathData := range s.GetSVGPathData() {
 			fmt.Fprintf(writer, `<path class="shape" d="%s" style="%s" />`, pathData, style)
 		}
