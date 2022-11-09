@@ -23,12 +23,12 @@ Use - to have d2 read from stdin or write to stdout.
 Flags:
 %s
 
-You may persistently set the following as environment variables:
+You may persistently set the following as environment variables (flags take precedent):
 - $D2_WATCH
 - $D2_BUNDLE
+- $DEBUG
 - $D2_LAYOUT
 - $D2_THEME
-- $DEBUG
 
 Subcommands:
   %[1]s layout - Lists available layout engine options with short help
