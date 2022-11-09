@@ -242,11 +242,8 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (wid
 			w *= FontSize_pre_code_em
 			h *= FontSize_pre_code_em
 		}
-		// fmt.Printf("%d:'%s' width %v (%v) height %v fontStyle %s fontSize %v family %v\n", depth, n.Data, w, w+spaceWidths, h, font.Style, font.Size, font.Family)
-
 		return w + spaceWidths, h, 0, 0
 	case html.ElementNode:
-		// fmt.Printf("%d: %v node\n", depth, n.Data)
 		switch n.Data {
 		case "h1", "h2", "h3", "h4", "h5", "h6":
 			font = HeaderFonts[n.Data]
@@ -352,7 +349,6 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (wid
 		if height > 0 && height < MarkdownLineHeightPx {
 			height = MarkdownLineHeightPx
 		}
-		// fmt.Printf("%d:%s width %v height %v mt %v mb %v\n", depth, n.Data, width, height, marginTop, marginBottom)
 	}
 	return width, height, marginTop, marginBottom
 }
