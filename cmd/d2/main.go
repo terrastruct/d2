@@ -55,13 +55,13 @@ func parseFlagsToEnv(ctx context.Context, ms *xmain.State) error {
 
 	debugFlag := ms.FlagSet.BoolP(
 		"debug", "d",
-		ms.Env.Getenv("D2_DEBUG") == "1" || ms.Env.Getenv("D2_DEBUG") == "true",
+		ms.Env.Getenv("DEBUG") == "1" || ms.Env.Getenv("DEBUG") == "true",
 		"print debug logs.",
 	)
 	if *debugFlag {
-		ms.Env.Setenv("D2_DEBUG", "1")
+		ms.Env.Setenv("DEBUG", "1")
 	} else {
-		ms.Env.Setenv("D2_DEBUG", "0")
+		ms.Env.Setenv("DEBUG", "0")
 	}
 
 	layoutEnvVal := ms.Env.Getenv("D2_LAYOUT")

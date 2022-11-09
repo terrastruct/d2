@@ -26,9 +26,9 @@ Flags:
 You may persistently set the following as environment variables:
 - $D2_WATCH
 - $D2_BUNDLE
-- $D2_DEBUG
 - $D2_LAYOUT
 - $D2_THEME
+- $DEBUG
 
 Subcommands:
   %[1]s layout - Lists available layout engine options with short help
