@@ -51,6 +51,53 @@ hexagon -> cloud
 `,
 		},
 		{
+			name: "all_shapes_multiple",
+			script: `
+rectangle: {shape: "rectangle"}
+square: {shape: "square"}
+page: {shape: "page"}
+parallelogram: {shape: "parallelogram"}
+document: {shape: "document"}
+cylinder: {shape: "cylinder"}
+queue: {shape: "queue"}
+package: {shape: "package"}
+step: {shape: "step"}
+callout: {shape: "callout"}
+stored_data: {shape: "stored_data"}
+person: {shape: "person"}
+diamond: {shape: "diamond"}
+oval: {shape: "oval"}
+circle: {shape: "circle"}
+hexagon: {shape: "hexagon"}
+cloud: {shape: "cloud"}
+
+rectangle -> square -> page
+parallelogram -> document -> cylinder
+queue -> package -> step
+callout -> stored_data -> person
+diamond -> oval -> circle
+hexagon -> cloud
+
+rectangle.multiple: true
+square.multiple: true
+page.multiple: true
+parallelogram.multiple: true
+document.multiple: true
+cylinder.multiple: true
+queue.multiple: true
+package.multiple: true
+step.multiple: true
+callout.multiple: true
+stored_data.multiple: true
+person.multiple: true
+diamond.multiple: true
+oval.multiple: true
+circle.multiple: true
+hexagon.multiple: true
+cloud.multiple: true
+`,
+		},
+		{
 			name: "container_edges",
 			script: `a -> g.b -> d.h.c
 d -> g.e -> f -> g -> d.h
