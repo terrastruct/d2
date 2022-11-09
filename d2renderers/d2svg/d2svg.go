@@ -458,10 +458,10 @@ func defineShadowFilter(writer io.Writer) {
 	fmt.Fprint(writer, `<defs>
 	<filter id="shadow-filter" width="200%" height="200%" x="-50%" y="-50%">
 		<feGaussianBlur stdDeviation="1.7 " in="SourceGraphic"></feGaussianBlur>
-		<feFlood flood-color="#3d4574" flood-opacity="0.4" result="ShadowFeFloodOut" in="SourceGraphic"></feFlood>
-		<feComposite in="ShadowFeFloodOut" in2="SourceAlpha" operator="in" result="ShadowFeCompositeOut"></feComposite>
-		<feOffset dx="3" dy="5" result="ShadowFeOffsetOut" in="ShadowFeCompositeOut"></feOffset>
-		<feBlend in="SourceGraphic" in2="ShadowFeOffsetOut" mode="normal" result="ShadowFeBlendOut"></feBlend>
+		<feFlood flood-color="#3d4574" flood-opacity="0.4" result="ShadowFeFlood" in="SourceGraphic"></feFlood>
+		<feComposite in="ShadowFeFlood" in2="SourceAlpha" operator="in" result="ShadowFeComposite"></feComposite>
+		<feOffset dx="3" dy="5" result="ShadowFeOffset" in="ShadowFeComposite"></feOffset>
+		<feBlend in="SourceGraphic" in2="ShadowFeOffset" mode="normal" result="ShadowFeBlend"></feBlend>
 	</filter>
 </defs>`)
 }
