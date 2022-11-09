@@ -520,8 +520,16 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 				fmt.Fprintf(writer, `<path class="shape" d="%s" style="%s" %s/>`, pathData, style, shadowAttr)
 			}
 		}
-		for _, pathData := range s.GetSVGPathData() {
-			fmt.Fprintf(writer, `<path class="shape" d="%s" style="%s" %s/>`, pathData, style, shadowAttr)
+
+		paths := s.GetSVGPathData()
+		if len(paths) == 1 {
+			fmt.Fprintf(writer, `<path class="shape" d="%s" style="%s" %s/>`, paths[0], style, shadowAttr)
+		} else {
+			fmt.Fprintf(writer, `<g class="shape" style="%s" %s>`, style, shadowAttr)
+			for _, pathData := range paths {
+				fmt.Fprintf(writer, `<path class="shape" d="%s"/>`, pathData)
+			}
+			fmt.Fprintf(writer, `</g>`)
 		}
 	}
 
