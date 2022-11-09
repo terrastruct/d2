@@ -82,6 +82,7 @@ func parseFlagsToEnv(ctx context.Context, ms *xmain.State) error {
 		return xmain.UsageErrorf("-t[heme] could not be found. The available options are:\n%s\nYou provided: %d", d2themescatalog.CLIString(), *themeFlag)
 	}
 	ms.Env.Setenv("D2_THEME", fmt.Sprintf("%d", *themeFlag))
+	ms.Log.Debug.Printf("using theme %s (ID: %d)", match.Name, *themeFlag)
 
 	if !errors.Is(err, pflag.ErrHelp) && err != nil {
 		return xmain.UsageErrorf("failed to parse flags: %v", err)
