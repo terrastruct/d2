@@ -8,6 +8,18 @@
   font-family: "font-bold";
 }
 
+.md code,
+.md kbd,
+.md pre,
+.md samp {
+  font-family: "font-mono";
+  font-size: 1em;
+}
+
+.md {
+  tab-size: 4;
+}
+
 /* based on https://github.com/sindresorhus/github-markdown-css */
 @media (prefers-color-scheme: dark) {
   .md {
@@ -131,14 +143,6 @@
   background-color: var(--color-canvas-default);
 }
 
-.md code,
-.md kbd,
-.md pre,
-.md samp {
-  font-family: monospace, monospace;
-  font-size: 1em;
-}
-
 .md figure {
   margin: 1em 40px;
 }
@@ -254,9 +258,6 @@
 .md kbd {
   display: inline-block;
   padding: 3px 5px;
-  font: 11px ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono,
-    monospace;
-  line-height: 10px;
   color: var(--color-fg-default);
   vertical-align: middle;
   background-color: var(--color-canvas-subtle);
@@ -341,19 +342,9 @@
   margin-left: 0;
 }
 
-.md tt,
-.md code {
-  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono,
-    monospace;
-  font-size: 12px;
-}
-
 .md pre {
   margin-top: 0;
   margin-bottom: 0;
-  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono,
-    monospace;
-  font-size: 12px;
   word-wrap: normal;
 }
 

@@ -2,7 +2,7 @@
 <svg
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="2061" height="681" viewBox="-100 -100 2061 681"><style type="text/css">
+width="2057" height="676" viewBox="-100 -100 2057 676"><style type="text/css">
 <![CDATA[
 .shape {
 	shape-rendering: geometricPrecision;
@@ -20,6 +20,18 @@ width="2061" height="681" viewBox="-100 -100 2061 681"><style type="text/css">
 .md b,
 .md strong {
   font-family: "font-bold";
+}
+
+.md code,
+.md kbd,
+.md pre,
+.md samp {
+  font-family: "font-mono";
+  font-size: 1em;
+}
+
+.md {
+  tab-size: 4;
 }
 
 /* based on https://github.com/sindresorhus/github-markdown-css */
@@ -145,14 +157,6 @@ width="2061" height="681" viewBox="-100 -100 2061 681"><style type="text/css">
   background-color: var(--color-canvas-default);
 }
 
-.md code,
-.md kbd,
-.md pre,
-.md samp {
-  font-family: monospace, monospace;
-  font-size: 1em;
-}
-
 .md figure {
   margin: 1em 40px;
 }
@@ -268,9 +272,6 @@ width="2061" height="681" viewBox="-100 -100 2061 681"><style type="text/css">
 .md kbd {
   display: inline-block;
   padding: 3px 5px;
-  font: 11px ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono,
-    monospace;
-  line-height: 10px;
   color: var(--color-fg-default);
   vertical-align: middle;
   background-color: var(--color-canvas-subtle);
@@ -355,19 +356,9 @@ width="2061" height="681" viewBox="-100 -100 2061 681"><style type="text/css">
   margin-left: 0;
 }
 
-.md tt,
-.md code {
-  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono,
-    monospace;
-  font-size: 12px;
-}
-
 .md pre {
   margin-top: 0;
   margin-bottom: 0;
-  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono,
-    monospace;
-  font-size: 12px;
   word-wrap: normal;
 }
 
@@ -797,11 +788,11 @@ width="2061" height="681" viewBox="-100 -100 2061 681"><style type="text/css">
 .md .contains-task-list:dir(rtl) .task-list-item-checkbox {
   margin: 0 -1.6em 0.25em 0.2em;
 }
-</style><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="0.000000" y="226.000000" width="1861" height="29"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><p>A paragraph is simply one or more consecutive lines of text, separated
+</style><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="0.000000" y="226.000000" width="1857" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><p>A paragraph is simply one or more consecutive lines of text, separated
 by one or more blank lines. (A blank line is any line that looks like a
 blank line -- a line containing nothing but spaces or tabs is considered
 blank.) Normal paragraphs should not be indented with spaces or tabs.</p>
-</div></foreignObject></g><rect class="shape" x="874" y="0" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /><text class="text-bold" x="930.500000" y="66.000000" style="text-anchor:middle;font-size:16px;fill:black">a</text><rect class="shape" x="874" y="355" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /><text class="text-bold" x="930.500000" y="421.000000" style="text-anchor:middle;font-size:16px;fill:black">b</text><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="8.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 930.500000 127.000000 C 930.500000 166.000000 930.500000 186.000000 930.500000 223.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" /><path d="M 930.500000 256.000000 C 930.500000 295.000000 930.500000 315.000000 930.500000 352.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" /><style type="text/css"><![CDATA[
+</div></foreignObject></g><rect class="shape" x="872" y="0" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /><text class="text-bold" x="928.500000" y="66.000000" style="text-anchor:middle;font-size:16px;fill:black">a</text><rect class="shape" x="872" y="350" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /><text class="text-bold" x="928.500000" y="416.000000" style="text-anchor:middle;font-size:16px;fill:black">b</text><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="8.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 928.500000 127.000000 C 928.500000 166.000000 928.500000 186.000000 928.500000 223.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" /><path d="M 928.500000 251.000000 C 928.500000 290.000000 928.500000 310.000000 928.500000 347.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" /><style type="text/css"><![CDATA[
 .text {
 	font-family: "font-regular";
 }
