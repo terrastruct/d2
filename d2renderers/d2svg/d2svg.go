@@ -444,14 +444,26 @@ func drawConnection(writer io.Writer, connection d2target.Connection, markers ma
 	}
 }
 
-func renderOval(tl *geo.Point, width, height float64, style string) string {
+func renderOval(tl *geo.Point, width, height float64, style, shadowAttr string) string {
 	rx := width / 2
 	ry := height / 2
 	cx := tl.X + rx
 	cy := tl.Y + ry
-	return fmt.Sprintf(`<ellipse class="shape" cx="%f" cy="%f" rx="%f" ry="%f" style="%s" />`,
-		cx, cy, rx, ry, style,
+	return fmt.Sprintf(`<ellipse class="shape" cx="%f" cy="%f" rx="%f" ry="%f" style="%s" %s/>`,
+		cx, cy, rx, ry, style, shadowAttr,
 	)
+}
+
+func defineShadowFilter(writer io.Writer) {
+	fmt.Fprint(writer, `<defs>
+	<filter id="shadow-filter" width="200%" height="200%" x="-50%" y="-50%">
+		<feGaussianBlur stdDeviation="1.7 " in="SourceGraphic"></feGaussianBlur>
+		<feFlood flood-color="#3d4574" flood-opacity="0.4" result="ShadowFeFloodOut" in="SourceGraphic"></feFlood>
+		<feComposite in="ShadowFeFloodOut" in2="SourceAlpha" operator="in" result="ShadowFeCompositeOut"></feComposite>
+		<feOffset dx="3" dy="5" result="ShadowFeOffsetOut" in="ShadowFeCompositeOut"></feOffset>
+		<feBlend in="SourceGraphic" in2="ShadowFeOffsetOut" mode="normal" result="ShadowFeBlendOut"></feBlend>
+	</filter>
+</defs>`)
 }
 
 func drawShape(writer io.Writer, targetShape d2target.Shape) error {
@@ -468,6 +480,11 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 		multipleTL = tl.AddVector(multipleOffset)
 	}
 
+	var shadowAttr string
+	if targetShape.Shadow {
+		shadowAttr = `filter="url(#shadow-filter)" `
+	}
+
 	switch targetShape.Type {
 	case d2target.ShapeClass:
 		drawClass(writer, targetShape)
@@ -477,34 +494,34 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 		return nil
 	case d2target.ShapeOval:
 		if targetShape.Multiple {
-			fmt.Fprint(writer, renderOval(multipleTL, width, height, style))
+			fmt.Fprint(writer, renderOval(multipleTL, width, height, style, shadowAttr))
 		}
-		fmt.Fprint(writer, renderOval(tl, width, height, style))
+		fmt.Fprint(writer, renderOval(tl, width, height, style, shadowAttr))
 
 	case d2target.ShapeImage:
-		fmt.Fprintf(writer, `<image class="shape" href="%s" x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+		fmt.Fprintf(writer, `<image class="shape" href="%s" x="%d" y="%d" width="%d" height="%d" style="%s" %s/>`,
 			targetShape.Icon.String(),
-			targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
+			targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style, shadowAttr)
 	case d2target.ShapeText:
 	case d2target.ShapeCode:
 		// TODO should standardize "" to rectangle
 	case d2target.ShapeRectangle, "":
 		if targetShape.Multiple {
-			fmt.Fprintf(writer, `<rect class="shape" x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-				targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style)
+			fmt.Fprintf(writer, `<rect class="shape" x="%d" y="%d" width="%d" height="%d" style="%s" %s/>`,
+				targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style, shadowAttr)
 		}
-		fmt.Fprintf(writer, `<rect class="shape" x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-			targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
+		fmt.Fprintf(writer, `<rect class="shape" x="%d" y="%d" width="%d" height="%d" style="%s" %s/>`,
+			targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style, shadowAttr)
 
 	default:
 		if targetShape.Multiple {
 			multiplePathData := shape.NewShape(shapeType, geo.NewBox(multipleTL, width, height)).GetSVGPathData()
 			for _, pathData := range multiplePathData {
-				fmt.Fprintf(writer, `<path class="shape" d="%s" style="%s" />`, pathData, style)
+				fmt.Fprintf(writer, `<path class="shape" d="%s" style="%s" %s/>`, pathData, style, shadowAttr)
 			}
 		}
 		for _, pathData := range s.GetSVGPathData() {
-			fmt.Fprintf(writer, `<path class="shape" d="%s" style="%s" />`, pathData, style)
+			fmt.Fprintf(writer, `<path class="shape" d="%s" style="%s" %s/>`, pathData, style, shadowAttr)
 		}
 	}
 
@@ -794,6 +811,14 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 	}
 	if hasMarkdown {
 		fmt.Fprintf(buf, `<style type="text/css">%s</style>`, mdCSS)
+	}
+
+	// only define shadow filter if a shape uses it
+	for _, s := range diagram.Shapes {
+		if s.Shadow {
+			defineShadowFilter(buf)
+			break
+		}
 	}
 
 	// SVG has no notion of z-index. The z-index is effectively the order it's drawn.
