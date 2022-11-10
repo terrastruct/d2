@@ -145,6 +145,18 @@ cloud.shadow: true
 `,
 		},
 		{
+			name: "square_3d",
+			script: `
+rectangle: {shape: "rectangle"}
+square: {shape: "square"}
+
+rectangle -> square
+
+rectangle.3d: true
+square.3d: true
+`,
+		},
+		{
 			name: "container_edges",
 			script: `a -> g.b -> d.h.c
 d -> g.e -> f -> g -> d.h
