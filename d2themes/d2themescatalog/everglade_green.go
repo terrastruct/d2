@@ -2,9 +2,9 @@ package d2themescatalog
 
 import "oss.terrastruct.com/d2/d2themes"
 
-var GrannySmithApple = d2themes.Theme{
+var EvergladeGreen = d2themes.Theme{
 	ID:   104,
-	Name: "Granny smith apple",
+	Name: "Everyglade green",
 	Colors: d2themes.ColorPalette{
 		Neutrals: d2themes.CoolNeutral,
 
