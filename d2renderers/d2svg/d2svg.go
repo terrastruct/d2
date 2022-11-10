@@ -506,17 +506,17 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 		fmt.Fprint(writer, renderOval(tl, width, height))
 
 	case d2target.ShapeImage:
-		fmt.Fprintf(writer, `<image class="shape" href="%s" x="%d" y="%d" width="%d" height="%d"/>`,
+		fmt.Fprintf(writer, `<image href="%s" x="%d" y="%d" width="%d" height="%d"/>`,
 			targetShape.Icon.String(),
 			targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height)
 
 	// TODO should standardize "" to rectangle
 	case d2target.ShapeRectangle, "":
 		if targetShape.Multiple {
-			fmt.Fprintf(writer, `<rect class="shape" x="%d" y="%d" width="%d" height="%d"/>`,
+			fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d"/>`,
 				targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height)
 		}
-		fmt.Fprintf(writer, `<rect class="shape" x="%d" y="%d" width="%d" height="%d"/>`,
+		fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d"/>`,
 			targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height)
 
 	case d2target.ShapeText, d2target.ShapeCode:
@@ -524,12 +524,12 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 		if targetShape.Multiple {
 			multiplePathData := shape.NewShape(shapeType, geo.NewBox(multipleTL, width, height)).GetSVGPathData()
 			for _, pathData := range multiplePathData {
-				fmt.Fprintf(writer, `<path class="shape" d="%s"/>`, pathData)
+				fmt.Fprintf(writer, `<path d="%s"/>`, pathData)
 			}
 		}
 
 		for _, pathData := range s.GetSVGPathData() {
-			fmt.Fprintf(writer, `<path class="shape" d="%s"/>`, pathData)
+			fmt.Fprintf(writer, `<path d="%s"/>`, pathData)
 		}
 	}
 
