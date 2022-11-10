@@ -6,7 +6,7 @@ var EvergladeGreen = d2themes.Theme{
 	ID:   104,
 	Name: "Everyglade green",
 	Colors: d2themes.ColorPalette{
-		Neutrals: d2themes.CoolNeutral,
+		Neutrals: d2themes.WarmNeutral,
 
 		B1: "#023324",
 		B2: "#048E63",
