@@ -6,6 +6,7 @@ width="494" height="1178" viewBox="-100 -100 494 1178"><style type="text/css">
 <![CDATA[
 .shape {
 	shape-rendering: geometricPrecision;
+	stroke-linejoin: round;
 }
 .connection {
 	stroke-linecap: round;
