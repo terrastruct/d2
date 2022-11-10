@@ -6,7 +6,7 @@ var ButteredToast = d2themes.Theme{
 	ID:   105,
 	Name: "Buttered toast",
 	Colors: d2themes.ColorPalette{
-		Neutrals: d2themes.CoolNeutral,
+		Neutrals: d2themes.WarmNeutral,
 
 		B1: "#312102",
 		B2: "#DF9C18",
