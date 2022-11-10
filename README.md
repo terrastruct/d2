@@ -169,23 +169,6 @@ Contributions are welcome! See [./docs/CONTRIBUTING.md](./docs/CONTRIBUTING.md).
 Copyright © 2022 Terrastruct, Inc. Open-source licensed under the Mozilla Public License
 2.0.
 
-## Dependencies
-
-D2 is light on third-party dependencies in the source code. Note that these are bundled
-with D2, you do not have to separately install anything.
-
-| Dependency                                                                                                                          | What it does                              |
-| -----------                                                                                                                         | -----------                               |
-| [slog](https://cdr.dev/slog)                                                                                                        | logging (deprecating it is a TODO)        |
-| [goldmark](https://github.com/yuin/goldmark), [goquery](https://github.com/PuerkitoBio/goquery)                                     | Markdown rendering                        |
-| [chroma](https://github.com/alecthomas/chroma)                                                                                      | syntax highlighting code snippets         |
-| [pflag](https://github.com/spf13/pflag), [fsnotify](https://github.com/fsnotify/fsnotify), [websocket](https://nhooyr.io/websocket) | CLI functions                             |
-| [v8go](https://rogchap.com/v8go)                                                                                                    | Run Javascript (e.g. Dagre layout engine) |
-| [gonum](https://gonum.org/v1/plot)                                                                                                  | Bezier curve stuff (rendering)            |
-
-The rest are helpers we've open-sourced. E.g. [diff](https://oss.terrastruct.com/diff) for
-our testing framework.
-
 ## Related
 
 ### VSCode extension
