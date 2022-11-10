@@ -22,6 +22,7 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/textmeasure"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/go2"
 	"oss.terrastruct.com/d2/lib/label"
@@ -31,6 +32,7 @@ import (
 const (
 	padding                    = 100
 	MIN_ARROWHEAD_STROKE_WIDTH = 2
+	threeDeeOffset             = 15
 )
 
 var multipleOffset = geo.NewVector(10, -10)
@@ -474,7 +476,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 	s := shape.NewShape(shapeType, geo.NewBox(tl, width, height))
 
 	var shadowAttr string
-	if targetShape.Shadow && d2target.IsShape(targetShape.Type) {
+	if targetShape.Shadow {
 		switch targetShape.Type {
 		case d2target.ShapeText,
 			d2target.ShapeCode,
@@ -512,6 +514,41 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 
 	// TODO should standardize "" to rectangle
 	case d2target.ShapeRectangle, "":
+		if targetShape.ThreeDee {
+			darkerColor, err := color.Darken(targetShape.Fill)
+			if err != nil {
+				darkerColor = targetShape.Fill
+			}
+
+			var topPolygonPoints []string
+			for _, v := range []d2target.Point{
+				{X: 0, Y: 0},
+				{X: threeDeeOffset, Y: -1 * threeDeeOffset},
+				{X: targetShape.Width + threeDeeOffset, Y: -1 * threeDeeOffset},
+				{X: targetShape.Width, Y: 0},
+				{X: 0, Y: 0},
+			} {
+				topPolygonPoints = append(topPolygonPoints,
+					fmt.Sprintf("%d,%d ", v.X+targetShape.Pos.X, v.Y+targetShape.Pos.Y),
+				)
+			}
+			fmt.Fprintf(writer, `<polygon points="%s" style="fill:%s;"/>`,
+				strings.Join(topPolygonPoints, ""), darkerColor)
+
+			var rightPolygonPoints []string
+			for _, v := range []d2target.Point{
+				{X: targetShape.Width, Y: 0},
+				{X: targetShape.Width + threeDeeOffset, Y: -1 * threeDeeOffset},
+				{X: targetShape.Width + threeDeeOffset, Y: targetShape.Height - threeDeeOffset},
+				{X: targetShape.Width, Y: targetShape.Height},
+			} {
+				rightPolygonPoints = append(rightPolygonPoints,
+					fmt.Sprintf("%d,%d ", v.X+targetShape.Pos.X, v.Y+targetShape.Pos.Y),
+				)
+			}
+			fmt.Fprintf(writer, `<polygon points="%s" style="fill:%s;"/>`,
+				strings.Join(rightPolygonPoints, ""), darkerColor)
+		}
 		if targetShape.Multiple {
 			fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d"/>`,
 				targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height)
@@ -804,6 +841,7 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 <![CDATA[
 .shape {
 	shape-rendering: geometricPrecision;
+	stroke-linejoin: round;
 }
 .connection {
 	stroke-linecap: round;
