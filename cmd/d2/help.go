@@ -23,25 +23,18 @@ Use - to have d2 read from stdin or write to stdout.
 Flags:
 %s
 
-You may persistently set the following as environment variables (flags take precedent):
-- $D2_WATCH
-- $D2_BUNDLE
-- $DEBUG
-- $D2_LAYOUT
-- $D2_THEME
-
 Subcommands:
   %[1]s layout - Lists available layout engine options with short help
   %[1]s layout [layout name] - Display long help for a particular layout engine
 
 See more docs at https://oss.terrastruct.com/d2
-`, ms.Name, ms.FlagHelp())
+`, ms.Name, ms.Opts.Help())
 }
 
 func layoutHelp(ctx context.Context, ms *xmain.State) error {
-	if len(ms.FlagSet.Args()) == 1 {
+	if len(ms.Opts.Args()) == 1 {
 		return shortLayoutHelp(ctx, ms)
-	} else if len(ms.FlagSet.Args()) == 2 {
+	} else if len(ms.Opts.Args()) == 2 {
 		return longLayoutHelp(ctx, ms)
 	} else {
 		return pluginSubcommand(ctx, ms)
@@ -82,7 +75,7 @@ See more docs at https://oss.terrastruct.com/d2
 }
 
 func longLayoutHelp(ctx context.Context, ms *xmain.State) error {
-	layout := ms.FlagSet.Arg(1)
+	layout := ms.Opts.Arg(1)
 	plugin, path, err := d2plugin.FindPlugin(ctx, layout)
 	if errors.Is(err, exec.ErrNotFound) {
 		return layoutNotFound(ctx, layout)
@@ -126,13 +119,13 @@ For more information on setup, please visit https://github.com/terrastruct/d2.`,
 }
 
 func pluginSubcommand(ctx context.Context, ms *xmain.State) error {
-	layout := ms.FlagSet.Arg(1)
+	layout := ms.Opts.Arg(1)
 	plugin, _, err := d2plugin.FindPlugin(ctx, layout)
 	if errors.Is(err, exec.ErrNotFound) {
 		return layoutNotFound(ctx, layout)
 	}
 
-	ms.Args = ms.FlagSet.Args()[2:]
+	ms.Opts.SetArgs(ms.Opts.Args()[2:])
 	return d2plugin.Serve(plugin)(ctx, ms)
 }
 

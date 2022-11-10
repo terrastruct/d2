@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"os/exec"
 	"path/filepath"
-	"strconv"
 	"strings"
 	"time"
 
@@ -28,81 +27,24 @@ func main() {
 	xmain.Main(run)
 }
 
-func parseFlagsToEnv(ctx context.Context, ms *xmain.State) error {
-	err := ms.FlagSet.Parse(ms.Args)
-
-	watchFlag := ms.FlagSet.BoolP(
-		"watch", "w",
-		ms.Env.Getenv("D2_WATCH") == "1" || ms.Env.Getenv("D2_WATCH") == "true",
-		"watch for changes to input and live reload. Use $HOST and $PORT to specify the listening address.\n$D2_HOST and $D2_PORT are also accepted and take priority (default localhost:0, which is will open on a randomly available local port).",
-	)
-	if *watchFlag {
-		ms.Env.Setenv("D2_WATCH", "1")
-	} else {
-		ms.Env.Setenv("D2_WATCH", "0")
-	}
-
-	bundleFlag := ms.FlagSet.BoolP(
-		"bundle", "b",
-		!(ms.Env.Getenv("D2_BUNDLE") == "0" || ms.Env.Getenv("D2_BUNDLE") == "false"),
-		"bundle all assets and layers into the output svg.",
-	)
-	if *bundleFlag {
-		ms.Env.Setenv("D2_BUNDLE", "1")
-	} else {
-		ms.Env.Setenv("D2_BUNDLE", "0")
-	}
-
-	debugFlag := ms.FlagSet.BoolP(
-		"debug", "d",
-		ms.Env.Getenv("DEBUG") == "1" || ms.Env.Getenv("DEBUG") == "true",
-		"print debug logs.",
-	)
-	if *debugFlag {
-		ms.Env.Setenv("DEBUG", "1")
-	} else {
-		ms.Env.Setenv("DEBUG", "0")
-	}
-
-	layoutEnvVal := ms.Env.Getenv("D2_LAYOUT")
-	if layoutEnvVal == "" {
-		layoutEnvVal = "dagre"
-	}
-	layoutFlag := ms.FlagSet.StringP("layout", "l", layoutEnvVal, `the layout engine used.`)
-	ms.Env.Setenv("D2_LAYOUT", *layoutFlag)
-
-	ev := ms.Env.Getenv("D2_THEME")
-	var themeEnvVal int64
-	if ev != "" {
-		themeEnvVal, err = strconv.ParseInt(ev, 10, 64)
-	}
-	themeFlag := ms.FlagSet.Int64P("theme", "t", themeEnvVal, "the diagram theme ID. For a list of available options, see https://oss.terrastruct.com/d2")
-	match := d2themescatalog.Find(*themeFlag)
-	if match == (d2themes.Theme{}) {
-		return xmain.UsageErrorf("-t[heme] could not be found. The available options are:\n%s\nYou provided: %d", d2themescatalog.CLIString(), *themeFlag)
-	}
-	ms.Env.Setenv("D2_THEME", fmt.Sprintf("%d", *themeFlag))
-	ms.Log.Debug.Printf("using theme %s (ID: %d)", match.Name, *themeFlag)
-
-	if !errors.Is(err, pflag.ErrHelp) && err != nil {
-		return xmain.UsageErrorf("failed to parse flags: %v", err)
-	}
-
-	return nil
-}
-
 func run(ctx context.Context, ms *xmain.State) (err error) {
 	// :(
 	ctx = xmain.DiscardSlog(ctx)
 
-	if err := parseFlagsToEnv(ctx, ms); err != nil {
-		return err
-	}
-	// Flags that don't make sense to set in env
-	versionFlag := ms.FlagSet.BoolP("version", "v", false, "get the version and check for updates")
+	watchFlag := ms.Opts.Bool("D2_WATCH", "watch", "w", false, "watch for changes to input and live reload. Use $HOST and $PORT to specify the listening address.\n$D2_HOST and $D2_PORT are also accepted and take priority (default localhost:0, which is will open on a randomly available local port).")
+	bundleFlag := ms.Opts.Bool("D2_BUNDLE", "bundle", "b", true, "bundle all assets and layers into the output svg.")
+	debugFlag := ms.Opts.Bool("DEBUG", "debug", "d", false, "print debug logs.")
+	layoutFlag := ms.Opts.String("D2_LAYOUT", "layout", "l", "dagre", `the layout engine used.`)
+	themeFlag := ms.Opts.Int64("D2_THEME", "theme", "t", 0, "the diagram theme ID. For a list of available options, see https://oss.terrastruct.com/d2")
+	versionFlag := ms.Opts.Bool("", "version", "v", false, "get the version and check for updates")
 
-	if len(ms.FlagSet.Args()) > 0 {
-		switch ms.FlagSet.Arg(0) {
+	err = ms.Opts.Parse()
+	if !errors.Is(err, pflag.ErrHelp) && err != nil {
+		return xmain.UsageErrorf("failed to parse flags: %v", err)
+	}
+
+	if len(ms.Opts.Args()) > 0 {
+		switch ms.Opts.Arg(0) {
 		case "layout":
 			return layoutHelp(ctx, ms)
 		}
@@ -113,28 +55,32 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		return nil
 	}
 
+	if *debugFlag {
+		ms.Env.Setenv("DEBUG", "1")
+	}
+
 	var inputPath string
 	var outputPath string
 
-	if len(ms.FlagSet.Args()) == 0 {
+	if len(ms.Opts.Args()) == 0 {
 		if versionFlag != nil && *versionFlag {
 			version.CheckVersion(ctx, ms.Log)
 			return nil
 		}
 		help(ms)
 		return nil
-	} else if len(ms.FlagSet.Args()) >= 3 {
+	} else if len(ms.Opts.Args()) >= 3 {
 		return xmain.UsageErrorf("too many arguments passed")
 	}
-	if len(ms.FlagSet.Args()) >= 1 {
-		if ms.FlagSet.Arg(0) == "version" {
+	if len(ms.Opts.Args()) >= 1 {
+		if ms.Opts.Arg(0) == "version" {
 			version.CheckVersion(ctx, ms.Log)
 			return nil
 		}
-		inputPath = ms.FlagSet.Arg(0)
+		inputPath = ms.Opts.Arg(0)
 	}
-	if len(ms.FlagSet.Args()) >= 2 {
-		outputPath = ms.FlagSet.Arg(1)
+	if len(ms.Opts.Args()) >= 2 {
+		outputPath = ms.Opts.Arg(1)
 	} else {
 		if inputPath == "-" {
 			outputPath = "-"
@@ -143,9 +89,15 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		}
 	}
 
-	plugin, path, err := d2plugin.FindPlugin(ctx, ms.Env.Getenv("D2_LAYOUT"))
+	match := d2themescatalog.Find(*themeFlag)
+	if match == (d2themes.Theme{}) {
+		return xmain.UsageErrorf("-t[heme] could not be found. The available options are:\n%s\nYou provided: %d", d2themescatalog.CLIString(), *themeFlag)
+	}
+	ms.Log.Debug.Printf("using theme %s (ID: %d)", match.Name, *themeFlag)
+
+	plugin, path, err := d2plugin.FindPlugin(ctx, *layoutFlag)
 	if errors.Is(err, exec.ErrNotFound) {
-		return layoutNotFound(ctx, ms.Env.Getenv("D2_LAYOUT"))
+		return layoutNotFound(ctx, *layoutFlag)
 	} else if err != nil {
 		return err
 	}
@@ -154,14 +106,14 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	if path != "" {
 		pluginLocation = fmt.Sprintf("executable plugin at %s", humanPath(path))
 	}
-	ms.Log.Debug.Printf("using layout plugin %s (%s)", ms.Env.Getenv("D2_LAYOUT"), pluginLocation)
+	ms.Log.Debug.Printf("using layout plugin %s (%s)", *layoutFlag, pluginLocation)
 
-	if ms.Env.Getenv("D2_WATCH") == "1" {
+	if *watchFlag {
 		if inputPath == "-" {
 			return xmain.UsageErrorf("-w[atch] cannot be combined with reading input from stdin")
 		}
 		ms.Env.Setenv("LOG_TIMESTAMPS", "1")
-		w, err := newWatcher(ctx, ms, plugin, inputPath, outputPath)
+		w, err := newWatcher(ctx, ms, plugin, *themeFlag, inputPath, outputPath)
 		if err != nil {
 			return err
 		}
@@ -171,11 +123,11 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	if ms.Env.Getenv("D2_BUNDLE") == "1" {
+	if *bundleFlag {
 		_ = 343
 	}
 
-	_, err = compile(ctx, ms, plugin, inputPath, outputPath)
+	_, err = compile(ctx, ms, plugin, *themeFlag, inputPath, outputPath)
 	if err != nil {
 		return err
 	}
@@ -183,7 +135,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, inputPath, outputPath string) ([]byte, error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, themeID int64, inputPath, outputPath string) ([]byte, error) {
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
 		return nil, err
@@ -194,7 +146,6 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, input
 		return nil, err
 	}
 
-	themeID, _ := strconv.ParseInt(ms.Env.Getenv("D2_THEME"), 10, 64)
 	d, err := d2.Compile(ctx, string(input), &d2.CompileOptions{
 		Layout:  plugin.Layout,
 		Ruler:   ruler,
