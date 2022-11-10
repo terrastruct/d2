@@ -20,7 +20,7 @@ var Catalog = []d2themes.Theme{
 	OrangeCreamsicle,
 	ShirleyTemple,
 	EarthTones,
-	GrannySmithApple,
+	EvergladeGreen,
 	ButteredToast,
 }
 
