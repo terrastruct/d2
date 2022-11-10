@@ -20,6 +20,8 @@ var Catalog = []d2themes.Theme{
 	OrangeCreamsicle,
 	ShirleyTemple,
 	EarthTones,
+	EvergladeGreen,
+	ButteredToast,
 }
 
 func Find(id int64) d2themes.Theme {
