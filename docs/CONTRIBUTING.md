@@ -97,5 +97,5 @@ language docs:
 ### Questions
 
 If you have any questions or would like to get more involved, feel free to open an issue
-to discuss publicly, or chat in [Discord](https://discord.gg/h9VFkAKTsT)! If you have a
-private question, feel free to email us at d2@terrastruct.com.
+to discuss publicly, or chat in [Discord](https://discord.gg/NF6X8K4eDq)! If you have a
+private inquiry, feel free to email us at hi@d2lang.com.
