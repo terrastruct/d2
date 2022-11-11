@@ -752,7 +752,7 @@ x -> hey -> y`,
 				  shape: arrow
 				}
 			  }
-			  
+
 			  c -> b: {
 				style.stroke-width: 7
 				style.stroke: "#20222a"
