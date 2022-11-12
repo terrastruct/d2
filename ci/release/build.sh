@@ -7,7 +7,10 @@ help() {
   cat <<EOF
 usage: $0 [--rebuild] [--local]
 
-$0 builds D2 release archives into ./ci/release/build/<ref>/d2-<ref>.tar.gz
+$0 builds D2 release archives into ./ci/release/build/<version>/d2-<version>.tar.gz
+
+The version is detected via git describe which will use the git tag for the current
+commit if available.
 
 Flags:
 
@@ -23,16 +26,22 @@ EOF
 }
 
 build() {
-  BUILD_DIR="$BUILD_DIR/$OS/$ARCH"
+  HW_BUILD_DIR="$BUILD_DIR/$OS/$ARCH/d2-$VERSION"
 
-  mkdir -p "$BUILD_DIR/bin"
-  sh_c cp LICENSE.txt "$BUILD_DIR"
-  sh_c "./ci/release/template/README.md.sh > $BUILD_DIR"
+  sh_c mkdir -p "$HW_BUILD_DIR"
+  sh_c rsync --recursive --perms --delete \
+    --human-readable --copy-links ./ci/release/template/ "$HW_BUILD_DIR/"
+  VERSION=$VERSION sh_c eval "'$HW_BUILD_DIR/README.md.sh'" \> "'$HW_BUILD_DIR/README.md'"
+  sh_c rm -f "$HW_BUILD_DIR/README.md.sh"
+  sh_c find "$HW_BUILD_DIR" -exec touch {} \;
 
   export GOOS=$(goos "$OS")
   export GOARCH="$ARCH"
-  sh_c go build -ldflags "-X lib/version.Version=$VERSION" \
-    -o "$BUILD_DIR/bin/d2" ./cmd/d2
+  sh_c mkdir -p "$HW_BUILD_DIR/bin"
+  sh_c go build -ldflags "-X oss.terrastruct.com/d2/lib/version.Version=$VERSION" \
+    -o "$HW_BUILD_DIR/bin/d2" ./cmd/d2
+
+  sh_c tar czf "$BUILD_DIR/d2-$OS-$ARCH-$VERSION.tar.gz" "$HW_BUILD_DIR"
 }
 
 main() {
@@ -41,11 +50,44 @@ main() {
     FLAGARG \
     FLAGSHIFT \
     VERSION \
+    BUILD_DIR \
+    HW_BUILD_DIR \
     REBUILD \
-    DEST  \
     LOCAL \
+    DRYRUN
   VERSION="$(git_describe_ref)"
   BUILD_DIR="ci/release/build/$VERSION"
+  while :; do
+    flag_parse "$@"
+    case "$FLAG" in
+      h|help)
+        help
+        return 0
+        ;;
+      rebuild)
+        flag_noarg
+        REBUILD=1
+        shift "$FLAGSHIFT"
+        ;;
+      local)
+        flag_noarg
+        LOCAL=1
+        shift "$FLAGSHIFT"
+        ;;
+      dryrun)
+        flag_noarg
+        DRYRUN=1
+        shift "$FLAGSHIFT"
+        ;;
+      '')
+        shift "$FLAGSHIFT"
+        break
+        ;;
+      *)
+        flag_errusage "unrecognized flag $FLAGRAW"
+        ;;
+    esac
+  done
 
   if [ $# -gt 0 ]; then
     flag_errusage "no arguments are accepted"
@@ -55,7 +97,7 @@ main() {
   runjob linux-arm64 'OS=linux ARCH=arm64 build' &
   runjob macos-amd64 'OS=macos ARCH=amd64 build' &
   runjob macos-arm64 'OS=macos ARCH=arm64 build' &
-  wait_jobs
+  waitjobs
 }
 
 main "$@"
