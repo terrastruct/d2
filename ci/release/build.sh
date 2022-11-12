@@ -3,9 +3,26 @@ set -eu
 cd -- "$(dirname "$0")/../.."
 . ./ci/sub/lib.sh
 
+help() {
+  cat <<EOF
+usage: $0 [--rebuild] [--local]
+
+$0 builds D2 release archives into ./ci/release/build/<ref>/d2-<ref>.tar.gz
+
+Flags:
+
+--rebuild: By default build.sh will avoid rebuilding finished assets if they
+           already exist but if you changed something and need to force rebuild, use
+           this flag.
+--local:   By default build.sh uses \$TSTRUCT_MACOS_BUILDER and \$TSTRUCT_LINUX_BUILDER
+           to build the release archives. It's required for now due to the following
+           issue: https://github.com/terrastruct/d2/issues/31
+           With --local, build.sh will cross compile locally.
+           warning: This is only for testing purposes, do not use in production!
+EOF
+}
+
 build() {
-  OS="$1"
-  ARCH="$2"
   BUILD_DIR="$BUILD_DIR/$OS/$ARCH"
 
   mkdir -p "$BUILD_DIR/bin"
@@ -19,14 +36,25 @@ build() {
 }
 
 main() {
+  unset FLAG \
+    FLAGRAW \
+    FLAGARG \
+    FLAGSHIFT \
+    VERSION \
+    REBUILD \
+    DEST  \
+    LOCAL \
   VERSION="$(git_describe_ref)"
   BUILD_DIR="ci/release/build/$VERSION"
-  
 
-  runjob linux-amd64 'OS=linux ARCH=amd64 build linux amd64' &
-  runjob linux-arm64 'OS=linux ARCH=arm64 build linux arm64' &
-  runjob macos-amd64 'OS=macos ARCH=amd64 build macos amd64' &
-  runjob macos-arm64 'OS=macos ARCH=arm64 build macos arm64' &
+  if [ $# -gt 0 ]; then
+    flag_errusage "no arguments are accepted"
+  fi
+
+  runjob linux-amd64 'OS=linux ARCH=amd64 build' &
+  runjob linux-arm64 'OS=linux ARCH=arm64 build' &
+  runjob macos-amd64 'OS=macos ARCH=amd64 build' &
+  runjob macos-arm64 'OS=macos ARCH=arm64 build' &
   wait_jobs
 }
 
