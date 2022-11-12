@@ -818,6 +818,20 @@ a line of text and an
 a -> md -> b
 `,
 		},
+		{
+			name: "class",
+			script: `manager: BatchManager {
+  shape: class
+  -num: int
+  -timeout: int
+  -pid
+
+  +getStatus(): Enum
+  +getJobs(): "Job[]"
+  +setTimeout(seconds int)
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
