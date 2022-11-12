@@ -2,6 +2,7 @@ package e2etests
 
 import (
 	"context"
+	"encoding/xml"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -125,6 +126,11 @@ func run(t *testing.T, tc testCase) {
 		svgBytes, err := d2svg.Render(diagram)
 		if err != nil {
 			t.Fatal(err)
+		}
+
+		var xmlParsed interface{}
+		if err := xml.Unmarshal(svgBytes, &xmlParsed); err != nil {
+			t.Fatalf("invalid SVG: %v", err)
 		}
 
 		err = diff.Testdata(filepath.Join(dataPath, "board"), diagram)
