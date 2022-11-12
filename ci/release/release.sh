@@ -99,26 +99,58 @@ main() {
   VERSION="$1"
   shift
 
-  1_branch
-  2_changelog
-  3_commit
-  4_tag
-  5_draft_release
-  6_draft_pr
-  7_build_assets
-  9_upload_assets
+  runjob ensure_branch
+  runjob ensure_changelog
+  runjob ensure_commit
+  # runjob push_branch
+  # 3_commit
+  # 4_tag
+  # 5_draft_release
+  # 6_draft_pr
+  # 7_build_assets
+  # 9_upload_assets
 
-  if [ "$(git_describe_ref)" != "$TAG" ]; then
-    git tag -am "$TAG" "$TAG"
+  # if [ "$(git_describe_ref)" != "$TAG" ]; then
+  #   git tag -am "$TAG" "$TAG"
+  # fi
+  # hide git push origin "$TAG"
+}
+
+ensure_branch() {
+  if [ -z "$(git branch --list "$VERSION")" ]; then
+    sh_c git branch "$VERSION" master
   fi
-  hide git push origin "$TAG"
+  sh_c git checkout -q "$VERSION"
 }
 
-1_branch() {
+ensure_changelog() {
+  if [ -f "./ci/release/changelogs/$VERSION.md" ]; then
+    return 0
+  fi
 
+  sh_c cp "./ci/release/changelogs/next.md" "./ci/release/changelogs/$VERSION.md"
+  if [ -z "${PRERELEASE-}" ]; then
+    sh_c cp "./ci/release/changelogs/template.md" "./ci/release/changelogs/next.md"
+  fi
 }
 
-7_build_assets() {
+ensure_commit() {
+  sh_c git add --all
+  if ! git commit --dry-run >/dev/null; then
+    return 0
+  fi
+  if [ "$(git show --no-patch --format=%s)" = "$VERSION" ]; then
+    sh_c git commit --amend --no-edit
+  else
+    sh_c git commit -m "$VERSION"
+  fi
+}
+
+push_branch() {
+  sh_c git push -fu origin "$VERSION"
+}
+
+ensure_built_assets() {
   ./ci/release/build.sh ${REBUILD:+--rebuild} $VERSION
 }
 
