@@ -102,15 +102,22 @@ main() {
   VERSION="$1"
   shift
 
-  runjob 1_ensure_branch _1_ensure_branch
-  runjob 2_ensure_changelog _2_ensure_changelog
-  runjob 3_ensure_commit _3_ensure_commit
-  runjob 4_push_branch _4_push_branch
-  runjob 5_ensure_tag _5_ensure_tag
-  runjob 6_ensure_release _6_ensure_release
-  runjob 7_ensure_pr _7_ensure_pr
-  runjob 8_ensure_assets _8_ensure_assets
-  runjob 9_upload_assets _9_upload_assets
+  header '1_ensure_branch' && _1_ensure_branch
+  header '2_ensure_changelog' && _2_ensure_changelog
+  header '3_ensure_commit' && _3_ensure_commit
+  header '4_push_branch' && _4_push_branch
+  header '5_ensure_tag' && _5_ensure_tag
+  header '6_ensure_release' && _6_ensure_release
+  header '7_ensure_pr' && _7_ensure_pr
+  header '8_ensure_assets' && _8_ensure_assets
+  header '9_upload_assets' && _9_upload_assets
+
+  COLOR=2 header 'final steps'
+  cat <<EOF
+1. Review and test the release: $release_url
+2. Merge the PR: $pr_url
+3. Publish the release!
+EOF
 }
 
 _1_ensure_branch() {
@@ -122,6 +129,7 @@ _1_ensure_branch() {
 
 _2_ensure_changelog() {
   if [ -f "./ci/release/changelogs/$VERSION.md" ]; then
+    log "./ci/release/changelogs/$VERSION.md"
     return 0
   fi
 
@@ -134,7 +142,7 @@ _2_ensure_changelog() {
 _3_ensure_commit() {
   sh_c git add --all
   if [ "$(git show --no-patch --format=%s)" = "$VERSION" ]; then
-    sh_c git commit --amend --no-edit
+    sh_c git commit --allow-empty --amend --no-edit
   else
     sh_c git commit --allow-empty -m "$VERSION"
   fi
@@ -155,34 +163,37 @@ _5_ensure_tag() {
 
 _6_ensure_release() {
   if gh release view "$VERSION" >/dev/null 2>&1; then
-    sh_c gh release edit \
+    release_url="$(sh_c gh release edit \
       --draft \
       --notes-file "./ci/release/changelogs/$VERSION.md" \
       ${PRERELEASE:+--prerelease} \
       "--title=$VERSION" \
-      "$VERSION"
+      "$VERSION" | tee /dev/stderr)"
     return 0
   fi
-  sh_c gh release create \
+  release_url="$(sh_c gh release create \
     --draft \
     --notes-file "./ci/release/changelogs/$VERSION.md" \
     ${PRERELEASE:+--prerelease} \
     "--title=$VERSION" \
-    "$VERSION"
+    "$VERSION" | tee /dev/stderr)"
 }
 
 _7_ensure_pr() {
-  pr_url=$(gh pr view "$VERSION" --json=url '--template={{ .url }}' 2>/dev/null || true)
+  # We do not use gh pr view as that includes closed PRs.
+  pr_url="$(gh pr list --head "$VERSION" --json=url '--template={{ range . }}{{ .url }}{{end}}')"
+  body="Will be available at $(gh repo view --json=url '--template={{ .url }}')/releases/tag/$VERSION"
   if [ -n "$pr_url" ]; then
-    _echo "PR already exists: $pr_url"
+    sh_c gh pr edit --body "$body" "$VERSION"
     return 0
   fi
-  sh_c gh pr create --draft --fill
+
+  pr_url="$(sh_c gh pr create --fill --body "$body" | tee /dev/stderr)"
 }
 
 _8_ensure_assets() {
   # ./ci/release/build.sh ${REBUILD:+--rebuild} $VERSION
-  _echo TODO
+  log TODO
 }
 
 _9_upload_assets() {
