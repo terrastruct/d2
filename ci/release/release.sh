@@ -14,12 +14,13 @@ Flags:
 --rebuild: Normally the release script will avoid rebuilding release assets if they
            already exist but if you changed something and need to force rebuild, use
            this flag.
---pre-release: Pass to mark the release on GitHub as a pre-release. For pre-releases the
+--prerelease: Pass to mark the release on GitHub as a pre-release. For pre-releases the
                version format should include a suffix like v0.0.99-alpha.1
                As well, for pre-releases the script will not overwrite changelogs/next.md
                with changelogs/template.md and instead keep it the same as
                changelogs/v0.0.99-alpha.1.md. This is because you want to maintain the
                changelog entries for the eventual final release.
+--dryrun: Print the commands that would be ran without executing them.
 
 Process:
 
@@ -68,7 +69,8 @@ main() {
     FLAGSHIFT \
     VERSION \
     REBUILD \
-    PRERELEASE
+    PRERELEASE \
+    DRYRUN
   while :; do
     flag_parse "$@"
     case "$FLAG" in
@@ -81,9 +83,14 @@ main() {
         REBUILD=1
         shift "$FLAGSHIFT"
         ;;
-      pre-release)
+      prerelease)
         flag_noarg
         PRERELEASE=1
+        shift "$FLAGSHIFT"
+        ;;
+      dryrun)
+        flag_noarg
+        DRYRUN=1
         shift "$FLAGSHIFT"
         ;;
       '')
@@ -113,7 +120,7 @@ main() {
   header '9_upload_assets' && _9_upload_assets
 
   COLOR=2 header 'final steps'
-  cat <<EOF
+  cat >&2 <<EOF
 1. Review and test the release: $release_url
 2. Merge the PR: $pr_url
 3. Publish the release!
@@ -162,13 +169,14 @@ _5_ensure_tag() {
 }
 
 _6_ensure_release() {
-  if gh release view "$VERSION" >/dev/null 2>&1; then
-    release_url="$(sh_c gh release edit \
+  release_url="$(gh release view "$VERSION" --json=url '--template={{ .url }}' 2>/dev/null || true)"
+  if [ -n "$release_url" ]; then
+    sh_c gh release edit \
       --draft \
       --notes-file "./ci/release/changelogs/$VERSION.md" \
       ${PRERELEASE:+--prerelease} \
       "--title=$VERSION" \
-      "$VERSION" | tee /dev/stderr)"
+      "$VERSION" | tee /dev/stderr
     return 0
   fi
   release_url="$(sh_c gh release create \
@@ -192,8 +200,7 @@ _7_ensure_pr() {
 }
 
 _8_ensure_assets() {
-  # ./ci/release/build.sh ${REBUILD:+--rebuild} $VERSION
-  log TODO
+  sh_c ./ci/release/build.sh ${REBUILD:+--rebuild}
 }
 
 _9_upload_assets() {
