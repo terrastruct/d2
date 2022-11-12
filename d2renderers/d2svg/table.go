@@ -98,8 +98,8 @@ func constraintAbbr(constraint string) string {
 }
 
 func drawTable(writer io.Writer, targetShape d2target.Shape) {
-	fmt.Fprintf(writer, `<rect class="shape" x="%d" y="%d" width="%d" height="%d" />`,
-		targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height)
+	fmt.Fprintf(writer, `<rect class="shape" x="%d" y="%d" width="%d" height="%d" style="%s"/>`,
+		targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, shapeStyle(targetShape))
 
 	box := geo.NewBox(
 		geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y)),
