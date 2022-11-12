@@ -564,7 +564,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 		if targetShape.Multiple {
 			multiplePathData := shape.NewShape(shapeType, geo.NewBox(multipleTL, width, height)).GetSVGPathData()
 			for _, pathData := range multiplePathData {
-				fmt.Fprintf(writer, `<path d="%s"/>`, pathData)
+				fmt.Fprintf(writer, `<path d="%s" style="%s"/>`, pathData, style)
 			}
 		}
 
