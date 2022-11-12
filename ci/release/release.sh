@@ -171,12 +171,12 @@ _5_ensure_tag() {
 _6_ensure_release() {
   release_url="$(gh release view "$VERSION" --json=url '--template={{ .url }}' 2>/dev/null || true)"
   if [ -n "$release_url" ]; then
-    sh_c gh release edit \
+    release_url="$(sh_c gh release edit \
       --draft \
       --notes-file "./ci/release/changelogs/$VERSION.md" \
       ${PRERELEASE:+--prerelease} \
       "--title=$VERSION" \
-      "$VERSION" | tee /dev/stderr
+      "$VERSION" | tee /dev/stderr)"
     return 0
   fi
   release_url="$(sh_c gh release create \
