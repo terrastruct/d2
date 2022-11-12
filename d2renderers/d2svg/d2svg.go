@@ -500,9 +500,11 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 	switch targetShape.Type {
 	case d2target.ShapeClass:
 		drawClass(writer, targetShape)
+		fmt.Fprintf(writer, `</g>`)
 		return nil
 	case d2target.ShapeSQLTable:
 		drawTable(writer, targetShape)
+		fmt.Fprintf(writer, `</g>`)
 		return nil
 	case d2target.ShapeOval:
 		if targetShape.Multiple {
