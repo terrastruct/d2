@@ -1,0 +1,75 @@
+{
+  "name": "",
+  "shapes": [
+    {
+      "id": "manager",
+      "type": "class",
+      "pos": {
+        "x": 12,
+        "y": 12
+      },
+      "width": 339,
+      "height": 368,
+      "level": 1,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#FFFFFF",
+      "stroke": "#0A0F25",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": [
+        {
+          "name": "num",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "timeout",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "pid",
+          "type": "",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getStatus()",
+          "return": "Enum",
+          "visibility": "public"
+        },
+        {
+          "name": "getJobs()",
+          "return": "Job[]",
+          "visibility": "public"
+        },
+        {
+          "name": "setTimeout(seconds int)",
+          "return": "void",
+          "visibility": "public"
+        }
+      ],
+      "columns": null,
+      "label": "BatchManager",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 150,
+      "labelHeight": 36
+    }
+  ],
+  "connections": []
+}
