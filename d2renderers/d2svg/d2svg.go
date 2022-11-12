@@ -37,6 +37,9 @@ const (
 
 var multipleOffset = geo.NewVector(10, -10)
 
+//go:embed style.css
+var styleCSS string
+
 //go:embed github-markdown.css
 var mdCSS string
 
@@ -446,12 +449,12 @@ func drawConnection(writer io.Writer, connection d2target.Connection, markers ma
 	}
 }
 
-func renderOval(tl *geo.Point, width, height float64) string {
+func renderOval(tl *geo.Point, width, height float64, style string) string {
 	rx := width / 2
 	ry := height / 2
 	cx := tl.X + rx
 	cy := tl.Y + ry
-	return fmt.Sprintf(`<ellipse class="shape" cx="%f" cy="%f" rx="%f" ry="%f" />`, cx, cy, rx, ry)
+	return fmt.Sprintf(`<ellipse class="shape" cx="%f" cy="%f" rx="%f" ry="%f" style="%s" />`, cx, cy, rx, ry, style)
 }
 
 func defineShadowFilter(writer io.Writer) {
@@ -487,7 +490,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 		}
 	}
 
-	fmt.Fprintf(writer, `<g class="shape" style="%s" %s>`, style, shadowAttr)
+	fmt.Fprintf(writer, `<g class="shape" %s>`, shadowAttr)
 
 	var multipleTL *geo.Point
 	if targetShape.Multiple {
@@ -503,14 +506,14 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 		return nil
 	case d2target.ShapeOval:
 		if targetShape.Multiple {
-			fmt.Fprint(writer, renderOval(multipleTL, width, height))
+			fmt.Fprint(writer, renderOval(multipleTL, width, height, style))
 		}
-		fmt.Fprint(writer, renderOval(tl, width, height))
+		fmt.Fprint(writer, renderOval(tl, width, height, style))
 
 	case d2target.ShapeImage:
-		fmt.Fprintf(writer, `<image href="%s" x="%d" y="%d" width="%d" height="%d"/>`,
+		fmt.Fprintf(writer, `<image href="%s" x="%d" y="%d" width="%d" height="%d" style="%s" />`,
 			targetShape.Icon.String(),
-			targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height)
+			targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
 
 	// TODO should standardize "" to rectangle
 	case d2target.ShapeRectangle, "":
@@ -550,23 +553,23 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 				strings.Join(rightPolygonPoints, ""), darkerColor)
 		}
 		if targetShape.Multiple {
-			fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d"/>`,
-				targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height)
+			fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+				targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style)
 		}
-		fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d"/>`,
-			targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height)
+		fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+			targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
 
 	case d2target.ShapeText, d2target.ShapeCode:
 	default:
 		if targetShape.Multiple {
 			multiplePathData := shape.NewShape(shapeType, geo.NewBox(multipleTL, width, height)).GetSVGPathData()
 			for _, pathData := range multiplePathData {
-				fmt.Fprintf(writer, `<path d="%s"/>`, pathData)
+				fmt.Fprintf(writer, `<path d="%s" style="%s"/>`, pathData, style)
 			}
 		}
 
 		for _, pathData := range s.GetSVGPathData() {
-			fmt.Fprintf(writer, `<path d="%s"/>`, pathData)
+			fmt.Fprintf(writer, `<path d="%s" style="%s"/>`, pathData, style)
 		}
 	}
 
@@ -837,18 +840,11 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 	buf := &bytes.Buffer{}
 	_, _ = setViewbox(buf, diagram)
 
-	buf.WriteString(`<style type="text/css">
+	buf.WriteString(fmt.Sprintf(`<style type="text/css">
 <![CDATA[
-.shape {
-	shape-rendering: geometricPrecision;
-	stroke-linejoin: round;
-}
-.connection {
-	stroke-linecap: round;
-	stroke-linejoin: round;
-}
+%s
 ]]>
-</style>`)
+</style>`, styleCSS))
 
 	hasMarkdown := false
 	for _, s := range diagram.Shapes {
