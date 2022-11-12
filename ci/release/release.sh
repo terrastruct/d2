@@ -29,14 +29,17 @@ Let's say you passed in v0.0.99 as the version:
    - It then checks it out.
 2. It moves changelogs/next.md to changelogs/v0.0.99.md if there isn't already a
    changelogs/v0.0.99.md.
-   - If the move occured, changelogs/next.md is replaced with changelogs/template.md. As
-     well, a git commit with title v0.0.99 will be created.
-3. It pushes branch v0.0.99 to origin.
-4. It creates a v0.0.99 git tag if one does not already exist.
+   - If the move occured, changelogs/next.md is replaced with changelogs/template.md.
+3. If the current commit does not have a title of v0.0.99 then a new commit with said
+   title will be created with all uncommitted changes.
+   - If the current commit does, then the uncommitted changes will be amended to the commit.
+4. It pushes branch v0.0.99 to origin.
+5. It creates a v0.0.99 git tag if one does not already exist.
    If one does, it ensures the v0.0.99 tag points to the current commit.
    Then it pushes the tag to origin.
-5. It creates a draft GitHub release for the tag if one does not already exist.
-6. It updates the GitHub release notes to match changelogs/v0.0.99.md.
+6. It creates a draft GitHub release for the tag if one does not already exist.
+   - It will also set the release notes to match changelogs/v0.0.99.md even
+     if the release already exists.
 7. It creates a draft PR for branch v0.0.99 into master if one does not already exist.
 8. It builds the release assets if they do not exist.
    Pass --rebuild to force rebuilding all release assets.
@@ -99,31 +102,25 @@ main() {
   VERSION="$1"
   shift
 
-  runjob ensure_branch
-  runjob ensure_changelog
-  runjob ensure_commit
-  # runjob push_branch
-  # 3_commit
-  # 4_tag
-  # 5_draft_release
-  # 6_draft_pr
-  # 7_build_assets
-  # 9_upload_assets
-
-  # if [ "$(git_describe_ref)" != "$TAG" ]; then
-  #   git tag -am "$TAG" "$TAG"
-  # fi
-  # hide git push origin "$TAG"
+  runjob 1_ensure_branch _1_ensure_branch
+  runjob 2_ensure_changelog _2_ensure_changelog
+  runjob 3_ensure_commit _3_ensure_commit
+  runjob 4_push_branch _4_push_branch
+  runjob 5_ensure_tag _5_ensure_tag
+  runjob 6_ensure_release _6_ensure_release
+  runjob 7_ensure_pr _7_ensure_pr
+  runjob 8_ensure_assets _8_ensure_assets
+  runjob 9_upload_assets _9_upload_assets
 }
 
-ensure_branch() {
+_1_ensure_branch() {
   if [ -z "$(git branch --list "$VERSION")" ]; then
     sh_c git branch "$VERSION" master
   fi
   sh_c git checkout -q "$VERSION"
 }
 
-ensure_changelog() {
+_2_ensure_changelog() {
   if [ -f "./ci/release/changelogs/$VERSION.md" ]; then
     return 0
   fi
@@ -134,24 +131,62 @@ ensure_changelog() {
   fi
 }
 
-ensure_commit() {
+_3_ensure_commit() {
   sh_c git add --all
-  if ! git commit --dry-run >/dev/null; then
-    return 0
-  fi
   if [ "$(git show --no-patch --format=%s)" = "$VERSION" ]; then
     sh_c git commit --amend --no-edit
   else
-    sh_c git commit -m "$VERSION"
+    sh_c git commit --allow-empty -m "$VERSION"
   fi
 }
 
-push_branch() {
-  sh_c git push -fu origin "$VERSION"
+_4_push_branch() {
+  if git rev-parse @{u} >/dev/null 2>&1; then
+    sh_c git push -f origin "refs/heads/$VERSION"
+  else
+    sh_c git push -fu origin "refs/heads/$VERSION"
+  fi
 }
 
-ensure_built_assets() {
-  ./ci/release/build.sh ${REBUILD:+--rebuild} $VERSION
+_5_ensure_tag() {
+  sh_c git tag --force -a "$VERSION" -m "$VERSION"
+  sh_c git push -f origin "refs/tags/$VERSION"
+}
+
+_6_ensure_release() {
+  if gh release view "$VERSION" >/dev/null 2>&1; then
+    sh_c gh release edit \
+      --draft \
+      --notes-file "./ci/release/changelogs/$VERSION.md" \
+      ${PRERELEASE:+--prerelease} \
+      "--title=$VERSION" \
+      "$VERSION"
+    return 0
+  fi
+  sh_c gh release create \
+    --draft \
+    --notes-file "./ci/release/changelogs/$VERSION.md" \
+    ${PRERELEASE:+--prerelease} \
+    "--title=$VERSION" \
+    "$VERSION"
+}
+
+_7_ensure_pr() {
+  pr_url=$(gh pr view "$VERSION" --json=url '--template={{ .url }}' 2>/dev/null || true)
+  if [ -n "$pr_url" ]; then
+    _echo "PR already exists: $pr_url"
+    return 0
+  fi
+  sh_c gh pr create --draft --fill
+}
+
+_8_ensure_assets() {
+  # ./ci/release/build.sh ${REBUILD:+--rebuild} $VERSION
+  _echo TODO
+}
+
+_9_upload_assets() {
+  sh_c gh release upload --clobber "$VERSION" "./ci/release/build/$VERSION"/*.tar.gz
 }
 
 main "$@"
