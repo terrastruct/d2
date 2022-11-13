@@ -19,7 +19,7 @@ type elkPlugin struct{}
 
 func (p elkPlugin) Info(context.Context) (*PluginInfo, error) {
 	return &PluginInfo{
-		Name:      "ELK",
+		Name:      "elk",
 		ShortHelp: "Eclipse Layout Kernel (ELK) with the Layered algorithm.",
 		LongHelp: `ELK is a layout engine offered by Eclipse.
 Originally written in Java, it has been ported to Javascript and cross-compiled into D2.
