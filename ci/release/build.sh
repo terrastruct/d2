@@ -26,31 +26,6 @@ Flags:
 EOF
 }
 
-build() {
-  HW_BUILD_DIR="$BUILD_DIR/$OS/$ARCH/d2-$VERSION"
-  ARCHIVE="$BUILD_DIR/d2-$OS-$ARCH-$VERSION.tar.gz"
-
-  if [ -e "$ARCHIVE" -a -z "${REBUILD-}" ]; then
-    log "skipping as already built at $ARCHIVE"
-    return 0
-  fi
-
-  sh_c mkdir -p "$HW_BUILD_DIR"
-  sh_c rsync --recursive --perms --delete \
-    --human-readable --copy-links ./ci/release/template/ "$HW_BUILD_DIR/"
-  VERSION=$VERSION sh_c eval "'$HW_BUILD_DIR/README.md.sh'" \> "'$HW_BUILD_DIR/README.md'"
-  sh_c rm -f "$HW_BUILD_DIR/README.md.sh"
-  sh_c find "$HW_BUILD_DIR" -exec touch {} \;
-
-  export GOOS=$(goos "$OS")
-  export GOARCH="$ARCH"
-  sh_c mkdir -p "$HW_BUILD_DIR/bin"
-  sh_c go build -ldflags "-X oss.terrastruct.com/d2/lib/version.Version=$VERSION" \
-    -o "$HW_BUILD_DIR/bin/d2" ./cmd/d2
-
-  sh_c tar czf "$ARCHIVE" "$HW_BUILD_DIR"
-}
-
 main() {
   unset FLAG \
     FLAGRAW \
@@ -106,6 +81,62 @@ main() {
   runjob macos-amd64 'OS=macos ARCH=amd64 build' &
   runjob macos-arm64 'OS=macos ARCH=arm64 build' &
   waitjobs
+}
+
+build() {
+  HW_BUILD_DIR="$BUILD_DIR/$OS/$ARCH/d2-$VERSION"
+  ARCHIVE="$BUILD_DIR/d2-$OS-$ARCH-$VERSION.tar.gz"
+
+  if [ -e "$ARCHIVE" -a -z "${REBUILD-}" ]; then
+    log "skipping as already built at $ARCHIVE"
+    return 0
+  fi
+
+  case $OS in
+    # macos)
+    #   ;;
+    linux)
+      case $ARCH in
+        amd64)
+          RHOST=$TSTRUCT_LINUX_AMD64_BUILDER build_rhost
+          ;;
+        arm64)
+          RHOST=$TSTRUCT_LINUX_ARM64_BUILDER build_rhost
+          ;;
+        *)
+          COLOR=3 logp warn "no builder for OS=$OS, building locally..."
+          build_local
+          ;;
+      esac
+      ;;
+    *)
+      COLOR=3 logp warn "no builder for OS=$OS, building locally..."
+      # build_local
+      ;;
+  esac
+}
+
+build_local() {
+  export DRYRUN \
+    HW_BUILD_DIR \
+    VERSION \
+    OS \
+    ARCH \
+    ARCHIVE
+  sh_c ./ci/release/_build.sh
+}
+
+build_rhost() {
+  sh_c ssh "$RHOST" mkdir -p src
+  sh_c rsync --archive --human-readable --delete ./ "$RHOST:src/d2/"
+  sh_c ssh -tttt "$RHOST" "DRYRUN=${DRYRUN-} \
+HW_BUILD_DIR=$HW_BUILD_DIR \
+VERSION=$VERSION \
+OS=$OS \
+ARCH=$ARCH \
+ARCHIVE=$ARCHIVE \
+./src/d2/ci/release/build_docker.sh"
+  sh_c rsync --archive --human-readable "$RHOST:src/d2/$ARCHIVE" "$ARCHIVE"
 }
 
 main "$@"
