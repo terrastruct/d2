@@ -79,6 +79,16 @@ create_aws() {
       --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=d2-builder-linux-amd64}]' \
         'ResourceType=volume,Tags=[{Key=Name,Value=d2-builder-linux-amd64}]' >/dev/null
   fi
+  while true; do
+    dnsname=$(sh_c aws ec2 describe-instances \
+      --filters 'Name=instance-state-name,Values=pending,running,shutting-down,stopping,stopped' 'Name=tag:Name,Values=d2-builder-linux-amd64' \
+      | jq -r '.Reservations[].Instances[].PublicDnsName')
+    if [ -n "$dnsname" ]; then
+      log "TSTRUCT_LINUX_AMD64_BUILDER=$dnsname"
+      break
+    fi
+    sleep 5
+  done
 
   header linux-arm64
   if ! aws ec2 describe-instances \
@@ -93,6 +103,16 @@ create_aws() {
       --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=d2-builder-linux-arm64}]' \
         'ResourceType=volume,Tags=[{Key=Name,Value=d2-builder-linux-arm64}]' >/dev/null
   fi
+  while true; do
+    dnsname=$(sh_c aws ec2 describe-instances \
+      --filters 'Name=instance-state-name,Values=pending,running,shutting-down,stopping,stopped' 'Name=tag:Name,Values=d2-builder-linux-arm64' \
+      | jq -r '.Reservations[].Instances[].PublicDnsName')
+    if [ -n "$dnsname" ]; then
+      log "TSTRUCT_LINUX_AMD64_BUILDER=$dnsname"
+      break
+    fi
+    sleep 5
+  done
 }
 
 main "$@"
