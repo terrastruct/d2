@@ -92,6 +92,11 @@ build() {
     return 0
   fi
 
+  if [ -n "${LOCAL-}" ]; then
+    build_local
+    return 0
+  fi
+
   case $OS in
     # macos)
     #   ;;
@@ -111,7 +116,7 @@ build() {
       ;;
     *)
       COLOR=3 logp warn "no builder for OS=$OS, building locally..."
-      # build_local
+      build_local
       ;;
   esac
 }
