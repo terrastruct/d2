@@ -7,7 +7,7 @@ help() {
   cat <<EOF
 usage: $0 [--dryrun]
 
-$0 creates the d2 builders in a AWS account.
+$0 creates and ensures the d2 builders in AWS.
 EOF
 }
 
@@ -38,10 +38,11 @@ main() {
     flag_errusage "no arguments are accepted"
   fi
 
-  create_aws
+  create_rhosts
+  init_rhosts
 }
 
-create_aws() {
+create_rhosts() {
   KEY_NAME=$(aws ec2 describe-key-pairs | jq -r .KeyPairs[0].KeyName)
   VPC_ID=$(aws ec2 describe-vpcs | jq -r .Vpcs[0].VpcId)
 
@@ -73,7 +74,7 @@ create_aws() {
     sh_c aws ec2 run-instances \
       --image-id=ami-0d593311db5abb72b \
       --count=1 \
-      --instance-type=t2.micro \
+      --instance-type=t2.small \
       --security-groups=ssh \
       "--key-name=$KEY_NAME" \
       --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=d2-builder-linux-amd64}]' \
@@ -84,7 +85,8 @@ create_aws() {
       --filters 'Name=instance-state-name,Values=pending,running,shutting-down,stopping,stopped' 'Name=tag:Name,Values=d2-builder-linux-amd64' \
       | jq -r '.Reservations[].Instances[].PublicDnsName')
     if [ -n "$dnsname" ]; then
-      log "TSTRUCT_LINUX_AMD64_BUILDER=$dnsname"
+      log "TSTRUCT_LINUX_AMD64_BUILDER=ec2-user@$dnsname"
+      export TSTRUCT_LINUX_AMD64_BUILDER=ec2-user@$dnsname
       break
     fi
     sleep 5
@@ -97,7 +99,7 @@ create_aws() {
     sh_c aws ec2 run-instances \
       --image-id=ami-0efabcf945ffd8831 \
       --count=1 \
-      --instance-type=t4g.nano \
+      --instance-type=t4g.small \
       --security-groups=ssh \
       "--key-name=$KEY_NAME" \
       --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=d2-builder-linux-arm64}]' \
@@ -108,11 +110,34 @@ create_aws() {
       --filters 'Name=instance-state-name,Values=pending,running,shutting-down,stopping,stopped' 'Name=tag:Name,Values=d2-builder-linux-arm64' \
       | jq -r '.Reservations[].Instances[].PublicDnsName')
     if [ -n "$dnsname" ]; then
-      log "TSTRUCT_LINUX_AMD64_BUILDER=$dnsname"
+      log "TSTRUCT_LINUX_ARM64_BUILDER=ec2-user@$dnsname"
+      export TSTRUCT_LINUX_ARM64_BUILDER=ec2-user@$dnsname
       break
     fi
     sleep 5
   done
+}
+
+init_rhosts() {
+  header linux-amd64
+  RHOST=$TSTRUCT_LINUX_AMD64_BUILDER init_rhost
+  header linux-arm64
+  RHOST=$TSTRUCT_LINUX_ARM64_BUILDER init_rhost
+}
+
+init_rhost() {
+  while true; do
+    if sh_c ssh "$RHOST" :; then
+      break
+    fi
+    sleep 5
+  done
+  sh_c ssh "$RHOST" 'sudo yum upgrade -y'
+  sh_c ssh "$RHOST" 'sudo yum install -y docker'
+  sh_c ssh "$RHOST" 'sudo systemctl start docker'
+  sh_c ssh "$RHOST" 'sudo systemctl enable docker'
+  sh_c ssh "$RHOST" 'sudo usermod -a -G docker ec2-user'
+  sh_c ssh "$RHOST" 'sudo reboot' || true
 }
 
 main "$@"
