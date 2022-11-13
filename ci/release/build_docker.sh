@@ -4,6 +4,7 @@ cd -- "$(dirname "$0")/../.."
 . ./ci/sub/lib.sh
 
 tag="$(sh_c docker build \
+  --build-arg GOVERSION="1.19.3.linux-$ARCH" \
   -qf ./ci/release/builders/Dockerfile ./ci/release/builders )"
 sh_c docker run -it --rm \
   -v "$HOME:$HOME" \
@@ -16,4 +17,5 @@ sh_c docker run -it --rm \
   -e ARCH="$ARCH" \
   -e ARCHIVE="$ARCHIVE" \
   -e TERM="$TERM" \
+  -e HOME="$HOME" \
   "$tag" ./src/d2/ci/release/_build.sh

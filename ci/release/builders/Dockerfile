@@ -1,8 +1,8 @@
 FROM centos:7
 
-ARG GOVERSION=1.19.3
+ARG GOVERSION=
 
-RUN curl -fsSL "https://go.dev/dl/go$GOVERSION.linux-amd64.tar.gz" >/tmp/go.tar.gz
+RUN curl -fsSL "https://go.dev/dl/go$GOVERSION.tar.gz" >/tmp/go.tar.gz
 RUN tar -C /usr/local -xzf /tmp/go.tar.gz
 
 ENV PATH="/usr/local/go/bin:$PATH"
