@@ -21,9 +21,8 @@ main() {
         return 0
         ;;
       dryrun)
-        flag_noarg
+        flag_noarg && shift "$FLAGSHIFT"
         DRYRUN=1
-        shift "$FLAGSHIFT"
         ;;
       '')
         shift "$FLAGSHIFT"

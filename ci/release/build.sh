@@ -37,24 +37,21 @@ main() {
         return 0
         ;;
       rebuild)
-        flag_noarg
+        flag_noarg && shift "$FLAGSHIFT"
         REBUILD=1
-        shift "$FLAGSHIFT"
         ;;
       local)
-        flag_noarg
+        flag_noarg && shift "$FLAGSHIFT"
         LOCAL=1
-        shift "$FLAGSHIFT"
         ;;
       dryrun)
-        flag_noarg
+        flag_noarg && shift "$FLAGSHIFT"
         DRYRUN=1
-        shift "$FLAGSHIFT"
         ;;
       run)
-        flag_reqarg
-        JOB_FILTER="$FLAGARG"
-        shift "$FLAGSHIFT"
+        flag_reqarg && shift "$FLAGSHIFT"
+        JOBFILTER="$FLAGARG"
+        ;;
       '')
         shift "$FLAGSHIFT"
         break
@@ -133,6 +130,7 @@ VERSION=$VERSION \
 OS=$OS \
 ARCH=$ARCH \
 ARCHIVE=$ARCHIVE \
+TERM=$TERM \
 ./src/d2/ci/release/build_docker.sh"
   sh_c rsync --archive --human-readable "$RHOST:src/d2/$ARCHIVE" "$ARCHIVE"
 }

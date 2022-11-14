@@ -1,5 +1,9 @@
 #!/bin/sh
 set -eu
 
-$LOG_SH
-$RAND_SH
+cd -- "$(dirname "$0")/../.."
+. ./ci/sub/lib/log.sh
+. ./ci/sub/lib/flag.sh
+cd -
+
+doing installation here
