@@ -42,27 +42,61 @@
 
 ## Quickstart (CLI)
 
+To install:
+
+```sh
+# With --dryrun the install script will print the commands it will use
+# to install without actually installing so you know what it's going to do.
+curl -fsSL https://d2lang.com/install.sh | sh -s -- --dryrun
+# If things look good, install for real.
+curl -fsSL https://d2lang.com/install.sh | sh -s --
+```
+
 The most convenient way to use D2 is to just run it as a CLI executable to
 produce SVGs from `.d2` files.
 
 ```sh
-go install oss.terrastruct.com/d2
-
 echo 'x -> y -> z' > in.d2
 d2 --watch in.d2 out.svg
 ```
 
 A browser window will open with `out.svg` and live-reload on changes to `in.d2`.
 
-### MacOS
+### Installing from source
 
-Homebrew package coming soon.
+```sh
+go install oss.terrastruct.com/d2
+```
 
-### Linux/Windows
+### Install
 
 We have precompiled binaries on the [releases](https://github.com/terrastruct/d2/releases)
-page. D2 will be added to OS-respective package managers soon.
+page for macOS and Linux. For both amd64 and arm64. We will release package manager
+distributions like .rpm, .deb soon. We also want to get D2 on Homebrew for macOS
+and release a docker image
 
+For now, if you don't want to install from source, just use our install script:
+Pass `--tala` if you want to install our improved but closed source layout engine
+tala. See the docs on [layout engine](#layout-engine) below.
+
+```sh
+# With --dryrun the install script will print the commands it will use
+# to install without actually installing so you know what it's going to do.
+curl -fsSL https://d2lang.com/install.sh | sh -s -- --dryrun
+# If things look good, install for real.
+curl -fsSL https://d2lang.com/install.sh | sh -s --
+```
+
+To uninstall:
+
+```sh
+curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall --dryrun
+# If things look good, install for real.
+curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall
+```
+
+> warn: Our binary releases aren't fully portable like normal Go binaries due to the C
+> dependency on v8go for executing dagre.
 
 ## Quickstart (library)
 
@@ -155,6 +189,14 @@ bundled with the build or separately installed as a standalone binary.
 D2 intends to integrate with a variety of layout engines, e.g. `dot`, as well as
 single-purpose layout types like sequence diagrams. You can choose whichever layout engine
 you like and works best for the diagram you're making.
+
+You can just pass `--tala` to the install script to install tala as well:
+
+```
+curl -fsSL https://d2lang.com/install.sh | sh -s -- --tala --dryrun
+# If things look good, install for real.
+curl -fsSL https://d2lang.com/install.sh | sh -s -- --tala
+```
 
 ## Comparison
 
