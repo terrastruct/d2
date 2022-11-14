@@ -5,7 +5,7 @@ cd -- "$(dirname "$0")/../../.."
 
 help() {
   cat <<EOF
-usage: $0 [--dry-run]
+usage: $0 [--dry-run] [--skip-create]
 
 $0 creates and ensures the d2 builders in AWS.
 EOF
@@ -23,6 +23,10 @@ main() {
         flag_noarg && shift "$FLAGSHIFT"
         DRY_RUN=1
         ;;
+      skip-create)
+        flag_noarg && shift "$FLAGSHIFT"
+        SKIP_CREATE=1
+        ;;
       '')
         shift "$FLAGSHIFT"
         break
@@ -36,7 +40,9 @@ main() {
     flag_errusage "no arguments are accepted"
   fi
 
-  create_rhosts
+  if [ -z "${SKIP_CREATE-}" ]; then
+    create_rhosts
+  fi
   init_rhosts
 }
 
@@ -228,9 +234,9 @@ init_rhost_macos() {
     sleep 5
   done
   sh_c ssh "$RHOST" '": | /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""'
-  sh_c ssh "$RHOST" '/usr/local/bin/brew update'
-  sh_c ssh "$RHOST" '/usr/local/bin/brew upgrade'
-  sh_c ssh "$RHOST" '/usr/local/bin/brew install go'
+  sh_c ssh "$RHOST" 'PATH="/usr/local/bin:/opt/homebrew/bin:\$PATH" brew update'
+  sh_c ssh "$RHOST" 'PATH="/usr/local/bin:/opt/homebrew/bin:\$PATH" brew upgrade'
+  sh_c ssh "$RHOST" 'PATH="/usr/local/bin:/opt/homebrew/bin:\$PATH" brew install go'
 }
 
 main "$@"

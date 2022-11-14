@@ -170,8 +170,9 @@ OS=$OS \
 ARCH=$ARCH \
 ARCHIVE=$ARCHIVE \
 TERM=$TERM \
-PATH=\"/usr/local/bin:/usr/local/sbin\${PATH+:\$PATH}\" \
+PATH=\"/usr/local/bin:/usr/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin\${PATH+:\$PATH}\" \
 ./src/d2/ci/release/_build.sh"
+  sh_c mkdir -p $HW_BUILD_DIR
   sh_c rsync --archive --human-readable "$RHOST:src/d2/$ARCHIVE" "$ARCHIVE"
 }
 
@@ -186,6 +187,7 @@ ARCH=$ARCH \
 ARCHIVE=$ARCHIVE \
 TERM=$TERM \
 ./src/d2/ci/release/build_docker.sh"
+  sh_c mkdir -p $HW_BUILD_DIR
   sh_c rsync --archive --human-readable "$RHOST:src/d2/$ARCHIVE" "$ARCHIVE"
 }
 
