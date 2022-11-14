@@ -97,13 +97,7 @@ catp() {
   prefix="$1"
   shift
 
-  printfp "$prefix"
-  printf ': '
-  read -r line
-  _echo "$line"
-
-  indent=$(repeat ' ' 2)
-  sed "s/^/$indent/"
+  sed "s/^/$(printfp "$prefix" '')/"
 }
 
 repeat() {
@@ -117,27 +111,27 @@ strlen() {
 }
 
 echoerr() {
-  COLOR=1 echop err "$*" >&2
+  COLOR=1 echop err "$*" | humanpath>&2
 }
 
 caterr() {
-  COLOR=1 catp err "$@" >&2
+  COLOR=1 catp err "$@" | humanpath >&2
 }
 
 printferr() {
-  COLOR=1 printfp err "$@" >&2
+  COLOR=1 printfp err "$@" | humanpath >&2
 }
 
 logp() {
-  echop "$@" >&2
+  echop "$@" | humanpath >&2
 }
 
 logfp() {
-  printfp "$@" >&2
+  printfp "$@" | humanpath >&2
 }
 
 logpcat() {
-  catp "$@" >&2
+  catp "$@" | humanpath >&2
 }
 
 log() {
@@ -167,8 +161,36 @@ sh_c() {
   fi
 }
 
+sudo_sh_c() {
+  if [ "$(id -u)" -eq 0 ]; then
+    sh_c "$@"
+  elif command -v doas >/dev/null; then
+    sh_c "doas $*"
+  elif command -v sudo >/dev/null; then
+    sh_c "sudo $*"
+  elif command -v su >/dev/null; then
+    sh_c "su root -c '$*'"
+  else
+    caterr <<EOF
+This script needs to run the following command as root:
+  $*
+Please install doas, sudo, or su.
+EOF
+    exit 1
+  fi
+}
+
 header() {
   logp "/* $1 */"
+}
+
+# humanpath replaces all occurrences of $HOME with ~
+humanpath() {
+  if [ -z "${HOME-}" ]; then
+    cat
+  else
+    sed "s#$HOME#~#g"
+  fi
 }
 
 hide() {
@@ -360,6 +382,37 @@ flag_fmt() {
   fi
 }
 #!/bin/sh
+if [ "${LIB_RELEASE-}" ]; then
+  return 0
+fi
+LIB_RELEASE=1
+
+goos() {
+  case $1 in
+    macos) echo darwin ;;
+    *) echo $1 ;;
+  esac
+}
+
+os() {
+  uname=$(uname)
+  case $uname in
+    Linux) echo linux ;;
+    Darwin) echo macos ;;
+    FreeBSD) echo freebsd ;;
+    *) echo "$uname" ;;
+  esac
+}
+
+arch() {
+  uname_m=$(uname -m)
+  case $uname_m in
+    aarch64) echo arm64 ;;
+    x86_64) echo amd64 ;;
+    *) echo "$uname_m" ;;
+  esac
+}
+#!/bin/sh
 set -eu
 
 
@@ -370,7 +423,7 @@ help() {
   fi
 
   cat <<EOF
-usage: $arg0 [--dry-run] [--version vX.X.X] [--edge] [--method detect] [--prefix ~/.local]
+usage: $arg0 [--dry-run] [--version vX.X.X] [--edge] [--method detect] [--prefix /usr/local]
   [--tala] [--tala-version vX.X.X] [--force] [--uninstall]
 
 install.sh automates the installation of D2 onto your system. It currently only supports
@@ -385,7 +438,6 @@ Flags:
 
 --version vX.X.X
   Pass to have install.sh install the given version instead of the latest version.
-  note: currently unimplemented.
 
 --edge
   Pass to build and install D2 from source. This will still use --method if set to detect
@@ -397,16 +449,17 @@ Flags:
 --method [detect | standalone]
   Pass to control the method by which to install. Right now we only support standalone
   releases from GitHub but later we'll add support for brew, rpm, deb and more.
+  note: currently unimplemented.
 
   - detect is currently unimplemented but would use your OS's package manager
     automatically.
-  - standalone installs a standalone release archive into ~/.local
-     Add ~/.local/bin to your \$PATH to use it.
-     Control the unix hierarchy path with --prefix
+  - standalone installs a standalone release archive into the unix hierarchy path
+     specified by --prefix which defaults to /usr/local
+     Ensure /usr/local/bin is in your \$PATH to use it.
 
---prefix ~/.local
+--prefix /usr/local
   Controls the unix hierarchy path into which standalone releases are installed.
-  Defaults to ~/.local. You may also want to use /usr/local
+  Defaults to /usr/local. You may also want to use ~/.local to avoid needing sudo.
   Remember that whatever you use, you must have the bin directory of your prefix
   path in \$PATH to execute the d2 binary. For example, if my prefix directory is
   /usr/local then my \$PATH must contain /usr/local/bin.
@@ -417,21 +470,23 @@ Flags:
 
 --tala-version vX.X.X
   Install the passed version of tala instead of latest.
-  note: currently unimplemented.
 
 --force:
-  Force installation over the existing version even if they match. It will attempt a clean
-  uninstall first before installing the new version. The install assets will not be deleted
-  from ~/.cache/d2/install.
+  Force installation over the existing version even if they match. It will attempt a
+  uninstall first before installing the new version. The release assets will be deleted
+  from ~/.cache/d2/release and ~/.local/share/d2/release
 
 --uninstall:
-  Uninstall the installed version of d2. The --method flag must be the same as for
-  installation. i.e if you used --method standalone you must again use --method standalone
-  for uninstallation. With detect, the install script will try to use the OS package manager
-  to uninstall instead.
+  Uninstall the installed version of d2. The --method and --prefix flags must be the same
+  as for installation. i.e if you used --method standalone you must again use --method
+  standalone for uninstallation. With detect, the install script will try to use the OS
+  package manager to uninstall instead.
 
-All downloaded assets are cached into ~/.cache/d2/install. use \$XDG_CACHE_HOME to change
-path of the cached assets.
+All downloaded archives are cached into ~/.cache/d2/release. use \$XDG_CACHE_HOME to change
+path of the cached assets. Archives will be unarchived into ~/.local/share/d2/release.
+Use \$XDG_DATA_HOME to adjust the path of the unarchived releases.
+
+note: Deleting the unarchived releases will cause --uninstall to stop working.
 
 You can rerun install.sh to update your version of D2. install.sh will avoid reinstalling
 if the installed version is the latest unless --force is passed.
@@ -439,6 +494,11 @@ EOF
 }
 
 main() {
+  if [ -n "${DEBUG-}" ]; then
+    set -x
+  fi
+
+  METHOD=standalone
   while :; do
     flag_parse "$@"
     case "$FLAG" in
@@ -453,14 +513,10 @@ main() {
       version)
         flag_nonemptyarg && shift "$FLAGSHIFT"
         VERSION=$FLAGARG
-        echoerr "$FLAGRAW is currently unimplemented"
-        exit 1
         ;;
       tala-version)
         flag_nonemptyarg && shift "$FLAGSHIFT"
         TALA_VERSION=$FLAGARG
-        echoerr "$FLAGRAW is currently unimplemented"
-        exit 1
         ;;
       edge)
         flag_noarg && shift "$FLAGSHIFT"
@@ -501,11 +557,158 @@ main() {
   fi
 
   REPO=${REPO:-terrastruct/d2}
-  latest_version
+  PREFIX=${PREFIX:-/usr/local}
+  OS=$(os)
+  ARCH=$(arch)
+  CACHE_DIR=$(cache_dir)
+  mkdir -p "$CACHE_DIR"
+  DATA_DIR=$(data_dir)
+  mkdir -p "$DATA_DIR"
+
+  if [ -n "${UNINSTALL-}" ]; then
+    if ! command -v d2 >/dev/null; then
+      echoerr "no version of d2 installed"
+      return 1
+    fi
+    INSTALLED_VERSION="$(d2 version)"
+    if ! uninstall_standalone; then
+      echoerr "failed to uninstall $INSTALLED_VERSION"
+      return 1
+    fi
+    return 0
+  fi
+
+  VERSION=${VERSION:-latest}
+  if [ "$VERSION" = latest ]; then
+    VERSION=$(fetch_version_info)
+  fi
+
+  # TODO: --tala, --tala-version
+
+  if command -v d2 >/dev/null; then
+    INSTALLED_VERSION="$(d2 version)"
+    if [ ! "${FORCE-}" -a "$VERSION" = "$INSTALLED_VERSION" ]; then
+      log "skipping installation as version $VERSION is already installed."
+      return 0
+    fi
+    log "uninstalling $INSTALLED_VERSION to install $VERSION"
+    if ! uninstall_standalone; then
+      warn "failed to uninstall $INSTALLED_VERSION"
+    fi
+  fi
+
+  install_standalone
 }
 
-latest_version() {
-  curl -fsSLI -o/dev/null -w '%{url_effective}' "https://github.com/$REPO/latest"
+install_standalone() {
+  ARCHIVE="d2-$VERSION-$OS-$ARCH.tar.gz"
+  log "installing standalone release $ARCHIVE from github"
+
+  VERSION=$(fetch_version_info)
+  asset_line=$(cat "$CACHE_DIR/$VERSION.json" | grep -n "$ARCHIVE" | cut -d: -f1 | head -n1)
+  asset_url=$(sed -n $((asset_line-3))p "$CACHE_DIR/$VERSION.json" | sed 's/^.*: "\(.*\)",$/\1/g')
+  fetch_gh "$asset_url" "$CACHE_DIR/$ARCHIVE" 'application/octet-stream'
+
+  sh_c tar -C "$DATA_DIR" -xzf "$CACHE_DIR/$ARCHIVE"
+  sh_c cd "$DATA_DIR/d2-$VERSION"
+
+  sh_c="sh_c"
+  if ! is_prefix_writable; then
+    sh_c="sudo_sh_c"
+  fi
+  "$sh_c" make install PREFIX="$PREFIX"
+}
+
+uninstall_standalone() {
+  log "uninstalling standalone release d2-$INSTALLED_VERSION"
+
+  if [ ! -e "$DATA_DIR/d2-$INSTALLED_VERSION" ]; then
+    echoerr "no standalone release directory for d2-$INSTALLED_VERSION"
+    return 1
+  fi
+
+  sh_c cd "$DATA_DIR/d2-$INSTALLED_VERSION"
+
+  sh_c="sh_c"
+  if ! is_prefix_writable; then
+    sh_c="sudo_sh_c"
+  fi
+  "$sh_c" make uninstall PREFIX="$PREFIX"
+
+  sh_c rm -rf "$DATA_DIR/d2-$INSTALLED_VERSION"
+  sh_c rm -rf "$CACHE_DIR/$INSTALLED_VERSION.json"
+  sh_c rm -rf "$CACHE_DIR/d2-$INSTALLED_VERSION-$OS-$ARCH.tar.gz"
+}
+
+is_prefix_writable() {
+  sh_c mkdir -p "$PREFIX" 2>/dev/null || true
+  # The reason for checking whether bin is writable specifically is that on macOS you have
+  # /usr/local owned by root but you don't need root to write to its subdirectories which
+  # is all we want to do.
+  if [ ! -w "$PREFIX/bin" ]; then
+    return 0
+  fi
+}
+
+cache_dir() {
+  if [ -n "${XDG_CACHE_HOME-}" ]; then
+    echo "$XDG_CACHE_HOME/d2/release"
+  elif [ -n "${HOME-}" ]; then
+    echo "$HOME/.cache/d2/release"
+  else
+    echo "/tmp/d2-cache/release"
+  fi
+}
+
+data_dir() {
+  if [ -n "${XDG_DATA_HOME-}" ]; then
+    echo "$XDG_DATA_HOME/d2/release"
+  elif [ -n "${HOME-}" ]; then
+    echo "$HOME/.local/d2/release"
+  else
+    echo "/tmp/d2-data/release"
+  fi
+}
+
+fetch_version_info() {
+  req_version=$VERSION
+  if [ -e "$CACHE_DIR/$req_version.json" ]; then
+    echo "$VERSION"
+    return 0
+  fi
+  log "fetching info on version $req_version"
+
+  rm -f "$CACHE_DIR/req_version.json"
+  if [ "$req_version" = latest ]; then
+    release_info_url="https://api.github.com/repos/$REPO/releases/$req_version"
+  else
+    release_info_url="https://api.github.com/repos/$REPO/releases/tags/$req_version"
+  fi
+  fetch_gh "$release_info_url" "$CACHE_DIR/$req_version.json" \
+    'application/json'
+  VERSION=$(cat "$CACHE_DIR/$req_version.json" | grep -m1 tag_name | sed 's/^.*: "\(.*\)",$/\1/g')
+  if [ "$req_version" = latest ]; then
+    sh_c mv "$CACHE_DIR/$req_version.json" "$CACHE_DIR/$VERSION.json"
+  fi
+  echo "$VERSION"
+}
+
+curl_gh() {
+  sh_c curl -fL ${GITHUB_TOKEN+"-H \"Authorization: Bearer \$GITHUB_TOKEN\""} "$@"
+}
+
+fetch_gh() {
+  url=$1
+  file=$2
+  accept=$3
+
+  if [ -e "$file" ]; then
+    log "reusing $file"
+    return
+  fi
+
+  curl_gh -#o "$file.inprogress" -C- -H "'Accept: $accept'" "$url"
+  sh_c mv "$file.inprogress" "$file"
 }
 
 main "$@"

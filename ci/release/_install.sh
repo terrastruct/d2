@@ -63,18 +63,21 @@ Flags:
   Install the passed version of tala instead of latest.
 
 --force:
-  Force installation over the existing version even if they match. It will attempt a clean
-  uninstall first before installing the new version. The install assets will not be deleted
-  from ~/.cache/d2/install.
+  Force installation over the existing version even if they match. It will attempt a
+  uninstall first before installing the new version. The release assets will be deleted
+  from ~/.cache/d2/release and ~/.local/share/d2/release
 
 --uninstall:
-  Uninstall the installed version of d2. The --method flag must be the same as for
-  installation. i.e if you used --method standalone you must again use --method standalone
-  for uninstallation. With detect, the install script will try to use the OS package manager
-  to uninstall instead.
+  Uninstall the installed version of d2. The --method and --prefix flags must be the same
+  as for installation. i.e if you used --method standalone you must again use --method
+  standalone for uninstallation. With detect, the install script will try to use the OS
+  package manager to uninstall instead.
 
-All downloaded assets are cached into ~/.cache/d2/release. use \$XDG_CACHE_HOME to change
-path of the cached assets.
+All downloaded archives are cached into ~/.cache/d2/release. use \$XDG_CACHE_HOME to change
+path of the cached assets. Archives will be unarchived into ~/.local/share/d2/release.
+Use \$XDG_DATA_HOME to adjust the path of the unarchived releases.
+
+note: Deleting the unarchived releases will cause --uninstall to stop working.
 
 You can rerun install.sh to update your version of D2. install.sh will avoid reinstalling
 if the installed version is the latest unless --force is passed.
@@ -144,21 +147,34 @@ main() {
     flag_errusage "no arguments are accepted"
   fi
 
-  if [ -n "${UNINSTALL-}" ]; then
-    uninstall
-    return 1
-  fi
-
   REPO=${REPO:-terrastruct/d2}
   PREFIX=${PREFIX:-/usr/local}
   OS=$(os)
   ARCH=$(arch)
   CACHE_DIR=$(cache_dir)
   mkdir -p "$CACHE_DIR"
+  DATA_DIR=$(data_dir)
+  mkdir -p "$DATA_DIR"
+
+  if [ -n "${UNINSTALL-}" ]; then
+    if ! command -v d2 >/dev/null; then
+      echoerr "no version of d2 installed"
+      return 1
+    fi
+    INSTALLED_VERSION="$(d2 version)"
+    if ! uninstall_standalone; then
+      echoerr "failed to uninstall $INSTALLED_VERSION"
+      return 1
+    fi
+    return 0
+  fi
+
   VERSION=${VERSION:-latest}
   if [ "$VERSION" = latest ]; then
     VERSION=$(fetch_version_info)
   fi
+
+  # TODO: --tala, --tala-version
 
   if command -v d2 >/dev/null; then
     INSTALLED_VERSION="$(d2 version)"
@@ -167,7 +183,9 @@ main() {
       return 0
     fi
     log "uninstalling $INSTALLED_VERSION to install $VERSION"
-    # uninstall
+    if ! uninstall_standalone; then
+      warn "failed to uninstall $INSTALLED_VERSION"
+    fi
   fi
 
   install_standalone
@@ -182,26 +200,35 @@ install_standalone() {
   asset_url=$(sed -n $((asset_line-3))p "$CACHE_DIR/$VERSION.json" | sed 's/^.*: "\(.*\)",$/\1/g')
   fetch_gh "$asset_url" "$CACHE_DIR/$ARCHIVE" 'application/octet-stream'
 
-  sh_c tar -C "$CACHE_DIR" -xzf "$CACHE_DIR/$ARCHIVE"
-  sh_c cd "$CACHE_DIR/d2-$VERSION"
+  sh_c tar -C "$DATA_DIR" -xzf "$CACHE_DIR/$ARCHIVE"
+  sh_c cd "$DATA_DIR/d2-$VERSION"
 
   sh_c="sh_c"
-  if !is_prefix_writable; then
+  if ! is_prefix_writable; then
     sh_c="sudo_sh_c"
   fi
   "$sh_c" make install PREFIX="$PREFIX"
 }
 
-uninstall() {
-  log "uninstalling standalone release d2-$VERSION"
+uninstall_standalone() {
+  log "uninstalling standalone release d2-$INSTALLED_VERSION"
 
-  sh_c cd "$CACHE_DIR/d2-$VERSION"
+  if [ ! -e "$DATA_DIR/d2-$INSTALLED_VERSION" ]; then
+    echoerr "no standalone release directory for d2-$INSTALLED_VERSION"
+    return 1
+  fi
+
+  sh_c cd "$DATA_DIR/d2-$INSTALLED_VERSION"
 
   sh_c="sh_c"
-  if !is_prefix_writable; then
+  if ! is_prefix_writable; then
     sh_c="sudo_sh_c"
   fi
   "$sh_c" make uninstall PREFIX="$PREFIX"
+
+  sh_c rm -rf "$DATA_DIR/d2-$INSTALLED_VERSION"
+  sh_c rm -rf "$CACHE_DIR/$INSTALLED_VERSION.json"
+  sh_c rm -rf "$CACHE_DIR/d2-$INSTALLED_VERSION-$OS-$ARCH.tar.gz"
 }
 
 is_prefix_writable() {
@@ -224,12 +251,23 @@ cache_dir() {
   fi
 }
 
+data_dir() {
+  if [ -n "${XDG_DATA_HOME-}" ]; then
+    echo "$XDG_DATA_HOME/d2/release"
+  elif [ -n "${HOME-}" ]; then
+    echo "$HOME/.local/d2/release"
+  else
+    echo "/tmp/d2-data/release"
+  fi
+}
+
 fetch_version_info() {
   req_version=$VERSION
-  log "fetching info on version $req_version"
   if [ -e "$CACHE_DIR/$req_version.json" ]; then
-    log "reusing $CACHE_DIR/$req_version.json"
+    echo "$VERSION"
+    return 0
   fi
+  log "fetching info on version $req_version"
 
   rm -f "$CACHE_DIR/req_version.json"
   if [ "$req_version" = latest ]; then
@@ -241,7 +279,7 @@ fetch_version_info() {
     'application/json'
   VERSION=$(cat "$CACHE_DIR/$req_version.json" | grep -m1 tag_name | sed 's/^.*: "\(.*\)",$/\1/g')
   if [ "$req_version" = latest ]; then
-    mv "$CACHE_DIR/$req_version.json" "$CACHE_DIR/$VERSION.json"
+    sh_c mv "$CACHE_DIR/$req_version.json" "$CACHE_DIR/$VERSION.json"
   fi
   echo "$VERSION"
 }
