@@ -149,7 +149,7 @@ logf() {
 }
 
 logcat() {
-  COLOR=5 catp log "$@" >&2
+  COLOR=5 logpcat log "$@"
 }
 
 warn() {
@@ -191,12 +191,12 @@ header() {
 }
 
 # humanpath replaces all occurrences of " $HOME" with " ~"
-# and all occurrences of '"$HOME' with the literal '"$HOME'.
+# and all occurrences of '$HOME' with the literal '$HOME'.
 humanpath() {
   if [ -z "${HOME-}" ]; then
     cat
   else
-    sed -e "s# $HOME# ~#g" -e "s#\"$HOME#\"\$HOME#g"
+    sed -e "s# $HOME# ~#g" -e "s#$HOME#\$HOME#g"
   fi
 }
 
