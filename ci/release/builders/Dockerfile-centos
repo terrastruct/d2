@@ -1,0 +1,16 @@
+FROM centos:7
+
+ARG GOVERSION=
+
+RUN curl -fsSL "https://go.dev/dl/go$GOVERSION.tar.gz" >/tmp/go.tar.gz
+RUN tar -C /usr/local -xzf /tmp/go.tar.gz
+
+ENV PATH="/usr/local/go/bin:$PATH"
+
+RUN yum install -y rsync wget
+RUN yum groupinstall -y 'Development Tools'
+
+RUN curl -fsSL https://ftp.gnu.org/gnu/gcc/gcc-5.2.0/gcc-5.2.0.tar.gz >/tmp/gcc.tar.gz
+RUN tar -C /usr/local -xzf /tmp/gcc.tar.gz
+RUN cd /usr/local/gcc-5.2.0 && ./contrib/download_prerequisites && mkdir -p build \
+  && cd build && ../configure --disable-multilib && make && make install

@@ -27,7 +27,7 @@ Subcommands:
   %[1]s layout - Lists available layout engine options with short help
   %[1]s layout [layout name] - Display long help for a particular layout engine
 
-See more docs at https://oss.terrastruct.com/d2
+See more docs and the source code at https://oss.terrastruct.com/d2
 `, ms.Name, ms.FlagHelp())
 }
 
