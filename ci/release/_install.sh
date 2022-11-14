@@ -162,6 +162,7 @@ main() {
 
   VERSION=${VERSION:-latest}
   if [ "$VERSION" = latest ]; then
+    header "fetching latest release info"
     fetch_release_info
   fi
 
@@ -171,11 +172,12 @@ main() {
 install() {
   install_d2
   if [ "${TALA-}" ]; then
-    install_tala
+    # Run in subshell to avoid overwriting VERSION.
+    ( install_tala )
   fi
 
   COLOR=2 header success
-  log "Standalone release $ARCHIVE has been successfully installed into $PREFIX"
+  log "d2-$VERSION-$OS-$ARCH has been successfully installed into $PREFIX"
   if ! echo "$PATH" | grep -qF "$PREFIX/bin"; then
     logcat >&2 <<EOF
 Extend your path to use d2:
@@ -201,12 +203,13 @@ install_d2() {
     fi
   fi
 
+  header "installing d2-$VERSION"
   install_standalone_d2
 }
 
 install_standalone_d2() {
   ARCHIVE="d2-$VERSION-$OS-$ARCH.tar.gz"
-  header "installing standalone release $ARCHIVE from github"
+  log "installing standalone release $ARCHIVE from github"
 
   fetch_release_info
   asset_line=$(cat "$RELEASE_INFO" | grep -n "$ARCHIVE" | cut -d: -f1 | head -n1)
@@ -228,12 +231,12 @@ install_tala() {
 
 install_standalone_tala() {
   REPO="${REPO_TALA:-terrastruct/TALA}"
-  VERSION=${TALA:-latest}
+  VERSION=$TALA
   RELEASE_INFO=
   fetch_release_info
 
   ARCHIVE="d2plugin-tala-$VERSION-$OS-$ARCH.tar.gz"
-  header "installing standalone release $ARCHIVE from github"
+  log "installing standalone release $ARCHIVE from github"
 
   asset_line=$(cat "$RELEASE_INFO" | grep -n "$ARCHIVE" | cut -d: -f1 | head -n1)
   asset_url=$(sed -n $((asset_line-3))p "$RELEASE_INFO" | sed 's/^.*: "\(.*\)",$/\1/g')
@@ -274,11 +277,12 @@ uninstall() {
 }
 
 uninstall_d2() {
+  header "uninstalling d2-$INSTALLED_VERSION"
   uninstall_standalone_d2
 }
 
 uninstall_standalone_d2() {
-  header "uninstalling standalone release d2-$INSTALLED_VERSION"
+  log "uninstalling standalone release of d2-$INSTALLED_VERSION"
 
   if [ ! -e "$INSTALL_DIR/d2-$INSTALLED_VERSION" ]; then
     echoerr "missing standalone install release directory $INSTALL_DIR/d2-$INSTALLED_VERSION"
@@ -299,7 +303,7 @@ uninstall_tala() {
 }
 
 uninstall_standalone_tala() {
-  header "uninstalling standalone release d2plugin-tala-$INSTALLED_VERSION"
+  log "uninstalling standalone release d2plugin-tala-$INSTALLED_VERSION"
 
   if [ ! -e "$INSTALL_DIR/d2plugin-tala-$INSTALLED_VERSION" ]; then
     echoerr "missing standalone install release directory $INSTALL_DIR/d2plugin-tala-$INSTALLED_VERSION"
