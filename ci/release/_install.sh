@@ -325,7 +325,7 @@ is_prefix_writable() {
   # /usr/local owned by root but you don't need root to write to its subdirectories which
   # is all we want to do.
   if [ ! -w "$PREFIX/bin" ]; then
-    return 0
+    return 1
   fi
 }
 
