@@ -645,7 +645,7 @@ install_standalone_tala() {
   RELEASE_INFO=
   fetch_release_info
 
-  ARCHIVE="d2plugin-tala-$VERSION-$OS-$ARCH.tar.gz"
+  ARCHIVE="tala-$VERSION-$OS-$ARCH.tar.gz"
   log "installing standalone release $ARCHIVE from github"
 
   asset_line=$(cat "$RELEASE_INFO" | grep -n "$ARCHIVE" | cut -d: -f1 | head -n1)
@@ -659,7 +659,7 @@ install_standalone_tala() {
   fi
 
   "$sh_c" tar -C "$INSTALL_DIR" -xzf "$CACHE_DIR/$ARCHIVE"
-  "$sh_c" sh -c "'cd \"$INSTALL_DIR/d2plugin-tala-$VERSION\" && make install PREFIX=\"$PREFIX\"'"
+  "$sh_c" sh -c "'cd \"$INSTALL_DIR/tala-$VERSION\" && make install PREFIX=\"$PREFIX\"'"
 }
 
 uninstall() {
@@ -674,12 +674,12 @@ uninstall() {
   fi
   if [ "${TALA-}" ]; then
     if ! command -v d2plugin-tala >/dev/null; then
-      echoerr "no version of d2plugin-tala installed"
+      echoerr "no version of tala installed"
       return 1
     fi
     INSTALLED_VERSION="$(d2plugin-tala --version)"
     if ! uninstall_tala; then
-      echoerr "failed to uninstall d2plugin-tala $INSTALLED_VERSION"
+      echoerr "failed to uninstall tala $INSTALLED_VERSION"
       return 1
     fi
   fi
@@ -713,10 +713,10 @@ uninstall_tala() {
 }
 
 uninstall_standalone_tala() {
-  log "uninstalling standalone release d2plugin-tala-$INSTALLED_VERSION"
+  log "uninstalling standalone release tala-$INSTALLED_VERSION"
 
-  if [ ! -e "$INSTALL_DIR/d2plugin-tala-$INSTALLED_VERSION" ]; then
-    echoerr "missing standalone install release directory $INSTALL_DIR/d2plugin-tala-$INSTALLED_VERSION"
+  if [ ! -e "$INSTALL_DIR/tala-$INSTALLED_VERSION" ]; then
+    echoerr "missing standalone install release directory $INSTALL_DIR/tala-$INSTALLED_VERSION"
     return 1
   fi
 
@@ -725,8 +725,8 @@ uninstall_standalone_tala() {
     sh_c="sudo_sh_c"
   fi
 
-  "$sh_c" sh -c "'cd \"$INSTALL_DIR/d2plugin-tala-$INSTALLED_VERSION\" && make uninstall PREFIX=\"$PREFIX\"'"
-  "$sh_c" rm -rf "$INSTALL_DIR/d2plugin-tala-$INSTALLED_VERSION"
+  "$sh_c" sh -c "'cd \"$INSTALL_DIR/tala-$INSTALLED_VERSION\" && make uninstall PREFIX=\"$PREFIX\"'"
+  "$sh_c" rm -rf "$INSTALL_DIR/tala-$INSTALLED_VERSION"
 }
 
 is_prefix_writable() {
