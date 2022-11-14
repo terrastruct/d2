@@ -30,6 +30,7 @@ sh_c cat \
   ./ci/sub/lib/rand.sh \
   ./ci/sub/lib/log.sh \
   ./ci/sub/lib/flag.sh \
+  ./ci/sub/lib/release.sh \
   \| sed "-e'/^\. /d'" \>\> ./install.sh
 sh_c cat ./ci/release/_install.sh \
   \| sed -n "'/cd -- \"\$(dirname/,/cd -/!p'" \>\> install.sh

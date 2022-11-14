@@ -16,4 +16,7 @@ sh_c mkdir -p "$HW_BUILD_DIR/bin"
 sh_c go build -ldflags "'-X oss.terrastruct.com/d2/lib/version.Version=$VERSION'" \
   -o "$HW_BUILD_DIR/bin/d2" ./cmd/d2
 
-sh_c tar czf "$ARCHIVE" "$HW_BUILD_DIR"
+ARCHIVE=$PWD/$ARCHIVE
+cd "$(dirname "$HW_BUILD_DIR")"
+sh_c tar -czf "$ARCHIVE" "$(basename "$HW_BUILD_DIR")"
+cd ->/dev/null

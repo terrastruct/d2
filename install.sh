@@ -499,6 +499,13 @@ main() {
   if [ $# -gt 0 ]; then
     flag_errusage "no arguments are accepted"
   fi
+
+  REPO=${REPO:-terrastruct/d2}
+  latest_version
+}
+
+latest_version() {
+  curl -fsSLI -o/dev/null -w '%{url_effective}' "https://github.com/$REPO/latest"
 }
 
 main "$@"

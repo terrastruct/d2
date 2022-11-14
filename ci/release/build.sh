@@ -7,7 +7,7 @@ help() {
   cat <<EOF
 usage: $0 [--rebuild] [--local] [--dry-run] [--run=regex] [--host-only]
 
-$0 builds D2 release archives into ./ci/release/build/<version>/d2-<version>.tar.gz
+$0 builds D2 release archives into ./ci/release/build/<version>/d2-<VERSION>-<OS>-<ARCH>.tar.gz
 
 The version is detected via git describe which will use the git tag for the current
 commit if available.
@@ -32,12 +32,13 @@ Flags:
 --run=regex
   Use to run only the OS-ARCH jobs that match the given regex. e.g. --run=linux only runs
   the linux jobs. --run=linux-amd64 only runs the linux-amd64 job.
+
+--version vX.X.X
+  Use to overwrite the version detected from git.
 EOF
 }
 
 main() {
-  VERSION="$(git_describe_ref)"
-  BUILD_DIR="ci/release/build/$VERSION"
   while :; do
     flag_parse "$@"
     case "$FLAG" in
@@ -64,6 +65,11 @@ main() {
       host-only)
         flag_noarg && shift "$FLAGSHIFT"
         HOST_ONLY=1
+        LOCAL=1
+        ;;
+      version)
+        flag_nonemptyarg && shift "$FLAGSHIFT"
+        VERSION=$FLAGARG
         ;;
       '')
         shift "$FLAGSHIFT"
@@ -79,6 +85,8 @@ main() {
     flag_errusage "no arguments are accepted"
   fi
 
+  VERSION=${VERSION:-$(git_describe_ref)}
+  BUILD_DIR=ci/release/build/$VERSION
   if [ -n "${HOST_ONLY-}" ]; then
     runjob $(os)-$(arch) "OS=$(os) ARCH=$(arch) build" &
     waitjobs
@@ -93,8 +101,8 @@ main() {
 }
 
 build() {
-  HW_BUILD_DIR="$BUILD_DIR/$OS/$ARCH/d2-$VERSION"
-  ARCHIVE="$BUILD_DIR/d2-$OS-$ARCH-$VERSION.tar.gz"
+  HW_BUILD_DIR="$BUILD_DIR/$OS-$ARCH/d2-$VERSION"
+  ARCHIVE="$BUILD_DIR/d2-$VERSION-$OS-$ARCH.tar.gz"
 
   if [ -e "$ARCHIVE" -a -z "${REBUILD-}" ]; then
     log "skipping as already built at $ARCHIVE"

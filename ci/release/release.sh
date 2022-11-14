@@ -21,6 +21,8 @@ Flags:
                changelogs/v0.0.99-alpha.1.md. This is because you want to maintain the
                changelog entries for the eventual final release.
 --dry-run: Print the commands that would be ran without executing them.
+--skip-build: Skip the build in case you want to upload your own specific assets.
+              Mainly for testing and debugging.
 
 Process:
 
@@ -81,6 +83,10 @@ main() {
       dry-run)
         flag_noarg && shift "$FLAGSHIFT"
         DRY_RUN=1
+        ;;
+      skip-build)
+        flag_noarg && shift "$FLAGSHIFT"
+        SKIP_BUILD=1
         ;;
       '')
         shift "$FLAGSHIFT"
@@ -185,15 +191,19 @@ _7_ensure_pr() {
     return 0
   fi
 
-  pr_url="$(sh_c gh pr create --fill --body "$body" | tee /dev/stderr)"
+  pr_url="$(sh_c gh pr create --fill --body "'$body'" | tee /dev/stderr)"
 }
 
 _8_ensure_assets() {
+  if [ "${SKIP_BUILD-}" ]; then
+    warn "skipping building of assets due to --skip-build"
+    return 0
+  fi
   sh_c ./ci/release/build.sh ${REBUILD:+--rebuild}
 }
 
 _9_upload_assets() {
-  sh_c gh release upload --clobber "$VERSION" "./ci/release/build/$VERSION"/*.tar.gz
+  ./ci/release/upload_assets.sh $VERSION
 }
 
 main "$@"
