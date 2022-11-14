@@ -186,7 +186,7 @@ Then run:
   d2 --help
 EOF
   else
-    log "You may run d2 --help"
+    log "Run d2 --help for usage."
   fi
   if ! manpath | grep -qF "$PREFIX/share/man"; then
     logcat >&2 <<EOF
@@ -196,8 +196,9 @@ Then run:
   man d2
 EOF
   else
-    log "You may run man d2 to view documentation."
+    log "Run man d2 for the manpage."
   fi
+  log "Rerun the install script with --uninstall to uninstall"
 }
 
 install_d2() {
