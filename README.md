@@ -42,27 +42,20 @@
 
 ## Quickstart (CLI)
 
-To install:
-
-```sh
-# With --dryrun the install script will print the commands it will use
-# to install without actually installing so you know what it's going to do.
-curl -fsSL https://d2lang.com/install.sh | sh -s -- --dryrun
-# If things look good, install for real.
-curl -fsSL https://d2lang.com/install.sh | sh -s --
-```
-
 The most convenient way to use D2 is to just run it as a CLI executable to
 produce SVGs from `.d2` files.
 
 ```sh
+# First, install D2
+curl -fsSL https://d2lang.com/install.sh | sh -s --
+
 echo 'x -> y -> z' > in.d2
 d2 --watch in.d2 out.svg
 ```
 
 A browser window will open with `out.svg` and live-reload on changes to `in.d2`.
 
-### Installing from source
+### Install from source
 
 ```sh
 go install oss.terrastruct.com/d2
@@ -70,14 +63,9 @@ go install oss.terrastruct.com/d2
 
 ### Install
 
-We have precompiled binaries on the [releases](https://github.com/terrastruct/d2/releases)
-page for macOS and Linux. For both amd64 and arm64. We will release package manager
-distributions like .rpm, .deb soon. We also want to get D2 on Homebrew for macOS
-and release a docker image
-
-For now, if you don't want to install from source, just use our install script:
-Pass `--tala` if you want to install our improved but closed source layout engine
-tala. See the docs on [layout engine](#layout-engine) below.
+The recommended way to install is to run our install script, which will figure out the
+best way to install based on your machine. E.g. if D2 is available through a package
+manager installed, it will use that package manager.
 
 ```sh
 # With --dryrun the install script will print the commands it will use
@@ -87,11 +75,16 @@ curl -fsSL https://d2lang.com/install.sh | sh -s -- --dryrun
 curl -fsSL https://d2lang.com/install.sh | sh -s --
 ```
 
+We have precompiled binaries on the [releases](https://github.com/terrastruct/d2/releases)
+page for macOS and Linux. For both amd64 and arm64. We will release package manager
+distributions like .rpm, .deb soon. We also want to get D2 on Homebrew for macOS
+and release a docker image.
+
 To uninstall:
 
 ```sh
 curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall --dryrun
-# If things look good, install for real.
+# If things look good, uninstall for real.
 curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall
 ```
 
@@ -170,32 +163,26 @@ more. Good language tooling is necessary for creating and maintaining large diag
 
 The extensions for VSCode and Vim can be found in the [Related](#related) section.
 
-## Layout engine
+## Plugins
 
-D2 currently uses the open-source library [dagre](https://github.com/dagrejs/dagre) as its
-default layout engine. D2 includes a wrapper around dagre to work around one of its
-biggest limitations -- the inability to make container-to-container edges.
+D2 is designed to be extensible and composable. The plugin system allows you to
+change out layout engines and customize the rendering pipeline. Plugins can either be
+bundled with the build or separately installed as a standalone binary.
 
-Dagre was chosen due to its popularity in other tools, but D2 intends to integrate with a
-variety of layout engines, e.g. `dot`, as well as single-purpose layout types like
-sequence diagrams. You can choose whichever layout engine you like and works best for the
-diagram you're making.
+**Layout engines**:
 
-Terrastruct has created a proprietary layout engine called
-[TALA](https://terrastruct.com/tala). It has been designed specifically for software
-architecture diagrams, though it's good for other domains too. TALA has many advantages
-over other layout engines, the biggest being that it isn't constrained to hierarchies, or
-any single type like "radial" or "tree" (as almost all layout engines are). For more
-information and to download & try TALA, see
-[https://github.com/terrastruct/TALA](https://github.com/terrastruct/TALA).
+- [dagre](https://github.com/dagrejs/dagre) (default, bundled): A fast, directed graph
+  layout engine that produces layered/hierarchical layouts. Based on Graphviz's DOT
+  algorithm.
+- [ELK](https://github.com/kieler/elkjs) (bundled): A directed graph layout engine
+  particularly suited for node-link diagrams with an inherent direction and ports.
+- [TALA](https://github.com/terrastruct/TALA) (binary): Novel layout engine designed
+  specifically for software architecture diagrams. Requires separate install, visit the
+  Github page for more.
 
-You can just pass `--tala` to the install script to install tala as well:
-
-```
-curl -fsSL https://d2lang.com/install.sh | sh -s -- --tala --dryrun
-# If things look good, install for real.
-curl -fsSL https://d2lang.com/install.sh | sh -s -- --tala
-```
+D2 intends to integrate with a variety of layout engines, e.g. `dot`, as well as
+single-purpose layout types like sequence diagrams. You can choose whichever layout engine
+you like and works best for the diagram you're making.
 
 ## Comparison
 
@@ -231,6 +218,8 @@ Copyright © 2022 Terrastruct, Inc. Open-source licensed under the Mozilla Publi
 - Does D2 collect telemetry?
   - No, D2 does not use an internet connection after installation, except to check for
     version updates from Github periodically.
+- Does D2 need a browser to run?
+  - No, D2 can run entirely server-side.
 - I have a question or need help.
   - The best way to get help is to open an Issue, so that it's searchable by others in the
     future. If you prefer synchronous or just want to chat, you can pop into the help
