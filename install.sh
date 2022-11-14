@@ -49,6 +49,10 @@ if [ "${LIB_LOG-}" ]; then
 fi
 LIB_LOG=1
 
+if [ -n "${DEBUG-}" ]; then
+  set -x
+fi
+
 tput() {
   if [ -n "$TERM" ]; then
     command tput "$@"
@@ -515,10 +519,6 @@ EOF
 }
 
 main() {
-  if [ -n "${DEBUG-}" ]; then
-    set -x
-  fi
-
   METHOD=standalone
   while :; do
     flag_parse "$@"

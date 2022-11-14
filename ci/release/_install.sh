@@ -85,10 +85,6 @@ EOF
 }
 
 main() {
-  if [ -n "${DEBUG-}" ]; then
-    set -x
-  fi
-
   METHOD=standalone
   while :; do
     flag_parse "$@"
