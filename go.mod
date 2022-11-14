@@ -28,7 +28,7 @@ require (
 	oss.terrastruct.com/xjson v0.0.0-20221018000420-4986731c4c4a
 	oss.terrastruct.com/xos v0.0.0-20221018030138-c96e7ae96e5d
 	oss.terrastruct.com/xrand v0.0.0-20221020211818-4ac08e618333
-	rogchap.com/v8go v0.7.0
+	rogchap.com/v8go v0.7.1-0.20221102201510-1f00b5007d95
 )
 
 require (

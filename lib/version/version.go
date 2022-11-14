@@ -2,6 +2,7 @@ package version
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/google/go-github/github"
 	"oss.terrastruct.com/cmdlog"
@@ -11,11 +12,16 @@ import (
 var Version = "master (built from source)"
 
 func CheckVersion(ctx context.Context, logger *cmdlog.Logger) {
-	logger.Info.Printf("D2 version: %s\n", Version)
+	fmt.Println(Version)
 
 	if Version == "master (built from source)" {
 		return
 	}
+
+	// Install script uses -v to check the version, we shouldn't be checking for
+	// updates here...
+	// https://github.com/terrastruct/d2/issues/49#issuecomment-1313229683
+	return
 
 	logger.Info.Printf("Checking for updates...")
 	latest, err := getLatestVersion(ctx)
