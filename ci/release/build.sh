@@ -191,4 +191,8 @@ TERM=$TERM \
   sh_c rsync --archive --human-readable "$RHOST:src/d2/$ARCHIVE" "$ARCHIVE"
 }
 
+ssh() {
+  command ssh -o='StrictHostKeyChecking=accept-new' "$@"
+}
+
 main "$@"
