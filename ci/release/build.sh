@@ -170,6 +170,7 @@ OS=$OS \
 ARCH=$ARCH \
 ARCHIVE=$ARCHIVE \
 TERM=$TERM \
+PATH=\"/usr/local/bin:/usr/local/sbin\${PATH+:\$PATH}\" \
 ./src/d2/ci/release/_build.sh"
   sh_c rsync --archive --human-readable "$RHOST:src/d2/$ARCHIVE" "$ARCHIVE"
 }

@@ -11,6 +11,7 @@ main() {
 
   sh_c mkdir -p "$PREFIX"
   sh_c install ./bin/d2 "$PREFIX/bin/d2"
+  sh_c install ./man/d2.1 "$PREFIX/share/man/man1"
 }
 
 main "$@"

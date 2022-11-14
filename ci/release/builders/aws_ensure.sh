@@ -66,9 +66,10 @@ create_rhosts() {
   fi
 
   header linux-amd64
-  if ! aws ec2 describe-instances \
-    "--query=Reservations[*].Instances[?State.Name!='terminated']" \
-    | grep -q d2-builder-linux-amd64; then
+  state=$(aws ec2 describe-instances --filters \
+    'Name=instance-state-name,Values=pending,running,stopping,stopped' 'Name=tag:Name,Values=d2-builder-linux-amd64' \
+    | jq -r '.Reservations[].Instances[].State.Name')
+  if [ -z "$state" ]; then
     sh_c aws ec2 run-instances \
       --image-id=ami-0d593311db5abb72b \
       --count=1 \
@@ -80,7 +81,7 @@ create_rhosts() {
   fi
   while true; do
     dnsname=$(sh_c aws ec2 describe-instances \
-      --filters 'Name=instance-state-name,Values=pending,running,shutting-down,stopping,stopped' 'Name=tag:Name,Values=d2-builder-linux-amd64' \
+      --filters 'Name=instance-state-name,Values=pending,running,stopping,stopped' 'Name=tag:Name,Values=d2-builder-linux-amd64' \
       | jq -r '.Reservations[].Instances[].PublicDnsName')
     if [ -n "$dnsname" ]; then
       log "TSTRUCT_LINUX_AMD64_BUILDER=ec2-user@$dnsname"
@@ -91,9 +92,10 @@ create_rhosts() {
   done
 
   header linux-arm64
-  if ! aws ec2 describe-instances \
-    "--query=Reservations[*].Instances[?State.Name!='terminated']" \
-    | grep -q d2-builder-linux-arm64; then
+  state=$(aws ec2 describe-instances --filters \
+    'Name=instance-state-name,Values=pending,running,stopping,stopped' 'Name=tag:Name,Values=d2-builder-linux-arm64' \
+    | jq -r '.Reservations[].Instances[].State.Name')
+  if [ -z "$state" ]; then
     sh_c aws ec2 run-instances \
       --image-id=ami-0efabcf945ffd8831 \
       --count=1 \
@@ -105,7 +107,7 @@ create_rhosts() {
   fi
   while true; do
     dnsname=$(sh_c aws ec2 describe-instances \
-      --filters 'Name=instance-state-name,Values=pending,running,shutting-down,stopping,stopped' 'Name=tag:Name,Values=d2-builder-linux-arm64' \
+      --filters 'Name=instance-state-name,Values=pending,running,stopping,stopped' 'Name=tag:Name,Values=d2-builder-linux-arm64' \
       | jq -r '.Reservations[].Instances[].PublicDnsName')
     if [ -n "$dnsname" ]; then
       log "TSTRUCT_LINUX_ARM64_BUILDER=ec2-user@$dnsname"
@@ -115,31 +117,40 @@ create_rhosts() {
     sleep 5
   done
 
-  header "allocate macOS hosts"
-  if ! aws ec2 describe-hosts | grep -q mac1.metal; then
-    aws ec2 allocate-hosts --instance-type mac1.metal --quantity 1 --availability-zone us-west-2a
+  header "macos-amd64-host"
+  MACOS_AMD64_HOST_ID=$(aws ec2 describe-hosts --filter 'Name=state,Values=pending,available' 'Name=tag:Name,Values=d2-builder-macos-amd64' | jq -r '.Hosts[].HostId')
+  if [ -z "$MACOS_AMD64_HOST_ID" ]; then
+    MACOS_AMD64_HOST_ID=$(sh_c aws ec2 allocate-hosts --instance-type mac1.metal --quantity 1 --availability-zone us-west-2a \
+      --tag-specifications '"ResourceType=dedicated-host,Tags=[{Key=Name,Value=d2-builder-macos-amd64}]"' \
+      | jq -r .HostIds[0])
   fi
-  if ! aws ec2 describe-hosts | grep -q mac2.metal; then
-    aws ec2 allocate-hosts --instance-type mac2.metal --quantity 1 --availability-zone us-west-2a
+
+  header "macos-arm64-host"
+  MACOS_ARM64_HOST_ID=$(aws ec2 describe-hosts --filter 'Name=state,Values=pending,available' 'Name=tag:Name,Values=d2-builder-macos-arm64' | jq -r '.Hosts[].HostId')
+  if [ -z "$MACOS_ARM64_HOST_ID" ]; then
+    MACOS_ARM64_HOST_ID=$(sh_c aws ec2 allocate-hosts --instance-type mac2.metal --quantity 1 --availability-zone us-west-2a \
+      --tag-specifications '"ResourceType=dedicated-host,Tags=[{Key=Name,Value=d2-builder-macos-amd64}]"' \
+      | jq -r .HostIds[0])
   fi
 
   header macos-amd64
-  if ! aws ec2 describe-instances \
-    "--query=Reservations[*].Instances[?State.Name!='terminated']" \
-    | grep -q d2-builder-macos-amd64; then
+  state=$(aws ec2 describe-instances --filters \
+    'Name=instance-state-name,Values=pending,running,stopping,stopped' 'Name=tag:Name,Values=d2-builder-macos-amd64' \
+    | jq -r '.Reservations[].Instances[].State.Name')
+  if [ -z "$state" ]; then
     sh_c aws ec2 run-instances \
       --image-id=ami-0dd2ded7568750663 \
       --count=1 \
       --instance-type=mac1.metal \
       --security-groups=ssh \
       "--key-name=$KEY_NAME" \
-      --placement 'Tenancy=host,HostId=h-0d881926de2e17555' \
+      --placement "Tenancy=host,HostId=$MACOS_AMD64_HOST_ID" \
       --tag-specifications '"ResourceType=instance,Tags=[{Key=Name,Value=d2-builder-macos-amd64}]"' \
         '"ResourceType=volume,Tags=[{Key=Name,Value=d2-builder-macos-amd64}]"' >/dev/null
   fi
   while true; do
     dnsname=$(sh_c aws ec2 describe-instances \
-      --filters 'Name=instance-state-name,Values=pending,running,shutting-down,stopping,stopped' 'Name=tag:Name,Values=d2-builder-macos-amd64' \
+      --filters 'Name=instance-state-name,Values=pending,running,stopping,stopped' 'Name=tag:Name,Values=d2-builder-macos-amd64' \
       | jq -r '.Reservations[].Instances[].PublicDnsName')
     if [ -n "$dnsname" ]; then
       log "TSTRUCT_MACOS_AMD64_BUILDER=ec2-user@$dnsname"
@@ -150,22 +161,23 @@ create_rhosts() {
   done
 
   header macos-arm64
-  if ! aws ec2 describe-instances \
-    "--query=Reservations[*].Instances[?State.Name!='terminated']" \
-    | grep -q d2-builder-macos-arm64; then
+  state=$(aws ec2 describe-instances --filters \
+    'Name=instance-state-name,Values=pending,running,stopping,stopped' 'Name=tag:Name,Values=d2-builder-macos-arm64' \
+    | jq -r '.Reservations[].Instances[].State.Name')
+  if [ -z "$state" ]; then
     sh_c aws ec2 run-instances \
       --image-id=ami-0af0516ff2c43dbbe \
       --count=1 \
       --instance-type=mac2.metal \
       --security-groups=ssh \
       "--key-name=$KEY_NAME" \
-      --placement 'Tenancy=host,HostId=h-040b9305c2d64119d' \
+      --placement "Tenancy=host,HostId=$MACOS_ARM64_HOST_ID" \
       --tag-specifications '"ResourceType=instance,Tags=[{Key=Name,Value=d2-builder-macos-arm64}]"' \
         '"ResourceType=volume,Tags=[{Key=Name,Value=d2-builder-macos-arm64}]"' >/dev/null
   fi
   while true; do
     dnsname=$(sh_c aws ec2 describe-instances \
-      --filters 'Name=instance-state-name,Values=pending,running,shutting-down,stopping,stopped' 'Name=tag:Name,Values=d2-builder-macos-arm64' \
+      --filters 'Name=instance-state-name,Values=pending,running,stopping,stopped' 'Name=tag:Name,Values=d2-builder-macos-arm64' \
       | jq -r '.Reservations[].Instances[].PublicDnsName')
     if [ -n "$dnsname" ]; then
       log "TSTRUCT_MACOS_ARM64_BUILDER=ec2-user@$dnsname"
@@ -216,9 +228,9 @@ init_rhost_macos() {
     sleep 5
   done
   sh_c ssh "$RHOST" '": | /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""'
-  sh_c ssh "$RHOST" 'brew update'
-  sh_c ssh "$RHOST" 'brew upgrade'
-  sh_c ssh "$RHOST" 'brew install go'
+  sh_c ssh "$RHOST" '/usr/local/bin/brew update'
+  sh_c ssh "$RHOST" '/usr/local/bin/brew upgrade'
+  sh_c ssh "$RHOST" '/usr/local/bin/brew install go'
 }
 
 main "$@"
