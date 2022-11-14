@@ -27,17 +27,6 @@ EOF
 }
 
 main() {
-  unset FLAG \
-    FLAGRAW \
-    FLAGARG \
-    FLAGSHIFT \
-    VERSION \
-    BUILD_DIR \
-    HW_BUILD_DIR \
-    REBUILD \
-    LOCAL \
-    DRYRUN \
-    ARCHIVE
   VERSION="$(git_describe_ref)"
   BUILD_DIR="ci/release/build/$VERSION"
   while :; do
@@ -62,6 +51,10 @@ main() {
         DRYRUN=1
         shift "$FLAGSHIFT"
         ;;
+      run)
+        flag_reqarg
+        JOB_FILTER="$FLAGARG"
+        shift "$FLAGSHIFT"
       '')
         shift "$FLAGSHIFT"
         break

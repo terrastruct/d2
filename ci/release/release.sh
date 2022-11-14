@@ -63,14 +63,6 @@ EOF
 }
 
 main() {
-  unset FLAG \
-    FLAGRAW \
-    FLAGARG \
-    FLAGSHIFT \
-    VERSION \
-    REBUILD \
-    PRERELEASE \
-    DRYRUN
   while :; do
     flag_parse "$@"
     case "$FLAG" in
