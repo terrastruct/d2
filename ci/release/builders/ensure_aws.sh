@@ -5,14 +5,13 @@ cd -- "$(dirname "$0")/../../.."
 
 help() {
   cat <<EOF
-usage: $0 [--dryrun]
+usage: $0 [--dry-run]
 
 $0 creates and ensures the d2 builders in AWS.
 EOF
 }
 
 main() {
-  unset DRYRUN 
   while :; do
     flag_parse "$@"
     case "$FLAG" in
@@ -20,9 +19,9 @@ main() {
         help
         return 0
         ;;
-      dryrun)
+      dry-run)
         flag_noarg && shift "$FLAGSHIFT"
-        DRYRUN=1
+        DRY_RUN=1
         ;;
       '')
         shift "$FLAGSHIFT"
