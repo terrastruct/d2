@@ -605,22 +605,25 @@ main() {
 
 install() {
   install_d2
-  if [ "${TALA-}" ]; then
+  if [ -n "${TALA-}" ]; then
     # Run in subshell to avoid overwriting VERSION.
-    ( install_tala )
+    TALA_VERSION="$( install_tala && echo "$VERSION" )"
   fi
 
   COLOR=2 header success
   log "d2-$VERSION-$OS-$ARCH has been successfully installed into $PREFIX"
+  if [ -n "${TALA-}" ]; then
+    log "tala-$TALA_VERSION-$OS-$ARCH has been successfully installed into $PREFIX"
+  fi
   if ! echo "$PATH" | grep -qF "$PREFIX/bin"; then
     logcat >&2 <<EOF
-Extend your path to use d2:
+Extend your \$PATH to use d2:
   export PATH=$PREFIX/bin:\$PATH
 Then run:
-  d2 --help
+  ${TALA+D2_LAYOUT=tala }d2 --help
 EOF
   else
-    log "Run d2 --help for usage."
+    log "  Run ${TALA+D2_LAYOUT=tala }d2 --help for usage."
   fi
   if ! manpath | grep -qF "$PREFIX/share/man"; then
     logcat >&2 <<EOF
@@ -629,9 +632,16 @@ Extend your \$MANPATH to view d2's manpages:
 Then run:
   man d2
 EOF
-  else
-    log "Run man d2 for the manpage."
+  if [ -n "${TALA-}" ]; then
+    log "  man d2plugin-tala"
   fi
+  else
+    log "  Run man d2 for detailed docs."
+    if [ -n "${TALA-}" ]; then
+      log "  Run man d2plugin-tala for detailed docs."
+    fi
+  fi
+
   log "Rerun the install script with --uninstall to uninstall"
 }
 
@@ -671,15 +681,15 @@ install_standalone_d2() {
 }
 
 install_tala() {
-  install_standalone_tala
-}
-
-install_standalone_tala() {
   REPO="${REPO_TALA:-terrastruct/TALA}"
   VERSION=$TALA
   RELEASE_INFO=
   fetch_release_info
+  header "installing tala-$VERSION"
+  install_standalone_tala
+}
 
+install_standalone_tala() {
   ARCHIVE="tala-$VERSION-$OS-$ARCH.tar.gz"
   log "installing standalone release $ARCHIVE from github"
 
@@ -699,8 +709,8 @@ install_standalone_tala() {
 
 uninstall() {
   if ! command -v d2 >/dev/null; then
-    echoerr "no version of d2 installed"
-    return 1
+    warn "no version of d2 installed"
+    return 0
   fi
   INSTALLED_VERSION="$(d2 --version)"
   if ! uninstall_d2; then
@@ -709,8 +719,8 @@ uninstall() {
   fi
   if [ "${TALA-}" ]; then
     if ! command -v d2plugin-tala >/dev/null; then
-      echoerr "no version of tala installed"
-      return 1
+      warn "no version of tala installed"
+      return 0
     fi
     INSTALLED_VERSION="$(d2plugin-tala --version)"
     if ! uninstall_tala; then
@@ -730,7 +740,8 @@ uninstall_standalone_d2() {
   log "uninstalling standalone release of d2-$INSTALLED_VERSION"
 
   if [ ! -e "$INSTALL_DIR/d2-$INSTALLED_VERSION" ]; then
-    echoerr "missing standalone install release directory $INSTALL_DIR/d2-$INSTALLED_VERSION"
+    warn "missing standalone install release directory $INSTALL_DIR/d2-$INSTALLED_VERSION"
+    warn "d2 have been installed via some other installation method."
     return 1
   fi
 
@@ -744,14 +755,16 @@ uninstall_standalone_d2() {
 }
 
 uninstall_tala() {
- uninstall_standalone_tala
+  header "uninstalling tala-$INSTALLED_VERSION"
+  uninstall_standalone_tala
 }
 
 uninstall_standalone_tala() {
   log "uninstalling standalone release tala-$INSTALLED_VERSION"
 
   if [ ! -e "$INSTALL_DIR/tala-$INSTALLED_VERSION" ]; then
-    echoerr "missing standalone install release directory $INSTALL_DIR/tala-$INSTALLED_VERSION"
+    warn "missing standalone install release directory $INSTALL_DIR/tala-$INSTALLED_VERSION"
+    warn "tala have been installed via some other installation method."
     return 1
   fi
 
@@ -766,10 +779,10 @@ uninstall_standalone_tala() {
 
 is_prefix_writable() {
   sh_c "mkdir -p '$INSTALL_DIR' 2>/dev/null" || true
-  # The reason for checking whether bin is writable specifically is that on macOS you have
+  # The reason for checking whether $INSTALL_DIR is writable is that on macOS you have
   # /usr/local owned by root but you don't need root to write to its subdirectories which
   # is all we want to do.
-  if [ ! -w "$PREFIX/bin" ]; then
+  if [ ! -w "$INSTALL_DIR" ]; then
     return 1
   fi
 }
