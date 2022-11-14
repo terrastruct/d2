@@ -115,18 +115,30 @@ build() {
   fi
 
   case $OS in
-    # macos)
-    #   ;;
+    macos)
+      case $ARCH in
+        amd64)
+          RHOST=$TSTRUCT_MACOS_AMD64_BUILDER build_rhost_macos
+          ;;
+        arm64)
+          RHOST=$TSTRUCT_MACOS_ARM64_BUILDER build_rhost_macos
+          ;;
+        *)
+          warn "no builder for OS=$OS ARCH=$ARCH, building locally..."
+          build_local
+          ;;
+      esac
+      ;;
     linux)
       case $ARCH in
         amd64)
-          RHOST=$TSTRUCT_LINUX_AMD64_BUILDER build_rhost
+          RHOST=$TSTRUCT_LINUX_AMD64_BUILDER build_rhost_linux
           ;;
         arm64)
-          RHOST=$TSTRUCT_LINUX_ARM64_BUILDER build_rhost
+          RHOST=$TSTRUCT_LINUX_ARM64_BUILDER build_rhost_linux
           ;;
         *)
-          warn "no builder for OS=$OS, building locally..."
+          warn "no builder for OS=$OS ARCH=$ARCH, building locally..."
           build_local
           ;;
       esac
@@ -148,7 +160,21 @@ build_local() {
   sh_c ./ci/release/_build.sh
 }
 
-build_rhost() {
+build_rhost_macos() {
+  sh_c ssh "$RHOST" mkdir -p src
+  sh_c rsync --archive --human-readable --delete ./ "$RHOST:src/d2/"
+  sh_c ssh -tttt "$RHOST" "DRY_RUN=${DRY_RUN-} \
+HW_BUILD_DIR=$HW_BUILD_DIR \
+VERSION=$VERSION \
+OS=$OS \
+ARCH=$ARCH \
+ARCHIVE=$ARCHIVE \
+TERM=$TERM \
+./src/d2/ci/release/_build.sh"
+  sh_c rsync --archive --human-readable "$RHOST:src/d2/$ARCHIVE" "$ARCHIVE"
+}
+
+build_rhost_linux() {
   sh_c ssh "$RHOST" mkdir -p src
   sh_c rsync --archive --human-readable --delete ./ "$RHOST:src/d2/"
   sh_c ssh -tttt "$RHOST" "DRY_RUN=${DRY_RUN-} \
