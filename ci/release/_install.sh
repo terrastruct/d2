@@ -185,12 +185,22 @@ install() {
   if ! echo "$PATH" | grep -qF "$PREFIX/bin"; then
     logcat >&2 <<EOF
 Extend your path to use d2:
-  PATH=$PREFIX/bin:\$PATH
+  export PATH=$PREFIX/bin:\$PATH
 Then run:
   d2 --help
 EOF
   else
-    log "You may now run d2 --help"
+    log "You may run d2 --help"
+  fi
+  if ! manpath | grep -qF "$PREFIX/share/man"; then
+    logcat >&2 <<EOF
+Extend your \$MANPATH to view d2's manpages:
+  export MANPATH=$PREFIX/share/man\${MANPATH+:\$MANPATH}
+Then run:
+  man d2
+EOF
+  else
+    log "You may run man d2 to view documentation."
   fi
 }
 

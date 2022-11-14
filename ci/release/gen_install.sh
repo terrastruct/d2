@@ -3,6 +3,7 @@ set -eu
 cd -- "$(dirname "$0")/../.."
 . ./ci/sub/lib.sh
 
+chmod +w ./install.sh
 cat >./install.sh <<EOF
 #!/bin/sh
 set -eu
@@ -35,3 +36,4 @@ sh_c cat \
   \| sed "-e'/^\. /d'" \>\> ./install.sh
 sh_c cat ./ci/release/_install.sh \
   \| sed -n "'/cd -- \"\$(dirname/,/cd -/!p'" \>\> install.sh
+chmod -w install.sh
