@@ -156,15 +156,7 @@ main() {
   INSTALL_DIR=$PREFIX/lib/d2
 
   if [ -n "${UNINSTALL-}" ]; then
-    if ! command -v d2 >/dev/null; then
-      echoerr "no version of d2 installed"
-      return 1
-    fi
-    INSTALLED_VERSION="$(d2 version)"
-    if ! uninstall; then
-      echoerr "failed to uninstall $INSTALLED_VERSION"
-      return 1
-    fi
+    uninstall
     return 0
   fi
 
@@ -173,24 +165,13 @@ main() {
     fetch_release_info
   fi
 
-  if command -v d2 >/dev/null; then
-    INSTALLED_VERSION="$(d2 version)"
-    if [ ! "${FORCE-}" -a "$VERSION" = "$INSTALLED_VERSION" ]; then
-      log "skipping installation as version $VERSION is already installed."
-      return 0
-    fi
-    log "uninstalling $INSTALLED_VERSION to install $VERSION"
-    if ! uninstall; then
-      warn "failed to uninstall $INSTALLED_VERSION"
-    fi
-  fi
   install
 }
 
 install() {
-  standalone_install
+  install_d2
   if [ "${TALA-}" ]; then
-    standalone_install_tala
+    install_tala
   fi
 
   COLOR=2 header success
@@ -207,14 +188,23 @@ EOF
   fi
 }
 
-uninstall() {
-  standalone_uninstall
-  if [ "${TALA-}" ]; then
-    standalone_uninstall_tala
+install_d2() {
+  if command -v d2 >/dev/null; then
+    INSTALLED_VERSION="$(d2 version)"
+    if [ ! "${FORCE-}" -a "$VERSION" = "$INSTALLED_VERSION" ]; then
+      log "skipping installation as version $VERSION is already installed."
+      return 0
+    fi
+    log "uninstalling $INSTALLED_VERSION to install $VERSION"
+    if ! uninstall_d2; then
+      warn "failed to uninstall $INSTALLED_VERSION"
+    fi
   fi
+
+  install_standalone_d2
 }
 
-standalone_install() {
+install_standalone_d2() {
   ARCHIVE="d2-$VERSION-$OS-$ARCH.tar.gz"
   header "installing standalone release $ARCHIVE from github"
 
@@ -232,11 +222,66 @@ standalone_install() {
   "$sh_c" sh -c "'cd \"$INSTALL_DIR/d2-$VERSION\" && make install PREFIX=\"$PREFIX\"'"
 }
 
-standalone_uninstall() {
+install_tala() {
+  install_standalone_tala
+}
+
+install_standalone_tala() {
+  REPO="${REPO_TALA:-terrastruct/TALA}"
+  VERSION=${TALA:-latest}
+  RELEASE_INFO=
+  fetch_release_info
+
+  ARCHIVE="d2plugin-tala-$VERSION-$OS-$ARCH.tar.gz"
+  header "installing standalone release $ARCHIVE from github"
+
+  asset_line=$(cat "$RELEASE_INFO" | grep -n "$ARCHIVE" | cut -d: -f1 | head -n1)
+  asset_url=$(sed -n $((asset_line-3))p "$RELEASE_INFO" | sed 's/^.*: "\(.*\)",$/\1/g')
+
+  fetch_gh "$asset_url" "$CACHE_DIR/$ARCHIVE" 'application/octet-stream'
+
+  sh_c="sh_c"
+  if ! is_prefix_writable; then
+    sh_c="sudo_sh_c"
+  fi
+
+  "$sh_c" tar -C "$INSTALL_DIR" -xzf "$CACHE_DIR/$ARCHIVE"
+  "$sh_c" sh -c "'cd \"$INSTALL_DIR/d2plugin-tala-$VERSION\" && make install PREFIX=\"$PREFIX\"'"
+}
+
+uninstall() {
+  if ! command -v d2 >/dev/null; then
+    echoerr "no version of d2 installed"
+    return 1
+  fi
+  INSTALLED_VERSION="$(d2 --version)"
+  if ! uninstall_d2; then
+    echoerr "failed to uninstall $INSTALLED_VERSION"
+    return 1
+  fi
+  if [ "${TALA-}" ]; then
+    if ! command -v d2plugin-tala >/dev/null; then
+      echoerr "no version of d2plugin-tala installed"
+      return 1
+    fi
+    INSTALLED_VERSION="$(d2plugin-tala --version)"
+    if ! uninstall_tala; then
+      echoerr "failed to uninstall d2plugin-tala $INSTALLED_VERSION"
+      return 1
+    fi
+  fi
+  return 0
+}
+
+uninstall_d2() {
+  uninstall_standalone_d2
+}
+
+uninstall_standalone_d2() {
   header "uninstalling standalone release d2-$INSTALLED_VERSION"
 
   if [ ! -e "$INSTALL_DIR/d2-$INSTALLED_VERSION" ]; then
-    echoerr "no installed release directory for d2-$INSTALLED_VERSION in $INSTALL_DIR/d2-$INSTALLED_VERSION"
+    echoerr "missing standalone install release directory $INSTALL_DIR/d2-$INSTALLED_VERSION"
     return 1
   fi
 
@@ -247,6 +292,27 @@ standalone_uninstall() {
 
   "$sh_c" sh -c "'cd \"$INSTALL_DIR/d2-$INSTALLED_VERSION\" && make uninstall PREFIX=\"$PREFIX\"'"
   "$sh_c" rm -rf "$INSTALL_DIR/d2-$INSTALLED_VERSION"
+}
+
+uninstall_tala() {
+ uninstall_standalone_tala
+}
+
+uninstall_standalone_tala() {
+  header "uninstalling standalone release d2plugin-tala-$INSTALLED_VERSION"
+
+  if [ ! -e "$INSTALL_DIR/d2plugin-tala-$INSTALLED_VERSION" ]; then
+    echoerr "missing standalone install release directory $INSTALL_DIR/d2plugin-tala-$INSTALLED_VERSION"
+    return 1
+  fi
+
+  sh_c="sh_c"
+  if ! is_prefix_writable; then
+    sh_c="sudo_sh_c"
+  fi
+
+  "$sh_c" sh -c "'cd \"$INSTALL_DIR/d2plugin-tala-$INSTALLED_VERSION\" && make uninstall PREFIX=\"$PREFIX\"'"
+  "$sh_c" rm -rf "$INSTALL_DIR/d2plugin-tala-$INSTALLED_VERSION"
 }
 
 is_prefix_writable() {
