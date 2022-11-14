@@ -15,6 +15,7 @@ set -eu
 # - ./ci/sub/lib/rand.sh
 # - ./ci/sub/lib/log.sh
 # - ./ci/sub/lib/flag.sh
+# - ./ci/sub/lib/release.sh
 # - ./ci/release/_install.sh
 #
 # The last of which implements the installation logic.
