@@ -15,7 +15,7 @@ help() {
 
   cat <<EOF
 usage: $arg0 [--dry-run] [--version vX.X.X] [--edge] [--method detect] [--prefix /usr/local]
-  [--tala] [--tala-version vX.X.X] [--force] [--uninstall]
+  [--tala latest] [--force] [--uninstall]
 
 install.sh automates the installation of D2 onto your system. It currently only supports
 the installation of standalone releases from GitHub. If you pass --edge, it will clone the
@@ -55,17 +55,18 @@ Flags:
   path in \$PATH to execute the d2 binary. For example, if my prefix directory is
   /usr/local then my \$PATH must contain /usr/local/bin.
 
---tala
+--tala [latest]
   Install Terrastruct's closed source TALA for improved layouts.
   See https://github.com/terrastruct/TALA
-
---tala-version vX.X.X
-  Install the passed version of tala instead of latest.
+  It optionally takes an argument of the TALA version to install.
+  Installation obeys all other flags, just like the installation of d2. For example,
+  the d2plugin-tala binary will be installed into /usr/local/bin/d2plugin-tala
 
 --force:
   Force installation over the existing version even if they match. It will attempt a
-  uninstall first before installing the new version. The release assets will be deleted
-  from ~/.cache/d2/release and ~/.local/share/d2/release
+  uninstall first before installing the new version. The installed release tree
+  will be deleted from /usr/local/lib/d2/d2-<VERSION> but the release archive in
+  ~/.cache/d2/release will remain.
 
 --uninstall:
   Uninstall the installed version of d2. The --method and --prefix flags must be the same
@@ -74,8 +75,7 @@ Flags:
   package manager to uninstall instead.
 
 All downloaded archives are cached into ~/.cache/d2/release. use \$XDG_CACHE_HOME to change
-path of the cached assets. Archives will be unarchived into ~/.local/share/d2/release.
-Use \$XDG_DATA_HOME to adjust the path of the unarchived releases.
+path of the cached assets. Release archives are unarchived into /usr/local/lib/d2/d2-<VERSION>
 
 note: Deleting the unarchived releases will cause --uninstall to stop working.
 
@@ -105,21 +105,21 @@ main() {
         flag_nonemptyarg && shift "$FLAGSHIFT"
         VERSION=$FLAGARG
         ;;
-      tala-version)
-        flag_nonemptyarg && shift "$FLAGSHIFT"
-        TALA_VERSION=$FLAGARG
+      tala)
+        shift "$FLAGSHIFT"
+        TALA=${FLAGARG:-latest}
         ;;
       edge)
         flag_noarg && shift "$FLAGSHIFT"
         EDGE=1
         echoerr "$FLAGRAW is currently unimplemented"
-        exit 1
+        return 1
         ;;
       method)
         flag_nonemptyarg && shift "$FLAGSHIFT"
         METHOD=$FLAGARG
         echoerr "$FLAGRAW is currently unimplemented"
-        exit 1
+        return 1
         ;;
       prefix)
         flag_nonemptyarg && shift "$FLAGSHIFT"
@@ -153,8 +153,7 @@ main() {
   ARCH=$(arch)
   CACHE_DIR=$(cache_dir)
   mkdir -p "$CACHE_DIR"
-  DATA_DIR=$(data_dir)
-  mkdir -p "$DATA_DIR"
+  INSTALL_DIR=$PREFIX/lib/d2
 
   if [ -n "${UNINSTALL-}" ]; then
     if ! command -v d2 >/dev/null; then
@@ -162,7 +161,7 @@ main() {
       return 1
     fi
     INSTALLED_VERSION="$(d2 version)"
-    if ! uninstall_standalone; then
+    if ! uninstall; then
       echoerr "failed to uninstall $INSTALLED_VERSION"
       return 1
     fi
@@ -171,10 +170,8 @@ main() {
 
   VERSION=${VERSION:-latest}
   if [ "$VERSION" = latest ]; then
-    VERSION=$(fetch_version_info)
+    fetch_release_info
   fi
-
-  # TODO: --tala, --tala-version
 
   if command -v d2 >/dev/null; then
     INSTALLED_VERSION="$(d2 version)"
@@ -183,56 +180,77 @@ main() {
       return 0
     fi
     log "uninstalling $INSTALLED_VERSION to install $VERSION"
-    if ! uninstall_standalone; then
+    if ! uninstall; then
       warn "failed to uninstall $INSTALLED_VERSION"
     fi
   fi
-
-  install_standalone
+  install
 }
 
-install_standalone() {
+install() {
+  standalone_install
+  if [ "${TALA-}" ]; then
+    standalone_install_tala
+  fi
+
+  COLOR=2 header success
+  log "Standalone release $ARCHIVE has been successfully installed into $PREFIX"
+  if ! echo "$PATH" | grep -qF "$PREFIX/bin"; then
+    logcat >&2 <<EOF
+Extend your path to use d2:
+  PATH=$PREFIX/bin:\$PATH
+Then run:
+  d2 --help
+EOF
+  else
+    log "You may now run d2 --help"
+  fi
+}
+
+uninstall() {
+  standalone_uninstall
+  if [ "${TALA-}" ]; then
+    standalone_uninstall_tala
+  fi
+}
+
+standalone_install() {
   ARCHIVE="d2-$VERSION-$OS-$ARCH.tar.gz"
-  log "installing standalone release $ARCHIVE from github"
+  header "installing standalone release $ARCHIVE from github"
 
-  VERSION=$(fetch_version_info)
-  asset_line=$(cat "$CACHE_DIR/$VERSION.json" | grep -n "$ARCHIVE" | cut -d: -f1 | head -n1)
-  asset_url=$(sed -n $((asset_line-3))p "$CACHE_DIR/$VERSION.json" | sed 's/^.*: "\(.*\)",$/\1/g')
+  fetch_release_info
+  asset_line=$(cat "$RELEASE_INFO" | grep -n "$ARCHIVE" | cut -d: -f1 | head -n1)
+  asset_url=$(sed -n $((asset_line-3))p "$RELEASE_INFO" | sed 's/^.*: "\(.*\)",$/\1/g')
   fetch_gh "$asset_url" "$CACHE_DIR/$ARCHIVE" 'application/octet-stream'
-
-  sh_c tar -C "$DATA_DIR" -xzf "$CACHE_DIR/$ARCHIVE"
-  sh_c cd "$DATA_DIR/d2-$VERSION"
 
   sh_c="sh_c"
   if ! is_prefix_writable; then
     sh_c="sudo_sh_c"
   fi
-  "$sh_c" make install PREFIX="$PREFIX"
+
+  "$sh_c" tar -C "$INSTALL_DIR" -xzf "$CACHE_DIR/$ARCHIVE"
+  "$sh_c" sh -c "'cd \"$INSTALL_DIR/d2-$VERSION\" && make install PREFIX=\"$PREFIX\"'"
 }
 
-uninstall_standalone() {
-  log "uninstalling standalone release d2-$INSTALLED_VERSION"
+standalone_uninstall() {
+  header "uninstalling standalone release d2-$INSTALLED_VERSION"
 
-  if [ ! -e "$DATA_DIR/d2-$INSTALLED_VERSION" ]; then
-    echoerr "no standalone release directory for d2-$INSTALLED_VERSION"
+  if [ ! -e "$INSTALL_DIR/d2-$INSTALLED_VERSION" ]; then
+    echoerr "no installed release directory for d2-$INSTALLED_VERSION in $INSTALL_DIR/d2-$INSTALLED_VERSION"
     return 1
   fi
 
-  sh_c cd "$DATA_DIR/d2-$INSTALLED_VERSION"
-
   sh_c="sh_c"
   if ! is_prefix_writable; then
     sh_c="sudo_sh_c"
   fi
-  "$sh_c" make uninstall PREFIX="$PREFIX"
 
-  sh_c rm -rf "$DATA_DIR/d2-$INSTALLED_VERSION"
-  sh_c rm -rf "$CACHE_DIR/$INSTALLED_VERSION.json"
-  sh_c rm -rf "$CACHE_DIR/d2-$INSTALLED_VERSION-$OS-$ARCH.tar.gz"
+  "$sh_c" sh -c "'cd \"$INSTALL_DIR/d2-$INSTALLED_VERSION\" && make uninstall PREFIX=\"$PREFIX\"'"
+  "$sh_c" rm -rf "$INSTALL_DIR/d2-$INSTALLED_VERSION"
 }
 
 is_prefix_writable() {
-  sh_c mkdir -p "$PREFIX" 2>/dev/null || true
+  sh_c "mkdir -p '$INSTALL_DIR' 2>/dev/null" || true
   # The reason for checking whether bin is writable specifically is that on macOS you have
   # /usr/local owned by root but you don't need root to write to its subdirectories which
   # is all we want to do.
@@ -251,37 +269,21 @@ cache_dir() {
   fi
 }
 
-data_dir() {
-  if [ -n "${XDG_DATA_HOME-}" ]; then
-    echo "$XDG_DATA_HOME/d2/release"
-  elif [ -n "${HOME-}" ]; then
-    echo "$HOME/.local/d2/release"
-  else
-    echo "/tmp/d2-data/release"
-  fi
-}
-
-fetch_version_info() {
-  req_version=$VERSION
-  if [ -e "$CACHE_DIR/$req_version.json" ]; then
-    echo "$VERSION"
+fetch_release_info() {
+  if [ -n "${RELEASE_INFO-}" ]; then
     return 0
   fi
-  log "fetching info on version $req_version"
 
-  rm -f "$CACHE_DIR/req_version.json"
-  if [ "$req_version" = latest ]; then
-    release_info_url="https://api.github.com/repos/$REPO/releases/$req_version"
+  log "fetching info on version $VERSION"
+  RELEASE_INFO=$(mktemp -d)/release-info.json
+  if [ "$VERSION" = latest ]; then
+    release_info_url="https://api.github.com/repos/$REPO/releases/$VERSION"
   else
-    release_info_url="https://api.github.com/repos/$REPO/releases/tags/$req_version"
+    release_info_url="https://api.github.com/repos/$REPO/releases/tags/$VERSION"
   fi
-  fetch_gh "$release_info_url" "$CACHE_DIR/$req_version.json" \
+  fetch_gh "$release_info_url" "$RELEASE_INFO" \
     'application/json'
-  VERSION=$(cat "$CACHE_DIR/$req_version.json" | grep -m1 tag_name | sed 's/^.*: "\(.*\)",$/\1/g')
-  if [ "$req_version" = latest ]; then
-    sh_c mv "$CACHE_DIR/$req_version.json" "$CACHE_DIR/$VERSION.json"
-  fi
-  echo "$VERSION"
+  VERSION=$(cat "$RELEASE_INFO" | grep -m1 tag_name | sed 's/^.*: "\(.*\)",$/\1/g')
 }
 
 curl_gh() {
