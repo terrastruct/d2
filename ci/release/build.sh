@@ -5,7 +5,7 @@ cd -- "$(dirname "$0")/../.."
 
 help() {
   cat <<EOF
-usage: $0 [--rebuild] [--local] [--dryrun]
+usage: $0 [--rebuild] [--local] [--dryrun] [--run=regex] [--host-only]
 
 $0 builds D2 release archives into ./ci/release/build/<version>/d2-<version>.tar.gz
 
@@ -14,15 +14,24 @@ commit if available.
 
 Flags:
 
---rebuild: By default build.sh will avoid rebuilding finished assets if they
-           already exist but if you changed something and need to force rebuild, use
-           this flag.
---local:   By default build.sh uses \$TSTRUCT_MACOS_AMD64_BUILDER,
-           \$TSTRUCT_MACOS_ARM64_BUILDER, \$TSTRUCT_LINUX_AMD64_BUILDER and
-           \$TSTRUCT_LINUX_ARM64_BUILDER to build the release archives. It's required for
-           now due to the following issue: https://github.com/terrastruct/d2/issues/31
-           With --local, build.sh will cross compile locally.
-           warning: This is only for testing purposes, do not use in production!
+--rebuild
+  By default build.sh will avoid rebuilding finished assets if they already exist but if you
+  changed something and need to force rebuild, use this flag.
+
+--local
+  By default build.sh uses \$TSTRUCT_MACOS_AMD64_BUILDER, \$TSTRUCT_MACOS_ARM64_BUILDER,
+  \$TSTRUCT_LINUX_AMD64_BUILDER and \$TSTRUCT_LINUX_ARM64_BUILDER to build the release
+  archives. It's required for now due to the following issue:
+  https://github.com/terrastruct/d2/issues/31 With --local, build.sh will cross compile
+  locally. warning: This is only for testing purposes, do not use in production!
+
+--host-only
+  Use to build the release archive for the host OS-ARCH only. All logging is done to stderr
+  so in a script you can read from stdout to get the path to the release archive.
+
+--run=regex
+  Use to run only the OS-ARCH jobs that match the given regex. e.g. --run=linux only runs
+  the linux jobs. --run=linux-amd64 only runs the linux-amd64 job.
 EOF
 }
 
@@ -52,6 +61,10 @@ main() {
         flag_reqarg && shift "$FLAGSHIFT"
         JOBFILTER="$FLAGARG"
         ;;
+      host-only)
+        flag_noarg && shift "$FLAGSHIFT"
+        HOST_ONLY=1
+        ;;
       '')
         shift "$FLAGSHIFT"
         break
@@ -64,6 +77,12 @@ main() {
 
   if [ $# -gt 0 ]; then
     flag_errusage "no arguments are accepted"
+  fi
+
+  if [ -n "${HOST_ONLY-}" ]; then
+    runjob $(os)-$(arch) "OS=$(os) ARCH=$(arch) build" &
+    waitjobs
+    return 0
   fi
 
   runjob linux-amd64 'OS=linux ARCH=amd64 build' &
@@ -99,13 +118,13 @@ build() {
           RHOST=$TSTRUCT_LINUX_ARM64_BUILDER build_rhost
           ;;
         *)
-          COLOR=3 logp warn "no builder for OS=$OS, building locally..."
+          warn "no builder for OS=$OS, building locally..."
           build_local
           ;;
       esac
       ;;
     *)
-      COLOR=3 logp warn "no builder for OS=$OS, building locally..."
+      warn "no builder for OS=$OS, building locally..."
       build_local
       ;;
   esac
