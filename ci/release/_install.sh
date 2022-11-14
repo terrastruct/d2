@@ -148,9 +148,13 @@ main() {
   fi
 
   REPO=${REPO:-terrastruct/d2}
-  PREFIX=${PREFIX:-/usr/local}
   OS=$(os)
   ARCH=$(arch)
+  if [ -z "${PREFIX-}" -a "$OS" = macos -a "$ARCH" = arm64 ]; then
+    # M1 Mac's do not allow modifications to /usr/local even with sudo.
+    PREFIX=$HOME/.local
+  fi
+  PREFIX=${PREFIX:-/usr/local}
   CACHE_DIR=$(cache_dir)
   mkdir -p "$CACHE_DIR"
   INSTALL_DIR=$PREFIX/lib/d2
@@ -212,8 +216,8 @@ install_standalone_d2() {
   log "installing standalone release $ARCHIVE from github"
 
   fetch_release_info
-  asset_line=$(cat "$RELEASE_INFO" | grep -n "$ARCHIVE" | cut -d: -f1 | head -n1)
-  asset_url=$(sed -n $((asset_line-3))p "$RELEASE_INFO" | sed 's/^.*: "\(.*\)",$/\1/g')
+  asset_line=$(sh_c 'cat "$RELEASE_INFO" | grep -n "$ARCHIVE" | cut -d: -f1 | head -n1')
+  asset_url=$(sh_c 'sed -n $((asset_line-3))p "$RELEASE_INFO" | sed "s/^.*: \"\(.*\)\",$/\1/g"')
   fetch_gh "$asset_url" "$CACHE_DIR/$ARCHIVE" 'application/octet-stream'
 
   sh_c="sh_c"
@@ -238,8 +242,8 @@ install_standalone_tala() {
   ARCHIVE="tala-$VERSION-$OS-$ARCH.tar.gz"
   log "installing standalone release $ARCHIVE from github"
 
-  asset_line=$(cat "$RELEASE_INFO" | grep -n "$ARCHIVE" | cut -d: -f1 | head -n1)
-  asset_url=$(sed -n $((asset_line-3))p "$RELEASE_INFO" | sed 's/^.*: "\(.*\)",$/\1/g')
+  asset_line=$(sh_c 'cat "$RELEASE_INFO" | grep -n "$ARCHIVE" | cut -d: -f1 | head -n1')
+  asset_url=$(sh_c 'sed -n $((asset_line-3))p "$RELEASE_INFO" | sed "s/^.*: \"\(.*\)\",$/\1/g"')
 
   fetch_gh "$asset_url" "$CACHE_DIR/$ARCHIVE" 'application/octet-stream'
 
