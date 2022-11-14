@@ -5,7 +5,7 @@ cd -- "$(dirname "$0")/../.."
 
 help() {
   cat <<EOF
-usage: $0 [--rebuild] [--local] [--dryrun] [--run=regex] [--host-only]
+usage: $0 [--rebuild] [--local] [--dry-run] [--run=regex] [--host-only]
 
 $0 builds D2 release archives into ./ci/release/build/<version>/d2-<version>.tar.gz
 
@@ -53,9 +53,9 @@ main() {
         flag_noarg && shift "$FLAGSHIFT"
         LOCAL=1
         ;;
-      dryrun)
+      dry-run)
         flag_noarg && shift "$FLAGSHIFT"
-        DRYRUN=1
+        DRY_RUN=1
         ;;
       run)
         flag_reqarg && shift "$FLAGSHIFT"
@@ -131,7 +131,7 @@ build() {
 }
 
 build_local() {
-  export DRYRUN \
+  export DRY_RUN \
     HW_BUILD_DIR \
     VERSION \
     OS \
@@ -143,7 +143,7 @@ build_local() {
 build_rhost() {
   sh_c ssh "$RHOST" mkdir -p src
   sh_c rsync --archive --human-readable --delete ./ "$RHOST:src/d2/"
-  sh_c ssh -tttt "$RHOST" "DRYRUN=${DRYRUN-} \
+  sh_c ssh -tttt "$RHOST" "DRY_RUN=${DRY_RUN-} \
 HW_BUILD_DIR=$HW_BUILD_DIR \
 VERSION=$VERSION \
 OS=$OS \

@@ -20,7 +20,7 @@ Flags:
                with changelogs/template.md and instead keep it the same as
                changelogs/v0.0.99-alpha.1.md. This is because you want to maintain the
                changelog entries for the eventual final release.
---dryrun: Print the commands that would be ran without executing them.
+--dry-run: Print the commands that would be ran without executing them.
 
 Process:
 
@@ -78,9 +78,9 @@ main() {
         flag_noarg && shift "$FLAGSHIFT"
         PRERELEASE=1
         ;;
-      dryrun)
+      dry-run)
         flag_noarg && shift "$FLAGSHIFT"
-        DRYRUN=1
+        DRY_RUN=1
         ;;
       '')
         shift "$FLAGSHIFT"
