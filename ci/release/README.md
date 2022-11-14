@@ -14,10 +14,6 @@ it depends on from ../sub/lib.
 - ./release.sh is the top level script to generate a new release.
   Run with --help for usage.
 
-### upload_assets.sh
-
-- Called by ./release.sh to upload the assets for the release in $VERSION
-
 ## build.sh
 
 - ./build.sh builds the release archives for each platform into ./build/<VERSION>/*.tar.gz
