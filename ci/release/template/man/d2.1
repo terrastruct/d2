@@ -1,0 +1,62 @@
+.Dd $Mdocdate$
+.Dt d2 1
+.Os
+.Sh NAME
+.Nm d2
+.Nd compiles and renders d2 diagrams into svgs.
+.Sh SYNOPSIS
+.Nm d2
+.Op Fl -watch Ar false
+.Op Fl -theme Em 0
+.Ar file.d2
+.Op Ar file.svg
+.Nm d2
+.Op Fl -watch Ar false
+.Op Fl -theme Em 0
+.Ar file.d2
+.Op Ar ...
+.Nm d2
+.Ar layout Op Ar name
+.Sh DESCRIPTION
+.Nm
+compiles and renders
+.Ar file.d2
+to
+.Ar file.svg
+.Ns .
+.Pp
+Pass - to have
+.Nm
+read from stdin or write to stdout.
+.Pp
+See more docs, the source code and license at
+.Lk https://oss.terrastruct.com/d2
+.Sh OPTIONS
+.Bl -tag -width Fl
+.It Fl w , -watch Ar false
+Watch for changes to input and live reload. Use
+.Ev $PORT and Ev $HOST to specify the listening address.
+.Ev $D2_PORT and $D2_HOST are also accepted and take priority. Default is localhost:0
+.It Fl t , -theme Ar 0
+Set the diagram theme to the passed integer. For a list of available options, see
+.Lk https://oss.terrastruct.com/d2
+.It Fl b , -bundle Ar true
+Bundle all assets and layers into the output svg.
+.It Fl d , -debug
+Print debug logs.
+.It Fl h , -help
+Print usage information and exit.
+.It Fl v , -version
+Print version information and exit.
+.El
+.Sh SUBCOMMANDS
+.Bl -tag -width Fl
+.It Ar layout
+Lists available layout engine options with short help.
+.It Ar layout Op Ar name
+Display long help for a particular layout engine.
+.El
+.Sh SEE ALSO
+.Xr d2plugin-tala 1
+.Sh AUTHORS
+Terrastruct Inc.
