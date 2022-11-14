@@ -242,6 +242,7 @@ install_standalone_d2() {
     sh_c="sudo_sh_c"
   fi
 
+  "$sh_c" mkdir -p "'$INSTALL_DIR'"
   "$sh_c" tar -C "$INSTALL_DIR" -xzf "$CACHE_DIR/$ARCHIVE"
   "$sh_c" sh -c "'cd \"$INSTALL_DIR/d2-$VERSION\" && make install PREFIX=\"$PREFIX\"'"
 }
@@ -269,6 +270,7 @@ install_standalone_tala() {
     sh_c="sudo_sh_c"
   fi
 
+  "$sh_c" mkdir -p "'$INSTALL_DIR'"
   "$sh_c" tar -C "$INSTALL_DIR" -xzf "$CACHE_DIR/$ARCHIVE"
   "$sh_c" sh -c "'cd \"$INSTALL_DIR/tala-$VERSION\" && make install PREFIX=\"$PREFIX\"'"
 }
