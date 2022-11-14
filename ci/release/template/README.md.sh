@@ -11,16 +11,18 @@ version: $VERSION
 ## Install
 
 \`\`\`sh
-make install PREFIX=/usr/local DRY_RUN=1
+make install DRY_RUN=1
 # If it looks right, run:
-make install PREFIX=/usr/local
+make install
 \`\`\`
+
+Pass \`PREFIX=whatever\` to change the installation prefix.
 
 ## Uninstall
 
 \`\`\`sh
-make uninstall PREFIX=/usr/local DRY_RUN=1
+make uninstall DRY_RUN=1
 # If it looks right, run:
-make uninstall PREFIX=/usr/local
+make uninstall
 \`\`\`
 EOF
