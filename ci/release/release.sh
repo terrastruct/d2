@@ -71,19 +71,16 @@ main() {
         return 0
         ;;
       rebuild)
-        flag_noarg
+        flag_noarg && shift "$FLAGSHIFT"
         REBUILD=1
-        shift "$FLAGSHIFT"
         ;;
       prerelease)
-        flag_noarg
+        flag_noarg && shift "$FLAGSHIFT"
         PRERELEASE=1
-        shift "$FLAGSHIFT"
         ;;
       dryrun)
-        flag_noarg
+        flag_noarg && shift "$FLAGSHIFT"
         DRYRUN=1
-        shift "$FLAGSHIFT"
         ;;
       '')
         shift "$FLAGSHIFT"

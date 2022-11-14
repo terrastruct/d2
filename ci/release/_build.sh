@@ -8,12 +8,12 @@ sh_c rsync --recursive --perms --delete \
   --human-readable --copy-links ./ci/release/template/ "$HW_BUILD_DIR/"
 VERSION=$VERSION sh_c eval "'$HW_BUILD_DIR/README.md.sh'" \> "'$HW_BUILD_DIR/README.md'"
 sh_c rm -f "$HW_BUILD_DIR/README.md.sh"
-sh_c find "$HW_BUILD_DIR" -exec touch {} \;
+sh_c find "$HW_BUILD_DIR" -exec touch {} \\\;
 
 export GOOS=$(goos "$OS")
 export GOARCH="$ARCH"
 sh_c mkdir -p "$HW_BUILD_DIR/bin"
-sh_c go build -ldflags "-X oss.terrastruct.com/d2/lib/version.Version=$VERSION" \
+sh_c go build -ldflags "'-X oss.terrastruct.com/d2/lib/version.Version=$VERSION'" \
   -o "$HW_BUILD_DIR/bin/d2" ./cmd/d2
 
 sh_c tar czf "$ARCHIVE" "$HW_BUILD_DIR"
