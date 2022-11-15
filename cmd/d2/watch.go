@@ -42,6 +42,7 @@ type watcher struct {
 
 	ms           *xmain.State
 	layoutPlugin d2plugin.Plugin
+	themeID      int64
 	inputPath    string
 	outputPath   string
 
@@ -68,7 +69,7 @@ type compileResult struct {
 	SVG string `json:"svg"`
 }
 
-func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plugin, inputPath, outputPath string) (*watcher, error) {
+func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plugin, themeID int64, inputPath, outputPath string) (*watcher, error) {
 	ctx, cancel := context.WithCancel(ctx)
 
 	w := &watcher{
@@ -78,6 +79,7 @@ func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plug
 
 		ms:           ms,
 		layoutPlugin: layoutPlugin,
+		themeID:      themeID,
 		inputPath:    inputPath,
 		outputPath:   outputPath,
 
@@ -325,7 +327,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			recompiledPrefix = "re"
 		}
 
-		b, err := compile(ctx, w.ms, w.layoutPlugin, w.inputPath, w.outputPath)
+		b, err := compile(ctx, w.ms, w.layoutPlugin, w.themeID, w.inputPath, w.outputPath)
 		if err != nil {
 			err = fmt.Errorf("failed to %scompile: %w", recompiledPrefix, err)
 			w.ms.Log.Error.Print(err)
