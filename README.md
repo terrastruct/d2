@@ -21,22 +21,22 @@
 <!-- toc -->
 
 - [Quickstart (CLI)](#quickstart-cli)
-  * [MacOS](#macos)
-  * [Linux/Windows](#linuxwindows)
+  * [Install from source](#install-from-source)
+  * [Install](#install)
 - [Quickstart (library)](#quickstart-library)
 - [Themes](#themes)
 - [Fonts](#fonts)
 - [Export file types](#export-file-types)
 - [Language tooling](#language-tooling)
-- [Layout engine](#layout-engine)
+- [Plugins](#plugins)
 - [Comparison](#comparison)
 - [Contributing](#contributing)
 - [License](#license)
-- [Dependencies](#dependencies)
 - [Related](#related)
   * [VSCode extension](#vscode-extension)
   * [Vim extension](#vim-extension)
   * [Misc](#misc)
+- [FAQ](#faq)
 
 <!-- tocstop -->
 
@@ -98,11 +98,11 @@ Go programs.
 
 ```go
 import (
-	"github.com/terrastruct/d2/d2compiler"
-	"github.com/terrastruct/d2/d2exporter"
-	"github.com/terrastruct/d2/d2layouts/d2dagrelayout"
-	"github.com/terrastruct/d2/d2renderers/textmeasure"
-	"github.com/terrastruct/d2/d2themes/d2themescatalog"
+  "github.com/terrastruct/d2/d2compiler"
+  "github.com/terrastruct/d2/d2exporter"
+  "github.com/terrastruct/d2/d2layouts/d2dagrelayout"
+  "github.com/terrastruct/d2/d2renderers/textmeasure"
+  "github.com/terrastruct/d2/d2themes/d2themescatalog"
 )
 
 func main() {
@@ -221,10 +221,8 @@ Copyright © 2022 Terrastruct, Inc. Open-source licensed under the Mozilla Publi
 - Does D2 need a browser to run?
   - No, D2 can run entirely server-side.
 - I have a question or need help.
-  - The best way to get help is to open an Issue, so that it's searchable by others in the
-    future. If you prefer synchronous or just want to chat, you can pop into the help
-    channel of the [D2 Discord](https://discord.gg/NF6X8K4eDq) as well.
-- I have a feature request or proposal.
-  - D2 uses Github Issues for everything. Just add a "discussion" label to your Issue.
+  - The best way to get help is to ask on [D2 Discord](https://discord.gg/NF6X8K4eDq)
+- I have a feature request, proposal, or bug report.
+  - Please open up a Github Issue.
 - I have a private inquiry.
   - Please reach out at [hi@d2lang.com](hi@d2lang.com).
