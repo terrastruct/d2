@@ -213,10 +213,13 @@ Copyright © 2022 Terrastruct, Inc. Open-source licensed under the Mozilla Publi
 
 [https://github.com/terrastruct/d2-vim](https://github.com/terrastruct/d2-vim)
 
+### Language docs
+
+[https://github.com/terrastruct/d2-docs](https://github.com/terrastruct/d2-docs)
+
 ### Misc
 
-- [https://github.com/terrastruct/d2-docs](https://github.com/terrastruct/d2-docs)
-- [https://github.com/terrastruct/text-to-diagram-com](https://github.com/terrastruct/text-to-diagram-com)
+- [https://github.com/terrastruct/text-to-diagram-site](https://github.com/terrastruct/text-to-diagram-site)
 
 ## FAQ
 
