@@ -122,7 +122,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 			NodeSpacing:           100.0,
 			EdgeNodeSpacing:       50.0,
 			NodePlacementStrategy: "NETWORK_SIMPLEX",
-			PortSurrounding:       "[top=10.0,left=10.0,bottom=10.0,right=10.0]",
+			PortSurrounding:       "[top=40.0,left=40.0,bottom=40.0,right=40.0]",
 		},
 	}
 
