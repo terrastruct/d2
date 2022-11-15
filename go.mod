@@ -8,7 +8,6 @@ require (
 	github.com/alecthomas/chroma v0.10.0
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
-	github.com/google/go-github v17.0.0+incompatible
 	github.com/lucasb-eyer/go-colorful v1.2.0
 	github.com/mazznoer/csscolorparser v0.1.3
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
@@ -40,7 +39,6 @@ require (
 	github.com/gin-gonic/gin v1.7.7 // indirect
 	github.com/go-playground/validator/v10 v10.10.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
-	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect

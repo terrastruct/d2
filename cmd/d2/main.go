@@ -35,7 +35,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	watchFlag := ms.FlagSet.BoolP("watch", "w", false, "watch for changes to input and live reload. Use $PORT and $HOST to specify the listening address.\n$D2_PORT and $D2_HOST are also accepted and take priority. Default is localhost:0")
 	themeFlag := ms.FlagSet.Int64P("theme", "t", 0, "set the diagram theme. For a list of available options, see https://oss.terrastruct.com/d2")
 	bundleFlag := ms.FlagSet.BoolP("bundle", "b", true, "bundle all assets and layers into the output svg")
-	versionFlag := ms.FlagSet.BoolP("version", "v", false, "get the version and check for updates")
+	versionFlag := ms.FlagSet.BoolP("version", "v", false, "get the version")
 	debugFlag := ms.FlagSet.BoolP("debug", "d", false, "print debug logs")
 	err = ms.FlagSet.Parse(ms.Args)
 
@@ -64,7 +64,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 
 	if len(ms.FlagSet.Args()) == 0 {
 		if versionFlag != nil && *versionFlag {
-			version.CheckVersion(ctx, ms.Log)
+			fmt.Println(version.Version)
 			return nil
 		}
 		help(ms)
@@ -74,7 +74,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	if len(ms.FlagSet.Args()) >= 1 {
 		if ms.FlagSet.Arg(0) == "version" {
-			version.CheckVersion(ctx, ms.Log)
+			fmt.Println(version.Version)
 			return nil
 		}
 		inputPath = ms.FlagSet.Arg(0)
