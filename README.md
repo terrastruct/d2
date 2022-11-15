@@ -61,8 +61,7 @@ A browser window will open with `out.svg` and live-reload on changes to `in.d2`.
 ### Install script
 
 The recommended way to install is to run our install script, which will figure out the
-best way to install based on your machine. E.g. if D2 is available through a package
-manager installed, it will use that package manager.
+best way to install based on your machine.
 
 ```sh
 # With --dryrun the install script will print the commands it will use
