@@ -64,9 +64,9 @@ The recommended way to install is to run our install script, which will figure o
 best way to install based on your machine.
 
 ```sh
-# With --dryrun the install script will print the commands it will use
+# With --dry-run the install script will print the commands it will use
 # to install without actually installing so you know what it's going to do.
-curl -fsSL https://d2lang.com/install.sh | sh -s -- --dryrun
+curl -fsSL https://d2lang.com/install.sh | sh -s -- --dry-run
 # If things look good, install for real.
 curl -fsSL https://d2lang.com/install.sh | sh -s --
 ```
@@ -79,7 +79,7 @@ and release a docker image.
 To uninstall:
 
 ```sh
-curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall --dryrun
+curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall --dry-run
 # If things look good, uninstall for real.
 curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall
 ```
