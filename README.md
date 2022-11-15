@@ -20,10 +20,11 @@
 
 <!-- toc -->
 
-- [Quickstart (CLI)](#quickstart-cli)
+- [Quickstart](#quickstart)
+- [Install](#install)
+  * [Install script](#install-script)
   * [Install from source](#install-from-source)
-  * [Install](#install)
-- [Quickstart (library)](#quickstart-library)
+- [D2 as a library](#d2-as-a-library)
 - [Themes](#themes)
 - [Fonts](#fonts)
 - [Export file types](#export-file-types)
@@ -40,7 +41,7 @@
 
 <!-- tocstop -->
 
-## Quickstart (CLI)
+## Quickstart
 
 The most convenient way to use D2 is to just run it as a CLI executable to
 produce SVGs from `.d2` files.
@@ -55,13 +56,9 @@ d2 --watch in.d2 out.svg
 
 A browser window will open with `out.svg` and live-reload on changes to `in.d2`.
 
-### Install from source
+## Install
 
-```sh
-go install oss.terrastruct.com/d2
-```
-
-### Install
+### Install script
 
 The recommended way to install is to run our install script, which will figure out the
 best way to install based on your machine. E.g. if D2 is available through a package
@@ -91,7 +88,13 @@ curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall
 > warn: Our binary releases aren't fully portable like normal Go binaries due to the C
 > dependency on v8go for executing dagre.
 
-## Quickstart (library)
+### Install from source
+
+```sh
+go install oss.terrastruct.com/d2
+```
+
+## D2 as a library
 
 In addition to being a runnable CLI tool, D2 can also be used to produce diagrams from
 Go programs.
