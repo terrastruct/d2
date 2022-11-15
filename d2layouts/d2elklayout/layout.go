@@ -121,7 +121,6 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 			NodeSpacing:           100.0,
 			EdgeNodeSpacing:       50.0,
 			NodePlacementStrategy: "NETWORK_SIMPLEX",
-			NodeFlexibility:       "NODE_SIZE",
 		},
 	}
 
@@ -144,12 +143,13 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 			ID:     obj.AbsID(),
 			Width:  obj.Width,
 			Height: obj.Height,
+			LayoutOptions: &ELKLayoutOptions{
+				NodeFlexibility: "NODE_SIZE",
+			},
 		}
 
 		if len(obj.ChildrenArray) > 0 {
-			n.LayoutOptions = &ELKLayoutOptions{
-				Padding: "[top=75,left=75,bottom=75,right=75]",
-			}
+			n.LayoutOptions.Padding = "[top=75,left=75,bottom=75,right=75]"
 		}
 
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
