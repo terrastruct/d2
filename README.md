@@ -90,6 +90,8 @@ curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall
 
 ### Install from source
 
+Alternatively, you can install from source:
+
 ```sh
 go install oss.terrastruct.com/d2
 ```
