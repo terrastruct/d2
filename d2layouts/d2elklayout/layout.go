@@ -81,6 +81,7 @@ type ELKLayoutOptions struct {
 	EdgeNodeSpacing       float64 `json:"spacing.edgeNodeBetweenLayers,omitempty"`
 	NodePlacementStrategy string  `json:"elk.layered.nodePlacement.strategy,omitempty"`
 	NodeFlexibility       string  `json:"elk.layered.nodePlacement.networkSimplex.nodeFlexibility,omitempty"`
+	PortSurrounding       string  `json:"elk.spacing.portsSurrounding"`
 }
 
 func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
@@ -121,6 +122,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 			NodeSpacing:           100.0,
 			EdgeNodeSpacing:       50.0,
 			NodePlacementStrategy: "NETWORK_SIMPLEX",
+			PortSurrounding:       "[top=10.0,left=10.0,bottom=10.0,right=10.0]",
 		},
 	}
 
