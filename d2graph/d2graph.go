@@ -607,6 +607,9 @@ type Edge struct {
 	MinWidth  int `json:"minWidth"`
 	MinHeight int `json:"minHeight"`
 
+	FromTableRowIndex int `json:"fromTableRowIndex"`
+	ToTableRowIndex   int `json:"toTableRowIndex"`
+
 	LabelDimensions d2target.TextDimensions `json:"label_dimensions"`
 	LabelPosition   *string                 `json:"labelPosition,omitempty"`
 	LabelPercentage *float64                `json:"labelPercentage,omitempty"`

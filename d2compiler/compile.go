@@ -682,10 +682,9 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 			if srcID == absID {
 				// Frontend isn't aware of container IDs.
 				d2Col.Reference = strings.TrimPrefix(dstID, parentID+".")
-				relSrc := strings.TrimPrefix(absID, parentID+".")
-				e.Attributes.Label.Value = fmt.Sprintf("%s %s %s", relSrc, e.ArrowString(), d2Col.Reference)
-				// removeContainer() will adjust the edge to point to the table and not inside.
-				break
+				e.FromTableRowIndex = len(obj.SQLTable.Columns)
+			} else {
+				e.ToTableRowIndex = len(obj.SQLTable.Columns)
 			}
 		}
 
@@ -746,6 +745,8 @@ func flattenContainer(g *d2graph.Graph, obj *d2graph.Object) {
 			newEdge, _ = g.Root.Connect(e.Src.AbsIDArray(), obj.AbsIDArray(), e.SrcArrow, e.DstArrow, e.Attributes.Label.Value)
 		}
 		// TODO more attributes
+		newEdge.FromTableRowIndex = e.FromTableRowIndex
+		newEdge.ToTableRowIndex = e.ToTableRowIndex
 		newEdge.Attributes.Label = e.Attributes.Label
 		newEdge.References = e.References
 	}
