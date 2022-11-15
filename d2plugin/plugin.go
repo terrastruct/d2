@@ -19,8 +19,14 @@ import (
 var plugins []Plugin
 
 type Plugin interface {
-	// Info returns the current info information of the plugin.
+	// Info returns information on the plugin.
 	Info(context.Context) (*PluginInfo, error)
+
+	// Options returns permitted operations for the plugin.
+	// "layout", "postProcess"
+	Options(context.Context) ([]string, error)
+
+	// OPERATIONS
 
 	// Layout runs the plugin's autolayout algorithm on the input graph
 	// and returns a new graph with the computed placements.

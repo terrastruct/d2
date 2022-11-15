@@ -39,3 +39,7 @@ func (p dagrePlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
 func (p dagrePlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) {
 	return in, nil
 }
+
+func (p dagrePlugin) Options(ctx context.Context) ([]string, error) {
+	return []string{"layout"}, nil
+}

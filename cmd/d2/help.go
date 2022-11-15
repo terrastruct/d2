@@ -78,7 +78,7 @@ func longLayoutHelp(ctx context.Context, ms *xmain.State) error {
 	layout := ms.FlagSet.Arg(1)
 	plugin, path, err := d2plugin.FindPlugin(ctx, layout)
 	if errors.Is(err, exec.ErrNotFound) {
-		return layoutNotFound(ctx, layout)
+		return pluginNotFound(ctx, layout)
 	}
 
 	pluginLocation := "bundled"
@@ -101,7 +101,7 @@ func longLayoutHelp(ctx context.Context, ms *xmain.State) error {
 	return nil
 }
 
-func layoutNotFound(ctx context.Context, layout string) error {
+func pluginNotFound(ctx context.Context, layout string) error {
 	var names []string
 	plugins, err := d2plugin.ListPlugins(ctx)
 	if err != nil {
@@ -111,8 +111,8 @@ func layoutNotFound(ctx context.Context, layout string) error {
 		names = append(names, p.Name)
 	}
 
-	return xmain.UsageErrorf(`D2_LAYOUT "%s" is not bundled and could not be found in your $PATH.
-The available options are: %s. For details on each option, run "d2 layout".
+	return xmain.UsageErrorf(`plugin "%s" is not bundled and could not be found in your $PATH.
+The available options are: %s. For details on each option, run "d2 plugin".
 
 For more information on setup, please visit https://github.com/terrastruct/d2.`,
 		layout, strings.Join(names, ", "))

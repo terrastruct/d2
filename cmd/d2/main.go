@@ -37,6 +37,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	bundleFlag := ms.FlagSet.BoolP("bundle", "b", true, "bundle all assets and layers into the output svg")
 	versionFlag := ms.FlagSet.BoolP("version", "v", false, "get the version and check for updates")
 	debugFlag := ms.FlagSet.BoolP("debug", "d", false, "print debug logs")
+	sketchFlag := ms.FlagSet.BoolP("sketch", "s", false, "use the sketch plugin, making diagrams look sketched by hand")
 	err = ms.FlagSet.Parse(ms.Args)
 
 	if !errors.Is(err, pflag.ErrHelp) && err != nil {
@@ -95,30 +96,42 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	ms.Env.Setenv("D2_THEME", fmt.Sprintf("%d", *themeFlag))
 
-	envD2Layout := ms.Env.Getenv("D2_LAYOUT")
-	if envD2Layout == "" {
-		envD2Layout = "dagre"
+	var requestedPlugins []string
+
+	layoutPlugin := ms.Env.Getenv("D2_LAYOUT")
+	if layoutPlugin == "" {
+		layoutPlugin = "dagre"
+	}
+	requestedPlugins = append(requestedPlugins, layoutPlugin)
+
+	if *sketchFlag {
+		requestedPlugins = append(requestedPlugins, "sketch")
 	}
 
-	plugin, path, err := d2plugin.FindPlugin(ctx, envD2Layout)
-	if errors.Is(err, exec.ErrNotFound) {
-		return layoutNotFound(ctx, envD2Layout)
-	} else if err != nil {
-		return err
-	}
+	var plugins []d2plugin.Plugin
 
-	pluginLocation := "bundled"
-	if path != "" {
-		pluginLocation = fmt.Sprintf("executable plugin at %s", humanPath(path))
+	for _, requestedPlugin := range requestedPlugins {
+		plugin, path, err := d2plugin.FindPlugin(ctx, requestedPlugin)
+		if errors.Is(err, exec.ErrNotFound) {
+			return pluginNotFound(ctx, requestedPlugin)
+		} else if err != nil {
+			return err
+		}
+
+		pluginLocation := "bundled"
+		if path != "" {
+			pluginLocation = fmt.Sprintf("executable plugin at %s", humanPath(path))
+		}
+		ms.Log.Debug.Printf("using plugin %s (%s)", requestedPlugin, pluginLocation)
+		plugins = append(plugins, plugin)
 	}
-	ms.Log.Debug.Printf("using layout plugin %s (%s)", envD2Layout, pluginLocation)
 
 	if *watchFlag {
 		if inputPath == "-" {
 			return xmain.UsageErrorf("-w[atch] cannot be combined with reading input from stdin")
 		}
 		ms.Env.Setenv("LOG_TIMESTAMPS", "1")
-		w, err := newWatcher(ctx, ms, plugin, inputPath, outputPath)
+		w, err := newWatcher(ctx, ms, plugins, inputPath, outputPath)
 		if err != nil {
 			return err
 		}
@@ -132,7 +145,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		_ = 343
 	}
 
-	_, err = compile(ctx, ms, plugin, inputPath, outputPath)
+	_, err = compile(ctx, ms, plugins, inputPath, outputPath)
 	if err != nil {
 		return err
 	}
@@ -140,7 +153,25 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, inputPath, outputPath string) ([]byte, error) {
+func compile(ctx context.Context, ms *xmain.State, plugins []d2plugin.Plugin, inputPath, outputPath string) ([]byte, error) {
+	var layoutPlugin d2plugin.Plugin
+	var postProcessPlugins []d2plugin.Plugin
+
+	for _, p := range plugins {
+		ops, err := p.Options(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, op := range ops {
+			if op == "layout" {
+				layoutPlugin = p
+			}
+			if op == "postProcess" {
+				postProcessPlugins = append(postProcessPlugins, p)
+			}
+		}
+	}
+
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
 		return nil, err
@@ -153,7 +184,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, input
 
 	themeID, _ := strconv.ParseInt(ms.Env.Getenv("D2_THEME"), 10, 64)
 	d, err := d2.Compile(ctx, string(input), &d2.CompileOptions{
-		Layout:  plugin.Layout,
+		Layout:  layoutPlugin.Layout,
 		Ruler:   ruler,
 		ThemeID: themeID,
 	})
@@ -165,9 +196,11 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, input
 	if err != nil {
 		return nil, err
 	}
-	svg, err = plugin.PostProcess(ctx, svg)
-	if err != nil {
-		return nil, err
+	for _, p := range postProcessPlugins {
+		svg, err = p.PostProcess(ctx, svg)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	err = ms.WritePath(outputPath, svg)
