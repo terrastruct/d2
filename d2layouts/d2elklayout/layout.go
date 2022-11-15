@@ -74,11 +74,13 @@ type ELKGraph struct {
 }
 
 type ELKLayoutOptions struct {
-	Algorithm         string  `json:"elk.algorithm,omitempty"`
-	HierarchyHandling string  `json:"elk.hierarchyHandling,omitempty"`
-	NodeSpacing       float64 `json:"spacing.nodeNodeBetweenLayers,omitempty"`
-	Padding           string  `json:"elk.padding,omitempty"`
-	EdgeNodeSpacing   float64 `json:"spacing.edgeNodeBetweenLayers,omitempty"`
+	Algorithm             string  `json:"elk.algorithm,omitempty"`
+	HierarchyHandling     string  `json:"elk.hierarchyHandling,omitempty"`
+	NodeSpacing           float64 `json:"spacing.nodeNodeBetweenLayers,omitempty"`
+	Padding               string  `json:"elk.padding,omitempty"`
+	EdgeNodeSpacing       float64 `json:"spacing.edgeNodeBetweenLayers,omitempty"`
+	NodePlacementStrategy string  `json:"elk.layered.nodePlacement.strategy,omitempty"`
+	NodeFlexibility       string  `json:"elk.layered.nodePlacement.networkSimplex.nodeFlexibility,omitempty"`
 }
 
 func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
@@ -114,10 +116,12 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	elkGraph := &ELKGraph{
 		ID: "root",
 		LayoutOptions: ELKLayoutOptions{
-			Algorithm:         "layered",
-			HierarchyHandling: "INCLUDE_CHILDREN",
-			NodeSpacing:       100.0,
-			EdgeNodeSpacing:   50.0,
+			Algorithm:             "layered",
+			HierarchyHandling:     "INCLUDE_CHILDREN",
+			NodeSpacing:           100.0,
+			EdgeNodeSpacing:       50.0,
+			NodePlacementStrategy: "NETWORK_SIMPLEX",
+			NodeFlexibility:       "NODE_SIZE",
 		},
 	}
 
