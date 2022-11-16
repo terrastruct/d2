@@ -86,8 +86,7 @@ EOF
 
 main() {
   METHOD=standalone
-  while :; do
-    flag_parse "$@"
+  while flag_parse "$@"; do
     case "$FLAG" in
       h|help)
         help
@@ -129,15 +128,12 @@ main() {
         flag_noarg && shift "$FLAGSHIFT"
         UNINSTALL=1
         ;;
-      '')
-        shift "$FLAGSHIFT"
-        break
-        ;;
       *)
         flag_errusage "unrecognized flag $FLAGRAW"
         ;;
     esac
   done
+  shift "$FLAGSHIFT"
 
   if [ $# -gt 0 ]; then
     flag_errusage "no arguments are accepted"
@@ -176,7 +172,7 @@ install() {
     TALA_VERSION="$( install_tala && echo "$VERSION" )"
   fi
 
-  COLOR=2 header success
+  FGCOLOR=2 header success
   log "d2-$VERSION-$OS-$ARCH has been successfully installed into $PREFIX"
   if [ -n "${TALA-}" ]; then
     log "tala-$TALA_VERSION-$OS-$ARCH has been successfully installed into $PREFIX"

@@ -42,8 +42,7 @@ EOF
 }
 
 main() {
-  while :; do
-    flag_parse "$@"
+  while flag_parse "$@"; do
     case "$FLAG" in
       h|help)
         help
@@ -78,16 +77,12 @@ main() {
         flag_noarg && shift "$FLAGSHIFT"
         LOCKFILE_FORCE=1
         ;;
-      '')
-        shift "$FLAGSHIFT"
-        break
-        ;;
       *)
         flag_errusage "unrecognized flag $FLAGRAW"
         ;;
     esac
   done
-
+  shift "$FLAGSHIFT"
   if [ $# -gt 0 ]; then
     flag_errusage "no arguments are accepted"
   fi

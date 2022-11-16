@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: recursive
-      - run: TERM=xterm-256color ./make.sh assert-linear
+      - run: COLOR=1 ./make.sh assert-linear
         env:
           GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -25,7 +25,7 @@ jobs:
         with:
           go-version-file: ./go.mod
           cache: true
-      - run: TERM=xterm-256color ./make.sh fmt
+      - run: COLOR=1 ./make.sh fmt
         env:
           GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -39,7 +39,7 @@ jobs:
         with:
           go-version-file: ./go.mod
           cache: true
-      - run: TERM=xterm-256color ./make.sh lint
+      - run: COLOR=1 ./make.sh lint
         env:
           GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -53,7 +53,7 @@ jobs:
         with:
           go-version-file: ./go.mod
           cache: true
-      - run: TERM=xterm-256color ./make.sh build
+      - run: COLOR=1 ./make.sh build
         env:
           GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -67,7 +67,7 @@ jobs:
         with:
           go-version-file: ./go.mod
           cache: true
-      - run: TERM=xterm-256color ./make.sh test
+      - run: COLOR=1 ./make.sh test
         env:
           GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
@@ -86,7 +86,7 @@ jobs:
         with:
           go-version-file: ./go.mod
           cache: true
-      - run: TERM=xterm-256color ./make.sh race
+      - run: COLOR=1 ./make.sh race
         env:
           GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
