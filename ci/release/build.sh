@@ -5,7 +5,7 @@ cd -- "$(dirname "$0")/../.."
 
 help() {
   cat <<EOF
-usage: $0 [--rebuild] [--local] [--dry-run] [--run=regex] [--host-only]
+usage: $0 [--rebuild] [--local] [--dry-run] [--run=regex] [--host-only] [--lockfile-force]
 
 $0 builds D2 release archives into ./ci/release/build/<version>/d2-<VERSION>-<OS>-<ARCH>.tar.gz
 
@@ -35,6 +35,9 @@ Flags:
 
 --version vX.X.X
   Use to overwrite the version detected from git.
+
+--lockfile-force
+  Forcefully take ownership of remote builder lockfiles.
 EOF
 }
 
@@ -70,6 +73,10 @@ main() {
       version)
         flag_nonemptyarg && shift "$FLAGSHIFT"
         VERSION=$FLAGARG
+        ;;
+      lockfile-force)
+        flag_noarg && shift "$FLAGSHIFT"
+        LOCKFILE_FORCE=1
         ;;
       '')
         shift "$FLAGSHIFT"
@@ -165,7 +172,7 @@ build_remote_macos() {
   trap unlockfile_ssh EXIT
   sh_c ssh "$REMOTE_HOST" mkdir -p src
   sh_c rsync --archive --human-readable --delete ./ "$REMOTE_HOST:src/d2/"
-  sh_c ssh -tttt "$REMOTE_HOST" "DRY_RUN=${DRY_RUN-} \
+  sh_c ssh "$REMOTE_HOST" "DRY_RUN=${DRY_RUN-} \
 HW_BUILD_DIR=$HW_BUILD_DIR \
 VERSION=$VERSION \
 OS=$OS \
@@ -183,7 +190,7 @@ build_remote_linux() {
   trap unlockfile_ssh EXIT
   sh_c ssh "$REMOTE_HOST" mkdir -p src
   sh_c rsync --archive --human-readable --delete ./ "$REMOTE_HOST:src/d2/"
-  sh_c ssh -tttt "$REMOTE_HOST" "DRY_RUN=${DRY_RUN-} \
+  sh_c ssh "$REMOTE_HOST" "DRY_RUN=${DRY_RUN-} \
 HW_BUILD_DIR=$HW_BUILD_DIR \
 VERSION=$VERSION \
 OS=$OS \
