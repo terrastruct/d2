@@ -1474,6 +1474,32 @@ b`, g.Objects[0].Attributes.Label.Value)
 SVP1.style.3d: true`,
 			expErr: `d2/testdata/d2compiler/TestCompile/3d_oval.d2:2:1: key "3d" can only be applied to squares and rectangles
 `,
+		}, {
+			name: "edge_column_index",
+			text: `src: {
+	shape: sql_table
+	id: int
+	dst_id: int
+}
+
+dst: {
+	shape: sql_table
+	id: int
+	name: string
+}
+
+dst.id <-> src.dst_id
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				fromIndex := g.Edges[0].FromTableColumnIndex
+				if fromIndex == nil || *fromIndex != 0 {
+					t.Fatalf("Expected FromTableColumnIndex to be 0, got %v", fromIndex)
+				}
+				toIndex := g.Edges[0].ToTableColumnIndex
+				if toIndex == nil || *toIndex != 1 {
+					t.Fatalf("Expected ToTableColumnIndex to be 1, got %v", toIndex)
+				}
+			},
 		},
 	}
 
