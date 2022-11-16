@@ -1491,13 +1491,13 @@ dst: {
 dst.id <-> src.dst_id
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				fromIndex := g.Edges[0].FromTableColumnIndex
-				if fromIndex == nil || *fromIndex != 0 {
-					t.Fatalf("Expected FromTableColumnIndex to be 0, got %v", fromIndex)
+				srcIndex := g.Edges[0].SrcTableColumnIndex
+				if srcIndex == nil || *srcIndex != 0 {
+					t.Fatalf("Expected SrcTableColumnIndex to be 0, got %v", srcIndex)
 				}
-				toIndex := g.Edges[0].ToTableColumnIndex
-				if toIndex == nil || *toIndex != 1 {
-					t.Fatalf("Expected ToTableColumnIndex to be 1, got %v", toIndex)
+				dstIndex := g.Edges[0].DstTableColumnIndex
+				if dstIndex == nil || *dstIndex != 1 {
+					t.Fatalf("Expected DstTableColumnIndex to be 1, got %v", dstIndex)
 				}
 			},
 		},

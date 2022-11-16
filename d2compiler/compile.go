@@ -681,11 +681,11 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 			}
 			if srcID == absID {
 				d2Col.Reference = strings.TrimPrefix(dstID, parentID+".")
-				e.FromTableColumnIndex = new(int)
-				*e.FromTableColumnIndex = len(obj.SQLTable.Columns)
+				e.SrcTableColumnIndex = new(int)
+				*e.SrcTableColumnIndex = len(obj.SQLTable.Columns)
 			} else if dstID == absID {
-				e.ToTableColumnIndex = new(int)
-				*e.ToTableColumnIndex = len(obj.SQLTable.Columns)
+				e.DstTableColumnIndex = new(int)
+				*e.DstTableColumnIndex = len(obj.SQLTable.Columns)
 			}
 		}
 
@@ -746,13 +746,13 @@ func flattenContainer(g *d2graph.Graph, obj *d2graph.Object) {
 			newEdge, _ = g.Root.Connect(e.Src.AbsIDArray(), obj.AbsIDArray(), e.SrcArrow, e.DstArrow, e.Attributes.Label.Value)
 		}
 		// TODO more attributes
-		if e.FromTableColumnIndex != nil {
-			newEdge.FromTableColumnIndex = new(int)
-			*newEdge.FromTableColumnIndex = *e.FromTableColumnIndex
+		if e.SrcTableColumnIndex != nil {
+			newEdge.SrcTableColumnIndex = new(int)
+			*newEdge.SrcTableColumnIndex = *e.SrcTableColumnIndex
 		}
-		if e.ToTableColumnIndex != nil {
-			newEdge.ToTableColumnIndex = new(int)
-			*newEdge.ToTableColumnIndex = *e.ToTableColumnIndex
+		if e.DstTableColumnIndex != nil {
+			newEdge.DstTableColumnIndex = new(int)
+			*newEdge.DstTableColumnIndex = *e.DstTableColumnIndex
 		}
 		newEdge.Attributes.Label = e.Attributes.Label
 		newEdge.References = e.References

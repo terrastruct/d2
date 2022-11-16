@@ -352,8 +352,8 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "fromTableColumnIndex": 0,
-        "toTableColumnIndex": 1,
+        "srcTableColumnIndex": 0,
+        "dstTableColumnIndex": 1,
         "label_dimensions": {
           "width": 0,
           "height": 0
