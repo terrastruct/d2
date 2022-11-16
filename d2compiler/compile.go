@@ -746,10 +746,14 @@ func flattenContainer(g *d2graph.Graph, obj *d2graph.Object) {
 			newEdge, _ = g.Root.Connect(e.Src.AbsIDArray(), obj.AbsIDArray(), e.SrcArrow, e.DstArrow, e.Attributes.Label.Value)
 		}
 		// TODO more attributes
-		newEdge.FromTableColumnIndex = new(int)
-		*newEdge.FromTableColumnIndex = *e.FromTableColumnIndex
-		newEdge.ToTableColumnIndex = new(int)
-		*newEdge.ToTableColumnIndex = *e.ToTableColumnIndex
+		if e.FromTableColumnIndex != nil {
+			newEdge.FromTableColumnIndex = new(int)
+			*newEdge.FromTableColumnIndex = *e.FromTableColumnIndex
+		}
+		if e.ToTableColumnIndex != nil {
+			newEdge.ToTableColumnIndex = new(int)
+			*newEdge.ToTableColumnIndex = *e.ToTableColumnIndex
+		}
 		newEdge.Attributes.Label = e.Attributes.Label
 		newEdge.References = e.References
 	}
