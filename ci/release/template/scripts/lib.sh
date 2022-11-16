@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ -n "${DEBUG-}" ]; then
+  set -x
+fi
+
 rand() {
   seed="$1"
   range="$2"

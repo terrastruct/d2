@@ -41,12 +41,12 @@ main() {
   fi
 
   if [ -z "${SKIP_CREATE-}" ]; then
-    create_rhosts
+    create_remote_hosts
   fi
-  init_rhosts
+  init_remote_hosts
 }
 
-create_rhosts() {
+create_remote_hosts() {
   KEY_NAME=$(aws ec2 describe-key-pairs | jq -r .KeyPairs[0].KeyName)
   VPC_ID=$(aws ec2 describe-vpcs | jq -r .Vpcs[0].VpcId)
 
@@ -194,15 +194,15 @@ create_rhosts() {
   done
 }
 
-init_rhosts() {
+init_remote_hosts() {
   header linux-amd64
-  RHOST=$TSTRUCT_LINUX_AMD64_BUILDER init_rhost_linux
+  REMOTE_HOST=$TSTRUCT_LINUX_AMD64_BUILDER init_remote_linux
   header linux-arm64
-  RHOST=$TSTRUCT_LINUX_ARM64_BUILDER init_rhost_linux
+  REMOTE_HOST=$TSTRUCT_LINUX_ARM64_BUILDER init_remote_linux
   header macos-amd64
-  RHOST=$TSTRUCT_MACOS_AMD64_BUILDER init_rhost_macos
+  REMOTE_HOST=$TSTRUCT_MACOS_AMD64_BUILDER init_remote_macos
   header macos-arm64
-  RHOST=$TSTRUCT_MACOS_ARM64_BUILDER init_rhost_macos
+  REMOTE_HOST=$TSTRUCT_MACOS_ARM64_BUILDER init_remote_macos
 
   COLOR=2 header summary
   log "export TSTRUCT_LINUX_AMD64_BUILDER=$TSTRUCT_LINUX_AMD64_BUILDER"
@@ -211,32 +211,32 @@ init_rhosts() {
   log "export TSTRUCT_MACOS_ARM64_BUILDER=$TSTRUCT_MACOS_ARM64_BUILDER"
 }
 
-init_rhost_linux() {
+init_remote_linux() {
   while true; do
-    if sh_c ssh "$RHOST" :; then
+    if sh_c ssh "$REMOTE_HOST" :; then
       break
     fi
     sleep 5
   done
-  sh_c ssh "$RHOST" 'sudo yum upgrade -y'
-  sh_c ssh "$RHOST" 'sudo yum install -y docker'
-  sh_c ssh "$RHOST" 'sudo systemctl start docker'
-  sh_c ssh "$RHOST" 'sudo systemctl enable docker'
-  sh_c ssh "$RHOST" 'sudo usermod -a -G docker ec2-user'
-  sh_c ssh "$RHOST" 'sudo reboot' || true
+  sh_c ssh "$REMOTE_HOST" 'sudo yum upgrade -y'
+  sh_c ssh "$REMOTE_HOST" 'sudo yum install -y docker'
+  sh_c ssh "$REMOTE_HOST" 'sudo systemctl start docker'
+  sh_c ssh "$REMOTE_HOST" 'sudo systemctl enable docker'
+  sh_c ssh "$REMOTE_HOST" 'sudo usermod -a -G docker ec2-user'
+  sh_c ssh "$REMOTE_HOST" 'sudo reboot' || true
 }
 
-init_rhost_macos() {
+init_remote_macos() {
   while true; do
-    if sh_c ssh "$RHOST" :; then
+    if sh_c ssh "$REMOTE_HOST" :; then
       break
     fi
     sleep 5
   done
-  sh_c ssh "$RHOST" '": | /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""'
-  sh_c ssh "$RHOST" 'PATH="/usr/local/bin:/opt/homebrew/bin:\$PATH" brew update'
-  sh_c ssh "$RHOST" 'PATH="/usr/local/bin:/opt/homebrew/bin:\$PATH" brew upgrade'
-  sh_c ssh "$RHOST" 'PATH="/usr/local/bin:/opt/homebrew/bin:\$PATH" brew install go'
+  sh_c ssh "$REMOTE_HOST" '": | /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""'
+  sh_c ssh "$REMOTE_HOST" 'PATH="/usr/local/bin:/opt/homebrew/bin:\$PATH" brew update'
+  sh_c ssh "$REMOTE_HOST" 'PATH="/usr/local/bin:/opt/homebrew/bin:\$PATH" brew upgrade'
+  sh_c ssh "$REMOTE_HOST" 'PATH="/usr/local/bin:/opt/homebrew/bin:\$PATH" brew install go'
 }
 
 main "$@"
