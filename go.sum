@@ -768,10 +768,10 @@ honnef.co/go/tools v0.0.1-2020.1.3/go.mod h1:X/FiERA/W4tHapMX5mGpAtMSVEeEUOyHaw9
 honnef.co/go/tools v0.0.1-2020.1.4/go.mod h1:X/FiERA/W4tHapMX5mGpAtMSVEeEUOyHaw9vFzvIQ3k=
 nhooyr.io/websocket v1.8.7 h1:usjR2uOr/zjjkVMy0lW+PPohFok7PCow5sDjLgX4P4g=
 nhooyr.io/websocket v1.8.7/go.mod h1:B70DZP8IakI65RVQ51MsWP/8jndNma26DVA/nFSCgW0=
-oss.terrastruct.com/cmdlog v0.0.0-20221025194258-d3fd7e0b8950 h1:35gU5c1wwHKhXg58F500d6Ev8s+jqQUg4BiDbx2Zr+g=
-oss.terrastruct.com/cmdlog v0.0.0-20221025194258-d3fd7e0b8950/go.mod h1:ROL3yxl2X+S3O+Rls00qdX6aMh+p1dF8IdxDRwDDpsg=
-oss.terrastruct.com/diff v1.0.1 h1:WJ0LPXIgj644ne7l9CtDT9sBMDqo1B2/Ir5zdvbxYN8=
-oss.terrastruct.com/diff v1.0.1/go.mod h1:cRGe5OvyjX7WWKk7CYh73SoS2tEghpTmAY1IPFWbqgE=
+oss.terrastruct.com/cmdlog v0.0.0-20221116181457-07977d95ac37 h1:Xy1JKJHc4hcuwi57s0BvGUY16GjxTtBmLUybsuGDU7E=
+oss.terrastruct.com/cmdlog v0.0.0-20221116181457-07977d95ac37/go.mod h1:ROL3yxl2X+S3O+Rls00qdX6aMh+p1dF8IdxDRwDDpsg=
+oss.terrastruct.com/diff v1.0.2-0.20221116222035-8bf4dd3ab541 h1:I9B1O1IJ6spivIQxbFRZmbhAwVeLwrcQRR1JbYUOvrI=
+oss.terrastruct.com/diff v1.0.2-0.20221116222035-8bf4dd3ab541/go.mod h1:ags2QDy/T6jr69hT6bpmAmhr2H98n9o8Atf3QlUJPiU=
 oss.terrastruct.com/xcontext v0.0.0-20221018000442-50fdafb12f4f h1:7voRCwKM7TZkTo9u7hj+uV/zXoVB8czWrTq6MVIh3dg=
 oss.terrastruct.com/xcontext v0.0.0-20221018000442-50fdafb12f4f/go.mod h1:Y0coTLsWwX0q3a+/Ndq797t+vWyxm42T49Ik3bzaDKY=
 oss.terrastruct.com/xdefer v0.0.0-20221017222355-6f3b6e4d1557 h1:rPbhJbN1q7B4tnppSPoAMwq0t6Pk5SrQDQ5S6uoNNHg=
