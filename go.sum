@@ -86,6 +86,7 @@ github.com/cncf/xds/go v0.0.0-20210805033703-aa0b78936158/go.mod h1:eXthEFrGJvWH
 github.com/cncf/xds/go v0.0.0-20210922020428-25de7278fc84/go.mod h1:eXthEFrGJvWHgFFCl3hGmgk+/aYT6PnTQLykKQRLhEs=
 github.com/cncf/xds/go v0.0.0-20211001041855-01bcc9b48dfe/go.mod h1:eXthEFrGJvWHgFFCl3hGmgk+/aYT6PnTQLykKQRLhEs=
 github.com/cncf/xds/go v0.0.0-20211011173535-cb28da3451f1/go.mod h1:eXthEFrGJvWHgFFCl3hGmgk+/aYT6PnTQLykKQRLhEs=
+github.com/creack/pty v1.1.9 h1:uDmaGzcdjhF4i/plgjmEsriH11Y0o7RKapEf/LDaM3w=
 github.com/creack/pty v1.1.9/go.mod h1:oKZEueFk5CKHvIhNR5MUki03XCEU+Q6VDXinZuGJ33E=
 github.com/creack/pty v1.1.18 h1:n56/Zwd5o6whRC5PMGretI4IdRLlmBXYNjScPaBgsbY=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -772,6 +773,8 @@ oss.terrastruct.com/cmdlog v0.0.0-20221025194258-d3fd7e0b8950 h1:35gU5c1wwHKhXg5
 oss.terrastruct.com/cmdlog v0.0.0-20221025194258-d3fd7e0b8950/go.mod h1:ROL3yxl2X+S3O+Rls00qdX6aMh+p1dF8IdxDRwDDpsg=
 oss.terrastruct.com/diff v1.0.1 h1:WJ0LPXIgj644ne7l9CtDT9sBMDqo1B2/Ir5zdvbxYN8=
 oss.terrastruct.com/diff v1.0.1/go.mod h1:cRGe5OvyjX7WWKk7CYh73SoS2tEghpTmAY1IPFWbqgE=
+oss.terrastruct.com/diff v1.0.2-0.20221116222035-8bf4dd3ab541 h1:I9B1O1IJ6spivIQxbFRZmbhAwVeLwrcQRR1JbYUOvrI=
+oss.terrastruct.com/diff v1.0.2-0.20221116222035-8bf4dd3ab541/go.mod h1:ags2QDy/T6jr69hT6bpmAmhr2H98n9o8Atf3QlUJPiU=
 oss.terrastruct.com/xcontext v0.0.0-20221018000442-50fdafb12f4f h1:7voRCwKM7TZkTo9u7hj+uV/zXoVB8czWrTq6MVIh3dg=
 oss.terrastruct.com/xcontext v0.0.0-20221018000442-50fdafb12f4f/go.mod h1:Y0coTLsWwX0q3a+/Ndq797t+vWyxm42T49Ik3bzaDKY=
 oss.terrastruct.com/xdefer v0.0.0-20221017222355-6f3b6e4d1557 h1:rPbhJbN1q7B4tnppSPoAMwq0t6Pk5SrQDQ5S6uoNNHg=
