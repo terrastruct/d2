@@ -1493,11 +1493,11 @@ dst.id <-> src.dst_id
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				srcIndex := g.Edges[0].SrcTableColumnIndex
 				if srcIndex == nil || *srcIndex != 0 {
-					t.Fatalf("Expected SrcTableColumnIndex to be 0, got %v", srcIndex)
+					t.Fatalf("expected SrcTableColumnIndex to be 0, got %v", srcIndex)
 				}
 				dstIndex := g.Edges[0].DstTableColumnIndex
 				if dstIndex == nil || *dstIndex != 1 {
-					t.Fatalf("Expected DstTableColumnIndex to be 1, got %v", dstIndex)
+					t.Fatalf("expected DstTableColumnIndex to be 1, got %v", dstIndex)
 				}
 			},
 		},
