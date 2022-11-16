@@ -161,6 +161,8 @@ build_local() {
 }
 
 build_rhost_macos() {
+  sh_c lockfile_ssh "$RHOST" .d2-build-lock
+  trap unlockfile_ssh EXIT
   sh_c ssh "$RHOST" mkdir -p src
   sh_c rsync --archive --human-readable --delete ./ "$RHOST:src/d2/"
   sh_c ssh -tttt "$RHOST" "DRY_RUN=${DRY_RUN-} \
@@ -177,6 +179,8 @@ PATH=\\\"/usr/local/bin:/usr/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin\\\$
 }
 
 build_rhost_linux() {
+  sh_c lockfile_ssh "$RHOST" .d2-build-lock
+  trap unlockfile_ssh EXIT
   sh_c ssh "$RHOST" mkdir -p src
   sh_c rsync --archive --human-readable --delete ./ "$RHOST:src/d2/"
   sh_c ssh -tttt "$RHOST" "DRY_RUN=${DRY_RUN-} \
