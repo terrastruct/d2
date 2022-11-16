@@ -831,6 +831,44 @@ a -> md -> b
   +setTimeout(seconds int)
 }
 `,
+		}, {
+			name: "sql_tables",
+			script: `
+			users: {
+			  shape: sql_table
+			  id: int
+			  name: string
+			  email: string
+			  password: string
+			  last_login: datetime
+			}
+
+			products: {
+			  shape: sql_table
+			  id: int
+			  price: decimal
+			  sku: string
+			  name: string
+			}
+
+			orders: {
+			  shape: sql_table
+			  id: int
+			  user_id: int
+			  product_id: int
+			}
+
+			shipments: {
+			  shape: sql_table
+			  id: int
+			  order_id: int
+			  tracking_number: string
+			  status: string
+			}
+
+			users.id <-> orders.user_id
+			products.id <-> orders.product_id
+			shipments.order_id <-> orders.id`,
 		},
 	}
 
