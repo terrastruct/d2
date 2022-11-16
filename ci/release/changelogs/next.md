@@ -6,7 +6,7 @@ For v0.0.99 we focused on X, Y and Z. Enjoy!
 
 #### Improvements 🔧
 
-- Add table columns indices in edges between SQL Tables so that layout engines can route exactly between rows
+- Add table columns indices in edges between SQL Tables so that layout engines can route exactly between them
 
 #### Bugfixes 🔴
 
