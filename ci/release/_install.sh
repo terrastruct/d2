@@ -181,8 +181,14 @@ install() {
   if [ -n "${TALA-}" ]; then
     log "tala-$TALA_VERSION-$OS-$ARCH has been successfully installed into $PREFIX"
   fi
+  log "Rerun this install script with --uninstall to uninstall"
   if ! echo "$PATH" | grep -qF "$PREFIX/bin"; then
     logcat >&2 <<EOF
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+NEXT STEPS
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
 Extend your \$PATH to use d2:
   export PATH=$PREFIX/bin:\$PATH
 Then run:
@@ -207,8 +213,11 @@ EOF
       log "  Run man d2plugin-tala for detailed docs."
     fi
   fi
+  logcat >&2 <<EOF
 
-  log "Rerun the install script with --uninstall to uninstall"
+Something not working? Please let us know:
+https://github.com/terrastruct/d2/issues/new
+EOF
 }
 
 install_d2() {
@@ -309,7 +318,7 @@ uninstall_standalone_d2() {
 
   if [ ! -e "$INSTALL_DIR/d2-$INSTALLED_VERSION" ]; then
     warn "missing standalone install release directory $INSTALL_DIR/d2-$INSTALLED_VERSION"
-    warn "d2 have been installed via some other installation method."
+    warn "d2 must have been installed via some other installation method."
     return 1
   fi
 
@@ -332,7 +341,7 @@ uninstall_standalone_tala() {
 
   if [ ! -e "$INSTALL_DIR/tala-$INSTALLED_VERSION" ]; then
     warn "missing standalone install release directory $INSTALL_DIR/tala-$INSTALLED_VERSION"
-    warn "tala have been installed via some other installation method."
+    warn "tala must have been installed via some other installation method."
     return 1
   fi
 
