@@ -34,7 +34,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 
 	watchFlag := ms.FlagSet.BoolP("watch", "w", false, "watch for changes to input and live reload. Use $PORT and $HOST to specify the listening address.\n$D2_PORT and $D2_HOST are also accepted and take priority. Default is localhost:0")
 	themeFlag := ms.FlagSet.Int64P("theme", "t", 0, "set the diagram theme. For a list of available options, see https://oss.terrastruct.com/d2")
-	bundleFlag := ms.FlagSet.BoolP("bundle", "b", true, "bundle all assets and layers into the output svg")
+	bundleFlag := ms.FlagSet.BoolP("bundle", "b", true, "when outputting SVG, bundle all assets and layers into the output file")
 	versionFlag := ms.FlagSet.BoolP("version", "v", false, "get the version")
 	debugFlag := ms.FlagSet.BoolP("debug", "d", false, "print debug logs")
 	err = ms.FlagSet.Parse(ms.Args)
@@ -119,12 +119,8 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		if err != nil {
 			return err
 		}
-		defer func() error {
-			err = pw.Cleanup(*watchFlag)
-			if err != nil {
-				return err
-			}
-			return nil
+		defer func() {
+			err = pw.Cleanup()
 		}()
 	}
 

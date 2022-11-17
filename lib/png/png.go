@@ -23,9 +23,6 @@ type Playwright struct {
 }
 
 func (pw *Playwright) RestartBrowser() (newPW Playwright, err error) {
-	if err = pw.BrowserContext.Close(); err != nil {
-		return Playwright{}, err
-	}
 	if err = pw.Browser.Close(); err != nil {
 		return Playwright{}, err
 	}
@@ -49,12 +46,7 @@ func (pw *Playwright) RestartBrowser() (newPW Playwright, err error) {
 	}, nil
 }
 
-func (pw *Playwright) Cleanup(isWatch bool) (err error) {
-	if !isWatch {
-		if err = pw.BrowserContext.Close(); err != nil {
-			return err
-		}
-	}
+func (pw *Playwright) Cleanup() (err error) {
 	if err = pw.Browser.Close(); err != nil {
 		return err
 	}
@@ -116,8 +108,7 @@ var genPNGScript string
 
 func ExportPNG(ms *xmain.State, page playwright.Page, svg []byte) (outputImage []byte, err error) {
 	if page == nil {
-		ms.Log.Error.Printf("Playwright was not initialized properly for PNG export")
-		return nil, fmt.Errorf("Playwright page is nil")
+		return nil, fmt.Errorf("Playwright was not initialized properly for PNG export")
 	}
 
 	encodedSVG := base64.StdEncoding.EncodeToString(svg)
@@ -129,8 +120,10 @@ func ExportPNG(ms *xmain.State, page playwright.Page, svg []byte) (outputImage [
 	pngString := fmt.Sprintf("%v", pngInterface)
 	pngPrefix := "data:image/png;base64,"
 	if !strings.HasPrefix(pngString, pngPrefix) {
-		ms.Log.Error.Printf("failed to convert D2 file to PNG")
-		return nil, fmt.Errorf("Playwright export generated invalid png")
+		if len(pngString) > 20 {
+			pngString = pngString[0:20] + "..."
+		}
+		return nil, fmt.Errorf("invalid PNG: %v\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", pngString)
 	}
 	splicedPNGString := pngString[len(pngPrefix):]
 	return base64.StdEncoding.DecodeString(splicedPNGString)
