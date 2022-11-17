@@ -16,10 +16,9 @@ import (
 )
 
 type Playwright struct {
-	PW             *playwright.Playwright
-	Browser        playwright.Browser
-	BrowserContext playwright.BrowserContext
-	Page           playwright.Page
+	PW      *playwright.Playwright
+	Browser playwright.Browser
+	Page    playwright.Page
 }
 
 func (pw *Playwright) RestartBrowser() (newPW Playwright, err error) {
@@ -39,10 +38,9 @@ func (pw *Playwright) RestartBrowser() (newPW Playwright, err error) {
 		return Playwright{}, err
 	}
 	return Playwright{
-		PW:             pw.PW,
-		Browser:        browser,
-		BrowserContext: context,
-		Page:           page,
+		PW:      pw.PW,
+		Browser: browser,
+		Page:    page,
 	}, nil
 }
 
@@ -96,10 +94,9 @@ func InitPlaywright() (Playwright, error) {
 		return Playwright{}, err
 	}
 	return Playwright{
-		PW:             pw,
-		Browser:        browser,
-		BrowserContext: context,
-		Page:           page,
+		PW:      pw,
+		Browser: browser,
+		Page:    page,
 	}, nil
 }
 
