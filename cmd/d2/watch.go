@@ -34,19 +34,23 @@ var devMode = false
 //go:embed static
 var staticFS embed.FS
 
-type watcher struct {
-	ctx     context.Context
-	cancel  context.CancelFunc
-	wg      sync.WaitGroup
-	devMode bool
-
-	ms           *xmain.State
+type watcherOpts struct {
 	layoutPlugin d2plugin.Plugin
 	themeID      int64
 	host         string
 	port         string
 	inputPath    string
 	outputPath   string
+}
+
+type watcher struct {
+	ctx     context.Context
+	cancel  context.CancelFunc
+	wg      sync.WaitGroup
+	devMode bool
+
+	ms *xmain.State
+	watcherOpts
 
 	compileCh chan struct{}
 
@@ -71,7 +75,7 @@ type compileResult struct {
 	SVG string `json:"svg"`
 }
 
-func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plugin, themeID int64, host, port, inputPath, outputPath string) (*watcher, error) {
+func newWatcher(ctx context.Context, ms *xmain.State, opts watcherOpts) (*watcher, error) {
 	ctx, cancel := context.WithCancel(ctx)
 
 	w := &watcher{
@@ -79,13 +83,8 @@ func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plug
 		cancel:  cancel,
 		devMode: devMode,
 
-		ms:           ms,
-		layoutPlugin: layoutPlugin,
-		themeID:      themeID,
-		host:         host,
-		port:         port,
-		inputPath:    inputPath,
-		outputPath:   outputPath,
+		ms:          ms,
+		watcherOpts: opts,
 
 		compileCh: make(chan struct{}, 1),
 		wsclients: make(map[*wsclient]struct{}),
