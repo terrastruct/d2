@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/fsnotify/fsnotify"
+	"github.com/playwright-community/playwright-go"
 	"nhooyr.io/websocket"
 	"nhooyr.io/websocket/wsjson"
 
@@ -61,6 +62,9 @@ type watcher struct {
 
 	resMu sync.Mutex
 	res   *compileResult
+
+	browser playwright.Browser
+	pw      *playwright.Playwright
 }
 
 type compileResult struct {
@@ -68,7 +72,7 @@ type compileResult struct {
 	SVG string `json:"svg"`
 }
 
-func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plugin, inputPath, outputPath string) (*watcher, error) {
+func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plugin, inputPath, outputPath string, pw *playwright.Playwright, browser playwright.Browser) (*watcher, error) {
 	ctx, cancel := context.WithCancel(ctx)
 
 	w := &watcher{
@@ -83,6 +87,8 @@ func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plug
 
 		compileCh: make(chan struct{}, 1),
 		wsclients: make(map[*wsclient]struct{}),
+		browser:   browser,
+		pw:        pw,
 	}
 	err := w.init()
 	if err != nil {
@@ -143,6 +149,7 @@ func (w *watcher) run() error {
 
 func (w *watcher) close() {
 	w.wsclientsMu.Lock()
+
 	if w.closing {
 		w.wsclientsMu.Unlock()
 		return
@@ -325,7 +332,15 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			recompiledPrefix = "re"
 		}
 
-		b, err := compile(ctx, w.ms, w.layoutPlugin, w.inputPath, w.outputPath)
+		if !w.browser.IsConnected() {
+			newBrowser, err := w.pw.Chromium.Launch()
+			if err != nil {
+				return err
+			}
+			w.browser = newBrowser
+		}
+
+		b, err := compile(ctx, w.ms, w.layoutPlugin, w.inputPath, w.outputPath, w.browser)
 		if err != nil {
 			err = fmt.Errorf("failed to %scompile: %w", recompiledPrefix, err)
 			w.ms.Log.Error.Print(err)

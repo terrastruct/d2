@@ -10,8 +10,7 @@ import (
 	"strings"
 	"time"
 
-	_ "embed"
-
+	"github.com/playwright-community/playwright-go"
 	"github.com/spf13/pflag"
 
 	"oss.terrastruct.com/d2"
@@ -20,6 +19,7 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/textmeasure"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
+	"oss.terrastruct.com/d2/lib/png"
 	"oss.terrastruct.com/d2/lib/version"
 	"oss.terrastruct.com/d2/lib/xmain"
 )
@@ -113,12 +113,28 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	ms.Log.Debug.Printf("using layout plugin %s (%s)", envD2Layout, pluginLocation)
 
+	var pw *playwright.Playwright
+	var browser playwright.Browser
+	if filepath.Ext(outputPath) == ".png" {
+		pw, browser, err = png.InitPlaywright()
+		if err != nil {
+			return err
+		}
+	}
+	defer func() error {
+		err = png.Cleanup(pw, browser)
+		if err != nil {
+			return err
+		}
+		return nil
+	}()
+
 	if *watchFlag {
 		if inputPath == "-" {
 			return xmain.UsageErrorf("-w[atch] cannot be combined with reading input from stdin")
 		}
 		ms.Env.Setenv("LOG_TIMESTAMPS", "1")
-		w, err := newWatcher(ctx, ms, plugin, inputPath, outputPath)
+		w, err := newWatcher(ctx, ms, plugin, inputPath, outputPath, pw, browser)
 		if err != nil {
 			return err
 		}
@@ -132,15 +148,16 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		_ = 343
 	}
 
-	_, err = compile(ctx, ms, plugin, inputPath, outputPath)
+	_, err = compile(ctx, ms, plugin, inputPath, outputPath, browser)
 	if err != nil {
 		return err
 	}
+
 	ms.Log.Success.Printf("successfully compiled %v to %v", inputPath, outputPath)
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, inputPath, outputPath string) ([]byte, error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, inputPath, outputPath string, browser playwright.Browser) ([]byte, error) {
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
 		return nil, err
@@ -165,12 +182,19 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, input
 	if err != nil {
 		return nil, err
 	}
-	svg, err = plugin.PostProcess(ctx, svg)
+	outputImage, err := plugin.PostProcess(ctx, svg)
 	if err != nil {
 		return nil, err
 	}
 
-	err = ms.WritePath(outputPath, svg)
+	if filepath.Ext(outputPath) == ".png" {
+		outputImage, err = png.ExportPNG(browser, svg)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	err = ms.WritePath(outputPath, outputImage)
 	if err != nil {
 		return nil, err
 	}
