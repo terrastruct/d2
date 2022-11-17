@@ -186,7 +186,7 @@ This script needs to run the following command as root:
   $*
 Please install doas, sudo, or su.
 EOF
-    exit 1
+    return 1
   fi
 }
 
@@ -214,7 +214,7 @@ hide() {
     return
   fi
   cat "$out" >&2
-  exit "$code"
+  return "$code"
 }
 
 echo_dur() {
@@ -615,8 +615,14 @@ install() {
   if [ -n "${TALA-}" ]; then
     log "tala-$TALA_VERSION-$OS-$ARCH has been successfully installed into $PREFIX"
   fi
+  log "Rerun this install script with --uninstall to uninstall"
   if ! echo "$PATH" | grep -qF "$PREFIX/bin"; then
     logcat >&2 <<EOF
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+NEXT STEPS
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
 Extend your \$PATH to use d2:
   export PATH=$PREFIX/bin:\$PATH
 Then run:
@@ -641,8 +647,11 @@ EOF
       log "  Run man d2plugin-tala for detailed docs."
     fi
   fi
+  logcat >&2 <<EOF
 
-  log "Rerun the install script with --uninstall to uninstall"
+Something not working? Please let us know:
+https://github.com/terrastruct/d2/issues/new
+EOF
 }
 
 install_d2() {
