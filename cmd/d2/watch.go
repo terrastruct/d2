@@ -147,7 +147,6 @@ func (w *watcher) run() error {
 
 func (w *watcher) close() {
 	w.wsclientsMu.Lock()
-
 	if w.closing {
 		w.wsclientsMu.Unlock()
 		return

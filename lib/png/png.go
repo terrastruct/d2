@@ -117,7 +117,7 @@ var genPNGScript string
 func ExportPNG(ms *xmain.State, page playwright.Page, svg []byte) (outputImage []byte, err error) {
 	if page == nil {
 		ms.Log.Error.Printf("Playwright was not initialized properly for PNG export")
-		return nil, fmt.Errorf("Playwright page is not initialized for png export")
+		return nil, fmt.Errorf("Playwright page is nil")
 	}
 
 	encodedSVG := base64.StdEncoding.EncodeToString(svg)
@@ -130,7 +130,7 @@ func ExportPNG(ms *xmain.State, page playwright.Page, svg []byte) (outputImage [
 	pngPrefix := "data:image/png;base64,"
 	if !strings.HasPrefix(pngString, pngPrefix) {
 		ms.Log.Error.Printf("failed to convert D2 file to PNG")
-		return nil, fmt.Errorf("playwright export generated invalid png")
+		return nil, fmt.Errorf("Playwright export generated invalid png")
 	}
 	splicedPNGString := pngString[len(pngPrefix):]
 	return base64.StdEncoding.DecodeString(splicedPNGString)
