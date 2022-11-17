@@ -31,12 +31,27 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	// :(
 	ctx = xmain.DiscardSlog(ctx)
 
-	watchFlag := ms.Opts.Bool("D2_WATCH", "watch", "w", false, "watch for changes to input and live reload. Use $HOST and $PORT to specify the listening address.\n$D2_HOST and $D2_PORT are also accepted and take priority (default localhost:0, which is will open on a randomly available local port).")
-	bundleFlag := ms.Opts.Bool("D2_BUNDLE", "bundle", "b", true, "bundle all assets and layers into the output svg.")
-	debugFlag := ms.Opts.Bool("DEBUG", "debug", "d", false, "print debug logs.")
+	watchFlag, err := ms.Opts.Bool("D2_WATCH", "watch", "w", false, "watch for changes to input and live reload. Use $HOST and $PORT to specify the listening address.\n$D2_HOST and $D2_PORT are also accepted and take priority (default localhost:0, which is will open on a randomly available local port).")
+	if err != nil {
+		return xmain.UsageErrorf(err.Error())
+	}
+	bundleFlag, err := ms.Opts.Bool("D2_BUNDLE", "bundle", "b", true, "bundle all assets and layers into the output svg.")
+	if err != nil {
+		return xmain.UsageErrorf(err.Error())
+	}
+	debugFlag, err := ms.Opts.Bool("DEBUG", "debug", "d", false, "print debug logs.")
+	if err != nil {
+		return xmain.UsageErrorf(err.Error())
+	}
 	layoutFlag := ms.Opts.String("D2_LAYOUT", "layout", "l", "dagre", `the layout engine used.`)
-	themeFlag := ms.Opts.Int64("D2_THEME", "theme", "t", 0, "the diagram theme ID. For a list of available options, see https://oss.terrastruct.com/d2")
-	versionFlag := ms.Opts.Bool("", "version", "v", false, "get the version")
+	themeFlag, err := ms.Opts.Int64("D2_THEME", "theme", "t", 0, "the diagram theme ID. For a list of available options, see https://oss.terrastruct.com/d2")
+	if err != nil {
+		return xmain.UsageErrorf(err.Error())
+	}
+	versionFlag, err := ms.Opts.Bool("", "version", "v", false, "get the version")
+	if err != nil {
+		return xmain.UsageErrorf(err.Error())
+	}
 
 	err = ms.Opts.Parse()
 	if !errors.Is(err, pflag.ErrHelp) && err != nil {

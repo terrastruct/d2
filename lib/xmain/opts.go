@@ -20,7 +20,7 @@ type Opts struct {
 	registeredEnvs []string
 }
 
-func NewOpts(env *xos.Env, args []string, log *cmdlog.Logger) *Opts {
+func NewOpts(env *xos.Env, log *cmdlog.Logger, args []string) *Opts {
 	flags := pflag.NewFlagSet("", pflag.ContinueOnError)
 	flags.SortFlags = false
 	flags.Usage = func() {}
@@ -52,29 +52,26 @@ func (o *Opts) Help() string {
 	return b.String()
 }
 
-func (o *Opts) Int64(envKey, flag, shortFlag string, defaultVal int64, usage string) *int64 {
+func (o *Opts) Int64(envKey, flag, shortFlag string, defaultVal int64, usage string) (*int64, error) {
 	if envKey != "" {
 		if o.env.Getenv(envKey) != "" {
 			envVal, err := strconv.ParseInt(o.env.Getenv(envKey), 10, 64)
 			if err != nil {
-				o.log.Error.Printf(`ignoring invalid environment variable %s. Expected int64. Found "%v".`, envKey, envVal)
-			} else if envVal != defaultVal {
-				defaultVal = envVal
+				return nil, fmt.Errorf(`invalid environment variable %s. Expected int64. Found "%v".`, envKey, envVal)
 			}
+			defaultVal = envVal
 		}
 		o.registeredEnvs = append(o.registeredEnvs, envKey)
 	}
 
-	return o.flags.Int64P(flag, shortFlag, defaultVal, usage)
+	return o.flags.Int64P(flag, shortFlag, defaultVal, usage), nil
 }
 
 func (o *Opts) String(envKey, flag, shortFlag string, defaultVal, usage string) *string {
 	if envKey != "" {
 		if o.env.Getenv(envKey) != "" {
 			envVal := o.env.Getenv(envKey)
-			if envVal != defaultVal {
-				defaultVal = envVal
-			}
+			defaultVal = envVal
 		}
 		o.registeredEnvs = append(o.registeredEnvs, envKey)
 	}
@@ -82,21 +79,23 @@ func (o *Opts) String(envKey, flag, shortFlag string, defaultVal, usage string) 
 	return o.flags.StringP(flag, shortFlag, defaultVal, usage)
 }
 
-func (o *Opts) Bool(envKey, flag, shortFlag string, defaultVal bool, usage string) *bool {
+func (o *Opts) Bool(envKey, flag, shortFlag string, defaultVal bool, usage string) (*bool, error) {
 	if envKey != "" {
 		if o.env.Getenv(envKey) != "" {
 			envVal := o.env.Getenv(envKey)
 			if !boolyEnv(envVal) {
-				o.log.Error.Printf(`ignoring invalid environment variable %s. Expected bool. Found "%s".`, envKey, envVal)
-			} else if (defaultVal && falseyEnv(envVal)) ||
-				(!defaultVal && truthyEnv(envVal)) {
-				defaultVal = !defaultVal
+				return nil, fmt.Errorf(`invalid environment variable %s. Expected bool. Found "%s".`, envKey, envVal)
+			}
+			if truthyEnv(envVal) {
+				defaultVal = true
+			} else {
+				defaultVal = false
 			}
 		}
 		o.registeredEnvs = append(o.registeredEnvs, envKey)
 	}
 
-	return o.flags.BoolP(flag, shortFlag, defaultVal, usage)
+	return o.flags.BoolP(flag, shortFlag, defaultVal, usage), nil
 }
 
 func boolyEnv(s string) bool {
@@ -104,19 +103,15 @@ func boolyEnv(s string) bool {
 }
 
 func falseyEnv(s string) bool {
-	return s == "0" || s == "false" || s == "f"
+	return s == "0" || s == "false"
 }
 
 func truthyEnv(s string) bool {
-	return s == "1" || s == "true" || s == "t"
+	return s == "1" || s == "true"
 }
 
 func (o *Opts) Parse() error {
-	err := o.flags.Parse(o.args)
-	if err != nil {
-		return err
-	}
-	return nil
+	return o.flags.Parse(o.args)
 }
 
 func (o *Opts) SetArgs(args []string) {

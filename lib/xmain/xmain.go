@@ -42,7 +42,7 @@ func Main(run RunFunc) {
 		Env: xos.NewEnv(os.Environ()),
 	}
 	ms.Log = cmdlog.Log(ms.Env, os.Stderr)
-	ms.Opts = NewOpts(ms.Env, args, ms.Log)
+	ms.Opts = NewOpts(ms.Env, ms.Log, args)
 
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, os.Interrupt, syscall.SIGTERM)
