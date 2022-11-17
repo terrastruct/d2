@@ -332,8 +332,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 		if filepath.Ext(w.outputPath) == ".png" && !w.pw.Browser.IsConnected() {
 			newPW, err := w.pw.RestartBrowser()
 			if err != nil {
-				w.ms.Log.Error.Printf("failed to refresh Playwright browser")
-				return err
+				return fmt.Errorf("png exporter has disconnected")
 			}
 			w.pw = newPW
 		}
