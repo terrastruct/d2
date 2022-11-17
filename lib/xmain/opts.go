@@ -52,47 +52,44 @@ func (o *Opts) Help() string {
 	return b.String()
 }
 
+func (o *Opts) getEnv(k string) string {
+	if k != "" {
+		o.registeredEnvs = append(o.registeredEnvs, k)
+		return o.env.Getenv(k)
+	}
+	return ""
+}
+
 func (o *Opts) Int64(envKey, flag, shortFlag string, defaultVal int64, usage string) (*int64, error) {
-	if envKey != "" {
-		if o.env.Getenv(envKey) != "" {
-			envVal, err := strconv.ParseInt(o.env.Getenv(envKey), 10, 64)
-			if err != nil {
-				return nil, fmt.Errorf(`invalid environment variable %s. Expected int64. Found "%v".`, envKey, envVal)
-			}
-			defaultVal = envVal
+	if env := o.getEnv(envKey); env != "" {
+		envVal, err := strconv.ParseInt(env, 10, 64)
+		if err != nil {
+			return nil, fmt.Errorf(`invalid environment variable %s. Expected int64. Found "%v".`, envKey, envVal)
 		}
-		o.registeredEnvs = append(o.registeredEnvs, envKey)
+		defaultVal = envVal
 	}
 
 	return o.Flags.Int64P(flag, shortFlag, defaultVal, usage), nil
 }
 
 func (o *Opts) String(envKey, flag, shortFlag string, defaultVal, usage string) *string {
-	if envKey != "" {
-		if o.env.Getenv(envKey) != "" {
-			envVal := o.env.Getenv(envKey)
-			defaultVal = envVal
-		}
-		o.registeredEnvs = append(o.registeredEnvs, envKey)
+	if env := o.getEnv(envKey); env != "" {
+		defaultVal = env
 	}
 
 	return o.Flags.StringP(flag, shortFlag, defaultVal, usage)
 }
 
 func (o *Opts) Bool(envKey, flag, shortFlag string, defaultVal bool, usage string) (*bool, error) {
-	if envKey != "" {
-		if o.env.Getenv(envKey) != "" {
-			envVal := o.env.Getenv(envKey)
-			if !boolyEnv(envVal) {
-				return nil, fmt.Errorf(`invalid environment variable %s. Expected bool. Found "%s".`, envKey, envVal)
-			}
-			if truthyEnv(envVal) {
-				defaultVal = true
-			} else {
-				defaultVal = false
-			}
+	if env := o.getEnv(envKey); env != "" {
+		if !boolyEnv(env) {
+			return nil, fmt.Errorf(`invalid environment variable %s. Expected bool. Found "%s".`, envKey, env)
 		}
-		o.registeredEnvs = append(o.registeredEnvs, envKey)
+		if truthyEnv(env) {
+			defaultVal = true
+		} else {
+			defaultVal = false
+		}
 	}
 
 	return o.Flags.BoolP(flag, shortFlag, defaultVal, usage), nil

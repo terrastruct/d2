@@ -6,7 +6,8 @@ For v0.0.99 we focused on X, Y and Z. Enjoy!
 
 #### Improvements 🔧
 
-- Add table columns indices in edges between SQL Tables so that layout engines can route exactly between them
+- Equivalency between flags and environment variables. You can set either one for all
+  options (flags take precedence).
 
 #### Bugfixes 🔴
 
