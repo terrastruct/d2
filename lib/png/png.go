@@ -120,8 +120,8 @@ func ExportPNG(ms *xmain.State, page playwright.Page, svg []byte) (outputImage [
 	pngString := fmt.Sprintf("%v", pngInterface)
 	pngPrefix := "data:image/png;base64,"
 	if !strings.HasPrefix(pngString, pngPrefix) {
-		if len(pngString) > 20 {
-			pngString = pngString[0:20] + "..."
+		if len(pngString) > 50 {
+			pngString = pngString[0:50] + "..."
 		}
 		return nil, fmt.Errorf("invalid PNG: %v\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", pngString)
 	}

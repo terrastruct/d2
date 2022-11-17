@@ -120,7 +120,10 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 			return err
 		}
 		defer func() {
-			err = pw.Cleanup()
+			cleanupErr := pw.Cleanup()
+			if cleanupErr != nil {
+				ms.Log.Error.Printf("error cleaning up playwright: %v", cleanupErr.Error())
+			}
 		}()
 	}
 
