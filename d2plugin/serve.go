@@ -19,12 +19,12 @@ import (
 // Also see execPlugin in exec.go for the d2 binary plugin protocol.
 func Serve(p Plugin) func(context.Context, *xmain.State) error {
 	return func(ctx context.Context, ms *xmain.State) (err error) {
-		if len(ms.Opts.Args()) < 1 {
+		if len(ms.Opts.Flags.Args()) < 1 {
 			return errors.New("expected first argument to plugin binary to be function name")
 		}
-		reqFunc := ms.Opts.Arg(0)
+		reqFunc := ms.Opts.Flags.Arg(0)
 
-		switch ms.Opts.Arg(0) {
+		switch ms.Opts.Flags.Arg(0) {
 		case "info":
 			return info(ctx, p, ms)
 		case "layout":
