@@ -318,7 +318,7 @@ uninstall_standalone_d2() {
 
   if [ ! -e "$INSTALL_DIR/d2-$INSTALLED_VERSION" ]; then
     warn "missing standalone install release directory $INSTALL_DIR/d2-$INSTALLED_VERSION"
-    warn "d2 has been installed via some other installation method."
+    warn "d2 must have been installed via some other installation method."
     return 1
   fi
 
@@ -341,7 +341,7 @@ uninstall_standalone_tala() {
 
   if [ ! -e "$INSTALL_DIR/tala-$INSTALLED_VERSION" ]; then
     warn "missing standalone install release directory $INSTALL_DIR/tala-$INSTALLED_VERSION"
-    warn "tala has been installed via some other installation method."
+    warn "tala must have been installed via some other installation method."
     return 1
   fi
 
