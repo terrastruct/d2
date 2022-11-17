@@ -113,15 +113,14 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	ms.Log.Debug.Printf("using layout plugin %s (%s)", envD2Layout, pluginLocation)
 
-	var pw *playwright.Playwright
-	var browser playwright.Browser
+	var pw png.Playwright
 	if filepath.Ext(outputPath) == ".png" {
-		pw, browser, err = png.InitPlaywright()
+		pw, err = png.InitPlaywright()
 		if err != nil {
 			return err
 		}
 		defer func() error {
-			err = png.Cleanup(pw, browser)
+			err = pw.Cleanup(*watchFlag)
 			if err != nil {
 				return err
 			}
@@ -134,7 +133,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 			return xmain.UsageErrorf("-w[atch] cannot be combined with reading input from stdin")
 		}
 		ms.Env.Setenv("LOG_TIMESTAMPS", "1")
-		w, err := newWatcher(ctx, ms, plugin, inputPath, outputPath, pw, browser)
+		w, err := newWatcher(ctx, ms, plugin, inputPath, outputPath, pw)
 		if err != nil {
 			return err
 		}
@@ -148,7 +147,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		_ = 343
 	}
 
-	_, err = compile(ctx, ms, plugin, inputPath, outputPath, browser)
+	_, err = compile(ctx, ms, plugin, inputPath, outputPath, pw.Page)
 	if err != nil {
 		return err
 	}
@@ -157,7 +156,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, inputPath, outputPath string, browser playwright.Browser) ([]byte, error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, inputPath, outputPath string, page playwright.Page) ([]byte, error) {
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
 		return nil, err
@@ -188,7 +187,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, input
 	}
 
 	if filepath.Ext(outputPath) == ".png" {
-		outputImage, err = png.ExportPNG(browser, svg)
+		outputImage, err = png.ExportPNG(ms, page, svg)
 		if err != nil {
 			return nil, err
 		}

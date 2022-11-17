@@ -16,11 +16,11 @@ import (
 	"time"
 
 	"github.com/fsnotify/fsnotify"
-	"github.com/playwright-community/playwright-go"
 	"nhooyr.io/websocket"
 	"nhooyr.io/websocket/wsjson"
 
 	"oss.terrastruct.com/d2/d2plugin"
+	"oss.terrastruct.com/d2/lib/png"
 	"oss.terrastruct.com/d2/lib/xbrowser"
 	"oss.terrastruct.com/d2/lib/xhttp"
 	"oss.terrastruct.com/d2/lib/xmain"
@@ -63,8 +63,7 @@ type watcher struct {
 	resMu sync.Mutex
 	res   *compileResult
 
-	browser playwright.Browser
-	pw      *playwright.Playwright
+	pw png.Playwright
 }
 
 type compileResult struct {
@@ -72,7 +71,7 @@ type compileResult struct {
 	SVG string `json:"svg"`
 }
 
-func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plugin, inputPath, outputPath string, pw *playwright.Playwright, browser playwright.Browser) (*watcher, error) {
+func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plugin, inputPath, outputPath string, pw png.Playwright) (*watcher, error) {
 	ctx, cancel := context.WithCancel(ctx)
 
 	w := &watcher{
@@ -87,7 +86,6 @@ func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plug
 
 		compileCh: make(chan struct{}, 1),
 		wsclients: make(map[*wsclient]struct{}),
-		browser:   browser,
 		pw:        pw,
 	}
 	err := w.init()
@@ -332,15 +330,16 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			recompiledPrefix = "re"
 		}
 
-		if !w.browser.IsConnected() {
-			newBrowser, err := w.pw.Chromium.Launch()
+		if filepath.Ext(w.outputPath) == ".png" && !w.pw.Browser.IsConnected() {
+			newPW, err := w.pw.RestartBrowser()
 			if err != nil {
+				w.ms.Log.Error.Printf("failed to refresh Playwright browser")
 				return err
 			}
-			w.browser = newBrowser
+			w.pw = newPW
 		}
 
-		b, err := compile(ctx, w.ms, w.layoutPlugin, w.inputPath, w.outputPath, w.browser)
+		b, err := compile(ctx, w.ms, w.layoutPlugin, w.inputPath, w.outputPath, w.pw.Page)
 		if err != nil {
 			err = fmt.Errorf("failed to %scompile: %w", recompiledPrefix, err)
 			w.ms.Log.Error.Print(err)
