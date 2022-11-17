@@ -120,14 +120,14 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		if err != nil {
 			return err
 		}
+		defer func() error {
+			err = png.Cleanup(pw, browser)
+			if err != nil {
+				return err
+			}
+			return nil
+		}()
 	}
-	defer func() error {
-		err = png.Cleanup(pw, browser)
-		if err != nil {
-			return err
-		}
-		return nil
-	}()
 
 	if *watchFlag {
 		if inputPath == "-" {
