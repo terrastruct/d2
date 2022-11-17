@@ -28,7 +28,7 @@ Subcommands:
   %[1]s layout [layout name] - Display long help for a particular layout engine
 
 See more docs and the source code at https://oss.terrastruct.com/d2
-`, ms.Name, ms.Opts.Help())
+`, ms.Name, ms.Opts.Defaults())
 }
 
 func layoutHelp(ctx context.Context, ms *xmain.State) error {
