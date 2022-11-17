@@ -31,6 +31,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	// :(
 	ctx = xmain.DiscardSlog(ctx)
 
+	// These should be kept up-to-date with the d2 man page
 	watchFlag, err := ms.Opts.Bool("D2_WATCH", "watch", "w", false, "watch for changes to input and live reload. Use $HOST and $PORT to specify the listening address.\n$D2_HOST and $D2_PORT are also accepted and take priority (default localhost:0, which is will open on a randomly available local port).")
 	if err != nil {
 		return xmain.UsageErrorf(err.Error())
