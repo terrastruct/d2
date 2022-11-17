@@ -43,6 +43,8 @@ type watcher struct {
 	ms           *xmain.State
 	layoutPlugin d2plugin.Plugin
 	themeID      int64
+	host         string
+	port         string
 	inputPath    string
 	outputPath   string
 
@@ -69,7 +71,7 @@ type compileResult struct {
 	SVG string `json:"svg"`
 }
 
-func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plugin, themeID int64, inputPath, outputPath string) (*watcher, error) {
+func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plugin, themeID int64, host, port, inputPath, outputPath string) (*watcher, error) {
 	ctx, cancel := context.WithCancel(ctx)
 
 	w := &watcher{
@@ -80,6 +82,8 @@ func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plug
 		ms:           ms,
 		layoutPlugin: layoutPlugin,
 		themeID:      themeID,
+		host:         host,
+		port:         port,
 		inputPath:    inputPath,
 		outputPath:   outputPath,
 
@@ -353,18 +357,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 }
 
 func (w *watcher) listen() error {
-	host := "localhost"
-	port := "0"
-	hostEnv := w.ms.Env.Getenv("HOST")
-	if hostEnv != "" {
-		host = hostEnv
-	}
-	portEnv := w.ms.Env.Getenv("PORT")
-	if portEnv != "" {
-		port = portEnv
-	}
-
-	l, err := net.Listen("tcp", net.JoinHostPort(host, port))
+	l, err := net.Listen("tcp", net.JoinHostPort(w.host, w.port))
 	if err != nil {
 		return err
 	}

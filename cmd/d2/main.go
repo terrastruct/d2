@@ -32,10 +32,12 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx = xmain.DiscardSlog(ctx)
 
 	// These should be kept up-to-date with the d2 man page
-	watchFlag, err := ms.Opts.Bool("D2_WATCH", "watch", "w", false, "watch for changes to input and live reload. Use $HOST and $PORT to specify the listening address.\n$D2_HOST and $D2_PORT are also accepted and take priority (default localhost:0, which is will open on a randomly available local port).")
+	watchFlag, err := ms.Opts.Bool("D2_WATCH", "watch", "w", false, "watch for changes to input and live reload. Use $HOST and $PORT to specify the listening address.\n(default localhost:0, which is will open on a randomly available local port).")
 	if err != nil {
 		return xmain.UsageErrorf(err.Error())
 	}
+	hostFlag := ms.Opts.String("HOST", "host", "h", "localhost", "host listening address when used with watch")
+	portFlag := ms.Opts.String("PORT", "port", "p", "0", "port listening address when used with watch")
 	bundleFlag, err := ms.Opts.Bool("D2_BUNDLE", "bundle", "b", true, "bundle all assets and layers into the output svg.")
 	if err != nil {
 		return xmain.UsageErrorf(err.Error())
@@ -130,7 +132,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 			return xmain.UsageErrorf("-w[atch] cannot be combined with reading input from stdin")
 		}
 		ms.Env.Setenv("LOG_TIMESTAMPS", "1")
-		w, err := newWatcher(ctx, ms, plugin, *themeFlag, inputPath, outputPath)
+		w, err := newWatcher(ctx, ms, plugin, *themeFlag, *hostFlag, *portFlag, inputPath, outputPath)
 		if err != nil {
 			return err
 		}
