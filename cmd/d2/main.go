@@ -186,7 +186,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, input
 	}
 
 	if filepath.Ext(outputPath) == ".png" {
-		outputImage, err = png.ExportPNG(ms, page, svg)
+		outputImage, err = png.ExportPNG(ms, page, outputImage)
 		if err != nil {
 			return nil, err
 		}
