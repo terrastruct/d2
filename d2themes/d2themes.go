@@ -18,9 +18,6 @@ type Neutral struct {
 }
 
 type ColorPalette struct {
-	// So far the palette only contains the colors used in d2 shapes, the full theme includes more colors
-	// https://www.figma.com/file/n79RbPiHFUTO4PPPdpDu7w/%5BKW%5D-GUI-features?node-id=2268%3A120792
-
 	Neutrals Neutral `json:"neutrals"`
 
 	// Base Colors: used for containers

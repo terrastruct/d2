@@ -36,7 +36,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	debugFlag := ms.Opts.Bool("DEBUG", "debug", "d", false, "print debug logs.")
 	layoutFlag := ms.Opts.String("D2_LAYOUT", "layout", "l", "dagre", `the layout engine used.`)
 	themeFlag := ms.Opts.Int64("D2_THEME", "theme", "t", 0, "the diagram theme ID. For a list of available options, see https://oss.terrastruct.com/d2")
-	versionFlag := ms.Opts.Bool("", "version", "v", false, "get the version and check for updates")
+	versionFlag := ms.Opts.Bool("", "version", "v", false, "get the version")
 
 	err = ms.Opts.Parse()
 	if !errors.Is(err, pflag.ErrHelp) && err != nil {
@@ -64,7 +64,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 
 	if len(ms.Opts.Args()) == 0 {
 		if versionFlag != nil && *versionFlag {
-			version.CheckVersion(ctx, ms.Log)
+			fmt.Println(version.Version)
 			return nil
 		}
 		help(ms)
@@ -72,9 +72,10 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	} else if len(ms.Opts.Args()) >= 3 {
 		return xmain.UsageErrorf("too many arguments passed")
 	}
+
 	if len(ms.Opts.Args()) >= 1 {
 		if ms.Opts.Arg(0) == "version" {
-			version.CheckVersion(ctx, ms.Log)
+			fmt.Println(version.Version)
 			return nil
 		}
 		inputPath = ms.Opts.Arg(0)

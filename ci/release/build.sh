@@ -5,7 +5,7 @@ cd -- "$(dirname "$0")/../.."
 
 help() {
   cat <<EOF
-usage: $0 [--rebuild] [--local] [--dry-run] [--run=regex] [--host-only]
+usage: $0 [--rebuild] [--local] [--dry-run] [--run=regex] [--host-only] [--lockfile-force]
 
 $0 builds D2 release archives into ./ci/release/build/<version>/d2-<VERSION>-<OS>-<ARCH>.tar.gz
 
@@ -35,6 +35,9 @@ Flags:
 
 --version vX.X.X
   Use to overwrite the version detected from git.
+
+--lockfile-force
+  Forcefully take ownership of remote builder lockfiles.
 EOF
 }
 
@@ -70,6 +73,10 @@ main() {
       version)
         flag_nonemptyarg && shift "$FLAGSHIFT"
         VERSION=$FLAGARG
+        ;;
+      lockfile-force)
+        flag_noarg && shift "$FLAGSHIFT"
+        LOCKFILE_FORCE=1
         ;;
       '')
         shift "$FLAGSHIFT"
@@ -118,10 +125,10 @@ build() {
     macos)
       case $ARCH in
         amd64)
-          RHOST=$TSTRUCT_MACOS_AMD64_BUILDER build_rhost_macos
+          REMOTE_HOST=$TSTRUCT_MACOS_AMD64_BUILDER build_remote_macos
           ;;
         arm64)
-          RHOST=$TSTRUCT_MACOS_ARM64_BUILDER build_rhost_macos
+          REMOTE_HOST=$TSTRUCT_MACOS_ARM64_BUILDER build_remote_macos
           ;;
         *)
           warn "no builder for OS=$OS ARCH=$ARCH, building locally..."
@@ -132,10 +139,10 @@ build() {
     linux)
       case $ARCH in
         amd64)
-          RHOST=$TSTRUCT_LINUX_AMD64_BUILDER build_rhost_linux
+          REMOTE_HOST=$TSTRUCT_LINUX_AMD64_BUILDER build_remote_linux
           ;;
         arm64)
-          RHOST=$TSTRUCT_LINUX_ARM64_BUILDER build_rhost_linux
+          REMOTE_HOST=$TSTRUCT_LINUX_ARM64_BUILDER build_remote_linux
           ;;
         *)
           warn "no builder for OS=$OS ARCH=$ARCH, building locally..."
@@ -160,10 +167,12 @@ build_local() {
   sh_c ./ci/release/_build.sh
 }
 
-build_rhost_macos() {
-  sh_c ssh "$RHOST" mkdir -p src
-  sh_c rsync --archive --human-readable --delete ./ "$RHOST:src/d2/"
-  sh_c ssh -tttt "$RHOST" "DRY_RUN=${DRY_RUN-} \
+build_remote_macos() {
+  sh_c lockfile_ssh "$REMOTE_HOST" .d2-build-lock
+  trap unlockfile_ssh EXIT
+  sh_c ssh "$REMOTE_HOST" mkdir -p src
+  sh_c rsync --archive --human-readable --delete ./ "$REMOTE_HOST:src/d2/"
+  sh_c ssh "$REMOTE_HOST" "DRY_RUN=${DRY_RUN-} \
 HW_BUILD_DIR=$HW_BUILD_DIR \
 VERSION=$VERSION \
 OS=$OS \
@@ -173,13 +182,15 @@ TERM=$TERM \
 PATH=\\\"/usr/local/bin:/usr/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin\\\${PATH+:\\\$PATH}\\\" \
 ./src/d2/ci/release/_build.sh"
   sh_c mkdir -p "$HW_BUILD_DIR"
-  sh_c rsync --archive --human-readable "$RHOST:src/d2/$ARCHIVE" "$ARCHIVE"
+  sh_c rsync --archive --human-readable "$REMOTE_HOST:src/d2/$ARCHIVE" "$ARCHIVE"
 }
 
-build_rhost_linux() {
-  sh_c ssh "$RHOST" mkdir -p src
-  sh_c rsync --archive --human-readable --delete ./ "$RHOST:src/d2/"
-  sh_c ssh -tttt "$RHOST" "DRY_RUN=${DRY_RUN-} \
+build_remote_linux() {
+  sh_c lockfile_ssh "$REMOTE_HOST" .d2-build-lock
+  trap unlockfile_ssh EXIT
+  sh_c ssh "$REMOTE_HOST" mkdir -p src
+  sh_c rsync --archive --human-readable --delete ./ "$REMOTE_HOST:src/d2/"
+  sh_c ssh "$REMOTE_HOST" "DRY_RUN=${DRY_RUN-} \
 HW_BUILD_DIR=$HW_BUILD_DIR \
 VERSION=$VERSION \
 OS=$OS \
@@ -188,7 +199,7 @@ ARCHIVE=$ARCHIVE \
 TERM=$TERM \
 ./src/d2/ci/release/build_docker.sh"
   sh_c mkdir -p "$HW_BUILD_DIR"
-  sh_c rsync --archive --human-readable "$RHOST:src/d2/$ARCHIVE" "$ARCHIVE"
+  sh_c rsync --archive --human-readable "$REMOTE_HOST:src/d2/$ARCHIVE" "$ARCHIVE"
 }
 
 ssh() {

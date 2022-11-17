@@ -12,7 +12,6 @@ import (
 	"math"
 
 	"rogchap.com/v8go"
-	v8 "rogchap.com/v8go"
 
 	"oss.terrastruct.com/xdefer"
 
@@ -104,7 +103,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	})
 	global.Set("setTimeout", setTimeout, v8go.ReadOnly)
 
-	v8ctx := v8.NewContext(iso, global)
+	v8ctx := v8go.NewContext(iso, global)
 	if _, err := v8ctx.RunScript(elkJS, "elk.js"); err != nil {
 		return err
 	}

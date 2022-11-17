@@ -194,7 +194,7 @@ EOF
   if ! manpath | grep -qF "$PREFIX/share/man"; then
     logcat >&2 <<EOF
 Extend your \$MANPATH to view d2's manpages:
-  export MANPATH=$PREFIX/share/man\${MANPATH+:\$MANPATH}
+  export MANPATH=$PREFIX/share/man:\$MANPATH
 Then run:
   man d2
 EOF

@@ -20,27 +20,28 @@
 
 <!-- toc -->
 
-- [Quickstart (CLI)](#quickstart-cli)
-  * [MacOS](#macos)
-  * [Linux/Windows](#linuxwindows)
-- [Quickstart (library)](#quickstart-library)
+- [Quickstart](#quickstart)
+- [Install](#install)
+  * [Install script](#install-script)
+  * [Install from source](#install-from-source)
+- [D2 as a library](#d2-as-a-library)
 - [Themes](#themes)
 - [Fonts](#fonts)
 - [Export file types](#export-file-types)
 - [Language tooling](#language-tooling)
-- [Layout engine](#layout-engine)
+- [Plugins](#plugins)
 - [Comparison](#comparison)
 - [Contributing](#contributing)
 - [License](#license)
-- [Dependencies](#dependencies)
 - [Related](#related)
   * [VSCode extension](#vscode-extension)
   * [Vim extension](#vim-extension)
   * [Misc](#misc)
+- [FAQ](#faq)
 
 <!-- tocstop -->
 
-## Quickstart (CLI)
+## Quickstart
 
 The most convenient way to use D2 is to just run it as a CLI executable to
 produce SVGs from `.d2` files.
@@ -55,22 +56,17 @@ d2 --watch in.d2 out.svg
 
 A browser window will open with `out.svg` and live-reload on changes to `in.d2`.
 
-### Install from source
+## Install
 
-```sh
-go install oss.terrastruct.com/d2
-```
-
-### Install
+### Install script
 
 The recommended way to install is to run our install script, which will figure out the
-best way to install based on your machine. E.g. if D2 is available through a package
-manager installed, it will use that package manager.
+best way to install based on your machine.
 
 ```sh
-# With --dryrun the install script will print the commands it will use
+# With --dry-run the install script will print the commands it will use
 # to install without actually installing so you know what it's going to do.
-curl -fsSL https://d2lang.com/install.sh | sh -s -- --dryrun
+curl -fsSL https://d2lang.com/install.sh | sh -s -- --dry-run
 # If things look good, install for real.
 curl -fsSL https://d2lang.com/install.sh | sh -s --
 ```
@@ -83,7 +79,7 @@ and release a docker image.
 To uninstall:
 
 ```sh
-curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall --dryrun
+curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall --dry-run
 # If things look good, uninstall for real.
 curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall
 ```
@@ -91,18 +87,26 @@ curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall
 > warn: Our binary releases aren't fully portable like normal Go binaries due to the C
 > dependency on v8go for executing dagre.
 
-## Quickstart (library)
+### Install from source
+
+Alternatively, you can install from source:
+
+```sh
+go install oss.terrastruct.com/d2
+```
+
+## D2 as a library
 
 In addition to being a runnable CLI tool, D2 can also be used to produce diagrams from
 Go programs.
 
 ```go
 import (
-	"github.com/terrastruct/d2/d2compiler"
-	"github.com/terrastruct/d2/d2exporter"
-	"github.com/terrastruct/d2/d2layouts/d2dagrelayout"
-	"github.com/terrastruct/d2/d2renderers/textmeasure"
-	"github.com/terrastruct/d2/d2themes/d2themescatalog"
+  "github.com/terrastruct/d2/d2compiler"
+  "github.com/terrastruct/d2/d2exporter"
+  "github.com/terrastruct/d2/d2layouts/d2dagrelayout"
+  "github.com/terrastruct/d2/d2renderers/textmeasure"
+  "github.com/terrastruct/d2/d2themes/d2themescatalog"
 )
 
 func main() {
@@ -208,10 +212,13 @@ Copyright © 2022 Terrastruct, Inc. Open-source licensed under the Mozilla Publi
 
 [https://github.com/terrastruct/d2-vim](https://github.com/terrastruct/d2-vim)
 
+### Language docs
+
+[https://github.com/terrastruct/d2-docs](https://github.com/terrastruct/d2-docs)
+
 ### Misc
 
-- [https://github.com/terrastruct/d2-docs](https://github.com/terrastruct/d2-docs)
-- [https://github.com/terrastruct/text-to-diagram-com](https://github.com/terrastruct/text-to-diagram-com)
+- [https://github.com/terrastruct/text-to-diagram-site](https://github.com/terrastruct/text-to-diagram-site)
 
 ## FAQ
 
@@ -221,10 +228,8 @@ Copyright © 2022 Terrastruct, Inc. Open-source licensed under the Mozilla Publi
 - Does D2 need a browser to run?
   - No, D2 can run entirely server-side.
 - I have a question or need help.
-  - The best way to get help is to open an Issue, so that it's searchable by others in the
-    future. If you prefer synchronous or just want to chat, you can pop into the help
-    channel of the [D2 Discord](https://discord.gg/NF6X8K4eDq) as well.
-- I have a feature request or proposal.
-  - D2 uses Github Issues for everything. Just add a "discussion" label to your Issue.
+  - The best way to get help is to ask on [D2 Discord](https://discord.gg/NF6X8K4eDq)
+- I have a feature request, proposal, or bug report.
+  - Please open up a Github Issue.
 - I have a private inquiry.
   - Please reach out at [hi@d2lang.com](hi@d2lang.com).

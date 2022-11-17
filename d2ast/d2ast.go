@@ -1,8 +1,5 @@
 // d2ast implements the d2 language's abstract syntax tree.
 //
-// https://github.com/terrastruct/d2-vscode
-// https://terrastruct.com/docs/d2/tour/intro/
-//
 // Special characters to think about in parser:
 //   #
 //   """
