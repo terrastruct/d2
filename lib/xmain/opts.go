@@ -12,8 +12,8 @@ import (
 )
 
 type Opts struct {
-	args  []string
-	flags *pflag.FlagSet
+	Args  []string
+	Flags *pflag.FlagSet
 	env   *xos.Env
 	log   *cmdlog.Logger
 
@@ -26,8 +26,8 @@ func NewOpts(env *xos.Env, log *cmdlog.Logger, args []string) *Opts {
 	flags.Usage = func() {}
 	flags.SetOutput(io.Discard)
 	return &Opts{
-		args:  args,
-		flags: flags,
+		Args:  args,
+		Flags: flags,
 		env:   env,
 		log:   log,
 	}
@@ -35,8 +35,8 @@ func NewOpts(env *xos.Env, log *cmdlog.Logger, args []string) *Opts {
 
 func (o *Opts) Help() string {
 	b := &strings.Builder{}
-	o.flags.SetOutput(b)
-	o.flags.PrintDefaults()
+	o.Flags.SetOutput(b)
+	o.Flags.PrintDefaults()
 
 	if len(o.registeredEnvs) > 0 {
 		b.WriteString("\nYou may persistently set the following as environment variables (flags take precedent):\n")
@@ -64,7 +64,7 @@ func (o *Opts) Int64(envKey, flag, shortFlag string, defaultVal int64, usage str
 		o.registeredEnvs = append(o.registeredEnvs, envKey)
 	}
 
-	return o.flags.Int64P(flag, shortFlag, defaultVal, usage), nil
+	return o.Flags.Int64P(flag, shortFlag, defaultVal, usage), nil
 }
 
 func (o *Opts) String(envKey, flag, shortFlag string, defaultVal, usage string) *string {
@@ -76,7 +76,7 @@ func (o *Opts) String(envKey, flag, shortFlag string, defaultVal, usage string) 
 		o.registeredEnvs = append(o.registeredEnvs, envKey)
 	}
 
-	return o.flags.StringP(flag, shortFlag, defaultVal, usage)
+	return o.Flags.StringP(flag, shortFlag, defaultVal, usage)
 }
 
 func (o *Opts) Bool(envKey, flag, shortFlag string, defaultVal bool, usage string) (*bool, error) {
@@ -95,7 +95,7 @@ func (o *Opts) Bool(envKey, flag, shortFlag string, defaultVal bool, usage strin
 		o.registeredEnvs = append(o.registeredEnvs, envKey)
 	}
 
-	return o.flags.BoolP(flag, shortFlag, defaultVal, usage), nil
+	return o.Flags.BoolP(flag, shortFlag, defaultVal, usage), nil
 }
 
 func boolyEnv(s string) bool {
@@ -108,20 +108,4 @@ func falseyEnv(s string) bool {
 
 func truthyEnv(s string) bool {
 	return s == "1" || s == "true"
-}
-
-func (o *Opts) Parse() error {
-	return o.flags.Parse(o.args)
-}
-
-func (o *Opts) SetArgs(args []string) {
-	o.args = args
-}
-
-func (o *Opts) Args() []string {
-	return o.flags.Args()
-}
-
-func (o *Opts) Arg(i int) string {
-	return o.flags.Arg(i)
 }

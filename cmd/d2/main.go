@@ -53,13 +53,13 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		return xmain.UsageErrorf(err.Error())
 	}
 
-	err = ms.Opts.Parse()
+	err = ms.Opts.Flags.Parse(ms.Opts.Args)
 	if !errors.Is(err, pflag.ErrHelp) && err != nil {
 		return xmain.UsageErrorf("failed to parse flags: %v", err)
 	}
 
-	if len(ms.Opts.Args()) > 0 {
-		switch ms.Opts.Arg(0) {
+	if len(ms.Opts.Flags.Args()) > 0 {
+		switch ms.Opts.Flags.Arg(0) {
 		case "layout":
 			return layoutHelp(ctx, ms)
 		}
@@ -77,26 +77,26 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	var inputPath string
 	var outputPath string
 
-	if len(ms.Opts.Args()) == 0 {
+	if len(ms.Opts.Flags.Args()) == 0 {
 		if versionFlag != nil && *versionFlag {
 			fmt.Println(version.Version)
 			return nil
 		}
 		help(ms)
 		return nil
-	} else if len(ms.Opts.Args()) >= 3 {
+	} else if len(ms.Opts.Flags.Args()) >= 3 {
 		return xmain.UsageErrorf("too many arguments passed")
 	}
 
-	if len(ms.Opts.Args()) >= 1 {
-		if ms.Opts.Arg(0) == "version" {
+	if len(ms.Opts.Flags.Args()) >= 1 {
+		if ms.Opts.Flags.Arg(0) == "version" {
 			fmt.Println(version.Version)
 			return nil
 		}
-		inputPath = ms.Opts.Arg(0)
+		inputPath = ms.Opts.Flags.Arg(0)
 	}
-	if len(ms.Opts.Args()) >= 2 {
-		outputPath = ms.Opts.Arg(1)
+	if len(ms.Opts.Flags.Args()) >= 2 {
+		outputPath = ms.Opts.Flags.Arg(1)
 	} else {
 		if inputPath == "-" {
 			outputPath = "-"

@@ -32,9 +32,9 @@ See more docs and the source code at https://oss.terrastruct.com/d2
 }
 
 func layoutHelp(ctx context.Context, ms *xmain.State) error {
-	if len(ms.Opts.Args()) == 1 {
+	if len(ms.Opts.Flags.Args()) == 1 {
 		return shortLayoutHelp(ctx, ms)
-	} else if len(ms.Opts.Args()) == 2 {
+	} else if len(ms.Opts.Flags.Args()) == 2 {
 		return longLayoutHelp(ctx, ms)
 	} else {
 		return pluginSubcommand(ctx, ms)
@@ -75,7 +75,7 @@ See more docs at https://oss.terrastruct.com/d2
 }
 
 func longLayoutHelp(ctx context.Context, ms *xmain.State) error {
-	layout := ms.Opts.Arg(1)
+	layout := ms.Opts.Flags.Arg(1)
 	plugin, path, err := d2plugin.FindPlugin(ctx, layout)
 	if errors.Is(err, exec.ErrNotFound) {
 		return layoutNotFound(ctx, layout)
@@ -119,13 +119,13 @@ For more information on setup, please visit https://github.com/terrastruct/d2.`,
 }
 
 func pluginSubcommand(ctx context.Context, ms *xmain.State) error {
-	layout := ms.Opts.Arg(1)
+	layout := ms.Opts.Flags.Arg(1)
 	plugin, _, err := d2plugin.FindPlugin(ctx, layout)
 	if errors.Is(err, exec.ErrNotFound) {
 		return layoutNotFound(ctx, layout)
 	}
 
-	ms.Opts.SetArgs(ms.Opts.Args()[2:])
+	ms.Opts.Args = ms.Opts.Flags.Args()[2:]
 	return d2plugin.Serve(plugin)(ctx, ms)
 }
 
