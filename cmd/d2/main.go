@@ -122,7 +122,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		defer func() {
 			cleanupErr := pw.Cleanup()
 			if cleanupErr != nil {
-				ms.Log.Error.Printf("error cleaning up png exporter: %v", cleanupErr.Error())
+				ms.Log.Error.Printf("error cleaning up playwright: %v", cleanupErr.Error())
 			}
 		}()
 	}

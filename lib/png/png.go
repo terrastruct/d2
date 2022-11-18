@@ -27,11 +27,11 @@ func (pw *Playwright) RestartBrowser() (newPW Playwright, err error) {
 	return startPlaywright(pw.PW)
 }
 
-func (pw *Playwright) Cleanup() (err error) {
-	if err = pw.Browser.Close(); err != nil {
+func (pw *Playwright) Cleanup() error {
+	if err := pw.Browser.Close(); err != nil {
 		return err
 	}
-	if err = pw.PW.Stop(); err != nil {
+	if err := pw.PW.Stop(); err != nil {
 		return err
 	}
 	return nil
@@ -73,7 +73,7 @@ func InitPlaywright() (Playwright, error) {
 		cmd := exec.Command(driver.DriverBinaryLocation, "--version")
 		output, err := cmd.Output()
 		if err != nil {
-			return Playwright{}, fmt.Errorf("error getting png exporter version: %v\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err.Error())
+			return Playwright{}, fmt.Errorf("error getting playwright version: %w\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err)
 		}
 		if !bytes.Contains(output, []byte(driver.Version)) {
 			err = playwright.Install()
@@ -82,7 +82,7 @@ func InitPlaywright() (Playwright, error) {
 			}
 		}
 	} else {
-		return Playwright{}, fmt.Errorf("could not install png exporter: %v\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err.Error())
+		return Playwright{}, fmt.Errorf("could not access playwright binary location: %w\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err)
 	}
 
 	pw, err := playwright.Run()
@@ -97,13 +97,13 @@ var genPNGScript string
 
 func ExportPNG(ms *xmain.State, page playwright.Page, svg []byte) (outputImage []byte, err error) {
 	if page == nil {
-		return nil, fmt.Errorf("png exporter was not initialized properly\nplease report this issue here: https://github.com/terrastruct/d2/issues/new")
+		return nil, fmt.Errorf("playwright was not initialized properly\nplease report this issue here: https://github.com/terrastruct/d2/issues/new")
 	}
 
 	encodedSVG := base64.StdEncoding.EncodeToString(svg)
 	pngInterface, err := page.Evaluate(genPNGScript, "data:image/svg+xml;charset=utf-8;base64,"+encodedSVG)
 	if err != nil {
-		return nil, fmt.Errorf("failed to generate png: %v\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err.Error())
+		return nil, fmt.Errorf("failed to generate png: %w\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err)
 	}
 
 	pngString := fmt.Sprintf("%v", pngInterface)
