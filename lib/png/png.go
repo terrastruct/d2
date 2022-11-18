@@ -73,7 +73,7 @@ func InitPlaywright() (Playwright, error) {
 		cmd := exec.Command(driver.DriverBinaryLocation, "--version")
 		output, err := cmd.Output()
 		if err != nil {
-			return Playwright{}, fmt.Errorf("could not install Playwright driver: %v\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err.Error())
+			return Playwright{}, fmt.Errorf("error installing png exporter: %v\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err.Error())
 		}
 		if !bytes.Contains(output, []byte(driver.Version)) {
 			err = playwright.Install()
@@ -82,7 +82,7 @@ func InitPlaywright() (Playwright, error) {
 			}
 		}
 	} else {
-		return Playwright{}, fmt.Errorf("could not find Playwright binary: %v\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err.Error())
+		return Playwright{}, fmt.Errorf("could not install png exporter: %v\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err.Error())
 	}
 
 	pw, err := playwright.Run()
@@ -97,7 +97,7 @@ var genPNGScript string
 
 func ExportPNG(ms *xmain.State, page playwright.Page, svg []byte) (outputImage []byte, err error) {
 	if page == nil {
-		return nil, fmt.Errorf("Playwright was not initialized properly for PNG export")
+		return nil, fmt.Errorf("png exporter was not initialized properly\nplease report this issue here: https://github.com/terrastruct/d2/issues/new")
 	}
 
 	encodedSVG := base64.StdEncoding.EncodeToString(svg)
