@@ -332,7 +332,11 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 		if filepath.Ext(w.outputPath) == ".png" && !w.pw.Browser.IsConnected() {
 			newPW, err := w.pw.RestartBrowser()
 			if err != nil {
-				return fmt.Errorf("png exporter has disconnected")
+				err = fmt.Errorf("png exporter has disconnected")
+				w.ms.Log.Error.Print(err)
+				w.broadcast(&compileResult{
+					Err: err.Error(),
+				})
 			}
 			w.pw = newPW
 		}

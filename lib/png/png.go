@@ -3,7 +3,6 @@ package png
 import (
 	"bytes"
 	"encoding/base64"
-	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -25,23 +24,7 @@ func (pw *Playwright) RestartBrowser() (newPW Playwright, err error) {
 	if err = pw.Browser.Close(); err != nil {
 		return Playwright{}, err
 	}
-	browser, err := pw.PW.Chromium.Launch()
-	if err != nil {
-		return Playwright{}, err
-	}
-	context, err := browser.NewContext()
-	if err != nil {
-		return Playwright{}, err
-	}
-	page, err := context.NewPage()
-	if err != nil {
-		return Playwright{}, err
-	}
-	return Playwright{
-		PW:      pw.PW,
-		Browser: browser,
-		Page:    page,
-	}, nil
+	return startPlaywright(pw.PW)
 }
 
 func (pw *Playwright) Cleanup() (err error) {
@@ -54,33 +37,7 @@ func (pw *Playwright) Cleanup() (err error) {
 	return nil
 }
 
-func InitPlaywright() (Playwright, error) {
-	// check if playwright driver/browsers are installed and up to date
-	// https://github.com/playwright-community/playwright-go/blob/8e8f670b5fa7ba5365ae4bfc123fea4aac359763/run.go#L64.
-	driver, err := playwright.NewDriver(&playwright.RunOptions{})
-	if err != nil {
-		return Playwright{}, err
-	}
-	if _, err := os.Stat(driver.DriverBinaryLocation); errors.Is(err, os.ErrNotExist) {
-		err = playwright.Install()
-		if err != nil {
-			return Playwright{}, err
-		}
-	} else if err == nil {
-		cmd := exec.Command(driver.DriverBinaryLocation, "--version")
-		output, err := cmd.Output()
-		if err != nil || !bytes.Contains(output, []byte(driver.Version)) {
-			err = playwright.Install()
-			if err != nil {
-				return Playwright{}, err
-			}
-		}
-	}
-
-	pw, err := playwright.Run()
-	if err != nil {
-		return Playwright{}, err
-	}
+func startPlaywright(pw *playwright.Playwright) (Playwright, error) {
 	browser, err := pw.Chromium.Launch()
 	if err != nil {
 		return Playwright{}, err
@@ -98,6 +55,41 @@ func InitPlaywright() (Playwright, error) {
 		Browser: browser,
 		Page:    page,
 	}, nil
+}
+
+func InitPlaywright() (Playwright, error) {
+	// check if playwright driver/browsers are installed and up to date
+	// https://github.com/playwright-community/playwright-go/blob/8e8f670b5fa7ba5365ae4bfc123fea4aac359763/run.go#L64.
+	driver, err := playwright.NewDriver(&playwright.RunOptions{})
+	if err != nil {
+		return Playwright{}, err
+	}
+	if _, err := os.Stat(driver.DriverBinaryLocation); os.IsNotExist(err) {
+		err = playwright.Install()
+		if err != nil {
+			return Playwright{}, err
+		}
+	} else if err == nil {
+		cmd := exec.Command(driver.DriverBinaryLocation, "--version")
+		output, err := cmd.Output()
+		if err != nil {
+			return Playwright{}, fmt.Errorf("could not install Playwright driver")
+		}
+		if !bytes.Contains(output, []byte(driver.Version)) {
+			err = playwright.Install()
+			if err != nil {
+				return Playwright{}, err
+			}
+		}
+	} else {
+		return Playwright{}, fmt.Errorf("could not install Playwright driver")
+	}
+
+	pw, err := playwright.Run()
+	if err != nil {
+		return Playwright{}, err
+	}
+	return startPlaywright(pw)
 }
 
 //go:embed generate_png.js
