@@ -64,25 +64,28 @@ func InitPlaywright() (Playwright, error) {
 	if err != nil {
 		return Playwright{}, err
 	}
-	if _, err := os.Stat(driver.DriverBinaryLocation); os.IsNotExist(err) {
-		err = playwright.Install()
-		if err != nil {
-			return Playwright{}, err
-		}
-	} else if err == nil {
-		cmd := exec.Command(driver.DriverBinaryLocation, "--version")
-		output, err := cmd.Output()
-		if err != nil {
-			return Playwright{}, fmt.Errorf("error getting Playwright version: %w\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err)
-		}
-		if !bytes.Contains(output, []byte(driver.Version)) {
+	_, err = os.Stat(driver.DriverBinaryLocation)
+	if err != nil {
+		if os.IsNotExist(err) {
 			err = playwright.Install()
 			if err != nil {
 				return Playwright{}, err
 			}
+		} else {
+			return Playwright{}, fmt.Errorf("could not access Playwright binary location: %v\nerror: %w\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", driver.DriverBinaryLocation, err)
 		}
-	} else {
-		return Playwright{}, fmt.Errorf("could not access Playwright binary location: %v\nerror: %w\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", driver.DriverBinaryLocation, err)
+	}
+
+	cmd := exec.Command(driver.DriverBinaryLocation, "--version")
+	output, err := cmd.Output()
+	if err != nil {
+		return Playwright{}, fmt.Errorf("error getting Playwright version: %w\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err)
+	}
+	if !bytes.Contains(output, []byte(driver.Version)) {
+		err = playwright.Install()
+		if err != nil {
+			return Playwright{}, err
+		}
 	}
 
 	pw, err := playwright.Run()
@@ -95,11 +98,9 @@ func InitPlaywright() (Playwright, error) {
 //go:embed generate_png.js
 var genPNGScript string
 
-func ExportPNG(ms *xmain.State, page playwright.Page, svg []byte) (outputImage []byte, err error) {
-	if page == nil {
-		return nil, fmt.Errorf("Playwright was not initialized properly\nplease report this issue here: https://github.com/terrastruct/d2/issues/new")
-	}
+const pngPrefix = "data:image/png;base64,"
 
+func ConvertSVG(ms *xmain.State, page playwright.Page, svg []byte) (outputImage []byte, err error) {
 	encodedSVG := base64.StdEncoding.EncodeToString(svg)
 	pngInterface, err := page.Evaluate(genPNGScript, "data:image/svg+xml;charset=utf-8;base64,"+encodedSVG)
 	if err != nil {
@@ -107,7 +108,6 @@ func ExportPNG(ms *xmain.State, page playwright.Page, svg []byte) (outputImage [
 	}
 
 	pngString := fmt.Sprintf("%v", pngInterface)
-	pngPrefix := "data:image/png;base64,"
 	if !strings.HasPrefix(pngString, pngPrefix) {
 		if len(pngString) > 50 {
 			pngString = pngString[0:50] + "..."

@@ -332,6 +332,11 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 		if filepath.Ext(w.outputPath) == ".png" && !w.pw.Browser.IsConnected() {
 			newPW, err := w.pw.RestartBrowser()
 			if err != nil {
+				broadcastErr := fmt.Errorf("issue encountered with PNG exporter, stopping")
+				w.ms.Log.Error.Print(broadcastErr)
+				w.broadcast(&compileResult{
+					Err: broadcastErr.Error(),
+				})
 				return fmt.Errorf("Playwright could not be restarted: %w", err)
 			}
 			w.pw = newPW
