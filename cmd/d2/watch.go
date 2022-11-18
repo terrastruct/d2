@@ -332,7 +332,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 		if filepath.Ext(w.outputPath) == ".png" && !w.pw.Browser.IsConnected() {
 			newPW, err := w.pw.RestartBrowser()
 			if err != nil {
-				return fmt.Errorf("playwright could not be restarted: %w", err)
+				return fmt.Errorf("Playwright could not be restarted: %w", err)
 			}
 			w.pw = newPW
 		}
