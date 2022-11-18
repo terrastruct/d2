@@ -73,7 +73,7 @@ func InitPlaywright() (Playwright, error) {
 		cmd := exec.Command(driver.DriverBinaryLocation, "--version")
 		output, err := cmd.Output()
 		if err != nil {
-			return Playwright{}, fmt.Errorf("error installing png exporter: %v\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err.Error())
+			return Playwright{}, fmt.Errorf("error getting png exporter version: %v\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err.Error())
 		}
 		if !bytes.Contains(output, []byte(driver.Version)) {
 			err = playwright.Install()
@@ -103,7 +103,7 @@ func ExportPNG(ms *xmain.State, page playwright.Page, svg []byte) (outputImage [
 	encodedSVG := base64.StdEncoding.EncodeToString(svg)
 	pngInterface, err := page.Evaluate(genPNGScript, "data:image/svg+xml;charset=utf-8;base64,"+encodedSVG)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to generate png: %v\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err.Error())
 	}
 
 	pngString := fmt.Sprintf("%v", pngInterface)
