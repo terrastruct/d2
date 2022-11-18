@@ -73,7 +73,7 @@ func InitPlaywright() (Playwright, error) {
 		cmd := exec.Command(driver.DriverBinaryLocation, "--version")
 		output, err := cmd.Output()
 		if err != nil {
-			return Playwright{}, fmt.Errorf("could not install Playwright driver")
+			return Playwright{}, fmt.Errorf("could not install Playwright driver: %v\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err.Error())
 		}
 		if !bytes.Contains(output, []byte(driver.Version)) {
 			err = playwright.Install()
@@ -82,7 +82,7 @@ func InitPlaywright() (Playwright, error) {
 			}
 		}
 	} else {
-		return Playwright{}, fmt.Errorf("could not install Playwright driver")
+		return Playwright{}, fmt.Errorf("could not find Playwright binary: %v\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err.Error())
 	}
 
 	pw, err := playwright.Run()
