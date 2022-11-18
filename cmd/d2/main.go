@@ -22,7 +22,6 @@ import (
 	"oss.terrastruct.com/d2/lib/png"
 	"oss.terrastruct.com/d2/lib/version"
 	"oss.terrastruct.com/d2/lib/xmain"
-	"oss.terrastruct.com/xdefer"
 )
 
 func main() {
@@ -123,7 +122,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		defer func() {
 			cleanupErr := pw.Cleanup()
 			if cleanupErr != nil {
-				ms.Log.Error.Printf(cleanupErr.Error())
+				ms.Log.Error.Printf("error cleaning up png exporter: %v", cleanupErr.Error())
 			}
 		}()
 	}
@@ -156,7 +155,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, inputPath, outputPath string, page playwright.Page) (_ []byte, err error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, inputPath, outputPath string, page playwright.Page) ([]byte, error) {
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
 		return nil, err
@@ -177,7 +176,6 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, input
 		return nil, err
 	}
 
-	defer xdefer.Errorf(&err, "failed to compile d2 \nplease report this issue here: https://github.com/terrastruct/d2/issues/new")
 	svg, err := d2svg.Render(d)
 	if err != nil {
 		return nil, err
