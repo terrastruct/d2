@@ -12,6 +12,7 @@ import (
 
 	"github.com/playwright-community/playwright-go"
 	"oss.terrastruct.com/d2/lib/xmain"
+	"oss.terrastruct.com/xdefer"
 )
 
 type Playwright struct {
@@ -21,6 +22,8 @@ type Playwright struct {
 }
 
 func (pw *Playwright) RestartBrowser() (newPW Playwright, err error) {
+	defer xdefer.Errorf(&err, "png exporter has disconnected\nplease report this issue here: https://github.com/terrastruct/d2/issues/new")
+
 	if err = pw.Browser.Close(); err != nil {
 		return Playwright{}, err
 	}
@@ -28,6 +31,8 @@ func (pw *Playwright) RestartBrowser() (newPW Playwright, err error) {
 }
 
 func (pw *Playwright) Cleanup() (err error) {
+	defer xdefer.Errorf(&err, "failed to clean up png exporter\nplease report this issue here: https://github.com/terrastruct/d2/issues/new")
+
 	if err = pw.Browser.Close(); err != nil {
 		return err
 	}
@@ -57,7 +62,9 @@ func startPlaywright(pw *playwright.Playwright) (Playwright, error) {
 	}, nil
 }
 
-func InitPlaywright() (Playwright, error) {
+func InitPlaywright() (_ Playwright, err error) {
+	defer xdefer.Errorf(&err, "failed to initialize png exporter\nplease report this issue here: https://github.com/terrastruct/d2/issues/new")
+
 	// check if playwright driver/browsers are installed and up to date
 	// https://github.com/playwright-community/playwright-go/blob/8e8f670b5fa7ba5365ae4bfc123fea4aac359763/run.go#L64.
 	driver, err := playwright.NewDriver(&playwright.RunOptions{})
@@ -73,7 +80,7 @@ func InitPlaywright() (Playwright, error) {
 		cmd := exec.Command(driver.DriverBinaryLocation, "--version")
 		output, err := cmd.Output()
 		if err != nil {
-			return Playwright{}, fmt.Errorf("error installing png exporter: %v\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err.Error())
+			return Playwright{}, err
 		}
 		if !bytes.Contains(output, []byte(driver.Version)) {
 			err = playwright.Install()
@@ -82,7 +89,7 @@ func InitPlaywright() (Playwright, error) {
 			}
 		}
 	} else {
-		return Playwright{}, fmt.Errorf("could not install png exporter: %v\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err.Error())
+		return Playwright{}, err
 	}
 
 	pw, err := playwright.Run()
@@ -96,8 +103,10 @@ func InitPlaywright() (Playwright, error) {
 var genPNGScript string
 
 func ExportPNG(ms *xmain.State, page playwright.Page, svg []byte) (outputImage []byte, err error) {
+	defer xdefer.Errorf(&err, "failed to export png")
+
 	if page == nil {
-		return nil, fmt.Errorf("png exporter was not initialized properly\nplease report this issue here: https://github.com/terrastruct/d2/issues/new")
+		return nil, fmt.Errorf("png exporter was not initialized properly")
 	}
 
 	encodedSVG := base64.StdEncoding.EncodeToString(svg)
@@ -112,7 +121,7 @@ func ExportPNG(ms *xmain.State, page playwright.Page, svg []byte) (outputImage [
 		if len(pngString) > 50 {
 			pngString = pngString[0:50] + "..."
 		}
-		return nil, fmt.Errorf("invalid PNG: %v\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", pngString)
+		return nil, fmt.Errorf("invalid PNG: %v", pngString)
 	}
 	splicedPNGString := pngString[len(pngPrefix):]
 	return base64.StdEncoding.DecodeString(splicedPNGString)
