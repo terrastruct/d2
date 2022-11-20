@@ -1,6 +1,6 @@
 #!/bin/sh
 set -eu
-cd -- "$(dirname "$0")/../.."
+cd -- "$(dirname "$0")/.."
 . ./ci/sub/lib.sh
 
 ./ci/release/gen_install.sh

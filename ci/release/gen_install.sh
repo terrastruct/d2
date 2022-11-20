@@ -37,7 +37,3 @@ sh_c cat \
 sh_c cat ./ci/release/_install.sh \
   \| sed -n "'/cd -- \"\$(dirname/,/cd -/!p'" \>\> install.sh
 sh_c chmod -w install.sh
-
-if [ -n "${CI-}" ]; then
-  git_assert_clean
-fi
