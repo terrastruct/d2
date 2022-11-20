@@ -55,20 +55,22 @@ tput() {
 
 should_color() {
   if [ -n "${COLOR-}" ]; then
-    if [ "${COLOR-}" = 0 -o "${COLOR-}" = false ]; then
-      _COLOR=0
+    if [ "$COLOR" = 0 -o "$COLOR" = false ]; then
+      _COLOR=
       return 1
-    elif [ "${COLOR-}" = 1 -o "${COLOR-}" = true ]; then
+    elif [ "$COLOR" = 1 -o "$COLOR" = true ]; then
       _COLOR=1
       return 0
     else
       printf '$COLOR must be 0, 1, false or true but got %s' "$COLOR" >&2
     fi
   fi
+
   if [ -t 1 ]; then
     _COLOR=1
     return 0
   else
+    _COLOR=
     return 1
   fi
 }
@@ -109,11 +111,12 @@ printfp() {(
   if [ -z "${FGCOLOR-}" ]; then
     FGCOLOR="$(get_rand_color "$prefix")"
   fi
-  setaf "$FGCOLOR" "[$prefix]"
-
-  if [ $# -gt 0 ]; then
-    printf ' '
-    printf "$@"
+  if [ $# -eq 0 ]; then
+    should_color || true
+    printf '%s' $(COLOR=${_COLOR-} setaf "$FGCOLOR" "$prefix")
+  else
+    should_color || true
+    printf '%s: %s\n' $(COLOR=${_COLOR-} setaf "$FGCOLOR" "$prefix") "$(printf "$@")"
   fi
 )}
 
