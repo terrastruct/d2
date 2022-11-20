@@ -164,7 +164,6 @@ build_local() {
 
 build_remote_macos() {
   sh_c lockfile_ssh "$REMOTE_HOST" .d2-build-lock
-  trap unlockfile_ssh EXIT
   sh_c ssh "$REMOTE_HOST" mkdir -p src
   sh_c rsync --archive --human-readable --delete ./ "$REMOTE_HOST:src/d2/"
   sh_c ssh "$REMOTE_HOST" "COLOR=${COLOR-} \
@@ -183,7 +182,6 @@ PATH=\\\"/usr/local/bin:/usr/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin\\\$
 
 build_remote_linux() {
   sh_c lockfile_ssh "$REMOTE_HOST" .d2-build-lock
-  trap unlockfile_ssh EXIT
   sh_c ssh "$REMOTE_HOST" mkdir -p src
   sh_c rsync --archive --human-readable --delete ./ "$REMOTE_HOST:src/d2/"
   sh_c ssh "$REMOTE_HOST" "COLOR=${COLOR-} \
