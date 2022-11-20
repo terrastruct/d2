@@ -58,6 +58,9 @@ A browser window will open with `out.svg` and live-reload on changes to `in.d2`.
 
 ## Install
 
+For more detailed installation docs with examples for if you do not wish to use the
+install script see [./doc/INSTALL.md](./doc/INSTALL.md).
+
 ### Install script
 
 The recommended way to install is to run our install script, which will figure out the
@@ -92,7 +95,7 @@ curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall
 Alternatively, you can install from source:
 
 ```sh
-go install oss.terrastruct.com/d2
+go install oss.terrastruct.com/d2/cmd/d2@latest
 ```
 
 ## D2 as a library
