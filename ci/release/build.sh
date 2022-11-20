@@ -167,13 +167,14 @@ build_remote_macos() {
   trap unlockfile_ssh EXIT
   sh_c ssh "$REMOTE_HOST" mkdir -p src
   sh_c rsync --archive --human-readable --delete ./ "$REMOTE_HOST:src/d2/"
-  sh_c ssh "$REMOTE_HOST" "DRY_RUN=${DRY_RUN-} \
+  sh_c ssh "$REMOTE_HOST" "COLOR=${COLOR-} \
+TERM=${TERM-} \
+DRY_RUN=${DRY_RUN-} \
 HW_BUILD_DIR=$HW_BUILD_DIR \
 VERSION=$VERSION \
 OS=$OS \
 ARCH=$ARCH \
 ARCHIVE=$ARCHIVE \
-TERM=$TERM \
 PATH=\\\"/usr/local/bin:/usr/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin\\\${PATH+:\\\$PATH}\\\" \
 ./src/d2/ci/release/_build.sh"
   sh_c mkdir -p "$HW_BUILD_DIR"
@@ -185,13 +186,14 @@ build_remote_linux() {
   trap unlockfile_ssh EXIT
   sh_c ssh "$REMOTE_HOST" mkdir -p src
   sh_c rsync --archive --human-readable --delete ./ "$REMOTE_HOST:src/d2/"
-  sh_c ssh "$REMOTE_HOST" "DRY_RUN=${DRY_RUN-} \
+  sh_c ssh "$REMOTE_HOST" "COLOR=${COLOR-} \
+TERM=${TERM-} \
+DRY_RUN=${DRY_RUN-} \
 HW_BUILD_DIR=$HW_BUILD_DIR \
 VERSION=$VERSION \
 OS=$OS \
 ARCH=$ARCH \
 ARCHIVE=$ARCHIVE \
-TERM=$TERM \
 ./src/d2/ci/release/build_docker.sh"
   sh_c mkdir -p "$HW_BUILD_DIR"
   sh_c rsync --archive --human-readable "$REMOTE_HOST:src/d2/$ARCHIVE" "$ARCHIVE"

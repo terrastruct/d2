@@ -9,6 +9,9 @@ endif
 .PHONY: fmt
 fmt:
 	prefix "$@" ./ci/sub/fmt/make.sh
+.PHONY: fmt-release
+fmt-release_sh:
+	prefix "$@" ./ci/release/gen_sh.sh
 .PHONY: lint
 lint:
 	prefix "$@" go vet --composites=false ./...

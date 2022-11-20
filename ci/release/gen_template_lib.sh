@@ -27,3 +27,7 @@ sh_c cat \
   ./ci/sub/lib/log.sh \
   \| sed "-e'/^\. /d'" \>\>./ci/release/template/scripts/lib.sh
 sh_c chmod -w ./ci/release/template/scripts/lib.sh
+
+if [ -n "${CI-}" ]; then
+  git_assert_clean
+fi
