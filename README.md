@@ -56,11 +56,14 @@ A browser window will open with `out.svg` and live-reload on changes to `in.d2`.
 
 ## Install
 
-For detailed installation docs with examples see [./docs/INSTALL.md](./docs/INSTALL.md).
+The easiest way to install is with our install script:
 
 ```sh
 curl -fsSL https://d2lang.com/install.sh | sh -s --
 ```
+
+For detailed installation docs, with alternative methods and examples for each OS, see
+[./docs/INSTALL.md](./docs/INSTALL.md).
 
 To uninstall:
 
