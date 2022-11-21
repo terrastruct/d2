@@ -13,6 +13,9 @@ This file documents all the ways by which you can install D2.
 
 ## install.sh
 
+The recommended and easiest way to install is with our install script, which will detect
+the OS and architecture you're on and use the best method:
+
 ```sh
 # With --dry-run the install script will print the commands it will use
 # to install without actually installing so you know what it's going to do.
@@ -69,6 +72,8 @@ The install script places the standalone release into `$PREFIX/lib/d2/d2-<versio
 and we recommend doing the same with manually installed releases so that you
 know where the release directory is for easy uninstall.
 
+> warn: Our binary releases aren't fully portable like normal Go binaries due to the C
+> dependency on v8go for executing dagre.
 
 ## From source
 
@@ -77,3 +82,10 @@ Alternatively, you can always install from source:
 ```sh
 go install oss.terrastruct.com/d2/cmd/d2@latest
 ```
+
+## Coming soon
+
+- Docker image
+- Windows install
+- rpm and deb packages
+- homebrew core
