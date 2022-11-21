@@ -75,9 +75,11 @@ curl -fsSL https://d2lang.com/install.sh | sh -s --
 
 We have precompiled binaries on the [releases](https://github.com/terrastruct/d2/releases)
 page for macOS and Linux. For both amd64 and arm64. We will release package manager
-distributions like .rpm, .deb soon. d2 is on homebrew with our tap. See [./docs/INSTALL.md](./docs/INSTALL.md).
+distributions like .rpm, .deb soon. D2 is on Homebrew with our tap (the install script
+uses this automatically if it detects you have `brew`). See
+[./docs/INSTALL.md](./docs/INSTALL.md).
 
-We'll have a docker image soon too.
+Docker image coming soon.
 
 To uninstall:
 
