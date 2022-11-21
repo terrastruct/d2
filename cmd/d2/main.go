@@ -9,8 +9,7 @@ import (
 	"strings"
 	"time"
 
-	_ "embed"
-
+	"github.com/playwright-community/playwright-go"
 	"github.com/spf13/pflag"
 
 	"oss.terrastruct.com/d2"
@@ -19,6 +18,7 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/textmeasure"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
+	"oss.terrastruct.com/d2/lib/png"
 	"oss.terrastruct.com/d2/lib/version"
 	"oss.terrastruct.com/d2/lib/xmain"
 )
@@ -38,7 +38,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	hostFlag := ms.Opts.String("HOST", "host", "h", "localhost", "host listening address when used with watch")
 	portFlag := ms.Opts.String("PORT", "port", "p", "0", "port listening address when used with watch")
-	bundleFlag, err := ms.Opts.Bool("D2_BUNDLE", "bundle", "b", true, "bundle all assets and layers into the output svg.")
+	bundleFlag, err := ms.Opts.Bool("D2_BUNDLE", "bundle", "b", true, "when outputting SVG, bundle all assets and layers into the output file.")
 	if err != nil {
 		return xmain.UsageErrorf(err.Error())
 	}
@@ -127,12 +127,25 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	ms.Log.Debug.Printf("using layout plugin %s (%s)", *layoutFlag, pluginLocation)
 
+	var pw png.Playwright
+	if filepath.Ext(outputPath) == ".png" {
+		pw, err = png.InitPlaywright()
+		if err != nil {
+			return err
+		}
+		defer func() {
+			cleanupErr := pw.Cleanup()
+			if err == nil {
+				err = cleanupErr
+			}
+		}()
+	}
+
 	if *watchFlag {
 		if inputPath == "-" {
 			return xmain.UsageErrorf("-w[atch] cannot be combined with reading input from stdin")
 		}
 		ms.Env.Setenv("LOG_TIMESTAMPS", "1")
-
 		w, err := newWatcher(ctx, ms, watcherOpts{
 			layoutPlugin: plugin,
 			themeID:      *themeFlag,
@@ -140,6 +153,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 			port:         *portFlag,
 			inputPath:    inputPath,
 			outputPath:   outputPath,
+			pw:           pw,
 		})
 		if err != nil {
 			return err
@@ -154,7 +168,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		_ = 343
 	}
 
-	_, err = compile(ctx, ms, plugin, *themeFlag, inputPath, outputPath)
+	_, err = compile(ctx, ms, plugin, *themeFlag, inputPath, outputPath, pw.Page)
 	if err != nil {
 		return err
 	}
@@ -162,7 +176,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, themeID int64, inputPath, outputPath string) ([]byte, error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, themeID int64, inputPath, outputPath string, page playwright.Page) ([]byte, error) {
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
 		return nil, err
@@ -191,7 +205,15 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, theme
 		return nil, err
 	}
 
-	err = ms.WritePath(outputPath, svg)
+	out := svg
+	if filepath.Ext(outputPath) == ".png" {
+		out, err = png.ConvertSVG(ms, page, svg)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	err = ms.WritePath(outputPath, out)
 	if err != nil {
 		return nil, err
 	}
