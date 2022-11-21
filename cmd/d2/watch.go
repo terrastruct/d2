@@ -20,6 +20,7 @@ import (
 	"nhooyr.io/websocket/wsjson"
 
 	"oss.terrastruct.com/d2/d2plugin"
+	"oss.terrastruct.com/d2/lib/png"
 	"oss.terrastruct.com/d2/lib/xbrowser"
 	"oss.terrastruct.com/d2/lib/xhttp"
 	"oss.terrastruct.com/d2/lib/xmain"
@@ -41,6 +42,7 @@ type watcherOpts struct {
 	port         string
 	inputPath    string
 	outputPath   string
+	pw           png.Playwright
 }
 
 type watcher struct {
@@ -330,7 +332,20 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			recompiledPrefix = "re"
 		}
 
-		b, err := compile(ctx, w.ms, w.layoutPlugin, w.themeID, w.inputPath, w.outputPath)
+		if filepath.Ext(w.outputPath) == ".png" && !w.pw.Browser.IsConnected() {
+			newPW, err := w.pw.RestartBrowser()
+			if err != nil {
+				broadcastErr := fmt.Errorf("issue encountered with PNG exporter: %w", err)
+				w.ms.Log.Error.Print(broadcastErr)
+				w.broadcast(&compileResult{
+					Err: broadcastErr.Error(),
+				})
+				continue
+			}
+			w.pw = newPW
+		}
+
+		b, err := compile(ctx, w.ms, w.layoutPlugin, w.themeID, w.inputPath, w.outputPath, w.pw.Page)
 		if err != nil {
 			err = fmt.Errorf("failed to %scompile: %w", recompiledPrefix, err)
 			w.ms.Log.Error.Print(err)
