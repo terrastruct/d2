@@ -1,13 +1,13 @@
 # install
 
-This file documents all the ways by which you can install d2.
+This file documents all the ways by which you can install D2.
 
 <!-- toc -->
 
 - [install.sh](#installsh)
-- [Standalone](#standalone)
 - [macOS (Homebrew)](#macos-homebrew)
-- [From Source](#from-source)
+- [Standalone](#standalone)
+- [From source](#from-source)
 
 <!-- tocstop -->
 
@@ -21,31 +21,41 @@ curl -fsSL https://d2lang.com/install.sh | sh -s -- --dry-run
 curl -fsSL https://d2lang.com/install.sh | sh -s --
 ```
 
-For help on the terminal run including the supported package managers
-and detection methods see:
+For help on the terminal run, including the supported package managers and detection
+methods:
 
 ```sh
 curl -fsSL https://d2lang.com/install.sh | sh -s -- --help
 ```
 
+## macOS (Homebrew)
+
+If you're on macOS, you can alternatively install with `brew`. (the install script above
+does this automatically if you have `brew` installed).
+
+```sh
+brew tap terrastruct/d2
+brew install d2
+```
+
 ## Standalone
 
-We publish standalone release archives with every release on github.
-Download the `.tar.gz` release for your OS/ARCH combination and then run:
+We publish standalone release archives with every release on Github.
+Download the `.tar.gz` release for your OS/ARCH combination and then run the following
+inside the extracted directory to install:
 
 ```sh
 make install
 ```
 
-Inside the extracted directory to install.
+Run the following to uninstall:
 
 ```sh
 make uninstall
 ```
 
-To uninstall. You will be prompted for sudo/su/doas if root permissions
-are required for installation. You can control the unix hierarchy installation
-path with `PREFIX=`. For example:
+You will be prompted for sudo/su/doas if root permissions are required for installation.
+You can control the Unix hierarchy installation path with `PREFIX=`. For example:
 
 ```
 # Install under ~/.local.
@@ -59,16 +69,10 @@ The install script places the standalone release into `$PREFIX/lib/d2/d2-<versio
 and we recommend doing the same with manually installed releases so that you
 know where the release directory is for easy uninstall.
 
-## macOS (Homebrew)
 
-For macOS you may install as so:
+## From source
 
-```sh
-brew tap terrastruct/d2
-brew install d2
-```
-
-## From Source
+Alternatively, you can always install from source:
 
 ```sh
 go install oss.terrastruct.com/d2/cmd/d2@latest
