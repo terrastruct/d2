@@ -62,14 +62,14 @@ The easiest way to install is with our install script:
 curl -fsSL https://d2lang.com/install.sh | sh -s --
 ```
 
-For detailed installation docs, with alternative methods and examples for each OS, see
-[./docs/INSTALL.md](./docs/INSTALL.md).
-
 To uninstall:
 
 ```sh
 curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall
 ```
+
+For detailed installation docs, with alternative methods and examples for each OS, see
+[./docs/INSTALL.md](./docs/INSTALL.md).
 
 ## D2 as a library
 
