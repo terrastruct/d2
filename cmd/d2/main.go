@@ -133,12 +133,11 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		if err != nil {
 			return err
 		}
-		defer func() error {
-			err = pw.Cleanup()
-			if err != nil {
-				return err
+		defer func() {
+			cleanupErr := pw.Cleanup()
+			if err == nil {
+				err = cleanupErr
 			}
-			return nil
 		}()
 	}
 

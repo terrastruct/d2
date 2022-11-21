@@ -77,7 +77,7 @@ func ConvertSVG(ms *xmain.State, page playwright.Page, svg []byte) ([]byte, erro
 	encodedSVG := base64.StdEncoding.EncodeToString(svg)
 	pngInterface, err := page.Evaluate(genPNGScript, "data:image/svg+xml;charset=utf-8;base64,"+encodedSVG)
 	if err != nil {
-		return nil, fmt.Errorf("failed to generate png: %w\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err)
+		return nil, fmt.Errorf("failed to generate png: %w", err)
 	}
 
 	pngString := pngInterface.(string)
@@ -85,7 +85,7 @@ func ConvertSVG(ms *xmain.State, page playwright.Page, svg []byte) ([]byte, erro
 		if len(pngString) > 50 {
 			pngString = pngString[0:50] + "..."
 		}
-		return nil, fmt.Errorf("invalid PNG: %q\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", pngString)
+		return nil, fmt.Errorf("invalid PNG: %q", pngString)
 	}
 	splicedPNGString := pngString[len(pngPrefix):]
 	return base64.StdEncoding.DecodeString(splicedPNGString)
