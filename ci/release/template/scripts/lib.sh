@@ -111,12 +111,11 @@ printfp() {(
   if [ -z "${FGCOLOR-}" ]; then
     FGCOLOR="$(get_rand_color "$prefix")"
   fi
+  should_color || true
   if [ $# -eq 0 ]; then
-    should_color || true
-    printf '%s' $(COLOR=${_COLOR-} setaf "$FGCOLOR" "$prefix")
+    printf '%s' "$(COLOR=${_COLOR-} setaf "$FGCOLOR" "$prefix")"
   else
-    should_color || true
-    printf '%s: %s\n' $(COLOR=${_COLOR-} setaf "$FGCOLOR" "$prefix") "$(printf "$@")"
+    printf '%s: %s\n' "$(COLOR=${_COLOR-} setaf "$FGCOLOR" "$prefix")" "$(printf "$@")"
   fi
 )}
 
@@ -217,6 +216,12 @@ EOF
 
 header() {
   logp "/* $1 */"
+}
+
+bigheader() {
+  logp "/**
+ * $1
+ **/"
 }
 
 # humanpath replaces all occurrences of " $HOME" with " ~"

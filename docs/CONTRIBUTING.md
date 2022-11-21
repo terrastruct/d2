@@ -65,8 +65,7 @@ language. Sometimes it gives controversial sentences -- don't use those.
 Script to generate one line of random text:
 ```
 ipsum1() {
-  fortune | head -n1 | sed 's/^ *//;s/ *$//' | tr -d '\n' | pbcopy
-  echo "$(pbpaste -Prefer txt)"
+  fortune | head -n1 | sed 's/^ *//;s/ *$//' | tr -d '\n' | tee /dev/stderr | pbcopy
 }
 ```
 
