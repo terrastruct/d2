@@ -202,13 +202,14 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, theme
 	if err != nil {
 		return nil, err
 	}
-	out, err := plugin.PostProcess(ctx, svg)
+	svg, err = plugin.PostProcess(ctx, svg)
 	if err != nil {
 		return nil, err
 	}
 
+	out := svg
 	if filepath.Ext(outputPath) == ".png" {
-		out, err = png.ConvertSVG(ms, page, out)
+		out, err = png.ConvertSVG(ms, page, svg)
 		if err != nil {
 			return nil, err
 		}
