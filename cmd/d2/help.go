@@ -17,7 +17,7 @@ func help(ms *xmain.State) {
 	fmt.Fprintf(ms.Stdout, `Usage:
   %s [--watch=false] [--theme=0] file.d2 [file.svg|file.png]
 
-%[1]s compiles and renders file.d2 to file.svg, file.png.
+%[1]s compiles and renders file.d2 to file.svg|file.png.
 Use - to have d2 read from stdin or write to stdout.
 
 Flags:
