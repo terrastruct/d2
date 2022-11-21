@@ -69,6 +69,8 @@ The install script places the standalone release into `$PREFIX/lib/d2/d2-<versio
 and we recommend doing the same with manually installed releases so that you
 know where the release directory is for easy uninstall.
 
+> warn: Our binary releases aren't fully portable like normal Go binaries due to the C
+> dependency on v8go for executing dagre.
 
 ## From source
 
@@ -77,3 +79,10 @@ Alternatively, you can always install from source:
 ```sh
 go install oss.terrastruct.com/d2/cmd/d2@latest
 ```
+
+## Coming soon
+
+- Docker image
+- Windows install
+- rpm and deb packages
+- homebrew core
