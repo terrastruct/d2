@@ -8,6 +8,7 @@ import (
 	_ "embed"
 
 	"github.com/playwright-community/playwright-go"
+
 	"oss.terrastruct.com/d2/lib/xmain"
 )
 
@@ -79,7 +80,7 @@ func ConvertSVG(ms *xmain.State, page playwright.Page, svg []byte) ([]byte, erro
 		return nil, fmt.Errorf("failed to generate png: %w\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err)
 	}
 
-	pngString := fmt.Sprintf("%v", pngInterface)
+	pngString := pngInterface.(string)
 	if !strings.HasPrefix(pngString, pngPrefix) {
 		if len(pngString) > 50 {
 			pngString = pngString[0:50] + "..."
