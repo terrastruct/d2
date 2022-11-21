@@ -13,6 +13,9 @@ This file documents all the ways by which you can install D2.
 
 ## install.sh
 
+The recommended and easiest way to install is with our install script, which will detect
+the OS and architecture you're on and use the best method:
+
 ```sh
 # With --dry-run the install script will print the commands it will use
 # to install without actually installing so you know what it's going to do.
