@@ -162,8 +162,13 @@ main() {
     detect)
       case "$OS" in
         macos)
-          log "detected macOS, using homebrew for (un)installation"
-          METHOD=homebrew
+          if command -v brew >/dev/null; then
+            log "detected macOS with homebrew, using homebrew for (un)installation"
+            METHOD=homebrew
+          else
+            warn "detected macOS without homebrew, falling back to --method=standalone"
+            METHOD=standalone
+          fi
           ;;
         *)
           warn "unrecognized OS $OS, falling back to --method=standalone"
@@ -181,8 +186,14 @@ main() {
 
   if [ -n "${UNINSTALL-}" ]; then
     uninstall
+    if [ -n "${DRY_RUN-}" ]; then
+      log "Rerun without --dry-run to execute printed commands and perform uninstall."
+    fi
   else
     install
+    if [ -n "${DRY_RUN-}" ]; then
+      log "Rerun without --dry-run to execute printed commands and perform install."
+    fi
   fi
 }
 
@@ -313,7 +324,6 @@ install_d2_brew() {
   header "installing d2 with homebrew"
   sh_c brew tap terrastruct/d2
   sh_c brew install d2
-  sh_c brew test d2
 }
 
 install_tala_standalone() {
@@ -361,7 +371,6 @@ install_tala_brew() {
   header "installing tala with homebrew"
   sh_c brew tap terrastruct/d2
   sh_c brew install tala
-  sh_c brew test tala
 }
 
 uninstall() {
@@ -490,6 +499,11 @@ fetch_gh() {
 
   curl_gh -#o "$file.inprogress" -C- -H "'Accept: $accept'" "$url"
   sh_c mv "$file.inprogress" "$file"
+}
+
+brew() {
+  # Makes brew sane.
+  HOMEBREW_NO_INSTALL_CLEANUP=1 HOMEBREW_NO_AUTO_UPDATE=1 command brew "$@"
 }
 
 main "$@"

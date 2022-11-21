@@ -1,7 +1,6 @@
 # install
 
-This file documents how the install.sh script installs d2 and how you can
-manually install yourself.
+This file documents all the ways by which you can install d2.
 
 <!-- toc -->
 
@@ -59,8 +58,6 @@ The install script places the standalone release into `$PREFIX/lib/d2/d2-<versio
 and we recommend doing the same with manually installed releases so that you
 know where the release directory is for easy uninstall.
 
-We have releases with identical process for tala at https://github.com/terrastruct/TALA/releases
-
 ## macOS (Homebrew)
 
 For macOS you may install as so:
@@ -68,16 +65,4 @@ For macOS you may install as so:
 ```sh
 brew tap terrastruct/d2
 brew install d2
-brew test d2
 ```
-
-For closed source TALA [https://github.com/terrastruct/tala]:
-
-```sh
-brew tap terrastruct/d2
-brew install tala
-brew test tala
-```
-
-You don't have to run the `brew test` command but we recommend it to ensure d2 is
-functioning correctly after installation.
