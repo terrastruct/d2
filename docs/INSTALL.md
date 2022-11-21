@@ -72,7 +72,7 @@ know where the release directory is for easy uninstall.
 
 ## From source
 
-Alternatively, you can always install from source as well with `go`.
+Alternatively, you can always install from source:
 
 ```sh
 go install oss.terrastruct.com/d2/cmd/d2@latest
