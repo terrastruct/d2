@@ -9,13 +9,11 @@ import (
 	"io"
 	"os"
 	"os/signal"
-	"strings"
 	"syscall"
 	"time"
 
 	"cdr.dev/slog"
 	"cdr.dev/slog/sloggers/sloghuman"
-	"github.com/spf13/pflag"
 
 	"oss.terrastruct.com/xos"
 
@@ -41,14 +39,10 @@ func Main(run RunFunc) {
 		Stdout: os.Stdout,
 		Stderr: os.Stderr,
 
-		Env:     xos.NewEnv(os.Environ()),
-		FlagSet: pflag.NewFlagSet("", pflag.ContinueOnError),
-		Args:    args,
+		Env: xos.NewEnv(os.Environ()),
 	}
 	ms.Log = cmdlog.Log(ms.Env, os.Stderr)
-	ms.FlagSet.SortFlags = false
-	ms.FlagSet.Usage = func() {}
-	ms.FlagSet.SetOutput(io.Discard)
+	ms.Opts = NewOpts(ms.Env, ms.Log, args)
 
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, os.Interrupt, syscall.SIGTERM)
@@ -88,10 +82,9 @@ type State struct {
 	Stdout io.WriteCloser
 	Stderr io.WriteCloser
 
-	Log     *cmdlog.Logger
-	Env     *xos.Env
-	Args    []string
-	FlagSet *pflag.FlagSet
+	Log  *cmdlog.Logger
+	Env  *xos.Env
+	Opts *Opts
 }
 
 func (ms *State) Main(ctx context.Context, sigs <-chan os.Signal, run func(context.Context, *State) error) error {
@@ -127,13 +120,6 @@ func (ms *State) Main(ctx context.Context, sigs <-chan os.Signal, run func(conte
 			}
 		}
 	}
-}
-
-func (ms *State) FlagHelp() string {
-	b := &strings.Builder{}
-	ms.FlagSet.SetOutput(b)
-	ms.FlagSet.PrintDefaults()
-	return b.String()
 }
 
 type ExitError struct {

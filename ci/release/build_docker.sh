@@ -13,5 +13,4 @@ docker_run \
   -e OS \
   -e ARCH \
   -e ARCHIVE \
-  -e TERM \
   "$tag" ./src/d2/ci/release/_build.sh

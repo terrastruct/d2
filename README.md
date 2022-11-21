@@ -22,8 +22,6 @@
 
 - [Quickstart](#quickstart)
 - [Install](#install)
-  * [Install script](#install-script)
-  * [Install from source](#install-from-source)
 - [D2 as a library](#d2-as-a-library)
 - [Themes](#themes)
 - [Fonts](#fonts)
@@ -58,42 +56,20 @@ A browser window will open with `out.svg` and live-reload on changes to `in.d2`.
 
 ## Install
 
-### Install script
-
-The recommended way to install is to run our install script, which will figure out the
-best way to install based on your machine.
+The easiest way to install is with our install script:
 
 ```sh
-# With --dry-run the install script will print the commands it will use
-# to install without actually installing so you know what it's going to do.
-curl -fsSL https://d2lang.com/install.sh | sh -s -- --dry-run
-# If things look good, install for real.
 curl -fsSL https://d2lang.com/install.sh | sh -s --
 ```
-
-We have precompiled binaries on the [releases](https://github.com/terrastruct/d2/releases)
-page for macOS and Linux. For both amd64 and arm64. We will release package manager
-distributions like .rpm, .deb soon. We also want to get D2 on Homebrew for macOS
-and release a docker image.
 
 To uninstall:
 
 ```sh
-curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall --dry-run
-# If things look good, uninstall for real.
 curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall
 ```
 
-> warn: Our binary releases aren't fully portable like normal Go binaries due to the C
-> dependency on v8go for executing dagre.
-
-### Install from source
-
-Alternatively, you can install from source:
-
-```sh
-go install oss.terrastruct.com/d2
-```
+For detailed installation docs, with alternative methods and examples for each OS, see
+[./docs/INSTALL.md](./docs/INSTALL.md).
 
 ## D2 as a library
 

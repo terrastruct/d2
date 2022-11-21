@@ -42,8 +42,7 @@ EOF
 }
 
 main() {
-  while :; do
-    flag_parse "$@"
+  while flag_parse "$@"; do
     case "$FLAG" in
       h|help)
         help
@@ -78,16 +77,12 @@ main() {
         flag_noarg && shift "$FLAGSHIFT"
         LOCKFILE_FORCE=1
         ;;
-      '')
-        shift "$FLAGSHIFT"
-        break
-        ;;
       *)
         flag_errusage "unrecognized flag $FLAGRAW"
         ;;
     esac
   done
-
+  shift "$FLAGSHIFT"
   if [ $# -gt 0 ]; then
     flag_errusage "no arguments are accepted"
   fi
@@ -169,16 +164,16 @@ build_local() {
 
 build_remote_macos() {
   sh_c lockfile_ssh "$REMOTE_HOST" .d2-build-lock
-  trap unlockfile_ssh EXIT
   sh_c ssh "$REMOTE_HOST" mkdir -p src
   sh_c rsync --archive --human-readable --delete ./ "$REMOTE_HOST:src/d2/"
-  sh_c ssh "$REMOTE_HOST" "DRY_RUN=${DRY_RUN-} \
+  sh_c ssh "$REMOTE_HOST" "COLOR=${COLOR-} \
+TERM=${TERM-} \
+DRY_RUN=${DRY_RUN-} \
 HW_BUILD_DIR=$HW_BUILD_DIR \
 VERSION=$VERSION \
 OS=$OS \
 ARCH=$ARCH \
 ARCHIVE=$ARCHIVE \
-TERM=$TERM \
 PATH=\\\"/usr/local/bin:/usr/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin\\\${PATH+:\\\$PATH}\\\" \
 ./src/d2/ci/release/_build.sh"
   sh_c mkdir -p "$HW_BUILD_DIR"
@@ -187,16 +182,16 @@ PATH=\\\"/usr/local/bin:/usr/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin\\\$
 
 build_remote_linux() {
   sh_c lockfile_ssh "$REMOTE_HOST" .d2-build-lock
-  trap unlockfile_ssh EXIT
   sh_c ssh "$REMOTE_HOST" mkdir -p src
   sh_c rsync --archive --human-readable --delete ./ "$REMOTE_HOST:src/d2/"
-  sh_c ssh "$REMOTE_HOST" "DRY_RUN=${DRY_RUN-} \
+  sh_c ssh "$REMOTE_HOST" "COLOR=${COLOR-} \
+TERM=${TERM-} \
+DRY_RUN=${DRY_RUN-} \
 HW_BUILD_DIR=$HW_BUILD_DIR \
 VERSION=$VERSION \
 OS=$OS \
 ARCH=$ARCH \
 ARCHIVE=$ARCHIVE \
-TERM=$TERM \
 ./src/d2/ci/release/build_docker.sh"
   sh_c mkdir -p "$HW_BUILD_DIR"
   sh_c rsync --archive --human-readable "$REMOTE_HOST:src/d2/$ARCHIVE" "$ARCHIVE"

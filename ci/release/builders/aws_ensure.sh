@@ -12,8 +12,7 @@ EOF
 }
 
 main() {
-  while :; do
-    flag_parse "$@"
+  while flag_parse "$@"; do
     case "$FLAG" in
       h|help)
         help
@@ -27,15 +26,12 @@ main() {
         flag_noarg && shift "$FLAGSHIFT"
         SKIP_CREATE=1
         ;;
-      '')
-        shift "$FLAGSHIFT"
-        break
-        ;;
       *)
         flag_errusage "unrecognized flag $FLAGRAW"
         ;;
     esac
   done
+  shift "$FLAGSHIFT"
   if [ $# -gt 0 ]; then
     flag_errusage "no arguments are accepted"
   fi
@@ -204,7 +200,7 @@ init_remote_hosts() {
   header macos-arm64
   REMOTE_HOST=$TSTRUCT_MACOS_ARM64_BUILDER init_remote_macos
 
-  COLOR=2 header summary
+  FGCOLOR=2 header summary
   log "export TSTRUCT_LINUX_AMD64_BUILDER=$TSTRUCT_LINUX_AMD64_BUILDER"
   log "export TSTRUCT_LINUX_ARM64_BUILDER=$TSTRUCT_LINUX_ARM64_BUILDER"
   log "export TSTRUCT_MACOS_AMD64_BUILDER=$TSTRUCT_MACOS_AMD64_BUILDER"

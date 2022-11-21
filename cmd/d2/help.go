@@ -28,13 +28,13 @@ Subcommands:
   %[1]s layout [layout name] - Display long help for a particular layout engine
 
 See more docs and the source code at https://oss.terrastruct.com/d2
-`, ms.Name, ms.FlagHelp())
+`, ms.Name, ms.Opts.Defaults())
 }
 
 func layoutHelp(ctx context.Context, ms *xmain.State) error {
-	if len(ms.FlagSet.Args()) == 1 {
+	if len(ms.Opts.Flags.Args()) == 1 {
 		return shortLayoutHelp(ctx, ms)
-	} else if len(ms.FlagSet.Args()) == 2 {
+	} else if len(ms.Opts.Flags.Args()) == 2 {
 		return longLayoutHelp(ctx, ms)
 	} else {
 		return pluginSubcommand(ctx, ms)
@@ -61,7 +61,7 @@ func shortLayoutHelp(ctx context.Context, ms *xmain.State) error {
 %s
 
 Usage:
-  To use a particular layout engine, set the environment variable D2_LAYOUT=[layout name].
+  To use a particular layout engine, set the environment variable D2_LAYOUT=[name] or flag --layout=[name].
 
 Example:
   D2_LAYOUT=dagre d2 in.d2 out.svg
@@ -75,7 +75,7 @@ See more docs at https://oss.terrastruct.com/d2
 }
 
 func longLayoutHelp(ctx context.Context, ms *xmain.State) error {
-	layout := ms.FlagSet.Arg(1)
+	layout := ms.Opts.Flags.Arg(1)
 	plugin, path, err := d2plugin.FindPlugin(ctx, layout)
 	if errors.Is(err, exec.ErrNotFound) {
 		return layoutNotFound(ctx, layout)
@@ -119,13 +119,13 @@ For more information on setup, please visit https://github.com/terrastruct/d2.`,
 }
 
 func pluginSubcommand(ctx context.Context, ms *xmain.State) error {
-	layout := ms.FlagSet.Arg(1)
+	layout := ms.Opts.Flags.Arg(1)
 	plugin, _, err := d2plugin.FindPlugin(ctx, layout)
 	if errors.Is(err, exec.ErrNotFound) {
 		return layoutNotFound(ctx, layout)
 	}
 
-	ms.Args = ms.FlagSet.Args()[2:]
+	ms.Opts.Args = ms.Opts.Flags.Args()[2:]
 	return d2plugin.Serve(plugin)(ctx, ms)
 }
 

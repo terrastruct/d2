@@ -35,16 +35,24 @@ var devMode = false
 //go:embed static
 var staticFS embed.FS
 
+type watcherOpts struct {
+	layoutPlugin d2plugin.Plugin
+	themeID      int64
+	host         string
+	port         string
+	inputPath    string
+	outputPath   string
+	pw           png.Playwright
+}
+
 type watcher struct {
 	ctx     context.Context
 	cancel  context.CancelFunc
 	wg      sync.WaitGroup
 	devMode bool
 
-	ms           *xmain.State
-	layoutPlugin d2plugin.Plugin
-	inputPath    string
-	outputPath   string
+	ms *xmain.State
+	watcherOpts
 
 	compileCh chan struct{}
 
@@ -62,8 +70,6 @@ type watcher struct {
 
 	resMu sync.Mutex
 	res   *compileResult
-
-	pw png.Playwright
 }
 
 type compileResult struct {
@@ -71,7 +77,7 @@ type compileResult struct {
 	SVG string `json:"svg"`
 }
 
-func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plugin, inputPath, outputPath string, pw png.Playwright) (*watcher, error) {
+func newWatcher(ctx context.Context, ms *xmain.State, opts watcherOpts) (*watcher, error) {
 	ctx, cancel := context.WithCancel(ctx)
 
 	w := &watcher{
@@ -79,14 +85,11 @@ func newWatcher(ctx context.Context, ms *xmain.State, layoutPlugin d2plugin.Plug
 		cancel:  cancel,
 		devMode: devMode,
 
-		ms:           ms,
-		layoutPlugin: layoutPlugin,
-		inputPath:    inputPath,
-		outputPath:   outputPath,
+		ms:          ms,
+		watcherOpts: opts,
 
 		compileCh: make(chan struct{}, 1),
 		wsclients: make(map[*wsclient]struct{}),
-		pw:        pw,
 	}
 	err := w.init()
 	if err != nil {
@@ -342,7 +345,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.pw = newPW
 		}
 
-		b, err := compile(ctx, w.ms, w.layoutPlugin, w.inputPath, w.outputPath, w.pw.Page)
+		b, err := compile(ctx, w.ms, w.layoutPlugin, w.themeID, w.inputPath, w.outputPath, w.pw.Page)
 		if err != nil {
 			err = fmt.Errorf("failed to %scompile: %w", recompiledPrefix, err)
 			w.ms.Log.Error.Print(err)
@@ -368,18 +371,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 }
 
 func (w *watcher) listen() error {
-	host := "localhost"
-	port := "0"
-	hostEnv := w.ms.Env.Getenv("HOST")
-	if hostEnv != "" {
-		host = hostEnv
-	}
-	portEnv := w.ms.Env.Getenv("PORT")
-	if portEnv != "" {
-		port = portEnv
-	}
-
-	l, err := net.Listen("tcp", net.JoinHostPort(host, port))
+	l, err := net.Listen("tcp", net.JoinHostPort(w.host, w.port))
 	if err != nil {
 		return err
 	}

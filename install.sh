@@ -54,8 +54,30 @@ if [ -n "${DEBUG-}" ]; then
 fi
 
 tput() {
-  if [ -n "$TERM" ]; then
-    command tput "$@"
+  if should_color; then
+    TERM=${TERM:-xterm-256color} command tput "$@"
+  fi
+}
+
+should_color() {
+  if [ -n "${COLOR-}" ]; then
+    if [ "$COLOR" = 0 -o "$COLOR" = false ]; then
+      _COLOR=
+      return 1
+    elif [ "$COLOR" = 1 -o "$COLOR" = true ]; then
+      _COLOR=1
+      return 0
+    else
+      printf '$COLOR must be 0, 1, false or true but got %s' "$COLOR" >&2
+    fi
+  fi
+
+  if [ -t 1 ]; then
+    _COLOR=1
+    return 0
+  else
+    _COLOR=
+    return 1
   fi
 }
 
@@ -92,14 +114,14 @@ printfp() {(
   prefix="$1"
   shift
 
-  if [ -z "${COLOR:-}" ]; then
-    COLOR="$(get_rand_color "$prefix")"
+  if [ -z "${FGCOLOR-}" ]; then
+    FGCOLOR="$(get_rand_color "$prefix")"
   fi
-  printf '%s' "$(setaf "$COLOR" "$prefix")"
-
-  if [ $# -gt 0 ]; then
-    printf ': '
-    printf "$@"
+  should_color || true
+  if [ $# -eq 0 ]; then
+    printf '%s' "$(COLOR=${_COLOR-} setaf "$FGCOLOR" "$prefix")"
+  else
+    printf '%s: %s\n' "$(COLOR=${_COLOR-} setaf "$FGCOLOR" "$prefix")" "$(printf "$@")"
   fi
 )}
 
@@ -107,7 +129,8 @@ catp() {
   prefix="$1"
   shift
 
-  sed "s/^/$(printfp "$prefix" '')/"
+  should_color || true
+  sed "s/^/$(COLOR=${_COLOR-} printfp "$prefix" '')/"
 }
 
 repeat() {
@@ -121,51 +144,58 @@ strlen() {
 }
 
 echoerr() {
-  COLOR=1 echop err "$*" | humanpath>&2
+  FGCOLOR=1 logp err "$*" | humanpath>&2
 }
 
 caterr() {
-  COLOR=1 catp err "$@" | humanpath >&2
+  FGCOLOR=1 logpcat err "$@" | humanpath >&2
 }
 
 printferr() {
-  COLOR=1 printfp err "$@" | humanpath >&2
+  FGCOLOR=1 logfp err "$@" | humanpath >&2
 }
 
 logp() {
-  echop "$@" | humanpath >&2
+  should_color >&2 || true
+  COLOR=${_COLOR-} echop "$@" | humanpath >&2
 }
 
 logfp() {
-  printfp "$@" | humanpath >&2
+  should_color >&2 || true
+  COLOR=${_COLOR-} printfp "$@" | humanpath >&2
 }
 
 logpcat() {
-  catp "$@" | humanpath >&2
+  should_color >&2 || true
+  COLOR=${_COLOR-} catp "$@" | humanpath >&2
 }
 
 log() {
-  COLOR=5 logp log "$@"
+  FGCOLOR=5 logp log "$@"
 }
 
 logf() {
-  COLOR=5 logfp log "$@"
+  FGCOLOR=5 logfp log "$@"
 }
 
 logcat() {
-  COLOR=5 logpcat log "$@"
+  FGCOLOR=5 logpcat log "$@"
 }
 
 warn() {
-  COLOR=3 logp warn "$@"
+  FGCOLOR=3 logp warn "$@"
 }
 
 warnf() {
-  COLOR=3 logfp warn "$@"
+  FGCOLOR=3 logfp warn "$@"
+}
+
+warncat() {
+  FGCOLOR=3 logpcat warn "$@"
 }
 
 sh_c() {
-  COLOR=3 logp exec "$*"
+  FGCOLOR=3 logp exec "$*"
   if [ -z "${DRY_RUN-}" ]; then
     eval "$@"
   fi
@@ -192,6 +222,12 @@ EOF
 
 header() {
   logp "/* $1 */"
+}
+
+bigheader() {
+  logp "/**
+ * $1
+ **/"
 }
 
 # humanpath replaces all occurrences of " $HOME" with " ~"
@@ -280,9 +316,8 @@ LIB_FLAG=1
 # FLAGSHIFT contains the number by which the arguments should be shifted to
 #   start at the next flag/argument
 #
-# After each call check $FLAG for the name of the parsed flag.
-# If empty, then no more flags are left.
-# Still, call shift "$FLAGSHIFT" in case there was a --
+# flag_parse exits with a non zero code when there are no more flags
+# to be parsed. Still, call shift "$FLAGSHIFT" in case there was a --
 #
 # If the argument for the flag is optional, then use ${FLAGARG-} to access
 # the argument if one was passed. Use ${FLAGARG+x} = x to check if it was set.
@@ -310,18 +345,15 @@ flag_parse() {
       # Remove everything before first equal sign.
       FLAGARG="${1#*=}"
       FLAGSHIFT=1
+      return 0
       ;;
     -)
-      FLAG=
-      FLAGRAW=
-      unset FLAGARG
       FLAGSHIFT=0
+      return 1
       ;;
     --)
-      FLAG=
-      FLAGRAW=
-      unset FLAGARG
       FLAGSHIFT=1
+      return 1
       ;;
     -*)
       # Remove leading hyphens.
@@ -343,15 +375,13 @@ flag_parse() {
             ;;
         esac
       fi
+      return 0
       ;;
     *)
-      FLAG=
-      FLAGRAW=
-      unset FLAGARG
       FLAGSHIFT=0
+      return 1
       ;;
   esac
-  return 0
 }
 
 flag_reqarg() {
@@ -452,8 +482,11 @@ usage: $arg0 [--dry-run] [--version vX.X.X] [--edge] [--method detect] [--prefix
   [--tala latest] [--force] [--uninstall]
 
 install.sh automates the installation of D2 onto your system. It currently only supports
-the installation of standalone releases from GitHub. If you pass --edge, it will clone the
-source, build a release and install from it.
+the installation of standalone releases from GitHub and via Homebrew on macOS. See the
+docs for --detect below for more information
+
+If you pass --edge, it will clone the source, build a release and install from it.
+--edge is incompatible with --tala and currently unimplemented.
 
 Flags:
 
@@ -463,6 +496,8 @@ Flags:
 
 --version vX.X.X
   Pass to have install.sh install the given version instead of the latest version.
+  warn: The version may not be obeyed with package manager installations. Use
+        --method=standalone to enforce the version.
 
 --edge
   Pass to build and install D2 from source. This will still use --method if set to detect
@@ -470,14 +505,15 @@ Flags:
   if an unsupported package manager is used. To install from source like a dev would,
   use go install oss.terrastruct.com/d2
   note: currently unimplemented.
+  warn: incompatible with --tala as TALA is closed source.
 
---method [detect | standalone]
+--method [detect | standalone | homebrew ]
   Pass to control the method by which to install. Right now we only support standalone
   releases from GitHub but later we'll add support for brew, rpm, deb and more.
-  note: currently unimplemented.
 
-  - detect is currently unimplemented but would use your OS's package manager
-    automatically.
+  - detect will use your OS's package manager automatically.
+    So far it only detects macOS and automatically uses homebrew.
+  - homebrew uses https://brew.sh/ which is a macOS and Linux package manager.
   - standalone installs a standalone release archive into the unix hierarchy path
      specified by --prefix which defaults to /usr/local
      Ensure /usr/local/bin is in your \$PATH to use it.
@@ -485,16 +521,19 @@ Flags:
 --prefix /usr/local
   Controls the unix hierarchy path into which standalone releases are installed.
   Defaults to /usr/local. You may also want to use ~/.local to avoid needing sudo.
-  Remember that whatever you use, you must have the bin directory of your prefix
-  path in \$PATH to execute the d2 binary. For example, if my prefix directory is
+  We use ~/.local by default on arm64 macOS machines as SIP now disables access to
+  /usr/local. Remember that whatever you use, you must have the bin directory of your
+  prefix path in \$PATH to execute the d2 binary. For example, if my prefix directory is
   /usr/local then my \$PATH must contain /usr/local/bin.
 
 --tala [latest]
   Install Terrastruct's closed source TALA for improved layouts.
-  See https://github.com/terrastruct/TALA
+  See https://github.com/terrastruct/tala
   It optionally takes an argument of the TALA version to install.
   Installation obeys all other flags, just like the installation of d2. For example,
   the d2plugin-tala binary will be installed into /usr/local/bin/d2plugin-tala
+  warn: The version may not be obeyed with package manager installations. Use
+        --method=standalone to enforce the version.
 
 --force:
   Force installation over the existing version even if they match. It will attempt a
@@ -507,6 +546,7 @@ Flags:
   as for installation. i.e if you used --method standalone you must again use --method
   standalone for uninstallation. With detect, the install script will try to use the OS
   package manager to uninstall instead.
+  note: tala will also be uninstalled if installed.
 
 All downloaded archives are cached into ~/.cache/d2/release. use \$XDG_CACHE_HOME to change
 path of the cached assets. Release archives are unarchived into /usr/local/lib/d2/d2-<VERSION>
@@ -519,9 +559,7 @@ EOF
 }
 
 main() {
-  METHOD=standalone
-  while :; do
-    flag_parse "$@"
+  while flag_parse "$@"; do
     case "$FLAG" in
       h|help)
         help
@@ -548,8 +586,6 @@ main() {
       method)
         flag_nonemptyarg && shift "$FLAGSHIFT"
         METHOD=$FLAGARG
-        echoerr "$FLAGRAW is currently unimplemented"
-        return 1
         ;;
       prefix)
         flag_nonemptyarg && shift "$FLAGSHIFT"
@@ -563,15 +599,12 @@ main() {
         flag_noarg && shift "$FLAGSHIFT"
         UNINSTALL=1
         ;;
-      '')
-        shift "$FLAGSHIFT"
-        break
-        ;;
       *)
         flag_errusage "unrecognized flag $FLAGRAW"
         ;;
     esac
   done
+  shift "$FLAGSHIFT"
 
   if [ $# -gt 0 ]; then
     flag_errusage "no arguments are accepted"
@@ -587,49 +620,86 @@ main() {
   PREFIX=${PREFIX:-/usr/local}
   CACHE_DIR=$(cache_dir)
   mkdir -p "$CACHE_DIR"
+  METHOD=${METHOD:-detect}
   INSTALL_DIR=$PREFIX/lib/d2
+
+  case $METHOD in
+    detect)
+      case "$OS" in
+        macos)
+          if command -v brew >/dev/null; then
+            log "detected macOS with homebrew, using homebrew for (un)installation"
+            METHOD=homebrew
+          else
+            warn "detected macOS without homebrew, falling back to --method=standalone"
+            METHOD=standalone
+          fi
+          ;;
+        *)
+          warn "unrecognized OS $OS, falling back to --method=standalone"
+          METHOD=standalone
+          ;;
+      esac
+      ;;
+    standalone) ;;
+    homebrew) ;;
+    *)
+      echoerr "unknown (un)installation method $METHOD"
+      return 1
+      ;;
+  esac
 
   if [ -n "${UNINSTALL-}" ]; then
     uninstall
-    return 0
+    if [ -n "${DRY_RUN-}" ]; then
+      log "Rerun without --dry-run to execute printed commands and perform uninstall."
+    fi
+  else
+    install
+    if [ -n "${DRY_RUN-}" ]; then
+      log "Rerun without --dry-run to execute printed commands and perform install."
+    fi
   fi
-
-  VERSION=${VERSION:-latest}
-  if [ "$VERSION" = latest ]; then
-    header "fetching latest release info"
-    fetch_release_info
-  fi
-
-  install
 }
 
 install() {
-  install_d2
-  if [ -n "${TALA-}" ]; then
-    # Run in subshell to avoid overwriting VERSION.
-    TALA_VERSION="$( install_tala && echo "$VERSION" )"
-  fi
+  case $METHOD in
+    standalone)
+      install_d2_standalone
+      if [ -n "${TALA-}" ]; then
+        # Run in subshell to avoid overwriting VERSION.
+        TALA_VERSION="$( RELEASE_INFO= install_tala_standalone && echo "$VERSION" )"
+      fi
+      ;;
+    homebrew)
+      install_d2_brew
+      if [ -n "${TALA-}" ]; then install_tala_brew; fi
+      ;;
+  esac
 
-  COLOR=2 header success
+  FGCOLOR=2 bigheader 'next steps'
+  case $METHOD in
+    standalone) install_post_standalone ;;
+    homebrew) install_post_brew ;;
+  esac
+}
+
+install_post_standalone() {
   log "d2-$VERSION-$OS-$ARCH has been successfully installed into $PREFIX"
   if [ -n "${TALA-}" ]; then
     log "tala-$TALA_VERSION-$OS-$ARCH has been successfully installed into $PREFIX"
   fi
-  log "Rerun this install script with --uninstall to uninstall"
+  log "Rerun this install script with --uninstall to uninstall."
+  log
   if ! echo "$PATH" | grep -qF "$PREFIX/bin"; then
     logcat >&2 <<EOF
-
-%%%%%%%%%%%%%%%%%%%%%%%%%
-NEXT STEPS
-%%%%%%%%%%%%%%%%%%%%%%%%%
-
 Extend your \$PATH to use d2:
   export PATH=$PREFIX/bin:\$PATH
 Then run:
   ${TALA+D2_LAYOUT=tala }d2 --help
 EOF
   else
-    log "  Run ${TALA+D2_LAYOUT=tala }d2 --help for usage."
+    log "Run ${TALA+D2_LAYOUT=tala }d2 --help for usage."
   fi
   if ! manpath | grep -qF "$PREFIX/share/man"; then
     logcat >&2 <<EOF
@@ -642,36 +712,61 @@ EOF
     log "  man d2plugin-tala"
   fi
   else
-    log "  Run man d2 for detailed docs."
+    log "Run man d2 for detailed docs."
     if [ -n "${TALA-}" ]; then
-      log "  Run man d2plugin-tala for detailed docs."
+      log "Run man d2plugin-tala for detailed TALA docs."
     fi
   fi
   logcat >&2 <<EOF
 
 Something not working? Please let us know:
-https://github.com/terrastruct/d2/issues/new
+https://github.com/terrastruct/d2/issues
+https://github.com/terrastruct/d2/discussions
+https://discord.gg/NF6X8K4eDq
 EOF
 }
 
-install_d2() {
+install_post_brew() {
+  log "d2 has been successfully installed with homebrew."
+  if [ -n "${TALA-}" ]; then
+    log "tala has been successfully installed with homebrew."
+  fi
+  log "Rerun this install script with --uninstall to uninstall."
+  log
+  log "Run ${TALA+D2_LAYOUT=tala }d2 --help for usage."
+  log "Run man d2 for detailed docs."
+  if [ -n "${TALA-}" ]; then
+    log "Run man d2plugin-tala for detailed TALA docs."
+  fi
+  logcat >&2 <<EOF
+
+Something not working? Please let us know:
+https://github.com/terrastruct/d2/issues
+https://github.com/terrastruct/d2/discussions
+https://discord.gg/NF6X8K4eDq
+EOF
+}
+
+install_d2_standalone() {
+  VERSION=${VERSION:-latest}
+  header "installing d2-$VERSION"
+
+  if [ "$VERSION" = latest ]; then
+    fetch_release_info
+  fi
+
   if command -v d2 >/dev/null; then
     INSTALLED_VERSION="$(d2 version)"
     if [ ! "${FORCE-}" -a "$VERSION" = "$INSTALLED_VERSION" ]; then
-      log "skipping installation as version $VERSION is already installed."
+      log "skipping installation as d2 $VERSION is already installed."
       return 0
     fi
-    log "uninstalling $INSTALLED_VERSION to install $VERSION"
-    if ! uninstall_d2; then
-      warn "failed to uninstall $INSTALLED_VERSION"
+    log "uninstalling d2 $INSTALLED_VERSION to install $VERSION"
+    if ! uninstall_d2_standalone; then
+      warn "failed to uninstall d2 $INSTALLED_VERSION"
     fi
   fi
 
-  header "installing d2-$VERSION"
-  install_standalone_d2
-}
-
-install_standalone_d2() {
   ARCHIVE="d2-$VERSION-$OS-$ARCH.tar.gz"
   log "installing standalone release $ARCHIVE from github"
 
@@ -690,19 +785,38 @@ install_standalone_d2() {
   "$sh_c" sh -c "'cd \"$INSTALL_DIR/d2-$VERSION\" && make install PREFIX=\"$PREFIX\"'"
 }
 
-install_tala() {
-  REPO="${REPO_TALA:-terrastruct/TALA}"
-  VERSION=$TALA
-  RELEASE_INFO=
-  fetch_release_info
-  header "installing tala-$VERSION"
-  install_standalone_tala
+install_d2_brew() {
+  header "installing d2 with homebrew"
+  sh_c brew tap terrastruct/d2
+  sh_c brew install d2
 }
 
-install_standalone_tala() {
+install_tala_standalone() {
+  REPO="${REPO_TALA:-terrastruct/tala}"
+  VERSION=$TALA
+
+  header "installing tala-$VERSION"
+
+  if [ "$VERSION" = latest ]; then
+    fetch_release_info
+  fi
+
+  if command -v d2plugin-tala >/dev/null; then
+    INSTALLED_VERSION="$(d2plugin-tala --version)"
+    if [ ! "${FORCE-}" -a "$VERSION" = "$INSTALLED_VERSION" ]; then
+      log "skipping installation as tala $VERSION is already installed."
+      return 0
+    fi
+    log "uninstalling tala $INSTALLED_VERSION to install $VERSION"
+    if ! uninstall_tala_standalone; then
+      warn "failed to uninstall tala $INSTALLED_VERSION"
+    fi
+  fi
+
   ARCHIVE="tala-$VERSION-$OS-$ARCH.tar.gz"
   log "installing standalone release $ARCHIVE from github"
 
+  fetch_release_info
   asset_line=$(sh_c 'cat "$RELEASE_INFO" | grep -n "$ARCHIVE" | cut -d: -f1 | head -n1')
   asset_url=$(sh_c 'sed -n $((asset_line-3))p "$RELEASE_INFO" | sed "s/^.*: \"\(.*\)\",$/\1/g"')
 
@@ -718,36 +832,40 @@ install_standalone_tala() {
   "$sh_c" sh -c "'cd \"$INSTALL_DIR/tala-$VERSION\" && make install PREFIX=\"$PREFIX\"'"
 }
 
+install_tala_brew() {
+  header "installing tala with homebrew"
+  sh_c brew tap terrastruct/d2
+  sh_c brew install tala
+}
+
 uninstall() {
+  # We uninstall tala first as package managers require that it be uninstalled before
+  # uninstalling d2 as TALA depends on d2.
+  if command -v d2plugin-tala >/dev/null; then
+    INSTALLED_VERSION="$(d2plugin-tala --version)"
+    header "uninstalling tala-$INSTALLED_VERSION"
+    case $METHOD in
+      standalone) uninstall_tala_standalone ;;
+      homebrew) uninstall_tala_brew ;;
+    esac
+  elif [ "${TALA-}" ]; then
+    warn "no version of tala installed"
+  fi
+
   if ! command -v d2 >/dev/null; then
     warn "no version of d2 installed"
     return 0
   fi
+
   INSTALLED_VERSION="$(d2 --version)"
-  if ! uninstall_d2; then
-    echoerr "failed to uninstall $INSTALLED_VERSION"
-    return 1
-  fi
-  if [ "${TALA-}" ]; then
-    if ! command -v d2plugin-tala >/dev/null; then
-      warn "no version of tala installed"
-      return 0
-    fi
-    INSTALLED_VERSION="$(d2plugin-tala --version)"
-    if ! uninstall_tala; then
-      echoerr "failed to uninstall tala $INSTALLED_VERSION"
-      return 1
-    fi
-  fi
-  return 0
-}
-
-uninstall_d2() {
   header "uninstalling d2-$INSTALLED_VERSION"
-  uninstall_standalone_d2
+  case $METHOD in
+    standalone) uninstall_d2_standalone ;;
+    homebrew) uninstall_d2_brew ;;
+  esac
 }
 
-uninstall_standalone_d2() {
+uninstall_d2_standalone() {
   log "uninstalling standalone release of d2-$INSTALLED_VERSION"
 
   if [ ! -e "$INSTALL_DIR/d2-$INSTALLED_VERSION" ]; then
@@ -765,12 +883,11 @@ uninstall_standalone_d2() {
   "$sh_c" rm -rf "$INSTALL_DIR/d2-$INSTALLED_VERSION"
 }
 
-uninstall_tala() {
-  header "uninstalling tala-$INSTALLED_VERSION"
-  uninstall_standalone_tala
+uninstall_d2_brew() {
+  sh_c brew remove d2
 }
 
-uninstall_standalone_tala() {
+uninstall_tala_standalone() {
   log "uninstalling standalone release tala-$INSTALLED_VERSION"
 
   if [ ! -e "$INSTALL_DIR/tala-$INSTALLED_VERSION" ]; then
@@ -786,6 +903,10 @@ uninstall_standalone_tala() {
 
   "$sh_c" sh -c "'cd \"$INSTALL_DIR/tala-$INSTALLED_VERSION\" && make uninstall PREFIX=\"$PREFIX\"'"
   "$sh_c" rm -rf "$INSTALL_DIR/tala-$INSTALLED_VERSION"
+}
+
+uninstall_tala_brew() {
+  sh_c brew remove tala
 }
 
 is_prefix_writable() {
@@ -841,6 +962,11 @@ fetch_gh() {
 
   curl_gh -#o "$file.inprogress" -C- -H "'Accept: $accept'" "$url"
   sh_c mv "$file.inprogress" "$file"
+}
+
+brew() {
+  # Makes brew sane.
+  HOMEBREW_NO_INSTALL_CLEANUP=1 HOMEBREW_NO_AUTO_UPDATE=1 command brew "$@"
 }
 
 main "$@"

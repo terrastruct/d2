@@ -12,8 +12,7 @@ EOF
 }
 
 main() {
-  while :; do
-    flag_parse "$@"
+  while flag_parse "$@"; do
     case "$FLAG" in
       h|help)
         help
@@ -27,15 +26,12 @@ main() {
         flag_nonemptyarg && shift "$FLAGSHIFT"
         KEY_FILE=$FLAGARG
         ;;
-      '')
-        shift "$FLAGSHIFT"
-        break
-        ;;
       *)
         flag_errusage "unrecognized flag $FLAGRAW"
         ;;
     esac
   done
+  shift "$FLAGSHIFT"
   if [ -z "${KEY_FILE-}" ]; then
     echoerr "-i is required"
     exit 1
