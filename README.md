@@ -1,6 +1,6 @@
 <div align="center">
   <h1>
-    <img src="./docs/assets/logo.svg" alt="D2" />
+    <img src="./docs/assets/banner.png" alt="D2" />
   </h1>
   <p>A modern DSL that turns text into diagrams.</p>
 
