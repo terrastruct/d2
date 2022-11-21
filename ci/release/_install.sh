@@ -82,6 +82,7 @@ Flags:
   as for installation. i.e if you used --method standalone you must again use --method
   standalone for uninstallation. With detect, the install script will try to use the OS
   package manager to uninstall instead.
+  note: tala will also be uninstalled if installed.
 
 All downloaded archives are cached into ~/.cache/d2/release. use \$XDG_CACHE_HOME to change
 path of the cached assets. Release archives are unarchived into /usr/local/lib/d2/d2-<VERSION>
@@ -376,17 +377,15 @@ install_tala_brew() {
 uninstall() {
   # We uninstall tala first as package managers require that it be uninstalled before
   # uninstalling d2 as TALA depends on d2.
-  if [ "${TALA-}" ]; then
-    if command -v d2plugin-tala >/dev/null; then
-      INSTALLED_VERSION="$(d2plugin-tala --version)"
-      header "uninstalling tala-$INSTALLED_VERSION"
-      case $METHOD in
-        standalone) uninstall_tala_standalone ;;
-        homebrew) uninstall_tala_brew ;;
-      esac
-    else
-      warn "no version of tala installed"
-    fi
+  if command -v d2plugin-tala >/dev/null; then
+    INSTALLED_VERSION="$(d2plugin-tala --version)"
+    header "uninstalling tala-$INSTALLED_VERSION"
+    case $METHOD in
+      standalone) uninstall_tala_standalone ;;
+      homebrew) uninstall_tala_brew ;;
+    esac
+  elif [ "${TALA-}" ]; then
+    warn "no version of tala installed"
   fi
 
   if ! command -v d2 >/dev/null; then
