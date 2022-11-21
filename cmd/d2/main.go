@@ -173,7 +173,6 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
-
 	ms.Log.Success.Printf("successfully compiled %v to %v", inputPath, outputPath)
 	return nil
 }
