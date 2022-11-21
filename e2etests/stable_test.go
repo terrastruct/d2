@@ -6,6 +6,7 @@ import (
 )
 
 // based on https://github.com/mxstbr/markdown-test-file
+//
 //go:embed markdowntest.md
 var testMarkdown string
 
