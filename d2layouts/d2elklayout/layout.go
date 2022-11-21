@@ -16,6 +16,7 @@ import (
 	"oss.terrastruct.com/xdefer"
 
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/go2"
 	"oss.terrastruct.com/d2/lib/label"
@@ -240,6 +241,8 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+			} else if obj.Attributes.Shape.Value == d2target.ShapeImage {
+				obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
 			} else {
 				obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			}
