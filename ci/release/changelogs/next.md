@@ -1,15 +1,15 @@
-For v0.0.99 we focused on X, Y and Z. Enjoy!
+#### Features 🚀
 
-#### Features 💸
-
-- Ability to export to PNG
-- Now you can easily do x, y and z #9999
+- Ability to export to PNG.
 
 #### Improvements 🔧
 
-- Equivalency between flags and environment variables. You can set either one for all
-  options (flags take precedence).
+- There is now equivalency between CLI flags and environment variables. For any option,
+  you can set either the flag or its equivalent environment variable (flags take
+  precedence). See `d2 --help` for more.
+- Install script now uses `brew` for macOS machines with `brew` installed.
 
 #### Bugfixes 🔴
 
-- Fixes something or the other #9999
+- Labels for Image shapes in dagre and ELK are now placed above the shape, to not overlap
+  with the actual image.

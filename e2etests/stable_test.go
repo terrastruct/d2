@@ -6,6 +6,7 @@ import (
 )
 
 // based on https://github.com/mxstbr/markdown-test-file
+//
 //go:embed markdowntest.md
 var testMarkdown string
 
@@ -868,6 +869,19 @@ shipments: {
 users.id <-> orders.user_id
 products.id <-> orders.product_id
 shipments.order_id <-> orders.id`,
+		}, {
+			name: "images",
+			script: `a: {
+  shape: image
+  icon: https://icons.terrastruct.com/essentials/004-picture.svg
+}
+
+b: {
+  shape: image
+  icon: https://icons.terrastruct.com/essentials/004-picture.svg
+}
+a -> b
+`,
 		},
 	}
 
