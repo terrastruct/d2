@@ -119,11 +119,12 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		if err != nil {
 			return err
 		}
-		defer func() {
-			cleanupErr := pw.Cleanup()
-			if cleanupErr != nil {
-				ms.Log.Error.Printf("error cleaning up Playwright: %v", cleanupErr.Error())
+		defer func() error {
+			err = pw.Cleanup()
+			if err != nil {
+				return err
 			}
+			return nil
 		}()
 	}
 
@@ -180,23 +181,23 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, input
 	if err != nil {
 		return nil, err
 	}
-	outputImage, err := plugin.PostProcess(ctx, svg)
+	out, err := plugin.PostProcess(ctx, svg)
 	if err != nil {
 		return nil, err
 	}
 
 	if filepath.Ext(outputPath) == ".png" {
-		outputImage, err = png.ConvertSVG(ms, page, outputImage)
+		out, err = png.ConvertSVG(ms, page, out)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	err = ms.WritePath(outputPath, outputImage)
+	err = ms.WritePath(outputPath, out)
 	if err != nil {
 		return nil, err
 	}
-	return svg, nil
+	return out, nil
 }
 
 // newExt must include leading .

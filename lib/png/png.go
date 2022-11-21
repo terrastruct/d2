@@ -1,11 +1,8 @@
 package png
 
 import (
-	"bytes"
 	"encoding/base64"
 	"fmt"
-	"os"
-	"os/exec"
 	"strings"
 
 	_ "embed"
@@ -20,19 +17,19 @@ type Playwright struct {
 	Page    playwright.Page
 }
 
-func (pw *Playwright) RestartBrowser() (newPW Playwright, err error) {
-	if err = pw.Browser.Close(); err != nil {
-		return Playwright{}, err
+func (pw *Playwright) RestartBrowser() (Playwright, error) {
+	if err := pw.Browser.Close(); err != nil {
+		return Playwright{}, fmt.Errorf("failed to close Playwright browser: %w", err)
 	}
 	return startPlaywright(pw.PW)
 }
 
 func (pw *Playwright) Cleanup() error {
 	if err := pw.Browser.Close(); err != nil {
-		return err
+		return fmt.Errorf("failed to close Playwright browser: %w", err)
 	}
 	if err := pw.PW.Stop(); err != nil {
-		return err
+		return fmt.Errorf("failed to stop Playwright: %w", err)
 	}
 	return nil
 }
@@ -40,15 +37,15 @@ func (pw *Playwright) Cleanup() error {
 func startPlaywright(pw *playwright.Playwright) (Playwright, error) {
 	browser, err := pw.Chromium.Launch()
 	if err != nil {
-		return Playwright{}, err
+		return Playwright{}, fmt.Errorf("failed to launch Chromium: %w", err)
 	}
 	context, err := browser.NewContext()
 	if err != nil {
-		return Playwright{}, err
+		return Playwright{}, fmt.Errorf("failed to start new Playwright browser context: %w", err)
 	}
 	page, err := context.NewPage()
 	if err != nil {
-		return Playwright{}, err
+		return Playwright{}, fmt.Errorf("failed to start new Playwright page: %w", err)
 	}
 	return Playwright{
 		PW:      pw,
@@ -58,39 +55,14 @@ func startPlaywright(pw *playwright.Playwright) (Playwright, error) {
 }
 
 func InitPlaywright() (Playwright, error) {
-	// check if playwright driver/browsers are installed and up to date
-	// https://github.com/playwright-community/playwright-go/blob/8e8f670b5fa7ba5365ae4bfc123fea4aac359763/run.go#L64.
-	driver, err := playwright.NewDriver(&playwright.RunOptions{})
+	err := playwright.Install(&playwright.RunOptions{Verbose: false})
 	if err != nil {
-		return Playwright{}, err
-	}
-	_, err = os.Stat(driver.DriverBinaryLocation)
-	if err != nil {
-		if os.IsNotExist(err) {
-			err = playwright.Install()
-			if err != nil {
-				return Playwright{}, err
-			}
-		} else {
-			return Playwright{}, fmt.Errorf("could not access Playwright binary location: %v\nerror: %w\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", driver.DriverBinaryLocation, err)
-		}
-	}
-
-	cmd := exec.Command(driver.DriverBinaryLocation, "--version")
-	output, err := cmd.Output()
-	if err != nil {
-		return Playwright{}, fmt.Errorf("error getting Playwright version: %w\nplease report this issue here: https://github.com/terrastruct/d2/issues/new", err)
-	}
-	if !bytes.Contains(output, []byte(driver.Version)) {
-		err = playwright.Install()
-		if err != nil {
-			return Playwright{}, err
-		}
+		return Playwright{}, fmt.Errorf("failed to install Playwright: %w", err)
 	}
 
 	pw, err := playwright.Run()
 	if err != nil {
-		return Playwright{}, err
+		return Playwright{}, fmt.Errorf("failed to run Playwright: %w", err)
 	}
 	return startPlaywright(pw)
 }
@@ -100,7 +72,7 @@ var genPNGScript string
 
 const pngPrefix = "data:image/png;base64,"
 
-func ConvertSVG(ms *xmain.State, page playwright.Page, svg []byte) (outputImage []byte, err error) {
+func ConvertSVG(ms *xmain.State, page playwright.Page, svg []byte) ([]byte, error) {
 	encodedSVG := base64.StdEncoding.EncodeToString(svg)
 	pngInterface, err := page.Evaluate(genPNGScript, "data:image/svg+xml;charset=utf-8;base64,"+encodedSVG)
 	if err != nil {

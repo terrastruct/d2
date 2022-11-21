@@ -337,7 +337,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 				w.broadcast(&compileResult{
 					Err: broadcastErr.Error(),
 				})
-				return fmt.Errorf("Playwright could not be restarted: %w", err)
+				continue
 			}
 			w.pw = newPW
 		}
