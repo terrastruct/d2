@@ -58,8 +58,7 @@ A browser window will open with `out.svg` and live-reload on changes to `in.d2`.
 
 ## Install
 
-For more detailed installation docs with examples for if you do not wish to use the
-install script see [./doc/INSTALL.md](./doc/INSTALL.md).
+For detailed installation docs with examples see [./docs/INSTALL.md](./docs/INSTALL.md).
 
 ### Install script
 
@@ -76,8 +75,9 @@ curl -fsSL https://d2lang.com/install.sh | sh -s --
 
 We have precompiled binaries on the [releases](https://github.com/terrastruct/d2/releases)
 page for macOS and Linux. For both amd64 and arm64. We will release package manager
-distributions like .rpm, .deb soon. We also want to get D2 on Homebrew for macOS
-and release a docker image.
+distributions like .rpm, .deb soon. d2 is on homebrew with our tap. See [./docs/INSTALL.md](./docs/INSTALL.md).
+
+We'll have a docker image soon too.
 
 To uninstall:
 

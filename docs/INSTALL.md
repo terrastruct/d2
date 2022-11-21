@@ -7,6 +7,7 @@ This file documents all the ways by which you can install d2.
 - [install.sh](#installsh)
 - [Standalone](#standalone)
 - [macOS (Homebrew)](#macos-homebrew)
+- [From Source](#from-source)
 
 <!-- tocstop -->
 
@@ -65,4 +66,10 @@ For macOS you may install as so:
 ```sh
 brew tap terrastruct/d2
 brew install d2
+```
+
+## From Source
+
+```sh
+go install oss.terrastruct.com/d2/cmd/d2@latest
 ```
