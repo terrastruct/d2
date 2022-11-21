@@ -1,7 +1,7 @@
 .POSIX:
 
 .PHONY: all
-all: fmt lint build test
+all: fmt gen lint build test
 ifdef CI
 all: assert-linear
 endif
@@ -9,6 +9,9 @@ endif
 .PHONY: fmt
 fmt:
 	prefix "$@" ./ci/sub/fmt/make.sh
+.PHONY: gen
+gen:
+	prefix "$@" ./ci/gen.sh
 .PHONY: lint
 lint:
 	prefix "$@" go vet --composites=false ./...

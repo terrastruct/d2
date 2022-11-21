@@ -12,8 +12,7 @@ EOF
 }
 
 main() {
-  while :; do
-    flag_parse "$@"
+  while flag_parse "$@"; do
     case "$FLAG" in
       h|help)
         help
@@ -27,15 +26,12 @@ main() {
         flag_reqarg && shift "$FLAGSHIFT"
         JOBFILTER="$FLAGARG"
         ;;
-      '')
-        shift "$FLAGSHIFT"
-        break
-        ;;
       *)
         flag_errusage "unrecognized flag $FLAGRAW"
         ;;
     esac
   done
+  shift "$FLAGSHIFT"
 
   REMOTE_HOST=$TSTRUCT_LINUX_AMD64_BUILDER; runjob linux-amd64 ssh "$REMOTE_HOST" "$@"
   REMOTE_HOST=$TSTRUCT_LINUX_ARM64_BUILDER; runjob linux-arm64 ssh "$REMOTE_HOST" "$@"

@@ -54,8 +54,30 @@ if [ -n "${DEBUG-}" ]; then
 fi
 
 tput() {
-  if [ -n "$TERM" ]; then
-    command tput "$@"
+  if should_color; then
+    TERM=${TERM:-xterm-256color} command tput "$@"
+  fi
+}
+
+should_color() {
+  if [ -n "${COLOR-}" ]; then
+    if [ "$COLOR" = 0 -o "$COLOR" = false ]; then
+      _COLOR=
+      return 1
+    elif [ "$COLOR" = 1 -o "$COLOR" = true ]; then
+      _COLOR=1
+      return 0
+    else
+      printf '$COLOR must be 0, 1, false or true but got %s' "$COLOR" >&2
+    fi
+  fi
+
+  if [ -t 1 ]; then
+    _COLOR=1
+    return 0
+  else
+    _COLOR=
+    return 1
   fi
 }
 
@@ -92,14 +114,15 @@ printfp() {(
   prefix="$1"
   shift
 
-  if [ -z "${COLOR:-}" ]; then
-    COLOR="$(get_rand_color "$prefix")"
+  if [ -z "${FGCOLOR-}" ]; then
+    FGCOLOR="$(get_rand_color "$prefix")"
   fi
-  printf '%s' "$(setaf "$COLOR" "$prefix")"
-
-  if [ $# -gt 0 ]; then
-    printf ': '
-    printf "$@"
+  if [ $# -eq 0 ]; then
+    should_color || true
+    printf '%s' $(COLOR=${_COLOR-} setaf "$FGCOLOR" "$prefix")
+  else
+    should_color || true
+    printf '%s: %s\n' $(COLOR=${_COLOR-} setaf "$FGCOLOR" "$prefix") "$(printf "$@")"
   fi
 )}
 
@@ -107,7 +130,8 @@ catp() {
   prefix="$1"
   shift
 
-  sed "s/^/$(printfp "$prefix" '')/"
+  should_color || true
+  sed "s/^/$(COLOR=${_COLOR-} printfp "$prefix" '')/"
 }
 
 repeat() {
@@ -121,51 +145,58 @@ strlen() {
 }
 
 echoerr() {
-  COLOR=1 echop err "$*" | humanpath>&2
+  FGCOLOR=1 logp err "$*" | humanpath>&2
 }
 
 caterr() {
-  COLOR=1 catp err "$@" | humanpath >&2
+  FGCOLOR=1 logpcat err "$@" | humanpath >&2
 }
 
 printferr() {
-  COLOR=1 printfp err "$@" | humanpath >&2
+  FGCOLOR=1 logfp err "$@" | humanpath >&2
 }
 
 logp() {
-  echop "$@" | humanpath >&2
+  should_color >&2 || true
+  COLOR=${_COLOR-} echop "$@" | humanpath >&2
 }
 
 logfp() {
-  printfp "$@" | humanpath >&2
+  should_color >&2 || true
+  COLOR=${_COLOR-} printfp "$@" | humanpath >&2
 }
 
 logpcat() {
-  catp "$@" | humanpath >&2
+  should_color >&2 || true
+  COLOR=${_COLOR-} catp "$@" | humanpath >&2
 }
 
 log() {
-  COLOR=5 logp log "$@"
+  FGCOLOR=5 logp log "$@"
 }
 
 logf() {
-  COLOR=5 logfp log "$@"
+  FGCOLOR=5 logfp log "$@"
 }
 
 logcat() {
-  COLOR=5 logpcat log "$@"
+  FGCOLOR=5 logpcat log "$@"
 }
 
 warn() {
-  COLOR=3 logp warn "$@"
+  FGCOLOR=3 logp warn "$@"
 }
 
 warnf() {
-  COLOR=3 logfp warn "$@"
+  FGCOLOR=3 logfp warn "$@"
+}
+
+warncat() {
+  FGCOLOR=3 logpcat warn "$@"
 }
 
 sh_c() {
-  COLOR=3 logp exec "$*"
+  FGCOLOR=3 logp exec "$*"
   if [ -z "${DRY_RUN-}" ]; then
     eval "$@"
   fi
@@ -280,9 +311,8 @@ LIB_FLAG=1
 # FLAGSHIFT contains the number by which the arguments should be shifted to
 #   start at the next flag/argument
 #
-# After each call check $FLAG for the name of the parsed flag.
-# If empty, then no more flags are left.
-# Still, call shift "$FLAGSHIFT" in case there was a --
+# flag_parse exits with a non zero code when there are no more flags
+# to be parsed. Still, call shift "$FLAGSHIFT" in case there was a --
 #
 # If the argument for the flag is optional, then use ${FLAGARG-} to access
 # the argument if one was passed. Use ${FLAGARG+x} = x to check if it was set.
@@ -310,18 +340,15 @@ flag_parse() {
       # Remove everything before first equal sign.
       FLAGARG="${1#*=}"
       FLAGSHIFT=1
+      return 0
       ;;
     -)
-      FLAG=
-      FLAGRAW=
-      unset FLAGARG
       FLAGSHIFT=0
+      return 1
       ;;
     --)
-      FLAG=
-      FLAGRAW=
-      unset FLAGARG
       FLAGSHIFT=1
+      return 1
       ;;
     -*)
       # Remove leading hyphens.
@@ -343,15 +370,13 @@ flag_parse() {
             ;;
         esac
       fi
+      return 0
       ;;
     *)
-      FLAG=
-      FLAGRAW=
-      unset FLAGARG
       FLAGSHIFT=0
+      return 1
       ;;
   esac
-  return 0
 }
 
 flag_reqarg() {
@@ -520,8 +545,7 @@ EOF
 
 main() {
   METHOD=standalone
-  while :; do
-    flag_parse "$@"
+  while flag_parse "$@"; do
     case "$FLAG" in
       h|help)
         help
@@ -563,15 +587,12 @@ main() {
         flag_noarg && shift "$FLAGSHIFT"
         UNINSTALL=1
         ;;
-      '')
-        shift "$FLAGSHIFT"
-        break
-        ;;
       *)
         flag_errusage "unrecognized flag $FLAGRAW"
         ;;
     esac
   done
+  shift "$FLAGSHIFT"
 
   if [ $# -gt 0 ]; then
     flag_errusage "no arguments are accepted"
@@ -610,7 +631,7 @@ install() {
     TALA_VERSION="$( install_tala && echo "$VERSION" )"
   fi
 
-  COLOR=2 header success
+  FGCOLOR=2 header success
   log "d2-$VERSION-$OS-$ARCH has been successfully installed into $PREFIX"
   if [ -n "${TALA-}" ]; then
     log "tala-$TALA_VERSION-$OS-$ARCH has been successfully installed into $PREFIX"
