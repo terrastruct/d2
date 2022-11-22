@@ -1,0 +1,110 @@
+# Generated with D2 v0.0.13
+# Layout engine: TALA v0.2.5
+Square: "" {
+  explanation: |md
+    ## **Timeline mixer**
+    - Inject ads, who-to-follow, onboarding
+    - Conversation module
+    - Cursoring,pagination
+    - tweat deduplication
+    - served data logging
+  |
+}
+People discovery: "People discovery \nservice"
+People discovery 2: Ad mixer
+People discovery 3: "Onboarding \nservice"
+Square -> People discovery
+Square -> People discovery 3
+Square -> People discovery 2
+Square 2: "" {
+  explanation 2: |md
+    ## **GraphQL**
+    Federated Strato Column
+  |
+}
+Square 2 -> Square
+Square 3: "" {
+  explanation: |md
+    ## **Tweet/user content hydration, visibility filtering**
+    TLS-API (being derecated)
+  |
+}
+Square -> Square 3
+Text: Twitter Frontend (TFE) {
+  icon: https://icons.terrastruct.com/social/013-twitter-1.svg
+  shape: image
+}
+Text -> Square 2: iPhone web
+Text -> Square 3: HTTP android
+Text 2: Web {
+  icon: https://icons.terrastruct.com/azure/Web%20Service%20Color/App%20Service%20Domains.svg
+  shape: image
+}
+
+Iphone: {
+  icon: 'https://ss7.vzw.com/is/image/VerizonWireless/apple-iphone-12-64gb-purple-53017-mjn13ll-a?$device-lg$'
+  shape: image
+}
+Android: {
+  icon: https://cdn4.iconfinder.com/data/icons/smart-phones-technologies/512/android-phone.png
+  shape: image
+}
+
+Text 2 -> Text
+People discovery 4: "Timeline\nScorer"
+People discovery 5: Home Ranker
+People discovery 6: Timeline Service
+Square -> People discovery 4
+Square -> People discovery 5
+Square -> People discovery 6
+People discovery 7: Home mixer
+Square 2 -> People discovery 7
+People discovery 7 -> People discovery 4
+People discovery 7 -> People discovery 5
+People discovery 7 -> People discovery 6
+People discovery 8: Manhattan
+People discovery 9: Gizmoduck
+People discovery 10: Social graph
+People discovery 11: Tweety Pie
+People discovery 7 -> People discovery 8
+People discovery 7 -> People discovery 9
+People discovery 7 -> People discovery 10
+People discovery 7 -> People discovery 11
+Iphone -> Text
+Android -> Text
+People discovery 12: Prediction Service
+People discovery 13: Home Scorer
+People discovery 14: Manhattan
+People discovery 15: Memcache
+Image: "" {
+  icon: https://i.stack.imgur.com/twIm6.png
+  shape: image
+}
+Square 4: "" {
+  People discovery 16: Fetch
+  People discovery: Feature {style.fill: "#F7F8FE"}
+  People discovery 2: Scoring {style.fill: "#F7F8FE"}
+  People discovery 16 -> People discovery
+  People discovery -> People discovery 2
+}
+
+People discovery 21: Prediction Service
+Square 4.People discovery 2 -> People discovery 21
+Square 4.People discovery 16 -> Square 5.People discovery 16
+Square 4.People discovery -> People discovery 14
+Square 4.People discovery -> People discovery 15
+Square 4.People discovery -> Image: Candidate Sources
+People discovery 13 -> People discovery 14
+People discovery 13 -> Image: Feature Hydration
+People discovery 13 -> People discovery 15
+People discovery 13 -> People discovery 12
+People discovery 5 -> People discovery 13
+People discovery 5 -> Square 5.People discovery 16: Candidate fetch
+Square 5: "" {
+  People discovery 17: EarlyBird
+  People discovery 20: Communities
+  People discovery 16: CrMixer {style.fill: "#F7F8FE"}
+  People discovery 18: Utag
+  People discovery 19: Space
+  style.fill: "#F7F8FE"
+}
