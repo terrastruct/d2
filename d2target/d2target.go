@@ -26,10 +26,10 @@ type Diagram struct {
 }
 
 func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
-	x1 := int(math.MaxInt64)
-	y1 := int(math.MaxInt64)
-	x2 := int(-math.MaxInt64)
-	y2 := int(-math.MaxInt64)
+	x1 := int(^uint(0) >> 1)
+	y1 := int(^uint(0) >> 1)
+	x2 := -int(^uint(0)>>1) - 1
+	y2 := -int(^uint(0)>>1) - 1
 
 	for _, targetShape := range diagram.Shapes {
 		x1 = go2.Min(x1, targetShape.Pos.X)
