@@ -1,8 +1,8 @@
 <div align="center">
+<img src="./docs/assets/banner.png" alt="D2" />
   <h1>
-    <img src="./docs/assets/banner.png" alt="D2" />
+    A modern diagram scripting language that turns text to diagrams.
   </h1>
-  <p>A modern diagram scripting language that turns text to diagrams.</p>
 
 [Language docs](https://d2lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf)
 
