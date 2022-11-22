@@ -30,7 +30,7 @@ The simplified D2 flow at a package level looks like:
 
 ## Logistics
 
-- D2 uses Issues as TODOs and discussions. No auto-closing on staleness.
+- D2 uses Issues as TODOs. No auto-closing on staleness.
 - Branch off `master`.
 - Prefix pull request titles with a short descriptor of the domain, e.g. `d2renderer: Add
   x`.
