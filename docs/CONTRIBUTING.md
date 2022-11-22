@@ -17,7 +17,7 @@
 
 ## CI
 
-Most of D2's CI is open-sourced in its own
+Most of D2's CI is open sourced in its own
 [repository](https://github.com/terrastruct/ci). You can find commands in the Github
 workflows. E.g. run `./make.sh fmt` to run the formatter. Please make sure all CI is
 passing for any PRs.

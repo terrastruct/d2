@@ -1,8 +1,8 @@
 <div align="center">
-  <h1>
-    <img src="./docs/assets/logo.svg" alt="D2" />
-  </h1>
-  <p>A modern DSL that turns text into diagrams.</p>
+  <img src="./docs/assets/banner.png" alt="D2" />
+  <h2>
+    A modern diagram scripting language that turns text to diagrams.
+  </h2>
 
 [Language docs](https://d2lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf)
 
@@ -175,8 +175,7 @@ Contributions are welcome! See [./docs/CONTRIBUTING.md](./docs/CONTRIBUTING.md).
 
 ## License
 
-Copyright © 2022 Terrastruct, Inc. Open-source licensed under the Mozilla Public License
-2.0.
+Open sourced under the Mozilla Public License 2.0. See [./LICENSE.txt](./LICENSE.txt).
 
 ## Related
 
