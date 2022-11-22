@@ -33,7 +33,7 @@ curl -fsSL https://d2lang.com/install.sh | sh -s -- --help
 
 ## macOS (Homebrew)
 
-If you're on macOS, you can alternatively install with `brew`.
+If you're on macOS, you can install with `brew`.
 
 ```sh
 brew tap terrastruct/d2
