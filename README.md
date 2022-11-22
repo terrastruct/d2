@@ -2,7 +2,7 @@
   <h1>
     <img src="./docs/assets/banner.png" alt="D2" />
   </h1>
-  <p>A modern DSL that turns text into diagrams.</p>
+  <p>A modern language that turns text into diagrams.</p>
 
 [Language docs](https://d2lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf)
 
@@ -12,7 +12,7 @@
 [![twitter](https://img.shields.io/twitter/follow/terrastruct?style=social)](https://twitter.com/terrastruct)
 [![license](https://img.shields.io/github/license/terrastruct/d2?color=9cf)](./LICENSE.txt)
 
-<img src="./docs/assets/cli2.gif" alt="D2 CLI" />
+<img src="./docs/assets/cli.gif" alt="D2 CLI" />
 
 </div>
 
@@ -175,8 +175,7 @@ Contributions are welcome! See [./docs/CONTRIBUTING.md](./docs/CONTRIBUTING.md).
 
 ## License
 
-Copyright © 2022 Terrastruct, Inc. Open-source licensed under the Mozilla Public License
-2.0.
+Open sourced under the Mozilla Public License 2.0. See [./LICENSE.txt](./LICENSE.txt).
 
 ## Related
 
