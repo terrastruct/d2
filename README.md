@@ -39,6 +39,34 @@
 
 <!-- tocstop -->
 
+# What does D2 look like?
+
+```d2
+# Actors
+hans: Hans Niemann
+
+defendants: {
+  mc: Magnus Carlsen
+  playmagnus: Play Magnus Group
+  chesscom: Chess.com
+  naka: Hikaru Nakamura
+
+  mc -> playmagnus: Owns majority
+  playmagnus <-> chesscom: Merger talks
+  chesscom -> naka: Sponsoring
+}
+
+# Accusations
+hans -> defendants: 'sueing for $100M'
+
+# Offense
+defendants.naka -> hans: Accused of cheating on his stream
+defendants.mc -> hans: Lost then withdrew with accusations
+defendants.chesscom -> hans: 72 page report of cheating
+```
+
+<img src="./docs/assets/syntax.png" alt="D2 render example" />
+
 ## Quickstart
 
 The most convenient way to use D2 is to just run it as a CLI executable to
