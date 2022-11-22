@@ -1,6 +1,6 @@
 # install
 
-This file documents all the ways by which you can install D2.
+You may install D2 through any of the following methods.
 
 <!-- toc -->
 
