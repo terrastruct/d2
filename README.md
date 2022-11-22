@@ -20,6 +20,7 @@
 
 <!-- toc -->
 
+- [What does D2 look like?](#what-does-d2-look-like)
 - [Quickstart](#quickstart)
 - [Install](#install)
 - [D2 as a library](#d2-as-a-library)
@@ -38,6 +39,36 @@
 - [FAQ](#faq)
 
 <!-- tocstop -->
+
+# What does D2 look like?
+
+```d2
+# Actors
+hans: Hans Niemann
+
+defendants: {
+  mc: Magnus Carlsen
+  playmagnus: Play Magnus Group
+  chesscom: Chess.com
+  naka: Hikaru Nakamura
+
+  mc -> playmagnus: Owns majority
+  playmagnus <-> chesscom: Merger talks
+  chesscom -> naka: Sponsoring
+}
+
+# Accusations
+hans -> defendants: 'sueing for $100M'
+
+# Offense
+defendants.naka -> hans: Accused of cheating on his stream
+defendants.mc -> hans: Lost then withdrew with accusations
+defendants.chesscom -> hans: 72 page report of cheating
+```
+
+> There is syntax highlighting with the editor plugins linked below.
+
+<img src="./docs/assets/syntax.png" alt="D2 render example" width="50%" />
 
 ## Quickstart
 
