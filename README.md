@@ -65,7 +65,7 @@ defendants.mc -> hans: Lost then withdrew with accusations
 defendants.chesscom -> hans: 72 page report of cheating
 ```
 
-<img src="./docs/assets/syntax.png" alt="D2 render example" />
+<img src="./docs/assets/syntax.png" alt="D2 render example" width="50%" />
 
 ## Quickstart
 
