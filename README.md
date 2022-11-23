@@ -151,7 +151,7 @@ graph, _ = d2oracle.Set(graph, "meow.style.fill", nil, &color)
 graph, _, _ = d2oracle.Create(graph, "cat")
 // Move the shape "meow" inside the container "cat"
 graph, _ = d2oracle.Move(graph, "meow", "cat.meow")
-// Prints formatted D2 code
+// Prints formatted D2 script
 println(d2format.Format(graph.AST))
 ```
 
