@@ -36,7 +36,12 @@ func (pw *Playwright) Cleanup() error {
 }
 
 func startPlaywright(pw *playwright.Playwright) (Playwright, error) {
-	browser, err := pw.Chromium.Launch()
+	browser, err := pw.Chromium.Launch(playwright.BrowserTypeLaunchOptions{
+		Args: []string{
+			"--disable-web-security",
+			"--user-agent=\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36\"",
+		},
+	})
 	if err != nil {
 		return Playwright{}, fmt.Errorf("failed to launch Chromium: %w", err)
 	}
