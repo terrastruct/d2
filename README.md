@@ -68,7 +68,7 @@ defendants.chesscom -> hans: 72 page report of cheating
 
 > There is syntax highlighting with the editor plugins linked below.
 
-<img src="./docs/assets/syntax.png" alt="D2 render example" height="600px" />
+<img src="./docs/assets/syntax.png" alt="D2 render example" />
 
 ## Quickstart
 
@@ -151,7 +151,7 @@ graph, _ = d2oracle.Set(graph, "meow.style.fill", nil, &color)
 graph, _, _ = d2oracle.Create(graph, "cat")
 // Move the shape "meow" inside the container "cat"
 graph, _ = d2oracle.Move(graph, "meow", "cat.meow")
-// Prints formatted D2 code
+// Prints formatted D2 script
 println(d2format.Format(graph.AST))
 ```
 
