@@ -109,10 +109,10 @@ Go programs.
 
 ```go
 import (
-	"context"
-	"io/ioutil"
-	"path/filepath"
-	"strings"
+  "context"
+  "io/ioutil"
+  "path/filepath"
+  "strings"
 
   "oss.terrastruct.com/d2/d2compiler"
   "oss.terrastruct.com/d2/d2exporter"
