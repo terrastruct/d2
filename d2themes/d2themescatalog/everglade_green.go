@@ -4,7 +4,7 @@ import "oss.terrastruct.com/d2/d2themes"
 
 var EvergladeGreen = d2themes.Theme{
 	ID:   104,
-	Name: "Everyglade green",
+	Name: "Everglade green",
 	Colors: d2themes.ColorPalette{
 		Neutrals: d2themes.WarmNeutral,
 
