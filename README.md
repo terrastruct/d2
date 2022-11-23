@@ -134,9 +134,7 @@ func main() {
 ```
 
 D2 is built to be hackable -- the language has an API built on top of it to make edits
-programmatically.
-
-Modifying the above diagram:
+programmatically. Modifying the above diagram:
 
 ```go
 import (
