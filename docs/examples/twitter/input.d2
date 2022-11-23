@@ -1,42 +1,44 @@
-# Generated with D2 v0.0.13
-# Layout engine: TALA v0.2.5
-Square: "" {
+timeline mixer: "" {
   explanation: |md
     ## **Timeline mixer**
     - Inject ads, who-to-follow, onboarding
     - Conversation module
     - Cursoring,pagination
-    - tweat deduplication
-    - served data logging
+    - Tweat deduplication
+    - Served data logging
   |
 }
 People discovery: "People discovery \nservice"
-People discovery 2: Ad mixer
-People discovery 3: "Onboarding \nservice"
-Square -> People discovery
-Square -> People discovery 3
-Square -> People discovery 2
-Square 2: "" {
-  explanation 2: |md
-    ## **GraphQL**
-    Federated Strato Column
-  |
+admixer: Ad mixer {
+  fill: "#c1a2f3"
 }
-Square 2 -> Square
-Square 3: "" {
-  explanation: |md
-    ## **Tweet/user content hydration, visibility filtering**
-    TLS-API (being derecated)
-  |
+
+onboarding service: "Onboarding \nservice"
+timeline mixer -> People discovery
+timeline mixer -> onboarding service
+timeline mixer -> admixer
+container0: "" {
+  graphql
+  comment
+  tlsapi
 }
-Square -> Square 3
-Text: Twitter Frontend (TFE) {
+container0.graphql: GraphQL\nFederated Strato Column {
+  shape: image
+  icon: https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/GraphQL_Logo.svg/1200px-GraphQL_Logo.svg.png
+}
+container0.comment: |md
+  ## Tweet/user content hydration, visibility filtering
+|
+container0.tlsapi: TLS-API (being deprecated)
+container0.graphql -> timeline mixer
+timeline mixer <- container0.tlsapi
+twitter fe: "Twitter Frontend " {
   icon: https://icons.terrastruct.com/social/013-twitter-1.svg
   shape: image
 }
-Text -> Square 2: iPhone web
-Text -> Square 3: HTTP android
-Text 2: Web {
+twitter fe -> container0.graphql: iPhone web
+twitter fe -> container0.tlsapi: HTTP Android
+web: Web {
   icon: https://icons.terrastruct.com/azure/Web%20Service%20Color/App%20Service%20Domains.svg
   shape: image
 }
@@ -50,61 +52,97 @@ Android: {
   shape: image
 }
 
-Text 2 -> Text
-People discovery 4: "Timeline\nScorer"
-People discovery 5: Home Ranker
-People discovery 6: Timeline Service
-Square -> People discovery 4
-Square -> People discovery 5
-Square -> People discovery 6
-People discovery 7: Home mixer
-Square 2 -> People discovery 7
-People discovery 7 -> People discovery 4
-People discovery 7 -> People discovery 5
-People discovery 7 -> People discovery 6
-People discovery 8: Manhattan
-People discovery 9: Gizmoduck
-People discovery 10: Social graph
-People discovery 11: Tweety Pie
-People discovery 7 -> People discovery 8
-People discovery 7 -> People discovery 9
-People discovery 7 -> People discovery 10
-People discovery 7 -> People discovery 11
-Iphone -> Text
-Android -> Text
-People discovery 12: Prediction Service
-People discovery 13: Home Scorer
-People discovery 14: Manhattan
-People discovery 15: Memcache
-Image: "" {
-  icon: https://i.stack.imgur.com/twIm6.png
-  shape: image
+web -> twitter fe
+timeline scorer: "Timeline\nScorer" {
+  fill: "#ffdef1"
 }
-Square 4: "" {
-  People discovery 16: Fetch
-  People discovery: Feature {style.fill: "#F7F8FE"}
-  People discovery 2: Scoring {style.fill: "#F7F8FE"}
-  People discovery 16 -> People discovery
-  People discovery -> People discovery 2
+home ranker: Home Ranker
+
+timeline service: Timeline Service
+timeline mixer -> timeline scorer: Thrift RPC
+timeline mixer -> home ranker: {
+  style.stroke-dash: 4
+  style.stroke: "#000E3D"
+}
+timeline mixer -> timeline service
+home mixer: Home mixer {
+  # fill: "#c1a2f3"
+}
+container0.graphql -> home mixer: {
+  style.stroke-dash: 4
+  style.stroke: "#000E3D"
+}
+home mixer -> timeline scorer
+home mixer -> home ranker: {
+  style.stroke-dash: 4
+  style.stroke: "#000E3D"
+}
+home mixer -> timeline service
+manhattan 2: Manhattan
+gizmoduck: Gizmoduck
+socialgraph: Social graph
+tweetypie: Tweety Pie
+home mixer -> manhattan 2
+home mixer -> gizmoduck
+home mixer -> socialgraph
+home mixer -> tweetypie
+Iphone -> twitter fe
+Android -> twitter fe
+prediction service2: Prediction Service {
+  shape: image
+  icon: https://cdn-icons-png.flaticon.com/512/6461/6461819.png
+}
+home scorer: Home Scorer {
+  fill: "#ffdef1"
+}
+manhattan: Manhattan
+memcache: Memcache {
+  icon: https://d1q6f0aelx0por.cloudfront.net/product-logos/de041504-0ddb-43f6-b89e-fe04403cca8d-memcached.png
 }
 
-People discovery 21: Prediction Service
-Square 4.People discovery 2 -> People discovery 21
-Square 4.People discovery 16 -> Square 5.People discovery 16
-Square 4.People discovery -> People discovery 14
-Square 4.People discovery -> People discovery 15
-Square 4.People discovery -> Image: Candidate Sources
-People discovery 13 -> People discovery 14
-People discovery 13 -> Image: Feature Hydration
-People discovery 13 -> People discovery 15
-People discovery 13 -> People discovery 12
-People discovery 5 -> People discovery 13
-People discovery 5 -> Square 5.People discovery 16: Candidate fetch
-Square 5: "" {
-  People discovery 17: EarlyBird
-  People discovery 20: Communities
-  People discovery 16: CrMixer {style.fill: "#F7F8FE"}
-  People discovery 18: Utag
-  People discovery 19: Space
-  style.fill: "#F7F8FE"
+fetch: Fetch {
+  multiple: true
+  shape: step
 }
+feature: Feature {
+  multiple: true
+  shape: step
+}
+scoring: Scoring {
+  multiple: true
+  shape: step
+}
+fetch -> feature
+feature -> scoring
+
+prediction service: Prediction Service {
+  shape: image
+  icon: https://cdn-icons-png.flaticon.com/512/6461/6461819.png
+}
+scoring -> prediction service
+fetch -> container2.crmixer
+
+home scorer -> manhattan: ""
+
+home scorer -> memcache: ""
+home scorer -> prediction service2
+home ranker -> home scorer
+home ranker -> container2.crmixer: Candidate Fetch
+container2: "" {
+  style.stroke: "#000E3D"
+  style.fill: "#ffffff"
+  crmixer: CrMixer {
+    style.fill: "#F7F8FE"
+  }
+  earlybird: EarlyBird
+  utag: Utag
+  space: Space
+  communities: Communities
+}
+etc: ...etc
+
+home scorer -> etc: Feature Hydration
+
+feature -> manhattan
+feature -> memcache
+feature -> etc: Candidate sources

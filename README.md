@@ -70,6 +70,8 @@ defendants.chesscom -> hans: 72 page report of cheating
 
 <img src="./docs/assets/syntax.png" alt="D2 render example" width="50%" />
 
+> For more examples, see [./docs/examples](./docs/examples).
+
 ## Quickstart
 
 The most convenient way to use D2 is to just run it as a CLI executable to
