@@ -68,7 +68,7 @@ defendants.chesscom -> hans: 72 page report of cheating
 
 > There is syntax highlighting with the editor plugins linked below.
 
-<img src="./docs/assets/syntax.png" alt="D2 render example" height="600px" />
+<img src="./docs/assets/syntax.png" alt="D2 render example" max-height="600px" />
 
 ## Quickstart
 
