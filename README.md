@@ -109,41 +109,50 @@ Go programs.
 
 ```go
 import (
-  "github.com/terrastruct/d2/d2compiler"
-  "github.com/terrastruct/d2/d2exporter"
-  "github.com/terrastruct/d2/d2layouts/d2dagrelayout"
-  "github.com/terrastruct/d2/d2renderers/textmeasure"
-  "github.com/terrastruct/d2/d2themes/d2themescatalog"
+	"context"
+	"io/ioutil"
+	"path/filepath"
+	"strings"
+
+  "oss.terrastruct.com/d2/d2compiler"
+  "oss.terrastruct.com/d2/d2exporter"
+  "oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
+  "oss.terrastruct.com/d2/d2renderers/d2svg"
+  "oss.terrastruct.com/d2/d2renderers/textmeasure"
+  "oss.terrastruct.com/d2/d2themes/d2themescatalog"
 )
 
 func main() {
-  graph, err := d2compiler.Compile("", strings.NewReader("x -> y"), &d2compiler.CompileOptions{ UTF16: true })
-  ruler, err := textmeasure.NewRuler()
-  err = graph.SetDimensions(nil, ruler)
-  err = d2dagrelayout.Layout(ctx, graph)
-  diagram, err := d2exporter.Export(ctx, graph, d2themescatalog.NeutralDefault)
-  ioutil.WriteFile(filepath.Join("out.svg"), d2svg.Render(*diagram), 0600)
+  graph, _ := d2compiler.Compile("", strings.NewReader("x -> y"), &d2compiler.CompileOptions{UTF16: true})
+  ruler, _ := textmeasure.NewRuler()
+  graph.SetDimensions(nil, ruler)
+  d2dagrelayout.Layout(context.Background(), graph)
+  diagram, _ := d2exporter.Export(context.Background(), graph, d2themescatalog.NeutralDefault.ID)
+  out, _ := d2svg.Render(diagram)
+  ioutil.WriteFile(filepath.Join("out.svg"), out, 0600)
 }
 ```
 
 D2 is built to be hackable -- the language has an API built on top of it to make edits
 programmatically.
 
+Modifying the above diagram:
+
 ```go
 import (
-  "github.com/terrastruct/d2/d2oracle"
-  "github.com/terrastruct/d2/d2format"
+  "oss.terrastruct.com/d2/d2renderers/textmeasure"
+  "oss.terrastruct.com/d2/d2themes/d2themescatalog"
 )
 
-// ...modifying the diagram `x -> y` from above
 // Create a shape with the ID, "meow"
-graph, err = d2oracle.Create(graph, "meow")
+graph, _, _ = d2oracle.Create(graph, "meow")
 // Style the shape green
-graph, err = d2oracle.Set(graph, "meow.style.fill", "green")
+color := "green"
+graph, _ = d2oracle.Set(graph, "meow.style.fill", nil, &color)
 // Create a shape with the ID, "cat"
-graph, err = d2oracle.Create(graph, "cat")
+graph, _, _ = d2oracle.Create(graph, "cat")
 // Move the shape "meow" inside the container "cat"
-graph, err = d2oracle.Move(graph, "meow", "cat.meow")
+graph, _ = d2oracle.Move(graph, "meow", "cat.meow")
 // Prints formatted D2 code
 println(d2format.Format(graph.AST))
 ```
