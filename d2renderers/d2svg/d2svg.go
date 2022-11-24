@@ -450,41 +450,36 @@ func drawConnection(writer io.Writer, connection d2target.Connection, markers ma
 
 	length := geo.Route(connection.Route).Length()
 	if connection.SrcLabel != "" {
-		// TODO use arrowhead label dimensions
+		// TODO use arrowhead label dimensions https://github.com/terrastruct/d2/issues/183
 		size := float64(connection.FontSize)
 		position := 0.
 		if length > 0 {
 			position = size / length
 		}
-		srcLabelTL := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, size, size)
-
-		textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", connection.FontSize, "black")
-		x := srcLabelTL.X + size/2
-		y := srcLabelTL.Y + float64(connection.FontSize)
-		fmt.Fprintf(writer, `<text class="text-italic" x="%f" y="%f" style="%s">%s</text>`,
-			x, y,
-			textStyle,
-			renderText(connection.SrcLabel, x, size),
-		)
+		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.SrcLabel, position, size, size))
 	}
 	if connection.DstLabel != "" {
-		// TODO use arrowhead label dimensions
+		// TODO use arrowhead label dimensions https://github.com/terrastruct/d2/issues/183
 		size := float64(connection.FontSize)
 		position := 1.
 		if length > 0 {
 			position -= size / length
 		}
-		dstLabelTL := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, size, size)
-
-		textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", connection.FontSize, "black")
-		x := dstLabelTL.X + size/2
-		y := dstLabelTL.Y + float64(connection.FontSize)
-		fmt.Fprintf(writer, `<text class="text-italic" x="%f" y="%f" style="%s">%s</text>`,
-			x, y,
-			textStyle,
-			renderText(connection.DstLabel, x, size),
-		)
+		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.DstLabel, position, size, size))
 	}
+}
+
+func renderArrowheadLabel(connection d2target.Connection, text string, position, width, height float64) string {
+	labelTL := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, width, height)
+
+	textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", connection.FontSize, "black")
+	x := labelTL.X + width/2
+	y := labelTL.Y + float64(connection.FontSize)
+	return fmt.Sprintf(`<text class="text-italic" x="%f" y="%f" style="%s">%s</text>`,
+		x, y,
+		textStyle,
+		renderText(text, x, height),
+	)
 }
 
 func renderOval(tl *geo.Point, width, height float64, style string) string {
