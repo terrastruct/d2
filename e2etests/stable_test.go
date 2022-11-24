@@ -883,6 +883,17 @@ b: {
 a -> b
 `,
 		},
+		{
+			name: "arrowhead_labels",
+			script: `
+a -> b: To err is human, to moo bovine {
+	source-arrowhead: 1
+	target-arrowhead: * {
+		shape: diamond
+	}
+}
+`,
+		},
 	}
 
 	runa(t, tcs)

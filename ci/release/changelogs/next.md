@@ -10,4 +10,4 @@ For v0.0.99 we focused on X, Y and Z. Enjoy!
 
 #### Bugfixes 🔴
 
-- Fixes something or the other #9999
+- The svg renderer now displays arrowhead labels fixing #169

@@ -85,13 +85,14 @@ func main() {
 			}
 
 			if testFile != nil {
+				testCaseRoot := filepath.Dir(path)
 				matchTestCase := true
 				if testCaseFlag != "" {
-					matchTestCase, _ = regexp.MatchString(testCaseFlag, filepath.Base(path))
+					matchTestCase, _ = regexp.MatchString(testCaseFlag, filepath.Base(testCaseRoot))
 				}
 				matchTestSet := true
 				if testSetFlag != "" {
-					matchTestSet, _ = regexp.MatchString(testSetFlag, filepath.Base(filepath.Dir(path)))
+					matchTestSet, _ = regexp.MatchString(testSetFlag, filepath.Base(filepath.Dir(testCaseRoot)))
 				}
 
 				if matchTestSet && matchTestCase {
@@ -101,17 +102,19 @@ func main() {
 					if _, err := os.Stat(gotPath); err == nil {
 						hasGot = true
 					}
+					// e.g. arrowhead_adjustment/dagre
+					name := filepath.Join(filepath.Base(testCaseRoot), info.Name())
 					if deltaFlag {
 						if hasGot {
 							tests = append(tests, TestItem{
-								Name:   info.Name(),
+								Name:   name,
 								ExpSVG: &fullPath,
 								GotSVG: gotPath,
 							})
 						}
 					} else {
 						test := TestItem{
-							Name:   info.Name(),
+							Name:   name,
 							ExpSVG: nil,
 							GotSVG: fullPath,
 						}
