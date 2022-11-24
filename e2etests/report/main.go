@@ -85,13 +85,14 @@ func main() {
 			}
 
 			if testFile != nil {
+				testCaseRoot := filepath.Dir(path)
 				matchTestCase := true
 				if testCaseFlag != "" {
-					matchTestCase, _ = regexp.MatchString(testCaseFlag, filepath.Base(path))
+					matchTestCase, _ = regexp.MatchString(testCaseFlag, filepath.Base(testCaseRoot))
 				}
 				matchTestSet := true
 				if testSetFlag != "" {
-					matchTestSet, _ = regexp.MatchString(testSetFlag, filepath.Base(filepath.Dir(path)))
+					matchTestSet, _ = regexp.MatchString(testSetFlag, filepath.Base(filepath.Dir(testCaseRoot)))
 				}
 
 				if matchTestSet && matchTestCase {
