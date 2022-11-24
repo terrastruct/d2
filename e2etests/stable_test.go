@@ -894,6 +894,37 @@ a -> b: To err is human, to moo bovine {
 }
 `,
 		},
+		{
+			name: "stylish",
+			script: `
+x: {
+  style: {
+    opacity: 0.6
+    fill: orange
+    stroke: "#53C0D8"
+    stroke-width: 5
+    shadow: true
+  }
+}
+
+y: {
+  style: {
+    opacity: 0.6
+    fill: red
+    3d: true
+  }
+}
+
+x -> y: {
+  style: {
+    stroke: green
+    opacity: 0.5
+    stroke-width: 2
+    stroke-dash: 5
+  }
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
