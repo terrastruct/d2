@@ -102,17 +102,19 @@ func main() {
 					if _, err := os.Stat(gotPath); err == nil {
 						hasGot = true
 					}
+					// e.g. arrowhead_adjustment/dagre
+					name := filepath.Join(filepath.Base(testCaseRoot), info.Name())
 					if deltaFlag {
 						if hasGot {
 							tests = append(tests, TestItem{
-								Name:   info.Name(),
+								Name:   name,
 								ExpSVG: &fullPath,
 								GotSVG: gotPath,
 							})
 						}
 					} else {
 						test := TestItem{
-							Name:   info.Name(),
+							Name:   name,
 							ExpSVG: nil,
 							GotSVG: fullPath,
 						}
