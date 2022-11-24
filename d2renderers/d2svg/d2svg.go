@@ -447,6 +447,44 @@ func drawConnection(writer io.Writer, connection d2target.Connection, markers ma
 			renderText(connection.Label, x, float64(connection.LabelHeight)),
 		)
 	}
+
+	length := geo.Route(connection.Route).Length()
+	if connection.SrcLabel != "" {
+		// TODO use arrowhead label dimensions
+		size := float64(connection.FontSize)
+		position := 0.
+		if length > 0 {
+			position = size / length
+		}
+		srcLabelTL := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, size, size)
+
+		textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", connection.FontSize, "black")
+		x := srcLabelTL.X + size/2
+		y := srcLabelTL.Y + float64(connection.FontSize)
+		fmt.Fprintf(writer, `<text class="text-italic" x="%f" y="%f" style="%s">%s</text>`,
+			x, y,
+			textStyle,
+			renderText(connection.SrcLabel, x, size),
+		)
+	}
+	if connection.DstLabel != "" {
+		// TODO use arrowhead label dimensions
+		size := float64(connection.FontSize)
+		position := 1.
+		if length > 0 {
+			position -= size / length
+		}
+		dstLabelTL := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, size, size)
+
+		textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", connection.FontSize, "black")
+		x := dstLabelTL.X + size/2
+		y := dstLabelTL.Y + float64(connection.FontSize)
+		fmt.Fprintf(writer, `<text class="text-italic" x="%f" y="%f" style="%s">%s</text>`,
+			x, y,
+			textStyle,
+			renderText(connection.DstLabel, x, size),
+		)
+	}
 }
 
 func renderOval(tl *geo.Point, width, height float64, style string) string {
