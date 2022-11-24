@@ -909,6 +909,7 @@ x: {
 
 y: {
   style: {
+    stroke-dash: 5
     opacity: 0.6
     fill: red
     3d: true
