@@ -755,6 +755,10 @@ func shapeStyle(shape d2target.Shape) string {
 	out += fmt.Sprintf(`stroke:%s;`, shape.Stroke)
 	out += fmt.Sprintf(`opacity:%f;`, shape.Opacity)
 	out += fmt.Sprintf(`stroke-width:%d;`, shape.StrokeWidth)
+	if shape.StrokeDash != 0 {
+		dashSize, gapSize := getStrokeDashAttributes(float64(shape.StrokeWidth), shape.StrokeDash)
+		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
+	}
 
 	return out
 }
