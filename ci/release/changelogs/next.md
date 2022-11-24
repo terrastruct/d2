@@ -1,7 +1,10 @@
 #### Features 🚀
 
-- Arrowhead labels are now supported [#182](https://github.com/terrastruct/d2/pull/182)
+- Arrowhead labels are now supported. [#182](https://github.com/terrastruct/d2/pull/182)
 
 #### Improvements 🔧
 
 #### Bugfixes 🔴
+
+- 3D style was missing border and other styles for its top and right faces.
+  [#187](https://github.com/terrastruct/d2/pull/187)
