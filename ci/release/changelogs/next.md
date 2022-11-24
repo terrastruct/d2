@@ -1,13 +1,10 @@
-For v0.0.99 we focused on X, Y and Z. Enjoy!
-
 #### Features 🚀
 
-- Now you can easily do x, y and z #9999
+- Arrowhead labels are now supported. [#182](https://github.com/terrastruct/d2/pull/182)
 
 #### Improvements 🔧
 
-- Improves something or the other #9999
-
 #### Bugfixes 🔴
 
-- The svg renderer now displays arrowhead labels fixing #169
+- 3D style was missing border and other styles for its top and right faces.
+  [#187](https://github.com/terrastruct/d2/pull/187)

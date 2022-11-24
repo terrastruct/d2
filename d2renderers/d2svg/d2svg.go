@@ -557,6 +557,9 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 			if err != nil {
 				darkerColor = targetShape.Fill
 			}
+			sideShape := targetShape
+			sideShape.Fill = darkerColor
+			sideStyle := shapeStyle(sideShape)
 
 			var topPolygonPoints []string
 			for _, v := range []d2target.Point{
@@ -570,8 +573,8 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 					fmt.Sprintf("%d,%d ", v.X+targetShape.Pos.X, v.Y+targetShape.Pos.Y),
 				)
 			}
-			fmt.Fprintf(writer, `<polygon points="%s" style="fill:%s;"/>`,
-				strings.Join(topPolygonPoints, ""), darkerColor)
+			fmt.Fprintf(writer, `<polygon points="%s" style="%s"/>`,
+				strings.Join(topPolygonPoints, ""), sideStyle)
 
 			var rightPolygonPoints []string
 			for _, v := range []d2target.Point{
@@ -584,8 +587,8 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 					fmt.Sprintf("%d,%d ", v.X+targetShape.Pos.X, v.Y+targetShape.Pos.Y),
 				)
 			}
-			fmt.Fprintf(writer, `<polygon points="%s" style="fill:%s;"/>`,
-				strings.Join(rightPolygonPoints, ""), darkerColor)
+			fmt.Fprintf(writer, `<polygon points="%s" style="%s"/>`,
+				strings.Join(rightPolygonPoints, ""), sideStyle)
 		}
 		if targetShape.Multiple {
 			fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
