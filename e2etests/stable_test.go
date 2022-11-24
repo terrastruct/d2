@@ -912,6 +912,7 @@ y: {
     opacity: 0.6
     fill: red
     3d: true
+		stroke: black
   }
 }
 
