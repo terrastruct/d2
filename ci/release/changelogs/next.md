@@ -1,6 +1,7 @@
 #### Features 🚀
 
 - Arrowhead labels are now supported. [#182](https://github.com/terrastruct/d2/pull/182)
+- `stroke-dash` on shapes is now supported. [#188](https://github.com/terrastruct/d2/issues/188)
 
 #### Improvements 🔧
 
