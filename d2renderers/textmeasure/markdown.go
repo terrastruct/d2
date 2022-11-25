@@ -115,9 +115,9 @@ func MeasureMarkdown(mdText string, ruler *Ruler) (width, height int, err error)
 
 	// TODO consider setting a max width + (manual) text wrapping
 	bodyNode := doc.Find("body").First().Nodes[0]
-	bodyWidth, bodyHeight, _, _ := ruler.measureNode(0, bodyNode, font)
+	bodyAttrs := ruler.measureNode(0, bodyNode, font)
 
-	return int(math.Ceil(bodyWidth)), int(math.Ceil(bodyHeight)), nil
+	return int(math.Ceil(bodyAttrs.width)), int(math.Ceil(bodyAttrs.height)), nil
 }
 
 func hasPrev(n *html.Node) bool {
@@ -192,8 +192,16 @@ func hasAncestorElement(n *html.Node, elType string) bool {
 	return hasAncestorElement(n.Parent, elType)
 }
 
+type blockAttrs struct {
+	width, height, marginTop, marginBottom float64
+}
+
+func (b *blockAttrs) isNotEmpty() bool {
+	return b != nil && *b != blockAttrs{}
+}
+
 // measures node dimensions to match rendering with styles in github-markdown.css
-func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (width, height, marginTop, marginBottom float64) {
+func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (block blockAttrs) {
 	var parentElementType string
 	if n.Parent != nil && n.Parent.Type == html.ElementNode {
 		parentElementType = n.Parent.Data
@@ -243,8 +251,9 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (wid
 			w *= FontSize_pre_code_em
 			h *= FontSize_pre_code_em
 		}
-		return w + spaceWidths, h, 0, 0
+		return blockAttrs{w + spaceWidths, h, 0, 0}
 	case html.ElementNode:
+		isCode := false
 		switch n.Data {
 		case "h1", "h2", "h3", "h4", "h5", "h6":
 			font = HeaderFonts[n.Data]
@@ -260,96 +269,135 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (wid
 		case "pre", "code":
 			font.Family = d2fonts.SourceCodePro
 			font.Style = d2fonts.FONT_STYLE_REGULAR
+			isCode = true
 		}
 
 		if n.FirstChild != nil {
 			first := getNext(n.FirstChild)
 			last := getPrev(n.LastChild)
 
-			var prevMarginBottom float64
+			var blocks []blockAttrs
+			var current *blockAttrs
+			// first create blocks from combined inline elements, then combine all blocks
+			// current will be non-nil while inline elements are being combined into a block
 			for child := n.FirstChild; child != nil; child = child.NextSibling {
-				childWidth, childHeight, childMarginTop, childMarginBottom := ruler.measureNode(depth+1, child, font)
+				childBlock := ruler.measureNode(depth+1, child, font)
 
 				if child.Type == html.ElementNode && isBlockElement(child.Data) {
-					if child == first {
-						if n.Data == "blockquote" {
-							childMarginTop = 0.
-						}
-						marginTop = go2.Max(marginTop, childMarginTop)
-					} else {
-						marginDiff := childMarginTop - prevMarginBottom
-						if marginDiff > 0 {
-							childHeight += marginDiff
-						}
+					if current != nil {
+						blocks = append(blocks, *current)
 					}
-					if child == last {
-						if n.Data == "blockquote" {
-							childMarginBottom = 0.
-						}
-						marginBottom = go2.Max(marginBottom, childMarginBottom)
+					current = &blockAttrs{}
+					if child == first && n.Data == "blockquote" {
+						current.marginTop = 0.
 					} else {
-						childHeight += childMarginBottom
-						prevMarginBottom = childMarginBottom
+						current.marginTop = childBlock.marginTop
+					}
+					if child == last && n.Data == "blockquote" {
+						current.marginBottom = 0.
+					} else {
+						current.marginBottom = childBlock.marginBottom
 					}
 
-					height += childHeight
-					width = go2.Max(width, childWidth)
-				} else {
-					marginTop = go2.Max(marginTop, childMarginTop)
-					marginBottom = go2.Max(marginBottom, childMarginBottom)
+					current.width = childBlock.width
+					current.height = childBlock.height
+					blocks = append(blocks, *current)
+					current = nil
+				} else if child.Type == html.ElementNode && child.Data == "br" {
+					if current != nil {
+						if !isCode && current.height > 0 && current.height < MarkdownLineHeightPx {
+							current.height = MarkdownLineHeightPx
+						}
+						blocks = append(blocks, *current)
+						current = nil
+					}
+				} else if childBlock.isNotEmpty() {
+					if current == nil {
+						current = &childBlock
+					} else {
+						current.marginTop = go2.Max(current.marginTop, childBlock.marginTop)
+						current.marginBottom = go2.Max(current.marginBottom, childBlock.marginBottom)
 
-					width += childWidth
-					height = go2.Max(height, childHeight)
+						current.width += childBlock.width
+						current.height = go2.Max(current.height, childBlock.height)
+					}
 				}
+			}
+			if current != nil {
+				if !isCode && current.height > 0 && current.height < MarkdownLineHeightPx {
+					current.height = MarkdownLineHeightPx
+				}
+				blocks = append(blocks, *current)
+				current = nil
+			}
+
+			var prevMarginBottom float64
+			for i, b := range blocks {
+				if i == 0 {
+					block.marginTop = go2.Max(block.marginTop, b.marginTop)
+				} else {
+					marginDiff := b.marginTop - prevMarginBottom
+					if marginDiff > 0 {
+						block.height += marginDiff
+					}
+				}
+				if i == len(blocks)-1 {
+					block.marginBottom = go2.Max(block.marginBottom, b.marginBottom)
+				} else {
+					block.height += b.marginBottom
+					prevMarginBottom = b.marginBottom
+				}
+
+				block.height += b.height
+				block.width = go2.Max(block.width, b.width)
 			}
 		}
 
 		switch n.Data {
 		case "blockquote":
-			width += (2*PaddingLR_blockquote_em + BorderLeft_blockquote_em) * float64(font.Size)
-			marginBottom = go2.Max(marginBottom, MarginBottom_blockquote)
+			block.width += (2*PaddingLR_blockquote_em + BorderLeft_blockquote_em) * float64(font.Size)
+			block.marginBottom = go2.Max(block.marginBottom, MarginBottom_blockquote)
 		case "p":
 			if parentElementType == "li" {
-				marginTop = go2.Max(marginTop, MarginTop_li_p)
+				block.marginTop = go2.Max(block.marginTop, MarginTop_li_p)
 			}
-			marginBottom = go2.Max(marginBottom, MarginBottom_p)
+			block.marginBottom = go2.Max(block.marginBottom, MarginBottom_p)
 		case "h1", "h2", "h3", "h4", "h5", "h6":
-			marginTop = go2.Max(marginTop, MarginTop_h)
-			marginBottom = go2.Max(marginBottom, MarginBottom_h)
+			block.marginTop = go2.Max(block.marginTop, MarginTop_h)
+			block.marginBottom = go2.Max(block.marginBottom, MarginBottom_h)
 			switch n.Data {
 			case "h1", "h2":
-				height += PaddingBottom_h1_h2_em * float64(font.Size)
+				block.height += PaddingBottom_h1_h2_em * float64(font.Size)
 			}
 		case "li":
-			width += PaddingLeft_ul_ol
+			block.width += PaddingLeft_ul_ol
 			if hasPrev(n) {
-				marginTop = go2.Max(marginTop, 4)
+				block.marginTop = go2.Max(block.marginTop, 4)
 			}
 		case "ol", "ul":
 			if hasAncestorElement(n, "ul") || hasAncestorElement(n, "ol") {
-				marginTop = 0
-				marginBottom = 0
+				block.marginTop = 0
+				block.marginBottom = 0
 			} else {
-				marginBottom = go2.Max(marginBottom, MarginBottom_ul)
+				block.marginBottom = go2.Max(block.marginBottom, MarginBottom_ul)
 			}
 		case "pre":
-			width += 2 * Padding_pre
-			height += 2 * Padding_pre
-			marginBottom = go2.Max(marginBottom, MarginBottom_pre)
+			block.width += 2 * Padding_pre
+			block.height += 2 * Padding_pre
+			block.marginBottom = go2.Max(block.marginBottom, MarginBottom_pre)
 		case "code":
 			if parentElementType != "pre" {
-				width += 2 * PaddingLeftRight_code_em * float64(font.Size)
-				height += 2 * PaddingTopBottom_code_em * float64(font.Size)
+				block.width += 2 * PaddingLeftRight_code_em * float64(font.Size)
+				block.height += 2 * PaddingTopBottom_code_em * float64(font.Size)
 			}
 		case "hr":
-			height += Height_hr
-			marginTop = go2.Max(marginTop, MarginTopBottom_hr)
-			marginBottom = go2.Max(marginBottom, MarginTopBottom_hr)
+			block.height += Height_hr
+			block.marginTop = go2.Max(block.marginTop, MarginTopBottom_hr)
+			block.marginBottom = go2.Max(block.marginBottom, MarginTopBottom_hr)
 		}
-
-		if height > 0 && height < MarkdownLineHeightPx {
-			height = MarkdownLineHeightPx
+		if block.height > 0 && block.height < MarkdownLineHeightPx {
+			block.height = MarkdownLineHeightPx
 		}
 	}
-	return width, height, marginTop, marginBottom
+	return block
 }
