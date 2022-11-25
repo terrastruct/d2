@@ -927,6 +927,28 @@ x -> y: {
 }
 `,
 		},
+		{
+			name: "md_2space_newline",
+			script: `
+markdown: {
+  md: |md
+Lorem ipsum dolor sit amet, consectetur adipiscing elit,  
+sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+|
+}
+`,
+		},
+		{
+			name: "md_backslash_newline",
+			script: `
+markdown: {
+  md: |md
+Lorem ipsum dolor sit amet, consectetur adipiscing elit,\
+sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+|
+}
+`,
+		},
 	}
 
 	runa(t, tcs)

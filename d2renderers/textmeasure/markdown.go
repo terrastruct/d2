@@ -85,6 +85,7 @@ func init() {
 	markdownRenderer = goldmark.New(
 		goldmark.WithRendererOptions(
 			goldmarkHtml.WithUnsafe(),
+			goldmarkHtml.WithXHTML(),
 		),
 	)
 }
