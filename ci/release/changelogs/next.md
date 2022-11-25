@@ -9,3 +9,5 @@
 
 - 3D style was missing border and other styles for its top and right faces.
   [#187](https://github.com/terrastruct/d2/pull/187)
+- System dark mode was incorrectly applying to markdown in renders.
+  [#159](https://github.com/terrastruct/d2/issues/159)
