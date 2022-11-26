@@ -3,6 +3,7 @@
 - Arrowhead labels are now supported. [#182](https://github.com/terrastruct/d2/pull/182)
 - `stroke-dash` on shapes is now supported. [#188](https://github.com/terrastruct/d2/issues/188)
 - `font-color` is now supported on shapes and connections. [#215](https://github.com/terrastruct/d2/pull/215)
+- Querying shapes and connections by ID is now supported in renders. [#218](https://github.com/terrastruct/d2/pull/218)
 
 #### Improvements 🔧
 
