@@ -18,6 +18,7 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/textmeasure"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
+	"oss.terrastruct.com/d2/lib/imgbundler"
 	"oss.terrastruct.com/d2/lib/png"
 	"oss.terrastruct.com/d2/lib/version"
 	"oss.terrastruct.com/d2/lib/xmain"
@@ -201,6 +202,12 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, theme
 		return nil, err
 	}
 	svg, err = plugin.PostProcess(ctx, svg)
+	if err != nil {
+		return nil, err
+	}
+
+	// TODO this may be desirable even for SVGs. Should make it a flag
+	svg, err = imgbundler.Inline(ms, svg)
 	if err != nil {
 		return nil, err
 	}
