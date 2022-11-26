@@ -72,6 +72,15 @@ func routeEdges(edgesInOrder []*d2graph.Edge, startY, yStep float64) {
 	}
 }
 
+// addLifelineEdges adds a new edge for each object in the graph that represents the
+// edge below he object showing its lifespan
+// ┌──────────────┐
+// │    object    │
+// └──────┬───────┘
+//        │
+//        │ lifeline
+//        │
+//        │
 func addLifelineEdges(g *d2graph.Graph, objectsInOrder []*d2graph.Object, yStep float64) {
 	endY := g.Edges[len(g.Edges)-1].Route[0].Y + yStep
 	for _, obj := range objectsInOrder {
