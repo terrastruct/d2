@@ -1,0 +1,121 @@
+{
+  "name": "",
+  "shapes": [
+    {
+      "id": "alpha",
+      "type": "",
+      "pos": {
+        "x": 12,
+        "y": 12
+      },
+      "width": 145,
+      "height": 126,
+      "level": 1,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#F7F8FE",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "alpha",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#4A6FF3",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 45,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER"
+    },
+    {
+      "id": "beta",
+      "type": "",
+      "pos": {
+        "x": 409,
+        "y": 12
+      },
+      "width": 136,
+      "height": 126,
+      "level": 1,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#F7F8FE",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "beta",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "red",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 36,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER"
+    }
+  ],
+  "connections": [
+    {
+      "id": "(alpha -> beta)[0]",
+      "src": "alpha",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "beta",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "gamma",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "green",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 52,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 157,
+          "y": 75
+        },
+        {
+          "x": 409,
+          "y": 75
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null
+    }
+  ]
+}

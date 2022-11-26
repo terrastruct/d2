@@ -949,6 +949,20 @@ sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 }
 `,
 		},
+		{
+			name: "font_colors",
+			script: `
+alpha: {
+	style.font-color: '#4A6FF3'
+}
+beta: {
+	style.font-color: red
+}
+alpha -> beta: gamma {
+	style.font-color: green
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
