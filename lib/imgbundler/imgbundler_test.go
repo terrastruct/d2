@@ -11,8 +11,9 @@ import (
 	"testing"
 
 	"oss.terrastruct.com/cmdlog"
-	"oss.terrastruct.com/d2/lib/xmain"
 	"oss.terrastruct.com/xos"
+
+	"oss.terrastruct.com/d2/lib/xmain"
 )
 
 //go:embed test_png.png
