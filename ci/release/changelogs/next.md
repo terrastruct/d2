@@ -16,3 +16,4 @@
 - Fixes markdown newlines created with a trailing double space or backslash.
   [#214](https://github.com/terrastruct/d2/pull/214)
 - Fixes images not loading in PNG exports
+  [#224](https://github.com/terrastruct/d2/pull/224)
