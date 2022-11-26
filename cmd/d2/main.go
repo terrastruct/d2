@@ -208,7 +208,6 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, theme
 
 	out := svg
 	if filepath.Ext(outputPath) == ".png" {
-		// TODO this may be desirable even for SVGs. Should make it a flag
 		svg, err = imgbundler.Inline(ms, svg)
 		if err != nil {
 			return nil, err
