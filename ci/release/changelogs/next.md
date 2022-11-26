@@ -12,5 +12,4 @@
 - System dark mode was incorrectly applying to markdown in renders.
   [#159](https://github.com/terrastruct/d2/issues/159)
 - Fixes markdown newlines created with a trailing double space or backslash.
-  [#212](https://github.com/terrastruct/d2/issues/212)
-  [#209](https://github.com/terrastruct/d2/issues/209)
+  [#214](https://github.com/terrastruct/d2/pull/214)

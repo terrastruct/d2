@@ -201,7 +201,7 @@ func (b *blockAttrs) isNotEmpty() bool {
 }
 
 // measures node dimensions to match rendering with styles in github-markdown.css
-func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (block blockAttrs) {
+func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) blockAttrs {
 	var parentElementType string
 	if n.Parent != nil && n.Parent.Type == html.ElementNode {
 		parentElementType = n.Parent.Data
@@ -210,7 +210,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (blo
 	switch n.Type {
 	case html.TextNode:
 		if strings.TrimSpace(n.Data) == "" {
-			return
+			return blockAttrs{}
 		}
 		spaceWidths := 0.
 
@@ -271,6 +271,8 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (blo
 			font.Style = d2fonts.FONT_STYLE_REGULAR
 			isCode = true
 		}
+
+		block := blockAttrs{}
 
 		if n.FirstChild != nil {
 			first := getNext(n.FirstChild)
@@ -398,6 +400,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) (blo
 		if block.height > 0 && block.height < MarkdownLineHeightPx {
 			block.height = MarkdownLineHeightPx
 		}
+		return block
 	}
-	return block
+	return blockAttrs{}
 }
