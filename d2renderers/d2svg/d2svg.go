@@ -447,6 +447,39 @@ func drawConnection(writer io.Writer, connection d2target.Connection, markers ma
 			renderText(connection.Label, x, float64(connection.LabelHeight)),
 		)
 	}
+
+	length := geo.Route(connection.Route).Length()
+	if connection.SrcLabel != "" {
+		// TODO use arrowhead label dimensions https://github.com/terrastruct/d2/issues/183
+		size := float64(connection.FontSize)
+		position := 0.
+		if length > 0 {
+			position = size / length
+		}
+		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.SrcLabel, position, size, size))
+	}
+	if connection.DstLabel != "" {
+		// TODO use arrowhead label dimensions https://github.com/terrastruct/d2/issues/183
+		size := float64(connection.FontSize)
+		position := 1.
+		if length > 0 {
+			position -= size / length
+		}
+		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.DstLabel, position, size, size))
+	}
+}
+
+func renderArrowheadLabel(connection d2target.Connection, text string, position, width, height float64) string {
+	labelTL := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, width, height)
+
+	textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", connection.FontSize, "black")
+	x := labelTL.X + width/2
+	y := labelTL.Y + float64(connection.FontSize)
+	return fmt.Sprintf(`<text class="text-italic" x="%f" y="%f" style="%s">%s</text>`,
+		x, y,
+		textStyle,
+		renderText(text, x, height),
+	)
 }
 
 func renderOval(tl *geo.Point, width, height float64, style string) string {
@@ -524,6 +557,9 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 			if err != nil {
 				darkerColor = targetShape.Fill
 			}
+			sideShape := targetShape
+			sideShape.Fill = darkerColor
+			sideStyle := shapeStyle(sideShape)
 
 			var topPolygonPoints []string
 			for _, v := range []d2target.Point{
@@ -537,8 +573,8 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 					fmt.Sprintf("%d,%d ", v.X+targetShape.Pos.X, v.Y+targetShape.Pos.Y),
 				)
 			}
-			fmt.Fprintf(writer, `<polygon points="%s" style="fill:%s;"/>`,
-				strings.Join(topPolygonPoints, ""), darkerColor)
+			fmt.Fprintf(writer, `<polygon points="%s" style="%s"/>`,
+				strings.Join(topPolygonPoints, ""), sideStyle)
 
 			var rightPolygonPoints []string
 			for _, v := range []d2target.Point{
@@ -551,8 +587,8 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 					fmt.Sprintf("%d,%d ", v.X+targetShape.Pos.X, v.Y+targetShape.Pos.Y),
 				)
 			}
-			fmt.Fprintf(writer, `<polygon points="%s" style="fill:%s;"/>`,
-				strings.Join(rightPolygonPoints, ""), darkerColor)
+			fmt.Fprintf(writer, `<polygon points="%s" style="%s"/>`,
+				strings.Join(rightPolygonPoints, ""), sideStyle)
 		}
 		if targetShape.Multiple {
 			fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
@@ -719,6 +755,10 @@ func shapeStyle(shape d2target.Shape) string {
 	out += fmt.Sprintf(`stroke:%s;`, shape.Stroke)
 	out += fmt.Sprintf(`opacity:%f;`, shape.Opacity)
 	out += fmt.Sprintf(`stroke-width:%d;`, shape.StrokeWidth)
+	if shape.StrokeDash != 0 {
+		dashSize, gapSize := getStrokeDashAttributes(float64(shape.StrokeWidth), shape.StrokeDash)
+		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
+	}
 
 	return out
 }

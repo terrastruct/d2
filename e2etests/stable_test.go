@@ -883,6 +883,50 @@ b: {
 a -> b
 `,
 		},
+		{
+			name: "arrowhead_labels",
+			script: `
+a -> b: To err is human, to moo bovine {
+	source-arrowhead: 1
+	target-arrowhead: * {
+		shape: diamond
+	}
+}
+`,
+		},
+		{
+			name: "stylish",
+			script: `
+x: {
+  style: {
+    opacity: 0.6
+    fill: orange
+    stroke: "#53C0D8"
+    stroke-width: 5
+    shadow: true
+  }
+}
+
+y: {
+  style: {
+    stroke-dash: 5
+    opacity: 0.6
+    fill: red
+    3d: true
+		stroke: black
+  }
+}
+
+x -> y: {
+  style: {
+    stroke: green
+    opacity: 0.5
+    stroke-width: 2
+    stroke-dash: 5
+  }
+}
+`,
+		},
 	}
 
 	runa(t, tcs)

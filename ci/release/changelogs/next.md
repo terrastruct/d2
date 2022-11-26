@@ -1,13 +1,12 @@
-For v0.0.99 we focused on X, Y and Z. Enjoy!
-
 #### Features 🚀
 
-- Now you can easily do x, y and z #9999
+- Arrowhead labels are now supported. [#182](https://github.com/terrastruct/d2/pull/182)
+- `stroke-dash` on shapes is now supported. [#188](https://github.com/terrastruct/d2/issues/188)
 
 #### Improvements 🔧
-
-- Improves something or the other #9999
 
 #### Bugfixes 🔴
 
 - Fixes PNG exports with images #176
+- 3D style was missing border and other styles for its top and right faces.
+  [#187](https://github.com/terrastruct/d2/pull/187)

@@ -70,6 +70,8 @@ defendants.chesscom -> hans: 72 page report of cheating
 
 <img src="./docs/assets/syntax.png" alt="D2 render example" />
 
+> Rendered with the TALA layout engine.
+
 > For more examples, see [./docs/examples](./docs/examples).
 
 ## Quickstart
@@ -242,6 +244,8 @@ Open sourced under the Mozilla Public License 2.0. See [./LICENSE.txt](./LICENSE
     version updates from Github periodically.
 - Does D2 need a browser to run?
   - No, D2 can run entirely server-side.
+- What's coming in the next release?
+  - See [./ci/release/changelogs/next.md](./ci/release/changelogs/next.md).
 - I have a question or need help.
   - The best way to get help is to ask on [D2 Discord](https://discord.gg/NF6X8K4eDq)
 - I have a feature request, proposal, or bug report.
