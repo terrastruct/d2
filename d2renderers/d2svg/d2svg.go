@@ -354,6 +354,7 @@ func labelMask(id string, connection d2target.Connection, labelTL, tl, br *geo.P
 }
 
 func drawConnection(writer io.Writer, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape) {
+	fmt.Fprintf(writer, `<g id="%s">`, escapeText(connection.ID))
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(false, connection)
@@ -471,6 +472,7 @@ func drawConnection(writer io.Writer, connection d2target.Connection, markers ma
 		}
 		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.DstLabel, position, size, size))
 	}
+	fmt.Fprintf(writer, `</g>`)
 }
 
 func renderArrowheadLabel(connection d2target.Connection, text string, position, width, height float64) string {
@@ -507,6 +509,7 @@ func defineShadowFilter(writer io.Writer) {
 }
 
 func drawShape(writer io.Writer, targetShape d2target.Shape) error {
+	fmt.Fprintf(writer, `<g id="%s">`, escapeText(targetShape.ID))
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)
@@ -537,11 +540,11 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 	switch targetShape.Type {
 	case d2target.ShapeClass:
 		drawClass(writer, targetShape)
-		fmt.Fprintf(writer, `</g>`)
+		fmt.Fprintf(writer, `</g></g>`)
 		return nil
 	case d2target.ShapeSQLTable:
 		drawTable(writer, targetShape)
-		fmt.Fprintf(writer, `</g>`)
+		fmt.Fprintf(writer, `</g></g>`)
 		return nil
 	case d2target.ShapeOval:
 		if targetShape.Multiple {
@@ -726,6 +729,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 			)
 		}
 	}
+	fmt.Fprintf(writer, `</g>`)
 	return nil
 }
 
