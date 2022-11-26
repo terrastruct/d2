@@ -437,7 +437,11 @@ func drawConnection(writer io.Writer, connection d2target.Connection, markers ma
 		} else if connection.Italic {
 			fontClass += "-italic"
 		}
-		textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", connection.FontSize, "black")
+		fontColor := "black"
+		if connection.Color != "" {
+			fontColor = connection.Color
+		}
+		textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", connection.FontSize, fontColor)
 		x := labelTL.X + float64(connection.LabelWidth)/2
 		y := labelTL.Y + float64(connection.FontSize)
 		fmt.Fprintf(writer, `<text class="%s" x="%f" y="%f" style="%s">%s</text>`,
@@ -706,7 +710,11 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 			fmt.Fprintf(writer, `<div xmlns="http://www.w3.org/1999/xhtml" class="md">%v</div>`, render)
 			fmt.Fprint(writer, `</foreignObject></g>`)
 		default:
-			textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", targetShape.FontSize, "black")
+			fontColor := "black"
+			if targetShape.Color != "" {
+				fontColor = targetShape.Color
+			}
+			textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", targetShape.FontSize, fontColor)
 			x := labelTL.X + float64(targetShape.LabelWidth)/2
 			// text is vertically positioned at its baseline which is at labelTL+FontSize
 			y := labelTL.Y + float64(targetShape.FontSize)
