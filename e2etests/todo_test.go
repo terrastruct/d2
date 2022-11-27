@@ -17,9 +17,20 @@ container -> container.second: c->2
 		},
 		{
 			name: "latex",
-			script: `hi: |md
-Inline math $\frac{1}{2}$
+			script: `a: |latex
+\\frac{\\alpha g^2}{\\omega^5} e^{[ -0.74\\bigl\\{\\frac{\\omega U_\\omega 19.5}{g}\\bigr\\}^{\\!-4}\\,]}
 |
+
+b: |latex
+e = mc^2
+|
+
+a -> c
+b -> c
+sugar -> c
+c: mixed together
+
+c -> solution: we get
 `,
 		},
 	}

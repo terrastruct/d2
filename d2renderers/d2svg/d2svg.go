@@ -18,8 +18,10 @@ import (
 	"github.com/alecthomas/chroma/formatters"
 	"github.com/alecthomas/chroma/lexers"
 	"github.com/alecthomas/chroma/styles"
+	"github.com/davecgh/go-spew/spew"
 
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
+	"oss.terrastruct.com/d2/d2renderers/d2latex"
 	"oss.terrastruct.com/d2/d2renderers/textmeasure"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/color"
@@ -660,46 +662,60 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 
 		switch targetShape.Type {
 		case d2target.ShapeCode:
-			lexer := lexers.Get(targetShape.Language)
-			if lexer == nil {
-				return fmt.Errorf("code snippet lexer for %s not found", targetShape.Language)
-			}
-			style := styles.Get("github")
-			if style == nil {
-				return errors.New(`code snippet style "github" not found`)
-			}
-			formatter := formatters.Get("svg")
-			if formatter == nil {
-				return errors.New(`code snippet formatter "svg" not found`)
-			}
-			iterator, err := lexer.Tokenise(nil, targetShape.Label)
-			if err != nil {
-				return err
-			}
-
-			svgStyles := styleToSVG(style)
-			containerStyle := fmt.Sprintf(`stroke: %s;fill:%s`, targetShape.Stroke, style.Get(chroma.Background).Background.String())
-
-			fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
-			fmt.Fprintf(writer, `<rect class="shape" width="%d" height="%d" style="%s" />`,
-				targetShape.Width, targetShape.Height, containerStyle)
-			// Padding
-			fmt.Fprintf(writer, `<g transform="translate(6 6)">`)
-
-			for index, tokens := range chroma.SplitTokensIntoLines(iterator.Tokens()) {
-				// TODO mono font looks better with 1.2 em (use px equivalent), but textmeasure needs to account for it. Not obvious how that should be done
-				fmt.Fprintf(writer, "<text class=\"text-mono\" x=\"0\" y=\"%fem\" xml:space=\"preserve\">", 1*float64(index+1))
-				for _, token := range tokens {
-					text := svgEscaper.Replace(token.String())
-					attr := styleAttr(svgStyles, token.Type)
-					if attr != "" {
-						text = fmt.Sprintf("<tspan %s>%s</tspan>", attr, text)
-					}
-					fmt.Fprint(writer, text)
+			if targetShape.Language == "latex" {
+				spew.Dump(targetShape.Label)
+				render, err := d2latex.SVG(targetShape.Label)
+				if err != nil {
+					spew.Dump(err)
+					return err
 				}
-				fmt.Fprint(writer, "</text>")
+				fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
+				// render = strings.Replace(render, "svg", "g", -1)
+				spew.Dump(render)
+				fmt.Fprintf(writer, render)
+				fmt.Fprintf(writer, "</g>")
+			} else {
+				lexer := lexers.Get(targetShape.Language)
+				if lexer == nil {
+					return fmt.Errorf("code snippet lexer for %s not found", targetShape.Language)
+				}
+				style := styles.Get("github")
+				if style == nil {
+					return errors.New(`code snippet style "github" not found`)
+				}
+				formatter := formatters.Get("svg")
+				if formatter == nil {
+					return errors.New(`code snippet formatter "svg" not found`)
+				}
+				iterator, err := lexer.Tokenise(nil, targetShape.Label)
+				if err != nil {
+					return err
+				}
+
+				svgStyles := styleToSVG(style)
+				containerStyle := fmt.Sprintf(`stroke: %s;fill:%s`, targetShape.Stroke, style.Get(chroma.Background).Background.String())
+
+				fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
+				fmt.Fprintf(writer, `<rect class="shape" width="%d" height="%d" style="%s" />`,
+					targetShape.Width, targetShape.Height, containerStyle)
+				// Padding
+				fmt.Fprintf(writer, `<g transform="translate(6 6)">`)
+
+				for index, tokens := range chroma.SplitTokensIntoLines(iterator.Tokens()) {
+					// TODO mono font looks better with 1.2 em (use px equivalent), but textmeasure needs to account for it. Not obvious how that should be done
+					fmt.Fprintf(writer, "<text class=\"text-mono\" x=\"0\" y=\"%fem\" xml:space=\"preserve\">", 1*float64(index+1))
+					for _, token := range tokens {
+						text := svgEscaper.Replace(token.String())
+						attr := styleAttr(svgStyles, token.Type)
+						if attr != "" {
+							text = fmt.Sprintf("<tspan %s>%s</tspan>", attr, text)
+						}
+						fmt.Fprint(writer, text)
+					}
+					fmt.Fprint(writer, "</text>")
+				}
+				fmt.Fprintf(writer, "</g></g>")
 			}
-			fmt.Fprintf(writer, "</g></g>")
 		case d2target.ShapeText:
 			render, err := textmeasure.RenderMarkdown(targetShape.Label)
 			if err != nil {
