@@ -5,13 +5,13 @@ import (
 	"testing"
 )
 
-func TestSVG(t *testing.T) {
+func TestRender(t *testing.T) {
 	txts := []string{
 		"a + b = c",
 		"\\\\frac{1}{2}",
 	}
 	for _, txt := range txts {
-		svg, err := SVG(txt)
+		svg, err := Render(txt)
 		if err != nil {
 			t.Fatal(err)
 		}
