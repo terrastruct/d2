@@ -33,7 +33,7 @@ The simplified D2 flow at a package level looks like:
 - **Important**: Contributions to D2 require a CLA. We will never relicense D2, but
   Hashicorp has a good explanation of why a CLA has benefits for all parties (contributor,
   community, us): [https://www.hashicorp.com/cla](https://www.hashicorp.com/cla). Please
-  email cla@d2lang.com with your name and Github username stating that you agree to
+  email cla@terrastruct.com with your name and Github username stating that you agree to
   [Terrastruct's
   CLA](https://terrastruct-site-assets.s3.us-west-1.amazonaws.com/documents/terrastruct_cla.pdf).
   You only have to do this the first time you contribute.
