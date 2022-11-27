@@ -7,6 +7,9 @@
 
 #### Improvements 🔧
 
+- Local images can now be included, e.g. `icon: ./my_img.png`.
+[#146](https://github.com/terrastruct/d2/issues/146)
+
 #### Bugfixes 🔴
 
 - 3D style was missing border and other styles for its top and right faces.
