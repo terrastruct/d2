@@ -15,6 +15,13 @@ container.first -> container.second: 1->2
 container -> container.second: c->2
 `,
 		},
+		{
+			name: "latex",
+			script: `hi: |md
+Inline math $\frac{1}{2}$
+|
+`,
+		},
 	}
 
 	runa(t, tcs)
