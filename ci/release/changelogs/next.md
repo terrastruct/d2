@@ -1,5 +1,6 @@
 #### Features 🚀
 
+- Latex is now supported. See https://d2lang.com docs for more. [#229](https://github.com/terrastruct/d2/pull/229)
 - Arrowhead labels are now supported. [#182](https://github.com/terrastruct/d2/pull/182)
 - `stroke-dash` on shapes is now supported. [#188](https://github.com/terrastruct/d2/issues/188)
 - `font-color` is now supported on shapes and connections. [#215](https://github.com/terrastruct/d2/pull/215)
