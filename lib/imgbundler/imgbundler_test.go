@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -25,7 +26,7 @@ func (f RoundTripFunc) RoundTrip(req *http.Request) (*http.Response, error) {
 	return f(req), nil
 }
 
-func TestInliner(t *testing.T) {
+func TestInlineRemote(t *testing.T) {
 	svgURL := "https://icons.terrastruct.com/essentials/004-picture.svg"
 	pngURL := "https://cdn4.iconfinder.com/data/icons/smart-phones-technologies/512/android-phone.png"
 
@@ -86,11 +87,72 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		Env: xos.NewEnv(os.Environ()),
 	}
 	ms.Log = cmdlog.Log(ms.Env, os.Stderr)
-	out, err := Inline(ms, []byte(sampleSVG))
+	out, err := InlineRemote(ms, []byte(sampleSVG))
 	if err != nil {
 		t.Fatal(err)
 	}
 	if strings.Contains(string(out), "https://") {
+		t.Fatal("links still exist")
+	}
+	if !strings.Contains(string(out), "image/svg+xml") {
+		t.Fatal("no svg image inserted")
+	}
+	if !strings.Contains(string(out), "image/png") {
+		t.Fatal("no png image inserted")
+	}
+}
+
+func TestInlineLocal(t *testing.T) {
+	svgURL, err := filepath.Abs("./test_svg.svg")
+	if err != nil {
+		t.Fatal(err)
+	}
+	pngURL, err := filepath.Abs("./test_png.png")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	sampleSVG := fmt.Sprintf(`<?xml version="1.0" encoding="utf-8"?>
+<svg
+style="background: white;"
+xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
+<![CDATA[
+.shape {
+  shape-rendering: geometricPrecision;
+  stroke-linejoin: round;
+}
+.connection {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+]]>
+</style><g id="a"><g class="shape" ><image href="%s" x="0" y="0" width="128" height="128" style="fill:#FFFFFF;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="64.000000" y="-15.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">a</text></g><g id="b"><g class="shape" ><image href="%s" x="0" y="228" width="128" height="128" style="fill:#FFFFFF;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="64.000000" y="213.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">b</text></g><g id="(a -&gt; b)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 64.000000 130.000000 C 64.000000 168.000000 64.000000 188.000000 64.000000 224.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" /></g><style type="text/css"><![CDATA[
+.text-bold {
+	font-family: "font-bold";
+}
+@font-face {
+	font-family: font-bold;
+	src: url("REMOVED");
+}]]></style></svg>
+`, svgURL, pngURL)
+
+	ms := &xmain.State{
+		Name: "test",
+
+		Stdin:  os.Stdin,
+		Stdout: os.Stdout,
+		Stderr: os.Stderr,
+
+		Env: xos.NewEnv(os.Environ()),
+	}
+	ms.Log = cmdlog.Log(ms.Env, os.Stderr)
+	out, err := InlineLocal(ms, []byte(sampleSVG))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(out), svgURL) {
 		t.Fatal("links still exist")
 	}
 	if !strings.Contains(string(out), "image/svg+xml") {

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"regexp"
 	"strings"
 	"sync"
@@ -14,7 +15,8 @@ import (
 	"oss.terrastruct.com/d2/lib/xmain"
 )
 
-var imgRe = regexp.MustCompile(`<image href="([^"]+)"`)
+var uriImgRe = regexp.MustCompile(`<image href="(http[^"]+)"`)
+var localImgRe = regexp.MustCompile(`<image href="([^http][^"]+)"`)
 
 type resp struct {
 	srctxt string
@@ -22,10 +24,18 @@ type resp struct {
 	err    error
 }
 
-func Inline(ms *xmain.State, in []byte) ([]byte, error) {
+func InlineLocal(ms *xmain.State, in []byte) ([]byte, error) {
+	return inline(ms, localImgRe, in)
+}
+
+func InlineRemote(ms *xmain.State, in []byte) ([]byte, error) {
+	return inline(ms, uriImgRe, in)
+}
+
+func inline(ms *xmain.State, re *regexp.Regexp, in []byte) ([]byte, error) {
 	svg := string(in)
 
-	imgs := imgRe.FindAllStringSubmatch(svg, -1)
+	imgs := re.FindAllStringSubmatch(svg, -1)
 
 	var wg sync.WaitGroup
 	respChan := make(chan resp)
@@ -34,7 +44,11 @@ func Inline(ms *xmain.State, in []byte) ([]byte, error) {
 	defer cancel()
 	wg.Add(len(imgs))
 	for _, img := range imgs {
-		go fetch(ctx, img[0], img[1], respChan)
+		if re == uriImgRe {
+			go fetch(ctx, img[0], img[1], respChan)
+		} else {
+			go read(ctx, img[0], img[1], respChan)
+		}
 	}
 
 	go func() {
@@ -78,6 +92,24 @@ func fetch(ctx context.Context, srctxt, href string, respChan chan resp) {
 	}
 	defer imgResp.Body.Close()
 	data, err := ioutil.ReadAll(imgResp.Body)
+	if err != nil {
+		respChan <- resp{err: err}
+		return
+	}
+
+	mimeType := http.DetectContentType(data)
+	mimeType = strings.Replace(mimeType, "text/xml", "image/svg+xml", 1)
+
+	enc := base64.StdEncoding.EncodeToString(data)
+
+	respChan <- resp{
+		srctxt: srctxt,
+		data:   fmt.Sprintf("data:%s;base64,%s", mimeType, enc),
+	}
+}
+
+func read(ctx context.Context, srctxt, href string, respChan chan resp) {
+	data, err := os.ReadFile(href)
 	if err != nil {
 		respChan <- resp{err: err}
 		return
