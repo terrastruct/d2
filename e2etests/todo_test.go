@@ -25,6 +25,14 @@ b: |latex
 e = mc^2
 |
 
+complex: |latex
+f(x) = \\begin{dcases*}
+				x  & when $x$ is even\\\
+				-x & when $x$ is odd
+				\\end{dcases*}
+|
+
+complex -> c
 a -> c
 b -> c
 sugar -> c
