@@ -25,14 +25,13 @@ b: |latex
 e = mc^2
 |
 
-complex: |latex
-f(x) = \\begin{dcases*}
-				x  & when $x$ is even\\\
-				-x & when $x$ is odd
-				\\end{dcases*}
+z: |latex
+gibberish\\; math:\\sum_{i=0}^\\infty i^2
 |
 
-complex -> c
+z -> a
+z -> b
+
 a -> c
 b -> c
 sugar -> c
