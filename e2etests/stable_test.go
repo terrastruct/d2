@@ -988,6 +988,20 @@ c: mixed together
 c -> solution: we get
 `,
 		},
+		{
+			name: "transparent_3d",
+			script: `
+cube: {
+	style: {
+		3d: true
+		opacity: 0.5
+		fill: orange
+		stroke: "#53C0D8"
+		stroke-width: 7
+	}
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
