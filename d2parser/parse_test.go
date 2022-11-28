@@ -158,17 +158,17 @@ meow.(x -> y -> z)[3].shape: "all hail corn"
 		{
 			name: "errs",
 			text: `
---: meow]]] 
-meow][: ok 
-ok: "dmsadmakls"    dsamkldkmsa   
- 
-s.shape: orochimaru       
-x.shape: dasdasdas       
+--: meow]]] ` + `
+meow][: ok ` + `
+ok: "dmsadmakls"    dsamkldkmsa   ` + `
+ ` + `
+s.shape: orochimaru       ` + `
+x.shape: dasdasdas       ` + `
 
 wow:
 
-: 
- 
+: ` + `
+ ` + `
 []
 
   {}
@@ -214,7 +214,7 @@ meow
 		{
 			name: "trailing_whitespace",
 			text: `
-s.shape: orochimaru       
+s.shape: orochimaru       ` + `
 `,
 		},
 		{
@@ -334,16 +334,16 @@ a: |   hello  |
 			name: "block_trailing_space",
 			text: `
 x: |
-	meow   
+	meow   ` + `
 |
-"""   hello    
+"""   hello    ` + `
 """
 `,
 		},
 		{
 			name: "block_edge_case",
 			text: `
-x: | meow   
+x: | meow   ` + `
   hello
 yes
 |
