@@ -12,9 +12,9 @@ import (
 )
 
 func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
-	pad := 50. // 2 * 25
-	edgeYStep := 100.
-	actorXStep := 200.
+	pad := MIN_HORIZONTAL_PAD
+	edgeYStep := MIN_EDGE_DISTANCE
+	actorXStep := MIN_ACTOR_DISTANCE
 	maxActorHeight := 0.
 
 	for _, edge := range g.Edges {
