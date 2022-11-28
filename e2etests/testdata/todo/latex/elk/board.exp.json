@@ -8,8 +8,8 @@
         "x": 291,
         "y": 196
       },
-      "width": 154,
-      "height": 41,
+      "width": 382,
+      "height": 101,
       "level": 1,
       "opacity": 1,
       "strokeDash": 0,
@@ -27,7 +27,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "\\\\frac{\\\\alpha g^2}{\\\\omega^5} e^{[ -0.74\\\\bigl\\\\{\\\\frac{\\\\omega U_\\\\omega 19.5}{g}\\\\bigr\\\\}^{\\\\!-4}\\\\,]}",
+      "label": "\\\\Huge{\\\\frac{\\\\alpha g^2}{\\\\omega^5} e^{[ -0.74\\\\bigl\\\\{\\\\frac{\\\\omega U_\\\\omega 19.5}{g}\\\\bigr\\\\}^{\\\\!-4}\\\\,]}}",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "latex",
@@ -35,14 +35,14 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 154,
-      "labelHeight": 41
+      "labelWidth": 382,
+      "labelHeight": 101
     },
     {
       "id": "b",
       "type": "text",
       "pos": {
-        "x": 336,
+        "x": 450,
         "y": 158
       },
       "width": 65,
@@ -116,7 +116,7 @@
       "id": "c",
       "type": "",
       "pos": {
-        "x": 545,
+        "x": 773,
         "y": 104
       },
       "width": 214,
@@ -154,7 +154,7 @@
       "id": "sugar",
       "type": "",
       "pos": {
-        "x": 299,
+        "x": 527,
         "y": 12
       },
       "width": 146,
@@ -192,7 +192,7 @@
       "id": "solution",
       "type": "",
       "pos": {
-        "x": 1003,
+        "x": 1231,
         "y": 104
       },
       "width": 164,
@@ -263,11 +263,11 @@
         },
         {
           "x": 241,
-          "y": 216.5
+          "y": 246.5
         },
         {
           "x": 291,
-          "y": 216.5
+          "y": 246.5
         }
       ],
       "animated": false,
@@ -304,7 +304,7 @@
           "y": 167
         },
         {
-          "x": 335.5,
+          "x": 449.5,
           "y": 167
         }
       ],
@@ -338,19 +338,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 445,
-          "y": 216.5
+          "x": 673,
+          "y": 246.5
         },
         {
-          "x": 495,
-          "y": 216.5
+          "x": 723,
+          "y": 246.5
         },
         {
-          "x": 495,
+          "x": 723,
           "y": 198.5
         },
         {
-          "x": 545,
+          "x": 773,
           "y": 198.5
         }
       ],
@@ -384,11 +384,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 400.5,
+          "x": 514.5,
           "y": 167
         },
         {
-          "x": 545,
+          "x": 773,
           "y": 167
         }
       ],
@@ -422,19 +422,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 445,
+          "x": 673,
           "y": 75
         },
         {
-          "x": 495,
+          "x": 723,
           "y": 75
         },
         {
-          "x": 495,
+          "x": 723,
           "y": 135.5
         },
         {
-          "x": 545,
+          "x": 773,
           "y": 135.5
         }
       ],
@@ -468,11 +468,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 759,
+          "x": 987,
           "y": 167
         },
         {
-          "x": 1003,
+          "x": 1231,
           "y": 167
         }
       ],

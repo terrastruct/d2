@@ -18,7 +18,7 @@ container -> container.second: c->2
 		{
 			name: "latex",
 			script: `a: |latex
-\\frac{\\alpha g^2}{\\omega^5} e^{[ -0.74\\bigl\\{\\frac{\\omega U_\\omega 19.5}{g}\\bigr\\}^{\\!-4}\\,]}
+\\Huge{\\frac{\\alpha g^2}{\\omega^5} e^{[ -0.74\\bigl\\{\\frac{\\omega U_\\omega 19.5}{g}\\bigr\\}^{\\!-4}\\,]}}
 |
 
 b: |latex
