@@ -16,11 +16,19 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	actorXStep := MIN_ACTOR_DISTANCE
 	maxActorHeight := 0.
 
+	actorRank := make(map[*d2graph.Object]int)
+	for rank, actor := range g.Objects {
+		actorRank[actor] = rank
+	}
 	for _, edge := range g.Edges {
 		edgeYStep = math.Max(edgeYStep, float64(edge.LabelDimensions.Height)+HORIZONTAL_PAD)
-		actorXStep = math.Max(actorXStep, float64(edge.LabelDimensions.Width)+HORIZONTAL_PAD)
 		maxActorHeight = math.Max(maxActorHeight, edge.Src.Height+HORIZONTAL_PAD)
 		maxActorHeight = math.Max(maxActorHeight, edge.Dst.Height+HORIZONTAL_PAD)
+		// ensures that long labels, spanning over multiple actors, don't make for large gaps between actors
+		// by distributing the label length across the actors rank difference
+		rankDiff := math.Abs(float64(actorRank[edge.Src]) - float64(actorRank[edge.Dst]))
+		distributedLabelWidth := float64(edge.LabelDimensions.Width) / rankDiff
+		actorXStep = math.Max(actorXStep, distributedLabelWidth+HORIZONTAL_PAD)
 	}
 
 	placeActors(g.Objects, maxActorHeight, actorXStep)
