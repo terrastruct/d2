@@ -26,6 +26,27 @@ func (f RoundTripFunc) RoundTrip(req *http.Request) (*http.Response, error) {
 	return f(req), nil
 }
 
+func TestRegex(t *testing.T) {
+	urls := []string{
+		"https://icons.terrastruct.com/essentials/004-picture.svg",
+		"http://icons.terrastruct.com/essentials/004-picture.svg",
+	}
+
+	notURLs := []string{
+		"hi.png",
+		"./cat.png",
+		"/cat.png",
+	}
+
+	for _, href := range append(urls, notURLs...) {
+		str := fmt.Sprintf(`<image href="%s" />`, href)
+		matches := imageRe.FindAllStringSubmatch(str, -1)
+		if len(matches) != 1 {
+			t.Fatalf("uri regex didn't match %s", str)
+		}
+	}
+}
+
 func TestInlineRemote(t *testing.T) {
 	svgURL := "https://icons.terrastruct.com/essentials/004-picture.svg"
 	pngURL := "https://cdn4.iconfinder.com/data/icons/smart-phones-technologies/512/android-phone.png"

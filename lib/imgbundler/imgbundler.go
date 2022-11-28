@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"os"
 	"regexp"
 	"strings"
@@ -15,8 +16,7 @@ import (
 	"oss.terrastruct.com/d2/lib/xmain"
 )
 
-var uriImgRe = regexp.MustCompile(`<image href="(http[^"]+)"`)
-var localImgRe = regexp.MustCompile(`<image href="([^http][^"]+)"`)
+var imageRe = regexp.MustCompile(`<image href="([^"]+)"`)
 
 type resp struct {
 	srctxt string
@@ -25,26 +25,35 @@ type resp struct {
 }
 
 func InlineLocal(ms *xmain.State, in []byte) ([]byte, error) {
-	return inline(ms, localImgRe, in)
+	return inline(ms, in, false)
 }
 
 func InlineRemote(ms *xmain.State, in []byte) ([]byte, error) {
-	return inline(ms, uriImgRe, in)
+	return inline(ms, in, true)
 }
 
-func inline(ms *xmain.State, re *regexp.Regexp, in []byte) ([]byte, error) {
+func inline(ms *xmain.State, in []byte, isRemote bool) ([]byte, error) {
 	svg := string(in)
 
-	imgs := re.FindAllStringSubmatch(svg, -1)
+	imgs := imageRe.FindAllStringSubmatch(svg, -1)
+
+	var filtered [][]string
+	for _, img := range imgs {
+		u, err := url.Parse(img[1])
+		isRemoteImg := err == nil && strings.HasPrefix(u.Scheme, "http")
+		if isRemoteImg == isRemote {
+			filtered = append(filtered, img)
+		}
+	}
 
 	var wg sync.WaitGroup
 	respChan := make(chan resp)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	wg.Add(len(imgs))
-	for _, img := range imgs {
-		if re == uriImgRe {
+	wg.Add(len(filtered))
+	for _, img := range filtered {
+		if isRemote {
 			go fetch(ctx, img[0], img[1], respChan)
 		} else {
 			go read(ctx, img[0], img[1], respChan)
