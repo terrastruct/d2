@@ -1,18 +1,13 @@
-/**
- * Ponyfill for `Array.prototype.find` which is only available in ES6 runtimes.
- *
- * Works with anything that has a `length` property and index access properties, including NodeList.
- *
- * @template {unknown} T
- * @param {Array<T> | ({length:number, [number]: T})} list
- * @param {function (item: T, index: number, list:Array<T> | ({length:number, [number]: T})):boolean} predicate
- * @param {Partial<Pick<ArrayConstructor['prototype'], 'find'>>?} ac `Array.prototype` by default,
- * 				allows injecting a custom implementation in tests
- * @returns {T | undefined}
- *
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
- * @see https://tc39.es/ecma262/multipage/indexed-collections.html#sec-array.prototype.find
- */
+// The below polyfills are from open-source libraries
+//
+// XMLDOM
+// https://github.com/xmldom/xmldom
+// MIT license: https://github.com/xmldom/xmldom/blob/master/LICENSE
+//
+// WGXPATH
+// https://github.com/google/wicked-good-xpath
+// MIT license: https://github.com/google/wicked-good-xpath/blob/master/LICENSE
+//
 function find(list, predicate, ac) {
 	if (ac === undefined) {
 		ac = Array.prototype;
@@ -30,21 +25,6 @@ function find(list, predicate, ac) {
 	}
 }
 
-/**
- * "Shallow freezes" an object to render it immutable.
- * Uses `Object.freeze` if available,
- * otherwise the immutability is only in the type.
- *
- * Is used to create "enum like" objects.
- *
- * @template T
- * @param {T} object the object to freeze
- * @param {Pick<ObjectConstructor, 'freeze'> = Object} oc `Object` by default,
- * 				allows to inject custom object constructor for tests
- * @returns {Readonly<T>}
- *
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze
- */
 function freeze(object, oc) {
 	if (oc === undefined) {
 		oc = Object
@@ -52,19 +32,6 @@ function freeze(object, oc) {
 	return oc && typeof oc.freeze === 'function' ? oc.freeze(object) : object
 }
 
-/**
- * Since we can not rely on `Object.assign` we provide a simplified version
- * that is sufficient for our needs.
- *
- * @param {Object} target
- * @param {Object | null | undefined} source
- *
- * @returns {Object} target
- * @throws TypeError if target is not an object
- *
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
- * @see https://tc39.es/ecma262/multipage/fundamental-objects.html#sec-object.assign
- */
 function assign(target, source) {
 	if (target === null || typeof target !== 'object') {
 		throw new TypeError('target is not an object')
@@ -77,74 +44,14 @@ function assign(target, source) {
 	return target
 }
 
-/**
- * All mime types that are allowed as input to `DOMParser.parseFromString`
- *
- * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString#Argument02 MDN
- * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#domparsersupportedtype WHATWG HTML Spec
- * @see DOMParser.prototype.parseFromString
- */
 var MIME_TYPE = freeze({
-	/**
-	 * `text/html`, the only mime type that triggers treating an XML document as HTML.
-	 *
-	 * @see DOMParser.SupportedType.isHTML
-	 * @see https://www.iana.org/assignments/media-types/text/html IANA MimeType registration
-	 * @see https://en.wikipedia.org/wiki/HTML Wikipedia
-	 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString MDN
-	 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-domparser-parsefromstring WHATWG HTML Spec
-	 */
 	HTML: 'text/html',
-
-	/**
-	 * Helper method to check a mime type if it indicates an HTML document
-	 *
-	 * @param {string} [value]
-	 * @returns {boolean}
-	 *
-	 * @see https://www.iana.org/assignments/media-types/text/html IANA MimeType registration
-	 * @see https://en.wikipedia.org/wiki/HTML Wikipedia
-	 * @see https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString MDN
-	 * @see https://html.spec.whatwg.org/multipage/dynamic-markup-insertion.html#dom-domparser-parsefromstring 	 */
 	isHTML: function (value) {
 		return value === MIME_TYPE.HTML
 	},
-
-	/**
-	 * `application/xml`, the standard mime type for XML documents.
-	 *
-	 * @see https://www.iana.org/assignments/media-types/application/xml IANA MimeType registration
-	 * @see https://tools.ietf.org/html/rfc7303#section-9.1 RFC 7303
-	 * @see https://en.wikipedia.org/wiki/XML_and_MIME Wikipedia
-	 */
 	XML_APPLICATION: 'application/xml',
-
-	/**
-	 * `text/html`, an alias for `application/xml`.
-	 *
-	 * @see https://tools.ietf.org/html/rfc7303#section-9.2 RFC 7303
-	 * @see https://www.iana.org/assignments/media-types/text/xml IANA MimeType registration
-	 * @see https://en.wikipedia.org/wiki/XML_and_MIME Wikipedia
-	 */
 	XML_TEXT: 'text/xml',
-
-	/**
-	 * `application/xhtml+xml`, indicates an XML document that has the default HTML namespace,
-	 * but is parsed as an XML document.
-	 *
-	 * @see https://www.iana.org/assignments/media-types/application/xhtml+xml IANA MimeType registration
-	 * @see https://dom.spec.whatwg.org/#dom-domimplementation-createdocument WHATWG DOM Spec
-	 * @see https://en.wikipedia.org/wiki/XHTML Wikipedia
-	 */
 	XML_XHTML_APPLICATION: 'application/xhtml+xml',
-
-	/**
-	 * `image/svg+xml`,
-	 *
-	 * @see https://www.iana.org/assignments/media-types/image/svg+xml IANA MimeType registration
-	 * @see https://www.w3.org/TR/SVG11/ W3C SVG 1.1
-	 * @see https://en.wikipedia.org/wiki/Scalable_Vector_Graphics Wikipedia
-	 */
 	XML_SVG_IMAGE: 'image/svg+xml',
 })
 
@@ -3249,31 +3156,8 @@ __DOMHandler = DOMHandler;
 function aa(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";if("[object Function]"==c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";else if("function"==
 b&&"undefined"==typeof a.call)return"object";return b}function l(a){return"string"==typeof a}function ba(a,b,c){return a.call.apply(a.bind,arguments)}function ca(a,b,c){if(!a)throw Error();if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var c=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(c,d);return a.apply(b,c)}}return function(){return a.apply(b,arguments)}}
 function da(a,b,c){da=Function.prototype.bind&&-1!=Function.prototype.bind.toString().indexOf("native code")?ba:ca;return da.apply(null,arguments)}function ea(a,b){var c=Array.prototype.slice.call(arguments,1);return function(){var b=c.slice();b.push.apply(b,arguments);return a.apply(this,b)}}
-function m(a){var b=n;function c(){}c.prototype=b.prototype;a.G=b.prototype;a.prototype=new c;a.prototype.constructor=a;a.F=function(a,c,f){for(var g=Array(arguments.length-2),h=2;h<arguments.length;h++)g[h-2]=arguments[h];return b.prototype[c].apply(a,g)}};/*
+function m(a){var b=n;function c(){}c.prototype=b.prototype;a.G=b.prototype;a.prototype=new c;a.prototype.constructor=a;a.F=function(a,c,f){for(var g=Array(arguments.length-2),h=2;h<arguments.length;h++)g[h-2]=arguments[h];return b.prototype[c].apply(a,g)}};
 
- The MIT License
-
- Copyright (c) 2007 Cybozu Labs, Inc.
- Copyright (c) 2012 Google Inc.
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to
- deal in the Software without restriction, including without limitation the
- rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
- sell copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
- IN THE SOFTWARE.
-*/
 var fa=String.prototype.trim?function(a){return a.trim()}:function(a){return a.replace(/^[\s\xa0]+|[\s\xa0]+$/g,"")};function q(a,b){return-1!=a.indexOf(b)}function ga(a,b){return a<b?-1:a>b?1:0};var ha=Array.prototype.indexOf?function(a,b,c){return Array.prototype.indexOf.call(a,b,c)}:function(a,b,c){c=null==c?0:0>c?Math.max(0,a.length+c):c;if(l(a))return l(b)&&1==b.length?a.indexOf(b,c):-1;for(;c<a.length;c++)if(c in a&&a[c]===b)return c;return-1},r=Array.prototype.forEach?function(a,b,c){Array.prototype.forEach.call(a,b,c)}:function(a,b,c){for(var d=a.length,e=l(a)?a.split(""):a,f=0;f<d;f++)f in e&&b.call(c,e[f],f,a)},ia=Array.prototype.filter?function(a,b,c){return Array.prototype.filter.call(a,
 b,c)}:function(a,b,c){for(var d=a.length,e=[],f=0,g=l(a)?a.split(""):a,h=0;h<d;h++)if(h in g){var p=g[h];b.call(c,p,h,a)&&(e[f++]=p)}return e},t=Array.prototype.reduce?function(a,b,c,d){d&&(b=da(b,d));return Array.prototype.reduce.call(a,b,c)}:function(a,b,c,d){var e=c;r(a,function(c,g){e=b.call(d,e,c,g,a)});return e},ja=Array.prototype.some?function(a,b,c){return Array.prototype.some.call(a,b,c)}:function(a,b,c){for(var d=a.length,e=l(a)?a.split(""):a,f=0;f<d;f++)if(f in e&&b.call(c,e[f],f,a))return!0;
 return!1};function ka(a,b){var c;a:{c=a.length;for(var d=l(a)?a.split(""):a,e=0;e<c;e++)if(e in d&&b.call(void 0,d[e],e,a)){c=e;break a}c=-1}return 0>c?null:l(a)?a.charAt(c):a[c]}function la(a){return Array.prototype.concat.apply(Array.prototype,arguments)}function ma(a,b,c){return 2>=arguments.length?Array.prototype.slice.call(a,b):Array.prototype.slice.call(a,b,c)};var u;a:{var na=k.navigator;if(na){var oa=na.userAgent;if(oa){u=oa;break a}}u=""};var pa=q(u,"Opera")||q(u,"OPR"),v=q(u,"Trident")||q(u,"MSIE"),qa=q(u,"Edge"),ra=q(u,"Gecko")&&!(q(u.toLowerCase(),"webkit")&&!q(u,"Edge"))&&!(q(u,"Trident")||q(u,"MSIE"))&&!q(u,"Edge"),sa=q(u.toLowerCase(),"webkit")&&!q(u,"Edge");function ta(){var a=k.document;return a?a.documentMode:void 0}var ua;
@@ -3322,13 +3206,3 @@ function Y(a,b){if(0==b)if(a instanceof C)b=4;else if("string"==typeof a)b=2;els
 H(a);c=[];for(var e=I(d);e;e=I(d))c.push(e instanceof x?e.a:e);this.snapshotLength=a.l;this.invalidIteratorState=!1;break;case 8:case 9:d=Ra(a);this.singleNodeValue=d instanceof x?d.a:d;break;default:throw Error("Unknown XPathResult type.");}var f=0;this.iterateNext=function(){if(4!=b&&5!=b)throw Error("iterateNext called with wrong result type");return f>=c.length?null:c[f++]};this.snapshotItem=function(a){if(6!=b&&7!=b)throw Error("snapshotItem called with wrong result type");return a>=c.length||
 0>a?null:c[a]}}Y.ANY_TYPE=0;Y.NUMBER_TYPE=1;Y.STRING_TYPE=2;Y.BOOLEAN_TYPE=3;Y.UNORDERED_NODE_ITERATOR_TYPE=4;Y.ORDERED_NODE_ITERATOR_TYPE=5;Y.UNORDERED_NODE_SNAPSHOT_TYPE=6;Y.ORDERED_NODE_SNAPSHOT_TYPE=7;Y.ANY_UNORDERED_NODE_TYPE=8;Y.FIRST_ORDERED_NODE_TYPE=9;function Ob(a){this.lookupNamespaceURI=Kb(a)}
 function Pb(a,b){var c=a||k,d=c.Document&&c.Document.prototype||c.document;if(!d.evaluate||b)c.XPathResult=Y,d.evaluate=function(a,b,c,d){return(new Nb(a,c)).evaluate(b,d)},d.createExpression=function(a,b){return new Nb(a,b)},d.createNSResolver=function(a){return new Ob(a)}}var Qb=["wgxpath","install"],Z=k;Qb[0]in Z||!Z.execScript||Z.execScript("var "+Qb[0]);for(var Rb;Qb.length&&(Rb=Qb.shift());)Qb.length||void 0===Pb?Z[Rb]?Z=Z[Rb]:Z=Z[Rb]={}:Z[Rb]=Pb;}).call(this)
-
-
-MathJax = {
-  tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']]
-  },
-  svg: {
-    fontCache: 'global'
-  }
-};
