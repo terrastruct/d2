@@ -8,8 +8,8 @@
         "x": 0,
         "y": 0
       },
-      "width": 559,
-      "height": 148,
+      "width": 930,
+      "height": 124,
       "level": 1,
       "opacity": 1,
       "strokeDash": 0,
@@ -46,8 +46,8 @@
         "x": 50,
         "y": 50
       },
-      "width": 459,
-      "height": 48,
+      "width": 830,
+      "height": 24,
       "level": 2,
       "opacity": 1,
       "strokeDash": 0,
@@ -65,7 +65,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "Lorem ipsum dolor sit amet, consectetur adipiscing elit,  \nsed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "label": "Lorem ipsum dolor sit amet, consectetur adipiscing elit,\nsed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -73,8 +73,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 459,
-      "labelHeight": 48
+      "labelWidth": 830,
+      "labelHeight": 24
     }
   ],
   "connections": []
