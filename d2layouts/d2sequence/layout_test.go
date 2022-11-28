@@ -45,27 +45,29 @@ func TestLayout(t *testing.T) {
 	ctx := log.WithTB(context.Background(), t, nil)
 	Layout(ctx, g)
 
-	// asserts that objects were placed in the expected x order and at y=0
-	objectsOrder := []*d2graph.Object{
+	// asserts that actors were placed in the expected x order and at y=0
+	actors := []*d2graph.Object{
 		g.Objects[0],
 		g.Objects[1],
 	}
-	for i := 1; i < len(objectsOrder); i++ {
-		if objectsOrder[i].TopLeft.X < objectsOrder[i-1].TopLeft.X {
-			t.Fatalf("expected object[%d].TopLeft.X > object[%d].TopLeft.X", i, i-1)
+	for i := 1; i < len(actors); i++ {
+		if actors[i].TopLeft.X < actors[i-1].TopLeft.X {
+			t.Fatalf("expected actor[%d].TopLeft.X > actor[%d].TopLeft.X", i, i-1)
 		}
-		if objectsOrder[i].Center().Y != objectsOrder[i-1].Center().Y {
-			t.Fatalf("expected object[%d] and object[%d] to be at the same center y", i, i-1)
+		actorBottom := actors[i].TopLeft.Y + actors[i].Height
+		prevActorBottom := actors[i-1].TopLeft.Y + actors[i-1].Height
+		if actorBottom != prevActorBottom {
+			t.Fatalf("expected actor[%d] and actor[%d] to be at the same bottom y", i, i-1)
 		}
 	}
 
-	nExpectedEdges := nEdges + len(objectsOrder)
+	nExpectedEdges := nEdges + len(actors)
 	if len(g.Edges) != nExpectedEdges {
 		t.Fatalf("expected %d edges, got %d", nExpectedEdges, len(g.Edges))
 	}
 
-	// assert that edges were placed in y order and have the endpoints at their objects
-	// uses `nEdges` because Layout creates some vertical edges to represent the object lifeline
+	// assert that edges were placed in y order and have the endpoints at their actors
+	// uses `nEdges` because Layout creates some vertical edges to represent the actor lifeline
 	for i := 0; i < nEdges; i++ {
 		edge := g.Edges[i]
 		if len(edge.Route) != 2 {
@@ -75,10 +77,10 @@ func TestLayout(t *testing.T) {
 			t.Fatalf("expected edge[%d] to be a horizontal line", i)
 		}
 		if edge.Route[0].X != edge.Src.Center().X {
-			t.Fatalf("expected edge[%d] source endpoint to be at the middle of the source object", i)
+			t.Fatalf("expected edge[%d] source endpoint to be at the middle of the source actor", i)
 		}
 		if edge.Route[1].X != edge.Dst.Center().X {
-			t.Fatalf("expected edge[%d] target endpoint to be at the middle of the target object", i)
+			t.Fatalf("expected edge[%d] target endpoint to be at the middle of the target actor", i)
 		}
 		if i > 0 {
 			prevEdge := g.Edges[i-1]
@@ -98,10 +100,10 @@ func TestLayout(t *testing.T) {
 			t.Fatalf("expected edge[%d] to be a vertical line", i)
 		}
 		if edge.Route[0].X != edge.Src.Center().X {
-			t.Fatalf("expected edge[%d] x to be at the object center", i)
+			t.Fatalf("expected edge[%d] x to be at the actor center", i)
 		}
 		if edge.Route[0].Y != edge.Src.Height+edge.Src.TopLeft.Y {
-			t.Fatalf("expected edge[%d] to start at the bottom of the source object", i)
+			t.Fatalf("expected edge[%d] to start at the bottom of the source actor", i)
 		}
 		if edge.Route[1].Y < lastSequenceEdge.Route[0].Y {
 			t.Fatalf("expected edge[%d] to end after the last sequence edge", i)

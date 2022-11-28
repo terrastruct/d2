@@ -14,43 +14,43 @@ import (
 func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	pad := 50. // 2 * 25
 	edgeYStep := 100.
-	objectXStep := 200.
-	maxObjectHeight := 0.
+	actorXStep := 200.
+	maxActorHeight := 0.
 
-	var objectsInOrder []*d2graph.Object
+	var actorsInOrder []*d2graph.Object
 	seen := make(map[*d2graph.Object]struct{})
 	for _, edge := range g.Edges {
 		if _, exists := seen[edge.Src]; !exists {
 			seen[edge.Src] = struct{}{}
-			objectsInOrder = append(objectsInOrder, edge.Src)
+			actorsInOrder = append(actorsInOrder, edge.Src)
 		}
 		if _, exists := seen[edge.Dst]; !exists {
 			seen[edge.Dst] = struct{}{}
-			objectsInOrder = append(objectsInOrder, edge.Dst)
+			actorsInOrder = append(actorsInOrder, edge.Dst)
 		}
 
 		edgeYStep = math.Max(edgeYStep, float64(edge.LabelDimensions.Height)+pad)
-		objectXStep = math.Max(objectXStep, float64(edge.LabelDimensions.Width)+pad)
-		maxObjectHeight = math.Max(maxObjectHeight, edge.Src.Height+pad)
-		maxObjectHeight = math.Max(maxObjectHeight, edge.Dst.Height+pad)
+		actorXStep = math.Max(actorXStep, float64(edge.LabelDimensions.Width)+pad)
+		maxActorHeight = math.Max(maxActorHeight, edge.Src.Height+pad)
+		maxActorHeight = math.Max(maxActorHeight, edge.Dst.Height+pad)
 	}
 
-	placeObjects(objectsInOrder, maxObjectHeight, objectXStep)
+	placeActors(actorsInOrder, maxActorHeight, actorXStep)
 	// edges are placed in the order users define them
-	routeEdges(g.Edges, maxObjectHeight, edgeYStep)
-	addLifelineEdges(g, objectsInOrder, edgeYStep)
+	routeEdges(g.Edges, maxActorHeight, edgeYStep)
+	addLifelineEdges(g, actorsInOrder, edgeYStep)
 
 	return nil
 }
 
-// placeObjects places objects side by side
-func placeObjects(objectsInOrder []*d2graph.Object, maxHeight, xStep float64) {
+// placeActors places actors bottom aligned, side by side
+func placeActors(actorsInOrder []*d2graph.Object, maxHeight, xStep float64) {
 	x := 0.
-	for _, obj := range objectsInOrder {
-		yDiff := maxHeight - obj.Height
-		obj.TopLeft = geo.NewPoint(x, yDiff/2.)
-		x += obj.Width + xStep
-		obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+	for _, actors := range actorsInOrder {
+		yOffset := maxHeight - actors.Height
+		actors.TopLeft = geo.NewPoint(x, yOffset)
+		x += actors.Width + xStep
+		actors.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 	}
 }
 
@@ -72,39 +72,39 @@ func routeEdges(edgesInOrder []*d2graph.Edge, startY, yStep float64) {
 	}
 }
 
-// addLifelineEdges adds a new edge for each object in the graph that represents the
-// edge below he object showing its lifespan
+// addLifelineEdges adds a new edge for each actor in the graph that represents the
+// edge below the actor showing its lifespan
 // ┌──────────────┐
-// │    object    │
+// │     actor    │
 // └──────┬───────┘
 //        │
 //        │ lifeline
 //        │
 //        │
-func addLifelineEdges(g *d2graph.Graph, objectsInOrder []*d2graph.Object, yStep float64) {
+func addLifelineEdges(g *d2graph.Graph, actorsInOrder []*d2graph.Object, yStep float64) {
 	endY := g.Edges[len(g.Edges)-1].Route[0].Y + yStep
-	for _, obj := range objectsInOrder {
-		objBottom := obj.Center()
-		objBottom.Y = obj.TopLeft.Y + obj.Height
-		objLifelineEnd := obj.Center()
-		objLifelineEnd.Y = endY
+	for _, actor := range actorsInOrder {
+		actorBottom := actor.Center()
+		actorBottom.Y = actor.TopLeft.Y + actor.Height
+		actorLifelineEnd := actor.Center()
+		actorLifelineEnd.Y = endY
 		g.Edges = append(g.Edges, &d2graph.Edge{
 			Attributes: d2graph.Attributes{
 				Style: d2graph.Style{
 					StrokeDash: &d2graph.Scalar{
 						Value: "10",
 					},
-					Stroke:      obj.Attributes.Style.Stroke,
-					StrokeWidth: obj.Attributes.Style.StrokeWidth,
+					Stroke:      actor.Attributes.Style.Stroke,
+					StrokeWidth: actor.Attributes.Style.StrokeWidth,
 				},
 			},
-			Src:      obj,
+			Src:      actor,
 			SrcArrow: false,
 			Dst: &d2graph.Object{
-				ID: obj.ID + fmt.Sprintf("-lifeline-end-%d", go2.StringToIntHash(obj.ID+"-lifeline-end")),
+				ID: actor.ID + fmt.Sprintf("-lifeline-end-%d", go2.StringToIntHash(actor.ID+"-lifeline-end")),
 			},
 			DstArrow: false,
-			Route:    []*geo.Point{objBottom, objLifelineEnd},
+			Route:    []*geo.Point{actorBottom, actorLifelineEnd},
 		})
 	}
 }
