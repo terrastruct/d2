@@ -21,3 +21,10 @@ func TestRender(t *testing.T) {
 		}
 	}
 }
+
+func TestRenderError(t *testing.T) {
+	_, err := Render(`\frac{1}{2}`)
+	if err == nil {
+		t.Fatal(err)
+	}
+}

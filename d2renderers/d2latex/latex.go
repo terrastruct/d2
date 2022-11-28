@@ -9,6 +9,7 @@ import (
 	"regexp"
 	"strconv"
 
+	"oss.terrastruct.com/xdefer"
 	v8 "rogchap.com/v8go"
 )
 
@@ -23,7 +24,8 @@ var mathjaxJS string
 
 var svgRe = regexp.MustCompile(`<svg[^>]+width="([0-9\.]+)ex" height="([0-9\.]+)ex"[^>]+>`)
 
-func Render(s string) (string, error) {
+func Render(s string) (_ string, err error) {
+	defer xdefer.Errorf(&err, "latex failed to parse")
 	v8ctx := v8.NewContext()
 
 	if _, err := v8ctx.RunScript(polyfillsJS, "polyfills.js"); err != nil {
@@ -49,7 +51,8 @@ func Render(s string) (string, error) {
 	return val.String(), nil
 }
 
-func Measure(s string) (width, height int, _ error) {
+func Measure(s string) (width, height int, err error) {
+	defer xdefer.Errorf(&err, "latex failed to parse")
 	svg, err := Render(s)
 	if err != nil {
 		return 0, 0, err
