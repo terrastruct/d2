@@ -17,36 +17,24 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	actorXStep := 200.
 	maxActorHeight := 0.
 
-	var actorsInOrder []*d2graph.Object
-	seen := make(map[*d2graph.Object]struct{})
 	for _, edge := range g.Edges {
-		if _, exists := seen[edge.Src]; !exists {
-			seen[edge.Src] = struct{}{}
-			actorsInOrder = append(actorsInOrder, edge.Src)
-		}
-		if _, exists := seen[edge.Dst]; !exists {
-			seen[edge.Dst] = struct{}{}
-			actorsInOrder = append(actorsInOrder, edge.Dst)
-		}
-
 		edgeYStep = math.Max(edgeYStep, float64(edge.LabelDimensions.Height)+pad)
 		actorXStep = math.Max(actorXStep, float64(edge.LabelDimensions.Width)+pad)
 		maxActorHeight = math.Max(maxActorHeight, edge.Src.Height+pad)
 		maxActorHeight = math.Max(maxActorHeight, edge.Dst.Height+pad)
 	}
 
-	placeActors(actorsInOrder, maxActorHeight, actorXStep)
-	// edges are placed in the order users define them
+	placeActors(g.Objects, maxActorHeight, actorXStep)
 	routeEdges(g.Edges, maxActorHeight, edgeYStep)
-	addLifelineEdges(g, actorsInOrder, edgeYStep)
+	addLifelineEdges(g, g.Objects, edgeYStep)
 
 	return nil
 }
 
 // placeActors places actors bottom aligned, side by side
-func placeActors(actorsInOrder []*d2graph.Object, maxHeight, xStep float64) {
+func placeActors(actors []*d2graph.Object, maxHeight, xStep float64) {
 	x := 0.
-	for _, actors := range actorsInOrder {
+	for _, actors := range actors {
 		yOffset := maxHeight - actors.Height
 		actors.TopLeft = geo.NewPoint(x, yOffset)
 		x += actors.Width + xStep
@@ -66,8 +54,12 @@ func routeEdges(edgesInOrder []*d2graph.Edge, startY, yStep float64) {
 		edgeY += yStep
 
 		if edge.Attributes.Label.Value != "" {
-			// TODO: consider label right-to-left
-			edge.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
+			isLeftToRight := edge.Src.TopLeft.X < edge.Dst.TopLeft.X
+			if isLeftToRight {
+				edge.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
+			} else {
+				edge.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
+			}
 		}
 	}
 }
@@ -81,9 +73,9 @@ func routeEdges(edgesInOrder []*d2graph.Edge, startY, yStep float64) {
 //        │ lifeline
 //        │
 //        │
-func addLifelineEdges(g *d2graph.Graph, actorsInOrder []*d2graph.Object, yStep float64) {
+func addLifelineEdges(g *d2graph.Graph, actors []*d2graph.Object, yStep float64) {
 	endY := g.Edges[len(g.Edges)-1].Route[0].Y + yStep
-	for _, actor := range actorsInOrder {
+	for _, actor := range actors {
 		actorBottom := actor.Center()
 		actorBottom.Y = actor.TopLeft.Y + actor.Height
 		actorLifelineEnd := actor.Center()
@@ -91,9 +83,7 @@ func addLifelineEdges(g *d2graph.Graph, actorsInOrder []*d2graph.Object, yStep f
 		g.Edges = append(g.Edges, &d2graph.Edge{
 			Attributes: d2graph.Attributes{
 				Style: d2graph.Style{
-					StrokeDash: &d2graph.Scalar{
-						Value: "10",
-					},
+					StrokeDash:  &d2graph.Scalar{Value: "10"},
 					Stroke:      actor.Attributes.Style.Stroke,
 					StrokeWidth: actor.Attributes.Style.StrokeWidth,
 				},
