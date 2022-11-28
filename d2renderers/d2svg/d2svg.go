@@ -509,6 +509,91 @@ func defineShadowFilter(writer io.Writer) {
 </defs>`)
 }
 
+func render3dRect(targetShape d2target.Shape) string {
+	moveTo := func(p d2target.Point) string {
+		return fmt.Sprintf("M%d,%d ", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
+	}
+	lineTo := func(p d2target.Point) string {
+		return fmt.Sprintf("L%d,%d ", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
+	}
+
+	// draw border all in one path to prevent overlapping sections
+	var borderSegments []string
+	borderSegments = append(borderSegments,
+		moveTo(d2target.Point{X: 0, Y: 0}),
+	)
+	for _, v := range []d2target.Point{
+		{X: threeDeeOffset, Y: -threeDeeOffset},
+		{X: targetShape.Width + threeDeeOffset, Y: -threeDeeOffset},
+		{X: targetShape.Width + threeDeeOffset, Y: targetShape.Height - threeDeeOffset},
+		{X: targetShape.Width, Y: targetShape.Height},
+		{X: 0, Y: targetShape.Height},
+		{X: 0, Y: 0},
+		{X: targetShape.Width, Y: 0},
+		{X: targetShape.Width, Y: targetShape.Height},
+	} {
+		borderSegments = append(borderSegments, lineTo(v))
+	}
+	// move to top right to draw last segment without overlapping
+	borderSegments = append(borderSegments,
+		moveTo(d2target.Point{X: targetShape.Width, Y: 0}),
+	)
+	borderSegments = append(borderSegments,
+		lineTo(d2target.Point{X: targetShape.Width + threeDeeOffset, Y: -threeDeeOffset}),
+	)
+	border := targetShape
+	border.Fill = "none"
+	borderStyle := shapeStyle(border)
+	renderedBorder := fmt.Sprintf(`<path d="%s" style="%s"/>`,
+		strings.Join(borderSegments, ""), borderStyle)
+
+	// create mask from border stroke, to cut away from the shape fills
+	maskID := fmt.Sprintf("border-mask-%v", escapeText(targetShape.ID))
+	borderMask := strings.Join([]string{
+		fmt.Sprintf(`<defs><mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
+			maskID, targetShape.Pos.X, targetShape.Pos.Y-threeDeeOffset, targetShape.Width+threeDeeOffset, targetShape.Height+threeDeeOffset,
+		),
+		fmt.Sprintf(`<rect x="%d" y="%d" width="%d" height="%d" fill="white"></rect>`,
+			targetShape.Pos.X, targetShape.Pos.Y-threeDeeOffset, targetShape.Width+threeDeeOffset, targetShape.Height+threeDeeOffset,
+		),
+		fmt.Sprintf(`<path d="%s" style="%s;stroke:#000;fill:none;opacity:1;"/></mask></defs>`,
+			strings.Join(borderSegments, ""), borderStyle),
+	}, "\n")
+
+	// render the main rectangle without stroke and the border mask
+	mainShape := targetShape
+	mainShape.Stroke = "none"
+	mainRect := fmt.Sprintf(`<rect x="%d" y="%d" width="%d" height="%d" style="%s" mask="url(#%s)"/>`,
+		targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, shapeStyle(mainShape), maskID,
+	)
+
+	// render the side shapes in the darkened color without stroke and the border mask
+	var sidePoints []string
+	for _, v := range []d2target.Point{
+		{X: 0, Y: 0},
+		{X: threeDeeOffset, Y: -threeDeeOffset},
+		{X: targetShape.Width + threeDeeOffset, Y: -threeDeeOffset},
+		{X: targetShape.Width + threeDeeOffset, Y: targetShape.Height - threeDeeOffset},
+		{X: targetShape.Width, Y: targetShape.Height},
+		{X: targetShape.Width, Y: 0},
+	} {
+		sidePoints = append(sidePoints,
+			fmt.Sprintf("%d,%d", v.X+targetShape.Pos.X, v.Y+targetShape.Pos.Y),
+		)
+	}
+	darkerColor, err := color.Darken(targetShape.Fill)
+	if err != nil {
+		darkerColor = targetShape.Fill
+	}
+	sideShape := targetShape
+	sideShape.Fill = darkerColor
+	sideShape.Stroke = "none"
+	renderedSides := fmt.Sprintf(`<polygon points="%s" style="%s" mask="url(#%s)"/>`,
+		strings.Join(sidePoints, " "), shapeStyle(sideShape), maskID)
+
+	return borderMask + mainRect + renderedSides + renderedBorder
+}
+
 func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 	fmt.Fprintf(writer, `<g id="%s">`, escapeText(targetShape.ID))
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
@@ -561,50 +646,15 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 	// TODO should standardize "" to rectangle
 	case d2target.ShapeRectangle, "":
 		if targetShape.ThreeDee {
-			darkerColor, err := color.Darken(targetShape.Fill)
-			if err != nil {
-				darkerColor = targetShape.Fill
+			fmt.Fprint(writer, render3dRect(targetShape))
+		} else {
+			if targetShape.Multiple {
+				fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+					targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style)
 			}
-			sideShape := targetShape
-			sideShape.Fill = darkerColor
-			sideStyle := shapeStyle(sideShape)
-
-			var topPolygonPoints []string
-			for _, v := range []d2target.Point{
-				{X: 0, Y: 0},
-				{X: threeDeeOffset, Y: -1 * threeDeeOffset},
-				{X: targetShape.Width + threeDeeOffset, Y: -1 * threeDeeOffset},
-				{X: targetShape.Width, Y: 0},
-				{X: 0, Y: 0},
-			} {
-				topPolygonPoints = append(topPolygonPoints,
-					fmt.Sprintf("%d,%d ", v.X+targetShape.Pos.X, v.Y+targetShape.Pos.Y),
-				)
-			}
-			fmt.Fprintf(writer, `<polygon points="%s" style="%s"/>`,
-				strings.Join(topPolygonPoints, ""), sideStyle)
-
-			var rightPolygonPoints []string
-			for _, v := range []d2target.Point{
-				{X: targetShape.Width, Y: 0},
-				{X: targetShape.Width + threeDeeOffset, Y: -1 * threeDeeOffset},
-				{X: targetShape.Width + threeDeeOffset, Y: targetShape.Height - threeDeeOffset},
-				{X: targetShape.Width, Y: targetShape.Height},
-			} {
-				rightPolygonPoints = append(rightPolygonPoints,
-					fmt.Sprintf("%d,%d ", v.X+targetShape.Pos.X, v.Y+targetShape.Pos.Y),
-				)
-			}
-			fmt.Fprintf(writer, `<polygon points="%s" style="%s"/>`,
-				strings.Join(rightPolygonPoints, ""), sideStyle)
-		}
-		if targetShape.Multiple {
 			fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-				targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style)
+				targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
 		}
-		fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-			targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
-
 	case d2target.ShapeText, d2target.ShapeCode:
 	default:
 		if targetShape.Multiple {
