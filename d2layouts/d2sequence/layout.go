@@ -12,16 +12,15 @@ import (
 )
 
 func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
-	pad := MIN_HORIZONTAL_PAD
 	edgeYStep := MIN_EDGE_DISTANCE
 	actorXStep := MIN_ACTOR_DISTANCE
 	maxActorHeight := 0.
 
 	for _, edge := range g.Edges {
-		edgeYStep = math.Max(edgeYStep, float64(edge.LabelDimensions.Height)+pad)
-		actorXStep = math.Max(actorXStep, float64(edge.LabelDimensions.Width)+pad)
-		maxActorHeight = math.Max(maxActorHeight, edge.Src.Height+pad)
-		maxActorHeight = math.Max(maxActorHeight, edge.Dst.Height+pad)
+		edgeYStep = math.Max(edgeYStep, float64(edge.LabelDimensions.Height)+HORIZONTAL_PAD)
+		actorXStep = math.Max(actorXStep, float64(edge.LabelDimensions.Width)+HORIZONTAL_PAD)
+		maxActorHeight = math.Max(maxActorHeight, edge.Src.Height+HORIZONTAL_PAD)
+		maxActorHeight = math.Max(maxActorHeight, edge.Dst.Height+HORIZONTAL_PAD)
 	}
 
 	placeActors(g.Objects, maxActorHeight, actorXStep)

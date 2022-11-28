@@ -1,7 +1,7 @@
 package d2sequence
 
-// min horizontal pad for actors, or edge labels, to consider the min distance between them
-const MIN_HORIZONTAL_PAD = 50.
+// leaves at least 25 units of space on the left/right when computing the space required between actors
+const HORIZONTAL_PAD = 50.
 
 const MIN_ACTOR_DISTANCE = 200.
 
