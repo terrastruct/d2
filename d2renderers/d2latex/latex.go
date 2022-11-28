@@ -13,6 +13,8 @@ import (
 	v8 "rogchap.com/v8go"
 )
 
+var pxPerEx = 8
+
 //go:embed polyfills.js
 var polyfillsJS string
 
@@ -22,6 +24,8 @@ var setupJS string
 //go:embed mathjax.js
 var mathjaxJS string
 
+// Matches this
+// <svg style="background: white;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="563" height="326" viewBox="-100 -100 563 326"><style type="text/css">
 var svgRe = regexp.MustCompile(`<svg[^>]+width="([0-9\.]+)ex" height="([0-9\.]+)ex"[^>]+>`)
 
 func Render(s string) (_ string, err error) {
@@ -41,9 +45,9 @@ func Render(s string) (_ string, err error) {
 	}
 
 	val, err := v8ctx.RunScript(fmt.Sprintf(`adaptor.innerHTML(html.convert("%s", {
-  em: 16,
-  ex: 8,
-}))`, s), "value.js")
+  em: %d,
+  ex: %d,
+}))`, s, pxPerEx*2, pxPerEx), "value.js")
 	if err != nil {
 		return "", err
 	}
@@ -75,5 +79,5 @@ func Measure(s string) (width, height int, err error) {
 		return 0, 0, fmt.Errorf("svg parsing failed for latex: %v", svg)
 	}
 
-	return int(math.Ceil(wf * 8)), int(math.Ceil(hf * 8)), nil
+	return int(math.Ceil(wf * float64(pxPerEx))), int(math.Ceil(hf * float64(pxPerEx))), nil
 }
