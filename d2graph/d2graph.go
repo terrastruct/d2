@@ -11,6 +11,7 @@ import (
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
+	"oss.terrastruct.com/d2/d2renderers/d2latex"
 	"oss.terrastruct.com/d2/d2renderers/textmeasure"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
@@ -833,10 +834,18 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		var dims *d2target.TextDimensions
 		var innerLabelPadding = 5
 		if obj.Attributes.Shape.Value == d2target.ShapeText {
-			var err error
-			dims, err = getMarkdownDimensions(mtexts, ruler, obj.Text())
-			if err != nil {
-				return err
+			if obj.Attributes.Language == "latex" {
+				width, height, err := d2latex.Measure(obj.Text().Text)
+				if err != nil {
+					return err
+				}
+				dims = d2target.NewTextDimensions(width, height)
+			} else {
+				var err error
+				dims, err = getMarkdownDimensions(mtexts, ruler, obj.Text())
+				if err != nil {
+					return err
+				}
 			}
 			innerLabelPadding = 0
 		} else {

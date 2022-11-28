@@ -20,6 +20,7 @@ import (
 	"github.com/alecthomas/chroma/styles"
 
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
+	"oss.terrastruct.com/d2/d2renderers/d2latex"
 	"oss.terrastruct.com/d2/d2renderers/textmeasure"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/color"
@@ -701,17 +702,27 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 			}
 			fmt.Fprintf(writer, "</g></g>")
 		case d2target.ShapeText:
-			render, err := textmeasure.RenderMarkdown(targetShape.Label)
-			if err != nil {
-				return err
+			if targetShape.Language == "latex" {
+				render, err := d2latex.Render(targetShape.Label)
+				if err != nil {
+					return err
+				}
+				fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
+				fmt.Fprintf(writer, render)
+				fmt.Fprintf(writer, "</g>")
+			} else {
+				render, err := textmeasure.RenderMarkdown(targetShape.Label)
+				if err != nil {
+					return err
+				}
+				fmt.Fprintf(writer, `<g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="%f" y="%f" width="%d" height="%d">`,
+					box.TopLeft.X, box.TopLeft.Y, targetShape.Width, targetShape.Height,
+				)
+				// we need the self closing form in this svg/xhtml context
+				render = strings.ReplaceAll(render, "<hr>", "<hr />")
+				fmt.Fprintf(writer, `<div xmlns="http://www.w3.org/1999/xhtml" class="md">%v</div>`, render)
+				fmt.Fprint(writer, `</foreignObject></g>`)
 			}
-			fmt.Fprintf(writer, `<g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="%f" y="%f" width="%d" height="%d">`,
-				box.TopLeft.X, box.TopLeft.Y, targetShape.Width, targetShape.Height,
-			)
-			// we need the self closing form in this svg/xhtml context
-			render = strings.ReplaceAll(render, "<hr>", "<hr />")
-			fmt.Fprintf(writer, `<div xmlns="http://www.w3.org/1999/xhtml" class="md">%v</div>`, render)
-			fmt.Fprint(writer, `</foreignObject></g>`)
 		default:
 			fontColor := "black"
 			if targetShape.Color != "" {

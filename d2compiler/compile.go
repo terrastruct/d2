@@ -377,7 +377,7 @@ func (c *compiler) applyScalar(attrs *d2graph.Attributes, reserved string, box d
 		if ok {
 			attrs.Language = fullTag
 		}
-		if attrs.Language == "markdown" {
+		if attrs.Language == "markdown" || attrs.Language == "latex" {
 			attrs.Shape.Value = d2target.ShapeText
 		} else {
 			attrs.Shape.Value = d2target.ShapeCode
@@ -548,12 +548,13 @@ func (c *compiler) compileFlatKey(k *d2ast.KeyPath) ([]string, string, bool) {
 
 // TODO add more, e.g. C, bash
 var ShortToFullLanguageAliases = map[string]string{
-	"md": "markdown",
-	"js": "javascript",
-	"go": "golang",
-	"py": "python",
-	"rb": "ruby",
-	"ts": "typescript",
+	"md":  "markdown",
+	"tex": "latex",
+	"js":  "javascript",
+	"go":  "golang",
+	"py":  "python",
+	"rb":  "ruby",
+	"ts":  "typescript",
 }
 var FullToShortLanguageAliases map[string]string
 
