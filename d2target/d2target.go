@@ -277,6 +277,7 @@ const (
 	ShapeClass         = "class"
 	ShapeSQLTable      = "sql_table"
 	ShapeImage         = "image"
+	ShapeSequence      = "sequence"
 )
 
 var Shapes = []string{
@@ -302,6 +303,7 @@ var Shapes = []string{
 	ShapeClass,
 	ShapeSQLTable,
 	ShapeImage,
+	ShapeSequence,
 }
 
 func IsShape(s string) bool {
@@ -368,6 +370,7 @@ var DSL_SHAPE_TO_SHAPE_TYPE = map[string]string{
 	ShapeClass:         shape.CLASS_TYPE,
 	ShapeSQLTable:      shape.TABLE_TYPE,
 	ShapeImage:         shape.IMAGE_TYPE,
+	ShapeSequence:      shape.SQUARE_TYPE,
 }
 
 var SHAPE_TYPE_TO_DSL_SHAPE map[string]string

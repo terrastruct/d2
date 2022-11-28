@@ -1501,6 +1501,26 @@ dst.id <-> src.dst_id
 				}
 			},
 		},
+		{
+			name: "basic_sequence",
+
+			text: `x: {
+  shape: sequence
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				diff.AssertStringEq(t, "sequence", g.Objects[0].Attributes.Shape.Value)
+			},
+		},
+		{
+			name: "root_sequence",
+
+			text: `shape: sequence
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				diff.AssertStringEq(t, "sequence", g.Root.Attributes.Shape.Value)
+			},
+		},
 	}
 
 	for _, tc := range testCases {
