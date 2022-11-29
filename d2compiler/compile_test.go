@@ -1521,6 +1521,14 @@ dst.id <-> src.dst_id
 				diff.AssertStringEq(t, "sequence_diagram", g.Root.Attributes.Shape.Value)
 			},
 		},
+		{
+			name: "default_orientation",
+
+			text: `x`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				diff.AssertStringEq(t, "vertical", g.Objects[0].Attributes.Orientation.Value)
+			},
+		},
 	}
 
 	for _, tc := range testCases {

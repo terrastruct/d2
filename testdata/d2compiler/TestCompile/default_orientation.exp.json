@@ -1,21 +1,21 @@
 {
   "graph": {
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile/escaped_id.d2,0:0:0-0:4:4",
+      "range": "d2/testdata/d2compiler/TestCompile/default_orientation.d2,0:0:0-0:1:1",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/escaped_id.d2,0:0:0-0:4:4",
+            "range": "d2/testdata/d2compiler/TestCompile/default_orientation.d2,0:0:0-0:1:1",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/escaped_id.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2compiler/TestCompile/default_orientation.d2,0:0:0-0:1:1",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/escaped_id.d2,0:0:0-0:4:4",
+                    "range": "d2/testdata/d2compiler/TestCompile/default_orientation.d2,0:0:0-0:1:1",
                     "value": [
                       {
-                        "string": "b\nb",
-                        "raw_string": "b\\nb"
+                        "string": "x",
+                        "raw_string": "x"
                       }
                     ]
                   }
@@ -52,8 +52,8 @@
     "edges": null,
     "objects": [
       {
-        "id": "\"b\\nb\"",
-        "id_val": "b\nb",
+        "id": "x",
+        "id_val": "x",
         "label_dimensions": {
           "width": 0,
           "height": 0
@@ -61,15 +61,15 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/escaped_id.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2compiler/TestCompile/default_orientation.d2,0:0:0-0:1:1",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/escaped_id.d2,0:0:0-0:4:4",
+                    "range": "d2/testdata/d2compiler/TestCompile/default_orientation.d2,0:0:0-0:1:1",
                     "value": [
                       {
-                        "string": "b\nb",
-                        "raw_string": "b\\nb"
+                        "string": "x",
+                        "raw_string": "x"
                       }
                     ]
                   }
@@ -82,7 +82,7 @@
         ],
         "attributes": {
           "label": {
-            "value": "b\nb"
+            "value": "x"
           },
           "style": {},
           "near_key": null,

@@ -97,6 +97,8 @@ type Attributes struct {
 	Language string         `json:"language,omitempty"`
 	// TODO: default to ShapeRectangle instead of empty string
 	Shape Scalar `json:"shape"`
+
+	Orientation Scalar `json:"orientation"`
 }
 
 // TODO references at the root scope should have their Scope set to root graph AST
@@ -441,6 +443,9 @@ func (obj *Object) newObject(id string) *Object {
 		Attributes: Attributes{
 			Label: Scalar{
 				Value: idval,
+			},
+			Orientation: Scalar{
+				Value: "vertical",
 			},
 		},
 
