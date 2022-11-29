@@ -14,7 +14,7 @@ help() {
   fi
 
   cat <<EOF
-usage: $arg0 [--dry-run] [--version vX.X.X] [--edge] [--method detect] [--prefix /usr/local]
+usage: $arg0 [-d|--dry-run] [--version vX.X.X] [--edge] [--method detect] [--prefix /usr/local]
   [--tala latest] [--force] [--uninstall]
 
 install.sh automates the installation of D2 onto your system. It currently only supports
@@ -26,7 +26,7 @@ If you pass --edge, it will clone the source, build a release and install from i
 
 Flags:
 
---dry-run
+-d, --dry-run
   Pass to have install.sh show the install method and flags that will be used to install
   without executing them. Very useful to understand what changes it will make to your system.
 
@@ -101,7 +101,7 @@ main() {
         help
         return 0
         ;;
-      dry-run)
+      d|dry-run)
         flag_noarg && shift "$FLAGSHIFT"
         DRY_RUN=1
         ;;
@@ -188,12 +188,13 @@ main() {
   if [ -n "${UNINSTALL-}" ]; then
     uninstall
     if [ -n "${DRY_RUN-}" ]; then
-      log "Rerun without --dry-run to execute printed commands and perform uninstall."
+      bigheader "Rerun without --dry-run to execute printed commands and perform uninstall."
     fi
   else
     install
     if [ -n "${DRY_RUN-}" ]; then
-      log "Rerun without --dry-run to execute printed commands and perform install."
+      bigheader "DRY RUN
+Rerun without --dry-run to execute printed commands and perform install."
     fi
   fi
 }
