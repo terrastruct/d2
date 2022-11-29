@@ -42,11 +42,13 @@ type sequenceDiagram struct {
 	activations []*d2graph.Object
 
 	// can be either actors or activation boxes
-	objectRank  map[*d2graph.Object]int
+	// rank: left to right position of actors/activations
+	objectRank map[*d2graph.Object]int
+	// depth: the nested levels of a given actor/activation
 	objectDepth map[*d2graph.Object]int
 
 	// keep track of the first and last edge of a given actor
-	// needed for activation boxes
+	// the edge rank is the order in which it appears from top to bottom
 	minEdgeRank map[*d2graph.Object]int
 	maxEdgeRank map[*d2graph.Object]int
 
@@ -69,7 +71,7 @@ func (sd *sequenceDiagram) init() {
 			sd.actors = append(sd.actors, obj)
 			sd.objectRank[obj] = len(sd.actors)
 			sd.objectDepth[obj] = 0
-			sd.maxActorHeight = math.Max(sd.maxActorHeight, obj.Height+VERTICAL_PAD)
+			sd.maxActorHeight = math.Max(sd.maxActorHeight, obj.Height)
 		} else {
 			// activations boxes are always rectangles and have no labels
 			obj.Attributes.Label = d2graph.Scalar{Value: ""}
@@ -83,7 +85,7 @@ func (sd *sequenceDiagram) init() {
 	}
 
 	for rank, edge := range sd.edges {
-		sd.edgeYStep = math.Max(sd.edgeYStep, float64(edge.LabelDimensions.Height)+VERTICAL_PAD)
+		sd.edgeYStep = math.Max(sd.edgeYStep, float64(edge.LabelDimensions.Height))
 
 		sd.setMinMaxEdgeRank(edge.Src, rank)
 		sd.setMinMaxEdgeRank(edge.Dst, rank)
@@ -94,6 +96,9 @@ func (sd *sequenceDiagram) init() {
 		distributedLabelWidth := float64(edge.LabelDimensions.Width) / rankDiff
 		sd.actorXStep = math.Max(sd.actorXStep, distributedLabelWidth+HORIZONTAL_PAD)
 	}
+
+	sd.maxActorHeight += VERTICAL_PAD
+	sd.edgeYStep += VERTICAL_PAD
 }
 
 func (sd *sequenceDiagram) setMinMaxEdgeRank(actor *d2graph.Object, rank int) {
@@ -213,7 +218,7 @@ func (sd *sequenceDiagram) placeActivationBoxes() {
 			maxY += ACTIVATION_BOX_EDGE_PAD
 		}
 
-		height := math.Max(maxY-minY, DEFAULT_ACTIVATION_BOX_HEIGHT)
+		height := math.Max(maxY-minY, MIN_ACTIVATION_BOX_HEIGHT)
 		width := ACTIVATION_BOX_WIDTH + (float64(sd.objectDepth[activation]-1) * ACTIVATION_BOX_DEPTH_GROW_FACTOR)
 		x := rankToX[sd.objectRank[activation]] - (width / 2.)
 		activation.Box = geo.NewBox(geo.NewPoint(x, minY), width, height)
