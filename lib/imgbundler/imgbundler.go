@@ -68,7 +68,7 @@ func inline(ms *xmain.State, in []byte, isRemote bool) ([]byte, error) {
 					return
 				}
 				if resp.err != nil {
-					ms.Log.Error.Printf("image failed to fetch: %s", resp.err.Error())
+					ms.Log.Error.Printf("image failed to fetch: %v", resp.err)
 				} else {
 					svg = strings.Replace(svg, resp.srctxt, fmt.Sprintf(`<image href="%s"`, resp.data), 1)
 				}
@@ -88,7 +88,6 @@ var transport = http.DefaultTransport
 func fetch(ctx context.Context, srctxt, href string, respChan chan resp) {
 	req, err := http.NewRequestWithContext(ctx, "GET", href, nil)
 	if err != nil {
-
 		respChan <- resp{err: err}
 		return
 	}

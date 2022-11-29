@@ -88,7 +88,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		case pngURL:
 			body = string(testPNGFile)
 		default:
-			t.Fatal(req.URL.String())
+			t.Fatal(req.URL)
 		}
 		return &http.Response{
 			StatusCode:    200,
