@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"sort"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/lib/geo"
@@ -15,7 +16,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	sd := &sequenceDiagram{
 		graph:          g,
 		objectRank:     make(map[*d2graph.Object]int),
-		edgeRank:       make(map[*d2graph.Edge]int),
+		objectDepth:    make(map[*d2graph.Object]int),
 		minEdgeRank:    make(map[*d2graph.Object]int),
 		maxEdgeRank:    make(map[*d2graph.Object]int),
 		edgeYStep:      MIN_EDGE_DISTANCE,
@@ -40,8 +41,8 @@ type sequenceDiagram struct {
 	lifespans []*d2graph.Object
 
 	// can be either actors or lifespans
-	objectRank map[*d2graph.Object]int
-	edgeRank   map[*d2graph.Edge]int
+	objectRank  map[*d2graph.Object]int
+	objectDepth map[*d2graph.Object]int
 
 	// keep track of the first and last edge of a given actor
 	// needed for lifespan
@@ -65,18 +66,27 @@ func (sd *sequenceDiagram) init() {
 	sd.edges = make([]*d2graph.Edge, len(sd.graph.Edges))
 	copy(sd.edges, sd.graph.Edges)
 
-	for rank, actor := range sd.graph.Root.ChildrenArray {
-		sd.assignRank(actor, rank)
-	}
-	for _, obj := range sd.graph.Objects {
+	queue := make([]*d2graph.Object, len(sd.graph.Root.ChildrenArray))
+	copy(queue, sd.graph.Root.ChildrenArray)
+	for len(queue) > 0 {
+		obj := queue[0]
+		queue = queue[1:]
+
 		if obj.Parent == sd.graph.Root {
 			sd.actors = append(sd.actors, obj)
+			sd.objectRank[obj] = len(sd.actors)
+			sd.objectDepth[obj] = 0
 		} else if obj != sd.graph.Root {
+			obj.Attributes.Label = d2graph.Scalar{Value: ""}
 			sd.lifespans = append(sd.lifespans, obj)
+			sd.objectRank[obj] = sd.objectRank[obj.Parent]
+			sd.objectDepth[obj] = sd.objectDepth[obj.Parent] + 1
 		}
+
+		queue = append(queue, obj.ChildrenArray...)
 	}
+
 	for rank, edge := range sd.edges {
-		sd.edgeRank[edge] = rank
 		if edge.Src.Parent == sd.graph.Root {
 			sd.maxActorHeight = math.Max(sd.maxActorHeight, edge.Src.Height+HORIZONTAL_PAD)
 		}
@@ -93,13 +103,6 @@ func (sd *sequenceDiagram) init() {
 		rankDiff := math.Abs(float64(sd.objectRank[edge.Src]) - float64(sd.objectRank[edge.Dst]))
 		distributedLabelWidth := float64(edge.LabelDimensions.Width) / rankDiff
 		sd.actorXStep = math.Max(sd.actorXStep, distributedLabelWidth+HORIZONTAL_PAD)
-	}
-}
-
-func (sd *sequenceDiagram) assignRank(actor *d2graph.Object, rank int) {
-	sd.objectRank[actor] = rank
-	for _, child := range actor.Children {
-		sd.assignRank(child, rank)
 	}
 }
 
@@ -176,17 +179,45 @@ func (sd *sequenceDiagram) placeLifespan() {
 	for _, actor := range sd.actors {
 		rankToX[sd.objectRank[actor]] = actor.Center().X
 	}
-	for _, lifespan := range sd.lifespans {
-		lifespan.Attributes.Label = d2graph.Scalar{Value: ""}
-		minRank := sd.minEdgeRank[lifespan]
-		maxRank := sd.maxEdgeRank[lifespan]
 
-		minY := sd.getEdgeY(minRank)
-		maxY := sd.getEdgeY(maxRank)
+	lifespanFromMostNested := make([]*d2graph.Object, len(sd.lifespans))
+	copy(lifespanFromMostNested, sd.lifespans)
+	sort.SliceStable(lifespanFromMostNested, func(i, j int) bool {
+		return sd.objectDepth[lifespanFromMostNested[i]] > sd.objectDepth[lifespanFromMostNested[j]]
+	})
+	for _, lifespan := range lifespanFromMostNested {
+		minChildY := math.Inf(1)
+		maxChildY := math.Inf(-1)
+		for _, child := range lifespan.ChildrenArray {
+			minChildY = math.Min(minChildY, child.TopLeft.Y)
+			maxChildY = math.Max(maxChildY, child.TopLeft.Y+child.Height)
+		}
+
+		minEdgeY := math.Inf(1)
+		if minRank, exists := sd.minEdgeRank[lifespan]; exists {
+			minEdgeY = sd.getEdgeY(minRank)
+		}
+		maxEdgeY := math.Inf(-1)
+		if maxRank, exists := sd.maxEdgeRank[lifespan]; exists {
+			maxEdgeY = sd.getEdgeY(maxRank)
+		}
+
+		minY := math.Min(minEdgeY, minChildY)
+		if minY == minChildY {
+			minY -= LIFESPAN_DEPTH_GROW_FACTOR
+		}
+		maxY := math.Max(maxEdgeY, maxChildY)
+		if maxY == maxChildY {
+			maxY += LIFESPAN_DEPTH_GROW_FACTOR
+		}
+
 		height := maxY - minY
 		height = math.Max(height, DEFAULT_LIFESPAN_BOX_HEIGHT)
-		x := rankToX[sd.objectRank[lifespan]] - (LIFESPAN_BOX_WIDTH / 2.)
-		lifespan.Box = geo.NewBox(geo.NewPoint(x, minY), LIFESPAN_BOX_WIDTH, height)
+
+		width := LIFESPAN_BOX_WIDTH + (float64(sd.objectDepth[lifespan]-1) * LIFESPAN_DEPTH_GROW_FACTOR)
+
+		x := rankToX[sd.objectRank[lifespan]] - (width / 2.)
+		lifespan.Box = geo.NewBox(geo.NewPoint(x, minY), width, height)
 	}
 }
 
