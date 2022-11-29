@@ -31,15 +31,15 @@ type resp struct {
 	err    error
 }
 
-func InlineLocal(ms *xmain.State, in []byte) ([]byte, error) {
-	return inline(ms, in, false)
+func InlineLocal(ctx context.Context, ms *xmain.State, in []byte) ([]byte, error) {
+	return inline(ctx, ms, in, false)
 }
 
-func InlineRemote(ms *xmain.State, in []byte) ([]byte, error) {
-	return inline(ms, in, true)
+func InlineRemote(ctx context.Context, ms *xmain.State, in []byte) ([]byte, error) {
+	return inline(ctx, ms, in, true)
 }
 
-func inline(ms *xmain.State, svg []byte, isRemote bool) (_ []byte, err error) {
+func inline(ctx context.Context, ms *xmain.State, svg []byte, isRemote bool) (_ []byte, err error) {
 	defer xdefer.Errorf(&err, "failed to bundle images")
 	imgs := imageRe.FindAllSubmatch(svg, -1)
 
@@ -57,7 +57,7 @@ func inline(ms *xmain.State, svg []byte, isRemote bool) (_ []byte, err error) {
 	// Limits the number of workers to 16.
 	sema := make(chan struct{}, 16)
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*5)
+	ctx, cancel := context.WithTimeout(ctx, time.Minute*5)
 	defer cancel()
 
 	wg.Add(len(filtered))
