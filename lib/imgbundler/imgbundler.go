@@ -32,17 +32,15 @@ func InlineRemote(ms *xmain.State, in []byte) ([]byte, error) {
 	return inline(ms, in, true)
 }
 
-func inline(ms *xmain.State, in []byte, isRemote bool) ([]byte, error) {
-	svg := string(in)
-
-	imgs := imageRe.FindAllStringSubmatch(svg, -1)
+func inline(ms *xmain.State, svg []byte, isRemote bool) ([]byte, error) {
+	imgs := imageRe.FindAllSubmatch(svg, -1)
 
 	var filtered [][]string
 	for _, img := range imgs {
-		u, err := url.Parse(img[1])
+		u, err := url.Parse(string(img[1]))
 		isRemoteImg := err == nil && strings.HasPrefix(u.Scheme, "http")
 		if isRemoteImg == isRemote {
-			filtered = append(filtered, img)
+			filtered = append(filtered, []string{string(img[0]), string(img[0])})
 		}
 	}
 
@@ -69,6 +67,7 @@ func inline(ms *xmain.State, in []byte, isRemote bool) ([]byte, error) {
 		}(img[0], img[1])
 	}
 
+	out := string(svg)
 	go func() {
 		for {
 			select {
@@ -79,7 +78,7 @@ func inline(ms *xmain.State, in []byte, isRemote bool) ([]byte, error) {
 				if resp.err != nil {
 					ms.Log.Error.Printf("image failed to fetch: %v", resp.err)
 				} else {
-					svg = strings.Replace(svg, resp.srctxt, fmt.Sprintf(`<image href="%s"`, resp.data), 1)
+					out = strings.Replace(out, resp.srctxt, fmt.Sprintf(`<image href="%s"`, resp.data), 1)
 				}
 				wg.Done()
 			}
@@ -89,7 +88,7 @@ func inline(ms *xmain.State, in []byte, isRemote bool) ([]byte, error) {
 	wg.Wait()
 	close(respChan)
 
-	return []byte(svg), nil
+	return []byte(out), nil
 }
 
 var transport = http.DefaultTransport
@@ -114,7 +113,7 @@ func fetch(ctx context.Context, href string) (string, error) {
 	mimeType := http.DetectContentType(data)
 	mimeType = strings.Replace(mimeType, "text/xml", "image/svg+xml", 1)
 
-	enc := base64.URLEncoding.EncodeToString(data)
+	enc := base64.StdEncoding.EncodeToString(data)
 
 	return fmt.Sprintf("data:%s;base64,%s", mimeType, enc), nil
 }
@@ -128,7 +127,7 @@ func read(ctx context.Context, href string) (string, error) {
 	mimeType := http.DetectContentType(data)
 	mimeType = strings.Replace(mimeType, "text/xml", "image/svg+xml", 1)
 
-	enc := base64.URLEncoding.EncodeToString(data)
+	enc := base64.StdEncoding.EncodeToString(data)
 
 	return fmt.Sprintf("data:%s;base64,%s", mimeType, enc), nil
 }
