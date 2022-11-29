@@ -114,7 +114,7 @@ func fetch(ctx context.Context, href string) (string, error) {
 	mimeType := http.DetectContentType(data)
 	mimeType = strings.Replace(mimeType, "text/xml", "image/svg+xml", 1)
 
-	enc := base64.StdEncoding.EncodeToString(data)
+	enc := base64.URLEncoding.EncodeToString(data)
 
 	return fmt.Sprintf("data:%s;base64,%s", mimeType, enc), nil
 }
@@ -128,7 +128,7 @@ func read(ctx context.Context, href string) (string, error) {
 	mimeType := http.DetectContentType(data)
 	mimeType = strings.Replace(mimeType, "text/xml", "image/svg+xml", 1)
 
-	enc := base64.StdEncoding.EncodeToString(data)
+	enc := base64.URLEncoding.EncodeToString(data)
 
 	return fmt.Sprintf("data:%s;base64,%s", mimeType, enc), nil
 }
