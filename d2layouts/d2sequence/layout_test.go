@@ -90,11 +90,23 @@ func TestBasicSequenceDiagram(t *testing.T) {
 		if edge.Route[0].Y != edge.Route[1].Y {
 			t.Fatalf("expected edge[%d] to be a horizontal line", i)
 		}
-		if edge.Route[0].X != edge.Src.Center().X {
-			t.Fatalf("expected edge[%d] source endpoint to be at the middle of the source actor", i)
-		}
-		if edge.Route[1].X != edge.Dst.Center().X {
-			t.Fatalf("expected edge[%d] target endpoint to be at the middle of the target actor", i)
+		if edge.Src.TopLeft.X < edge.Dst.TopLeft.X {
+			// left to right
+			if edge.Route[0].X != edge.Src.Center().X+ACTIVATION_BOX_EDGE_PAD {
+				t.Fatalf("expected edge[%d] x to be at the actor center", i)
+			}
+
+			if edge.Route[1].X != edge.Dst.Center().X-ACTIVATION_BOX_EDGE_PAD {
+				t.Fatalf("expected edge[%d] x to be at the actor center", i)
+			}
+		} else {
+			if edge.Route[0].X != edge.Src.Center().X-ACTIVATION_BOX_EDGE_PAD {
+				t.Fatalf("expected edge[%d] x to be at the actor center", i)
+			}
+
+			if edge.Route[1].X != edge.Dst.Center().X+ACTIVATION_BOX_EDGE_PAD {
+				t.Fatalf("expected edge[%d] x to be at the actor center", i)
+			}
 		}
 		if i > 0 {
 			prevEdge := g.Edges[i-1]
@@ -108,19 +120,19 @@ func TestBasicSequenceDiagram(t *testing.T) {
 	for i := nEdges; i < nExpectedEdges; i++ {
 		edge := g.Edges[i]
 		if len(edge.Route) != 2 {
-			t.Fatalf("expected edge[%d] to have only 2 points", i)
+			t.Fatalf("expected lifeline edge[%d] to have only 2 points", i)
 		}
 		if edge.Route[0].X != edge.Route[1].X {
-			t.Fatalf("expected edge[%d] to be a vertical line", i)
+			t.Fatalf("expected lifeline edge[%d] to be a vertical line", i)
 		}
 		if edge.Route[0].X != edge.Src.Center().X {
-			t.Fatalf("expected edge[%d] x to be at the actor center", i)
+			t.Fatalf("expected lifeline edge[%d] x to be at the actor center", i)
 		}
 		if edge.Route[0].Y != edge.Src.Height+edge.Src.TopLeft.Y {
-			t.Fatalf("expected edge[%d] to start at the bottom of the source actor", i)
+			t.Fatalf("expected lifeline edge[%d] to start at the bottom of the source actor", i)
 		}
 		if edge.Route[1].Y < lastSequenceEdge.Route[0].Y {
-			t.Fatalf("expected edge[%d] to end after the last sequence edge", i)
+			t.Fatalf("expected lifeline edge[%d] to end after the last sequence edge", i)
 		}
 	}
 
@@ -224,15 +236,15 @@ func TestActivationBoxesSequenceDiagram(t *testing.T) {
 	}
 
 	// check routes
-	if g.Edges[0].Route[0].X != a_t1.TopLeft.X+a_t1.Width {
+	if g.Edges[0].Route[0].X != a_t1.TopLeft.X+a_t1.Width+ACTIVATION_BOX_EDGE_PAD {
 		t.Fatal("expected the first edge to start on a.t1 top right X")
 	}
 
-	if g.Edges[0].Route[1].X != b_t1.TopLeft.X {
+	if g.Edges[0].Route[1].X != b_t1.TopLeft.X-ACTIVATION_BOX_EDGE_PAD {
 		t.Fatal("expected the first edge to end on b.t1 top left X")
 	}
 
-	if g.Edges[2].Route[1].X != b.Center().X {
+	if g.Edges[2].Route[1].X != b.Center().X-ACTIVATION_BOX_EDGE_PAD {
 		t.Fatal("expected the third edge to end on b.t1 center X")
 	}
 }

@@ -238,6 +238,15 @@ func (sd *sequenceDiagram) routeEdges() {
 		} else {
 			endX = edge.Dst.TopLeft.X + edge.Dst.Width
 		}
+
+		if isLeftToRight {
+			startX += ACTIVATION_BOX_EDGE_PAD
+			endX -= ACTIVATION_BOX_EDGE_PAD
+		} else {
+			startX -= ACTIVATION_BOX_EDGE_PAD
+			endX += ACTIVATION_BOX_EDGE_PAD
+		}
+
 		edgeY := sd.getEdgeY(rank)
 		edge.Route = []*geo.Point{
 			geo.NewPoint(startX, edgeY),
