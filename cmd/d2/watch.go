@@ -345,7 +345,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.pw = newPW
 		}
 
-		b, err := compile(ctx, w.ms, w.layoutPlugin, w.themeID, w.inputPath, w.outputPath, w.pw.Page)
+		b, err := compile(ctx, w.ms, true, w.layoutPlugin, w.themeID, w.inputPath, w.outputPath, w.pw.Page)
 		if err != nil {
 			err = fmt.Errorf("failed to %scompile: %w", recompiledPrefix, err)
 			w.ms.Log.Error.Print(err)

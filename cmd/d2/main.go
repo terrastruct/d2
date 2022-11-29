@@ -169,7 +169,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		_ = 343
 	}
 
-	_, err = compile(ctx, ms, plugin, *themeFlag, inputPath, outputPath, pw.Page)
+	_, err = compile(ctx, ms, false, plugin, *themeFlag, inputPath, outputPath, pw.Page)
 	if err != nil {
 		return err
 	}
@@ -177,7 +177,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, themeID int64, inputPath, outputPath string, page playwright.Page) ([]byte, error) {
+func compile(ctx context.Context, ms *xmain.State, isWatching bool, plugin d2plugin.Plugin, themeID int64, inputPath, outputPath string, page playwright.Page) ([]byte, error) {
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
 		return nil, err
@@ -205,16 +205,24 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, theme
 	if err != nil {
 		return nil, err
 	}
-	svg, err = imgbundler.InlineLocal(ms, svg)
+	svg, err = imgbundler.InlineLocal(svg)
 	if err != nil {
-		return nil, err
+		// Missing/broken images are fine during watch mode, as the user is likely building up a diagram.
+		// Otherwise, the assumption is that this diagram is building for production, and broken images are not okay.
+		if !isWatching {
+			return nil, err
+		}
+		ms.Log.Debug.Printf("ignoring missing/broken local image in watch mode: %v", err)
 	}
 
 	out := svg
 	if filepath.Ext(outputPath) == ".png" {
-		svg, err = imgbundler.InlineRemote(ms, svg)
+		svg, err = imgbundler.InlineRemote(svg)
 		if err != nil {
-			return nil, err
+			if !isWatching {
+				return nil, err
+			}
+			ms.Log.Debug.Printf("ignoring missing/broken remote image in watch mode: %v", err)
 		}
 
 		out, err = png.ConvertSVG(ms, page, svg)

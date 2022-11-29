@@ -16,8 +16,6 @@ import (
 
 	"go.uber.org/multierr"
 	"oss.terrastruct.com/xdefer"
-
-	"oss.terrastruct.com/d2/lib/xmain"
 )
 
 var imageRe = regexp.MustCompile(`<image href="([^"]+)"`)
@@ -28,15 +26,15 @@ type resp struct {
 	err    error
 }
 
-func InlineLocal(ms *xmain.State, in []byte) ([]byte, error) {
-	return inline(ms, in, false)
+func InlineLocal(in []byte) ([]byte, error) {
+	return inline(in, false)
 }
 
-func InlineRemote(ms *xmain.State, in []byte) ([]byte, error) {
-	return inline(ms, in, true)
+func InlineRemote(in []byte) ([]byte, error) {
+	return inline(in, true)
 }
 
-func inline(ms *xmain.State, svg []byte, isRemote bool) (_ []byte, err error) {
+func inline(svg []byte, isRemote bool) (_ []byte, err error) {
 	defer xdefer.Errorf(&err, "failed to bundle images")
 	imgs := imageRe.FindAllSubmatch(svg, -1)
 
@@ -95,7 +93,7 @@ func inline(ms *xmain.State, svg []byte, isRemote bool) (_ []byte, err error) {
 	for {
 		select {
 		case <-ctx.Done():
-			return nil, fmt.Errorf("failed to wait for imgbundler workers: %w", ctx.Err())
+			return nil, fmt.Errorf("failed waiting for imgbundler workers: %w", ctx.Err())
 		case resp, ok := <-respChan:
 			if !ok {
 				return svg, nil
@@ -112,7 +110,7 @@ func inline(ms *xmain.State, svg []byte, isRemote bool) (_ []byte, err error) {
 var transport = http.DefaultTransport
 
 func fetch(ctx context.Context, href string) (string, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	ctx, cancel := context.WithTimeout(ctx, time.Minute)
 	defer cancel()
 
 	req, err := http.NewRequestWithContext(ctx, "GET", href, nil)
