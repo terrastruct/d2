@@ -44,7 +44,7 @@ func Render(s string) (_ string, err error) {
 		return "", err
 	}
 
-	val, err := v8ctx.RunScript(fmt.Sprintf(`adaptor.innerHTML(html.convert("%s", {
+	val, err := v8ctx.RunScript(fmt.Sprintf(`adaptor.innerHTML(html.convert(`+"`"+"%s`"+`, {
   em: %d,
   ex: %d,
 }))`, s, pxPerEx*2, pxPerEx), "value.js")
