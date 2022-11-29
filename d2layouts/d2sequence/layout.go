@@ -27,7 +27,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 
 	sd.init()
 	sd.placeActors()
-	sd.placeActivationBoxes()
+	sd.placeSpanBoxes()
 	sd.routeEdges()
 	sd.addLifelineEdges()
 
@@ -37,14 +37,14 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 type sequenceDiagram struct {
 	graph *d2graph.Graph
 
-	edges       []*d2graph.Edge
-	actors      []*d2graph.Object
-	activations []*d2graph.Object
+	edges  []*d2graph.Edge
+	actors []*d2graph.Object
+	spans  []*d2graph.Object
 
-	// can be either actors or activation boxes
-	// rank: left to right position of actors/activations
+	// can be either actors or span boxes
+	// rank: left to right position of actors/span boxes
 	objectRank map[*d2graph.Object]int
-	// depth: the nested levels of a given actor/activation
+	// depth: the nested levels of a given actor/span
 	objectDepth map[*d2graph.Object]int
 
 	// keep track of the first and last edge of a given actor
@@ -73,10 +73,10 @@ func (sd *sequenceDiagram) init() {
 			sd.objectDepth[obj] = 0
 			sd.maxActorHeight = math.Max(sd.maxActorHeight, obj.Height)
 		} else {
-			// activations boxes are always rectangles and have no labels
+			// span boxes are always rectangles and have no labels
 			obj.Attributes.Label = d2graph.Scalar{Value: ""}
 			obj.Attributes.Shape = d2graph.Scalar{Value: shape.SQUARE_TYPE}
-			sd.activations = append(sd.activations, obj)
+			sd.spans = append(sd.spans, obj)
 			sd.objectRank[obj] = sd.objectRank[obj.Parent]
 			sd.objectDepth[obj] = sd.objectDepth[obj.Parent] + 1
 		}
@@ -156,72 +156,72 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 	}
 }
 
-// placeActivationBoxes places activation boxes over the object lifeline
+// placeSpanBoxes places span boxes over the object lifeline
 // ┌──────────┐
 // │  actor   │
 // └────┬─────┘
 //    ┌─┴──┐
 //    │    │
-//  activation
+//    |span|
 //    │    │
 //    └─┬──┘
 //      │
 //   lifeline
 //      │
-func (sd *sequenceDiagram) placeActivationBoxes() {
-	// quickly find the activation box center X
+func (sd *sequenceDiagram) placeSpanBoxes() {
+	// quickly find the span box center X
 	rankToX := make(map[int]float64)
 	for _, actor := range sd.actors {
 		rankToX[sd.objectRank[actor]] = actor.Center().X
 	}
 
-	// places activation boxes from most to least nested
-	// the order is important because the only way a child activation box exists is if there'e an edge to it
-	// however, the parent activation might not have an edge to it and then its position is based on the child position
+	// places span boxes from most to least nested
+	// the order is important because the only way a child span box exists is if there'e an edge to it
+	// however, the parent span might not have an edge to it and then its position is based on the child position
 	// or, there can be edge to it, but it comes after the child one meaning the top left position is still based on the child
 	// and not on its own edge
-	activationFromMostNested := make([]*d2graph.Object, len(sd.activations))
-	copy(activationFromMostNested, sd.activations)
-	sort.SliceStable(activationFromMostNested, func(i, j int) bool {
-		return sd.objectDepth[activationFromMostNested[i]] > sd.objectDepth[activationFromMostNested[j]]
+	spanFromMostNested := make([]*d2graph.Object, len(sd.spans))
+	copy(spanFromMostNested, sd.spans)
+	sort.SliceStable(spanFromMostNested, func(i, j int) bool {
+		return sd.objectDepth[spanFromMostNested[i]] > sd.objectDepth[spanFromMostNested[j]]
 	})
-	for _, activation := range activationFromMostNested {
+	for _, span := range spanFromMostNested {
 		// finds the position based on children
 		minChildY := math.Inf(1)
 		maxChildY := math.Inf(-1)
-		for _, child := range activation.ChildrenArray {
+		for _, child := range span.ChildrenArray {
 			minChildY = math.Min(minChildY, child.TopLeft.Y)
 			maxChildY = math.Max(maxChildY, child.TopLeft.Y+child.Height)
 		}
 
-		// finds the position if there are edges to this activation box
+		// finds the position if there are edges to this span box
 		minEdgeY := math.Inf(1)
-		if minRank, exists := sd.minEdgeRank[activation]; exists {
+		if minRank, exists := sd.minEdgeRank[span]; exists {
 			minEdgeY = sd.getEdgeY(minRank)
 		}
 		maxEdgeY := math.Inf(-1)
-		if maxRank, exists := sd.maxEdgeRank[activation]; exists {
+		if maxRank, exists := sd.maxEdgeRank[span]; exists {
 			maxEdgeY = sd.getEdgeY(maxRank)
 		}
 
 		// if it is the same as the child top left, add some padding
 		minY := math.Min(minEdgeY, minChildY)
 		if minY == minChildY {
-			minY -= ACTIVATION_BOX_DEPTH_GROW_FACTOR
+			minY -= SPAN_BOX_DEPTH_GROW_FACTOR
 		} else {
-			minY -= ACTIVATION_BOX_EDGE_PAD
+			minY -= SPAN_BOX_EDGE_PAD
 		}
 		maxY := math.Max(maxEdgeY, maxChildY)
 		if maxY == maxChildY {
-			maxY += ACTIVATION_BOX_DEPTH_GROW_FACTOR
+			maxY += SPAN_BOX_DEPTH_GROW_FACTOR
 		} else {
-			maxY += ACTIVATION_BOX_EDGE_PAD
+			maxY += SPAN_BOX_EDGE_PAD
 		}
 
-		height := math.Max(maxY-minY, MIN_ACTIVATION_BOX_HEIGHT)
-		width := ACTIVATION_BOX_WIDTH + (float64(sd.objectDepth[activation]-1) * ACTIVATION_BOX_DEPTH_GROW_FACTOR)
-		x := rankToX[sd.objectRank[activation]] - (width / 2.)
-		activation.Box = geo.NewBox(geo.NewPoint(x, minY), width, height)
+		height := math.Max(maxY-minY, MIN_SPAN_BOX_HEIGHT)
+		width := SPAN_BOX_WIDTH + (float64(sd.objectDepth[span]-1) * SPAN_BOX_DEPTH_GROW_FACTOR)
+		x := rankToX[sd.objectRank[span]] - (width / 2.)
+		span.Box = geo.NewBox(geo.NewPoint(x, minY), width, height)
 	}
 }
 
@@ -249,11 +249,11 @@ func (sd *sequenceDiagram) routeEdges() {
 		}
 
 		if isLeftToRight {
-			startX += ACTIVATION_BOX_EDGE_PAD
-			endX -= ACTIVATION_BOX_EDGE_PAD
+			startX += SPAN_BOX_EDGE_PAD
+			endX -= SPAN_BOX_EDGE_PAD
 		} else {
-			startX -= ACTIVATION_BOX_EDGE_PAD
-			endX += ACTIVATION_BOX_EDGE_PAD
+			startX -= SPAN_BOX_EDGE_PAD
+			endX += SPAN_BOX_EDGE_PAD
 		}
 
 		edgeY := sd.getEdgeY(rank)

@@ -12,13 +12,13 @@ const MIN_ACTOR_DISTANCE = 200.
 const MIN_EDGE_DISTANCE = 100.
 
 // default size
-const ACTIVATION_BOX_WIDTH = 20.
+const SPAN_BOX_WIDTH = 20.
 
-// small pad so that edges don't touch lifelines and activation boxes
-const ACTIVATION_BOX_EDGE_PAD = 5.
+// small pad so that edges don't touch lifelines and span boxes
+const SPAN_BOX_EDGE_PAD = 5.
 
-// as the activation boxes start getting nested, their size grows
-const ACTIVATION_BOX_DEPTH_GROW_FACTOR = 10.
+// as the span boxes start getting nested, their size grows
+const SPAN_BOX_DEPTH_GROW_FACTOR = 10.
 
-// when a activation box has a single edge
-const MIN_ACTIVATION_BOX_HEIGHT = MIN_EDGE_DISTANCE / 2.
+// when a span box has a single edge
+const MIN_SPAN_BOX_HEIGHT = MIN_EDGE_DISTANCE / 2.
