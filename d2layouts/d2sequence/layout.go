@@ -10,6 +10,7 @@ import (
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/go2"
 	"oss.terrastruct.com/d2/lib/label"
+	"oss.terrastruct.com/d2/lib/shape"
 )
 
 func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
@@ -54,14 +55,6 @@ type sequenceDiagram struct {
 	maxActorHeight float64
 }
 
-func intMin(a, b int) int {
-	return int(math.Min(float64(a), float64(b)))
-}
-
-func intMax(a, b int) int {
-	return int(math.Max(float64(a), float64(b)))
-}
-
 func (sd *sequenceDiagram) init() {
 	sd.edges = make([]*d2graph.Edge, len(sd.graph.Edges))
 	copy(sd.edges, sd.graph.Edges)
@@ -72,12 +65,15 @@ func (sd *sequenceDiagram) init() {
 		obj := queue[0]
 		queue = queue[1:]
 
-		if obj.Parent == sd.graph.Root {
+		if sd.isActor(obj) {
 			sd.actors = append(sd.actors, obj)
 			sd.objectRank[obj] = len(sd.actors)
 			sd.objectDepth[obj] = 0
-		} else if obj != sd.graph.Root {
+			sd.maxActorHeight = math.Max(sd.maxActorHeight, obj.Height+HORIZONTAL_PAD)
+		} else {
+			// activations boxes are always rectangles and have no labels
 			obj.Attributes.Label = d2graph.Scalar{Value: ""}
+			obj.Attributes.Shape = d2graph.Scalar{Value: shape.SQUARE_TYPE}
 			sd.activations = append(sd.activations, obj)
 			sd.objectRank[obj] = sd.objectRank[obj.Parent]
 			sd.objectDepth[obj] = sd.objectDepth[obj.Parent] + 1
@@ -87,12 +83,6 @@ func (sd *sequenceDiagram) init() {
 	}
 
 	for rank, edge := range sd.edges {
-		if edge.Src.Parent == sd.graph.Root {
-			sd.maxActorHeight = math.Max(sd.maxActorHeight, edge.Src.Height+HORIZONTAL_PAD)
-		}
-		if edge.Dst.Parent == sd.graph.Root {
-			sd.maxActorHeight = math.Max(sd.maxActorHeight, edge.Dst.Height+HORIZONTAL_PAD)
-		}
 		sd.edgeYStep = math.Max(sd.edgeYStep, float64(edge.LabelDimensions.Height)+HORIZONTAL_PAD)
 
 		sd.setMinMaxEdgeRank(edge.Src, rank)
@@ -108,12 +98,12 @@ func (sd *sequenceDiagram) init() {
 
 func (sd *sequenceDiagram) setMinMaxEdgeRank(actor *d2graph.Object, rank int) {
 	if minRank, exists := sd.minEdgeRank[actor]; exists {
-		sd.minEdgeRank[actor] = intMin(minRank, rank)
+		sd.minEdgeRank[actor] = go2.IntMin(minRank, rank)
 	} else {
 		sd.minEdgeRank[actor] = rank
 	}
 
-	sd.maxEdgeRank[actor] = intMax(sd.maxEdgeRank[actor], rank)
+	sd.maxEdgeRank[actor] = go2.IntMax(sd.maxEdgeRank[actor], rank)
 }
 
 // placeActors places actors bottom aligned, side by side
@@ -213,7 +203,7 @@ func (sd *sequenceDiagram) placeActivationBoxes() {
 		height := maxY - minY
 		height = math.Max(height, DEFAULT_ACTIVATION_BOX_HEIGHT)
 
-		width := ACTIvATION_BOX_WIDTH + (float64(sd.objectDepth[activation]-1) * ACTIVATION_BOX_DEPTH_GROW_FACTOR)
+		width := ACTIVATION_BOX_WIDTH + (float64(sd.objectDepth[activation]-1) * ACTIVATION_BOX_DEPTH_GROW_FACTOR)
 
 		x := rankToX[sd.objectRank[activation]] - (width / 2.)
 		activation.Box = geo.NewBox(geo.NewPoint(x, minY), width, height)

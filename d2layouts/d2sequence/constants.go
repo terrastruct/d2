@@ -9,7 +9,7 @@ const MIN_ACTOR_DISTANCE = 200.
 const MIN_EDGE_DISTANCE = 100.
 
 // default size
-const ACTIvATION_BOX_WIDTH = 20.
+const ACTIVATION_BOX_WIDTH = 20.
 
 // as the activation boxes start getting nested, their size grows
 const ACTIVATION_BOX_DEPTH_GROW_FACTOR = 10.
