@@ -6,8 +6,13 @@
 - `stroke-dash` on shapes is now supported. [#188](https://github.com/terrastruct/d2/issues/188)
 - `font-color` is now supported on shapes and connections. [#215](https://github.com/terrastruct/d2/pull/215)
 - Querying shapes and connections by ID is now supported in renders. [#218](https://github.com/terrastruct/d2/pull/218)
+- [install.sh](./install.sh) now accepts `-d` as an alias for `--dry-run`.
+  [#266](https://github.com/terrastruct/d2/pull/266)
 
 #### Improvements 🔧
+
+- [install.sh](./install.sh) prints the dry run message more visibly.
+  [#266](https://github.com/terrastruct/d2/pull/266)
 
 #### Bugfixes 🔴
 
