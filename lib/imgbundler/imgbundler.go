@@ -40,7 +40,7 @@ func inline(ms *xmain.State, svg []byte, isRemote bool) ([]byte, error) {
 		u, err := url.Parse(string(img[1]))
 		isRemoteImg := err == nil && strings.HasPrefix(u.Scheme, "http")
 		if isRemoteImg == isRemote {
-			filtered = append(filtered, []string{string(img[0]), string(img[0])})
+			filtered = append(filtered, []string{string(img[0]), string(img[1])})
 		}
 	}
 
