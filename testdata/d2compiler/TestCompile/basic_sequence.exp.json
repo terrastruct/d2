@@ -1,11 +1,11 @@
 {
   "graph": {
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile/basic_sequence.d2,0:0:0-3:0:25",
+      "range": "d2/testdata/d2compiler/TestCompile/basic_sequence.d2,0:0:0-3:0:33",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/basic_sequence.d2,0:0:0-2:1:24",
+            "range": "d2/testdata/d2compiler/TestCompile/basic_sequence.d2,0:0:0-2:1:32",
             "key": {
               "range": "d2/testdata/d2compiler/TestCompile/basic_sequence.d2,0:0:0-0:1:1",
               "path": [
@@ -25,11 +25,11 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/basic_sequence.d2,0:3:3-2:0:23",
+                "range": "d2/testdata/d2compiler/TestCompile/basic_sequence.d2,0:3:3-2:0:31",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/basic_sequence.d2,1:2:7-1:17:22",
+                      "range": "d2/testdata/d2compiler/TestCompile/basic_sequence.d2,1:2:7-1:25:30",
                       "key": {
                         "range": "d2/testdata/d2compiler/TestCompile/basic_sequence.d2,1:2:7-1:7:12",
                         "path": [
@@ -49,11 +49,11 @@
                       "primary": {},
                       "value": {
                         "unquoted_string": {
-                          "range": "d2/testdata/d2compiler/TestCompile/basic_sequence.d2,1:9:14-1:17:22",
+                          "range": "d2/testdata/d2compiler/TestCompile/basic_sequence.d2,1:9:14-1:25:30",
                           "value": [
                             {
-                              "string": "sequence",
-                              "raw_string": "sequence"
+                              "string": "sequence_diagram",
+                              "raw_string": "sequence_diagram"
                             }
                           ]
                         }
@@ -123,7 +123,7 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": "sequence"
+            "value": "sequence_diagram"
           }
         }
       }
