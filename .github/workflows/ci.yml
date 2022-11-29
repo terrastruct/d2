@@ -13,7 +13,7 @@ jobs:
         with:
           go-version-file: ./go.mod
           cache: true
-      - run: COLOR=1 ./make.sh all race
+      - run: COLOR=1 ./make.sh
         env:
           GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
