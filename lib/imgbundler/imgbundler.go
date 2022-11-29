@@ -20,6 +20,9 @@ import (
 	"oss.terrastruct.com/d2/lib/xmain"
 )
 
+// 32 MB
+var max_img_size int64 = 33_554_432
+
 var imageRe = regexp.MustCompile(`<image href="([^"]+)"`)
 
 type resp struct {
@@ -132,7 +135,8 @@ func fetch(ctx context.Context, href string) (string, error) {
 	if imgResp.StatusCode != 200 {
 		return "", fmt.Errorf("img %s returned status code %d", href, imgResp.StatusCode)
 	}
-	data, err := ioutil.ReadAll(imgResp.Body)
+	r := http.MaxBytesReader(nil, imgResp.Body, max_img_size)
+	data, err := ioutil.ReadAll(r)
 	if err != nil {
 		return "", err
 	}

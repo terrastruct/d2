@@ -1,6 +1,7 @@
 package imgbundler
 
 import (
+	"crypto/rand"
 	_ "embed"
 	"fmt"
 	"net/http"
@@ -113,6 +114,34 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 	}
 	if !strings.Contains(string(out), "image/png") {
 		t.Fatal("no png image inserted")
+	}
+
+	// Test almost too large response
+	transport = roundTripFunc(func(req *http.Request) *http.Response {
+		respRecorder := httptest.NewRecorder()
+		bytes := make([]byte, max_img_size-1)
+		rand.Read(bytes)
+		respRecorder.Write(bytes)
+		respRecorder.WriteHeader(200)
+		return respRecorder.Result()
+	})
+	_, err = InlineRemote(ms, []byte(sampleSVG))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Test too large response
+	transport = roundTripFunc(func(req *http.Request) *http.Response {
+		respRecorder := httptest.NewRecorder()
+		bytes := make([]byte, max_img_size+1)
+		rand.Read(bytes)
+		respRecorder.Write(bytes)
+		respRecorder.WriteHeader(200)
+		return respRecorder.Result()
+	})
+	_, err = InlineRemote(ms, []byte(sampleSVG))
+	if err == nil {
+		t.Fatal("expected error")
 	}
 
 	// Test error response
