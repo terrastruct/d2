@@ -165,6 +165,7 @@ func (sd *sequenceDiagram) placeLifespan() {
 		rankToX[sd.objectRank[actor]] = actor.Center().X
 	}
 	for _, lifespan := range sd.lifespans {
+		lifespan.Attributes.Label = d2graph.Scalar{Value: ""}
 		minRank := sd.minEdgeRank[lifespan]
 		maxRank := sd.maxEdgeRank[lifespan]
 
