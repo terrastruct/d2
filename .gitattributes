@@ -1,3 +1,9 @@
+# Leading ** is required.
+**/testdata/**/*.json linguist-generated
+go.mod linguist-generated
+go.sum linguist-generated
 d2layouts/d2dagrelayout/dagre.js linguist-vendored
 d2layouts/d2elklayout/elk.js linguist-vendored
 d2renderers/d2svg/github-markdown.css linguist-vendored
+d2renderers/d2latex/mathjax.js linguist-vendored
+d2renderers/d2latex/polyfills.js linguist-vendored

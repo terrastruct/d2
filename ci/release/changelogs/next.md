@@ -1,14 +1,20 @@
 #### Features 🚀
 
+- Latex is now supported. See [docs](https://d2lang.com/tour/text) for more.
+  [#229](https://github.com/terrastruct/d2/pull/229)
 - Arrowhead labels are now supported. [#182](https://github.com/terrastruct/d2/pull/182)
 - `stroke-dash` on shapes is now supported. [#188](https://github.com/terrastruct/d2/issues/188)
 - `font-color` is now supported on shapes and connections. [#215](https://github.com/terrastruct/d2/pull/215)
 - Querying shapes and connections by ID is now supported in renders. [#218](https://github.com/terrastruct/d2/pull/218)
+- [install.sh](./install.sh) now accepts `-d` as an alias for `--dry-run`.
+  [#266](https://github.com/terrastruct/d2/pull/266)
 
 #### Improvements 🔧
 
 - Local images can now be included, e.g. `icon: ./my_img.png`.
   [#146](https://github.com/terrastruct/d2/issues/146)
+- [install.sh](./install.sh) prints the dry run message more visibly.
+  [#266](https://github.com/terrastruct/d2/pull/266)
 
 #### Bugfixes 🔴
 

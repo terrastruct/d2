@@ -14,6 +14,7 @@ import (
 	"github.com/spf13/pflag"
 
 	"oss.terrastruct.com/d2"
+	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2renderers/textmeasure"
@@ -189,8 +190,13 @@ func compile(ctx context.Context, ms *xmain.State, isWatching bool, plugin d2plu
 		return nil, err
 	}
 
+	layout := plugin.Layout
+	// TODO: remove, this is just a feature flag to test sequence diagrams as we work on them
+	if os.Getenv("D2_SEQUENCE") == "1" {
+		layout = d2sequence.Layout
+	}
 	d, err := d2.Compile(ctx, string(input), &d2.CompileOptions{
-		Layout:  plugin.Layout,
+		Layout:  layout,
 		Ruler:   ruler,
 		ThemeID: themeID,
 	})
