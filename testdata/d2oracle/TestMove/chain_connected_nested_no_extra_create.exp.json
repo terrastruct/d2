@@ -118,7 +118,8 @@
         "direction": {
           "value": ""
         }
-      }
+      },
+      "renderPriority": null
     },
     "edges": [
       {
@@ -235,7 +236,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       },
       {
         "id": "b",
@@ -289,7 +291,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       },
       {
         "id": "x",
@@ -352,7 +355,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       },
       {
         "id": "z",
@@ -395,7 +399,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       }
     ]
   },

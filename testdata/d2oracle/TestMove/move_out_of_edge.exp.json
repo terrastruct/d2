@@ -126,7 +126,8 @@
         "direction": {
           "value": ""
         }
-      }
+      },
+      "renderPriority": null
     },
     "edges": [
       {
@@ -202,7 +203,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       },
       {
         "id": "a",
@@ -256,7 +258,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       },
       {
         "id": "c",
@@ -310,7 +313,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       },
       {
         "id": "d",
@@ -375,7 +379,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       },
       {
         "id": "e",
@@ -440,7 +445,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       },
       {
         "id": "f",
@@ -505,7 +511,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       }
     ]
   },

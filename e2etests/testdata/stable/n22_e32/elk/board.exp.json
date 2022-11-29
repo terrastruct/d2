@@ -10,7 +10,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,7 +36,8 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "b",
@@ -48,7 +48,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -75,7 +74,8 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "c",
@@ -86,7 +86,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -113,7 +112,8 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "d",
@@ -124,7 +124,6 @@
       },
       "width": 114,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -151,7 +150,8 @@
       "underline": false,
       "labelWidth": 14,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "e",
@@ -162,7 +162,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -189,7 +188,8 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "f",
@@ -200,7 +200,6 @@
       },
       "width": 111,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -227,7 +226,8 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "g",
@@ -238,7 +238,6 @@
       },
       "width": 114,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -265,7 +264,8 @@
       "underline": false,
       "labelWidth": 14,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "h",
@@ -276,7 +276,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -303,7 +302,8 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "i",
@@ -314,7 +314,6 @@
       },
       "width": 109,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -341,7 +340,8 @@
       "underline": false,
       "labelWidth": 9,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "j",
@@ -352,7 +352,6 @@
       },
       "width": 110,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -379,7 +378,8 @@
       "underline": false,
       "labelWidth": 10,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "k",
@@ -390,7 +390,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -417,7 +416,8 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "l",
@@ -428,7 +428,6 @@
       },
       "width": 109,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -455,7 +454,8 @@
       "underline": false,
       "labelWidth": 9,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "m",
@@ -466,7 +466,6 @@
       },
       "width": 117,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -493,7 +492,8 @@
       "underline": false,
       "labelWidth": 17,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "n",
@@ -504,7 +504,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -531,7 +530,8 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "o",
@@ -542,7 +542,6 @@
       },
       "width": 114,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -569,7 +568,8 @@
       "underline": false,
       "labelWidth": 14,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "p",
@@ -580,7 +580,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -607,7 +606,8 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "q",
@@ -618,7 +618,6 @@
       },
       "width": 114,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -645,7 +644,8 @@
       "underline": false,
       "labelWidth": 14,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "r",
@@ -656,7 +656,6 @@
       },
       "width": 111,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -683,7 +682,8 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "s",
@@ -694,7 +694,6 @@
       },
       "width": 112,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -721,7 +720,8 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "t",
@@ -732,7 +732,6 @@
       },
       "width": 111,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -759,7 +758,8 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "u",
@@ -770,7 +770,6 @@
       },
       "width": 114,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -797,7 +796,8 @@
       "underline": false,
       "labelWidth": 14,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     }
   ],
   "connections": [
@@ -845,7 +845,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(c -> a)[0]",
@@ -891,7 +892,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(d -> a)[0]",
@@ -937,7 +939,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(d -> b)[0]",
@@ -975,7 +978,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(d -> e)[0]",
@@ -1021,7 +1025,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(e -> f)[0]",
@@ -1059,7 +1064,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(f -> b)[0]",
@@ -1105,7 +1111,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(c -> f)[0]",
@@ -1159,7 +1166,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(g -> c)[0]",
@@ -1197,7 +1205,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(g -> h)[0]",
@@ -1243,7 +1252,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(h -> i)[0]",
@@ -1281,7 +1291,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(i -> j)[0]",
@@ -1319,7 +1330,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(j -> k)[0]",
@@ -1357,7 +1369,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(k -> e)[0]",
@@ -1395,7 +1408,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(j -> f)[0]",
@@ -1449,7 +1463,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(l -> m)[0]",
@@ -1495,7 +1510,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(n -> l)[0]",
@@ -1541,7 +1557,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(n -> l)[1]",
@@ -1579,7 +1596,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(n -> m)[0]",
@@ -1625,7 +1643,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(n -> o)[0]",
@@ -1671,7 +1690,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(o -> p)[0]",
@@ -1709,7 +1729,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(p -> m)[0]",
@@ -1755,7 +1776,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(n -> p)[0]",
@@ -1809,7 +1831,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(q -> n)[0]",
@@ -1847,7 +1870,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(q -> r)[0]",
@@ -1893,7 +1917,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(r -> s)[0]",
@@ -1931,7 +1956,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(s -> t)[0]",
@@ -1969,7 +1995,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(t -> u)[0]",
@@ -2007,7 +2034,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(u -> o)[0]",
@@ -2045,7 +2073,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(t -> p)[0]",
@@ -2099,7 +2128,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(c -> t)[0]",
@@ -2145,7 +2175,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(s -> a)[0]",
@@ -2199,7 +2230,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     },
     {
       "id": "(u -> a)[0]",
@@ -2245,7 +2277,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 2
     }
   ]
 }

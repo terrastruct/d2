@@ -175,7 +175,8 @@
         "direction": {
           "value": ""
         }
-      }
+      },
+      "renderPriority": null
     },
     "edges": [
       {
@@ -251,7 +252,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       },
       {
         "id": "here",
@@ -314,7 +316,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       },
       {
         "id": "test",
@@ -357,7 +360,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       }
     ]
   },

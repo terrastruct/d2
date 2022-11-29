@@ -10,7 +10,6 @@
       },
       "width": 213,
       "height": 226,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,7 +36,8 @@
       "underline": false,
       "labelWidth": 17,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "a.b",
@@ -48,7 +48,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -75,7 +74,8 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 2
     },
     {
       "id": "c",
@@ -86,7 +86,6 @@
       },
       "width": 214,
       "height": 226,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -113,7 +112,8 @@
       "underline": false,
       "labelWidth": 17,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "c.d",
@@ -124,7 +124,6 @@
       },
       "width": 114,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -151,7 +150,8 @@
       "underline": false,
       "labelWidth": 14,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 2
     },
     {
       "id": "f",
@@ -162,7 +162,6 @@
       },
       "width": 294,
       "height": 326,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -189,7 +188,8 @@
       "underline": false,
       "labelWidth": 14,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "f.h",
@@ -200,7 +200,6 @@
       },
       "width": 214,
       "height": 226,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -227,7 +226,8 @@
       "underline": false,
       "labelWidth": 16,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "renderPriority": 2
     },
     {
       "id": "f.h.g",
@@ -238,7 +238,6 @@
       },
       "width": 114,
       "height": 126,
-      "level": 3,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -265,7 +264,8 @@
       "underline": false,
       "labelWidth": 14,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 3
     }
   ],
   "connections": [
@@ -326,7 +326,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 4
     },
     {
       "id": "(c.d -> f.h.g)[0]",
@@ -397,7 +398,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 4
     }
   ]
 }

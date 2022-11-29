@@ -10,7 +10,6 @@
       },
       "width": 1117,
       "height": 1654,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,7 +36,8 @@
       "underline": false,
       "labelWidth": 32,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "aa.bb",
@@ -48,7 +48,6 @@
       },
       "width": 776,
       "height": 1554,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -75,7 +74,8 @@
       "underline": false,
       "labelWidth": 31,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "renderPriority": 2
     },
     {
       "id": "aa.bb.cc",
@@ -86,7 +86,6 @@
       },
       "width": 510,
       "height": 676,
-      "level": 3,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -113,7 +112,8 @@
       "underline": false,
       "labelWidth": 24,
       "labelHeight": 31,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "renderPriority": 3
     },
     {
       "id": "aa.bb.cc.dd",
@@ -124,7 +124,6 @@
       },
       "width": 355,
       "height": 226,
-      "level": 4,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -151,7 +150,8 @@
       "underline": false,
       "labelWidth": 22,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "renderPriority": 4
     },
     {
       "id": "aa.bb.cc.dd.ee",
@@ -162,7 +162,6 @@
       },
       "width": 16,
       "height": 24,
-      "level": 5,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -188,7 +187,8 @@
       "bold": true,
       "underline": false,
       "labelWidth": 16,
-      "labelHeight": 24
+      "labelHeight": 24,
+      "renderPriority": 5
     },
     {
       "id": "aa.bb.cc.dd.ff",
@@ -199,7 +199,6 @@
       },
       "width": 117,
       "height": 126,
-      "level": 5,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -226,7 +225,8 @@
       "underline": false,
       "labelWidth": 17,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 5
     },
     {
       "id": "aa.bb.cc.gg",
@@ -237,7 +237,6 @@
       },
       "width": 17,
       "height": 24,
-      "level": 4,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -263,7 +262,8 @@
       "bold": true,
       "underline": false,
       "labelWidth": 17,
-      "labelHeight": 24
+      "labelHeight": 24,
+      "renderPriority": 4
     },
     {
       "id": "aa.bb.cc.hh",
@@ -274,7 +274,6 @@
       },
       "width": 123,
       "height": 126,
-      "level": 4,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -301,7 +300,8 @@
       "underline": false,
       "labelWidth": 23,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 4
     },
     {
       "id": "aa.bb.ii",
@@ -312,7 +312,6 @@
       },
       "width": 367,
       "height": 226,
-      "level": 3,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -339,7 +338,8 @@
       "underline": false,
       "labelWidth": 14,
       "labelHeight": 31,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "renderPriority": 3
     },
     {
       "id": "aa.bb.ii.jj",
@@ -350,7 +350,6 @@
       },
       "width": 115,
       "height": 126,
-      "level": 4,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -377,7 +376,8 @@
       "underline": false,
       "labelWidth": 15,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 4
     },
     {
       "id": "aa.bb.kk",
@@ -388,7 +388,6 @@
       },
       "width": 126,
       "height": 126,
-      "level": 3,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -415,7 +414,8 @@
       "underline": false,
       "labelWidth": 22,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 3
     },
     {
       "id": "aa.ll",
@@ -426,7 +426,6 @@
       },
       "width": 114,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -453,7 +452,8 @@
       "underline": false,
       "labelWidth": 14,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 2
     },
     {
       "id": "aa.mm",
@@ -464,7 +464,6 @@
       },
       "width": 131,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -491,7 +490,8 @@
       "underline": false,
       "labelWidth": 31,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 2
     },
     {
       "id": "aa.nn",
@@ -502,7 +502,6 @@
       },
       "width": 18,
       "height": 24,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -528,7 +527,8 @@
       "bold": true,
       "underline": false,
       "labelWidth": 18,
-      "labelHeight": 24
+      "labelHeight": 24,
+      "renderPriority": 2
     },
     {
       "id": "aa.oo",
@@ -539,7 +539,6 @@
       },
       "width": 123,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -566,7 +565,8 @@
       "underline": false,
       "labelWidth": 23,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 2
     }
   ],
   "connections": [
@@ -615,7 +615,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 6
     },
     {
       "id": "aa.bb.cc.(gg -- hh)[0]",
@@ -662,7 +663,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 6
     },
     {
       "id": "aa.bb.(ii -> cc.dd)[0]",
@@ -757,7 +759,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 6
     },
     {
       "id": "aa.(ll <-> bb)[0]",
@@ -804,7 +807,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 6
     },
     {
       "id": "aa.(mm -> bb.cc)[0]",
@@ -863,7 +867,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 6
     },
     {
       "id": "aa.(mm -> ll)[0]",
@@ -910,7 +915,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 6
     },
     {
       "id": "aa.(mm <-> bb)[0]",
@@ -957,7 +963,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 6
     },
     {
       "id": "aa.(ll <-> bb.cc.gg)[0]",
@@ -1052,7 +1059,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 6
     },
     {
       "id": "aa.(mm <- bb.ii)[0]",
@@ -1099,7 +1107,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 6
     },
     {
       "id": "aa.(bb.cc <- ll)[0]",
@@ -1146,7 +1155,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 6
     },
     {
       "id": "aa.(bb.ii <-> ll)[0]",
@@ -1205,7 +1215,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 6
     }
   ]
 }

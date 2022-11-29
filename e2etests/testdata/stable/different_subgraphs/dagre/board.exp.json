@@ -10,7 +10,6 @@
       },
       "width": 465,
       "height": 904,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,7 +36,8 @@
       "underline": false,
       "labelWidth": 77,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "a",
@@ -48,7 +48,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -75,7 +74,8 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "tree",
@@ -86,7 +86,6 @@
       },
       "width": 134,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -113,7 +112,8 @@
       "underline": false,
       "labelWidth": 34,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "and",
@@ -124,7 +124,6 @@
       },
       "width": 132,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -151,7 +150,8 @@
       "underline": false,
       "labelWidth": 32,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "nodes",
@@ -162,7 +162,6 @@
       },
       "width": 147,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -189,7 +188,8 @@
       "underline": false,
       "labelWidth": 47,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "some",
@@ -200,7 +200,6 @@
       },
       "width": 143,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -227,7 +226,8 @@
       "underline": false,
       "labelWidth": 43,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "more",
@@ -238,7 +238,6 @@
       },
       "width": 141,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -265,7 +264,8 @@
       "underline": false,
       "labelWidth": 41,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "many",
@@ -276,7 +276,6 @@
       },
       "width": 145,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -303,7 +302,8 @@
       "underline": false,
       "labelWidth": 45,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "then",
@@ -314,7 +314,6 @@
       },
       "width": 138,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -341,7 +340,8 @@
       "underline": false,
       "labelWidth": 38,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "here",
@@ -352,7 +352,6 @@
       },
       "width": 136,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -379,7 +378,8 @@
       "underline": false,
       "labelWidth": 36,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "you",
@@ -390,7 +390,6 @@
       },
       "width": 132,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -417,7 +416,8 @@
       "underline": false,
       "labelWidth": 32,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "have",
@@ -428,7 +428,6 @@
       },
       "width": 138,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -455,7 +454,8 @@
       "underline": false,
       "labelWidth": 38,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "hierarchy",
@@ -466,7 +466,6 @@
       },
       "width": 173,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -493,7 +492,8 @@
       "underline": false,
       "labelWidth": 73,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "another",
@@ -504,7 +504,6 @@
       },
       "width": 163,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -531,7 +530,8 @@
       "underline": false,
       "labelWidth": 63,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "of",
@@ -542,7 +542,6 @@
       },
       "width": 120,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -569,7 +568,8 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "nesting",
@@ -580,7 +580,6 @@
       },
       "width": 158,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -607,7 +606,8 @@
       "underline": false,
       "labelWidth": 58,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "trees",
@@ -618,7 +618,6 @@
       },
       "width": 142,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -645,7 +644,8 @@
       "underline": false,
       "labelWidth": 42,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "finally.a",
@@ -656,7 +656,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -683,7 +682,8 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 2
     },
     {
       "id": "finally.tree",
@@ -694,7 +694,6 @@
       },
       "width": 134,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -721,7 +720,8 @@
       "underline": false,
       "labelWidth": 34,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 2
     },
     {
       "id": "finally.inside",
@@ -732,7 +732,6 @@
       },
       "width": 148,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -759,7 +758,8 @@
       "underline": false,
       "labelWidth": 48,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 2
     },
     {
       "id": "finally.hierarchy",
@@ -770,7 +770,6 @@
       },
       "width": 173,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -797,7 +796,8 @@
       "underline": false,
       "labelWidth": 73,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 2
     },
     {
       "id": "finally.root",
@@ -808,7 +808,6 @@
       },
       "width": 135,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -835,7 +834,8 @@
       "underline": false,
       "labelWidth": 35,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 2
     }
   ],
   "connections": [
@@ -884,7 +884,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "(a -> and)[0]",
@@ -931,7 +932,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "(a -> nodes)[0]",
@@ -978,7 +980,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "(and -> some)[0]",
@@ -1025,7 +1028,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "(tree -> more)[0]",
@@ -1072,7 +1076,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "(tree -> many)[0]",
@@ -1119,7 +1124,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "(then -> here)[0]",
@@ -1166,7 +1172,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "(here -> you)[0]",
@@ -1213,7 +1220,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "(have -> hierarchy)[0]",
@@ -1260,7 +1268,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "(then -> hierarchy)[0]",
@@ -1307,7 +1316,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "(finally -> another)[0]",
@@ -1354,7 +1364,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "(another -> of)[0]",
@@ -1401,7 +1412,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "(nesting -> trees)[0]",
@@ -1448,7 +1460,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "(finally -> trees)[0]",
@@ -1495,7 +1508,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "finally.(a -> tree)[0]",
@@ -1542,7 +1556,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "finally.(inside -> a)[0]",
@@ -1589,7 +1604,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "finally.(tree -> hierarchy)[0]",
@@ -1636,7 +1652,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "finally.(a -> root)[0]",
@@ -1683,7 +1700,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     }
   ]
 }

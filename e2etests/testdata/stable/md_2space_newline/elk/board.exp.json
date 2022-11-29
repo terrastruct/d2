@@ -10,7 +10,6 @@
       },
       "width": 609,
       "height": 198,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,7 +36,8 @@
       "underline": false,
       "labelWidth": 129,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "markdown.md",
@@ -48,7 +48,6 @@
       },
       "width": 459,
       "height": 48,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -74,7 +73,8 @@
       "bold": true,
       "underline": false,
       "labelWidth": 459,
-      "labelHeight": 48
+      "labelHeight": 48,
+      "renderPriority": 2
     }
   ],
   "connections": []

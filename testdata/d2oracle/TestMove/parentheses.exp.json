@@ -109,7 +109,8 @@
         "direction": {
           "value": ""
         }
-      }
+      },
+      "renderPriority": null
     },
     "edges": [
       {
@@ -216,7 +217,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       },
       {
         "id": "x",
@@ -259,7 +261,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       },
       {
         "id": "\"y (z)\"",
@@ -313,7 +316,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       }
     ]
   },

@@ -181,7 +181,8 @@
         "direction": {
           "value": ""
         }
-      }
+      },
+      "renderPriority": null
     },
     "edges": [],
     "objects": [
@@ -226,7 +227,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       },
       {
         "id": "table",
@@ -285,7 +287,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "renderPriority": null
       }
     ]
   },

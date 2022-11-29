@@ -5,12 +5,11 @@
       "id": "aaa",
       "type": "",
       "pos": {
-        "x": 12,
-        "y": 364
+        "x": 375,
+        "y": 12
       },
-      "width": 430,
-      "height": 317,
-      "level": 1,
+      "width": 325,
+      "height": 422,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,18 +36,18 @@
       "underline": false,
       "labelWidth": 46,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "aaa.bbb",
       "type": "callout",
       "pos": {
-        "x": 87,
-        "y": 439
+        "x": 450,
+        "y": 87
       },
       "width": 132,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -75,18 +74,18 @@
       "underline": false,
       "labelWidth": 32,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 2
     },
     {
       "id": "ddd",
       "type": "cylinder",
       "pos": {
-        "x": 85,
-        "y": 12
+        "x": 12,
+        "y": 87
       },
       "width": 133,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -113,18 +112,18 @@
       "underline": false,
       "labelWidth": 33,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "eee",
       "type": "document",
       "pos": {
-        "x": 238,
-        "y": 12
+        "x": 15,
+        "y": 233
       },
       "width": 130,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -151,18 +150,18 @@
       "underline": false,
       "labelWidth": 30,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "aaa.ccc",
       "type": "",
       "pos": {
-        "x": 239,
-        "y": 439
+        "x": 452,
+        "y": 233
       },
       "width": 128,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -189,7 +188,8 @@
       "underline": false,
       "labelWidth": 28,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 2
     }
   ],
   "connections": [
@@ -219,17 +219,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 303,
-          "y": 565
+          "x": 580,
+          "y": 296
         },
         {
-          "x": 303,
-          "y": 681
+          "x": 700,
+          "y": 296
         }
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "(eee <- aaa.ccc)[0]",
@@ -257,17 +258,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 303,
-          "y": 138
+          "x": 145,
+          "y": 296
         },
         {
-          "x": 303,
-          "y": 439
+          "x": 452,
+          "y": 296
         }
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     }
   ]
 }

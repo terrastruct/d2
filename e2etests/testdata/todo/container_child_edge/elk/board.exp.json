@@ -8,9 +8,8 @@
         "x": 12,
         "y": 12
       },
-      "width": 336,
-      "height": 463,
-      "level": 1,
+      "width": 509,
+      "height": 321,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,18 +36,18 @@
       "underline": false,
       "labelWidth": 117,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "renderPriority": 1
     },
     {
       "id": "container.first",
       "type": "",
       "pos": {
-        "x": 138,
-        "y": 87
+        "x": 87,
+        "y": 132
       },
       "width": 135,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -75,18 +74,18 @@
       "underline": false,
       "labelWidth": 35,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 2
     },
     {
       "id": "container.second",
       "type": "",
       "pos": {
-        "x": 102,
-        "y": 274
+        "x": 291,
+        "y": 111
       },
       "width": 155,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -113,7 +112,8 @@
       "underline": false,
       "labelWidth": 55,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "renderPriority": 2
     }
   ],
   "connections": [
@@ -143,17 +143,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 205.5,
-          "y": 213
+          "x": 222,
+          "y": 195
         },
         {
-          "x": 205.5,
-          "y": 274
+          "x": 291,
+          "y": 195
         }
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     },
     {
       "id": "(container -> container.second)[0]",
@@ -181,25 +182,26 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 117,
-          "y": 12
+          "x": 12,
+          "y": 111
         },
         {
-          "x": 117,
-          "y": 264
+          "x": 281,
+          "y": 111
         },
         {
-          "x": 153.83333333333334,
-          "y": 264
+          "x": 281,
+          "y": 153
         },
         {
-          "x": 153.83333333333334,
-          "y": 274
+          "x": 291,
+          "y": 153
         }
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "renderPriority": 3
     }
   ]
 }

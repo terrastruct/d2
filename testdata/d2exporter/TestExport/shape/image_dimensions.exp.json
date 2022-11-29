@@ -10,7 +10,6 @@
       },
       "width": 0,
       "height": 0,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -47,7 +46,8 @@
       "bold": true,
       "underline": false,
       "labelWidth": 0,
-      "labelHeight": 0
+      "labelHeight": 0,
+      "renderPriority": 1
     }
   ],
   "connections": []
