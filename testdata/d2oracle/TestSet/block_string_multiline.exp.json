@@ -50,6 +50,9 @@
         "near_key": null,
         "shape": {
           "value": ""
+        },
+        "orientation": {
+          "value": ""
         }
       }
     },
@@ -93,6 +96,9 @@
           "language": "markdown",
           "shape": {
             "value": "text"
+          },
+          "orientation": {
+            "value": "vertical"
           }
         }
       }

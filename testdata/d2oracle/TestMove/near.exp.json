@@ -105,6 +105,9 @@
         "near_key": null,
         "shape": {
           "value": ""
+        },
+        "orientation": {
+          "value": ""
         }
       }
     },
@@ -173,6 +176,9 @@
           },
           "shape": {
             "value": ""
+          },
+          "orientation": {
+            "value": "vertical"
           }
         }
       },
@@ -213,6 +219,9 @@
           "near_key": null,
           "shape": {
             "value": ""
+          },
+          "orientation": {
+            "value": "vertical"
           }
         }
       }
