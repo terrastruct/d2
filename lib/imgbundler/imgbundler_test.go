@@ -5,9 +5,15 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"oss.terrastruct.com/cmdlog"
+	"oss.terrastruct.com/xos"
+
+	"oss.terrastruct.com/d2/lib/xmain"
 )
 
 //go:embed test_png.png
@@ -70,6 +76,17 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 }]]></style></svg>
 `, svgURL, pngURL)
 
+	ms := &xmain.State{
+		Name: "test",
+
+		Stdin:  os.Stdin,
+		Stdout: os.Stdout,
+		Stderr: os.Stderr,
+
+		Env: xos.NewEnv(os.Environ()),
+	}
+	ms.Log = cmdlog.Log(ms.Env, os.Stderr)
+
 	transport = roundTripFunc(func(req *http.Request) *http.Response {
 		respRecorder := httptest.NewRecorder()
 		switch req.URL.String() {
@@ -84,7 +101,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		return respRecorder.Result()
 	})
 
-	out, err := InlineRemote([]byte(sampleSVG))
+	out, err := InlineRemote(ms, []byte(sampleSVG))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -96,6 +113,17 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 	}
 	if !strings.Contains(string(out), "image/png") {
 		t.Fatal("no png image inserted")
+	}
+
+	// Test error response
+	transport = roundTripFunc(func(req *http.Request) *http.Response {
+		respRecorder := httptest.NewRecorder()
+		respRecorder.WriteHeader(500)
+		return respRecorder.Result()
+	})
+	_, err = InlineRemote(ms, []byte(sampleSVG))
+	if err == nil {
+		t.Fatal("expected error")
 	}
 }
 
@@ -135,7 +163,17 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 }]]></style></svg>
 `, svgURL, pngURL)
 
-	out, err := InlineLocal([]byte(sampleSVG))
+	ms := &xmain.State{
+		Name: "test",
+
+		Stdin:  os.Stdin,
+		Stdout: os.Stdout,
+		Stderr: os.Stderr,
+
+		Env: xos.NewEnv(os.Environ()),
+	}
+	ms.Log = cmdlog.Log(ms.Env, os.Stderr)
+	out, err := InlineLocal(ms, []byte(sampleSVG))
 	if err != nil {
 		t.Fatal(err)
 	}

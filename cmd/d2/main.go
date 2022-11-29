@@ -205,7 +205,7 @@ func compile(ctx context.Context, ms *xmain.State, isWatching bool, plugin d2plu
 	if err != nil {
 		return nil, err
 	}
-	svg, err = imgbundler.InlineLocal(svg)
+	svg, err = imgbundler.InlineLocal(ms, svg)
 	if err != nil {
 		// Missing/broken images are fine during watch mode, as the user is likely building up a diagram.
 		// Otherwise, the assumption is that this diagram is building for production, and broken images are not okay.
@@ -217,7 +217,7 @@ func compile(ctx context.Context, ms *xmain.State, isWatching bool, plugin d2plu
 
 	out := svg
 	if filepath.Ext(outputPath) == ".png" {
-		svg, err = imgbundler.InlineRemote(svg)
+		svg, err = imgbundler.InlineRemote(ms, svg)
 		if err != nil {
 			if !isWatching {
 				return nil, err
