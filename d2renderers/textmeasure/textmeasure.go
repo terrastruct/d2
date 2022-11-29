@@ -143,7 +143,34 @@ func NewRuler() (*Ruler, error) {
 }
 
 func (t *Ruler) Measure(font d2fonts.Font, s string) (width, height int) {
-	w, h := t.MeasurePrecise(font, s)
+	hasSize := false
+	for _, size := range d2fonts.FontSizes {
+		if size == font.Size {
+			hasSize = true
+			break
+		}
+	}
+	var w, h float64
+	if hasSize {
+		w, h = t.MeasurePrecise(font, s)
+	} else {
+		// find the closest font size we have and scale the measurement
+		closestSize := d2fonts.FontSizes[0]
+		smallestDiff := math.Abs(float64(closestSize - font.Size))
+		for i := 1; i < len(d2fonts.FontSizes); i++ {
+			diff := math.Abs(float64(d2fonts.FontSizes[i] - font.Size))
+			if diff < smallestDiff {
+				smallestDiff = diff
+				closestSize = d2fonts.FontSizes[i]
+			}
+		}
+		scaledFont := font
+		scaledFont.Size = closestSize
+		w, h = t.MeasurePrecise(scaledFont, s)
+		f := float64(font.Size) / float64(closestSize)
+		w *= f
+		h *= f
+	}
 	return int(math.Ceil(w)), int(math.Ceil(h))
 }
 

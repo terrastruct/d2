@@ -5,11 +5,11 @@
       "id": "size XS",
       "type": "",
       "pos": {
-        "x": 1084,
-        "y": 226
+        "x": 1293,
+        "y": 278
       },
-      "width": 154,
-      "height": 126,
+      "width": 145,
+      "height": 122,
       "level": 1,
       "opacity": 1,
       "strokeDash": 0,
@@ -28,26 +28,26 @@
       "methods": null,
       "columns": null,
       "label": "size XS",
-      "fontSize": 16,
+      "fontSize": 13,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 54,
-      "labelHeight": 26,
+      "labelWidth": 45,
+      "labelHeight": 22,
       "labelPosition": "INSIDE_MIDDLE_CENTER"
     },
     {
       "id": "size S",
       "type": "",
       "pos": {
-        "x": 1,
-        "y": 0
+        "x": 4,
+        "y": 12
       },
-      "width": 145,
-      "height": 126,
+      "width": 140,
+      "height": 123,
       "level": 1,
       "opacity": 1,
       "strokeDash": 0,
@@ -66,15 +66,15 @@
       "methods": null,
       "columns": null,
       "label": "size S",
-      "fontSize": 16,
+      "fontSize": 14,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 45,
-      "labelHeight": 26,
+      "labelWidth": 40,
+      "labelHeight": 23,
       "labelPosition": "INSIDE_MIDDLE_CENTER"
     },
     {
@@ -82,7 +82,7 @@
       "type": "",
       "pos": {
         "x": 0,
-        "y": 226
+        "y": 276
       },
       "width": 147,
       "height": 126,
@@ -119,11 +119,11 @@
       "id": "size L",
       "type": "",
       "pos": {
-        "x": 206,
-        "y": 0
+        "x": 204,
+        "y": 8
       },
-      "width": 144,
-      "height": 126,
+      "width": 153,
+      "height": 131,
       "level": 1,
       "opacity": 1,
       "strokeDash": 0,
@@ -142,26 +142,26 @@
       "methods": null,
       "columns": null,
       "label": "size L",
-      "fontSize": 16,
+      "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 44,
-      "labelHeight": 26,
+      "labelWidth": 53,
+      "labelHeight": 31,
       "labelPosition": "INSIDE_MIDDLE_CENTER"
     },
     {
       "id": "size XL",
       "type": "",
       "pos": {
-        "x": 410,
-        "y": 0
+        "x": 417,
+        "y": 5
       },
-      "width": 153,
-      "height": 126,
+      "width": 177,
+      "height": 136,
       "level": 1,
       "opacity": 1,
       "strokeDash": 0,
@@ -180,26 +180,26 @@
       "methods": null,
       "columns": null,
       "label": "size XL",
-      "fontSize": 16,
+      "fontSize": 24,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 53,
-      "labelHeight": 26,
+      "labelWidth": 77,
+      "labelHeight": 36,
       "labelPosition": "INSIDE_MIDDLE_CENTER"
     },
     {
       "id": "size XXL",
       "type": "",
       "pos": {
-        "x": 623,
-        "y": 0
+        "x": 654,
+        "y": 3
       },
-      "width": 162,
-      "height": 126,
+      "width": 204,
+      "height": 141,
       "level": 1,
       "opacity": 1,
       "strokeDash": 0,
@@ -218,26 +218,26 @@
       "methods": null,
       "columns": null,
       "label": "size XXL",
-      "fontSize": 16,
+      "fontSize": 28,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 62,
-      "labelHeight": 26,
+      "labelWidth": 104,
+      "labelHeight": 41,
       "labelPosition": "INSIDE_MIDDLE_CENTER"
     },
     {
       "id": "size XXXL",
       "type": "",
       "pos": {
-        "x": 845,
+        "x": 918,
         "y": 0
       },
-      "width": 171,
-      "height": 126,
+      "width": 237,
+      "height": 146,
       "level": 1,
       "opacity": 1,
       "strokeDash": 0,
@@ -256,26 +256,26 @@
       "methods": null,
       "columns": null,
       "label": "size XXXL",
-      "fontSize": 16,
+      "fontSize": 32,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 71,
-      "labelHeight": 26,
+      "labelWidth": 137,
+      "labelHeight": 46,
       "labelPosition": "INSIDE_MIDDLE_CENTER"
     },
     {
       "id": "custom 8",
       "type": "",
       "pos": {
-        "x": 1076,
-        "y": 0
+        "x": 1297,
+        "y": 15
       },
-      "width": 169,
-      "height": 126,
+      "width": 138,
+      "height": 116,
       "level": 1,
       "opacity": 1,
       "strokeDash": 0,
@@ -294,26 +294,26 @@
       "methods": null,
       "columns": null,
       "label": "custom 8",
-      "fontSize": 16,
+      "fontSize": 8,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 69,
-      "labelHeight": 26,
+      "labelWidth": 38,
+      "labelHeight": 16,
       "labelPosition": "INSIDE_MIDDLE_CENTER"
     },
     {
       "id": "custom 12",
       "type": "",
       "pos": {
-        "x": 1305,
-        "y": 0
+        "x": 1495,
+        "y": 13
       },
-      "width": 178,
-      "height": 126,
+      "width": 160,
+      "height": 121,
       "level": 1,
       "opacity": 1,
       "strokeDash": 0,
@@ -332,26 +332,26 @@
       "methods": null,
       "columns": null,
       "label": "custom 12",
-      "fontSize": 16,
+      "fontSize": 12,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 78,
-      "labelHeight": 26,
+      "labelWidth": 60,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER"
     },
     {
       "id": "custom 18",
       "type": "",
       "pos": {
-        "x": 1543,
-        "y": 0
+        "x": 1715,
+        "y": 9
       },
-      "width": 178,
-      "height": 126,
+      "width": 187,
+      "height": 128,
       "level": 1,
       "opacity": 1,
       "strokeDash": 0,
@@ -370,26 +370,26 @@
       "methods": null,
       "columns": null,
       "label": "custom 18",
-      "fontSize": 16,
+      "fontSize": 18,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 78,
-      "labelHeight": 26,
+      "labelWidth": 87,
+      "labelHeight": 28,
       "labelPosition": "INSIDE_MIDDLE_CENTER"
     },
     {
       "id": "custom 21",
       "type": "",
       "pos": {
-        "x": 1781,
-        "y": 0
+        "x": 1962,
+        "y": 7
       },
-      "width": 178,
-      "height": 126,
+      "width": 200,
+      "height": 132,
       "level": 1,
       "opacity": 1,
       "strokeDash": 0,
@@ -408,26 +408,26 @@
       "methods": null,
       "columns": null,
       "label": "custom 21",
-      "fontSize": 16,
+      "fontSize": 21,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 78,
-      "labelHeight": 26,
+      "labelWidth": 100,
+      "labelHeight": 32,
       "labelPosition": "INSIDE_MIDDLE_CENTER"
     },
     {
       "id": "custom 64",
       "type": "",
       "pos": {
-        "x": 841,
-        "y": 226
+        "x": 839,
+        "y": 246
       },
-      "width": 179,
-      "height": 126,
+      "width": 394,
+      "height": 186,
       "level": 1,
       "opacity": 1,
       "strokeDash": 0,
@@ -446,15 +446,15 @@
       "methods": null,
       "columns": null,
       "label": "custom 64",
-      "fontSize": 16,
+      "fontSize": 64,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 79,
-      "labelHeight": 26,
+      "labelWidth": 294,
+      "labelHeight": 86,
       "labelPosition": "INSIDE_MIDDLE_CENTER"
     }
   ],
@@ -479,26 +479,26 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 67,
-      "labelHeight": 21,
+      "labelWidth": 42,
+      "labelHeight": 13,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1160.5,
-          "y": 126
+          "x": 1365.5,
+          "y": 131
         },
         {
-          "x": 1160.5,
-          "y": 166
+          "x": 1365.5,
+          "y": 183
         },
         {
-          "x": 1160.5,
-          "y": 186
+          "x": 1365.5,
+          "y": 212.4
         },
         {
-          "x": 1160.5,
-          "y": 226
+          "x": 1365.5,
+          "y": 278
         }
       ],
       "isCurve": true,
@@ -526,26 +526,26 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 67,
-      "labelHeight": 21,
+      "labelWidth": 63,
+      "labelHeight": 19,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
       "route": [
         {
           "x": 73.5,
-          "y": 126
+          "y": 135.5
         },
         {
           "x": 73.5,
-          "y": 166
+          "y": 183.9
         },
         {
           "x": 73.5,
-          "y": 186
+          "y": 212
         },
         {
           "x": 73.5,
-          "y": 226
+          "y": 276
         }
       ],
       "isCurve": true,
@@ -573,26 +573,26 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 67,
-      "labelHeight": 21,
+      "labelWidth": 200,
+      "labelHeight": 61,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
       "route": [
         {
-          "x": 930.5,
-          "y": 126
+          "x": 1036,
+          "y": 146
         },
         {
-          "x": 930.5,
-          "y": 166
-        },
-        {
-          "x": 930.5,
+          "x": 1036,
           "y": 186
         },
         {
-          "x": 930.5,
-          "y": 226
+          "x": 1036,
+          "y": 206
+        },
+        {
+          "x": 1036,
+          "y": 246
         }
       ],
       "isCurve": true,
