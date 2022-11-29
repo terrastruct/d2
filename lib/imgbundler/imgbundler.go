@@ -1,6 +1,7 @@
 package imgbundler
 
 import (
+	"bytes"
 	"context"
 	"encoding/base64"
 	"fmt"
@@ -12,6 +13,9 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"go.uber.org/multierr"
+	"oss.terrastruct.com/xdefer"
 
 	"oss.terrastruct.com/d2/lib/xmain"
 )
@@ -32,68 +36,85 @@ func InlineRemote(ms *xmain.State, in []byte) ([]byte, error) {
 	return inline(ms, in, true)
 }
 
-func inline(ms *xmain.State, svg []byte, isRemote bool) ([]byte, error) {
+func inline(ms *xmain.State, svg []byte, isRemote bool) (_ []byte, err error) {
+	defer xdefer.Errorf(&err, "failed to bundle images")
 	imgs := imageRe.FindAllSubmatch(svg, -1)
 
-	var filtered [][]string
+	var filtered [][][]byte
 	for _, img := range imgs {
 		u, err := url.Parse(string(img[1]))
 		isRemoteImg := err == nil && strings.HasPrefix(u.Scheme, "http")
 		if isRemoteImg == isRemote {
-			filtered = append(filtered, []string{string(img[0]), string(img[1])})
+			filtered = append(filtered, img)
 		}
 	}
 
 	var wg sync.WaitGroup
 	respChan := make(chan resp)
+	// Limits the number of workers to 16.
+	sema := make(chan struct{}, 16)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*5)
 	defer cancel()
-	wg.Add(len(filtered))
-	for _, img := range filtered {
-		go func(src, href string) {
-			var data string
-			var err error
-			if isRemote {
-				data, err = fetch(ctx, href)
-			} else {
-				data, err = read(ctx, href)
-			}
-			respChan <- resp{
-				srctxt: src,
-				data:   data,
-				err:    err,
-			}
-		}(img[0], img[1])
-	}
 
-	out := string(svg)
+	wg.Add(len(filtered))
+	// Start workers as the sema allows.
 	go func() {
-		for {
-			select {
-			case resp, ok := <-respChan:
-				if !ok {
-					return
-				}
-				if resp.err != nil {
-					ms.Log.Error.Printf("image failed to fetch: %v", resp.err)
+		for _, img := range filtered {
+			sema <- struct{}{}
+			go func(src, href string) {
+				defer func() {
+					wg.Done()
+					<-sema
+				}()
+
+				var data string
+				var err error
+				if isRemote {
+					data, err = fetch(ctx, href)
 				} else {
-					out = strings.Replace(out, resp.srctxt, fmt.Sprintf(`<image href="%s"`, resp.data), 1)
+					data, err = read(href)
 				}
-				wg.Done()
-			}
+				select {
+				case <-ctx.Done():
+				case respChan <- resp{
+					srctxt: src,
+					data:   data,
+					err:    err,
+				}:
+				}
+			}(string(img[0]), string(img[1]))
 		}
 	}()
 
-	wg.Wait()
-	close(respChan)
+	go func() {
+		wg.Wait()
+		close(respChan)
+	}()
 
-	return []byte(out), nil
+	for {
+		select {
+		case <-ctx.Done():
+			return nil, fmt.Errorf("failed to wait for imgbundler workers: %w", ctx.Err())
+		case resp, ok := <-respChan:
+			if !ok {
+				return svg, nil
+			}
+			if resp.err != nil {
+				err = multierr.Combine(err, resp.err)
+				continue
+			}
+			svg = bytes.Replace(svg, []byte(resp.srctxt), []byte(fmt.Sprintf(`<image href="%s"`, resp.data)), 1)
+		}
+	}
 }
 
 var transport = http.DefaultTransport
 
 func fetch(ctx context.Context, href string) (string, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	defer cancel()
+
 	req, err := http.NewRequestWithContext(ctx, "GET", href, nil)
 	if err != nil {
 		return "", err
@@ -118,7 +139,7 @@ func fetch(ctx context.Context, href string) (string, error) {
 	return fmt.Sprintf("data:%s;base64,%s", mimeType, enc), nil
 }
 
-func read(ctx context.Context, href string) (string, error) {
+func read(href string) (string, error) {
 	data, err := os.ReadFile(href)
 	if err != nil {
 		return "", err
