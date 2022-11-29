@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"hash/fnv"
 	"io"
+	"sort"
 	"strings"
 
 	"math"
@@ -983,25 +984,31 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 	// SVG has no notion of z-index. The z-index is effectively the order it's drawn.
 	// So draw from the least nested to most nested
 	idToShape := make(map[string]d2target.Shape)
-	highest := 1
+	allObjects := make([]d2target.DiagramObject, 0, len(diagram.Shapes)+len(diagram.Connections))
 	for _, s := range diagram.Shapes {
-		highest = go2.Max(highest, s.Level)
 		idToShape[s.ID] = s
+		allObjects = append(allObjects, s)
 	}
-	for i := 1; i <= highest; i++ {
-		for _, s := range diagram.Shapes {
-			if s.Level == i {
-				err := drawShape(buf, s)
-				if err != nil {
-					return nil, err
-				}
-			}
-		}
+	for _, c := range diagram.Connections {
+		allObjects = append(allObjects, c)
 	}
 
+	sort.SliceStable(allObjects, func(i, j int) bool {
+		return allObjects[i].GetPriority() < allObjects[j].GetPriority()
+	})
+
 	markers := map[string]struct{}{}
-	for _, c := range diagram.Connections {
-		drawConnection(buf, c, markers, idToShape)
+	for _, obj := range allObjects {
+		if c, is := obj.(d2target.Connection); is {
+			drawConnection(buf, c, markers, idToShape)
+		} else if s, is := obj.(d2target.Shape); is {
+			err := drawShape(buf, s)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			return nil, fmt.Errorf("unknow object of type %t", obj)
+		}
 	}
 
 	embedFonts(buf)

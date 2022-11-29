@@ -17,6 +17,10 @@ const (
 	MAX_ICON_SIZE     = 64
 )
 
+type DiagramObject interface {
+	GetPriority() int
+}
+
 type Diagram struct {
 	Name        string `json:"name"`
 	Description string `json:"description,omitempty"`
@@ -91,7 +95,6 @@ type Shape struct {
 	Pos    Point `json:"pos"`
 	Width  int   `json:"width"`
 	Height int   `json:"height"`
-	Level  int   `json:"level"`
 
 	Opacity     float64 `json:"opacity"`
 	StrokeDash  float64 `json:"strokeDash"`
@@ -117,6 +120,8 @@ type Shape struct {
 	Text
 
 	LabelPosition string `json:"labelPosition,omitempty"`
+
+	RenderPriority int `json:"renderPriority"`
 }
 
 func (s *Shape) SetType(t string) {
@@ -128,6 +133,10 @@ func (s *Shape) SetType(t string) {
 		t = ShapeRectangle
 	}
 	s.Type = strings.ToLower(t)
+}
+
+func (s Shape) GetPriority() int {
+	return s.RenderPriority
 }
 
 type Text struct {
@@ -183,6 +192,8 @@ type Connection struct {
 	Animated bool     `json:"animated"`
 	Tooltip  string   `json:"tooltip"`
 	Icon     *url.URL `json:"icon"`
+
+	RenderPriority int `json:"renderPriority"`
 }
 
 func BaseConnection() *Connection {
@@ -208,6 +219,10 @@ func (c *Connection) GetLabelTopLeft() *geo.Point {
 		float64(c.LabelWidth),
 		float64(c.LabelHeight),
 	)
+}
+
+func (c Connection) GetPriority() int {
+	return c.RenderPriority
 }
 
 type Arrowhead string

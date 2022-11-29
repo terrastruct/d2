@@ -8,6 +8,7 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
+	"oss.terrastruct.com/d2/lib/go2"
 )
 
 func Export(ctx context.Context, g *d2graph.Graph, themeID int64) (*d2target.Diagram, error) {
@@ -16,13 +17,16 @@ func Export(ctx context.Context, g *d2graph.Graph, themeID int64) (*d2target.Dia
 	diagram := d2target.NewDiagram()
 
 	diagram.Shapes = make([]d2target.Shape, len(g.Objects))
+	highestObjectPriority := 0
 	for i := range g.Objects {
 		diagram.Shapes[i] = toShape(g.Objects[i], &theme)
+		highestObjectPriority = go2.IntMax(highestObjectPriority, diagram.Shapes[i].RenderPriority)
 	}
 
+	edgeDefaultRenderPriority := highestObjectPriority + 1
 	diagram.Connections = make([]d2target.Connection, len(g.Edges))
 	for i := range g.Edges {
-		diagram.Connections[i] = toConnection(g.Edges[i], &theme)
+		diagram.Connections[i] = toConnection(g.Edges[i], &theme, edgeDefaultRenderPriority)
 	}
 
 	return diagram, nil
@@ -88,13 +92,17 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	shape := d2target.BaseShape()
 	shape.SetType(obj.Attributes.Shape.Value)
 	shape.ID = obj.AbsID()
+	if obj.RenderPriority == nil {
+		shape.RenderPriority = int(obj.Level())
+	} else {
+		shape.RenderPriority = *obj.RenderPriority
+	}
 	shape.Pos = d2target.NewPoint(int(obj.TopLeft.X), int(obj.TopLeft.Y))
 	shape.Width = int(obj.Width)
 	shape.Height = int(obj.Height)
 
 	text := obj.Text()
 	shape.FontSize = text.FontSize
-	shape.Level = int(obj.Level())
 
 	applyStyles(shape, obj)
 	applyTheme(shape, obj, theme)
@@ -130,9 +138,14 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	return *shape
 }
 
-func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection {
+func toConnection(edge *d2graph.Edge, theme *d2themes.Theme, defaultRenderPriotity int) d2target.Connection {
 	connection := d2target.BaseConnection()
 	connection.ID = edge.AbsID()
+	if edge.RenderPriority == nil {
+		connection.RenderPriority = defaultRenderPriotity
+	} else {
+		connection.RenderPriority = *edge.RenderPriority
+	}
 	// edge.Edge.ID = go2.StringToIntHash(connection.ID)
 	text := edge.Text()
 

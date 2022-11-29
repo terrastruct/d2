@@ -78,6 +78,8 @@ type Object struct {
 	ChildrenArray []*Object          `json:"-"`
 
 	Attributes Attributes `json:"attributes"`
+
+	RenderPriority *int `json:"renderPriority",omitempty`
 }
 
 type Attributes struct {
@@ -630,6 +632,8 @@ type Edge struct {
 
 	References []EdgeReference `json:"references,omitempty"`
 	Attributes Attributes      `json:"attributes"`
+
+	RenderPriority *int `json:"renderPriority,omitempty"`
 }
 
 type EdgeReference struct {
