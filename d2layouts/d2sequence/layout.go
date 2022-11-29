@@ -69,7 +69,7 @@ func (sd *sequenceDiagram) init() {
 			sd.actors = append(sd.actors, obj)
 			sd.objectRank[obj] = len(sd.actors)
 			sd.objectDepth[obj] = 0
-			sd.maxActorHeight = math.Max(sd.maxActorHeight, obj.Height+HORIZONTAL_PAD)
+			sd.maxActorHeight = math.Max(sd.maxActorHeight, obj.Height+VERTICAL_PAD)
 		} else {
 			// activations boxes are always rectangles and have no labels
 			obj.Attributes.Label = d2graph.Scalar{Value: ""}
@@ -83,7 +83,7 @@ func (sd *sequenceDiagram) init() {
 	}
 
 	for rank, edge := range sd.edges {
-		sd.edgeYStep = math.Max(sd.edgeYStep, float64(edge.LabelDimensions.Height)+HORIZONTAL_PAD)
+		sd.edgeYStep = math.Max(sd.edgeYStep, float64(edge.LabelDimensions.Height)+VERTICAL_PAD)
 
 		sd.setMinMaxEdgeRank(edge.Src, rank)
 		sd.setMinMaxEdgeRank(edge.Dst, rank)
