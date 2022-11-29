@@ -79,7 +79,7 @@ type Object struct {
 
 	Attributes Attributes `json:"attributes"`
 
-	RenderPriority *int `json:"renderPriority",omitempty`
+	RenderPriority *int `json:"renderPriority,omitempty"`
 }
 
 type Attributes struct {
