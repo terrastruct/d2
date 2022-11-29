@@ -25,9 +25,9 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 
 	sd.init()
 	sd.placeActors()
-	sd.addLifelineEdges()
 	sd.placeLifespan()
 	sd.routeEdges()
+	sd.addLifelineEdges()
 
 	return nil
 }
@@ -159,6 +159,18 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 	}
 }
 
+// placeLifespan places lifespan boxes over the object lifeline
+// ┌──────────┐
+// │  actor   │
+// └────┬─────┘
+//    ┌─┴──┐
+//    │    │
+//   lifespan
+//    │    │
+//    └─┬──┘
+//      │
+//   lifeline
+//      │
 func (sd *sequenceDiagram) placeLifespan() {
 	rankToX := make(map[int]float64)
 	for _, actor := range sd.actors {
@@ -172,6 +184,7 @@ func (sd *sequenceDiagram) placeLifespan() {
 		minY := sd.getEdgeY(minRank)
 		maxY := sd.getEdgeY(maxRank)
 		height := maxY - minY
+		height = math.Max(height, DEFAULT_LIFESPAN_BOX_HEIGHT)
 		x := rankToX[sd.objectRank[lifespan]] - (LIFESPAN_BOX_WIDTH / 2.)
 		lifespan.Box = geo.NewBox(geo.NewPoint(x, minY), LIFESPAN_BOX_WIDTH, height)
 	}
@@ -180,14 +193,31 @@ func (sd *sequenceDiagram) placeLifespan() {
 // routeEdges routes horizontal edges from Src to Dst
 func (sd *sequenceDiagram) routeEdges() {
 	for rank, edge := range sd.edges {
-		start := edge.Src.Center()
-		start.Y = sd.getEdgeY(rank)
-		end := edge.Dst.Center()
-		end.Y = start.Y
-		edge.Route = []*geo.Point{start, end}
+		isLeftToRight := edge.Src.TopLeft.X < edge.Dst.TopLeft.X
+
+		var startX, endX float64
+		if sd.isActor(edge.Src) {
+			startX = edge.Src.Center().X
+		} else if isLeftToRight {
+			startX = edge.Src.TopLeft.X + edge.Src.Width
+		} else {
+			startX = edge.Src.TopLeft.X
+		}
+
+		if sd.isActor(edge.Dst) {
+			endX = edge.Dst.Center().X
+		} else if isLeftToRight {
+			endX = edge.Dst.TopLeft.X
+		} else {
+			endX = edge.Dst.TopLeft.X + edge.Dst.Width
+		}
+		edgeY := sd.getEdgeY(rank)
+		edge.Route = []*geo.Point{
+			geo.NewPoint(startX, edgeY),
+			geo.NewPoint(endX, edgeY),
+		}
 
 		if edge.Attributes.Label.Value != "" {
-			isLeftToRight := edge.Src.TopLeft.X < edge.Dst.TopLeft.X
 			if isLeftToRight {
 				edge.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
 			} else {
@@ -198,5 +228,10 @@ func (sd *sequenceDiagram) routeEdges() {
 }
 
 func (sd *sequenceDiagram) getEdgeY(rank int) float64 {
+	// +1 so that the first edge has the top padding for its label
 	return ((float64(rank) + 1.) * sd.edgeYStep) + sd.maxActorHeight
+}
+
+func (sd *sequenceDiagram) isActor(obj *d2graph.Object) bool {
+	return obj.Parent == sd.graph.Root
 }
