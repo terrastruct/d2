@@ -22,3 +22,12 @@ jobs:
         with:
           name: d2chaos-test
           path: ./d2chaos/out
+  nofixups:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: git submodule update --init
+      - run: COLOR=1 ./ci/sub/nofixups.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}

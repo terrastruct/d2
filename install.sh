@@ -144,15 +144,15 @@ strlen() {
 }
 
 echoerr() {
-  FGCOLOR=1 logp err "$*" | humanpath>&2
+  FGCOLOR=1 logp err "$*"
 }
 
 caterr() {
-  FGCOLOR=1 logpcat err "$@" | humanpath >&2
+  FGCOLOR=1 logpcat err "$@"
 }
 
 printferr() {
-  FGCOLOR=1 logfp err "$@" | humanpath >&2
+  FGCOLOR=1 logfp err "$@"
 }
 
 logp() {
