@@ -1,6 +1,7 @@
 package imgbundler
 
 import (
+	"context"
 	"crypto/rand"
 	_ "embed"
 	"fmt"
@@ -48,6 +49,7 @@ func TestRegex(t *testing.T) {
 }
 
 func TestInlineRemote(t *testing.T) {
+	ctx := context.Background()
 	svgURL := "https://icons.terrastruct.com/essentials/004-picture.svg"
 	pngURL := "https://cdn4.iconfinder.com/data/icons/smart-phones-technologies/512/android-phone.png"
 
@@ -102,7 +104,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		return respRecorder.Result()
 	})
 
-	out, err := InlineRemote(ms, []byte(sampleSVG))
+	out, err := InlineRemote(ctx, ms, []byte(sampleSVG))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -119,13 +121,13 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 	// Test almost too large response
 	transport = roundTripFunc(func(req *http.Request) *http.Response {
 		respRecorder := httptest.NewRecorder()
-		bytes := make([]byte, max_img_size-1)
+		bytes := make([]byte, maxImageSize-1)
 		rand.Read(bytes)
 		respRecorder.Write(bytes)
 		respRecorder.WriteHeader(200)
 		return respRecorder.Result()
 	})
-	_, err = InlineRemote(ms, []byte(sampleSVG))
+	_, err = InlineRemote(ctx, ms, []byte(sampleSVG))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -133,13 +135,13 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 	// Test too large response
 	transport = roundTripFunc(func(req *http.Request) *http.Response {
 		respRecorder := httptest.NewRecorder()
-		bytes := make([]byte, max_img_size+1)
+		bytes := make([]byte, maxImageSize+1)
 		rand.Read(bytes)
 		respRecorder.Write(bytes)
 		respRecorder.WriteHeader(200)
 		return respRecorder.Result()
 	})
-	_, err = InlineRemote(ms, []byte(sampleSVG))
+	_, err = InlineRemote(ctx, ms, []byte(sampleSVG))
 	if err == nil {
 		t.Fatal("expected error")
 	}
@@ -150,13 +152,14 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		respRecorder.WriteHeader(500)
 		return respRecorder.Result()
 	})
-	_, err = InlineRemote(ms, []byte(sampleSVG))
+	_, err = InlineRemote(ctx, ms, []byte(sampleSVG))
 	if err == nil {
 		t.Fatal("expected error")
 	}
 }
 
 func TestInlineLocal(t *testing.T) {
+	ctx := context.Background()
 	svgURL, err := filepath.Abs("./test_svg.svg")
 	if err != nil {
 		t.Fatal(err)
@@ -202,7 +205,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		Env: xos.NewEnv(os.Environ()),
 	}
 	ms.Log = cmdlog.Log(ms.Env, os.Stderr)
-	out, err := InlineLocal(ms, []byte(sampleSVG))
+	out, err := InlineLocal(ctx, ms, []byte(sampleSVG))
 	if err != nil {
 		t.Fatal(err)
 	}

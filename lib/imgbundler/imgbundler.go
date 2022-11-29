@@ -20,8 +20,7 @@ import (
 	"oss.terrastruct.com/d2/lib/xmain"
 )
 
-// 32 MB
-var max_img_size int64 = 33_554_432
+const maxImageSize int64 = 1 << 25 // 33_554_432
 
 var imageRe = regexp.MustCompile(`<image href="([^"]+)"`)
 
@@ -99,7 +98,7 @@ func inline(ctx context.Context, ms *xmain.State, svg []byte, isRemote bool) (_ 
 		select {
 		case <-ctx.Done():
 			ms.Log.Debug.Printf("there")
-			return nil, fmt.Errorf("failed waiting for imgbundler workers: %w", ctx.Err())
+			return nil, fmt.Errorf("failed to wait for imgbundler workers: %w", ctx.Err())
 		case <-time.After(time.Second * 5):
 			ms.Log.Info.Printf("fetching images...")
 		case resp, ok := <-respChan:
@@ -135,7 +134,7 @@ func fetch(ctx context.Context, href string) (string, error) {
 	if imgResp.StatusCode != 200 {
 		return "", fmt.Errorf("img %s returned status code %d", href, imgResp.StatusCode)
 	}
-	r := http.MaxBytesReader(nil, imgResp.Body, max_img_size)
+	r := http.MaxBytesReader(nil, imgResp.Body, maxImageSize)
 	data, err := ioutil.ReadAll(r)
 	if err != nil {
 		return "", err
