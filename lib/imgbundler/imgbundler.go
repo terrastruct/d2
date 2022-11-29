@@ -53,11 +53,20 @@ func inline(ms *xmain.State, in []byte, isRemote bool) ([]byte, error) {
 	defer cancel()
 	wg.Add(len(filtered))
 	for _, img := range filtered {
-		if isRemote {
-			go fetch(ctx, img[0], img[1], respChan)
-		} else {
-			go read(ctx, img[0], img[1], respChan)
-		}
+		go func(src, href string) {
+			var data string
+			var err error
+			if isRemote {
+				data, err = fetch(ctx, href)
+			} else {
+				data, err = read(ctx, href)
+			}
+			respChan <- resp{
+				srctxt: src,
+				data:   data,
+				err:    err,
+			}
+		}(img[0], img[1])
 	}
 
 	go func() {
@@ -85,24 +94,21 @@ func inline(ms *xmain.State, in []byte, isRemote bool) ([]byte, error) {
 
 var transport = http.DefaultTransport
 
-func fetch(ctx context.Context, srctxt, href string, respChan chan resp) {
+func fetch(ctx context.Context, href string) (string, error) {
 	req, err := http.NewRequestWithContext(ctx, "GET", href, nil)
 	if err != nil {
-		respChan <- resp{err: err}
-		return
+		return "", err
 	}
 
 	client := &http.Client{Transport: transport}
 	imgResp, err := client.Do(req)
 	if err != nil {
-		respChan <- resp{err: err}
-		return
+		return "", err
 	}
 	defer imgResp.Body.Close()
 	data, err := ioutil.ReadAll(imgResp.Body)
 	if err != nil {
-		respChan <- resp{err: err}
-		return
+		return "", err
 	}
 
 	mimeType := http.DetectContentType(data)
@@ -110,17 +116,13 @@ func fetch(ctx context.Context, srctxt, href string, respChan chan resp) {
 
 	enc := base64.StdEncoding.EncodeToString(data)
 
-	respChan <- resp{
-		srctxt: srctxt,
-		data:   fmt.Sprintf("data:%s;base64,%s", mimeType, enc),
-	}
+	return fmt.Sprintf("data:%s;base64,%s", mimeType, enc), nil
 }
 
-func read(ctx context.Context, srctxt, href string, respChan chan resp) {
+func read(ctx context.Context, href string) (string, error) {
 	data, err := os.ReadFile(href)
 	if err != nil {
-		respChan <- resp{err: err}
-		return
+		return "", err
 	}
 
 	mimeType := http.DetectContentType(data)
@@ -128,8 +130,5 @@ func read(ctx context.Context, srctxt, href string, respChan chan resp) {
 
 	enc := base64.StdEncoding.EncodeToString(data)
 
-	respChan <- resp{
-		srctxt: srctxt,
-		data:   fmt.Sprintf("data:%s;base64,%s", mimeType, enc),
-	}
+	return fmt.Sprintf("data:%s;base64,%s", mimeType, enc), nil
 }
