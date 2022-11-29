@@ -653,13 +653,16 @@ main() {
   if [ -n "${UNINSTALL-}" ]; then
     uninstall
     if [ -n "${DRY_RUN-}" ]; then
-      bigheader "Rerun without --dry-run to execute printed commands and perform uninstall."
+      FGCOLOR=3 bigheader "***********
+Rerun without --dry-run to execute printed commands and perform install.
+***********"
     fi
   else
     install
     if [ -n "${DRY_RUN-}" ]; then
-      bigheader "DRY RUN
-Rerun without --dry-run to execute printed commands and perform install."
+      FGCOLOR=3 bigheader "***********
+Rerun without --dry-run to execute printed commands and perform install.
+***********"
     fi
   fi
 }
