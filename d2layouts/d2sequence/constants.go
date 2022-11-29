@@ -7,3 +7,5 @@ const MIN_ACTOR_DISTANCE = 200.
 
 // min vertical distance between edges
 const MIN_EDGE_DISTANCE = 100.
+
+const LIFESPAN_BOX_WIDTH = 20.

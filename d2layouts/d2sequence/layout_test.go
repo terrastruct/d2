@@ -9,35 +9,41 @@ import (
 	"oss.terrastruct.com/d2/lib/log"
 )
 
-func TestLayout(t *testing.T) {
+func TestBasicSequenceDiagram(t *testing.T) {
+	// ┌────────┐              ┌────────┐
+	// │   n1   │              │   n2   │
+	// └────┬───┘              └────┬───┘
+	//      │                       │
+	//      ├───────────────────────►
+	//      │                       │
+	//      ◄───────────────────────┤
+	//      │                       │
+	//      ├───────────────────────►
+	//      │                       │
+	//      ◄───────────────────────┤
+	//      │                       │
 	g := d2graph.NewGraph(nil)
-	g.Objects = []*d2graph.Object{
-		{
-			ID:  "Alice",
-			Box: geo.NewBox(nil, 100, 100),
-		},
-		{
-			ID:  "Bob",
-			Box: geo.NewBox(nil, 30, 30),
-		},
-	}
+	n1 := g.Root.EnsureChild([]string{"n1"})
+	n1.Box = geo.NewBox(nil, 100, 100)
+	n2 := g.Root.EnsureChild([]string{"n2"})
+	n2.Box = geo.NewBox(nil, 30, 30)
 
 	g.Edges = []*d2graph.Edge{
 		{
-			Src: g.Objects[0],
-			Dst: g.Objects[1],
+			Src: n1,
+			Dst: n2,
 		},
 		{
-			Src: g.Objects[1],
-			Dst: g.Objects[0],
+			Src: n2,
+			Dst: n1,
 		},
 		{
-			Src: g.Objects[0],
-			Dst: g.Objects[1],
+			Src: n1,
+			Dst: n2,
 		},
 		{
-			Src: g.Objects[1],
-			Dst: g.Objects[0],
+			Src: n2,
+			Dst: n1,
 		},
 	}
 	nEdges := len(g.Edges)
@@ -108,5 +114,54 @@ func TestLayout(t *testing.T) {
 		if edge.Route[1].Y < lastSequenceEdge.Route[0].Y {
 			t.Fatalf("expected edge[%d] to end after the last sequence edge", i)
 		}
+	}
+}
+
+func TestLifespanSequenceDiagram(t *testing.T) {
+	//   ┌─────┐                 ┌─────┐
+	//   │  a  │                 │  b  │
+	//   └──┬──┘                 └──┬──┘
+	//      ├┐────────────────────►┌┤
+	//   t1 ││                     ││ t1
+	//      ├┘◄────────────────────└┤
+	//      ├┐──────────────────────►
+	//   t2 ││                      │
+	//      ├┘◄─────────────────────┤
+	g := d2graph.NewGraph(nil)
+	a := g.Root.EnsureChild([]string{"a"})
+	a.Box = geo.NewBox(nil, 100, 100)
+	a_t1 := a.EnsureChild([]string{"t1"})
+	a_t2 := a.EnsureChild([]string{"t2"})
+	b := g.Root.EnsureChild([]string{"b"})
+	b.Box = geo.NewBox(nil, 30, 30)
+	b_t1 := b.EnsureChild([]string{"t1"})
+
+	g.Edges = []*d2graph.Edge{
+		{
+			Src: a_t1,
+			Dst: b_t1,
+		}, {
+			Src: b_t1,
+			Dst: a_t1,
+		}, {
+			Src: a_t2,
+			Dst: b,
+		}, {
+			Src: b,
+			Dst: a_t2,
+		},
+	}
+
+	ctx := log.WithTB(context.Background(), t, nil)
+	Layout(ctx, g)
+
+	if a.Center().X != a_t1.Center().X {
+		t.Fatal("expected a_t1.X = a.X")
+	}
+	if a.Center().X != a_t2.Center().X {
+		t.Fatal("expected a_t2.X = a.X")
+	}
+	if b.Center().X != b_t1.Center().X {
+		t.Fatal("expected b_t1.X = b.X")
 	}
 }
