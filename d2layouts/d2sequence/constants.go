@@ -9,10 +9,10 @@ const MIN_ACTOR_DISTANCE = 200.
 const MIN_EDGE_DISTANCE = 100.
 
 // default size
-const LIFESPAN_BOX_WIDTH = 20.
+const ACTIvATION_BOX_WIDTH = 20.
 
-// as the lifespan boxes start getting nested, their size grows
-const LIFESPAN_DEPTH_GROW_FACTOR = 10.
+// as the activation boxes start getting nested, their size grows
+const ACTIVATION_BOX_DEPTH_GROW_FACTOR = 10.
 
-// when a lifespan box has a single edge
-const DEFAULT_LIFESPAN_BOX_HEIGHT = MIN_EDGE_DISTANCE / 2.
+// when a activation box has a single edge
+const DEFAULT_ACTIVATION_BOX_HEIGHT = MIN_EDGE_DISTANCE / 2.

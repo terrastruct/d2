@@ -117,7 +117,7 @@ func TestBasicSequenceDiagram(t *testing.T) {
 	}
 }
 
-func TestLifespanSequenceDiagram(t *testing.T) {
+func TestActivationBoxesSequenceDiagram(t *testing.T) {
 	//   ┌─────┐                 ┌─────┐
 	//   │  a  │                 │  b  │
 	//   └──┬──┘                 └──┬──┘

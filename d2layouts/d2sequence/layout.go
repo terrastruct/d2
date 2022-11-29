@@ -26,7 +26,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 
 	sd.init()
 	sd.placeActors()
-	sd.placeLifespan()
+	sd.placeActivationBoxes()
 	sd.routeEdges()
 	sd.addLifelineEdges()
 
@@ -36,16 +36,16 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 type sequenceDiagram struct {
 	graph *d2graph.Graph
 
-	edges     []*d2graph.Edge
-	actors    []*d2graph.Object
-	lifespans []*d2graph.Object
+	edges       []*d2graph.Edge
+	actors      []*d2graph.Object
+	activations []*d2graph.Object
 
-	// can be either actors or lifespans
+	// can be either actors or activation boxes
 	objectRank  map[*d2graph.Object]int
 	objectDepth map[*d2graph.Object]int
 
 	// keep track of the first and last edge of a given actor
-	// needed for lifespan
+	// needed for activation boxes
 	minEdgeRank map[*d2graph.Object]int
 	maxEdgeRank map[*d2graph.Object]int
 
@@ -78,7 +78,7 @@ func (sd *sequenceDiagram) init() {
 			sd.objectDepth[obj] = 0
 		} else if obj != sd.graph.Root {
 			obj.Attributes.Label = d2graph.Scalar{Value: ""}
-			sd.lifespans = append(sd.lifespans, obj)
+			sd.activations = append(sd.activations, obj)
 			sd.objectRank[obj] = sd.objectRank[obj.Parent]
 			sd.objectDepth[obj] = sd.objectDepth[obj.Parent] + 1
 		}
@@ -127,8 +127,7 @@ func (sd *sequenceDiagram) placeActors() {
 	}
 }
 
-// addLifelineEdges adds a new edge for each actor in the graph that represents the
-// edge below the actor showing its lifespan
+// addLifelineEdges adds a new edge for each actor in the graph that represents the its lifeline
 // ┌──────────────┐
 // │     actor    │
 // └──────┬───────┘
@@ -162,62 +161,62 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 	}
 }
 
-// placeLifespan places lifespan boxes over the object lifeline
+// placeActivationBoxes places activation boxes over the object lifeline
 // ┌──────────┐
 // │  actor   │
 // └────┬─────┘
 //    ┌─┴──┐
 //    │    │
-//   lifespan
+//  activation
 //    │    │
 //    └─┬──┘
 //      │
 //   lifeline
 //      │
-func (sd *sequenceDiagram) placeLifespan() {
+func (sd *sequenceDiagram) placeActivationBoxes() {
 	rankToX := make(map[int]float64)
 	for _, actor := range sd.actors {
 		rankToX[sd.objectRank[actor]] = actor.Center().X
 	}
 
-	lifespanFromMostNested := make([]*d2graph.Object, len(sd.lifespans))
-	copy(lifespanFromMostNested, sd.lifespans)
-	sort.SliceStable(lifespanFromMostNested, func(i, j int) bool {
-		return sd.objectDepth[lifespanFromMostNested[i]] > sd.objectDepth[lifespanFromMostNested[j]]
+	activationFromMostNested := make([]*d2graph.Object, len(sd.activations))
+	copy(activationFromMostNested, sd.activations)
+	sort.SliceStable(activationFromMostNested, func(i, j int) bool {
+		return sd.objectDepth[activationFromMostNested[i]] > sd.objectDepth[activationFromMostNested[j]]
 	})
-	for _, lifespan := range lifespanFromMostNested {
+	for _, activation := range activationFromMostNested {
 		minChildY := math.Inf(1)
 		maxChildY := math.Inf(-1)
-		for _, child := range lifespan.ChildrenArray {
+		for _, child := range activation.ChildrenArray {
 			minChildY = math.Min(minChildY, child.TopLeft.Y)
 			maxChildY = math.Max(maxChildY, child.TopLeft.Y+child.Height)
 		}
 
 		minEdgeY := math.Inf(1)
-		if minRank, exists := sd.minEdgeRank[lifespan]; exists {
+		if minRank, exists := sd.minEdgeRank[activation]; exists {
 			minEdgeY = sd.getEdgeY(minRank)
 		}
 		maxEdgeY := math.Inf(-1)
-		if maxRank, exists := sd.maxEdgeRank[lifespan]; exists {
+		if maxRank, exists := sd.maxEdgeRank[activation]; exists {
 			maxEdgeY = sd.getEdgeY(maxRank)
 		}
 
 		minY := math.Min(minEdgeY, minChildY)
 		if minY == minChildY {
-			minY -= LIFESPAN_DEPTH_GROW_FACTOR
+			minY -= ACTIVATION_BOX_DEPTH_GROW_FACTOR
 		}
 		maxY := math.Max(maxEdgeY, maxChildY)
 		if maxY == maxChildY {
-			maxY += LIFESPAN_DEPTH_GROW_FACTOR
+			maxY += ACTIVATION_BOX_DEPTH_GROW_FACTOR
 		}
 
 		height := maxY - minY
-		height = math.Max(height, DEFAULT_LIFESPAN_BOX_HEIGHT)
+		height = math.Max(height, DEFAULT_ACTIVATION_BOX_HEIGHT)
 
-		width := LIFESPAN_BOX_WIDTH + (float64(sd.objectDepth[lifespan]-1) * LIFESPAN_DEPTH_GROW_FACTOR)
+		width := ACTIvATION_BOX_WIDTH + (float64(sd.objectDepth[activation]-1) * ACTIVATION_BOX_DEPTH_GROW_FACTOR)
 
-		x := rankToX[sd.objectRank[lifespan]] - (width / 2.)
-		lifespan.Box = geo.NewBox(geo.NewPoint(x, minY), width, height)
+		x := rankToX[sd.objectRank[activation]] - (width / 2.)
+		activation.Box = geo.NewBox(geo.NewPoint(x, minY), width, height)
 	}
 }
 
