@@ -164,17 +164,24 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 //   lifeline
 //      │
 func (sd *sequenceDiagram) placeActivationBoxes() {
+	// quickly find the activation box center X
 	rankToX := make(map[int]float64)
 	for _, actor := range sd.actors {
 		rankToX[sd.objectRank[actor]] = actor.Center().X
 	}
 
+	// places activation boxes from most to least nested
+	// the order is important because the only way a child activation box exists is if there'e an edge to it
+	// however, the parent activation might not have an edge to it and then its position is based on the child position
+	// or, there can be edge to it, but it comes after the child one meaning the top left position is still based on the child
+	// and not on its own edge
 	activationFromMostNested := make([]*d2graph.Object, len(sd.activations))
 	copy(activationFromMostNested, sd.activations)
 	sort.SliceStable(activationFromMostNested, func(i, j int) bool {
 		return sd.objectDepth[activationFromMostNested[i]] > sd.objectDepth[activationFromMostNested[j]]
 	})
 	for _, activation := range activationFromMostNested {
+		// finds the position based on children
 		minChildY := math.Inf(1)
 		maxChildY := math.Inf(-1)
 		for _, child := range activation.ChildrenArray {
@@ -182,6 +189,7 @@ func (sd *sequenceDiagram) placeActivationBoxes() {
 			maxChildY = math.Max(maxChildY, child.TopLeft.Y+child.Height)
 		}
 
+		// finds the position if there are edges to this activation box
 		minEdgeY := math.Inf(1)
 		if minRank, exists := sd.minEdgeRank[activation]; exists {
 			minEdgeY = sd.getEdgeY(minRank)
@@ -191,6 +199,7 @@ func (sd *sequenceDiagram) placeActivationBoxes() {
 			maxEdgeY = sd.getEdgeY(maxRank)
 		}
 
+		// if it is the same as the child top left, add some padding
 		minY := math.Min(minEdgeY, minChildY)
 		if minY == minChildY {
 			minY -= ACTIVATION_BOX_DEPTH_GROW_FACTOR
@@ -200,11 +209,8 @@ func (sd *sequenceDiagram) placeActivationBoxes() {
 			maxY += ACTIVATION_BOX_DEPTH_GROW_FACTOR
 		}
 
-		height := maxY - minY
-		height = math.Max(height, DEFAULT_ACTIVATION_BOX_HEIGHT)
-
+		height := math.Max(maxY-minY, DEFAULT_ACTIVATION_BOX_HEIGHT)
 		width := ACTIVATION_BOX_WIDTH + (float64(sd.objectDepth[activation]-1) * ACTIVATION_BOX_DEPTH_GROW_FACTOR)
-
 		x := rankToX[sd.objectRank[activation]] - (width / 2.)
 		activation.Box = geo.NewBox(geo.NewPoint(x, minY), width, height)
 	}
@@ -215,6 +221,7 @@ func (sd *sequenceDiagram) routeEdges() {
 	for rank, edge := range sd.edges {
 		isLeftToRight := edge.Src.TopLeft.X < edge.Dst.TopLeft.X
 
+		// finds the proper anchor point based on the edge direction
 		var startX, endX float64
 		if sd.isActor(edge.Src) {
 			startX = edge.Src.Center().X
@@ -241,6 +248,7 @@ func (sd *sequenceDiagram) routeEdges() {
 			if isLeftToRight {
 				edge.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
 			} else {
+				// the label will be placed above the edge because the orientation is based on the edge normal vector
 				edge.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
 			}
 		}
