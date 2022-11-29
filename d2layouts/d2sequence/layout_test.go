@@ -6,7 +6,9 @@ import (
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/log"
+	"oss.terrastruct.com/d2/lib/shape"
 )
 
 func TestBasicSequenceDiagram(t *testing.T) {
@@ -32,10 +34,16 @@ func TestBasicSequenceDiagram(t *testing.T) {
 		{
 			Src: n1,
 			Dst: n2,
+			Attributes: d2graph.Attributes{
+				Label: d2graph.Scalar{Value: "left to right"},
+			},
 		},
 		{
 			Src: n2,
 			Dst: n1,
+			Attributes: d2graph.Attributes{
+				Label: d2graph.Scalar{Value: "right to left"},
+			},
 		},
 		{
 			Src: n1,
@@ -115,6 +123,15 @@ func TestBasicSequenceDiagram(t *testing.T) {
 			t.Fatalf("expected edge[%d] to end after the last sequence edge", i)
 		}
 	}
+
+	// check label positions
+	if *g.Edges[0].LabelPosition != string(label.OutsideTopCenter) {
+		t.Fatalf("expected edge label to be placed on %s, got %s", string(label.OutsideTopCenter), *g.Edges[0].LabelPosition)
+	}
+
+	if *g.Edges[1].LabelPosition != string(label.OutsideBottomCenter) {
+		t.Fatalf("expected edge label to be placed on %s, got %s", string(label.OutsideBottomCenter), *g.Edges[0].LabelPosition)
+	}
 }
 
 func TestActivationBoxesSequenceDiagram(t *testing.T) {
@@ -130,7 +147,14 @@ func TestActivationBoxesSequenceDiagram(t *testing.T) {
 	g := d2graph.NewGraph(nil)
 	a := g.Root.EnsureChild([]string{"a"})
 	a.Box = geo.NewBox(nil, 100, 100)
+	a.Attributes = d2graph.Attributes{
+		Shape: d2graph.Scalar{Value: shape.PERSON_TYPE},
+	}
 	a_t1 := a.EnsureChild([]string{"t1"})
+	a_t1.Attributes = d2graph.Attributes{
+		Shape: d2graph.Scalar{Value: shape.DIAMOND_TYPE},
+		Label: d2graph.Scalar{Value: "label"},
+	}
 	a_t2 := a.EnsureChild([]string{"t2"})
 	b := g.Root.EnsureChild([]string{"b"})
 	b.Box = geo.NewBox(nil, 30, 30)
@@ -155,6 +179,34 @@ func TestActivationBoxesSequenceDiagram(t *testing.T) {
 	ctx := log.WithTB(context.Background(), t, nil)
 	Layout(ctx, g)
 
+	// check properties
+	if a.Attributes.Shape.Value != shape.PERSON_TYPE {
+		t.Fatal("actor a shape changed")
+	}
+
+	if a_t1.Attributes.Label.Value != "" {
+		t.Fatalf("expected no label for activation box, got %s", a_t1.Attributes.Label.Value)
+	}
+
+	if a_t1.Attributes.Shape.Value != shape.SQUARE_TYPE {
+		t.Fatalf("expected square shape for activation box, got %s", a_t1.Attributes.Shape.Value)
+	}
+
+	if a_t1.Height != b_t1.Height {
+		t.Fatalf("expected a.t1 and b.t1 to have the same height, got %.5f and %.5f", a_t1.Height, b_t1.Height)
+	}
+
+	// Y diff of the 2 first edges
+	expectedHeight := g.Edges[1].Route[0].Y - g.Edges[0].Route[0].Y
+	if a_t1.Height != expectedHeight {
+		t.Fatalf("expected a.t1 height to be %.5f, got %.5f", expectedHeight, a_t1.Height)
+	}
+
+	if a_t1.Width != ACTIVATION_BOX_WIDTH {
+		t.Fatalf("expected activation box width to be %.5f, got %.5f", ACTIVATION_BOX_WIDTH, a_t1.Width)
+	}
+
+	// check positions
 	if a.Center().X != a_t1.Center().X {
 		t.Fatal("expected a_t1.X = a.X")
 	}
@@ -163,5 +215,24 @@ func TestActivationBoxesSequenceDiagram(t *testing.T) {
 	}
 	if b.Center().X != b_t1.Center().X {
 		t.Fatal("expected b_t1.X = b.X")
+	}
+	if a_t1.TopLeft.Y != b_t1.TopLeft.Y {
+		t.Fatal("expected a.t1 and b.t1 to be placed at the same Y")
+	}
+	if a_t1.TopLeft.Y != g.Edges[0].Route[0].Y {
+		t.Fatal("expected a.t1 to be placed at the same Y of the first edge")
+	}
+
+	// check routes
+	if g.Edges[0].Route[0].X != a_t1.TopLeft.X+a_t1.Width {
+		t.Fatal("expected the first edge to start on a.t1 top right X")
+	}
+
+	if g.Edges[0].Route[1].X != b_t1.TopLeft.X {
+		t.Fatal("expected the first edge to end on b.t1 top left X")
+	}
+
+	if g.Edges[2].Route[1].X != b.Center().X {
+		t.Fatal("expected the third edge to end on b.t1 center X")
 	}
 }
