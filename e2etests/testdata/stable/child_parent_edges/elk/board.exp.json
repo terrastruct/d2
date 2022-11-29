@@ -37,7 +37,7 @@
       "labelWidth": 17,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "a.b",
@@ -75,7 +75,7 @@
       "labelWidth": 17,
       "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "a.b.c",
@@ -113,7 +113,7 @@
       "labelWidth": 14,
       "labelHeight": 31,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "a.b.c.d",
@@ -151,7 +151,7 @@
       "labelWidth": 14,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 4
+      "zIndex": 4
     }
   ],
   "connections": [
@@ -192,7 +192,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 5
+      "zIndex": 5
     },
     {
       "id": "a.(b -> b.c)[0]",
@@ -231,7 +231,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 5
+      "zIndex": 5
     },
     {
       "id": "a.(b.c.d -> b)[0]",
@@ -278,7 +278,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 5
+      "zIndex": 5
     }
   ]
 }

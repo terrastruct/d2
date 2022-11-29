@@ -36,7 +36,7 @@
       "underline": false,
       "labelWidth": 0,
       "labelHeight": 0,
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "y",
@@ -73,7 +73,7 @@
       "underline": false,
       "labelWidth": 0,
       "labelHeight": 0,
-      "renderPriority": 1
+      "zIndex": 1
     }
   ],
   "connections": [
@@ -106,7 +106,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(x -> y)[1]",
@@ -137,7 +137,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     }
   ]
 }

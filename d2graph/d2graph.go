@@ -79,7 +79,7 @@ type Object struct {
 
 	Attributes Attributes `json:"attributes"`
 
-	RenderPriority *int `json:"renderPriority,omitempty"`
+	ZIndex *int `json:"zIndex,omitempty"`
 }
 
 type Attributes struct {
@@ -633,7 +633,7 @@ type Edge struct {
 	References []EdgeReference `json:"references,omitempty"`
 	Attributes Attributes      `json:"attributes"`
 
-	RenderPriority *int `json:"renderPriority,omitempty"`
+	ZIndex *int `json:"zIndex,omitempty"`
 }
 
 type EdgeReference struct {

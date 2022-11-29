@@ -18,7 +18,7 @@ const (
 )
 
 type DiagramObject interface {
-	GetPriority() int
+	GetZIndex() int
 }
 
 type Diagram struct {
@@ -121,7 +121,7 @@ type Shape struct {
 
 	LabelPosition string `json:"labelPosition,omitempty"`
 
-	RenderPriority int `json:"renderPriority"`
+	ZIndex int `json:"zIndex"`
 }
 
 func (s *Shape) SetType(t string) {
@@ -135,8 +135,8 @@ func (s *Shape) SetType(t string) {
 	s.Type = strings.ToLower(t)
 }
 
-func (s Shape) GetPriority() int {
-	return s.RenderPriority
+func (s Shape) GetZIndex() int {
+	return s.ZIndex
 }
 
 type Text struct {
@@ -193,7 +193,7 @@ type Connection struct {
 	Tooltip  string   `json:"tooltip"`
 	Icon     *url.URL `json:"icon"`
 
-	RenderPriority int `json:"renderPriority"`
+	ZIndex int `json:"zIndex"`
 }
 
 func BaseConnection() *Connection {
@@ -221,8 +221,8 @@ func (c *Connection) GetLabelTopLeft() *geo.Point {
 	)
 }
 
-func (c Connection) GetPriority() int {
-	return c.RenderPriority
+func (c Connection) GetZIndex() int {
+	return c.ZIndex
 }
 
 type Arrowhead string

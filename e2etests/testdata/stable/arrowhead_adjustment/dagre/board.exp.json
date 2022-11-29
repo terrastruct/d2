@@ -37,7 +37,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "b",
@@ -75,7 +75,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "a",
@@ -113,7 +113,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "Oval",
@@ -150,7 +150,7 @@
       "underline": false,
       "labelWidth": 0,
       "labelHeight": 0,
-      "renderPriority": 1
+      "zIndex": 1
     }
   ],
   "connections": [
@@ -200,7 +200,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(c -> b)[0]",
@@ -260,7 +260,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(a <-> Oval)[0]",
@@ -308,7 +308,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(c -- a)[0]",
@@ -356,7 +356,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(Oval <-> c)[0]",
@@ -416,7 +416,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     }
   ]
 }

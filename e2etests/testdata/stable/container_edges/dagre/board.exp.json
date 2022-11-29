@@ -37,7 +37,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "g",
@@ -75,7 +75,7 @@
       "labelWidth": 18,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "g.b",
@@ -113,7 +113,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "d",
@@ -151,7 +151,7 @@
       "labelWidth": 18,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "d.h",
@@ -189,7 +189,7 @@
       "labelWidth": 16,
       "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "d.h.c",
@@ -227,7 +227,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "g.e",
@@ -265,7 +265,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "f",
@@ -303,7 +303,7 @@
       "labelWidth": 11,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     }
   ],
   "connections": [
@@ -353,7 +353,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     },
     {
       "id": "(g.b -> d.h.c)[0]",
@@ -413,7 +413,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     },
     {
       "id": "(d -> g.e)[0]",
@@ -461,7 +461,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     },
     {
       "id": "(g.e -> f)[0]",
@@ -509,7 +509,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     },
     {
       "id": "(f -> g)[0]",
@@ -557,7 +557,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     },
     {
       "id": "(g -> d.h)[0]",
@@ -605,7 +605,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     }
   ]
 }

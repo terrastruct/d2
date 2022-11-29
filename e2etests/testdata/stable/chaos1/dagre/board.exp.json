@@ -37,7 +37,7 @@
       "labelWidth": 46,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "aaa.bbb",
@@ -75,7 +75,7 @@
       "labelWidth": 32,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "ddd",
@@ -113,7 +113,7 @@
       "labelWidth": 33,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "eee",
@@ -151,7 +151,7 @@
       "labelWidth": 30,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "aaa.ccc",
@@ -189,7 +189,7 @@
       "labelWidth": 28,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     }
   ],
   "connections": [
@@ -239,7 +239,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "(eee <- aaa.ccc)[0]",
@@ -287,7 +287,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     }
   ]
 }

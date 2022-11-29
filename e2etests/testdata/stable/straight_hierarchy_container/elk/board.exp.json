@@ -37,7 +37,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "c",
@@ -75,7 +75,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "b",
@@ -113,7 +113,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "l1",
@@ -151,7 +151,7 @@
       "labelWidth": 24,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "l1.b",
@@ -189,7 +189,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "l1.a",
@@ -227,7 +227,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "l1.c",
@@ -265,7 +265,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "l2c1",
@@ -303,7 +303,7 @@
       "labelWidth": 50,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "l2c1.a",
@@ -341,7 +341,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "l2c3",
@@ -379,7 +379,7 @@
       "labelWidth": 50,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "l2c3.c",
@@ -417,7 +417,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "l2c2",
@@ -455,7 +455,7 @@
       "labelWidth": 50,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "l2c2.b",
@@ -493,7 +493,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "l3c1",
@@ -531,7 +531,7 @@
       "labelWidth": 50,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "l3c1.a",
@@ -569,7 +569,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "l3c1.b",
@@ -607,7 +607,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "l3c2",
@@ -645,7 +645,7 @@
       "labelWidth": 50,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "l3c2.c",
@@ -683,7 +683,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "l4",
@@ -721,7 +721,7 @@
       "labelWidth": 25,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "l4.c1",
@@ -759,7 +759,7 @@
       "labelWidth": 26,
       "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "l4.c1.a",
@@ -797,7 +797,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "l4.c2",
@@ -835,7 +835,7 @@
       "labelWidth": 26,
       "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "l4.c2.b",
@@ -873,7 +873,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "l4.c3",
@@ -911,7 +911,7 @@
       "labelWidth": 26,
       "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "l4.c3.c",
@@ -949,7 +949,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 3
+      "zIndex": 3
     }
   ],
   "connections": [
@@ -990,7 +990,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     },
     {
       "id": "(a -> l1.a)[0]",
@@ -1029,7 +1029,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     },
     {
       "id": "(c -> l1.c)[0]",
@@ -1068,7 +1068,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     },
     {
       "id": "(l1.a -> l2c1.a)[0]",
@@ -1115,7 +1115,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     },
     {
       "id": "(l1.c -> l2c3.c)[0]",
@@ -1154,7 +1154,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     },
     {
       "id": "(l1.b -> l2c2.b)[0]",
@@ -1201,7 +1201,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     },
     {
       "id": "(l2c1.a -> l3c1.a)[0]",
@@ -1240,7 +1240,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     },
     {
       "id": "(l2c2.b -> l3c1.b)[0]",
@@ -1287,7 +1287,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     },
     {
       "id": "(l2c3.c -> l3c2.c)[0]",
@@ -1326,7 +1326,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     },
     {
       "id": "(l3c1.a -> l4.c1.a)[0]",
@@ -1365,7 +1365,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     },
     {
       "id": "(l3c1.b -> l4.c2.b)[0]",
@@ -1412,7 +1412,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     },
     {
       "id": "(l3c2.c -> l4.c3.c)[0]",
@@ -1451,7 +1451,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 4
+      "zIndex": 4
     }
   ]
 }

@@ -37,7 +37,7 @@
       "labelWidth": 17,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "a.b",
@@ -75,7 +75,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "c",
@@ -113,7 +113,7 @@
       "labelWidth": 17,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "c.d",
@@ -151,7 +151,7 @@
       "labelWidth": 14,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     }
   ],
   "connections": [
@@ -192,7 +192,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     }
   ]
 }

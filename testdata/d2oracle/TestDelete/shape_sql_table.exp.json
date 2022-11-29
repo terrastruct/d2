@@ -267,8 +267,7 @@
         "direction": {
           "value": ""
         }
-      },
-      "renderPriority": null
+      }
     },
     "edges": [
       {
@@ -344,8 +343,7 @@
           "direction": {
             "value": ""
           }
-        },
-        "renderPriority": null
+        }
       },
       {
         "id": "disks",
@@ -449,8 +447,7 @@
           "direction": {
             "value": ""
           }
-        },
-        "renderPriority": null
+        }
       },
       {
         "id": "AWS S3 Vancouver",
@@ -493,8 +490,7 @@
           "direction": {
             "value": ""
           }
-        },
-        "renderPriority": null
+        }
       }
     ]
   },

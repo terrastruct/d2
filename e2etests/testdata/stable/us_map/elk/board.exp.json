@@ -37,7 +37,7 @@
       "labelWidth": 26,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "HI",
@@ -75,7 +75,7 @@
       "labelWidth": 19,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "AL",
@@ -113,7 +113,7 @@
       "labelWidth": 24,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "FL",
@@ -151,7 +151,7 @@
       "labelWidth": 21,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "GA",
@@ -189,7 +189,7 @@
       "labelWidth": 26,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "MS",
@@ -227,7 +227,7 @@
       "labelWidth": 26,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "TN",
@@ -265,7 +265,7 @@
       "labelWidth": 24,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "AZ",
@@ -303,7 +303,7 @@
       "labelWidth": 25,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "CA",
@@ -341,7 +341,7 @@
       "labelWidth": 25,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "NV",
@@ -379,7 +379,7 @@
       "labelWidth": 25,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "NM",
@@ -417,7 +417,7 @@
       "labelWidth": 26,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "UT",
@@ -455,7 +455,7 @@
       "labelWidth": 24,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "AR",
@@ -493,7 +493,7 @@
       "labelWidth": 26,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "LA",
@@ -531,7 +531,7 @@
       "labelWidth": 23,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "MO",
@@ -569,7 +569,7 @@
       "labelWidth": 28,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "OK",
@@ -607,7 +607,7 @@
       "labelWidth": 26,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "TX",
@@ -645,7 +645,7 @@
       "labelWidth": 23,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "OR",
@@ -683,7 +683,7 @@
       "labelWidth": 26,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "CO",
@@ -721,7 +721,7 @@
       "labelWidth": 26,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "KS",
@@ -759,7 +759,7 @@
       "labelWidth": 23,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "NE",
@@ -797,7 +797,7 @@
       "labelWidth": 23,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "WY",
@@ -835,7 +835,7 @@
       "labelWidth": 28,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "CT",
@@ -873,7 +873,7 @@
       "labelWidth": 24,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "MA",
@@ -911,7 +911,7 @@
       "labelWidth": 27,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "NY",
@@ -949,7 +949,7 @@
       "labelWidth": 24,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "RI",
@@ -987,7 +987,7 @@
       "labelWidth": 18,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "DE",
@@ -1025,7 +1025,7 @@
       "labelWidth": 23,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "MD",
@@ -1063,7 +1063,7 @@
       "labelWidth": 27,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "NJ",
@@ -1101,7 +1101,7 @@
       "labelWidth": 22,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "PA",
@@ -1139,7 +1139,7 @@
       "labelWidth": 24,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "NC",
@@ -1177,7 +1177,7 @@
       "labelWidth": 24,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "SC",
@@ -1215,7 +1215,7 @@
       "labelWidth": 23,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "ID",
@@ -1253,7 +1253,7 @@
       "labelWidth": 19,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "MT",
@@ -1291,7 +1291,7 @@
       "labelWidth": 26,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "WA",
@@ -1329,7 +1329,7 @@
       "labelWidth": 29,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "IL",
@@ -1367,7 +1367,7 @@
       "labelWidth": 17,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "IN",
@@ -1405,7 +1405,7 @@
       "labelWidth": 19,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "IA",
@@ -1443,7 +1443,7 @@
       "labelWidth": 19,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "MI",
@@ -1481,7 +1481,7 @@
       "labelWidth": 21,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "KY",
@@ -1519,7 +1519,7 @@
       "labelWidth": 23,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "WI",
@@ -1557,7 +1557,7 @@
       "labelWidth": 23,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "OH",
@@ -1595,7 +1595,7 @@
       "labelWidth": 26,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "MN",
@@ -1633,7 +1633,7 @@
       "labelWidth": 27,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "SD",
@@ -1671,7 +1671,7 @@
       "labelWidth": 24,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "VA",
@@ -1709,7 +1709,7 @@
       "labelWidth": 25,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "WV",
@@ -1747,7 +1747,7 @@
       "labelWidth": 29,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "ME",
@@ -1785,7 +1785,7 @@
       "labelWidth": 25,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "NH",
@@ -1823,7 +1823,7 @@
       "labelWidth": 25,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "VT",
@@ -1861,7 +1861,7 @@
       "labelWidth": 24,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "ND",
@@ -1899,7 +1899,7 @@
       "labelWidth": 25,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     }
   ],
   "connections": [
@@ -1940,7 +1940,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(FL -- GA)[0]",
@@ -1979,7 +1979,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(GA -- MS)[0]",
@@ -2018,7 +2018,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MS -- TN)[0]",
@@ -2073,7 +2073,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(AZ -- CA)[0]",
@@ -2112,7 +2112,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(CA -- NV)[0]",
@@ -2151,7 +2151,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NV -- NM)[0]",
@@ -2198,7 +2198,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NM -- UT)[0]",
@@ -2245,7 +2245,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(AR -- LA)[0]",
@@ -2284,7 +2284,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(LA -- MS)[0]",
@@ -2331,7 +2331,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MS -- MO)[0]",
@@ -2378,7 +2378,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MO -- OK)[0]",
@@ -2433,7 +2433,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(OK -- TN)[0]",
@@ -2480,7 +2480,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(TN -- TX)[0]",
@@ -2527,7 +2527,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(CA -- NV)[1]",
@@ -2574,7 +2574,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NV -- OR)[0]",
@@ -2613,7 +2613,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(CO -- KS)[0]",
@@ -2652,7 +2652,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(KS -- NE)[0]",
@@ -2691,7 +2691,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NE -- NM)[0]",
@@ -2730,7 +2730,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NM -- OK)[0]",
@@ -2769,7 +2769,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(OK -- UT)[0]",
@@ -2816,7 +2816,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(UT -- WY)[0]",
@@ -2871,7 +2871,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(CT -- MA)[0]",
@@ -2910,7 +2910,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MA -- NY)[0]",
@@ -2949,7 +2949,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NY -- RI)[0]",
@@ -2996,7 +2996,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(DE -- MD)[0]",
@@ -3035,7 +3035,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MD -- NJ)[0]",
@@ -3074,7 +3074,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NJ -- PA)[0]",
@@ -3121,7 +3121,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(FL -- GA)[1]",
@@ -3168,7 +3168,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(GA -- NC)[0]",
@@ -3223,7 +3223,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NC -- SC)[0]",
@@ -3262,7 +3262,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(SC -- TN)[0]",
@@ -3301,7 +3301,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(ID -- MT)[0]",
@@ -3340,7 +3340,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MT -- NV)[0]",
@@ -3387,7 +3387,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NV -- OR)[1]",
@@ -3434,7 +3434,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(OR -- UT)[0]",
@@ -3481,7 +3481,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(UT -- WA)[0]",
@@ -3528,7 +3528,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(WA -- WY)[0]",
@@ -3567,7 +3567,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(IL -- IN)[0]",
@@ -3606,7 +3606,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(IN -- IA)[0]",
@@ -3653,7 +3653,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(IA -- MI)[0]",
@@ -3692,7 +3692,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MI -- KY)[0]",
@@ -3739,7 +3739,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(KY -- MO)[0]",
@@ -3778,7 +3778,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MO -- WI)[0]",
@@ -3825,7 +3825,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(IN -- KY)[0]",
@@ -3864,7 +3864,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(KY -- MI)[0]",
@@ -3911,7 +3911,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MI -- OH)[0]",
@@ -3958,7 +3958,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(IA -- MN)[0]",
@@ -4013,7 +4013,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MN -- MO)[0]",
@@ -4060,7 +4060,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MO -- NE)[0]",
@@ -4107,7 +4107,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NE -- SD)[0]",
@@ -4154,7 +4154,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(SD -- WI)[0]",
@@ -4201,7 +4201,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(KS -- MO)[0]",
@@ -4248,7 +4248,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MO -- NE)[1]",
@@ -4295,7 +4295,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NE -- OK)[0]",
@@ -4350,7 +4350,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(KY -- MO)[1]",
@@ -4397,7 +4397,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MO -- OH)[0]",
@@ -4444,7 +4444,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(OH -- TN)[0]",
@@ -4491,7 +4491,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(TN -- VA)[0]",
@@ -4538,7 +4538,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(VA -- WV)[0]",
@@ -4585,7 +4585,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(LA -- MS)[1]",
@@ -4632,7 +4632,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MS -- TX)[0]",
@@ -4687,7 +4687,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(ME -- NH)[0]",
@@ -4726,7 +4726,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MD -- PA)[0]",
@@ -4781,7 +4781,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(PA -- VA)[0]",
@@ -4828,7 +4828,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(VA -- WV)[1]",
@@ -4867,7 +4867,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MA -- NH)[0]",
@@ -4914,7 +4914,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NH -- NY)[0]",
@@ -4961,7 +4961,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NY -- RI)[1]",
@@ -5008,7 +5008,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(RI -- VT)[0]",
@@ -5055,7 +5055,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MI -- MN)[0]",
@@ -5094,7 +5094,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MN -- OH)[0]",
@@ -5141,7 +5141,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(OH -- WI)[0]",
@@ -5196,7 +5196,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MN -- ND)[0]",
@@ -5251,7 +5251,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(ND -- SD)[0]",
@@ -5298,7 +5298,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(SD -- WI)[1]",
@@ -5345,7 +5345,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MS -- TN)[1]",
@@ -5400,7 +5400,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MO -- NE)[2]",
@@ -5447,7 +5447,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NE -- OK)[1]",
@@ -5502,7 +5502,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(OK -- TN)[1]",
@@ -5549,7 +5549,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(MT -- ND)[0]",
@@ -5588,7 +5588,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(ND -- SD)[1]",
@@ -5627,7 +5627,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(SD -- WY)[0]",
@@ -5682,7 +5682,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NE -- SD)[1]",
@@ -5729,7 +5729,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(SD -- WY)[1]",
@@ -5784,7 +5784,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NV -- OR)[2]",
@@ -5831,7 +5831,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(OR -- UT)[1]",
@@ -5870,7 +5870,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NH -- VT)[0]",
@@ -5917,7 +5917,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NJ -- NY)[0]",
@@ -5964,7 +5964,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NY -- PA)[0]",
@@ -6011,7 +6011,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NM -- OK)[1]",
@@ -6058,7 +6058,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(OK -- TX)[0]",
@@ -6105,7 +6105,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NY -- PA)[1]",
@@ -6152,7 +6152,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(PA -- RI)[0]",
@@ -6199,7 +6199,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(RI -- VT)[1]",
@@ -6246,7 +6246,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(NC -- SC)[1]",
@@ -6293,7 +6293,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(SC -- TN)[1]",
@@ -6340,7 +6340,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(TN -- VA)[1]",
@@ -6379,7 +6379,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(ND -- SD)[2]",
@@ -6426,7 +6426,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(OH -- PA)[0]",
@@ -6473,7 +6473,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(PA -- WV)[0]",
@@ -6520,7 +6520,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(OK -- TX)[1]",
@@ -6567,7 +6567,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(OR -- WA)[0]",
@@ -6614,7 +6614,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(PA -- WV)[1]",
@@ -6669,7 +6669,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(SD -- WY)[2]",
@@ -6716,7 +6716,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(TN -- VA)[2]",
@@ -6763,7 +6763,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(UT -- WY)[1]",
@@ -6810,7 +6810,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(VA -- WV)[2]",
@@ -6857,7 +6857,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     }
   ]
 }

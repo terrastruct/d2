@@ -20,13 +20,13 @@ func Export(ctx context.Context, g *d2graph.Graph, themeID int64) (*d2target.Dia
 	highestObjectPriority := 0
 	for i := range g.Objects {
 		diagram.Shapes[i] = toShape(g.Objects[i], &theme)
-		highestObjectPriority = go2.IntMax(highestObjectPriority, diagram.Shapes[i].RenderPriority)
+		highestObjectPriority = go2.IntMax(highestObjectPriority, diagram.Shapes[i].ZIndex)
 	}
 
-	edgeDefaultRenderPriority := highestObjectPriority + 1
+	edgeDefaultZIndex := highestObjectPriority + 1
 	diagram.Connections = make([]d2target.Connection, len(g.Edges))
 	for i := range g.Edges {
-		diagram.Connections[i] = toConnection(g.Edges[i], &theme, edgeDefaultRenderPriority)
+		diagram.Connections[i] = toConnection(g.Edges[i], &theme, edgeDefaultZIndex)
 	}
 
 	return diagram, nil
@@ -92,10 +92,10 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	shape := d2target.BaseShape()
 	shape.SetType(obj.Attributes.Shape.Value)
 	shape.ID = obj.AbsID()
-	if obj.RenderPriority == nil {
-		shape.RenderPriority = int(obj.Level())
+	if obj.ZIndex == nil {
+		shape.ZIndex = int(obj.Level())
 	} else {
-		shape.RenderPriority = *obj.RenderPriority
+		shape.ZIndex = *obj.ZIndex
 	}
 	shape.Pos = d2target.NewPoint(int(obj.TopLeft.X), int(obj.TopLeft.Y))
 	shape.Width = int(obj.Width)
@@ -138,13 +138,13 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	return *shape
 }
 
-func toConnection(edge *d2graph.Edge, theme *d2themes.Theme, defaultRenderPriotity int) d2target.Connection {
+func toConnection(edge *d2graph.Edge, theme *d2themes.Theme, defaultZIndex int) d2target.Connection {
 	connection := d2target.BaseConnection()
 	connection.ID = edge.AbsID()
-	if edge.RenderPriority == nil {
-		connection.RenderPriority = defaultRenderPriotity
+	if edge.ZIndex == nil {
+		connection.ZIndex = defaultZIndex
 	} else {
-		connection.RenderPriority = *edge.RenderPriority
+		connection.ZIndex = *edge.ZIndex
 	}
 	// edge.Edge.ID = go2.StringToIntHash(connection.ID)
 	text := edge.Text()

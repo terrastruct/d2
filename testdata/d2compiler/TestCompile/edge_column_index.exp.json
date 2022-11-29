@@ -348,8 +348,7 @@
         "direction": {
           "value": ""
         }
-      },
-      "renderPriority": null
+      }
     },
     "edges": [
       {
@@ -474,8 +473,7 @@
           "direction": {
             "value": ""
           }
-        },
-        "renderPriority": null
+        }
       },
       {
         "id": "dst",
@@ -565,8 +563,7 @@
           "direction": {
             "value": ""
           }
-        },
-        "renderPriority": null
+        }
       }
     ]
   },

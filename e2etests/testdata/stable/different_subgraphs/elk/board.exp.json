@@ -37,7 +37,7 @@
       "labelWidth": 77,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "a",
@@ -75,7 +75,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "tree",
@@ -113,7 +113,7 @@
       "labelWidth": 34,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "and",
@@ -151,7 +151,7 @@
       "labelWidth": 32,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "nodes",
@@ -189,7 +189,7 @@
       "labelWidth": 47,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "some",
@@ -227,7 +227,7 @@
       "labelWidth": 43,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "more",
@@ -265,7 +265,7 @@
       "labelWidth": 41,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "many",
@@ -303,7 +303,7 @@
       "labelWidth": 45,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "then",
@@ -341,7 +341,7 @@
       "labelWidth": 38,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "here",
@@ -379,7 +379,7 @@
       "labelWidth": 36,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "you",
@@ -417,7 +417,7 @@
       "labelWidth": 32,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "have",
@@ -455,7 +455,7 @@
       "labelWidth": 38,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "hierarchy",
@@ -493,7 +493,7 @@
       "labelWidth": 73,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "another",
@@ -531,7 +531,7 @@
       "labelWidth": 63,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "of",
@@ -569,7 +569,7 @@
       "labelWidth": 20,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "nesting",
@@ -607,7 +607,7 @@
       "labelWidth": 58,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "trees",
@@ -645,7 +645,7 @@
       "labelWidth": 42,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "finally.a",
@@ -683,7 +683,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "finally.tree",
@@ -721,7 +721,7 @@
       "labelWidth": 34,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "finally.inside",
@@ -759,7 +759,7 @@
       "labelWidth": 48,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "finally.hierarchy",
@@ -797,7 +797,7 @@
       "labelWidth": 73,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "finally.root",
@@ -835,7 +835,7 @@
       "labelWidth": 35,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     }
   ],
   "connections": [
@@ -884,7 +884,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "(a -> and)[0]",
@@ -931,7 +931,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "(a -> nodes)[0]",
@@ -970,7 +970,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "(and -> some)[0]",
@@ -1009,7 +1009,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "(tree -> more)[0]",
@@ -1048,7 +1048,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "(tree -> many)[0]",
@@ -1095,7 +1095,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "(then -> here)[0]",
@@ -1134,7 +1134,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "(here -> you)[0]",
@@ -1173,7 +1173,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "(have -> hierarchy)[0]",
@@ -1212,7 +1212,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "(then -> hierarchy)[0]",
@@ -1259,7 +1259,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "(finally -> another)[0]",
@@ -1298,7 +1298,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "(another -> of)[0]",
@@ -1337,7 +1337,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "(nesting -> trees)[0]",
@@ -1376,7 +1376,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "(finally -> trees)[0]",
@@ -1423,7 +1423,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "finally.(a -> tree)[0]",
@@ -1470,7 +1470,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "finally.(inside -> a)[0]",
@@ -1509,7 +1509,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "finally.(tree -> hierarchy)[0]",
@@ -1548,7 +1548,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "finally.(a -> root)[0]",
@@ -1587,7 +1587,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     }
   ]
 }

@@ -37,7 +37,7 @@
       "labelWidth": 117,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "container.first",
@@ -75,7 +75,7 @@
       "labelWidth": 35,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "container.second",
@@ -113,7 +113,7 @@
       "labelWidth": 55,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 2
+      "zIndex": 2
     }
   ],
   "connections": [
@@ -163,7 +163,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     },
     {
       "id": "(container -> container.second)[0]",
@@ -211,7 +211,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 3
+      "zIndex": 3
     }
   ]
 }

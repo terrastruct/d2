@@ -994,7 +994,7 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 	}
 
 	sort.SliceStable(allObjects, func(i, j int) bool {
-		return allObjects[i].GetPriority() < allObjects[j].GetPriority()
+		return allObjects[i].GetZIndex() < allObjects[j].GetZIndex()
 	})
 
 	markers := map[string]struct{}{}

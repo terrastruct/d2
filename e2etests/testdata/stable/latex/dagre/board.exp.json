@@ -36,7 +36,7 @@
       "underline": false,
       "labelWidth": 382,
       "labelHeight": 101,
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "b",
@@ -73,7 +73,7 @@
       "underline": false,
       "labelWidth": 65,
       "labelHeight": 18,
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "z",
@@ -110,7 +110,7 @@
       "underline": false,
       "labelWidth": 179,
       "labelHeight": 51,
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "c",
@@ -148,7 +148,7 @@
       "labelWidth": 114,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "sugar",
@@ -186,7 +186,7 @@
       "labelWidth": 46,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     },
     {
       "id": "solution",
@@ -224,7 +224,7 @@
       "labelWidth": 64,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "renderPriority": 1
+      "zIndex": 1
     }
   ],
   "connections": [
@@ -274,7 +274,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(z -> b)[0]",
@@ -322,7 +322,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(a -> c)[0]",
@@ -370,7 +370,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(b -> c)[0]",
@@ -418,7 +418,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(sugar -> c)[0]",
@@ -466,7 +466,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     },
     {
       "id": "(c -> solution)[0]",
@@ -514,7 +514,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "renderPriority": 2
+      "zIndex": 2
     }
   ]
 }
