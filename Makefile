@@ -2,9 +2,6 @@
 
 .PHONY: all
 all: fmt gen lint build test
-ifdef CI
-all: assert-linear
-endif
 
 .PHONY: fmt
 fmt:
@@ -24,6 +21,3 @@ test:
 .PHONY: race
 race:
 	prefix "$@" ./ci/test.sh --race ./...
-.PHONY: assert-linear
-assert-linear:
-	prefix "$@" ./ci/sub/assert_linear.sh
