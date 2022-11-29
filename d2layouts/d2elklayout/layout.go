@@ -80,6 +80,7 @@ type ELKLayoutOptions struct {
 	NodeSpacing       float64 `json:"spacing.nodeNodeBetweenLayers,omitempty"`
 	Padding           string  `json:"elk.padding,omitempty"`
 	EdgeNodeSpacing   float64 `json:"spacing.edgeNodeBetweenLayers,omitempty"`
+	Direction         string  `json:"elk.direction"`
 }
 
 func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
@@ -119,7 +120,11 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 			HierarchyHandling: "INCLUDE_CHILDREN",
 			NodeSpacing:       100.0,
 			EdgeNodeSpacing:   50.0,
+			Direction:         "DOWN",
 		},
+	}
+	if g.Root.Attributes.Orientation.Value == "horizontal" {
+		elkGraph.LayoutOptions.Direction = "RIGHT"
 	}
 
 	elkNodes := make(map[*d2graph.Object]*ELKNode)

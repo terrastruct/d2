@@ -1052,16 +1052,17 @@ func Key(k *d2ast.KeyPath) []string {
 }
 
 var ReservedKeywords = map[string]struct{}{
-	"label":      {},
-	"desc":       {},
-	"shape":      {},
-	"icon":       {},
-	"constraint": {},
-	"tooltip":    {},
-	"link":       {},
-	"near":       {},
-	"width":      {},
-	"height":     {},
+	"label":       {},
+	"desc":        {},
+	"shape":       {},
+	"icon":        {},
+	"constraint":  {},
+	"tooltip":     {},
+	"link":        {},
+	"near":        {},
+	"width":       {},
+	"height":      {},
+	"orientation": {},
 }
 
 // ReservedKeywordHolders are reserved keywords that are meaningless on its own and exist solely to hold a set of reserved keywords

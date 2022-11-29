@@ -1522,12 +1522,39 @@ dst.id <-> src.dst_id
 			},
 		},
 		{
+			name: "root_orientation",
+
+			text: `orientation: horizontal`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				diff.AssertStringEq(t, "horizontal", g.Root.Attributes.Orientation.Value)
+			},
+		},
+		{
 			name: "default_orientation",
 
 			text: `x`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				diff.AssertStringEq(t, "vertical", g.Objects[0].Attributes.Orientation.Value)
 			},
+		},
+		{
+			name: "set_orientation",
+
+			text: `x: {
+  orientation: horizontal
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				diff.AssertStringEq(t, "horizontal", g.Objects[0].Attributes.Orientation.Value)
+			},
+		},
+		{
+			name: "invalid_orientation",
+
+			text: `x: {
+  orientation: diagonal
+}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/invalid_orientation.d2:2:16: expected "horizontal" or "vertical" orientation, got "diagonal"
+`,
 		},
 	}
 

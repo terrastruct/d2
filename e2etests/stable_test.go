@@ -988,6 +988,20 @@ c: mixed together
 c -> solution: we get
 `,
 		},
+		{
+			name: "orientation",
+			script: `a -> b -> c -> d -> e
+b: {
+  orientation: horizontal
+	1 -> 2 -> 3 -> 4 -> 5
+
+  2: {
+    orientation: vertical
+    a -> b -> c -> d -> e
+  }
+}
+`,
+		},
 	}
 
 	runa(t, tcs)

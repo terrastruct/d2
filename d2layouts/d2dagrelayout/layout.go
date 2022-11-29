@@ -60,12 +60,16 @@ func Layout(ctx context.Context, d2graph *d2graph.Graph) (err error) {
 		return err
 	}
 
-	configJS := setGraphAttrs(dagreGraphAttrs{
+	rootAttrs := dagreGraphAttrs{
 		ranksep: 100,
 		edgesep: 40,
 		nodesep: 60,
-		rankdir: "tb",
-	})
+		rankdir: "TB",
+	}
+	if d2graph.Root.Attributes.Orientation.Value == "horizontal" {
+		rootAttrs.rankdir = "LR"
+	}
+	configJS := setGraphAttrs(rootAttrs)
 	if _, err := v8ctx.RunScript(configJS, "config.js"); err != nil {
 		return err
 	}

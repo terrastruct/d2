@@ -356,6 +356,13 @@ func (c *compiler) applyScalar(attrs *d2graph.Attributes, reserved string, box d
 	case "link":
 		attrs.Link = scalar.ScalarString()
 		return
+	case "orientation":
+		if scalar.ScalarString() != "horizontal" && scalar.ScalarString() != "vertical" {
+			c.errorf(scalar.GetRange().Start, scalar.GetRange().End, `expected "horizontal" or "vertical" orientation, got %q`, scalar.ScalarString())
+			return
+		}
+		attrs.Orientation.Value = scalar.ScalarString()
+		return
 	}
 
 	if _, ok := d2graph.StyleKeywords[reserved]; ok {
