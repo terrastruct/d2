@@ -266,6 +266,8 @@ func (c *compiler) compileKey(obj *d2graph.Object, m *d2ast.Map, mk *d2ast.Key) 
 		}, unresolvedObj)
 	} else if obj.Parent == nil {
 		// Top level reserved key set on root.
+		c.compileAttributes(&obj.Attributes, mk)
+		c.applyScalar(&obj.Attributes, reserved, mk.Value.ScalarBox())
 		return
 	}
 
