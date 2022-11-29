@@ -15,7 +15,7 @@ const MIN_EDGE_DISTANCE = 100.
 const ACTIVATION_BOX_WIDTH = 20.
 
 // small pad so that edges don't touch lifelines and activation boxes
-const ACTIVATION_BOX_EDGE_PAD = 2.
+const ACTIVATION_BOX_EDGE_PAD = 5.
 
 // as the activation boxes start getting nested, their size grows
 const ACTIVATION_BOX_DEPTH_GROW_FACTOR = 10.

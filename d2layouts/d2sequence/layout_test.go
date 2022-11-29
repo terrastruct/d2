@@ -209,7 +209,7 @@ func TestActivationBoxesSequenceDiagram(t *testing.T) {
 	}
 
 	// Y diff of the 2 first edges
-	expectedHeight := g.Edges[1].Route[0].Y - g.Edges[0].Route[0].Y
+	expectedHeight := g.Edges[1].Route[0].Y - g.Edges[0].Route[0].Y + (2 * ACTIVATION_BOX_EDGE_PAD)
 	if a_t1.Height != expectedHeight {
 		t.Fatalf("expected a.t1 height to be %.5f, got %.5f", expectedHeight, a_t1.Height)
 	}
@@ -231,7 +231,7 @@ func TestActivationBoxesSequenceDiagram(t *testing.T) {
 	if a_t1.TopLeft.Y != b_t1.TopLeft.Y {
 		t.Fatal("expected a.t1 and b.t1 to be placed at the same Y")
 	}
-	if a_t1.TopLeft.Y != g.Edges[0].Route[0].Y {
+	if a_t1.TopLeft.Y != g.Edges[0].Route[0].Y-ACTIVATION_BOX_EDGE_PAD {
 		t.Fatal("expected a.t1 to be placed at the same Y of the first edge")
 	}
 

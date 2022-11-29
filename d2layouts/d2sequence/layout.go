@@ -203,10 +203,14 @@ func (sd *sequenceDiagram) placeActivationBoxes() {
 		minY := math.Min(minEdgeY, minChildY)
 		if minY == minChildY {
 			minY -= ACTIVATION_BOX_DEPTH_GROW_FACTOR
+		} else {
+			minY -= ACTIVATION_BOX_EDGE_PAD
 		}
 		maxY := math.Max(maxEdgeY, maxChildY)
 		if maxY == maxChildY {
 			maxY += ACTIVATION_BOX_DEPTH_GROW_FACTOR
+		} else {
+			maxY += ACTIVATION_BOX_EDGE_PAD
 		}
 
 		height := math.Max(maxY-minY, DEFAULT_ACTIVATION_BOX_HEIGHT)
