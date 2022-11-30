@@ -122,11 +122,13 @@ func runWorkers(ctx context.Context, ms *xmain.State, svg []byte, imgs [][][]byt
 		}
 	}()
 
+	t := time.NewTicker(time.Second * 5)
+	defer t.Stop()
 	for {
 		select {
 		case <-ctx.Done():
 			return svg, xerrors.Errorf("failed to wait for workers: %w", ctx.Err())
-		case <-time.After(time.Second * 5):
+		case <-t.C:
 			ms.Log.Info.Printf("fetching images...")
 		case repl, ok := <-replc:
 			if !ok {
