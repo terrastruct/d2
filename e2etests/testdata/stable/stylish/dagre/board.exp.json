@@ -10,7 +10,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 1,
       "opacity": 0.6,
       "strokeDash": 0,
       "strokeWidth": 5,
@@ -37,7 +36,9 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "y",
@@ -48,7 +49,6 @@
       },
       "width": 114,
       "height": 126,
-      "level": 1,
       "opacity": 0.6,
       "strokeDash": 5,
       "strokeWidth": 2,
@@ -75,7 +75,9 @@
       "underline": false,
       "labelWidth": 14,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -124,7 +126,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     }
   ]
 }

@@ -10,7 +10,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,7 +36,9 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "g",
@@ -48,7 +49,6 @@
       },
       "width": 253,
       "height": 878,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -75,7 +75,9 @@
       "underline": false,
       "labelWidth": 18,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "g.b",
@@ -86,7 +88,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -113,7 +114,9 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 2
     },
     {
       "id": "d",
@@ -124,7 +127,6 @@
       },
       "width": 293,
       "height": 326,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -151,7 +153,9 @@
       "underline": false,
       "labelWidth": 18,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "d.h",
@@ -162,7 +166,6 @@
       },
       "width": 213,
       "height": 226,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -189,7 +192,9 @@
       "underline": false,
       "labelWidth": 16,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 2
     },
     {
       "id": "d.h.c",
@@ -200,7 +205,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 3,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -227,7 +231,9 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 3
     },
     {
       "id": "g.e",
@@ -238,7 +244,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -265,7 +270,9 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 2
     },
     {
       "id": "f",
@@ -276,7 +283,6 @@
       },
       "width": 111,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -303,7 +309,9 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -352,7 +360,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(g.b -> d.h.c)[0]",
@@ -411,7 +420,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(d -> g.e)[0]",
@@ -458,7 +468,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(g.e -> f)[0]",
@@ -505,7 +516,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(f -> g)[0]",
@@ -552,7 +564,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(g -> d.h)[0]",
@@ -599,7 +612,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     }
   ]
 }

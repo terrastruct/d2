@@ -1016,6 +1016,34 @@ cube: {
 }
 `,
 		},
+		{
+			name: "font_sizes",
+			script: `
+size XS.style.font-size: 13
+size S.style.font-size: 14
+size M.style.font-size: 16
+size L.style.font-size: 20
+size XL.style.font-size: 24
+size XXL.style.font-size: 28
+size XXXL.style.font-size: 32
+
+custom 8.style.font-size: 8
+custom 12.style.font-size: 12
+custom 18.style.font-size: 18
+custom 21.style.font-size: 21
+custom 64.style.font-size: 64
+
+custom 8 -> size XS: custom 10 {
+	style.font-size: 10
+}
+size S -> size M: custom 15 {
+	style.font-size: 15
+}
+size XXXL -> custom 64: custom 48 {
+	style.font-size: 48
+}
+`,
+		},
 	}
 
 	runa(t, tcs)

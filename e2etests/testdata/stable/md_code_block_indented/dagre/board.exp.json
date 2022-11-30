@@ -10,7 +10,6 @@
       },
       "width": 212,
       "height": 151,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -36,7 +35,9 @@
       "bold": true,
       "underline": false,
       "labelWidth": 212,
-      "labelHeight": 151
+      "labelHeight": 151,
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "a",
@@ -47,7 +48,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -74,7 +74,9 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "b",
@@ -85,7 +87,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -112,7 +113,9 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -161,7 +164,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(md -> b)[0]",
@@ -208,7 +212,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     }
   ]
 }

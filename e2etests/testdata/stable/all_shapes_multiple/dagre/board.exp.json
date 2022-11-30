@@ -10,7 +10,6 @@
       },
       "width": 171,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,7 +36,9 @@
       "underline": false,
       "labelWidth": 71,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "square",
@@ -48,7 +49,6 @@
       },
       "width": 154,
       "height": 154,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -75,7 +75,9 @@
       "underline": false,
       "labelWidth": 54,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "page",
@@ -86,7 +88,6 @@
       },
       "width": 139,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -113,7 +114,9 @@
       "underline": false,
       "labelWidth": 39,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "parallelogram",
@@ -124,7 +127,6 @@
       },
       "width": 204,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -151,7 +153,9 @@
       "underline": false,
       "labelWidth": 104,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "document",
@@ -162,7 +166,6 @@
       },
       "width": 177,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -189,7 +192,9 @@
       "underline": false,
       "labelWidth": 77,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "cylinder",
@@ -200,7 +205,6 @@
       },
       "width": 164,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -227,7 +231,9 @@
       "underline": false,
       "labelWidth": 64,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "queue",
@@ -238,7 +244,6 @@
       },
       "width": 149,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -265,7 +270,9 @@
       "underline": false,
       "labelWidth": 49,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "package",
@@ -276,7 +283,6 @@
       },
       "width": 163,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -303,7 +309,9 @@
       "underline": false,
       "labelWidth": 63,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "step",
@@ -314,7 +322,6 @@
       },
       "width": 136,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -341,7 +348,9 @@
       "underline": false,
       "labelWidth": 36,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "callout",
@@ -352,7 +361,6 @@
       },
       "width": 155,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -379,7 +387,9 @@
       "underline": false,
       "labelWidth": 55,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "stored_data",
@@ -390,7 +400,6 @@
       },
       "width": 191,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -417,7 +426,9 @@
       "underline": false,
       "labelWidth": 91,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "person",
@@ -428,7 +439,6 @@
       },
       "width": 153,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -455,7 +465,9 @@
       "underline": false,
       "labelWidth": 53,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "diamond",
@@ -466,7 +478,6 @@
       },
       "width": 168,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -493,7 +504,9 @@
       "underline": false,
       "labelWidth": 68,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "oval",
@@ -504,7 +517,6 @@
       },
       "width": 136,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -531,7 +543,9 @@
       "underline": false,
       "labelWidth": 36,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "circle",
@@ -542,7 +556,6 @@
       },
       "width": 144,
       "height": 144,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -569,7 +582,9 @@
       "underline": false,
       "labelWidth": 44,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "hexagon",
@@ -580,7 +595,6 @@
       },
       "width": 165,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -607,7 +621,9 @@
       "underline": false,
       "labelWidth": 65,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "cloud",
@@ -618,7 +634,6 @@
       },
       "width": 145,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -645,7 +660,9 @@
       "underline": false,
       "labelWidth": 45,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -694,7 +711,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(square -> page)[0]",
@@ -741,7 +759,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(parallelogram -> document)[0]",
@@ -788,7 +807,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(document -> cylinder)[0]",
@@ -835,7 +855,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(queue -> package)[0]",
@@ -882,7 +903,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(package -> step)[0]",
@@ -929,7 +951,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(callout -> stored_data)[0]",
@@ -976,7 +999,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(stored_data -> person)[0]",
@@ -1023,7 +1047,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(diamond -> oval)[0]",
@@ -1070,7 +1095,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(oval -> circle)[0]",
@@ -1117,7 +1143,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(hexagon -> cloud)[0]",
@@ -1164,7 +1191,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     }
   ]
 }

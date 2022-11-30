@@ -10,7 +10,6 @@
       },
       "width": 574,
       "height": 601,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,7 +36,9 @@
       "underline": false,
       "labelWidth": 17,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "a.b",
@@ -48,7 +49,6 @@
       },
       "width": 424,
       "height": 451,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -75,7 +75,9 @@
       "underline": false,
       "labelWidth": 17,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 2
     },
     {
       "id": "a.b.c",
@@ -86,7 +88,6 @@
       },
       "width": 264,
       "height": 276,
-      "level": 3,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -113,7 +114,9 @@
       "underline": false,
       "labelWidth": 14,
       "labelHeight": 31,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 3
     },
     {
       "id": "a.b.c.d",
@@ -124,7 +127,6 @@
       },
       "width": 114,
       "height": 126,
-      "level": 4,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -151,7 +153,9 @@
       "underline": false,
       "labelWidth": 14,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 4
     }
   ],
   "connections": [
@@ -191,7 +195,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "a.(b -> b.c)[0]",
@@ -229,7 +234,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "a.(b.c.d -> b)[0]",
@@ -275,7 +281,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     }
   ]
 }

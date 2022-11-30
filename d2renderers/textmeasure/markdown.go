@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"math"
 	"strings"
-	"unicode/utf8"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/yuin/goldmark"
@@ -212,20 +211,17 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) bloc
 		if strings.TrimSpace(n.Data) == "" {
 			return blockAttrs{}
 		}
-		spaceWidths := 0.
-
-		// consecutive leading/trailing spaces end up rendered as a single space
-		spaceRune, _ := utf8.DecodeRuneInString(" ")
-		// measure will not include leading or trailing whitespace, so we have to add in the space width
-		spaceWidth := ruler.atlases[font].glyph(spaceRune).advance
-
 		str := n.Data
 		isCode := parentElementType == "pre" || parentElementType == "code"
+		spaceWidths := 0.
 
 		if !isCode {
+			spaceWidth := ruler.spaceWidth(font)
+			// MeasurePrecise will not include leading or trailing whitespace, so we account for it here
 			str = strings.ReplaceAll(str, "\n", " ")
 			str = strings.ReplaceAll(str, "\t", " ")
 			if strings.HasPrefix(str, " ") {
+				// consecutive leading/trailing spaces end up rendered as a single space
 				str = strings.TrimPrefix(str, " ")
 				if hasPrev(n) {
 					spaceWidths += spaceWidth

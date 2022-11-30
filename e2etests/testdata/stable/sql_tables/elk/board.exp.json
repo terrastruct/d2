@@ -10,7 +10,6 @@
       },
       "width": 259,
       "height": 216,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -67,7 +66,9 @@
       "bold": true,
       "underline": false,
       "labelWidth": 61,
-      "labelHeight": 36
+      "labelHeight": 36,
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "products",
@@ -78,7 +79,6 @@
       },
       "width": 290,
       "height": 180,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -129,7 +129,9 @@
       "bold": true,
       "underline": false,
       "labelWidth": 99,
-      "labelHeight": 36
+      "labelHeight": 36,
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "orders",
@@ -140,7 +142,6 @@
       },
       "width": 215,
       "height": 144,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -185,7 +186,9 @@
       "bold": true,
       "underline": false,
       "labelWidth": 74,
-      "labelHeight": 36
+      "labelHeight": 36,
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "shipments",
@@ -196,7 +199,6 @@
       },
       "width": 293,
       "height": 180,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -247,7 +249,9 @@
       "bold": true,
       "underline": false,
       "labelWidth": 116,
-      "labelHeight": 36
+      "labelHeight": 36,
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -295,7 +299,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(products <-> orders)[0]",
@@ -333,7 +338,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(shipments <-> orders)[0]",
@@ -379,7 +385,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     }
   ]
 }

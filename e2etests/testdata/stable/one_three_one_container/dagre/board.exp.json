@@ -10,7 +10,6 @@
       },
       "width": 506,
       "height": 226,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,7 +36,9 @@
       "underline": false,
       "labelWidth": 45,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "top.start",
@@ -48,7 +49,6 @@
       },
       "width": 140,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -75,7 +75,9 @@
       "underline": false,
       "labelWidth": 40,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 2
     },
     {
       "id": "a",
@@ -86,7 +88,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -113,7 +114,9 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "b",
@@ -124,7 +127,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -151,7 +153,9 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "c",
@@ -162,7 +166,6 @@
       },
       "width": 113,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -189,7 +192,9 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "bottom",
@@ -200,7 +205,6 @@
       },
       "width": 504,
       "height": 226,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -227,7 +231,9 @@
       "underline": false,
       "labelWidth": 90,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "bottom.end",
@@ -238,7 +244,6 @@
       },
       "width": 132,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -265,7 +270,9 @@
       "underline": false,
       "labelWidth": 32,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 2
     }
   ],
   "connections": [
@@ -314,7 +321,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(top.start -> b)[0]",
@@ -361,7 +369,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(top.start -> c)[0]",
@@ -408,7 +417,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(a -> bottom.end)[0]",
@@ -455,7 +465,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(b -> bottom.end)[0]",
@@ -502,7 +513,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(c -> bottom.end)[0]",
@@ -549,7 +561,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     }
   ]
 }
