@@ -1534,7 +1534,7 @@ dst.id <-> src.dst_id
 
 			text: `x`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				diff.AssertStringEq(t, "down", g.Objects[0].Attributes.Direction.Value)
+				diff.AssertStringEq(t, "", g.Objects[0].Attributes.Direction.Value)
 			},
 		},
 		{
