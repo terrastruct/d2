@@ -97,7 +97,6 @@ func inline(ctx context.Context, ms *xmain.State, svg []byte, isRemote bool) (_ 
 	for {
 		select {
 		case <-ctx.Done():
-			ms.Log.Debug.Printf("there")
 			return nil, fmt.Errorf("failed to wait for imgbundler workers: %w", ctx.Err())
 		case <-time.After(time.Second * 5):
 			ms.Log.Info.Printf("fetching images...")
@@ -114,7 +113,7 @@ func inline(ctx context.Context, ms *xmain.State, svg []byte, isRemote bool) (_ 
 	}
 }
 
-var transport = http.DefaultTransport
+var imgClient = &http.Client{}
 
 func fetch(ctx context.Context, href string) (string, error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute)
@@ -125,8 +124,7 @@ func fetch(ctx context.Context, href string) (string, error) {
 		return "", err
 	}
 
-	client := &http.Client{Transport: transport}
-	imgResp, err := client.Do(req)
+	imgResp, err := imgClient.Do(req)
 	if err != nil {
 		return "", err
 	}

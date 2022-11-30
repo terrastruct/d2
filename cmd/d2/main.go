@@ -214,22 +214,14 @@ func compile(ctx context.Context, ms *xmain.State, isWatching bool, plugin d2plu
 	}
 	svg, err = imgbundler.InlineLocal(ctx, ms, svg)
 	if err != nil {
-		if !isWatching {
-			ms.Log.Error.Printf("missing/broken remote image(s), writing partial output: %v", err)
-		} else {
-			ms.Log.Debug.Printf("ignoring missing/broken local image(s) in watch mode: %v", err)
-		}
+		ms.Log.Error.Printf("missing/broken local image(s), writing partial output: %v", err)
 	}
 
 	out := svg
 	if filepath.Ext(outputPath) == ".png" {
 		svg, err = imgbundler.InlineRemote(ctx, ms, svg)
 		if err != nil {
-			if !isWatching {
-				ms.Log.Error.Printf("missing/broken remote image(s), writing partial output: %v", err)
-			} else {
-				ms.Log.Debug.Printf("ignoring missing/broken remote image(s) in watch mode: %v", err)
-			}
+			ms.Log.Error.Printf("missing/broken remote image(s), writing partial output: %v", err)
 		}
 
 		out, err = png.ConvertSVG(ms, page, svg)
@@ -246,7 +238,7 @@ func compile(ctx context.Context, ms *xmain.State, isWatching bool, plugin d2plu
 	// Missing/broken images are fine during watch mode, as the user is likely building up a diagram.
 	// Otherwise, the assumption is that this diagram is building for production, and broken images are not okay.
 	if !isWatching && ms.Log.Nerrors() > 0 {
-		os.Exit(1)
+		xmain.ExitErrorf(1, "errors logged while rendering, partial output written to %v", outputPath)
 	}
 
 	return svg, nil

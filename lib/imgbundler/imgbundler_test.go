@@ -90,7 +90,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 	}
 	ms.Log = cmdlog.Log(ms.Env, os.Stderr)
 
-	transport = roundTripFunc(func(req *http.Request) *http.Response {
+	imgClient.Transport = roundTripFunc(func(req *http.Request) *http.Response {
 		respRecorder := httptest.NewRecorder()
 		switch req.URL.String() {
 		case svgURL:
@@ -119,7 +119,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 	}
 
 	// Test almost too large response
-	transport = roundTripFunc(func(req *http.Request) *http.Response {
+	imgClient.Transport = roundTripFunc(func(req *http.Request) *http.Response {
 		respRecorder := httptest.NewRecorder()
 		bytes := make([]byte, maxImageSize)
 		rand.Read(bytes)
@@ -133,7 +133,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 	}
 
 	// Test too large response
-	transport = roundTripFunc(func(req *http.Request) *http.Response {
+	imgClient.Transport = roundTripFunc(func(req *http.Request) *http.Response {
 		respRecorder := httptest.NewRecorder()
 		bytes := make([]byte, maxImageSize+1)
 		rand.Read(bytes)
@@ -147,7 +147,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 	}
 
 	// Test error response
-	transport = roundTripFunc(func(req *http.Request) *http.Response {
+	imgClient.Transport = roundTripFunc(func(req *http.Request) *http.Response {
 		respRecorder := httptest.NewRecorder()
 		respRecorder.WriteHeader(500)
 		return respRecorder.Result()
