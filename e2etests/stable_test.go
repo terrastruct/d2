@@ -993,7 +993,7 @@ c -> solution: we get
 			script: `a -> b -> c -> d -> e
 b: {
   direction: right
-	1 -> 2 -> 3 -> 4 -> 5
+  1 -> 2 -> 3 -> 4 -> 5
 
   2: {
     direction: up
