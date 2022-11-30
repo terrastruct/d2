@@ -238,7 +238,7 @@ func compile(ctx context.Context, ms *xmain.State, isWatching bool, plugin d2plu
 	// Missing/broken images are fine during watch mode, as the user is likely building up a diagram.
 	// Otherwise, the assumption is that this diagram is building for production, and broken images are not okay.
 	if !isWatching && ms.Log.Nerrors() > 0 {
-		xmain.ExitErrorf(1, "errors logged while rendering, partial output written to %v", outputPath)
+		return nil, xmain.ExitErrorf(1, "errors logged while rendering, partial output written to %v", outputPath)
 	}
 
 	return svg, nil
