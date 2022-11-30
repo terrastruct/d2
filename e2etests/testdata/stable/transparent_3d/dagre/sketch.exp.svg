@@ -2,7 +2,7 @@
 <svg
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="625" height="354" viewBox="-88 -88 625 354"><style type="text/css">
+width="339" height="326" viewBox="-100 -100 339 326"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -14,11 +14,9 @@ width="625" height="354" viewBox="-88 -88 625 354"><style type="text/css">
 }
 
 ]]>
-</style><g id="rectangle"><g class="shape" ><defs><mask id="border-mask-rectangle" maskUnits="userSpaceOnUse" x="12" y="11" width="186" height="141">
-<rect x="12" y="11" width="186" height="141" fill="white"></rect>
-<path d="M12,26L27,11L198,11L198,137L183,152L12,152L12,26L183,26L183,152M183,26L198,11" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;;stroke:#000;fill:none;opacity:1;"/></mask></defs><rect x="12" y="26" width="171" height="126" style="fill:#F7F8FE;stroke:none;opacity:1.000000;stroke-width:2;" mask="url(#border-mask-rectangle)"/><polygon points="12,26 27,11 198,11 198,137 183,152 183,26" style="fill:#cad0f8;stroke:none;opacity:1.000000;stroke-width:2;" mask="url(#border-mask-rectangle)"/><path d="M12,26 L27,11 L198,11 L198,137 L183,152 L12,152 L12,26 L183,26 L183,152 M183,26 L198,11" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/></g><text class="text-bold" x="97.500000" y="92.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">rectangle</text></g><g id="square"><g class="shape" ><defs><mask id="border-mask-square" maskUnits="userSpaceOnUse" x="283" y="-3" width="169" height="169">
-<rect x="283" y="-3" width="169" height="169" fill="white"></rect>
-<path d="M283,12L298,-3L452,-3L452,151L437,166L283,166L283,12L437,12L437,166M437,12L452,-3" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;;stroke:#000;fill:none;opacity:1;"/></mask></defs><rect x="283" y="12" width="154" height="154" style="fill:#F7F8FE;stroke:none;opacity:1.000000;stroke-width:2;" mask="url(#border-mask-square)"/><polygon points="283,12 298,-3 452,-3 452,151 437,166 437,12" style="fill:#cad0f8;stroke:none;opacity:1.000000;stroke-width:2;" mask="url(#border-mask-square)"/><path d="M283,12 L298,-3 L452,-3 L452,151 L437,166 L283,166 L283,12 L437,12 L437,166 M437,12 L452,-3" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/></g><text class="text-bold" x="360.000000" y="92.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">square</text></g><g id="(rectangle -&gt; square)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 185.000000 89.000000 L 279.000000 89.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" /></g><style type="text/css"><![CDATA[
+</style><g id="cube"><g class="shape" ><defs><mask id="border-mask-cube" maskUnits="userSpaceOnUse" x="0" y="-15" width="154" height="141">
+<rect x="0" y="-15" width="154" height="141" fill="white"></rect>
+<path d="M0,0L15,-15L154,-15L154,111L139,126L0,126L0,0L139,0L139,126M139,0L154,-15" style="fill:none;stroke:#53C0D8;opacity:0.500000;stroke-width:7;;stroke:#000;fill:none;opacity:1;"/></mask></defs><rect x="0" y="0" width="139" height="126" style="fill:orange;stroke:none;opacity:0.500000;stroke-width:7;" mask="url(#border-mask-cube)"/><polygon points="0,0 15,-15 154,-15 154,111 139,126 139,0" style="fill:#cc8400;stroke:none;opacity:0.500000;stroke-width:7;" mask="url(#border-mask-cube)"/><path d="M0,0 L15,-15 L154,-15 L154,111 L139,126 L0,126 L0,0 L139,0 L139,126 M139,0 L154,-15" style="fill:none;stroke:#53C0D8;opacity:0.500000;stroke-width:7;"/></g><text class="text-bold" x="69.500000" y="66.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">cube</text></g><style type="text/css"><![CDATA[
 .text-bold {
 	font-family: "font-bold";
 }
