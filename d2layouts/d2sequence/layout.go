@@ -218,6 +218,7 @@ func (sd *sequenceDiagram) placeSpans() {
 		width := SPAN_WIDTH + (float64(span.Level()-2) * SPAN_DEPTH_GROW_FACTOR)
 		x := rankToX[sd.objectRank[span]] - (width / 2.)
 		span.Box = geo.NewBox(geo.NewPoint(x, minY), width, height)
+		span.ZIndex = 1
 	}
 }
 

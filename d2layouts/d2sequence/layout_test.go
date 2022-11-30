@@ -208,6 +208,12 @@ func TestSpansSequenceDiagram(t *testing.T) {
 		t.Fatalf("expected a.t1 and b.t1 to have the same height, got %.5f and %.5f", a_t1.Height, b_t1.Height)
 	}
 
+	for _, span := range []*d2graph.Object{a_t1, a_t2, b_t1} {
+		if span.ZIndex != 1 {
+			t.Fatalf("expected span ZIndex=1, got %d", span.ZIndex)
+		}
+	}
+
 	// Y diff of the 2 first edges
 	expectedHeight := g.Edges[1].Route[0].Y - g.Edges[0].Route[0].Y + (2 * SPAN_EDGE_PAD)
 	if a_t1.Height != expectedHeight {
