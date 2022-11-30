@@ -415,6 +415,9 @@ func (obj *Object) Text() *d2target.MText {
 	if obj.IsContainer() {
 		fontSize = obj.Level().LabelSize()
 	}
+	if obj.Attributes.Style.FontSize != nil {
+		fontSize, _ = strconv.Atoi(obj.Attributes.Style.FontSize.Value)
+	}
 	// Class and Table objects have Label set to header
 	if obj.Class != nil || obj.SQLTable != nil {
 		fontSize = d2fonts.FONT_SIZE_XL
@@ -662,9 +665,13 @@ func (e *Edge) ArrowString() string {
 }
 
 func (e *Edge) Text() *d2target.MText {
+	fontSize := d2fonts.FONT_SIZE_M
+	if e.Attributes.Style.FontSize != nil {
+		fontSize, _ = strconv.Atoi(e.Attributes.Style.FontSize.Value)
+	}
 	return &d2target.MText{
 		Text:     e.Attributes.Label.Value,
-		FontSize: d2fonts.FONT_SIZE_M,
+		FontSize: fontSize,
 		IsBold:   false,
 		IsItalic: true,
 

@@ -76,6 +76,8 @@ type Ruler struct {
 
 	atlases map[d2fonts.Font]*atlas
 
+	ttfs map[d2fonts.Font]*truetype.Font
+
 	buf    []byte
 	prevR  rune
 	bounds *rect
@@ -97,49 +99,52 @@ type Ruler struct {
 //   })
 //   txt := text.New(orig, text.NewAtlas(face, text.ASCII))
 func NewRuler() (*Ruler, error) {
-	lineHeights := make(map[d2fonts.Font]float64)
-	tabWidths := make(map[d2fonts.Font]float64)
-	atlases := make(map[d2fonts.Font]*atlas)
+	origin := geo.NewPoint(0, 0)
+	r := &Ruler{
+		Orig:             origin,
+		Dot:              origin.Copy(),
+		LineHeightFactor: 1.,
+		lineHeights:      make(map[d2fonts.Font]float64),
+		tabWidths:        make(map[d2fonts.Font]float64),
+		atlases:          make(map[d2fonts.Font]*atlas),
+		ttfs:             make(map[d2fonts.Font]*truetype.Font),
+	}
 
 	for _, fontFamily := range d2fonts.FontFamilies {
-		for _, fontSize := range d2fonts.FontSizes {
-			for _, fontStyle := range d2fonts.FontStyles {
-				font := d2fonts.Font{
-					Family: fontFamily,
-					Style:  fontStyle,
-				}
-				if _, ok := d2fonts.FontFaces[font]; !ok {
-					continue
-				}
+		for _, fontStyle := range d2fonts.FontStyles {
+			font := d2fonts.Font{
+				Family: fontFamily,
+				Style:  fontStyle,
+			}
+			// Note: FontFaces lookup is size-agnostic
+			if _, ok := d2fonts.FontFaces[font]; !ok {
+				continue
+			}
+			if _, loaded := r.ttfs[font]; !loaded {
 				ttf, err := truetype.Parse(d2fonts.FontFaces[font])
 				if err != nil {
 					return nil, err
 				}
-				// Added after, since FontFaces lookup is size-agnostic
-				font.Size = fontSize
-				face := truetype.NewFace(ttf, &truetype.Options{
-					Size: float64(fontSize),
-				})
-				atlas := NewAtlas(face, ASCII)
-				atlases[font] = atlas
-				lineHeights[font] = atlas.lineHeight
-				tabWidths[font] = atlas.glyph(' ').advance * TAB_SIZE
+				r.ttfs[font] = ttf
 			}
 		}
 	}
-	origin := geo.NewPoint(0, 0)
-	txt := &Ruler{
-		Orig:             origin,
-		Dot:              origin.Copy(),
-		LineHeightFactor: 1.,
-		lineHeights:      lineHeights,
-		tabWidths:        tabWidths,
-		atlases:          atlases,
-	}
 
-	txt.clear()
+	r.clear()
 
-	return txt, nil
+	return r, nil
+}
+
+func (r *Ruler) addFontSize(font d2fonts.Font) {
+	sizeless := font
+	sizeless.Size = 0
+	face := truetype.NewFace(r.ttfs[sizeless], &truetype.Options{
+		Size: float64(font.Size),
+	})
+	atlas := NewAtlas(face, ASCII)
+	r.atlases[font] = atlas
+	r.lineHeights[font] = atlas.lineHeight
+	r.tabWidths[font] = atlas.glyph(' ').advance * TAB_SIZE
 }
 
 func (t *Ruler) Measure(font d2fonts.Font, s string) (width, height int) {
@@ -148,6 +153,9 @@ func (t *Ruler) Measure(font d2fonts.Font, s string) (width, height int) {
 }
 
 func (t *Ruler) MeasurePrecise(font d2fonts.Font, s string) (width, height float64) {
+	if _, ok := t.atlases[font]; !ok {
+		t.addFontSize(font)
+	}
 	t.clear()
 	t.buf = append(t.buf, s...)
 	t.drawBuf(font)
@@ -215,4 +223,12 @@ func (txt *Ruler) drawBuf(font d2fonts.Font) {
 			}
 		}
 	}
+}
+
+func (ruler *Ruler) spaceWidth(font d2fonts.Font) float64 {
+	if _, has := ruler.atlases[font]; !has {
+		ruler.addFontSize(font)
+	}
+	spaceRune, _ := utf8.DecodeRuneInString(" ")
+	return ruler.atlases[font].glyph(spaceRune).advance
 }
