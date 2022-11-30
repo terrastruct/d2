@@ -22,3 +22,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: d2chaos
+          path: ./d2chaos/out
