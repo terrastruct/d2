@@ -267,7 +267,8 @@
         "direction": {
           "value": ""
         }
-      }
+      },
+      "zIndex": 0
     },
     "edges": [
       {
@@ -298,7 +299,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       }
     ],
     "objects": [
@@ -343,7 +345,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "disks",
@@ -447,7 +450,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "AWS S3 Vancouver",
@@ -490,7 +494,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       }
     ]
   },

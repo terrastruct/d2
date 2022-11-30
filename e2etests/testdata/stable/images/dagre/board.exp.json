@@ -48,7 +48,8 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "OUTSIDE_TOP_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "b",
@@ -97,7 +98,8 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "OUTSIDE_TOP_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -147,7 +149,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     }
   ]
 }

@@ -37,7 +37,8 @@
       "labelWidth": 71,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "square",
@@ -75,7 +76,8 @@
       "labelWidth": 54,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -116,7 +118,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     }
   ]
 }

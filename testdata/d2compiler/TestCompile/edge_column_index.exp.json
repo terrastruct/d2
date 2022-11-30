@@ -348,7 +348,8 @@
         "direction": {
           "value": ""
         }
-      }
+      },
+      "zIndex": 0
     },
     "edges": [
       {
@@ -381,7 +382,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       }
     ],
     "objects": [
@@ -473,7 +475,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "dst",
@@ -563,7 +566,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       }
     ]
   },

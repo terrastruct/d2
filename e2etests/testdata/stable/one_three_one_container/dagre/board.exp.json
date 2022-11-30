@@ -37,7 +37,8 @@
       "labelWidth": 45,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "top.start",
@@ -75,7 +76,8 @@
       "labelWidth": 40,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 2
+      "zIndex": 0,
+      "level": 2
     },
     {
       "id": "a",
@@ -113,7 +115,8 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "b",
@@ -151,7 +154,8 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "c",
@@ -189,7 +193,8 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "bottom",
@@ -227,7 +232,8 @@
       "labelWidth": 90,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "bottom.end",
@@ -265,7 +271,8 @@
       "labelWidth": 32,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 2
+      "zIndex": 0,
+      "level": 2
     }
   ],
   "connections": [
@@ -315,7 +322,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 0
     },
     {
       "id": "(top.start -> b)[0]",
@@ -363,7 +370,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 0
     },
     {
       "id": "(top.start -> c)[0]",
@@ -411,7 +418,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 0
     },
     {
       "id": "(a -> bottom.end)[0]",
@@ -459,7 +466,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 0
     },
     {
       "id": "(b -> bottom.end)[0]",
@@ -507,7 +514,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 0
     },
     {
       "id": "(c -> bottom.end)[0]",
@@ -555,7 +562,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 0
     }
   ]
 }

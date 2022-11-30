@@ -184,7 +184,8 @@
         "direction": {
           "value": ""
         }
-      }
+      },
+      "zIndex": 0
     },
     "edges": [
       {
@@ -215,7 +216,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "index": 0,
@@ -245,7 +247,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       }
     ],
     "objects": [
@@ -290,7 +293,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "z",
@@ -333,7 +337,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "Square",
@@ -376,7 +381,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "Square 2",
@@ -419,7 +425,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "x",
@@ -462,7 +469,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "y",
@@ -505,7 +513,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       }
     ]
   },

@@ -36,7 +36,8 @@
       "underline": false,
       "labelWidth": 531,
       "labelHeight": 186,
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "x",
@@ -74,7 +75,8 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "y",
@@ -112,7 +114,8 @@
       "labelWidth": 14,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -153,7 +156,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     },
     {
       "id": "(hey -> y)[0]",
@@ -192,7 +195,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     }
   ]
 }

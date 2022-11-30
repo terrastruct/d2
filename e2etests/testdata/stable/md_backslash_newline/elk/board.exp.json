@@ -37,7 +37,8 @@
       "labelWidth": 129,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "markdown.md",
@@ -74,7 +75,8 @@
       "underline": false,
       "labelWidth": 459,
       "labelHeight": 48,
-      "zIndex": 2
+      "zIndex": 0,
+      "level": 2
     }
   ],
   "connections": []

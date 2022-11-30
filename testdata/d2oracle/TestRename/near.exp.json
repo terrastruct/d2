@@ -109,7 +109,8 @@
         "direction": {
           "value": ""
         }
-      }
+      },
+      "zIndex": 0
     },
     "edges": null,
     "objects": [
@@ -169,7 +170,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "z",
@@ -212,7 +214,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       }
     ]
   },

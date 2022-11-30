@@ -188,7 +188,8 @@
         "direction": {
           "value": ""
         }
-      }
+      },
+      "zIndex": 0
     },
     "edges": null,
     "objects": [
@@ -266,7 +267,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "b",
@@ -342,7 +344,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "d",
@@ -418,7 +421,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "e",
@@ -494,7 +498,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "p",
@@ -548,7 +553,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "q",
@@ -602,7 +608,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "b",
@@ -667,7 +674,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "m",
@@ -732,7 +740,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "o",
@@ -797,7 +806,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       },
       {
         "id": "z",
@@ -840,7 +850,8 @@
           "direction": {
             "value": ""
           }
-        }
+        },
+        "zIndex": 0
       }
     ]
   },

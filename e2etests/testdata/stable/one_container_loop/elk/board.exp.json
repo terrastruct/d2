@@ -37,7 +37,8 @@
       "labelWidth": 17,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "a.b",
@@ -75,7 +76,8 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 2
+      "zIndex": 0,
+      "level": 2
     },
     {
       "id": "c",
@@ -113,7 +115,8 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "d",
@@ -151,7 +154,8 @@
       "labelWidth": 14,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "e",
@@ -189,7 +193,8 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "f",
@@ -227,7 +232,8 @@
       "labelWidth": 11,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "g",
@@ -265,7 +271,8 @@
       "labelWidth": 14,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "a.h",
@@ -303,7 +310,8 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 2
+      "zIndex": 0,
+      "level": 2
     }
   ],
   "connections": [
@@ -360,7 +368,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 0
     },
     {
       "id": "(d -> c)[0]",
@@ -399,7 +407,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 0
     },
     {
       "id": "(e -> c)[0]",
@@ -446,7 +454,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 0
     },
     {
       "id": "(f -> d)[0]",
@@ -485,7 +493,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 0
     },
     {
       "id": "(a -> e)[0]",
@@ -524,7 +532,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 0
     },
     {
       "id": "(g -> f)[0]",
@@ -563,7 +571,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 0
     },
     {
       "id": "(a.h -> g)[0]",
@@ -610,7 +618,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 0
     }
   ]
 }

@@ -67,7 +67,8 @@
       "underline": false,
       "labelWidth": 61,
       "labelHeight": 36,
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "products",
@@ -129,7 +130,8 @@
       "underline": false,
       "labelWidth": 99,
       "labelHeight": 36,
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "orders",
@@ -185,7 +187,8 @@
       "underline": false,
       "labelWidth": 74,
       "labelHeight": 36,
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "shipments",
@@ -247,7 +250,8 @@
       "underline": false,
       "labelWidth": 116,
       "labelHeight": 36,
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -296,7 +300,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     },
     {
       "id": "(products <-> orders)[0]",
@@ -335,7 +339,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     },
     {
       "id": "(shipments <-> orders)[0]",
@@ -382,7 +386,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     }
   ]
 }

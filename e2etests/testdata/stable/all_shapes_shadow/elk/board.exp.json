@@ -37,7 +37,8 @@
       "labelWidth": 71,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "square",
@@ -75,7 +76,8 @@
       "labelWidth": 54,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "page",
@@ -113,7 +115,8 @@
       "labelWidth": 39,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "parallelogram",
@@ -151,7 +154,8 @@
       "labelWidth": 104,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "document",
@@ -189,7 +193,8 @@
       "labelWidth": 77,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "cylinder",
@@ -227,7 +232,8 @@
       "labelWidth": 64,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "queue",
@@ -265,7 +271,8 @@
       "labelWidth": 49,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "package",
@@ -303,7 +310,8 @@
       "labelWidth": 63,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "step",
@@ -341,7 +349,8 @@
       "labelWidth": 36,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "callout",
@@ -379,7 +388,8 @@
       "labelWidth": 55,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "stored_data",
@@ -417,7 +427,8 @@
       "labelWidth": 91,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "person",
@@ -455,7 +466,8 @@
       "labelWidth": 53,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "diamond",
@@ -493,7 +505,8 @@
       "labelWidth": 68,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "oval",
@@ -531,7 +544,8 @@
       "labelWidth": 36,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "circle",
@@ -569,7 +583,8 @@
       "labelWidth": 44,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "hexagon",
@@ -607,7 +622,8 @@
       "labelWidth": 65,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "cloud",
@@ -645,7 +661,8 @@
       "labelWidth": 45,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -686,7 +703,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     },
     {
       "id": "(square -> page)[0]",
@@ -725,7 +742,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     },
     {
       "id": "(parallelogram -> document)[0]",
@@ -764,7 +781,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     },
     {
       "id": "(document -> cylinder)[0]",
@@ -803,7 +820,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     },
     {
       "id": "(queue -> package)[0]",
@@ -842,7 +859,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     },
     {
       "id": "(package -> step)[0]",
@@ -881,7 +898,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     },
     {
       "id": "(callout -> stored_data)[0]",
@@ -920,7 +937,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     },
     {
       "id": "(stored_data -> person)[0]",
@@ -959,7 +976,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     },
     {
       "id": "(diamond -> oval)[0]",
@@ -998,7 +1015,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     },
     {
       "id": "(oval -> circle)[0]",
@@ -1037,7 +1054,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     },
     {
       "id": "(hexagon -> cloud)[0]",
@@ -1076,7 +1093,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     }
   ]
 }

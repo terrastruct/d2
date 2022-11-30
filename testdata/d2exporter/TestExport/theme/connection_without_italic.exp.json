@@ -36,7 +36,8 @@
       "underline": false,
       "labelWidth": 0,
       "labelHeight": 0,
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "y",
@@ -73,7 +74,8 @@
       "underline": false,
       "labelWidth": 0,
       "labelHeight": 0,
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -106,7 +108,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 0
     }
   ]
 }

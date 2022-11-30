@@ -37,7 +37,8 @@
       "labelWidth": 46,
       "labelHeight": 41,
       "labelPosition": "INSIDE_TOP_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "aaa.bbb",
@@ -75,7 +76,8 @@
       "labelWidth": 32,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 2
+      "zIndex": 0,
+      "level": 2
     },
     {
       "id": "ddd",
@@ -113,7 +115,8 @@
       "labelWidth": 33,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "eee",
@@ -151,7 +154,8 @@
       "labelWidth": 30,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "aaa.ccc",
@@ -189,7 +193,8 @@
       "labelWidth": 28,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 2
+      "zIndex": 0,
+      "level": 2
     }
   ],
   "connections": [
@@ -239,7 +244,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 0
     },
     {
       "id": "(eee <- aaa.ccc)[0]",
@@ -287,7 +292,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 0
     }
   ]
 }
