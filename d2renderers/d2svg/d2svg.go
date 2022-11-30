@@ -511,10 +511,10 @@ func defineShadowFilter(writer io.Writer) {
 
 func render3dRect(targetShape d2target.Shape) string {
 	moveTo := func(p d2target.Point) string {
-		return fmt.Sprintf("M%d,%d ", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
+		return fmt.Sprintf("M%d,%d", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
 	}
 	lineTo := func(p d2target.Point) string {
-		return fmt.Sprintf("L%d,%d ", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
+		return fmt.Sprintf("L%d,%d", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
 	}
 
 	// draw border all in one path to prevent overlapping sections
@@ -545,7 +545,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	border.Fill = "none"
 	borderStyle := shapeStyle(border)
 	renderedBorder := fmt.Sprintf(`<path d="%s" style="%s"/>`,
-		strings.Join(borderSegments, ""), borderStyle)
+		strings.Join(borderSegments, " "), borderStyle)
 
 	// create mask from border stroke, to cut away from the shape fills
 	maskID := fmt.Sprintf("border-mask-%v", escapeText(targetShape.ID))
