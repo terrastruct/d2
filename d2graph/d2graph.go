@@ -39,6 +39,7 @@ func NewGraph(ast *d2ast.Map) *Graph {
 		Parent:   nil,
 		Children: make(map[string]*Object),
 	}
+	d.Root.Attributes.Direction.Value = "down"
 	return d
 }
 
