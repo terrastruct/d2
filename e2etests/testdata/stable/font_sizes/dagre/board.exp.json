@@ -10,7 +10,6 @@
       },
       "width": 145,
       "height": 122,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,7 +36,9 @@
       "underline": false,
       "labelWidth": 45,
       "labelHeight": 22,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "size S",
@@ -48,7 +49,6 @@
       },
       "width": 140,
       "height": 123,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -75,7 +75,9 @@
       "underline": false,
       "labelWidth": 40,
       "labelHeight": 23,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "size M",
@@ -86,7 +88,6 @@
       },
       "width": 147,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -113,7 +114,9 @@
       "underline": false,
       "labelWidth": 47,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "size L",
@@ -124,7 +127,6 @@
       },
       "width": 153,
       "height": 131,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -151,7 +153,9 @@
       "underline": false,
       "labelWidth": 53,
       "labelHeight": 31,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "size XL",
@@ -162,7 +166,6 @@
       },
       "width": 177,
       "height": 136,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -189,7 +192,9 @@
       "underline": false,
       "labelWidth": 77,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "size XXL",
@@ -200,7 +205,6 @@
       },
       "width": 204,
       "height": 141,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -227,7 +231,9 @@
       "underline": false,
       "labelWidth": 104,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "size XXXL",
@@ -238,7 +244,6 @@
       },
       "width": 237,
       "height": 146,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -265,7 +270,9 @@
       "underline": false,
       "labelWidth": 137,
       "labelHeight": 46,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "custom 8",
@@ -276,7 +283,6 @@
       },
       "width": 137,
       "height": 116,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -303,7 +309,9 @@
       "underline": false,
       "labelWidth": 37,
       "labelHeight": 16,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "custom 12",
@@ -314,7 +322,6 @@
       },
       "width": 160,
       "height": 121,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -341,7 +348,9 @@
       "underline": false,
       "labelWidth": 60,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "custom 18",
@@ -352,7 +361,6 @@
       },
       "width": 186,
       "height": 128,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -379,7 +387,9 @@
       "underline": false,
       "labelWidth": 86,
       "labelHeight": 28,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "custom 21",
@@ -390,7 +400,6 @@
       },
       "width": 200,
       "height": 132,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -417,7 +426,9 @@
       "underline": false,
       "labelWidth": 100,
       "labelHeight": 32,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "custom 64",
@@ -428,7 +439,6 @@
       },
       "width": 393,
       "height": 186,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -455,7 +465,9 @@
       "underline": false,
       "labelWidth": 293,
       "labelHeight": 86,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -504,7 +516,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(size S -> size M)[0]",
@@ -551,7 +564,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(size XXXL -> custom 64)[0]",
@@ -598,7 +612,8 @@
       "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     }
   ]
 }
