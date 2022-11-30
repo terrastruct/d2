@@ -172,7 +172,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	_, written, err := compile(ctx, ms, plugin, *themeFlag, inputPath, outputPath, *bundleFlag, pw.Page)
 	if err != nil {
 		if written {
-			return fmt.Errorf("failed to compile (partial render written): %w", err)
+			return fmt.Errorf("failed to fully compile (partial render written): %w", err)
 		}
 		return fmt.Errorf("failed to compile: %w", err)
 	}

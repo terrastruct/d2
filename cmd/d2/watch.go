@@ -346,11 +346,11 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.pw = newPW
 		}
 
-		b, _, err := compile(ctx, w.ms, w.layoutPlugin, w.themeID, w.inputPath, w.outputPath, w.bundle, w.pw.Page)
+		svg, _, err := compile(ctx, w.ms, w.layoutPlugin, w.themeID, w.inputPath, w.outputPath, w.bundle, w.pw.Page)
 		errs := ""
 		if err != nil {
-			if len(b) > 0 {
-				err = fmt.Errorf("failed to %scompile (rendering partial svg): %w", recompiledPrefix, err)
+			if len(svg) > 0 {
+				err = fmt.Errorf("failed to fully %scompile (rendering partial svg): %w", recompiledPrefix, err)
 			} else {
 				err = fmt.Errorf("failed to %scompile: %w", recompiledPrefix, err)
 			}
@@ -360,7 +360,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.ms.Log.Success.Printf("successfully %scompiled %v to %v", recompiledPrefix, w.inputPath, w.outputPath)
 		}
 		w.broadcast(&compileResult{
-			SVG: string(b),
+			SVG: string(svg),
 			Err: errs,
 		})
 

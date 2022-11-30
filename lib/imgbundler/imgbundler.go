@@ -105,7 +105,7 @@ func runWorkers(ctx context.Context, ms *xmain.State, svg []byte, imgs [][][]byt
 
 				bundledImage, err := worker(ctx, img[1], isRemote)
 				if err != nil {
-					ms.Log.Error.Printf("failed to bundle %s: %v", img[0], err)
+					ms.Log.Error.Printf("failed to bundle %s: %v", img[1], err)
 					errhrefsMu.Lock()
 					errhrefs = append(errhrefs, string(img[1]))
 					errhrefsMu.Unlock()
