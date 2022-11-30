@@ -1218,6 +1218,13 @@ foo baz: Foo Baz
 foo baz -> hello
 `,
 		},
+		{
+			name: "self-referencing",
+			script: `x -> x -> x -> y
+z -> y
+z -> z: hello
+`,
+		},
 	}
 
 	runa(t, tcs)

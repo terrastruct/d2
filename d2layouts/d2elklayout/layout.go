@@ -82,6 +82,7 @@ type ELKLayoutOptions struct {
 	Padding           string  `json:"elk.padding,omitempty"`
 	EdgeNodeSpacing   float64 `json:"spacing.edgeNodeBetweenLayers,omitempty"`
 	Direction         string  `json:"elk.direction"`
+	SelfLoopSpacing   float64 `json:"elk.spacing.nodeSelfLoop"`
 }
 
 func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
@@ -121,6 +122,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 			HierarchyHandling: "INCLUDE_CHILDREN",
 			NodeSpacing:       100.0,
 			EdgeNodeSpacing:   50.0,
+			SelfLoopSpacing:   50.0,
 		},
 	}
 	switch g.Root.Attributes.Direction.Value {

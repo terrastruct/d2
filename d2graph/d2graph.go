@@ -727,10 +727,6 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 	src := srcObj.EnsureChild(srcID)
 	dst := dstObj.EnsureChild(dstID)
 
-	if src == dst {
-		return nil, errors.New("self-referencing connection")
-	}
-
 	edge := &Edge{
 		Attributes: Attributes{
 			Label: Scalar{
