@@ -39,6 +39,7 @@ func NewGraph(ast *d2ast.Map) *Graph {
 		Parent:   nil,
 		Children: make(map[string]*Object),
 	}
+	d.Root.Attributes.Direction.Value = "down"
 	return d
 }
 
@@ -97,6 +98,8 @@ type Attributes struct {
 	Language string         `json:"language,omitempty"`
 	// TODO: default to ShapeRectangle instead of empty string
 	Shape Scalar `json:"shape"`
+
+	Direction Scalar `json:"direction"`
 }
 
 // TODO references at the root scope should have their Scope set to root graph AST
@@ -441,6 +444,9 @@ func (obj *Object) newObject(id string) *Object {
 		Attributes: Attributes{
 			Label: Scalar{
 				Value: idval,
+			},
+			Direction: Scalar{
+				Value: "down",
 			},
 		},
 
@@ -1057,6 +1063,7 @@ var ReservedKeywords = map[string]struct{}{
 	"near":       {},
 	"width":      {},
 	"height":     {},
+	"direction":  {},
 }
 
 // ReservedKeywordHolders are reserved keywords that are meaningless on its own and exist solely to hold a set of reserved keywords

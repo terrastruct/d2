@@ -1521,6 +1521,41 @@ dst.id <-> src.dst_id
 				diff.AssertStringEq(t, "sequence_diagram", g.Root.Attributes.Shape.Value)
 			},
 		},
+		{
+			name: "root_direction",
+
+			text: `direction: right`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				diff.AssertStringEq(t, "right", g.Root.Attributes.Direction.Value)
+			},
+		},
+		{
+			name: "default_direction",
+
+			text: `x`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				diff.AssertStringEq(t, "down", g.Objects[0].Attributes.Direction.Value)
+			},
+		},
+		{
+			name: "set_direction",
+
+			text: `x: {
+  direction: left
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				diff.AssertStringEq(t, "left", g.Objects[0].Attributes.Direction.Value)
+			},
+		},
+		{
+			name: "invalid_direction",
+
+			text: `x: {
+  direction: diagonal
+}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/invalid_direction.d2:2:14: direction must be one of up, down, right, left, got "diagonal"
+`,
+		},
 	}
 
 	for _, tc := range testCases {

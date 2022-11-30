@@ -166,6 +166,9 @@
         "near_key": null,
         "shape": {
           "value": ""
+        },
+        "direction": {
+          "value": "down"
         }
       }
     },
@@ -196,6 +199,9 @@
           "style": {},
           "near_key": null,
           "shape": {
+            "value": ""
+          },
+          "direction": {
             "value": ""
           }
         }
@@ -239,6 +245,9 @@
           "near_key": null,
           "shape": {
             "value": ""
+          },
+          "direction": {
+            "value": "down"
           }
         }
       },
@@ -299,6 +308,9 @@
           "near_key": null,
           "shape": {
             "value": ""
+          },
+          "direction": {
+            "value": "down"
           }
         }
       },
@@ -359,6 +371,9 @@
           "near_key": null,
           "shape": {
             "value": ""
+          },
+          "direction": {
+            "value": "down"
           }
         }
       }

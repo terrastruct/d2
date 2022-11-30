@@ -989,6 +989,20 @@ c -> solution: we get
 `,
 		},
 		{
+			name: "direction",
+			script: `a -> b -> c -> d -> e
+b: {
+  direction: right
+  1 -> 2 -> 3 -> 4 -> 5
+
+  2: {
+    direction: up
+    a -> b -> c -> d -> e
+  }
+}
+`,
+		},
+		{
 			name: "transparent_3d",
 			script: `
 cube: {
