@@ -17,13 +17,13 @@ func Export(ctx context.Context, g *d2graph.Graph, themeID int64) (*d2target.Dia
 	diagram := d2target.NewDiagram()
 
 	diagram.Shapes = make([]d2target.Shape, len(g.Objects))
-	highestObjectPriority := 0
+	maxObjectZIndex := 0
 	for i := range g.Objects {
 		diagram.Shapes[i] = toShape(g.Objects[i], &theme)
-		highestObjectPriority = go2.IntMax(highestObjectPriority, diagram.Shapes[i].ZIndex)
+		maxObjectZIndex = go2.IntMax(maxObjectZIndex, diagram.Shapes[i].ZIndex)
 	}
 
-	edgeDefaultZIndex := highestObjectPriority + 1
+	edgeDefaultZIndex := maxObjectZIndex + 1
 	diagram.Connections = make([]d2target.Connection, len(g.Edges))
 	for i := range g.Edges {
 		diagram.Connections[i] = toConnection(g.Edges[i], &theme, edgeDefaultZIndex)
