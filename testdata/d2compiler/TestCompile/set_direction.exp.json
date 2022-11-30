@@ -86,7 +86,8 @@
         "direction": {
           "value": ""
         }
-      }
+      },
+      "zIndex": 0
     },
     "edges": null,
     "objects": [
@@ -131,7 +132,8 @@
           "direction": {
             "value": "left"
           }
-        }
+        },
+        "zIndex": 0
       }
     ]
   },

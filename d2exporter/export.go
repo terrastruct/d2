@@ -88,13 +88,14 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	shape := d2target.BaseShape()
 	shape.SetType(obj.Attributes.Shape.Value)
 	shape.ID = obj.AbsID()
+	shape.ZIndex = obj.ZIndex
+	shape.Level = int(obj.Level())
 	shape.Pos = d2target.NewPoint(int(obj.TopLeft.X), int(obj.TopLeft.Y))
 	shape.Width = int(obj.Width)
 	shape.Height = int(obj.Height)
 
 	text := obj.Text()
 	shape.FontSize = text.FontSize
-	shape.Level = int(obj.Level())
 
 	applyStyles(shape, obj)
 	applyTheme(shape, obj, theme)
@@ -133,6 +134,7 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection {
 	connection := d2target.BaseConnection()
 	connection.ID = edge.AbsID()
+	connection.ZIndex = edge.ZIndex
 	// edge.Edge.ID = go2.StringToIntHash(connection.ID)
 	text := edge.Text()
 

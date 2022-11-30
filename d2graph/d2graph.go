@@ -78,6 +78,8 @@ type Object struct {
 	ChildrenArray []*Object          `json:"-"`
 
 	Attributes Attributes `json:"attributes"`
+
+	ZIndex int `json:"zIndex"`
 }
 
 type Attributes struct {
@@ -633,6 +635,8 @@ type Edge struct {
 
 	References []EdgeReference `json:"references,omitempty"`
 	Attributes Attributes      `json:"attributes"`
+
+	ZIndex int `json:"zIndex"`
 }
 
 type EdgeReference struct {

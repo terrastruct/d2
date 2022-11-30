@@ -91,7 +91,6 @@ type Shape struct {
 	Pos    Point `json:"pos"`
 	Width  int   `json:"width"`
 	Height int   `json:"height"`
-	Level  int   `json:"level"`
 
 	Opacity     float64 `json:"opacity"`
 	StrokeDash  float64 `json:"strokeDash"`
@@ -117,6 +116,9 @@ type Shape struct {
 	Text
 
 	LabelPosition string `json:"labelPosition,omitempty"`
+
+	ZIndex int `json:"zIndex"`
+	Level  int `json:"level"`
 }
 
 func (s *Shape) SetType(t string) {
@@ -128,6 +130,14 @@ func (s *Shape) SetType(t string) {
 		t = ShapeRectangle
 	}
 	s.Type = strings.ToLower(t)
+}
+
+func (s Shape) GetZIndex() int {
+	return s.ZIndex
+}
+
+func (s Shape) GetID() string {
+	return s.ID
 }
 
 type Text struct {
@@ -183,6 +193,8 @@ type Connection struct {
 	Animated bool     `json:"animated"`
 	Tooltip  string   `json:"tooltip"`
 	Icon     *url.URL `json:"icon"`
+
+	ZIndex int `json:"zIndex"`
 }
 
 func BaseConnection() *Connection {
@@ -208,6 +220,14 @@ func (c *Connection) GetLabelTopLeft() *geo.Point {
 		float64(c.LabelWidth),
 		float64(c.LabelHeight),
 	)
+}
+
+func (c Connection) GetZIndex() int {
+	return c.ZIndex
+}
+
+func (c Connection) GetID() string {
+	return c.ID
 }
 
 type Arrowhead string

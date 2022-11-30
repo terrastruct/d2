@@ -10,7 +10,6 @@
       },
       "width": 139,
       "height": 126,
-      "level": 1,
       "opacity": 0.5,
       "strokeDash": 0,
       "strokeWidth": 7,
@@ -37,7 +36,9 @@
       "underline": false,
       "labelWidth": 39,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": []

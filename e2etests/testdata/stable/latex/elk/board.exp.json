@@ -10,7 +10,6 @@
       },
       "width": 382,
       "height": 101,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -36,7 +35,9 @@
       "bold": true,
       "underline": false,
       "labelWidth": 382,
-      "labelHeight": 101
+      "labelHeight": 101,
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "b",
@@ -47,7 +48,6 @@
       },
       "width": 65,
       "height": 18,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -73,7 +73,9 @@
       "bold": true,
       "underline": false,
       "labelWidth": 65,
-      "labelHeight": 18
+      "labelHeight": 18,
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "z",
@@ -84,7 +86,6 @@
       },
       "width": 179,
       "height": 51,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -110,7 +111,9 @@
       "bold": true,
       "underline": false,
       "labelWidth": 179,
-      "labelHeight": 51
+      "labelHeight": 51,
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "c",
@@ -121,7 +124,6 @@
       },
       "width": 214,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -148,7 +150,9 @@
       "underline": false,
       "labelWidth": 114,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "sugar",
@@ -159,7 +163,6 @@
       },
       "width": 146,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -186,7 +189,9 @@
       "underline": false,
       "labelWidth": 46,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "solution",
@@ -197,7 +202,6 @@
       },
       "width": 164,
       "height": 126,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -224,7 +228,9 @@
       "underline": false,
       "labelWidth": 64,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -272,7 +278,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(z -> b)[0]",
@@ -310,7 +317,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(a -> c)[0]",
@@ -356,7 +364,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(b -> c)[0]",
@@ -394,7 +403,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(sugar -> c)[0]",
@@ -440,7 +450,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
       "id": "(c -> solution)[0]",
@@ -478,7 +489,8 @@
       ],
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     }
   ]
 }

@@ -10,7 +10,6 @@
       },
       "width": 724,
       "height": 716,
-      "level": 1,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,7 +36,9 @@
       "underline": false,
       "labelWidth": 457,
       "labelHeight": 130,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
       "id": "ninety nine.sixty four",
@@ -48,7 +49,6 @@
       },
       "width": 574,
       "height": 566,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -75,7 +75,9 @@
       "underline": false,
       "labelWidth": 251,
       "labelHeight": 86,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 2
     },
     {
       "id": "ninety nine.sixty four.thirty two",
@@ -86,7 +88,6 @@
       },
       "width": 424,
       "height": 416,
-      "level": 3,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -113,7 +114,9 @@
       "underline": false,
       "labelWidth": 135,
       "labelHeight": 46,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 3
     },
     {
       "id": "ninety nine.sixty four.thirty two.sixteen",
@@ -124,7 +127,6 @@
       },
       "width": 274,
       "height": 266,
-      "level": 4,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -151,7 +153,9 @@
       "underline": false,
       "labelWidth": 53,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_TOP_CENTER"
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 4
     },
     {
       "id": "ninety nine.sixty four.thirty two.sixteen.eight",
@@ -162,7 +166,6 @@
       },
       "width": 124,
       "height": 116,
-      "level": 5,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -189,7 +192,9 @@
       "underline": false,
       "labelWidth": 24,
       "labelHeight": 16,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 5
     }
   ],
   "connections": []
