@@ -14,6 +14,8 @@
 
 #### Improvements 🔧
 
+- Local images can now be included, e.g. `icon: ./my_img.png`.
+  [#146](https://github.com/terrastruct/d2/issues/146)
 - ELK layout engine now defaults to top-down to be consistent with dagre.
   [#251](https://github.com/terrastruct/d2/pull/251)
 - [install.sh](./install.sh) prints the dry run message more visibly.
@@ -27,3 +29,5 @@
   [#159](https://github.com/terrastruct/d2/issues/159)
 - Fixes markdown newlines created with a trailing double space or backslash.
   [#214](https://github.com/terrastruct/d2/pull/214)
+- Fixes images not loading in PNG exports
+  [#224](https://github.com/terrastruct/d2/pull/224)
