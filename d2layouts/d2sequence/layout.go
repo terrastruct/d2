@@ -17,7 +17,6 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	sd := &sequenceDiagram{
 		graph:          g,
 		objectRank:     make(map[*d2graph.Object]int),
-		objectLevel:    make(map[*d2graph.Object]int),
 		minEdgeRank:    make(map[*d2graph.Object]int),
 		maxEdgeRank:    make(map[*d2graph.Object]int),
 		edgeYStep:      MIN_EDGE_DISTANCE,
@@ -44,8 +43,6 @@ type sequenceDiagram struct {
 	// can be either actors or spans
 	// rank: left to right position of actors/spans (spans have the same rank as their parents)
 	objectRank map[*d2graph.Object]int
-	// similar to d2graph.Object.Level() just don't make the recursive calls
-	objectLevel map[*d2graph.Object]int
 
 	// keep track of the first and last edge of a given actor
 	// the edge rank is the order in which it appears from top to bottom
@@ -70,7 +67,6 @@ func (sd *sequenceDiagram) init() {
 		if sd.isActor(obj) {
 			sd.actors = append(sd.actors, obj)
 			sd.objectRank[obj] = len(sd.actors)
-			sd.objectLevel[obj] = 0
 			sd.maxActorHeight = math.Max(sd.maxActorHeight, obj.Height)
 		} else {
 			// spans are always rectangles and have no labels
@@ -78,7 +74,6 @@ func (sd *sequenceDiagram) init() {
 			obj.Attributes.Shape = d2graph.Scalar{Value: shape.SQUARE_TYPE}
 			sd.spans = append(sd.spans, obj)
 			sd.objectRank[obj] = sd.objectRank[obj.Parent]
-			sd.objectLevel[obj] = sd.objectLevel[obj.Parent] + 1
 		}
 
 		queue = append(queue, obj.ChildrenArray...)
@@ -183,7 +178,7 @@ func (sd *sequenceDiagram) placeSpans() {
 	spanFromMostNested := make([]*d2graph.Object, len(sd.spans))
 	copy(spanFromMostNested, sd.spans)
 	sort.SliceStable(spanFromMostNested, func(i, j int) bool {
-		return sd.objectLevel[spanFromMostNested[i]] > sd.objectLevel[spanFromMostNested[j]]
+		return spanFromMostNested[i].Level() > spanFromMostNested[j].Level()
 	})
 	for _, span := range spanFromMostNested {
 		// finds the position based on children
@@ -219,7 +214,8 @@ func (sd *sequenceDiagram) placeSpans() {
 		}
 
 		height := math.Max(maxY-minY, MIN_SPAN_HEIGHT)
-		width := SPAN_WIDTH + (float64(sd.objectLevel[span]-1) * SPAN_DEPTH_GROW_FACTOR)
+		// -2 because the actors count as level 1 making the first level span getting 2*SPAN_DEPTH_GROW_FACTOR
+		width := SPAN_WIDTH + (float64(span.Level()-2) * SPAN_DEPTH_GROW_FACTOR)
 		x := rankToX[sd.objectRank[span]] - (width / 2.)
 		span.Box = geo.NewBox(geo.NewPoint(x, minY), width, height)
 	}
