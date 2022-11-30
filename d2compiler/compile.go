@@ -13,6 +13,7 @@ import (
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/lib/go2"
 )
 
 // TODO: should Parse even be exported? guess not. IR should contain list of files and
@@ -356,12 +357,13 @@ func (c *compiler) applyScalar(attrs *d2graph.Attributes, reserved string, box d
 	case "link":
 		attrs.Link = scalar.ScalarString()
 		return
-	case "orientation":
-		if scalar.ScalarString() != "horizontal" && scalar.ScalarString() != "vertical" {
-			c.errorf(scalar.GetRange().Start, scalar.GetRange().End, `expected "horizontal" or "vertical" orientation, got %q`, scalar.ScalarString())
+	case "direction":
+		dirs := []string{"up", "down", "right", "left"}
+		if !go2.Contains(dirs, scalar.ScalarString()) {
+			c.errorf(scalar.GetRange().Start, scalar.GetRange().End, `direction must be one of %v, got %q`, strings.Join(dirs, ", "), scalar.ScalarString())
 			return
 		}
-		attrs.Orientation.Value = scalar.ScalarString()
+		attrs.Direction.Value = scalar.ScalarString()
 		return
 	}
 

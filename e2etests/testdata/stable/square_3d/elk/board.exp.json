@@ -6,7 +6,7 @@
       "type": "rectangle",
       "pos": {
         "x": 12,
-        "y": 12
+        "y": 26
       },
       "width": 171,
       "height": 126,
@@ -43,8 +43,8 @@
       "id": "square",
       "type": "rectangle",
       "pos": {
-        "x": 21,
-        "y": 238
+        "x": 283,
+        "y": 12
       },
       "width": 154,
       "height": 154,
@@ -105,12 +105,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 97.5,
-          "y": 138
+          "x": 183,
+          "y": 89
         },
         {
-          "x": 97.5,
-          "y": 238
+          "x": 283,
+          "y": 89
         }
       ],
       "animated": false,

@@ -98,7 +98,7 @@ type Attributes struct {
 	// TODO: default to ShapeRectangle instead of empty string
 	Shape Scalar `json:"shape"`
 
-	Orientation Scalar `json:"orientation"`
+	Direction Scalar `json:"direction"`
 }
 
 // TODO references at the root scope should have their Scope set to root graph AST
@@ -444,8 +444,8 @@ func (obj *Object) newObject(id string) *Object {
 			Label: Scalar{
 				Value: idval,
 			},
-			Orientation: Scalar{
-				Value: "vertical",
+			Direction: Scalar{
+				Value: "down",
 			},
 		},
 
@@ -1052,17 +1052,17 @@ func Key(k *d2ast.KeyPath) []string {
 }
 
 var ReservedKeywords = map[string]struct{}{
-	"label":       {},
-	"desc":        {},
-	"shape":       {},
-	"icon":        {},
-	"constraint":  {},
-	"tooltip":     {},
-	"link":        {},
-	"near":        {},
-	"width":       {},
-	"height":      {},
-	"orientation": {},
+	"label":      {},
+	"desc":       {},
+	"shape":      {},
+	"icon":       {},
+	"constraint": {},
+	"tooltip":    {},
+	"link":       {},
+	"near":       {},
+	"width":      {},
+	"height":     {},
+	"direction":  {},
 }
 
 // ReservedKeywordHolders are reserved keywords that are meaningless on its own and exist solely to hold a set of reserved keywords

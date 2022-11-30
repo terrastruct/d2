@@ -51,7 +51,7 @@
         "shape": {
           "value": ""
         },
-        "orientation": {
+        "direction": {
           "value": ""
         }
       }
@@ -97,8 +97,8 @@
           "shape": {
             "value": "text"
           },
-          "orientation": {
-            "value": "vertical"
+          "direction": {
+            "value": "down"
           }
         }
       }

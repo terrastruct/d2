@@ -207,7 +207,7 @@
         "shape": {
           "value": ""
         },
-        "orientation": {
+        "direction": {
           "value": ""
         }
       }
@@ -266,8 +266,8 @@
           "shape": {
             "value": "sql_table"
           },
-          "orientation": {
-            "value": "vertical"
+          "direction": {
+            "value": "down"
           }
         }
       }

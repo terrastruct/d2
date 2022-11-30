@@ -989,14 +989,14 @@ c -> solution: we get
 `,
 		},
 		{
-			name: "orientation",
+			name: "direction",
 			script: `a -> b -> c -> d -> e
 b: {
-  orientation: horizontal
+  direction: right
 	1 -> 2 -> 3 -> 4 -> 5
 
   2: {
-    orientation: vertical
+    direction: up
     a -> b -> c -> d -> e
   }
 }

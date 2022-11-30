@@ -165,7 +165,7 @@
         "shape": {
           "value": ""
         },
-        "orientation": {
+        "direction": {
           "value": ""
         }
       }
@@ -226,8 +226,8 @@
           "shape": {
             "value": "image"
           },
-          "orientation": {
-            "value": "vertical"
+          "direction": {
+            "value": "down"
           }
         }
       }

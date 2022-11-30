@@ -83,7 +83,7 @@
         "shape": {
           "value": ""
         },
-        "orientation": {
+        "direction": {
           "value": ""
         }
       }
@@ -128,8 +128,8 @@
           "shape": {
             "value": "sequence_diagram"
           },
-          "orientation": {
-            "value": "vertical"
+          "direction": {
+            "value": "down"
           }
         }
       }

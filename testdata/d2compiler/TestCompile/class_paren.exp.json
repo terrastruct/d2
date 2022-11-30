@@ -182,7 +182,7 @@
         "shape": {
           "value": ""
         },
-        "orientation": {
+        "direction": {
           "value": ""
         }
       }
@@ -248,8 +248,8 @@
           "shape": {
             "value": "class"
           },
-          "orientation": {
-            "value": "vertical"
+          "direction": {
+            "value": "down"
           }
         }
       }

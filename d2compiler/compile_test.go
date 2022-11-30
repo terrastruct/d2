@@ -1522,38 +1522,38 @@ dst.id <-> src.dst_id
 			},
 		},
 		{
-			name: "root_orientation",
+			name: "root_direction",
 
-			text: `orientation: horizontal`,
+			text: `direction: right`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				diff.AssertStringEq(t, "horizontal", g.Root.Attributes.Orientation.Value)
+				diff.AssertStringEq(t, "right", g.Root.Attributes.Direction.Value)
 			},
 		},
 		{
-			name: "default_orientation",
+			name: "default_direction",
 
 			text: `x`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				diff.AssertStringEq(t, "vertical", g.Objects[0].Attributes.Orientation.Value)
+				diff.AssertStringEq(t, "down", g.Objects[0].Attributes.Direction.Value)
 			},
 		},
 		{
-			name: "set_orientation",
+			name: "set_direction",
 
 			text: `x: {
-  orientation: horizontal
+  direction: left
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				diff.AssertStringEq(t, "horizontal", g.Objects[0].Attributes.Orientation.Value)
+				diff.AssertStringEq(t, "left", g.Objects[0].Attributes.Direction.Value)
 			},
 		},
 		{
-			name: "invalid_orientation",
+			name: "invalid_direction",
 
 			text: `x: {
-  orientation: diagonal
+  direction: diagonal
 }`,
-			expErr: `d2/testdata/d2compiler/TestCompile/invalid_orientation.d2:2:16: expected "horizontal" or "vertical" orientation, got "diagonal"
+			expErr: `d2/testdata/d2compiler/TestCompile/invalid_direction.d2:2:14: direction must be one of up, down, right, left, got "diagonal"
 `,
 		},
 	}

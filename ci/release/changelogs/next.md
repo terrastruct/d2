@@ -2,7 +2,7 @@
 
 - Latex is now supported. See [docs](https://d2lang.com/tour/text) for more.
   [#229](https://github.com/terrastruct/d2/pull/229)
-- `orientation` keyword is now supported to specify horizontal or vertical layouts. See
+- `direction` keyword is now supported to specify `up`, `down`, `right`, `left` layouts. See
   [docs](https://d2lang.com/tour/layouts) for more.
   [#251](https://github.com/terrastruct/d2/pull/251)
 - Arrowhead labels are now supported. [#182](https://github.com/terrastruct/d2/pull/182)

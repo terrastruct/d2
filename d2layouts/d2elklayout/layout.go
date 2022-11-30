@@ -120,11 +120,17 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 			HierarchyHandling: "INCLUDE_CHILDREN",
 			NodeSpacing:       100.0,
 			EdgeNodeSpacing:   50.0,
-			Direction:         "DOWN",
 		},
 	}
-	if g.Root.Attributes.Orientation.Value == "horizontal" {
+	switch g.Root.Attributes.Direction.Value {
+	case "down":
+		elkGraph.LayoutOptions.Direction = "DOWN"
+	case "up":
+		elkGraph.LayoutOptions.Direction = "UP"
+	case "right":
 		elkGraph.LayoutOptions.Direction = "RIGHT"
+	case "left":
+		elkGraph.LayoutOptions.Direction = "LEFT"
 	}
 
 	elkNodes := make(map[*d2graph.Object]*ELKNode)

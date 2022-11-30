@@ -184,7 +184,7 @@
         "shape": {
           "value": ""
         },
-        "orientation": {
+        "direction": {
           "value": ""
         }
       }
@@ -215,7 +215,7 @@
           "shape": {
             "value": ""
           },
-          "orientation": {
+          "direction": {
             "value": ""
           }
         }
@@ -245,7 +245,7 @@
           "shape": {
             "value": ""
           },
-          "orientation": {
+          "direction": {
             "value": ""
           }
         }
@@ -290,8 +290,8 @@
           "shape": {
             "value": ""
           },
-          "orientation": {
-            "value": "vertical"
+          "direction": {
+            "value": "down"
           }
         }
       },
@@ -364,8 +364,8 @@
           "shape": {
             "value": ""
           },
-          "orientation": {
-            "value": "vertical"
+          "direction": {
+            "value": "down"
           }
         }
       },
@@ -438,8 +438,8 @@
           "shape": {
             "value": ""
           },
-          "orientation": {
-            "value": "vertical"
+          "direction": {
+            "value": "down"
           }
         }
       }
