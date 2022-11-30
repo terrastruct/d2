@@ -17,11 +17,6 @@ const (
 	MAX_ICON_SIZE     = 64
 )
 
-type DiagramObject interface {
-	GetID() string
-	GetZIndex() int
-}
-
 type Diagram struct {
 	Name        string `json:"name"`
 	Description string `json:"description,omitempty"`

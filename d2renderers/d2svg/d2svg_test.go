@@ -7,7 +7,7 @@ import (
 )
 
 func TestSortObjects(t *testing.T) {
-	allObjects := []d2target.DiagramObject{
+	allObjects := []DiagramObject{
 		// same zIndex and level, should keep in this order
 		d2target.Shape{
 			ID:     "0",
@@ -57,7 +57,7 @@ func TestSortObjects(t *testing.T) {
 		},
 	}
 
-	expectedOrder := []d2target.DiagramObject{
+	expectedOrder := []DiagramObject{
 		allObjects[8],
 		allObjects[0],
 		allObjects[1],
