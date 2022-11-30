@@ -127,10 +127,6 @@ func NewRuler() (*Ruler, error) {
 				}
 				r.ttfs[font] = ttf
 			}
-
-			for _, fontSize := range d2fonts.FontSizes {
-				r.addFontSize(font, fontSize)
-			}
 		}
 	}
 
@@ -139,13 +135,12 @@ func NewRuler() (*Ruler, error) {
 	return r, nil
 }
 
-func (r *Ruler) addFontSize(font d2fonts.Font, fontSize int) {
+func (r *Ruler) addFontSize(font d2fonts.Font) {
 	sizeless := font
 	sizeless.Size = 0
 	face := truetype.NewFace(r.ttfs[sizeless], &truetype.Options{
-		Size: float64(fontSize),
+		Size: float64(font.Size),
 	})
-	font.Size = fontSize
 	atlas := NewAtlas(face, ASCII)
 	r.atlases[font] = atlas
 	r.lineHeights[font] = atlas.lineHeight
@@ -159,7 +154,7 @@ func (t *Ruler) Measure(font d2fonts.Font, s string) (width, height int) {
 
 func (t *Ruler) MeasurePrecise(font d2fonts.Font, s string) (width, height float64) {
 	if _, ok := t.atlases[font]; !ok {
-		t.addFontSize(font, font.Size)
+		t.addFontSize(font)
 	}
 	t.clear()
 	t.buf = append(t.buf, s...)
@@ -228,4 +223,12 @@ func (txt *Ruler) drawBuf(font d2fonts.Font) {
 			}
 		}
 	}
+}
+
+func (ruler *Ruler) spaceWidth(font d2fonts.Font) float64 {
+	if _, has := ruler.atlases[font]; !has {
+		ruler.addFontSize(font)
+	}
+	spaceRune, _ := utf8.DecodeRuneInString(" ")
+	return ruler.atlases[font].glyph(spaceRune).advance
 }
