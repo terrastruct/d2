@@ -1,0 +1,12 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/invalid_direction.d2,1:13:18-1:21:26",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/invalid_direction.d2:2:14: direction must be one of up, down, right, left, got \"diagonal\""
+      }
+    ]
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/root_direction.d2,0:0:0-0:16:16",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/root_direction.d2,0:0:0-0:16:16",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/root_direction.d2,0:0:0-0:9:9",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/root_direction.d2,0:0:0-0:9:9",
+                    "value": [
+                      {
+                        "string": "direction",
+                        "raw_string": "direction"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile/root_direction.d2,0:11:11-0:16:16",
+                "value": [
+                  {
+                    "string": "right",
+                    "raw_string": "right"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": "right"
+        }
+      }
+    },
+    "edges": null,
+    "objects": null
+  },
+  "err": null
+}

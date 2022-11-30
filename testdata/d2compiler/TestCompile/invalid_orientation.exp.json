@@ -1,0 +1,12 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/invalid_orientation.d2,1:15:20-1:23:28",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/invalid_orientation.d2:2:16: expected \"horizontal\" or \"vertical\" orientation, got \"diagonal\""
+      }
+    ]
+  }
+}

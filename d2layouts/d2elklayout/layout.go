@@ -68,10 +68,10 @@ type ELKEdge struct {
 }
 
 type ELKGraph struct {
-	ID            string           `json:"id"`
-	LayoutOptions ELKLayoutOptions `json:"layoutOptions"`
-	Children      []*ELKNode       `json:"children,omitempty"`
-	Edges         []*ELKEdge       `json:"edges,omitempty"`
+	ID            string            `json:"id"`
+	LayoutOptions *ELKLayoutOptions `json:"layoutOptions"`
+	Children      []*ELKNode        `json:"children,omitempty"`
+	Edges         []*ELKEdge        `json:"edges,omitempty"`
 }
 
 type ELKLayoutOptions struct {
@@ -80,6 +80,7 @@ type ELKLayoutOptions struct {
 	NodeSpacing       float64 `json:"spacing.nodeNodeBetweenLayers,omitempty"`
 	Padding           string  `json:"elk.padding,omitempty"`
 	EdgeNodeSpacing   float64 `json:"spacing.edgeNodeBetweenLayers,omitempty"`
+	Direction         string  `json:"elk.direction"`
 }
 
 func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
@@ -114,12 +115,22 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 
 	elkGraph := &ELKGraph{
 		ID: "root",
-		LayoutOptions: ELKLayoutOptions{
+		LayoutOptions: &ELKLayoutOptions{
 			Algorithm:         "layered",
 			HierarchyHandling: "INCLUDE_CHILDREN",
 			NodeSpacing:       100.0,
 			EdgeNodeSpacing:   50.0,
 		},
+	}
+	switch g.Root.Attributes.Direction.Value {
+	case "down":
+		elkGraph.LayoutOptions.Direction = "DOWN"
+	case "up":
+		elkGraph.LayoutOptions.Direction = "UP"
+	case "right":
+		elkGraph.LayoutOptions.Direction = "RIGHT"
+	case "left":
+		elkGraph.LayoutOptions.Direction = "LEFT"
 	}
 
 	elkNodes := make(map[*d2graph.Object]*ELKNode)

@@ -2,6 +2,9 @@
 
 - Latex is now supported. See [docs](https://d2lang.com/tour/text) for more.
   [#229](https://github.com/terrastruct/d2/pull/229)
+- `direction` keyword is now supported to specify `up`, `down`, `right`, `left` layouts. See
+  [docs](https://d2lang.com/tour/layouts) for more.
+  [#251](https://github.com/terrastruct/d2/pull/251)
 - Arrowhead labels are now supported. [#182](https://github.com/terrastruct/d2/pull/182)
 - `stroke-dash` on shapes is now supported. [#188](https://github.com/terrastruct/d2/issues/188)
 - `font-color` is now supported on shapes and connections. [#215](https://github.com/terrastruct/d2/pull/215)
@@ -13,6 +16,8 @@
 
 - Local images can now be included, e.g. `icon: ./my_img.png`.
   [#146](https://github.com/terrastruct/d2/issues/146)
+- ELK layout engine now defaults to top-down to be consistent with dagre.
+  [#251](https://github.com/terrastruct/d2/pull/251)
 - [install.sh](./install.sh) prints the dry run message more visibly.
   [#266](https://github.com/terrastruct/d2/pull/266)
 

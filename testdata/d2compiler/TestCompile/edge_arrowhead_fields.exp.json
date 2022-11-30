@@ -245,6 +245,9 @@
         "near_key": null,
         "shape": {
           "value": ""
+        },
+        "direction": {
+          "value": "down"
         }
       }
     },
@@ -267,6 +270,9 @@
           "near_key": null,
           "shape": {
             "value": "diamond"
+          },
+          "direction": {
+            "value": ""
           }
         },
         "dst_arrow": true,
@@ -282,6 +288,9 @@
           "near_key": null,
           "shape": {
             "value": ""
+          },
+          "direction": {
+            "value": ""
           }
         },
         "references": [
@@ -296,6 +305,9 @@
           "style": {},
           "near_key": null,
           "shape": {
+            "value": ""
+          },
+          "direction": {
             "value": ""
           }
         }
@@ -339,6 +351,9 @@
           "near_key": null,
           "shape": {
             "value": ""
+          },
+          "direction": {
+            "value": "down"
           }
         }
       },
@@ -379,6 +394,9 @@
           "near_key": null,
           "shape": {
             "value": ""
+          },
+          "direction": {
+            "value": "down"
           }
         }
       }
