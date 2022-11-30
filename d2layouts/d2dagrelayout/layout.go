@@ -74,6 +74,8 @@ func Layout(ctx context.Context, d2graph *d2graph.Graph) (err error) {
 		rootAttrs.rankdir = "RL"
 	case "up":
 		rootAttrs.rankdir = "BT"
+	default:
+		rootAttrs.rankdir = "TB"
 	}
 	configJS := setGraphAttrs(rootAttrs)
 	if _, err := v8ctx.RunScript(configJS, "config.js"); err != nil {
