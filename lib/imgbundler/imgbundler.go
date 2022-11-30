@@ -48,82 +48,10 @@ func bundle(ctx context.Context, ms *xmain.State, svg []byte, isRemote bool) (_ 
 	imgs := imageRegex.FindAllSubmatch(svg, -1)
 	imgs = filterImageElements(imgs, isRemote)
 
-	var wg sync.WaitGroup
-	replc := make(chan repl)
-	// Limits the number of workers to 16.
-	sema := make(chan struct{}, 16)
-
-	var errhrefsMu sync.Mutex
-	var errhrefs []string
-
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*5)
 	defer cancel()
 
-	wg.Add(len(imgs))
-	// Start workers as the sema allows.
-	go func() {
-		for _, img := range imgs {
-			sema <- struct{}{}
-			go func(imgel, href []byte) {
-				defer func() {
-					wg.Done()
-					<-sema
-				}()
-
-				var buf []byte
-				var mimeType string
-				var err error
-				if isRemote {
-					buf, mimeType, err = httpGet(ctx, string(href))
-				} else {
-					buf, err = os.ReadFile(string(href))
-				}
-				if err != nil {
-					ms.Log.Error.Printf("failed to bundle %s: %v", imgel, err)
-					errhrefsMu.Lock()
-					errhrefs = append(errhrefs, string(href))
-					errhrefsMu.Unlock()
-					return
-				}
-
-				if mimeType == "" {
-					mimeType = sniffMimeType(href, buf, isRemote)
-				}
-				mimeType = strings.Replace(mimeType, "text/xml", "image/svg+xml", 1)
-				b64 := base64.StdEncoding.EncodeToString(buf)
-
-				select {
-				case <-ctx.Done():
-				case replc <- repl{
-					from: imgel,
-					to:   []byte(fmt.Sprintf(`<image href="data:%s;base64,%s"`, mimeType, b64)),
-				}:
-				}
-			}(img[0], img[1])
-		}
-	}()
-
-	go func() {
-		wg.Wait()
-		close(replc)
-	}()
-
-	for {
-		select {
-		case <-ctx.Done():
-			return svg, xerrors.Errorf("failed to wait for workers: %w", ctx.Err())
-		case <-time.After(time.Second * 5):
-			ms.Log.Info.Printf("fetching images...")
-		case repl, ok := <-replc:
-			if !ok {
-				if len(errhrefs) > 0 {
-					return svg, xerrors.Errorf("%v", errhrefs)
-				}
-				return svg, nil
-			}
-			svg = bytes.Replace(svg, repl.from, repl.to, 1)
-		}
-	}
+	return runWorkers(ctx, ms, svg, imgs, isRemote)
 }
 
 // filterImageElements finds all image elements in imgs that are eligible
@@ -146,6 +74,91 @@ func filterImageElements(imgs [][][]byte, isRemote bool) [][][]byte {
 		}
 	}
 	return imgs2
+}
+
+func runWorkers(ctx context.Context, ms *xmain.State, svg []byte, imgs [][][]byte, isRemote bool) (_ []byte, err error) {
+	var wg sync.WaitGroup
+	replc := make(chan repl)
+
+	wg.Add(len(imgs))
+	go func() {
+		wg.Wait()
+		close(replc)
+	}()
+
+	// Limits the number of workers to 16.
+	sema := make(chan struct{}, 16)
+
+	var errhrefsMu sync.Mutex
+	var errhrefs []string
+
+	// Start workers as the sema allows.
+	go func() {
+		for _, img := range imgs {
+			img := img
+			sema <- struct{}{}
+			go func() {
+				defer func() {
+					wg.Done()
+					<-sema
+				}()
+
+				bundledImage, err := worker(ctx, img[1], isRemote)
+				if err != nil {
+					ms.Log.Error.Printf("failed to bundle %s: %v", img[0], err)
+					errhrefsMu.Lock()
+					errhrefs = append(errhrefs, string(img[1]))
+					errhrefsMu.Unlock()
+					return
+				}
+				select {
+				case <-ctx.Done():
+				case replc <- repl{
+					from: img[0],
+					to:   bundledImage,
+				}:
+				}
+			}()
+		}
+	}()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return svg, xerrors.Errorf("failed to wait for workers: %w", ctx.Err())
+		case <-time.After(time.Second * 5):
+			ms.Log.Info.Printf("fetching images...")
+		case repl, ok := <-replc:
+			if !ok {
+				if len(errhrefs) > 0 {
+					return svg, xerrors.Errorf("%v", errhrefs)
+				}
+				return svg, nil
+			}
+			svg = bytes.Replace(svg, repl.from, repl.to, 1)
+		}
+	}
+}
+
+func worker(ctx context.Context, href []byte, isRemote bool) ([]byte, error) {
+	var buf []byte
+	var mimeType string
+	var err error
+	if isRemote {
+		buf, mimeType, err = httpGet(ctx, string(href))
+	} else {
+		buf, err = os.ReadFile(string(href))
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	if mimeType == "" {
+		mimeType = sniffMimeType(href, buf, isRemote)
+	}
+	mimeType = strings.Replace(mimeType, "text/xml", "image/svg+xml", 1)
+	b64 := base64.StdEncoding.EncodeToString(buf)
+	return []byte(fmt.Sprintf(`<image href="data:%s;base64,%s"`, mimeType, b64)), nil
 }
 
 var httpClient = &http.Client{}
