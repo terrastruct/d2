@@ -42,6 +42,7 @@ type watcherOpts struct {
 	port         string
 	inputPath    string
 	outputPath   string
+	bundle       bool
 	pw           png.Playwright
 }
 
@@ -73,8 +74,8 @@ type watcher struct {
 }
 
 type compileResult struct {
-	Err string `json:"err"`
 	SVG string `json:"svg"`
+	Err string `json:"err"`
 }
 
 func newWatcher(ctx context.Context, ms *xmain.State, opts watcherOpts) (*watcher, error) {
@@ -345,19 +346,23 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.pw = newPW
 		}
 
-		b, err := compile(ctx, w.ms, true, w.layoutPlugin, w.themeID, w.inputPath, w.outputPath, w.pw.Page)
+		svg, _, err := compile(ctx, w.ms, w.layoutPlugin, w.themeID, w.inputPath, w.outputPath, w.bundle, w.pw.Page)
+		errs := ""
 		if err != nil {
-			err = fmt.Errorf("failed to %scompile: %w", recompiledPrefix, err)
-			w.ms.Log.Error.Print(err)
-			w.broadcast(&compileResult{
-				Err: err.Error(),
-			})
+			if len(svg) > 0 {
+				err = fmt.Errorf("failed to fully %scompile (rendering partial svg): %w", recompiledPrefix, err)
+			} else {
+				err = fmt.Errorf("failed to %scompile: %w", recompiledPrefix, err)
+			}
+			errs = err.Error()
+			w.ms.Log.Error.Print(errs)
 		} else {
 			w.ms.Log.Success.Printf("successfully %scompiled %v to %v", recompiledPrefix, w.inputPath, w.outputPath)
-			w.broadcast(&compileResult{
-				SVG: string(b),
-			})
 		}
+		w.broadcast(&compileResult{
+			SVG: string(svg),
+			Err: errs,
+		})
 
 		if firstCompile {
 			firstCompile = false

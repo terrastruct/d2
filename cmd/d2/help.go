@@ -15,10 +15,14 @@ import (
 
 func help(ms *xmain.State) {
 	fmt.Fprintf(ms.Stdout, `Usage:
-  %s [--watch=false] [--theme=0] file.d2 [file.svg|file.png]
+  %s [--watch=false] [--theme=0] file.d2 [file.svg | file.png]
 
-%[1]s compiles and renders file.d2 to file.svg|file.png.
+%[1]s compiles and renders file.d2 to file.svg | file.png
+It defaults to file.svg if an output path is not provided.
+
 Use - to have d2 read from stdin or write to stdout.
+
+See man %[1]s for more detailed docs.
 
 Flags:
 %s

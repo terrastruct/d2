@@ -129,7 +129,7 @@ func (o *Opts) Int64(envKey, flag, shortFlag string, defaultVal int64, usage str
 	if env := o.getEnv(flag, envKey); env != "" {
 		envVal, err := strconv.ParseInt(env, 10, 64)
 		if err != nil {
-			return nil, fmt.Errorf(`invalid environment variable %s. Expected int64. Found "%v".`, envKey, envVal)
+			return nil, UsageErrorf(`invalid environment variable %s. Expected int64. Found "%v".`, envKey, envVal)
 		}
 		defaultVal = envVal
 	}
@@ -148,7 +148,7 @@ func (o *Opts) String(envKey, flag, shortFlag string, defaultVal, usage string) 
 func (o *Opts) Bool(envKey, flag, shortFlag string, defaultVal bool, usage string) (*bool, error) {
 	if env := o.getEnv(flag, envKey); env != "" {
 		if !boolyEnv(env) {
-			return nil, fmt.Errorf(`invalid environment variable %s. Expected bool. Found "%s".`, envKey, env)
+			return nil, UsageErrorf(`invalid environment variable %s. Expected bool. Found "%s".`, envKey, env)
 		}
 		if truthyEnv(env) {
 			defaultVal = true

@@ -20,6 +20,7 @@ require (
 	golang.org/x/image v0.1.0
 	golang.org/x/net v0.2.0
 	golang.org/x/text v0.4.0
+	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2
 	gonum.org/v1/plot v0.12.0
 	nhooyr.io/websocket v1.8.7
 	oss.terrastruct.com/cmdlog v0.0.0-20221129200109-540ef52ff07d
@@ -57,7 +58,6 @@ require (
 	golang.org/x/crypto v0.3.0 // indirect
 	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/term v0.2.0 // indirect
-	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/genproto v0.0.0-20220822174746-9e6da59bd2fc // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
