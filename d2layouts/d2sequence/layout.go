@@ -17,9 +17,9 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	sd := &sequenceDiagram{
 		graph:          g,
 		objectRank:     make(map[*d2graph.Object]int),
-		minEdgeRank:    make(map[*d2graph.Object]int),
-		maxEdgeRank:    make(map[*d2graph.Object]int),
-		edgeYStep:      MIN_EDGE_DISTANCE,
+		minMessageRank: make(map[*d2graph.Object]int),
+		maxMessageRank: make(map[*d2graph.Object]int),
+		messageYStep:   MIN_MESSAGE_DISTANCE,
 		actorXStep:     MIN_ACTOR_DISTANCE,
 		maxActorHeight: 0.,
 	}
@@ -27,7 +27,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	sd.init()
 	sd.placeActors()
 	sd.placeSpans()
-	sd.routeEdges()
+	sd.routeMessages()
 	sd.addLifelineEdges()
 
 	return nil
@@ -36,27 +36,27 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 type sequenceDiagram struct {
 	graph *d2graph.Graph
 
-	edges  []*d2graph.Edge
-	actors []*d2graph.Object
-	spans  []*d2graph.Object
+	messages []*d2graph.Edge
+	actors   []*d2graph.Object
+	spans    []*d2graph.Object
 
 	// can be either actors or spans
 	// rank: left to right position of actors/spans (spans have the same rank as their parents)
 	objectRank map[*d2graph.Object]int
 
-	// keep track of the first and last edge of a given actor
-	// the edge rank is the order in which it appears from top to bottom
-	minEdgeRank map[*d2graph.Object]int
-	maxEdgeRank map[*d2graph.Object]int
+	// keep track of the first and last message of a given actor/span
+	// the message rank is the order in which it appears from top to bottom
+	minMessageRank map[*d2graph.Object]int
+	maxMessageRank map[*d2graph.Object]int
 
-	edgeYStep      float64
+	messageYStep   float64
 	actorXStep     float64
 	maxActorHeight float64
 }
 
 func (sd *sequenceDiagram) init() {
-	sd.edges = make([]*d2graph.Edge, len(sd.graph.Edges))
-	copy(sd.edges, sd.graph.Edges)
+	sd.messages = make([]*d2graph.Edge, len(sd.graph.Edges))
+	copy(sd.messages, sd.graph.Edges)
 
 	queue := make([]*d2graph.Object, len(sd.graph.Root.ChildrenArray))
 	copy(queue, sd.graph.Root.ChildrenArray)
@@ -79,31 +79,31 @@ func (sd *sequenceDiagram) init() {
 		queue = append(queue, obj.ChildrenArray...)
 	}
 
-	for rank, edge := range sd.edges {
-		sd.edgeYStep = math.Max(sd.edgeYStep, float64(edge.LabelDimensions.Height))
+	for rank, message := range sd.messages {
+		sd.messageYStep = math.Max(sd.messageYStep, float64(message.LabelDimensions.Height))
 
-		sd.setMinMaxEdgeRank(edge.Src, rank)
-		sd.setMinMaxEdgeRank(edge.Dst, rank)
+		sd.setMinMaxMessageRank(message.Src, rank)
+		sd.setMinMaxMessageRank(message.Dst, rank)
 
 		// ensures that long labels, spanning over multiple actors, don't make for large gaps between actors
 		// by distributing the label length across the actors rank difference
-		rankDiff := math.Abs(float64(sd.objectRank[edge.Src]) - float64(sd.objectRank[edge.Dst]))
-		distributedLabelWidth := float64(edge.LabelDimensions.Width) / rankDiff
+		rankDiff := math.Abs(float64(sd.objectRank[message.Src]) - float64(sd.objectRank[message.Dst]))
+		distributedLabelWidth := float64(message.LabelDimensions.Width) / rankDiff
 		sd.actorXStep = math.Max(sd.actorXStep, distributedLabelWidth+HORIZONTAL_PAD)
 	}
 
 	sd.maxActorHeight += VERTICAL_PAD
-	sd.edgeYStep += VERTICAL_PAD
+	sd.messageYStep += VERTICAL_PAD
 }
 
-func (sd *sequenceDiagram) setMinMaxEdgeRank(actor *d2graph.Object, rank int) {
-	if minRank, exists := sd.minEdgeRank[actor]; exists {
-		sd.minEdgeRank[actor] = go2.IntMin(minRank, rank)
+func (sd *sequenceDiagram) setMinMaxMessageRank(actor *d2graph.Object, rank int) {
+	if minRank, exists := sd.minMessageRank[actor]; exists {
+		sd.minMessageRank[actor] = go2.IntMin(minRank, rank)
 	} else {
-		sd.minEdgeRank[actor] = rank
+		sd.minMessageRank[actor] = rank
 	}
 
-	sd.maxEdgeRank[actor] = go2.IntMax(sd.maxEdgeRank[actor], rank)
+	sd.maxMessageRank[actor] = go2.IntMax(sd.maxMessageRank[actor], rank)
 }
 
 // placeActors places actors bottom aligned, side by side
@@ -126,7 +126,7 @@ func (sd *sequenceDiagram) placeActors() {
 //        │
 //        │
 func (sd *sequenceDiagram) addLifelineEdges() {
-	endY := sd.getEdgeY(len(sd.edges))
+	endY := sd.getMessageY(len(sd.messages))
 	for _, actor := range sd.actors {
 		actorBottom := actor.Center()
 		actorBottom.Y = actor.TopLeft.Y + actor.Height
@@ -171,10 +171,10 @@ func (sd *sequenceDiagram) placeSpans() {
 	}
 
 	// places spans from most to least nested
-	// the order is important because the only way a child span exists is if there'e an edge to it
-	// however, the parent span might not have an edge to it and then its position is based on the child position
-	// or, there can be edge to it, but it comes after the child one meaning the top left position is still based on the child
-	// and not on its own edge
+	// the order is important because the only way a child span exists is if there'e an message to it
+	// however, the parent span might not have a message to it and then its position is based on the child position
+	// or, there can be a message to it, but it comes after the child one meaning the top left position is still based on the child
+	// and not on its own message
 	spanFromMostNested := make([]*d2graph.Object, len(sd.spans))
 	copy(spanFromMostNested, sd.spans)
 	sort.SliceStable(spanFromMostNested, func(i, j int) bool {
@@ -189,28 +189,28 @@ func (sd *sequenceDiagram) placeSpans() {
 			maxChildY = math.Max(maxChildY, child.TopLeft.Y+child.Height)
 		}
 
-		// finds the position if there are edges to this span
-		minEdgeY := math.Inf(1)
-		if minRank, exists := sd.minEdgeRank[span]; exists {
-			minEdgeY = sd.getEdgeY(minRank)
+		// finds the position if there are messages to this span
+		minMessageY := math.Inf(1)
+		if minRank, exists := sd.minMessageRank[span]; exists {
+			minMessageY = sd.getMessageY(minRank)
 		}
-		maxEdgeY := math.Inf(-1)
-		if maxRank, exists := sd.maxEdgeRank[span]; exists {
-			maxEdgeY = sd.getEdgeY(maxRank)
+		maxMessageY := math.Inf(-1)
+		if maxRank, exists := sd.maxMessageRank[span]; exists {
+			maxMessageY = sd.getMessageY(maxRank)
 		}
 
 		// if it is the same as the child top left, add some padding
-		minY := math.Min(minEdgeY, minChildY)
+		minY := math.Min(minMessageY, minChildY)
 		if minY == minChildY {
 			minY -= SPAN_DEPTH_GROW_FACTOR
 		} else {
-			minY -= SPAN_EDGE_PAD
+			minY -= SPAN_MESSAGE_PAD
 		}
-		maxY := math.Max(maxEdgeY, maxChildY)
+		maxY := math.Max(maxMessageY, maxChildY)
 		if maxY == maxChildY {
 			maxY += SPAN_DEPTH_GROW_FACTOR
 		} else {
-			maxY += SPAN_EDGE_PAD
+			maxY += SPAN_MESSAGE_PAD
 		}
 
 		height := math.Max(maxY-minY, MIN_SPAN_HEIGHT)
@@ -221,57 +221,57 @@ func (sd *sequenceDiagram) placeSpans() {
 	}
 }
 
-// routeEdges routes horizontal edges from Src to Dst
-func (sd *sequenceDiagram) routeEdges() {
-	for rank, edge := range sd.edges {
-		isLeftToRight := edge.Src.TopLeft.X < edge.Dst.TopLeft.X
+// routeMessages routes horizontal edges (messages) from Src to Dst
+func (sd *sequenceDiagram) routeMessages() {
+	for rank, message := range sd.messages {
+		isLeftToRight := message.Src.TopLeft.X < message.Dst.TopLeft.X
 
-		// finds the proper anchor point based on the edge direction
+		// finds the proper anchor point based on the message direction
 		var startX, endX float64
-		if sd.isActor(edge.Src) {
-			startX = edge.Src.Center().X
+		if sd.isActor(message.Src) {
+			startX = message.Src.Center().X
 		} else if isLeftToRight {
-			startX = edge.Src.TopLeft.X + edge.Src.Width
+			startX = message.Src.TopLeft.X + message.Src.Width
 		} else {
-			startX = edge.Src.TopLeft.X
+			startX = message.Src.TopLeft.X
 		}
 
-		if sd.isActor(edge.Dst) {
-			endX = edge.Dst.Center().X
+		if sd.isActor(message.Dst) {
+			endX = message.Dst.Center().X
 		} else if isLeftToRight {
-			endX = edge.Dst.TopLeft.X
+			endX = message.Dst.TopLeft.X
 		} else {
-			endX = edge.Dst.TopLeft.X + edge.Dst.Width
+			endX = message.Dst.TopLeft.X + message.Dst.Width
 		}
 
 		if isLeftToRight {
-			startX += SPAN_EDGE_PAD
-			endX -= SPAN_EDGE_PAD
+			startX += SPAN_MESSAGE_PAD
+			endX -= SPAN_MESSAGE_PAD
 		} else {
-			startX -= SPAN_EDGE_PAD
-			endX += SPAN_EDGE_PAD
+			startX -= SPAN_MESSAGE_PAD
+			endX += SPAN_MESSAGE_PAD
 		}
 
-		edgeY := sd.getEdgeY(rank)
-		edge.Route = []*geo.Point{
-			geo.NewPoint(startX, edgeY),
-			geo.NewPoint(endX, edgeY),
+		messageY := sd.getMessageY(rank)
+		message.Route = []*geo.Point{
+			geo.NewPoint(startX, messageY),
+			geo.NewPoint(endX, messageY),
 		}
 
-		if edge.Attributes.Label.Value != "" {
+		if message.Attributes.Label.Value != "" {
 			if isLeftToRight {
-				edge.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
+				message.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
 			} else {
-				// the label will be placed above the edge because the orientation is based on the edge normal vector
-				edge.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
+				// the label will be placed above the message because the orientation is based on the edge normal vector
+				message.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
 			}
 		}
 	}
 }
 
-func (sd *sequenceDiagram) getEdgeY(rank int) float64 {
-	// +1 so that the first edge has the top padding for its label
-	return ((float64(rank) + 1.) * sd.edgeYStep) + sd.maxActorHeight
+func (sd *sequenceDiagram) getMessageY(rank int) float64 {
+	// +1 so that the first message has the top padding for its label
+	return ((float64(rank) + 1.) * sd.messageYStep) + sd.maxActorHeight
 }
 
 func (sd *sequenceDiagram) isActor(obj *d2graph.Object) bool {
