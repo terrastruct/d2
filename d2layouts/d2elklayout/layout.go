@@ -68,10 +68,10 @@ type ELKEdge struct {
 }
 
 type ELKGraph struct {
-	ID            string           `json:"id"`
-	LayoutOptions ELKLayoutOptions `json:"layoutOptions"`
-	Children      []*ELKNode       `json:"children,omitempty"`
-	Edges         []*ELKEdge       `json:"edges,omitempty"`
+	ID            string            `json:"id"`
+	LayoutOptions *ELKLayoutOptions `json:"layoutOptions"`
+	Children      []*ELKNode        `json:"children,omitempty"`
+	Edges         []*ELKEdge        `json:"edges,omitempty"`
 }
 
 type ELKLayoutOptions struct {
@@ -115,7 +115,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 
 	elkGraph := &ELKGraph{
 		ID: "root",
-		LayoutOptions: ELKLayoutOptions{
+		LayoutOptions: &ELKLayoutOptions{
 			Algorithm:         "layered",
 			HierarchyHandling: "INCLUDE_CHILDREN",
 			NodeSpacing:       100.0,
