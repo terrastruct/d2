@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/log"
@@ -246,5 +247,62 @@ func TestSpansSequenceDiagram(t *testing.T) {
 
 	if g.Edges[2].Route[1].X != b.Center().X-SPAN_MESSAGE_PAD {
 		t.Fatal("expected the third message to end on b.t1 center X")
+	}
+}
+
+func TestNestedSequenceDiagrams(t *testing.T) {
+	//   ┌─────┐                 ┌─────┐
+	//   │  a  │                 │  b  │
+	//   └──┬──┘                 └──┬──┘
+	//      ├┐────────────────────►┌┤
+	//   t1 ││                     ││ t1
+	//      ├┘◄────────────────────└┤
+	g := d2graph.NewGraph(nil)
+	container := g.Root.EnsureChild([]string{"container"})
+	container.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
+	a := container.EnsureChild([]string{"a"})
+	a.Box = geo.NewBox(nil, 100, 100)
+	a.Attributes.Shape = d2graph.Scalar{Value: shape.PERSON_TYPE}
+	a_t1 := a.EnsureChild([]string{"t1"})
+	b := container.EnsureChild([]string{"b"})
+	b.Box = geo.NewBox(nil, 30, 30)
+	b_t1 := b.EnsureChild([]string{"t1"})
+
+	c := g.Root.EnsureChild([]string{"c"})
+	c.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSquare}
+
+	sdEdge1, err := g.Root.Connect(a_t1.AbsIDArray(), b_t1.AbsIDArray(), false, true, "sequence diagram edge 1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	sdEdge2, err := g.Root.Connect(b_t1.AbsIDArray(), a_t1.AbsIDArray(), false, true, "sequence diagram edge 2")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	edge1, err := g.Root.Connect(container.AbsIDArray(), c.AbsIDArray(), false, false, "edge 1")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	layoutFn := func(ctx context.Context, g *d2graph.Graph) error {
+		for _, edge := range g.Edges {
+			if edge == sdEdge1 || edge == sdEdge2 {
+				t.Fatal("expected to have removed all sequence diagram edges from graph")
+			}
+		}
+		if g.Edges[0] != edge1 {
+			t.Fatal("expected graph edge to be in the graph")
+		}
+		return nil
+	}
+
+	ctx := log.WithTB(context.Background(), t, nil)
+	if err = Layout2(ctx, g, layoutFn); err != nil {
+		t.Fatal(err)
+	}
+
+	if len(g.Edges) != 3 {
+		t.Fatal("expected graph to have all edges after layout")
 	}
 }

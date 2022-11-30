@@ -13,6 +13,10 @@ import (
 	"oss.terrastruct.com/d2/lib/shape"
 )
 
+func Layout2(ctx context.Context, g *d2graph.Graph, layoutFn func(ctx context.Context, g *d2graph.Graph) error) error {
+	return nil
+}
+
 func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	sd := &sequenceDiagram{
 		graph:          g,
