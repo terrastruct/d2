@@ -4,7 +4,7 @@
     A modern diagram scripting language that turns text to diagrams.
   </h2>
 
-[Language docs](https://d2lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf)
+[Language docs](https://d2lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf) | [Comparisons](https://text-to-diagram.com)
 
 [![ci](https://github.com/terrastruct/d2/actions/workflows/ci.yml/badge.svg)](https://github.com/terrastruct/d2/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/v/release/terrastruct/d2)](https://github.com/terrastruct/d2/releases)
