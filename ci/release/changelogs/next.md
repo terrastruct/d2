@@ -11,6 +11,8 @@
 - Querying shapes and connections by ID is now supported in renders. [#218](https://github.com/terrastruct/d2/pull/218)
 - [install.sh](./install.sh) now accepts `-d` as an alias for `--dry-run`.
   [#266](https://github.com/terrastruct/d2/pull/266)
+- `-b/--bundle` flag to `d2` now works and bundles all image assets directly as base64
+  data urls. [#278](https://github.com/terrastruct/d2/pull/278)
 
 #### Improvements 🔧
 
