@@ -131,6 +131,8 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 		elkGraph.LayoutOptions.Direction = "RIGHT"
 	case "left":
 		elkGraph.LayoutOptions.Direction = "LEFT"
+	default:
+		elkGraph.LayoutOptions.Direction = "DOWN"
 	}
 
 	elkNodes := make(map[*d2graph.Object]*ELKNode)
