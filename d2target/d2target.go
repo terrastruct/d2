@@ -18,6 +18,7 @@ const (
 )
 
 type DiagramObject interface {
+	GetID() string
 	GetZIndex() int
 }
 
@@ -122,6 +123,7 @@ type Shape struct {
 	LabelPosition string `json:"labelPosition,omitempty"`
 
 	ZIndex int `json:"zIndex"`
+	Level  int `json:"level"`
 }
 
 func (s *Shape) SetType(t string) {
@@ -137,6 +139,10 @@ func (s *Shape) SetType(t string) {
 
 func (s Shape) GetZIndex() int {
 	return s.ZIndex
+}
+
+func (s Shape) GetID() string {
+	return s.ID
 }
 
 type Text struct {
@@ -223,6 +229,10 @@ func (c *Connection) GetLabelTopLeft() *geo.Point {
 
 func (c Connection) GetZIndex() int {
 	return c.ZIndex
+}
+
+func (c Connection) GetID() string {
+	return c.ID
 }
 
 type Arrowhead string

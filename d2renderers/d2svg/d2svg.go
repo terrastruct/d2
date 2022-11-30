@@ -993,9 +993,7 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 		allObjects = append(allObjects, c)
 	}
 
-	sort.SliceStable(allObjects, func(i, j int) bool {
-		return allObjects[i].GetZIndex() < allObjects[j].GetZIndex()
-	})
+	sortObjects(allObjects)
 
 	markers := map[string]struct{}{}
 	for _, obj := range allObjects {
@@ -1015,6 +1013,34 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 
 	buf.WriteString(`</svg>`)
 	return buf.Bytes(), nil
+}
+
+// sortObjects sorts all diagrams objects (shapes and connections) in the desired drawing order
+// the sorting criteria is:
+// 1. zIndex, lower comes first
+// 2. two shapes with the same zIndex are sorted by their level (container nesting), containers come first
+// 3. two shapes with the same zIndex and same level, are sorted in the order they were exported
+// 4. shape and edge, shapes come first
+func sortObjects(allObjects []d2target.DiagramObject) {
+	sort.SliceStable(allObjects, func(i, j int) bool {
+		// first sort by zIndex
+		iZIndex := allObjects[i].GetZIndex()
+		jZIndex := allObjects[j].GetZIndex()
+		if iZIndex != jZIndex {
+			return iZIndex < jZIndex
+		}
+
+		// then, if both are shapes, the containers come first
+		iShape, iIsShape := allObjects[i].(d2target.Shape)
+		jShape, jIsShape := allObjects[j].(d2target.Shape)
+		if iIsShape && jIsShape {
+			return iShape.Level < jShape.Level
+		}
+
+		// then, shapes come before connections
+		_, jIsConnection := allObjects[j].(d2target.Connection)
+		return iIsShape && jIsConnection
+	})
 }
 
 func hash(s string) string {

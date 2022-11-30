@@ -8,7 +8,6 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
-	"oss.terrastruct.com/d2/lib/go2"
 )
 
 func Export(ctx context.Context, g *d2graph.Graph, themeID int64) (*d2target.Diagram, error) {
@@ -17,16 +16,13 @@ func Export(ctx context.Context, g *d2graph.Graph, themeID int64) (*d2target.Dia
 	diagram := d2target.NewDiagram()
 
 	diagram.Shapes = make([]d2target.Shape, len(g.Objects))
-	maxObjectZIndex := 0
 	for i := range g.Objects {
 		diagram.Shapes[i] = toShape(g.Objects[i], &theme)
-		maxObjectZIndex = go2.IntMax(maxObjectZIndex, diagram.Shapes[i].ZIndex)
 	}
 
-	edgeDefaultZIndex := maxObjectZIndex + 1
 	diagram.Connections = make([]d2target.Connection, len(g.Edges))
 	for i := range g.Edges {
-		diagram.Connections[i] = toConnection(g.Edges[i], &theme, edgeDefaultZIndex)
+		diagram.Connections[i] = toConnection(g.Edges[i], &theme)
 	}
 
 	return diagram, nil
@@ -92,11 +88,8 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	shape := d2target.BaseShape()
 	shape.SetType(obj.Attributes.Shape.Value)
 	shape.ID = obj.AbsID()
-	if obj.ZIndex == nil {
-		shape.ZIndex = int(obj.Level())
-	} else {
-		shape.ZIndex = *obj.ZIndex
-	}
+	shape.ZIndex = obj.ZIndex
+	shape.Level = int(obj.Level())
 	shape.Pos = d2target.NewPoint(int(obj.TopLeft.X), int(obj.TopLeft.Y))
 	shape.Width = int(obj.Width)
 	shape.Height = int(obj.Height)
@@ -138,14 +131,10 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	return *shape
 }
 
-func toConnection(edge *d2graph.Edge, theme *d2themes.Theme, defaultZIndex int) d2target.Connection {
+func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection {
 	connection := d2target.BaseConnection()
 	connection.ID = edge.AbsID()
-	if edge.ZIndex == nil {
-		connection.ZIndex = defaultZIndex
-	} else {
-		connection.ZIndex = *edge.ZIndex
-	}
+	connection.ZIndex = edge.ZIndex
 	// edge.Edge.ID = go2.StringToIntHash(connection.ID)
 	text := edge.Text()
 
