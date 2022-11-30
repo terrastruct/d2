@@ -71,6 +71,10 @@ func TestSortObjects(t *testing.T) {
 
 	sortObjects(allObjects)
 
+	if len(allObjects) != len(expectedOrder) {
+		t.Fatal("number of objects changed while sorting")
+	}
+
 	for i := 0; i < len(allObjects); i++ {
 		if allObjects[i].GetID() != expectedOrder[i].GetID() {
 			t.Fatalf("object order differs at index %d, got '%s' expected '%s'", i, allObjects[i].GetID(), expectedOrder[i].GetID())
