@@ -4,6 +4,9 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 function init(reconnectDelay) {
+  const d2ErrDiv = window.document.querySelector("#d2-err");
+  const d2SVG = window.document.querySelector("#d2-svg");
+
   const devMode = document.body.dataset.d2DevMode === "true";
   const ws = new WebSocket(
     `ws://${window.location.host}${window.location.pathname}watch`
@@ -19,13 +22,7 @@ function init(reconnectDelay) {
     } else {
       console.debug("watch websocket received data");
     }
-    const d2ErrDiv = window.document.querySelector("#d2-err");
-    if (msg.err) {
-      d2ErrDiv.innerText = msg.err;
-      d2ErrDiv.style.display = "block";
-      d2ErrDiv.scrollIntoView();
-    } else {
-      const d2SVG = window.document.querySelector("#d2-svg");
+    if (msg.svg) {
       // We could turn d2SVG into an actual SVG element and use outerHTML to fully replace it
       // with the result from the renderer but unfortunately that overwrites the #d2-svg ID.
       // Even if you add another line to set it afterwards. The parsing/interpretation of outerHTML must be async.
@@ -35,6 +32,11 @@ function init(reconnectDelay) {
       // out the width, height and viewbox out of the top level SVG tag and update those manually.
       d2SVG.innerHTML = msg.svg;
       d2ErrDiv.style.display = "none";
+    }
+    if (msg.err) {
+      d2ErrDiv.innerText = msg.err;
+      d2ErrDiv.style.display = "block";
+      d2ErrDiv.scrollIntoView();
     }
   };
   ws.onerror = (ev) => {

@@ -12,6 +12,7 @@ import (
 
 	"github.com/playwright-community/playwright-go"
 	"github.com/spf13/pflag"
+	"go.uber.org/multierr"
 
 	"oss.terrastruct.com/d2"
 	"oss.terrastruct.com/d2/d2layouts/d2sequence"
@@ -156,6 +157,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 			port:         *portFlag,
 			inputPath:    inputPath,
 			outputPath:   outputPath,
+			bundle:       *bundleFlag,
 			pw:           pw,
 		})
 		if err != nil {
@@ -167,19 +169,15 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	if *bundleFlag {
-		_ = 343
-	}
-
-	_, err = compile(ctx, ms, false, plugin, *themeFlag, inputPath, outputPath, pw.Page)
+	_, err = compile(ctx, ms, plugin, *themeFlag, inputPath, outputPath, *bundleFlag, pw.Page)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to compile: %w", err)
 	}
 	ms.Log.Success.Printf("successfully compiled %v to %v", inputPath, outputPath)
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, isWatching bool, plugin d2plugin.Plugin, themeID int64, inputPath, outputPath string, page playwright.Page) ([]byte, error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, themeID int64, inputPath, outputPath string, bundle bool, page playwright.Page) ([]byte, error) {
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
 		return nil, err
@@ -210,38 +208,37 @@ func compile(ctx context.Context, ms *xmain.State, isWatching bool, plugin d2plu
 	}
 	svg, err = plugin.PostProcess(ctx, svg)
 	if err != nil {
-		return nil, err
+		return svg, err
 	}
-	svg, err = imgbundler.InlineLocal(ctx, ms, svg)
-	if err != nil {
-		ms.Log.Error.Printf("missing/broken local image(s), writing partial output: %v", err)
+
+	svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
+	if bundle {
+		var bundleErr2 error
+		svg, bundleErr2 = imgbundler.BundleRemote(ctx, ms, svg)
+		bundleErr = multierr.Combine(bundleErr, bundleErr2)
 	}
 
 	out := svg
 	if filepath.Ext(outputPath) == ".png" {
-		svg, err = imgbundler.InlineRemote(ctx, ms, svg)
-		if err != nil {
-			ms.Log.Error.Printf("missing/broken remote image(s), writing partial output: %v", err)
+		svg := svg
+		if !bundle {
+			var bundleErr2 error
+			svg, bundleErr2 = imgbundler.BundleRemote(ctx, ms, svg)
+			bundleErr = multierr.Combine(bundleErr, bundleErr2)
 		}
 
 		out, err = png.ConvertSVG(ms, page, svg)
 		if err != nil {
-			return nil, err
+			return svg, err
 		}
 	}
 
 	err = ms.WritePath(outputPath, out)
 	if err != nil {
-		return nil, err
+		return svg, err
 	}
 
-	// Missing/broken images are fine during watch mode, as the user is likely building up a diagram.
-	// Otherwise, the assumption is that this diagram is building for production, and broken images are not okay.
-	if !isWatching && ms.Log.Nerrors() > 0 {
-		return nil, xmain.ExitErrorf(1, "errors logged while rendering, partial output written to %v", outputPath)
-	}
-
-	return svg, nil
+	return svg, bundleErr
 }
 
 // newExt must include leading .
