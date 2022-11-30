@@ -346,11 +346,11 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.pw = newPW
 		}
 
-		b, err := compile(ctx, w.ms, w.layoutPlugin, w.themeID, w.inputPath, w.outputPath, w.bundle, w.pw.Page)
+		b, _, err := compile(ctx, w.ms, w.layoutPlugin, w.themeID, w.inputPath, w.outputPath, w.bundle, w.pw.Page)
 		errs := ""
 		if err != nil {
 			if len(b) > 0 {
-				err = fmt.Errorf("failed to %scompile (rendering partial output): %w", recompiledPrefix, err)
+				err = fmt.Errorf("failed to %scompile (rendering partial svg): %w", recompiledPrefix, err)
 			} else {
 				err = fmt.Errorf("failed to %scompile: %w", recompiledPrefix, err)
 			}

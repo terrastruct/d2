@@ -169,23 +169,26 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	_, err = compile(ctx, ms, plugin, *themeFlag, inputPath, outputPath, *bundleFlag, pw.Page)
+	_, written, err := compile(ctx, ms, plugin, *themeFlag, inputPath, outputPath, *bundleFlag, pw.Page)
 	if err != nil {
+		if written {
+			return fmt.Errorf("failed to compile (partial render written): %w", err)
+		}
 		return fmt.Errorf("failed to compile: %w", err)
 	}
 	ms.Log.Success.Printf("successfully compiled %v to %v", inputPath, outputPath)
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, themeID int64, inputPath, outputPath string, bundle bool, page playwright.Page) ([]byte, error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, themeID int64, inputPath, outputPath string, bundle bool, page playwright.Page) (_ []byte, written bool, _ error) {
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
-		return nil, err
+		return nil, false, err
 	}
 
 	ruler, err := textmeasure.NewRuler()
 	if err != nil {
-		return nil, err
+		return nil, false, err
 	}
 
 	layout := plugin.Layout
@@ -199,16 +202,16 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, theme
 		ThemeID: themeID,
 	})
 	if err != nil {
-		return nil, err
+		return nil, false, err
 	}
 
 	svg, err := d2svg.Render(d)
 	if err != nil {
-		return nil, err
+		return nil, false, err
 	}
 	svg, err = plugin.PostProcess(ctx, svg)
 	if err != nil {
-		return svg, err
+		return svg, false, err
 	}
 
 	svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
@@ -229,16 +232,16 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, theme
 
 		out, err = png.ConvertSVG(ms, page, svg)
 		if err != nil {
-			return svg, err
+			return svg, false, err
 		}
 	}
 
 	err = ms.WritePath(outputPath, out)
 	if err != nil {
-		return svg, err
+		return svg, false, err
 	}
 
-	return svg, bundleErr
+	return svg, true, bundleErr
 }
 
 // newExt must include leading .
