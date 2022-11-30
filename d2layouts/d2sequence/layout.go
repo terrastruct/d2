@@ -207,19 +207,19 @@ func (sd *sequenceDiagram) placeSpans() {
 		// if it is the same as the child top left, add some padding
 		minY := math.Min(minEdgeY, minChildY)
 		if minY == minChildY {
-			minY -= SPAN_BOX_DEPTH_GROW_FACTOR
+			minY -= SPAN_DEPTH_GROW_FACTOR
 		} else {
 			minY -= SPAN_EDGE_PAD
 		}
 		maxY := math.Max(maxEdgeY, maxChildY)
 		if maxY == maxChildY {
-			maxY += SPAN_BOX_DEPTH_GROW_FACTOR
+			maxY += SPAN_DEPTH_GROW_FACTOR
 		} else {
 			maxY += SPAN_EDGE_PAD
 		}
 
 		height := math.Max(maxY-minY, MIN_SPAN_HEIGHT)
-		width := SPAN_WIDTH + (float64(sd.objectLevel[span]-1) * SPAN_BOX_DEPTH_GROW_FACTOR)
+		width := SPAN_WIDTH + (float64(sd.objectLevel[span]-1) * SPAN_DEPTH_GROW_FACTOR)
 		x := rankToX[sd.objectRank[span]] - (width / 2.)
 		span.Box = geo.NewBox(geo.NewPoint(x, minY), width, height)
 	}

@@ -18,7 +18,7 @@ const SPAN_WIDTH = 20.
 const SPAN_EDGE_PAD = 5.
 
 // as the spans start getting nested, their size grows
-const SPAN_BOX_DEPTH_GROW_FACTOR = 10.
+const SPAN_DEPTH_GROW_FACTOR = 10.
 
 // when a span has a single edge
 const MIN_SPAN_HEIGHT = MIN_EDGE_DISTANCE / 2.
