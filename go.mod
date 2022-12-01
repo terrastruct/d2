@@ -25,6 +25,7 @@ require (
 	nhooyr.io/websocket v1.8.7
 	oss.terrastruct.com/cmdlog v0.0.0-20221201100934-012c01b3431c
 	oss.terrastruct.com/diff v1.0.2-0.20221116222035-8bf4dd3ab541
+	oss.terrastruct.com/util-go v0.0.0-20221201174206-77c68780d6f0
 	oss.terrastruct.com/xcontext v0.0.0-20221018000442-50fdafb12f4f
 	oss.terrastruct.com/xdefer v0.0.0-20221017222355-6f3b6e4d1557
 	oss.terrastruct.com/xjson v0.0.0-20221018000420-4986731c4c4a

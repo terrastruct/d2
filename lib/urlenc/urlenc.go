@@ -1,4 +1,4 @@
-package compress
+package urlenc
 
 import (
 	"bytes"
@@ -6,6 +6,8 @@ import (
 	"encoding/base64"
 	"io"
 	"strings"
+
+	"oss.terrastruct.com/util-go/xdefer"
 
 	"oss.terrastruct.com/d2/d2graph"
 )
@@ -15,13 +17,25 @@ var compressionDict = "->" +
 	"--" +
 	"<->"
 
-var compressionDictBytes []byte
+func init() {
+	for k := range d2graph.StyleKeywords {
+		compressionDict += k
+	}
+	for k := range d2graph.ReservedKeywords {
+		compressionDict += k
+	}
+	for k := range d2graph.ReservedKeywordHolders {
+		compressionDict += k
+	}
+}
 
-// Compress takes a D2 script and compresses it to a URL-encoded string
-func Compress(raw string) (string, error) {
-	var b bytes.Buffer
+// Encode takes a D2 script and encodes it as a compressed base64 string for embedding in URLs.
+func Encode(raw string) (_ string, err error) {
+	defer xdefer.Errorf(&err, "failed to encode d2 script")
 
-	zw, err := flate.NewWriterDict(&b, flate.DefaultCompression, []byte(compressionDict))
+	b := &bytes.Buffer{}
+
+	zw, err := flate.NewWriterDict(b, flate.DefaultCompression, []byte(compressionDict))
 	if err != nil {
 		return "", err
 	}
@@ -36,8 +50,10 @@ func Compress(raw string) (string, error) {
 	return encoded, nil
 }
 
-// Decompress takes a compressed, URL-encoded string and returns the decompressed D2 script
-func Decompress(encoded string) (string, error) {
+// Decode decodes a compressed base64 D2 string.
+func Decode(encoded string) (_ string, err error) {
+	defer xdefer.Errorf(&err, "failed to decode d2 script")
+
 	b64Decoded, err := base64.URLEncoding.DecodeString(encoded)
 	if err != nil {
 		return "", err
@@ -52,16 +68,4 @@ func Decompress(encoded string) (string, error) {
 		return "", nil
 	}
 	return b.String(), nil
-}
-
-func init() {
-	for k := range d2graph.StyleKeywords {
-		compressionDict += k
-	}
-	for k := range d2graph.ReservedKeywords {
-		compressionDict += k
-	}
-	for k := range d2graph.ReservedKeywordHolders {
-		compressionDict += k
-	}
 }
