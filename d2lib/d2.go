@@ -9,6 +9,7 @@ import (
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2exporter"
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
@@ -40,9 +41,9 @@ func Compile(ctx context.Context, input string, opts *CompileOptions) (*d2target
 	}
 
 	if layout, err := getLayout(opts); err != nil {
-		return nil, err
+		return nil, nil, err
 	} else if err := d2sequence.Layout(ctx, g, layout); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	diagram, err := d2exporter.Export(ctx, g, opts.ThemeID)
