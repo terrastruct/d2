@@ -149,7 +149,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		if inputPath == "-" {
 			return xmain.UsageErrorf("-w[atch] cannot be combined with reading input from stdin")
 		}
-		ms.Env.Setenv("LOG_TIMESTAMPS", "1")
+		ms.Log.SetTS(true)
 		w, err := newWatcher(ctx, ms, watcherOpts{
 			layoutPlugin: plugin,
 			themeID:      *themeFlag,
