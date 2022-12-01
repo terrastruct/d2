@@ -9,8 +9,13 @@ main() {
     return 1
   fi
 
-  sh_c rm -f "$PREFIX/bin/d2"
-  sh_c rm -f "$PREFIX/share/man/man1/d2.1"
+  sh_c="sh_c"
+  if ! is_writable_dir "$PREFIX/bin"; then
+    sh_c="sudo_sh_c"
+  fi
+
+  "$sh_c" rm -f "$PREFIX/bin/d2"
+  "$sh_c" rm -f "$PREFIX/share/man/man1/d2.1"
 }
 
 main "$@"
