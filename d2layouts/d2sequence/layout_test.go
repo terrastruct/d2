@@ -257,15 +257,18 @@ func TestSpansSequenceDiagram(t *testing.T) {
 }
 
 func TestNestedSequenceDiagrams(t *testing.T) {
-	//   ┌─────┐                 ┌─────┐
-	//   │  a  │                 │  b  │
-	//   └──┬──┘                 └──┬──┘
-	//      ├┐────────────────────►┌┤
-	//   t1 ││                     ││ t1
-	//      ├┘◄────────────────────└┤
+	// ┌────────────────────────────────────────┐
+	// |     ┌─────┐    container    ┌─────┐    |
+	// |     │  a  │                 │  b  │    |            ┌─────┐
+	// |     └──┬──┘                 └──┬──┘    ├────edge1───┤  c  │
+	// |        ├┐───────sdEdge1──────►┌┤       |            └─────┘
+	// |     t1 ││                     ││ t1    |
+	// |        ├┘◄──────sdEdge2───────└┤       |
+	// └────────────────────────────────────────┘
 	g := d2graph.NewGraph(nil)
 	container := g.Root.EnsureChild([]string{"container"})
 	container.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
+	container.Box = geo.NewBox(nil, 500, 500)
 	a := container.EnsureChild([]string{"a"})
 	a.Box = geo.NewBox(nil, 100, 100)
 	a.Attributes.Shape = d2graph.Scalar{Value: shape.PERSON_TYPE}
@@ -275,6 +278,7 @@ func TestNestedSequenceDiagrams(t *testing.T) {
 	b_t1 := b.EnsureChild([]string{"t1"})
 
 	c := g.Root.EnsureChild([]string{"c"})
+	c.Box = geo.NewBox(nil, 100, 100)
 	c.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSquare}
 
 	sdEdge1, err := g.Root.Connect(a_t1.AbsIDArray(), b_t1.AbsIDArray(), false, true, "sequence diagram edge 1")
@@ -292,6 +296,23 @@ func TestNestedSequenceDiagrams(t *testing.T) {
 	}
 
 	layoutFn := func(ctx context.Context, g *d2graph.Graph) error {
+		// 4 because it replaces all `container` children with a rectangle for layout
+		if len(g.Objects) != 4 {
+			t.Fatal("expected only diagram objects for layout")
+		}
+		for _, obj := range g.Objects {
+			if obj == a || obj == a_t1 || obj == b || obj == b_t1 {
+				t.Fatal("expected to have removed all sequence diagram objects")
+			}
+		}
+		if len(container.ChildrenArray) != 1 {
+			t.Fatalf("expected only 1 `container` child, got %d", len(container.ChildrenArray))
+		}
+
+		if len(container.Children) != len(container.ChildrenArray) {
+			t.Fatal("container children mismatch")
+		}
+
 		for _, edge := range g.Edges {
 			if edge == sdEdge1 || edge == sdEdge2 {
 				t.Fatal("expected to have removed all sequence diagram edges from graph")
@@ -300,6 +321,18 @@ func TestNestedSequenceDiagrams(t *testing.T) {
 		if g.Edges[0] != edge1 {
 			t.Fatal("expected graph edge to be in the graph")
 		}
+
+		// just set some position as if it had been properly placed
+		for _, obj := range g.Objects {
+			if obj != g.Root {
+				obj.TopLeft = geo.NewPoint(0, 0)
+			}
+		}
+
+		for _, edge := range g.Edges {
+			edge.Route = []*geo.Point{geo.NewPoint(1, 1)}
+		}
+
 		return nil
 	}
 
@@ -308,7 +341,18 @@ func TestNestedSequenceDiagrams(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if len(g.Edges) != 3 {
-		t.Fatal("expected graph to have all edges after layout")
+	if len(g.Edges) != 5 {
+		t.Fatal("expected graph to have all edges and lifelines after layout")
+	}
+
+	for _, obj := range g.Objects {
+		if obj != g.Root && obj.TopLeft == nil {
+			t.Fatal("expected to have placed all objects")
+		}
+	}
+	for _, edge := range g.Edges {
+		if len(edge.Route) == 0 {
+			t.Fatal("expected to have routed all edges")
+		}
 	}
 }
