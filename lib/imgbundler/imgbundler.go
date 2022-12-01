@@ -17,7 +17,7 @@ import (
 	"time"
 
 	"golang.org/x/xerrors"
-	"oss.terrastruct.com/xdefer"
+	"oss.terrastruct.com/util-go/xdefer"
 
 	"oss.terrastruct.com/util-go/xmain"
 )

@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"oss.terrastruct.com/diff"
+	"oss.terrastruct.com/util-go/assert"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2parser"
@@ -44,7 +44,7 @@ func TestKey(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			diff.AssertStringEq(t, tc.exp, strings.Join(d2graph.Key(k), "."))
+			assert.String(t, tc.exp, strings.Join(d2graph.Key(k), "."))
 		})
 	}
 }

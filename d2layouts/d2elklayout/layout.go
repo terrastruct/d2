@@ -13,7 +13,7 @@ import (
 
 	"rogchap.com/v8go"
 
-	"oss.terrastruct.com/xdefer"
+	"oss.terrastruct.com/util-go/xdefer"
 
 	"oss.terrastruct.com/util-go/go2"
 

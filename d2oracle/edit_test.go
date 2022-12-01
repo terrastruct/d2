@@ -7,13 +7,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
-	"oss.terrastruct.com/xjson"
-
-	"oss.terrastruct.com/diff"
-
+	"oss.terrastruct.com/util-go/assert"
+	"oss.terrastruct.com/util-go/diff"
 	"oss.terrastruct.com/util-go/go2"
+	"oss.terrastruct.com/util-go/xjson"
 
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2format"
@@ -967,10 +964,10 @@ z: {
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.Equal(t, 3, len(g.Objects))
-				assert.Equal(t, 1, len(g.Edges))
-				assert.Equal(t, "q", g.Edges[0].Src.ID)
-				assert.Equal(t, "0.4", g.Edges[0].Attributes.Style.Opacity.Value)
+				assert.JSON(t, 3, len(g.Objects))
+				assert.JSON(t, 1, len(g.Edges))
+				assert.JSON(t, "q", g.Edges[0].Src.ID)
+				assert.JSON(t, "0.4", g.Edges[0].Attributes.Style.Opacity.Value)
 			},
 		},
 		{
@@ -1618,8 +1615,8 @@ func TestMove(t *testing.T) {
 			exp: `b
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.Equal(t, len(g.Objects), 1)
-				assert.Equal(t, g.Objects[0].ID, "b")
+				assert.JSON(t, len(g.Objects), 1)
+				assert.JSON(t, g.Objects[0].ID, "b")
 			},
 		},
 		{
@@ -1637,8 +1634,8 @@ func TestMove(t *testing.T) {
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.Equal(t, len(g.Objects), 2)
-				assert.Equal(t, g.Objects[1].ID, "c")
+				assert.JSON(t, len(g.Objects), 2)
+				assert.JSON(t, g.Objects[1].ID, "c")
 			},
 		},
 		{
@@ -1693,9 +1690,9 @@ c
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.Equal(t, len(g.Objects), 3)
-				assert.Equal(t, "a", g.Objects[0].ID)
-				assert.Equal(t, 2, len(g.Objects[0].Children))
+				assert.JSON(t, len(g.Objects), 3)
+				assert.JSON(t, "a", g.Objects[0].ID)
+				assert.JSON(t, 2, len(g.Objects[0].Children))
 			},
 		},
 		{
@@ -1734,9 +1731,9 @@ c
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.Equal(t, len(g.Objects), 2)
-				assert.Equal(t, "a", g.Objects[0].ID)
-				assert.Equal(t, 1, len(g.Objects[0].Children))
+				assert.JSON(t, len(g.Objects), 2)
+				assert.JSON(t, "a", g.Objects[0].ID)
+				assert.JSON(t, 1, len(g.Objects[0].Children))
 			},
 		},
 		{
@@ -1753,9 +1750,9 @@ c
 b
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.Equal(t, len(g.Objects), 2)
-				assert.Equal(t, "a", g.Objects[0].ID)
-				assert.Equal(t, 0, len(g.Objects[0].Children))
+				assert.JSON(t, len(g.Objects), 2)
+				assert.JSON(t, "a", g.Objects[0].ID)
+				assert.JSON(t, 0, len(g.Objects[0].Children))
 			},
 		},
 		{
@@ -1864,11 +1861,11 @@ c: {
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.Equal(t, len(g.Objects), 3)
-				assert.Equal(t, "a", g.Objects[0].ID)
-				assert.Equal(t, 0, len(g.Objects[0].Children))
-				assert.Equal(t, "c", g.Objects[1].ID)
-				assert.Equal(t, 1, len(g.Objects[1].Children))
+				assert.JSON(t, len(g.Objects), 3)
+				assert.JSON(t, "a", g.Objects[0].ID)
+				assert.JSON(t, 0, len(g.Objects[0].Children))
+				assert.JSON(t, "c", g.Objects[1].ID)
+				assert.JSON(t, 1, len(g.Objects[1].Children))
 			},
 		},
 		{
@@ -1930,7 +1927,7 @@ a: {
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.Equal(t, len(g.Objects), 3)
+				assert.JSON(t, len(g.Objects), 3)
 			},
 		},
 		{
@@ -1987,7 +1984,7 @@ c: {
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.Equal(t, len(g.Objects), 3)
+				assert.JSON(t, len(g.Objects), 3)
 			},
 		},
 		{
@@ -2005,7 +2002,7 @@ d: {
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.Equal(t, len(g.Objects), 4)
+				assert.JSON(t, len(g.Objects), 4)
 			},
 		},
 		{
@@ -2024,7 +2021,7 @@ c: {
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.Equal(t, len(g.Objects), 4)
+				assert.JSON(t, len(g.Objects), 4)
 			},
 		},
 		{
@@ -4423,10 +4420,8 @@ func (tc editTest) run(t *testing.T) {
 		Err:   fmt.Sprintf("%#v", err),
 	}
 
-	err = diff.Testdata(filepath.Join("..", "testdata", "d2oracle", t.Name()), got)
-	if err != nil {
-		t.Fatal(err)
-	}
+	err = diff.TestdataJSON(filepath.Join("..", "testdata", "d2oracle", t.Name()), got)
+	assert.Success(t, err)
 }
 
 func TestMoveIDDeltas(t *testing.T) {
@@ -4636,7 +4631,7 @@ x.a -> x.b
 				t.Fatal(err)
 			}
 
-			ds, err := diff.Strings(tc.exp, xjson.MarshalIndent(deltas))
+			ds, err := diff.Strings(tc.exp, string(xjson.Marshal(deltas)))
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -4826,7 +4821,7 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
 				t.Fatal(err)
 			}
 
-			ds, err := diff.Strings(tc.exp, xjson.MarshalIndent(deltas))
+			ds, err := diff.Strings(tc.exp, string(xjson.Marshal(deltas)))
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -4978,7 +4973,7 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
 				t.Fatal(err)
 			}
 
-			ds, err := diff.Strings(tc.exp, xjson.MarshalIndent(deltas))
+			ds, err := diff.Strings(tc.exp, string(xjson.Marshal(deltas)))
 			if err != nil {
 				t.Fatal(err)
 			}

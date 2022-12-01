@@ -7,9 +7,9 @@ import (
 	"strings"
 	"unicode"
 
-	"oss.terrastruct.com/xdefer"
+	"oss.terrastruct.com/util-go/xdefer"
 
-	"oss.terrastruct.com/xrand"
+	"oss.terrastruct.com/util-go/xrand"
 
 	"oss.terrastruct.com/util-go/go2"
 

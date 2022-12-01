@@ -8,9 +8,8 @@ import (
 
 	"cdr.dev/slog"
 
-	"oss.terrastruct.com/diff"
-
-	"github.com/stretchr/testify/assert"
+	"oss.terrastruct.com/util-go/assert"
+	"oss.terrastruct.com/util-go/diff"
 
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2exporter"
@@ -215,10 +214,10 @@ func run(t *testing.T, tc testCase) {
 	}
 
 	ruler, err := textmeasure.NewRuler()
-	assert.Nil(t, err)
+	assert.JSON(t, nil, err)
 
 	err = g.SetDimensions(nil, ruler)
-	assert.Nil(t, err)
+	assert.JSON(t, nil, err)
 
 	err = d2dagrelayout.Layout(ctx, g)
 	if err != nil {
@@ -252,8 +251,6 @@ func run(t *testing.T, tc testCase) {
 		got.Connections[i].LabelPosition = ""
 	}
 
-	err = diff.Testdata(filepath.Join("..", "testdata", "d2exporter", t.Name()), got)
-	if err != nil {
-		t.Fatal(err)
-	}
+	err = diff.TestdataJSON(filepath.Join("..", "testdata", "d2exporter", t.Name()), got)
+	assert.Success(t, err)
 }

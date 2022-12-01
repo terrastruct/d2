@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"oss.terrastruct.com/diff"
+	"oss.terrastruct.com/util-go/assert"
 
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
@@ -605,7 +605,7 @@ hi # Fraud is the homage that force pays to reason.
 			if err != nil {
 				t.Fatal(err)
 			}
-			diff.AssertStringEq(t, tc.exp, d2format.Format(ast))
+			assert.String(t, tc.exp, d2format.Format(ast))
 		})
 	}
 }
@@ -621,6 +621,6 @@ func TestEdge(t *testing.T) {
 		t.Fatalf("expected one edge: %#v", mk.Edges)
 	}
 
-	diff.AssertStringEq(t, `x -> y`, d2format.Format(mk.Edges[0]))
-	diff.AssertStringEq(t, `[0]`, d2format.Format(mk.EdgeIndex))
+	assert.String(t, `x -> y`, d2format.Format(mk.Edges[0]))
+	assert.String(t, `[0]`, d2format.Format(mk.EdgeIndex))
 }
