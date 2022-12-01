@@ -480,6 +480,14 @@ manpath() {
     echo "${MANPATH-}"
   fi
 }
+
+is_writable_dir() {
+  # The path has to exist for -w to succeed.
+  sh_c "mkdir -p '$1' 2>/dev/null" || true
+  if [ ! -w "$1" ]; then
+    return 1
+  fi
+}
 #!/bin/sh
 set -eu
 
@@ -927,13 +935,10 @@ uninstall_tala_brew() {
 }
 
 is_prefix_writable() {
-  sh_c "mkdir -p '$INSTALL_DIR' 2>/dev/null" || true
   # The reason for checking whether $INSTALL_DIR is writable is that on macOS you have
   # /usr/local owned by root but you don't need root to write to its subdirectories which
   # is all we want to do.
-  if [ ! -w "$INSTALL_DIR" ]; then
-    return 1
-  fi
+  is_writable_dir "$INSTALL_DIR"
 }
 
 cache_dir() {
