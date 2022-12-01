@@ -15,7 +15,7 @@ import (
 	"oss.terrastruct.com/d2/lib/shape"
 )
 
-func Layout2(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Context, g *d2graph.Graph) error) error {
+func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Context, g *d2graph.Graph) error) error {
 	oldObjects := g.Objects
 	oldEdges := g.Edges
 
@@ -94,12 +94,6 @@ func Layout2(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Cont
 		g.Edges = append(g.Edges, sequenceDiagrams[obj].lifelines...)
 	}
 
-	return nil
-}
-
-func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
-	sd := newSequenceDiagram(nil, nil)
-	sd.layout()
 	return nil
 }
 

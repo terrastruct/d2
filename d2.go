@@ -40,11 +40,9 @@ func Compile(ctx context.Context, input string, opts *CompileOptions) (*d2target
 		return nil, err
 	}
 
-	if layout, err := getLayout(opts); err == nil {
-		if err := d2sequence.Layout2(ctx, g, layout); err != nil {
-			return nil, err
-		}
-	} else {
+	if layout, err := getLayout(opts); err != nil {
+		return nil, err
+	} else if err := d2sequence.Layout(ctx, g, layout); err != nil {
 		return nil, err
 	}
 

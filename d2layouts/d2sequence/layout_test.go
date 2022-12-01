@@ -26,6 +26,7 @@ func TestBasicSequenceDiagram(t *testing.T) {
 	//      ◄───────────────────────┤
 	//      │                       │
 	g := d2graph.NewGraph(nil)
+	g.Root.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
 	n1 := g.Root.EnsureChild([]string{"n1"})
 	n1.Box = geo.NewBox(nil, 100, 100)
 	n2 := g.Root.EnsureChild([]string{"n2"})
@@ -58,7 +59,17 @@ func TestBasicSequenceDiagram(t *testing.T) {
 	nEdges := len(g.Edges)
 
 	ctx := log.WithTB(context.Background(), t, nil)
-	Layout(ctx, g)
+	Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
+		// just set some position as if it had been properly placed
+		for _, obj := range g.Objects {
+			obj.TopLeft = geo.NewPoint(0, 0)
+		}
+
+		for _, edge := range g.Edges {
+			edge.Route = []*geo.Point{geo.NewPoint(1, 1)}
+		}
+		return nil
+	})
 
 	// asserts that actors were placed in the expected x order and at y=0
 	actors := []*d2graph.Object{
@@ -158,6 +169,7 @@ func TestSpansSequenceDiagram(t *testing.T) {
 	//   t2 ││                      │
 	//      ├┘◄─────────────────────┤
 	g := d2graph.NewGraph(nil)
+	g.Root.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
 	a := g.Root.EnsureChild([]string{"a"})
 	a.Box = geo.NewBox(nil, 100, 100)
 	a.Attributes = d2graph.Attributes{
@@ -190,7 +202,17 @@ func TestSpansSequenceDiagram(t *testing.T) {
 	}
 
 	ctx := log.WithTB(context.Background(), t, nil)
-	Layout(ctx, g)
+	Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
+		// just set some position as if it had been properly placed
+		for _, obj := range g.Objects {
+			obj.TopLeft = geo.NewPoint(0, 0)
+		}
+
+		for _, edge := range g.Edges {
+			edge.Route = []*geo.Point{geo.NewPoint(1, 1)}
+		}
+		return nil
+	})
 
 	// check properties
 	if a.Attributes.Shape.Value != shape.PERSON_TYPE {
@@ -335,7 +357,7 @@ func TestNestedSequenceDiagrams(t *testing.T) {
 	}
 
 	ctx := log.WithTB(context.Background(), t, nil)
-	if err = Layout2(ctx, g, layoutFn); err != nil {
+	if err = Layout(ctx, g, layoutFn); err != nil {
 		t.Fatal(err)
 	}
 
