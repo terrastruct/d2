@@ -11,13 +11,14 @@ import (
 
 	"oss.terrastruct.com/xrand"
 
+	"oss.terrastruct.com/util-go/go2"
+
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/lib/go2"
 )
 
 func Create(g *d2graph.Graph, key string) (_ *d2graph.Graph, newKey string, err error) {

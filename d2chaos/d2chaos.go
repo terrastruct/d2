@@ -6,12 +6,13 @@ import (
 	"strings"
 	"time"
 
+	"oss.terrastruct.com/util-go/go2"
+
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2oracle"
 	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/lib/go2"
 )
 
 func GenDSL(maxi int) (_ string, err error) {

@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"strings"
 
+	"oss.terrastruct.com/util-go/go2"
+
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
@@ -15,7 +17,6 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/go2"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 

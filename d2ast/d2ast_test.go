@@ -13,10 +13,11 @@ import (
 
 	"oss.terrastruct.com/diff"
 
+	"oss.terrastruct.com/util-go/go2"
+
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/lib/go2"
 )
 
 func TestRange(t *testing.T) {

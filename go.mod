@@ -16,7 +16,6 @@ require (
 	github.com/stretchr/testify v1.8.1
 	github.com/yuin/goldmark v1.5.3
 	go.uber.org/multierr v1.8.0
-	golang.org/x/exp v0.0.0-20221126150942-6ab00d035af9
 	golang.org/x/image v0.1.0
 	golang.org/x/net v0.2.0
 	golang.org/x/text v0.4.0
@@ -25,7 +24,7 @@ require (
 	nhooyr.io/websocket v1.8.7
 	oss.terrastruct.com/cmdlog v0.0.0-20221201100934-012c01b3431c
 	oss.terrastruct.com/diff v1.0.2-0.20221116222035-8bf4dd3ab541
-	oss.terrastruct.com/util-go v0.0.0-20221201180807-58edfec77805
+	oss.terrastruct.com/util-go v0.0.0-20221201184644-70a234206a9a
 	oss.terrastruct.com/xcontext v0.0.0-20221018000442-50fdafb12f4f
 	oss.terrastruct.com/xdefer v0.0.0-20221017222355-6f3b6e4d1557
 	oss.terrastruct.com/xjson v0.0.0-20221018000420-4986731c4c4a
@@ -57,6 +56,7 @@ require (
 	go.opencensus.io v0.24.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	golang.org/x/crypto v0.3.0 // indirect
+	golang.org/x/exp v0.0.0-20221126150942-6ab00d035af9 // indirect
 	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/term v0.2.0 // indirect
 	google.golang.org/genproto v0.0.0-20220822174746-9e6da59bd2fc // indirect

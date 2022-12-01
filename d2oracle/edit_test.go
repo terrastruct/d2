@@ -13,12 +13,13 @@ import (
 
 	"oss.terrastruct.com/diff"
 
+	"oss.terrastruct.com/util-go/go2"
+
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2oracle"
 	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/lib/go2"
 )
 
 // TODO: make assertions less specific
