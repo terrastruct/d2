@@ -15,7 +15,9 @@ import (
 
 func help(ms *xmain.State) {
 	fmt.Fprintf(ms.Stdout, `Usage:
-  %s [--watch=false] [--theme=0] file.d2 [file.svg | file.png]
+  %[1]s [--watch=false] [--theme=0] file.d2 [file.svg | file.png]
+  %[1]s layout [name]
+  %[1]s fmt file.d2
 
 %[1]s compiles and renders file.d2 to file.svg | file.png
 It defaults to file.svg if an output path is not provided.
@@ -29,13 +31,14 @@ Flags:
 
 Subcommands:
   %[1]s layout - Lists available layout engine options with short help
-  %[1]s layout [layout name] - Display long help for a particular layout engine
+  %[1]s layout [name] - Display long help for a particular layout engine
+  %[1]s fmt file.d2 - Format file.d2
 
 See more docs and the source code at https://oss.terrastruct.com/d2
-`, ms.Name, ms.Opts.Defaults())
+`, filepath.Base(ms.Name), ms.Opts.Defaults())
 }
 
-func layoutHelp(ctx context.Context, ms *xmain.State) error {
+func layoutCmd(ctx context.Context, ms *xmain.State) error {
 	if len(ms.Opts.Flags.Args()) == 1 {
 		return shortLayoutHelp(ctx, ms)
 	} else if len(ms.Opts.Flags.Args()) == 2 {

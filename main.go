@@ -65,16 +65,24 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		return xmain.UsageErrorf("failed to parse flags: %v", err)
 	}
 
-	if len(ms.Opts.Flags.Args()) > 0 {
-		switch ms.Opts.Flags.Arg(0) {
-		case "layout":
-			return layoutHelp(ctx, ms)
-		}
-	}
-
 	if errors.Is(err, pflag.ErrHelp) {
 		help(ms)
 		return nil
+	}
+
+	if len(ms.Opts.Flags.Args()) > 0 {
+		switch ms.Opts.Flags.Arg(0) {
+		case "layout":
+			return layoutCmd(ctx, ms)
+		case "fmt":
+			return fmtCmd(ctx, ms)
+		case "version":
+			if len(ms.Opts.Flags.Args()) > 1 {
+				return xmain.UsageErrorf("version subcommand accepts no arguments")
+			}
+			fmt.Println(version.Version)
+			return nil
+		}
 	}
 
 	if *debugFlag {
@@ -96,10 +104,6 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 
 	if len(ms.Opts.Flags.Args()) >= 1 {
-		if ms.Opts.Flags.Arg(0) == "version" {
-			fmt.Println(version.Version)
-			return nil
-		}
 		inputPath = ms.Opts.Flags.Arg(0)
 	}
 	if len(ms.Opts.Flags.Args()) >= 2 {

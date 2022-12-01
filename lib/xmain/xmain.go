@@ -66,10 +66,10 @@ func Main(run RunFunc) {
 		}
 
 		if msg != "" {
-			if usage {
-				msg = fmt.Sprintf("%s\n%s", msg, "Run with --help to see usage.")
-			}
 			ms.Log.Error.Print(msg)
+			if usage {
+				ms.Log.Error.Print("Run with --help to see usage.")
+			}
 		}
 		os.Exit(code)
 	}
