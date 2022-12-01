@@ -1,4 +1,4 @@
-#### Features 💸
+#### Features 🚀
 
 - Formatting of d2 scripts is supported on the CLI with the `fmt` subcommand.
   [#292](https://github.com/terrastruct/d2/pull/292)
