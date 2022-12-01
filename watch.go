@@ -251,7 +251,7 @@ func (w *watcher) watchLoop(ctx context.Context) error {
 				// We missed changes.
 				lastModified = mt
 			}
-			// The purpose of eatBurstTimer is to wait at least 32 milliseconds after a sequence of
+			// The purpose of eatBurstTimer is to wait at least 16 milliseconds after a sequence of
 			// events to ensure that whomever is editing the file is now done.
 			//
 			// For example, On macOS editing with neovim, every write I see a chmod immediately
@@ -261,7 +261,7 @@ func (w *watcher) watchLoop(ctx context.Context) error {
 			// Another example would be a very large file where one logical edit becomes write
 			// events. We wouldn't want to try to compile an incomplete file and then report a
 			// misleading error.
-			eatBurstTimer.Reset(time.Millisecond * 32)
+			eatBurstTimer.Reset(time.Millisecond * 16)
 		case <-eatBurstTimer.C:
 			w.ms.Log.Info.Printf("detected change in %v: recompiling...", w.inputPath)
 			w.requestCompile()
@@ -284,7 +284,7 @@ func (w *watcher) requestCompile() {
 }
 
 func (w *watcher) ensureAddWatch(ctx context.Context) (time.Time, error) {
-	interval := time.Second
+	interval := time.Millisecond * 16
 	tc := time.NewTimer(0)
 	<-tc.C
 	for {
@@ -292,11 +292,16 @@ func (w *watcher) ensureAddWatch(ctx context.Context) (time.Time, error) {
 		if err == nil {
 			return mt, nil
 		}
-		w.ms.Log.Error.Printf("failed to watch inputPath %q: %v (retrying in %v)", w.inputPath, err, interval)
+		if interval >= time.Second {
+			w.ms.Log.Error.Printf("failed to watch inputPath %q: %v (retrying in %v)", w.inputPath, err, interval)
+		}
 
 		tc.Reset(interval)
 		select {
 		case <-tc.C:
+			if interval < time.Second {
+				interval = time.Second
+			}
 			if interval < time.Second*16 {
 				interval *= 2
 			}
