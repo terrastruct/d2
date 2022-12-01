@@ -35,12 +35,13 @@
 - [Related](#related)
   * [VSCode extension](#vscode-extension)
   * [Vim extension](#vim-extension)
+  * [Language docs](#language-docs)
   * [Misc](#misc)
 - [FAQ](#faq)
 
 <!-- tocstop -->
 
-# What does D2 look like?
+## What does D2 look like?
 
 ```d2
 # Actors
@@ -112,7 +113,6 @@ In addition to being a runnable CLI tool, D2 can also be used to produce diagram
 Go programs.
 
 For examples, see [./docs/examples/lib](./docs/examples/lib).
-
 
 ## Themes
 
