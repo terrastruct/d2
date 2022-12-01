@@ -21,8 +21,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 	oldObjects := g.Objects
 	oldEdges := g.Edges
 
-	// new graph objects
-	g.Objects = make([]*d2graph.Object, 0, len(g.Objects))
+	// flag objects to keep to avoid having to flag all descendants of sequence diagram to be removed
+	objectsToKeep := make(map[*d2graph.Object]struct{})
 	// edges flagged to be removed (these are internal edges of the sequence diagrams)
 	edgesToRemove := make(map[*d2graph.Edge]struct{})
 	// store the sequence diagram related to a given node
@@ -38,9 +38,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 		queue = queue[1:]
 
 		// root is not part of g.Objects, so we can't add it here
-		if obj != g.Root {
-			g.Objects = append(g.Objects, obj)
-		}
+		objectsToKeep[obj] = struct{}{}
 		if obj.Attributes.Shape.Value == d2target.ShapeSequenceDiagram {
 			// TODO: should update obj.References too?
 
@@ -52,6 +50,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 			sdMock := obj.EnsureChild([]string{"sequence_diagram"})
 			sdMock.Attributes.Shape.Value = d2target.ShapeRectangle
 			sdMock.Attributes.Label.Value = ""
+			objectsToKeep[sdMock] = struct{}{}
 
 			// find the edges that belong to this sequence diagra
 			var edges []*d2graph.Edge
@@ -81,15 +80,17 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 		}
 	}
 
-	// objToIndex := make(map[*d2graph.Object]int)
-	// for i, obj := range oldObjects {
-	// 	objToIndex[obj] = i
-	// }
+	// done this way (by flagging objects) instead of appending to `queue`
+	// because appending in that order would change the order of g.Objects which
+	// could lead to layout changes (as the order of the objects might be important for the underlying engine)
+	newObjects := make([]*d2graph.Object, 0, len(objectsToKeep))
+	for _, obj := range g.Objects {
+		if _, exists := objectsToKeep[obj]; exists {
+			newObjects = append(newObjects, obj)
+		}
+	}
 
-	// sort.Slice(g.Objects, func(i, j int) bool {
-	// 	return objToIndex[g.Objects[i]] < objToIndex[g.Objects[j]]
-	// })
-
+	g.Objects = newObjects
 	g.Edges = newEdges
 	if err := layout(ctx, g); err != nil {
 		return err
