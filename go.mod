@@ -10,7 +10,6 @@ require (
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 	github.com/lucasb-eyer/go-colorful v1.2.0
 	github.com/mazznoer/csscolorparser v0.1.3
-	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/playwright-community/playwright-go v0.2000.1
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.8.1
@@ -24,7 +23,7 @@ require (
 	nhooyr.io/websocket v1.8.7
 	oss.terrastruct.com/cmdlog v0.0.0-20221201100934-012c01b3431c
 	oss.terrastruct.com/diff v1.0.2-0.20221116222035-8bf4dd3ab541
-	oss.terrastruct.com/util-go v0.0.0-20221201184644-70a234206a9a
+	oss.terrastruct.com/util-go v0.0.0-20221201185848-8cc30ca56bbe
 	oss.terrastruct.com/xcontext v0.0.0-20221018000442-50fdafb12f4f
 	oss.terrastruct.com/xdefer v0.0.0-20221017222355-6f3b6e4d1557
 	oss.terrastruct.com/xjson v0.0.0-20221018000420-4986731c4c4a
@@ -50,6 +49,7 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
+	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.8.0 // indirect
 	github.com/ugorji/go/codec v1.2.6 // indirect
