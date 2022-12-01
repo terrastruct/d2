@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- Sequence diagrams are now supported. See [docs](https://d2lang.com/tour/sequence-diagrams) for more.
+  [#99](https://github.com/terrastruct/d2/issues/99)
 - Formatting of d2 scripts is supported on the CLI with the `fmt` subcommand.
   [#292](https://github.com/terrastruct/d2/pull/292)
 - Latex is now supported. See [docs](https://d2lang.com/tour/text) for more.
