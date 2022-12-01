@@ -296,8 +296,8 @@ func TestNestedSequenceDiagrams(t *testing.T) {
 	}
 
 	layoutFn := func(ctx context.Context, g *d2graph.Graph) error {
-		// 4 because it replaces all `container` children with a rectangle for layout
-		if len(g.Objects) != 4 {
+		// 3 because it replaces all `container` children with a rectangle for layout
+		if len(g.Objects) != 3 {
 			t.Fatal("expected only diagram objects for layout")
 		}
 		for _, obj := range g.Objects {
@@ -324,9 +324,7 @@ func TestNestedSequenceDiagrams(t *testing.T) {
 
 		// just set some position as if it had been properly placed
 		for _, obj := range g.Objects {
-			if obj != g.Root {
-				obj.TopLeft = geo.NewPoint(0, 0)
-			}
+			obj.TopLeft = geo.NewPoint(0, 0)
 		}
 
 		for _, edge := range g.Edges {
@@ -346,7 +344,7 @@ func TestNestedSequenceDiagrams(t *testing.T) {
 	}
 
 	for _, obj := range g.Objects {
-		if obj != g.Root && obj.TopLeft == nil {
+		if obj.TopLeft == nil {
 			t.Fatal("expected to have placed all objects")
 		}
 	}

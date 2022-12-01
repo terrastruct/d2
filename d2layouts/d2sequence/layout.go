@@ -16,6 +16,9 @@ import (
 )
 
 func Layout2(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Context, g *d2graph.Graph) error) error {
+	oldObjects := g.Objects
+	oldEdges := g.Edges
+
 	// new graph objects without sequence diagram objects and their replacement (rectangle node)
 	newObjects := make([]*d2graph.Object, 0, len(g.Objects))
 	edgesToRemove := make(map[*d2graph.Edge]struct{})
@@ -30,7 +33,9 @@ func Layout2(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Cont
 		obj := queue[0]
 		queue = queue[1:]
 
-		newObjects = append(newObjects, obj)
+		if obj != g.Root {
+			newObjects = append(newObjects, obj)
+		}
 		if obj.Attributes.Shape.Value == d2target.ShapeSequenceDiagram {
 			// TODO: should update obj.References too?
 
@@ -76,22 +81,17 @@ func Layout2(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Cont
 	}
 
 	// restores objects & edges
-	for edge := range edgesToRemove {
-		g.Edges = append(g.Edges, edge)
-	}
+	g.Edges = oldEdges
+	g.Objects = oldObjects
 	for obj, children := range objChildrenArray {
 		sdMock := obj.ChildrenArray[0]
 		sequenceDiagrams[obj].shift(sdMock.TopLeft)
 		obj.Children = make(map[string]*d2graph.Object)
 		for _, child := range children {
-			g.Objects = append(g.Objects, child)
 			obj.Children[child.ID] = child
 		}
 		obj.ChildrenArray = children
-
-		for _, edge := range sequenceDiagrams[obj].lifelines {
-			g.Edges = append(g.Edges, edge)
-		}
+		g.Edges = append(g.Edges, sequenceDiagrams[obj].lifelines...)
 	}
 
 	return nil
