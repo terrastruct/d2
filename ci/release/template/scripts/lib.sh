@@ -66,7 +66,7 @@ should_color() {
     fi
   fi
 
-  if [ -t 1 ]; then
+  if [ -t 1 -a "${TERM-}" != dumb ]; then
     _COLOR=1
     return 0
   else
@@ -89,7 +89,8 @@ _echo() {
 get_rand_color() {
   # 1-6 are regular and 9-14 are bright.
   # 1,2 and 9,10 are red and green but we use those for success and failure.
-  pick "$*" 3 4 5 6 11 12 13 14
+  pick "$*" 1 2 3 4 5 6 \
+            9 10 11 12 13 14
 }
 
 echop() {
