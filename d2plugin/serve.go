@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/spf13/pflag"
 	"oss.terrastruct.com/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2graph"
@@ -20,12 +21,21 @@ import (
 // Also see execPlugin in exec.go for the d2 binary plugin protocol.
 func Serve(p Plugin) xmain.RunFunc {
 	return func(ctx context.Context, ms *xmain.State) (err error) {
-		if len(ms.Opts.Flags.Args()) < 1 {
-			return errors.New("expected first argument to plugin binary to be function name")
+		err = ms.Opts.Flags.Parse(ms.Opts.Args)
+		if !errors.Is(err, pflag.ErrHelp) && err != nil {
+			return xmain.UsageErrorf("failed to parse flags: %v", err)
 		}
-		reqFunc := ms.Opts.Flags.Arg(0)
+		if errors.Is(err, pflag.ErrHelp) {
+			// At some point we want to write a friendly help.
+			return info(ctx, p, ms)
+		}
 
-		switch ms.Opts.Flags.Arg(0) {
+		if len(ms.Opts.Flags.Args()) < 1 {
+			return xmain.UsageErrorf("expected first argument to be subcmd name")
+		}
+
+		subcmd := ms.Opts.Flags.Arg(0)
+		switch subcmd {
 		case "info":
 			return info(ctx, p, ms)
 		case "layout":
@@ -33,7 +43,7 @@ func Serve(p Plugin) xmain.RunFunc {
 		case "postprocess":
 			return postProcess(ctx, p, ms)
 		default:
-			return fmt.Errorf("unrecognized command: %s", reqFunc)
+			return xmain.UsageErrorf("unrecognized command: %s", subcmd)
 		}
 	}
 }
