@@ -18,7 +18,7 @@ import (
 // See implementation of d2plugin-dagre in the ./cmd directory.
 //
 // Also see execPlugin in exec.go for the d2 binary plugin protocol.
-func Serve(p Plugin) func(context.Context, *xmain.State) error {
+func Serve(p Plugin) xmain.RunFunc {
 	return func(ctx context.Context, ms *xmain.State) (err error) {
 		if len(ms.Opts.Flags.Args()) < 1 {
 			return errors.New("expected first argument to plugin binary to be function name")

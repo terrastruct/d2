@@ -1,4 +1,4 @@
-#### Features 💸
+#### Features 🚀
 
 #### Improvements 🧹
 
