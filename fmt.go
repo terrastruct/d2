@@ -11,14 +11,14 @@ import (
 	"oss.terrastruct.com/d2/lib/xmain"
 )
 
-func autofmt(ctx context.Context, ms *xmain.State) (err error) {
-	defer xdefer.Errorf(&err, "autofmt failed")
+func fmtCmd(ctx context.Context, ms *xmain.State) (err error) {
+	defer xdefer.Errorf(&err, "failed to fmt")
 
 	ms.Opts = xmain.NewOpts(ms.Env, ms.Log, ms.Opts.Flags.Args()[1:])
 	if len(ms.Opts.Args) == 0 {
 		return xmain.UsageErrorf("fmt must be passed the file to be formatted")
 	} else if len(ms.Opts.Args) > 1 {
-		return xmain.UsageErrorf("fmt only accepts one argument for the file to be formatted")
+		return xmain.UsageErrorf("fmt accepts only one argument for the file to be formatted")
 	}
 
 	inputPath := ms.Opts.Args[0]

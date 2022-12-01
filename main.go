@@ -73,9 +73,9 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	if len(ms.Opts.Flags.Args()) > 0 {
 		switch ms.Opts.Flags.Arg(0) {
 		case "layout":
-			return layoutHelp(ctx, ms)
+			return layoutCmd(ctx, ms)
 		case "fmt":
-			return autofmt(ctx, ms)
+			return fmtCmd(ctx, ms)
 		case "version":
 			if len(ms.Opts.Flags.Args()) > 1 {
 				return xmain.UsageErrorf("version subcommand accepts no arguments")
