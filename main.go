@@ -65,16 +65,21 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		return xmain.UsageErrorf("failed to parse flags: %v", err)
 	}
 
+	if errors.Is(err, pflag.ErrHelp) {
+		help(ms)
+		return nil
+	}
+
 	if len(ms.Opts.Flags.Args()) > 0 {
 		switch ms.Opts.Flags.Arg(0) {
 		case "layout":
 			return layoutHelp(ctx, ms)
+		case "fmt":
+			return autofmt(ctx, ms)
+		case "version":
+			fmt.Println(version.Version)
+			return nil
 		}
-	}
-
-	if errors.Is(err, pflag.ErrHelp) {
-		help(ms)
-		return nil
 	}
 
 	if *debugFlag {
@@ -96,10 +101,6 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 
 	if len(ms.Opts.Flags.Args()) >= 1 {
-		if ms.Opts.Flags.Arg(0) == "version" {
-			fmt.Println(version.Version)
-			return nil
-		}
 		inputPath = ms.Opts.Flags.Arg(0)
 	}
 	if len(ms.Opts.Flags.Args()) >= 2 {

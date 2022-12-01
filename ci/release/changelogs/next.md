@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- autoformat is supported on the CLI with the `fmt` subcommand.
+  [#292](https://github.com/terrastruct/d2/pull/292)
 - Latex is now supported. See [docs](https://d2lang.com/tour/text) for more.
   [#229](https://github.com/terrastruct/d2/pull/229)
 - `direction` keyword is now supported to specify `up`, `down`, `right`, `left` layouts. See
