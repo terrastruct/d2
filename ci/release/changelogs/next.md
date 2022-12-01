@@ -17,7 +17,7 @@
 - `-b/--bundle` flag to `d2` now works and bundles all image assets directly as base64
   data urls. [#278](https://github.com/terrastruct/d2/pull/278)
 
-#### Improvements 🔧
+#### Improvements 🧹
 
 - Local images can now be included, e.g. `icon: ./my_img.png`.
   [#146](https://github.com/terrastruct/d2/issues/146)

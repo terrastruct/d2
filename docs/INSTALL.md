@@ -3,13 +3,12 @@
 You may install D2 through any of the following methods.
 
 <!-- toc -->
-
-- [install.sh](#installsh)
-- [macOS (Homebrew)](#macos-homebrew)
-- [Standalone](#standalone)
-- [From source](#from-source)
-
-<!-- tocstop -->
+- <a href="#installsh" id="toc-installsh">install.sh</a>
+  - <a href="#security" id="toc-security">Security</a>
+- <a href="#macos-homebrew" id="toc-macos-homebrew">macOS (Homebrew)</a>
+- <a href="#standalone" id="toc-standalone">Standalone</a>
+- <a href="#from-source" id="toc-from-source">From source</a>
+- <a href="#coming-soon" id="toc-coming-soon">Coming soon</a>
 
 ## install.sh
 
@@ -30,6 +29,37 @@ methods:
 ```sh
 curl -fsSL https://d2lang.com/install.sh | sh -s -- --help
 ```
+
+### Security
+
+The install script is not the most secure way to install d2. We recommend that if
+possible, you use your OS's package manager directly or install from source with `go` as
+described below.
+
+But this does not mean the install script is insecure. There is no major flaw that
+the install script is more vulnerable to than any other method of manual installation.
+The most secure installation method involves a second independent entity, i.e your OS
+package repos or Go's proxy server.
+
+We're careful shell programmers and are aware of the many footguns of the unix shell. Our
+script was written carefully and with detail. For example, it is not vulnerable to partial
+execution and the entire script runs with `set -eu` and very meticulous quoting.
+
+It follows the XDG standards, installs d2 properly into a unix hierarchy path (defaulting
+to /usr/local though you can use ~/.local to avoid sudo if you'd like) and allows for easy
+uninstall.
+
+Some other niceties are that it'll tell you if you need to adjust `$PATH` or `$MANPATH` to
+access d2 and its manpages. It can also install
+[TALA](https://github.com/terrastruct/tala) for you with `--tala`. You can also use it to
+install a specific version of `d2` with `--version`. Run it with `--help` for more more
+detailed docs on its various options and features.
+
+If you're still concerned, remember you can run with `--dry-run` to avoid executing
+anything permanent.
+
+The install script does not yet verify any signature on the downloaded release
+but that is coming soon. [#315](https://github.com/terrastruct/d2/issues/315)
 
 ## macOS (Homebrew)
 
@@ -84,6 +114,14 @@ You can always install from source:
 
 ```sh
 go install oss.terrastruct.com/d2@latest
+```
+
+To install a proper release from source clone the repository and then:
+
+```sh
+./ci/release/build.sh --install
+# To uninstall:
+# ./ci/release/build.sh --uninstall
 ```
 
 ## Coming soon

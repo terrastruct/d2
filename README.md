@@ -98,14 +98,24 @@ curl -fsSL https://d2lang.com/install.sh | sh -s --
 You can run the install script with `--dry-run` to see the commands that will be used
 to install without executing them.
 
-To uninstall:
+Or if you have Go installed you can install from source though you won't get the manpage:
+
+```sh
+go install oss.terrastruct.com/d2@latest
+```
+
+To uninstall with the install script:
 
 ```sh
 curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall
 ```
 
-For detailed installation docs, with alternative methods and examples for each OS, see
-[./docs/INSTALL.md](./docs/INSTALL.md).
+For detailed installation docs, see [./docs/INSTALL.md](./docs/INSTALL.md).
+We demonstrate alternative methods and examples for each OS.
+
+As well, the functioning of the install script is described in detail to alleviate any
+concern of its use. We recommend using your OS's package manager directly instead for
+improved security but the install script is by no means insecure.
 
 ## D2 as a library
 
