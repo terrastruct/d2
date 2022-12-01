@@ -23,12 +23,12 @@ require (
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2
 	gonum.org/v1/plot v0.12.0
 	nhooyr.io/websocket v1.8.7
-	oss.terrastruct.com/cmdlog v0.0.0-20221129200109-540ef52ff07d
+	oss.terrastruct.com/cmdlog v0.0.0-20221201084049-dd840835d2eb
 	oss.terrastruct.com/diff v1.0.2-0.20221116222035-8bf4dd3ab541
 	oss.terrastruct.com/xcontext v0.0.0-20221018000442-50fdafb12f4f
 	oss.terrastruct.com/xdefer v0.0.0-20221017222355-6f3b6e4d1557
 	oss.terrastruct.com/xjson v0.0.0-20221018000420-4986731c4c4a
-	oss.terrastruct.com/xos v0.0.0-20221018030138-c96e7ae96e5d
+	oss.terrastruct.com/xos v0.0.0-20221130233107-5fb84d57c9e3
 	oss.terrastruct.com/xrand v0.0.0-20221020211818-4ac08e618333
 	rogchap.com/v8go v0.7.1-0.20221102201510-1f00b5007d95
 )
