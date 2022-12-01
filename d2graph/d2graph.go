@@ -7,16 +7,17 @@ import (
 	"strconv"
 	"strings"
 
+	"oss.terrastruct.com/util-go/go2"
+
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2latex"
-	"oss.terrastruct.com/d2/d2renderers/textmeasure"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/go2"
+	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
 // TODO: Refactor with a light abstract layer on top of AST implementing scenarios,

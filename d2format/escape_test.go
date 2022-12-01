@@ -3,7 +3,7 @@ package d2format_test
 import (
 	"testing"
 
-	"oss.terrastruct.com/diff"
+	"oss.terrastruct.com/util-go/assert"
 
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2format"
@@ -42,7 +42,7 @@ func TestEscapeSingleQuoted(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			diff.AssertStringEq(t, tc.exp, d2format.Format(&d2ast.SingleQuotedString{
+			assert.String(t, tc.exp, d2format.Format(&d2ast.SingleQuotedString{
 				Value: tc.str,
 			}))
 		})
@@ -104,7 +104,7 @@ func TestEscapeDoubleQuoted(t *testing.T) {
 			} else {
 				n = d2ast.FlatDoubleQuotedString(tc.str)
 			}
-			diff.AssertStringEq(t, tc.exp, d2format.Format(n))
+			assert.String(t, tc.exp, d2format.Format(n))
 		})
 	}
 }
@@ -203,7 +203,7 @@ func TestEscapeUnquoted(t *testing.T) {
 				n = d2ast.FlatUnquotedString(tc.str)
 			}
 
-			diff.AssertStringEq(t, tc.exp, d2format.Format(n))
+			assert.String(t, tc.exp, d2format.Format(n))
 		})
 	}
 }
@@ -286,7 +286,7 @@ func TestEscapeBlockString(t *testing.T) {
 				Value: tc.value,
 			}
 
-			diff.AssertStringEq(t, tc.exp, d2format.Format(n))
+			assert.String(t, tc.exp, d2format.Format(n))
 		})
 	}
 }

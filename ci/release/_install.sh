@@ -91,6 +91,9 @@ note: Deleting the unarchived releases will cause --uninstall to stop working.
 
 You can rerun install.sh to update your version of D2. install.sh will avoid reinstalling
 if the installed version is the latest unless --force is passed.
+
+See https://github.com/terrastruct/d2/blob/master/docs/INSTALL.md#security for
+documentation on its security.
 EOF
 }
 
@@ -450,13 +453,10 @@ uninstall_tala_brew() {
 }
 
 is_prefix_writable() {
-  sh_c "mkdir -p '$INSTALL_DIR' 2>/dev/null" || true
   # The reason for checking whether $INSTALL_DIR is writable is that on macOS you have
   # /usr/local owned by root but you don't need root to write to its subdirectories which
   # is all we want to do.
-  if [ ! -w "$INSTALL_DIR" ]; then
-    return 1
-  fi
+  is_writable_dir "$INSTALL_DIR"
 }
 
 cache_dir() {
@@ -509,4 +509,7 @@ brew() {
   HOMEBREW_NO_INSTALL_CLEANUP=1 HOMEBREW_NO_AUTO_UPDATE=1 command brew "$@"
 }
 
+# The main function does more than provide organization. It provides robustness in that if
+# the install script was to only partial download into sh, sh will not execute it because
+# main is not invoked until the very last byte.
 main "$@"

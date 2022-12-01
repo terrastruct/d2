@@ -1,5 +1,7 @@
-#### Features 🚀
+#### Features 💸
 
+- Formatting of d2 scripts is supported on the CLI with the `fmt` subcommand.
+  [#292](https://github.com/terrastruct/d2/pull/292)
 - Latex is now supported. See [docs](https://d2lang.com/tour/text) for more.
   [#229](https://github.com/terrastruct/d2/pull/229)
 - `direction` keyword is now supported to specify `up`, `down`, `right`, `left` layouts. See
@@ -12,8 +14,10 @@
 - Querying shapes and connections by ID is now supported in renders. [#218](https://github.com/terrastruct/d2/pull/218)
 - [install.sh](./install.sh) now accepts `-d` as an alias for `--dry-run`.
   [#266](https://github.com/terrastruct/d2/pull/266)
+- `-b/--bundle` flag to `d2` now works and bundles all image assets directly as base64
+  data urls. [#278](https://github.com/terrastruct/d2/pull/278)
 
-#### Improvements 🔧
+#### Improvements 🧹
 
 - Local images can now be included, e.g. `icon: ./my_img.png`.
   [#146](https://github.com/terrastruct/d2/issues/146)
@@ -21,8 +25,14 @@
   [#251](https://github.com/terrastruct/d2/pull/251)
 - [install.sh](./install.sh) prints the dry run message more visibly.
   [#266](https://github.com/terrastruct/d2/pull/266)
+- `d2` now lives in the root folder of the repository instead of as a subcommand.
+  So you can run `go install oss.terrastruct.com/d2@latest` to install from source
+  now.
+  [#290](https://github.com/terrastruct/d2/pull/290)
+- `BROWSER=0` now works to disable opening a browser on `--watch`.
+  [#311](https://github.com/terrastruct/d2/pull/311)
 
-#### Bugfixes 🔴
+#### Bugfixes ⛑️
 
 - 3D style was missing border and other styles for its top and right faces.
   [#187](https://github.com/terrastruct/d2/pull/187)
@@ -30,5 +40,10 @@
   [#159](https://github.com/terrastruct/d2/issues/159)
 - Fixes markdown newlines created with a trailing double space or backslash.
   [#214](https://github.com/terrastruct/d2/pull/214)
-- Fixes images not loading in PNG exports
+- Fixes images not loading in PNG exports.
   [#224](https://github.com/terrastruct/d2/pull/224)
+- Avoid logging benign file watching errors.
+  [#293](https://github.com/terrastruct/d2/pull/293)
+- `$BROWSER` now works to open a custom browser correctly.
+  For example, to open Firefox on macOS: `BROWSER='open -aFirefox'`
+  [#311](https://github.com/terrastruct/d2/pull/311)

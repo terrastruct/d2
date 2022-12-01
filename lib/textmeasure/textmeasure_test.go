@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/d2renderers/textmeasure"
+	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
 var txts = []string{

@@ -12,10 +12,10 @@ import (
 	"strings"
 	"testing"
 
-	"oss.terrastruct.com/cmdlog"
-	"oss.terrastruct.com/xos"
+	"oss.terrastruct.com/util-go/cmdlog"
+	"oss.terrastruct.com/util-go/xos"
 
-	"oss.terrastruct.com/d2/lib/xmain"
+	"oss.terrastruct.com/util-go/xmain"
 )
 
 //go:embed test_png.png
@@ -41,7 +41,7 @@ func TestRegex(t *testing.T) {
 
 	for _, href := range append(urls, notURLs...) {
 		str := fmt.Sprintf(`<image href="%s" />`, href)
-		matches := imageRe.FindAllStringSubmatch(str, -1)
+		matches := imageRegex.FindAllStringSubmatch(str, -1)
 		if len(matches) != 1 {
 			t.Fatalf("uri regex didn't match %s", str)
 		}
@@ -88,9 +88,9 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 
 		Env: xos.NewEnv(os.Environ()),
 	}
-	ms.Log = cmdlog.Log(ms.Env, os.Stderr)
+	ms.Log = cmdlog.NewTB(ms.Env, t)
 
-	imgClient.Transport = roundTripFunc(func(req *http.Request) *http.Response {
+	httpClient.Transport = roundTripFunc(func(req *http.Request) *http.Response {
 		respRecorder := httptest.NewRecorder()
 		switch req.URL.String() {
 		case svgURL:
@@ -104,7 +104,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		return respRecorder.Result()
 	})
 
-	out, err := InlineRemote(ctx, ms, []byte(sampleSVG))
+	out, err := BundleRemote(ctx, ms, []byte(sampleSVG))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -119,7 +119,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 	}
 
 	// Test almost too large response
-	imgClient.Transport = roundTripFunc(func(req *http.Request) *http.Response {
+	httpClient.Transport = roundTripFunc(func(req *http.Request) *http.Response {
 		respRecorder := httptest.NewRecorder()
 		bytes := make([]byte, maxImageSize)
 		rand.Read(bytes)
@@ -127,13 +127,13 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		respRecorder.WriteHeader(200)
 		return respRecorder.Result()
 	})
-	_, err = InlineRemote(ctx, ms, []byte(sampleSVG))
+	_, err = BundleRemote(ctx, ms, []byte(sampleSVG))
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	// Test too large response
-	imgClient.Transport = roundTripFunc(func(req *http.Request) *http.Response {
+	httpClient.Transport = roundTripFunc(func(req *http.Request) *http.Response {
 		respRecorder := httptest.NewRecorder()
 		bytes := make([]byte, maxImageSize+1)
 		rand.Read(bytes)
@@ -141,18 +141,18 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 		respRecorder.WriteHeader(200)
 		return respRecorder.Result()
 	})
-	_, err = InlineRemote(ctx, ms, []byte(sampleSVG))
+	_, err = BundleRemote(ctx, ms, []byte(sampleSVG))
 	if err == nil {
 		t.Fatal("expected error")
 	}
 
 	// Test error response
-	imgClient.Transport = roundTripFunc(func(req *http.Request) *http.Response {
+	httpClient.Transport = roundTripFunc(func(req *http.Request) *http.Response {
 		respRecorder := httptest.NewRecorder()
 		respRecorder.WriteHeader(500)
 		return respRecorder.Result()
 	})
-	_, err = InlineRemote(ctx, ms, []byte(sampleSVG))
+	_, err = BundleRemote(ctx, ms, []byte(sampleSVG))
 	if err == nil {
 		t.Fatal("expected error")
 	}
@@ -204,8 +204,8 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 
 		Env: xos.NewEnv(os.Environ()),
 	}
-	ms.Log = cmdlog.Log(ms.Env, os.Stderr)
-	out, err := InlineLocal(ctx, ms, []byte(sampleSVG))
+	ms.Log = cmdlog.NewTB(ms.Env, t)
+	out, err := BundleLocal(ctx, ms, []byte(sampleSVG))
 	if err != nil {
 		t.Fatal(err)
 	}

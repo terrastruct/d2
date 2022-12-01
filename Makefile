@@ -5,7 +5,7 @@ all: fmt gen lint build test
 
 .PHONY: fmt
 fmt:
-	prefix "$@" ./ci/sub/fmt/make.sh
+	prefix "$@" ./ci/fmt.sh
 .PHONY: gen
 gen:
 	prefix "$@" ./ci/gen.sh

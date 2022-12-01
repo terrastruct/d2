@@ -9,14 +9,16 @@ import (
 	"strings"
 	"testing"
 
-	"oss.terrastruct.com/xrand"
+	"oss.terrastruct.com/util-go/assert"
+	"oss.terrastruct.com/util-go/xrand"
 
-	"oss.terrastruct.com/diff"
+	"oss.terrastruct.com/util-go/diff"
+
+	"oss.terrastruct.com/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/lib/go2"
 )
 
 func TestRange(t *testing.T) {
@@ -193,18 +195,18 @@ func TestRange(t *testing.T) {
 
 			var p d2ast.Position
 			p = p.Advance('a', false)
-			diff.AssertJSONEq(t, `"0:1:1"`, p)
+			assert.StringJSON(t, `"0:1:1"`, p)
 			p = p.Advance('\n', false)
-			diff.AssertJSONEq(t, `"1:0:2"`, p)
+			assert.StringJSON(t, `"1:0:2"`, p)
 			p = p.Advance('è', false)
-			diff.AssertJSONEq(t, `"1:2:4"`, p)
+			assert.StringJSON(t, `"1:2:4"`, p)
 			p = p.Advance('𐀀', false)
-			diff.AssertJSONEq(t, `"1:6:8"`, p)
+			assert.StringJSON(t, `"1:6:8"`, p)
 
 			p = p.Subtract('𐀀', false)
-			diff.AssertJSONEq(t, `"1:2:4"`, p)
+			assert.StringJSON(t, `"1:2:4"`, p)
 			p = p.Subtract('è', false)
-			diff.AssertJSONEq(t, `"1:0:2"`, p)
+			assert.StringJSON(t, `"1:0:2"`, p)
 		})
 
 		t.Run("UTF-16", func(t *testing.T) {
@@ -212,18 +214,18 @@ func TestRange(t *testing.T) {
 
 			var p d2ast.Position
 			p = p.Advance('a', true)
-			diff.AssertJSONEq(t, `"0:1:1"`, p)
+			assert.StringJSON(t, `"0:1:1"`, p)
 			p = p.Advance('\n', true)
-			diff.AssertJSONEq(t, `"1:0:2"`, p)
+			assert.StringJSON(t, `"1:0:2"`, p)
 			p = p.Advance('è', true)
-			diff.AssertJSONEq(t, `"1:1:3"`, p)
+			assert.StringJSON(t, `"1:1:3"`, p)
 			p = p.Advance('𐀀', true)
-			diff.AssertJSONEq(t, `"1:3:5"`, p)
+			assert.StringJSON(t, `"1:3:5"`, p)
 
 			p = p.Subtract('𐀀', true)
-			diff.AssertJSONEq(t, `"1:1:3"`, p)
+			assert.StringJSON(t, `"1:1:3"`, p)
 			p = p.Subtract('è', true)
-			diff.AssertJSONEq(t, `"1:0:2"`, p)
+			assert.StringJSON(t, `"1:0:2"`, p)
 		})
 	})
 }
@@ -411,7 +413,7 @@ name to "America".
 		},
 	}
 
-	diff.AssertJSONEq(t, `{
+	assert.StringJSON(t, `{
   "range": "json_test.d2,0:0:0-5:1:50",
   "nodes": [
     {
@@ -807,7 +809,7 @@ _park   `,
 			t.Parallel()
 
 			ast := d2ast.RawString(tc.str, tc.inKey)
-			diff.AssertStringEq(t, tc.exp, d2format.Format(ast))
+			assert.String(t, tc.exp, d2format.Format(ast))
 		})
 	}
 }

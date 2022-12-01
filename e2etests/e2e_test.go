@@ -12,19 +12,19 @@ import (
 
 	"cdr.dev/slog"
 
-	"github.com/stretchr/testify/assert"
+	tassert "github.com/stretchr/testify/assert"
 
-	"oss.terrastruct.com/diff"
+	"oss.terrastruct.com/util-go/assert"
+	"oss.terrastruct.com/util-go/diff"
 
-	"oss.terrastruct.com/d2"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2layouts/d2elklayout"
+	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
-	"oss.terrastruct.com/d2/d2renderers/textmeasure"
 	"oss.terrastruct.com/d2/d2target"
-	xdiff "oss.terrastruct.com/d2/lib/diff"
 	"oss.terrastruct.com/d2/lib/log"
+	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
 func TestE2E(t *testing.T) {
@@ -90,7 +90,7 @@ func run(t *testing.T, tc testCase) {
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
 	ruler, err := textmeasure.NewRuler()
-	if !assert.Nil(t, err) {
+	if !tassert.Nil(t, err) {
 		return
 	}
 
@@ -104,13 +104,13 @@ func run(t *testing.T, tc testCase) {
 		} else if layoutName == "elk" {
 			layout = d2elklayout.Layout
 		}
-		diagram, err := d2.Compile(ctx, tc.script, &d2.CompileOptions{
+		diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
 			UTF16:   true,
 			Ruler:   ruler,
 			ThemeID: 0,
 			Layout:  layout,
 		})
-		if !assert.Nil(t, err) {
+		if !tassert.Nil(t, err) {
 			return
 		}
 
@@ -122,34 +122,23 @@ func run(t *testing.T, tc testCase) {
 
 		dataPath := filepath.Join("testdata", strings.TrimPrefix(t.Name(), "TestE2E/"), layoutName)
 		pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
-		pathExpSVG := filepath.Join(dataPath, "sketch.exp.svg")
+
 		svgBytes, err := d2svg.Render(diagram)
-		if err != nil {
-			t.Fatal(err)
-		}
+		assert.Success(t, err)
+		err = ioutil.WriteFile(pathGotSVG, svgBytes, 0600)
+		assert.Success(t, err)
+		defer os.Remove(pathGotSVG)
 
 		var xmlParsed interface{}
-		if err := xml.Unmarshal(svgBytes, &xmlParsed); err != nil {
-			t.Fatalf("invalid SVG: %v", err)
-		}
+		err = xml.Unmarshal(svgBytes, &xmlParsed)
+		assert.Success(t, err)
 
-		err = diff.Testdata(filepath.Join(dataPath, "board"), diagram)
-		if err != nil {
-			ioutil.WriteFile(pathGotSVG, svgBytes, 0600)
-			t.Fatal(err)
-		}
+		err = diff.TestdataJSON(filepath.Join(dataPath, "board"), diagram)
+		assert.Success(t, err)
 		if os.Getenv("SKIP_SVG_CHECK") == "" {
-			err = xdiff.TestdataGeneric(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
-			if err != nil {
-				ioutil.WriteFile(pathGotSVG, svgBytes, 0600)
-				t.Fatal(err)
-			}
+			err = diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
+			assert.Success(t, err)
 		}
-		err = ioutil.WriteFile(pathExpSVG, svgBytes, 0600)
-		if err != nil {
-			t.Fatal(err)
-		}
-		os.Remove(filepath.Join(dataPath, "sketch.got.svg"))
 	}
 }
 

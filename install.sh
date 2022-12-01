@@ -61,22 +61,26 @@ tput() {
 
 should_color() {
   if [ -n "${COLOR-}" ]; then
-    if [ "$COLOR" = 0 -o "$COLOR" = false ]; then
-      _COLOR=
-      return 1
-    elif [ "$COLOR" = 1 -o "$COLOR" = true ]; then
+    if [ "$COLOR" = 1 -o "$COLOR" = true ]; then
       _COLOR=1
+      __COLOR=1
       return 0
+    elif [ "$COLOR" = 0 -o "$COLOR" = false ]; then
+      _COLOR=
+      __COLOR=0
+      return 1
     else
       printf '$COLOR must be 0, 1, false or true but got %s\n' "$COLOR" >&2
     fi
   fi
 
-  if [ -t 1 ]; then
+  if [ -t 1 -a "${TERM-}" != dumb ]; then
     _COLOR=1
+    __COLOR=1
     return 0
   else
     _COLOR=
+    __COLOR=0
     return 1
   fi
 }
@@ -95,7 +99,8 @@ _echo() {
 get_rand_color() {
   # 1-6 are regular and 9-14 are bright.
   # 1,2 and 9,10 are red and green but we use those for success and failure.
-  pick "$*" 3 4 5 6 11 12 13 14
+  pick "$*" 1 2 3 4 5 6 \
+            9 10 11 12 13 14
 }
 
 echop() {
@@ -119,9 +124,9 @@ printfp() {(
   fi
   should_color || true
   if [ $# -eq 0 ]; then
-    printf '%s' "$(COLOR=${_COLOR-} setaf "$FGCOLOR" "$prefix")"
+    printf '%s' "$(COLOR=$__COLOR setaf "$FGCOLOR" "$prefix")"
   else
-    printf '%s: %s\n' "$(COLOR=${_COLOR-} setaf "$FGCOLOR" "$prefix")" "$(printf "$@")"
+    printf '%s: %s\n' "$(COLOR=$__COLOR setaf "$FGCOLOR" "$prefix")" "$(printf "$@")"
   fi
 )}
 
@@ -130,7 +135,7 @@ catp() {
   shift
 
   should_color || true
-  sed "s/^/$(COLOR=${_COLOR-} printfp "$prefix" '')/"
+  sed "s/^/$(COLOR=$__COLOR printfp "$prefix" '')/"
 }
 
 repeat() {
@@ -157,17 +162,17 @@ printferr() {
 
 logp() {
   should_color >&2 || true
-  COLOR=${_COLOR-} echop "$@" | humanpath >&2
+  COLOR=$__COLOR echop "$@" | humanpath >&2
 }
 
 logfp() {
   should_color >&2 || true
-  COLOR=${_COLOR-} printfp "$@" | humanpath >&2
+  COLOR=$__COLOR printfp "$@" | humanpath >&2
 }
 
 logpcat() {
   should_color >&2 || true
-  COLOR=${_COLOR-} catp "$@" | humanpath >&2
+  COLOR=$__COLOR catp "$@" | humanpath >&2
 }
 
 log() {
@@ -291,6 +296,13 @@ runtty() {
       echoerr "runtty: unsupported OS $(uname)"
       return 1
   esac
+}
+
+capcode() {
+  set +e
+  "$@"
+  code=$?
+  set -e
 }
 #!/bin/sh
 if [ "${LIB_FLAG-}" ]; then
@@ -468,6 +480,14 @@ manpath() {
     echo "${MANPATH-}"
   fi
 }
+
+is_writable_dir() {
+  # The path has to exist for -w to succeed.
+  sh_c "mkdir -p '$1' 2>/dev/null" || true
+  if [ ! -w "$1" ]; then
+    return 1
+  fi
+}
 #!/bin/sh
 set -eu
 
@@ -556,6 +576,9 @@ note: Deleting the unarchived releases will cause --uninstall to stop working.
 
 You can rerun install.sh to update your version of D2. install.sh will avoid reinstalling
 if the installed version is the latest unless --force is passed.
+
+See https://github.com/terrastruct/d2/blob/master/docs/INSTALL.md#security for
+documentation on its security.
 EOF
 }
 
@@ -915,13 +938,10 @@ uninstall_tala_brew() {
 }
 
 is_prefix_writable() {
-  sh_c "mkdir -p '$INSTALL_DIR' 2>/dev/null" || true
   # The reason for checking whether $INSTALL_DIR is writable is that on macOS you have
   # /usr/local owned by root but you don't need root to write to its subdirectories which
   # is all we want to do.
-  if [ ! -w "$INSTALL_DIR" ]; then
-    return 1
-  fi
+  is_writable_dir "$INSTALL_DIR"
 }
 
 cache_dir() {
@@ -974,4 +994,7 @@ brew() {
   HOMEBREW_NO_INSTALL_CLEANUP=1 HOMEBREW_NO_AUTO_UPDATE=1 command brew "$@"
 }
 
+# The main function does more than provide organization. It provides robustness in that if
+# the install script was to only partial download into sh, sh will not execute it because
+# main is not invoked until the very last byte.
 main "$@"

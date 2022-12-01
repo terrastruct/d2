@@ -6,156 +6,204 @@ import (
 	"encoding/base64"
 	"fmt"
 	"io/ioutil"
+	"mime"
 	"net/http"
 	"net/url"
 	"os"
+	"path"
 	"regexp"
 	"strings"
 	"sync"
 	"time"
 
-	"go.uber.org/multierr"
-	"oss.terrastruct.com/xdefer"
+	"golang.org/x/xerrors"
+	"oss.terrastruct.com/util-go/xdefer"
 
-	"oss.terrastruct.com/d2/lib/xmain"
+	"oss.terrastruct.com/util-go/xmain"
 )
 
 const maxImageSize int64 = 1 << 25 // 33_554_432
 
-var imageRe = regexp.MustCompile(`<image href="([^"]+)"`)
+var imageRegex = regexp.MustCompile(`<image href="([^"]+)"`)
 
-type resp struct {
-	srctxt string
-	data   string
-	err    error
+func BundleLocal(ctx context.Context, ms *xmain.State, in []byte) ([]byte, error) {
+	return bundle(ctx, ms, in, false)
 }
 
-func InlineLocal(ctx context.Context, ms *xmain.State, in []byte) ([]byte, error) {
-	return inline(ctx, ms, in, false)
+func BundleRemote(ctx context.Context, ms *xmain.State, in []byte) ([]byte, error) {
+	return bundle(ctx, ms, in, true)
 }
 
-func InlineRemote(ctx context.Context, ms *xmain.State, in []byte) ([]byte, error) {
-	return inline(ctx, ms, in, true)
+type repl struct {
+	from []byte
+	to   []byte
 }
 
-func inline(ctx context.Context, ms *xmain.State, svg []byte, isRemote bool) (_ []byte, err error) {
-	defer xdefer.Errorf(&err, "failed to bundle images")
-	imgs := imageRe.FindAllSubmatch(svg, -1)
-
-	var filtered [][][]byte
-	for _, img := range imgs {
-		u, err := url.Parse(string(img[1]))
-		isRemoteImg := err == nil && strings.HasPrefix(u.Scheme, "http")
-		if isRemoteImg == isRemote {
-			filtered = append(filtered, img)
-		}
+func bundle(ctx context.Context, ms *xmain.State, svg []byte, isRemote bool) (_ []byte, err error) {
+	if isRemote {
+		defer xdefer.Errorf(&err, "failed to bundle remote images")
+	} else {
+		defer xdefer.Errorf(&err, "failed to bundle local images")
 	}
-
-	var wg sync.WaitGroup
-	respChan := make(chan resp)
-	// Limits the number of workers to 16.
-	sema := make(chan struct{}, 16)
+	imgs := imageRegex.FindAllSubmatch(svg, -1)
+	imgs = filterImageElements(imgs, isRemote)
 
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*5)
 	defer cancel()
 
-	wg.Add(len(filtered))
+	return runWorkers(ctx, ms, svg, imgs, isRemote)
+}
+
+// filterImageElements finds all image elements in imgs that are eligible
+// for bundling in the current context.
+func filterImageElements(imgs [][][]byte, isRemote bool) [][][]byte {
+	imgs2 := imgs[:0]
+	for _, img := range imgs {
+		href := string(img[1])
+
+		// Skip already bundled images.
+		if strings.HasPrefix(href, "data:") {
+			continue
+		}
+
+		u, err := url.Parse(href)
+		isRemoteImg := err == nil && strings.HasPrefix(u.Scheme, "http")
+
+		if isRemoteImg == isRemote {
+			imgs2 = append(imgs2, img)
+		}
+	}
+	return imgs2
+}
+
+func runWorkers(ctx context.Context, ms *xmain.State, svg []byte, imgs [][][]byte, isRemote bool) (_ []byte, err error) {
+	var wg sync.WaitGroup
+	replc := make(chan repl)
+
+	wg.Add(len(imgs))
+	go func() {
+		wg.Wait()
+		close(replc)
+	}()
+
+	// Limits the number of workers to 16.
+	sema := make(chan struct{}, 16)
+
+	var errhrefsMu sync.Mutex
+	var errhrefs []string
+
 	// Start workers as the sema allows.
 	go func() {
-		for _, img := range filtered {
+		for _, img := range imgs {
+			img := img
 			sema <- struct{}{}
-			go func(src, href string) {
+			go func() {
 				defer func() {
 					wg.Done()
 					<-sema
 				}()
 
-				var data string
-				var err error
-				if isRemote {
-					data, err = fetch(ctx, href)
-				} else {
-					data, err = read(href)
+				bundledImage, err := worker(ctx, img[1], isRemote)
+				if err != nil {
+					ms.Log.Error.Printf("failed to bundle %s: %v", img[1], err)
+					errhrefsMu.Lock()
+					errhrefs = append(errhrefs, string(img[1]))
+					errhrefsMu.Unlock()
+					return
 				}
 				select {
 				case <-ctx.Done():
-				case respChan <- resp{
-					srctxt: src,
-					data:   data,
-					err:    err,
+				case replc <- repl{
+					from: img[0],
+					to:   bundledImage,
 				}:
 				}
-			}(string(img[0]), string(img[1]))
+			}()
 		}
 	}()
 
-	go func() {
-		wg.Wait()
-		close(respChan)
-	}()
-
+	t := time.NewTicker(time.Second * 5)
+	defer t.Stop()
 	for {
 		select {
 		case <-ctx.Done():
-			return nil, fmt.Errorf("failed to wait for imgbundler workers: %w", ctx.Err())
-		case <-time.After(time.Second * 5):
+			return svg, xerrors.Errorf("failed to wait for workers: %w", ctx.Err())
+		case <-t.C:
 			ms.Log.Info.Printf("fetching images...")
-		case resp, ok := <-respChan:
+		case repl, ok := <-replc:
 			if !ok {
-				return svg, err
+				if len(errhrefs) > 0 {
+					return svg, xerrors.Errorf("%v", errhrefs)
+				}
+				return svg, nil
 			}
-			if resp.err != nil {
-				err = multierr.Combine(err, resp.err)
-				continue
-			}
-			svg = bytes.Replace(svg, []byte(resp.srctxt), []byte(fmt.Sprintf(`<image href="%s"`, resp.data)), 1)
+			svg = bytes.Replace(svg, repl.from, repl.to, 1)
 		}
 	}
 }
 
-var imgClient = &http.Client{}
+func worker(ctx context.Context, href []byte, isRemote bool) ([]byte, error) {
+	var buf []byte
+	var mimeType string
+	var err error
+	if isRemote {
+		buf, mimeType, err = httpGet(ctx, string(href))
+	} else {
+		buf, err = os.ReadFile(string(href))
+	}
+	if err != nil {
+		return nil, err
+	}
 
-func fetch(ctx context.Context, href string) (string, error) {
+	if mimeType == "" {
+		mimeType = sniffMimeType(href, buf, isRemote)
+	}
+	mimeType = strings.Replace(mimeType, "text/xml", "image/svg+xml", 1)
+	b64 := base64.StdEncoding.EncodeToString(buf)
+	return []byte(fmt.Sprintf(`<image href="data:%s;base64,%s"`, mimeType, b64)), nil
+}
+
+var httpClient = &http.Client{}
+
+func httpGet(ctx context.Context, href string) ([]byte, string, error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute)
 	defer cancel()
 
 	req, err := http.NewRequestWithContext(ctx, "GET", href, nil)
 	if err != nil {
-		return "", err
+		return nil, "", err
 	}
 
-	imgResp, err := imgClient.Do(req)
+	resp, err := httpClient.Do(req)
 	if err != nil {
-		return "", err
+		return nil, "", err
 	}
-	defer imgResp.Body.Close()
-	if imgResp.StatusCode != 200 {
-		return "", fmt.Errorf("img %s returned status code %d", href, imgResp.StatusCode)
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		return nil, "", fmt.Errorf("expected status 200 but got %d %s", resp.StatusCode, resp.Status)
 	}
-	r := http.MaxBytesReader(nil, imgResp.Body, maxImageSize)
-	data, err := ioutil.ReadAll(r)
+	r := http.MaxBytesReader(nil, resp.Body, maxImageSize)
+	buf, err := ioutil.ReadAll(r)
 	if err != nil {
-		return "", err
+		return nil, "", err
 	}
-
-	mimeType := http.DetectContentType(data)
-	mimeType = strings.Replace(mimeType, "text/xml", "image/svg+xml", 1)
-
-	enc := base64.StdEncoding.EncodeToString(data)
-
-	return fmt.Sprintf("data:%s;base64,%s", mimeType, enc), nil
+	return buf, resp.Header.Get("Content-Type"), nil
 }
 
-func read(href string) (string, error) {
-	data, err := os.ReadFile(href)
-	if err != nil {
-		return "", err
+// sniffMimeType sniffs the mime type of href based on its file extension and contents.
+func sniffMimeType(href, buf []byte, isRemote bool) string {
+	p := string(href)
+	if isRemote {
+		u, err := url.Parse(p)
+		if err != nil {
+			p = ""
+		} else {
+			p = u.Path
+		}
 	}
-
-	mimeType := http.DetectContentType(data)
-	mimeType = strings.Replace(mimeType, "text/xml", "image/svg+xml", 1)
-
-	enc := base64.StdEncoding.EncodeToString(data)
-
-	return fmt.Sprintf("data:%s;base64,%s", mimeType, enc), nil
+	mimeType := mime.TypeByExtension(path.Ext(p))
+	if mimeType == "" {
+		mimeType = http.DetectContentType(buf)
+	}
+	return mimeType
 }

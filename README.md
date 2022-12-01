@@ -4,7 +4,7 @@
     A modern diagram scripting language that turns text to diagrams.
   </h2>
 
-[Language docs](https://d2lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf)
+[Language docs](https://d2lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf) | [Comparisons](https://text-to-diagram.com)
 
 [![ci](https://github.com/terrastruct/d2/actions/workflows/ci.yml/badge.svg)](https://github.com/terrastruct/d2/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/v/release/terrastruct/d2)](https://github.com/terrastruct/d2/releases)
@@ -19,28 +19,26 @@
 # Table of Contents
 
 <!-- toc -->
+- <a href="#what-does-d2-look-like" id="toc-what-does-d2-look-like">What does D2 look like?</a>
+- <a href="#quickstart" id="toc-quickstart">Quickstart</a>
+- <a href="#install" id="toc-install">Install</a>
+- <a href="#d2-as-a-library" id="toc-d2-as-a-library">D2 as a library</a>
+- <a href="#themes" id="toc-themes">Themes</a>
+- <a href="#fonts" id="toc-fonts">Fonts</a>
+- <a href="#export-file-types" id="toc-export-file-types">Export file types</a>
+- <a href="#language-tooling" id="toc-language-tooling">Language tooling</a>
+- <a href="#plugins" id="toc-plugins">Plugins</a>
+- <a href="#comparison" id="toc-comparison">Comparison</a>
+- <a href="#contributing" id="toc-contributing">Contributing</a>
+- <a href="#license" id="toc-license">License</a>
+- <a href="#related" id="toc-related">Related</a>
+  - <a href="#vscode-extension" id="toc-vscode-extension">VSCode extension</a>
+  - <a href="#vim-extension" id="toc-vim-extension">Vim extension</a>
+  - <a href="#language-docs" id="toc-language-docs">Language docs</a>
+  - <a href="#misc" id="toc-misc">Misc</a>
+- <a href="#faq" id="toc-faq">FAQ</a>
 
-- [What does D2 look like?](#what-does-d2-look-like)
-- [Quickstart](#quickstart)
-- [Install](#install)
-- [D2 as a library](#d2-as-a-library)
-- [Themes](#themes)
-- [Fonts](#fonts)
-- [Export file types](#export-file-types)
-- [Language tooling](#language-tooling)
-- [Plugins](#plugins)
-- [Comparison](#comparison)
-- [Contributing](#contributing)
-- [License](#license)
-- [Related](#related)
-  * [VSCode extension](#vscode-extension)
-  * [Vim extension](#vim-extension)
-  * [Misc](#misc)
-- [FAQ](#faq)
-
-<!-- tocstop -->
-
-# What does D2 look like?
+## What does D2 look like?
 
 ```d2
 # Actors
@@ -97,70 +95,34 @@ The easiest way to install is with our install script:
 curl -fsSL https://d2lang.com/install.sh | sh -s --
 ```
 
-To uninstall:
+You can run the install script with `--dry-run` to see the commands that will be used
+to install without executing them.
+
+Or if you have Go installed you can install from source though you won't get the manpage:
+
+```sh
+go install oss.terrastruct.com/d2@latest
+```
+
+To uninstall with the install script:
 
 ```sh
 curl -fsSL https://d2lang.com/install.sh | sh -s -- --uninstall
 ```
 
-For detailed installation docs, with alternative methods and examples for each OS, see
-[./docs/INSTALL.md](./docs/INSTALL.md).
+For detailed installation docs, see [./docs/INSTALL.md](./docs/INSTALL.md).
+We demonstrate alternative methods and examples for each OS.
+
+As well, the functioning of the install script is described in detail to alleviate any
+concern of its use. We recommend using your OS's package manager directly instead for
+improved security but the install script is by no means insecure.
 
 ## D2 as a library
 
 In addition to being a runnable CLI tool, D2 can also be used to produce diagrams from
 Go programs.
 
-```go
-import (
-  "context"
-  "io/ioutil"
-  "path/filepath"
-  "strings"
-
-  "oss.terrastruct.com/d2/d2compiler"
-  "oss.terrastruct.com/d2/d2exporter"
-  "oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
-  "oss.terrastruct.com/d2/d2renderers/d2svg"
-  "oss.terrastruct.com/d2/d2renderers/textmeasure"
-  "oss.terrastruct.com/d2/d2themes/d2themescatalog"
-)
-
-func main() {
-  graph, _ := d2compiler.Compile("", strings.NewReader("x -> y"), &d2compiler.CompileOptions{UTF16: true})
-  ruler, _ := textmeasure.NewRuler()
-  graph.SetDimensions(nil, ruler)
-  d2dagrelayout.Layout(context.Background(), graph)
-  diagram, _ := d2exporter.Export(context.Background(), graph, d2themescatalog.NeutralDefault.ID)
-  out, _ := d2svg.Render(diagram)
-  ioutil.WriteFile(filepath.Join("out.svg"), out, 0600)
-}
-```
-
-D2 is built to be hackable -- the language has an API built on top of it to make edits
-programmatically. Modifying the above diagram:
-
-```go
-import (
-  "oss.terrastruct.com/d2/d2renderers/textmeasure"
-  "oss.terrastruct.com/d2/d2themes/d2themescatalog"
-)
-
-// Create a shape with the ID, "meow"
-graph, _, _ = d2oracle.Create(graph, "meow")
-// Style the shape green
-color := "green"
-graph, _ = d2oracle.Set(graph, "meow.style.fill", nil, &color)
-// Create a shape with the ID, "cat"
-graph, _, _ = d2oracle.Create(graph, "cat")
-// Move the shape "meow" inside the container "cat"
-graph, _ = d2oracle.Move(graph, "meow", "cat.meow")
-// Prints formatted D2 script
-println(d2format.Format(graph.AST))
-```
-
-This makes it easy to build functionality on top of D2. Terrastruct uses the above API to
-implement editing of D2 from mouse actions in a visual interface.
+For examples, see [./docs/examples/lib](./docs/examples/lib).
 
 ## Themes
 

@@ -19,11 +19,14 @@ import (
 	"nhooyr.io/websocket"
 	"nhooyr.io/websocket/wsjson"
 
+	"oss.terrastruct.com/util-go/xbrowser"
+
+	"oss.terrastruct.com/util-go/xhttp"
+
+	"oss.terrastruct.com/util-go/xmain"
+
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/lib/png"
-	"oss.terrastruct.com/d2/lib/xbrowser"
-	"oss.terrastruct.com/d2/lib/xhttp"
-	"oss.terrastruct.com/d2/lib/xmain"
 )
 
 // Enabled with the build tag "dev".
@@ -42,6 +45,7 @@ type watcherOpts struct {
 	port         string
 	inputPath    string
 	outputPath   string
+	bundle       bool
 	pw           png.Playwright
 }
 
@@ -73,8 +77,8 @@ type watcher struct {
 }
 
 type compileResult struct {
-	Err string `json:"err"`
 	SVG string `json:"svg"`
+	Err string `json:"err"`
 }
 
 func newWatcher(ctx context.Context, ms *xmain.State, opts watcherOpts) (*watcher, error) {
@@ -250,7 +254,7 @@ func (w *watcher) watchLoop(ctx context.Context) error {
 				// We missed changes.
 				lastModified = mt
 			}
-			// The purpose of eatBurstTimer is to wait at least 32 milliseconds after a sequence of
+			// The purpose of eatBurstTimer is to wait at least 16 milliseconds after a sequence of
 			// events to ensure that whomever is editing the file is now done.
 			//
 			// For example, On macOS editing with neovim, every write I see a chmod immediately
@@ -260,7 +264,7 @@ func (w *watcher) watchLoop(ctx context.Context) error {
 			// Another example would be a very large file where one logical edit becomes write
 			// events. We wouldn't want to try to compile an incomplete file and then report a
 			// misleading error.
-			eatBurstTimer.Reset(time.Millisecond * 32)
+			eatBurstTimer.Reset(time.Millisecond * 16)
 		case <-eatBurstTimer.C:
 			w.ms.Log.Info.Printf("detected change in %v: recompiling...", w.inputPath)
 			w.requestCompile()
@@ -283,7 +287,7 @@ func (w *watcher) requestCompile() {
 }
 
 func (w *watcher) ensureAddWatch(ctx context.Context) (time.Time, error) {
-	interval := time.Second
+	interval := time.Millisecond * 16
 	tc := time.NewTimer(0)
 	<-tc.C
 	for {
@@ -291,11 +295,16 @@ func (w *watcher) ensureAddWatch(ctx context.Context) (time.Time, error) {
 		if err == nil {
 			return mt, nil
 		}
-		w.ms.Log.Error.Printf("failed to watch inputPath %q: %v (retrying in %v)", w.inputPath, err, interval)
+		if interval >= time.Second {
+			w.ms.Log.Error.Printf("failed to watch inputPath %q: %v (retrying in %v)", w.inputPath, err, interval)
+		}
 
 		tc.Reset(interval)
 		select {
 		case <-tc.C:
+			if interval < time.Second {
+				interval = time.Second
+			}
 			if interval < time.Second*16 {
 				interval *= 2
 			}
@@ -345,24 +354,28 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.pw = newPW
 		}
 
-		b, err := compile(ctx, w.ms, true, w.layoutPlugin, w.themeID, w.inputPath, w.outputPath, w.pw.Page)
+		svg, _, err := compile(ctx, w.ms, w.layoutPlugin, w.themeID, w.inputPath, w.outputPath, w.bundle, w.pw.Page)
+		errs := ""
 		if err != nil {
-			err = fmt.Errorf("failed to %scompile: %w", recompiledPrefix, err)
-			w.ms.Log.Error.Print(err)
-			w.broadcast(&compileResult{
-				Err: err.Error(),
-			})
+			if len(svg) > 0 {
+				err = fmt.Errorf("failed to fully %scompile (rendering partial svg): %w", recompiledPrefix, err)
+			} else {
+				err = fmt.Errorf("failed to %scompile: %w", recompiledPrefix, err)
+			}
+			errs = err.Error()
+			w.ms.Log.Error.Print(errs)
 		} else {
 			w.ms.Log.Success.Printf("successfully %scompiled %v to %v", recompiledPrefix, w.inputPath, w.outputPath)
-			w.broadcast(&compileResult{
-				SVG: string(b),
-			})
 		}
+		w.broadcast(&compileResult{
+			SVG: string(svg),
+			Err: errs,
+		})
 
 		if firstCompile {
 			firstCompile = false
 			url := fmt.Sprintf("http://%s", w.l.Addr())
-			err = xbrowser.OpenURL(ctx, w.ms.Env, url)
+			err = xbrowser.Open(ctx, w.ms.Env, url)
 			if err != nil {
 				w.ms.Log.Warn.Printf("failed to open browser to %v: %v", url, err)
 			}

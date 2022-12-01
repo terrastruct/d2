@@ -9,16 +9,11 @@
 .Op Fl -watch Ar false
 .Op Fl -theme Em 0
 .Ar file.d2
-.Op Ar file.svg
-|
-.Op Ar file.png
-.Nm d2
-.Op Fl -watch Ar false
-.Op Fl -theme Em 0
-.Ar file.d2
-.Op Ar ...
+.Op Ar file.svg | file.png
 .Nm d2
 .Ar layout Op Ar name
+.Nm d2
+.Ar fmt Ar file.d2
 .Sh DESCRIPTION
 .Nm
 compiles and renders
@@ -29,9 +24,20 @@ to
 .Ar file.png
 .Ns .
 .Pp
+It defaults to
+.Ar file.svg
+if no output path is passed.
+.Pp
 Pass - to have
 .Nm
 read from stdin or write to stdout.
+.Pp
+Never use the presence of the output file to check for success.
+Always use the exit status of
+.Nm d2
+.Ns .
+This is because sometimes when errors occur while rendering, d2 still write out a partial
+render anyway to enable iteration on a broken diagram.
 .Pp
 See more docs, the source code and license at
 .Lk https://oss.terrastruct.com/d2
@@ -71,6 +77,10 @@ Print version information and exit.
 Lists available layout engine options with short help.
 .It Ar layout Op Ar name
 Display long help for a particular layout engine.
+.It Ar fmt Ar file.d2
+Format
+.Ar file.d2
+.Ns .
 .El
 .Sh SEE ALSO
 .Xr d2plugin-tala 1

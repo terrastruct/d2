@@ -5,9 +5,10 @@ import (
 	"net/url"
 	"strings"
 
+	"oss.terrastruct.com/util-go/go2"
+
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/go2"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/shape"
 )

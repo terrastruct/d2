@@ -1,4 +1,4 @@
-package d2
+package d2lib
 
 import (
 	"context"
@@ -9,9 +9,8 @@ import (
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2exporter"
 	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2layouts/d2sequence"
-	"oss.terrastruct.com/d2/d2renderers/textmeasure"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
 type CompileOptions struct {
@@ -23,7 +22,7 @@ type CompileOptions struct {
 	ThemeID int64
 }
 
-func Compile(ctx context.Context, input string, opts *CompileOptions) (*d2target.Diagram, error) {
+func Compile(ctx context.Context, input string, opts *CompileOptions) (*d2target.Diagram, *d2graph.Graph, error) {
 	if opts == nil {
 		opts = &CompileOptions{}
 	}
@@ -32,12 +31,12 @@ func Compile(ctx context.Context, input string, opts *CompileOptions) (*d2target
 		UTF16: opts.UTF16,
 	})
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	err = g.SetDimensions(opts.MeasuredTexts, opts.Ruler)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	if layout, err := getLayout(opts); err != nil {
@@ -47,7 +46,7 @@ func Compile(ctx context.Context, input string, opts *CompileOptions) (*d2target
 	}
 
 	diagram, err := d2exporter.Export(ctx, g, opts.ThemeID)
-	return diagram, err
+	return diagram, g, err
 }
 
 func getLayout(opts *CompileOptions) (func(context.Context, *d2graph.Graph) error, error) {

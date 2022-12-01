@@ -9,7 +9,7 @@ import (
 
 	"github.com/playwright-community/playwright-go"
 
-	"oss.terrastruct.com/d2/lib/xmain"
+	"oss.terrastruct.com/util-go/xmain"
 )
 
 type Playwright struct {

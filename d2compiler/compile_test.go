@@ -6,9 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"oss.terrastruct.com/diff"
-
-	"github.com/stretchr/testify/assert"
+	"oss.terrastruct.com/util-go/assert"
+	"oss.terrastruct.com/util-go/diff"
 
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2format"
@@ -775,8 +774,8 @@ x -> y: {
 				if len(g.Objects) != 2 {
 					t.Fatalf("expected 2 objects: %#v", g.Objects)
 				}
-				diff.AssertStringEq(t, "diamond", g.Edges[0].SrcArrowhead.Shape.Value)
-				assert.Empty(t, g.Edges[0].Attributes.Shape.Value)
+				assert.String(t, "diamond", g.Edges[0].SrcArrowhead.Shape.Value)
+				assert.String(t, "", g.Edges[0].Attributes.Shape.Value)
 				// Make sure the DSL didn't change. this is a regression test where it did
 				exp := `x -> y: {
   source-arrowhead: {
@@ -814,13 +813,13 @@ x -> y: {
 				if len(g.Objects) != 2 {
 					t.Fatalf("expected 2 objects: %#v", g.Objects)
 				}
-				diff.AssertStringEq(t, "diamond", g.Edges[0].SrcArrowhead.Shape.Value)
-				diff.AssertStringEq(t, "Reisner's Rule of Conceptual Inertia", g.Edges[0].SrcArrowhead.Label.Value)
-				diff.AssertStringEq(t, "QOTD", g.Edges[0].DstArrowhead.Label.Value)
-				diff.AssertStringEq(t, "true", g.Edges[0].DstArrowhead.Style.Filled.Value)
-				assert.Empty(t, g.Edges[0].Attributes.Shape.Value)
-				assert.Empty(t, g.Edges[0].Attributes.Label.Value)
-				assert.Nil(t, g.Edges[0].Attributes.Style.Filled)
+				assert.String(t, "diamond", g.Edges[0].SrcArrowhead.Shape.Value)
+				assert.String(t, "Reisner's Rule of Conceptual Inertia", g.Edges[0].SrcArrowhead.Label.Value)
+				assert.String(t, "QOTD", g.Edges[0].DstArrowhead.Label.Value)
+				assert.String(t, "true", g.Edges[0].DstArrowhead.Style.Filled.Value)
+				assert.String(t, "", g.Edges[0].Attributes.Shape.Value)
+				assert.String(t, "", g.Edges[0].Attributes.Label.Value)
+				assert.JSON(t, nil, g.Edges[0].Attributes.Style.Filled)
 			},
 		},
 		{
@@ -836,8 +835,8 @@ x -> y: {
 				if len(g.Objects) != 2 {
 					t.Fatalf("expected 2 objects: %#v", g.Objects)
 				}
-				diff.AssertStringEq(t, "diamond", g.Edges[0].SrcArrowhead.Shape.Value)
-				assert.Empty(t, g.Edges[0].Attributes.Shape.Value)
+				assert.String(t, "diamond", g.Edges[0].SrcArrowhead.Shape.Value)
+				assert.String(t, "", g.Edges[0].Attributes.Shape.Value)
 			},
 		},
 		{
@@ -853,8 +852,8 @@ x -> y: {
 				if len(g.Objects) != 2 {
 					t.Fatalf("expected 2 objects: %#v", g.Objects)
 				}
-				diff.AssertStringEq(t, "triangle", g.Edges[0].SrcArrowhead.Shape.Value)
-				assert.Empty(t, g.Edges[0].Attributes.Shape.Value)
+				assert.String(t, "triangle", g.Edges[0].SrcArrowhead.Shape.Value)
+				assert.String(t, "", g.Edges[0].Attributes.Shape.Value)
 			},
 		},
 		{
@@ -880,8 +879,8 @@ x -> y: {
 				if len(g.Objects) != 2 {
 					t.Fatalf("expected 2 objects: %#v", g.Objects)
 				}
-				diff.AssertStringEq(t, "yo", g.Edges[0].SrcArrowhead.Label.Value)
-				assert.Empty(t, g.Edges[0].Attributes.Label.Value)
+				assert.String(t, "yo", g.Edges[0].SrcArrowhead.Label.Value)
+				assert.String(t, "", g.Edges[0].Attributes.Label.Value)
 			},
 		},
 		{
@@ -899,8 +898,8 @@ x -> y: {
 				if len(g.Objects) != 2 {
 					t.Fatalf("expected 2 objects: %#v", g.Objects)
 				}
-				diff.AssertStringEq(t, "diamond", g.Edges[0].SrcArrowhead.Shape.Value)
-				assert.Empty(t, g.Edges[0].Attributes.Shape.Value)
+				assert.String(t, "diamond", g.Edges[0].SrcArrowhead.Shape.Value)
+				assert.String(t, "", g.Edges[0].Attributes.Shape.Value)
 			},
 		},
 		{
@@ -920,9 +919,9 @@ x -> y: {
 				if len(g.Objects) != 2 {
 					t.Fatalf("expected 2 objects: %#v", g.Objects)
 				}
-				diff.AssertStringEq(t, "diamond", g.Edges[0].SrcArrowhead.Shape.Value)
-				diff.AssertStringEq(t, "diamond", g.Edges[0].DstArrowhead.Shape.Value)
-				assert.Empty(t, g.Edges[0].Attributes.Shape.Value)
+				assert.String(t, "diamond", g.Edges[0].SrcArrowhead.Shape.Value)
+				assert.String(t, "diamond", g.Edges[0].DstArrowhead.Shape.Value)
+				assert.String(t, "", g.Edges[0].Attributes.Shape.Value)
 			},
 		},
 		{
@@ -1333,7 +1332,7 @@ y -> x.style
 				if len(g.Objects) != 1 {
 					t.Fatal(g.Objects)
 				}
-				diff.AssertStringEq(t, `b
+				assert.String(t, `b
 b`, g.Objects[0].Attributes.Label.Value)
 			},
 		},
@@ -1420,9 +1419,9 @@ b`, g.Objects[0].Attributes.Label.Value)
 				if len(g.Objects) != 1 {
 					t.Fatal(g.Objects)
 				}
-				diff.AssertStringEq(t, `field here`, g.Objects[0].Class.Fields[0].Name)
-				diff.AssertStringEq(t, `GetType()`, g.Objects[0].Class.Methods[0].Name)
-				diff.AssertStringEq(t, `Is()`, g.Objects[0].Class.Methods[1].Name)
+				assert.String(t, `field here`, g.Objects[0].Class.Fields[0].Name)
+				assert.String(t, `GetType()`, g.Objects[0].Class.Methods[0].Name)
+				assert.String(t, `Is()`, g.Objects[0].Class.Methods[1].Name)
 			},
 		},
 		{
@@ -1438,8 +1437,8 @@ b`, g.Objects[0].Attributes.Label.Value)
 				if len(g.Objects) != 1 {
 					t.Fatal(g.Objects)
 				}
-				diff.AssertStringEq(t, `GetType()`, g.Objects[0].SQLTable.Columns[0].Name)
-				diff.AssertStringEq(t, `Is()`, g.Objects[0].SQLTable.Columns[1].Name)
+				assert.String(t, `GetType()`, g.Objects[0].SQLTable.Columns[0].Name)
+				assert.String(t, `Is()`, g.Objects[0].SQLTable.Columns[1].Name)
 			},
 		},
 		{
@@ -1463,8 +1462,8 @@ b`, g.Objects[0].Attributes.Label.Value)
 				if len(g.Objects[0].ChildrenArray) != 1 {
 					t.Fatal(g.Objects)
 				}
-				diff.AssertStringEq(t, `GetType()`, g.Objects[1].SQLTable.Columns[0].Name)
-				diff.AssertStringEq(t, `Is()`, g.Objects[1].SQLTable.Columns[1].Name)
+				assert.String(t, `GetType()`, g.Objects[1].SQLTable.Columns[0].Name)
+				assert.String(t, `Is()`, g.Objects[1].SQLTable.Columns[1].Name)
 			},
 		},
 		{
@@ -1509,7 +1508,7 @@ dst.id <-> src.dst_id
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				diff.AssertStringEq(t, "sequence_diagram", g.Objects[0].Attributes.Shape.Value)
+				assert.String(t, "sequence_diagram", g.Objects[0].Attributes.Shape.Value)
 			},
 		},
 		{
@@ -1518,7 +1517,7 @@ dst.id <-> src.dst_id
 			text: `shape: sequence_diagram
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				diff.AssertStringEq(t, "sequence_diagram", g.Root.Attributes.Shape.Value)
+				assert.String(t, "sequence_diagram", g.Root.Attributes.Shape.Value)
 			},
 		},
 		{
@@ -1526,7 +1525,7 @@ dst.id <-> src.dst_id
 
 			text: `direction: right`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				diff.AssertStringEq(t, "right", g.Root.Attributes.Direction.Value)
+				assert.String(t, "right", g.Root.Attributes.Direction.Value)
 			},
 		},
 		{
@@ -1534,7 +1533,7 @@ dst.id <-> src.dst_id
 
 			text: `x`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				diff.AssertStringEq(t, "", g.Objects[0].Attributes.Direction.Value)
+				assert.String(t, "", g.Objects[0].Attributes.Direction.Value)
 			},
 		},
 		{
@@ -1544,7 +1543,7 @@ dst.id <-> src.dst_id
   direction: left
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				diff.AssertStringEq(t, "left", g.Objects[0].Attributes.Direction.Value)
+				assert.String(t, "left", g.Objects[0].Attributes.Direction.Value)
 			},
 		},
 		{
@@ -1594,10 +1593,8 @@ dst.id <-> src.dst_id
 				Err:   err,
 			}
 
-			err = diff.Testdata(filepath.Join("..", "testdata", "d2compiler", t.Name()), got)
-			if err != nil {
-				t.Fatal(err)
-			}
+			err = diff.TestdataJSON(filepath.Join("..", "testdata", "d2compiler", t.Name()), got)
+			assert.Success(t, err)
 		})
 	}
 }

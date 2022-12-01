@@ -3,7 +3,7 @@ package d2graph
 import (
 	"encoding/json"
 
-	"oss.terrastruct.com/d2/lib/go2"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type SerializedGraph struct {
