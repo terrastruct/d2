@@ -98,6 +98,9 @@ The easiest way to install is with our install script:
 curl -fsSL https://d2lang.com/install.sh | sh -s --
 ```
 
+You can run the install script with `--dry-run` to see the commands that will be used
+to install without executing them.
+
 To uninstall:
 
 ```sh
