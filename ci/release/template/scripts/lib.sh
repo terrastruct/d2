@@ -55,12 +55,14 @@ tput() {
 
 should_color() {
   if [ -n "${COLOR-}" ]; then
-    if [ "$COLOR" = 0 -o "$COLOR" = false ]; then
-      _COLOR=
-      return 1
-    elif [ "$COLOR" = 1 -o "$COLOR" = true ]; then
+    if [ "$COLOR" = 1 -o "$COLOR" = true ]; then
       _COLOR=1
+      __COLOR=1
       return 0
+    elif [ "$COLOR" = 0 -o "$COLOR" = false ]; then
+      _COLOR=
+      __COLOR=0
+      return 1
     else
       printf '$COLOR must be 0, 1, false or true but got %s\n' "$COLOR" >&2
     fi
@@ -68,9 +70,11 @@ should_color() {
 
   if [ -t 1 -a "${TERM-}" != dumb ]; then
     _COLOR=1
+    __COLOR=1
     return 0
   else
     _COLOR=
+    __COLOR=0
     return 1
   fi
 }
@@ -114,9 +118,9 @@ printfp() {(
   fi
   should_color || true
   if [ $# -eq 0 ]; then
-    printf '%s' "$(COLOR=${_COLOR-} setaf "$FGCOLOR" "$prefix")"
+    printf '%s' "$(COLOR=$__COLOR setaf "$FGCOLOR" "$prefix")"
   else
-    printf '%s: %s\n' "$(COLOR=${_COLOR-} setaf "$FGCOLOR" "$prefix")" "$(printf "$@")"
+    printf '%s: %s\n' "$(COLOR=$__COLOR setaf "$FGCOLOR" "$prefix")" "$(printf "$@")"
   fi
 )}
 
@@ -125,7 +129,7 @@ catp() {
   shift
 
   should_color || true
-  sed "s/^/$(COLOR=${_COLOR-} printfp "$prefix" '')/"
+  sed "s/^/$(COLOR=$__COLOR printfp "$prefix" '')/"
 }
 
 repeat() {
@@ -152,17 +156,17 @@ printferr() {
 
 logp() {
   should_color >&2 || true
-  COLOR=${_COLOR-} echop "$@" | humanpath >&2
+  COLOR=$__COLOR echop "$@" | humanpath >&2
 }
 
 logfp() {
   should_color >&2 || true
-  COLOR=${_COLOR-} printfp "$@" | humanpath >&2
+  COLOR=$__COLOR printfp "$@" | humanpath >&2
 }
 
 logpcat() {
   should_color >&2 || true
-  COLOR=${_COLOR-} catp "$@" | humanpath >&2
+  COLOR=$__COLOR catp "$@" | humanpath >&2
 }
 
 log() {
@@ -286,4 +290,11 @@ runtty() {
       echoerr "runtty: unsupported OS $(uname)"
       return 1
   esac
+}
+
+capcode() {
+  set +e
+  "$@"
+  code=$?
+  set -e
 }
