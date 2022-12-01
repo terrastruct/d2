@@ -1043,6 +1043,173 @@ size XXXL -> custom 64: custom 48 {
 	style.font-size: 48
 }
 `,
+		}, {
+			name: "sequence_diagram_simple",
+			script: `shape: sequence_diagram
+
+alice: "Alice\nline\nbreaker" {
+    shape: person
+    style.stroke: red
+}
+bob: "Bob" {
+    shape: person
+    style.stroke-width: 5
+}
+db: {
+    shape: cylinder
+}
+queue: {
+    shape: queue
+}
+service: "an\nodd\nservice\nwith\na\nname\nin\nmultiple lines"
+
+alice -> bob: "Authentication Request"
+bob -> service: "make request for something that is quite far away and requires a really long label to take all the space between the objects"
+service -> db: "validate credentials"
+db -> service: {
+    style.stroke-dash: 4
+}
+service -> bob: {
+    style.stroke-dash: 4
+}
+bob -> alice: "Authentication Response"
+alice -> bob: "Another authentication Request"
+bob -> queue: "do it later"
+queue -> bob: "stored" {
+    style.stroke-dash: 3
+    style.stroke-width: 5
+    style.stroke: green
+}
+
+bob -> alice: "Another authentication Response"`,
+		}, {
+			name: "sequence_diagram_span",
+			script: `shape: sequence_diagram
+
+scorer.t -> itemResponse.t: getItem()
+scorer.t <- itemResponse.t: item
+
+scorer.t -> item.t1: getRubric()
+scorer.t <- item.t1: rubric
+
+scorer.t -> essayRubric.t: applyTo(essayResp)
+itemResponse -> essayRubric.t.c
+essayRubric.t.c -> concept.t: match(essayResponse)
+scorer <- essayRubric.t: score
+
+scorer.t -> itemOutcome.t1: new
+scorer.t -> item.t2: getNormalMinimum()
+scorer.t -> item.t3: getNormalMaximum()
+
+scorer.t -> itemOutcome.t2: setScore(score)
+scorer.t -> itemOutcome.t3: setFeedback(missingConcepts)`,
+		}, {
+			name: "sequence_diagram_nested_span",
+			script: `shape: sequence_diagram
+
+scorer: {
+    stroke: red
+    stroke-width: 5
+}
+
+scorer.abc: {
+    fill: yellow
+    stroke-width: 7
+}
+
+scorer -> itemResponse.a: {
+    stroke-width: 10
+}
+itemResponse.a -> item.a.b
+item.a.b -> essayRubric.a.b.c
+essayRubric.a.b.c -> concept.a.b.c.d
+item.a -> essayRubric.a.b
+concept.a.b.c.d -> itemOutcome.a.b.c.d.e
+
+scorer.abc -> item.a
+
+itemOutcome.a.b.c.d.e -> scorer
+scorer -> itemResponse.c`,
+		}, {
+			name: "sequence_diagrams",
+			script: `a_shape.shape: circle
+a_sequence: {
+    shape: sequence_diagram
+
+    scorer.t -> itemResponse.t: getItem()
+    scorer.t <- itemResponse.t: item
+
+    scorer.t -> item.t1: getRubric()
+    scorer.t <- item.t1: rubric
+
+    scorer.t -> essayRubric.t: applyTo(essayResp)
+    itemResponse -> essayRubric.t.c
+    essayRubric.t.c -> concept.t: match(essayResponse)
+    scorer <- essayRubric.t: score
+
+    scorer.t <-> itemOutcome.t1: new
+    scorer.t <-> item.t2: getNormalMinimum()
+    scorer.t -> item.t3: getNormalMaximum()
+
+    scorer.t -- itemOutcome.t2: setScore(score)
+    scorer.t -- itemOutcome.t3: setFeedback(missingConcepts)
+}
+
+another: {
+    sequence: {
+        shape: sequence_diagram
+
+		# scoped edges
+        scorer.t -> itemResponse.t: getItem()
+        scorer.t <- itemResponse.t: item
+
+        scorer.t -> item.t1: getRubric()
+        scorer.t <- item.t1: rubric
+
+        scorer.t -> essayRubric.t: applyTo(essayResp)
+        itemResponse -> essayRubric.t.c
+        essayRubric.t.c -> concept.t: match(essayResponse)
+        scorer <- essayRubric.t: score
+
+        scorer.t -> itemOutcome.t1: new
+        scorer.t <-> item.t2: getNormalMinimum()
+        scorer.t -> item.t3: getNormalMaximum()
+
+        scorer.t -> itemOutcome.t2: setScore(score)
+        scorer.t -> itemOutcome.t3: setFeedback(missingConcepts)
+    }
+}
+
+a_shape -> a_sequence
+a_shape -> another.sequence
+a_sequence -> sequence
+another.sequence <-> finally.sequence
+a_shape -- finally
+
+
+finally: {
+    shape: queue
+    sequence: {
+        shape: sequence_diagram
+		# items appear in this order
+        scorer
+        concept
+        essayRubric
+        item
+        itemOutcome
+        itemResponse
+    }
+}
+
+# full path edges
+finally.sequence.itemResponse.a -> finally.sequence.item.a.b
+finally.sequence.item.a.b -> finally.sequence.essayRubric.a.b.c
+finally.sequence.essayRubric.a.b.c -> finally.sequence.concept.a.b.c.d
+finally.sequence.item.a -> finally.sequence.essayRubric.a.b
+finally.sequence.concept.a.b.c.d -> finally.sequence.itemOutcome.a.b.c.d.e
+finally.sequence.scorer.abc -> finally.sequence.item.a
+finally.sequence.itemOutcome.a.b.c.d.e -> finally.sequence.scorer
+finally.sequence.scorer -> finally.sequence.itemResponse.c`,
 		},
 	}
 
