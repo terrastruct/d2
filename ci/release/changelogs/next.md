@@ -1,4 +1,4 @@
-#### Features 🚀
+#### Features 💸
 
 - Formatting of d2 scripts is supported on the CLI with the `fmt` subcommand.
   [#292](https://github.com/terrastruct/d2/pull/292)
@@ -32,7 +32,7 @@
 - `BROWSER=0` now works to disable opening a browser on `--watch`.
   [#311](https://github.com/terrastruct/d2/pull/311)
 
-#### Bugfixes 🔴
+#### Bugfixes ⛑️
 
 - 3D style was missing border and other styles for its top and right faces.
   [#187](https://github.com/terrastruct/d2/pull/187)

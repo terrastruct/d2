@@ -7,6 +7,8 @@ You may install D2 through any of the following methods.
   - <a href="#security" id="toc-security">Security</a>
 - <a href="#macos-homebrew" id="toc-macos-homebrew">macOS (Homebrew)</a>
 - <a href="#standalone" id="toc-standalone">Standalone</a>
+  - <a href="#manual" id="toc-manual">Manual</a>
+  - <a href="#prefix" id="toc-prefix">PREFIX</a>
 - <a href="#from-source" id="toc-from-source">From source</a>
 - <a href="#coming-soon" id="toc-coming-soon">Coming soon</a>
 
@@ -76,8 +78,28 @@ brew install d2
 ## Standalone
 
 We publish standalone release archives for every release on Github.
-Download the `.tar.gz` release for your OS/ARCH combination and then run the following
-inside the extracted directory to install:
+
+Here's a minimal example script that downloads a standalone release, extracts it into the
+current directory and then installs it.
+Adjust VERSION, OS, and ARCH as needed.
+
+```sh
+VERSION=v0.0.13 OS=macos ARCH=amd64 curl -fsSLO \
+    "https://github.com/terrastruct/d2/releases/download/$VERSION/d2-$VERSION-$OS-$ARCH.tar.gz" \
+    && tar -xzf "d2-$VERSION-$OS-$ARCH.tar.gz" \
+    && make -sC "d2-$VERSION" install
+```
+
+To uninstall:
+
+```sh
+VERSION=v0.0.13 make -sC "d2-$VERSION" uninstall
+```
+
+### Manual
+
+You can also manually download the `.tar.gz` release for your OS/ARCH combination and then
+run the following inside the extracted directory to install:
 
 ```sh
 make install
@@ -89,10 +111,11 @@ Run the following to uninstall:
 make uninstall
 ```
 
-If root permissions are required for installation, you'll need to run `make` with `sudo`.
+### PREFIX
+
 You can control the Unix hierarchy installation path with `PREFIX=`. For example:
 
-```
+```sh
 # Install under ~/.local.
 # Binaries will be at ~/.local/bin
 # And manpages will be under ~/.local/share/man
