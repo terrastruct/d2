@@ -15,7 +15,7 @@ import (
 	"go.uber.org/multierr"
 
 	"oss.terrastruct.com/d2/d2layouts/d2sequence"
-	d2 "oss.terrastruct.com/d2/d2lib"
+	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2renderers/textmeasure"
@@ -196,7 +196,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, theme
 	if os.Getenv("D2_SEQUENCE") == "1" {
 		layout = d2sequence.Layout
 	}
-	d, err := d2.Compile(ctx, string(input), &d2.CompileOptions{
+	diagram, _, err := d2lib.Compile(ctx, string(input), &d2lib.CompileOptions{
 		Layout:  layout,
 		Ruler:   ruler,
 		ThemeID: themeID,
@@ -205,7 +205,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, theme
 		return nil, false, err
 	}
 
-	svg, err := d2svg.Render(d)
+	svg, err := d2svg.Render(diagram)
 	if err != nil {
 		return nil, false, err
 	}

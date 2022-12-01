@@ -26,7 +26,7 @@
 - `d2` now lives in the root folder of the repository instead of as a subcommand.
   So you can run `go install oss.terrastruct.com/d2@latest` to install from source
   now.
-  [#xxx](https://github.com/terrastruct/d2/pull/xxx)
+  [#290](https://github.com/terrastruct/d2/pull/290)
 
 #### Bugfixes 🔴
 

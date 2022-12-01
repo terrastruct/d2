@@ -22,7 +22,7 @@ type CompileOptions struct {
 	ThemeID int64
 }
 
-func Compile(ctx context.Context, input string, opts *CompileOptions) (*d2target.Diagram, error) {
+func Compile(ctx context.Context, input string, opts *CompileOptions) (*d2target.Diagram, *d2graph.Graph, error) {
 	if opts == nil {
 		opts = &CompileOptions{}
 	}
@@ -31,12 +31,12 @@ func Compile(ctx context.Context, input string, opts *CompileOptions) (*d2target
 		UTF16: opts.UTF16,
 	})
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	err = g.SetDimensions(opts.MeasuredTexts, opts.Ruler)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	if opts.Layout != nil {
@@ -47,11 +47,11 @@ func Compile(ctx context.Context, input string, opts *CompileOptions) (*d2target
 		err = errors.New("no available layout")
 	}
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	diagram, err := d2exporter.Export(ctx, g, opts.ThemeID)
-	return diagram, err
+	return diagram, g, err
 }
 
 // See c.go
