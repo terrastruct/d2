@@ -9,8 +9,9 @@ import (
 	"unicode"
 	"unicode/utf8"
 
+	"oss.terrastruct.com/util-go/go2"
+
 	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/lib/go2"
 )
 
 type ParseOptions struct {

@@ -11,12 +11,13 @@ import (
 	"cdr.dev/slog"
 	v8 "rogchap.com/v8go"
 
-	"oss.terrastruct.com/xdefer"
+	"oss.terrastruct.com/util-go/xdefer"
+
+	"oss.terrastruct.com/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
-	"oss.terrastruct.com/d2/lib/go2"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/shape"

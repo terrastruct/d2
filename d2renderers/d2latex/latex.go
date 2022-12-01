@@ -9,7 +9,7 @@ import (
 	"regexp"
 	"strconv"
 
-	"oss.terrastruct.com/xdefer"
+	"oss.terrastruct.com/util-go/xdefer"
 	v8 "rogchap.com/v8go"
 )
 

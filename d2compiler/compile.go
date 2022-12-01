@@ -8,12 +8,13 @@ import (
 	"strconv"
 	"strings"
 
+	"oss.terrastruct.com/util-go/go2"
+
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/lib/go2"
 )
 
 // TODO: should Parse even be exported? guess not. IR should contain list of files and

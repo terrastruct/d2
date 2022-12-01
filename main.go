@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -14,6 +15,8 @@ import (
 	"github.com/spf13/pflag"
 	"go.uber.org/multierr"
 
+	"oss.terrastruct.com/util-go/xmain"
+
 	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2plugin"
@@ -21,10 +24,13 @@ import (
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/imgbundler"
+	ctxlog "oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/png"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 	"oss.terrastruct.com/d2/lib/version"
-	"oss.terrastruct.com/d2/lib/xmain"
+
+	"cdr.dev/slog"
+	"cdr.dev/slog/sloggers/sloghuman"
 )
 
 func main() {
@@ -33,7 +39,7 @@ func main() {
 
 func run(ctx context.Context, ms *xmain.State) (err error) {
 	// :(
-	ctx = xmain.DiscardSlog(ctx)
+	ctx = DiscardSlog(ctx)
 
 	// These should be kept up-to-date with the d2 man page
 	watchFlag, err := ms.Opts.Bool("D2_WATCH", "watch", "w", false, "watch for changes to input and live reload. Use $HOST and $PORT to specify the listening address.\n(default localhost:0, which is will open on a randomly available local port).")
@@ -256,4 +262,9 @@ func renameExt(fp string, newExt string) string {
 	} else {
 		return strings.TrimSuffix(fp, ext) + newExt
 	}
+}
+
+// TODO: remove after removing slog
+func DiscardSlog(ctx context.Context) context.Context {
+	return ctxlog.With(ctx, slog.Make(sloghuman.Sink(io.Discard)))
 }

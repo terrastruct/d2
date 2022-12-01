@@ -9,7 +9,7 @@ import (
 	"os/exec"
 	"time"
 
-	"oss.terrastruct.com/xdefer"
+	"oss.terrastruct.com/util-go/xdefer"
 
 	"oss.terrastruct.com/d2/d2graph"
 )

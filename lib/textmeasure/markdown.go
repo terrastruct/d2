@@ -10,8 +10,9 @@ import (
 	goldmarkHtml "github.com/yuin/goldmark/renderer/html"
 	"golang.org/x/net/html"
 
+	"oss.terrastruct.com/util-go/go2"
+
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/lib/go2"
 )
 
 var markdownRenderer goldmark.Markdown

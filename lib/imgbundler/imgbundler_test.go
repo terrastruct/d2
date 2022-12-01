@@ -12,10 +12,10 @@ import (
 	"strings"
 	"testing"
 
-	"oss.terrastruct.com/cmdlog"
-	"oss.terrastruct.com/xos"
+	"oss.terrastruct.com/util-go/cmdlog"
+	"oss.terrastruct.com/util-go/xos"
 
-	"oss.terrastruct.com/d2/lib/xmain"
+	"oss.terrastruct.com/util-go/xmain"
 )
 
 //go:embed test_png.png

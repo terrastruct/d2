@@ -6,7 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"oss.terrastruct.com/diff"
+	"oss.terrastruct.com/util-go/assert"
+	"oss.terrastruct.com/util-go/diff"
 
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2parser"
@@ -382,10 +383,8 @@ q.(x -> y).z: (rawr)
 				Err: err,
 			}
 
-			err = diff.Testdata(filepath.Join("..", "testdata", "d2parser", t.Name()), got)
-			if err != nil {
-				t.Fatal(err)
-			}
+			err = diff.TestdataJSON(filepath.Join("..", "testdata", "d2parser", t.Name()), got)
+			assert.Success(t, err)
 		})
 	}
 }
