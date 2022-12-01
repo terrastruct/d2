@@ -77,6 +77,9 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		case "fmt":
 			return autofmt(ctx, ms)
 		case "version":
+			if len(ms.Opts.Flags.Args()) > 1 {
+				return xmain.UsageErrorf("version subcommand accepts no arguments")
+			}
 			fmt.Println(version.Version)
 			return nil
 		}
