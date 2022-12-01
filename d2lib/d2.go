@@ -9,8 +9,8 @@ import (
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2exporter"
 	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2renderers/textmeasure"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
 type CompileOptions struct {

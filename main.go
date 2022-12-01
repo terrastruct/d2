@@ -18,11 +18,11 @@ import (
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
-	"oss.terrastruct.com/d2/d2renderers/textmeasure"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/imgbundler"
 	"oss.terrastruct.com/d2/lib/png"
+	"oss.terrastruct.com/d2/lib/textmeasure"
 	"oss.terrastruct.com/d2/lib/version"
 	"oss.terrastruct.com/d2/lib/xmain"
 )

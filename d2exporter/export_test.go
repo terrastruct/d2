@@ -15,11 +15,11 @@ import (
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2exporter"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
-	"oss.terrastruct.com/d2/d2renderers/textmeasure"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/log"
+	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
 type testCase struct {

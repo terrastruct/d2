@@ -22,13 +22,13 @@ import (
 
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2latex"
-	"oss.terrastruct.com/d2/d2renderers/textmeasure"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/go2"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/shape"
+	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
 const (
