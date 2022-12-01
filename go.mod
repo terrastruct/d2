@@ -17,17 +17,13 @@ require (
 	go.uber.org/multierr v1.8.0
 	golang.org/x/image v0.1.0
 	golang.org/x/net v0.2.0
-	golang.org/x/text v0.4.0
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2
 	gonum.org/v1/plot v0.12.0
 	nhooyr.io/websocket v1.8.7
-	oss.terrastruct.com/cmdlog v0.0.0-20221201100934-012c01b3431c
 	oss.terrastruct.com/diff v1.0.2-0.20221116222035-8bf4dd3ab541
-	oss.terrastruct.com/util-go v0.0.0-20221201190418-569dcbf6dc3f
-	oss.terrastruct.com/xcontext v0.0.0-20221018000442-50fdafb12f4f
+	oss.terrastruct.com/util-go v0.0.0-20221201191904-5edc89ce397b
 	oss.terrastruct.com/xdefer v0.0.0-20221017222355-6f3b6e4d1557
 	oss.terrastruct.com/xjson v0.0.0-20221018000420-4986731c4c4a
-	oss.terrastruct.com/xos v0.0.0-20221130233107-5fb84d57c9e3
 	oss.terrastruct.com/xrand v0.0.0-20221020211818-4ac08e618333
 	rogchap.com/v8go v0.7.1-0.20221102201510-1f00b5007d95
 )
@@ -59,6 +55,7 @@ require (
 	golang.org/x/exp v0.0.0-20221126150942-6ab00d035af9 // indirect
 	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/term v0.2.0 // indirect
+	golang.org/x/text v0.4.0 // indirect
 	google.golang.org/genproto v0.0.0-20220822174746-9e6da59bd2fc // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect

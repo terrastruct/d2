@@ -9,8 +9,9 @@ import (
 	"context"
 	"os/exec"
 
-	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/util-go/xexec"
+
+	"oss.terrastruct.com/d2/d2graph"
 )
 
 // plugins contains the bundled d2 plugins.

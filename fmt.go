@@ -6,9 +6,10 @@ import (
 
 	"oss.terrastruct.com/xdefer"
 
+	"oss.terrastruct.com/util-go/xmain"
+
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/lib/xmain"
 )
 
 func fmtCmd(ctx context.Context, ms *xmain.State) (err error) {

@@ -9,8 +9,9 @@ import (
 	"path/filepath"
 	"strings"
 
+	"oss.terrastruct.com/util-go/xmain"
+
 	"oss.terrastruct.com/d2/d2plugin"
-	"oss.terrastruct.com/d2/lib/xmain"
 )
 
 func help(ms *xmain.State) {

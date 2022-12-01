@@ -21,10 +21,12 @@ import (
 
 	"oss.terrastruct.com/util-go/xbrowser"
 
+	"oss.terrastruct.com/util-go/xhttp"
+
+	"oss.terrastruct.com/util-go/xmain"
+
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/lib/png"
-	"oss.terrastruct.com/d2/lib/xhttp"
-	"oss.terrastruct.com/d2/lib/xmain"
 )
 
 // Enabled with the build tag "dev".

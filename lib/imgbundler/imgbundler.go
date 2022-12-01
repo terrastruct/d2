@@ -19,7 +19,7 @@ import (
 	"golang.org/x/xerrors"
 	"oss.terrastruct.com/xdefer"
 
-	"oss.terrastruct.com/d2/lib/xmain"
+	"oss.terrastruct.com/util-go/xmain"
 )
 
 const maxImageSize int64 = 1 << 25 // 33_554_432
