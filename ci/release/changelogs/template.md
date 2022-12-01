@@ -1,5 +1,5 @@
-#### Features 🚀
+#### Features 💸
 
-#### Improvements 🔧
+#### Improvements 🧹
 
-#### Bugfixes 🔴
+#### Bugfixes ⛑️

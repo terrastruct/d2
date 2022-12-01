@@ -1,4 +1,4 @@
-#### Features 🚀
+#### Features 💸
 
 - Formatting of d2 scripts is supported on the CLI with the `fmt` subcommand.
   [#292](https://github.com/terrastruct/d2/pull/292)
@@ -17,7 +17,7 @@
 - `-b/--bundle` flag to `d2` now works and bundles all image assets directly as base64
   data urls. [#278](https://github.com/terrastruct/d2/pull/278)
 
-#### Improvements 🔧
+#### Improvements 🧹
 
 - Local images can now be included, e.g. `icon: ./my_img.png`.
   [#146](https://github.com/terrastruct/d2/issues/146)
@@ -32,7 +32,7 @@
 - `BROWSER=0` now works to disable opening a browser on `--watch`.
   [#311](https://github.com/terrastruct/d2/pull/311)
 
-#### Bugfixes 🔴
+#### Bugfixes ⛑️
 
 - 3D style was missing border and other styles for its top and right faces.
   [#187](https://github.com/terrastruct/d2/pull/187)
