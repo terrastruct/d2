@@ -88,7 +88,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 
 		Env: xos.NewEnv(os.Environ()),
 	}
-	ms.Log = cmdlog.Log(ms.Env, os.Stderr)
+	ms.Log = cmdlog.NewTB(ms.Env, t)
 
 	httpClient.Transport = roundTripFunc(func(req *http.Request) *http.Response {
 		respRecorder := httptest.NewRecorder()
@@ -204,7 +204,7 @@ width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
 
 		Env: xos.NewEnv(os.Environ()),
 	}
-	ms.Log = cmdlog.Log(ms.Env, os.Stderr)
+	ms.Log = cmdlog.NewTB(ms.Env, t)
 	out, err := BundleLocal(ctx, ms, []byte(sampleSVG))
 	if err != nil {
 		t.Fatal(err)
