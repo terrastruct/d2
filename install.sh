@@ -226,12 +226,12 @@ EOF
 }
 
 header() {
-  logp "/* $1 */"
+  FGCOLOR=${FGCOLOR:-4} logp "/* $1 */"
 }
 
 bigheader() {
   set -- "$(echo "$*" | sed "s/^/ * /")"
-  logp "/**
+  FGCOLOR=${FGCOLOR:-3} logp "/**
 $*
  **/"
 }
@@ -676,14 +676,14 @@ main() {
   if [ -n "${UNINSTALL-}" ]; then
     uninstall
     if [ -n "${DRY_RUN-}" ]; then
-      FGCOLOR=3 bigheader "***********
+      bigheader "***********
 Rerun without --dry-run to execute printed commands and perform install.
 ***********"
     fi
   else
     install
     if [ -n "${DRY_RUN-}" ]; then
-      FGCOLOR=3 bigheader "***********
+      bigheader "***********
 Rerun without --dry-run to execute printed commands and perform install.
 ***********"
     fi
