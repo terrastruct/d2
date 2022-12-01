@@ -16,10 +16,10 @@ import (
 
 	"oss.terrastruct.com/diff"
 
-	"oss.terrastruct.com/d2"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2layouts/d2elklayout"
+	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2renderers/textmeasure"
 	"oss.terrastruct.com/d2/d2target"
@@ -104,7 +104,7 @@ func run(t *testing.T, tc testCase) {
 		} else if layoutName == "elk" {
 			layout = d2elklayout.Layout
 		}
-		diagram, err := d2.Compile(ctx, tc.script, &d2.CompileOptions{
+		diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
 			UTF16:   true,
 			Ruler:   ruler,
 			ThemeID: 0,

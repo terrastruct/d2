@@ -35,12 +35,13 @@
 - [Related](#related)
   * [VSCode extension](#vscode-extension)
   * [Vim extension](#vim-extension)
+  * [Language docs](#language-docs)
   * [Misc](#misc)
 - [FAQ](#faq)
 
 <!-- tocstop -->
 
-# What does D2 look like?
+## What does D2 look like?
 
 ```d2
 # Actors
@@ -111,56 +112,7 @@ For detailed installation docs, with alternative methods and examples for each O
 In addition to being a runnable CLI tool, D2 can also be used to produce diagrams from
 Go programs.
 
-```go
-import (
-  "context"
-  "io/ioutil"
-  "path/filepath"
-  "strings"
-
-  "oss.terrastruct.com/d2/d2compiler"
-  "oss.terrastruct.com/d2/d2exporter"
-  "oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
-  "oss.terrastruct.com/d2/d2renderers/d2svg"
-  "oss.terrastruct.com/d2/d2renderers/textmeasure"
-  "oss.terrastruct.com/d2/d2themes/d2themescatalog"
-)
-
-func main() {
-  graph, _ := d2compiler.Compile("", strings.NewReader("x -> y"), &d2compiler.CompileOptions{UTF16: true})
-  ruler, _ := textmeasure.NewRuler()
-  graph.SetDimensions(nil, ruler)
-  d2dagrelayout.Layout(context.Background(), graph)
-  diagram, _ := d2exporter.Export(context.Background(), graph, d2themescatalog.NeutralDefault.ID)
-  out, _ := d2svg.Render(diagram)
-  ioutil.WriteFile(filepath.Join("out.svg"), out, 0600)
-}
-```
-
-D2 is built to be hackable -- the language has an API built on top of it to make edits
-programmatically. Modifying the above diagram:
-
-```go
-import (
-  "oss.terrastruct.com/d2/d2renderers/textmeasure"
-  "oss.terrastruct.com/d2/d2themes/d2themescatalog"
-)
-
-// Create a shape with the ID, "meow"
-graph, _, _ = d2oracle.Create(graph, "meow")
-// Style the shape green
-color := "green"
-graph, _ = d2oracle.Set(graph, "meow.style.fill", nil, &color)
-// Create a shape with the ID, "cat"
-graph, _, _ = d2oracle.Create(graph, "cat")
-// Move the shape "meow" inside the container "cat"
-graph, _ = d2oracle.Move(graph, "meow", "cat.meow")
-// Prints formatted D2 script
-println(d2format.Format(graph.AST))
-```
-
-This makes it easy to build functionality on top of D2. Terrastruct uses the above API to
-implement editing of D2 from mouse actions in a visual interface.
+For examples, see [./docs/examples/lib](./docs/examples/lib).
 
 ## Themes
 
