@@ -6,6 +6,7 @@ cd -- "$(dirname "$0")/../.."
 help() {
   cat <<EOF
 usage: $0 [--rebuild] [--local] [--dry-run] [--run=regex] [--host-only] [--lockfile-force]
+          [--install] [--uninstall]
 
 $0 builds D2 release archives into ./ci/release/build/<version>/d2-<VERSION>-<OS>-<ARCH>.tar.gz
 
@@ -38,6 +39,12 @@ Flags:
 
 --lockfile-force
   Forcefully take ownership of remote builder lockfiles.
+
+--install
+  Ensure a release using --host-only and install it.
+
+--uninstall
+  Ensure a release using --host-only and uninstall it.
 EOF
 }
 
@@ -77,6 +84,18 @@ main() {
         flag_noarg && shift "$FLAGSHIFT"
         LOCKFILE_FORCE=1
         ;;
+      install)
+        flag_noarg && shift "$FLAGSHIFT"
+        INSTALL=1
+        HOST_ONLY=1
+        LOCAL=1
+        ;;
+      uninstall)
+        flag_noarg && shift "$FLAGSHIFT"
+        UNINSTALL=1
+        HOST_ONLY=1
+        LOCAL=1
+        ;;
       *)
         flag_errusage "unrecognized flag $FLAGRAW"
         ;;
@@ -90,8 +109,12 @@ main() {
   VERSION=${VERSION:-$(git_describe_ref)}
   BUILD_DIR=ci/release/build/$VERSION
   if [ -n "${HOST_ONLY-}" ]; then
-    runjob $(os)-$(arch) "OS=$(os) ARCH=$(arch) build" &
-    waitjobs
+    runjob $(os)-$(arch) "OS=$(os) ARCH=$(arch) build"
+    if [ -n "${INSTALL-}" ]; then
+      ( sh_c make -sC "ci/release/build/$VERSION/$(os)-$(arch)/d2-$VERSION" install)
+    elif [ -n "${UNINSTALL-}" ]; then
+      ( sh_c make -sC "ci/release/build/$VERSION/$(os)-$(arch)/d2-$VERSION" uninstall)
+    fi
     return 0
   fi
 
