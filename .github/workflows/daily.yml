@@ -2,9 +2,7 @@ name: daily
 on:
   workflow_dispatch:
   schedule:
-    # daily at 00:42 to avoid hourly loads in GitHub actions
-    # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule
-    - cron: '42 0 * * *'
+    - cron: '42 0 * * *' # daily at 00:42
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: true
