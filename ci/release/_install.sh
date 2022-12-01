@@ -191,14 +191,14 @@ main() {
   if [ -n "${UNINSTALL-}" ]; then
     uninstall
     if [ -n "${DRY_RUN-}" ]; then
-      FGCOLOR=3 bigheader "***********
+      bigheader "***********
 Rerun without --dry-run to execute printed commands and perform install.
 ***********"
     fi
   else
     install
     if [ -n "${DRY_RUN-}" ]; then
-      FGCOLOR=3 bigheader "***********
+      bigheader "***********
 Rerun without --dry-run to execute printed commands and perform install.
 ***********"
     fi
@@ -292,7 +292,7 @@ EOF
 
 install_d2_standalone() {
   VERSION=${VERSION:-latest}
-  FGCOLOR=4 header "installing d2-$VERSION"
+  header "installing d2-$VERSION"
 
   if [ "$VERSION" = latest ]; then
     fetch_release_info
@@ -329,7 +329,7 @@ install_d2_standalone() {
 }
 
 install_d2_brew() {
-  FGCOLOR=4 header "installing d2 with homebrew"
+  header "installing d2 with homebrew"
   sh_c brew tap terrastruct/d2
   sh_c brew install d2
 }
@@ -338,7 +338,7 @@ install_tala_standalone() {
   REPO="${REPO_TALA:-terrastruct/tala}"
   VERSION=$TALA
 
-  FGCOLOR=4 header "installing tala-$VERSION"
+  header "installing tala-$VERSION"
 
   if [ "$VERSION" = latest ]; then
     fetch_release_info
@@ -376,7 +376,7 @@ install_tala_standalone() {
 }
 
 install_tala_brew() {
-  FGCOLOR=4 header "installing tala with homebrew"
+  header "installing tala with homebrew"
   sh_c brew tap terrastruct/d2
   sh_c brew install tala
 }
@@ -386,7 +386,7 @@ uninstall() {
   # uninstalling d2 as TALA depends on d2.
   if command -v d2plugin-tala >/dev/null; then
     INSTALLED_VERSION="$(d2plugin-tala --version)"
-    FGCOLOR=4 header "uninstalling tala-$INSTALLED_VERSION"
+    header "uninstalling tala-$INSTALLED_VERSION"
     case $METHOD in
       standalone) uninstall_tala_standalone ;;
       homebrew) uninstall_tala_brew ;;
@@ -401,7 +401,7 @@ uninstall() {
   fi
 
   INSTALLED_VERSION="$(d2 --version)"
-  FGCOLOR=4 header "uninstalling d2-$INSTALLED_VERSION"
+  header "uninstalling d2-$INSTALLED_VERSION"
   case $METHOD in
     standalone) uninstall_d2_standalone ;;
     homebrew) uninstall_d2_brew ;;
