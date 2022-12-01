@@ -22,7 +22,7 @@ It defaults to file.svg if an output path is not provided.
 
 Use - to have d2 read from stdin or write to stdout.
 
-See man %[1]s for more detailed docs.
+See man d2 for more detailed docs.
 
 Flags:
 %s

@@ -14,8 +14,8 @@ import (
 	"github.com/spf13/pflag"
 	"go.uber.org/multierr"
 
-	"oss.terrastruct.com/d2"
 	"oss.terrastruct.com/d2/d2layouts/d2sequence"
+	d2 "oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2renderers/textmeasure"

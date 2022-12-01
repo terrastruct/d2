@@ -23,6 +23,10 @@
   [#251](https://github.com/terrastruct/d2/pull/251)
 - [install.sh](./install.sh) prints the dry run message more visibly.
   [#266](https://github.com/terrastruct/d2/pull/266)
+- `d2` now lives in the root folder of the repository instead of as a subcommand.
+  So you can run `go install oss.terrastruct.com/d2@latest` to install from source
+  now.
+  [#xxx](https://github.com/terrastruct/d2/pull/xxx)
 
 #### Bugfixes 🔴
 

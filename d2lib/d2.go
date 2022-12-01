@@ -1,4 +1,4 @@
-package d2
+package d2lib
 
 import (
 	"context"

@@ -83,7 +83,7 @@ know where the release directory is for easy uninstall.
 You can always install from source:
 
 ```sh
-go install oss.terrastruct.com/d2/cmd/d2@latest
+go install oss.terrastruct.com/d2@latest
 ```
 
 ## Coming soon
