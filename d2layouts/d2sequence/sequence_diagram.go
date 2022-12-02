@@ -14,6 +14,7 @@ import (
 )
 
 type sequenceDiagram struct {
+	root      *d2graph.Object
 	messages  []*d2graph.Edge
 	lifelines []*d2graph.Edge
 	actors    []*d2graph.Object
@@ -48,6 +49,7 @@ func newSequenceDiagram(actors []*d2graph.Object, messages []*d2graph.Edge) *seq
 	}
 
 	for rank, actor := range actors {
+		sd.root = actor.Parent
 		sd.objectRank[actor] = rank
 		sd.maxActorHeight = math.Max(sd.maxActorHeight, actor.Height)
 
@@ -273,13 +275,7 @@ func (sd *sequenceDiagram) getMessageY(rank int) float64 {
 }
 
 func (sd *sequenceDiagram) isActor(obj *d2graph.Object) bool {
-	// TODO: map to avoid looping around every time?
-	for _, actor := range sd.actors {
-		if actor == obj {
-			return true
-		}
-	}
-	return false
+	return obj.Parent == sd.root
 }
 
 func (sd *sequenceDiagram) getWidth() float64 {
