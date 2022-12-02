@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -17,7 +16,6 @@ import (
 
 	"oss.terrastruct.com/util-go/xmain"
 
-	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
@@ -202,10 +200,6 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, theme
 	}
 
 	layout := plugin.Layout
-	// TODO: remove, this is just a feature flag to test sequence diagrams as we work on them
-	if os.Getenv("D2_SEQUENCE") == "1" {
-		layout = d2sequence.Layout
-	}
 	diagram, _, err := d2lib.Compile(ctx, string(input), &d2lib.CompileOptions{
 		Layout:  layout,
 		Ruler:   ruler,
