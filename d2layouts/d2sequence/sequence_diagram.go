@@ -8,6 +8,7 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/shape"
@@ -108,11 +109,18 @@ func (sd *sequenceDiagram) layout() {
 // placeActors places actors bottom aligned, side by side
 func (sd *sequenceDiagram) placeActors() {
 	x := 0.
-	for _, actors := range sd.actors {
-		yOffset := sd.maxActorHeight - actors.Height
-		actors.TopLeft = geo.NewPoint(x, yOffset)
-		x += actors.Width + sd.actorXStep
-		actors.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+	for _, actor := range sd.actors {
+		shape := actor.Attributes.Shape.Value
+		var yOffset float64
+		if shape == d2target.ShapeImage || shape == d2target.ShapePerson {
+			actor.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
+			yOffset = sd.maxActorHeight - actor.Height - float64(*actor.LabelHeight)
+		} else {
+			actor.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			yOffset = sd.maxActorHeight - actor.Height
+		}
+		actor.TopLeft = geo.NewPoint(x, yOffset)
+		x += actor.Width + sd.actorXStep
 	}
 }
 
@@ -129,6 +137,9 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 	for _, actor := range sd.actors {
 		actorBottom := actor.Center()
 		actorBottom.Y = actor.TopLeft.Y + actor.Height
+		if *actor.LabelPosition == string(label.OutsideBottomCenter) {
+			actorBottom.Y += float64(*actor.LabelHeight)
+		}
 		actorLifelineEnd := actor.Center()
 		actorLifelineEnd.Y = endY
 		sd.lifelines = append(sd.lifelines, &d2graph.Edge{
