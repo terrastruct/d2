@@ -34,26 +34,30 @@ func TestBasicSequenceDiagram(t *testing.T) {
 
 	g.Edges = []*d2graph.Edge{
 		{
-			Src: n1,
-			Dst: n2,
+			Src:   n1,
+			Dst:   n2,
+			Index: 0,
 			Attributes: d2graph.Attributes{
 				Label: d2graph.Scalar{Value: "left to right"},
 			},
 		},
 		{
-			Src: n2,
-			Dst: n1,
+			Src:   n2,
+			Dst:   n1,
+			Index: 0,
 			Attributes: d2graph.Attributes{
 				Label: d2graph.Scalar{Value: "right to left"},
 			},
 		},
 		{
-			Src: n1,
-			Dst: n2,
+			Src:   n1,
+			Dst:   n2,
+			Index: 1,
 		},
 		{
-			Src: n2,
-			Dst: n1,
+			Src:   n2,
+			Dst:   n1,
+			Index: 1,
 		},
 	}
 	nEdges := len(g.Edges)
@@ -187,17 +191,21 @@ func TestSpansSequenceDiagram(t *testing.T) {
 
 	g.Edges = []*d2graph.Edge{
 		{
-			Src: a_t1,
-			Dst: b_t1,
+			Src:   a_t1,
+			Dst:   b_t1,
+			Index: 0,
 		}, {
-			Src: b_t1,
-			Dst: a_t1,
+			Src:   b_t1,
+			Dst:   a_t1,
+			Index: 0,
 		}, {
-			Src: a_t2,
-			Dst: b,
+			Src:   a_t2,
+			Dst:   b,
+			Index: 0,
 		}, {
-			Src: b,
-			Dst: a_t2,
+			Src:   b,
+			Dst:   a_t2,
+			Index: 0,
 		},
 	}
 

@@ -58,7 +58,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 	layoutObjects, objectOrder := getLayoutObjects(g, objectsToRemove)
 	g.Objects = layoutObjects
 
-	if g.Root.Attributes.Shape.Value == d2target.ShapeSequenceDiagram {
+	if isRootSequenceDiagram(g) {
 		// don't need to run the layout engine if the root is a sequence diagram
 		g.Root.TopLeft = geo.NewPoint(0, 0)
 	} else if err := layout(ctx, g); err != nil {
@@ -66,8 +66,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 	}
 
 	cleanup(g, sequenceDiagrams, objectOrder, edgeOrder)
-
 	return nil
+}
+
+func isRootSequenceDiagram(g *d2graph.Graph) bool {
+	return g.Root.Attributes.Shape.Value == d2target.ShapeSequenceDiagram
 }
 
 // layoutSequenceDiagram finds the edges inside the sequence diagram and performs the layout on the object descendants
@@ -119,7 +122,13 @@ func getLayoutObjects(g *d2graph.Graph, toRemove map[*d2graph.Object]struct{}) (
 // - adds the sequence diagram descendants back to the graph objects
 // - sorts edges and objects to their original graph order
 func cleanup(g *d2graph.Graph, sequenceDiagrams map[string]*sequenceDiagram, objectsOrder, edgesOrder map[string]int) {
-	for _, obj := range g.Objects {
+	var objects []*d2graph.Object
+	if isRootSequenceDiagram(g) {
+		objects = []*d2graph.Object{g.Root}
+	} else {
+		objects = g.Objects
+	}
+	for _, obj := range objects {
 		if _, exists := sequenceDiagrams[obj.AbsID()]; !exists {
 			continue
 		}
