@@ -1046,7 +1046,6 @@ size XXXL -> custom 64: custom 48 {
 		}, {
 			name: "sequence_diagram_simple",
 			script: `shape: sequence_diagram
-
 alice: "Alice\nline\nbreaker" {
     shape: person
     style.stroke: red

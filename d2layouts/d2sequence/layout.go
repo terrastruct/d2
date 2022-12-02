@@ -17,34 +17,29 @@ import (
 // Once all nodes were processed, it continues to run the layout engine without the sequence diagram nodes and edges.
 // Then it restores all objects with their proper layout engine and sequence diagram positions
 func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Context, g *d2graph.Graph) error) error {
-	// keeps the current graph state
-	oldObjects := g.Objects
-	oldEdges := g.Edges
-
 	// flag objects to keep to avoid having to flag all descendants of sequence diagram to be removed
 	objectsToKeep := make(map[*d2graph.Object]struct{})
 	// edges flagged to be removed (these are internal edges of the sequence diagrams)
 	edgesToRemove := make(map[*d2graph.Edge]struct{})
 	// store the sequence diagram related to a given node
-	sequenceDiagrams := make(map[*d2graph.Object]*sequenceDiagram)
+	sequenceDiagrams := make(map[string]*sequenceDiagram)
 	// keeps the reference of the children of a given node
-	objChildrenArray := make(map[*d2graph.Object][]*d2graph.Object)
+	childrenReplacement := make(map[string][]*d2graph.Object)
 
 	// goes from root and travers all descendants
-	queue := make([]*d2graph.Object, 1, len(oldObjects))
+	queue := make([]*d2graph.Object, 1, len(g.Objects))
 	queue[0] = g.Root
 	for len(queue) > 0 {
 		obj := queue[0]
 		queue = queue[1:]
 
-		// root is not part of g.Objects, so we can't add it here
 		objectsToKeep[obj] = struct{}{}
 		if obj.Attributes.Shape.Value == d2target.ShapeSequenceDiagram {
 			// TODO: should update obj.References too?
 
 			// clean current children and keep a backup to restore them later
 			obj.Children = make(map[string]*d2graph.Object)
-			objChildrenArray[obj] = obj.ChildrenArray
+			children := obj.ChildrenArray
 			obj.ChildrenArray = nil
 			// creates a mock rectangle so that layout considers this size
 			sdMock := obj.EnsureChild([]string{"sequence_diagram"})
@@ -62,36 +57,47 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 				}
 			}
 
-			sd := newSequenceDiagram(objChildrenArray[obj], edges)
+			sd := newSequenceDiagram(children, edges)
 			sd.layout()
 			sdMock.Box = geo.NewBox(nil, sd.getWidth(), sd.getHeight())
-			sequenceDiagrams[obj] = sd
+			sequenceDiagrams[sdMock.AbsID()] = sd
+			childrenReplacement[sdMock.AbsID()] = children
 		} else {
 			// only move to children if the parent is not a sequence diagram
 			queue = append(queue, obj.ChildrenArray...)
 		}
 	}
 
+	if len(sequenceDiagrams) == 0 {
+		return layout(ctx, g)
+	}
+
 	// removes the edges
-	newEdges := make([]*d2graph.Edge, 0, len(g.Edges)-len(edgesToRemove))
+	layoutEdges := make([]*d2graph.Edge, 0, len(g.Edges)-len(edgesToRemove))
+	sequenceDiagramEdges := make([]*d2graph.Edge, 0, len(edgesToRemove))
 	for _, edge := range g.Edges {
 		if _, exists := edgesToRemove[edge]; !exists {
-			newEdges = append(newEdges, edge)
+			layoutEdges = append(layoutEdges, edge)
+		} else {
+			sequenceDiagramEdges = append(sequenceDiagramEdges, edge)
 		}
 	}
+	g.Edges = layoutEdges
 
 	// done this way (by flagging objects) instead of appending to `queue`
 	// because appending in that order would change the order of g.Objects which
 	// could lead to layout changes (as the order of the objects might be important for the underlying engine)
-	newObjects := make([]*d2graph.Object, 0, len(objectsToKeep))
+	layoutObjects := make([]*d2graph.Object, 0, len(objectsToKeep))
+	sequenceDiagramObjects := make([]*d2graph.Object, 0, len(g.Objects)-len(objectsToKeep))
 	for _, obj := range g.Objects {
 		if _, exists := objectsToKeep[obj]; exists {
-			newObjects = append(newObjects, obj)
+			layoutObjects = append(layoutObjects, obj)
+		} else {
+			sequenceDiagramObjects = append(sequenceDiagramObjects, obj)
 		}
 	}
+	g.Objects = layoutObjects
 
-	g.Objects = newObjects
-	g.Edges = newEdges
 	if g.Root.Attributes.Shape.Value == d2target.ShapeSequenceDiagram {
 		// don't need to run the layout engine if the root is a sequence diagram
 		g.Root.ChildrenArray[0].TopLeft = geo.NewPoint(0, 0)
@@ -99,25 +105,36 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 		return err
 	}
 
-	// restores objects & edges
-	g.Edges = oldEdges
-	g.Objects = oldObjects
+	g.Edges = append(g.Edges, sequenceDiagramEdges...)
 
-	for obj, children := range objChildrenArray {
+	// restores objects
+	// it must be this way because the objects pointer reference is lost when calling layout engines compiled in binaries
+	allObjects := sequenceDiagramObjects
+	for _, obj := range g.Objects {
+		if _, exists := sequenceDiagrams[obj.AbsID()]; !exists {
+			allObjects = append(allObjects, obj)
+			continue
+		}
+		// we don't want `sdMock` in `g.Objects` because they shouldn't be rendered
+
+		// just to make it easier to read
+		sdMock := obj
+		parent := obj.Parent
+
 		// shift the sequence diagrams as they are always placed at (0, 0)
-		sdMock := obj.ChildrenArray[0]
-		sequenceDiagrams[obj].shift(sdMock.TopLeft)
+		sequenceDiagrams[sdMock.AbsID()].shift(sdMock.TopLeft)
 
 		// restore children
-		obj.Children = make(map[string]*d2graph.Object)
-		for _, child := range children {
-			obj.Children[child.ID] = child
+		parent.Children = make(map[string]*d2graph.Object)
+		for _, child := range childrenReplacement[sdMock.AbsID()] {
+			parent.Children[child.ID] = child
 		}
-		obj.ChildrenArray = children
+		parent.ChildrenArray = childrenReplacement[sdMock.AbsID()]
 
 		// add lifeline edges
-		g.Edges = append(g.Edges, sequenceDiagrams[obj].lifelines...)
+		g.Edges = append(g.Edges, sequenceDiagrams[sdMock.AbsID()].lifelines...)
 	}
+	g.Objects = allObjects
 
 	return nil
 }
