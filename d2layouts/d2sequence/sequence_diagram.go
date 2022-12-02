@@ -134,9 +134,8 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 		sd.lifelines = append(sd.lifelines, &d2graph.Edge{
 			Attributes: d2graph.Attributes{
 				Style: d2graph.Style{
-					StrokeDash:  &d2graph.Scalar{Value: "10"},
-					Stroke:      actor.Attributes.Style.Stroke,
-					StrokeWidth: actor.Attributes.Style.StrokeWidth,
+					StrokeDash:  &d2graph.Scalar{Value: fmt.Sprintf("%d", LIFELINE_STROKE_DASH)},
+					StrokeWidth: &d2graph.Scalar{Value: fmt.Sprintf("%d", LIFELINE_STROKE_WIDTH)},
 				},
 			},
 			Src:      actor,
