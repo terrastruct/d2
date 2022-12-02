@@ -202,14 +202,10 @@ func (sd *sequenceDiagram) placeSpans() {
 		minY := math.Min(minMessageY, minChildY)
 		if minY == minChildY {
 			minY -= SPAN_DEPTH_GROW_FACTOR
-		} else {
-			minY -= SPAN_MESSAGE_PAD
 		}
 		maxY := math.Max(maxMessageY, maxChildY)
 		if maxY == maxChildY {
 			maxY += SPAN_DEPTH_GROW_FACTOR
-		} else {
-			maxY += SPAN_MESSAGE_PAD
 		}
 
 		height := math.Max(maxY-minY, MIN_SPAN_HEIGHT)
@@ -243,14 +239,6 @@ func (sd *sequenceDiagram) routeMessages() {
 			endX = message.Dst.TopLeft.X
 		} else {
 			endX = message.Dst.TopLeft.X + message.Dst.Width
-		}
-
-		if isLeftToRight {
-			startX += SPAN_MESSAGE_PAD
-			endX -= SPAN_MESSAGE_PAD
-		} else {
-			startX -= SPAN_MESSAGE_PAD
-			endX += SPAN_MESSAGE_PAD
 		}
 
 		messageY := sd.getMessageY(rank)

@@ -14,9 +14,6 @@ const MIN_MESSAGE_DISTANCE = 100.
 // default size
 const SPAN_WIDTH = 20.
 
-// small pad so that messages don't touch lifelines and spans
-const SPAN_MESSAGE_PAD = 5.
-
 // as the spans start getting nested, their size grows
 const SPAN_DEPTH_GROW_FACTOR = 10.
 

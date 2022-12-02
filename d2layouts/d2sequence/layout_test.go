@@ -108,19 +108,19 @@ func TestBasicSequenceDiagram(t *testing.T) {
 		}
 		if edge.Src.TopLeft.X < edge.Dst.TopLeft.X {
 			// left to right
-			if edge.Route[0].X != edge.Src.Center().X+SPAN_MESSAGE_PAD {
+			if edge.Route[0].X != edge.Src.Center().X {
 				t.Fatalf("expected edge[%d] x to be at the actor center", i)
 			}
 
-			if edge.Route[1].X != edge.Dst.Center().X-SPAN_MESSAGE_PAD {
+			if edge.Route[1].X != edge.Dst.Center().X {
 				t.Fatalf("expected edge[%d] x to be at the actor center", i)
 			}
 		} else {
-			if edge.Route[0].X != edge.Src.Center().X-SPAN_MESSAGE_PAD {
+			if edge.Route[0].X != edge.Src.Center().X {
 				t.Fatalf("expected edge[%d] x to be at the actor center", i)
 			}
 
-			if edge.Route[1].X != edge.Dst.Center().X+SPAN_MESSAGE_PAD {
+			if edge.Route[1].X != edge.Dst.Center().X {
 				t.Fatalf("expected edge[%d] x to be at the actor center", i)
 			}
 		}
@@ -246,7 +246,7 @@ func TestSpansSequenceDiagram(t *testing.T) {
 	}
 
 	// Y diff of the 2 first edges
-	expectedHeight := g.Edges[1].Route[0].Y - g.Edges[0].Route[0].Y + (2 * SPAN_MESSAGE_PAD)
+	expectedHeight := g.Edges[1].Route[0].Y - g.Edges[0].Route[0].Y
 	if a_t1.Height != expectedHeight {
 		t.Fatalf("expected a.t1 height to be %.5f, got %.5f", expectedHeight, a_t1.Height)
 	}
@@ -268,20 +268,20 @@ func TestSpansSequenceDiagram(t *testing.T) {
 	if a_t1.TopLeft.Y != b_t1.TopLeft.Y {
 		t.Fatal("expected a.t1 and b.t1 to be placed at the same Y")
 	}
-	if a_t1.TopLeft.Y != g.Edges[0].Route[0].Y-SPAN_MESSAGE_PAD {
+	if a_t1.TopLeft.Y != g.Edges[0].Route[0].Y {
 		t.Fatal("expected a.t1 to be placed at the same Y of the first message")
 	}
 
 	// check routes
-	if g.Edges[0].Route[0].X != a_t1.TopLeft.X+a_t1.Width+SPAN_MESSAGE_PAD {
+	if g.Edges[0].Route[0].X != a_t1.TopLeft.X+a_t1.Width {
 		t.Fatal("expected the first message to start on a.t1 top right X")
 	}
 
-	if g.Edges[0].Route[1].X != b_t1.TopLeft.X-SPAN_MESSAGE_PAD {
+	if g.Edges[0].Route[1].X != b_t1.TopLeft.X {
 		t.Fatal("expected the first message to end on b.t1 top left X")
 	}
 
-	if g.Edges[2].Route[1].X != b.Center().X-SPAN_MESSAGE_PAD {
+	if g.Edges[2].Route[1].X != b.Center().X {
 		t.Fatal("expected the third message to end on b.t1 center X")
 	}
 }
