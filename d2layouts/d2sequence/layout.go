@@ -20,13 +20,11 @@ import (
 // Then it restores all objects with their proper layout engine and sequence diagram positions
 func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Context, g *d2graph.Graph) error) error {
 	// flag objects to keep to avoid having to flag all descendants of sequence diagram to be removed
-	objectsToKeep := make(map[*d2graph.Object]struct{})
+	objectsToRemove := make(map[*d2graph.Object]struct{})
 	// edges flagged to be removed (these are internal edges of the sequence diagrams)
 	edgesToRemove := make(map[*d2graph.Edge]struct{})
 	// store the sequence diagram related to a given node
 	sequenceDiagrams := make(map[string]*sequenceDiagram)
-	// keeps the reference of the children of a given node
-	childrenReplacement := make(map[string][]*d2graph.Object)
 
 	// starts in root and traverses all descendants
 	queue := make([]*d2graph.Object, 1, len(g.Objects))
@@ -34,33 +32,26 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 	for len(queue) > 0 {
 		obj := queue[0]
 		queue = queue[1:]
-
-		objectsToKeep[obj] = struct{}{}
-		if obj.Attributes.Shape.Value == d2target.ShapeSequenceDiagram {
-			// clean current children and keep a backup to restore them later
-			obj.Children = make(map[string]*d2graph.Object)
-			children := obj.ChildrenArray
-			obj.ChildrenArray = nil
-
-			// find the edges that belong to this sequence diagram
-			var edges []*d2graph.Edge
-			for _, edge := range g.Edges {
-				// both Src and Dst must be inside the sequence diagram
-				if strings.HasPrefix(edge.Src.AbsID(), obj.AbsID()) && strings.HasPrefix(edge.Dst.AbsID(), obj.AbsID()) {
-					edgesToRemove[edge] = struct{}{}
-					edges = append(edges, edge)
-				}
-			}
-
-			sd := newSequenceDiagram(children, edges)
-			sd.layout()
-			obj.Width = sd.getWidth()
-			obj.Height = sd.getHeight()
-			sequenceDiagrams[obj.AbsID()] = sd
-			childrenReplacement[obj.AbsID()] = children
-		} else {
+		if obj.Attributes.Shape.Value != d2target.ShapeSequenceDiagram {
 			// only move to children if the parent is not a sequence diagram
 			queue = append(queue, obj.ChildrenArray...)
+			continue
+		}
+
+		sd := layoutSequenceDiagram(g, obj)
+		obj.Children = make(map[string]*d2graph.Object)
+		obj.ChildrenArray = nil
+		sequenceDiagrams[obj.AbsID()] = sd
+
+		// flag objects and edges to remove
+		for _, edge := range sd.messages {
+			edgesToRemove[edge] = struct{}{}
+		}
+		for _, obj := range sd.actors {
+			objectsToRemove[obj] = struct{}{}
+		}
+		for _, obj := range sd.spans {
+			objectsToRemove[obj] = struct{}{}
 		}
 	}
 
@@ -76,9 +67,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 	// done this way (by flagging objects) instead of appending while going through the `queue`
 	// because appending in that order would change the order of g.Objects which
 	// could lead to layout changes (as the order of the objects might be important for the underlying engine)
-	layoutObjects := make([]*d2graph.Object, 0, len(objectsToKeep))
+	layoutObjects := make([]*d2graph.Object, 0, len(objectsToRemove))
 	for _, obj := range g.Objects {
-		if _, exists := objectsToKeep[obj]; exists {
+		if _, exists := objectsToRemove[obj]; !exists {
 			layoutObjects = append(layoutObjects, obj)
 		}
 	}
@@ -97,15 +88,17 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 			continue
 		}
 		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+		sd := sequenceDiagrams[obj.AbsID()]
+
 		// shift the sequence diagrams as they are always placed at (0, 0)
-		sequenceDiagrams[obj.AbsID()].shift(obj.TopLeft)
+		sd.shift(obj.TopLeft)
 
 		// restore children
 		obj.Children = make(map[string]*d2graph.Object)
-		for _, child := range childrenReplacement[obj.AbsID()] {
+		for _, child := range sd.actors {
 			obj.Children[child.ID] = child
 		}
-		obj.ChildrenArray = childrenReplacement[obj.AbsID()]
+		obj.ChildrenArray = sd.actors
 
 		// add lifeline edges
 		g.Edges = append(g.Edges, sequenceDiagrams[obj.AbsID()].lifelines...)
@@ -115,4 +108,21 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 	}
 
 	return nil
+}
+
+func layoutSequenceDiagram(g *d2graph.Graph, obj *d2graph.Object) *sequenceDiagram {
+	// find the edges that belong to this sequence diagram
+	var edges []*d2graph.Edge
+	for _, edge := range g.Edges {
+		// both Src and Dst must be inside the sequence diagram
+		if strings.HasPrefix(edge.Src.AbsID(), obj.AbsID()) && strings.HasPrefix(edge.Dst.AbsID(), obj.AbsID()) {
+			edges = append(edges, edge)
+		}
+	}
+
+	sd := newSequenceDiagram(obj.ChildrenArray, edges)
+	sd.layout()
+	obj.Width = sd.getWidth()
+	obj.Height = sd.getHeight()
+	return sd
 }
