@@ -920,7 +920,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(itemResponse.a -> item.a.b)[0]",
@@ -959,7 +959,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(item.a.b -> essayRubric.a.b.c)[0]",
@@ -998,7 +998,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(essayRubric.a.b.c -> concept.a.b.c.d)[0]",
@@ -1037,7 +1037,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(item.a -> essayRubric.a.b)[0]",
@@ -1076,7 +1076,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(concept.a.b.c.d -> itemOutcome.a.b.c.d.e)[0]",
@@ -1115,7 +1115,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(scorer.abc -> item.a)[0]",
@@ -1154,7 +1154,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(itemOutcome.a.b.c.d.e -> scorer)[0]",
@@ -1193,7 +1193,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(scorer -> itemResponse.c)[0]",
@@ -1232,7 +1232,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(scorer -- )[0]",

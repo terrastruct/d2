@@ -224,6 +224,7 @@ func (sd *sequenceDiagram) placeSpans() {
 // routeMessages routes horizontal edges (messages) from Src to Dst
 func (sd *sequenceDiagram) routeMessages() {
 	for rank, message := range sd.messages {
+		message.ZIndex = 2
 		isLeftToRight := message.Src.TopLeft.X < message.Dst.TopLeft.X
 
 		// finds the proper anchor point based on the message direction
