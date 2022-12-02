@@ -2,6 +2,7 @@ package d2sequence
 
 import (
 	"context"
+	"sort"
 	"strings"
 
 	"oss.terrastruct.com/d2/d2graph"
@@ -13,17 +14,13 @@ import (
 
 // Layout identifies and performs layout on sequence diagrams within a graph
 // first, it traverses the graph from Root and once it finds an object of shape `sequence_diagram`
-// it replaces the children with a rectangle with id `sequence_diagram`, collects all edges coming to this node and
-// flag the edges to be removed. Then, using the children and the edges, it lays out the sequence diagram and
-// sets the dimensions of the rectangle `sequence_diagram` rectangle.
+// it removes all descendants, collects all edges inside this node and flag them to be removed.
+// Then, using the descendants and the edges, it lays out the sequence diagram and sets the dimensions of the node.
 // Once all nodes were processed, it continues to run the layout engine without the sequence diagram nodes and edges.
 // Then it restores all objects with their proper layout engine and sequence diagram positions
 func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Context, g *d2graph.Graph) error) error {
-	// flag objects to keep to avoid having to flag all descendants of sequence diagram to be removed
 	objectsToRemove := make(map[*d2graph.Object]struct{})
-	// edges flagged to be removed (these are internal edges of the sequence diagrams)
 	edgesToRemove := make(map[*d2graph.Edge]struct{})
-	// store the sequence diagram related to a given node
 	sequenceDiagrams := make(map[string]*sequenceDiagram)
 
 	// starts in root and traverses all descendants
@@ -41,6 +38,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 		sd := layoutSequenceDiagram(g, obj)
 		obj.Children = make(map[string]*d2graph.Object)
 		obj.ChildrenArray = nil
+		obj.Box = geo.NewBox(nil, sd.getWidth(), sd.getHeight())
 		sequenceDiagrams[obj.AbsID()] = sd
 
 		// flag objects and edges to remove
@@ -55,34 +53,72 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 		}
 	}
 
-	// removes the edges
-	layoutEdges := make([]*d2graph.Edge, 0, len(g.Edges)-len(edgesToRemove))
-	for _, edge := range g.Edges {
-		if _, exists := edgesToRemove[edge]; !exists {
-			layoutEdges = append(layoutEdges, edge)
-		}
-	}
+	layoutEdges, edgeOrder := getLayoutEdges(g, edgesToRemove)
 	g.Edges = layoutEdges
-
-	// done this way (by flagging objects) instead of appending while going through the `queue`
-	// because appending in that order would change the order of g.Objects which
-	// could lead to layout changes (as the order of the objects might be important for the underlying engine)
-	layoutObjects := make([]*d2graph.Object, 0, len(objectsToRemove))
-	for _, obj := range g.Objects {
-		if _, exists := objectsToRemove[obj]; !exists {
-			layoutObjects = append(layoutObjects, obj)
-		}
-	}
+	layoutObjects, objectOrder := getLayoutObjects(g, objectsToRemove)
 	g.Objects = layoutObjects
 
 	if g.Root.Attributes.Shape.Value == d2target.ShapeSequenceDiagram {
 		// don't need to run the layout engine if the root is a sequence diagram
-		g.Root.ChildrenArray[0].TopLeft = geo.NewPoint(0, 0)
+		g.Root.TopLeft = geo.NewPoint(0, 0)
 	} else if err := layout(ctx, g); err != nil {
 		return err
 	}
 
-	// restores objects
+	cleanup(g, sequenceDiagrams, objectOrder, edgeOrder)
+
+	return nil
+}
+
+// layoutSequenceDiagram finds the edges inside the sequence diagram and performs the layout on the object descendants
+func layoutSequenceDiagram(g *d2graph.Graph, obj *d2graph.Object) *sequenceDiagram {
+	// find the edges that belong to this sequence diagram
+	var edges []*d2graph.Edge
+	for _, edge := range g.Edges {
+		// both Src and Dst must be inside the sequence diagram
+		if strings.HasPrefix(edge.Src.AbsID(), obj.AbsID()) && strings.HasPrefix(edge.Dst.AbsID(), obj.AbsID()) {
+			edges = append(edges, edge)
+		}
+	}
+
+	sd := newSequenceDiagram(obj.ChildrenArray, edges)
+	sd.layout()
+	return sd
+}
+
+func getLayoutEdges(g *d2graph.Graph, toRemove map[*d2graph.Edge]struct{}) ([]*d2graph.Edge, map[string]int) {
+	edgeOrder := make(map[string]int)
+	layoutEdges := make([]*d2graph.Edge, 0, len(g.Edges)-len(toRemove))
+	for i, edge := range g.Edges {
+		edgeOrder[edge.AbsID()] = i
+		if _, exists := toRemove[edge]; !exists {
+			layoutEdges = append(layoutEdges, edge)
+		}
+	}
+	return layoutEdges, edgeOrder
+}
+
+func getLayoutObjects(g *d2graph.Graph, toRemove map[*d2graph.Object]struct{}) ([]*d2graph.Object, map[string]int) {
+	objectOrder := make(map[string]int)
+	layoutObjects := make([]*d2graph.Object, 0, len(toRemove))
+	for i, obj := range g.Objects {
+		objectOrder[obj.AbsID()] = i
+		if _, exists := toRemove[obj]; !exists {
+			layoutObjects = append(layoutObjects, obj)
+		}
+	}
+	return layoutObjects, objectOrder
+}
+
+// cleanup restores the graph state after the layout engine finished.
+// Restoring the graph state means:
+// - translating the sequence to the node position placed by the layout engine
+// - restore the children (`obj.ChildrenArray`) of the sequence diagram graph object
+// - adds the sequence diagram edges (messages) back to the graph
+// - adds the sequence diagram lifelines to the graph edges
+// - adds the sequence diagram descendants back to the graph objects
+// - sorts edges and objects to their original graph order
+func cleanup(g *d2graph.Graph, sequenceDiagrams map[string]*sequenceDiagram, objectsOrder, edgesOrder map[string]int) {
 	for _, obj := range g.Objects {
 		if _, exists := sequenceDiagrams[obj.AbsID()]; !exists {
 			continue
@@ -101,28 +137,27 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 		obj.ChildrenArray = sd.actors
 
 		// add lifeline edges
-		g.Edges = append(g.Edges, sequenceDiagrams[obj.AbsID()].lifelines...)
 		g.Edges = append(g.Edges, sequenceDiagrams[obj.AbsID()].messages...)
+		g.Edges = append(g.Edges, sequenceDiagrams[obj.AbsID()].lifelines...)
 		g.Objects = append(g.Objects, sequenceDiagrams[obj.AbsID()].actors...)
 		g.Objects = append(g.Objects, sequenceDiagrams[obj.AbsID()].spans...)
 	}
 
-	return nil
-}
+	// no new objects, so just keep the same position
+	sort.SliceStable(g.Objects, func(i, j int) bool {
+		return objectsOrder[g.Objects[i].AbsID()] < objectsOrder[g.Objects[j].AbsID()]
+	})
 
-func layoutSequenceDiagram(g *d2graph.Graph, obj *d2graph.Object) *sequenceDiagram {
-	// find the edges that belong to this sequence diagram
-	var edges []*d2graph.Edge
-	for _, edge := range g.Edges {
-		// both Src and Dst must be inside the sequence diagram
-		if strings.HasPrefix(edge.Src.AbsID(), obj.AbsID()) && strings.HasPrefix(edge.Dst.AbsID(), obj.AbsID()) {
-			edges = append(edges, edge)
+	// sequence diagrams add lifelines, and they must be the last ones in this slice
+	sort.SliceStable(g.Edges, func(i, j int) bool {
+		iOrder, iExists := edgesOrder[g.Edges[i].AbsID()]
+		jOrder, jExists := edgesOrder[g.Edges[j].AbsID()]
+		if iExists && jExists {
+			return iOrder < jOrder
+		} else if iExists && !jExists {
+			return true
 		}
-	}
-
-	sd := newSequenceDiagram(obj.ChildrenArray, edges)
-	sd.layout()
-	obj.Width = sd.getWidth()
-	obj.Height = sd.getHeight()
-	return sd
+		// either both don't exist or i doesn't exist and j exists
+		return false
+	})
 }

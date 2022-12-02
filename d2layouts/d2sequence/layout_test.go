@@ -318,8 +318,7 @@ func TestNestedSequenceDiagrams(t *testing.T) {
 	}
 
 	layoutFn := func(ctx context.Context, g *d2graph.Graph) error {
-		// 3 because it replaces all `container` children with a rectangle for layout
-		if len(g.Objects) != 3 {
+		if len(g.Objects) != 2 {
 			t.Fatal("expected only diagram objects for layout")
 		}
 		for _, obj := range g.Objects {
@@ -327,8 +326,8 @@ func TestNestedSequenceDiagrams(t *testing.T) {
 				t.Fatal("expected to have removed all sequence diagram objects")
 			}
 		}
-		if len(container.ChildrenArray) != 1 {
-			t.Fatalf("expected only 1 `container` child, got %d", len(container.ChildrenArray))
+		if len(container.ChildrenArray) != 0 {
+			t.Fatalf("expected no `container` children, got %d", len(container.ChildrenArray))
 		}
 
 		if len(container.Children) != len(container.ChildrenArray) {
