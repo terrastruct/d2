@@ -251,8 +251,8 @@ func TestSpansSequenceDiagram(t *testing.T) {
 		t.Fatalf("expected a.t1 height to be %.5f, got %.5f", expectedHeight, a_t1.Height)
 	}
 
-	if a_t1.Width != SPAN_WIDTH {
-		t.Fatalf("expected span width to be %.5f, got %.5f", SPAN_WIDTH, a_t1.Width)
+	if a_t1.Width != SPAN_BASE_WIDTH {
+		t.Fatalf("expected span width to be %.5f, got %.5f", SPAN_BASE_WIDTH, a_t1.Width)
 	}
 
 	// check positions

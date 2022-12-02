@@ -12,10 +12,10 @@ const MIN_ACTOR_DISTANCE = 200.
 const MIN_MESSAGE_DISTANCE = 100.
 
 // default size
-const SPAN_WIDTH = 20.
+const SPAN_BASE_WIDTH = 12.
 
 // as the spans start getting nested, their size grows
-const SPAN_DEPTH_GROW_FACTOR = 10.
+const SPAN_DEPTH_GROWTH_FACTOR = 8.
 
 // when a span has a single messages
-const MIN_SPAN_HEIGHT = MIN_MESSAGE_DISTANCE / 2.
+const MIN_SPAN_HEIGHT = 80.

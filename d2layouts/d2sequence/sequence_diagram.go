@@ -201,16 +201,16 @@ func (sd *sequenceDiagram) placeSpans() {
 		// if it is the same as the child top left, add some padding
 		minY := math.Min(minMessageY, minChildY)
 		if minY == minChildY {
-			minY -= SPAN_DEPTH_GROW_FACTOR
+			minY -= SPAN_DEPTH_GROWTH_FACTOR
 		}
 		maxY := math.Max(maxMessageY, maxChildY)
 		if maxY == maxChildY {
-			maxY += SPAN_DEPTH_GROW_FACTOR
+			maxY += SPAN_DEPTH_GROWTH_FACTOR
 		}
 
 		height := math.Max(maxY-minY, MIN_SPAN_HEIGHT)
 		// -2 because the actors count as level 1 making the first level span getting 2*SPAN_DEPTH_GROW_FACTOR
-		width := SPAN_WIDTH + (float64(span.Level()-2) * SPAN_DEPTH_GROW_FACTOR)
+		width := SPAN_BASE_WIDTH + (float64(span.Level()-2) * SPAN_DEPTH_GROWTH_FACTOR)
 		x := rankToX[sd.objectRank[span]] - (width / 2.)
 		span.Box = geo.NewBox(geo.NewPoint(x, minY), width, height)
 		span.ZIndex = 1
