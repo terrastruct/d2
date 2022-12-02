@@ -28,7 +28,12 @@ pick() {
   shift
 
   seed_file="$(mktemp)"
-  echo "$seed" > "$seed_file"
+  echo "$seed" >"$seed_file"
+  # We add 16 more bytes to the seed file for sufficient entropy. Otherwise Cygwin's sort
+  # for example complains and I'm sure there are more platforms that would too.
+  # edit: nvm disabled for now, we don't use Cygwin anyway, we use MinGW who has a sort
+  # that behaves correctly.
+  # echo "================" >"$seed_file"
 
   while [ $# -gt 0 ]; do
     echo "$1"
@@ -90,11 +95,16 @@ _echo() {
   printf '%s\n' "$*"
 }
 
-get_rand_color() {
   # 1-6 are regular and 9-14 are bright.
-  # 1,2 and 9,10 are red and green but we use those for success and failure.
-  pick "$*" 1 2 3 4 5 6 \
-            9 10 11 12 13 14
+get_rand_color() {
+  colors=""
+  ncolors=$(command tput colors)
+  if [ "$ncolors" -ge 8 ]; then
+    colors="$colors 1 2 3 4 5 6"
+  elif [ "$ncolors" -ge 16 ]; then
+    colors="$colors 9 10 11 12 13 14"
+  fi
+  pick "$*" $colors
 }
 
 echop() {
@@ -437,27 +447,28 @@ LIB_RELEASE=1
 
 goos() {
   case $1 in
-    macos) echo darwin ;;
-    *) echo $1 ;;
+    macos) echo darwin;;
+    *) echo $1;;
   esac
 }
 
 os() {
   uname=$(uname)
   case $uname in
-    Linux) echo linux ;;
-    Darwin) echo macos ;;
-    FreeBSD) echo freebsd ;;
-    *) echo "$uname" ;;
+    Linux) echo linux;;
+    Darwin) echo macos;;
+    FreeBSD) echo freebsd;;
+    CYGWIN_NT*|MINGW32_NT*) echo windows;;
+    *) echo "$uname";;
   esac
 }
 
 arch() {
   uname_m=$(uname -m)
   case $uname_m in
-    aarch64) echo arm64 ;;
-    x86_64) echo amd64 ;;
-    *) echo "$uname_m" ;;
+    aarch64) echo arm64;;
+    x86_64) echo amd64;;
+    *) echo "$uname_m";;
   esac
 }
 
