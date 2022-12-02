@@ -9,7 +9,7 @@ import (
 	"oss.terrastruct.com/d2/lib/geo"
 )
 
-// Layout identifies and layouts sequence diagrams within a graph
+// Layout identifies and performs layout on sequence diagrams within a graph
 // first, it traverses the graph from Root and once it finds an object of shape `sequence_diagram`
 // it replaces the children with a rectangle with id `sequence_diagram`, collects all edges coming to this node and
 // flag the edges to be removed. Then, using the children and the edges, it lays out the sequence diagram and
@@ -92,7 +92,10 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 
 	g.Objects = newObjects
 	g.Edges = newEdges
-	if err := layout(ctx, g); err != nil {
+	if g.Root.Attributes.Shape.Value == d2target.ShapeSequenceDiagram {
+		// don't need to run the layout engine if the root is a sequence diagram
+		g.Root.ChildrenArray[0].TopLeft = geo.NewPoint(0, 0)
+	} else if err := layout(ctx, g); err != nil {
 		return err
 	}
 
