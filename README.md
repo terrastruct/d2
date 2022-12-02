@@ -70,7 +70,7 @@ defendants.chesscom -> hans: 72 page report of cheating
 
 > Rendered with the TALA layout engine.
 
-> For more examples, see [./docs/examples](./docs/examples).
+> For more examples (including Elon's Twitter Diagram), see [./docs/examples](./docs/examples).
 
 ## Quickstart
 
