@@ -7,6 +7,8 @@ import (
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/label"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 // Layout identifies and performs layout on sequence diagrams within a graph
@@ -26,7 +28,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 	// keeps the reference of the children of a given node
 	childrenReplacement := make(map[string][]*d2graph.Object)
 
-	// goes from root and travers all descendants
+	// starts in root and traverses all descendants
 	queue := make([]*d2graph.Object, 1, len(g.Objects))
 	queue[0] = g.Root
 	for len(queue) > 0 {
@@ -35,19 +37,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 
 		objectsToKeep[obj] = struct{}{}
 		if obj.Attributes.Shape.Value == d2target.ShapeSequenceDiagram {
-			// TODO: should update obj.References too?
-
 			// clean current children and keep a backup to restore them later
 			obj.Children = make(map[string]*d2graph.Object)
 			children := obj.ChildrenArray
 			obj.ChildrenArray = nil
-			// creates a mock rectangle so that layout considers this size
-			sdMock := obj.EnsureChild([]string{"sequence_diagram"})
-			sdMock.Attributes.Shape.Value = d2target.ShapeRectangle
-			sdMock.Attributes.Label.Value = ""
-			objectsToKeep[sdMock] = struct{}{}
 
-			// find the edges that belong to this sequence diagra
+			// find the edges that belong to this sequence diagram
 			var edges []*d2graph.Edge
 			for _, edge := range g.Edges {
 				// both Src and Dst must be inside the sequence diagram
@@ -59,41 +54,32 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 
 			sd := newSequenceDiagram(children, edges)
 			sd.layout()
-			sdMock.Box = geo.NewBox(nil, sd.getWidth(), sd.getHeight())
-			sequenceDiagrams[sdMock.AbsID()] = sd
-			childrenReplacement[sdMock.AbsID()] = children
+			obj.Width = sd.getWidth()
+			obj.Height = sd.getHeight()
+			sequenceDiagrams[obj.AbsID()] = sd
+			childrenReplacement[obj.AbsID()] = children
 		} else {
 			// only move to children if the parent is not a sequence diagram
 			queue = append(queue, obj.ChildrenArray...)
 		}
 	}
 
-	if len(sequenceDiagrams) == 0 {
-		return layout(ctx, g)
-	}
-
 	// removes the edges
 	layoutEdges := make([]*d2graph.Edge, 0, len(g.Edges)-len(edgesToRemove))
-	sequenceDiagramEdges := make([]*d2graph.Edge, 0, len(edgesToRemove))
 	for _, edge := range g.Edges {
 		if _, exists := edgesToRemove[edge]; !exists {
 			layoutEdges = append(layoutEdges, edge)
-		} else {
-			sequenceDiagramEdges = append(sequenceDiagramEdges, edge)
 		}
 	}
 	g.Edges = layoutEdges
 
-	// done this way (by flagging objects) instead of appending to `queue`
+	// done this way (by flagging objects) instead of appending while going through the `queue`
 	// because appending in that order would change the order of g.Objects which
 	// could lead to layout changes (as the order of the objects might be important for the underlying engine)
 	layoutObjects := make([]*d2graph.Object, 0, len(objectsToKeep))
-	sequenceDiagramObjects := make([]*d2graph.Object, 0, len(g.Objects)-len(objectsToKeep))
 	for _, obj := range g.Objects {
 		if _, exists := objectsToKeep[obj]; exists {
 			layoutObjects = append(layoutObjects, obj)
-		} else {
-			sequenceDiagramObjects = append(sequenceDiagramObjects, obj)
 		}
 	}
 	g.Objects = layoutObjects
@@ -105,36 +91,28 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 		return err
 	}
 
-	g.Edges = append(g.Edges, sequenceDiagramEdges...)
-
 	// restores objects
-	// it must be this way because the objects pointer reference is lost when calling layout engines compiled in binaries
-	allObjects := sequenceDiagramObjects
 	for _, obj := range g.Objects {
 		if _, exists := sequenceDiagrams[obj.AbsID()]; !exists {
-			allObjects = append(allObjects, obj)
 			continue
 		}
-		// we don't want `sdMock` in `g.Objects` because they shouldn't be rendered
-
-		// just to make it easier to read
-		sdMock := obj
-		parent := obj.Parent
-
+		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 		// shift the sequence diagrams as they are always placed at (0, 0)
-		sequenceDiagrams[sdMock.AbsID()].shift(sdMock.TopLeft)
+		sequenceDiagrams[obj.AbsID()].shift(obj.TopLeft)
 
 		// restore children
-		parent.Children = make(map[string]*d2graph.Object)
-		for _, child := range childrenReplacement[sdMock.AbsID()] {
-			parent.Children[child.ID] = child
+		obj.Children = make(map[string]*d2graph.Object)
+		for _, child := range childrenReplacement[obj.AbsID()] {
+			obj.Children[child.ID] = child
 		}
-		parent.ChildrenArray = childrenReplacement[sdMock.AbsID()]
+		obj.ChildrenArray = childrenReplacement[obj.AbsID()]
 
 		// add lifeline edges
-		g.Edges = append(g.Edges, sequenceDiagrams[sdMock.AbsID()].lifelines...)
+		g.Edges = append(g.Edges, sequenceDiagrams[obj.AbsID()].lifelines...)
+		g.Edges = append(g.Edges, sequenceDiagrams[obj.AbsID()].messages...)
+		g.Objects = append(g.Objects, sequenceDiagrams[obj.AbsID()].actors...)
+		g.Objects = append(g.Objects, sequenceDiagrams[obj.AbsID()].spans...)
 	}
-	g.Objects = allObjects
 
 	return nil
 }
