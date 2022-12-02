@@ -12,7 +12,7 @@
 [![twitter](https://img.shields.io/twitter/follow/terrastruct?style=social)](https://twitter.com/terrastruct)
 [![license](https://img.shields.io/github/license/terrastruct/d2?color=9cf)](./LICENSE.txt)
 
-<img src="./docs/assets/cli.gif" alt="D2 CLI" />
+https://user-images.githubusercontent.com/10180857/205946913-8d164e43-c972-465d-90d4-cf6ed3cdff30.mp4
 
 </div>
 
