@@ -260,7 +260,12 @@ func (sd *sequenceDiagram) routeMessages() {
 		}
 
 		if message.Attributes.Label.Value != "" {
-			message.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			if isLeftToRight {
+				message.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
+			} else {
+				// the label will be placed above the message because the orientation is based on the edge normal vector
+				message.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
+			}
 		}
 	}
 }
