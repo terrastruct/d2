@@ -20,7 +20,7 @@ require (
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2
 	gonum.org/v1/plot v0.12.0
 	nhooyr.io/websocket v1.8.7
-	oss.terrastruct.com/util-go v0.0.0-20221202005600-84192f5a34c3
+	oss.terrastruct.com/util-go v0.0.0-20221202012609-7e2754a7212e
 	rogchap.com/v8go v0.7.1-0.20221102201510-1f00b5007d95
 )
 
