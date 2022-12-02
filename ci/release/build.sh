@@ -122,6 +122,8 @@ main() {
   runjob linux-arm64 'OS=linux ARCH=arm64 build' &
   runjob macos-amd64 'OS=macos ARCH=amd64 build' &
   runjob macos-arm64 'OS=macos ARCH=arm64 build' &
+  runjob windows-amd64 'OS=windows ARCH=amd64 build' &
+  runjob windows-arm64 'OS=macos ARCH=arm64 build' &
   waitjobs
 }
 
