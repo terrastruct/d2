@@ -1213,7 +1213,6 @@ finally.sequence.scorer -> finally.sequence.itemResponse.c`,
 		{
 			name: "number_connections",
 			script: `1 -> 2
-
 foo baz: Foo Baz
 
 foo baz -> hello
