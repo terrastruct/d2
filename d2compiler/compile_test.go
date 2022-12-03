@@ -1555,6 +1555,18 @@ dst.id <-> src.dst_id
 			expErr: `d2/testdata/d2compiler/TestCompile/invalid_direction.d2:2:14: direction must be one of up, down, right, left, got "diagonal"
 `,
 		},
+		{
+			name: "self-referencing",
+
+			text: `x -> x
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				_, err := diff.Strings(g.Edges[0].Dst.ID, g.Edges[0].Src.ID)
+				if err != nil {
+					t.Fatal(err)
+				}
+			},
+		},
 	}
 
 	for _, tc := range testCases {

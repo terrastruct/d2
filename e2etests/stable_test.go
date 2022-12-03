@@ -1319,6 +1319,13 @@ q -> r
 r -> s
 s -> t`,
 		},
+		{
+			name: "self-referencing",
+			script: `x -> x -> x -> y
+z -> y
+z -> z: hello
+`,
+		},
 	}
 
 	runa(t, tcs)

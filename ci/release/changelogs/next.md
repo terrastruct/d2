@@ -9,6 +9,8 @@
 - `direction` keyword is now supported to specify `up`, `down`, `right`, `left` layouts. See
   [docs](https://d2lang.com/tour/layouts) for more.
   [#251](https://github.com/terrastruct/d2/pull/251)
+- Self-referencing connections are now valid. E.g. `x -> x`.
+  [#273](https://github.com/terrastruct/d2/pull/273)
 - Arrowhead labels are now supported. [#182](https://github.com/terrastruct/d2/pull/182)
 - `stroke-dash` on shapes is now supported. [#188](https://github.com/terrastruct/d2/issues/188)
 - `font-color` is now supported on shapes and connections. [#215](https://github.com/terrastruct/d2/pull/215)

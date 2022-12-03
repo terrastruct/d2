@@ -187,17 +187,19 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 		start, end := points[startIndex], points[endIndex]
 
 		// chop where edge crosses the source/target boxes since container edges were routed to a descendant
-		for i := 1; i < len(points); i++ {
-			segment := *geo.NewSegment(points[i-1], points[i])
-			if intersections := edge.Src.Box.Intersections(segment); len(intersections) > 0 {
-				start = intersections[0]
-				startIndex = i - 1
-			}
+		if edge.Src != edge.Dst {
+			for i := 1; i < len(points); i++ {
+				segment := *geo.NewSegment(points[i-1], points[i])
+				if intersections := edge.Src.Box.Intersections(segment); len(intersections) > 0 {
+					start = intersections[0]
+					startIndex = i - 1
+				}
 
-			if intersections := edge.Dst.Box.Intersections(segment); len(intersections) > 0 {
-				end = intersections[0]
-				endIndex = i
-				break
+				if intersections := edge.Dst.Box.Intersections(segment); len(intersections) > 0 {
+					end = intersections[0]
+					endIndex = i
+					break
+				}
 			}
 		}
 
