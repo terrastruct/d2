@@ -142,7 +142,8 @@ func (sd *sequenceDiagram) placeActors() {
 //        │
 //        │
 func (sd *sequenceDiagram) addLifelineEdges() {
-	endY := sd.getMessageY(len(sd.messages))
+	lastRoute := sd.messages[len(sd.messages)-1].Route
+	endY := lastRoute[len(lastRoute)-1].Y + MIN_MESSAGE_DISTANCE
 	for _, actor := range sd.actors {
 		actorBottom := actor.Center()
 		actorBottom.Y = actor.TopLeft.Y + actor.Height
@@ -241,6 +242,7 @@ func (sd *sequenceDiagram) routeMessages() {
 	for rank, message := range sd.messages {
 		message.ZIndex = 2
 		isLeftToRight := message.Src.TopLeft.X < message.Dst.TopLeft.X
+		isSelfMessage := message.Src == message.Dst
 
 		// finds the proper anchor point based on the message direction
 		var startX, endX float64
@@ -252,7 +254,9 @@ func (sd *sequenceDiagram) routeMessages() {
 			startX = message.Src.TopLeft.X
 		}
 
-		if sd.isActor(message.Dst) {
+		if isSelfMessage {
+			endX = startX
+		} else if sd.isActor(message.Dst) {
 			endX = message.Dst.Center().X
 		} else if isLeftToRight {
 			endX = message.Dst.TopLeft.X
@@ -260,14 +264,25 @@ func (sd *sequenceDiagram) routeMessages() {
 			endX = message.Dst.TopLeft.X + message.Dst.Width
 		}
 
-		messageY := sd.getMessageY(rank)
-		message.Route = []*geo.Point{
-			geo.NewPoint(startX, messageY),
-			geo.NewPoint(endX, messageY),
+		startY := sd.getMessageY(rank)
+		if isSelfMessage {
+			message.Route = []*geo.Point{
+				geo.NewPoint(startX, startY),
+				geo.NewPoint(startX+MIN_MESSAGE_DISTANCE, startY),
+				geo.NewPoint(startX+MIN_MESSAGE_DISTANCE, startY+MIN_MESSAGE_DISTANCE),
+				geo.NewPoint(startX, startY+MIN_MESSAGE_DISTANCE),
+			}
+		} else {
+			message.Route = []*geo.Point{
+				geo.NewPoint(startX, startY),
+				geo.NewPoint(endX, startY),
+			}
 		}
 
 		if message.Attributes.Label.Value != "" {
-			if isLeftToRight {
+			if isSelfMessage {
+				message.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			} else if isLeftToRight {
 				message.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
 			} else {
 				// the label will be placed above the message because the orientation is based on the edge normal vector

@@ -383,3 +383,39 @@ func TestNestedSequenceDiagrams(t *testing.T) {
 		}
 	}
 }
+
+func TestSelfEdges(t *testing.T) {
+	g := d2graph.NewGraph(nil)
+	g.Root.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
+	n1 := g.Root.EnsureChild([]string{"n1"})
+	n1.Box = geo.NewBox(nil, 100, 100)
+
+	g.Edges = []*d2graph.Edge{
+		{
+			Src:   n1,
+			Dst:   n1,
+			Index: 0,
+			Attributes: d2graph.Attributes{
+				Label: d2graph.Scalar{Value: "left to right"},
+			},
+		},
+	}
+
+	ctx := log.WithTB(context.Background(), t, nil)
+	Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
+		return nil
+	})
+
+	route := g.Edges[0].Route
+	if len(route) != 4 {
+		t.Fatalf("expected route to have 4 points, got %d", len(route))
+	}
+
+	if route[0].X != route[3].X {
+		t.Fatalf("route does not end at the same actor, start at %.5f, end at %.5f", route[0].X, route[3].X)
+	}
+
+	if route[3].Y-route[0].Y != MIN_MESSAGE_DISTANCE {
+		t.Fatalf("expected route height to be %.f5, got %.5f", MIN_MESSAGE_DISTANCE, route[3].Y-route[0].Y)
+	}
+}
