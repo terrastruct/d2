@@ -9,8 +9,8 @@ import (
 	"regexp"
 	"strconv"
 
+	"github.com/dop251/goja"
 	"oss.terrastruct.com/util-go/xdefer"
-	v8 "rogchap.com/v8go"
 )
 
 var pxPerEx = 8
@@ -30,24 +30,24 @@ var svgRe = regexp.MustCompile(`<svg[^>]+width="([0-9\.]+)ex" height="([0-9\.]+)
 
 func Render(s string) (_ string, err error) {
 	defer xdefer.Errorf(&err, "latex failed to parse")
-	v8ctx := v8.NewContext()
+	vm := goja.New()
 
-	if _, err := v8ctx.RunScript(polyfillsJS, "polyfills.js"); err != nil {
+	if _, err := vm.RunString(polyfillsJS); err != nil {
 		return "", err
 	}
 
-	if _, err := v8ctx.RunScript(mathjaxJS, "mathjax.js"); err != nil {
+	if _, err := vm.RunString(mathjaxJS); err != nil {
 		return "", err
 	}
 
-	if _, err := v8ctx.RunScript(setupJS, "setup.js"); err != nil {
+	if _, err := vm.RunString(setupJS); err != nil {
 		return "", err
 	}
 
-	val, err := v8ctx.RunScript(fmt.Sprintf(`adaptor.innerHTML(html.convert(`+"`"+"%s`"+`, {
+	val, err := vm.RunString(fmt.Sprintf(`adaptor.innerHTML(html.convert(`+"`"+"%s`"+`, {
   em: %d,
   ex: %d,
-}))`, s, pxPerEx*2, pxPerEx), "value.js")
+}))`, s, pxPerEx*2, pxPerEx))
 	if err != nil {
 		return "", err
 	}
