@@ -1,5 +1,3 @@
-//go:build cgo
-
 package d2latex
 
 import (
