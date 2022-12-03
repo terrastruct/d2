@@ -1,4 +1,4 @@
-//go:build cgo && !nodagre
+//go:build !nodagre
 
 package main
 
