@@ -1,4 +1,4 @@
-//go:build cgo && !noelk
+//go:build !noelk
 
 package d2plugin
 
