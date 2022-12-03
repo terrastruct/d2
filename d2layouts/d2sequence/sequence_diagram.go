@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"sort"
+	"strings"
 
 	"oss.terrastruct.com/util-go/go2"
 
@@ -26,9 +27,8 @@ type sequenceDiagram struct {
 	objectRank map[*d2graph.Object]int
 
 	// keep track of the first and last message of a given actor/span
-	// the message rank is the order in which it appears from top to bottom
-	minMessageRank map[*d2graph.Object]int
-	maxMessageRank map[*d2graph.Object]int
+	firstMessage map[*d2graph.Object]*d2graph.Edge
+	lastMessage  map[*d2graph.Object]*d2graph.Edge
 
 	messageYStep   float64
 	actorXStep     float64
@@ -42,8 +42,8 @@ func newSequenceDiagram(actors []*d2graph.Object, messages []*d2graph.Edge) *seq
 		spans:          nil,
 		lifelines:      nil,
 		objectRank:     make(map[*d2graph.Object]int),
-		minMessageRank: make(map[*d2graph.Object]int),
-		maxMessageRank: make(map[*d2graph.Object]int),
+		firstMessage:   make(map[*d2graph.Object]*d2graph.Edge),
+		lastMessage:    make(map[*d2graph.Object]*d2graph.Edge),
 		messageYStep:   MIN_MESSAGE_DISTANCE,
 		actorXStep:     MIN_ACTOR_DISTANCE,
 		maxActorHeight: 0.,
@@ -76,17 +76,27 @@ func newSequenceDiagram(actors []*d2graph.Object, messages []*d2graph.Edge) *seq
 		}
 	}
 
-	for rank, message := range sd.messages {
+	for _, message := range sd.messages {
 		sd.messageYStep = math.Max(sd.messageYStep, float64(message.LabelDimensions.Height))
-
-		sd.setMinMaxMessageRank(message.Src, rank)
-		sd.setMinMaxMessageRank(message.Dst, rank)
 
 		// ensures that long labels, spanning over multiple actors, don't make for large gaps between actors
 		// by distributing the label length across the actors rank difference
 		rankDiff := math.Abs(float64(sd.objectRank[message.Src]) - float64(sd.objectRank[message.Dst]))
-		distributedLabelWidth := float64(message.LabelDimensions.Width) / rankDiff
-		sd.actorXStep = math.Max(sd.actorXStep, distributedLabelWidth+HORIZONTAL_PAD)
+		if rankDiff != 0 {
+			// rankDiff = 0 for self edges
+			distributedLabelWidth := float64(message.LabelDimensions.Width) / rankDiff
+			sd.actorXStep = math.Max(sd.actorXStep, distributedLabelWidth+HORIZONTAL_PAD)
+
+		}
+		sd.lastMessage[message.Src] = message
+		if _, exists := sd.firstMessage[message.Src]; !exists {
+			sd.firstMessage[message.Src] = message
+		}
+		sd.lastMessage[message.Dst] = message
+		if _, exists := sd.firstMessage[message.Dst]; !exists {
+			sd.firstMessage[message.Dst] = message
+		}
+
 	}
 
 	sd.messageYStep += VERTICAL_PAD
@@ -98,21 +108,15 @@ func newSequenceDiagram(actors []*d2graph.Object, messages []*d2graph.Edge) *seq
 	return sd
 }
 
-func (sd *sequenceDiagram) setMinMaxMessageRank(actor *d2graph.Object, rank int) {
-	if minRank, exists := sd.minMessageRank[actor]; exists {
-		sd.minMessageRank[actor] = go2.IntMin(minRank, rank)
-	} else {
-		sd.minMessageRank[actor] = rank
-	}
-
-	sd.maxMessageRank[actor] = go2.IntMax(sd.maxMessageRank[actor], rank)
-}
-
-func (sd *sequenceDiagram) layout() {
+func (sd *sequenceDiagram) layout() error {
 	sd.placeActors()
+	if err := sd.routeMessages(); err != nil {
+		return err
+	}
 	sd.placeSpans()
-	sd.routeMessages()
+	sd.adjustRouteEndpoints()
 	sd.addLifelineEdges()
+	return nil
 }
 
 // placeActors places actors bottom aligned, side by side
@@ -210,12 +214,21 @@ func (sd *sequenceDiagram) placeSpans() {
 
 		// finds the position if there are messages to this span
 		minMessageY := math.Inf(1)
-		if minRank, exists := sd.minMessageRank[span]; exists {
-			minMessageY = sd.getMessageY(minRank)
+		if firstMessage, exists := sd.firstMessage[span]; exists {
+			// needs to check Src/Dst because of self-edges or edges to/from descendants
+			if span == firstMessage.Src {
+				minMessageY = firstMessage.Route[0].Y
+			} else {
+				minMessageY = firstMessage.Route[len(firstMessage.Route)-1].Y
+			}
 		}
 		maxMessageY := math.Inf(-1)
-		if maxRank, exists := sd.maxMessageRank[span]; exists {
-			maxMessageY = sd.getMessageY(maxRank)
+		if lastMessage, exists := sd.lastMessage[span]; exists {
+			if span == lastMessage.Src {
+				maxMessageY = lastMessage.Route[0].Y
+			} else {
+				maxMessageY = lastMessage.Route[len(lastMessage.Route)-1].Y
+			}
 		}
 
 		// if it is the same as the child top left, add some padding
@@ -237,40 +250,36 @@ func (sd *sequenceDiagram) placeSpans() {
 	}
 }
 
-// routeMessages routes horizontal edges (messages) from Src to Dst
-func (sd *sequenceDiagram) routeMessages() {
-	for rank, message := range sd.messages {
+// routeMessages routes horizontal edges (messages) from Src to Dst lifeline (actor/span center)
+// in another step, routes are adjusted to spans borders when necessary
+func (sd *sequenceDiagram) routeMessages() error {
+	startY := sd.maxActorHeight + sd.messageYStep
+	for _, message := range sd.messages {
 		message.ZIndex = 2
-		isLeftToRight := message.Src.TopLeft.X < message.Dst.TopLeft.X
+		var startX, endX float64
+		if startCenter := getCenter(message.Src); startCenter != nil {
+			startX = startCenter.X
+		} else {
+			return fmt.Errorf("could not find center of %s", message.Src.AbsID())
+		}
+		if endCenter := getCenter(message.Dst); endCenter != nil {
+			endX = endCenter.X
+		} else {
+			return fmt.Errorf("could not find center of %s", message.Dst.AbsID())
+		}
+		isLeftToRight := startX < endX
+		isToDescendant := strings.HasPrefix(message.Dst.AbsID(), message.Src.AbsID())
+		isFromDescendant := strings.HasPrefix(message.Src.AbsID(), message.Dst.AbsID())
 		isSelfMessage := message.Src == message.Dst
 
-		// finds the proper anchor point based on the message direction
-		var startX, endX float64
-		if sd.isActor(message.Src) {
-			startX = message.Src.Center().X
-		} else if isLeftToRight {
-			startX = message.Src.TopLeft.X + message.Src.Width
-		} else {
-			startX = message.Src.TopLeft.X
-		}
-
-		if isSelfMessage {
-			endX = startX
-		} else if sd.isActor(message.Dst) {
-			endX = message.Dst.Center().X
-		} else if isLeftToRight {
-			endX = message.Dst.TopLeft.X
-		} else {
-			endX = message.Dst.TopLeft.X + message.Dst.Width
-		}
-
-		startY := sd.getMessageY(rank)
-		if isSelfMessage {
+		if isSelfMessage || isToDescendant || isFromDescendant {
+			midX := startX + MIN_MESSAGE_DISTANCE
+			endY := startY + MIN_MESSAGE_DISTANCE
 			message.Route = []*geo.Point{
 				geo.NewPoint(startX, startY),
-				geo.NewPoint(startX+MIN_MESSAGE_DISTANCE, startY),
-				geo.NewPoint(startX+MIN_MESSAGE_DISTANCE, startY+MIN_MESSAGE_DISTANCE),
-				geo.NewPoint(startX, startY+MIN_MESSAGE_DISTANCE),
+				geo.NewPoint(midX, startY),
+				geo.NewPoint(midX, endY),
+				geo.NewPoint(endX, endY),
 			}
 		} else {
 			message.Route = []*geo.Point{
@@ -278,9 +287,10 @@ func (sd *sequenceDiagram) routeMessages() {
 				geo.NewPoint(endX, startY),
 			}
 		}
+		startY += sd.messageYStep
 
 		if message.Attributes.Label.Value != "" {
-			if isSelfMessage {
+			if isSelfMessage || isFromDescendant || isToDescendant {
 				message.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			} else if isLeftToRight {
 				message.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
@@ -290,11 +300,39 @@ func (sd *sequenceDiagram) routeMessages() {
 			}
 		}
 	}
+	return nil
 }
 
-func (sd *sequenceDiagram) getMessageY(rank int) float64 {
-	// +1 so that the first message has the top padding for its label
-	return ((float64(rank) + 1.) * sd.messageYStep) + sd.maxActorHeight
+func getCenter(obj *d2graph.Object) *geo.Point {
+	if obj == nil {
+		return nil
+	} else if obj.TopLeft != nil {
+		return obj.Center()
+	}
+	return getCenter(obj.Parent)
+}
+
+// adjustRouteEndpoints adjust the first and last points of message routes when they are spans
+// routeMessages() will route to the actor lifelife as a reference point and this function
+// adjust to span width when necessary
+func (sd *sequenceDiagram) adjustRouteEndpoints() {
+	for _, message := range sd.messages {
+		route := message.Route
+		if !sd.isActor(message.Src) {
+			if sd.objectRank[message.Src] <= sd.objectRank[message.Dst] {
+				route[0].X += message.Src.Width / 2.
+			} else {
+				route[0].X -= message.Src.Width / 2.
+			}
+		}
+		if !sd.isActor(message.Dst) {
+			if sd.objectRank[message.Src] < sd.objectRank[message.Dst] {
+				route[len(route)-1].X -= message.Dst.Width / 2.
+			} else {
+				route[len(route)-1].X += message.Dst.Width / 2.
+			}
+		}
+	}
 }
 
 func (sd *sequenceDiagram) isActor(obj *d2graph.Object) bool {
@@ -308,8 +346,7 @@ func (sd *sequenceDiagram) getWidth() float64 {
 }
 
 func (sd *sequenceDiagram) getHeight() float64 {
-	// the layout is always placed starting at 0, so the height is just the last message
-	return sd.getMessageY(len(sd.messages))
+	return sd.lifelines[0].Route[1].Y
 }
 
 func (sd *sequenceDiagram) shift(tl *geo.Point) {

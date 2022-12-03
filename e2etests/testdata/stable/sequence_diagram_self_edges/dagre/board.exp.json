@@ -2,56 +2,17 @@
   "name": "",
   "shapes": [
     {
-      "id": "alice",
-      "type": "person",
+      "id": "a",
+      "type": "",
       "pos": {
         "x": 0,
-        "y": 77
+        "y": 50
       },
-      "width": 163,
-      "height": 158,
+      "width": 150,
+      "height": 169,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#E3E9FD",
-      "stroke": "red",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "Alice\nline\nbreaker",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": true,
-      "underline": false,
-      "labelWidth": 63,
-      "labelHeight": 58,
-      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
-      "zIndex": 0,
-      "level": 1
-    },
-    {
-      "id": "bob",
-      "type": "person",
-      "pos": {
-        "x": 480,
-        "y": 124
-      },
-      "width": 150,
-      "height": 143,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 5,
       "borderRadius": 0,
       "fill": "#E3E9FD",
       "stroke": "#0D32B2",
@@ -65,7 +26,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "Bob",
+      "label": "a",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -73,21 +34,60 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 32,
+      "labelWidth": 12,
       "labelHeight": 26,
-      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
-      "id": "db",
-      "type": "cylinder",
+      "id": "b",
+      "type": "",
       "pos": {
-        "x": 947,
-        "y": 136
+        "x": 400,
+        "y": 52
       },
       "width": 150,
-      "height": 152,
+      "height": 167,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#E3E9FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "b",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 13,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "b.1",
+      "type": "rectangle",
+      "pos": {
+        "x": 469,
+        "y": 673
+      },
+      "width": 12,
+      "height": 228,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -104,68 +104,28 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "db",
-      "fontSize": 16,
+      "label": "",
+      "fontSize": 24,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 24,
-      "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 1
+      "labelWidth": 15,
+      "labelHeight": 36,
+      "zIndex": 1,
+      "level": 2
     },
     {
-      "id": "queue",
-      "type": "queue",
+      "id": "b.1.2",
+      "type": "rectangle",
       "pos": {
-        "x": 1414,
-        "y": 161
+        "x": 465,
+        "y": 803
       },
-      "width": 150,
-      "height": 127,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#F0F3F9",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "queue",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": true,
-      "underline": false,
-      "labelWidth": 49,
-      "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 1
-    },
-    {
-      "id": "service",
-      "type": "",
-      "pos": {
-        "x": 1881,
-        "y": 50
-      },
-      "width": 202,
-      "height": 238,
+      "width": 20,
+      "height": 82,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -182,7 +142,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "an\nodd\nservice\nwith\na\nname\nin\nmultiple lines",
+      "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -190,27 +150,140 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 102,
-      "labelHeight": 138,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 1
+      "labelWidth": 13,
+      "labelHeight": 26,
+      "zIndex": 1,
+      "level": 3
+    },
+    {
+      "id": "a.1",
+      "type": "rectangle",
+      "pos": {
+        "x": 69,
+        "y": 967
+      },
+      "width": 12,
+      "height": 178,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#EDF0FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "",
+      "fontSize": 24,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 15,
+      "labelHeight": 36,
+      "zIndex": 1,
+      "level": 2
+    },
+    {
+      "id": "a.1.2",
+      "type": "rectangle",
+      "pos": {
+        "x": 65,
+        "y": 983
+      },
+      "width": 20,
+      "height": 80,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#F7F8FE",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 13,
+      "labelHeight": 26,
+      "zIndex": 1,
+      "level": 3
+    },
+    {
+      "id": "b.3",
+      "type": "rectangle",
+      "pos": {
+        "x": 469,
+        "y": 1113
+      },
+      "width": 12,
+      "height": 80,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#EDF0FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 13,
+      "labelHeight": 26,
+      "zIndex": 1,
+      "level": 2
     }
   ],
   "connections": [
     {
-      "id": "(alice -> bob)[0]",
-      "src": "alice",
+      "id": "(a -> a)[0]",
+      "src": "a",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "bob",
+      "dst": "a",
       "dstArrow": "triangle",
       "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "#0D32B2",
-      "label": "Authentication Request",
+      "label": "a self edge here",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -218,18 +291,26 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 155,
+      "labelWidth": 103,
       "labelHeight": 21,
-      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
       "route": [
         {
-          "x": 81.5,
-          "y": 418
+          "x": 75,
+          "y": 349
         },
         {
-          "x": 555,
-          "y": 418
+          "x": 155,
+          "y": 349
+        },
+        {
+          "x": 155,
+          "y": 429
+        },
+        {
+          "x": 75,
+          "y": 429
         }
       ],
       "animated": false,
@@ -238,18 +319,18 @@
       "zIndex": 2
     },
     {
-      "id": "(bob -> service)[0]",
-      "src": "bob",
+      "id": "(a -> b)[0]",
+      "src": "a",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "service",
+      "dst": "b",
       "dstArrow": "triangle",
       "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "#0D32B2",
-      "label": "make request for something that is quite far away and requires a really long label to take all the space between the objects",
+      "label": "between actors",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -257,18 +338,18 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 801,
+      "labelWidth": 102,
       "labelHeight": 21,
       "labelPosition": "OUTSIDE_TOP_CENTER",
       "labelPercentage": 0,
       "route": [
         {
-          "x": 555,
-          "y": 548
+          "x": 75,
+          "y": 479
         },
         {
-          "x": 1982,
-          "y": 548
+          "x": 475,
+          "y": 479
         }
       ],
       "animated": false,
@@ -277,18 +358,18 @@
       "zIndex": 2
     },
     {
-      "id": "(service -> db)[0]",
-      "src": "service",
+      "id": "(b -> b.1)[0]",
+      "src": "b",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "db",
+      "dst": "b.1",
       "dstArrow": "triangle",
       "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "#0D32B2",
-      "label": "validate credentials",
+      "label": "to descendant",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -296,18 +377,159 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 131,
+      "labelWidth": 94,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 475,
+          "y": 609
+        },
+        {
+          "x": 555,
+          "y": 609
+        },
+        {
+          "x": 555,
+          "y": 689
+        },
+        {
+          "x": 481,
+          "y": 689
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 2
+    },
+    {
+      "id": "b.(1 -> 1.2)[0]",
+      "src": "b.1",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "b.1.2",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "to deeper descendant",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 143,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 481,
+          "y": 739
+        },
+        {
+          "x": 555,
+          "y": 739
+        },
+        {
+          "x": 555,
+          "y": 819
+        },
+        {
+          "x": 485,
+          "y": 819
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 2
+    },
+    {
+      "id": "(b.1.2 -> b)[0]",
+      "src": "b.1.2",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "b",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "to parent",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 62,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 485,
+          "y": 869
+        },
+        {
+          "x": 555,
+          "y": 869
+        },
+        {
+          "x": 555,
+          "y": 949
+        },
+        {
+          "x": 475,
+          "y": 949
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 2
+    },
+    {
+      "id": "(b -> a.1.2)[0]",
+      "src": "b",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "a.1.2",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "actor",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 36,
       "labelHeight": 21,
       "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1982,
-          "y": 678
+          "x": 475,
+          "y": 999
         },
         {
-          "x": 1022,
-          "y": 678
+          "x": 85,
+          "y": 999
         }
       ],
       "animated": false,
@@ -316,15 +538,15 @@
       "zIndex": 2
     },
     {
-      "id": "(db -> service)[0]",
-      "src": "db",
+      "id": "(a.1 -> b.3)[0]",
+      "src": "a.1",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "service",
+      "dst": "b.3",
       "dstArrow": "triangle",
       "dstLabel": "",
       "opacity": 1,
-      "strokeDash": 4,
+      "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "#0D32B2",
       "label": "",
@@ -341,12 +563,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1022,
-          "y": 808
+          "x": 81,
+          "y": 1129
         },
         {
-          "x": 1982,
-          "y": 808
+          "x": 469,
+          "y": 1129
         }
       ],
       "animated": false,
@@ -355,245 +577,11 @@
       "zIndex": 2
     },
     {
-      "id": "(service -> bob)[0]",
-      "src": "service",
+      "id": "(a -- )[0]",
+      "src": "a",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "bob",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 4,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 1982,
-          "y": 938
-        },
-        {
-          "x": 555,
-          "y": 938
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 2
-    },
-    {
-      "id": "(bob -> alice)[0]",
-      "src": "bob",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "alice",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "Authentication Response",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 164,
-      "labelHeight": 21,
-      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 555,
-          "y": 1068
-        },
-        {
-          "x": 81.5,
-          "y": 1068
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 2
-    },
-    {
-      "id": "(alice -> bob)[1]",
-      "src": "alice",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "bob",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "Another authentication Request",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 210,
-      "labelHeight": 21,
-      "labelPosition": "OUTSIDE_TOP_CENTER",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 81.5,
-          "y": 1198
-        },
-        {
-          "x": 555,
-          "y": 1198
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 2
-    },
-    {
-      "id": "(bob -> queue)[0]",
-      "src": "bob",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "queue",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "do it later",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 65,
-      "labelHeight": 21,
-      "labelPosition": "OUTSIDE_TOP_CENTER",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 555,
-          "y": 1328
-        },
-        {
-          "x": 1489,
-          "y": 1328
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 2
-    },
-    {
-      "id": "(queue -> bob)[0]",
-      "src": "queue",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "bob",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 3,
-      "strokeWidth": 5,
-      "stroke": "green",
-      "label": "stored",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 44,
-      "labelHeight": 21,
-      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 1489,
-          "y": 1458
-        },
-        {
-          "x": 555,
-          "y": 1458
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 2
-    },
-    {
-      "id": "(bob -> alice)[1]",
-      "src": "bob",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "alice",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "Another authentication Response",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 219,
-      "labelHeight": 21,
-      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 555,
-          "y": 1588
-        },
-        {
-          "x": 81.5,
-          "y": 1588
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 2
-    },
-    {
-      "id": "(alice -- )[0]",
-      "src": "alice",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "alice-lifeline-end-3851299086",
+      "dst": "a-lifeline-end-2251863791",
       "dstArrow": "none",
       "dstLabel": "",
       "opacity": 1,
@@ -614,12 +602,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 81.5,
-          "y": 293
+          "x": 75,
+          "y": 219
         },
         {
-          "x": 81.5,
-          "y": 1668
+          "x": 75,
+          "y": 1209
         }
       ],
       "animated": false,
@@ -628,11 +616,11 @@
       "zIndex": 0
     },
     {
-      "id": "(bob -- )[0]",
-      "src": "bob",
+      "id": "(b -- )[0]",
+      "src": "b",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "bob-lifeline-end-3036726343",
+      "dst": "b-lifeline-end-668380428",
       "dstArrow": "none",
       "dstLabel": "",
       "opacity": 1,
@@ -653,129 +641,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 555,
-          "y": 293
+          "x": 475,
+          "y": 219
         },
         {
-          "x": 555,
-          "y": 1668
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 0
-    },
-    {
-      "id": "(db -- )[0]",
-      "src": "db",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "db-lifeline-end-2675250554",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 8,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 1022,
-          "y": 288
-        },
-        {
-          "x": 1022,
-          "y": 1668
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 0
-    },
-    {
-      "id": "(queue -- )[0]",
-      "src": "queue",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "queue-lifeline-end-1097346683",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 8,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 1489,
-          "y": 288
-        },
-        {
-          "x": 1489,
-          "y": 1668
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 0
-    },
-    {
-      "id": "(service -- )[0]",
-      "src": "service",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "service-lifeline-end-22863415",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 8,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 1982,
-          "y": 288
-        },
-        {
-          "x": 1982,
-          "y": 1668
+          "x": 475,
+          "y": 1209
         }
       ],
       "animated": false,
