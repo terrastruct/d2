@@ -1,5 +1,3 @@
-//go:build cgo
-
 package d2lib
 
 import "oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
