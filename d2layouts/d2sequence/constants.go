@@ -20,6 +20,8 @@ const SPAN_DEPTH_GROWTH_FACTOR = 8.
 // when a span has a single messages
 const MIN_SPAN_HEIGHT = 80.
 
+const SPAN_MESSAGE_PAD = 16.
+
 const LIFELINE_STROKE_WIDTH int = 2
 
 const LIFELINE_STROKE_DASH int = 8

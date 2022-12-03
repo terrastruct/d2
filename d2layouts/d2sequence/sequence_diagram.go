@@ -210,12 +210,12 @@ func (sd *sequenceDiagram) placeSpans() {
 
 		// if it is the same as the child top left, add some padding
 		minY := math.Min(minMessageY, minChildY)
-		if minY == minChildY {
-			minY -= SPAN_DEPTH_GROWTH_FACTOR
+		if minY == minChildY || minY == minMessageY {
+			minY -= SPAN_MESSAGE_PAD
 		}
 		maxY := math.Max(maxMessageY, maxChildY)
-		if maxY == maxChildY {
-			maxY += SPAN_DEPTH_GROWTH_FACTOR
+		if maxY == maxChildY || maxY == maxMessageY {
+			maxY += SPAN_MESSAGE_PAD
 		}
 
 		height := math.Max(maxY-minY, MIN_SPAN_HEIGHT)
