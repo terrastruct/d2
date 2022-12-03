@@ -8,6 +8,7 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/shape"
@@ -51,6 +52,12 @@ func newSequenceDiagram(actors []*d2graph.Object, messages []*d2graph.Edge) *seq
 	for rank, actor := range actors {
 		sd.root = actor.Parent
 		sd.objectRank[actor] = rank
+
+		if actor.Width < MIN_ACTOR_WIDTH {
+			aspectRatio := actor.Height / actor.Width
+			actor.Width = MIN_ACTOR_WIDTH
+			actor.Height = math.Round(aspectRatio * actor.Width)
+		}
 		sd.maxActorHeight = math.Max(sd.maxActorHeight, actor.Height)
 
 		queue := make([]*d2graph.Object, len(actor.ChildrenArray))
@@ -82,8 +89,11 @@ func newSequenceDiagram(actors []*d2graph.Object, messages []*d2graph.Edge) *seq
 		sd.actorXStep = math.Max(sd.actorXStep, distributedLabelWidth+HORIZONTAL_PAD)
 	}
 
-	sd.maxActorHeight += VERTICAL_PAD
 	sd.messageYStep += VERTICAL_PAD
+	sd.maxActorHeight += VERTICAL_PAD
+	if sd.root.LabelHeight != nil {
+		sd.maxActorHeight += float64(*sd.root.LabelHeight)
+	}
 
 	return sd
 }
@@ -108,11 +118,18 @@ func (sd *sequenceDiagram) layout() {
 // placeActors places actors bottom aligned, side by side
 func (sd *sequenceDiagram) placeActors() {
 	x := 0.
-	for _, actors := range sd.actors {
-		yOffset := sd.maxActorHeight - actors.Height
-		actors.TopLeft = geo.NewPoint(x, yOffset)
-		x += actors.Width + sd.actorXStep
-		actors.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+	for _, actor := range sd.actors {
+		shape := actor.Attributes.Shape.Value
+		var yOffset float64
+		if shape == d2target.ShapeImage || shape == d2target.ShapePerson {
+			actor.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
+			yOffset = sd.maxActorHeight - actor.Height - float64(*actor.LabelHeight)
+		} else {
+			actor.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			yOffset = sd.maxActorHeight - actor.Height
+		}
+		actor.TopLeft = geo.NewPoint(x, yOffset)
+		x += actor.Width + sd.actorXStep
 	}
 }
 
@@ -129,14 +146,16 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 	for _, actor := range sd.actors {
 		actorBottom := actor.Center()
 		actorBottom.Y = actor.TopLeft.Y + actor.Height
+		if *actor.LabelPosition == string(label.OutsideBottomCenter) {
+			actorBottom.Y += float64(*actor.LabelHeight) + LIFELINE_LABEL_PAD
+		}
 		actorLifelineEnd := actor.Center()
 		actorLifelineEnd.Y = endY
 		sd.lifelines = append(sd.lifelines, &d2graph.Edge{
 			Attributes: d2graph.Attributes{
 				Style: d2graph.Style{
-					StrokeDash:  &d2graph.Scalar{Value: "10"},
-					Stroke:      actor.Attributes.Style.Stroke,
-					StrokeWidth: actor.Attributes.Style.StrokeWidth,
+					StrokeDash:  &d2graph.Scalar{Value: fmt.Sprintf("%d", LIFELINE_STROKE_DASH)},
+					StrokeWidth: &d2graph.Scalar{Value: fmt.Sprintf("%d", LIFELINE_STROKE_WIDTH)},
 				},
 			},
 			Src:      actor,
@@ -170,7 +189,7 @@ func (sd *sequenceDiagram) placeSpans() {
 	}
 
 	// places spans from most to least nested
-	// the order is important because the only way a child span exists is if there'e an message to it
+	// the order is important because the only way a child span exists is if there's a message to it
 	// however, the parent span might not have a message to it and then its position is based on the child position
 	// or, there can be a message to it, but it comes after the child one meaning the top left position is still based on the child
 	// and not on its own message
@@ -200,21 +219,17 @@ func (sd *sequenceDiagram) placeSpans() {
 
 		// if it is the same as the child top left, add some padding
 		minY := math.Min(minMessageY, minChildY)
-		if minY == minChildY {
-			minY -= SPAN_DEPTH_GROW_FACTOR
-		} else {
+		if minY == minChildY || minY == minMessageY {
 			minY -= SPAN_MESSAGE_PAD
 		}
 		maxY := math.Max(maxMessageY, maxChildY)
-		if maxY == maxChildY {
-			maxY += SPAN_DEPTH_GROW_FACTOR
-		} else {
+		if maxY == maxChildY || maxY == maxMessageY {
 			maxY += SPAN_MESSAGE_PAD
 		}
 
 		height := math.Max(maxY-minY, MIN_SPAN_HEIGHT)
 		// -2 because the actors count as level 1 making the first level span getting 2*SPAN_DEPTH_GROW_FACTOR
-		width := SPAN_WIDTH + (float64(span.Level()-2) * SPAN_DEPTH_GROW_FACTOR)
+		width := SPAN_BASE_WIDTH + (float64(span.Level()-2) * SPAN_DEPTH_GROWTH_FACTOR)
 		x := rankToX[sd.objectRank[span]] - (width / 2.)
 		span.Box = geo.NewBox(geo.NewPoint(x, minY), width, height)
 		span.ZIndex = 1
@@ -243,14 +258,6 @@ func (sd *sequenceDiagram) routeMessages() {
 			endX = message.Dst.TopLeft.X
 		} else {
 			endX = message.Dst.TopLeft.X + message.Dst.Width
-		}
-
-		if isLeftToRight {
-			startX += SPAN_MESSAGE_PAD
-			endX -= SPAN_MESSAGE_PAD
-		} else {
-			startX -= SPAN_MESSAGE_PAD
-			endX += SPAN_MESSAGE_PAD
 		}
 
 		messageY := sd.getMessageY(rank)

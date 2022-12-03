@@ -6,10 +6,10 @@
       "type": "",
       "pos": {
         "x": 0,
-        "y": 50
+        "y": 62
       },
-      "width": 179,
-      "height": 141,
+      "width": 150,
+      "height": 128,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 5,
@@ -27,15 +27,15 @@
       "methods": null,
       "columns": null,
       "label": "scorer",
-      "fontSize": 28,
+      "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 79,
-      "labelHeight": 41,
+      "labelWidth": 48,
+      "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -44,11 +44,11 @@
       "id": "scorer.abc",
       "type": "rectangle",
       "pos": {
-        "x": 79,
-        "y": 1236
+        "x": 69,
+        "y": 1084
       },
-      "width": 20,
-      "height": 50,
+      "width": 12,
+      "height": 80,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 7,
@@ -82,11 +82,11 @@
       "id": "itemResponse",
       "type": "",
       "pos": {
-        "x": 379,
-        "y": 50
+        "x": 400,
+        "y": 64
       },
-      "width": 270,
-      "height": 141,
+      "width": 200,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -104,15 +104,15 @@
       "methods": null,
       "columns": null,
       "label": "itemResponse",
-      "fontSize": 28,
+      "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 170,
-      "labelHeight": 41,
+      "labelWidth": 100,
+      "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -121,11 +121,11 @@
       "id": "itemResponse.a",
       "type": "rectangle",
       "pos": {
-        "x": 504,
-        "y": 336
+        "x": 494,
+        "y": 304
       },
-      "width": 20,
-      "height": 160,
+      "width": 12,
+      "height": 162,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -159,11 +159,11 @@
       "id": "item",
       "type": "",
       "pos": {
-        "x": 849,
+        "x": 850,
         "y": 50
       },
-      "width": 157,
-      "height": 141,
+      "width": 150,
+      "height": 140,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -181,15 +181,15 @@
       "methods": null,
       "columns": null,
       "label": "item",
-      "fontSize": 28,
+      "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 57,
-      "labelHeight": 41,
+      "labelWidth": 35,
+      "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -198,11 +198,11 @@
       "id": "item.a",
       "type": "rectangle",
       "pos": {
-        "x": 917,
-        "y": 476
+        "x": 919,
+        "y": 418
       },
-      "width": 20,
-      "height": 770,
+      "width": 12,
+      "height": 698,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -236,11 +236,11 @@
       "id": "item.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 912,
-        "y": 486
+        "x": 915,
+        "y": 434
       },
-      "width": 30,
-      "height": 160,
+      "width": 20,
+      "height": 162,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -274,11 +274,11 @@
       "id": "essayRubric",
       "type": "",
       "pos": {
-        "x": 1206,
-        "y": 50
+        "x": 1250,
+        "y": 64
       },
-      "width": 245,
-      "height": 141,
+      "width": 186,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -296,15 +296,15 @@
       "methods": null,
       "columns": null,
       "label": "essayRubric",
-      "fontSize": 28,
+      "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 145,
-      "labelHeight": 41,
+      "labelWidth": 86,
+      "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -313,10 +313,10 @@
       "id": "essayRubric.a",
       "type": "rectangle",
       "pos": {
-        "x": 1318,
-        "y": 616
+        "x": 1337,
+        "y": 532
       },
-      "width": 20,
+      "width": 12,
       "height": 340,
       "opacity": 1,
       "strokeDash": 0,
@@ -351,11 +351,11 @@
       "id": "essayRubric.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 1313,
-        "y": 626
+        "x": 1333,
+        "y": 548
       },
-      "width": 30,
-      "height": 320,
+      "width": 20,
+      "height": 308,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -389,11 +389,11 @@
       "id": "essayRubric.a.b.c",
       "type": "rectangle",
       "pos": {
-        "x": 1308,
-        "y": 636
+        "x": 1329,
+        "y": 564
       },
-      "width": 40,
-      "height": 160,
+      "width": 28,
+      "height": 162,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -427,11 +427,11 @@
       "id": "concept",
       "type": "",
       "pos": {
-        "x": 1651,
-        "y": 50
+        "x": 1686,
+        "y": 64
       },
-      "width": 200,
-      "height": 141,
+      "width": 160,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -449,15 +449,15 @@
       "methods": null,
       "columns": null,
       "label": "concept",
-      "fontSize": 28,
+      "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 100,
-      "labelHeight": 41,
+      "labelWidth": 60,
+      "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -466,11 +466,11 @@
       "id": "concept.a",
       "type": "rectangle",
       "pos": {
-        "x": 1741,
-        "y": 756
+        "x": 1760,
+        "y": 646
       },
-      "width": 20,
-      "height": 370,
+      "width": 12,
+      "height": 388,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -504,11 +504,11 @@
       "id": "concept.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 1736,
-        "y": 766
+        "x": 1756,
+        "y": 662
       },
-      "width": 30,
-      "height": 350,
+      "width": 20,
+      "height": 356,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -542,11 +542,11 @@
       "id": "concept.a.b.c",
       "type": "rectangle",
       "pos": {
-        "x": 1731,
-        "y": 776
+        "x": 1752,
+        "y": 678
       },
-      "width": 40,
-      "height": 330,
+      "width": 28,
+      "height": 324,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -580,11 +580,11 @@
       "id": "concept.a.b.c.d",
       "type": "rectangle",
       "pos": {
-        "x": 1726,
-        "y": 786
+        "x": 1748,
+        "y": 694
       },
-      "width": 50,
-      "height": 310,
+      "width": 36,
+      "height": 292,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -618,11 +618,11 @@
       "id": "itemOutcome",
       "type": "",
       "pos": {
-        "x": 2051,
-        "y": 50
+        "x": 2096,
+        "y": 64
       },
-      "width": 265,
-      "height": 141,
+      "width": 197,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -640,15 +640,15 @@
       "methods": null,
       "columns": null,
       "label": "itemOutcome",
-      "fontSize": 28,
+      "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 165,
-      "labelHeight": 41,
+      "labelWidth": 97,
+      "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -657,11 +657,11 @@
       "id": "itemOutcome.a",
       "type": "rectangle",
       "pos": {
-        "x": 2173,
-        "y": 1046
+        "x": 2188,
+        "y": 890
       },
-      "width": 20,
-      "height": 390,
+      "width": 12,
+      "height": 420,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -695,11 +695,11 @@
       "id": "itemOutcome.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 2168,
-        "y": 1056
+        "x": 2184,
+        "y": 906
       },
-      "width": 30,
-      "height": 370,
+      "width": 20,
+      "height": 388,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -733,11 +733,11 @@
       "id": "itemOutcome.a.b.c",
       "type": "rectangle",
       "pos": {
-        "x": 2163,
-        "y": 1066
+        "x": 2180,
+        "y": 922
       },
-      "width": 40,
-      "height": 350,
+      "width": 28,
+      "height": 356,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -771,11 +771,11 @@
       "id": "itemOutcome.a.b.c.d",
       "type": "rectangle",
       "pos": {
-        "x": 2158,
-        "y": 1076
+        "x": 2176,
+        "y": 938
       },
-      "width": 50,
-      "height": 330,
+      "width": 36,
+      "height": 324,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -809,11 +809,11 @@
       "id": "itemOutcome.a.b.c.d.e",
       "type": "rectangle",
       "pos": {
-        "x": 2153,
-        "y": 1086
+        "x": 2172,
+        "y": 954
       },
-      "width": 60,
-      "height": 310,
+      "width": 44,
+      "height": 292,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -847,11 +847,11 @@
       "id": "itemResponse.c",
       "type": "rectangle",
       "pos": {
-        "x": 504,
-        "y": 1536
+        "x": 494,
+        "y": 1344
       },
-      "width": 20,
-      "height": 50,
+      "width": 12,
+      "height": 80,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -909,12 +909,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 94.5,
-          "y": 341
+          "x": 75,
+          "y": 320
         },
         {
-          "x": 499,
-          "y": 341
+          "x": 494,
+          "y": 320
         }
       ],
       "animated": false,
@@ -948,12 +948,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 529,
-          "y": 491
+          "x": 506,
+          "y": 450
         },
         {
-          "x": 907.5,
-          "y": 491
+          "x": 915,
+          "y": 450
         }
       ],
       "animated": false,
@@ -987,12 +987,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 947.5,
-          "y": 641
+          "x": 935,
+          "y": 580
         },
         {
-          "x": 1303.5,
-          "y": 641
+          "x": 1329,
+          "y": 580
         }
       ],
       "animated": false,
@@ -1026,12 +1026,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1353.5,
-          "y": 791
+          "x": 1357,
+          "y": 710
         },
         {
-          "x": 1721,
-          "y": 791
+          "x": 1748,
+          "y": 710
         }
       ],
       "animated": false,
@@ -1065,12 +1065,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 942.5,
-          "y": 941
+          "x": 931,
+          "y": 840
         },
         {
-          "x": 1308.5,
-          "y": 941
+          "x": 1333,
+          "y": 840
         }
       ],
       "animated": false,
@@ -1104,12 +1104,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1781,
-          "y": 1091
+          "x": 1784,
+          "y": 970
         },
         {
-          "x": 2148.5,
-          "y": 1091
+          "x": 2172.5,
+          "y": 970
         }
       ],
       "animated": false,
@@ -1143,12 +1143,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 104.5,
-          "y": 1241
+          "x": 81,
+          "y": 1100
         },
         {
-          "x": 912.5,
-          "y": 1241
+          "x": 919,
+          "y": 1100
         }
       ],
       "animated": false,
@@ -1182,12 +1182,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2148.5,
-          "y": 1391
+          "x": 2172.5,
+          "y": 1230
         },
         {
-          "x": 94.5,
-          "y": 1391
+          "x": 75,
+          "y": 1230
         }
       ],
       "animated": false,
@@ -1221,12 +1221,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 94.5,
-          "y": 1541
+          "x": 75,
+          "y": 1360
         },
         {
-          "x": 499,
-          "y": 1541
+          "x": 494,
+          "y": 1360
         }
       ],
       "animated": false,
@@ -1243,9 +1243,9 @@
       "dstArrow": "none",
       "dstLabel": "",
       "opacity": 1,
-      "strokeDash": 10,
-      "strokeWidth": 5,
-      "stroke": "red",
+      "strokeDash": 8,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -1260,12 +1260,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 89.5,
-          "y": 191
+          "x": 75,
+          "y": 190
         },
         {
-          "x": 89.5,
-          "y": 1691
+          "x": 75,
+          "y": 1490
         }
       ],
       "animated": false,
@@ -1282,7 +1282,7 @@
       "dstArrow": "none",
       "dstLabel": "",
       "opacity": 1,
-      "strokeDash": 10,
+      "strokeDash": 8,
       "strokeWidth": 2,
       "stroke": "#0D32B2",
       "label": "",
@@ -1299,12 +1299,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 514,
-          "y": 191
+          "x": 500,
+          "y": 190
         },
         {
-          "x": 514,
-          "y": 1691
+          "x": 500,
+          "y": 1490
         }
       ],
       "animated": false,
@@ -1321,7 +1321,7 @@
       "dstArrow": "none",
       "dstLabel": "",
       "opacity": 1,
-      "strokeDash": 10,
+      "strokeDash": 8,
       "strokeWidth": 2,
       "stroke": "#0D32B2",
       "label": "",
@@ -1338,12 +1338,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 927.5,
-          "y": 191
+          "x": 925,
+          "y": 190
         },
         {
-          "x": 927.5,
-          "y": 1691
+          "x": 925,
+          "y": 1490
         }
       ],
       "animated": false,
@@ -1360,7 +1360,7 @@
       "dstArrow": "none",
       "dstLabel": "",
       "opacity": 1,
-      "strokeDash": 10,
+      "strokeDash": 8,
       "strokeWidth": 2,
       "stroke": "#0D32B2",
       "label": "",
@@ -1377,12 +1377,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1328.5,
-          "y": 191
+          "x": 1343,
+          "y": 190
         },
         {
-          "x": 1328.5,
-          "y": 1691
+          "x": 1343,
+          "y": 1490
         }
       ],
       "animated": false,
@@ -1399,7 +1399,7 @@
       "dstArrow": "none",
       "dstLabel": "",
       "opacity": 1,
-      "strokeDash": 10,
+      "strokeDash": 8,
       "strokeWidth": 2,
       "stroke": "#0D32B2",
       "label": "",
@@ -1416,12 +1416,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1751,
-          "y": 191
+          "x": 1766,
+          "y": 190
         },
         {
-          "x": 1751,
-          "y": 1691
+          "x": 1766,
+          "y": 1490
         }
       ],
       "animated": false,
@@ -1438,7 +1438,7 @@
       "dstArrow": "none",
       "dstLabel": "",
       "opacity": 1,
-      "strokeDash": 10,
+      "strokeDash": 8,
       "strokeWidth": 2,
       "stroke": "#0D32B2",
       "label": "",
@@ -1455,12 +1455,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2183.5,
-          "y": 191
+          "x": 2194.5,
+          "y": 190
         },
         {
-          "x": 2183.5,
-          "y": 1691
+          "x": 2194.5,
+          "y": 1490
         }
       ],
       "animated": false,

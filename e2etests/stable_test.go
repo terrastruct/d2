@@ -1217,6 +1217,107 @@ foo baz: Foo Baz
 
 foo baz -> hello
 `,
+		}, {
+			name: "sequence_diagram_all_shapes",
+			script: `shape: sequence_diagram
+
+a: "a label" {
+    shape: callout 
+}
+b: "b\nlabels" {
+    shape: circle
+}
+c: "a class" {
+    shape: class
+    +public() bool
+    -private() int
+}
+d: "cloudyyyy" {
+    shape: cloud 
+}
+e: |go
+    a := 5
+    b := a + 7
+    fmt.Printf("%d", b)
+|
+f: "cyl" {
+    shape: cylinder 
+}
+g: "dia" {
+    shape: diamond 
+}
+h: "docs" {
+    shape: document 
+}
+i: "six corners" {
+    shape: hexagon 
+}
+j: "a random icon" {
+    shape: image
+    icon: https://icons.terrastruct.com/essentials/004-picture.svg
+}
+k: "over" {
+    shape: oval 
+}
+l: "pack" {
+    shape: package 
+}
+m: "docs page" {
+    shape: page 
+}
+n: "too\nhard\to say" {
+    shape: parallelogram 
+}
+o: "single\nperson" {
+    shape: person 
+}
+p: "a queue" {
+    shape: queue 
+}
+q: "a square" {
+    shape: square 
+}
+r: "a step at a time" {
+    shape: step 
+}
+s: "data" {
+    shape: stored_data 
+}
+
+t: "users" {
+    shape: sql_table
+    id: int
+    name: varchar
+}
+
+a -> b: |go
+    result := callThisFunction(obj, 5)
+|
+b <-> c: "mid" {
+    source-arrowhead: "this side" {
+        shape: diamond
+    }
+    target-arrowhead: "other side" {
+        shape: triangle
+    }
+}
+c -> d
+d -> e
+e -> f
+f -> g
+g -> h
+h -> i
+i -> j
+j -> k
+k -> l
+l -> m
+m -> n
+n -> o
+o -> p
+p -> q
+q -> r
+r -> s
+s -> t`,
 		},
 	}
 

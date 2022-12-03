@@ -41,6 +41,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 		obj.Children = make(map[string]*d2graph.Object)
 		obj.ChildrenArray = nil
 		obj.Box = geo.NewBox(nil, sd.getWidth(), sd.getHeight())
+		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 		sequenceDiagrams[obj.AbsID()] = sd
 
 		for _, edge := range sd.messages {
@@ -59,7 +60,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 	layoutObjects, objectOrder := getLayoutObjects(g, objectsToRemove)
 	g.Objects = layoutObjects
 
-	if isRootSequenceDiagram(g) {
+	if g.Root.IsSequenceDiagram() {
 		// the sequence diagram is the only layout engine if the whole diagram is
 		// shape: sequence_diagram
 		g.Root.TopLeft = geo.NewPoint(0, 0)
@@ -69,10 +70,6 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 
 	cleanup(g, sequenceDiagrams, objectOrder, edgeOrder)
 	return nil
-}
-
-func isRootSequenceDiagram(g *d2graph.Graph) bool {
-	return g.Root.Attributes.Shape.Value == d2target.ShapeSequenceDiagram
 }
 
 // layoutSequenceDiagram finds the edges inside the sequence diagram and performs the layout on the object descendants
@@ -123,7 +120,7 @@ func getLayoutObjects(g *d2graph.Graph, toRemove map[*d2graph.Object]struct{}) (
 // - sorts edges and objects to their original graph order
 func cleanup(g *d2graph.Graph, sequenceDiagrams map[string]*sequenceDiagram, objectsOrder, edgesOrder map[string]int) {
 	var objects []*d2graph.Object
-	if isRootSequenceDiagram(g) {
+	if g.Root.IsSequenceDiagram() {
 		objects = []*d2graph.Object{g.Root}
 	} else {
 		objects = g.Objects

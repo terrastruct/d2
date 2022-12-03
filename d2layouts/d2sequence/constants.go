@@ -6,19 +6,27 @@ const HORIZONTAL_PAD = 50.
 // leaves at least 25 units of space on the top/bottom when computing the space required between messages
 const VERTICAL_PAD = 50.
 
-const MIN_ACTOR_DISTANCE = 200.
+const MIN_ACTOR_DISTANCE = 250.
+
+const MIN_ACTOR_WIDTH = 150.
 
 // min vertical distance between messages
-const MIN_MESSAGE_DISTANCE = 100.
+const MIN_MESSAGE_DISTANCE = 80.
 
 // default size
-const SPAN_WIDTH = 20.
-
-// small pad so that messages don't touch lifelines and spans
-const SPAN_MESSAGE_PAD = 5.
+const SPAN_BASE_WIDTH = 12.
 
 // as the spans start getting nested, their size grows
-const SPAN_DEPTH_GROW_FACTOR = 10.
+const SPAN_DEPTH_GROWTH_FACTOR = 8.
 
 // when a span has a single messages
-const MIN_SPAN_HEIGHT = MIN_MESSAGE_DISTANCE / 2.
+const MIN_SPAN_HEIGHT = 80.
+
+const SPAN_MESSAGE_PAD = 16.
+
+const LIFELINE_STROKE_WIDTH int = 2
+
+const LIFELINE_STROKE_DASH int = 8
+
+// pad when the actor has the label placed OutsideMiddleBottom so that the lifeline is not so close to the text
+const LIFELINE_LABEL_PAD = 5.

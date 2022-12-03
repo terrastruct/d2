@@ -399,6 +399,10 @@ func (obj *Object) IsContainer() bool {
 	return len(obj.Children) > 0
 }
 
+func (obj *Object) IsSequenceDiagram() bool {
+	return obj != nil && obj.Attributes.Shape.Value == d2target.ShapeSequenceDiagram
+}
+
 func (obj *Object) AbsID() string {
 	if obj.Parent != nil && obj.Parent.ID != "" {
 		return obj.Parent.AbsID() + "." + obj.ID
@@ -415,7 +419,8 @@ func (obj *Object) AbsIDArray() []string {
 
 func (obj *Object) Text() *d2target.MText {
 	fontSize := d2fonts.FONT_SIZE_M
-	if obj.IsContainer() {
+	if obj.IsContainer() && !obj.Parent.IsSequenceDiagram() {
+		// sequence diagram children (aka, actors) shouldn't have the container font size
 		fontSize = obj.Level().LabelSize()
 	}
 	if obj.Attributes.Style.FontSize != nil {
