@@ -125,6 +125,8 @@ func run(t *testing.T, tc testCase) {
 
 		svgBytes, err := d2svg.Render(diagram)
 		assert.Success(t, err)
+		err = os.MkdirAll(dataPath, 0755)
+		assert.Success(t, err)
 		err = ioutil.WriteFile(pathGotSVG, svgBytes, 0600)
 		assert.Success(t, err)
 		defer os.Remove(pathGotSVG)

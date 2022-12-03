@@ -49,3 +49,6 @@
 - `$BROWSER` now works to open a custom browser correctly.
   For example, to open Firefox on macOS: `BROWSER='open -aFirefox'`
   [#311](https://github.com/terrastruct/d2/pull/311)
+- Fixes numbered IDs being wrongly positioned in `dagre`
+  [#321](https://github.com/terrastruct/d2/issues/321). Thank you @pleshevskiy for the
+  report.
