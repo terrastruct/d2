@@ -1210,6 +1210,14 @@ finally.sequence.scorer.abc -> finally.sequence.item.a
 finally.sequence.itemOutcome.a.b.c.d.e -> finally.sequence.scorer
 finally.sequence.scorer -> finally.sequence.itemResponse.c`,
 		},
+		{
+			name: "number_connections",
+			script: `1 -> 2
+foo baz: Foo Baz
+
+foo baz -> hello
+`,
+		},
 	}
 
 	runa(t, tcs)

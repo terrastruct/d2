@@ -30,6 +30,7 @@ var setupJS string
 var dagreJS string
 
 type DagreNode struct {
+	ID     string  `json:"id"`
 	X      float64 `json:"x"`
 	Y      float64 `json:"y"`
 	Width  float64 `json:"width"`
@@ -49,7 +50,7 @@ type dagreGraphAttrs struct {
 	rankdir string
 }
 
-func Layout(ctx context.Context, d2graph *d2graph.Graph) (err error) {
+func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	defer xdefer.Errorf(&err, "failed to dagre layout")
 
 	debugJS := false
@@ -66,7 +67,7 @@ func Layout(ctx context.Context, d2graph *d2graph.Graph) (err error) {
 		edgesep: 40,
 		nodesep: 60,
 	}
-	switch d2graph.Root.Attributes.Direction.Value {
+	switch g.Root.Attributes.Direction.Value {
 	case "down":
 		rootAttrs.rankdir = "TB"
 	case "right":
@@ -84,14 +85,16 @@ func Layout(ctx context.Context, d2graph *d2graph.Graph) (err error) {
 	}
 
 	loadScript := ""
-	for _, obj := range d2graph.Objects {
+	idToObj := make(map[string]*d2graph.Object)
+	for _, obj := range g.Objects {
 		id := obj.AbsID()
+		idToObj[id] = obj
 		loadScript += generateAddNodeLine(id, int(obj.Width), int(obj.Height))
-		if obj.Parent != d2graph.Root {
+		if obj.Parent != g.Root {
 			loadScript += generateAddParentLine(id, obj.Parent.AbsID())
 		}
 	}
-	for _, edge := range d2graph.Edges {
+	for _, edge := range g.Edges {
 		// dagre doesn't work with edges to containers so we connect container edges to their first child instead (going all the way down)
 		// we will chop the edge where it intersects the container border so it only shows the edge from the container
 		src := edge.Src
@@ -124,13 +127,7 @@ func Layout(ctx context.Context, d2graph *d2graph.Graph) (err error) {
 		return err
 	}
 
-	// val, err := v8ctx.RunScript("JSON.stringify(dagre.graphlib.json.write(g))", "q.js")
-	// if err != nil {
-	// 	return err
-	// }
-	// log.Debug(ctx, "graph", slog.F("json", val.String()))
-
-	for i, obj := range d2graph.Objects {
+	for i := range g.Objects {
 		val, err := v8ctx.RunScript(fmt.Sprintf("JSON.stringify(g.node(g.nodes()[%d]))", i), "value.js")
 		if err != nil {
 			return err
@@ -139,6 +136,11 @@ func Layout(ctx context.Context, d2graph *d2graph.Graph) (err error) {
 		if err := json.Unmarshal([]byte(val.String()), &dn); err != nil {
 			return err
 		}
+		if debugJS {
+			log.Debug(ctx, "graph", slog.F("json", dn))
+		}
+
+		obj := idToObj[dn.ID]
 
 		// dagre gives center of node
 		obj.TopLeft = geo.NewPoint(math.Round(dn.X-dn.Width/2), math.Round(dn.Y-dn.Height/2))
@@ -159,7 +161,7 @@ func Layout(ctx context.Context, d2graph *d2graph.Graph) (err error) {
 		}
 	}
 
-	for i, edge := range d2graph.Edges {
+	for i, edge := range g.Edges {
 		val, err := v8ctx.RunScript(fmt.Sprintf("JSON.stringify(g.edge(g.edges()[%d]))", i), "value.js")
 		if err != nil {
 			return err
@@ -167,6 +169,9 @@ func Layout(ctx context.Context, d2graph *d2graph.Graph) (err error) {
 		var de DagreEdge
 		if err := json.Unmarshal([]byte(val.String()), &de); err != nil {
 			return err
+		}
+		if debugJS {
+			log.Debug(ctx, "graph", slog.F("json", de))
 		}
 
 		points := make([]*geo.Point, len(de.Points))
@@ -250,7 +255,7 @@ func setGraphAttrs(attrs dagreGraphAttrs) string {
 }
 
 func generateAddNodeLine(id string, width, height int) string {
-	return fmt.Sprintf("g.setNode(`%s`, { width: %d, height: %d });\n", id, width, height)
+	return fmt.Sprintf("g.setNode(`%s`, { id: `%s`, width: %d, height: %d });\n", id, id, width, height)
 }
 
 func generateAddParentLine(childID, parentID string) string {

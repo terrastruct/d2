@@ -2,58 +2,19 @@
   "name": "",
   "shapes": [
     {
-      "id": "container",
+      "id": "foo baz",
       "type": "",
       "pos": {
-        "x": 0,
-        "y": 0
+        "x": 12,
+        "y": 12
       },
-      "width": 255,
-      "height": 452,
-      "level": 1,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#E3E9FD",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "container",
-      "fontSize": 28,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": true,
-      "underline": false,
-      "labelWidth": 117,
-      "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER"
-    },
-    {
-      "id": "container.first",
-      "type": "",
-      "pos": {
-        "x": 60,
-        "y": 50
-      },
-      "width": 135,
+      "width": 159,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#F7F8FE",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -65,7 +26,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "first",
+      "label": "Foo Baz",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -73,25 +34,26 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 35,
+      "labelWidth": 59,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     },
     {
-      "id": "container.second",
+      "id": "1",
       "type": "",
       "pos": {
-        "x": 50,
-        "y": 276
+        "x": 191,
+        "y": 12
       },
-      "width": 155,
+      "width": 112,
       "height": 126,
-      "level": 2,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#F7F8FE",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -103,7 +65,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "second",
+      "label": "1",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -111,25 +73,105 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 55,
+      "labelWidth": 12,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER"
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "2",
+      "type": "",
+      "pos": {
+        "x": 191,
+        "y": 238
+      },
+      "width": 113,
+      "height": 126,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#F7F8FE",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "2",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 13,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "hello",
+      "type": "",
+      "pos": {
+        "x": 22,
+        "y": 238
+      },
+      "width": 140,
+      "height": 126,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#F7F8FE",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "hello",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 40,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
     {
-      "id": "container.(first -> second)[0]",
-      "src": "container.first",
+      "id": "(1 -> 2)[0]",
+      "src": "1",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "container.second",
+      "dst": "2",
       "dstArrow": "triangle",
       "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "#0D32B2",
-      "label": "1->2",
+      "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -137,46 +179,38 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 29,
-      "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
       "labelPercentage": 0,
       "route": [
         {
-          "x": 103.10840707964601,
-          "y": 176
+          "x": 247,
+          "y": 138
         },
         {
-          "x": 87.6216814159292,
-          "y": 216
-        },
-        {
-          "x": 87.55,
-          "y": 236
-        },
-        {
-          "x": 102.75,
-          "y": 276
+          "x": 247,
+          "y": 238
         }
       ],
-      "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     },
     {
-      "id": "(container -> container.second)[0]",
-      "src": "container",
+      "id": "(foo baz -> hello)[0]",
+      "src": "foo baz",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "container.second",
+      "dst": "hello",
       "dstArrow": "triangle",
       "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "#0D32B2",
-      "label": "c->2",
+      "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -184,32 +218,24 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 28,
-      "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
       "labelPercentage": 0,
       "route": [
         {
-          "x": 151.891592920354,
-          "y": 176
+          "x": 91.5,
+          "y": 138
         },
         {
-          "x": 167.3783185840708,
-          "y": 216
-        },
-        {
-          "x": 167.45,
-          "y": 236
-        },
-        {
-          "x": 152.25,
-          "y": 276
+          "x": 91.5,
+          "y": 238
         }
       ],
-      "isCurve": true,
       "animated": false,
       "tooltip": "",
-      "icon": null
+      "icon": null,
+      "zIndex": 0
     }
   ]
 }
