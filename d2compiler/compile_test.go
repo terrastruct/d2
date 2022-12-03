@@ -1561,7 +1561,10 @@ dst.id <-> src.dst_id
 			text: `x -> x
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				diff.AssertStringEq(t, g.Edges[0].Dst.ID, g.Edges[0].Src.ID)
+				_, err := diff.Strings(g.Edges[0].Dst.ID, g.Edges[0].Src.ID)
+				if err != nil {
+					t.Fatal(err)
+				}
 			},
 		},
 	}
