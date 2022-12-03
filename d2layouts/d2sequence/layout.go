@@ -41,6 +41,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 		obj.Children = make(map[string]*d2graph.Object)
 		obj.ChildrenArray = nil
 		obj.Box = geo.NewBox(nil, sd.getWidth(), sd.getHeight())
+		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 		sequenceDiagrams[obj.AbsID()] = sd
 
 		for _, edge := range sd.messages {

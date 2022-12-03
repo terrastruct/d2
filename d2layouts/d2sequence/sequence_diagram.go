@@ -89,8 +89,11 @@ func newSequenceDiagram(actors []*d2graph.Object, messages []*d2graph.Edge) *seq
 		sd.actorXStep = math.Max(sd.actorXStep, distributedLabelWidth+HORIZONTAL_PAD)
 	}
 
-	sd.maxActorHeight += VERTICAL_PAD
 	sd.messageYStep += VERTICAL_PAD
+	sd.maxActorHeight += VERTICAL_PAD
+	if sd.root.LabelHeight != nil {
+		sd.maxActorHeight += float64(*sd.root.LabelHeight)
+	}
 
 	return sd
 }
