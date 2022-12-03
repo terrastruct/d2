@@ -711,6 +711,16 @@ func (e *Edge) AbsID() string {
 	return fmt.Sprintf("%s(%s %s %s)[%d]", commonKey, strings.Join(srcIDA, "."), e.ArrowString(), strings.Join(dstIDA, "."), e.Index)
 }
 
+func (obj *Object) outerSequenceDiagram() *Object {
+	for obj != nil {
+		obj = obj.Parent
+		if obj.IsSequenceDiagram() {
+			return obj
+		}
+	}
+	return nil
+}
+
 func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label string) (*Edge, error) {
 	srcObj, srcID, err := ResolveUnderscoreKey(srcID, obj)
 	if err != nil {
@@ -731,6 +741,10 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 
 	src := srcObj.EnsureChild(srcID)
 	dst := dstObj.EnsureChild(dstID)
+
+	if src.outerSequenceDiagram() != dst.outerSequenceDiagram() {
+		return nil, errors.New("connections within sequence diagrams can connect only to other objects within the same sequence diagram")
+	}
 
 	edge := &Edge{
 		Attributes: Attributes{

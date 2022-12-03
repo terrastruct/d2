@@ -1,0 +1,12 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/leaky_sequence.d2,4:0:36-4:8:44",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/leaky_sequence.d2:5:1: connections within sequence diagrams can only connect to other objects within the same sequence diagram"
+      }
+    ]
+  }
+}
