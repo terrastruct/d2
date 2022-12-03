@@ -25,6 +25,8 @@
 
 - Local images can now be included, e.g. `icon: ./my_img.png`.
   [#146](https://github.com/terrastruct/d2/issues/146)
+- Connection labels no longer overlap other connections.
+  [#332](https://github.com/terrastruct/d2/pull/332)
 - ELK layout engine now defaults to top-down to be consistent with dagre.
   [#251](https://github.com/terrastruct/d2/pull/251)
 - [install.sh](./install.sh) prints the dry run message more visibly.
