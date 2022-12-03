@@ -268,7 +268,7 @@ func TestSpansSequenceDiagram(t *testing.T) {
 	if a_t1.TopLeft.Y != b_t1.TopLeft.Y {
 		t.Fatal("expected a.t1 and b.t1 to be placed at the same Y")
 	}
-	if a_t1.TopLeft.Y-SPAN_MESSAGE_PAD != g.Edges[0].Route[0].Y {
+	if a_t1.TopLeft.Y+SPAN_MESSAGE_PAD != g.Edges[0].Route[0].Y {
 		t.Fatal("expected a.t1 to be placed at the same Y of the first message")
 	}
 

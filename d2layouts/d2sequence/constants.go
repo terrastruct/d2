@@ -8,6 +8,8 @@ const VERTICAL_PAD = 50.
 
 const MIN_ACTOR_DISTANCE = 250.
 
+const MIN_ACTOR_WIDTH = 150.
+
 // min vertical distance between messages
 const MIN_MESSAGE_DISTANCE = 80.
 
@@ -25,3 +27,6 @@ const SPAN_MESSAGE_PAD = 16.
 const LIFELINE_STROKE_WIDTH int = 2
 
 const LIFELINE_STROKE_DASH int = 8
+
+// pad when the actor has the label placed OutsideMiddleBottom so that the lifeline is not so close to the text
+const LIFELINE_LABEL_PAD = 5.

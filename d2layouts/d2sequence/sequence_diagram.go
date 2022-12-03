@@ -52,6 +52,12 @@ func newSequenceDiagram(actors []*d2graph.Object, messages []*d2graph.Edge) *seq
 	for rank, actor := range actors {
 		sd.root = actor.Parent
 		sd.objectRank[actor] = rank
+
+		if actor.Width < MIN_ACTOR_WIDTH {
+			aspectRatio := actor.Height / actor.Width
+			actor.Width = MIN_ACTOR_WIDTH
+			actor.Height = math.Round(aspectRatio * actor.Width)
+		}
 		sd.maxActorHeight = math.Max(sd.maxActorHeight, actor.Height)
 
 		queue := make([]*d2graph.Object, len(actor.ChildrenArray))
@@ -138,7 +144,7 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 		actorBottom := actor.Center()
 		actorBottom.Y = actor.TopLeft.Y + actor.Height
 		if *actor.LabelPosition == string(label.OutsideBottomCenter) {
-			actorBottom.Y += float64(*actor.LabelHeight)
+			actorBottom.Y += float64(*actor.LabelHeight) + LIFELINE_LABEL_PAD
 		}
 		actorLifelineEnd := actor.Center()
 		actorLifelineEnd.Y = endY
@@ -180,7 +186,7 @@ func (sd *sequenceDiagram) placeSpans() {
 	}
 
 	// places spans from most to least nested
-	// the order is important because the only way a child span exists is if there'e an message to it
+	// the order is important because the only way a child span exists is if there's a message to it
 	// however, the parent span might not have a message to it and then its position is based on the child position
 	// or, there can be a message to it, but it comes after the child one meaning the top left position is still based on the child
 	// and not on its own message
