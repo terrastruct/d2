@@ -1334,6 +1334,19 @@ z -> z: hello
 }
 `,
 		},
+		{
+			name: "sequence_diagram_note",
+			script: `shape: sequence_diagram
+a; b; c; d
+a -> b
+a.explanation
+a.another explanation
+b -> c
+b."Some one who believes imaginary things\n appear right before your i's."
+c -> b: okay
+d."The earth is like a tiny grain of sand, only much, much heavier"
+`,
+		},
 	}
 
 	runa(t, tcs)
