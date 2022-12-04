@@ -19,6 +19,7 @@ type sequenceDiagram struct {
 	messages  []*d2graph.Edge
 	lifelines []*d2graph.Edge
 	actors    []*d2graph.Object
+	groups    []*d2graph.Object
 	spans     []*d2graph.Object
 	notes     []*d2graph.Object
 
@@ -70,26 +71,68 @@ func hasEdge(o *d2graph.Object) bool {
 	return false
 }
 
-func (sd *sequenceDiagram) containsMessage(o *d2graph.Object) bool {
-	for _, m := range sd.messages {
-		for _, ref := range m.References {
-			curr := ref.ScopeObj
-			for curr != nil {
-				if curr == o {
-					return true
+func containsAnyMessage(o *d2graph.Object, messages []*d2graph.Edge) bool {
+	for _, m := range messages {
+		if containsMessage(o, m) {
+			return true
+		}
+	}
+	return false
+}
+
+func containsMessage(o *d2graph.Object, m *d2graph.Edge) bool {
+	for _, ref := range m.References {
+		curr := ref.ScopeObj
+		for curr != nil {
+			if curr == o {
+				return true
+			}
+			curr = curr.Parent
+		}
+	}
+	return false
+}
+
+func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *sequenceDiagram {
+	var actors []*d2graph.Object
+	var groups []*d2graph.Object
+
+	for _, obj := range objects {
+		messageRecipient := false
+		for _, m := range messages {
+			if m.Src == obj || m.Dst == obj {
+				messageRecipient = true
+				break
+			}
+		}
+		hasNote := false
+		for _, ch := range obj.ChildrenArray {
+			// if the child contains a message, it's a span, not a note
+			if !containsAnyMessage(ch, messages) {
+				hasNote = true
+				break
+			}
+		}
+		if messageRecipient || hasNote {
+			actors = append(actors, obj)
+		} else {
+			queue := []*d2graph.Object{obj}
+			// Groups may have more nested groups
+			for len(queue) > 0 {
+				curr := queue[0]
+				groups = append(groups, curr)
+				queue = queue[1:]
+				for _, c := range curr.ChildrenArray {
+					queue = append(queue, c)
 				}
-				curr = curr.Parent
 			}
 		}
 	}
 
-	return false
-}
-
-func newSequenceDiagram(actors []*d2graph.Object, messages []*d2graph.Edge) *sequenceDiagram {
 	sd := &sequenceDiagram{
 		messages:        messages,
 		actors:          actors,
+		groups:          groups,
 		spans:           nil,
 		notes:           nil,
 		lifelines:       nil,
@@ -120,8 +163,9 @@ func newSequenceDiagram(actors []*d2graph.Object, messages []*d2graph.Edge) *seq
 			queue = queue[1:]
 
 			// spans are children of actors that have edges
-			// notes are children of actors with no edges and contains no messages
-			if hasEdge(child) && !sd.containsMessage(child) {
+			// notes are children of actors with no edges and no children
+			// edge groups are children of actors with no edges and children edges
+			if hasEdge(child) && !containsAnyMessage(child, sd.messages) {
 				// spans have no labels
 				// TODO why not? Spans should be able to
 				child.Attributes.Label = d2graph.Scalar{Value: ""}
@@ -179,7 +223,64 @@ func (sd *sequenceDiagram) layout() {
 	sd.placeSpans()
 	sd.placeNotes()
 	sd.routeMessages()
+	sd.placeGroups()
 	sd.addLifelineEdges()
+}
+
+func (sd *sequenceDiagram) placeGroups() {
+	for _, group := range sd.groups {
+		sd.placeGroup(group)
+	}
+}
+
+func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
+	minX := math.Inf(1)
+	minY := math.Inf(1)
+	maxX := math.Inf(-1)
+	maxY := math.Inf(-1)
+
+	for _, m := range sd.messages {
+		if containsMessage(group, m) {
+			for _, p := range m.Route {
+				minX = math.Min(minX, p.X)
+				minY = math.Min(minY, p.Y)
+				maxX = math.Max(maxX, p.X)
+				maxY = math.Max(maxY, p.Y)
+			}
+		}
+	}
+	// Groups should horizontally encompass all notes of the actor
+	for _, n := range sd.notes {
+		inGroup := false
+		for _, ref := range n.References {
+			curr := ref.UnresolvedScopeObj
+			for curr != nil {
+				if curr == group {
+					inGroup = true
+					break
+				}
+				curr = curr.Parent
+			}
+			if inGroup {
+				break
+			}
+		}
+		if inGroup {
+			minY = math.Min(minY, n.TopLeft.Y)
+			maxY = math.Max(maxY, n.TopLeft.Y+n.Height)
+			minX = math.Min(minX, n.TopLeft.X)
+			maxX = math.Max(maxX, n.TopLeft.X+n.Width)
+		}
+	}
+
+	group.Box = geo.NewBox(
+		geo.NewPoint(
+			minX-HORIZONTAL_PAD,
+			minY-(MIN_MESSAGE_DISTANCE/2.),
+		),
+		maxX-minX+HORIZONTAL_PAD*2,
+		maxY-minY+MIN_MESSAGE_DISTANCE,
+	)
 }
 
 // placeActors places actors bottom aligned, side by side
