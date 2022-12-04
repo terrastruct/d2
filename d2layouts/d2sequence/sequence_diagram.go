@@ -70,6 +70,22 @@ func hasEdge(o *d2graph.Object) bool {
 	return false
 }
 
+func (sd *sequenceDiagram) containsMessage(o *d2graph.Object) bool {
+	for _, m := range sd.messages {
+		for _, ref := range m.References {
+			curr := ref.ScopeObj
+			for curr != nil {
+				if curr == o {
+					return true
+				}
+				curr = curr.Parent
+			}
+		}
+	}
+
+	return false
+}
+
 func newSequenceDiagram(actors []*d2graph.Object, messages []*d2graph.Edge) *sequenceDiagram {
 	sd := &sequenceDiagram{
 		messages:        messages,
@@ -104,8 +120,8 @@ func newSequenceDiagram(actors []*d2graph.Object, messages []*d2graph.Edge) *seq
 			queue = queue[1:]
 
 			// spans are children of actors that have edges
-			// notes are children of actors with no edges
-			if hasEdge(child) {
+			// notes are children of actors with no edges and contains no messages
+			if hasEdge(child) && !sd.containsMessage(child) {
 				// spans have no labels
 				// TODO why not? Spans should be able to
 				child.Attributes.Label = d2graph.Scalar{Value: ""}
