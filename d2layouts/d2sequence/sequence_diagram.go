@@ -70,6 +70,22 @@ func hasEdge(o *d2graph.Object) bool {
 	return false
 }
 
+func (sd *sequenceDiagram) containsMessage(o *d2graph.Object) bool {
+	for _, m := range sd.messages {
+		for _, ref := range m.References {
+			curr := ref.ScopeObj
+			for curr != nil {
+				if curr == o {
+					return true
+				}
+				curr = curr.Parent
+			}
+		}
+	}
+
+	return false
+}
+
 func newSequenceDiagram(actors []*d2graph.Object, messages []*d2graph.Edge) *sequenceDiagram {
 	sd := &sequenceDiagram{
 		messages:        messages,
@@ -104,8 +120,8 @@ func newSequenceDiagram(actors []*d2graph.Object, messages []*d2graph.Edge) *seq
 			queue = queue[1:]
 
 			// spans are children of actors that have edges
-			// notes are children of actors with no edges
-			if hasEdge(child) {
+			// notes are children of actors with no edges and contains no messages
+			if hasEdge(child) && !sd.containsMessage(child) {
 				// spans have no labels
 				// TODO why not? Spans should be able to
 				child.Attributes.Label = d2graph.Scalar{Value: ""}
@@ -174,7 +190,10 @@ func (sd *sequenceDiagram) placeActors() {
 		var yOffset float64
 		if shape == d2target.ShapeImage || shape == d2target.ShapePerson {
 			actor.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
-			yOffset = sd.maxActorHeight - actor.Height - float64(*actor.LabelHeight)
+			yOffset = sd.maxActorHeight - actor.Height
+			if actor.LabelHeight != nil {
+				yOffset -= float64(*actor.LabelHeight)
+			}
 		} else {
 			actor.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			yOffset = sd.maxActorHeight - actor.Height
@@ -207,7 +226,7 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 	for _, actor := range sd.actors {
 		actorBottom := actor.Center()
 		actorBottom.Y = actor.TopLeft.Y + actor.Height
-		if *actor.LabelPosition == string(label.OutsideBottomCenter) {
+		if *actor.LabelPosition == string(label.OutsideBottomCenter) && actor.LabelHeight != nil {
 			actorBottom.Y += float64(*actor.LabelHeight) + LIFELINE_LABEL_PAD
 		}
 		actorLifelineEnd := actor.Center()
