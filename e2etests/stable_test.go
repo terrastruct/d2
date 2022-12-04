@@ -1222,7 +1222,7 @@ foo baz -> hello
 			script: `shape: sequence_diagram
 
 a: "a label" {
-    shape: callout 
+    shape: callout
 }
 b: "b\nlabels" {
     shape: circle
@@ -1233,7 +1233,7 @@ c: "a class" {
     -private() int
 }
 d: "cloudyyyy" {
-    shape: cloud 
+    shape: cloud
 }
 e: |go
     a := 5
@@ -1241,47 +1241,47 @@ e: |go
     fmt.Printf("%d", b)
 |
 f: "cyl" {
-    shape: cylinder 
+    shape: cylinder
 }
 g: "dia" {
-    shape: diamond 
+    shape: diamond
 }
 h: "docs" {
-    shape: document 
+    shape: document
 }
 i: "six corners" {
-    shape: hexagon 
+    shape: hexagon
 }
 j: "a random icon" {
     shape: image
     icon: https://icons.terrastruct.com/essentials/004-picture.svg
 }
 k: "over" {
-    shape: oval 
+    shape: oval
 }
 l: "pack" {
-    shape: package 
+    shape: package
 }
 m: "docs page" {
-    shape: page 
+    shape: page
 }
 n: "too\nhard\to say" {
-    shape: parallelogram 
+    shape: parallelogram
 }
 o: "single\nperson" {
-    shape: person 
+    shape: person
 }
 p: "a queue" {
-    shape: queue 
+    shape: queue
 }
 q: "a square" {
-    shape: square 
+    shape: square
 }
 r: "a step at a time" {
-    shape: step 
+    shape: step
 }
 s: "data" {
-    shape: stored_data 
+    shape: stored_data
 }
 
 t: "users" {
@@ -1324,6 +1324,14 @@ s -> t`,
 			script: `x -> x -> x -> y
 z -> y
 z -> z: hello
+`,
+		},
+		{
+			name: "icon-label",
+			script: `ww: {
+  label: hello
+  icon: https://icons.terrastruct.com/essentials/time.svg
+}
 `,
 		},
 	}

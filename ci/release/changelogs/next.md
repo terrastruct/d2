@@ -46,6 +46,8 @@
   [#214](https://github.com/terrastruct/d2/pull/214)
 - Fixes images not loading in PNG exports.
   [#224](https://github.com/terrastruct/d2/pull/224)
+- Fixes label and icon overlapping each other in dagre and elk layouts.
+  [#343](https://github.com/terrastruct/d2/pull/343)
 - Avoid logging benign file watching errors.
   [#293](https://github.com/terrastruct/d2/pull/293)
 - `$BROWSER` now works to open a custom browser correctly.
