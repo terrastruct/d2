@@ -20,6 +20,7 @@ type sequenceDiagram struct {
 	lifelines []*d2graph.Edge
 	actors    []*d2graph.Object
 	spans     []*d2graph.Object
+	notes     []*d2graph.Object
 
 	// can be either actors or spans
 	// rank: left to right position of actors/spans (spans have the same rank as their parents)
@@ -30,23 +31,59 @@ type sequenceDiagram struct {
 	minMessageRank map[*d2graph.Object]int
 	maxMessageRank map[*d2graph.Object]int
 
-	messageYStep   float64
+	yStep          float64
 	actorXStep     float64
 	maxActorHeight float64
+
+	verticalIndices map[string]int
+}
+
+func getObjEarliestLineNum(o *d2graph.Object) int {
+	min := int(math.MaxInt64)
+	for _, ref := range o.References {
+		if ref.MapKey == nil {
+			continue
+		}
+		min = go2.IntMin(min, ref.MapKey.Range.Start.Line)
+	}
+	return min
+}
+
+func getEdgeEarliestLineNum(e *d2graph.Edge) int {
+	min := int(math.MaxInt64)
+	for _, ref := range e.References {
+		if ref.MapKey == nil {
+			continue
+		}
+		min = go2.IntMin(min, ref.MapKey.Range.Start.Line)
+	}
+	return min
+}
+
+func hasEdge(o *d2graph.Object) bool {
+	for _, ref := range o.References {
+		if ref.MapKey != nil && len(ref.MapKey.Edges) > 0 {
+			return true
+		}
+	}
+
+	return false
 }
 
 func newSequenceDiagram(actors []*d2graph.Object, messages []*d2graph.Edge) *sequenceDiagram {
 	sd := &sequenceDiagram{
-		messages:       messages,
-		actors:         actors,
-		spans:          nil,
-		lifelines:      nil,
-		objectRank:     make(map[*d2graph.Object]int),
-		minMessageRank: make(map[*d2graph.Object]int),
-		maxMessageRank: make(map[*d2graph.Object]int),
-		messageYStep:   MIN_MESSAGE_DISTANCE,
-		actorXStep:     MIN_ACTOR_DISTANCE,
-		maxActorHeight: 0.,
+		messages:        messages,
+		actors:          actors,
+		spans:           nil,
+		notes:           nil,
+		lifelines:       nil,
+		objectRank:      make(map[*d2graph.Object]int),
+		minMessageRank:  make(map[*d2graph.Object]int),
+		maxMessageRank:  make(map[*d2graph.Object]int),
+		yStep:           MIN_MESSAGE_DISTANCE,
+		actorXStep:      MIN_ACTOR_DISTANCE,
+		maxActorHeight:  0.,
+		verticalIndices: make(map[string]int),
 	}
 
 	for rank, actor := range actors {
@@ -63,21 +100,34 @@ func newSequenceDiagram(actors []*d2graph.Object, messages []*d2graph.Edge) *seq
 		queue := make([]*d2graph.Object, len(actor.ChildrenArray))
 		copy(queue, actor.ChildrenArray)
 		for len(queue) > 0 {
-			span := queue[0]
+			child := queue[0]
 			queue = queue[1:]
 
-			// spans are always rectangles and have no labels
-			span.Attributes.Label = d2graph.Scalar{Value: ""}
-			span.Attributes.Shape = d2graph.Scalar{Value: shape.SQUARE_TYPE}
-			sd.spans = append(sd.spans, span)
-			sd.objectRank[span] = rank
+			// spans are children of actors that have edges
+			// notes are children of actors with no edges
+			if hasEdge(child) {
+				// spans have no labels
+				// TODO why not? Spans should be able to
+				child.Attributes.Label = d2graph.Scalar{Value: ""}
+				child.Attributes.Shape = d2graph.Scalar{Value: shape.SQUARE_TYPE}
+				sd.spans = append(sd.spans, child)
+				sd.objectRank[child] = rank
+			} else {
+				sd.verticalIndices[child.AbsID()] = getObjEarliestLineNum(child)
+				// TODO change to page type when it doesn't look deformed
+				child.Attributes.Shape = d2graph.Scalar{Value: shape.SQUARE_TYPE}
+				sd.notes = append(sd.notes, child)
+				sd.objectRank[child] = rank
+				child.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
 
-			queue = append(queue, span.ChildrenArray...)
+			queue = append(queue, child.ChildrenArray...)
 		}
 	}
 
 	for rank, message := range sd.messages {
-		sd.messageYStep = math.Max(sd.messageYStep, float64(message.LabelDimensions.Height))
+		sd.verticalIndices[message.AbsID()] = getEdgeEarliestLineNum(message)
+		sd.yStep = math.Max(sd.yStep, float64(message.LabelDimensions.Height))
 
 		sd.setMinMaxMessageRank(message.Src, rank)
 		sd.setMinMaxMessageRank(message.Dst, rank)
@@ -89,7 +139,7 @@ func newSequenceDiagram(actors []*d2graph.Object, messages []*d2graph.Edge) *seq
 		sd.actorXStep = math.Max(sd.actorXStep, distributedLabelWidth+HORIZONTAL_PAD)
 	}
 
-	sd.messageYStep += VERTICAL_PAD
+	sd.yStep += VERTICAL_PAD
 	sd.maxActorHeight += VERTICAL_PAD
 	if sd.root.LabelHeight != nil {
 		sd.maxActorHeight += float64(*sd.root.LabelHeight)
@@ -111,6 +161,7 @@ func (sd *sequenceDiagram) setMinMaxMessageRank(actor *d2graph.Object, rank int)
 func (sd *sequenceDiagram) layout() {
 	sd.placeActors()
 	sd.placeSpans()
+	sd.placeNotes()
 	sd.routeMessages()
 	sd.addLifelineEdges()
 }
@@ -142,7 +193,17 @@ func (sd *sequenceDiagram) placeActors() {
 //        │
 //        │
 func (sd *sequenceDiagram) addLifelineEdges() {
-	endY := sd.getMessageY(len(sd.messages))
+	endY := 0.
+	for _, m := range sd.messages {
+		for _, p := range m.Route {
+			endY = math.Max(endY, p.Y)
+		}
+	}
+	for _, note := range sd.notes {
+		endY = math.Max(endY, note.TopLeft.Y+note.Height)
+	}
+	endY += sd.yStep
+
 	for _, actor := range sd.actors {
 		actorBottom := actor.Center()
 		actorBottom.Y = actor.TopLeft.Y + actor.Height
@@ -166,6 +227,31 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 			DstArrow: false,
 			Route:    []*geo.Point{actorBottom, actorLifelineEnd},
 		})
+	}
+}
+
+func (sd *sequenceDiagram) placeNotes() {
+	rankToX := make(map[int]float64)
+	for _, actor := range sd.actors {
+		rankToX[sd.objectRank[actor]] = actor.Center().X
+	}
+
+	for i, note := range sd.notes {
+		verticalIndex := sd.verticalIndices[note.AbsID()]
+		y := sd.maxActorHeight + sd.yStep
+
+		for _, msg := range sd.messages {
+			if sd.verticalIndices[msg.AbsID()] < verticalIndex {
+				y += sd.yStep
+			}
+		}
+		for _, otherNote := range sd.notes[:i] {
+			y += otherNote.Height + sd.yStep
+		}
+
+		x := rankToX[sd.objectRank[note]] - (note.Width / 2.)
+		note.Box.TopLeft = geo.NewPoint(x, y)
+		note.ZIndex = 1
 	}
 }
 
@@ -261,6 +347,13 @@ func (sd *sequenceDiagram) routeMessages() {
 		}
 
 		messageY := sd.getMessageY(rank)
+
+		for _, note := range sd.notes {
+			if sd.verticalIndices[note.AbsID()] < sd.verticalIndices[message.AbsID()] {
+				messageY += note.Height + sd.yStep
+			}
+		}
+
 		message.Route = []*geo.Point{
 			geo.NewPoint(startX, messageY),
 			geo.NewPoint(endX, messageY),
@@ -274,7 +367,7 @@ func (sd *sequenceDiagram) routeMessages() {
 
 func (sd *sequenceDiagram) getMessageY(rank int) float64 {
 	// +1 so that the first message has the top padding for its label
-	return ((float64(rank) + 1.) * sd.messageYStep) + sd.maxActorHeight
+	return ((float64(rank) + 1.) * sd.yStep) + sd.maxActorHeight
 }
 
 func (sd *sequenceDiagram) isActor(obj *d2graph.Object) bool {
