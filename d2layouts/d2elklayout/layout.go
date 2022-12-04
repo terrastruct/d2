@@ -247,7 +247,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-			} else if obj.Attributes.Shape.Value == d2target.ShapeImage {
+			} else if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
 			} else {
 				obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
