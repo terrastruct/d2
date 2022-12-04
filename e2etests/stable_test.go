@@ -1347,6 +1347,34 @@ c -> b: okay
 d."The earth is like a tiny grain of sand, only much, much heavier"
 `,
 		},
+		{
+			name: "sequence_diagram_groups",
+			script: `shape: sequence_diagram
+a;b;c;d
+a -> b
+ggg: {
+	_.a -> _.b: lala
+}
+group 1: {
+  _.b -> _.c
+	_.c -> _.b: ey
+  nested guy: {
+    _._.c -> _._.b: okay
+  }
+  _.b.t1 -> _.c.t1
+  _.b.t1.t2 -> _.c.t1
+  _.c.t1 -> _.b.t1
+}
+group b: {
+  _.b -> _.c
+	_.c."what would arnold say"
+  _.c -> _.b: okay
+}
+choo: {
+  _.d."this note"
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
