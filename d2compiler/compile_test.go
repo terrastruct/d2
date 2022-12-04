@@ -6,6 +6,7 @@ import (
 	"strings"
 	"testing"
 
+	tassert "github.com/stretchr/testify/assert"
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
 
@@ -207,6 +208,20 @@ x: {
 					t.Fatalf("expected 2 objects at the root: %#v", len(g.Root.ChildrenArray))
 				}
 
+			},
+		},
+		{
+			name: "underscore_unresolved_obj",
+
+			text: `
+x: {
+	_.y
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "y", g.Objects[1].ID)
+				tassert.Equal(t, g.Root.AbsID(), g.Objects[1].References[0].ScopeObj.AbsID())
+				tassert.Equal(t, g.Objects[0].AbsID(), g.Objects[1].References[0].UnresolvedScopeObj.AbsID())
 			},
 		},
 		{
