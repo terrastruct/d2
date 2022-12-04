@@ -252,11 +252,8 @@ func (c *compiler) compileKey(obj *d2graph.Object, m *d2ast.Map, mk *d2ast.Key) 
 		c.errorf(mk.Range.Start, mk.Range.End, err.Error())
 		return
 	}
-	if resolvedObj != obj {
-		obj = resolvedObj
-	}
 
-	parent := obj
+	parent := resolvedObj
 	if len(resolvedIDA) > 0 {
 		unresolvedObj := obj
 		obj = parent.EnsureChild(resolvedIDA)
