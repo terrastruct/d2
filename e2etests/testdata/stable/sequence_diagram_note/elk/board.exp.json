@@ -32,7 +32,7 @@
       "language": "",
       "color": "#0A0F25",
       "italic": false,
-      "bold": true,
+      "bold": false,
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
@@ -44,7 +44,7 @@
       "id": "b",
       "type": "",
       "pos": {
-        "x": 250,
+        "x": 220,
         "y": 50
       },
       "width": 150,
@@ -71,7 +71,7 @@
       "language": "",
       "color": "#0A0F25",
       "italic": false,
-      "bold": true,
+      "bold": false,
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
@@ -83,7 +83,7 @@
       "id": "c",
       "type": "",
       "pos": {
-        "x": 500,
+        "x": 440,
         "y": 50
       },
       "width": 150,
@@ -110,9 +110,9 @@
       "language": "",
       "color": "#0A0F25",
       "italic": false,
-      "bold": true,
+      "bold": false,
       "underline": false,
-      "labelWidth": 13,
+      "labelWidth": 12,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -122,7 +122,7 @@
       "id": "d",
       "type": "",
       "pos": {
-        "x": 750,
+        "x": 660,
         "y": 50
       },
       "width": 150,
@@ -149,7 +149,7 @@
       "language": "",
       "color": "#0A0F25",
       "italic": false,
-      "bold": true,
+      "bold": false,
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
@@ -161,10 +161,10 @@
       "id": "a.explanation",
       "type": "rectangle",
       "pos": {
-        "x": -20,
+        "x": -17,
         "y": 436
       },
-      "width": 190,
+      "width": 184,
       "height": 126,
       "opacity": 1,
       "strokeDash": 0,
@@ -188,9 +188,9 @@
       "language": "",
       "color": "#0A0F25",
       "italic": false,
-      "bold": true,
+      "bold": false,
       "underline": false,
-      "labelWidth": 90,
+      "labelWidth": 84,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 5,
@@ -200,10 +200,10 @@
       "id": "a.another explanation",
       "type": "rectangle",
       "pos": {
-        "x": -50,
+        "x": -45,
         "y": 692
       },
-      "width": 250,
+      "width": 241,
       "height": 126,
       "opacity": 1,
       "strokeDash": 0,
@@ -227,9 +227,9 @@
       "language": "",
       "color": "#0A0F25",
       "italic": false,
-      "bold": true,
+      "bold": false,
       "underline": false,
-      "labelWidth": 150,
+      "labelWidth": 141,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 5,
@@ -239,10 +239,10 @@
       "id": "b.\"Some one who believes imaginary things\\n appear right before your i's.\"",
       "type": "rectangle",
       "pos": {
-        "x": 128,
+        "x": 106,
         "y": 1078
       },
-      "width": 393,
+      "width": 378,
       "height": 142,
       "opacity": 1,
       "strokeDash": 0,
@@ -266,9 +266,9 @@
       "language": "",
       "color": "#0A0F25",
       "italic": false,
-      "bold": true,
+      "bold": false,
       "underline": false,
-      "labelWidth": 293,
+      "labelWidth": 278,
       "labelHeight": 42,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 5,
@@ -278,10 +278,10 @@
       "id": "d.The earth is like a tiny grain of sand, only much, much heavier",
       "type": "rectangle",
       "pos": {
-        "x": 554,
+        "x": 477,
         "y": 1480
       },
-      "width": 541,
+      "width": 516,
       "height": 126,
       "opacity": 1,
       "strokeDash": 0,
@@ -305,9 +305,9 @@
       "language": "",
       "color": "#0A0F25",
       "italic": false,
-      "bold": true,
+      "bold": false,
       "underline": false,
-      "labelWidth": 441,
+      "labelWidth": 416,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 5,
@@ -345,7 +345,7 @@
           "y": 306
         },
         {
-          "x": 325,
+          "x": 295,
           "y": 306
         }
       ],
@@ -380,11 +380,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 325,
+          "x": 295,
           "y": 948
         },
         {
-          "x": 575,
+          "x": 515,
           "y": 948
         }
       ],
@@ -419,11 +419,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 575,
+          "x": 515,
           "y": 1350
         },
         {
-          "x": 325,
+          "x": 295,
           "y": 1350
         }
       ],
@@ -497,11 +497,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 325,
+          "x": 295,
           "y": 176
         },
         {
-          "x": 325,
+          "x": 295,
           "y": 1736
         }
       ],
@@ -536,11 +536,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 575,
+          "x": 515,
           "y": 176
         },
         {
-          "x": 575,
+          "x": 515,
           "y": 1736
         }
       ],
@@ -575,11 +575,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 825,
+          "x": 735,
           "y": 176
         },
         {
-          "x": 825,
+          "x": 735,
           "y": 1736
         }
       ],

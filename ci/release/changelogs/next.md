@@ -35,6 +35,8 @@
   So you can run `go install oss.terrastruct.com/d2@latest` to install from source
   now.
   [#290](https://github.com/terrastruct/d2/pull/290)
+- Container default font styling is no longer bold. Everything used to look too bold.
+  [#358](https://github.com/terrastruct/d2/pull/358)
 - `BROWSER=0` now works to disable opening a browser on `--watch`.
   [#311](https://github.com/terrastruct/d2/pull/311)
 
