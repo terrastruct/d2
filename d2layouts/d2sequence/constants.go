@@ -6,7 +6,7 @@ const HORIZONTAL_PAD = 50.
 // leaves at least 25 units of space on the top/bottom when computing the space required between messages
 const VERTICAL_PAD = 50.
 
-const MIN_ACTOR_DISTANCE = 250.
+const MIN_ACTOR_DISTANCE = 70.
 
 const MIN_ACTOR_WIDTH = 150.
 

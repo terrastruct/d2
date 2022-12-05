@@ -33,7 +33,6 @@ type sequenceDiagram struct {
 	lastMessage  map[*d2graph.Object]*d2graph.Edge
 
 	yStep          float64
-	actorXStep     float64
 	maxActorHeight float64
 
 	verticalIndices map[string]int
@@ -140,7 +139,6 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 		firstMessage:    make(map[*d2graph.Object]*d2graph.Edge),
 		lastMessage:     make(map[*d2graph.Object]*d2graph.Edge),
 		yStep:           MIN_MESSAGE_DISTANCE,
-		actorXStep:      MIN_ACTOR_DISTANCE,
 		maxActorHeight:  0.,
 		verticalIndices: make(map[string]int),
 	}
@@ -189,15 +187,6 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 		sd.verticalIndices[message.AbsID()] = getEdgeEarliestLineNum(message)
 		sd.yStep = math.Max(sd.yStep, float64(message.LabelDimensions.Height))
 
-		// ensures that long labels, spanning over multiple actors, don't make for large gaps between actors
-		// by distributing the label length across the actors rank difference
-		rankDiff := math.Abs(float64(sd.objectRank[message.Src]) - float64(sd.objectRank[message.Dst]))
-		if rankDiff != 0 {
-			// rankDiff = 0 for self edges
-			distributedLabelWidth := float64(message.LabelDimensions.Width) / rankDiff
-			sd.actorXStep = math.Max(sd.actorXStep, distributedLabelWidth+HORIZONTAL_PAD)
-
-		}
 		sd.lastMessage[message.Src] = message
 		if _, exists := sd.firstMessage[message.Src]; !exists {
 			sd.firstMessage[message.Src] = message
@@ -304,7 +293,7 @@ func (sd *sequenceDiagram) placeActors() {
 			yOffset = sd.maxActorHeight - actor.Height
 		}
 		actor.TopLeft = geo.NewPoint(x, yOffset)
-		x += actor.Width + sd.actorXStep
+		x += actor.Width + MIN_ACTOR_DISTANCE
 	}
 }
 
