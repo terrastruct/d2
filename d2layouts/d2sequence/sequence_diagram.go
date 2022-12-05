@@ -60,38 +60,6 @@ func getEdgeEarliestLineNum(e *d2graph.Edge) int {
 	return min
 }
 
-func hasEdge(o *d2graph.Object) bool {
-	for _, ref := range o.References {
-		if ref.MapKey != nil && len(ref.MapKey.Edges) > 0 {
-			return true
-		}
-	}
-
-	return false
-}
-
-func containsAnyMessage(o *d2graph.Object, messages []*d2graph.Edge) bool {
-	for _, m := range messages {
-		if containsMessage(o, m) {
-			return true
-		}
-	}
-	return false
-}
-
-func containsMessage(o *d2graph.Object, m *d2graph.Edge) bool {
-	for _, ref := range m.References {
-		curr := ref.ScopeObj
-		for curr != nil {
-			if curr == o {
-				return true
-			}
-			curr = curr.Parent
-		}
-	}
-	return false
-}
-
 func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *sequenceDiagram {
 	var actors []*d2graph.Object
 	var groups []*d2graph.Object
@@ -107,7 +75,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 		hasNote := false
 		for _, ch := range obj.ChildrenArray {
 			// if the child contains a message, it's a span, not a note
-			if !containsAnyMessage(ch, messages) {
+			if !ch.ContainsAnyEdge(messages) {
 				hasNote = true
 				break
 			}
@@ -161,22 +129,21 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 			queue = queue[1:]
 
 			// spans are children of actors that have edges
-			// notes are children of actors with no edges and no children
 			// edge groups are children of actors with no edges and children edges
-			if hasEdge(child) && !containsAnyMessage(child, sd.messages) {
-				// spans have no labels
-				// TODO why not? Spans should be able to
-				child.Attributes.Label = d2graph.Scalar{Value: ""}
-				child.Attributes.Shape = d2graph.Scalar{Value: shape.SQUARE_TYPE}
-				sd.spans = append(sd.spans, child)
-				sd.objectRank[child] = rank
-			} else {
+			if child.IsSequenceDiagramNote() {
 				sd.verticalIndices[child.AbsID()] = getObjEarliestLineNum(child)
 				// TODO change to page type when it doesn't look deformed
 				child.Attributes.Shape = d2graph.Scalar{Value: shape.SQUARE_TYPE}
 				sd.notes = append(sd.notes, child)
 				sd.objectRank[child] = rank
 				child.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			} else {
+				// spans have no labels
+				// TODO why not? Spans should be able to
+				child.Attributes.Label = d2graph.Scalar{Value: ""}
+				child.Attributes.Shape = d2graph.Scalar{Value: shape.SQUARE_TYPE}
+				sd.spans = append(sd.spans, child)
+				sd.objectRank[child] = rank
 			}
 
 			queue = append(queue, child.ChildrenArray...)
@@ -233,7 +200,7 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 	maxY := math.Inf(-1)
 
 	for _, m := range sd.messages {
-		if containsMessage(group, m) {
+		if m.ContainedBy(group) {
 			for _, p := range m.Route {
 				minX = math.Min(minX, p.X)
 				minY = math.Min(minY, p.Y)

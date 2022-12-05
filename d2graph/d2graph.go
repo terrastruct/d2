@@ -403,10 +403,6 @@ func (obj *Object) IsContainer() bool {
 	return len(obj.Children) > 0
 }
 
-func (obj *Object) IsSequenceDiagram() bool {
-	return obj != nil && obj.Attributes.Shape.Value == d2target.ShapeSequenceDiagram
-}
-
 func (obj *Object) AbsID() string {
 	if obj.Parent != nil && obj.Parent.ID != "" {
 		return obj.Parent.AbsID() + "." + obj.ID
@@ -713,16 +709,6 @@ func (e *Edge) AbsID() string {
 	}
 
 	return fmt.Sprintf("%s(%s %s %s)[%d]", commonKey, strings.Join(srcIDA, "."), e.ArrowString(), strings.Join(dstIDA, "."), e.Index)
-}
-
-func (obj *Object) outerSequenceDiagram() *Object {
-	for obj != nil {
-		obj = obj.Parent
-		if obj.IsSequenceDiagram() {
-			return obj
-		}
-	}
-	return nil
 }
 
 func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label string) (*Edge, error) {
