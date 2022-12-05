@@ -327,6 +327,20 @@ func (obj *Object) GetFill(theme *d2themes.Theme) string {
 		return theme.Colors.B5
 	}
 
+	// fill for spans
+	sd := obj.OuterSequenceDiagram()
+	if sd != nil {
+		level -= int(sd.Level())
+		if level == 1 {
+			return theme.Colors.B5
+		} else if level == 2 {
+			return theme.Colors.B6
+		} else if level == 3 {
+			return theme.Colors.Neutrals.N6
+		}
+		return theme.Colors.Neutrals.N7
+	}
+
 	shape := obj.Attributes.Shape.Value
 
 	if strings.EqualFold(shape, d2target.ShapeSequenceDiagram) {
