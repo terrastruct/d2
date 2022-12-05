@@ -231,8 +231,8 @@ b -> a.t2`
 	}
 
 	for _, span := range []*d2graph.Object{a_t1, a_t2, b_t1} {
-		if span.ZIndex != 1 {
-			t.Fatalf("expected span ZIndex=1, got %d", span.ZIndex)
+		if span.ZIndex != d2sequence.SPAN_Z_INDEX {
+			t.Fatalf("expected span ZIndex=%d, got %d", d2sequence.SPAN_Z_INDEX, span.ZIndex)
 		}
 	}
 
@@ -393,7 +393,7 @@ func TestSelfEdges(t *testing.T) {
 	}
 
 	ctx := log.WithTB(context.Background(), t, nil)
-	Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
+	d2sequence.Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
 		return nil
 	})
 
@@ -406,8 +406,8 @@ func TestSelfEdges(t *testing.T) {
 		t.Fatalf("route does not end at the same actor, start at %.5f, end at %.5f", route[0].X, route[3].X)
 	}
 
-	if route[3].Y-route[0].Y != MIN_MESSAGE_DISTANCE {
-		t.Fatalf("expected route height to be %.f5, got %.5f", MIN_MESSAGE_DISTANCE, route[3].Y-route[0].Y)
+	if route[3].Y-route[0].Y != d2sequence.MIN_MESSAGE_DISTANCE {
+		t.Fatalf("expected route height to be %.f5, got %.5f", d2sequence.MIN_MESSAGE_DISTANCE, route[3].Y-route[0].Y)
 	}
 }
 
@@ -435,7 +435,7 @@ func TestSequenceToDescendant(t *testing.T) {
 	}
 
 	ctx := log.WithTB(context.Background(), t, nil)
-	Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
+	d2sequence.Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
 		return nil
 	})
 
