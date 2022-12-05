@@ -68,6 +68,7 @@
       "underline": false,
       "labelWidth": 61,
       "labelHeight": 36,
+      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     },
@@ -132,6 +133,7 @@
       "underline": false,
       "labelWidth": 99,
       "labelHeight": 36,
+      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     },
@@ -190,6 +192,7 @@
       "underline": false,
       "labelWidth": 74,
       "labelHeight": 36,
+      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     },
@@ -254,6 +257,7 @@
       "underline": false,
       "labelWidth": 116,
       "labelHeight": 36,
+      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     }

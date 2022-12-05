@@ -38,6 +38,7 @@
       "labelWidth": 12,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     },
@@ -78,6 +79,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     },
@@ -117,6 +119,7 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
+      "maskLabel": false,
       "zIndex": 2,
       "level": 2
     },
@@ -156,6 +159,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
+      "maskLabel": false,
       "zIndex": 2,
       "level": 3
     },
@@ -195,6 +199,7 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
+      "maskLabel": false,
       "zIndex": 2,
       "level": 2
     },
@@ -234,6 +239,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
+      "maskLabel": false,
       "zIndex": 2,
       "level": 3
     },
@@ -273,6 +279,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
+      "maskLabel": false,
       "zIndex": 2,
       "level": 2
     }

@@ -37,6 +37,7 @@
       "underline": false,
       "labelWidth": 531,
       "labelHeight": 186,
+      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     },
@@ -77,6 +78,7 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     },
@@ -117,6 +119,7 @@
       "labelWidth": 14,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     }

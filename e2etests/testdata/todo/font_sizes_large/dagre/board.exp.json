@@ -38,6 +38,7 @@
       "labelWidth": 24,
       "labelHeight": 16,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     },
@@ -78,6 +79,7 @@
       "labelWidth": 57,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     },
@@ -118,6 +120,7 @@
       "labelWidth": 147,
       "labelHeight": 46,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     },
@@ -158,6 +161,7 @@
       "labelWidth": 274,
       "labelHeight": 86,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     },
@@ -198,6 +202,7 @@
       "labelWidth": 489,
       "labelHeight": 130,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     }
