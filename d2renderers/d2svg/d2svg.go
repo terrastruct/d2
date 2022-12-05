@@ -337,11 +337,11 @@ func pathData(connection d2target.Connection, idToShape map[string]d2target.Shap
 	return strings.Join(path, " ")
 }
 
-func makeLabelMask(connection d2target.Connection, labelTL, tl, br *geo.Point) string {
+func makeLabelMask(labelTL *geo.Point, width, height int) string {
 	return fmt.Sprintf(`<rect x="%f" y="%f" width="%d" height="%d" fill="black"></rect>`,
 		labelTL.X, labelTL.Y,
-		connection.LabelWidth,
-		connection.LabelHeight,
+		width,
+		height,
 	)
 }
 
@@ -408,7 +408,7 @@ func drawConnection(writer io.Writer, connection d2target.Connection, markers ma
 			br.X = math.Max(br.X, labelTL.X+float64(connection.LabelWidth))
 			br.Y = math.Max(br.Y, labelTL.Y+float64(connection.LabelHeight))
 
-			labelMask = makeLabelMask(connection, labelTL, tl, br)
+			labelMask = makeLabelMask(labelTL, connection.LabelWidth, connection.LabelHeight)
 		}
 	}
 
@@ -582,7 +582,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	return borderMask + mainRect + renderedSides + renderedBorder
 }
 
-func drawShape(writer io.Writer, targetShape d2target.Shape) error {
+func drawShape(writer io.Writer, targetShape d2target.Shape) (labelMask string, err error) {
 	fmt.Fprintf(writer, `<g id="%s">`, escapeText(targetShape.ID))
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
@@ -615,11 +615,11 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 	case d2target.ShapeClass:
 		drawClass(writer, targetShape)
 		fmt.Fprintf(writer, `</g></g>`)
-		return nil
+		return labelMask, nil
 	case d2target.ShapeSQLTable:
 		drawTable(writer, targetShape)
 		fmt.Fprintf(writer, `</g></g>`)
-		return nil
+		return labelMask, nil
 	case d2target.ShapeOval:
 		if targetShape.Multiple {
 			fmt.Fprint(writer, renderOval(multipleTL, width, height, style))
@@ -701,19 +701,19 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 		case d2target.ShapeCode:
 			lexer := lexers.Get(targetShape.Language)
 			if lexer == nil {
-				return fmt.Errorf("code snippet lexer for %s not found", targetShape.Language)
+				return labelMask, fmt.Errorf("code snippet lexer for %s not found", targetShape.Language)
 			}
 			style := styles.Get("github")
 			if style == nil {
-				return errors.New(`code snippet style "github" not found`)
+				return labelMask, errors.New(`code snippet style "github" not found`)
 			}
 			formatter := formatters.Get("svg")
 			if formatter == nil {
-				return errors.New(`code snippet formatter "svg" not found`)
+				return labelMask, errors.New(`code snippet formatter "svg" not found`)
 			}
 			iterator, err := lexer.Tokenise(nil, targetShape.Label)
 			if err != nil {
-				return err
+				return labelMask, err
 			}
 
 			svgStyles := styleToSVG(style)
@@ -743,15 +743,15 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 			if targetShape.Language == "latex" {
 				render, err := d2latex.Render(targetShape.Label)
 				if err != nil {
-					return err
+					return labelMask, err
 				}
 				fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
-				fmt.Fprintf(writer, render)
+				fmt.Fprint(writer, render)
 				fmt.Fprintf(writer, "</g>")
 			} else {
 				render, err := textmeasure.RenderMarkdown(targetShape.Label)
 				if err != nil {
-					return err
+					return labelMask, err
 				}
 				fmt.Fprintf(writer, `<g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="%f" y="%f" width="%d" height="%d">`,
 					box.TopLeft.X, box.TopLeft.Y, targetShape.Width, targetShape.Height,
@@ -776,10 +776,11 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 				textStyle,
 				renderText(targetShape.Label, x, float64(targetShape.LabelHeight)),
 			)
+			labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight)
 		}
 	}
 	fmt.Fprintf(writer, `</g>`)
-	return nil
+	return labelMask, nil
 }
 
 func escapeText(text string) string {
@@ -986,14 +987,14 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 	markers := map[string]struct{}{}
 	for _, obj := range allObjects {
 		if c, is := obj.(d2target.Connection); is {
-			labelMask := drawConnection(buf, c, markers, idToShape)
-			if labelMask != "" {
+			if labelMask := drawConnection(buf, c, markers, idToShape); labelMask != "" {
 				labelMasks = append(labelMasks, labelMask)
 			}
 		} else if s, is := obj.(d2target.Shape); is {
-			err := drawShape(buf, s)
-			if err != nil {
+			if labelMask, err := drawShape(buf, s); err != nil {
 				return nil, err
+			} else if labelMask != "" {
+				labelMasks = append(labelMasks, labelMask)
 			}
 		} else {
 			return nil, fmt.Errorf("unknow object of type %T", obj)
