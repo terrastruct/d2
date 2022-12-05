@@ -50,6 +50,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 		for _, obj := range sd.actors {
 			objectsToRemove[obj] = struct{}{}
 		}
+		for _, obj := range sd.notes {
+			objectsToRemove[obj] = struct{}{}
+		}
 		for _, obj := range sd.spans {
 			objectsToRemove[obj] = struct{}{}
 		}
@@ -144,6 +147,7 @@ func cleanup(g *d2graph.Graph, sequenceDiagrams map[string]*sequenceDiagram, obj
 		g.Edges = append(g.Edges, sequenceDiagrams[obj.AbsID()].messages...)
 		g.Edges = append(g.Edges, sequenceDiagrams[obj.AbsID()].lifelines...)
 		g.Objects = append(g.Objects, sequenceDiagrams[obj.AbsID()].actors...)
+		g.Objects = append(g.Objects, sequenceDiagrams[obj.AbsID()].notes...)
 		g.Objects = append(g.Objects, sequenceDiagrams[obj.AbsID()].spans...)
 	}
 
