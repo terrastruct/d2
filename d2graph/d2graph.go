@@ -332,10 +332,12 @@ func (obj *Object) GetFill(theme *d2themes.Theme) string {
 	if sd != nil {
 		level -= int(sd.Level())
 		if level == 1 {
-			return theme.Colors.B5
+			return theme.Colors.B3
 		} else if level == 2 {
-			return theme.Colors.B6
+			return theme.Colors.B4
 		} else if level == 3 {
+			return theme.Colors.B5
+		} else if level == 4 {
 			return theme.Colors.Neutrals.N6
 		}
 		return theme.Colors.Neutrals.N7
