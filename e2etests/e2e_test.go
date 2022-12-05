@@ -39,6 +39,10 @@ func TestE2E(t *testing.T) {
 func testSanity(t *testing.T) {
 	tcs := []testCase{
 		{
+			name:   "empty",
+			script: ``,
+		},
+		{
 			name: "basic",
 			script: `a -> b
 `,
