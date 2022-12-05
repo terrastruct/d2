@@ -97,7 +97,6 @@ func run(t *testing.T, tc testCase) {
 	layoutsTested := []string{"dagre", "elk"}
 
 	for _, layoutName := range layoutsTested {
-
 		var layout func(context.Context, *d2graph.Graph) error
 		if layoutName == "dagre" {
 			layout = d2dagrelayout.Layout
@@ -105,7 +104,6 @@ func run(t *testing.T, tc testCase) {
 			layout = d2elklayout.Layout
 		}
 		diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
-			UTF16:   true,
 			Ruler:   ruler,
 			ThemeID: 0,
 			Layout:  layout,

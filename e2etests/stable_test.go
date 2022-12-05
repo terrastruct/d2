@@ -1375,6 +1375,30 @@ choo: {
 }
 `,
 		},
+		{
+			name: "sequence_diagram_real",
+			script: `How this is rendered: {
+  shape: sequence_diagram
+
+	CLI; d2ast; d2compiler; d2layout; d2exporter; d2themes; d2renderer
+
+  CLI -> d2ast: "'How this is rendered: {...}'"
+  d2ast -> CLI: tokenized AST
+  CLI -> d2compiler: compile AST
+  d2compiler."measurements also take place"
+  d2compiler -> CLI: objects and edges
+  CLI -> d2layout.layout: run layout engines
+  d2layout.layout -> d2sequencelayout: run engine on shape: sequence_diagram, temporarily remove
+  d2layout.layout -> d2dagrelayout: run core engine on rest
+  d2layout.layout <- d2sequencelayout: add back in sequence diagrams
+  d2layout -> CLI: diagram with correct positions and dimensions
+  CLI -> d2exporter: export diagram with chosen theme and renderer
+  d2exporter.export -> d2themes: get theme styles
+  d2exporter.export -> d2renderer: render to SVG
+  d2exporter.export -> CLI: resulting SVG
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
