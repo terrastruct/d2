@@ -69,6 +69,7 @@ type Object struct {
 	References      []Reference             `json:"references,omitempty"`
 
 	*geo.Box      `json:"box,omitempty"`
+	MaskLabel     *bool   `json:"maskLabel,omitempty"`
 	LabelPosition *string `json:"labelPosition,omitempty"`
 	LabelWidth    *int    `json:"labelWidth,omitempty"`
 	LabelHeight   *int    `json:"labelHeight,omitempty"`

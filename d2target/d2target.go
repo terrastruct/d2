@@ -121,6 +121,7 @@ type Shape struct {
 	Text
 
 	LabelPosition string `json:"labelPosition,omitempty"`
+	MaskLabel     bool   `json:"maskLabel"`
 
 	ZIndex int `json:"zIndex"`
 	Level  int `json:"level"`

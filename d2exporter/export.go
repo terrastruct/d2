@@ -127,6 +127,9 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	if obj.LabelPosition != nil {
 		shape.LabelPosition = *obj.LabelPosition
 	}
+	if obj.MaskLabel != nil {
+		shape.MaskLabel = *obj.MaskLabel
+	}
 
 	shape.Tooltip = obj.Attributes.Tooltip
 	shape.Link = obj.Attributes.Link
