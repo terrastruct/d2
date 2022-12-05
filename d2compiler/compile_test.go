@@ -1347,6 +1347,7 @@ y -> x.style
 				if len(g.Objects) != 1 {
 					t.Fatal(g.Objects)
 				}
+				assert.String(t, `"b\nb"`, g.Objects[0].ID)
 				assert.String(t, `b
 b`, g.Objects[0].Attributes.Label.Value)
 			},
@@ -1359,6 +1360,7 @@ b`, g.Objects[0].Attributes.Label.Value)
 				if len(g.Objects) != 1 {
 					t.Fatal(g.Objects)
 				}
+				assert.String(t, "b\rb", g.Objects[0].ID)
 				assert.String(t, "b\rb", g.Objects[0].Attributes.Label.Value)
 			},
 		},
