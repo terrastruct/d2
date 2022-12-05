@@ -95,6 +95,8 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	shape.Height = int(obj.Height)
 
 	text := obj.Text()
+	shape.Bold = text.IsBold
+	shape.Italic = text.IsItalic
 	shape.FontSize = text.FontSize
 
 	applyStyles(shape, obj)

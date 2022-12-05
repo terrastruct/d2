@@ -6,7 +6,7 @@ func (obj *Object) IsSequenceDiagram() bool {
 	return obj != nil && obj.Attributes.Shape.Value == d2target.ShapeSequenceDiagram
 }
 
-func (obj *Object) outerSequenceDiagram() *Object {
+func (obj *Object) OuterSequenceDiagram() *Object {
 	for obj != nil {
 		obj = obj.Parent
 		if obj.IsSequenceDiagram() {
@@ -19,7 +19,7 @@ func (obj *Object) outerSequenceDiagram() *Object {
 // groups are objects in sequence diagrams that have no messages connected
 // and does not have a note as a child (a note can appear within a group, but it's a child of an actor)
 func (obj *Object) IsSequenceDiagramGroup() bool {
-	if obj.outerSequenceDiagram() == nil {
+	if obj.OuterSequenceDiagram() == nil {
 		return false
 	}
 	for _, e := range obj.Graph.Edges {
@@ -38,7 +38,7 @@ func (obj *Object) IsSequenceDiagramGroup() bool {
 
 // notes are descendant of actors with no edges and no children
 func (obj *Object) IsSequenceDiagramNote() bool {
-	if obj.outerSequenceDiagram() == nil {
+	if obj.OuterSequenceDiagram() == nil {
 		return false
 	}
 	return !obj.hasEdgeRef() && !obj.ContainsAnyEdge(obj.Graph.Edges) && len(obj.ChildrenArray) == 0

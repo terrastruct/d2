@@ -336,7 +336,7 @@ func (obj *Object) GetFill(theme *d2themes.Theme) string {
 	} else if obj.IsSequenceDiagramNote() {
 		return theme.Colors.Neutrals.N7
 	} else if obj.IsSequenceDiagramGroup() {
-		sd := obj.outerSequenceDiagram()
+		sd := obj.OuterSequenceDiagram()
 		// Alternate
 		if (level-int(sd.Level()))%2 == 0 {
 			return theme.Colors.Neutrals.N7
@@ -428,10 +428,14 @@ func (obj *Object) AbsIDArray() []string {
 }
 
 func (obj *Object) Text() *d2target.MText {
+	isBold := !obj.IsContainer()
 	fontSize := d2fonts.FONT_SIZE_M
-	if obj.IsContainer() && !obj.Parent.IsSequenceDiagram() {
-		// sequence diagram children (aka, actors) shouldn't have the container font size
-		fontSize = obj.Level().LabelSize()
+	if obj.OuterSequenceDiagram() == nil {
+		if obj.IsContainer() {
+			fontSize = obj.Level().LabelSize()
+		}
+	} else {
+		isBold = false
 	}
 	if obj.Attributes.Style.FontSize != nil {
 		fontSize, _ = strconv.Atoi(obj.Attributes.Style.FontSize.Value)
@@ -443,7 +447,7 @@ func (obj *Object) Text() *d2target.MText {
 	return &d2target.MText{
 		Text:     obj.Attributes.Label.Value,
 		FontSize: fontSize,
-		IsBold:   !obj.IsContainer(),
+		IsBold:   isBold,
 		IsItalic: false,
 		Language: obj.Attributes.Language,
 		Shape:    obj.Attributes.Shape.Value,
@@ -742,7 +746,7 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 	src := srcObj.EnsureChild(srcID)
 	dst := dstObj.EnsureChild(dstID)
 
-	if src.outerSequenceDiagram() != dst.outerSequenceDiagram() {
+	if src.OuterSequenceDiagram() != dst.OuterSequenceDiagram() {
 		return nil, errors.New("connections within sequence diagrams can connect only to other objects within the same sequence diagram")
 	}
 
