@@ -12,6 +12,10 @@ width="955" height="818" viewBox="-88 -88 955 818"><style type="text/css">
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+.blend {
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
 
 ]]>
 </style><g id="hey"><g class="shape" ></g><g transform="translate(12.000000 238.000000)" style="opacity:1.000000"><rect class="shape" width="755" height="166" style="stroke: #0A0F25;fill:#ffffff" /><g transform="translate(6 6)"><text class="text-mono" x="0" y="1.000000em" xml:space="preserve"><tspan fill="#999988" font-style="italic">//&#160;RegisterHash&#160;registers&#160;a&#160;function&#160;that&#160;returns&#160;a&#160;new&#160;instance&#160;of&#160;the&#160;given

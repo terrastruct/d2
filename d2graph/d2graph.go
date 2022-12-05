@@ -333,18 +333,12 @@ func (l ContainerLevel) LabelSize() int {
 
 func (obj *Object) GetFill(theme *d2themes.Theme) string {
 	level := int(obj.Level())
-	if obj.Parent.IsSequenceDiagram() {
-		return theme.Colors.B5
-	} else if obj.IsSequenceDiagramNote() {
+	if obj.IsSequenceDiagramNote() {
 		return theme.Colors.Neutrals.N7
 	} else if obj.IsSequenceDiagramGroup() {
-		sd := obj.OuterSequenceDiagram()
-		// Alternate
-		if (level-int(sd.Level()))%2 == 0 {
-			return theme.Colors.Neutrals.N7
-		} else {
-			return theme.Colors.Neutrals.N6
-		}
+		return theme.Colors.Neutrals.N5
+	} else if obj.Parent.IsSequenceDiagram() {
+		return theme.Colors.B5
 	}
 
 	shape := obj.Attributes.Shape.Value

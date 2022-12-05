@@ -23,6 +23,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -44,7 +45,7 @@
       "id": "b",
       "type": "",
       "pos": {
-        "x": 220,
+        "x": 250,
         "y": 50
       },
       "width": 150,
@@ -62,6 +63,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -83,7 +85,7 @@
       "id": "c",
       "type": "",
       "pos": {
-        "x": 440,
+        "x": 500,
         "y": 50
       },
       "width": 150,
@@ -101,6 +103,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -122,7 +125,7 @@
       "id": "d",
       "type": "",
       "pos": {
-        "x": 660,
+        "x": 750,
         "y": 50
       },
       "width": 150,
@@ -140,6 +143,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -164,13 +168,13 @@
         "x": 25,
         "y": 396
       },
-      "width": 320,
+      "width": 350,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 2,
+      "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#DEE1EB",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -179,6 +183,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -192,23 +197,23 @@
       "underline": false,
       "labelWidth": 30,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 1
     },
     {
       "id": "group 1",
       "type": "",
       "pos": {
-        "x": 221,
+        "x": 251,
         "y": 526
       },
-      "width": 368,
+      "width": 398,
       "height": 730,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 2,
+      "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#DEE1EB",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -217,6 +222,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -230,23 +236,23 @@
       "underline": false,
       "labelWidth": 57,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 1
     },
     {
       "id": "group 1.nested guy",
       "type": "",
       "pos": {
-        "x": 245,
+        "x": 275,
         "y": 786
       },
-      "width": 320,
+      "width": 350,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 2,
+      "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
+      "fill": "#DEE1EB",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -255,6 +261,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -268,23 +275,23 @@
       "underline": false,
       "labelWidth": 78,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 2
     },
     {
       "id": "group b",
       "type": "",
       "pos": {
-        "x": 245,
+        "x": 275,
         "y": 1306
       },
-      "width": 438,
+      "width": 468,
       "height": 466,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 2,
+      "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#DEE1EB",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -293,6 +300,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -306,14 +314,14 @@
       "underline": false,
       "labelWidth": 58,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 1
     },
     {
       "id": "c.what would arnold say",
       "type": "rectangle",
       "pos": {
-        "x": 386,
+        "x": 446,
         "y": 1476
       },
       "width": 257,
@@ -331,6 +339,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -352,16 +361,16 @@
       "id": "choo",
       "type": "",
       "pos": {
-        "x": 603,
+        "x": 693,
         "y": 1822
       },
       "width": 254,
       "height": 216,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 2,
+      "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#DEE1EB",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -370,6 +379,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -383,14 +393,14 @@
       "underline": false,
       "labelWidth": 38,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 1
     },
     {
       "id": "d.this note",
       "type": "rectangle",
       "pos": {
-        "x": 653,
+        "x": 743,
         "y": 1862
       },
       "width": 164,
@@ -408,6 +418,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -429,7 +440,7 @@
       "id": "b.t1",
       "type": "rectangle",
       "pos": {
-        "x": 289,
+        "x": 319,
         "y": 940
       },
       "width": 12,
@@ -447,6 +458,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -460,14 +472,14 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 2
     },
     {
       "id": "c.t1",
       "type": "rectangle",
       "pos": {
-        "x": 509,
+        "x": 569,
         "y": 940
       },
       "width": 12,
@@ -485,6 +497,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -498,14 +511,14 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 2
     },
     {
       "id": "b.t1.t2",
       "type": "rectangle",
       "pos": {
-        "x": 285,
+        "x": 315,
         "y": 1070
       },
       "width": 20,
@@ -523,6 +536,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -536,7 +550,7 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 3
     }
   ],
@@ -571,7 +585,7 @@
           "y": 306
         },
         {
-          "x": 295,
+          "x": 325,
           "y": 306
         }
       ],
@@ -610,7 +624,7 @@
           "y": 436
         },
         {
-          "x": 295,
+          "x": 325,
           "y": 436
         }
       ],
@@ -645,11 +659,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 295,
+          "x": 325,
           "y": 566
         },
         {
-          "x": 515,
+          "x": 575,
           "y": 566
         }
       ],
@@ -684,11 +698,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 515,
+          "x": 575,
           "y": 696
         },
         {
-          "x": 295,
+          "x": 325,
           "y": 696
         }
       ],
@@ -723,11 +737,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 515,
+          "x": 575,
           "y": 826
         },
         {
-          "x": 295,
+          "x": 325,
           "y": 826
         }
       ],
@@ -762,11 +776,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 301,
+          "x": 331,
           "y": 956
         },
         {
-          "x": 509,
+          "x": 569,
           "y": 956
         }
       ],
@@ -801,11 +815,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 305,
+          "x": 335,
           "y": 1086
         },
         {
-          "x": 509,
+          "x": 569,
           "y": 1086
         }
       ],
@@ -840,11 +854,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 509,
+          "x": 569,
           "y": 1216
         },
         {
-          "x": 301,
+          "x": 331,
           "y": 1216
         }
       ],
@@ -879,11 +893,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 295,
+          "x": 325,
           "y": 1346
         },
         {
-          "x": 515,
+          "x": 575,
           "y": 1346
         }
       ],
@@ -918,11 +932,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 515,
+          "x": 575,
           "y": 1732
         },
         {
-          "x": 295,
+          "x": 325,
           "y": 1732
         }
       ],
@@ -968,7 +982,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(b -- )[0]",
@@ -996,18 +1010,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 295,
+          "x": 325,
           "y": 176
         },
         {
-          "x": 295,
+          "x": 325,
           "y": 2118
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(c -- )[0]",
@@ -1035,18 +1049,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 515,
+          "x": 575,
           "y": 176
         },
         {
-          "x": 515,
+          "x": 575,
           "y": 2118
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(d -- )[0]",
@@ -1074,18 +1088,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 735,
+          "x": 825,
           "y": 176
         },
         {
-          "x": 735,
+          "x": 825,
           "y": 2118
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     }
   ]
 }

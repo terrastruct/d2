@@ -5,7 +5,7 @@
       "id": "a_shape",
       "type": "oval",
       "pos": {
-        "x": 1451,
+        "x": 1482,
         "y": 0
       },
       "width": 164,
@@ -23,6 +23,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -44,10 +45,10 @@
       "id": "a_sequence",
       "type": "sequence_diagram",
       "pos": {
-        "x": 1651,
+        "x": 1682,
         "y": 314
       },
-      "width": 1393,
+      "width": 1424,
       "height": 2032,
       "opacity": 1,
       "strokeDash": 0,
@@ -62,6 +63,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -86,7 +88,7 @@
         "x": 0,
         "y": 264
       },
-      "width": 1493,
+      "width": 1524,
       "height": 2132,
       "opacity": 1,
       "strokeDash": 0,
@@ -101,6 +103,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -125,7 +128,7 @@
         "x": 50,
         "y": 317
       },
-      "width": 1393,
+      "width": 1424,
       "height": 2027,
       "opacity": 1,
       "strokeDash": 0,
@@ -140,6 +143,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -161,16 +165,16 @@
       "id": "finally",
       "type": "queue",
       "pos": {
-        "x": 333,
+        "x": 341,
         "y": 2496
       },
-      "width": 1593,
+      "width": 1624,
       "height": 1477,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F0F3F9",
+      "fill": "#DEE1EB",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -179,6 +183,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -200,10 +205,10 @@
       "id": "finally.sequence",
       "type": "sequence_diagram",
       "pos": {
-        "x": 443,
+        "x": 451,
         "y": 2546
       },
-      "width": 1393,
+      "width": 1425,
       "height": 1377,
       "opacity": 1,
       "strokeDash": 0,
@@ -218,6 +223,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -239,7 +245,7 @@
       "id": "finally.sequence.scorer",
       "type": "",
       "pos": {
-        "x": 443,
+        "x": 451,
         "y": 2627
       },
       "width": 150,
@@ -257,6 +263,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -278,7 +285,7 @@
       "id": "finally.sequence.concept",
       "type": "",
       "pos": {
-        "x": 663,
+        "x": 696,
         "y": 2627
       },
       "width": 160,
@@ -296,6 +303,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -317,7 +325,7 @@
       "id": "finally.sequence.essayRubric",
       "type": "",
       "pos": {
-        "x": 893,
+        "x": 933,
         "y": 2627
       },
       "width": 186,
@@ -335,6 +343,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -356,7 +365,7 @@
       "id": "finally.sequence.item",
       "type": "",
       "pos": {
-        "x": 1149,
+        "x": 1201,
         "y": 2627
       },
       "width": 150,
@@ -374,6 +383,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -395,7 +405,7 @@
       "id": "finally.sequence.itemOutcome",
       "type": "",
       "pos": {
-        "x": 1369,
+        "x": 1428,
         "y": 2627
       },
       "width": 197,
@@ -413,6 +423,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -434,7 +445,7 @@
       "id": "finally.sequence.itemResponse",
       "type": "",
       "pos": {
-        "x": 1636,
+        "x": 1676,
         "y": 2627
       },
       "width": 200,
@@ -452,6 +463,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -473,7 +485,7 @@
       "id": "a_sequence.scorer",
       "type": "",
       "pos": {
-        "x": 1651,
+        "x": 1682,
         "y": 400
       },
       "width": 150,
@@ -491,6 +503,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -512,7 +525,7 @@
       "id": "a_sequence.scorer.t",
       "type": "rectangle",
       "pos": {
-        "x": 1720,
+        "x": 1751,
         "y": 640
       },
       "width": 12,
@@ -530,6 +543,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -543,14 +557,14 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 3
     },
     {
       "id": "a_sequence.itemResponse",
       "type": "",
       "pos": {
-        "x": 1871,
+        "x": 1907,
         "y": 400
       },
       "width": 200,
@@ -568,6 +582,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -589,7 +604,7 @@
       "id": "a_sequence.itemResponse.t",
       "type": "rectangle",
       "pos": {
-        "x": 1965,
+        "x": 2001,
         "y": 640
       },
       "width": 12,
@@ -607,6 +622,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -620,14 +636,14 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 3
     },
     {
       "id": "a_sequence.item",
       "type": "",
       "pos": {
-        "x": 2141,
+        "x": 2182,
         "y": 400
       },
       "width": 150,
@@ -645,6 +661,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -666,7 +683,7 @@
       "id": "a_sequence.item.t1",
       "type": "rectangle",
       "pos": {
-        "x": 2210,
+        "x": 2251,
         "y": 900
       },
       "width": 12,
@@ -684,6 +701,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -697,14 +715,14 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 3
     },
     {
       "id": "a_sequence.essayRubric",
       "type": "",
       "pos": {
-        "x": 2361,
+        "x": 2414,
         "y": 400
       },
       "width": 186,
@@ -722,6 +740,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -743,7 +762,7 @@
       "id": "a_sequence.essayRubric.t",
       "type": "rectangle",
       "pos": {
-        "x": 2448,
+        "x": 2501,
         "y": 1160
       },
       "width": 12,
@@ -761,6 +780,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -774,14 +794,14 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 3
     },
     {
       "id": "a_sequence.essayRubric.t.c",
       "type": "rectangle",
       "pos": {
-        "x": 2444,
+        "x": 2497,
         "y": 1290
       },
       "width": 20,
@@ -799,6 +819,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -812,14 +833,14 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     },
     {
       "id": "a_sequence.concept",
       "type": "",
       "pos": {
-        "x": 2617,
+        "x": 2677,
         "y": 400
       },
       "width": 160,
@@ -837,6 +858,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -858,7 +880,7 @@
       "id": "a_sequence.concept.t",
       "type": "rectangle",
       "pos": {
-        "x": 2691,
+        "x": 2751,
         "y": 1420
       },
       "width": 12,
@@ -876,6 +898,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -889,14 +912,14 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 3
     },
     {
       "id": "a_sequence.itemOutcome",
       "type": "",
       "pos": {
-        "x": 2847,
+        "x": 2909,
         "y": 400
       },
       "width": 197,
@@ -914,6 +937,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -935,7 +959,7 @@
       "id": "a_sequence.itemOutcome.t1",
       "type": "rectangle",
       "pos": {
-        "x": 2939,
+        "x": 3001,
         "y": 1680
       },
       "width": 12,
@@ -953,6 +977,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -966,14 +991,14 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 3
     },
     {
       "id": "a_sequence.item.t2",
       "type": "rectangle",
       "pos": {
-        "x": 2210,
+        "x": 2251,
         "y": 1810
       },
       "width": 12,
@@ -991,6 +1016,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1004,14 +1030,14 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 3
     },
     {
       "id": "a_sequence.item.t3",
       "type": "rectangle",
       "pos": {
-        "x": 2210,
+        "x": 2251,
         "y": 1940
       },
       "width": 12,
@@ -1029,6 +1055,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1042,14 +1069,14 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 3
     },
     {
       "id": "a_sequence.itemOutcome.t2",
       "type": "rectangle",
       "pos": {
-        "x": 2939,
+        "x": 3001,
         "y": 2070
       },
       "width": 12,
@@ -1067,6 +1094,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1080,14 +1108,14 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 3
     },
     {
       "id": "a_sequence.itemOutcome.t3",
       "type": "rectangle",
       "pos": {
-        "x": 2939,
+        "x": 3001,
         "y": 2200
       },
       "width": 12,
@@ -1105,6 +1133,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1118,7 +1147,7 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 3
     },
     {
@@ -1143,6 +1172,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1182,6 +1212,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1195,14 +1226,14 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     },
     {
       "id": "another.sequence.itemResponse",
       "type": "",
       "pos": {
-        "x": 270,
+        "x": 275,
         "y": 398
       },
       "width": 200,
@@ -1220,6 +1251,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1241,7 +1273,7 @@
       "id": "another.sequence.itemResponse.t",
       "type": "rectangle",
       "pos": {
-        "x": 364,
+        "x": 369,
         "y": 638
       },
       "width": 12,
@@ -1259,6 +1291,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1272,14 +1305,14 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     },
     {
       "id": "another.sequence.item",
       "type": "",
       "pos": {
-        "x": 540,
+        "x": 550,
         "y": 398
       },
       "width": 150,
@@ -1297,6 +1330,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1318,7 +1352,7 @@
       "id": "another.sequence.item.t1",
       "type": "rectangle",
       "pos": {
-        "x": 609,
+        "x": 619,
         "y": 898
       },
       "width": 12,
@@ -1336,6 +1370,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1349,14 +1384,14 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     },
     {
       "id": "another.sequence.essayRubric",
       "type": "",
       "pos": {
-        "x": 760,
+        "x": 782,
         "y": 398
       },
       "width": 186,
@@ -1374,6 +1409,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1395,7 +1431,7 @@
       "id": "another.sequence.essayRubric.t",
       "type": "rectangle",
       "pos": {
-        "x": 847,
+        "x": 869,
         "y": 1158
       },
       "width": 12,
@@ -1413,6 +1449,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1426,14 +1463,14 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     },
     {
       "id": "another.sequence.essayRubric.t.c",
       "type": "rectangle",
       "pos": {
-        "x": 843,
+        "x": 865,
         "y": 1288
       },
       "width": 20,
@@ -1451,6 +1488,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1464,14 +1502,14 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 5
     },
     {
       "id": "another.sequence.concept",
       "type": "",
       "pos": {
-        "x": 1016,
+        "x": 1045,
         "y": 398
       },
       "width": 160,
@@ -1489,6 +1527,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1510,7 +1549,7 @@
       "id": "another.sequence.concept.t",
       "type": "rectangle",
       "pos": {
-        "x": 1090,
+        "x": 1119,
         "y": 1418
       },
       "width": 12,
@@ -1528,6 +1567,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1541,14 +1581,14 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     },
     {
       "id": "another.sequence.itemOutcome",
       "type": "",
       "pos": {
-        "x": 1246,
+        "x": 1277,
         "y": 398
       },
       "width": 197,
@@ -1566,6 +1606,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1587,7 +1628,7 @@
       "id": "another.sequence.itemOutcome.t1",
       "type": "rectangle",
       "pos": {
-        "x": 1338,
+        "x": 1369,
         "y": 1678
       },
       "width": 12,
@@ -1605,6 +1646,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1618,14 +1660,14 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     },
     {
       "id": "another.sequence.item.t2",
       "type": "rectangle",
       "pos": {
-        "x": 609,
+        "x": 619,
         "y": 1808
       },
       "width": 12,
@@ -1643,6 +1685,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1656,14 +1699,14 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     },
     {
       "id": "another.sequence.item.t3",
       "type": "rectangle",
       "pos": {
-        "x": 609,
+        "x": 619,
         "y": 1938
       },
       "width": 12,
@@ -1681,6 +1724,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1694,14 +1738,14 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     },
     {
       "id": "another.sequence.itemOutcome.t2",
       "type": "rectangle",
       "pos": {
-        "x": 1338,
+        "x": 1369,
         "y": 2068
       },
       "width": 12,
@@ -1719,6 +1763,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1732,14 +1777,14 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     },
     {
       "id": "another.sequence.itemOutcome.t3",
       "type": "rectangle",
       "pos": {
-        "x": 1338,
+        "x": 1369,
         "y": 2198
       },
       "width": 12,
@@ -1757,6 +1802,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1770,14 +1816,14 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     },
     {
       "id": "sequence",
       "type": "",
       "pos": {
-        "x": 2262,
+        "x": 2308,
         "y": 3172
       },
       "width": 172,
@@ -1795,6 +1841,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1816,7 +1863,7 @@
       "id": "finally.sequence.itemResponse.a",
       "type": "rectangle",
       "pos": {
-        "x": 1730,
+        "x": 1770,
         "y": 2867
       },
       "width": 12,
@@ -1834,6 +1881,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1847,14 +1895,14 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     },
     {
       "id": "finally.sequence.item.a",
       "type": "rectangle",
       "pos": {
-        "x": 1218,
+        "x": 1270,
         "y": 2851
       },
       "width": 12,
@@ -1872,6 +1920,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1885,14 +1934,14 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     },
     {
       "id": "finally.sequence.item.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 1214,
+        "x": 1266,
         "y": 2867
       },
       "width": 20,
@@ -1910,6 +1959,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1923,14 +1973,14 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 5
     },
     {
       "id": "finally.sequence.essayRubric.a",
       "type": "rectangle",
       "pos": {
-        "x": 980,
+        "x": 1020,
         "y": 2965
       },
       "width": 12,
@@ -1948,6 +1998,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1961,14 +2012,14 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     },
     {
       "id": "finally.sequence.essayRubric.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 976,
+        "x": 1016,
         "y": 2981
       },
       "width": 20,
@@ -1986,6 +2037,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -1999,14 +2051,14 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 5
     },
     {
       "id": "finally.sequence.essayRubric.a.b.c",
       "type": "rectangle",
       "pos": {
-        "x": 972,
+        "x": 1012,
         "y": 2997
       },
       "width": 28,
@@ -2024,6 +2076,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -2037,14 +2090,14 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 6
     },
     {
       "id": "finally.sequence.concept.a",
       "type": "rectangle",
       "pos": {
-        "x": 737,
+        "x": 770,
         "y": 3079
       },
       "width": 12,
@@ -2062,6 +2115,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -2075,14 +2129,14 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     },
     {
       "id": "finally.sequence.concept.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 733,
+        "x": 766,
         "y": 3095
       },
       "width": 20,
@@ -2100,6 +2154,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -2113,14 +2168,14 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 5
     },
     {
       "id": "finally.sequence.concept.a.b.c",
       "type": "rectangle",
       "pos": {
-        "x": 729,
+        "x": 762,
         "y": 3111
       },
       "width": 28,
@@ -2138,6 +2193,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -2151,14 +2207,14 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 6
     },
     {
       "id": "finally.sequence.concept.a.b.c.d",
       "type": "rectangle",
       "pos": {
-        "x": 725,
+        "x": 758,
         "y": 3127
       },
       "width": 36,
@@ -2176,6 +2232,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -2189,14 +2246,14 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 7
     },
     {
       "id": "finally.sequence.itemOutcome.a",
       "type": "rectangle",
       "pos": {
-        "x": 1461,
+        "x": 1520,
         "y": 3323
       },
       "width": 12,
@@ -2214,6 +2271,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -2227,14 +2285,14 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     },
     {
       "id": "finally.sequence.itemOutcome.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 1457,
+        "x": 1516,
         "y": 3339
       },
       "width": 20,
@@ -2252,6 +2310,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -2265,14 +2324,14 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 5
     },
     {
       "id": "finally.sequence.itemOutcome.a.b.c",
       "type": "rectangle",
       "pos": {
-        "x": 1453,
+        "x": 1512,
         "y": 3355
       },
       "width": 28,
@@ -2290,6 +2349,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -2303,14 +2363,14 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 6
     },
     {
       "id": "finally.sequence.itemOutcome.a.b.c.d",
       "type": "rectangle",
       "pos": {
-        "x": 1449,
+        "x": 1508,
         "y": 3371
       },
       "width": 36,
@@ -2328,6 +2388,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -2341,14 +2402,14 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 7
     },
     {
       "id": "finally.sequence.itemOutcome.a.b.c.d.e",
       "type": "rectangle",
       "pos": {
-        "x": 1445,
+        "x": 1504,
         "y": 3387
       },
       "width": 44,
@@ -2366,6 +2427,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -2379,14 +2441,14 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 8
     },
     {
       "id": "finally.sequence.scorer.abc",
       "type": "rectangle",
       "pos": {
-        "x": 512,
+        "x": 520,
         "y": 3517
       },
       "width": 12,
@@ -2404,6 +2466,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -2417,14 +2480,14 @@
       "underline": false,
       "labelWidth": 29,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     },
     {
       "id": "finally.sequence.itemResponse.c",
       "type": "rectangle",
       "pos": {
-        "x": 1730,
+        "x": 1770,
         "y": 3777
       },
       "width": 12,
@@ -2442,6 +2505,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -2455,7 +2519,7 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 4
     }
   ],
@@ -2486,11 +2550,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1732,
+          "x": 1763,
           "y": 656
         },
         {
-          "x": 1965,
+          "x": 2001,
           "y": 656
         }
       ],
@@ -2525,11 +2589,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1732,
+          "x": 1763,
           "y": 786
         },
         {
-          "x": 1965,
+          "x": 2001,
           "y": 786
         }
       ],
@@ -2564,11 +2628,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1732,
+          "x": 1763,
           "y": 916
         },
         {
-          "x": 2210,
+          "x": 2251,
           "y": 916
         }
       ],
@@ -2603,11 +2667,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1732,
+          "x": 1763,
           "y": 1046
         },
         {
-          "x": 2210,
+          "x": 2251,
           "y": 1046
         }
       ],
@@ -2642,11 +2706,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1732,
+          "x": 1763,
           "y": 1176
         },
         {
-          "x": 2448,
+          "x": 2501,
           "y": 1176
         }
       ],
@@ -2681,11 +2745,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1971,
+          "x": 2007,
           "y": 1306
         },
         {
-          "x": 2444,
+          "x": 2497,
           "y": 1306
         }
       ],
@@ -2720,11 +2784,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2464,
+          "x": 2517,
           "y": 1436
         },
         {
-          "x": 2691,
+          "x": 2751,
           "y": 1436
         }
       ],
@@ -2759,11 +2823,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1726,
+          "x": 1757,
           "y": 1566
         },
         {
-          "x": 2448,
+          "x": 2501,
           "y": 1566
         }
       ],
@@ -2798,11 +2862,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1732,
+          "x": 1763,
           "y": 1696
         },
         {
-          "x": 2939.5,
+          "x": 3001.5,
           "y": 1696
         }
       ],
@@ -2837,11 +2901,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1732,
+          "x": 1763,
           "y": 1826
         },
         {
-          "x": 2210,
+          "x": 2251,
           "y": 1826
         }
       ],
@@ -2876,11 +2940,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1732,
+          "x": 1763,
           "y": 1956
         },
         {
-          "x": 2210,
+          "x": 2251,
           "y": 1956
         }
       ],
@@ -2915,11 +2979,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1732,
+          "x": 1763,
           "y": 2086
         },
         {
-          "x": 2939.5,
+          "x": 3001.5,
           "y": 2086
         }
       ],
@@ -2954,11 +3018,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1732,
+          "x": 1763,
           "y": 2216
         },
         {
-          "x": 2939.5,
+          "x": 3001.5,
           "y": 2216
         }
       ],
@@ -2997,7 +3061,7 @@
           "y": 654
         },
         {
-          "x": 364,
+          "x": 369,
           "y": 654
         }
       ],
@@ -3036,7 +3100,7 @@
           "y": 784
         },
         {
-          "x": 364,
+          "x": 369,
           "y": 784
         }
       ],
@@ -3075,7 +3139,7 @@
           "y": 914
         },
         {
-          "x": 609,
+          "x": 619,
           "y": 914
         }
       ],
@@ -3114,7 +3178,7 @@
           "y": 1044
         },
         {
-          "x": 609,
+          "x": 619,
           "y": 1044
         }
       ],
@@ -3153,7 +3217,7 @@
           "y": 1174
         },
         {
-          "x": 847,
+          "x": 869,
           "y": 1174
         }
       ],
@@ -3188,11 +3252,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 370,
+          "x": 375,
           "y": 1304
         },
         {
-          "x": 843,
+          "x": 865,
           "y": 1304
         }
       ],
@@ -3227,11 +3291,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 863,
+          "x": 885,
           "y": 1434
         },
         {
-          "x": 1090,
+          "x": 1119,
           "y": 1434
         }
       ],
@@ -3270,7 +3334,7 @@
           "y": 1564
         },
         {
-          "x": 847,
+          "x": 869,
           "y": 1564
         }
       ],
@@ -3309,7 +3373,7 @@
           "y": 1694
         },
         {
-          "x": 1338.5,
+          "x": 1369.5,
           "y": 1694
         }
       ],
@@ -3348,7 +3412,7 @@
           "y": 1824
         },
         {
-          "x": 609,
+          "x": 619,
           "y": 1824
         }
       ],
@@ -3387,7 +3451,7 @@
           "y": 1954
         },
         {
-          "x": 609,
+          "x": 619,
           "y": 1954
         }
       ],
@@ -3426,7 +3490,7 @@
           "y": 2084
         },
         {
-          "x": 1338.5,
+          "x": 1369.5,
           "y": 2084
         }
       ],
@@ -3465,7 +3529,7 @@
           "y": 2214
         },
         {
-          "x": 1338.5,
+          "x": 1369.5,
           "y": 2214
         }
       ],
@@ -3500,19 +3564,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1614,
+          "x": 1645,
           "y": 95
         },
         {
-          "x": 2200.8,
+          "x": 2244.4,
           "y": 190.2
         },
         {
-          "x": 2347.5,
+          "x": 2394.25,
           "y": 274
         },
         {
-          "x": 2347.5,
+          "x": 2394.25,
           "y": 314
         }
       ],
@@ -3548,19 +3612,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1452,
-          "y": 96
+          "x": 1483,
+          "y": 95
         },
         {
-          "x": 887.6,
-          "y": 190.4
+          "x": 906.1999999999999,
+          "y": 190.2
         },
         {
-          "x": 746.5,
+          "x": 762,
           "y": 274.5
         },
         {
-          "x": 746.5,
+          "x": 762,
           "y": 316.5
         }
       ],
@@ -3596,31 +3660,31 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2347.5,
+          "x": 2394.25,
           "y": 2346
         },
         {
-          "x": 2347.5,
+          "x": 2394.25,
           "y": 2386
         },
         {
-          "x": 2347.5,
+          "x": 2394.25,
           "y": 2406
         },
         {
-          "x": 2347.5,
+          "x": 2394.25,
           "y": 2421
         },
         {
-          "x": 2347.5,
+          "x": 2394.25,
           "y": 2436
         },
         {
-          "x": 2347.5,
+          "x": 2394.25,
           "y": 2631.1
         },
         {
-          "x": 2347.5,
+          "x": 2394.25,
           "y": 3171.5
         }
       ],
@@ -3656,31 +3720,31 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 746.5,
+          "x": 762,
           "y": 2344.5
         },
         {
-          "x": 746.5,
+          "x": 762,
           "y": 2385.7
         },
         {
-          "x": 746.5,
+          "x": 762,
           "y": 2406
         },
         {
-          "x": 746.5,
+          "x": 762,
           "y": 2421
         },
         {
-          "x": 746.5,
+          "x": 762,
           "y": 2436
         },
         {
-          "x": 751.9,
+          "x": 767.4,
           "y": 2506
         },
         {
-          "x": 773.5,
+          "x": 789,
           "y": 2546
         }
       ],
@@ -3716,55 +3780,55 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1533,
+          "x": 1564,
           "y": 164
         },
         {
-          "x": 1533,
+          "x": 1564,
           "y": 204
         },
         {
-          "x": 1533,
+          "x": 1564,
           "y": 224
         },
         {
-          "x": 1533,
+          "x": 1564,
           "y": 239
         },
         {
-          "x": 1533,
+          "x": 1564,
           "y": 254
         },
         {
-          "x": 1533,
+          "x": 1564,
           "y": 477.20000000000005
         },
         {
-          "x": 1533,
+          "x": 1564,
           "y": 797
         },
         {
-          "x": 1533,
+          "x": 1564,
           "y": 1116.8000000000002
         },
         {
-          "x": 1533,
+          "x": 1564,
           "y": 1543.2
         },
         {
-          "x": 1533,
+          "x": 1564,
           "y": 1863
         },
         {
-          "x": 1533,
+          "x": 1564,
           "y": 2182.8
         },
         {
-          "x": 1533,
+          "x": 1564,
           "y": 2456
         },
         {
-          "x": 1533,
+          "x": 1564,
           "y": 2496
         }
       ],
@@ -3800,11 +3864,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1730,
+          "x": 1770,
           "y": 2883
         },
         {
-          "x": 1234,
+          "x": 1286,
           "y": 2883
         }
       ],
@@ -3839,11 +3903,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1214,
+          "x": 1266,
           "y": 3013
         },
         {
-          "x": 1000,
+          "x": 1040,
           "y": 3013
         }
       ],
@@ -3878,11 +3942,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 972,
+          "x": 1012,
           "y": 3143
         },
         {
-          "x": 761,
+          "x": 794,
           "y": 3143
         }
       ],
@@ -3917,11 +3981,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1218,
+          "x": 1270,
           "y": 3273
         },
         {
-          "x": 996,
+          "x": 1036,
           "y": 3273
         }
       ],
@@ -3956,11 +4020,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 761,
+          "x": 794,
           "y": 3403
         },
         {
-          "x": 1445.5,
+          "x": 1504.5,
           "y": 3403
         }
       ],
@@ -3995,11 +4059,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 524,
+          "x": 532,
           "y": 3533
         },
         {
-          "x": 1218,
+          "x": 1270,
           "y": 3533
         }
       ],
@@ -4034,11 +4098,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1445.5,
+          "x": 1504.5,
           "y": 3663
         },
         {
-          "x": 518,
+          "x": 526,
           "y": 3663
         }
       ],
@@ -4073,11 +4137,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 518,
+          "x": 526,
           "y": 3793
         },
         {
-          "x": 1730,
+          "x": 1770,
           "y": 3793
         }
       ],
@@ -4112,18 +4176,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1726,
+          "x": 1757,
           "y": 526
         },
         {
-          "x": 1726,
+          "x": 1757,
           "y": 2346
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(a_sequence.itemResponse -- )[0]",
@@ -4151,18 +4215,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1971,
+          "x": 2007,
           "y": 526
         },
         {
-          "x": 1971,
+          "x": 2007,
           "y": 2346
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(a_sequence.item -- )[0]",
@@ -4190,18 +4254,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2216,
+          "x": 2257,
           "y": 526
         },
         {
-          "x": 2216,
+          "x": 2257,
           "y": 2346
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(a_sequence.essayRubric -- )[0]",
@@ -4229,18 +4293,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2454,
+          "x": 2507,
           "y": 526
         },
         {
-          "x": 2454,
+          "x": 2507,
           "y": 2346
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(a_sequence.concept -- )[0]",
@@ -4268,18 +4332,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2697,
+          "x": 2757,
           "y": 526
         },
         {
-          "x": 2697,
+          "x": 2757,
           "y": 2346
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(a_sequence.itemOutcome -- )[0]",
@@ -4307,18 +4371,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2945.5,
+          "x": 3007.5,
           "y": 526
         },
         {
-          "x": 2945.5,
+          "x": 3007.5,
           "y": 2346
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(another.sequence.scorer -- )[0]",
@@ -4357,7 +4421,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(another.sequence.itemResponse -- )[0]",
@@ -4385,18 +4449,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 370,
+          "x": 375,
           "y": 524
         },
         {
-          "x": 370,
+          "x": 375,
           "y": 2344
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(another.sequence.item -- )[0]",
@@ -4424,18 +4488,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 615,
+          "x": 625,
           "y": 524
         },
         {
-          "x": 615,
+          "x": 625,
           "y": 2344
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(another.sequence.essayRubric -- )[0]",
@@ -4463,18 +4527,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 853,
+          "x": 875,
           "y": 524
         },
         {
-          "x": 853,
+          "x": 875,
           "y": 2344
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(another.sequence.concept -- )[0]",
@@ -4502,18 +4566,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1096,
+          "x": 1125,
           "y": 524
         },
         {
-          "x": 1096,
+          "x": 1125,
           "y": 2344
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(another.sequence.itemOutcome -- )[0]",
@@ -4541,18 +4605,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1344.5,
+          "x": 1375.5,
           "y": 524
         },
         {
-          "x": 1344.5,
+          "x": 1375.5,
           "y": 2344
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(finally.sequence.scorer -- )[0]",
@@ -4580,18 +4644,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 518,
+          "x": 526,
           "y": 2753
         },
         {
-          "x": 518,
+          "x": 526,
           "y": 3923
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(finally.sequence.concept -- )[0]",
@@ -4619,18 +4683,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 743,
+          "x": 776,
           "y": 2753
         },
         {
-          "x": 743,
+          "x": 776,
           "y": 3923
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(finally.sequence.essayRubric -- )[0]",
@@ -4658,18 +4722,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 986,
+          "x": 1026,
           "y": 2753
         },
         {
-          "x": 986,
+          "x": 1026,
           "y": 3923
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(finally.sequence.item -- )[0]",
@@ -4697,18 +4761,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1224,
+          "x": 1276,
           "y": 2753
         },
         {
-          "x": 1224,
+          "x": 1276,
           "y": 3923
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(finally.sequence.itemOutcome -- )[0]",
@@ -4736,18 +4800,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1467.5,
+          "x": 1526.5,
           "y": 2753
         },
         {
-          "x": 1467.5,
+          "x": 1526.5,
           "y": 3923
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(finally.sequence.itemResponse -- )[0]",
@@ -4775,18 +4839,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1736,
+          "x": 1776,
           "y": 2753
         },
         {
-          "x": 1736,
+          "x": 1776,
           "y": 3923
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     }
   ]
 }

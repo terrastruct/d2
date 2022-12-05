@@ -12,6 +12,10 @@ width="1120" height="1028" viewBox="-88 -88 1120 1028"><style type="text/css">
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+.blend {
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
 
 ]]>
 </style><style type="text/css">.md em,

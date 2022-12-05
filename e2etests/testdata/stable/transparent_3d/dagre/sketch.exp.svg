@@ -12,6 +12,10 @@ width="339" height="326" viewBox="-100 -100 339 326"><style type="text/css">
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+.blend {
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
 
 ]]>
 </style><g id="cube"><g class="shape" ><defs><mask id="border-mask-cube" maskUnits="userSpaceOnUse" x="0" y="-15" width="154" height="141">
