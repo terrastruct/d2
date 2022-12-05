@@ -604,7 +604,12 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 		}
 	}
 
-	fmt.Fprintf(writer, `<g class="shape" %s>`, shadowAttr)
+	var blendModeClass string
+	if targetShape.Blend {
+		blendModeClass = " blend"
+	}
+
+	fmt.Fprintf(writer, `<g class="shape%s" %s>`, blendModeClass, shadowAttr)
 
 	var multipleTL *geo.Point
 	if targetShape.Multiple {

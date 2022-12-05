@@ -23,6 +23,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -62,6 +63,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -101,6 +103,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -140,6 +143,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -168,9 +172,9 @@
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 2,
+      "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#DEE1EB",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -179,6 +183,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -192,7 +197,7 @@
       "underline": false,
       "labelWidth": 30,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 1
     },
     {
@@ -206,9 +211,9 @@
       "height": 730,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 2,
+      "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#DEE1EB",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -217,6 +222,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -230,7 +236,7 @@
       "underline": false,
       "labelWidth": 57,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 1
     },
     {
@@ -244,9 +250,9 @@
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 2,
+      "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
+      "fill": "#DEE1EB",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -255,6 +261,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -268,7 +275,7 @@
       "underline": false,
       "labelWidth": 78,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -282,9 +289,9 @@
       "height": 466,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 2,
+      "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#DEE1EB",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -293,6 +300,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -306,7 +314,7 @@
       "underline": false,
       "labelWidth": 58,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 1
     },
     {
@@ -331,6 +339,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -359,9 +368,9 @@
       "height": 216,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 2,
+      "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#DEE1EB",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -370,6 +379,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -383,7 +393,7 @@
       "underline": false,
       "labelWidth": 38,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 1
     },
     {
@@ -408,6 +418,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -447,6 +458,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -460,7 +472,7 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 2
     },
     {
@@ -485,6 +497,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -498,7 +511,7 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 2
     },
     {
@@ -523,6 +536,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -536,7 +550,7 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 3
     }
   ],
@@ -968,7 +982,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(b -- )[0]",
@@ -1007,7 +1021,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(c -- )[0]",
@@ -1046,7 +1060,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(d -- )[0]",
@@ -1085,7 +1099,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     }
   ]
 }

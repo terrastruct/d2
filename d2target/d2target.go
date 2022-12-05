@@ -111,6 +111,10 @@ type Shape struct {
 	Icon         *url.URL `json:"icon"`
 	IconPosition string   `json:"iconPosition"`
 
+	// Whether the shape should allow shapes behind it to bleed through
+	// Currently just used for sequence diagram groups
+	Blend bool `json:"blend"`
+
 	Class
 	SQLTable
 
