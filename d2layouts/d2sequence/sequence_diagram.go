@@ -220,12 +220,12 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 
 func (sd *sequenceDiagram) layout() error {
 	sd.placeActors()
+	sd.placeNotes()
 	if err := sd.routeMessages(); err != nil {
 		return err
 	}
 	sd.placeSpans()
 	sd.adjustRouteEndpoints()
-	sd.placeNotes()
 	sd.placeGroups()
 	sd.addLifelineEdges()
 	return nil
@@ -457,13 +457,15 @@ func (sd *sequenceDiagram) placeSpans() {
 // routeMessages routes horizontal edges (messages) from Src to Dst lifeline (actor/span center)
 // in another step, routes are adjusted to spans borders when necessary
 func (sd *sequenceDiagram) routeMessages() error {
-	startY := sd.maxActorHeight + sd.yStep
+	messageOffset := sd.maxActorHeight + sd.yStep
 	for _, message := range sd.messages {
+		noteOffset := 0.
 		for _, note := range sd.notes {
 			if sd.verticalIndices[note.AbsID()] < sd.verticalIndices[message.AbsID()] {
-				startY += note.Height + sd.yStep
+				noteOffset += note.Height + sd.yStep
 			}
 		}
+		startY := messageOffset + noteOffset
 
 		message.ZIndex = 2
 		var startX, endX float64
@@ -496,7 +498,7 @@ func (sd *sequenceDiagram) routeMessages() error {
 				geo.NewPoint(endX, startY),
 			}
 		}
-		startY += sd.yStep
+		messageOffset += sd.yStep
 
 		if message.Attributes.Label.Value != "" {
 			message.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
