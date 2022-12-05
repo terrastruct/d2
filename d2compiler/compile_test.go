@@ -6,6 +6,7 @@ import (
 	"strings"
 	"testing"
 
+	tassert "github.com/stretchr/testify/assert"
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
 
@@ -207,6 +208,20 @@ x: {
 					t.Fatalf("expected 2 objects at the root: %#v", len(g.Root.ChildrenArray))
 				}
 
+			},
+		},
+		{
+			name: "underscore_unresolved_obj",
+
+			text: `
+x: {
+	_.y
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "y", g.Objects[1].ID)
+				tassert.Equal(t, g.Root.AbsID(), g.Objects[1].References[0].ScopeObj.AbsID())
+				tassert.Equal(t, g.Objects[0].AbsID(), g.Objects[1].References[0].UnresolvedScopeObj.AbsID())
 			},
 		},
 		{
@@ -1519,6 +1534,18 @@ dst.id <-> src.dst_id
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				assert.String(t, "sequence_diagram", g.Root.Attributes.Shape.Value)
 			},
+		},
+		{
+			name: "leaky_sequence",
+
+			text: `x: {
+  shape: sequence_diagram
+	a
+}
+b -> x.a
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/leaky_sequence.d2:5:1: connections within sequence diagrams can connect only to other objects within the same sequence diagram
+`,
 		},
 		{
 			name: "root_direction",

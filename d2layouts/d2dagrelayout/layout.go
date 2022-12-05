@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"cdr.dev/slog"
-	v8 "rogchap.com/v8go"
+	"github.com/dop251/goja"
 
 	"oss.terrastruct.com/util-go/xdefer"
 
@@ -54,11 +54,11 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	defer xdefer.Errorf(&err, "failed to dagre layout")
 
 	debugJS := false
-	v8ctx := v8.NewContext()
-	if _, err := v8ctx.RunScript(dagreJS, "dagre.js"); err != nil {
+	vm := goja.New()
+	if _, err := vm.RunString(dagreJS); err != nil {
 		return err
 	}
-	if _, err := v8ctx.RunScript(setupJS, "setup.js"); err != nil {
+	if _, err := vm.RunString(setupJS); err != nil {
 		return err
 	}
 
@@ -80,7 +80,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 		rootAttrs.rankdir = "TB"
 	}
 	configJS := setGraphAttrs(rootAttrs)
-	if _, err := v8ctx.RunScript(configJS, "config.js"); err != nil {
+	if _, err := vm.RunString(configJS); err != nil {
 		return err
 	}
 
@@ -116,11 +116,11 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 		log.Debug(ctx, "script", slog.F("all", setupJS+configJS+loadScript))
 	}
 
-	if _, err := v8ctx.RunScript(loadScript, "load.js"); err != nil {
+	if _, err := vm.RunString(loadScript); err != nil {
 		return err
 	}
 
-	if _, err := v8ctx.RunScript(`dagre.layout(g)`, "layout.js"); err != nil {
+	if _, err := vm.RunString(`dagre.layout(g)`); err != nil {
 		if debugJS {
 			log.Warn(ctx, "layout error", slog.F("err", err))
 		}
@@ -128,7 +128,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	}
 
 	for i := range g.Objects {
-		val, err := v8ctx.RunScript(fmt.Sprintf("JSON.stringify(g.node(g.nodes()[%d]))", i), "value.js")
+		val, err := vm.RunString(fmt.Sprintf("JSON.stringify(g.node(g.nodes()[%d]))", i))
 		if err != nil {
 			return err
 		}
@@ -150,7 +150,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-			} else if obj.Attributes.Shape.Value == d2target.ShapeImage {
+			} else if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
 			} else {
 				obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
@@ -162,7 +162,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	}
 
 	for i, edge := range g.Edges {
-		val, err := v8ctx.RunScript(fmt.Sprintf("JSON.stringify(g.edge(g.edges()[%d]))", i), "value.js")
+		val, err := vm.RunString(fmt.Sprintf("JSON.stringify(g.edge(g.edges()[%d]))", i))
 		if err != nil {
 			return err
 		}

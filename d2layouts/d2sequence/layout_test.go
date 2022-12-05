@@ -1,10 +1,14 @@
-package d2sequence
+package d2sequence_test
 
 import (
 	"context"
+	"strings"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
@@ -25,45 +29,28 @@ func TestBasicSequenceDiagram(t *testing.T) {
 	//      │                       │
 	//      ◄───────────────────────┤
 	//      │                       │
-	g := d2graph.NewGraph(nil)
-	g.Root.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
-	n1 := g.Root.EnsureChild([]string{"n1"})
+	input := `
+shape: sequence_diagram
+n1 -> n2: left to right
+n2 -> n1: right to left
+n1 -> n2
+n2 -> n1
+`
+	g, err := d2compiler.Compile("", strings.NewReader(input), nil)
+	assert.Nil(t, err)
+
+	n1, has := g.Root.HasChild([]string{"n1"})
+	assert.True(t, has)
+	n2, has := g.Root.HasChild([]string{"n2"})
+	assert.True(t, has)
+
 	n1.Box = geo.NewBox(nil, 100, 100)
-	n2 := g.Root.EnsureChild([]string{"n2"})
 	n2.Box = geo.NewBox(nil, 30, 30)
 
-	g.Edges = []*d2graph.Edge{
-		{
-			Src:   n1,
-			Dst:   n2,
-			Index: 0,
-			Attributes: d2graph.Attributes{
-				Label: d2graph.Scalar{Value: "left to right"},
-			},
-		},
-		{
-			Src:   n2,
-			Dst:   n1,
-			Index: 0,
-			Attributes: d2graph.Attributes{
-				Label: d2graph.Scalar{Value: "right to left"},
-			},
-		},
-		{
-			Src:   n1,
-			Dst:   n2,
-			Index: 1,
-		},
-		{
-			Src:   n2,
-			Dst:   n1,
-			Index: 1,
-		},
-	}
 	nEdges := len(g.Edges)
 
 	ctx := log.WithTB(context.Background(), t, nil)
-	Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
+	d2sequence.Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
 		// just set some position as if it had been properly placed
 		for _, obj := range g.Objects {
 			obj.TopLeft = geo.NewPoint(0, 0)
@@ -153,12 +140,12 @@ func TestBasicSequenceDiagram(t *testing.T) {
 	}
 
 	// check label positions
-	if *g.Edges[0].LabelPosition != string(label.OutsideTopCenter) {
-		t.Fatalf("expected edge label to be placed on %s, got %s", string(label.OutsideTopCenter), *g.Edges[0].LabelPosition)
+	if *g.Edges[0].LabelPosition != string(label.InsideMiddleCenter) {
+		t.Fatalf("expected edge label to be placed on %s, got %s", string(label.InsideMiddleCenter), *g.Edges[0].LabelPosition)
 	}
 
-	if *g.Edges[1].LabelPosition != string(label.OutsideBottomCenter) {
-		t.Fatalf("expected edge label to be placed on %s, got %s", string(label.OutsideBottomCenter), *g.Edges[0].LabelPosition)
+	if *g.Edges[1].LabelPosition != string(label.InsideMiddleCenter) {
+		t.Fatalf("expected edge label to be placed on %s, got %s", string(label.InsideMiddleCenter), *g.Edges[0].LabelPosition)
 	}
 }
 
@@ -172,48 +159,51 @@ func TestSpansSequenceDiagram(t *testing.T) {
 	//      ├┐──────────────────────►
 	//   t2 ││                      │
 	//      ├┘◄─────────────────────┤
-	g := d2graph.NewGraph(nil)
-	g.Root.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
-	a := g.Root.EnsureChild([]string{"a"})
-	a.Box = geo.NewBox(nil, 100, 100)
-	a.Attributes = d2graph.Attributes{
-		Shape: d2graph.Scalar{Value: shape.PERSON_TYPE},
-	}
-	a_t1 := a.EnsureChild([]string{"t1"})
-	a_t1.Box = geo.NewBox(nil, 100, 100)
-	a_t1.Attributes = d2graph.Attributes{
-		Shape: d2graph.Scalar{Value: shape.DIAMOND_TYPE},
-		Label: d2graph.Scalar{Value: "label"},
-	}
-	a_t2 := a.EnsureChild([]string{"t2"})
-	a_t2.Box = geo.NewBox(nil, 100, 100)
-	b := g.Root.EnsureChild([]string{"b"})
-	b.Box = geo.NewBox(nil, 30, 30)
-	b_t1 := b.EnsureChild([]string{"t1"})
-	b_t1.Box = geo.NewBox(nil, 100, 100)
 
-	g.Edges = []*d2graph.Edge{
-		{
-			Src:   a_t1,
-			Dst:   b_t1,
-			Index: 0,
-		}, {
-			Src:   b_t1,
-			Dst:   a_t1,
-			Index: 0,
-		}, {
-			Src:   a_t2,
-			Dst:   b,
-			Index: 0,
-		}, {
-			Src:   b,
-			Dst:   a_t2,
-			Index: 0,
-		},
-	}
+	input := `
+shape: sequence_diagram
+a: { shape: person }
+b
+
+a.t1: {
+  shape: diamond
+  label: label
+}
+a.t1 -> b.t1
+b.t1 -> a.t1
+
+a.t2 -> b
+b -> a.t2`
 
 	ctx := log.WithTB(context.Background(), t, nil)
-	Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
+	g, err := d2compiler.Compile("", strings.NewReader(input), nil)
+	assert.Nil(t, err)
+
+	g.Root.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
+
+	a, has := g.Root.HasChild([]string{"a"})
+	assert.True(t, has)
+
+	a_t1, has := a.HasChild([]string{"t1"})
+	assert.True(t, has)
+
+	a_t2, has := a.HasChild([]string{"t2"})
+	assert.True(t, has)
+
+	b, has := g.Root.HasChild([]string{"b"})
+	assert.True(t, has)
+	b.Box = geo.NewBox(nil, 30, 30)
+
+	b_t1, has := b.HasChild([]string{"t1"})
+	assert.True(t, has)
+
+	a.Box = geo.NewBox(nil, 100, 100)
+	a_t1.Box = geo.NewBox(nil, 100, 100)
+	a_t2.Box = geo.NewBox(nil, 100, 100)
+	b.Box = geo.NewBox(nil, 30, 30)
+	b_t1.Box = geo.NewBox(nil, 100, 100)
+
+	d2sequence.Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
 		// just set some position as if it had been properly placed
 		for _, obj := range g.Objects {
 			obj.TopLeft = geo.NewPoint(0, 0)
@@ -226,9 +216,7 @@ func TestSpansSequenceDiagram(t *testing.T) {
 	})
 
 	// check properties
-	if a.Attributes.Shape.Value != shape.PERSON_TYPE {
-		t.Fatal("actor a shape changed")
-	}
+	assert.Equal(t, strings.ToLower(shape.PERSON_TYPE), strings.ToLower(a.Attributes.Shape.Value))
 
 	if a_t1.Attributes.Label.Value != "" {
 		t.Fatalf("expected no label for span, got %s", a_t1.Attributes.Label.Value)
@@ -249,13 +237,13 @@ func TestSpansSequenceDiagram(t *testing.T) {
 	}
 
 	// Y diff of the 2 first edges
-	expectedHeight := g.Edges[1].Route[0].Y - g.Edges[0].Route[0].Y + (2 * SPAN_MESSAGE_PAD)
+	expectedHeight := g.Edges[1].Route[0].Y - g.Edges[0].Route[0].Y + (2 * d2sequence.SPAN_MESSAGE_PAD)
 	if a_t1.Height != expectedHeight {
 		t.Fatalf("expected a.t1 height to be %.5f, got %.5f", expectedHeight, a_t1.Height)
 	}
 
-	if a_t1.Width != SPAN_BASE_WIDTH {
-		t.Fatalf("expected span width to be %.5f, got %.5f", SPAN_BASE_WIDTH, a_t1.Width)
+	if a_t1.Width != d2sequence.SPAN_BASE_WIDTH {
+		t.Fatalf("expected span width to be %.5f, got %.5f", d2sequence.SPAN_BASE_WIDTH, a_t1.Width)
 	}
 
 	// check positions
@@ -271,7 +259,7 @@ func TestSpansSequenceDiagram(t *testing.T) {
 	if a_t1.TopLeft.Y != b_t1.TopLeft.Y {
 		t.Fatal("expected a.t1 and b.t1 to be placed at the same Y")
 	}
-	if a_t1.TopLeft.Y+SPAN_MESSAGE_PAD != g.Edges[0].Route[0].Y {
+	if a_t1.TopLeft.Y+d2sequence.SPAN_MESSAGE_PAD != g.Edges[0].Route[0].Y {
 		t.Fatal("expected a.t1 to be placed at the same Y of the first message")
 	}
 
@@ -298,37 +286,43 @@ func TestNestedSequenceDiagrams(t *testing.T) {
 	// |     t1 ││                     ││ t1    |
 	// |        ├┘◄──────sdEdge2───────└┤       |
 	// └────────────────────────────────────────┘
-	g := d2graph.NewGraph(nil)
-	container := g.Root.EnsureChild([]string{"container"})
-	container.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
+	input := `container: {
+  shape: sequence_diagram
+  a: { shape: person }
+  b
+  a.t1 -> b.t1: sequence diagram edge 1
+  b.t1 -> a.t1: sequence diagram edge 2
+}
+c
+container -> c: edge 1
+`
+	ctx := log.WithTB(context.Background(), t, nil)
+	g, err := d2compiler.Compile("", strings.NewReader(input), nil)
+	assert.Nil(t, err)
+
+	container, has := g.Root.HasChild([]string{"container"})
+	assert.True(t, has)
 	container.Box = geo.NewBox(nil, 500, 500)
-	a := container.EnsureChild([]string{"a"})
+
+	a, has := container.HasChild([]string{"a"})
+	assert.True(t, has)
 	a.Box = geo.NewBox(nil, 100, 100)
-	a.Attributes.Shape = d2graph.Scalar{Value: shape.PERSON_TYPE}
-	a_t1 := a.EnsureChild([]string{"t1"})
+
+	a_t1, has := a.HasChild([]string{"t1"})
+	assert.True(t, has)
 	a_t1.Box = geo.NewBox(nil, 100, 100)
-	b := container.EnsureChild([]string{"b"})
+
+	b, has := container.HasChild([]string{"b"})
+	assert.True(t, has)
 	b.Box = geo.NewBox(nil, 30, 30)
-	b_t1 := b.EnsureChild([]string{"t1"})
+
+	b_t1, has := b.HasChild([]string{"t1"})
+	assert.True(t, has)
 	b_t1.Box = geo.NewBox(nil, 100, 100)
 
 	c := g.Root.EnsureChild([]string{"c"})
 	c.Box = geo.NewBox(nil, 100, 100)
 	c.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSquare}
-
-	sdEdge1, err := g.Root.Connect(a_t1.AbsIDArray(), b_t1.AbsIDArray(), false, true, "sequence diagram edge 1")
-	if err != nil {
-		t.Fatal(err)
-	}
-	sdEdge2, err := g.Root.Connect(b_t1.AbsIDArray(), a_t1.AbsIDArray(), false, true, "sequence diagram edge 2")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	edge1, err := g.Root.Connect(container.AbsIDArray(), c.AbsIDArray(), false, false, "edge 1")
-	if err != nil {
-		t.Fatal(err)
-	}
 
 	layoutFn := func(ctx context.Context, g *d2graph.Graph) error {
 		if len(g.Objects) != 2 {
@@ -347,14 +341,7 @@ func TestNestedSequenceDiagrams(t *testing.T) {
 			t.Fatal("container children mismatch")
 		}
 
-		for _, edge := range g.Edges {
-			if edge == sdEdge1 || edge == sdEdge2 {
-				t.Fatal("expected to have removed all sequence diagram edges from graph")
-			}
-		}
-		if g.Edges[0] != edge1 {
-			t.Fatal("expected graph edge to be in the graph")
-		}
+		assert.Equal(t, 1, len(g.Edges))
 
 		// just set some position as if it had been properly placed
 		for _, obj := range g.Objects {
@@ -368,8 +355,7 @@ func TestNestedSequenceDiagrams(t *testing.T) {
 		return nil
 	}
 
-	ctx := log.WithTB(context.Background(), t, nil)
-	if err = Layout(ctx, g, layoutFn); err != nil {
+	if err = d2sequence.Layout(ctx, g, layoutFn); err != nil {
 		t.Fatal(err)
 	}
 

@@ -25,6 +25,8 @@
 
 - Local images can now be included, e.g. `icon: ./my_img.png`.
   [#146](https://github.com/terrastruct/d2/issues/146)
+- Connection labels no longer overlap other connections.
+  [#332](https://github.com/terrastruct/d2/pull/332)
 - ELK layout engine now defaults to top-down to be consistent with dagre.
   [#251](https://github.com/terrastruct/d2/pull/251)
 - [install.sh](./install.sh) prints the dry run message more visibly.
@@ -46,6 +48,8 @@
   [#214](https://github.com/terrastruct/d2/pull/214)
 - Fixes images not loading in PNG exports.
   [#224](https://github.com/terrastruct/d2/pull/224)
+- Fixes label and icon overlapping each other in dagre and elk layouts.
+  [#343](https://github.com/terrastruct/d2/pull/343)
 - Avoid logging benign file watching errors.
   [#293](https://github.com/terrastruct/d2/pull/293)
 - `$BROWSER` now works to open a custom browser correctly.

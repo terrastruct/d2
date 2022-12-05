@@ -26,7 +26,7 @@ const SPAN_MESSAGE_PAD = 16.
 
 const LIFELINE_STROKE_WIDTH int = 2
 
-const LIFELINE_STROKE_DASH int = 8
+const LIFELINE_STROKE_DASH int = 6
 
 // pad when the actor has the label placed OutsideMiddleBottom so that the lifeline is not so close to the text
 const LIFELINE_LABEL_PAD = 5.

@@ -11,8 +11,7 @@ import (
 	"fmt"
 	"math"
 
-	"rogchap.com/v8go"
-
+	"github.com/dop251/goja"
 	"oss.terrastruct.com/util-go/xdefer"
 
 	"oss.terrastruct.com/util-go/go2"
@@ -88,30 +87,17 @@ type ELKLayoutOptions struct {
 func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	defer xdefer.Errorf(&err, "failed to ELK layout")
 
-	iso := v8go.NewIsolate()
-	global := v8go.NewObjectTemplate(iso)
+	vm := goja.New()
 
-	// setTimeout is not defined by in v8go global
-	// As far as I can tell, it's not actually useful in elk.js
-	// The comment above one of the instances it's used is "why do we even need this"
-	// and it's a timeout of 0.
-	// If weird things happen though, look here.
-	setTimeout := v8go.NewFunctionTemplate(iso, func(info *v8go.FunctionCallbackInfo) *v8go.Value {
-		args := info.Args()
-		fn, _ := args[0].AsFunction()
-		receiver := v8go.NewObjectTemplate(iso)
-		s, _ := receiver.NewInstance(info.Context())
-		fn.Call(s)
-
-		return s.Value
-	})
-	global.Set("setTimeout", setTimeout, v8go.ReadOnly)
-
-	v8ctx := v8go.NewContext(iso, global)
-	if _, err := v8ctx.RunScript(elkJS, "elk.js"); err != nil {
+	console := vm.NewObject()
+	if err := vm.Set("console", console); err != nil {
 		return err
 	}
-	if _, err := v8ctx.RunScript(setupJS, "setup.js"); err != nil {
+
+	if _, err := vm.RunString(elkJS); err != nil {
+		return err
+	}
+	if _, err := vm.RunString(setupJS); err != nil {
 		return err
 	}
 
@@ -205,37 +191,41 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 
 	loadScript := fmt.Sprintf(`var graph = %s`, raw)
 
-	if _, err := v8ctx.RunScript(loadScript, "load.js"); err != nil {
+	if _, err := vm.RunString(loadScript); err != nil {
 		return err
 	}
 
-	val, err := v8ctx.RunScript(`elk.layout(graph)
+	val, err := vm.RunString(`elk.layout(graph)
 .then(s => s)
 .catch(s => s)
-`, "layout.js")
+`)
 
 	if err != nil {
 		return err
 	}
 
-	promise, err := val.AsPromise()
+	p := val.Export()
 	if err != nil {
 		return err
 	}
 
-	for promise.State() == v8go.Pending {
+	promise := p.(*goja.Promise)
+
+	for promise.State() == goja.PromiseStatePending {
 		if err := ctx.Err(); err != nil {
 			return err
 		}
 		continue
 	}
 
-	jsonOut, err := promise.Result().MarshalJSON()
+	jsonOut := promise.Result().Export().(map[string]interface{})
+
+	jsonBytes, err := json.Marshal(jsonOut)
 	if err != nil {
 		return err
 	}
 
-	err = json.Unmarshal(jsonOut, &elkGraph)
+	err = json.Unmarshal(jsonBytes, &elkGraph)
 	if err != nil {
 		return err
 	}
@@ -257,7 +247,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-			} else if obj.Attributes.Shape.Value == d2target.ShapeImage {
+			} else if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
 			} else {
 				obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))

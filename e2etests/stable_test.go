@@ -1222,7 +1222,7 @@ foo baz -> hello
 			script: `shape: sequence_diagram
 
 a: "a label" {
-    shape: callout 
+    shape: callout
 }
 b: "b\nlabels" {
     shape: circle
@@ -1233,7 +1233,7 @@ c: "a class" {
     -private() int
 }
 d: "cloudyyyy" {
-    shape: cloud 
+    shape: cloud
 }
 e: |go
     a := 5
@@ -1241,47 +1241,47 @@ e: |go
     fmt.Printf("%d", b)
 |
 f: "cyl" {
-    shape: cylinder 
+    shape: cylinder
 }
 g: "dia" {
-    shape: diamond 
+    shape: diamond
 }
 h: "docs" {
-    shape: document 
+    shape: document
 }
 i: "six corners" {
-    shape: hexagon 
+    shape: hexagon
 }
 j: "a random icon" {
     shape: image
     icon: https://icons.terrastruct.com/essentials/004-picture.svg
 }
 k: "over" {
-    shape: oval 
+    shape: oval
 }
 l: "pack" {
-    shape: package 
+    shape: package
 }
 m: "docs page" {
-    shape: page 
+    shape: page
 }
 n: "too\nhard\to say" {
-    shape: parallelogram 
+    shape: parallelogram
 }
 o: "single\nperson" {
-    shape: person 
+    shape: person
 }
 p: "a queue" {
-    shape: queue 
+    shape: queue
 }
 q: "a square" {
-    shape: square 
+    shape: square
 }
 r: "a step at a time" {
-    shape: step 
+    shape: step
 }
 s: "data" {
-    shape: stored_data 
+    shape: stored_data
 }
 
 t: "users" {
@@ -1335,6 +1335,79 @@ b.1 -> b.1.2: to deeper descendant
 b.1.2 -> b: to parent
 b -> a.1.2: actor
 a.1 -> b.3`,
+		},
+		{
+			name: "icon-label",
+			script: `ww: {
+  label: hello
+  icon: https://icons.terrastruct.com/essentials/time.svg
+}
+`,
+		},
+		{
+			name: "sequence_diagram_note",
+			script: `shape: sequence_diagram
+a; b; c; d
+a -> b
+a.explanation
+a.another explanation
+b -> c
+b."Some one who believes imaginary things\n appear right before your i's."
+c -> b: okay
+d."The earth is like a tiny grain of sand, only much, much heavier"
+`,
+		},
+		{
+			name: "sequence_diagram_groups",
+			script: `shape: sequence_diagram
+a;b;c;d
+a -> b
+ggg: {
+	_.a -> _.b: lala
+}
+group 1: {
+  _.b -> _.c
+	_.c -> _.b: ey
+  nested guy: {
+    _._.c -> _._.b: okay
+  }
+  _.b.t1 -> _.c.t1
+  _.b.t1.t2 -> _.c.t1
+  _.c.t1 -> _.b.t1
+}
+group b: {
+  _.b -> _.c
+	_.c."what would arnold say"
+  _.c -> _.b: okay
+}
+choo: {
+  _.d."this note"
+}
+`,
+		},
+		{
+			name: "sequence_diagram_real",
+			script: `How this is rendered: {
+  shape: sequence_diagram
+
+	CLI; d2ast; d2compiler; d2layout; d2exporter; d2themes; d2renderer
+
+  CLI -> d2ast: "'How this is rendered: {...}'"
+  d2ast -> CLI: tokenized AST
+  CLI -> d2compiler: compile AST
+  d2compiler."measurements also take place"
+  d2compiler -> CLI: objects and edges
+  CLI -> d2layout.layout: run layout engines
+  d2layout.layout -> d2sequencelayout: run engine on shape: sequence_diagram, temporarily remove
+  d2layout.layout -> d2dagrelayout: run core engine on rest
+  d2layout.layout <- d2sequencelayout: add back in sequence diagrams
+  d2layout -> CLI: diagram with correct positions and dimensions
+  CLI -> d2exporter: export diagram with chosen theme and renderer
+  d2exporter.export -> d2themes: get theme styles
+  d2exporter.export -> d2renderer: render to SVG
+  d2exporter.export -> CLI: resulting SVG
+}
+`,
 		},
 	}
 

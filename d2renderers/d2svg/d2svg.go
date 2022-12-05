@@ -337,26 +337,15 @@ func pathData(connection d2target.Connection, idToShape map[string]d2target.Shap
 	return strings.Join(path, " ")
 }
 
-func labelMask(id string, connection d2target.Connection, labelTL, tl, br *geo.Point) string {
-	width := br.X - tl.X
-	height := br.Y - tl.Y
-	return strings.Join([]string{
-		fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="%f" y="%f" width="%f" height="%f">`,
-			id, tl.X, tl.Y, width, height,
-		),
-		fmt.Sprintf(`<rect x="%f" y="%f" width="%f" height="%f" fill="white"></rect>`,
-			tl.X, tl.Y, width, height,
-		),
-		fmt.Sprintf(`<rect x="%f" y="%f" width="%d" height="%d" fill="black"></rect>`,
-			labelTL.X, labelTL.Y,
-			connection.LabelWidth,
-			connection.LabelHeight,
-		),
-		`</mask>`,
-	}, "\n")
+func makeLabelMask(connection d2target.Connection, labelTL, tl, br *geo.Point) string {
+	return fmt.Sprintf(`<rect x="%f" y="%f" width="%d" height="%d" fill="black"></rect>`,
+		labelTL.X, labelTL.Y,
+		connection.LabelWidth,
+		connection.LabelHeight,
+	)
 }
 
-func drawConnection(writer io.Writer, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape) {
+func drawConnection(writer io.Writer, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape) (labelMask string) {
 	fmt.Fprintf(writer, `<g id="%s">`, escapeText(connection.ID))
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
@@ -387,7 +376,6 @@ func drawConnection(writer io.Writer, connection d2target.Connection, markers ma
 	}
 
 	var labelTL *geo.Point
-	var mask string
 	if connection.Label != "" {
 		labelTL = connection.GetLabelTopLeft()
 		labelTL.X = math.Round(labelTL.X)
@@ -420,18 +408,15 @@ func drawConnection(writer io.Writer, connection d2target.Connection, markers ma
 			br.X = math.Max(br.X, labelTL.X+float64(connection.LabelWidth))
 			br.Y = math.Max(br.Y, labelTL.Y+float64(connection.LabelHeight))
 
-			maskID := fmt.Sprintf("mask-%s", hash(connection.ID))
-			fmt.Fprint(writer, labelMask(maskID, connection, labelTL, tl, br))
-			mask = fmt.Sprintf(`mask="url(#%s)" `, maskID)
+			labelMask = makeLabelMask(connection, labelTL, tl, br)
 		}
 	}
 
-	fmt.Fprintf(writer, `<path d="%s" class="connection" style="fill:none;%s" %s%s%s/>`,
+	fmt.Fprintf(writer, `<path d="%s" class="connection" style="fill:none;%s" %s%smask="url(#labels)"/>`,
 		pathData(connection, idToShape),
 		connectionStyle(connection),
 		markerStart,
 		markerEnd,
-		mask,
 	)
 
 	if connection.Label != "" {
@@ -476,6 +461,7 @@ func drawConnection(writer io.Writer, connection d2target.Connection, markers ma
 		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.DstLabel, position, size, size))
 	}
 	fmt.Fprintf(writer, `</g>`)
+	return
 }
 
 func renderArrowheadLabel(connection d2target.Connection, text string, position, width, height float64) string {
@@ -955,7 +941,7 @@ func embedFonts(buf *bytes.Buffer) {
 // TODO minify output at end
 func Render(diagram *d2target.Diagram) ([]byte, error) {
 	buf := &bytes.Buffer{}
-	_, _ = setViewbox(buf, diagram)
+	w, h := setViewbox(buf, diagram)
 
 	buf.WriteString(fmt.Sprintf(`<style type="text/css">
 <![CDATA[
@@ -996,10 +982,14 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 
 	sortObjects(allObjects)
 
+	var labelMasks []string
 	markers := map[string]struct{}{}
 	for _, obj := range allObjects {
 		if c, is := obj.(d2target.Connection); is {
-			drawConnection(buf, c, markers, idToShape)
+			labelMask := drawConnection(buf, c, markers, idToShape)
+			if labelMask != "" {
+				labelMasks = append(labelMasks, labelMask)
+			}
 		} else if s, is := obj.(d2target.Shape); is {
 			err := drawShape(buf, s)
 			if err != nil {
@@ -1008,6 +998,20 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 		} else {
 			return nil, fmt.Errorf("unknow object of type %T", obj)
 		}
+	}
+
+	if len(labelMasks) > 0 {
+		fmt.Fprint(buf, strings.Join([]string{
+			fmt.Sprintf(`<mask id="labels" maskUnits="userSpaceOnUse" x="0" y="0" width="%d" height="%d">`,
+				w, h,
+			),
+			fmt.Sprintf(`<rect x="0" y="0" width="%d" height="%d" fill="white"></rect>`,
+				w,
+				h,
+			),
+			strings.Join(labelMasks, "\n"),
+			`</mask>`,
+		}, "\n"))
 	}
 
 	embedFonts(buf)
