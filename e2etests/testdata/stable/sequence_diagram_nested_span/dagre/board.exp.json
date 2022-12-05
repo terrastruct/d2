@@ -75,7 +75,7 @@
       "underline": false,
       "labelWidth": 31,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -152,7 +152,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -229,7 +229,7 @@
       "underline": false,
       "labelWidth": 15,
       "labelHeight": 36,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -267,7 +267,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 3
     },
     {
@@ -344,7 +344,7 @@
       "underline": false,
       "labelWidth": 15,
       "labelHeight": 36,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -382,7 +382,7 @@
       "underline": false,
       "labelWidth": 15,
       "labelHeight": 31,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 3
     },
     {
@@ -420,7 +420,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 4
     },
     {
@@ -497,7 +497,7 @@
       "underline": false,
       "labelWidth": 15,
       "labelHeight": 36,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -535,7 +535,7 @@
       "underline": false,
       "labelWidth": 15,
       "labelHeight": 31,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 3
     },
     {
@@ -573,7 +573,7 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 4
     },
     {
@@ -611,7 +611,7 @@
       "underline": false,
       "labelWidth": 14,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 5
     },
     {
@@ -688,7 +688,7 @@
       "underline": false,
       "labelWidth": 15,
       "labelHeight": 36,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -726,7 +726,7 @@
       "underline": false,
       "labelWidth": 15,
       "labelHeight": 31,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 3
     },
     {
@@ -764,7 +764,7 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 4
     },
     {
@@ -802,7 +802,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 5
     },
     {
@@ -840,7 +840,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 6
     },
     {
@@ -878,7 +878,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 2
     }
   ],
@@ -920,7 +920,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(itemResponse.a -> item.a.b)[0]",
@@ -959,7 +959,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(item.a.b -> essayRubric.a.b.c)[0]",
@@ -998,7 +998,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(essayRubric.a.b.c -> concept.a.b.c.d)[0]",
@@ -1037,7 +1037,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(item.a -> essayRubric.a.b)[0]",
@@ -1076,7 +1076,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(concept.a.b.c.d -> itemOutcome.a.b.c.d.e)[0]",
@@ -1115,7 +1115,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(scorer.abc -> item.a)[0]",
@@ -1154,7 +1154,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(itemOutcome.a.b.c.d.e -> scorer)[0]",
@@ -1193,7 +1193,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(scorer -> itemResponse.c)[0]",
@@ -1232,7 +1232,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(scorer -- )[0]",
@@ -1271,7 +1271,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(itemResponse -- )[0]",
@@ -1310,7 +1310,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(item -- )[0]",
@@ -1349,7 +1349,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(essayRubric -- )[0]",
@@ -1388,7 +1388,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(concept -- )[0]",
@@ -1427,7 +1427,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(itemOutcome -- )[0]",
@@ -1466,7 +1466,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     }
   ]
 }

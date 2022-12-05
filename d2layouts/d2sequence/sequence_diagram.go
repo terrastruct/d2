@@ -292,6 +292,7 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 			},
 			DstArrow: false,
 			Route:    []*geo.Point{actorBottom, actorLifelineEnd},
+			ZIndex:   LIFELINE_Z_INDEX,
 		})
 	}
 }

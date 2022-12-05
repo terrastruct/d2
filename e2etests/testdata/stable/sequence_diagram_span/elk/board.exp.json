@@ -75,7 +75,7 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -152,7 +152,7 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -229,7 +229,7 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -306,7 +306,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 36,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -344,7 +344,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 3
     },
     {
@@ -421,7 +421,7 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -498,7 +498,7 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -536,7 +536,7 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -574,7 +574,7 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -612,7 +612,7 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -650,7 +650,7 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 3,
       "level": 2
     }
   ],
@@ -692,7 +692,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(scorer.t <- itemResponse.t)[0]",
@@ -731,7 +731,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(scorer.t -> item.t1)[0]",
@@ -770,7 +770,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(scorer.t <- item.t1)[0]",
@@ -809,7 +809,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(scorer.t -> essayRubric.t)[0]",
@@ -848,7 +848,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(itemResponse -> essayRubric.t.c)[0]",
@@ -887,7 +887,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(essayRubric.t.c -> concept.t)[0]",
@@ -926,7 +926,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(scorer <- essayRubric.t)[0]",
@@ -965,7 +965,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(scorer.t -> itemOutcome.t1)[0]",
@@ -1004,7 +1004,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(scorer.t -> item.t2)[0]",
@@ -1043,7 +1043,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(scorer.t -> item.t3)[0]",
@@ -1082,7 +1082,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(scorer.t -> itemOutcome.t2)[0]",
@@ -1121,7 +1121,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(scorer.t -> itemOutcome.t3)[0]",
@@ -1160,7 +1160,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(scorer -- )[0]",
@@ -1199,7 +1199,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(itemResponse -- )[0]",
@@ -1238,7 +1238,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(item -- )[0]",
@@ -1277,7 +1277,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(essayRubric -- )[0]",
@@ -1316,7 +1316,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(concept -- )[0]",
@@ -1355,7 +1355,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(itemOutcome -- )[0]",
@@ -1394,7 +1394,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     }
   ]
 }

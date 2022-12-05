@@ -193,7 +193,7 @@
       "labelWidth": 90,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 4,
+      "zIndex": 5,
       "level": 2
     },
     {
@@ -232,7 +232,7 @@
       "labelWidth": 150,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 4,
+      "zIndex": 5,
       "level": 2
     },
     {
@@ -271,7 +271,7 @@
       "labelWidth": 293,
       "labelHeight": 42,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 4,
+      "zIndex": 5,
       "level": 2
     },
     {
@@ -310,7 +310,7 @@
       "labelWidth": 441,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 4,
+      "zIndex": 5,
       "level": 2
     }
   ],
@@ -352,7 +352,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(b -> c)[0]",
@@ -391,7 +391,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(c -> b)[0]",
@@ -430,7 +430,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(a -- )[0]",
@@ -469,7 +469,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(b -- )[0]",
@@ -508,7 +508,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(c -- )[0]",
@@ -547,7 +547,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(d -- )[0]",
@@ -586,7 +586,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     }
   ]
 }

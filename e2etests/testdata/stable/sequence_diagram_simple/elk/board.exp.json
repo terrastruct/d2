@@ -235,7 +235,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(bob -> service)[0]",
@@ -274,7 +274,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(service -> db)[0]",
@@ -313,7 +313,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(db -> service)[0]",
@@ -352,7 +352,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(service -> bob)[0]",
@@ -391,7 +391,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(bob -> alice)[0]",
@@ -430,7 +430,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(alice -> bob)[1]",
@@ -469,7 +469,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(bob -> queue)[0]",
@@ -508,7 +508,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(queue -> bob)[0]",
@@ -547,7 +547,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(bob -> alice)[1]",
@@ -586,7 +586,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 3
+      "zIndex": 4
     },
     {
       "id": "(alice -- )[0]",
@@ -625,7 +625,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(bob -- )[0]",
@@ -664,7 +664,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(db -- )[0]",
@@ -703,7 +703,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(queue -- )[0]",
@@ -742,7 +742,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(service -- )[0]",
@@ -781,7 +781,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     }
   ]
 }
