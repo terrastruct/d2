@@ -37,7 +37,6 @@
       "underline": false,
       "labelWidth": 160,
       "labelHeight": 26,
-      "maskLabel": true,
       "zIndex": 3,
       "level": 1
     },
@@ -77,7 +76,6 @@
       "underline": false,
       "labelWidth": 238,
       "labelHeight": 26,
-      "maskLabel": true,
       "zIndex": 3,
       "level": 2
     },
@@ -117,7 +115,6 @@
       "underline": false,
       "labelWidth": 173,
       "labelHeight": 26,
-      "maskLabel": true,
       "zIndex": 3,
       "level": 3
     },
@@ -157,7 +154,6 @@
       "underline": false,
       "labelWidth": 77,
       "labelHeight": 26,
-      "maskLabel": true,
       "zIndex": 3,
       "level": 4
     },
@@ -198,7 +194,6 @@
       "labelWidth": 12,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     },
@@ -239,7 +234,6 @@
       "labelWidth": 48,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "maskLabel": false,
       "zIndex": 5,
       "level": 2
     },
@@ -279,7 +273,6 @@
       "underline": false,
       "labelWidth": 41,
       "labelHeight": 26,
-      "maskLabel": true,
       "zIndex": 3,
       "level": 5
     },
@@ -319,7 +312,6 @@
       "underline": false,
       "labelWidth": 24,
       "labelHeight": 26,
-      "maskLabel": true,
       "zIndex": 3,
       "level": 1
     },
@@ -359,7 +351,6 @@
       "underline": false,
       "labelWidth": 47,
       "labelHeight": 26,
-      "maskLabel": true,
       "zIndex": 3,
       "level": 2
     },
@@ -399,7 +390,6 @@
       "underline": false,
       "labelWidth": 47,
       "labelHeight": 26,
-      "maskLabel": true,
       "zIndex": 3,
       "level": 2
     },
@@ -439,7 +429,6 @@
       "underline": false,
       "labelWidth": 47,
       "labelHeight": 26,
-      "maskLabel": true,
       "zIndex": 3,
       "level": 2
     },
@@ -479,7 +468,6 @@
       "underline": false,
       "labelWidth": 47,
       "labelHeight": 26,
-      "maskLabel": true,
       "zIndex": 3,
       "level": 2
     },
@@ -520,7 +508,6 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     },
@@ -561,7 +548,6 @@
       "labelWidth": 425,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "maskLabel": false,
       "zIndex": 5,
       "level": 2
     },
@@ -602,7 +588,6 @@
       "labelWidth": 37,
       "labelHeight": 90,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "maskLabel": false,
       "zIndex": 5,
       "level": 2
     },
@@ -643,7 +628,6 @@
       "labelWidth": 90,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     }

@@ -201,7 +201,6 @@ func (sd *sequenceDiagram) placeGroups() {
 	})
 	for _, group := range sd.groups {
 		group.ZIndex = GROUP_Z_INDEX
-		group.MaskLabel = go2.Pointer(true)
 		sd.placeGroup(group)
 	}
 }

@@ -38,7 +38,6 @@
       "labelWidth": 12,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     },
@@ -79,7 +78,6 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     },
@@ -120,7 +118,6 @@
       "labelWidth": 12,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     },
@@ -161,7 +158,6 @@
       "labelWidth": 13,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "maskLabel": false,
       "zIndex": 0,
       "level": 1
     },
@@ -201,7 +197,6 @@
       "underline": false,
       "labelWidth": 30,
       "labelHeight": 26,
-      "maskLabel": true,
       "zIndex": 3,
       "level": 1
     },
@@ -241,7 +236,6 @@
       "underline": false,
       "labelWidth": 57,
       "labelHeight": 26,
-      "maskLabel": true,
       "zIndex": 3,
       "level": 1
     },
@@ -281,7 +275,6 @@
       "underline": false,
       "labelWidth": 78,
       "labelHeight": 26,
-      "maskLabel": true,
       "zIndex": 3,
       "level": 2
     },
@@ -321,7 +314,6 @@
       "underline": false,
       "labelWidth": 58,
       "labelHeight": 26,
-      "maskLabel": true,
       "zIndex": 3,
       "level": 1
     },
@@ -362,7 +354,6 @@
       "labelWidth": 157,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "maskLabel": false,
       "zIndex": 5,
       "level": 2
     },
@@ -402,7 +393,6 @@
       "underline": false,
       "labelWidth": 38,
       "labelHeight": 26,
-      "maskLabel": true,
       "zIndex": 3,
       "level": 1
     },
@@ -443,7 +433,6 @@
       "labelWidth": 64,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "maskLabel": false,
       "zIndex": 5,
       "level": 2
     },
@@ -483,7 +472,6 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "maskLabel": false,
       "zIndex": 2,
       "level": 2
     },
@@ -523,7 +511,6 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "maskLabel": false,
       "zIndex": 2,
       "level": 2
     },
@@ -563,7 +550,6 @@
       "underline": false,
       "labelWidth": 19,
       "labelHeight": 26,
-      "maskLabel": false,
       "zIndex": 2,
       "level": 3
     }

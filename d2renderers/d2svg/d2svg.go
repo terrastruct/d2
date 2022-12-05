@@ -782,7 +782,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) (labelMask string, 
 				textStyle,
 				renderText(targetShape.Label, x, float64(targetShape.LabelHeight)),
 			)
-			if targetShape.MaskLabel {
+			if targetShape.Blend {
 				labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight-d2graph.INNER_LABEL_PADDING)
 			}
 		}
