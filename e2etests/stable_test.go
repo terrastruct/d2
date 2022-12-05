@@ -1386,6 +1386,47 @@ choo: {
 `,
 		},
 		{
+			name: "sequence_diagram_nested_groups",
+			script: `shape: sequence_diagram
+
+this is a message group: {
+    _.a -> _.b
+    and this is a nested message group: {
+        _._.a -> _._.b
+        what about more nesting: {
+            _._._.a -> _._._.b
+						crazy town: {
+								_._._._.a."a note"
+								_._._._.a -> _._._._.b
+							whoa: {
+									_._._._._.a -> _._._._._.b
+							}
+            }
+        }
+    }
+}
+
+alt: {
+    case 1: {
+        _._.b -> _._.c
+    }
+    case 2: {
+        _._.b -> _._.c
+    }
+    case 3: {
+        _._.b -> _._.c
+    }
+    case 4: {
+        _._.b -> _._.c
+    }
+}
+
+b.note: "a note here to remember that padding must consider notes too"
+a.note: "just\na\nlong\nnote\nhere"
+c: "just an actor"
+`,
+		},
+		{
 			name: "sequence_diagram_real",
 			script: `How this is rendered: {
   shape: sequence_diagram

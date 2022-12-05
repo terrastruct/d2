@@ -44,7 +44,7 @@ var CoolNeutral = Neutral{
 	N2: "#676C7E",
 	N3: "#9499AB",
 	N4: "#CFD2DD",
-	N5: "#F0F3F9",
+	N5: "#DEE1EB",
 	N6: "#EEF1F8",
 	N7: "#FFFFFF",
 }

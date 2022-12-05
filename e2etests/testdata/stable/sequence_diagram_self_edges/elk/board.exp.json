@@ -23,6 +23,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -62,6 +63,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -101,6 +103,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -114,7 +117,7 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 2
     },
     {
@@ -139,6 +142,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -152,7 +156,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 3
     },
     {
@@ -177,6 +181,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -190,7 +195,7 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 2
     },
     {
@@ -215,6 +220,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -228,7 +234,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 3
     },
     {
@@ -253,6 +259,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -266,7 +273,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 2
     }
   ],
@@ -613,7 +620,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(b -- )[0]",
@@ -652,7 +659,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     }
   ]
 }

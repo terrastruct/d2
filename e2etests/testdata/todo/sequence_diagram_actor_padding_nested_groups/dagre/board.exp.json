@@ -23,6 +23,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -62,6 +63,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -101,6 +103,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -129,9 +132,9 @@
       "height": 696,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 2,
+      "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#DEE1EB",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -140,6 +143,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -153,7 +157,7 @@
       "underline": false,
       "labelWidth": 160,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 1
     },
     {
@@ -167,9 +171,9 @@
       "height": 542,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 2,
+      "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
+      "fill": "#DEE1EB",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -178,6 +182,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -191,7 +196,7 @@
       "underline": false,
       "labelWidth": 238,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -205,9 +210,9 @@
       "height": 388,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 2,
+      "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#EEF1F8",
+      "fill": "#DEE1EB",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -216,6 +221,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -229,7 +235,7 @@
       "underline": false,
       "labelWidth": 173,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 3
     },
     {
@@ -243,9 +249,9 @@
       "height": 234,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 2,
+      "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
+      "fill": "#DEE1EB",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -254,6 +260,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -267,7 +274,7 @@
       "underline": false,
       "labelWidth": 21,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
@@ -281,9 +288,9 @@
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 2,
+      "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#EEF1F8",
+      "fill": "#DEE1EB",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -292,6 +299,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -305,7 +313,7 @@
       "underline": false,
       "labelWidth": 21,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 5
     }
   ],
@@ -581,7 +589,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(a -- )[0]",
@@ -620,7 +628,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(c -- )[0]",
@@ -659,7 +667,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     }
   ]
 }
