@@ -196,7 +196,6 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 			// rankDiff = 0 for self edges
 			distributedLabelWidth := float64(message.LabelDimensions.Width) / rankDiff
 			sd.actorXStep = math.Max(sd.actorXStep, distributedLabelWidth+HORIZONTAL_PAD)
-
 		}
 		sd.lastMessage[message.Src] = message
 		if _, exists := sd.firstMessage[message.Src]; !exists {
@@ -287,9 +286,9 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 	)
 }
 
-// placeActors places actors bottom aligned, side by side
+// placeActors places actors bottom aligned, side by side with centers spaced by sd.actorXStep
 func (sd *sequenceDiagram) placeActors() {
-	x := 0.
+	centerX := sd.actors[0].Width / 2.
 	for _, actor := range sd.actors {
 		shape := actor.Attributes.Shape.Value
 		var yOffset float64
@@ -303,8 +302,9 @@ func (sd *sequenceDiagram) placeActors() {
 			actor.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			yOffset = sd.maxActorHeight - actor.Height
 		}
-		actor.TopLeft = geo.NewPoint(x, yOffset)
-		x += actor.Width + sd.actorXStep
+		halfWidth := actor.Width / 2.
+		actor.TopLeft = geo.NewPoint(math.Round(centerX-halfWidth), yOffset)
+		centerX += sd.actorXStep
 	}
 }
 
