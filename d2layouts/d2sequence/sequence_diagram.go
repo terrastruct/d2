@@ -460,6 +460,12 @@ func (sd *sequenceDiagram) placeSpans() {
 func (sd *sequenceDiagram) routeMessages() error {
 	startY := sd.maxActorHeight + sd.yStep
 	for _, message := range sd.messages {
+		for _, note := range sd.notes {
+			if sd.verticalIndices[note.AbsID()] < sd.verticalIndices[message.AbsID()] {
+				startY += note.Height + sd.yStep
+			}
+		}
+
 		message.ZIndex = 2
 		var startX, endX float64
 		if startCenter := getCenter(message.Src); startCenter != nil {
