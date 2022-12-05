@@ -260,6 +260,7 @@ func setGraphAttrs(attrs dagreGraphAttrs) string {
 }
 
 func escapeID(id string) string {
+	// an unescaped \r will become a \n in the layout result
 	return strings.ReplaceAll(id, "\r", "\\r")
 }
 
