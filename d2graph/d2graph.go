@@ -20,6 +20,8 @@ import (
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
+const INNER_LABEL_PADDING int = 5
+
 // TODO: Refactor with a light abstract layer on top of AST implementing scenarios,
 // variables, imports, substitutions and then a final set of structures representing
 // a final graph.
@@ -865,7 +867,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		}
 
 		var dims *d2target.TextDimensions
-		var innerLabelPadding = 5
+		var innerLabelPadding = INNER_LABEL_PADDING
 		if obj.Attributes.Shape.Value == d2target.ShapeText {
 			if obj.Attributes.Language == "latex" {
 				width, height, err := d2latex.Measure(obj.Text().Text)

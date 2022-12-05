@@ -22,6 +22,7 @@ import (
 
 	"oss.terrastruct.com/util-go/go2"
 
+	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2latex"
 	"oss.terrastruct.com/d2/d2target"
@@ -767,7 +768,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) (labelMask string, 
 				fontColor = targetShape.Color
 			}
 			textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", targetShape.FontSize, fontColor)
-			x := labelTL.X + float64(targetShape.LabelWidth)/2
+			x := labelTL.X + float64(targetShape.LabelWidth)/2.
 			// text is vertically positioned at its baseline which is at labelTL+FontSize
 			y := labelTL.Y + float64(targetShape.FontSize)
 			fmt.Fprintf(writer, `<text class="%s" x="%f" y="%f" style="%s">%s</text>`,
@@ -776,7 +777,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) (labelMask string, 
 				textStyle,
 				renderText(targetShape.Label, x, float64(targetShape.LabelHeight)),
 			)
-			labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight)
+			labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight-d2graph.INNER_LABEL_PADDING)
 		}
 	}
 	fmt.Fprintf(writer, `</g>`)
