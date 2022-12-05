@@ -101,7 +101,9 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 		sd.objectRank[actor] = rank
 
 		if actor.Width < MIN_ACTOR_WIDTH {
+			aspectRatio := actor.Height / actor.Width
 			actor.Width = MIN_ACTOR_WIDTH
+			actor.Height = math.Round(aspectRatio * actor.Width)
 		}
 		sd.maxActorHeight = math.Max(sd.maxActorHeight, actor.Height)
 
