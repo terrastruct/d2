@@ -136,9 +136,6 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 		if err := json.Unmarshal([]byte(val.String()), &dn); err != nil {
 			return err
 		}
-		// ID "ninety\nnine" is set in dagre with backticks: g.setNode(`"ninety\nnine"`, ...)
-		// but unmarshal converts \n into an actual newline, so we need to replace these to get the AbsID string and lookup the node
-		dn.ID = strings.ReplaceAll(dn.ID, "\n", "\\n")
 		if debugJS {
 			log.Debug(ctx, "graph", slog.F("json", dn))
 		}
@@ -260,8 +257,10 @@ func setGraphAttrs(attrs dagreGraphAttrs) string {
 }
 
 func escapeID(id string) string {
-	// an unescaped \r will become a \n in the layout result
-	return strings.ReplaceAll(id, "\r", "\\r")
+	id = strings.ReplaceAll(id, "\\n", "\\\\n")
+	// avoid an unescaped \r becoming a \n in the layout result
+	id = strings.ReplaceAll(id, "\r", "\\r")
+	return id
 }
 
 func generateAddNodeLine(id string, width, height int) string {
