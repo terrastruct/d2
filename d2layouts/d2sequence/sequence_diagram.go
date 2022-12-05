@@ -226,7 +226,6 @@ func (sd *sequenceDiagram) layout() error {
 	sd.placeSpans()
 	sd.adjustRouteEndpoints()
 	sd.placeNotes()
-	sd.routeMessages()
 	sd.placeGroups()
 	sd.addLifelineEdges()
 	return nil
