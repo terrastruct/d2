@@ -14,7 +14,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#E3E9FD",
+      "fill": "#EDF0FD",
       "stroke": "red",
       "shadow": false,
       "3d": false,
@@ -44,16 +44,16 @@
       "id": "bob",
       "type": "person",
       "pos": {
-        "x": 267,
-        "y": 124
+        "x": 233,
+        "y": 141
       },
       "width": 150,
-      "height": 143,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 5,
       "borderRadius": 0,
-      "fill": "#E3E9FD",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -83,11 +83,11 @@
       "id": "db",
       "type": "cylinder",
       "pos": {
-        "x": 584,
-        "y": 136
+        "x": 453,
+        "y": 162
       },
       "width": 150,
-      "height": 152,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -122,16 +122,16 @@
       "id": "queue",
       "type": "queue",
       "pos": {
-        "x": 901,
-        "y": 161
+        "x": 673,
+        "y": 162
       },
       "width": 150,
-      "height": 127,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F0F3F9",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -161,7 +161,7 @@
       "id": "service",
       "type": "",
       "pos": {
-        "x": 1192,
+        "x": 893,
         "y": 50
       },
       "width": 202,
@@ -170,7 +170,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -228,14 +228,14 @@
           "y": 418
         },
         {
-          "x": 342,
+          "x": 308,
           "y": 418
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(bob -> service)[0]",
@@ -263,18 +263,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 342,
+          "x": 308,
           "y": 548
         },
         {
-          "x": 1293,
+          "x": 994,
           "y": 548
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(service -> db)[0]",
@@ -302,18 +302,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1293,
+          "x": 994,
           "y": 678
         },
         {
-          "x": 659,
+          "x": 528,
           "y": 678
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(db -> service)[0]",
@@ -341,18 +341,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 659,
+          "x": 528,
           "y": 808
         },
         {
-          "x": 1293,
+          "x": 994,
           "y": 808
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(service -> bob)[0]",
@@ -380,18 +380,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1293,
+          "x": 994,
           "y": 938
         },
         {
-          "x": 342,
+          "x": 308,
           "y": 938
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(bob -> alice)[0]",
@@ -419,7 +419,7 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 342,
+          "x": 308,
           "y": 1068
         },
         {
@@ -430,7 +430,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(alice -> bob)[1]",
@@ -462,14 +462,14 @@
           "y": 1198
         },
         {
-          "x": 342,
+          "x": 308,
           "y": 1198
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(bob -> queue)[0]",
@@ -497,18 +497,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 342,
+          "x": 308,
           "y": 1328
         },
         {
-          "x": 976,
+          "x": 748,
           "y": 1328
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(queue -> bob)[0]",
@@ -536,18 +536,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 976,
+          "x": 748,
           "y": 1458
         },
         {
-          "x": 342,
+          "x": 308,
           "y": 1458
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(bob -> alice)[1]",
@@ -575,7 +575,7 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 342,
+          "x": 308,
           "y": 1588
         },
         {
@@ -586,7 +586,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(alice -- )[0]",
@@ -625,7 +625,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(bob -- )[0]",
@@ -653,18 +653,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 342,
+          "x": 308,
           "y": 293
         },
         {
-          "x": 342,
+          "x": 308,
           "y": 1718
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(db -- )[0]",
@@ -692,18 +692,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 659,
+          "x": 528,
           "y": 288
         },
         {
-          "x": 659,
+          "x": 528,
           "y": 1718
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(queue -- )[0]",
@@ -731,18 +731,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 976,
+          "x": 748,
           "y": 288
         },
         {
-          "x": 976,
+          "x": 748,
           "y": 1718
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(service -- )[0]",
@@ -770,18 +770,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1293,
+          "x": 994,
           "y": 288
         },
         {
-          "x": 1293,
+          "x": 994,
           "y": 1718
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     }
   ]
 }

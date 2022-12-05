@@ -6,15 +6,15 @@
       "type": "",
       "pos": {
         "x": 0,
-        "y": 52
+        "y": 50
       },
       "width": 150,
-      "height": 167,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -44,16 +44,16 @@
       "id": "b",
       "type": "",
       "pos": {
-        "x": 250,
-        "y": 52
+        "x": 220,
+        "y": 50
       },
       "width": 150,
-      "height": 167,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#E3E9FD",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -83,16 +83,16 @@
       "id": "c",
       "type": "",
       "pos": {
-        "x": 500,
+        "x": 440,
         "y": 50
       },
       "width": 150,
-      "height": 169,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#E3E9FD",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -122,16 +122,16 @@
       "id": "d",
       "type": "",
       "pos": {
-        "x": 750,
-        "y": 52
+        "x": 660,
+        "y": 50
       },
       "width": 150,
-      "height": 167,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#E3E9FD",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -162,15 +162,15 @@
       "type": "",
       "pos": {
         "x": 25,
-        "y": 439
+        "y": 396
       },
-      "width": 350,
+      "width": 320,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -192,23 +192,23 @@
       "underline": false,
       "labelWidth": 32,
       "labelHeight": 26,
-      "zIndex": 0,
+      "zIndex": 1,
       "level": 1
     },
     {
       "id": "group 1",
       "type": "",
       "pos": {
-        "x": 275,
-        "y": 569
+        "x": 221,
+        "y": 526
       },
-      "width": 350,
+      "width": 368,
       "height": 730,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#E3E9FD",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -230,23 +230,23 @@
       "underline": false,
       "labelWidth": 57,
       "labelHeight": 26,
-      "zIndex": 0,
+      "zIndex": 1,
       "level": 1
     },
     {
       "id": "group 1.nested guy",
       "type": "",
       "pos": {
-        "x": 275,
-        "y": 829
+        "x": 245,
+        "y": 786
       },
-      "width": 350,
+      "width": 320,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#FFFFFF",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -268,23 +268,23 @@
       "underline": false,
       "labelWidth": 82,
       "labelHeight": 26,
-      "zIndex": 0,
+      "zIndex": 1,
       "level": 2
     },
     {
       "id": "group b",
       "type": "",
       "pos": {
-        "x": 275,
-        "y": 1349
+        "x": 245,
+        "y": 1306
       },
-      "width": 483,
+      "width": 443,
       "height": 466,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -306,15 +306,15 @@
       "underline": false,
       "labelWidth": 60,
       "labelHeight": 26,
-      "zIndex": 0,
+      "zIndex": 1,
       "level": 1
     },
     {
       "id": "c.what would arnold say",
       "type": "rectangle",
       "pos": {
-        "x": 442,
-        "y": 1519
+        "x": 382,
+        "y": 1476
       },
       "width": 266,
       "height": 126,
@@ -322,7 +322,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#FFFFFF",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -345,23 +345,23 @@
       "labelWidth": 166,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1,
+      "zIndex": 5,
       "level": 2
     },
     {
       "id": "choo",
       "type": "",
       "pos": {
-        "x": 691,
-        "y": 1865
+        "x": 601,
+        "y": 1822
       },
-      "width": 268,
-      "height": 206,
+      "width": 258,
+      "height": 216,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -383,15 +383,15 @@
       "underline": false,
       "labelWidth": 40,
       "labelHeight": 26,
-      "zIndex": 0,
+      "zIndex": 1,
       "level": 1
     },
     {
       "id": "d.this note",
       "type": "rectangle",
       "pos": {
-        "x": 741,
-        "y": 1905
+        "x": 651,
+        "y": 1862
       },
       "width": 168,
       "height": 126,
@@ -399,7 +399,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#FFFFFF",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -422,15 +422,15 @@
       "labelWidth": 68,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1,
+      "zIndex": 5,
       "level": 2
     },
     {
       "id": "b.t1",
       "type": "rectangle",
       "pos": {
-        "x": 319,
-        "y": 983
+        "x": 289,
+        "y": 940
       },
       "width": 12,
       "height": 292,
@@ -460,15 +460,15 @@
       "underline": false,
       "labelWidth": 25,
       "labelHeight": 36,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 2
     },
     {
       "id": "c.t1",
       "type": "rectangle",
       "pos": {
-        "x": 569,
-        "y": 983
+        "x": 509,
+        "y": 940
       },
       "width": 12,
       "height": 292,
@@ -498,15 +498,15 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 2
     },
     {
       "id": "b.t1.t2",
       "type": "rectangle",
       "pos": {
-        "x": 315,
-        "y": 1113
+        "x": 285,
+        "y": 1070
       },
       "width": 20,
       "height": 80,
@@ -536,7 +536,7 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 3
     }
   ],
@@ -568,17 +568,17 @@
       "route": [
         {
           "x": 75,
-          "y": 349
+          "y": 306
         },
         {
-          "x": 325,
-          "y": 349
+          "x": 295,
+          "y": 306
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(a -> b)[1]",
@@ -607,17 +607,17 @@
       "route": [
         {
           "x": 75,
-          "y": 479
+          "y": 436
         },
         {
-          "x": 325,
-          "y": 479
+          "x": 295,
+          "y": 436
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(b -> c)[0]",
@@ -645,18 +645,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 325,
-          "y": 609
+          "x": 295,
+          "y": 566
         },
         {
-          "x": 575,
-          "y": 609
+          "x": 515,
+          "y": 566
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(c -> b)[0]",
@@ -684,18 +684,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 575,
-          "y": 739
+          "x": 515,
+          "y": 696
         },
         {
-          "x": 325,
-          "y": 739
+          "x": 295,
+          "y": 696
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(c -> b)[1]",
@@ -723,18 +723,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 575,
-          "y": 869
+          "x": 515,
+          "y": 826
         },
         {
-          "x": 325,
-          "y": 869
+          "x": 295,
+          "y": 826
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(b.t1 -> c.t1)[0]",
@@ -762,18 +762,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 331,
-          "y": 999
+          "x": 301,
+          "y": 956
         },
         {
-          "x": 569,
-          "y": 999
+          "x": 509,
+          "y": 956
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(b.t1.t2 -> c.t1)[0]",
@@ -801,18 +801,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 335,
-          "y": 1129
+          "x": 305,
+          "y": 1086
         },
         {
-          "x": 569,
-          "y": 1129
+          "x": 509,
+          "y": 1086
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(c.t1 -> b.t1)[0]",
@@ -840,18 +840,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 569,
-          "y": 1259
+          "x": 509,
+          "y": 1216
         },
         {
-          "x": 331,
-          "y": 1259
+          "x": 301,
+          "y": 1216
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(b -> c)[1]",
@@ -879,18 +879,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 325,
-          "y": 1389
+          "x": 295,
+          "y": 1346
         },
         {
-          "x": 575,
-          "y": 1389
+          "x": 515,
+          "y": 1346
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(c -> b)[2]",
@@ -918,18 +918,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 575,
-          "y": 1775
+          "x": 515,
+          "y": 1732
         },
         {
-          "x": 325,
-          "y": 1775
+          "x": 295,
+          "y": 1732
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(a -- )[0]",
@@ -958,17 +958,17 @@
       "route": [
         {
           "x": 75,
-          "y": 219
+          "y": 176
         },
         {
           "x": 75,
-          "y": 2161
+          "y": 2118
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(b -- )[0]",
@@ -996,18 +996,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 325,
-          "y": 219
+          "x": 295,
+          "y": 176
         },
         {
-          "x": 325,
-          "y": 2161
+          "x": 295,
+          "y": 2118
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(c -- )[0]",
@@ -1035,18 +1035,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 575,
-          "y": 219
+          "x": 515,
+          "y": 176
         },
         {
-          "x": 575,
-          "y": 2161
+          "x": 515,
+          "y": 2118
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(d -- )[0]",
@@ -1074,18 +1074,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 825,
-          "y": 219
+          "x": 735,
+          "y": 176
         },
         {
-          "x": 825,
-          "y": 2161
+          "x": 735,
+          "y": 2118
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     }
   ]
 }

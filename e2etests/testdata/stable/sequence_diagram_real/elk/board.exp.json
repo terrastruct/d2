@@ -8,8 +8,8 @@
         "x": 12,
         "y": 12
       },
-      "width": 2180,
-      "height": 2311,
+      "width": 2193,
+      "height": 2288,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -48,7 +48,7 @@
         "y": 98
       },
       "width": 150,
-      "height": 149,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -83,11 +83,11 @@
       "id": "How this is rendered.d2ast",
       "type": "",
       "pos": {
-        "x": 262,
-        "y": 117
+        "x": 232,
+        "y": 98
       },
       "width": 150,
-      "height": 130,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -122,8 +122,8 @@
       "id": "How this is rendered.d2compiler",
       "type": "",
       "pos": {
-        "x": 496,
-        "y": 121
+        "x": 452,
+        "y": 98
       },
       "width": 182,
       "height": 126,
@@ -161,8 +161,8 @@
       "id": "How this is rendered.d2layout",
       "type": "",
       "pos": {
-        "x": 755,
-        "y": 121
+        "x": 704,
+        "y": 98
       },
       "width": 165,
       "height": 126,
@@ -200,8 +200,8 @@
       "id": "How this is rendered.d2exporter",
       "type": "",
       "pos": {
-        "x": 997,
-        "y": 121
+        "x": 939,
+        "y": 98
       },
       "width": 180,
       "height": 126,
@@ -239,8 +239,8 @@
       "id": "How this is rendered.d2themes",
       "type": "",
       "pos": {
-        "x": 1249,
-        "y": 121
+        "x": 1189,
+        "y": 98
       },
       "width": 176,
       "height": 126,
@@ -278,8 +278,8 @@
       "id": "How this is rendered.d2renderer",
       "type": "",
       "pos": {
-        "x": 1494,
-        "y": 121
+        "x": 1435,
+        "y": 98
       },
       "width": 186,
       "height": 126,
@@ -317,8 +317,8 @@
       "id": "How this is rendered.d2compiler.measurements also take place",
       "type": "rectangle",
       "pos": {
-        "x": 416,
-        "y": 755
+        "x": 372,
+        "y": 732
       },
       "width": 318,
       "height": 126,
@@ -326,7 +326,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#FFFFFF",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -349,17 +349,55 @@
       "labelWidth": 218,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1,
+      "zIndex": 5,
       "level": 3
+    },
+    {
+      "id": "How this is rendered.only if root is not sequence",
+      "type": "",
+      "pos": {
+        "x": 730,
+        "y": 1338
+      },
+      "width": 1408,
+      "height": 80,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#EDF0FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "only if root is not sequence",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 195,
+      "labelHeight": 26,
+      "zIndex": 1,
+      "level": 2
     },
     {
       "id": "How this is rendered.d2layout.layout",
       "type": "rectangle",
       "pos": {
-        "x": 827,
-        "y": 1137
+        "x": 780,
+        "y": 1114
       },
-      "width": 20,
+      "width": 12,
       "height": 422,
       "opacity": 1,
       "strokeDash": 0,
@@ -387,15 +425,15 @@
       "underline": false,
       "labelWidth": 50,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 3
     },
     {
       "id": "How this is rendered.d2sequencelayout",
       "type": "",
       "pos": {
-        "x": 1720,
-        "y": 121
+        "x": 1691,
+        "y": 98
       },
       "width": 235,
       "height": 126,
@@ -433,8 +471,8 @@
       "id": "How this is rendered.d2dagrelayout",
       "type": "",
       "pos": {
-        "x": 1983,
-        "y": 121
+        "x": 1996,
+        "y": 98
       },
       "width": 209,
       "height": 126,
@@ -472,10 +510,10 @@
       "id": "How this is rendered.d2exporter.export",
       "type": "rectangle",
       "pos": {
-        "x": 1077,
-        "y": 1917
+        "x": 1023,
+        "y": 1894
       },
-      "width": 20,
+      "width": 12,
       "height": 292,
       "opacity": 1,
       "strokeDash": 0,
@@ -503,7 +541,7 @@
       "underline": false,
       "labelWidth": 52,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 3
     }
   ],
@@ -535,17 +573,17 @@
       "route": [
         {
           "x": 87,
-          "y": 377
+          "y": 354
         },
         {
-          "x": 337,
-          "y": 377
+          "x": 307,
+          "y": 354
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "How this is rendered.(d2ast -> CLI)[0]",
@@ -573,18 +611,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 337,
-          "y": 507
+          "x": 307,
+          "y": 484
         },
         {
           "x": 87,
-          "y": 507
+          "y": 484
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "How this is rendered.(CLI -> d2compiler)[0]",
@@ -613,17 +651,17 @@
       "route": [
         {
           "x": 87,
-          "y": 637
+          "y": 614
         },
         {
-          "x": 587,
-          "y": 637
+          "x": 543,
+          "y": 614
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "How this is rendered.(d2compiler -> CLI)[0]",
@@ -651,18 +689,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 587,
-          "y": 1023
+          "x": 543,
+          "y": 1000
         },
         {
           "x": 87,
-          "y": 1023
+          "y": 1000
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "How this is rendered.(CLI -> d2layout.layout)[0]",
@@ -691,17 +729,17 @@
       "route": [
         {
           "x": 87,
-          "y": 1153
+          "y": 1130
         },
         {
-          "x": 827.5,
-          "y": 1153
+          "x": 780.5,
+          "y": 1130
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "How this is rendered.(d2layout.layout -> d2sequencelayout)[0]",
@@ -729,18 +767,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 847.5,
-          "y": 1283
+          "x": 792.5,
+          "y": 1260
         },
         {
-          "x": 1837.5,
-          "y": 1283
+          "x": 1808.5,
+          "y": 1260
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "How this is rendered.(d2layout.layout -> d2dagrelayout)[0]",
@@ -768,18 +806,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 847.5,
-          "y": 1413
+          "x": 792.5,
+          "y": 1390
         },
         {
-          "x": 2087.5,
-          "y": 1413
+          "x": 2100.5,
+          "y": 1390
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "How this is rendered.(d2layout.layout <- d2sequencelayout)[0]",
@@ -807,18 +845,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 847.5,
-          "y": 1543
+          "x": 792.5,
+          "y": 1520
         },
         {
-          "x": 1837.5,
-          "y": 1543
+          "x": 1808.5,
+          "y": 1520
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "How this is rendered.(d2layout -> CLI)[0]",
@@ -846,18 +884,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 837.5,
-          "y": 1673
+          "x": 786.5,
+          "y": 1650
         },
         {
           "x": 87,
-          "y": 1673
+          "y": 1650
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "How this is rendered.(CLI -> d2exporter)[0]",
@@ -886,17 +924,17 @@
       "route": [
         {
           "x": 87,
-          "y": 1803
+          "y": 1780
         },
         {
-          "x": 1087,
-          "y": 1803
+          "x": 1029,
+          "y": 1780
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "How this is rendered.(d2exporter.export -> d2themes)[0]",
@@ -924,18 +962,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1097,
-          "y": 1933
+          "x": 1035,
+          "y": 1910
         },
         {
-          "x": 1337,
-          "y": 1933
+          "x": 1277,
+          "y": 1910
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "How this is rendered.(d2exporter.export -> d2renderer)[0]",
@@ -963,18 +1001,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1097,
-          "y": 2063
+          "x": 1035,
+          "y": 2040
         },
         {
-          "x": 1587,
-          "y": 2063
+          "x": 1528,
+          "y": 2040
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "How this is rendered.(d2exporter.export -> CLI)[0]",
@@ -1002,18 +1040,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1077,
-          "y": 2193
+          "x": 1023,
+          "y": 2170
         },
         {
           "x": 87,
-          "y": 2193
+          "y": 2170
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(How this is rendered.CLI -- )[0]",
@@ -1042,17 +1080,17 @@
       "route": [
         {
           "x": 87,
-          "y": 247
+          "y": 224
         },
         {
           "x": 87,
-          "y": 2323
+          "y": 2300
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(How this is rendered.d2ast -- )[0]",
@@ -1080,18 +1118,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 337,
-          "y": 247
+          "x": 307,
+          "y": 224
         },
         {
-          "x": 337,
-          "y": 2323
+          "x": 307,
+          "y": 2300
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(How this is rendered.d2compiler -- )[0]",
@@ -1119,18 +1157,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 587,
-          "y": 247
+          "x": 543,
+          "y": 224
         },
         {
-          "x": 587,
-          "y": 2323
+          "x": 543,
+          "y": 2300
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(How this is rendered.d2layout -- )[0]",
@@ -1158,18 +1196,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 837.5,
-          "y": 247
+          "x": 786.5,
+          "y": 224
         },
         {
-          "x": 837.5,
-          "y": 2323
+          "x": 786.5,
+          "y": 2300
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(How this is rendered.d2exporter -- )[0]",
@@ -1197,18 +1235,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1087,
-          "y": 247
+          "x": 1029,
+          "y": 224
         },
         {
-          "x": 1087,
-          "y": 2323
+          "x": 1029,
+          "y": 2300
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(How this is rendered.d2themes -- )[0]",
@@ -1236,18 +1274,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1337,
-          "y": 247
+          "x": 1277,
+          "y": 224
         },
         {
-          "x": 1337,
-          "y": 2323
+          "x": 1277,
+          "y": 2300
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(How this is rendered.d2renderer -- )[0]",
@@ -1275,18 +1313,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1587,
-          "y": 247
+          "x": 1528,
+          "y": 224
         },
         {
-          "x": 1587,
-          "y": 2323
+          "x": 1528,
+          "y": 2300
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(How this is rendered.d2sequencelayout -- )[0]",
@@ -1314,18 +1352,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1837.5,
-          "y": 247
+          "x": 1808.5,
+          "y": 224
         },
         {
-          "x": 1837.5,
-          "y": 2323
+          "x": 1808.5,
+          "y": 2300
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(How this is rendered.d2dagrelayout -- )[0]",
@@ -1353,18 +1391,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2087.5,
-          "y": 247
+          "x": 2100.5,
+          "y": 224
         },
         {
-          "x": 2087.5,
-          "y": 2323
+          "x": 2100.5,
+          "y": 2300
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     }
   ]
 }

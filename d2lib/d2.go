@@ -35,15 +35,17 @@ func Compile(ctx context.Context, input string, opts *CompileOptions) (*d2target
 		return nil, nil, err
 	}
 
-	err = g.SetDimensions(opts.MeasuredTexts, opts.Ruler)
-	if err != nil {
-		return nil, nil, err
-	}
+	if len(g.Objects) > 0 {
+		err = g.SetDimensions(opts.MeasuredTexts, opts.Ruler)
+		if err != nil {
+			return nil, nil, err
+		}
 
-	if layout, err := getLayout(opts); err != nil {
-		return nil, nil, err
-	} else if err := d2sequence.Layout(ctx, g, layout); err != nil {
-		return nil, nil, err
+		if layout, err := getLayout(opts); err != nil {
+			return nil, nil, err
+		} else if err := d2sequence.Layout(ctx, g, layout); err != nil {
+			return nil, nil, err
+		}
 	}
 
 	diagram, err := d2exporter.Export(ctx, g, opts.ThemeID)

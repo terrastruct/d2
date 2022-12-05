@@ -231,8 +231,8 @@ b -> a.t2`
 	}
 
 	for _, span := range []*d2graph.Object{a_t1, a_t2, b_t1} {
-		if span.ZIndex != 1 {
-			t.Fatalf("expected span ZIndex=1, got %d", span.ZIndex)
+		if span.ZIndex != d2sequence.SPAN_Z_INDEX {
+			t.Fatalf("expected span ZIndex=%d, got %d", d2sequence.SPAN_Z_INDEX, span.ZIndex)
 		}
 	}
 

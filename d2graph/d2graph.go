@@ -331,6 +331,20 @@ func (l ContainerLevel) LabelSize() int {
 
 func (obj *Object) GetFill(theme *d2themes.Theme) string {
 	level := int(obj.Level())
+	if obj.Parent.IsSequenceDiagram() {
+		return theme.Colors.B5
+	} else if obj.IsSequenceDiagramNote() {
+		return theme.Colors.Neutrals.N7
+	} else if obj.IsSequenceDiagramGroup() {
+		sd := obj.outerSequenceDiagram()
+		// Alternate
+		if (level-int(sd.Level()))%2 == 0 {
+			return theme.Colors.Neutrals.N7
+		} else {
+			return theme.Colors.Neutrals.N6
+		}
+	}
+
 	shape := obj.Attributes.Shape.Value
 
 	if shape == "" || strings.EqualFold(shape, d2target.ShapeSquare) || strings.EqualFold(shape, d2target.ShapeCircle) || strings.EqualFold(shape, d2target.ShapeOval) || strings.EqualFold(shape, d2target.ShapeRectangle) {
@@ -397,10 +411,6 @@ func (obj *Object) Level() ContainerLevel {
 
 func (obj *Object) IsContainer() bool {
 	return len(obj.Children) > 0
-}
-
-func (obj *Object) IsSequenceDiagram() bool {
-	return obj != nil && obj.Attributes.Shape.Value == d2target.ShapeSequenceDiagram
 }
 
 func (obj *Object) AbsID() string {
@@ -709,16 +719,6 @@ func (e *Edge) AbsID() string {
 	}
 
 	return fmt.Sprintf("%s(%s %s %s)[%d]", commonKey, strings.Join(srcIDA, "."), e.ArrowString(), strings.Join(dstIDA, "."), e.Index)
-}
-
-func (obj *Object) outerSequenceDiagram() *Object {
-	for obj != nil {
-		obj = obj.Parent
-		if obj.IsSequenceDiagram() {
-			return obj
-		}
-	}
-	return nil
 }
 
 func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label string) (*Edge, error) {

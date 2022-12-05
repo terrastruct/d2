@@ -5,7 +5,7 @@
       "id": "a_shape",
       "type": "oval",
       "pos": {
-        "x": 1482,
+        "x": 1451,
         "y": 0
       },
       "width": 164,
@@ -44,11 +44,11 @@
       "id": "a_sequence",
       "type": "sequence_diagram",
       "pos": {
-        "x": 1682,
+        "x": 1651,
         "y": 314
       },
-      "width": 1424,
-      "height": 2046,
+      "width": 1393,
+      "height": 2032,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -86,8 +86,8 @@
         "x": 0,
         "y": 264
       },
-      "width": 1524,
-      "height": 2146,
+      "width": 1493,
+      "height": 2132,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -125,8 +125,8 @@
         "x": 50,
         "y": 317
       },
-      "width": 1424,
-      "height": 2041,
+      "width": 1393,
+      "height": 2027,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -161,11 +161,11 @@
       "id": "finally",
       "type": "queue",
       "pos": {
-        "x": 341,
-        "y": 2510
+        "x": 333,
+        "y": 2496
       },
-      "width": 1624,
-      "height": 1491,
+      "width": 1593,
+      "height": 1477,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -200,11 +200,11 @@
       "id": "finally.sequence",
       "type": "sequence_diagram",
       "pos": {
-        "x": 451,
-        "y": 2560
+        "x": 443,
+        "y": 2546
       },
-      "width": 1425,
-      "height": 1391,
+      "width": 1393,
+      "height": 1377,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -239,16 +239,16 @@
       "id": "finally.sequence.scorer",
       "type": "",
       "pos": {
-        "x": 451,
-        "y": 2653
+        "x": 443,
+        "y": 2627
       },
       "width": 150,
-      "height": 128,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -278,8 +278,8 @@
       "id": "finally.sequence.concept",
       "type": "",
       "pos": {
-        "x": 696,
-        "y": 2655
+        "x": 663,
+        "y": 2627
       },
       "width": 160,
       "height": 126,
@@ -287,7 +287,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -317,8 +317,8 @@
       "id": "finally.sequence.essayRubric",
       "type": "",
       "pos": {
-        "x": 933,
-        "y": 2655
+        "x": 893,
+        "y": 2627
       },
       "width": 186,
       "height": 126,
@@ -326,7 +326,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -356,16 +356,16 @@
       "id": "finally.sequence.item",
       "type": "",
       "pos": {
-        "x": 1201,
-        "y": 2641
+        "x": 1149,
+        "y": 2627
       },
       "width": 150,
-      "height": 140,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -395,8 +395,8 @@
       "id": "finally.sequence.itemOutcome",
       "type": "",
       "pos": {
-        "x": 1428,
-        "y": 2655
+        "x": 1369,
+        "y": 2627
       },
       "width": 197,
       "height": 126,
@@ -404,7 +404,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -434,8 +434,8 @@
       "id": "finally.sequence.itemResponse",
       "type": "",
       "pos": {
-        "x": 1676,
-        "y": 2655
+        "x": 1636,
+        "y": 2627
       },
       "width": 200,
       "height": 126,
@@ -443,7 +443,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -473,11 +473,11 @@
       "id": "a_sequence.scorer",
       "type": "",
       "pos": {
-        "x": 1682,
-        "y": 412
+        "x": 1651,
+        "y": 400
       },
       "width": 150,
-      "height": 128,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -512,10 +512,10 @@
       "id": "a_sequence.scorer.t",
       "type": "rectangle",
       "pos": {
-        "x": 1747,
-        "y": 654
+        "x": 1720,
+        "y": 640
       },
-      "width": 20,
+      "width": 12,
       "height": 1592,
       "opacity": 1,
       "strokeDash": 0,
@@ -543,15 +543,15 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 3
     },
     {
       "id": "a_sequence.itemResponse",
       "type": "",
       "pos": {
-        "x": 1907,
-        "y": 414
+        "x": 1871,
+        "y": 400
       },
       "width": 200,
       "height": 126,
@@ -589,10 +589,10 @@
       "id": "a_sequence.itemResponse.t",
       "type": "rectangle",
       "pos": {
-        "x": 1997,
-        "y": 654
+        "x": 1965,
+        "y": 640
       },
-      "width": 20,
+      "width": 12,
       "height": 162,
       "opacity": 1,
       "strokeDash": 0,
@@ -620,18 +620,18 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 3
     },
     {
       "id": "a_sequence.item",
       "type": "",
       "pos": {
-        "x": 2182,
+        "x": 2141,
         "y": 400
       },
       "width": 150,
-      "height": 140,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -666,10 +666,10 @@
       "id": "a_sequence.item.t1",
       "type": "rectangle",
       "pos": {
-        "x": 2247,
-        "y": 914
+        "x": 2210,
+        "y": 900
       },
-      "width": 20,
+      "width": 12,
       "height": 162,
       "opacity": 1,
       "strokeDash": 0,
@@ -697,15 +697,15 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 3
     },
     {
       "id": "a_sequence.essayRubric",
       "type": "",
       "pos": {
-        "x": 2414,
-        "y": 414
+        "x": 2361,
+        "y": 400
       },
       "width": 186,
       "height": 126,
@@ -743,10 +743,10 @@
       "id": "a_sequence.essayRubric.t",
       "type": "rectangle",
       "pos": {
-        "x": 2497,
-        "y": 1174
+        "x": 2448,
+        "y": 1160
       },
-      "width": 20,
+      "width": 12,
       "height": 422,
       "opacity": 1,
       "strokeDash": 0,
@@ -774,17 +774,17 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 31,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 3
     },
     {
       "id": "a_sequence.essayRubric.t.c",
       "type": "rectangle",
       "pos": {
-        "x": 2493,
-        "y": 1304
+        "x": 2444,
+        "y": 1290
       },
-      "width": 28,
+      "width": 20,
       "height": 162,
       "opacity": 1,
       "strokeDash": 0,
@@ -812,15 +812,15 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
       "id": "a_sequence.concept",
       "type": "",
       "pos": {
-        "x": 2677,
-        "y": 414
+        "x": 2617,
+        "y": 400
       },
       "width": 160,
       "height": 126,
@@ -858,10 +858,10 @@
       "id": "a_sequence.concept.t",
       "type": "rectangle",
       "pos": {
-        "x": 2747,
-        "y": 1434
+        "x": 2691,
+        "y": 1420
       },
-      "width": 20,
+      "width": 12,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -889,15 +889,15 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 3
     },
     {
       "id": "a_sequence.itemOutcome",
       "type": "",
       "pos": {
-        "x": 2909,
-        "y": 414
+        "x": 2847,
+        "y": 400
       },
       "width": 197,
       "height": 126,
@@ -935,10 +935,10 @@
       "id": "a_sequence.itemOutcome.t1",
       "type": "rectangle",
       "pos": {
-        "x": 2997,
-        "y": 1694
+        "x": 2939,
+        "y": 1680
       },
-      "width": 20,
+      "width": 12,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -966,17 +966,17 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 3
     },
     {
       "id": "a_sequence.item.t2",
       "type": "rectangle",
       "pos": {
-        "x": 2247,
-        "y": 1824
+        "x": 2210,
+        "y": 1810
       },
-      "width": 20,
+      "width": 12,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -1004,17 +1004,17 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 3
     },
     {
       "id": "a_sequence.item.t3",
       "type": "rectangle",
       "pos": {
-        "x": 2247,
-        "y": 1954
+        "x": 2210,
+        "y": 1940
       },
-      "width": 20,
+      "width": 12,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -1042,17 +1042,17 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 3
     },
     {
       "id": "a_sequence.itemOutcome.t2",
       "type": "rectangle",
       "pos": {
-        "x": 2997,
-        "y": 2084
+        "x": 2939,
+        "y": 2070
       },
-      "width": 20,
+      "width": 12,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -1080,17 +1080,17 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 3
     },
     {
       "id": "a_sequence.itemOutcome.t3",
       "type": "rectangle",
       "pos": {
-        "x": 2997,
-        "y": 2214
+        "x": 2939,
+        "y": 2200
       },
-      "width": 20,
+      "width": 12,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -1118,7 +1118,7 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 3
     },
     {
@@ -1126,15 +1126,15 @@
       "type": "",
       "pos": {
         "x": 50,
-        "y": 410
+        "y": 398
       },
       "width": 150,
-      "height": 128,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -1164,10 +1164,10 @@
       "id": "another.sequence.scorer.t",
       "type": "rectangle",
       "pos": {
-        "x": 111,
-        "y": 652
+        "x": 119,
+        "y": 638
       },
-      "width": 28,
+      "width": 12,
       "height": 1592,
       "opacity": 1,
       "strokeDash": 0,
@@ -1195,15 +1195,15 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
       "id": "another.sequence.itemResponse",
       "type": "",
       "pos": {
-        "x": 275,
-        "y": 412
+        "x": 270,
+        "y": 398
       },
       "width": 200,
       "height": 126,
@@ -1211,7 +1211,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -1241,10 +1241,10 @@
       "id": "another.sequence.itemResponse.t",
       "type": "rectangle",
       "pos": {
-        "x": 361,
-        "y": 652
+        "x": 364,
+        "y": 638
       },
-      "width": 28,
+      "width": 12,
       "height": 162,
       "opacity": 1,
       "strokeDash": 0,
@@ -1272,23 +1272,23 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
       "id": "another.sequence.item",
       "type": "",
       "pos": {
-        "x": 550,
+        "x": 540,
         "y": 398
       },
       "width": 150,
-      "height": 140,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -1318,10 +1318,10 @@
       "id": "another.sequence.item.t1",
       "type": "rectangle",
       "pos": {
-        "x": 611,
-        "y": 912
+        "x": 609,
+        "y": 898
       },
-      "width": 28,
+      "width": 12,
       "height": 162,
       "opacity": 1,
       "strokeDash": 0,
@@ -1349,15 +1349,15 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
       "id": "another.sequence.essayRubric",
       "type": "",
       "pos": {
-        "x": 782,
-        "y": 412
+        "x": 760,
+        "y": 398
       },
       "width": 186,
       "height": 126,
@@ -1365,7 +1365,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -1395,10 +1395,10 @@
       "id": "another.sequence.essayRubric.t",
       "type": "rectangle",
       "pos": {
-        "x": 861,
-        "y": 1172
+        "x": 847,
+        "y": 1158
       },
-      "width": 28,
+      "width": 12,
       "height": 422,
       "opacity": 1,
       "strokeDash": 0,
@@ -1426,17 +1426,17 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
       "id": "another.sequence.essayRubric.t.c",
       "type": "rectangle",
       "pos": {
-        "x": 857,
-        "y": 1302
+        "x": 843,
+        "y": 1288
       },
-      "width": 36,
+      "width": 20,
       "height": 162,
       "opacity": 1,
       "strokeDash": 0,
@@ -1464,15 +1464,15 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 5
     },
     {
       "id": "another.sequence.concept",
       "type": "",
       "pos": {
-        "x": 1045,
-        "y": 412
+        "x": 1016,
+        "y": 398
       },
       "width": 160,
       "height": 126,
@@ -1480,7 +1480,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -1510,10 +1510,10 @@
       "id": "another.sequence.concept.t",
       "type": "rectangle",
       "pos": {
-        "x": 1111,
-        "y": 1432
+        "x": 1090,
+        "y": 1418
       },
-      "width": 28,
+      "width": 12,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -1541,15 +1541,15 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
       "id": "another.sequence.itemOutcome",
       "type": "",
       "pos": {
-        "x": 1277,
-        "y": 412
+        "x": 1246,
+        "y": 398
       },
       "width": 197,
       "height": 126,
@@ -1557,7 +1557,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -1587,10 +1587,10 @@
       "id": "another.sequence.itemOutcome.t1",
       "type": "rectangle",
       "pos": {
-        "x": 1361,
-        "y": 1692
+        "x": 1338,
+        "y": 1678
       },
-      "width": 28,
+      "width": 12,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -1618,17 +1618,17 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
       "id": "another.sequence.item.t2",
       "type": "rectangle",
       "pos": {
-        "x": 611,
-        "y": 1822
+        "x": 609,
+        "y": 1808
       },
-      "width": 28,
+      "width": 12,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -1656,17 +1656,17 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
       "id": "another.sequence.item.t3",
       "type": "rectangle",
       "pos": {
-        "x": 611,
-        "y": 1952
+        "x": 609,
+        "y": 1938
       },
-      "width": 28,
+      "width": 12,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -1694,17 +1694,17 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
       "id": "another.sequence.itemOutcome.t2",
       "type": "rectangle",
       "pos": {
-        "x": 1361,
-        "y": 2082
+        "x": 1338,
+        "y": 2068
       },
-      "width": 28,
+      "width": 12,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -1732,17 +1732,17 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
       "id": "another.sequence.itemOutcome.t3",
       "type": "rectangle",
       "pos": {
-        "x": 1361,
-        "y": 2212
+        "x": 1338,
+        "y": 2198
       },
-      "width": 28,
+      "width": 12,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -1770,15 +1770,15 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
       "id": "sequence",
       "type": "",
       "pos": {
-        "x": 2308,
-        "y": 3193
+        "x": 2262,
+        "y": 3172
       },
       "width": 172,
       "height": 126,
@@ -1816,10 +1816,10 @@
       "id": "finally.sequence.itemResponse.a",
       "type": "rectangle",
       "pos": {
-        "x": 1762,
-        "y": 2895
+        "x": 1730,
+        "y": 2867
       },
-      "width": 28,
+      "width": 12,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -1847,17 +1847,17 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
       "id": "finally.sequence.item.a",
       "type": "rectangle",
       "pos": {
-        "x": 1262,
-        "y": 2879
+        "x": 1218,
+        "y": 2851
       },
-      "width": 28,
+      "width": 12,
       "height": 698,
       "opacity": 1,
       "strokeDash": 0,
@@ -1885,17 +1885,17 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
       "id": "finally.sequence.item.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 1258,
-        "y": 2895
+        "x": 1214,
+        "y": 2867
       },
-      "width": 36,
+      "width": 20,
       "height": 162,
       "opacity": 1,
       "strokeDash": 0,
@@ -1923,17 +1923,17 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 5
     },
     {
       "id": "finally.sequence.essayRubric.a",
       "type": "rectangle",
       "pos": {
-        "x": 1012,
-        "y": 2993
+        "x": 980,
+        "y": 2965
       },
-      "width": 28,
+      "width": 12,
       "height": 340,
       "opacity": 1,
       "strokeDash": 0,
@@ -1961,17 +1961,17 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
       "id": "finally.sequence.essayRubric.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 1008,
-        "y": 3009
+        "x": 976,
+        "y": 2981
       },
-      "width": 36,
+      "width": 20,
       "height": 308,
       "opacity": 1,
       "strokeDash": 0,
@@ -1999,17 +1999,17 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 5
     },
     {
       "id": "finally.sequence.essayRubric.a.b.c",
       "type": "rectangle",
       "pos": {
-        "x": 1004,
-        "y": 3025
+        "x": 972,
+        "y": 2997
       },
-      "width": 44,
+      "width": 28,
       "height": 162,
       "opacity": 1,
       "strokeDash": 0,
@@ -2037,17 +2037,17 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 6
     },
     {
       "id": "finally.sequence.concept.a",
       "type": "rectangle",
       "pos": {
-        "x": 762,
-        "y": 3107
+        "x": 737,
+        "y": 3079
       },
-      "width": 28,
+      "width": 12,
       "height": 388,
       "opacity": 1,
       "strokeDash": 0,
@@ -2075,17 +2075,17 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
       "id": "finally.sequence.concept.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 758,
-        "y": 3123
+        "x": 733,
+        "y": 3095
       },
-      "width": 36,
+      "width": 20,
       "height": 356,
       "opacity": 1,
       "strokeDash": 0,
@@ -2113,17 +2113,17 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 5
     },
     {
       "id": "finally.sequence.concept.a.b.c",
       "type": "rectangle",
       "pos": {
-        "x": 754,
-        "y": 3139
+        "x": 729,
+        "y": 3111
       },
-      "width": 44,
+      "width": 28,
       "height": 324,
       "opacity": 1,
       "strokeDash": 0,
@@ -2151,17 +2151,17 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 6
     },
     {
       "id": "finally.sequence.concept.a.b.c.d",
       "type": "rectangle",
       "pos": {
-        "x": 750,
-        "y": 3155
+        "x": 725,
+        "y": 3127
       },
-      "width": 52,
+      "width": 36,
       "height": 292,
       "opacity": 1,
       "strokeDash": 0,
@@ -2189,17 +2189,17 @@
       "underline": false,
       "labelWidth": 14,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 7
     },
     {
       "id": "finally.sequence.itemOutcome.a",
       "type": "rectangle",
       "pos": {
-        "x": 1512,
-        "y": 3351
+        "x": 1461,
+        "y": 3323
       },
-      "width": 28,
+      "width": 12,
       "height": 420,
       "opacity": 1,
       "strokeDash": 0,
@@ -2227,17 +2227,17 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
       "id": "finally.sequence.itemOutcome.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 1508,
-        "y": 3367
+        "x": 1457,
+        "y": 3339
       },
-      "width": 36,
+      "width": 20,
       "height": 388,
       "opacity": 1,
       "strokeDash": 0,
@@ -2265,17 +2265,17 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 5
     },
     {
       "id": "finally.sequence.itemOutcome.a.b.c",
       "type": "rectangle",
       "pos": {
-        "x": 1504,
-        "y": 3383
+        "x": 1453,
+        "y": 3355
       },
-      "width": 44,
+      "width": 28,
       "height": 356,
       "opacity": 1,
       "strokeDash": 0,
@@ -2303,17 +2303,17 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 6
     },
     {
       "id": "finally.sequence.itemOutcome.a.b.c.d",
       "type": "rectangle",
       "pos": {
-        "x": 1500,
-        "y": 3399
+        "x": 1449,
+        "y": 3371
       },
-      "width": 52,
+      "width": 36,
       "height": 324,
       "opacity": 1,
       "strokeDash": 0,
@@ -2341,17 +2341,17 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 7
     },
     {
       "id": "finally.sequence.itemOutcome.a.b.c.d.e",
       "type": "rectangle",
       "pos": {
-        "x": 1496,
-        "y": 3415
+        "x": 1445,
+        "y": 3387
       },
-      "width": 60,
+      "width": 44,
       "height": 292,
       "opacity": 1,
       "strokeDash": 0,
@@ -2379,7 +2379,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 8
     },
     {
@@ -2387,9 +2387,9 @@
       "type": "rectangle",
       "pos": {
         "x": 512,
-        "y": 3545
+        "y": 3517
       },
-      "width": 28,
+      "width": 12,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -2417,17 +2417,17 @@
       "underline": false,
       "labelWidth": 31,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     },
     {
       "id": "finally.sequence.itemResponse.c",
       "type": "rectangle",
       "pos": {
-        "x": 1762,
-        "y": 3805
+        "x": 1730,
+        "y": 3777
       },
-      "width": 28,
+      "width": 12,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -2455,7 +2455,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 4
     }
   ],
@@ -2486,18 +2486,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1767,
-          "y": 670
+          "x": 1732,
+          "y": 656
         },
         {
-          "x": 1997,
-          "y": 670
+          "x": 1965,
+          "y": 656
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "a_sequence.(scorer.t <- itemResponse.t)[0]",
@@ -2525,18 +2525,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1767,
-          "y": 800
+          "x": 1732,
+          "y": 786
         },
         {
-          "x": 1997,
-          "y": 800
+          "x": 1965,
+          "y": 786
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "a_sequence.(scorer.t -> item.t1)[0]",
@@ -2564,18 +2564,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1767,
-          "y": 930
+          "x": 1732,
+          "y": 916
         },
         {
-          "x": 2247,
-          "y": 930
+          "x": 2210,
+          "y": 916
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "a_sequence.(scorer.t <- item.t1)[0]",
@@ -2603,18 +2603,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1767,
-          "y": 1060
+          "x": 1732,
+          "y": 1046
         },
         {
-          "x": 2247,
-          "y": 1060
+          "x": 2210,
+          "y": 1046
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "a_sequence.(scorer.t -> essayRubric.t)[0]",
@@ -2642,18 +2642,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1767,
-          "y": 1190
+          "x": 1732,
+          "y": 1176
         },
         {
-          "x": 2497,
-          "y": 1190
+          "x": 2448,
+          "y": 1176
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "a_sequence.(itemResponse -> essayRubric.t.c)[0]",
@@ -2681,18 +2681,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2007,
-          "y": 1320
+          "x": 1971,
+          "y": 1306
         },
         {
-          "x": 2493,
-          "y": 1320
+          "x": 2444,
+          "y": 1306
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "a_sequence.(essayRubric.t.c -> concept.t)[0]",
@@ -2720,18 +2720,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2521,
-          "y": 1450
+          "x": 2464,
+          "y": 1436
         },
         {
-          "x": 2747,
-          "y": 1450
+          "x": 2691,
+          "y": 1436
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "a_sequence.(scorer <- essayRubric.t)[0]",
@@ -2759,18 +2759,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1757,
-          "y": 1580
+          "x": 1726,
+          "y": 1566
         },
         {
-          "x": 2497,
-          "y": 1580
+          "x": 2448,
+          "y": 1566
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "a_sequence.(scorer.t <-> itemOutcome.t1)[0]",
@@ -2798,18 +2798,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1767,
-          "y": 1710
+          "x": 1732,
+          "y": 1696
         },
         {
-          "x": 2997.5,
-          "y": 1710
+          "x": 2939.5,
+          "y": 1696
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "a_sequence.(scorer.t <-> item.t2)[0]",
@@ -2837,18 +2837,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1767,
-          "y": 1840
+          "x": 1732,
+          "y": 1826
         },
         {
-          "x": 2247,
-          "y": 1840
+          "x": 2210,
+          "y": 1826
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "a_sequence.(scorer.t -> item.t3)[0]",
@@ -2876,18 +2876,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1767,
-          "y": 1970
+          "x": 1732,
+          "y": 1956
         },
         {
-          "x": 2247,
-          "y": 1970
+          "x": 2210,
+          "y": 1956
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "a_sequence.(scorer.t -- itemOutcome.t2)[0]",
@@ -2915,18 +2915,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1767,
-          "y": 2100
+          "x": 1732,
+          "y": 2086
         },
         {
-          "x": 2997.5,
-          "y": 2100
+          "x": 2939.5,
+          "y": 2086
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "a_sequence.(scorer.t -- itemOutcome.t3)[0]",
@@ -2954,18 +2954,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1767,
-          "y": 2230
+          "x": 1732,
+          "y": 2216
         },
         {
-          "x": 2997.5,
-          "y": 2230
+          "x": 2939.5,
+          "y": 2216
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "another.sequence.(scorer.t -> itemResponse.t)[0]",
@@ -2993,18 +2993,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 139,
-          "y": 668
+          "x": 131,
+          "y": 654
         },
         {
-          "x": 361,
-          "y": 668
+          "x": 364,
+          "y": 654
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "another.sequence.(scorer.t <- itemResponse.t)[0]",
@@ -3032,18 +3032,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 139,
-          "y": 798
+          "x": 131,
+          "y": 784
         },
         {
-          "x": 361,
-          "y": 798
+          "x": 364,
+          "y": 784
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "another.sequence.(scorer.t -> item.t1)[0]",
@@ -3071,18 +3071,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 139,
-          "y": 928
+          "x": 131,
+          "y": 914
         },
         {
-          "x": 611,
-          "y": 928
+          "x": 609,
+          "y": 914
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "another.sequence.(scorer.t <- item.t1)[0]",
@@ -3110,18 +3110,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 139,
-          "y": 1058
+          "x": 131,
+          "y": 1044
         },
         {
-          "x": 611,
-          "y": 1058
+          "x": 609,
+          "y": 1044
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "another.sequence.(scorer.t -> essayRubric.t)[0]",
@@ -3149,18 +3149,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 139,
-          "y": 1188
+          "x": 131,
+          "y": 1174
         },
         {
-          "x": 861,
-          "y": 1188
+          "x": 847,
+          "y": 1174
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "another.sequence.(itemResponse -> essayRubric.t.c)[0]",
@@ -3188,18 +3188,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 375,
-          "y": 1318
+          "x": 370,
+          "y": 1304
         },
         {
-          "x": 857,
-          "y": 1318
+          "x": 843,
+          "y": 1304
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "another.sequence.(essayRubric.t.c -> concept.t)[0]",
@@ -3227,18 +3227,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 893,
-          "y": 1448
+          "x": 863,
+          "y": 1434
         },
         {
-          "x": 1111,
-          "y": 1448
+          "x": 1090,
+          "y": 1434
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "another.sequence.(scorer <- essayRubric.t)[0]",
@@ -3267,17 +3267,17 @@
       "route": [
         {
           "x": 125,
-          "y": 1578
+          "y": 1564
         },
         {
-          "x": 861,
-          "y": 1578
+          "x": 847,
+          "y": 1564
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "another.sequence.(scorer.t -> itemOutcome.t1)[0]",
@@ -3305,18 +3305,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 139,
-          "y": 1708
+          "x": 131,
+          "y": 1694
         },
         {
-          "x": 1361.5,
-          "y": 1708
+          "x": 1338.5,
+          "y": 1694
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "another.sequence.(scorer.t <-> item.t2)[0]",
@@ -3344,18 +3344,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 139,
-          "y": 1838
+          "x": 131,
+          "y": 1824
         },
         {
-          "x": 611,
-          "y": 1838
+          "x": 609,
+          "y": 1824
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "another.sequence.(scorer.t -> item.t3)[0]",
@@ -3383,18 +3383,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 139,
-          "y": 1968
+          "x": 131,
+          "y": 1954
         },
         {
-          "x": 611,
-          "y": 1968
+          "x": 609,
+          "y": 1954
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "another.sequence.(scorer.t -> itemOutcome.t2)[0]",
@@ -3422,18 +3422,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 139,
-          "y": 2098
+          "x": 131,
+          "y": 2084
         },
         {
-          "x": 1361.5,
-          "y": 2098
+          "x": 1338.5,
+          "y": 2084
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "another.sequence.(scorer.t -> itemOutcome.t3)[0]",
@@ -3461,18 +3461,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 139,
-          "y": 2228
+          "x": 131,
+          "y": 2214
         },
         {
-          "x": 1361.5,
-          "y": 2228
+          "x": 1338.5,
+          "y": 2214
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(a_shape -> a_sequence)[0]",
@@ -3500,19 +3500,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1645,
+          "x": 1614,
           "y": 95
         },
         {
-          "x": 2244.4,
+          "x": 2200.8,
           "y": 190.2
         },
         {
-          "x": 2394.25,
+          "x": 2347.5,
           "y": 274
         },
         {
-          "x": 2394.25,
+          "x": 2347.5,
           "y": 314
         }
       ],
@@ -3548,19 +3548,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1483,
-          "y": 95
+          "x": 1452,
+          "y": 96
         },
         {
-          "x": 906.1999999999999,
-          "y": 190.2
+          "x": 887.6,
+          "y": 190.4
         },
         {
-          "x": 762,
+          "x": 746.5,
           "y": 274.5
         },
         {
-          "x": 762,
+          "x": 746.5,
           "y": 316.5
         }
       ],
@@ -3596,32 +3596,32 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2394.25,
-          "y": 2360
+          "x": 2347.5,
+          "y": 2346
         },
         {
-          "x": 2394.25,
-          "y": 2400
+          "x": 2347.5,
+          "y": 2386
         },
         {
-          "x": 2394.25,
-          "y": 2420
+          "x": 2347.5,
+          "y": 2406
         },
         {
-          "x": 2394.25,
-          "y": 2435
+          "x": 2347.5,
+          "y": 2421
         },
         {
-          "x": 2394.25,
-          "y": 2450
+          "x": 2347.5,
+          "y": 2436
         },
         {
-          "x": 2394.25,
-          "y": 2646.5
+          "x": 2347.5,
+          "y": 2631.1
         },
         {
-          "x": 2394.25,
-          "y": 3192.5
+          "x": 2347.5,
+          "y": 3171.5
         }
       ],
       "isCurve": true,
@@ -3656,32 +3656,32 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 762,
-          "y": 2358.5
+          "x": 746.5,
+          "y": 2344.5
         },
         {
-          "x": 762,
-          "y": 2399.7
+          "x": 746.5,
+          "y": 2385.7
         },
         {
-          "x": 762,
-          "y": 2420
+          "x": 746.5,
+          "y": 2406
         },
         {
-          "x": 762,
-          "y": 2435
+          "x": 746.5,
+          "y": 2421
         },
         {
-          "x": 762,
-          "y": 2450
+          "x": 746.5,
+          "y": 2436
         },
         {
-          "x": 767.4,
-          "y": 2520
+          "x": 751.9,
+          "y": 2506
         },
         {
-          "x": 789,
-          "y": 2560
+          "x": 773.5,
+          "y": 2546
         }
       ],
       "isCurve": true,
@@ -3716,56 +3716,56 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1564,
+          "x": 1533,
           "y": 164
         },
         {
-          "x": 1564,
+          "x": 1533,
           "y": 204
         },
         {
-          "x": 1564,
+          "x": 1533,
           "y": 224
         },
         {
-          "x": 1564,
+          "x": 1533,
           "y": 239
         },
         {
-          "x": 1564,
+          "x": 1533,
           "y": 254
         },
         {
-          "x": 1564,
-          "y": 478.6
+          "x": 1533,
+          "y": 477.20000000000005
         },
         {
-          "x": 1564,
-          "y": 800.5
+          "x": 1533,
+          "y": 797
         },
         {
-          "x": 1564,
-          "y": 1122.4
+          "x": 1533,
+          "y": 1116.8000000000002
         },
         {
-          "x": 1564,
-          "y": 1551.6
+          "x": 1533,
+          "y": 1543.2
         },
         {
-          "x": 1564,
-          "y": 1873.5
+          "x": 1533,
+          "y": 1863
         },
         {
-          "x": 1564,
-          "y": 2195.4
+          "x": 1533,
+          "y": 2182.8
         },
         {
-          "x": 1564,
-          "y": 2470
+          "x": 1533,
+          "y": 2456
         },
         {
-          "x": 1564,
-          "y": 2510
+          "x": 1533,
+          "y": 2496
         }
       ],
       "isCurve": true,
@@ -3800,18 +3800,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1762,
-          "y": 2911
+          "x": 1730,
+          "y": 2883
         },
         {
-          "x": 1294,
-          "y": 2911
+          "x": 1234,
+          "y": 2883
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "finally.sequence.(item.a.b -> essayRubric.a.b.c)[0]",
@@ -3839,18 +3839,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1258,
-          "y": 3041
+          "x": 1214,
+          "y": 3013
         },
         {
-          "x": 1048,
-          "y": 3041
+          "x": 1000,
+          "y": 3013
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "finally.sequence.(essayRubric.a.b.c -> concept.a.b.c.d)[0]",
@@ -3878,18 +3878,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1004,
-          "y": 3171
+          "x": 972,
+          "y": 3143
         },
         {
-          "x": 802,
-          "y": 3171
+          "x": 761,
+          "y": 3143
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "finally.sequence.(item.a -> essayRubric.a.b)[0]",
@@ -3917,18 +3917,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1262,
-          "y": 3301
+          "x": 1218,
+          "y": 3273
         },
         {
-          "x": 1044,
-          "y": 3301
+          "x": 996,
+          "y": 3273
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "finally.sequence.(concept.a.b.c.d -> itemOutcome.a.b.c.d.e)[0]",
@@ -3956,18 +3956,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 802,
-          "y": 3431
+          "x": 761,
+          "y": 3403
         },
         {
-          "x": 1496.5,
-          "y": 3431
+          "x": 1445.5,
+          "y": 3403
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "finally.sequence.(scorer.abc -> item.a)[0]",
@@ -3995,18 +3995,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 540,
-          "y": 3561
+          "x": 524,
+          "y": 3533
         },
         {
-          "x": 1262,
-          "y": 3561
+          "x": 1218,
+          "y": 3533
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "finally.sequence.(itemOutcome.a.b.c.d.e -> scorer)[0]",
@@ -4034,18 +4034,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1496.5,
-          "y": 3691
+          "x": 1445.5,
+          "y": 3663
         },
         {
-          "x": 526,
-          "y": 3691
+          "x": 518,
+          "y": 3663
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "finally.sequence.(scorer -> itemResponse.c)[0]",
@@ -4073,18 +4073,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 526,
-          "y": 3821
+          "x": 518,
+          "y": 3793
         },
         {
-          "x": 1762,
-          "y": 3821
+          "x": 1730,
+          "y": 3793
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 4
     },
     {
       "id": "(a_sequence.scorer -- )[0]",
@@ -4112,18 +4112,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1757,
-          "y": 540
+          "x": 1726,
+          "y": 526
         },
         {
-          "x": 1757,
-          "y": 2360
+          "x": 1726,
+          "y": 2346
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(a_sequence.itemResponse -- )[0]",
@@ -4151,18 +4151,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2007,
-          "y": 540
+          "x": 1971,
+          "y": 526
         },
         {
-          "x": 2007,
-          "y": 2360
+          "x": 1971,
+          "y": 2346
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(a_sequence.item -- )[0]",
@@ -4190,18 +4190,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2257,
-          "y": 540
+          "x": 2216,
+          "y": 526
         },
         {
-          "x": 2257,
-          "y": 2360
+          "x": 2216,
+          "y": 2346
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(a_sequence.essayRubric -- )[0]",
@@ -4229,18 +4229,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2507,
-          "y": 540
+          "x": 2454,
+          "y": 526
         },
         {
-          "x": 2507,
-          "y": 2360
+          "x": 2454,
+          "y": 2346
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(a_sequence.concept -- )[0]",
@@ -4268,18 +4268,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2757,
-          "y": 540
+          "x": 2697,
+          "y": 526
         },
         {
-          "x": 2757,
-          "y": 2360
+          "x": 2697,
+          "y": 2346
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(a_sequence.itemOutcome -- )[0]",
@@ -4307,18 +4307,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 3007.5,
-          "y": 540
+          "x": 2945.5,
+          "y": 526
         },
         {
-          "x": 3007.5,
-          "y": 2360
+          "x": 2945.5,
+          "y": 2346
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(another.sequence.scorer -- )[0]",
@@ -4347,17 +4347,17 @@
       "route": [
         {
           "x": 125,
-          "y": 538
+          "y": 524
         },
         {
           "x": 125,
-          "y": 2358
+          "y": 2344
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(another.sequence.itemResponse -- )[0]",
@@ -4385,18 +4385,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 375,
-          "y": 538
+          "x": 370,
+          "y": 524
         },
         {
-          "x": 375,
-          "y": 2358
+          "x": 370,
+          "y": 2344
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(another.sequence.item -- )[0]",
@@ -4424,18 +4424,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 625,
-          "y": 538
+          "x": 615,
+          "y": 524
         },
         {
-          "x": 625,
-          "y": 2358
+          "x": 615,
+          "y": 2344
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(another.sequence.essayRubric -- )[0]",
@@ -4463,18 +4463,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 875,
-          "y": 538
+          "x": 853,
+          "y": 524
         },
         {
-          "x": 875,
-          "y": 2358
+          "x": 853,
+          "y": 2344
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(another.sequence.concept -- )[0]",
@@ -4502,18 +4502,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1125,
-          "y": 538
+          "x": 1096,
+          "y": 524
         },
         {
-          "x": 1125,
-          "y": 2358
+          "x": 1096,
+          "y": 2344
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(another.sequence.itemOutcome -- )[0]",
@@ -4541,18 +4541,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1375.5,
-          "y": 538
+          "x": 1344.5,
+          "y": 524
         },
         {
-          "x": 1375.5,
-          "y": 2358
+          "x": 1344.5,
+          "y": 2344
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(finally.sequence.scorer -- )[0]",
@@ -4580,18 +4580,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 526,
-          "y": 2781
+          "x": 518,
+          "y": 2753
         },
         {
-          "x": 526,
-          "y": 3951
+          "x": 518,
+          "y": 3923
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(finally.sequence.concept -- )[0]",
@@ -4619,18 +4619,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 776,
-          "y": 2781
+          "x": 743,
+          "y": 2753
         },
         {
-          "x": 776,
-          "y": 3951
+          "x": 743,
+          "y": 3923
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(finally.sequence.essayRubric -- )[0]",
@@ -4658,18 +4658,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1026,
-          "y": 2781
+          "x": 986,
+          "y": 2753
         },
         {
-          "x": 1026,
-          "y": 3951
+          "x": 986,
+          "y": 3923
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(finally.sequence.item -- )[0]",
@@ -4697,18 +4697,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1276,
-          "y": 2781
+          "x": 1224,
+          "y": 2753
         },
         {
-          "x": 1276,
-          "y": 3951
+          "x": 1224,
+          "y": 3923
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(finally.sequence.itemOutcome -- )[0]",
@@ -4736,18 +4736,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1526.5,
-          "y": 2781
+          "x": 1467.5,
+          "y": 2753
         },
         {
-          "x": 1526.5,
-          "y": 3951
+          "x": 1467.5,
+          "y": 3923
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     },
     {
       "id": "(finally.sequence.itemResponse -- )[0]",
@@ -4775,18 +4775,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1776,
-          "y": 2781
+          "x": 1736,
+          "y": 2753
         },
         {
-          "x": 1776,
-          "y": 3951
+          "x": 1736,
+          "y": 3923
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 2
     }
   ]
 }

@@ -64,61 +64,12 @@ func getEdgeEarliestLineNum(e *d2graph.Edge) int {
 	return min
 }
 
-func hasEdge(o *d2graph.Object) bool {
-	for _, ref := range o.References {
-		if ref.MapKey != nil && len(ref.MapKey.Edges) > 0 {
-			return true
-		}
-	}
-
-	return false
-}
-
-func containsAnyMessage(o *d2graph.Object, messages []*d2graph.Edge) bool {
-	for _, m := range messages {
-		if containsMessage(o, m) {
-			return true
-		}
-	}
-	return false
-}
-
-func containsMessage(o *d2graph.Object, m *d2graph.Edge) bool {
-	for _, ref := range m.References {
-		curr := ref.ScopeObj
-		for curr != nil {
-			if curr == o {
-				return true
-			}
-			curr = curr.Parent
-		}
-	}
-	return false
-}
-
 func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *sequenceDiagram {
 	var actors []*d2graph.Object
 	var groups []*d2graph.Object
 
 	for _, obj := range objects {
-		messageRecipient := false
-		for _, m := range messages {
-			if m.Src == obj || m.Dst == obj {
-				messageRecipient = true
-				break
-			}
-		}
-		hasNote := false
-		for _, ch := range obj.ChildrenArray {
-			// if the child contains a message, it's a span, not a note
-			if !containsAnyMessage(ch, messages) {
-				hasNote = true
-				break
-			}
-		}
-		if messageRecipient || hasNote {
-			actors = append(actors, obj)
-		} else {
+		if obj.IsSequenceDiagramGroup() {
 			queue := []*d2graph.Object{obj}
 			// Groups may have more nested groups
 			for len(queue) > 0 {
@@ -129,6 +80,8 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 					queue = append(queue, c)
 				}
 			}
+		} else {
+			actors = append(actors, obj)
 		}
 	}
 
@@ -153,9 +106,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 		sd.objectRank[actor] = rank
 
 		if actor.Width < MIN_ACTOR_WIDTH {
-			aspectRatio := actor.Height / actor.Width
 			actor.Width = MIN_ACTOR_WIDTH
-			actor.Height = math.Round(aspectRatio * actor.Width)
 		}
 		sd.maxActorHeight = math.Max(sd.maxActorHeight, actor.Height)
 
@@ -166,22 +117,21 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 			queue = queue[1:]
 
 			// spans are children of actors that have edges
-			// notes are children of actors with no edges and no children
 			// edge groups are children of actors with no edges and children edges
-			if hasEdge(child) && !containsAnyMessage(child, sd.messages) {
-				// spans have no labels
-				// TODO why not? Spans should be able to
-				child.Attributes.Label = d2graph.Scalar{Value: ""}
-				child.Attributes.Shape = d2graph.Scalar{Value: shape.SQUARE_TYPE}
-				sd.spans = append(sd.spans, child)
-				sd.objectRank[child] = rank
-			} else {
+			if child.IsSequenceDiagramNote() {
 				sd.verticalIndices[child.AbsID()] = getObjEarliestLineNum(child)
 				// TODO change to page type when it doesn't look deformed
 				child.Attributes.Shape = d2graph.Scalar{Value: shape.SQUARE_TYPE}
 				sd.notes = append(sd.notes, child)
 				sd.objectRank[child] = rank
 				child.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			} else {
+				// spans have no labels
+				// TODO why not? Spans should be able to
+				child.Attributes.Label = d2graph.Scalar{Value: ""}
+				child.Attributes.Shape = d2graph.Scalar{Value: shape.SQUARE_TYPE}
+				sd.spans = append(sd.spans, child)
+				sd.objectRank[child] = rank
 			}
 
 			queue = append(queue, child.ChildrenArray...)
@@ -240,7 +190,11 @@ func (sd *sequenceDiagram) layout() error {
 }
 
 func (sd *sequenceDiagram) placeGroups() {
+	sort.SliceStable(sd.groups, func(i, j int) bool {
+		return sd.groups[i].Level() > sd.groups[j].Level()
+	})
 	for _, group := range sd.groups {
+		group.ZIndex = GROUP_Z_INDEX
 		sd.placeGroup(group)
 	}
 }
@@ -252,12 +206,12 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 	maxY := math.Inf(-1)
 
 	for _, m := range sd.messages {
-		if containsMessage(group, m) {
+		if m.ContainedBy(group) {
 			for _, p := range m.Route {
-				minX = math.Min(minX, p.X)
-				minY = math.Min(minY, p.Y)
-				maxX = math.Max(maxX, p.X)
-				maxY = math.Max(maxY, p.Y)
+				minX = math.Min(minX, p.X-HORIZONTAL_PAD)
+				minY = math.Min(minY, p.Y-MIN_MESSAGE_DISTANCE/2.)
+				maxX = math.Max(maxX, p.X+HORIZONTAL_PAD)
+				maxY = math.Max(maxY, p.Y+MIN_MESSAGE_DISTANCE/2.)
 			}
 		}
 	}
@@ -278,20 +232,32 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 			}
 		}
 		if inGroup {
-			minY = math.Min(minY, n.TopLeft.Y)
-			maxY = math.Max(maxY, n.TopLeft.Y+n.Height)
-			minX = math.Min(minX, n.TopLeft.X)
-			maxX = math.Max(maxX, n.TopLeft.X+n.Width)
+			minX = math.Min(minX, n.TopLeft.X-HORIZONTAL_PAD)
+			minY = math.Min(minY, n.TopLeft.Y-MIN_MESSAGE_DISTANCE/2.)
+			maxY = math.Max(maxY, n.TopLeft.Y+n.Height+HORIZONTAL_PAD)
+			maxX = math.Max(maxX, n.TopLeft.X+n.Width+MIN_MESSAGE_DISTANCE/2.)
+		}
+	}
+
+	for _, ch := range group.ChildrenArray {
+		for _, g := range sd.groups {
+			if ch == g {
+				minX = math.Min(minX, ch.TopLeft.X-GROUP_CONTAINER_PADDING)
+				minY = math.Min(minY, ch.TopLeft.Y-GROUP_CONTAINER_PADDING)
+				maxX = math.Max(maxX, ch.TopLeft.X+ch.Width+GROUP_CONTAINER_PADDING)
+				maxY = math.Max(maxY, ch.TopLeft.Y+ch.Height+GROUP_CONTAINER_PADDING)
+				break
+			}
 		}
 	}
 
 	group.Box = geo.NewBox(
 		geo.NewPoint(
-			minX-HORIZONTAL_PAD,
-			minY-(MIN_MESSAGE_DISTANCE/2.),
+			minX,
+			minY,
 		),
-		maxX-minX+HORIZONTAL_PAD*2,
-		maxY-minY+MIN_MESSAGE_DISTANCE,
+		maxX-minX,
+		maxY-minY,
 	)
 }
 
@@ -360,6 +326,7 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 			},
 			DstArrow: false,
 			Route:    []*geo.Point{actorBottom, actorLifelineEnd},
+			ZIndex:   LIFELINE_Z_INDEX,
 		})
 	}
 }
@@ -385,7 +352,7 @@ func (sd *sequenceDiagram) placeNotes() {
 
 		x := rankToX[sd.objectRank[note]] - (note.Width / 2.)
 		note.Box.TopLeft = geo.NewPoint(x, y)
-		note.ZIndex = 1
+		note.ZIndex = NOTE_Z_INDEX
 	}
 }
 
@@ -457,11 +424,11 @@ func (sd *sequenceDiagram) placeSpans() {
 		}
 
 		height := math.Max(maxY-minY, MIN_SPAN_HEIGHT)
-		// -2 because the actors count as level 1 making the first level span getting 2*SPAN_DEPTH_GROW_FACTOR
-		width := SPAN_BASE_WIDTH + (float64(span.Level()-2) * SPAN_DEPTH_GROWTH_FACTOR)
+		// -1 because the actors count as 1 level
+		width := SPAN_BASE_WIDTH + (float64(span.Level()-sd.root.Level()-2) * SPAN_DEPTH_GROWTH_FACTOR)
 		x := rankToX[sd.objectRank[span]] - (width / 2.)
 		span.Box = geo.NewBox(geo.NewPoint(x, minY), width, height)
-		span.ZIndex = 1
+		span.ZIndex = SPAN_Z_INDEX
 	}
 }
 
@@ -470,6 +437,7 @@ func (sd *sequenceDiagram) placeSpans() {
 func (sd *sequenceDiagram) routeMessages() error {
 	messageOffset := sd.maxActorHeight + sd.yStep
 	for _, message := range sd.messages {
+		message.ZIndex = MESSAGE_Z_INDEX
 		noteOffset := 0.
 		for _, note := range sd.notes {
 			if sd.verticalIndices[note.AbsID()] < sd.verticalIndices[message.AbsID()] {
@@ -478,7 +446,6 @@ func (sd *sequenceDiagram) routeMessages() error {
 		}
 		startY := messageOffset + noteOffset
 
-		message.ZIndex = 2
 		var startX, endX float64
 		if startCenter := getCenter(message.Src); startCenter != nil {
 			startX = startCenter.X
@@ -495,7 +462,7 @@ func (sd *sequenceDiagram) routeMessages() error {
 		isSelfMessage := message.Src == message.Dst
 
 		if isSelfMessage || isToDescendant || isFromDescendant {
-			midX := startX + MIN_MESSAGE_DISTANCE
+			midX := startX + SELF_MESSAGE_HORIZONTAL_TRAVEL
 			endY := startY + MIN_MESSAGE_DISTANCE
 			message.Route = []*geo.Point{
 				geo.NewPoint(startX, startY),
