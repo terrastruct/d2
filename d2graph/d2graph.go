@@ -330,13 +330,21 @@ func (l ContainerLevel) LabelSize() int {
 }
 
 func (obj *Object) GetFill(theme *d2themes.Theme) string {
+	level := int(obj.Level())
 	if obj.Parent.IsSequenceDiagram() {
 		return theme.Colors.B5
 	} else if obj.IsSequenceDiagramNote() {
 		return theme.Colors.Neutrals.N7
+	} else if obj.IsSequenceDiagramGroup() {
+		sd := obj.outerSequenceDiagram()
+		// Alternate
+		if (level-int(sd.Level()))%2 == 0 {
+			return theme.Colors.Neutrals.N7
+		} else {
+			return theme.Colors.Neutrals.N6
+		}
 	}
 
-	level := int(obj.Level())
 	shape := obj.Attributes.Shape.Value
 
 	if shape == "" || strings.EqualFold(shape, d2target.ShapeSquare) || strings.EqualFold(shape, d2target.ShapeCircle) || strings.EqualFold(shape, d2target.ShapeOval) || strings.EqualFold(shape, d2target.ShapeRectangle) {

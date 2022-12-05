@@ -18,15 +18,18 @@ func (obj *Object) outerSequenceDiagram() *Object {
 
 // groups are objects in sequence diagrams that have no messages connected
 // and does not have a note as a child (a note can appear within a group, but it's a child of an actor)
-func (obj *Object) IsSequenceDiagramGroup(edges []*Edge) bool {
-	for _, e := range edges {
+func (obj *Object) IsSequenceDiagramGroup() bool {
+	if obj.outerSequenceDiagram() == nil {
+		return false
+	}
+	for _, e := range obj.Graph.Edges {
 		if e.Src == obj || e.Dst == obj {
 			return false
 		}
 	}
 	for _, ch := range obj.ChildrenArray {
 		// if the child contains a message, it's a span, not a note
-		if !ch.ContainsAnyEdge(edges) {
+		if !ch.ContainsAnyEdge(obj.Graph.Edges) {
 			return false
 		}
 	}
@@ -35,8 +38,7 @@ func (obj *Object) IsSequenceDiagramGroup(edges []*Edge) bool {
 
 // notes are descendant of actors with no edges and no children
 func (obj *Object) IsSequenceDiagramNote() bool {
-	sd := obj.outerSequenceDiagram()
-	if sd == nil {
+	if obj.outerSequenceDiagram() == nil {
 		return false
 	}
 	return !obj.hasEdgeRef() && !obj.ContainsAnyEdge(obj.Graph.Edges) && len(obj.ChildrenArray) == 0

@@ -65,7 +65,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 	var groups []*d2graph.Object
 
 	for _, obj := range objects {
-		if obj.IsSequenceDiagramGroup(messages) {
+		if obj.IsSequenceDiagramGroup() {
 			queue := []*d2graph.Object{obj}
 			// Groups may have more nested groups
 			for len(queue) > 0 {
@@ -175,7 +175,6 @@ func (sd *sequenceDiagram) layout() error {
 func (sd *sequenceDiagram) placeGroups() {
 	for _, group := range sd.groups {
 		group.ZIndex = GROUP_Z_INDEX
-		// group.Attributes.Style.Opacity = &d2graph.Scalar{Value: "0.5"}
 		sd.placeGroup(group)
 	}
 }
