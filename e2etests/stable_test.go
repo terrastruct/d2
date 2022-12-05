@@ -1451,7 +1451,8 @@ c: "just an actor"
   d2exporter.export -> CLI: resulting SVG
 }
 `,
-		}, {
+		},
+		{
 			name: "sequence_diagram_actor_distance",
 			script: `shape: sequence_diagram
 a: "an actor with a really long label that will break everything"

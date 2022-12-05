@@ -142,6 +142,9 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 			nextActorHW := actors[rank+1].Width / 2.
 			sd.actorXStep[rank] = math.Max(actorHW+nextActorHW+HORIZONTAL_PAD, MIN_ACTOR_DISTANCE)
 			sd.actorXStep[rank] = math.Max(maxNoteWidth/2.+HORIZONTAL_PAD, sd.actorXStep[rank])
+			if rank > 0 {
+				sd.actorXStep[rank-1] = math.Max(maxNoteWidth/2.+HORIZONTAL_PAD, sd.actorXStep[rank-1])
+			}
 		}
 	}
 
@@ -538,6 +541,8 @@ func (sd *sequenceDiagram) getHeight() float64 {
 func (sd *sequenceDiagram) shift(tl *geo.Point) {
 	allObjects := append([]*d2graph.Object{}, sd.actors...)
 	allObjects = append(allObjects, sd.spans...)
+	allObjects = append(allObjects, sd.groups...)
+	allObjects = append(allObjects, sd.notes...)
 	for _, obj := range allObjects {
 		obj.TopLeft.X += tl.X
 		obj.TopLeft.Y += tl.Y
