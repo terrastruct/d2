@@ -637,7 +637,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) error {
 			targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
 
 	// TODO should standardize "" to rectangle
-	case d2target.ShapeRectangle, "":
+	case d2target.ShapeRectangle, d2target.ShapeSequenceDiagram, "":
 		if targetShape.ThreeDee {
 			fmt.Fprint(writer, render3dRect(targetShape))
 		} else {

@@ -5,8 +5,8 @@
       "id": "scorer",
       "type": "",
       "pos": {
-        "x": 0,
-        "y": 50
+        "x": 24,
+        "y": 74
       },
       "width": 150,
       "height": 126,
@@ -45,8 +45,8 @@
       "id": "scorer.abc",
       "type": "rectangle",
       "pos": {
-        "x": 69,
-        "y": 1070
+        "x": 93,
+        "y": 1094
       },
       "width": 12,
       "height": 80,
@@ -84,8 +84,8 @@
       "id": "itemResponse",
       "type": "",
       "pos": {
-        "x": 225,
-        "y": 50
+        "x": 249,
+        "y": 74
       },
       "width": 200,
       "height": 126,
@@ -124,8 +124,8 @@
       "id": "itemResponse.a",
       "type": "rectangle",
       "pos": {
-        "x": 319,
-        "y": 290
+        "x": 343,
+        "y": 314
       },
       "width": 12,
       "height": 162,
@@ -133,7 +133,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#E3E9FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -163,8 +163,8 @@
       "id": "item",
       "type": "",
       "pos": {
-        "x": 500,
-        "y": 50
+        "x": 524,
+        "y": 74
       },
       "width": 150,
       "height": 126,
@@ -203,8 +203,8 @@
       "id": "item.a",
       "type": "rectangle",
       "pos": {
-        "x": 569,
-        "y": 404
+        "x": 593,
+        "y": 428
       },
       "width": 12,
       "height": 698,
@@ -212,7 +212,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#E3E9FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -242,8 +242,8 @@
       "id": "item.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 565,
-        "y": 420
+        "x": 589,
+        "y": 444
       },
       "width": 20,
       "height": 162,
@@ -251,7 +251,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -281,8 +281,8 @@
       "id": "essayRubric",
       "type": "",
       "pos": {
-        "x": 732,
-        "y": 50
+        "x": 756,
+        "y": 74
       },
       "width": 186,
       "height": 126,
@@ -321,8 +321,8 @@
       "id": "essayRubric.a",
       "type": "rectangle",
       "pos": {
-        "x": 819,
-        "y": 518
+        "x": 843,
+        "y": 542
       },
       "width": 12,
       "height": 340,
@@ -330,7 +330,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#E3E9FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -360,8 +360,8 @@
       "id": "essayRubric.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 815,
-        "y": 534
+        "x": 839,
+        "y": 558
       },
       "width": 20,
       "height": 308,
@@ -369,7 +369,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -399,8 +399,8 @@
       "id": "essayRubric.a.b.c",
       "type": "rectangle",
       "pos": {
-        "x": 811,
-        "y": 550
+        "x": 835,
+        "y": 574
       },
       "width": 28,
       "height": 162,
@@ -408,7 +408,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
+      "fill": "#EEF1F8",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -438,8 +438,8 @@
       "id": "concept",
       "type": "",
       "pos": {
-        "x": 995,
-        "y": 50
+        "x": 1019,
+        "y": 74
       },
       "width": 160,
       "height": 126,
@@ -478,8 +478,8 @@
       "id": "concept.a",
       "type": "rectangle",
       "pos": {
-        "x": 1069,
-        "y": 632
+        "x": 1093,
+        "y": 656
       },
       "width": 12,
       "height": 388,
@@ -487,7 +487,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#E3E9FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -517,8 +517,8 @@
       "id": "concept.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 1065,
-        "y": 648
+        "x": 1089,
+        "y": 672
       },
       "width": 20,
       "height": 356,
@@ -526,7 +526,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -556,8 +556,8 @@
       "id": "concept.a.b.c",
       "type": "rectangle",
       "pos": {
-        "x": 1061,
-        "y": 664
+        "x": 1085,
+        "y": 688
       },
       "width": 28,
       "height": 324,
@@ -565,7 +565,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
+      "fill": "#EEF1F8",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -595,8 +595,8 @@
       "id": "concept.a.b.c.d",
       "type": "rectangle",
       "pos": {
-        "x": 1057,
-        "y": 680
+        "x": 1081,
+        "y": 704
       },
       "width": 36,
       "height": 292,
@@ -634,8 +634,8 @@
       "id": "itemOutcome",
       "type": "",
       "pos": {
-        "x": 1227,
-        "y": 50
+        "x": 1251,
+        "y": 74
       },
       "width": 197,
       "height": 126,
@@ -674,8 +674,8 @@
       "id": "itemOutcome.a",
       "type": "rectangle",
       "pos": {
-        "x": 1319,
-        "y": 876
+        "x": 1343,
+        "y": 900
       },
       "width": 12,
       "height": 420,
@@ -683,7 +683,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#E3E9FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -713,8 +713,8 @@
       "id": "itemOutcome.a.b",
       "type": "rectangle",
       "pos": {
-        "x": 1315,
-        "y": 892
+        "x": 1339,
+        "y": 916
       },
       "width": 20,
       "height": 388,
@@ -722,7 +722,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#EDF0FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -752,8 +752,8 @@
       "id": "itemOutcome.a.b.c",
       "type": "rectangle",
       "pos": {
-        "x": 1311,
-        "y": 908
+        "x": 1335,
+        "y": 932
       },
       "width": 28,
       "height": 356,
@@ -761,7 +761,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
+      "fill": "#EEF1F8",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -791,8 +791,8 @@
       "id": "itemOutcome.a.b.c.d",
       "type": "rectangle",
       "pos": {
-        "x": 1307,
-        "y": 924
+        "x": 1331,
+        "y": 948
       },
       "width": 36,
       "height": 324,
@@ -830,8 +830,8 @@
       "id": "itemOutcome.a.b.c.d.e",
       "type": "rectangle",
       "pos": {
-        "x": 1303,
-        "y": 940
+        "x": 1327,
+        "y": 964
       },
       "width": 44,
       "height": 292,
@@ -869,8 +869,8 @@
       "id": "itemResponse.c",
       "type": "rectangle",
       "pos": {
-        "x": 319,
-        "y": 1330
+        "x": 343,
+        "y": 1354
       },
       "width": 12,
       "height": 80,
@@ -878,7 +878,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#E3E9FD",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -932,12 +932,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 75,
-          "y": 306
+          "x": 99,
+          "y": 330
         },
         {
-          "x": 319,
-          "y": 306
+          "x": 343,
+          "y": 330
         }
       ],
       "animated": false,
@@ -971,12 +971,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 331,
-          "y": 436
+          "x": 355,
+          "y": 460
         },
         {
-          "x": 565,
-          "y": 436
+          "x": 589,
+          "y": 460
         }
       ],
       "animated": false,
@@ -1010,12 +1010,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 585,
-          "y": 566
+          "x": 609,
+          "y": 590
         },
         {
-          "x": 811,
-          "y": 566
+          "x": 835,
+          "y": 590
         }
       ],
       "animated": false,
@@ -1049,12 +1049,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 839,
-          "y": 696
+          "x": 863,
+          "y": 720
         },
         {
-          "x": 1057,
-          "y": 696
+          "x": 1081,
+          "y": 720
         }
       ],
       "animated": false,
@@ -1088,12 +1088,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 581,
-          "y": 826
+          "x": 605,
+          "y": 850
         },
         {
-          "x": 815,
-          "y": 826
+          "x": 839,
+          "y": 850
         }
       ],
       "animated": false,
@@ -1127,12 +1127,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1093,
-          "y": 956
+          "x": 1117,
+          "y": 980
         },
         {
-          "x": 1303.5,
-          "y": 956
+          "x": 1327.5,
+          "y": 980
         }
       ],
       "animated": false,
@@ -1166,12 +1166,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 81,
-          "y": 1086
+          "x": 105,
+          "y": 1110
         },
         {
-          "x": 569,
-          "y": 1086
+          "x": 593,
+          "y": 1110
         }
       ],
       "animated": false,
@@ -1205,12 +1205,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1303.5,
-          "y": 1216
+          "x": 1327.5,
+          "y": 1240
         },
         {
-          "x": 75,
-          "y": 1216
+          "x": 99,
+          "y": 1240
         }
       ],
       "animated": false,
@@ -1244,12 +1244,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 75,
-          "y": 1346
+          "x": 99,
+          "y": 1370
         },
         {
-          "x": 319,
-          "y": 1346
+          "x": 343,
+          "y": 1370
         }
       ],
       "animated": false,
@@ -1283,12 +1283,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 75,
-          "y": 176
+          "x": 99,
+          "y": 200
         },
         {
-          "x": 75,
-          "y": 1476
+          "x": 99,
+          "y": 1500
         }
       ],
       "animated": false,
@@ -1322,12 +1322,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 325,
-          "y": 176
+          "x": 349,
+          "y": 200
         },
         {
-          "x": 325,
-          "y": 1476
+          "x": 349,
+          "y": 1500
         }
       ],
       "animated": false,
@@ -1361,12 +1361,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 575,
-          "y": 176
+          "x": 599,
+          "y": 200
         },
         {
-          "x": 575,
-          "y": 1476
+          "x": 599,
+          "y": 1500
         }
       ],
       "animated": false,
@@ -1400,12 +1400,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 825,
-          "y": 176
+          "x": 849,
+          "y": 200
         },
         {
-          "x": 825,
-          "y": 1476
+          "x": 849,
+          "y": 1500
         }
       ],
       "animated": false,
@@ -1439,12 +1439,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1075,
-          "y": 176
+          "x": 1099,
+          "y": 200
         },
         {
-          "x": 1075,
-          "y": 1476
+          "x": 1099,
+          "y": 1500
         }
       ],
       "animated": false,
@@ -1478,12 +1478,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1325.5,
-          "y": 176
+          "x": 1349.5,
+          "y": 200
         },
         {
-          "x": 1325.5,
-          "y": 1476
+          "x": 1349.5,
+          "y": 1500
         }
       ],
       "animated": false,

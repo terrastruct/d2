@@ -43,7 +43,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 		}
 		obj.Children = make(map[string]*d2graph.Object)
 		obj.ChildrenArray = nil
-		obj.Box = geo.NewBox(nil, sd.getWidth(), sd.getHeight())
+		obj.Box = geo.NewBox(nil, sd.getWidth()+GROUP_CONTAINER_PADDING*2, sd.getHeight()+GROUP_CONTAINER_PADDING*2)
 		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 		sequenceDiagrams[obj.AbsID()] = sd
 
@@ -141,14 +141,26 @@ func cleanup(g *d2graph.Graph, sequenceDiagrams map[string]*sequenceDiagram, obj
 		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 		sd := sequenceDiagrams[obj.AbsID()]
 
-		// shift the sequence diagrams as they are always placed at (0, 0)
-		sd.shift(obj.TopLeft)
+		// shift the sequence diagrams as they are always placed at (0, 0) with some padding
+		sd.shift(
+			geo.NewPoint(
+				obj.TopLeft.X+GROUP_CONTAINER_PADDING,
+				obj.TopLeft.Y+GROUP_CONTAINER_PADDING,
+			),
+		)
 
 		obj.Children = make(map[string]*d2graph.Object)
+		obj.ChildrenArray = make([]*d2graph.Object, 0)
 		for _, child := range sd.actors {
 			obj.Children[child.ID] = child
+			obj.ChildrenArray = append(obj.ChildrenArray, child)
 		}
-		obj.ChildrenArray = sd.actors
+		for _, child := range sd.groups {
+			if child.Parent.AbsID() == obj.AbsID() {
+				obj.Children[child.ID] = child
+				obj.ChildrenArray = append(obj.ChildrenArray, child)
+			}
+		}
 
 		g.Edges = append(g.Edges, sequenceDiagrams[obj.AbsID()].messages...)
 		g.Edges = append(g.Edges, sequenceDiagrams[obj.AbsID()].lifelines...)

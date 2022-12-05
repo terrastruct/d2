@@ -305,18 +305,6 @@ func (s *Style) Apply(key, value string) error {
 
 type ContainerLevel int
 
-func (l ContainerLevel) Fill() string {
-	// Darkest (least nested) to lightest (most nested)
-	if l == 1 {
-		return "#E3E9FD"
-	} else if l == 2 {
-		return "#EDF0FD"
-	} else if l == 3 {
-		return "#F7F8FE"
-	}
-	return "#FFFFFF"
-}
-
 func (l ContainerLevel) LabelSize() int {
 	// Largest to smallest
 	if l == 1 {
@@ -337,6 +325,26 @@ func (obj *Object) GetFill(theme *d2themes.Theme) string {
 		return theme.Colors.Neutrals.N5
 	} else if obj.Parent.IsSequenceDiagram() {
 		return theme.Colors.B5
+	}
+
+	// fill for spans
+	sd := obj.OuterSequenceDiagram()
+	if sd != nil {
+		level -= int(sd.Level())
+		if level == 1 {
+			return theme.Colors.B3
+		} else if level == 2 {
+			return theme.Colors.B4
+		} else if level == 3 {
+			return theme.Colors.B5
+		} else if level == 4 {
+			return theme.Colors.Neutrals.N6
+		}
+		return theme.Colors.Neutrals.N7
+	}
+
+	if obj.IsSequenceDiagram() {
+		return theme.Colors.Neutrals.N7
 	}
 
 	shape := obj.Attributes.Shape.Value
