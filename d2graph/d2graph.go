@@ -330,6 +330,10 @@ func (l ContainerLevel) LabelSize() int {
 }
 
 func (obj *Object) GetFill(theme *d2themes.Theme) string {
+	if obj.Parent.IsSequenceDiagram() {
+		return theme.Colors.B5
+	}
+
 	level := int(obj.Level())
 	shape := obj.Attributes.Shape.Value
 
