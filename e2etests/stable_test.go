@@ -1425,6 +1425,12 @@ c -> d: "short"
 a -> d: "this should span many actors lifelines so we know how it will look like when redering a long label over many actors"
 d -> e: "long label for testing purposes and it must be really, really long"
 a -> f`,
+		}, {
+			name: "sequence_diagram_long_note",
+			script: `shape: sequence_diagram
+a -> b
+b.note: "a note here to remember that padding must consider notes too"
+a.note: "just\na\nlong\nnote\nhere"`,
 		},
 	}
 

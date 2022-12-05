@@ -110,6 +110,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 
 		queue := make([]*d2graph.Object, len(actor.ChildrenArray))
 		copy(queue, actor.ChildrenArray)
+		maxNoteWidth := 0.
 		for len(queue) > 0 {
 			child := queue[0]
 			queue = queue[1:]
@@ -123,6 +124,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 				sd.notes = append(sd.notes, child)
 				sd.objectRank[child] = rank
 				child.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+				maxNoteWidth = math.Max(maxNoteWidth, child.Width)
 			} else {
 				// spans have no labels
 				// TODO why not? Spans should be able to
@@ -139,6 +141,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 			actorHW := actor.Width / 2.
 			nextActorHW := actors[rank+1].Width / 2.
 			sd.actorXStep[rank] = math.Max(actorHW+nextActorHW+HORIZONTAL_PAD, MIN_ACTOR_DISTANCE)
+			sd.actorXStep[rank] = math.Max(maxNoteWidth/2.+HORIZONTAL_PAD, sd.actorXStep[rank])
 		}
 	}
 
