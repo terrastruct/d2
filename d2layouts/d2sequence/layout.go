@@ -32,6 +32,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 	for len(queue) > 0 {
 		obj := queue[0]
 		queue = queue[1:]
+		if len(obj.ChildrenArray) == 0 {
+			continue
+		}
 		if obj.Attributes.Shape.Value != d2target.ShapeSequenceDiagram {
 			queue = append(queue, obj.ChildrenArray...)
 			continue
