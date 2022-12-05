@@ -14,6 +14,7 @@ width="202" height="202" viewBox="9223372036854775707 9223372036854775707 202 20
 }
 .blend {
   mix-blend-mode: multiply;
+  opacity: 0.5;
 }
 
 ]]>

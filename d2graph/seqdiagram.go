@@ -41,7 +41,7 @@ func (obj *Object) IsSequenceDiagramNote() bool {
 	if obj.OuterSequenceDiagram() == nil {
 		return false
 	}
-	return !obj.hasEdgeRef() && !obj.ContainsAnyEdge(obj.Graph.Edges) && len(obj.ChildrenArray) == 0
+	return !obj.hasEdgeRef() && !obj.ContainsAnyEdge(obj.Graph.Edges) && len(obj.ChildrenArray) == 0 && !obj.ContainsAnyObject(obj.Graph.Objects)
 }
 
 func (obj *Object) hasEdgeRef() bool {

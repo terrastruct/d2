@@ -14,6 +14,7 @@ width="1950" height="1456" viewBox="-100 -100 1950 1456"><style type="text/css">
 }
 .blend {
   mix-blend-mode: multiply;
+  opacity: 0.5;
 }
 
 ]]>
