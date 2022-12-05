@@ -171,6 +171,9 @@ func (sd *sequenceDiagram) layout() error {
 }
 
 func (sd *sequenceDiagram) placeGroups() {
+	sort.SliceStable(sd.groups, func(i, j int) bool {
+		return sd.groups[i].Level() > sd.groups[j].Level()
+	})
 	for _, group := range sd.groups {
 		group.ZIndex = GROUP_Z_INDEX
 		sd.placeGroup(group)
@@ -217,13 +220,33 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 		}
 	}
 
+	hasNested := false
+	for _, ch := range group.ChildrenArray {
+		for _, g := range sd.groups {
+			if ch == g {
+				hasNested = true
+				minX = math.Min(minX, ch.TopLeft.X-GROUP_CONTAINER_PADDING)
+				minY = math.Min(minY, ch.TopLeft.Y-GROUP_CONTAINER_PADDING)
+				maxX = math.Max(maxX, ch.TopLeft.X+ch.Width+GROUP_CONTAINER_PADDING)
+				maxY = math.Max(maxY, ch.TopLeft.Y+ch.Height+GROUP_CONTAINER_PADDING)
+				break
+			}
+		}
+	}
+	if !hasNested {
+		minX -= HORIZONTAL_PAD
+		minY -= MIN_MESSAGE_DISTANCE / 2.
+		maxX += HORIZONTAL_PAD
+		maxY += MIN_MESSAGE_DISTANCE / 2.
+	}
+
 	group.Box = geo.NewBox(
 		geo.NewPoint(
-			minX-HORIZONTAL_PAD,
-			minY-(MIN_MESSAGE_DISTANCE/2.),
+			minX,
+			minY,
 		),
-		maxX-minX+HORIZONTAL_PAD*2,
-		maxY-minY+MIN_MESSAGE_DISTANCE,
+		maxX-minX,
+		maxY-minY,
 	)
 }
 
