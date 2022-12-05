@@ -343,11 +343,11 @@ func (obj *Object) GetFill(theme *d2themes.Theme) string {
 		return theme.Colors.Neutrals.N7
 	}
 
-	shape := obj.Attributes.Shape.Value
-
-	if strings.EqualFold(shape, d2target.ShapeSequenceDiagram) {
+	if obj.IsSequenceDiagram() {
 		return theme.Colors.Neutrals.N7
 	}
+
+	shape := obj.Attributes.Shape.Value
 
 	if shape == "" || strings.EqualFold(shape, d2target.ShapeSquare) || strings.EqualFold(shape, d2target.ShapeCircle) || strings.EqualFold(shape, d2target.ShapeOval) || strings.EqualFold(shape, d2target.ShapeRectangle) {
 		if level == 1 {

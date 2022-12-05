@@ -3,7 +3,6 @@ package d2exporter
 import (
 	"context"
 	"strconv"
-	"strings"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
@@ -100,7 +99,7 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	shape.Italic = text.IsItalic
 	shape.FontSize = text.FontSize
 
-	if strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeSequenceDiagram) {
+	if obj.IsSequenceDiagram() {
 		shape.StrokeWidth = 0
 	}
 

@@ -156,7 +156,7 @@ func cleanup(g *d2graph.Graph, sequenceDiagrams map[string]*sequenceDiagram, obj
 			obj.ChildrenArray = append(obj.ChildrenArray, child)
 		}
 		for _, child := range sd.groups {
-			if child.Parent == obj {
+			if child.Parent.AbsID() == obj.AbsID() {
 				obj.Children[child.ID] = child
 				obj.ChildrenArray = append(obj.ChildrenArray, child)
 			}
