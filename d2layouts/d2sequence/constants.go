@@ -10,6 +10,8 @@ const MIN_ACTOR_DISTANCE = 70.
 
 const MIN_ACTOR_WIDTH = 150.
 
+const SELF_MESSAGE_HORIZONTAL_TRAVEL = 100.
+
 // min vertical distance between messages
 const MIN_MESSAGE_DISTANCE = 80.
 

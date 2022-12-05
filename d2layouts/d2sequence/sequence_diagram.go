@@ -427,7 +427,7 @@ func (sd *sequenceDiagram) routeMessages() error {
 		isSelfMessage := message.Src == message.Dst
 
 		if isSelfMessage || isToDescendant || isFromDescendant {
-			midX := startX + MIN_MESSAGE_DISTANCE
+			midX := startX + SELF_MESSAGE_HORIZONTAL_TRAVEL
 			endY := startY + MIN_MESSAGE_DISTANCE
 			message.Route = []*geo.Point{
 				geo.NewPoint(startX, startY),
