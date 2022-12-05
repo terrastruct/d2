@@ -142,6 +142,9 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 			nextActorHW := actors[rank+1].Width / 2.
 			sd.actorXStep[rank] = math.Max(actorHW+nextActorHW+HORIZONTAL_PAD, MIN_ACTOR_DISTANCE)
 			sd.actorXStep[rank] = math.Max(maxNoteWidth/2.+HORIZONTAL_PAD, sd.actorXStep[rank])
+			if rank > 0 {
+				sd.actorXStep[rank-1] = math.Max(maxNoteWidth/2.+HORIZONTAL_PAD, sd.actorXStep[rank-1])
+			}
 		}
 	}
 
