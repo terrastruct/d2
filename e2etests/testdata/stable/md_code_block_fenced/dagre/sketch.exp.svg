@@ -13,6 +13,10 @@ width="396" height="763" viewBox="-100 -100 396 763"><style type="text/css">
   stroke-linejoin: round;
 }
 
+.blend {
+  mix-blend-mode: multiply;
+}
+
 ]]>
 </style><style type="text/css">.md em,
 .md dfn {

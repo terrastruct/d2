@@ -23,6 +23,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -62,6 +63,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -101,6 +103,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -140,6 +143,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -179,6 +183,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -218,6 +223,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -257,6 +263,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -296,6 +303,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -335,6 +343,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -374,6 +383,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -387,7 +397,7 @@
       "underline": false,
       "labelWidth": 185,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 3,
       "level": 2
     },
     {
@@ -412,6 +422,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -425,7 +436,7 @@
       "underline": false,
       "labelWidth": 47,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 3
     },
     {
@@ -450,6 +461,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -489,6 +501,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -528,6 +541,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -541,7 +555,7 @@
       "underline": false,
       "labelWidth": 50,
       "labelHeight": 26,
-      "zIndex": 3,
+      "zIndex": 2,
       "level": 3
     }
   ],
@@ -1090,7 +1104,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(How this is rendered.d2ast -- )[0]",
@@ -1129,7 +1143,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(How this is rendered.d2compiler -- )[0]",
@@ -1168,7 +1182,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(How this is rendered.d2layout -- )[0]",
@@ -1207,7 +1221,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(How this is rendered.d2exporter -- )[0]",
@@ -1246,7 +1260,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(How this is rendered.d2themes -- )[0]",
@@ -1285,7 +1299,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(How this is rendered.d2renderer -- )[0]",
@@ -1324,7 +1338,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(How this is rendered.d2sequencelayout -- )[0]",
@@ -1363,7 +1377,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     },
     {
       "id": "(How this is rendered.d2dagrelayout -- )[0]",
@@ -1402,7 +1416,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 1
     }
   ]
 }

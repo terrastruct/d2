@@ -13,6 +13,10 @@ width="314" height="552" viewBox="-88 -88 314 552"><style type="text/css">
   stroke-linejoin: round;
 }
 
+.blend {
+  mix-blend-mode: multiply;
+}
+
 ]]>
 </style><defs>
 	<filter id="shadow-filter" width="200%" height="200%" x="-50%" y="-50%">
