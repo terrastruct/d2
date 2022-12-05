@@ -32,8 +32,8 @@ const LIFELINE_STROKE_DASH int = 6
 const LIFELINE_LABEL_PAD = 5.
 
 const (
-	SPAN_Z_INDEX    = 1
-	GROUP_Z_INDEX   = 2
+	GROUP_Z_INDEX   = 1
+	SPAN_Z_INDEX    = 2
 	MESSAGE_Z_INDEX = 3
 	NOTE_Z_INDEX    = 4
 )

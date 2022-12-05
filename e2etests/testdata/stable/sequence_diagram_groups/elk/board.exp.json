@@ -192,7 +192,7 @@
       "underline": false,
       "labelWidth": 32,
       "labelHeight": 26,
-      "zIndex": 0,
+      "zIndex": 1,
       "level": 1
     },
     {
@@ -230,7 +230,7 @@
       "underline": false,
       "labelWidth": 57,
       "labelHeight": 26,
-      "zIndex": 0,
+      "zIndex": 1,
       "level": 1
     },
     {
@@ -268,7 +268,7 @@
       "underline": false,
       "labelWidth": 82,
       "labelHeight": 26,
-      "zIndex": 0,
+      "zIndex": 1,
       "level": 2
     },
     {
@@ -306,7 +306,7 @@
       "underline": false,
       "labelWidth": 60,
       "labelHeight": 26,
-      "zIndex": 0,
+      "zIndex": 1,
       "level": 1
     },
     {
@@ -345,7 +345,7 @@
       "labelWidth": 166,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1,
+      "zIndex": 4,
       "level": 2
     },
     {
@@ -383,7 +383,7 @@
       "underline": false,
       "labelWidth": 40,
       "labelHeight": 26,
-      "zIndex": 0,
+      "zIndex": 1,
       "level": 1
     },
     {
@@ -422,7 +422,7 @@
       "labelWidth": 68,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1,
+      "zIndex": 4,
       "level": 2
     },
     {
@@ -460,7 +460,7 @@
       "underline": false,
       "labelWidth": 25,
       "labelHeight": 36,
-      "zIndex": 1,
+      "zIndex": 2,
       "level": 2
     },
     {
@@ -498,7 +498,7 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 2,
       "level": 2
     },
     {
@@ -536,7 +536,7 @@
       "underline": false,
       "labelWidth": 20,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 2,
       "level": 3
     }
   ],
@@ -578,7 +578,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(a -> b)[1]",
@@ -617,7 +617,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(b -> c)[0]",
@@ -656,7 +656,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(c -> b)[0]",
@@ -695,7 +695,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(c -> b)[1]",
@@ -734,7 +734,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(b.t1 -> c.t1)[0]",
@@ -773,7 +773,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(b.t1.t2 -> c.t1)[0]",
@@ -812,7 +812,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(c.t1 -> b.t1)[0]",
@@ -851,7 +851,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(b -> c)[1]",
@@ -890,7 +890,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(c -> b)[2]",
@@ -929,7 +929,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(a -- )[0]",

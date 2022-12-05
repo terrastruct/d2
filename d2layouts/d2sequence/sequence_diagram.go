@@ -65,24 +65,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 	var groups []*d2graph.Object
 
 	for _, obj := range objects {
-		messageRecipient := false
-		for _, m := range messages {
-			if m.Src == obj || m.Dst == obj {
-				messageRecipient = true
-				break
-			}
-		}
-		hasNote := false
-		for _, ch := range obj.ChildrenArray {
-			// if the child contains a message, it's a span, not a note
-			if !ch.ContainsAnyEdge(messages) {
-				hasNote = true
-				break
-			}
-		}
-		if messageRecipient || hasNote {
-			actors = append(actors, obj)
-		} else {
+		if obj.IsSequenceDiagramGroup(messages) {
 			queue := []*d2graph.Object{obj}
 			// Groups may have more nested groups
 			for len(queue) > 0 {
@@ -93,6 +76,8 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 					queue = append(queue, c)
 				}
 			}
+		} else {
+			actors = append(actors, obj)
 		}
 	}
 

@@ -114,7 +114,7 @@
       "underline": false,
       "labelWidth": 15,
       "labelHeight": 36,
-      "zIndex": 1,
+      "zIndex": 2,
       "level": 2
     },
     {
@@ -152,7 +152,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 2,
       "level": 3
     },
     {
@@ -190,7 +190,7 @@
       "underline": false,
       "labelWidth": 15,
       "labelHeight": 36,
-      "zIndex": 1,
+      "zIndex": 2,
       "level": 2
     },
     {
@@ -228,7 +228,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 2,
       "level": 3
     },
     {
@@ -266,7 +266,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 2,
       "level": 2
     }
   ],
@@ -316,7 +316,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(a -> b)[0]",
@@ -355,7 +355,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(b -> b.1)[0]",
@@ -402,7 +402,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "b.(1 -> 1.2)[0]",
@@ -449,7 +449,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(b.1.2 -> b)[0]",
@@ -496,7 +496,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(b -> a.1.2)[0]",
@@ -535,7 +535,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(a.1 -> b.3)[0]",
@@ -574,7 +574,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(a -- )[0]",

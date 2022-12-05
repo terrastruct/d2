@@ -193,7 +193,7 @@
       "labelWidth": 90,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1,
+      "zIndex": 4,
       "level": 2
     },
     {
@@ -232,7 +232,7 @@
       "labelWidth": 150,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1,
+      "zIndex": 4,
       "level": 2
     },
     {
@@ -271,7 +271,7 @@
       "labelWidth": 293,
       "labelHeight": 42,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1,
+      "zIndex": 4,
       "level": 2
     },
     {
@@ -310,7 +310,7 @@
       "labelWidth": 441,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1,
+      "zIndex": 4,
       "level": 2
     }
   ],
@@ -352,7 +352,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(b -> c)[0]",
@@ -391,7 +391,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(c -> b)[0]",
@@ -430,7 +430,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(a -- )[0]",

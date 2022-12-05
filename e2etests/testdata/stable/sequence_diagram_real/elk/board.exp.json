@@ -361,7 +361,7 @@
       },
       "width": 1404,
       "height": 80,
-      "opacity": 0.5,
+      "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
@@ -387,7 +387,7 @@
       "underline": false,
       "labelWidth": 195,
       "labelHeight": 26,
-      "zIndex": 2,
+      "zIndex": 1,
       "level": 2
     },
     {
@@ -425,7 +425,7 @@
       "underline": false,
       "labelWidth": 50,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 2,
       "level": 3
     },
     {
@@ -541,7 +541,7 @@
       "underline": false,
       "labelWidth": 52,
       "labelHeight": 26,
-      "zIndex": 1,
+      "zIndex": 2,
       "level": 3
     }
   ],
