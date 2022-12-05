@@ -305,18 +305,6 @@ func (s *Style) Apply(key, value string) error {
 
 type ContainerLevel int
 
-func (l ContainerLevel) Fill() string {
-	// Darkest (least nested) to lightest (most nested)
-	if l == 1 {
-		return "#E3E9FD"
-	} else if l == 2 {
-		return "#EDF0FD"
-	} else if l == 3 {
-		return "#F7F8FE"
-	}
-	return "#FFFFFF"
-}
-
 func (l ContainerLevel) LabelSize() int {
 	// Largest to smallest
 	if l == 1 {
@@ -340,6 +328,10 @@ func (obj *Object) GetFill(theme *d2themes.Theme) string {
 	}
 
 	shape := obj.Attributes.Shape.Value
+
+	if strings.EqualFold(shape, d2target.ShapeSequenceDiagram) {
+		return theme.Colors.Neutrals.N7
+	}
 
 	if shape == "" || strings.EqualFold(shape, d2target.ShapeSquare) || strings.EqualFold(shape, d2target.ShapeCircle) || strings.EqualFold(shape, d2target.ShapeOval) || strings.EqualFold(shape, d2target.ShapeRectangle) {
 		if level == 1 {
