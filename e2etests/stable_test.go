@@ -1414,14 +1414,17 @@ choo: {
 			name: "sequence_diagram_actor_distance",
 			script: `shape: sequence_diagram
 a: "an actor with a really long label that will break everything"
-b: "a short one"
 c: "an\nactor\nwith\na\nreally\nlong\nlabel\nthat\nwill\nbreak\neverything"
 d: "simple"
-a -> b -> c: "short"
+e: "a short one"
+b: "far away"
+f: "what if there were no labels between this actor and the previous one"
+a -> b: "short"
 a -> b: "long label for testing purposes and it must be really, really long"
-b -> c: "long label for testing purposes and it must be really, really long"
 c -> d: "short"
-a -> d: "this should span many actors lifelines so we know how it will look like when redering a long label over many actors"`,
+a -> d: "this should span many actors lifelines so we know how it will look like when redering a long label over many actors"
+d -> e: "long label for testing purposes and it must be really, really long"
+a -> f`,
 		},
 	}
 

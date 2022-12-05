@@ -76,9 +76,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 				curr := queue[0]
 				groups = append(groups, curr)
 				queue = queue[1:]
-				for _, c := range curr.ChildrenArray {
-					queue = append(queue, c)
-				}
+				queue = append(queue, curr.ChildrenArray...)
 			}
 		} else {
 			actors = append(actors, obj)
@@ -138,7 +136,9 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 		}
 
 		if rank != len(actors)-1 {
-			sd.actorXStep[rank] = math.Max(actor.Width/2., MIN_ACTOR_DISTANCE)
+			actorHW := actor.Width / 2.
+			nextActorHW := actors[rank+1].Width / 2.
+			sd.actorXStep[rank] = math.Max(actorHW+nextActorHW+HORIZONTAL_PAD, MIN_ACTOR_DISTANCE)
 		}
 	}
 

@@ -41,49 +41,10 @@
       "level": 1
     },
     {
-      "id": "b",
-      "type": "",
-      "pos": {
-        "x": 626,
-        "y": 210
-      },
-      "width": 184,
-      "height": 126,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "a short one",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": true,
-      "underline": false,
-      "labelWidth": 84,
-      "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 1
-    },
-    {
       "id": "c",
       "type": "",
       "pos": {
-        "x": 1088,
+        "x": 588,
         "y": 50
       },
       "width": 183,
@@ -122,7 +83,7 @@
       "id": "d",
       "type": "",
       "pos": {
-        "x": 1401,
+        "x": 1026,
         "y": 210
       },
       "width": 152,
@@ -152,6 +113,123 @@
       "bold": true,
       "underline": false,
       "labelWidth": 52,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "e",
+      "type": "",
+      "pos": {
+        "x": 1471,
+        "y": 210
+      },
+      "width": 184,
+      "height": 126,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#EDF0FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "a short one",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 84,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "b",
+      "type": "",
+      "pos": {
+        "x": 1730,
+        "y": 210
+      },
+      "width": 167,
+      "height": 126,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#EDF0FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "far away",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 67,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "f",
+      "type": "",
+      "pos": {
+        "x": 1947,
+        "y": 210
+      },
+      "width": 587,
+      "height": 126,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#EDF0FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "what if there were no labels between this actor and the previous one",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 487,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -189,47 +267,8 @@
           "y": 466
         },
         {
-          "x": 718,
+          "x": 1813.5,
           "y": 466
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 4
-    },
-    {
-      "id": "(b -> c)[0]",
-      "src": "b",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "c",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "short",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 36,
-      "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 718,
-          "y": 596
-        },
-        {
-          "x": 1179.5,
-          "y": 596
         }
       ],
       "animated": false,
@@ -264,50 +303,11 @@
       "route": [
         {
           "x": 257,
-          "y": 726
+          "y": 596
         },
         {
-          "x": 718,
-          "y": 726
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 4
-    },
-    {
-      "id": "(b -> c)[1]",
-      "src": "b",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "c",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "long label for testing purposes and it must be really, really long",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 411,
-      "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 718,
-          "y": 856
-        },
-        {
-          "x": 1179.5,
-          "y": 856
+          "x": 1813.5,
+          "y": 596
         }
       ],
       "animated": false,
@@ -341,12 +341,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1179.5,
-          "y": 986
+          "x": 679.5,
+          "y": 726
         },
         {
-          "x": 1477,
-          "y": 986
+          "x": 1102,
+          "y": 726
         }
       ],
       "animated": false,
@@ -381,10 +381,88 @@
       "route": [
         {
           "x": 257,
+          "y": 856
+        },
+        {
+          "x": 1102,
+          "y": 856
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 4
+    },
+    {
+      "id": "(d -> e)[0]",
+      "src": "d",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "e",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "long label for testing purposes and it must be really, really long",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 411,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1102,
+          "y": 986
+        },
+        {
+          "x": 1563,
+          "y": 986
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 4
+    },
+    {
+      "id": "(a -> f)[0]",
+      "src": "a",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "f",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 257,
           "y": 1116
         },
         {
-          "x": 1477,
+          "x": 2240.5,
           "y": 1116
         }
       ],
@@ -433,45 +511,6 @@
       "zIndex": 2
     },
     {
-      "id": "(b -- )[0]",
-      "src": "b",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "b-lifeline-end-668380428",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 6,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 718,
-          "y": 336
-        },
-        {
-          "x": 718,
-          "y": 1246
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 2
-    },
-    {
       "id": "(c -- )[0]",
       "src": "c",
       "srcArrow": "none",
@@ -497,11 +536,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1179.5,
+          "x": 679.5,
           "y": 336
         },
         {
-          "x": 1179.5,
+          "x": 679.5,
           "y": 1246
         }
       ],
@@ -536,11 +575,128 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1477,
+          "x": 1102,
           "y": 336
         },
         {
-          "x": 1477,
+          "x": 1102,
+          "y": 1246
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 2
+    },
+    {
+      "id": "(e -- )[0]",
+      "src": "e",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "e-lifeline-end-2214352275",
+      "dstArrow": "none",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1563,
+          "y": 336
+        },
+        {
+          "x": 1563,
+          "y": 1246
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 2
+    },
+    {
+      "id": "(b -- )[0]",
+      "src": "b",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "b-lifeline-end-668380428",
+      "dstArrow": "none",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1813.5,
+          "y": 336
+        },
+        {
+          "x": 1813.5,
+          "y": 1246
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 2
+    },
+    {
+      "id": "(f -- )[0]",
+      "src": "f",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "f-lifeline-end-865917984",
+      "dstArrow": "none",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 2240.5,
+          "y": 336
+        },
+        {
+          "x": 2240.5,
           "y": 1246
         }
       ],

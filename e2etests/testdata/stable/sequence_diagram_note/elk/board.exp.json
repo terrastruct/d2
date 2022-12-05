@@ -44,7 +44,7 @@
       "id": "b",
       "type": "",
       "pos": {
-        "x": 75,
+        "x": 250,
         "y": 50
       },
       "width": 150,
@@ -83,7 +83,7 @@
       "id": "c",
       "type": "",
       "pos": {
-        "x": 150,
+        "x": 500,
         "y": 50
       },
       "width": 150,
@@ -122,7 +122,7 @@
       "id": "d",
       "type": "",
       "pos": {
-        "x": 225,
+        "x": 750,
         "y": 50
       },
       "width": 150,
@@ -239,7 +239,7 @@
       "id": "b.\"Some one who believes imaginary things\\n appear right before your i's.\"",
       "type": "rectangle",
       "pos": {
-        "x": -46,
+        "x": 128,
         "y": 1078
       },
       "width": 393,
@@ -278,7 +278,7 @@
       "id": "d.The earth is like a tiny grain of sand, only much, much heavier",
       "type": "rectangle",
       "pos": {
-        "x": 29,
+        "x": 554,
         "y": 1480
       },
       "width": 541,
@@ -345,7 +345,7 @@
           "y": 306
         },
         {
-          "x": 150,
+          "x": 325,
           "y": 306
         }
       ],
@@ -380,11 +380,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 150,
+          "x": 325,
           "y": 948
         },
         {
-          "x": 225,
+          "x": 575,
           "y": 948
         }
       ],
@@ -419,11 +419,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 225,
+          "x": 575,
           "y": 1350
         },
         {
-          "x": 150,
+          "x": 325,
           "y": 1350
         }
       ],
@@ -497,11 +497,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 150,
+          "x": 325,
           "y": 176
         },
         {
-          "x": 150,
+          "x": 325,
           "y": 1736
         }
       ],
@@ -536,11 +536,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 225,
+          "x": 575,
           "y": 176
         },
         {
-          "x": 225,
+          "x": 575,
           "y": 1736
         }
       ],
@@ -575,11 +575,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 300,
+          "x": 825,
           "y": 176
         },
         {
-          "x": 300,
+          "x": 825,
           "y": 1736
         }
       ],
