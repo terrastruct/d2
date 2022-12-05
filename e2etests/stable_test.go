@@ -1399,7 +1399,9 @@ choo: {
   d2compiler -> CLI: objects and edges
   CLI -> d2layout.layout: run layout engines
   d2layout.layout -> d2sequencelayout: run engine on shape: sequence_diagram, temporarily remove
-  d2layout.layout -> d2dagrelayout: run core engine on rest
+  only if root is not sequence: {
+    _.d2layout.layout -> _.d2dagrelayout: run core engine on rest
+  }
   d2layout.layout <- d2sequencelayout: add back in sequence diagrams
   d2layout -> CLI: diagram with correct positions and dimensions
   CLI -> d2exporter: export diagram with chosen theme and renderer

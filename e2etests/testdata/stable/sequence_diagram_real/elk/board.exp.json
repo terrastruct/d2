@@ -349,8 +349,46 @@
       "labelWidth": 218,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 1,
+      "zIndex": 4,
       "level": 3
+    },
+    {
+      "id": "How this is rendered.only if root is not sequence",
+      "type": "",
+      "pos": {
+        "x": 734,
+        "y": 1361
+      },
+      "width": 1404,
+      "height": 80,
+      "opacity": 0.5,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#EDF0FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "only if root is not sequence",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 195,
+      "labelHeight": 26,
+      "zIndex": 2,
+      "level": 2
     },
     {
       "id": "How this is rendered.d2layout.layout",
@@ -545,7 +583,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "How this is rendered.(d2ast -> CLI)[0]",
@@ -584,7 +622,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "How this is rendered.(CLI -> d2compiler)[0]",
@@ -623,7 +661,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "How this is rendered.(d2compiler -> CLI)[0]",
@@ -662,7 +700,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "How this is rendered.(CLI -> d2layout.layout)[0]",
@@ -701,7 +739,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "How this is rendered.(d2layout.layout -> d2sequencelayout)[0]",
@@ -740,7 +778,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "How this is rendered.(d2layout.layout -> d2dagrelayout)[0]",
@@ -779,7 +817,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "How this is rendered.(d2layout.layout <- d2sequencelayout)[0]",
@@ -818,7 +856,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "How this is rendered.(d2layout -> CLI)[0]",
@@ -857,7 +895,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "How this is rendered.(CLI -> d2exporter)[0]",
@@ -896,7 +934,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "How this is rendered.(d2exporter.export -> d2themes)[0]",
@@ -935,7 +973,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "How this is rendered.(d2exporter.export -> d2renderer)[0]",
@@ -974,7 +1012,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "How this is rendered.(d2exporter.export -> CLI)[0]",
@@ -1013,7 +1051,7 @@
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 2
+      "zIndex": 3
     },
     {
       "id": "(How this is rendered.CLI -- )[0]",

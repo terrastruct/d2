@@ -189,6 +189,8 @@ func (sd *sequenceDiagram) layout() error {
 
 func (sd *sequenceDiagram) placeGroups() {
 	for _, group := range sd.groups {
+		group.ZIndex = GROUP_Z_INDEX
+		// group.Attributes.Style.Opacity = &d2graph.Scalar{Value: "0.5"}
 		sd.placeGroup(group)
 	}
 }
@@ -330,7 +332,7 @@ func (sd *sequenceDiagram) placeNotes() {
 
 		x := rankToX[sd.objectRank[note]] - (note.Width / 2.)
 		note.Box.TopLeft = geo.NewPoint(x, y)
-		note.ZIndex = 1
+		note.ZIndex = NOTE_Z_INDEX
 	}
 }
 
@@ -406,7 +408,7 @@ func (sd *sequenceDiagram) placeSpans() {
 		width := SPAN_BASE_WIDTH + (float64(span.Level()-2) * SPAN_DEPTH_GROWTH_FACTOR)
 		x := rankToX[sd.objectRank[span]] - (width / 2.)
 		span.Box = geo.NewBox(geo.NewPoint(x, minY), width, height)
-		span.ZIndex = 1
+		span.ZIndex = SPAN_Z_INDEX
 	}
 }
 
@@ -415,6 +417,7 @@ func (sd *sequenceDiagram) placeSpans() {
 func (sd *sequenceDiagram) routeMessages() error {
 	messageOffset := sd.maxActorHeight + sd.yStep
 	for _, message := range sd.messages {
+		message.ZIndex = MESSAGE_Z_INDEX
 		noteOffset := 0.
 		for _, note := range sd.notes {
 			if sd.verticalIndices[note.AbsID()] < sd.verticalIndices[message.AbsID()] {
@@ -423,7 +426,6 @@ func (sd *sequenceDiagram) routeMessages() error {
 		}
 		startY := messageOffset + noteOffset
 
-		message.ZIndex = 2
 		var startX, endX float64
 		if startCenter := getCenter(message.Src); startCenter != nil {
 			startX = startCenter.X

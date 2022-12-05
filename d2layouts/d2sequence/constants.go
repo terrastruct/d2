@@ -30,3 +30,10 @@ const LIFELINE_STROKE_DASH int = 6
 
 // pad when the actor has the label placed OutsideMiddleBottom so that the lifeline is not so close to the text
 const LIFELINE_LABEL_PAD = 5.
+
+const (
+	SPAN_Z_INDEX    = 1
+	GROUP_Z_INDEX   = 2
+	MESSAGE_Z_INDEX = 3
+	NOTE_Z_INDEX    = 4
+)
