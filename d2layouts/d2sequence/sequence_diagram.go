@@ -189,10 +189,10 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 	for _, m := range sd.messages {
 		if m.ContainedBy(group) {
 			for _, p := range m.Route {
-				minX = math.Min(minX, p.X)
-				minY = math.Min(minY, p.Y)
-				maxX = math.Max(maxX, p.X)
-				maxY = math.Max(maxY, p.Y)
+				minX = math.Min(minX, p.X-HORIZONTAL_PAD)
+				minY = math.Min(minY, p.Y-MIN_MESSAGE_DISTANCE/2.)
+				maxX = math.Max(maxX, p.X+HORIZONTAL_PAD)
+				maxY = math.Max(maxY, p.Y+MIN_MESSAGE_DISTANCE/2.)
 			}
 		}
 	}
@@ -213,18 +213,16 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 			}
 		}
 		if inGroup {
-			minY = math.Min(minY, n.TopLeft.Y)
-			maxY = math.Max(maxY, n.TopLeft.Y+n.Height)
-			minX = math.Min(minX, n.TopLeft.X)
-			maxX = math.Max(maxX, n.TopLeft.X+n.Width)
+			minX = math.Min(minX, n.TopLeft.X-HORIZONTAL_PAD)
+			minY = math.Min(minY, n.TopLeft.Y-MIN_MESSAGE_DISTANCE/2.)
+			maxY = math.Max(maxY, n.TopLeft.Y+n.Height+HORIZONTAL_PAD)
+			maxX = math.Max(maxX, n.TopLeft.X+n.Width+MIN_MESSAGE_DISTANCE/2.)
 		}
 	}
 
-	hasNested := false
 	for _, ch := range group.ChildrenArray {
 		for _, g := range sd.groups {
 			if ch == g {
-				hasNested = true
 				minX = math.Min(minX, ch.TopLeft.X-GROUP_CONTAINER_PADDING)
 				minY = math.Min(minY, ch.TopLeft.Y-GROUP_CONTAINER_PADDING)
 				maxX = math.Max(maxX, ch.TopLeft.X+ch.Width+GROUP_CONTAINER_PADDING)
@@ -232,12 +230,6 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 				break
 			}
 		}
-	}
-	if !hasNested {
-		minX -= HORIZONTAL_PAD
-		minY -= MIN_MESSAGE_DISTANCE / 2.
-		maxX += HORIZONTAL_PAD
-		maxY += MIN_MESSAGE_DISTANCE / 2.
 	}
 
 	group.Box = geo.NewBox(
