@@ -1352,6 +1352,17 @@ b`, g.Objects[0].Attributes.Label.Value)
 			},
 		},
 		{
+			name: "unescaped_id_cr",
+
+			text: `b\rb`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatal(g.Objects)
+				}
+				assert.String(t, "b\rb", g.Objects[0].Attributes.Label.Value)
+			},
+		},
+		{
 			name: "class_style",
 
 			text: `IUserProperties: {
