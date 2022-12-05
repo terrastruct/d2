@@ -537,6 +537,8 @@ func (sd *sequenceDiagram) getHeight() float64 {
 func (sd *sequenceDiagram) shift(tl *geo.Point) {
 	allObjects := append([]*d2graph.Object{}, sd.actors...)
 	allObjects = append(allObjects, sd.spans...)
+	allObjects = append(allObjects, sd.groups...)
+	allObjects = append(allObjects, sd.notes...)
 	for _, obj := range allObjects {
 		obj.TopLeft.X += tl.X
 		obj.TopLeft.Y += tl.Y
