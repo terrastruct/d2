@@ -9,17 +9,17 @@ var NeutralDefault = d2themes.Theme{
 		Neutrals: d2themes.CoolNeutral,
 
 		B1: "#0D32B2",
-		B2: "#2952E4",
-		B3: "#B0C0FB",
-		B4: "#D2DBFD",
-		B5: "#E7EAFF",
-		B6: "#F4F6FD",
+		B2: "#0D32B2",
+		B3: "#E3E9FD",
+		B4: "#E3E9FD",
+		B5: "#EDF0FD",
+		B6: "#F7F8FE",
 
-		AA2: "#2952E4",
-		AA4: "#D2DBFD",
-		AA5: "#E7EAFF",
+		AA2: "#4A6FF3",
+		AA4: "#EDF0FD",
+		AA5: "#F7F8FE",
 
-		AB4: "#D2DBFD",
-		AB5: "#E7EAFF",
+		AB4: "#EDF0FD",
+		AB5: "#F7F8FE",
 	},
 }
