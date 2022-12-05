@@ -1325,6 +1325,16 @@ s -> t`,
 z -> y
 z -> z: hello
 `,
+		}, {
+			name: "sequence_diagram_self_edges",
+			script: `shape: sequence_diagram
+a -> a: a self edge here
+a -> b: between actors
+b -> b.1: to descendant
+b.1 -> b.1.2: to deeper descendant
+b.1.2 -> b: to parent
+b -> a.1.2: actor
+a.1 -> b.3`,
 		},
 		{
 			name: "icon-label",

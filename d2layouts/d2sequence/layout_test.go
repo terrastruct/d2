@@ -159,6 +159,7 @@ func TestSpansSequenceDiagram(t *testing.T) {
 	//      ├┐──────────────────────►
 	//   t2 ││                      │
 	//      ├┘◄─────────────────────┤
+
 	input := `
 shape: sequence_diagram
 a: { shape: person }
@@ -182,7 +183,6 @@ b -> a.t2`
 
 	a, has := g.Root.HasChild([]string{"a"})
 	assert.True(t, has)
-	a.Box = geo.NewBox(nil, 100, 100)
 
 	a_t1, has := a.HasChild([]string{"t1"})
 	assert.True(t, has)
@@ -196,6 +196,12 @@ b -> a.t2`
 
 	b_t1, has := b.HasChild([]string{"t1"})
 	assert.True(t, has)
+
+	a.Box = geo.NewBox(nil, 100, 100)
+	a_t1.Box = geo.NewBox(nil, 100, 100)
+	a_t2.Box = geo.NewBox(nil, 100, 100)
+	b.Box = geo.NewBox(nil, 30, 30)
+	b_t1.Box = geo.NewBox(nil, 100, 100)
 
 	d2sequence.Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
 		// just set some position as if it had been properly placed
@@ -304,6 +310,7 @@ container -> c: edge 1
 
 	a_t1, has := a.HasChild([]string{"t1"})
 	assert.True(t, has)
+	a_t1.Box = geo.NewBox(nil, 100, 100)
 
 	b, has := container.HasChild([]string{"b"})
 	assert.True(t, has)
@@ -311,6 +318,7 @@ container -> c: edge 1
 
 	b_t1, has := b.HasChild([]string{"t1"})
 	assert.True(t, has)
+	b_t1.Box = geo.NewBox(nil, 100, 100)
 
 	c := g.Root.EnsureChild([]string{"c"})
 	c.Box = geo.NewBox(nil, 100, 100)
@@ -364,5 +372,92 @@ container -> c: edge 1
 		if len(edge.Route) == 0 {
 			t.Fatal("expected to have routed all edges")
 		}
+	}
+}
+
+func TestSelfEdges(t *testing.T) {
+	g := d2graph.NewGraph(nil)
+	g.Root.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
+	n1 := g.Root.EnsureChild([]string{"n1"})
+	n1.Box = geo.NewBox(nil, 100, 100)
+
+	g.Edges = []*d2graph.Edge{
+		{
+			Src:   n1,
+			Dst:   n1,
+			Index: 0,
+			Attributes: d2graph.Attributes{
+				Label: d2graph.Scalar{Value: "left to right"},
+			},
+		},
+	}
+
+	ctx := log.WithTB(context.Background(), t, nil)
+	Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
+		return nil
+	})
+
+	route := g.Edges[0].Route
+	if len(route) != 4 {
+		t.Fatalf("expected route to have 4 points, got %d", len(route))
+	}
+
+	if route[0].X != route[3].X {
+		t.Fatalf("route does not end at the same actor, start at %.5f, end at %.5f", route[0].X, route[3].X)
+	}
+
+	if route[3].Y-route[0].Y != MIN_MESSAGE_DISTANCE {
+		t.Fatalf("expected route height to be %.f5, got %.5f", MIN_MESSAGE_DISTANCE, route[3].Y-route[0].Y)
+	}
+}
+
+func TestSequenceToDescendant(t *testing.T) {
+	g := d2graph.NewGraph(nil)
+	g.Root.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
+	a := g.Root.EnsureChild([]string{"a"})
+	a.Box = geo.NewBox(nil, 100, 100)
+	a.Attributes = d2graph.Attributes{
+		Shape: d2graph.Scalar{Value: shape.PERSON_TYPE},
+	}
+	a_t1 := a.EnsureChild([]string{"t1"})
+	a_t1.Box = geo.NewBox(nil, 16, 80)
+
+	g.Edges = []*d2graph.Edge{
+		{
+			Src:   a,
+			Dst:   a_t1,
+			Index: 0,
+		}, {
+			Src:   a_t1,
+			Dst:   a,
+			Index: 0,
+		},
+	}
+
+	ctx := log.WithTB(context.Background(), t, nil)
+	Layout(ctx, g, func(ctx context.Context, g *d2graph.Graph) error {
+		return nil
+	})
+
+	route1 := g.Edges[0].Route
+	if len(route1) != 4 {
+		t.Fatal("expected route with 4 points")
+	}
+	if route1[0].X != a.Center().X {
+		t.Fatal("expected route to start at `a` lifeline")
+	}
+	if route1[3].X != a_t1.TopLeft.X+a_t1.Width {
+		t.Fatal("expected route to end at `a.t1` right side")
+	}
+
+	route2 := g.Edges[1].Route
+	if len(route2) != 4 {
+		t.Fatal("expected route with 4 points")
+	}
+	if route2[0].X != a_t1.TopLeft.X+a_t1.Width {
+		t.Fatal("expected route to start at `a.t1` right side")
+	}
+	if route2[3].X != a.Center().X {
+		t.Fatal("expected route to end at `a` lifeline")
 	}
 }

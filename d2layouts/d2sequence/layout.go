@@ -37,7 +37,10 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 			continue
 		}
 
-		sd := layoutSequenceDiagram(g, obj)
+		sd, err := layoutSequenceDiagram(g, obj)
+		if err != nil {
+			return err
+		}
 		obj.Children = make(map[string]*d2graph.Object)
 		obj.ChildrenArray = nil
 		obj.Box = geo.NewBox(nil, sd.getWidth(), sd.getHeight())
@@ -76,7 +79,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 }
 
 // layoutSequenceDiagram finds the edges inside the sequence diagram and performs the layout on the object descendants
-func layoutSequenceDiagram(g *d2graph.Graph, obj *d2graph.Object) *sequenceDiagram {
+func layoutSequenceDiagram(g *d2graph.Graph, obj *d2graph.Object) (*sequenceDiagram, error) {
 	var edges []*d2graph.Edge
 	for _, edge := range g.Edges {
 		// both Src and Dst must be inside the sequence diagram
@@ -86,8 +89,8 @@ func layoutSequenceDiagram(g *d2graph.Graph, obj *d2graph.Object) *sequenceDiagr
 	}
 
 	sd := newSequenceDiagram(obj.ChildrenArray, edges)
-	sd.layout()
-	return sd
+	err := sd.layout()
+	return sd, err
 }
 
 func getLayoutEdges(g *d2graph.Graph, toRemove map[*d2graph.Edge]struct{}) ([]*d2graph.Edge, map[string]int) {
