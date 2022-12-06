@@ -109,11 +109,14 @@ main() {
   VERSION=${VERSION:-$(git_describe_ref)}
   BUILD_DIR=ci/release/build/$VERSION
   if [ -n "${HOST_ONLY-}" ]; then
-    runjob $(os)-$(arch) "OS=$(os) ARCH=$(arch) build"
+    OS=$(os)
+    ARCH=$(arch)
+    runjob "$OS-$ARCH" "build"
+
     if [ -n "${INSTALL-}" ]; then
-      ( sh_c make -sC "ci/release/build/$VERSION/$(os)-$(arch)/d2-$VERSION" install)
+      sh_c make -sC "ci/release/build/$VERSION/$(os)-$(arch)/d2-$VERSION" install
     elif [ -n "${UNINSTALL-}" ]; then
-      ( sh_c make -sC "ci/release/build/$VERSION/$(os)-$(arch)/d2-$VERSION" uninstall)
+      sh_c make -sC "ci/release/build/$VERSION/$(os)-$(arch)/d2-$VERSION" uninstall
     fi
     return 0
   fi
@@ -123,7 +126,7 @@ main() {
   runjob macos-amd64 'OS=macos ARCH=amd64 build' &
   runjob macos-arm64 'OS=macos ARCH=arm64 build' &
   runjob windows-amd64 'OS=windows ARCH=amd64 build' &
-  runjob windows-arm64 'OS=macos ARCH=arm64 build' &
+  runjob windows-arm64 'OS=windows ARCH=arm64 build' &
   waitjobs
 }
 
@@ -189,8 +192,7 @@ build_local() {
 
 build_remote_macos() {
   sh_c lockfile_ssh "$REMOTE_HOST" .d2-build-lock
-  sh_c ssh "$REMOTE_HOST" mkdir -p src
-  sh_c rsync --archive --human-readable --delete ./ "$REMOTE_HOST:src/d2/"
+  sh_c gitsync "$REMOTE_HOST" src/d2
   sh_c ssh "$REMOTE_HOST" "COLOR=${COLOR-} \
 TERM=${TERM-} \
 DRY_RUN=${DRY_RUN-} \
@@ -207,8 +209,7 @@ PATH=\\\"/usr/local/bin:/usr/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin\\\$
 
 build_remote_linux() {
   sh_c lockfile_ssh "$REMOTE_HOST" .d2-build-lock
-  sh_c ssh "$REMOTE_HOST" mkdir -p src
-  sh_c rsync --archive --human-readable --delete ./ "$REMOTE_HOST:src/d2/"
+  sh_c gitsync "$REMOTE_HOST" src/d2
   sh_c ssh "$REMOTE_HOST" "COLOR=${COLOR-} \
 TERM=${TERM-} \
 DRY_RUN=${DRY_RUN-} \

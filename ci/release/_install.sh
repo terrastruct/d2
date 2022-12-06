@@ -14,7 +14,7 @@ help() {
   fi
 
   cat <<EOF
-usage: $arg0 [-d|--dry-run] [--version vX.X.X] [--edge] [--method detect] [--prefix /usr/local]
+usage: $arg0 [-d|--dry-run] [--version vX.X.X] [--edge] [--method detect] [--prefix path]
   [--tala latest] [--force] [--uninstall]
 
 install.sh automates the installation of D2 onto your system. It currently only supports
@@ -23,6 +23,9 @@ docs for --detect below for more information
 
 If you pass --edge, it will clone the source, build a release and install from it.
 --edge is incompatible with --tala and currently unimplemented.
+
+\$PREFIX in the docs below refers to the path set by --prefix. See docs on the --prefix
+flag below for the default.
 
 Flags:
 
@@ -51,30 +54,31 @@ Flags:
     So far it only detects macOS and automatically uses homebrew.
   - homebrew uses https://brew.sh/ which is a macOS and Linux package manager.
   - standalone installs a standalone release archive into the unix hierarchy path
-     specified by --prefix which defaults to /usr/local
-     Ensure /usr/local/bin is in your \$PATH to use it.
+     specified by --prefix
 
---prefix /usr/local
+--prefix path
   Controls the unix hierarchy path into which standalone releases are installed.
-  Defaults to /usr/local. You may also want to use ~/.local to avoid needing sudo.
-  We use ~/.local by default on arm64 macOS machines as SIP now disables access to
-  /usr/local. Remember that whatever you use, you must have the bin directory of your
-  prefix path in \$PATH to execute the d2 binary. For example, if my prefix directory is
-  /usr/local then my \$PATH must contain /usr/local/bin.
+  Defaults to /usr/local or ~/.local if /usr/local is not writable by the current user.
+  Remember that whatever you use, you must have the bin directory of your prefix path in
+  \$PATH to execute the d2 binary. For example, if my prefix directory is /usr/local then
+  my \$PATH must contain /usr/local/bin.
+  You may also need to include \$PREFIX/share/man into \$MANPATH.
+  install.sh will tell you whether \$PATH or \$MANPATH need to be updated after successful
+  installation.
 
 --tala [latest]
   Install Terrastruct's closed source TALA for improved layouts.
   See https://github.com/terrastruct/tala
   It optionally takes an argument of the TALA version to install.
   Installation obeys all other flags, just like the installation of d2. For example,
-  the d2plugin-tala binary will be installed into /usr/local/bin/d2plugin-tala
+  the d2plugin-tala binary will be installed into \$PREFIX/bin/d2plugin-tala
   warn: The version may not be obeyed with package manager installations. Use
         --method=standalone to enforce the version.
 
 --force:
   Force installation over the existing version even if they match. It will attempt a
   uninstall first before installing the new version. The installed release tree
-  will be deleted from /usr/local/lib/d2/d2-<VERSION> but the release archive in
+  will be deleted from \$PREFIX/lib/d2/d2-<VERSION> but the release archive in
   ~/.cache/d2/release will remain.
 
 --uninstall:
@@ -85,7 +89,7 @@ Flags:
   note: tala will also be uninstalled if installed.
 
 All downloaded archives are cached into ~/.cache/d2/release. use \$XDG_CACHE_HOME to change
-path of the cached assets. Release archives are unarchived into /usr/local/lib/d2/d2-<VERSION>
+path of the cached assets. Release archives are unarchived into \$PREFIX/lib/d2/d2-<VERSION>
 
 note: Deleting the unarchived releases will cause --uninstall to stop working.
 
@@ -150,13 +154,9 @@ main() {
   fi
 
   REPO=${REPO:-terrastruct/d2}
-  OS=$(os)
-  ARCH=$(arch)
-  if [ -z "${PREFIX-}" -a "$OS" = macos -a "$ARCH" = arm64 ]; then
-    # M1 Mac's do not allow modifications to /usr/local even with sudo.
-    PREFIX=$HOME/.local
-  fi
-  PREFIX=${PREFIX:-/usr/local}
+  ensure_os
+  ensure_arch
+  ensure_prefix
   CACHE_DIR=$(cache_dir)
   mkdir -p "$CACHE_DIR"
   METHOD=${METHOD:-detect}
@@ -318,11 +318,7 @@ install_d2_standalone() {
   asset_url=$(sh_c 'sed -n $((asset_line-3))p "$RELEASE_INFO" | sed "s/^.*: \"\(.*\)\",$/\1/g"')
   fetch_gh "$asset_url" "$CACHE_DIR/$ARCHIVE" 'application/octet-stream'
 
-  sh_c="sh_c"
-  if ! is_prefix_writable; then
-    sh_c="sudo_sh_c"
-  fi
-
+  ensure_prefix_sh_c
   "$sh_c" mkdir -p "'$INSTALL_DIR'"
   "$sh_c" tar -C "$INSTALL_DIR" -xzf "$CACHE_DIR/$ARCHIVE"
   "$sh_c" sh -c "'cd \"$INSTALL_DIR/d2-$VERSION\" && make install PREFIX=\"$PREFIX\"'"
@@ -365,11 +361,7 @@ install_tala_standalone() {
 
   fetch_gh "$asset_url" "$CACHE_DIR/$ARCHIVE" 'application/octet-stream'
 
-  sh_c="sh_c"
-  if ! is_prefix_writable; then
-    sh_c="sudo_sh_c"
-  fi
-
+  ensure_prefix_sh_c
   "$sh_c" mkdir -p "'$INSTALL_DIR'"
   "$sh_c" tar -C "$INSTALL_DIR" -xzf "$CACHE_DIR/$ARCHIVE"
   "$sh_c" sh -c "'cd \"$INSTALL_DIR/tala-$VERSION\" && make install PREFIX=\"$PREFIX\"'"
@@ -417,11 +409,7 @@ uninstall_d2_standalone() {
     return 1
   fi
 
-  sh_c="sh_c"
-  if ! is_prefix_writable; then
-    sh_c="sudo_sh_c"
-  fi
-
+  ensure_prefix_sh_c
   "$sh_c" sh -c "'cd \"$INSTALL_DIR/d2-$INSTALLED_VERSION\" && make uninstall PREFIX=\"$PREFIX\"'"
   "$sh_c" rm -rf "$INSTALL_DIR/d2-$INSTALLED_VERSION"
 }
@@ -439,24 +427,13 @@ uninstall_tala_standalone() {
     return 1
   fi
 
-  sh_c="sh_c"
-  if ! is_prefix_writable; then
-    sh_c="sudo_sh_c"
-  fi
-
+  ensure_prefix_sh_c
   "$sh_c" sh -c "'cd \"$INSTALL_DIR/tala-$INSTALLED_VERSION\" && make uninstall PREFIX=\"$PREFIX\"'"
   "$sh_c" rm -rf "$INSTALL_DIR/tala-$INSTALLED_VERSION"
 }
 
 uninstall_tala_brew() {
   sh_c brew remove tala
-}
-
-is_prefix_writable() {
-  # The reason for checking whether $INSTALL_DIR is writable is that on macOS you have
-  # /usr/local owned by root but you don't need root to write to its subdirectories which
-  # is all we want to do.
-  is_writable_dir "$INSTALL_DIR"
 }
 
 cache_dir() {

@@ -253,7 +253,7 @@ init_remote_macos() {
   sh_c ssh "$REMOTE_HOST" '"/bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""'
   sh_c ssh "$REMOTE_HOST" 'PATH="/usr/local/bin:/opt/homebrew/bin:\$PATH" brew update'
   sh_c ssh "$REMOTE_HOST" 'PATH="/usr/local/bin:/opt/homebrew/bin:\$PATH" brew upgrade'
-  sh_c ssh "$REMOTE_HOST" 'PATH="/usr/local/bin:/opt/homebrew/bin:\$PATH" brew install go'
+  sh_c ssh "$REMOTE_HOST" 'PATH="/usr/local/bin:/opt/homebrew/bin:\$PATH" brew install go rsync'
 }
 
 main "$@"
