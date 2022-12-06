@@ -24,10 +24,6 @@ func (obj *Object) IsSequenceDiagramGroup() bool {
 	}
 	for _, e := range obj.Graph.Edges {
 		if e.Src == obj || e.Dst == obj {
-			if obj.AbsID() == "choo" {
-				println("\033[1;31m--- DEBUG:", "=======================", "\033[m")
-				println("\033[1;31m--- DEBUG:", e.AbsID(), "\033[m")
-			}
 			return false
 		}
 	}
