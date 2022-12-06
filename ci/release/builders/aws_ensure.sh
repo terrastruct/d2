@@ -233,6 +233,9 @@ sudo -E apt-get update -y
 sudo -E apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 sudo groupadd docker || true
 sudo usermod -aG docker \$USER
+
+mkdir -p \$HOME/.local/bin
+mkdir -p \$HOME/.local/share/man
 EOF
   init_remote_env
 
