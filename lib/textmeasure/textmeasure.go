@@ -29,23 +29,27 @@ func init() {
 // Ruler allows for effiecient and convenient text drawing.
 //
 // To create a Ruler object, use the New constructor:
-//   txt := text.New(pixel.ZV, text.NewAtlas(face, text.ASCII))
+//
+//	txt := text.New(pixel.ZV, text.NewAtlas(face, text.ASCII))
 //
 // As suggested by the constructor, a Ruler object is always associated with one font face and a
 // fixed set of runes. For example, the Ruler we created above can draw text using the font face
 // contained in the face variable and is capable of drawing ASCII characters.
 //
 // Here we create a Ruler object which can draw ASCII and Katakana characters:
-//   txt := text.New(0, text.NewAtlas(face, text.ASCII, text.RangeTable(unicode.Katakana)))
+//
+//	txt := text.New(0, text.NewAtlas(face, text.ASCII, text.RangeTable(unicode.Katakana)))
 //
 // Similarly to IMDraw, Ruler functions as a buffer. It implements io.Writer interface, so writing
 // text to it is really simple:
-//   fmt.Print(txt, "Hello, world!")
+//
+//	fmt.Print(txt, "Hello, world!")
 //
 // Newlines, tabs and carriage returns are supported.
 //
 // Finally, if we want the written text to show up on some other Target, we can draw it:
-//   txt.Draw(target)
+//
+//	txt.Draw(target)
 //
 // Ruler exports two important fields: Orig and Dot. Dot is the position where the next character
 // will be written. Dot is automatically moved when writing to a Ruler object, but you can also
@@ -90,14 +94,15 @@ type Ruler struct {
 // will be initially set to orig.
 //
 // Here we create a Ruler capable of drawing ASCII characters using the Go Regular font.
-//   ttf, err := truetype.Parse(goregular.TTF)
-//   if err != nil {
-//       panic(err)
-//   }
-//   face := truetype.NewFace(ttf, &truetype.Options{
-//       Size: 14,
-//   })
-//   txt := text.New(orig, text.NewAtlas(face, text.ASCII))
+//
+//	ttf, err := truetype.Parse(goregular.TTF)
+//	if err != nil {
+//	    panic(err)
+//	}
+//	face := truetype.NewFace(ttf, &truetype.Options{
+//	    Size: 14,
+//	})
+//	txt := text.New(orig, text.NewAtlas(face, text.ASCII))
 func NewRuler() (*Ruler, error) {
 	origin := geo.NewPoint(0, 0)
 	r := &Ruler{
@@ -147,9 +152,9 @@ func (r *Ruler) addFontSize(font d2fonts.Font) {
 	r.tabWidths[font] = atlas.glyph(' ').advance * TAB_SIZE
 }
 
-func (t *Ruler) Measure(font d2fonts.Font, s string) (width, height int) {
+func (t *Ruler) Measure(font d2fonts.Font, s string) (width, height int64) {
 	w, h := t.MeasurePrecise(font, s)
-	return int(math.Ceil(w)), int(math.Ceil(h))
+	return int64(math.Ceil(w)), int64(math.Ceil(h))
 }
 
 func (t *Ruler) MeasurePrecise(font d2fonts.Font, s string) (width, height float64) {

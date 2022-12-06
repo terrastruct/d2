@@ -90,7 +90,7 @@ func init() {
 	)
 }
 
-func MeasureMarkdown(mdText string, ruler *Ruler) (width, height int, err error) {
+func MeasureMarkdown(mdText string, ruler *Ruler) (width, height int64, err error) {
 	render, err := RenderMarkdown(mdText)
 	if err != nil {
 		return width, height, err
@@ -117,7 +117,7 @@ func MeasureMarkdown(mdText string, ruler *Ruler) (width, height int, err error)
 	bodyNode := doc.Find("body").First().Nodes[0]
 	bodyAttrs := ruler.measureNode(0, bodyNode, font)
 
-	return int(math.Ceil(bodyAttrs.width)), int(math.Ceil(bodyAttrs.height)), nil
+	return int64(math.Ceil(bodyAttrs.width)), int64(math.Ceil(bodyAttrs.height)), nil
 }
 
 func hasPrev(n *html.Node) bool {

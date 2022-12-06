@@ -47,7 +47,7 @@ var styleCSS string
 //go:embed github-markdown.css
 var mdCSS string
 
-func setViewbox(writer io.Writer, diagram *d2target.Diagram) (width int, height int) {
+func setViewbox(writer io.Writer, diagram *d2target.Diagram) (width int64, height int64) {
 	tl, br := diagram.BoundingBox()
 	w := br.X - tl.X + padding*2
 	h := br.Y - tl.Y + padding*2
@@ -236,7 +236,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 }
 
 // compute the (dx, dy) adjustment to apply to get the arrowhead-adjusted end point
-func arrowheadAdjustment(start, end *geo.Point, arrowhead d2target.Arrowhead, edgeStrokeWidth, shapeStrokeWidth int) *geo.Point {
+func arrowheadAdjustment(start, end *geo.Point, arrowhead d2target.Arrowhead, edgeStrokeWidth, shapeStrokeWidth int64) *geo.Point {
 	distance := (float64(edgeStrokeWidth) + float64(shapeStrokeWidth)) / 2.0
 	if arrowhead != d2target.NoArrowhead {
 		distance += float64(edgeStrokeWidth)
@@ -338,7 +338,7 @@ func pathData(connection d2target.Connection, idToShape map[string]d2target.Shap
 	return strings.Join(path, " ")
 }
 
-func makeLabelMask(labelTL *geo.Point, width, height int) string {
+func makeLabelMask(labelTL *geo.Point, width, height int64) string {
 	return fmt.Sprintf(`<rect x="%f" y="%f" width="%d" height="%d" fill="black"></rect>`,
 		labelTL.X, labelTL.Y,
 		width,
@@ -1041,7 +1041,7 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 
 type DiagramObject interface {
 	GetID() string
-	GetZIndex() int
+	GetZIndex() int64
 }
 
 // sortObjects sorts all diagrams objects (shapes and connections) in the desired drawing order

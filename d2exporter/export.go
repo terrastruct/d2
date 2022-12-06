@@ -50,7 +50,8 @@ func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
 		shape.Stroke = obj.Attributes.Style.Stroke.Value
 	}
 	if obj.Attributes.Style.StrokeWidth != nil {
-		shape.StrokeWidth, _ = strconv.Atoi(obj.Attributes.Style.StrokeWidth.Value)
+		tmp, _ := strconv.Atoi(obj.Attributes.Style.StrokeWidth.Value)
+		shape.StrokeWidth = int64(tmp)
 	}
 	if obj.Attributes.Style.Shadow != nil {
 		shape.Shadow, _ = strconv.ParseBool(obj.Attributes.Style.Shadow.Value)
@@ -89,10 +90,10 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	shape.SetType(obj.Attributes.Shape.Value)
 	shape.ID = obj.AbsID()
 	shape.ZIndex = obj.ZIndex
-	shape.Level = int(obj.Level())
-	shape.Pos = d2target.NewPoint(int(obj.TopLeft.X), int(obj.TopLeft.Y))
-	shape.Width = int(obj.Width)
-	shape.Height = int(obj.Height)
+	shape.Level = int64(obj.Level())
+	shape.Pos = d2target.NewPoint(int64(obj.TopLeft.X), int64(obj.TopLeft.Y))
+	shape.Width = int64(obj.Width)
+	shape.Height = int64(obj.Height)
 
 	text := obj.Text()
 	shape.Bold = text.IsBold
@@ -145,7 +146,7 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection {
 	connection := d2target.BaseConnection()
 	connection.ID = edge.AbsID()
-	connection.ZIndex = edge.ZIndex
+	connection.ZIndex = int64(edge.ZIndex)
 	// edge.Edge.ID = go2.StringToIntHash(connection.ID)
 	text := edge.Text()
 
@@ -197,7 +198,8 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 	}
 
 	if edge.Attributes.Style.StrokeWidth != nil {
-		connection.StrokeWidth, _ = strconv.Atoi(edge.Attributes.Style.StrokeWidth.Value)
+		tmp, _ := strconv.Atoi(edge.Attributes.Style.StrokeWidth.Value)
+		connection.StrokeWidth = int64(tmp)
 	}
 
 	connection.FontSize = text.FontSize

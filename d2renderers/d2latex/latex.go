@@ -53,7 +53,7 @@ func Render(s string) (_ string, err error) {
 	return val.String(), nil
 }
 
-func Measure(s string) (width, height int, err error) {
+func Measure(s string) (width, height int64, err error) {
 	defer xdefer.Errorf(&err, "latex failed to parse")
 	svg, err := Render(s)
 	if err != nil {
@@ -77,5 +77,5 @@ func Measure(s string) (width, height int, err error) {
 		return 0, 0, fmt.Errorf("svg parsing failed for latex: %v", svg)
 	}
 
-	return int(math.Ceil(wf * float64(pxPerEx))), int(math.Ceil(hf * float64(pxPerEx))), nil
+	return int64(math.Ceil(wf * float64(pxPerEx))), int64(math.Ceil(hf * float64(pxPerEx))), nil
 }

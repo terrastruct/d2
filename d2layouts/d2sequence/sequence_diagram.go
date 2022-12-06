@@ -39,27 +39,27 @@ type sequenceDiagram struct {
 	yStep          float64
 	maxActorHeight float64
 
-	verticalIndices map[string]int
+	verticalIndices map[string]int64
 }
 
-func getObjEarliestLineNum(o *d2graph.Object) int {
-	min := int(math.MaxInt64)
+func getObjEarliestLineNum(o *d2graph.Object) (min int64) {
+	min = math.MaxInt64
 	for _, ref := range o.References {
 		if ref.MapKey == nil {
 			continue
 		}
-		min = go2.IntMin(min, ref.MapKey.Range.Start.Line)
+		min = int64(math.Min(float64(min), float64(ref.MapKey.Range.Start.Line)))
 	}
 	return min
 }
 
-func getEdgeEarliestLineNum(e *d2graph.Edge) int {
-	min := int(math.MaxInt64)
+func getEdgeEarliestLineNum(e *d2graph.Edge) (min int64) {
+	min = math.MaxInt64
 	for _, ref := range e.References {
 		if ref.MapKey == nil {
 			continue
 		}
-		min = go2.IntMin(min, ref.MapKey.Range.Start.Line)
+		min = int64(math.Min(float64(min), float64(ref.MapKey.Range.Start.Line)))
 	}
 	return min
 }
@@ -96,7 +96,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 		actorXStep:      make([]float64, len(actors)-1),
 		yStep:           MIN_MESSAGE_DISTANCE,
 		maxActorHeight:  0.,
-		verticalIndices: make(map[string]int),
+		verticalIndices: make(map[string]int64),
 	}
 
 	for rank, actor := range actors {
@@ -294,10 +294,11 @@ func (sd *sequenceDiagram) placeActors() {
 // ┌──────────────┐
 // │     actor    │
 // └──────┬───────┘
-//        │
-//        │ lifeline
-//        │
-//        │
+//
+//	│
+//	│ lifeline
+//	│
+//	│
 func (sd *sequenceDiagram) addLifelineEdges() {
 	lastRoute := sd.messages[len(sd.messages)-1].Route
 	endY := 0.
@@ -365,14 +366,15 @@ func (sd *sequenceDiagram) placeNotes() {
 // ┌──────────┐
 // │  actor   │
 // └────┬─────┘
-//    ┌─┴──┐
-//    │    │
-//    |span|
-//    │    │
-//    └─┬──┘
-//      │
-//   lifeline
-//      │
+//
+//	 ┌─┴──┐
+//	 │    │
+//	 |span|
+//	 │    │
+//	 └─┬──┘
+//	   │
+//	lifeline
+//	   │
 func (sd *sequenceDiagram) placeSpans() {
 	// quickly find the span center X
 	rankToX := make(map[int]float64)

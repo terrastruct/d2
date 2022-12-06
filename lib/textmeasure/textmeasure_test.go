@@ -76,7 +76,7 @@ func TestFontMeasure(t *testing.T) {
 }
 
 type dimensions struct {
-	width, height int
+	width, height int64
 }
 
 var mdTexts = map[string]dimensions{

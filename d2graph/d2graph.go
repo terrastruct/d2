@@ -20,7 +20,7 @@ import (
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
-const INNER_LABEL_PADDING int = 5
+const INNER_LABEL_PADDING int64 = 5
 
 // TODO: Refactor with a light abstract layer on top of AST implementing scenarios,
 // variables, imports, substitutions and then a final set of structures representing
@@ -70,8 +70,8 @@ type Object struct {
 
 	*geo.Box      `json:"box,omitempty"`
 	LabelPosition *string `json:"labelPosition,omitempty"`
-	LabelWidth    *int    `json:"labelWidth,omitempty"`
-	LabelHeight   *int    `json:"labelHeight,omitempty"`
+	LabelWidth    *int64  `json:"labelWidth,omitempty"`
+	LabelHeight   *int64  `json:"labelHeight,omitempty"`
 	IconPosition  *string `json:"iconPosition,omitempty"`
 
 	Class    *d2target.Class    `json:"class,omitempty"`
@@ -82,7 +82,7 @@ type Object struct {
 
 	Attributes Attributes `json:"attributes"`
 
-	ZIndex int `json:"zIndex"`
+	ZIndex int64 `json:"zIndex"`
 }
 
 type Attributes struct {
@@ -652,8 +652,8 @@ func (obj *Object) AppendReferences(ida []string, ref Reference, unresolvedObj *
 type Edge struct {
 	Index int `json:"index"`
 
-	MinWidth  int `json:"minWidth"`
-	MinHeight int `json:"minHeight"`
+	MinWidth  int64 `json:"minWidth"`
+	MinHeight int64 `json:"minHeight"`
 
 	SrcTableColumnIndex *int `json:"srcTableColumnIndex,omitempty"`
 	DstTableColumnIndex *int `json:"dstTableColumnIndex,omitempty"`
@@ -844,8 +844,8 @@ func getTextDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2
 	}
 
 	if ruler != nil {
-		var w int
-		var h int
+		var w int64
+		var h int64
 		if t.Language != "" {
 			w, h = ruler.Measure(d2fonts.SourceCodePro.Font(t.FontSize, d2fonts.FONT_STYLE_REGULAR), t.Text)
 			// padding
@@ -986,7 +986,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			if anyRowText != nil {
 				// 10px of padding top and bottom so text doesn't look squished
 				rowHeight := getTextDimensions(mtexts, ruler, anyRowText).Height + 20
-				obj.Height = float64(rowHeight * (len(obj.Class.Fields) + len(obj.Class.Methods) + 2))
+				obj.Height = float64(rowHeight * int64(len(obj.Class.Fields)+len(obj.Class.Methods)+2))
 			}
 			// Leave room for padding
 			obj.Width = float64(maxWidth + 100)
@@ -1006,7 +1006,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 
 			// The rows get padded a little due to header font being larger than row font
-			obj.Height = float64(dims.Height * (len(obj.SQLTable.Columns) + 1))
+			obj.Height = float64(dims.Height * int64(len(obj.SQLTable.Columns)+1))
 			// Leave room for padding
 			obj.Width = float64(maxWidth + 100)
 

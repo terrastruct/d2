@@ -44,10 +44,10 @@ func (diagram Diagram) HashID() (string, error) {
 }
 
 func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
-	x1 := int(math.MaxInt64)
-	y1 := int(math.MaxInt64)
-	x2 := int(-math.MaxInt64)
-	y2 := int(-math.MaxInt64)
+	x1 := int64(math.MaxInt64)
+	y1 := int64(math.MaxInt64)
+	x2 := int64(-math.MaxInt64)
+	y2 := int64(-math.MaxInt64)
 
 	for _, targetShape := range diagram.Shapes {
 		x1 = go2.Min(x1, targetShape.Pos.X)
@@ -71,27 +71,27 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			)
 
 			labelTL := labelPosition.GetPointOnBox(s.GetBox(), label.PADDING, float64(targetShape.LabelWidth), float64(targetShape.LabelHeight))
-			x1 = go2.Min(x1, int(labelTL.X))
-			y1 = go2.Min(y1, int(labelTL.Y))
-			x2 = go2.Max(x2, int(labelTL.X)+targetShape.LabelWidth)
-			y2 = go2.Max(y2, int(labelTL.Y)+targetShape.LabelHeight)
+			x1 = go2.Min(x1, int64(labelTL.X))
+			y1 = go2.Min(y1, int64(labelTL.Y))
+			x2 = go2.Max(x2, int64(labelTL.X)+targetShape.LabelWidth)
+			y2 = go2.Max(y2, int64(labelTL.Y)+targetShape.LabelHeight)
 		}
 	}
 
 	for _, connection := range diagram.Connections {
 		for _, point := range connection.Route {
-			x1 = go2.Min(x1, int(math.Floor(point.X)))
-			y1 = go2.Min(y1, int(math.Floor(point.Y)))
-			x2 = go2.Max(x2, int(math.Ceil(point.X)))
-			y2 = go2.Max(y2, int(math.Ceil(point.Y)))
+			x1 = go2.Min(x1, int64(math.Floor(point.X)))
+			y1 = go2.Min(y1, int64(math.Floor(point.Y)))
+			x2 = go2.Max(x2, int64(math.Ceil(point.X)))
+			y2 = go2.Max(y2, int64(math.Ceil(point.Y)))
 		}
 
 		if connection.Label != "" {
 			labelTL := connection.GetLabelTopLeft()
-			x1 = go2.Min(x1, int(labelTL.X))
-			y1 = go2.Min(y1, int(labelTL.Y))
-			x2 = go2.Max(x2, int(labelTL.X)+connection.LabelWidth)
-			y2 = go2.Max(y2, int(labelTL.Y)+connection.LabelHeight)
+			x1 = go2.Min(x1, int64(labelTL.X))
+			y1 = go2.Min(y1, int64(labelTL.Y))
+			x2 = go2.Max(x2, int64(labelTL.X)+connection.LabelWidth)
+			y2 = go2.Max(y2, int64(labelTL.Y)+connection.LabelHeight)
 		}
 	}
 
@@ -107,12 +107,12 @@ type Shape struct {
 	Type string `json:"type"`
 
 	Pos    Point `json:"pos"`
-	Width  int   `json:"width"`
-	Height int   `json:"height"`
+	Width  int64 `json:"width"`
+	Height int64 `json:"height"`
 
 	Opacity     float64 `json:"opacity"`
 	StrokeDash  float64 `json:"strokeDash"`
-	StrokeWidth int     `json:"strokeWidth"`
+	StrokeWidth int64   `json:"strokeWidth"`
 
 	BorderRadius int `json:"borderRadius"`
 
@@ -139,8 +139,8 @@ type Shape struct {
 
 	LabelPosition string `json:"labelPosition,omitempty"`
 
-	ZIndex int `json:"zIndex"`
-	Level  int `json:"level"`
+	ZIndex int64 `json:"zIndex"`
+	Level  int64 `json:"level"`
 }
 
 func (s *Shape) SetType(t string) {
@@ -154,7 +154,7 @@ func (s *Shape) SetType(t string) {
 	s.Type = strings.ToLower(t)
 }
 
-func (s Shape) GetZIndex() int {
+func (s Shape) GetZIndex() int64 {
 	return s.ZIndex
 }
 
@@ -173,8 +173,8 @@ type Text struct {
 	Bold      bool `json:"bold"`
 	Underline bool `json:"underline"`
 
-	LabelWidth  int `json:"labelWidth"`
-	LabelHeight int `json:"labelHeight"`
+	LabelWidth  int64 `json:"labelWidth"`
+	LabelHeight int64 `json:"labelHeight"`
 }
 
 func BaseShape() *Shape {
@@ -202,7 +202,7 @@ type Connection struct {
 
 	Opacity     float64 `json:"opacity"`
 	StrokeDash  float64 `json:"strokeDash"`
-	StrokeWidth int     `json:"strokeWidth"`
+	StrokeWidth int64   `json:"strokeWidth"`
 	Stroke      string  `json:"stroke"`
 
 	Text
@@ -216,7 +216,7 @@ type Connection struct {
 	Tooltip  string   `json:"tooltip"`
 	Icon     *url.URL `json:"icon"`
 
-	ZIndex int `json:"zIndex"`
+	ZIndex int64 `json:"zIndex"`
 }
 
 func BaseConnection() *Connection {
@@ -244,7 +244,7 @@ func (c *Connection) GetLabelTopLeft() *geo.Point {
 	)
 }
 
-func (c Connection) GetZIndex() int {
+func (c Connection) GetZIndex() int64 {
 	return c.ZIndex
 }
 
@@ -288,11 +288,11 @@ func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
 }
 
 type Point struct {
-	X int `json:"x"`
-	Y int `json:"y"`
+	X int64 `json:"x"`
+	Y int64 `json:"y"`
 }
 
-func NewPoint(x, y int) Point {
+func NewPoint(x, y int64) Point {
 	return Point{X: x, Y: y}
 }
 
@@ -373,11 +373,11 @@ type MText struct {
 }
 
 type TextDimensions struct {
-	Width  int `json:"width"`
-	Height int `json:"height"`
+	Width  int64 `json:"width"`
+	Height int64 `json:"height"`
 }
 
-func NewTextDimensions(w, h int) *TextDimensions {
+func NewTextDimensions(w, h int64) *TextDimensions {
 	return &TextDimensions{Width: w, Height: h}
 }
 
@@ -424,32 +424,32 @@ func init() {
 	}
 }
 
-func (s *Shape) GetIconSize(box *geo.Box) int {
+func (s *Shape) GetIconSize(box *geo.Box) int64 {
 	iconPosition := label.Position(s.IconPosition)
 
-	minDimension := int(math.Min(box.Width, box.Height))
-	halfMinDimension := int(math.Ceil(0.5 * float64(minDimension)))
+	minDimension := int64(math.Min(box.Width, box.Height))
+	halfMinDimension := int64(math.Ceil(0.5 * float64(minDimension)))
 
-	var size int
+	var size int64
 
 	if iconPosition == label.InsideMiddleCenter {
 		size = halfMinDimension
 	} else {
-		size = go2.IntMin(
-			minDimension,
-			go2.IntMax(DEFAULT_ICON_SIZE, halfMinDimension),
-		)
+		size = int64(math.Min(
+			float64(minDimension),
+			math.Max(float64(DEFAULT_ICON_SIZE), float64(halfMinDimension)),
+		))
 	}
 
-	size = go2.IntMin(size, MAX_ICON_SIZE)
+	size = int64(math.Min(float64(size), float64(MAX_ICON_SIZE)))
 
 	if !iconPosition.IsOutside() {
-		size = go2.IntMin(size,
-			go2.IntMin(
-				go2.IntMax(int(box.Width)-2*label.PADDING, 0),
-				go2.IntMax(int(box.Height)-2*label.PADDING, 0),
+		size = int64(math.Min(float64(size),
+			math.Min(
+				math.Max(float64(int64(box.Width)-2*label.PADDING), 0),
+				math.Max(float64(int64(box.Height)-2*label.PADDING), 0),
 			),
-		)
+		))
 	}
 
 	return size
