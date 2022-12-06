@@ -761,6 +761,9 @@ main() {
             METHOD=standalone
           fi
           ;;
+        linux|windows)
+          METHOD=standalone
+          ;;
         *)
           warn "unrecognized OS $OS, falling back to --method=standalone"
           METHOD=standalone
@@ -832,7 +835,7 @@ EOF
   else
     log "Run ${TALA+D2_LAYOUT=tala }d2 --help for usage."
   fi
-  if ! manpath | grep -qF "$PREFIX/share/man"; then
+  if ! manpath 2>/dev/null | grep -qF "$PREFIX/share/man"; then
     logcat >&2 <<EOF
 Extend your \$MANPATH to view d2's manpages:
   export MANPATH=$PREFIX/share/man:\$MANPATH

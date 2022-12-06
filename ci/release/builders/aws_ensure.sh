@@ -208,12 +208,7 @@ init_remote_hosts() {
 }
 
 init_remote_linux() {
-  while true; do
-    if sh_c ssh "$REMOTE_HOST" :; then
-      break
-    fi
-    sleep 5
-  done
+  wait_remote_host
 
   sh_c ssh "$REMOTE_HOST" sh -s -- <<EOF
 set -eux
@@ -239,17 +234,13 @@ sudo -E apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-
 sudo groupadd docker || true
 sudo usermod -aG docker \$USER
 EOF
+  init_remote_env
 
   sh_c ssh "$REMOTE_HOST" 'sudo reboot' || true
 }
 
 init_remote_macos() {
-  while true; do
-    if sh_c ssh "$REMOTE_HOST" :; then
-      break
-    fi
-    sleep 5
-  done
+  wait_remote_host
 
   sh_c ssh "$REMOTE_HOST" '"/bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""'
 
@@ -261,18 +252,40 @@ init_remote_macos() {
   if ! echo "$shellenv" | sh_c ssh "$REMOTE_HOST" "IFS= read -r regex\; \"grep -qF \\\"\\\$regex\\\" ~/.zshrc\""; then
     echo "$shellenv" | sh_c ssh "$REMOTE_HOST" "\"(echo && cat) >> ~/.zshrc\""
   fi
+  if ! sh_c ssh "$REMOTE_HOST" "'grep -qF \\\$HOME/.local ~/.zshrc'"; then
+    sh_c ssh "$REMOTE_HOST" "\"(echo && cat) >> ~/.zshrc\"" <<EOF
+PATH=\$HOME/.local/bin:\$PATH
+MANPATH=\$HOME/.local/share/man:\$MANPATH
+EOF
+  fi
 
-  # macOS is a joke.
-  sh_c ssh "$REMOTE_HOST" '"rm -f ~/.ssh/environment"'
-  sh_c ssh "$REMOTE_HOST" '"echo PATH=\$HOME/.local/bin:\$(. ~/.zshrc && echo "\$PATH") >\$HOME/.ssh/environment"'
-  sh_c ssh "$REMOTE_HOST" '"echo MANPATH=\$HOME/.local/share/man:\$(. ~/.zshrc && echo "\$MANPATH") >>\$HOME/.ssh/environment"'
-
-  sh_c ssh "$REMOTE_HOST" "sudo sed -i.bak '\"s/#PermitUserEnvironment no/PermitUserEnvironment yes/\"' /etc/ssh/sshd_config"
-  sh_c ssh "$REMOTE_HOST" "sudo launchctl stop com.openssh.sshd"
-
+  init_remote_env
   sh_c ssh "$REMOTE_HOST" brew update
   sh_c ssh "$REMOTE_HOST" brew upgrade
   sh_c ssh "$REMOTE_HOST" brew install go rsync
+}
+
+init_remote_env() {
+  sh_c ssh "$REMOTE_HOST" '"rm -f ~/.ssh/environment"'
+  sh_c ssh "$REMOTE_HOST" '"echo PATH=\$(echo \"echo \\\$PATH\" | \"\$SHELL\" -ils) >\$HOME/.ssh/environment"'
+  sh_c ssh "$REMOTE_HOST" '"echo MANPATH=\$(echo \"echo \\\$MANPATH\" | \"\$SHELL\" -ils) >>\$HOME/.ssh/environment"'
+
+  sh_c ssh "$REMOTE_HOST" "sudo sed -i.bak '\"s/#PermitUserEnvironment no/PermitUserEnvironment yes/\"' /etc/ssh/sshd_config"
+
+  if sh_c ssh "$REMOTE_HOST" uname | grep -qF Darwin; then
+    sh_c ssh "$REMOTE_HOST" "sudo launchctl stop com.openssh.sshd"
+  else
+    sh_c ssh "$REMOTE_HOST" "sudo systemctl restart sshd"
+  fi
+}
+
+wait_remote_host() {
+  while true; do
+    if sh_c ssh "$REMOTE_HOST" true; then
+      break
+    fi
+    sleep 5
+  done
 }
 
 main "$@"
