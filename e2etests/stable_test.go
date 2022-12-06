@@ -1431,7 +1431,7 @@ c: "just an actor"
 			script: `How this is rendered: {
   shape: sequence_diagram
 
-	CLI; d2ast; d2compiler; d2layout; d2exporter; d2themes; d2renderer; d2dagrelayout
+	CLI; d2ast; d2compiler; d2layout; d2exporter; d2themes; d2renderer; d2sequencelayout; d2dagrelayout
 
   CLI -> d2ast: "'How this is rendered: {...}'"
   d2ast -> CLI: tokenized AST
