@@ -1031,7 +1031,7 @@ fetch_release_info() {
   fi
 
   log "fetching info on $VERSION version of $REPO"
-  RELEASE_INFO=$(mktemp -d)/release-info.json
+  RELEASE_INFO=$(mktempd)/release-info.json
   if [ "$VERSION" = latest ]; then
     release_info_url="https://api.github.com/repos/$REPO/releases/$VERSION"
   else
