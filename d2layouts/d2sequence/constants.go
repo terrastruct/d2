@@ -6,7 +6,7 @@ const HORIZONTAL_PAD = 50.
 // leaves at least 25 units of space on the top/bottom when computing the space required between messages
 const VERTICAL_PAD = 50.
 
-const MIN_ACTOR_DISTANCE = 70.
+const MIN_ACTOR_DISTANCE = 250.
 
 const MIN_ACTOR_WIDTH = 150.
 
@@ -36,9 +36,9 @@ const LIFELINE_STROKE_DASH int = 6
 const LIFELINE_LABEL_PAD = 5.
 
 const (
-	GROUP_Z_INDEX    = 1
-	LIFELINE_Z_INDEX = 2
-	SPAN_Z_INDEX     = 3
+	LIFELINE_Z_INDEX = 1
+	SPAN_Z_INDEX     = 2
+	GROUP_Z_INDEX    = 3
 	MESSAGE_Z_INDEX  = 4
 	NOTE_Z_INDEX     = 5
 )

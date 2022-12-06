@@ -32,6 +32,10 @@ type sequenceDiagram struct {
 	firstMessage map[*d2graph.Object]*d2graph.Edge
 	lastMessage  map[*d2graph.Object]*d2graph.Edge
 
+	// the distance from actor[i] center to actor[i+1] center
+	// every neighbor actors need different distances depending on the message labels between them
+	actorXStep []float64
+
 	yStep          float64
 	maxActorHeight float64
 
@@ -72,9 +76,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 				curr := queue[0]
 				groups = append(groups, curr)
 				queue = queue[1:]
-				for _, c := range curr.ChildrenArray {
-					queue = append(queue, c)
-				}
+				queue = append(queue, curr.ChildrenArray...)
 			}
 		} else {
 			actors = append(actors, obj)
@@ -91,6 +93,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 		objectRank:      make(map[*d2graph.Object]int),
 		firstMessage:    make(map[*d2graph.Object]*d2graph.Edge),
 		lastMessage:     make(map[*d2graph.Object]*d2graph.Edge),
+		actorXStep:      make([]float64, len(actors)-1),
 		yStep:           MIN_MESSAGE_DISTANCE,
 		maxActorHeight:  0.,
 		verticalIndices: make(map[string]int),
@@ -107,6 +110,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 
 		queue := make([]*d2graph.Object, len(actor.ChildrenArray))
 		copy(queue, actor.ChildrenArray)
+		maxNoteWidth := 0.
 		for len(queue) > 0 {
 			child := queue[0]
 			queue = queue[1:]
@@ -119,6 +123,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 				sd.notes = append(sd.notes, child)
 				sd.objectRank[child] = rank
 				child.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+				maxNoteWidth = math.Max(maxNoteWidth, child.Width)
 			} else {
 				// spans have no labels
 				// TODO why not? Spans should be able to
@@ -130,12 +135,32 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 
 			queue = append(queue, child.ChildrenArray...)
 		}
+
+		if rank != len(actors)-1 {
+			actorHW := actor.Width / 2.
+			nextActorHW := actors[rank+1].Width / 2.
+			sd.actorXStep[rank] = math.Max(actorHW+nextActorHW+HORIZONTAL_PAD, MIN_ACTOR_DISTANCE)
+			sd.actorXStep[rank] = math.Max(maxNoteWidth/2.+HORIZONTAL_PAD, sd.actorXStep[rank])
+			if rank > 0 {
+				sd.actorXStep[rank-1] = math.Max(maxNoteWidth/2.+HORIZONTAL_PAD, sd.actorXStep[rank-1])
+			}
+		}
 	}
 
 	for _, message := range sd.messages {
 		sd.verticalIndices[message.AbsID()] = getEdgeEarliestLineNum(message)
 		sd.yStep = math.Max(sd.yStep, float64(message.LabelDimensions.Height))
 
+		// ensures that long labels, spanning over multiple actors, don't make for large gaps between actors
+		// by distributing the label length across the actors rank difference
+		rankDiff := math.Abs(float64(sd.objectRank[message.Src]) - float64(sd.objectRank[message.Dst]))
+		if rankDiff != 0 {
+			// rankDiff = 0 for self edges
+			distributedLabelWidth := float64(message.LabelDimensions.Width) / rankDiff
+			for rank := sd.objectRank[message.Src]; rank <= sd.objectRank[message.Dst]-1; rank++ {
+				sd.actorXStep[rank] = math.Max(sd.actorXStep[rank], distributedLabelWidth+HORIZONTAL_PAD)
+			}
+		}
 		sd.lastMessage[message.Src] = message
 		if _, exists := sd.firstMessage[message.Src]; !exists {
 			sd.firstMessage[message.Src] = message
@@ -241,10 +266,10 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 	)
 }
 
-// placeActors places actors bottom aligned, side by side
+// placeActors places actors bottom aligned, side by side with centers spaced by sd.actorXStep
 func (sd *sequenceDiagram) placeActors() {
-	x := 0.
-	for _, actor := range sd.actors {
+	centerX := sd.actors[0].Width / 2.
+	for rank, actor := range sd.actors {
 		shape := actor.Attributes.Shape.Value
 		var yOffset float64
 		if shape == d2target.ShapeImage || shape == d2target.ShapePerson {
@@ -257,8 +282,11 @@ func (sd *sequenceDiagram) placeActors() {
 			actor.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			yOffset = sd.maxActorHeight - actor.Height
 		}
-		actor.TopLeft = geo.NewPoint(x, yOffset)
-		x += actor.Width + MIN_ACTOR_DISTANCE
+		halfWidth := actor.Width / 2.
+		actor.TopLeft = geo.NewPoint(math.Round(centerX-halfWidth), yOffset)
+		if rank != len(sd.actors)-1 {
+			centerX += sd.actorXStep[rank]
+		}
 	}
 }
 
@@ -511,6 +539,8 @@ func (sd *sequenceDiagram) getHeight() float64 {
 func (sd *sequenceDiagram) shift(tl *geo.Point) {
 	allObjects := append([]*d2graph.Object{}, sd.actors...)
 	allObjects = append(allObjects, sd.spans...)
+	allObjects = append(allObjects, sd.groups...)
+	allObjects = append(allObjects, sd.notes...)
 	for _, obj := range allObjects {
 		obj.TopLeft.X += tl.X
 		obj.TopLeft.Y += tl.Y

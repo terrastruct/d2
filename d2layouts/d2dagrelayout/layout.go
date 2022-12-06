@@ -256,15 +256,23 @@ func setGraphAttrs(attrs dagreGraphAttrs) string {
 	)
 }
 
+func escapeID(id string) string {
+	id = strings.ReplaceAll(id, `\n`, `\\n`)
+	// avoid an unescaped \r becoming a \n in the layout result
+	id = strings.ReplaceAll(id, "\r", `\r`)
+	return id
+}
+
 func generateAddNodeLine(id string, width, height int) string {
+	id = escapeID(id)
 	return fmt.Sprintf("g.setNode(`%s`, { id: `%s`, width: %d, height: %d });\n", id, id, width, height)
 }
 
 func generateAddParentLine(childID, parentID string) string {
-	return fmt.Sprintf("g.setParent(`%s`, `%s`);\n", childID, parentID)
+	return fmt.Sprintf("g.setParent(`%s`, `%s`);\n", escapeID(childID), escapeID(parentID))
 }
 
 func generateAddEdgeLine(fromID, toID, edgeID string) string {
 	// in dagre v is from, w is to, name is to uniquely identify
-	return fmt.Sprintf("g.setEdge({v:`%s`, w:`%s`, name:`%s` });\n", fromID, toID, edgeID)
+	return fmt.Sprintf("g.setEdge({v:`%s`, w:`%s`, name:`%s` });\n", escapeID(fromID), escapeID(toID), escapeID(edgeID))
 }

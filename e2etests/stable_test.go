@@ -1386,6 +1386,47 @@ choo: {
 `,
 		},
 		{
+			name: "sequence_diagram_nested_groups",
+			script: `shape: sequence_diagram
+
+this is a message group: {
+    _.a -> _.b
+    and this is a nested message group: {
+        _._.a -> _._.b
+        what about more nesting: {
+            _._._.a -> _._._.b
+						crazy town: {
+								_._._._.a."a note"
+								_._._._.a -> _._._._.b
+							whoa: {
+									_._._._._.a -> _._._._._.b
+							}
+            }
+        }
+    }
+}
+
+alt: {
+    case 1: {
+        _._.b -> _._.c
+    }
+    case 2: {
+        _._.b -> _._.c
+    }
+    case 3: {
+        _._.b -> _._.c
+    }
+    case 4: {
+        _._.b -> _._.c
+    }
+}
+
+b.note: "a note here to remember that padding must consider notes too"
+a.note: "just\na\nlong\nnote\nhere"
+c: "just an actor"
+`,
+		},
+		{
 			name: "sequence_diagram_real",
 			script: `How this is rendered: {
   shape: sequence_diagram
@@ -1410,6 +1451,28 @@ choo: {
   d2exporter.export -> CLI: resulting SVG
 }
 `,
+		},
+		{
+			name: "sequence_diagram_actor_distance",
+			script: `shape: sequence_diagram
+a: "an actor with a really long label that will break everything"
+c: "an\nactor\nwith\na\nreally\nlong\nlabel\nthat\nwill\nbreak\neverything"
+d: "simple"
+e: "a short one"
+b: "far away"
+f: "what if there were no labels between this actor and the previous one"
+a -> b: "short"
+a -> b: "long label for testing purposes and it must be really, really long"
+c -> d: "short"
+a -> d: "this should span many actors lifelines so we know how it will look like when redering a long label over many actors"
+d -> e: "long label for testing purposes and it must be really, really long"
+a -> f`,
+		}, {
+			name: "sequence_diagram_long_note",
+			script: `shape: sequence_diagram
+a -> b
+b.note: "a note here to remember that padding must consider notes too"
+a.note: "just\na\nlong\nnote\nhere"`,
 		},
 	}
 

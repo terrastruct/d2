@@ -99,6 +99,15 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	shape.Italic = text.IsItalic
 	shape.FontSize = text.FontSize
 
+	if obj.IsSequenceDiagram() {
+		shape.StrokeWidth = 0
+	}
+
+	if obj.IsSequenceDiagramGroup() {
+		shape.StrokeWidth = 0
+		shape.Blend = true
+	}
+
 	applyStyles(shape, obj)
 	applyTheme(shape, obj, theme)
 	shape.Color = text.GetColor(theme, shape.Italic)

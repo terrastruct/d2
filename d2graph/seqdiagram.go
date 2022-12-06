@@ -33,7 +33,7 @@ func (obj *Object) IsSequenceDiagramGroup() bool {
 			return false
 		}
 	}
-	return true
+	return obj.ContainsAnyObject(obj.Graph.Objects) || obj.ContainsAnyEdge(obj.Graph.Edges)
 }
 
 // notes are descendant of actors with no edges and no children
@@ -41,7 +41,7 @@ func (obj *Object) IsSequenceDiagramNote() bool {
 	if obj.OuterSequenceDiagram() == nil {
 		return false
 	}
-	return !obj.hasEdgeRef() && !obj.ContainsAnyEdge(obj.Graph.Edges) && len(obj.ChildrenArray) == 0
+	return !obj.hasEdgeRef() && !obj.ContainsAnyEdge(obj.Graph.Edges) && len(obj.ChildrenArray) == 0 && !obj.ContainsAnyObject(obj.Graph.Objects)
 }
 
 func (obj *Object) hasEdgeRef() bool {
@@ -51,6 +51,28 @@ func (obj *Object) hasEdgeRef() bool {
 		}
 	}
 
+	return false
+}
+
+func (obj *Object) ContainsAnyObject(objects []*Object) bool {
+	for _, o := range objects {
+		if o.ContainedBy(obj) {
+			return true
+		}
+	}
+	return false
+}
+
+func (o *Object) ContainedBy(obj *Object) bool {
+	for _, ref := range o.References {
+		curr := ref.UnresolvedScopeObj
+		for curr != nil {
+			if curr == obj {
+				return true
+			}
+			curr = curr.Parent
+		}
+	}
 	return false
 }
 
