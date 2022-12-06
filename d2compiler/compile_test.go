@@ -1553,12 +1553,44 @@ dst.id <-> src.dst_id
 
 			text: `x: {
   shape: sequence_diagram
-	a
+  a
 }
 b -> x.a
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/leaky_sequence.d2:5:1: connections within sequence diagrams can connect only to other objects within the same sequence diagram
 `,
+		},
+		{
+			name: "sequence_scoping",
+
+			text: `x: {
+  shape: sequence_diagram
+	a;b
+  group: {
+    a -> b
+    a.t1 -> b.t1
+    b.t1.t2 -> b.t1
+  }
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 7, len(g.Objects))
+				tassert.Equal(t, 3, len(g.Objects[0].ChildrenArray))
+			},
+		},
+		{
+			name: "sequence_grouped_note",
+
+			text: `shape: sequence_diagram
+a;d
+choo: {
+  d."this note"
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 4, len(g.Objects))
+				tassert.Equal(t, 3, len(g.Root.ChildrenArray))
+			},
 		},
 		{
 			name: "root_direction",

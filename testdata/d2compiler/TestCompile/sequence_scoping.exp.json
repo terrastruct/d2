@@ -1,0 +1,1059 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,0:0:0-9:0:101",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,0:0:0-8:1:100",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,0:3:3-8:0:99",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,1:2:7-1:25:30",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,1:2:7-1:7:12",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,1:2:7-1:7:12",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,1:9:14-1:25:30",
+                          "value": [
+                            {
+                              "string": "sequence_diagram",
+                              "raw_string": "sequence_diagram"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,2:1:32-2:2:33",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,2:1:32-2:2:33",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,2:1:32-2:2:33",
+                              "value": [
+                                {
+                                  "string": "a",
+                                  "raw_string": "a"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,2:3:34-2:4:35",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,2:3:34-2:4:35",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,2:3:34-2:4:35",
+                              "value": [
+                                {
+                                  "string": "b",
+                                  "raw_string": "b"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,3:2:38-7:3:98",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,3:2:38-3:7:43",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,3:2:38-3:7:43",
+                              "value": [
+                                {
+                                  "string": "group",
+                                  "raw_string": "group"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,3:9:45-7:2:97",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:4:51-4:10:57",
+                                "edges": [
+                                  {
+                                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:4:51-4:10:57",
+                                    "src": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:4:51-4:6:53",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:4:51-4:5:52",
+                                            "value": [
+                                              {
+                                                "string": "a",
+                                                "raw_string": "a"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "src_arrow": "",
+                                    "dst": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:8:55-4:10:57",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:9:56-4:10:57",
+                                            "value": [
+                                              {
+                                                "string": "b",
+                                                "raw_string": "b"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "dst_arrow": ">"
+                                  }
+                                ],
+                                "primary": {},
+                                "value": {}
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:16:74",
+                                "edges": [
+                                  {
+                                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:16:74",
+                                    "src": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:9:67",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:5:63",
+                                            "value": [
+                                              {
+                                                "string": "a",
+                                                "raw_string": "a"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:6:64-5:8:66",
+                                            "value": [
+                                              {
+                                                "string": "t1",
+                                                "raw_string": "t1"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "src_arrow": "",
+                                    "dst": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:11:69-5:16:74",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:12:70-5:13:71",
+                                            "value": [
+                                              {
+                                                "string": "b",
+                                                "raw_string": "b"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:14:72-5:16:74",
+                                            "value": [
+                                              {
+                                                "string": "t1",
+                                                "raw_string": "t1"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "dst_arrow": ">"
+                                  }
+                                ],
+                                "primary": {},
+                                "value": {}
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:19:94",
+                                "edges": [
+                                  {
+                                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:19:94",
+                                    "src": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:12:87",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:5:80",
+                                            "value": [
+                                              {
+                                                "string": "b",
+                                                "raw_string": "b"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:6:81-6:8:83",
+                                            "value": [
+                                              {
+                                                "string": "t1",
+                                                "raw_string": "t1"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:9:84-6:11:86",
+                                            "value": [
+                                              {
+                                                "string": "t2",
+                                                "raw_string": "t2"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "src_arrow": "",
+                                    "dst": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:14:89-6:19:94",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:15:90-6:16:91",
+                                            "value": [
+                                              {
+                                                "string": "b",
+                                                "raw_string": "b"
+                                              }
+                                            ]
+                                          }
+                                        },
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:17:92-6:19:94",
+                                            "value": [
+                                              {
+                                                "string": "t1",
+                                                "raw_string": "t1"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "dst_arrow": ">"
+                                  }
+                                ],
+                                "primary": {},
+                                "value": {}
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": [
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ],
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "sequence_diagram"
+          },
+          "direction": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "a",
+        "id_val": "a",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,2:1:32-2:2:33",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,2:1:32-2:2:33",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:4:51-4:6:53",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:4:51-4:5:52",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:9:67",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:5:63",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:6:64-5:8:66",
+                    "value": [
+                      {
+                        "string": "t1",
+                        "raw_string": "t1"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "a"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "b",
+        "id_val": "b",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,2:3:34-2:4:35",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,2:3:34-2:4:35",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:8:55-4:10:57",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:9:56-4:10:57",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:11:69-5:16:74",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:12:70-5:13:71",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:14:72-5:16:74",
+                    "value": [
+                      {
+                        "string": "t1",
+                        "raw_string": "t1"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:12:87",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:5:80",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:6:81-6:8:83",
+                    "value": [
+                      {
+                        "string": "t1",
+                        "raw_string": "t1"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:9:84-6:11:86",
+                    "value": [
+                      {
+                        "string": "t2",
+                        "raw_string": "t2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:14:89-6:19:94",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:15:90-6:16:91",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:17:92-6:19:94",
+                    "value": [
+                      {
+                        "string": "t1",
+                        "raw_string": "t1"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "b"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "group",
+        "id_val": "group",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,3:2:38-3:7:43",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,3:2:38-3:7:43",
+                    "value": [
+                      {
+                        "string": "group",
+                        "raw_string": "group"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "group"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "t1",
+        "id_val": "t1",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:9:67",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:5:63",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:6:64-5:8:66",
+                    "value": [
+                      {
+                        "string": "t1",
+                        "raw_string": "t1"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 1,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "t1"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "t1",
+        "id_val": "t1",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:11:69-5:16:74",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:12:70-5:13:71",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:14:72-5:16:74",
+                    "value": [
+                      {
+                        "string": "t1",
+                        "raw_string": "t1"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 1,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:12:87",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:5:80",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:6:81-6:8:83",
+                    "value": [
+                      {
+                        "string": "t1",
+                        "raw_string": "t1"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:9:84-6:11:86",
+                    "value": [
+                      {
+                        "string": "t2",
+                        "raw_string": "t2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 1,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:14:89-6:19:94",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:15:90-6:16:91",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:17:92-6:19:94",
+                    "value": [
+                      {
+                        "string": "t1",
+                        "raw_string": "t1"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 1,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "t1"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "t2",
+        "id_val": "t2",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:12:87",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:5:80",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:6:81-6:8:83",
+                    "value": [
+                      {
+                        "string": "t1",
+                        "raw_string": "t1"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:9:84-6:11:86",
+                    "value": [
+                      {
+                        "string": "t2",
+                        "raw_string": "t2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 2,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "t2"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}
