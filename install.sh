@@ -553,8 +553,9 @@ manpath() {
 }
 
 is_writable_dir() {
-  # If it can be created, we can use it.
-  hide mkdir -p "$1"
+  mkdir -p "$1" 2>/dev/null
+  # directory must exist otherwise -w returns 1 even for paths that should be writable.
+  [ -w "$1" ]
 }
 
 ensure_prefix() {
