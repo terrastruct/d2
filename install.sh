@@ -620,8 +620,13 @@ Flags:
 --edge
   Pass to build and install D2 from source. This will still use --method if set to detect
   to install the release archive for your OS, whether it's apt, yum, brew or standalone
-  if an unsupported package manager is used. To install from source like a dev would,
-  use go install oss.terrastruct.com/d2
+  if an unsupported package manager is used.
+
+  To install from source like a dev would, use go install oss.terrastruct.com/d2. There's
+  also ./ci/release/build.sh --install to build and install a proper standalone release
+  including manpages. The proper release will also ensure d2 --version shows the correct
+  version by embedding the commit hash into the binary.
+
   note: currently unimplemented.
   warn: incompatible with --tala as TALA is closed source.
 
@@ -746,7 +751,7 @@ main() {
       case "$OS" in
         macos)
           if command -v brew >/dev/null; then
-            log "detected macOS with homebrew, using homebrew for (un)installation"
+            log "detected macOS with homebrew, using homebrew for installation"
             METHOD=homebrew
           else
             warn "detected macOS without homebrew, falling back to --method=standalone"
@@ -762,7 +767,7 @@ main() {
     standalone) ;;
     homebrew) ;;
     *)
-      echoerr "unknown (un)installation method $METHOD"
+      echoerr "unknown installation method $METHOD"
       return 1
       ;;
   esac
@@ -804,6 +809,7 @@ install() {
     standalone) install_post_standalone ;;
     homebrew) install_post_brew ;;
   esac
+  install_post_warn
 }
 
 install_post_standalone() {
@@ -867,6 +873,28 @@ https://github.com/terrastruct/d2/issues
 https://github.com/terrastruct/d2/discussions
 https://discord.gg/NF6X8K4eDq
 EOF
+
+  VERSION=$(brew info d2 | head -n1 | cut -d' ' -f4)
+  VERSION=${VERSION%,}
+  if [ -n "${TALA-}" ]; then
+    TALA_VERSION=$(brew info tala | head -n1 | cut -d' ' -f4)
+    TALA_VERSION=${TALA_VERSION%,}
+  fi
+}
+
+install_post_warn() {
+  if command -v d2 >/dev/null; then
+    INSTALLED_VERSION=$(d2 --version)
+    if [ "$INSTALLED_VERSION" != "$VERSION" ]; then
+      warn "newly installed d2 $VERSION is shadowed by d2 $INSTALLED_VERSION in \$PATH"
+    fi
+  fi
+  if [ -n "${TALA-}" ] && command -v d2plugin-tala >/dev/null; then
+    INSTALLED_TALA_VERSION=$(d2plugin-tala --version)
+    if [ "$INSTALLED_TALA_VERSION" != "$TALA_VERSION" ]; then
+      warn "newly installed d2plugin-tala $TALA_VERSION is shadowed by d2plugin-tala $INSTALLED_TALA_VERSION in \$PATH"
+    fi
+  fi
 }
 
 install_d2_standalone() {
@@ -878,7 +906,7 @@ install_d2_standalone() {
   fi
 
   if command -v d2 >/dev/null; then
-    INSTALLED_VERSION="$(d2 version)"
+    INSTALLED_VERSION="$(d2 --version)"
     if [ ! "${FORCE-}" -a "$VERSION" = "$INSTALLED_VERSION" ]; then
       log "skipping installation as d2 $VERSION is already installed."
       return 0

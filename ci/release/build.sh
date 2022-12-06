@@ -109,14 +109,14 @@ main() {
   VERSION=${VERSION:-$(git_describe_ref)}
   BUILD_DIR=ci/release/build/$VERSION
   if [ -n "${HOST_ONLY-}" ]; then
-    OS=$(os)
-    ARCH=$(arch)
+    ensure_os
+    ensure_arch
     runjob "$OS-$ARCH" "build"
 
     if [ -n "${INSTALL-}" ]; then
-      sh_c make -sC "ci/release/build/$VERSION/$(os)-$(arch)/d2-$VERSION" install
+      sh_c make -sC "ci/release/build/$VERSION/$OS-$ARCH/d2-$VERSION" install
     elif [ -n "${UNINSTALL-}" ]; then
-      sh_c make -sC "ci/release/build/$VERSION/$(os)-$(arch)/d2-$VERSION" uninstall
+      sh_c make -sC "ci/release/build/$VERSION/$OS-$ARCH/d2-$VERSION" uninstall
     fi
     return 0
   fi
