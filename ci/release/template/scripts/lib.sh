@@ -84,7 +84,7 @@ if [ "${LIB_LOG-}" ]; then
 fi
 LIB_LOG=1
 
-if [ -n "${DEBUG-}" ]; then
+if [ -n "${TRACE-}" ]; then
   set -x
 fi
 

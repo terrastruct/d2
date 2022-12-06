@@ -15,7 +15,7 @@ help() {
 
   cat <<EOF
 usage: $arg0 [-d|--dry-run] [--version vX.X.X] [--edge] [--method detect] [--prefix path]
-  [--tala latest] [--force] [--uninstall]
+  [--tala latest] [--force] [--uninstall] [-x|--trace]
 
 install.sh automates the installation of D2 onto your system. It currently only supports
 the installation of standalone releases from GitHub and via Homebrew on macOS. See the
@@ -93,6 +93,9 @@ Flags:
   package manager to uninstall instead.
   note: tala will also be uninstalled if installed.
 
+-x, --trace:
+  Run script with set -x.
+
 All downloaded archives are cached into ~/.cache/d2/release. use \$XDG_CACHE_HOME to change
 path of the cached assets. Release archives are unarchived into \$PREFIX/lib/d2/d2-<VERSION>
 
@@ -146,6 +149,11 @@ main() {
       uninstall)
         flag_noarg && shift "$FLAGSHIFT"
         UNINSTALL=1
+        ;;
+      x|trace)
+        flag_noarg && shift "$FLAGSHIFT"
+        set -x
+        export TRACE=1
         ;;
       *)
         flag_errusage "unrecognized flag $FLAGRAW"
