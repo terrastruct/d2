@@ -13,7 +13,7 @@ sh_c find "$HW_BUILD_DIR" -exec touch {} \\\;
 ensure_goos
 ensure_goarch
 sh_c mkdir -p "$HW_BUILD_DIR/bin"
-sh_c CGO_ENABLED=0 go build \
+sh_c CGO_ENABLED=0 go build -trimpath \
   -ldflags "'-X oss.terrastruct.com/d2/lib/version.Version=$VERSION'" \
   -o "$HW_BUILD_DIR/bin/d2" .
 
