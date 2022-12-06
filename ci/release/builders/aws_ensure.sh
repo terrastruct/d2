@@ -250,10 +250,29 @@ init_remote_macos() {
     fi
     sleep 5
   done
+
   sh_c ssh "$REMOTE_HOST" '"/bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""'
-  sh_c ssh "$REMOTE_HOST" 'PATH="/usr/local/bin:/opt/homebrew/bin:\$PATH" brew update'
-  sh_c ssh "$REMOTE_HOST" 'PATH="/usr/local/bin:/opt/homebrew/bin:\$PATH" brew upgrade'
-  sh_c ssh "$REMOTE_HOST" 'PATH="/usr/local/bin:/opt/homebrew/bin:\$PATH" brew install go rsync'
+
+  if sh_c ssh "$REMOTE_HOST" uname -m | grep -qF arm64; then
+    shellenv=$(sh_c ssh "$REMOTE_HOST" /opt/homebrew/bin/brew shellenv)
+  else
+    shellenv=$(sh_c ssh "$REMOTE_HOST" /usr/local/bin/brew shellenv)
+  fi
+  if ! echo "$shellenv" | sh_c ssh "$REMOTE_HOST" "IFS= read -r regex\; \"grep -qF \\\"\\\$regex\\\" ~/.zshrc\""; then
+    echo "$shellenv" | sh_c ssh "$REMOTE_HOST" "\"(echo && cat) >> ~/.zshrc\""
+  fi
+
+  # macOS is a joke.
+  sh_c ssh "$REMOTE_HOST" '"rm -f ~/.ssh/environment"'
+  sh_c ssh "$REMOTE_HOST" '"echo PATH=\$HOME/.local/bin:\$(. ~/.zshrc && echo "\$PATH") >\$HOME/.ssh/environment"'
+  sh_c ssh "$REMOTE_HOST" '"echo MANPATH=\$HOME/.local/share/man:\$(. ~/.zshrc && echo "\$MANPATH") >>\$HOME/.ssh/environment"'
+
+  sh_c ssh "$REMOTE_HOST" "sudo sed -i.bak '\"s/#PermitUserEnvironment no/PermitUserEnvironment yes/\"' /etc/ssh/sshd_config"
+  sh_c ssh "$REMOTE_HOST" "sudo launchctl stop com.openssh.sshd"
+
+  sh_c ssh "$REMOTE_HOST" brew update
+  sh_c ssh "$REMOTE_HOST" brew upgrade
+  sh_c ssh "$REMOTE_HOST" brew install go rsync
 }
 
 main "$@"
