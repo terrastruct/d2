@@ -995,11 +995,13 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 	markers := map[string]struct{}{}
 	for _, obj := range allObjects {
 		if c, is := obj.(d2target.Connection); is {
-			if labelMask := drawConnection(buf, c, markers, idToShape); labelMask != "" {
+			labelMask := drawConnection(buf, c, markers, idToShape)
+			if labelMask != "" {
 				labelMasks = append(labelMasks, labelMask)
 			}
 		} else if s, is := obj.(d2target.Shape); is {
-			if labelMask, err := drawShape(buf, s); err != nil {
+			labelMask, err := drawShape(buf, s)
+			if err != nil {
 				return nil, err
 			} else if labelMask != "" {
 				labelMasks = append(labelMasks, labelMask)
