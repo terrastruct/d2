@@ -6,6 +6,8 @@ You may install `d2` through any of the following methods.
 - <a href="#installsh" id="toc-installsh">install.sh</a>
   - <a href="#security" id="toc-security">Security</a>
 - <a href="#macos-homebrew" id="toc-macos-homebrew">macOS (Homebrew)</a>
+- <a href="#linux" id="toc-linux">Linux</a>
+  - <a href="#void-linux" id="toc-void-linux">Void Linux</a>
 - <a href="#standalone" id="toc-standalone">Standalone</a>
   - <a href="#manual" id="toc-manual">Manual</a>
   - <a href="#prefix" id="toc-prefix">PREFIX</a>
@@ -77,6 +79,18 @@ brew install d2
 
 > The install script above does this automatically if you have `brew` installed and
 > are running it on macOS.
+
+## Linux
+
+The following distributions have packages for d2:
+
+### Void Linux
+
+All supported platforms:
+
+```sh
+xbps-install d2
+```
 
 ## Standalone
 
