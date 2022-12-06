@@ -278,9 +278,9 @@ header() {
 
 bigheader() {
   set -- "$(echo "$*" | sed "s/^/ * /")"
-  FGCOLOR=${FGCOLOR:-5} logp "/**
+  FGCOLOR=${FGCOLOR:-3} logp "/****************************************************************
 $*
- **/"
+ ****************************************************************/"
 }
 
 # humanpath replaces all occurrences of " $HOME" with " ~"
@@ -790,16 +790,12 @@ main() {
   if [ -n "${UNINSTALL-}" ]; then
     uninstall
     if [ -n "${DRY_RUN-}" ]; then
-      bigheader "***********
-Rerun without --dry-run to execute printed commands and perform install.
-***********"
+      bigheader "Rerun without --dry-run to execute printed commands and perform install."
     fi
   else
     install
     if [ -n "${DRY_RUN-}" ]; then
-      bigheader "***********
-Rerun without --dry-run to execute printed commands and perform install.
-***********"
+      bigheader "Rerun without --dry-run to execute printed commands and perform install."
     fi
   fi
 }
@@ -860,13 +856,6 @@ EOF
       log "Run man d2plugin-tala for detailed TALA docs."
     fi
   fi
-  logcat >&2 <<EOF
-
-Something not working? Please let us know:
-https://github.com/terrastruct/d2/issues
-https://github.com/terrastruct/d2/discussions
-https://discord.gg/NF6X8K4eDq
-EOF
 }
 
 install_post_brew() {
@@ -881,13 +870,6 @@ install_post_brew() {
   if [ -n "${TALA-}" ]; then
     log "Run man d2plugin-tala for detailed TALA docs."
   fi
-  logcat >&2 <<EOF
-
-Something not working? Please let us know:
-https://github.com/terrastruct/d2/issues
-https://github.com/terrastruct/d2/discussions
-https://discord.gg/NF6X8K4eDq
-EOF
 
   VERSION=$(brew info d2 | head -n1 | cut -d' ' -f4)
   VERSION=${VERSION%,}
