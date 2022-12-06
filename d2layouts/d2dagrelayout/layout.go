@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"regexp"
 	"strings"
 
 	"cdr.dev/slog"
@@ -257,7 +258,11 @@ func setGraphAttrs(attrs dagreGraphAttrs) string {
 }
 
 func escapeID(id string) string {
-	id = strings.ReplaceAll(id, `\n`, `\\n`)
+	// fixes \\
+	id = strings.ReplaceAll(id, "\\", `\\`)
+	// replaces \n with \\n whenever \n is not preceded by \ (does not replace \\n)
+	re := regexp.MustCompile(`[^\\](\n)`)
+	id = re.ReplaceAllString(id, `\\n`)
 	// avoid an unescaped \r becoming a \n in the layout result
 	id = strings.ReplaceAll(id, "\r", `\r`)
 	return id
