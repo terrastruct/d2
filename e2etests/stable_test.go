@@ -1476,6 +1476,13 @@ a -> b
 b.note: "a note here to remember that padding must consider notes too"
 a.note: "just\na\nlong\nnote\nhere"`,
 		},
+		{
+			name: "sequence_diagram_distance",
+			script: `shape: sequence_diagram
+alice -> bob: what does it mean to be well-adjusted
+bob -> alice: The ability to play bridge or golf as if they were games
+`,
+		},
 	}
 
 	runa(t, tcs)
