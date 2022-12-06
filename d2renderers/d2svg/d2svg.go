@@ -978,6 +978,8 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 		}
 	}
 
+	// Mask URLs are global. So when multiple SVGs attach to a DOM, they share
+	// the same namespace for mask URLs.
 	labelMaskID, err := diagram.HashID()
 	if err != nil {
 		return nil, err
