@@ -5,7 +5,14 @@ cd -- "$(dirname "$0")/.."
 
 main() {
   ensure_prefix_sh_c
-  "$sh_c" rm -f "$PREFIX/bin/d2"
+
+  ensure_os
+  if [ "$OS" = windows ]; then
+    "$sh_c" rm -f "$PREFIX/bin/d2.exe"
+  else
+    "$sh_c" rm -f "$PREFIX/bin/d2"
+  fi
+
   "$sh_c" rm -f "$PREFIX/share/man/man1/d2.1"
 }
 
