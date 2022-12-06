@@ -17,9 +17,10 @@ import (
 
 func GenDSL(maxi int) (_ string, err error) {
 	gs := &dslGenState{
-		rand:       mathrand.New(mathrand.NewSource(time.Now().UnixNano())),
-		g:          d2graph.NewGraph(&d2ast.Map{}),
-		nodeShapes: make(map[string]string),
+		rand:          mathrand.New(mathrand.NewSource(time.Now().UnixNano())),
+		g:             d2graph.NewGraph(&d2ast.Map{}),
+		nodeShapes:    make(map[string]string),
+		nodeContainer: make(map[string]string),
 	}
 	err = gs.gen(maxi)
 	if err != nil {
@@ -32,8 +33,9 @@ type dslGenState struct {
 	rand *mathrand.Rand
 	g    *d2graph.Graph
 
-	nodesArr   []string
-	nodeShapes map[string]string
+	nodesArr      []string
+	nodeShapes    map[string]string
+	nodeContainer map[string]string
 }
 
 func (gs *dslGenState) gen(maxi int) error {
@@ -70,6 +72,7 @@ func (gs *dslGenState) genNode(containerID string) (string, error) {
 	}
 	gs.nodesArr = append(gs.nodesArr, nodeID)
 	gs.nodeShapes[nodeID] = "square"
+	gs.nodeContainer[nodeID] = containerID
 	return nodeID, nil
 }
 
@@ -123,7 +126,7 @@ func (gs *dslGenState) edge() error {
 		if err != nil {
 			return err
 		}
-		if src != dst {
+		if gs.findOuterSequenceDiagram(src) == gs.findOuterSequenceDiagram(dst) {
 			break
 		}
 		err = gs.node()
@@ -194,6 +197,16 @@ func randRune() rune {
 	return mathrand.Int31n(128) + 1
 }
 
+func (gs *dslGenState) findOuterSequenceDiagram(nodeID string) string {
+	for {
+		containerID := gs.nodeContainer[nodeID]
+		if containerID == "" || gs.nodeShapes[containerID] == d2target.ShapeSequenceDiagram {
+			return containerID
+		}
+		nodeID = containerID
+	}
+}
+
 func String(n int, exclude []rune) string {
 	var b strings.Builder
 	for i := 0; i < n; i++ {
@@ -233,10 +246,7 @@ func (gs *dslGenState) randStr(n int, inKey bool) string {
 func (gs *dslGenState) randShape() string {
 	for {
 		s := shapes[gs.rand.Intn(len(shapes))]
-		if s != "image" {
-			return s
-		}
-		if s != "sequence_diagram" {
+		if s != d2target.ShapeImage {
 			return s
 		}
 	}

@@ -7,11 +7,14 @@ import (
 func testRegression(t *testing.T) {
 	tcs := []testCase{
 		{
-			name: "dagre_id_with_newline",
+			name: "dagre_special_ids",
 			script: `
 ninety\nnine
 eighty\reight
 seventy\r\nseven
+a\\yode -> there
+a\\"ode -> there
+a\\node -> there
 `,
 		},
 		{
