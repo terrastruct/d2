@@ -10,10 +10,11 @@ VERSION=$VERSION sh_c eval "'$HW_BUILD_DIR/README.md.sh'" \> "'$HW_BUILD_DIR/REA
 sh_c rm -f "$HW_BUILD_DIR/README.md.sh"
 sh_c find "$HW_BUILD_DIR" -exec touch {} \\\;
 
-export GOOS=$(goos "$OS")
-export GOARCH="$ARCH"
+ensure_goos
+ensure_goarch
 sh_c mkdir -p "$HW_BUILD_DIR/bin"
-sh_c go build -ldflags "'-X oss.terrastruct.com/d2/lib/version.Version=$VERSION'" \
+sh_c CGO_ENABLED=0 go build \
+  -ldflags "'-X oss.terrastruct.com/d2/lib/version.Version=$VERSION'" \
   -o "$HW_BUILD_DIR/bin/d2" .
 
 ARCHIVE=$PWD/$ARCHIVE

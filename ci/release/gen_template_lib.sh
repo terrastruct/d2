@@ -13,6 +13,7 @@ sh_c cat >./ci/release/template/scripts/lib.sh <<EOF
 # lib.sh was bundled together from
 #
 # - ./ci/sub/lib/rand.sh
+# - ./ci/sub/lib/temp.sh
 # - ./ci/sub/lib/log.sh
 # - ./ci/sub/lib/release.sh
 #
@@ -25,6 +26,7 @@ EOF
 # script.
 sh_c cat \
   ./ci/sub/lib/rand.sh \
+  ./ci/sub/lib/temp.sh \
   ./ci/sub/lib/log.sh \
   ./ci/sub/lib/release.sh \
   \| sed "-e'/^\. /d'" \>\>./ci/release/template/scripts/lib.sh

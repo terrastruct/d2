@@ -14,6 +14,7 @@ set -eu
 # install.sh was bundled together from
 #
 # - ./ci/sub/lib/rand.sh
+# - ./ci/sub/lib/temp.sh
 # - ./ci/sub/lib/log.sh
 # - ./ci/sub/lib/flag.sh
 # - ./ci/sub/lib/release.sh
@@ -30,6 +31,7 @@ EOF
 # script.
 sh_c cat \
   ./ci/sub/lib/rand.sh \
+  ./ci/sub/lib/temp.sh \
   ./ci/sub/lib/log.sh \
   ./ci/sub/lib/flag.sh \
   ./ci/sub/lib/release.sh \

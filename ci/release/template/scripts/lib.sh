@@ -6,6 +6,7 @@
 # lib.sh was bundled together from
 #
 # - ./ci/sub/lib/rand.sh
+# - ./ci/sub/lib/temp.sh
 # - ./ci/sub/lib/log.sh
 # - ./ci/sub/lib/release.sh
 #
@@ -22,12 +23,15 @@ pick() {
   seed="$1"
   shift
 
-  seed_file="$(mktemp)"
-  echo "$seed" >"$seed_file"
-  # We add 16 more bytes to the seed file for sufficient entropy. Otherwise both Cygwin's
+  seed_file="$(mktempd)/pickseed"
+
+  # We add 32 more bytes to the seed file for sufficient entropy. Otherwise both Cygwin's
   # and MinGW's sort for example complains about the lack of entropy on stderr and writes
   # nothing to stdout. I'm sure there are more platforms that would too.
-  echo "================" >"$seed_file"
+  #
+  # We also limit to a max of 32 bytes as otherwise macOS's sort complains that the random
+  # seed is too large. Probably more platforms too.
+  (echo "$seed" && echo "================================") | head -c32 >"$seed_file"
 
   while [ $# -gt 0 ]; do
     echo "$1"
@@ -35,6 +39,44 @@ pick() {
   done \
     | sort --sort=random --random-source="$seed_file" \
     | head -n1
+}
+#!/bin/sh
+if [ "${LIB_TEMP-}" ]; then
+  return 0
+fi
+LIB_TEMP=1
+
+ensure_tmpdir() {
+  if [ -n "${_TMPDIR-}" ]; then
+    return
+  fi
+
+  _TMPDIR=$(mktemp -d)
+  export _TMPDIR
+  trap temp_exittrap EXIT
+}
+
+temp_exittrap() {
+  if [ -n "${_TMPDIR-}" ]; then
+    rm -r "$_TMPDIR"
+  fi
+}
+
+temppath() {
+  ensure_tmpdir
+  while true; do
+    temppath=$_TMPDIR/$(</dev/urandom head -c8 | base64)
+    if [ ! -e "$temppath" ]; then
+      echo "$temppath"
+      return
+    fi
+  done
+}
+
+mktempd() {
+  tp=$(temppath)
+  mkdir -p "$tp"
+  echo "$tp"
 }
 #!/bin/sh
 if [ "${LIB_LOG-}" ]; then
@@ -89,16 +131,20 @@ _echo() {
   printf '%s\n' "$*"
 }
 
-  # 1-6 are regular and 9-14 are bright.
 get_rand_color() {
-  colors=""
-  ncolors=$(command tput colors)
-  if [ "$ncolors" -ge 8 ]; then
-    colors="$colors 1 2 3 4 5 6"
-  elif [ "$ncolors" -ge 16 ]; then
-    colors="$colors 9 10 11 12 13 14"
+  if [ "${TERM_COLORS+x}" != x ]; then
+    TERM_COLORS=""
+    export TERM_COLORS
+    ncolors=$(TERM=${TERM:-xterm-256color} command tput colors)
+    if [ "$ncolors" -ge 8 ]; then
+      # 1-6 are regular
+      TERM_COLORS="$TERM_COLORS 1 2 3 4 5 6"
+    elif [ "$ncolors" -ge 16 ]; then
+      # 9-14 are bright.
+      TERM_COLORS="$TERM_COLORS 9 10 11 12 13 14"
+    fi
   fi
-  pick "$*" $colors
+  pick "$*" $TERM_COLORS
 }
 
 echop() {
@@ -117,14 +163,12 @@ printfp() {(
   prefix="$1"
   shift
 
-  if [ -z "${FGCOLOR-}" ]; then
-    FGCOLOR="$(get_rand_color "$prefix")"
-  fi
+  _FGCOLOR=${FGCOLOR:-$(get_rand_color "$prefix")}
   should_color || true
   if [ $# -eq 0 ]; then
-    printf '%s' "$(COLOR=$__COLOR setaf "$FGCOLOR" "$prefix")"
+    printf '%s' "$(COLOR=$__COLOR setaf "$_FGCOLOR" "$prefix")"
   else
-    printf '%s: %s\n' "$(COLOR=$__COLOR setaf "$FGCOLOR" "$prefix")" "$(printf "$@")"
+    printf '%s: %s\n' "$(COLOR=$__COLOR setaf "$_FGCOLOR" "$prefix")" "$(printf "$@")"
   fi
 )}
 
@@ -215,7 +259,7 @@ sudo_sh_c() {
     sh_c "su root -c '$*'"
   else
     caterr <<EOF
-This script needs to run the following command as root:
+Unable to run the following command as root:
   $*
 Please install doas, sudo, or su.
 EOF
@@ -245,11 +289,8 @@ humanpath() {
 }
 
 hide() {
-  out="$(mktemp)"
-  set +e
-  "$@" >"$out" 2>&1
-  code="$?"
-  set -e
+  out="$(mktempd)/hideout"
+  capcode "$@" >"$out" 2>&1
   if [ "$code" -eq 0 ]; then
     return
   fi
@@ -267,7 +308,7 @@ echo_dur() {
 
 sponge() {
   dst="$1"
-  tmp="$(mktemp)"
+  tmp="$(mktempd)/sponge"
   cat > "$tmp"
   cat "$tmp" > "$dst"
 }
@@ -302,36 +343,60 @@ capcode() {
   code=$?
   set -e
 }
+
+strjoin() {
+  (IFS="$1"; shift; echo "$*")
+}
 #!/bin/sh
 if [ "${LIB_RELEASE-}" ]; then
   return 0
 fi
 LIB_RELEASE=1
 
-goos() {
-  case $1 in
-    macos) echo darwin;;
-    *) echo $1;;
+ensure_goos() {
+  if [ -n "${GOOS-}" ]; then
+    return
+  fi
+  ensure_os
+  case "$OS" in
+    macos) export GOOS=darwin;;
+    *) export GOOS=$OS;;
   esac
 }
 
-os() {
+ensure_goarch() {
+  if [ -n "${GOARCH-}" ]; then
+    return
+  fi
+  ensure_arch
+  case "$ARCH" in
+    *) export GOARCH=$ARCH;;
+  esac
+}
+
+ensure_os() {
+  if [ -n "${OS-}" ]; then
+    return
+  fi
   uname=$(uname)
   case $uname in
-    Linux) echo linux;;
-    Darwin) echo macos;;
-    FreeBSD) echo freebsd;;
-    CYGWIN_NT*|MINGW32_NT*) echo windows;;
-    *) echo "$uname";;
+    Linux) OS=linux;;
+    Darwin) OS=macos;;
+    FreeBSD) OS=freebsd;;
+    CYGWIN_NT*|MINGW32_NT*) OS=windows;;
+    *) OS=$uname;;
   esac
 }
 
-arch() {
+ensure_arch() {
+  if [ -n "${ARCH-}" ]; then
+    return
+  fi
   uname_m=$(uname -m)
   case $uname_m in
-    aarch64) echo arm64;;
-    x86_64) echo amd64;;
-    *) echo "$uname_m";;
+    aarch64) ARCH=arm64;;
+    x86_64) ARCH=amd64;;
+    *) ARCH=$uname_m;;
   esac
 }
 
@@ -350,9 +415,34 @@ manpath() {
 }
 
 is_writable_dir() {
-  # The path has to exist for -w to succeed.
-  sh_c "mkdir -p '$1' 2>/dev/null" || true
-  if [ ! -w "$1" ]; then
-    return 1
+  # If it can be created, we can use it.
+  sh_c "mkdir -p '$1' 2>/dev/null"
+}
+
+ensure_prefix() {
+  if [ -n "${PREFIX-}" ]; then
+    return
+  fi
+  # The reason for checking whether bin is writable is that on macOS you have /usr/local
+  # owned by root but you don't need root to write to its subdirectories which is all we
+  # need to do.
+  if ! is_writable_dir "/usr/local/bin"; then
+    # This also handles M1 Mac's which do not allow modifications to /usr/local even
+    # with sudo.
+    PREFIX=$HOME/.local
+  else
+    PREFIX=/usr/local
+  fi
+}
+
+ensure_prefix_sh_c() {
+  ensure_prefix
+
+  sh_c="sh_c"
+  # The reason for checking whether bin is writable is that on macOS you have /usr/local
+  # owned by root but you don't need root to write to its subdirectories which is all we
+  # need to do.
+  if ! is_writable_dir "$PREFIX/bin"; then
+    sh_c="sudo_sh_c"
   fi
 }

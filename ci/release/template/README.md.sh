@@ -13,16 +13,17 @@ version: $VERSION
 \`\`\`sh
 make install DRY_RUN=1
 # If it looks right, run:
-make install
+# make install
 \`\`\`
 
-Pass \`PREFIX=whatever\` to change the installation prefix.
+Pass \`PREFIX=somepath\` to change the installation prefix from the default which is
+\`/usr/local\` or \`~/.local\` if \`/usr/local\` is not writable with the current user.
 
 ## Uninstall
 
 \`\`\`sh
 make uninstall DRY_RUN=1
 # If it looks right, run:
-make uninstall
+# make uninstall
 \`\`\`
 EOF

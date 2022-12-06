@@ -57,6 +57,11 @@ PRs when it's a visual change.
 - `d2` now lives in the root folder of the repository instead of as a subcommand. So you
   can now run `go install oss.terrastruct.com/d2@latest` to install from source.
   [#290](https://github.com/terrastruct/d2/pull/290)
+- `install.sh` defaults to installation to `/usr/local` as before but now if
+  `/usr/local` is not accessible to the current user, it will use `~/.local`
+  instead of prompting for sudo. You can pass `--prefix /usr/local` to force
+  installation into `/usr/local` with a prompt for sudo.
+  [#372](https://github.com/terrastruct/d2/pull/372)
 
 #### Bugfixes ⛑️
 

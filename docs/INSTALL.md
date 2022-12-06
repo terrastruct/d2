@@ -47,9 +47,9 @@ We're careful shell programmers and are aware of the many footguns of the Unix s
 script was written carefully and with detail. For example, it is not vulnerable to partial
 execution and the entire script runs with `set -eu` and very meticulous quoting.
 
-It follows the XDG standards, installs `d2` properly into a Unix hierarchy path (defaulting
-to /usr/local though you can use ~/.local to avoid sudo if you'd like) and allows for easy
-uninstall.
+It follows the XDG standards, installs `d2` properly into a Unix hierarchy path
+(`/usr/local` unless `/usr/local` requires sudo in which case `~/.local` is used) and
+allows for easy uninstall. You can easily adjust the used path with `--prefix`.
 
 Some other niceties are that it'll tell you if you need to adjust `$PATH` or `$MANPATH` to
 access `d2` and its manpages. It can also install
@@ -125,10 +125,6 @@ make install PREFIX=$HOME/.local
 The install script places the standalone release into `$PREFIX/lib/d2/d2-<version>`
 and we recommend doing the same with manually installed releases so that you
 know where the release directory is for easy uninstall.
-
-> warn: Our binary releases aren't fully static like normal Go binaries due to the C
-> dependency on v8go for executing dagre. If you're on an older system with an old
-> libc, you'll want to install from source.
 
 ## From source
 

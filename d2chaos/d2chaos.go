@@ -236,6 +236,9 @@ func (gs *dslGenState) randShape() string {
 		if s != "image" {
 			return s
 		}
+		if s != "sequence_diagram" {
+			return s
+		}
 	}
 }
 
