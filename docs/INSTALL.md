@@ -13,6 +13,7 @@ You may install `d2` through any of the following methods.
   - <a href="#source-release" id="toc-source-release">Source Release</a>
 - <a href="#windows" id="toc-windows">Windows</a>
   - <a href="#msys2" id="toc-msys2">MSYS2</a>
+  - <a href="#wsl" id="toc-wsl">WSL</a>
 - <a href="#coming-soon" id="toc-coming-soon">Coming soon</a>
 
 ## install.sh
@@ -184,6 +185,12 @@ The MSYS2 terminal also enables `d2` to display colors like in the above screens
 
 In addition, all of our development and CI scripts work under MSYS2 whereas they do not
 under plain Windows.
+
+### WSL
+
+`d2` works perfectly under [WSL](https://learn.microsoft.com/en-us/windows/wsl/install)
+aka Windows Subsystem for Linux if that's what you prefer. Installation is just like any
+other Linux system.
 
 ## Coming soon
 
