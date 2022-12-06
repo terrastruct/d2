@@ -115,8 +115,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 			// edge groups are children of actors with no edges and children edges
 			if child.IsSequenceDiagramNote() {
 				sd.verticalIndices[child.AbsID()] = getObjEarliestLineNum(child)
-				// TODO change to page type when it doesn't look deformed
-				child.Attributes.Shape = d2graph.Scalar{Value: shape.SQUARE_TYPE}
+				child.Attributes.Shape = d2graph.Scalar{Value: shape.PAGE_TYPE}
 				sd.notes = append(sd.notes, child)
 				sd.objectRank[child] = rank
 				child.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
