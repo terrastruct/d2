@@ -104,6 +104,9 @@ Or if you have Go installed you can install from source though you won't get the
 go install oss.terrastruct.com/d2@latest
 ```
 
+You can also install a release from source which will include manpages.
+See [./docs/INSTALL.md#source-release](./docs/INSTALL.md#source-release).
+
 To uninstall with the install script:
 
 ```sh

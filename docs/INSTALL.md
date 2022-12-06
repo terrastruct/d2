@@ -10,6 +10,7 @@ You may install `d2` through any of the following methods.
   - <a href="#manual" id="toc-manual">Manual</a>
   - <a href="#prefix" id="toc-prefix">PREFIX</a>
 - <a href="#from-source" id="toc-from-source">From source</a>
+  - <a href="#source-release" id="toc-source-release">Source Release</a>
 - <a href="#coming-soon" id="toc-coming-soon">Coming soon</a>
 
 ## install.sh
@@ -134,6 +135,8 @@ You can always install from source:
 go install oss.terrastruct.com/d2@latest
 ```
 
+### Source Release
+
 To install a proper release from source clone the repository and then:
 
 ```sh
@@ -141,6 +144,11 @@ To install a proper release from source clone the repository and then:
 # To uninstall:
 # ./ci/release/build.sh --uninstall
 ```
+
+Installing a real release will also install manpages and in the future other assets like
+fonts and icons. Furthermore, when installing a non versioned commit, installing a proper
+release will ensure that `d2 --version` works correctly by embedding the commit hash into
+the `d2` binary.
 
 ## Coming soon
 
