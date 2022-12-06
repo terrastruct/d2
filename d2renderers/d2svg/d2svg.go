@@ -346,7 +346,7 @@ func makeLabelMask(labelTL *geo.Point, width, height int) string {
 	)
 }
 
-func drawConnection(writer io.Writer, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape) (labelMask string) {
+func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape) (labelMask string) {
 	fmt.Fprintf(writer, `<g id="%s">`, escapeText(connection.ID))
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
@@ -413,11 +413,12 @@ func drawConnection(writer io.Writer, connection d2target.Connection, markers ma
 		}
 	}
 
-	fmt.Fprintf(writer, `<path d="%s" class="connection" style="fill:none;%s" %s%smask="url(#labels)"/>`,
+	fmt.Fprintf(writer, `<path d="%s" class="connection" style="fill:none;%s" %s%smask="url(#%s)"/>`,
 		pathData(connection, idToShape),
 		connectionStyle(connection),
 		markerStart,
 		markerEnd,
+		labelMaskID,
 	)
 
 	if connection.Label != "" {
@@ -977,6 +978,11 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 		}
 	}
 
+	labelMaskID, err := diagram.HashID()
+	if err != nil {
+		return nil, err
+	}
+
 	// SVG has no notion of z-index. The z-index is effectively the order it's drawn.
 	// So draw from the least nested to most nested
 	idToShape := make(map[string]d2target.Shape)
@@ -995,7 +1001,7 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 	markers := map[string]struct{}{}
 	for _, obj := range allObjects {
 		if c, is := obj.(d2target.Connection); is {
-			labelMask := drawConnection(buf, c, markers, idToShape)
+			labelMask := drawConnection(buf, labelMaskID, c, markers, idToShape)
 			if labelMask != "" {
 				labelMasks = append(labelMasks, labelMask)
 			}
@@ -1013,8 +1019,8 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 
 	if len(labelMasks) > 0 {
 		fmt.Fprint(buf, strings.Join([]string{
-			fmt.Sprintf(`<mask id="labels" maskUnits="userSpaceOnUse" x="0" y="0" width="%d" height="%d">`,
-				w, h,
+			fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="0" y="0" width="%d" height="%d">`,
+				labelMaskID, w, h,
 			),
 			fmt.Sprintf(`<rect x="0" y="0" width="%d" height="%d" fill="white"></rect>`,
 				w,
