@@ -1,6 +1,9 @@
 package d2target
 
 import (
+	"encoding/json"
+	"fmt"
+	"hash/fnv"
 	"math"
 	"net/url"
 	"strings"
@@ -24,6 +27,20 @@ type Diagram struct {
 
 	Shapes      []Shape      `json:"shapes"`
 	Connections []Connection `json:"connections"`
+}
+
+func (diagram Diagram) HashID() (string, error) {
+	b1, err := json.Marshal(diagram.Shapes)
+	if err != nil {
+		return "", err
+	}
+	b2, err := json.Marshal(diagram.Connections)
+	if err != nil {
+		return "", err
+	}
+	h := fnv.New32a()
+	h.Write(append(b1, b2...))
+	return fmt.Sprint(h.Sum32()), nil
 }
 
 func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
