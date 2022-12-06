@@ -552,7 +552,7 @@ manpath() {
 
 is_writable_dir() {
   # If it can be created, we can use it.
-  sh_c "mkdir -p '$1' 2>/dev/null"
+  hide mkdir -p "$1"
 }
 
 ensure_prefix() {
