@@ -353,6 +353,35 @@ if [ "${LIB_RELEASE-}" ]; then
 fi
 LIB_RELEASE=1
 
+ensure_os() {
+  if [ -n "${OS-}" ]; then
+    # Windows defines OS=Windows_NT.
+    if [ "$OS" == Windows_NT ]; then
+      OS=windows
+    fi
+    return
+  fi
+  uname=$(uname)
+  case $uname in
+    Linux) OS=linux;;
+    Darwin) OS=macos;;
+    FreeBSD) OS=freebsd;;
+    *) OS=$uname;;
+  esac
+}
+
+ensure_arch() {
+  if [ -n "${ARCH-}" ]; then
+    return
+  fi
+  uname_m=$(uname -m)
+  case $uname_m in
+    aarch64) ARCH=arm64;;
+    x86_64) ARCH=amd64;;
+    *) ARCH=$uname_m;;
+  esac
+}
+
 ensure_goos() {
   if [ -n "${GOOS-}" ]; then
     return
@@ -371,34 +400,6 @@ ensure_goarch() {
   ensure_arch
   case "$ARCH" in
     *) export GOARCH=$ARCH;;
-  esac
-}
-
-ensure_os() {
-  if [ -n "${_OS-}" ]; then
-    return
-  fi
-  uname=$(uname)
-  case $uname in
-    Linux) OS=linux;;
-    Darwin) OS=macos;;
-    FreeBSD) OS=freebsd;;
-    MINGW32_NT*) OS=windows;;
-    *) OS=$uname;;
-  esac
-  # We cannot use $OS to check as $OS is defined in MinGW terminals by default.
-  _OS=1
-}
-
-ensure_arch() {
-  if [ -n "${ARCH-}" ]; then
-    return
-  fi
-  uname_m=$(uname -m)
-  case $uname_m in
-    aarch64) ARCH=arm64;;
-    x86_64) ARCH=amd64;;
-    *) ARCH=$uname_m;;
   esac
 }
 
