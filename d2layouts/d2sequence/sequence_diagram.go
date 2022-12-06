@@ -402,8 +402,7 @@ func (sd *sequenceDiagram) placeSpans() {
 		// finds the position if there are messages to this span
 		minMessageY := math.Inf(1)
 		if firstMessage, exists := sd.firstMessage[span]; exists {
-			// needs to check Src/Dst because of self-edges or edges to/from descendants
-			if span == firstMessage.Src {
+			if firstMessage.Src == firstMessage.Dst || span == firstMessage.Src {
 				minMessageY = firstMessage.Route[0].Y
 			} else {
 				minMessageY = firstMessage.Route[len(firstMessage.Route)-1].Y
@@ -411,10 +410,10 @@ func (sd *sequenceDiagram) placeSpans() {
 		}
 		maxMessageY := math.Inf(-1)
 		if lastMessage, exists := sd.lastMessage[span]; exists {
-			if span == lastMessage.Src {
-				maxMessageY = lastMessage.Route[0].Y
-			} else {
+			if lastMessage.Src == lastMessage.Dst || span == lastMessage.Dst {
 				maxMessageY = lastMessage.Route[len(lastMessage.Route)-1].Y
+			} else {
+				maxMessageY = lastMessage.Route[0].Y
 			}
 		}
 
