@@ -1,0 +1,243 @@
+{
+  "name": "",
+  "shapes": [
+    {
+      "id": "alice",
+      "type": "",
+      "pos": {
+        "x": 24,
+        "y": 74
+      },
+      "width": 150,
+      "height": 126,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#EDF0FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "alice",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 37,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "bob",
+      "type": "",
+      "pos": {
+        "x": 426,
+        "y": 74
+      },
+      "width": 150,
+      "height": 126,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#EDF0FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "bob",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 31,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    }
+  ],
+  "connections": [
+    {
+      "id": "(alice -> bob)[0]",
+      "src": "alice",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "bob",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "what does it mean to be well-adjusted",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 249,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 99,
+          "y": 330
+        },
+        {
+          "x": 501,
+          "y": 330
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 4
+    },
+    {
+      "id": "(bob -> alice)[0]",
+      "src": "bob",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "alice",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "The ability to play bridge or golf as if they were games",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 352,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 501,
+          "y": 460
+        },
+        {
+          "x": 99,
+          "y": 460
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 4
+    },
+    {
+      "id": "(alice -- )[0]",
+      "src": "alice",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "alice-lifeline-end-3851299086",
+      "dstArrow": "none",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 99,
+          "y": 200
+        },
+        {
+          "x": 99,
+          "y": 590
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 1
+    },
+    {
+      "id": "(bob -- )[0]",
+      "src": "bob",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "bob-lifeline-end-3036726343",
+      "dstArrow": "none",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 501,
+          "y": 200
+        },
+        {
+          "x": 501,
+          "y": 590
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 1
+    }
+  ]
+}
