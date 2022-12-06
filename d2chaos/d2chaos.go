@@ -246,10 +246,7 @@ func (gs *dslGenState) randStr(n int, inKey bool) string {
 func (gs *dslGenState) randShape() string {
 	for {
 		s := shapes[gs.rand.Intn(len(shapes))]
-		if s != "image" {
-			return s
-		}
-		if s != "sequence_diagram" {
+		if s != d2target.ShapeImage {
 			return s
 		}
 	}
