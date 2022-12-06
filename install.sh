@@ -7,6 +7,7 @@ set -eu
 # install.sh was bundled together from
 #
 # - ./ci/sub/lib/rand.sh
+# - ./ci/sub/lib/temp.sh
 # - ./ci/sub/lib/log.sh
 # - ./ci/sub/lib/flag.sh
 # - ./ci/sub/lib/release.sh
@@ -27,7 +28,7 @@ pick() {
   seed="$1"
   shift
 
-  seed_file="$(mktemp)"
+  seed_file="$(mktempd)/pickseed"
 
   # We add 32 more bytes to the seed file for sufficient entropy. Otherwise both Cygwin's
   # and MinGW's sort for example complains about the lack of entropy on stderr and writes
@@ -43,6 +44,44 @@ pick() {
   done \
     | sort --sort=random --random-source="$seed_file" \
     | head -n1
+}
+#!/bin/sh
+if [ "${LIB_TEMP-}" ]; then
+  return 0
+fi
+LIB_TEMP=1
+
+ensure_tmpdir() {
+  if [ -n "${_TMPDIR-}" ]; then
+    return
+  fi
+
+  _TMPDIR=$(mktemp -d)
+  export _TMPDIR
+  trap temp_exittrap EXIT
+}
+
+temp_exittrap() {
+  if [ -n "${_TMPDIR-}" ]; then
+    rm -r "$_TMPDIR"
+  fi
+}
+
+temppath() {
+  ensure_tmpdir
+  while true; do
+    temppath=$_TMPDIR/$(</dev/urandom head -c8 | base64)
+    if [ ! -e "$temppath" ]; then
+      echo "$temppath"
+      return
+    fi
+  done
+}
+
+mktempd() {
+  tp=$(temppath)
+  mkdir -p "$tp"
+  echo "$tp"
 }
 #!/bin/sh
 if [ "${LIB_LOG-}" ]; then
@@ -225,7 +264,7 @@ sudo_sh_c() {
     sh_c "su root -c '$*'"
   else
     caterr <<EOF
-This script needs to run the following command as root:
+Unable to run the following command as root:
   $*
 Please install doas, sudo, or su.
 EOF
@@ -255,11 +294,8 @@ humanpath() {
 }
 
 hide() {
-  out="$(mktemp)"
-  set +e
-  "$@" >"$out" 2>&1
-  code="$?"
-  set -e
+  out="$(mktempd)/hideout"
+  capcode "$@" >"$out" 2>&1
   if [ "$code" -eq 0 ]; then
     return
   fi
@@ -277,7 +313,7 @@ echo_dur() {
 
 sponge() {
   dst="$1"
-  tmp="$(mktemp)"
+  tmp="$(mktempd)/sponge"
   cat > "$tmp"
   cat "$tmp" > "$dst"
 }
@@ -460,7 +496,7 @@ ensure_goos() {
   ensure_os
   case "$OS" in
     macos) export GOOS=darwin;;
-    *) export GOOS=$1;;
+    *) export GOOS=$OS;;
   esac
 }
 
@@ -470,7 +506,7 @@ ensure_goarch() {
   fi
   ensure_arch
   case "$ARCH" in
-    *) export GOARCH=$1;;
+    *) export GOARCH=$ARCH;;
   esac
 }
 
