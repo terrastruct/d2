@@ -47,20 +47,20 @@ func pageOuterPath(box *geo.Box) *svg.SvgPathContext {
 }
 
 func pageInnerPath(box *geo.Box) *svg.SvgPathContext {
-	pc := svg.NewSVGPathContext(box.TopLeft, box.Width/30.5, box.Height/36.5)
-	pc.StartAt(pc.Absolute(30, 36.5))
-	pc.H(false, 0.5)
-	pc.C(true, -0.3, 0, -0.5, -0.2, -0.5, -0.5)
+	pc := svg.NewSVGPathContext(box.TopLeft, box.Width/66., box.Height/36.5)
+	pc.StartAt(pc.Absolute(64.91803, 36.5))
+	pc.H(false, 1.08196)
+	pc.C(true, -0.64918, 0, -1.08196, -0.2, -1.08196, -0.5)
 	pc.V(false, 0.5)
-	pc.C(true, 0, -0.3, 0.2, -0.5, 0.5, -0.5)
-	pc.H(true, 20.3)
-	pc.C(true, 0.3, 0, 0.5, 0.2, 0.5, 0.5)
+	pc.C(true, 0, -0.3, 0.43278, -0.5, 1.08196, -0.5)
+	pc.H(true, 43.27868)
+	pc.C(true, 0.64918, 0, 1.08196, 0.2, 1.08196, 0.5)
 	pc.V(true, 7.9)
-	pc.C(true, 0, 0.6, 0.4, 1.1, 1.1, 1.1)
-	pc.H(false, 30)
-	pc.C(true, 0.3, 0, 0.5, 0.2, 0.5, 0.5)
+	pc.C(true, 0, 0.6, 0.86557, 1.1, 2.38032, 1.1)
+	pc.H(false, 64.91803)
+	pc.C(true, .64918, 0, 1.08196, 0.2, 1.08196, 0.5)
 	pc.V(false, 36)
-	pc.C(false, 30.5, 36.3, 30.3, 36.5, 30, 36.5)
+	pc.C(false, 64.99999, 36.3, 65.56721, 36.5, 64.91803, 36.5)
 	pc.Z()
 	return pc
 }
