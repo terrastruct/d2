@@ -169,6 +169,10 @@ func testPinned(t *testing.T, outDir string) {
 			name: "orientation",
 			text: "a: {\n  b\n  c\n }\n  a <- a.c\n  a.b -> a\n",
 		},
+		{
+			name: "panic",
+			text: "\"y\x10e5k%|\": {\n  \"\x11Do\b:\": '\"6d7\\n+u8B\u0080\x18M\x15kb\x12ZPn~\x13\x16/*[y\x03\ffR\u007fsN[w\vb\x1c>\x04\x1dj\\\"&bD\x1eK(D@t,:=L\\\"7\x1f\\n\rcXsnlc\x1c\\n)7RJ\\n\\$t5Mer\u007fX&a\x16A\x0f q4!\u0080\x0e|ym9l\\n\x1aP\ag\x19\x02S,[EU0\x19^\\$(\beB\x18l\x11;A\a>@0\x1d0N\u007f\fV\x1aHSA^\\\"Yn)NYb[Wh7Zhbl\x11\x06vb,^\f\x1e\x144oePF\x15\vt eE.q\x1fG''=~o\x16Q|7oM\x17\b\v(\rX\\\"\x17\x0e@V*E3e\f\x11\x1a-\x1ecccW+:\x1a\x03G\x133Lna:\x06\x1b.\x18M(ScF,!l.HE|E\x0e6-4\x15bi\x0f3!o\x1bt\"'\n  \"#2>rM\x18I\\$\": {\n    shape: document\n    \"\x161%~;H\bfiBG\": {shape: rectangle}\n  }\n  \"1U5^b/6*\x1b2QCc97\\\"\\n>0\x1emc\\n(n87\x03+\t\": '\"KoJ-R\x02xhcG\x17hhb?l)\x15V\x19\v#\x19o)E\x15\a\x12#,\x13?(,h=@?L\x1b\x11\x18,Eu4. eL]b\\\"W(,.A+p&[Z&\\n!)\x16\x0eS7\f\vw0\x02\"' {shape: code}\n  \"1U5^b/6*\x1b2QCc97\\\"\\n>0\x1emc\\n(n87\x03+\t\" <-> \"\x11Do\b:\"\n}\n\"h#\x06z\x0e5c\u0080g~C([\b:\x12H%D\x1c\x18s\x1fog.^oA>\": '\"v\\nm]\x1c\u00809umD\x17YDQ\x1d/)\\nt[i!6<)r?P\x19<F\x10vxB\\n,B]x\f\u0080''\r\v\x0f\x17dc](\t\\nH4^0>\bJ\f\x1c\x12j\x1dTb-]XFuC5KR|q4IwR[@7\x17\x18\x1b\x10 y\x14\aTf\x01!id\bY\x1bosZ8G;~.\u007fKj=Ne2Lum\b\x18]\\n\x1dj|[CvZ#n=kA=0=\x11)\"' {shape: text}\n\"h#\x06z\x0e5c\u0080g~C([\b:\x12H%D\x1c\x18s\x1fog.^oA>\" <-> \"y\x10e5k%|\": '\"\t]2J\x14-\x185\aYVUN\\n7bJ\aC^\x14R9<>\x0eK\x04fD7*7\x06U~\x114\\\"\u00806\"'\n",
+		},
 	}
 
 	for _, tc := range testCases {
