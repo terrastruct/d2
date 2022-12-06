@@ -278,7 +278,7 @@ header() {
 
 bigheader() {
   set -- "$(echo "$*" | sed "s/^/ * /")"
-  FGCOLOR=${FGCOLOR:-3} logp "/**
+  FGCOLOR=${FGCOLOR:-5} logp "/**
 $*
  **/"
 }
