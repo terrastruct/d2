@@ -8,7 +8,7 @@
         "x": 12,
         "y": 12
       },
-      "width": 2247,
+      "width": 2254,
       "height": 2336,
       "opacity": 1,
       "strokeDash": 0,
@@ -322,6 +322,46 @@
       "level": 2
     },
     {
+      "id": "How this is rendered.d2dagrelayout",
+      "type": "",
+      "pos": {
+        "x": 1759,
+        "y": 122
+      },
+      "width": 204,
+      "height": 126,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#EDF0FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "d2dagrelayout",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 104,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
       "id": "How this is rendered.d2compiler.measurements also take place",
       "type": "rectangle",
       "pos": {
@@ -368,7 +408,7 @@
         "x": 817,
         "y": 1374
       },
-      "width": 1365,
+      "width": 1093,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -443,7 +483,7 @@
       "id": "How this is rendered.d2sequencelayout",
       "type": "",
       "pos": {
-        "x": 1752,
+        "x": 2013,
         "y": 122
       },
       "width": 229,
@@ -474,46 +514,6 @@
       "bold": false,
       "underline": false,
       "labelWidth": 129,
-      "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 2
-    },
-    {
-      "id": "How this is rendered.d2dagrelayout",
-      "type": "",
-      "pos": {
-        "x": 2031,
-        "y": 122
-      },
-      "width": 204,
-      "height": 126,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "d2dagrelayout",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 104,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -785,7 +785,7 @@
           "y": 1284
         },
         {
-          "x": 1866.5,
+          "x": 2127.5,
           "y": 1284
         }
       ],
@@ -824,7 +824,7 @@
           "y": 1414
         },
         {
-          "x": 2133,
+          "x": 1861,
           "y": 1414
         }
       ],
@@ -863,7 +863,7 @@
           "y": 1544
         },
         {
-          "x": 1866.5,
+          "x": 2127.5,
           "y": 1544
         }
       ],
@@ -1341,45 +1341,6 @@
       "zIndex": 1
     },
     {
-      "id": "(How this is rendered.d2sequencelayout -- )[0]",
-      "src": "How this is rendered.d2sequencelayout",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "d2sequencelayout-lifeline-end-3085844671",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 6,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 1866.5,
-          "y": 248
-        },
-        {
-          "x": 1866.5,
-          "y": 2324
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 1
-    },
-    {
       "id": "(How this is rendered.d2dagrelayout -- )[0]",
       "src": "How this is rendered.d2dagrelayout",
       "srcArrow": "none",
@@ -1405,11 +1366,50 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2133,
+          "x": 1861,
           "y": 248
         },
         {
-          "x": 2133,
+          "x": 1861,
+          "y": 2324
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 1
+    },
+    {
+      "id": "(How this is rendered.d2sequencelayout -- )[0]",
+      "src": "How this is rendered.d2sequencelayout",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "d2sequencelayout-lifeline-end-3085844671",
+      "dstArrow": "none",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 2127.5,
+          "y": 248
+        },
+        {
+          "x": 2127.5,
           "y": 2324
         }
       ],

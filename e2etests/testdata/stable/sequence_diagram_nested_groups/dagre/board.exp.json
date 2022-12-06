@@ -5,11 +5,11 @@
       "id": "this is a message group",
       "type": "",
       "pos": {
-        "x": -97,
+        "x": -47,
         "y": 290
       },
-      "width": 655,
-      "height": 952,
+      "width": 0,
+      "height": 0,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -44,11 +44,11 @@
       "id": "this is a message group.and this is a nested message group",
       "type": "",
       "pos": {
-        "x": -73,
+        "x": -23,
         "y": 420
       },
-      "width": 607,
-      "height": 798,
+      "width": 0,
+      "height": 0,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -83,11 +83,11 @@
       "id": "this is a message group.and this is a nested message group.what about more nesting",
       "type": "",
       "pos": {
-        "x": -49,
+        "x": 1,
         "y": 550
       },
-      "width": 559,
-      "height": 644,
+      "width": 0,
+      "height": 0,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -122,16 +122,16 @@
       "id": "this is a message group.and this is a nested message group.what about more nesting.crazy town",
       "type": "",
       "pos": {
-        "x": -25,
+        "x": 25,
         "y": 680
       },
-      "width": 511,
-      "height": 490,
+      "width": 0,
+      "height": 0,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 0,
+      "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#DEE1EB",
+      "fill": "#EEF1F8",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -140,7 +140,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
-      "blend": true,
+      "blend": false,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -158,19 +158,19 @@
       "level": 4
     },
     {
-      "id": "a",
+      "id": "this is a message group.and this is a nested message group.what about more nesting.crazy town.a",
       "type": "",
       "pos": {
-        "x": 24,
-        "y": 74
+        "x": 9223372036854775807,
+        "y": 9223372036854775807
       },
-      "width": 150,
-      "height": 126,
+      "width": 0,
+      "height": 0,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#FFFFFF",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -193,19 +193,18 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 1
+      "zIndex": 3,
+      "level": 5
     },
     {
-      "id": "a.a note",
-      "type": "rectangle",
+      "id": "this is a message group.and this is a nested message group.what about more nesting.crazy town.a.a note",
+      "type": "",
       "pos": {
-        "x": 25,
-        "y": 720
+        "x": 9223372036854775807,
+        "y": 9223372036854775807
       },
-      "width": 148,
-      "height": 126,
+      "width": -9223372036854775808,
+      "height": -9223372036854775808,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -233,16 +232,15 @@
       "underline": false,
       "labelWidth": 48,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 5,
-      "level": 2
+      "zIndex": 3,
+      "level": 6
     },
     {
       "id": "this is a message group.and this is a nested message group.what about more nesting.crazy town.whoa",
       "type": "",
       "pos": {
         "x": 49,
-        "y": 1066
+        "y": 810
       },
       "width": 413,
       "height": 80,
@@ -280,10 +278,10 @@
       "id": "alt",
       "type": "",
       "pos": {
-        "x": 338,
-        "y": 1172
+        "x": 25,
+        "y": 916
       },
-      "width": 460,
+      "width": 711,
       "height": 518,
       "opacity": 1,
       "strokeDash": 0,
@@ -319,10 +317,10 @@
       "id": "alt.case 1",
       "type": "",
       "pos": {
-        "x": 362,
-        "y": 1196
+        "x": 49,
+        "y": 940
       },
-      "width": 412,
+      "width": 663,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -358,10 +356,10 @@
       "id": "alt.case 2",
       "type": "",
       "pos": {
-        "x": 362,
-        "y": 1326
+        "x": 49,
+        "y": 1070
       },
-      "width": 412,
+      "width": 663,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -397,10 +395,10 @@
       "id": "alt.case 3",
       "type": "",
       "pos": {
-        "x": 362,
-        "y": 1456
+        "x": 49,
+        "y": 1200
       },
-      "width": 412,
+      "width": 663,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -436,10 +434,10 @@
       "id": "alt.case 4",
       "type": "",
       "pos": {
-        "x": 362,
-        "y": 1586
+        "x": 49,
+        "y": 1330
       },
-      "width": 412,
+      "width": 663,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -475,7 +473,7 @@
       "id": "b",
       "type": "",
       "pos": {
-        "x": 337,
+        "x": 24,
         "y": 74
       },
       "width": 150,
@@ -515,8 +513,8 @@
       "id": "b.note",
       "type": "rectangle",
       "pos": {
-        "x": 149,
-        "y": 2076
+        "x": -163,
+        "y": 1500
       },
       "width": 525,
       "height": 126,
@@ -552,10 +550,50 @@
       "level": 2
     },
     {
+      "id": "a",
+      "type": "",
+      "pos": {
+        "x": 337,
+        "y": 74
+      },
+      "width": 150,
+      "height": 126,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#EDF0FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "a",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 12,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
       "id": "a.note",
       "type": "rectangle",
       "pos": {
-        "x": 30,
+        "x": 343,
         "y": 1756
       },
       "width": 137,
@@ -595,7 +633,7 @@
       "id": "c",
       "type": "",
       "pos": {
-        "x": 629,
+        "x": 567,
         "y": 74
       },
       "width": 190,
@@ -659,11 +697,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
+          "x": 412,
           "y": 330
         },
         {
-          "x": 412,
+          "x": 99,
           "y": 330
         }
       ],
@@ -698,11 +736,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
+          "x": 412,
           "y": 460
         },
         {
-          "x": 412,
+          "x": 99,
           "y": 460
         }
       ],
@@ -737,11 +775,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
+          "x": 412,
           "y": 590
         },
         {
-          "x": 412,
+          "x": 99,
           "y": 590
         }
       ],
@@ -776,12 +814,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
-          "y": 976
+          "x": 412,
+          "y": 720
         },
         {
-          "x": 412,
-          "y": 976
+          "x": 99,
+          "y": 720
         }
       ],
       "animated": false,
@@ -815,12 +853,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
-          "y": 1106
+          "x": 412,
+          "y": 850
         },
         {
-          "x": 412,
-          "y": 1106
+          "x": 99,
+          "y": 850
         }
       ],
       "animated": false,
@@ -854,12 +892,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 412,
-          "y": 1236
+          "x": 99,
+          "y": 980
         },
         {
-          "x": 724,
-          "y": 1236
+          "x": 662,
+          "y": 980
         }
       ],
       "animated": false,
@@ -893,12 +931,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 412,
-          "y": 1366
+          "x": 99,
+          "y": 1110
         },
         {
-          "x": 724,
-          "y": 1366
+          "x": 662,
+          "y": 1110
         }
       ],
       "animated": false,
@@ -932,12 +970,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 412,
-          "y": 1496
+          "x": 99,
+          "y": 1240
         },
         {
-          "x": 724,
-          "y": 1496
+          "x": 662,
+          "y": 1240
         }
       ],
       "animated": false,
@@ -971,57 +1009,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 412,
-          "y": 1626
+          "x": 99,
+          "y": 1370
         },
         {
-          "x": 724,
-          "y": 1626
+          "x": 662,
+          "y": 1370
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
       "zIndex": 4
-    },
-    {
-      "id": "(a -- )[0]",
-      "src": "a",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "a-lifeline-end-2251863791",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 6,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 99,
-          "y": 200
-        },
-        {
-          "x": 99,
-          "y": 2332
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 1
     },
     {
       "id": "(b -- )[0]",
@@ -1049,12 +1048,51 @@
       "labelPercentage": 0,
       "route": [
         {
+          "x": 99,
+          "y": 200
+        },
+        {
+          "x": 99,
+          "y": 2076
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 1
+    },
+    {
+      "id": "(a -- )[0]",
+      "src": "a",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "a-lifeline-end-2251863791",
+      "dstArrow": "none",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
           "x": 412,
           "y": 200
         },
         {
           "x": 412,
-          "y": 2332
+          "y": 2076
         }
       ],
       "animated": false,
@@ -1088,12 +1126,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 724,
+          "x": 662,
           "y": 200
         },
         {
-          "x": 724,
-          "y": 2332
+          "x": 662,
+          "y": 2076
         }
       ],
       "animated": false,

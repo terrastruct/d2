@@ -525,6 +525,22 @@ func (obj *Object) HasEdge(mk *d2ast.Key) (*Edge, bool) {
 }
 
 func ResolveUnderscoreKey(ida []string, obj *Object) (resolvedObj *Object, resolvedIDA []string, _ error) {
+	if len(ida) > 0 {
+		objSD := obj.OuterSequenceDiagram()
+		if objSD != nil {
+			referencesActor := false
+			for _, c := range objSD.ChildrenArray {
+				if c.ID == ida[0] {
+					referencesActor = true
+					break
+				}
+			}
+			if referencesActor {
+				obj = objSD
+			}
+		}
+	}
+
 	resolvedObj = obj
 	resolvedIDA = ida
 

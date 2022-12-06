@@ -1363,25 +1363,25 @@ d."The earth is like a tiny grain of sand, only much, much heavier"
 a;b;c;d
 a -> b
 ggg: {
-	_.a -> _.b: lala
+	a -> b: lala
 }
 group 1: {
-  _.b -> _.c
-	_.c -> _.b: ey
+  b -> c
+	c -> b: ey
   nested guy: {
-    _._.c -> _._.b: okay
+    c -> b: okay
   }
-  _.b.t1 -> _.c.t1
-  _.b.t1.t2 -> _.c.t1
-  _.c.t1 -> _.b.t1
+  b.t1 -> c.t1
+  b.t1.t2 -> c.t1
+  c.t1 -> b.t1
 }
 group b: {
-  _.b -> _.c
-	_.c."what would arnold say"
-  _.c -> _.b: okay
+  b -> c
+	c."what would arnold say"
+  c -> b: okay
 }
 choo: {
-  _.d."this note"
+  d."this note"
 }
 `,
 		},
@@ -1390,16 +1390,16 @@ choo: {
 			script: `shape: sequence_diagram
 
 this is a message group: {
-    _.a -> _.b
+    a -> b
     and this is a nested message group: {
-        _._.a -> _._.b
+        a -> b
         what about more nesting: {
-            _._._.a -> _._._.b
+            a -> b
 						crazy town: {
-								_._._._.a."a note"
-								_._._._.a -> _._._._.b
+								a."a note"
+								a -> b
 							whoa: {
-									_._._._._.a -> _._._._._.b
+									a -> b
 							}
             }
         }
@@ -1408,16 +1408,16 @@ this is a message group: {
 
 alt: {
     case 1: {
-        _._.b -> _._.c
+        b -> c
     }
     case 2: {
-        _._.b -> _._.c
+        b -> c
     }
     case 3: {
-        _._.b -> _._.c
+        b -> c
     }
     case 4: {
-        _._.b -> _._.c
+        b -> c
     }
 }
 
@@ -1431,7 +1431,7 @@ c: "just an actor"
 			script: `How this is rendered: {
   shape: sequence_diagram
 
-	CLI; d2ast; d2compiler; d2layout; d2exporter; d2themes; d2renderer
+	CLI; d2ast; d2compiler; d2layout; d2exporter; d2themes; d2renderer; d2dagrelayout
 
   CLI -> d2ast: "'How this is rendered: {...}'"
   d2ast -> CLI: tokenized AST
@@ -1441,7 +1441,7 @@ c: "just an actor"
   CLI -> d2layout.layout: run layout engines
   d2layout.layout -> d2sequencelayout: run engine on shape: sequence_diagram, temporarily remove
   only if root is not sequence: {
-    _.d2layout.layout -> _.d2dagrelayout: run core engine on rest
+    d2layout.layout -> d2dagrelayout: run core engine on rest
   }
   d2layout.layout <- d2sequencelayout: add back in sequence diagrams
   d2layout -> CLI: diagram with correct positions and dimensions

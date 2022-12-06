@@ -75,15 +75,15 @@ ninety nine: {
 b;a;c
 b -> c
 this is a message group: {
-    _.a -> _.b
+    a -> b
     and this is a nested message group: {
-        _._.a -> _._.b
+        a -> b
         what about more nesting: {
-            _._._.a -> _._._.b
+            a -> b
             yo: {
-                _._._._.a -> _._._._.b
+                a -> b
                 yo: {
-                    _._._._._.a -> _._._._._.b
+                    a -> b
                 }
             }
         }
