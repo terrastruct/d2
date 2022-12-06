@@ -11,6 +11,8 @@ You may install `d2` through any of the following methods.
   - <a href="#prefix" id="toc-prefix">PREFIX</a>
 - <a href="#from-source" id="toc-from-source">From source</a>
   - <a href="#source-release" id="toc-source-release">Source Release</a>
+- <a href="#windows" id="toc-windows">Windows</a>
+  - <a href="#msys2" id="toc-msys2">MSYS2</a>
 - <a href="#coming-soon" id="toc-coming-soon">Coming soon</a>
 
 ## install.sh
@@ -150,10 +152,42 @@ fonts and icons. Furthermore, when installing a non versioned commit, installing
 release will ensure that `d2 --version` works correctly by embedding the commit hash into
 the `d2` binary.
 
+## Windows
+
+d2 builds and runs on Windows:
+
+We have prebuilt standalone releases for Windows though they're structured in the same way
+as our Unix releases. So after extracting a release, you'll have to manually put the d2
+binary into your `$PATH` or add the `bin` directory of the release into your `$PATH`.
+
+See https://www.wikihow.com/Change-the-PATH-Environment-Variable-on-Windows
+
+Then you'll be able to call `d2` from the commandline in `cmd.exe` or `pwsh.exe`.
+
+We intend to have a `.msi` release installer sometime soon that handles putting `d2` into
+your `$PATH` for you.
+
+### MSYS2
+
+<img width="1680" alt="Screenshot 2022-12-06 at 2 55 27 AM" src="https://user-images.githubusercontent.com/10180857/205892927-6f3e116c-1c4a-440a-9972-82c306aa9779.png">
+
+We recommend using [MSYS2](https://www.msys2.org/) or [Git
+Bash](https://gitforwindows.org/#bash) (Git Bash is based on MSYS2) for an improved
+terminal experience.
+
+MSYS2 provides a unix style shell environment that is native to Windows (unlike
+[Cygwin](https://www.cygwin.com/)). MSYS2 allows `install.sh` to work, enables proper
+installation of our standalone releases via `make install` and makes the manpage
+accessible via `man d2`.
+
+The MSYS2 terminal also enables `d2` to display colors like in the above screenshot.
+
+In addition, all of our development and CI scripts work under MSYS2 whereas they do not
+under plain Windows.
+
 ## Coming soon
 
 - Docker image
-- Windows install
 - rpm and deb packages
     - with repositories and standalone
 - homebrew core

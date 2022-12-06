@@ -14,6 +14,11 @@ PRs when it's a visual change.
 
 #### Features 🚀
 
+- Windows support has landed! See [./docs/INSTALL.md](./docs/INSTALL.md#windows) for usage
+  instructions. [#96](https://github.com/terrastruct/d2/issues/96)
+
+<img width="1680" alt="Screenshot 2022-12-06 at 2 55 27 AM" src="https://user-images.githubusercontent.com/10180857/205892927-6f3e116c-1c4a-440a-9972-82c306aa9779.png">
+
 - Sequence diagrams are now supported, experimentally. See
   [docs](https://d2lang.com/tour/sequence-diagrams).
   [#99](https://github.com/terrastruct/d2/issues/99)
