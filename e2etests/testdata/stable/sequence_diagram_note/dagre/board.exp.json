@@ -159,7 +159,7 @@
     },
     {
       "id": "a.explanation",
-      "type": "rectangle",
+      "type": "page",
       "pos": {
         "x": -17,
         "y": 436
@@ -198,7 +198,7 @@
     },
     {
       "id": "a.another explanation",
-      "type": "rectangle",
+      "type": "page",
       "pos": {
         "x": -45,
         "y": 692
@@ -237,7 +237,7 @@
     },
     {
       "id": "b.\"Some one who believes imaginary things\\n appear right before your i's.\"",
-      "type": "rectangle",
+      "type": "page",
       "pos": {
         "x": 106,
         "y": 1078
@@ -276,7 +276,7 @@
     },
     {
       "id": "d.The earth is like a tiny grain of sand, only much, much heavier",
-      "type": "rectangle",
+      "type": "page",
       "pos": {
         "x": 477,
         "y": 1480
