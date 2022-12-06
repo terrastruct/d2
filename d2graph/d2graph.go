@@ -20,6 +20,8 @@ import (
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
+const INNER_LABEL_PADDING int = 5
+
 // TODO: Refactor with a light abstract layer on top of AST implementing scenarios,
 // variables, imports, substitutions and then a final set of structures representing
 // a final graph.
@@ -525,6 +527,22 @@ func (obj *Object) HasEdge(mk *d2ast.Key) (*Edge, bool) {
 }
 
 func ResolveUnderscoreKey(ida []string, obj *Object) (resolvedObj *Object, resolvedIDA []string, _ error) {
+	if len(ida) > 0 && !obj.IsSequenceDiagram() {
+		objSD := obj.OuterSequenceDiagram()
+		if objSD != nil {
+			referencesActor := false
+			for _, c := range objSD.ChildrenArray {
+				if c.ID == ida[0] {
+					referencesActor = true
+					break
+				}
+			}
+			if referencesActor {
+				obj = objSD
+			}
+		}
+	}
+
 	resolvedObj = obj
 	resolvedIDA = ida
 
@@ -867,7 +885,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		}
 
 		var dims *d2target.TextDimensions
-		var innerLabelPadding = 5
+		var innerLabelPadding = INNER_LABEL_PADDING
 		if obj.Attributes.Shape.Value == d2target.ShapeText {
 			if obj.Attributes.Language == "latex" {
 				width, height, err := d2latex.Measure(obj.Text().Text)
