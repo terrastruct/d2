@@ -1389,6 +1389,8 @@ choo: {
 			name: "sequence_diagram_nested_groups",
 			script: `shape: sequence_diagram
 
+a; b; c
+
 this is a message group: {
     a -> b
     and this is a nested message group: {
