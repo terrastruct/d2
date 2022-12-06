@@ -497,7 +497,7 @@ fetch_release_info() {
   else
     release_info_url="https://api.github.com/repos/$REPO/releases/tags/$VERSION"
   fi
-  fetch_gh "$release_info_url" "$RELEASE_INFO" \
+  DRY_RUN= fetch_gh "$release_info_url" "$RELEASE_INFO" \
     'application/json'
   VERSION=$(cat "$RELEASE_INFO" | grep -m1 tag_name | sed 's/^.*: "\(.*\)",$/\1/g')
 }
