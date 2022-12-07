@@ -43,7 +43,7 @@ type sequenceDiagram struct {
 }
 
 func getObjEarliestLineNum(o *d2graph.Object) int {
-	min := int(math.MaxInt64)
+	min := int(math.MaxInt32)
 	for _, ref := range o.References {
 		if ref.MapKey == nil {
 			continue
@@ -54,7 +54,7 @@ func getObjEarliestLineNum(o *d2graph.Object) int {
 }
 
 func getEdgeEarliestLineNum(e *d2graph.Edge) int {
-	min := int(math.MaxInt64)
+	min := int(math.MaxInt32)
 	for _, ref := range e.References {
 		if ref.MapKey == nil {
 			continue
