@@ -44,6 +44,9 @@ func (diagram Diagram) HashID() (string, error) {
 }
 
 func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
+	if len(diagram.Shapes) == 0 {
+		return Point{0, 0}, Point{0, 0}
+	}
 	x1 := int(math.MaxInt64)
 	y1 := int(math.MaxInt64)
 	x2 := int(-math.MaxInt64)
