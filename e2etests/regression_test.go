@@ -28,8 +28,12 @@ B: goodbye {
   shape: sequence_diagram
 }
 
-A->B
-`,
+A->B`,
+		}, {
+			name: "sequence_diagram_span_cover",
+			script: `shape: sequence_diagram
+b.1 -> b.1
+b.1 -> b.1`,
 		},
 	}
 
