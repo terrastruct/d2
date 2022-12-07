@@ -594,6 +594,23 @@ hi # Fraud is the homage that force pays to reason.
 			exp: `x
 `,
 		},
+		{
+			name: "leading_space_comments",
+			in: `# foo
+#   foobar
+#     baz
+x  ->  y
+#foo
+y
+`,
+			exp: `# foo
+#   foobar
+#     baz
+x -> y
+# foo
+y
+`,
+		},
 	}
 
 	for _, tc := range testCases {
