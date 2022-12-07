@@ -12,7 +12,7 @@
 [![twitter](https://img.shields.io/twitter/follow/terrastruct?style=social)](https://twitter.com/terrastruct)
 [![license](https://img.shields.io/github/license/terrastruct/d2?color=9cf)](./LICENSE.txt)
 
-https://user-images.githubusercontent.com/10180857/205946913-8d164e43-c972-465d-90d4-cf6ed3cdff30.mp4
+https://user-images.githubusercontent.com/3120367/206125010-bd1fea8e-248a-43e7-8f85-0bbfca0c6e2a.mp4
 
 </div>
 
