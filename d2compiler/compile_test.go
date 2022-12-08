@@ -8,12 +8,12 @@ import (
 
 	tassert "github.com/stretchr/testify/assert"
 
-	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/util-go/assert"
+	"oss.terrastruct.com/util-go/diff"
 )
 
 func TestCompile(t *testing.T) {
