@@ -77,6 +77,12 @@ brew install d2
 > The install script above does this automatically if you have `brew` installed and
 > are running it on macOS.
 
+You can also install from source with:
+
+```d2
+brew install d2 --HEAD
+```
+
 ## Standalone
 
 We publish standalone release archives for every release on Github.
