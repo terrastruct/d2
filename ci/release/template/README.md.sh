@@ -23,7 +23,7 @@ We currently do not have a .msi for automatic installation on Windows so this re
 structured the same as our Unix releases.
 
 Easiest way to use d2 on Windows is to just cd into the bin directory of this release
-and invoke d2 like ./d2.exe <full-input-file-path>
+and invoke d2 like \`./d2.exe <full-input-file-path>\`
 
 You can install on Windows with [MSYS2](https://www.msys2.org/) which emulates a Linux
 shell for Windows. It also enables d2 to show colors in its output.
@@ -31,6 +31,9 @@ shell for Windows. It also enables d2 to show colors in its output.
 But if you must install on Windows without MSYS2, for now you'll have to add the d2 binary
 in \`./bin/d2.exe\` to your \`\$PATH\` manually. Or you can add the \`./bin\` directory to
 your \`\$PATH\`.
+
+We intend to have a \`.msi\` release installer sometime soon that handles putting \`d2\` into
+your \`\$PATH\` for you.
 
 See https://www.wikihow.com/Change-the-PATH-Environment-Variable-on-Windows
 See https://github.com/terrastruct/d2/blob/master/docs/INSTALL.md#windows

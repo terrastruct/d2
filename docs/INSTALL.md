@@ -158,8 +158,13 @@ the `d2` binary.
 d2 builds and runs on Windows:
 
 We have prebuilt standalone releases for Windows though they're structured in the same way
-as our Unix releases. So after extracting a release, you'll have to manually put the d2
-binary into your `$PATH` or add the `bin` directory of the release into your `$PATH`.
+as our Unix releases.
+
+Easiest way to use d2 on Windows is to just cd into the bin directory of the release after
+extracting it and invoking d2 like `./d2.exe <full-input-file-path>`
+
+For installation, you'll have to manually put the d2 binary into your `$PATH` or add the
+`bin` directory of the release into your `$PATH`.
 
 See https://www.wikihow.com/Change-the-PATH-Environment-Variable-on-Windows
 
