@@ -8,8 +8,8 @@ import (
 	"io"
 
 	"github.com/spf13/pflag"
-	"oss.terrastruct.com/util-go/xmain"
 
+	"oss.terrastruct.com/util-go/xmain"
 	"oss.terrastruct.com/d2/d2graph"
 )
 

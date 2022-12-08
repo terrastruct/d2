@@ -5,7 +5,7 @@ all: fmt gen lint build test
 
 .PHONY: fmt
 fmt:
-	prefix "$@" ./ci/fmt.sh
+	prefix "$@" GOIMPORTS_LOCAL=oss.terrastruct.com, ./ci/sub/bin/fmt.sh
 .PHONY: gen
 gen:
 	prefix "$@" ./ci/gen.sh
