@@ -348,6 +348,7 @@ install_d2_standalone() {
 install_d2_brew() {
   header "installing d2 with homebrew"
   sh_c brew tap terrastruct/d2
+  sh_c brew update
   sh_c brew install d2
 }
 
@@ -500,11 +501,6 @@ fetch_gh() {
 
   curl_gh -#o "$file.inprogress" -C- -H "'Accept: $accept'" "$url"
   sh_c mv "$file.inprogress" "$file"
-}
-
-brew() {
-  # Makes brew sane.
-  HOMEBREW_NO_INSTALL_CLEANUP=1 HOMEBREW_NO_AUTO_UPDATE=1 command brew "$@"
 }
 
 # The main function does more than provide organization. It provides robustness in that if
