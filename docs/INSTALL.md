@@ -71,7 +71,6 @@ but that is coming soon. [#315](https://github.com/terrastruct/d2/issues/315)
 If you're on macOS, you can install with `brew`.
 
 ```sh
-brew tap terrastruct/d2
 brew install d2
 ```
 
