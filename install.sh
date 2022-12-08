@@ -51,24 +51,13 @@ if [ "${LIB_TEMP-}" ]; then
 fi
 LIB_TEMP=1
 
-ensure_tmpdir() {
-  if [ -n "${_TMPDIR-}" ]; then
-    return
-  fi
-
+if [ -z "${_TMPDIR-}" ]; then
   _TMPDIR=$(mktemp -d)
   export _TMPDIR
-  trap temp_exittrap EXIT
-}
-
-temp_exittrap() {
-  if [ -n "${_TMPDIR-}" ]; then
-    rm -r "$_TMPDIR"
-  fi
-}
+  trap 'rm -Rf "$_TMPDIR"' EXIT
+fi
 
 temppath() {
-  ensure_tmpdir
   while true; do
     temppath=$_TMPDIR/$(</dev/urandom od -N8 -tx -An -v | tr -d '[:space:]')
     if [ ! -e "$temppath" ]; then
