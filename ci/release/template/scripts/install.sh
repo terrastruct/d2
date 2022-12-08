@@ -9,7 +9,7 @@ main() {
 
   ensure_os
   if [ "$OS" = windows ]; then
-    "$sh_c" install ./bin/d2 "$PREFIX/bin/d2.exe"
+    "$sh_c" install ./bin/d2.exe "$PREFIX/bin/d2.exe"
   else
     "$sh_c" install ./bin/d2 "$PREFIX/bin/d2"
   fi
