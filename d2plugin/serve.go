@@ -8,9 +8,9 @@ import (
 	"io"
 
 	"github.com/spf13/pflag"
-	"oss.terrastruct.com/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/util-go/xmain"
 )
 
 // Serve returns a xmain.RunFunc that will invoke the plugin p as necessary to service the

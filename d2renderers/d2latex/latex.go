@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"github.com/dop251/goja"
+
 	"oss.terrastruct.com/util-go/xdefer"
 )
 
