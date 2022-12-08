@@ -140,7 +140,7 @@ go install oss.terrastruct.com/d2@latest
 
 ### Source Release
 
-To install a proper release from source clone the repository and then:
+To install a release from source clone the repository and then:
 
 ```sh
 ./ci/release/build.sh --install
@@ -149,9 +149,9 @@ To install a proper release from source clone the repository and then:
 ```
 
 Installing a real release will also install manpages and in the future other assets like
-fonts and icons. Furthermore, when installing a non versioned commit, installing a proper
-release will ensure that `d2 --version` works correctly by embedding the commit hash into
-the `d2` binary.
+fonts and icons. Furthermore, when installing a non versioned commit, installing a release
+will ensure that `d2 --version` works correctly by embedding the commit hash into the `d2`
+binary.
 
 ## Windows
 
@@ -160,10 +160,10 @@ d2 builds and runs on Windows:
 We have prebuilt standalone releases for Windows though they're structured in the same way
 as our Unix releases.
 
-Easiest way to use d2 on Windows is to just cd into the bin directory of the release after
-extracting it and invoking d2 like `./d2.exe <full-input-file-path>`
+Easiest way to use d2 on Windows is to just `chdir` into the bin directory of the release
+and invoke d2 like `./d2 <full-input-file-path>`
 
-For installation, you'll have to manually put the d2 binary into your `$PATH` or add the
+For installation, you'll have to put the `bin/d2.exe` binary into your `$PATH` or add the
 `bin` directory of the release into your `$PATH`.
 
 See https://www.wikihow.com/Change-the-PATH-Environment-Variable-on-Windows
@@ -182,7 +182,7 @@ Bash](https://gitforwindows.org/#bash) (Git Bash is based on MSYS2) for an impro
 terminal experience.
 
 MSYS2 provides a unix style shell environment that is native to Windows (unlike
-[Cygwin](https://www.cygwin.com/)). MSYS2 allows `install.sh` to work, enables proper
+[Cygwin](https://www.cygwin.com/)). MSYS2 allows `install.sh` to work, enables automatic
 installation of our standalone releases via `make install` and makes the manpage
 accessible via `man d2`.
 
