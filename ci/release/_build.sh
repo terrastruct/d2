@@ -3,11 +3,12 @@ set -eu
 cd -- "$(dirname "$0")/../.."
 . ./ci/sub/lib.sh
 
+sh_c rm -Rf "$HW_BUILD_DIR"
 sh_c mkdir -p "$HW_BUILD_DIR"
 sh_c cp ./ci/release/template/LICENSE.txt "$HW_BUILD_DIR"
 sh_c cp ./ci/release/template/Makefile "$HW_BUILD_DIR"
 sh_c cp -R ./ci/release/template/man "$HW_BUILD_DIR"
-sh_c cp -Rf ./ci/release/template/scripts "$HW_BUILD_DIR"
+sh_c cp -R ./ci/release/template/scripts "$HW_BUILD_DIR"
 sh_c VERSION="$VERSION" ./ci/release/template/README.md.sh \> "'$HW_BUILD_DIR/README.md'"
 
 ensure_goos
