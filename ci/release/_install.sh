@@ -347,7 +347,6 @@ install_d2_standalone() {
 
 install_d2_brew() {
   header "installing d2 with homebrew"
-  sh_c brew tap terrastruct/d2
   sh_c brew update
   sh_c brew install d2
 }
@@ -391,8 +390,8 @@ install_tala_standalone() {
 
 install_tala_brew() {
   header "installing tala with homebrew"
-  sh_c brew tap terrastruct/d2
-  sh_c brew install tala
+  sh_c brew update
+  sh_c brew install terrastruct/tap/tala
 }
 
 uninstall() {
