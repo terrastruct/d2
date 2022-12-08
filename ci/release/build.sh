@@ -190,7 +190,7 @@ build_local() {
   sh_c ./ci/release/_build.sh
 }
 
-build_remote_macos() {
+build_remote_macos() {(
   sh_c lockfile_ssh "$REMOTE_HOST" .d2-build-lock
   sh_c gitsync "$REMOTE_HOST" src/d2
   sh_c ssh "$REMOTE_HOST" "COLOR=${COLOR-} \
@@ -205,9 +205,9 @@ PATH=\\\"/usr/local/bin:/usr/local/sbin:/opt/homebrew/bin:/opt/homebrew/sbin\\\$
 ./src/d2/ci/release/_build.sh"
   sh_c mkdir -p "$HW_BUILD_DIR"
   sh_c rsync --archive --human-readable "$REMOTE_HOST:src/d2/$ARCHIVE" "$ARCHIVE"
-}
+)}
 
-build_remote_linux() {
+build_remote_linux() {(
   sh_c lockfile_ssh "$REMOTE_HOST" .d2-build-lock
   sh_c gitsync "$REMOTE_HOST" src/d2
   sh_c ssh "$REMOTE_HOST" "COLOR=${COLOR-} \
@@ -221,7 +221,7 @@ ARCHIVE=$ARCHIVE \
 ./src/d2/ci/release/build_docker.sh"
   sh_c mkdir -p "$HW_BUILD_DIR"
   sh_c rsync --archive --human-readable "$REMOTE_HOST:src/d2/$ARCHIVE" "$ARCHIVE"
-}
+)}
 
 ssh() {
   command ssh -o='StrictHostKeyChecking=accept-new' "$@"
