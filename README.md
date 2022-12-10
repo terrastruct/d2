@@ -187,13 +187,18 @@ Open sourced under the Mozilla Public License 2.0. See [./LICENSE.txt](./LICENSE
 
 ## Related
 
-### VSCode extension
+### Official plugins
 
-[https://github.com/terrastruct/d2-vscode](https://github.com/terrastruct/d2-vscode)
+- **VSCode extension**: [https://github.com/terrastruct/d2-vscode](https://github.com/terrastruct/d2-vscode)
+- **Vim extension**: [https://github.com/terrastruct/d2-vim](https://github.com/terrastruct/d2-vim)
+- **Obsidian plugin**: [https://github.com/terrastruct/d2-obsidian](https://github.com/terrastruct/d2-obsidian)
 
-### Vim extension
+### Community plugins
 
-[https://github.com/terrastruct/d2-vim](https://github.com/terrastruct/d2-vim)
+- **Tree-sitter grammar**: [https://github.com/pleshevskiy/tree-sitter-d2](https://github.com/pleshevskiy/tree-sitter-d2)
+- **Emacs extension**: [https://github.com/andorsk/d2-mode](https://github.com/andorsk/d2-mode)
+- **Telegram bot**: [https://github.com/meinside/telegram-d2-bot](https://github.com/meinside/telegram-d2-bot)
+- **Postgres importer**: [https://github.com/zekenie/d2-erd-from-postgres](https://github.com/zekenie/d2-erd-from-postgres)
 
 ### Language docs
 
