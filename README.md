@@ -190,8 +190,8 @@ Open sourced under the Mozilla Public License 2.0. See [./LICENSE.txt](./LICENSE
 We are constantly working on new plugins, integrations, extensions. Contributions are
 welcome in any official or community plugins. If you have somewhere in your workflow that
 you want to use D2, feel free to open a discussion. We have limited bandwidth and usually
-choose the most high-demand ones to work on. If you make a plugin for one yourself, let us
-know and we'll be happy to include it here or help you out!
+choose the most high-demand ones to work on. If you make something cool with D2 yourself,
+let us know and we'll be happy to include it here!
 
 ### Official plugins
 
