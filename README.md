@@ -187,13 +187,24 @@ Open sourced under the Mozilla Public License 2.0. See [./LICENSE.txt](./LICENSE
 
 ## Related
 
-### VSCode extension
+We are constantly working on new plugins, integrations, extensions. Contributions are
+welcome in any official or community plugins. If you have somewhere in your workflow that
+you want to use D2, feel free to open a discussion. We have limited bandwidth and usually
+choose the most high-demand ones to work on. If you make something cool with D2 yourself,
+let us know and we'll be happy to include it here!
 
-[https://github.com/terrastruct/d2-vscode](https://github.com/terrastruct/d2-vscode)
+### Official plugins
 
-### Vim extension
+- **VSCode extension**: [https://github.com/terrastruct/d2-vscode](https://github.com/terrastruct/d2-vscode)
+- **Vim extension**: [https://github.com/terrastruct/d2-vim](https://github.com/terrastruct/d2-vim)
+- **Obsidian plugin**: [https://github.com/terrastruct/d2-obsidian](https://github.com/terrastruct/d2-obsidian)
 
-[https://github.com/terrastruct/d2-vim](https://github.com/terrastruct/d2-vim)
+### Community plugins
+
+- **Tree-sitter grammar**: [https://github.com/pleshevskiy/tree-sitter-d2](https://github.com/pleshevskiy/tree-sitter-d2)
+- **Emacs extension**: [https://github.com/andorsk/d2-mode](https://github.com/andorsk/d2-mode)
+- **Telegram bot**: [https://github.com/meinside/telegram-d2-bot](https://github.com/meinside/telegram-d2-bot)
+- **Postgres importer**: [https://github.com/zekenie/d2-erd-from-postgres](https://github.com/zekenie/d2-erd-from-postgres)
 
 ### Language docs
 
