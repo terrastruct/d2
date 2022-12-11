@@ -5,6 +5,7 @@ import (
 	"compress/flate"
 	"encoding/base64"
 	"io"
+	"sort"
 	"strings"
 
 	"oss.terrastruct.com/util-go/xdefer"
@@ -18,13 +19,18 @@ var compressionDict = "->" +
 	"<->"
 
 func init() {
+	var common []string
 	for k := range d2graph.StyleKeywords {
-		compressionDict += k
+		common = append(common, k)
 	}
 	for k := range d2graph.ReservedKeywords {
-		compressionDict += k
+		common = append(common, k)
 	}
 	for k := range d2graph.ReservedKeywordHolders {
+		common = append(common, k)
+	}
+	sort.Strings(common)
+	for _, k := range common {
 		compressionDict += k
 	}
 }
