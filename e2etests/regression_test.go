@@ -34,6 +34,11 @@ A->B`,
 			script: `shape: sequence_diagram
 b.1 -> b.1
 b.1 -> b.1`,
+		}, {
+			name: "sequence_diagram_no_message",
+			script: `shape: sequence_diagram
+a: A
+b: B`,
 		},
 	}
 

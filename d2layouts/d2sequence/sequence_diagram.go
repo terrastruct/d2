@@ -299,13 +299,18 @@ func (sd *sequenceDiagram) placeActors() {
 //        │
 //        │
 func (sd *sequenceDiagram) addLifelineEdges() {
-	lastRoute := sd.messages[len(sd.messages)-1].Route
 	endY := 0.
-	for _, p := range lastRoute {
-		endY = math.Max(endY, p.Y)
+	if len(sd.messages) > 0 {
+		lastRoute := sd.messages[len(sd.messages)-1].Route
+		for _, p := range lastRoute {
+			endY = math.Max(endY, p.Y)
+		}
 	}
 	for _, note := range sd.notes {
 		endY = math.Max(endY, note.TopLeft.Y+note.Height)
+	}
+	for _, actor := range sd.actors {
+		endY = math.Max(endY, actor.TopLeft.Y+actor.Height)
 	}
 	endY += sd.yStep
 
