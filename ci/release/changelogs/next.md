@@ -1,5 +1,8 @@
 #### Features 🚀
 
+- Diagram padding can now can be configured in the CLI (default 100px).
+  [https://github.com/terrastruct/d2/pull/431](https://github.com/terrastruct/d2/pull/431)
+
 #### Improvements 🧹
 
 #### Bugfixes ⛑️

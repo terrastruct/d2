@@ -21,6 +21,6 @@ func main() {
 	_ = graph.SetDimensions(nil, ruler)
 	_ = d2dagrelayout.Layout(context.Background(), graph)
 	diagram, _ := d2exporter.Export(context.Background(), graph, d2themescatalog.NeutralDefault.ID)
-	out, _ := d2svg.Render(diagram)
+	out, _ := d2svg.Render(diagram, d2svg.DEFAULT_PADDING)
 	_ = ioutil.WriteFile(filepath.Join("out.svg"), out, 0600)
 }

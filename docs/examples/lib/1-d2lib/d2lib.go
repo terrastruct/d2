@@ -20,6 +20,6 @@ func main() {
 		Ruler:   ruler,
 		ThemeID: d2themescatalog.GrapeSoda.ID,
 	})
-	out, _ := d2svg.Render(diagram)
+	out, _ := d2svg.Render(diagram, d2svg.DEFAULT_PADDING)
 	_ = ioutil.WriteFile(filepath.Join("out.svg"), out, 0600)
 }
