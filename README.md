@@ -205,6 +205,7 @@ let us know and we'll be happy to include it here!
 - **Emacs extension**: [https://github.com/andorsk/d2-mode](https://github.com/andorsk/d2-mode)
 - **Telegram bot**: [https://github.com/meinside/telegram-d2-bot](https://github.com/meinside/telegram-d2-bot)
 - **Postgres importer**: [https://github.com/zekenie/d2-erd-from-postgres](https://github.com/zekenie/d2-erd-from-postgres)
+- **Structurizr DSL exporter**: [https://github.com/goto1134/structurizr-d2-exporter](https://github.com/goto1134/structurizr-d2-exporter)
 
 ### Language docs
 
