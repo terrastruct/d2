@@ -363,6 +363,9 @@ func (c *compiler) applyScalar(attrs *d2graph.Attributes, reserved string, box d
 		}
 		attrs.Direction.Value = scalar.ScalarString()
 		return
+	case "constraint":
+		// Compilation for shape-specific keywords happens elsewhere
+		return
 	}
 
 	if _, ok := d2graph.StyleKeywords[reserved]; ok {
