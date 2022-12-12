@@ -1619,6 +1619,17 @@ choo: {
 			},
 		},
 		{
+			name: "constraint_label",
+
+			text: `foo {
+  label: bar
+  constraint: BIZ
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.String(t, "bar", g.Objects[0].Attributes.Label.Value)
+			},
+		},
+		{
 			name: "invalid_direction",
 
 			text: `x: {
