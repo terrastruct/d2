@@ -3,11 +3,14 @@
 package main
 
 import (
+	"encoding/json"
+	"errors"
 	"strings"
 	"syscall/js"
 
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2format"
+	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/lib/urlenc"
 )
 
@@ -18,20 +21,38 @@ func main() {
 	<-done
 }
 
+type jsObject struct {
+	Result    string `json:"result"`
+	UserError string `json:"userError"`
+	D2Error   string `json:"d2Error"`
+}
+
 // TODO error passing
+// TODO recover panics
 func jsCompile(this js.Value, args []js.Value) interface{} {
 	script := args[0].String()
 
 	g, err := d2compiler.Compile("", strings.NewReader(script), &d2compiler.CompileOptions{
 		UTF16: true,
 	})
+	var pe d2parser.ParseError
 	if err != nil {
-		return err
+		if errors.As(err, &pe) {
+			serialized, _ := json.Marshal(err)
+			ret := jsObject{UserError: string(serialized)}
+			str, _ := json.Marshal(ret)
+			return string(str)
+		}
+		ret := jsObject{D2Error: err.Error()}
+		str, _ := json.Marshal(ret)
+		return string(str)
 	}
 
 	newScript := d2format.Format(g.AST)
 	if script != newScript {
-		return newScript
+		ret := jsObject{Result: newScript}
+		str, _ := json.Marshal(ret)
+		return string(str)
 	}
 
 	return nil
