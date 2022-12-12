@@ -59,6 +59,10 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	padFlag, err := ms.Opts.Int64("D2_PAD", "pad", "", d2svg.DEFAULT_PADDING, "pixels padded around the rendered diagram")
+	if err != nil {
+		return err
+	}
 	versionFlag, err := ms.Opts.Bool("", "version", "v", false, "get the version")
 	if err != nil {
 		return err
@@ -161,6 +165,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		w, err := newWatcher(ctx, ms, watcherOpts{
 			layoutPlugin: plugin,
 			themeID:      *themeFlag,
+			pad:          *padFlag,
 			host:         *hostFlag,
 			port:         *portFlag,
 			inputPath:    inputPath,
@@ -177,7 +182,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	_, written, err := compile(ctx, ms, plugin, *themeFlag, inputPath, outputPath, *bundleFlag, pw.Page)
+	_, written, err := compile(ctx, ms, plugin, *padFlag, *themeFlag, inputPath, outputPath, *bundleFlag, pw.Page)
 	if err != nil {
 		if written {
 			return fmt.Errorf("failed to fully compile (partial render written): %w", err)
@@ -188,7 +193,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, themeID int64, inputPath, outputPath string, bundle bool, page playwright.Page) (_ []byte, written bool, _ error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, pad, themeID int64, inputPath, outputPath string, bundle bool, page playwright.Page) (_ []byte, written bool, _ error) {
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
 		return nil, false, err
@@ -209,7 +214,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, theme
 		return nil, false, err
 	}
 
-	svg, err := d2svg.Render(diagram)
+	svg, err := d2svg.Render(diagram, int(pad))
 	if err != nil {
 		return nil, false, err
 	}

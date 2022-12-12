@@ -34,7 +34,7 @@ import (
 )
 
 const (
-	padding                    = 100
+	DEFAULT_PADDING            = 100
 	MIN_ARROWHEAD_STROKE_WIDTH = 2
 	threeDeeOffset             = 15
 )
@@ -47,10 +47,10 @@ var styleCSS string
 //go:embed github-markdown.css
 var mdCSS string
 
-func setViewbox(writer io.Writer, diagram *d2target.Diagram) (width int, height int) {
+func setViewbox(writer io.Writer, diagram *d2target.Diagram, pad int) (width int, height int) {
 	tl, br := diagram.BoundingBox()
-	w := br.X - tl.X + padding*2
-	h := br.Y - tl.Y + padding*2
+	w := br.X - tl.X + pad*2
+	h := br.Y - tl.Y + pad*2
 	// TODO minify
 
 	// TODO background stuff. e.g. dotted, grid, colors
@@ -58,7 +58,7 @@ func setViewbox(writer io.Writer, diagram *d2target.Diagram) (width int, height 
 <svg
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="%d" height="%d" viewBox="%d %d %d %d">`, w, h, tl.X-padding, tl.Y-padding, w, h)
+width="%d" height="%d" viewBox="%d %d %d %d">`, w, h, tl.X-pad, tl.Y-pad, w, h)
 
 	return w, h
 }
@@ -949,9 +949,9 @@ func embedFonts(buf *bytes.Buffer) {
 }
 
 // TODO minify output at end
-func Render(diagram *d2target.Diagram) ([]byte, error) {
+func Render(diagram *d2target.Diagram, pad int) ([]byte, error) {
 	buf := &bytes.Buffer{}
-	w, h := setViewbox(buf, diagram)
+	w, h := setViewbox(buf, diagram, pad)
 
 	buf.WriteString(fmt.Sprintf(`<style type="text/css">
 <![CDATA[
