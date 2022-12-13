@@ -18,6 +18,7 @@ func main() {
 	done := make(chan struct{}, 0)
 	js.Global().Set("d2Compile", js.FuncOf(jsCompile))
 	js.Global().Set("d2Encode", js.FuncOf(jsEncode))
+	js.Global().Set("d2Decode", js.FuncOf(jsDecode))
 	<-done
 }
 
@@ -62,9 +63,29 @@ func jsEncode(this js.Value, args []js.Value) interface{} {
 	script := args[0].String()
 
 	encoded, err := urlenc.Encode(script)
+	// should never happen
 	if err != nil {
-		return err
+		ret := jsObject{D2Error: err.Error()}
+		str, _ := json.Marshal(ret)
+		return string(str)
 	}
 
-	return encoded
+	ret := jsObject{Result: encoded}
+	str, _ := json.Marshal(ret)
+	return string(str)
+}
+
+func jsDecode(this js.Value, args []js.Value) interface{} {
+	script := args[0].String()
+
+	script, err := urlenc.Decode(script)
+	if err != nil {
+		ret := jsObject{UserError: err.Error()}
+		str, _ := json.Marshal(ret)
+		return string(str)
+	}
+
+	ret := jsObject{Result: script}
+	str, _ := json.Marshal(ret)
+	return string(str)
 }
