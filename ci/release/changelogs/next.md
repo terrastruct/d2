@@ -5,6 +5,9 @@
 
 #### Improvements 🧹
 
+- Fmt now preserves leading comment spacing.
+  [#400](https://github.com/terrastruct/d2/issues/400)
+
 #### Bugfixes ⛑️
 
 - Fixed crash when sequence diagrams had no messages.
