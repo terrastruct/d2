@@ -287,6 +287,16 @@ hide() {
   return "$code"
 }
 
+hide_stderr() {
+  out="$(mktempd)/hideout"
+  capcode "$@" 2>"$out"
+  if [ "$code" -eq 0 ]; then
+    return
+  fi
+  cat "$out" >&2
+  return "$code"
+}
+
 echo_dur() {
   local dur=$1
   local h=$((dur/60/60))
