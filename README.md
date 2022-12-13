@@ -141,7 +141,7 @@ one, please see [./d2renderers/d2fonts](./d2renderers/d2fonts).
 
 ## Export file types
 
-D2 currently supports SVG exports. More coming soon.
+D2 currently supports SVG and PNG file exports. More coming soon. 
 
 ## Language tooling
 
