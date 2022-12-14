@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
-cd -- "$(dirname "$0")/../../.."
-. ./ci/sub/lib.sh
+. "$(dirname "$0")/../../../../ci/sub/lib.sh"
+cd -- "$(dirname "$0")/../../../.."
 
 help() {
   cat <<EOF

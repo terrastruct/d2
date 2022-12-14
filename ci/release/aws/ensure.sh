@@ -1,11 +1,11 @@
 #!/bin/sh
 set -eu
-cd -- "$(dirname "$0")/../../.."
-. ./ci/sub/lib.sh
+. "$(dirname "$0")/../../../../ci/sub/lib.sh"
+cd -- "$(dirname "$0")/../../../.."
 
 help() {
   cat <<EOF
-usage: $0 [--dry-run] [--skip-create]
+usage: $0 [--dry-run] [--skip-create] [--copy-id=id.pub]
 
 $0 creates and ensures the d2 builders in AWS.
 EOF
@@ -18,13 +18,22 @@ main() {
         help
         return 0
         ;;
+      x)
+        flag_noarg && shift "$FLAGSHIFT"
+        set -x
+        export TRACE=1
+        ;;
       dry-run)
         flag_noarg && shift "$FLAGSHIFT"
-        DRY_RUN=1
+        export DRY_RUN=1
         ;;
       skip-create)
         flag_noarg && shift "$FLAGSHIFT"
         SKIP_CREATE=1
+        ;;
+      copy-id)
+        flag_nonemptyarg && shift "$FLAGSHIFT"
+        ID_PUB_PATH=$FLAGARG
         ;;
       *)
         flag_errusage "unrecognized flag $FLAGRAW"
@@ -35,6 +44,9 @@ main() {
   if [ $# -gt 0 ]; then
     flag_errusage "no arguments are accepted"
   fi
+  if [ -z "${ID_PUB_PATH-}" ]; then
+    flag_errusage "--copy-id is required"
+  fi
 
   if [ -z "${SKIP_CREATE-}" ]; then
     create_remote_hosts
@@ -43,6 +55,8 @@ main() {
 }
 
 create_remote_hosts() {
+  bigheader create_remote_hosts
+
   KEY_NAME=$(aws ec2 describe-key-pairs | jq -r .KeyPairs[0].KeyName)
   VPC_ID=$(aws ec2 describe-vpcs | jq -r .Vpcs[0].VpcId)
 
@@ -73,11 +87,12 @@ create_remote_hosts() {
     | jq -r '.Reservations[].Instances[].State.Name')
   if [ -z "$state" ]; then
     sh_c aws ec2 run-instances \
-      --image-id=ami-071e6cafc48327ca2 \
+      --image-id=ami-0ecc74eca1d66d8a6 \
       --count=1 \
       --instance-type=t2.small \
       --security-groups=ssh \
       "--key-name=$KEY_NAME" \
+      --iam-instance-profile 'Name=AmazonSSMRoleForInstancesQuickSetup' \
       --tag-specifications '"ResourceType=instance,Tags=[{Key=Name,Value=d2-builder-linux-amd64}]"' \
         '"ResourceType=volume,Tags=[{Key=Name,Value=d2-builder-linux-amd64}]"' >/dev/null
   fi
@@ -86,8 +101,8 @@ create_remote_hosts() {
       --filters 'Name=instance-state-name,Values=pending,running,stopping,stopped' 'Name=tag:Name,Values=d2-builder-linux-amd64' \
       | jq -r '.Reservations[].Instances[].PublicDnsName')
     if [ -n "$dnsname" ]; then
-      log "TSTRUCT_LINUX_AMD64_BUILDER=admin@$dnsname"
-      export TSTRUCT_LINUX_AMD64_BUILDER=admin@$dnsname
+      log "TSTRUCT_LINUX_AMD64_BUILDER=ubuntu@$dnsname"
+      export TSTRUCT_LINUX_AMD64_BUILDER=ubuntu@$dnsname
       break
     fi
     sleep 5
@@ -99,11 +114,12 @@ create_remote_hosts() {
     | jq -r '.Reservations[].Instances[].State.Name')
   if [ -z "$state" ]; then
     sh_c aws ec2 run-instances \
-      --image-id=ami-0e67506f183e5ab60 \
+      --image-id=ami-06e2dea2cdda3acda \
       --count=1 \
       --instance-type=t4g.small \
       --security-groups=ssh \
       "--key-name=$KEY_NAME" \
+      --iam-instance-profile 'Name=AmazonSSMRoleForInstancesQuickSetup' \
       --tag-specifications '"ResourceType=instance,Tags=[{Key=Name,Value=d2-builder-linux-arm64}]"' \
         '"ResourceType=volume,Tags=[{Key=Name,Value=d2-builder-linux-arm64}]"' >/dev/null
   fi
@@ -112,8 +128,8 @@ create_remote_hosts() {
       --filters 'Name=instance-state-name,Values=pending,running,stopping,stopped' 'Name=tag:Name,Values=d2-builder-linux-arm64' \
       | jq -r '.Reservations[].Instances[].PublicDnsName')
     if [ -n "$dnsname" ]; then
-      log "TSTRUCT_LINUX_ARM64_BUILDER=admin@$dnsname"
-      export TSTRUCT_LINUX_ARM64_BUILDER=admin@$dnsname
+      log "TSTRUCT_LINUX_ARM64_BUILDER=ubuntu@$dnsname"
+      export TSTRUCT_LINUX_ARM64_BUILDER=ubuntu@$dnsname
       break
     fi
     sleep 5
@@ -146,6 +162,7 @@ create_remote_hosts() {
       --instance-type=mac1.metal \
       --security-groups=ssh \
       "--key-name=$KEY_NAME" \
+      --iam-instance-profile 'Name=AmazonSSMRoleForInstancesQuickSetup' \
       --placement "Tenancy=host,HostId=$MACOS_AMD64_HOST_ID" \
       --tag-specifications '"ResourceType=instance,Tags=[{Key=Name,Value=d2-builder-macos-amd64}]"' \
         '"ResourceType=volume,Tags=[{Key=Name,Value=d2-builder-macos-amd64}]"' >/dev/null
@@ -173,6 +190,7 @@ create_remote_hosts() {
       --instance-type=mac2.metal \
       --security-groups=ssh \
       "--key-name=$KEY_NAME" \
+      --iam-instance-profile 'Name=AmazonSSMRoleForInstancesQuickSetup' \
       --placement "Tenancy=host,HostId=$MACOS_ARM64_HOST_ID" \
       --tag-specifications '"ResourceType=instance,Tags=[{Key=Name,Value=d2-builder-macos-arm64}]"' \
         '"ResourceType=volume,Tags=[{Key=Name,Value=d2-builder-macos-arm64}]"' >/dev/null
@@ -191,6 +209,8 @@ create_remote_hosts() {
 }
 
 init_remote_hosts() {
+  bigheader init_remote_hosts
+
   header linux-amd64
   REMOTE_HOST=$TSTRUCT_LINUX_AMD64_BUILDER init_remote_linux
   header linux-arm64
@@ -201,14 +221,18 @@ init_remote_hosts() {
   REMOTE_HOST=$TSTRUCT_MACOS_ARM64_BUILDER init_remote_macos
 
   FGCOLOR=2 header summary
-  log "export TSTRUCT_LINUX_AMD64_BUILDER=$TSTRUCT_LINUX_AMD64_BUILDER"
-  log "export TSTRUCT_LINUX_ARM64_BUILDER=$TSTRUCT_LINUX_ARM64_BUILDER"
-  log "export TSTRUCT_MACOS_AMD64_BUILDER=$TSTRUCT_MACOS_AMD64_BUILDER"
-  log "export TSTRUCT_MACOS_ARM64_BUILDER=$TSTRUCT_MACOS_ARM64_BUILDER"
+  echo "export TSTRUCT_LINUX_AMD64_BUILDER=$TSTRUCT_LINUX_AMD64_BUILDER"
+  echo "export TSTRUCT_LINUX_ARM64_BUILDER=$TSTRUCT_LINUX_ARM64_BUILDER"
+  echo "export TSTRUCT_MACOS_AMD64_BUILDER=$TSTRUCT_MACOS_AMD64_BUILDER"
+  echo "export TSTRUCT_MACOS_ARM64_BUILDER=$TSTRUCT_MACOS_ARM64_BUILDER"
 }
 
 init_remote_linux() {
   wait_remote_host
+
+  if [ -n "${ID_PUB_PATH-}" ]; then
+    sh_c ssh_copy_id -i="$ID_PUB_PATH" "$REMOTE_HOST"
+  fi
 
   sh_c ssh "$REMOTE_HOST" sh -s -- <<EOF
 set -eux
@@ -218,16 +242,16 @@ sudo -E apt-get update -y
 sudo -E apt-get dist-upgrade -y
 sudo -E apt-get install -y build-essential rsync
 
-# Docker from https://docs.docker.com/engine/install/debian/
+# Docker from https://docs.docker.com/engine/install/ubuntu/
 sudo -E apt-get -y install \
     ca-certificates \
     curl \
     gnupg \
     lsb-release
 sudo mkdir -p /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --batch --yes --dearmor -o /etc/apt/keyrings/docker.gpg
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --yes --dearmor -o /etc/apt/keyrings/docker.gpg
 echo \
-  "deb [arch=\$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+  "deb [arch=\$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
   \$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo -E apt-get update -y
 sudo -E apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
@@ -239,6 +263,11 @@ mkdir -p \$HOME/.local/share/man
 EOF
   init_remote_env
 
+  sh_c ssh "$REMOTE_HOST" sh -s -- <<EOF
+set -eux
+export DEBIAN_FRONTEND=noninteractive
+sudo -E apt-get autoremove -y
+EOF
   sh_c ssh "$REMOTE_HOST" 'sudo reboot' || true
 }
 
@@ -266,6 +295,8 @@ EOF
   sh_c ssh "$REMOTE_HOST" brew update
   sh_c ssh "$REMOTE_HOST" brew upgrade
   sh_c ssh "$REMOTE_HOST" brew install go rsync
+
+  sh_c ssh "$REMOTE_HOST" 'sudo reboot' || true
 }
 
 init_remote_env() {
