@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
-. "$(dirname "$0")/../../../../ci/sub/lib.sh"
-cd -- "$(dirname "$0")/../../../.."
+. "$(dirname "$0")/../../../ci/sub/lib.sh"
+cd -- "$(dirname "$0")/../../.."
 
 help() {
   cat <<EOF
@@ -33,10 +33,11 @@ main() {
   done
   shift "$FLAGSHIFT"
 
-  REMOTE_HOST=$TSTRUCT_LINUX_AMD64_BUILDER; runjob linux-amd64 ssh "$REMOTE_HOST" "$@"
-  REMOTE_HOST=$TSTRUCT_LINUX_ARM64_BUILDER; runjob linux-arm64 ssh "$REMOTE_HOST" "$@"
-  REMOTE_HOST=$TSTRUCT_MACOS_AMD64_BUILDER; runjob macos-amd64 ssh "$REMOTE_HOST" "$@"
-  REMOTE_HOST=$TSTRUCT_MACOS_ARM64_BUILDER; runjob macos-arm64 ssh "$REMOTE_HOST" "$@"
+  REMOTE_HOST=$CI_HOST_D2_LINUX_AMD64 && runjob linux-amd64 ssh "$REMOTE_HOST" "$@"
+  REMOTE_HOST=$CI_HOST_D2_LINUX_ARM64 && runjob linux-arm64 ssh "$REMOTE_HOST" "$@"
+  REMOTE_HOST=$CI_HOST_D2_MACOS_AMD64 && runjob macos-amd64 ssh "$REMOTE_HOST" "$@"
+  REMOTE_HOST=$CI_HOST_D2_MACOS_ARM64 && runjob macos-arm64 ssh "$REMOTE_HOST" "$@"
+  REMOTE_HOST=$CI_HOST_D2_WINDOWS_AMD64 && runjob macos-arm64 ssh "$REMOTE_HOST" "$@"
 }
 
 main "$@"
