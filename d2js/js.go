@@ -15,11 +15,10 @@ import (
 )
 
 func main() {
-	done := make(chan struct{}, 0)
 	js.Global().Set("d2Compile", js.FuncOf(jsCompile))
 	js.Global().Set("d2Encode", js.FuncOf(jsEncode))
 	js.Global().Set("d2Decode", js.FuncOf(jsDecode))
-	<-done
+	select {}
 }
 
 type jsObject struct {
