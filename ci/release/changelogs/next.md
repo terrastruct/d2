@@ -7,6 +7,8 @@
 
 - Fmt now preserves leading comment spacing.
   [#400](https://github.com/terrastruct/d2/issues/400)
+- Improved readability of connection labels when they are placed above or below a connection.
+  [#414](https://github.com/terrastruct/d2/issues/414)
 
 #### Bugfixes ⛑️
 
