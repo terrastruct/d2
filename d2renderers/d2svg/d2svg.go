@@ -382,9 +382,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		labelTL.X = math.Round(labelTL.X)
 		labelTL.Y = math.Round(labelTL.Y)
 
-		if label.Position(connection.LabelPosition).IsOnEdge() {
-			labelMask = makeLabelMask(labelTL, connection.LabelWidth, connection.LabelHeight)
-		}
+		labelMask = makeLabelMask(labelTL, connection.LabelWidth, connection.LabelHeight)
 	}
 
 	fmt.Fprintf(writer, `<path d="%s" class="connection" style="fill:none;%s" %s%smask="url(#%s)"/>`,
