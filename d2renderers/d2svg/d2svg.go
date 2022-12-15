@@ -383,32 +383,6 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		labelTL.Y = math.Round(labelTL.Y)
 
 		if label.Position(connection.LabelPosition).IsOnEdge() {
-			strokeWidth := float64(connection.StrokeWidth)
-			tl, br := geo.Route(connection.Route).GetBoundingBox()
-			tl.X -= strokeWidth
-			tl.Y -= strokeWidth
-			br.X += strokeWidth
-			br.Y += strokeWidth
-			if connection.SrcArrow != d2target.NoArrowhead {
-				width, height := arrowheadDimensions(connection.SrcArrow, strokeWidth)
-				tl.X -= width
-				tl.Y -= height
-				br.X += width
-				br.Y += height
-			}
-			if connection.DstArrow != d2target.NoArrowhead {
-				width, height := arrowheadDimensions(connection.DstArrow, strokeWidth)
-				tl.X -= width
-				tl.Y -= height
-				br.X += width
-				br.Y += height
-			}
-
-			tl.X = math.Min(tl.X, labelTL.X)
-			tl.Y = math.Min(tl.Y, labelTL.Y)
-			br.X = math.Max(br.X, labelTL.X+float64(connection.LabelWidth))
-			br.Y = math.Max(br.Y, labelTL.Y+float64(connection.LabelHeight))
-
 			labelMask = makeLabelMask(labelTL, connection.LabelWidth, connection.LabelHeight)
 		}
 	}
