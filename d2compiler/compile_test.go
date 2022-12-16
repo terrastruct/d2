@@ -1709,6 +1709,62 @@ seq: {
 				tassert.False(t, ade.IsDescendantOf(adef))
 			},
 		},
+		{
+			name: "sequence_diagram_name_prefixes",
+
+			text: `
+foo: {
+	shape: sequence_diagram
+	a -> b
+}
+
+foobar: {
+	shape: sequence_diagram
+	c -> d
+}
+
+foo -> foobar
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 6, len(g.Objects))
+
+				foo := g.Objects[0]
+				assert.String(t, "foo", foo.ID)
+				tassert.True(t, foo.IsDescendantOf(g.Root))
+				tassert.False(t, foo.IsDescendantOf(foo))
+				tassert.False(t, g.Root.IsDescendantOf(foo))
+
+				foobar := g.Objects[1]
+				assert.String(t, "foobar", foobar.AbsID())
+				tassert.False(t, foobar.IsDescendantOf(foo))
+				tassert.False(t, foo.IsDescendantOf(foobar))
+				tassert.True(t, foobar.IsDescendantOf(g.Root))
+
+				tassert.Equal(t, 3, len(g.Edges))
+				ab := g.Edges[0]
+				assert.String(t, "foo.(a -> b)[0]", ab.AbsID())
+				tassert.True(t, ab.Src.IsDescendantOf(foo))
+				tassert.True(t, ab.Dst.IsDescendantOf(foo))
+				tassert.False(t, ab.Src.IsDescendantOf(foobar))
+				tassert.False(t, ab.Dst.IsDescendantOf(foobar))
+
+				cd := g.Edges[1]
+				assert.String(t, "foobar.(c -> d)[0]", cd.AbsID())
+				tassert.False(t, cd.Src.IsDescendantOf(foo))
+				tassert.False(t, cd.Dst.IsDescendantOf(foo))
+				tassert.True(t, cd.Src.IsDescendantOf(foobar))
+				tassert.True(t, cd.Dst.IsDescendantOf(foobar))
+
+				foofoobar := g.Edges[2]
+				assert.String(t, "(foo -> foobar)[0]", foofoobar.AbsID())
+				assert.String(t, "foo", foofoobar.Src.AbsID())
+				assert.String(t, "foobar", foofoobar.Dst.AbsID())
+				tassert.False(t, foofoobar.Src.IsDescendantOf(foo))
+				tassert.False(t, foofoobar.Src.IsDescendantOf(foobar))
+				tassert.False(t, foofoobar.Dst.IsDescendantOf(foo))
+				tassert.False(t, foofoobar.Dst.IsDescendantOf(foobar))
+			},
+		},
 	}
 
 	for _, tc := range testCases {
