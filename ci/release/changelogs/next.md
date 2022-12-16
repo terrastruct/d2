@@ -12,6 +12,8 @@
 
 - Fixed crash when sequence diagrams had no messages.
   [https://github.com/terrastruct/d2/pull/427](https://github.com/terrastruct/d2/pull/427)
+- Fixed a crash when external connection IDs were prefixes of a sequence diagram ID.
+  [https://github.com/terrastruct/d2/pull/450](https://github.com/terrastruct/d2/pull/450)
 - Fixed `constraint` keyword setting label.
   [https://github.com/terrastruct/d2/issues/415](https://github.com/terrastruct/d2/issues/415)
 - Fixed serialization affecting binary plugins (TALA).
