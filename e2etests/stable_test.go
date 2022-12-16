@@ -917,12 +917,13 @@ y: {
   }
 }
 
-x -> y: {
+x -> y: in style {
   style: {
     stroke: green
     opacity: 0.5
     stroke-width: 2
     stroke-dash: 5
+	fill: lavender
   }
 }
 `,
@@ -1041,6 +1042,7 @@ size S -> size M: custom 15 {
 }
 size XXXL -> custom 64: custom 48 {
 	style.font-size: 48
+	style.fill: lavender
 }
 `,
 		}, {
