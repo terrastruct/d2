@@ -418,9 +418,13 @@ init_remote_windows() {
 
 Invoke-WebRequest -Uri "https://github.com/msys2/msys2-installer/releases/download/2022-10-28/msys2-x86_64-20221028.exe" -OutFile "./msys2-x86_64.exe"
 ./msys2-x86_64.exe install --default-answer --confirm-command --root C:\msys64
-C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'pacman -Sy --noconfirm base-devel vim'
+C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'pacman -Sy --noconfirm base-devel vim rsync'
 C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'curl -fsSL https://d2lang.com/install.sh | sh -s -- --tala'
 C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'd2 --version'
+
+\$oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
+\$newpath = “\$oldpath;C:\msys64\usr\bin”
+Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH -Value \$newPath
 
 Invoke-WebRequest -Uri https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3 -OutFile .\microsoft.ui.xaml.2.7.3.zip
 Expand-Archive -Force .\microsoft.ui.xaml.2.7.3.zip
@@ -452,6 +456,26 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Wi
 
 Restart-Computer
 EOF
+
+# Use the following to get a pure MSYS2 shell:
+#   ssh -t "$CI_D2_WINDOWS_AMD64" 'C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64'
+# Use the following to run a command in a pure MSYS2 shell:
+#   ssh "$CI_D2_WINDOWS_AMD64" 'C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c "echo hi"'
+
+# In case msys2 improves in the future and allows for noninteractive commands via ssh "$CI_D2_WINDOWS_AMD64" echo hi
+# The following will set the OpenSSH shell to MSYS2 instead of PowerShell.
+# But PowerShell as the default is better anyway as it gives us access to both the UNIX userspace and Windows tools like wix/dotnet/winget.
+#   <<EOF
+#   echo '@C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64' | Out-File C:\msys64\sshd_default_shell.cmd
+#   # utf8BOM -> utf8: https://stackoverflow.com/a/34969243/4283659
+#   \$null = New-Item -Force C:\msys64\sshd_default_shell.cmd -Value (Get-Content -Path C:\msys64\sshd_default_shell.cmd | Out-String)
+#   Set-ItemProperty -Path HKLM:\SOFTWARE\OpenSSH -Name DefaultShell -Value C:\msys64\sshd_default_shell.cmd
+#   EOF
+# To undo:
+#   <<EOF
+#   Remove-ItemProperty -Path HKLM:\SOFTWARE\OpenSSH -Name DefaultShell
+#   rm C:\msys64\sshd_default_shell.cmd
+#   EOF
 )
 
   gen_init_ps1=$(cat <<EOF
