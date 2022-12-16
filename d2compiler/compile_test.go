@@ -1650,6 +1650,65 @@ choo: {
 				}
 			},
 		},
+		{
+			name: "is_descendent_of_with_sequence_diagram",
+
+			text: `
+a.b.c -> a.d.e.f
+
+seq: {
+	shape: sequence_diagram
+	a; b
+
+	message group: {
+		nested message group: {
+			a -> b
+		}
+	}
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 11, len(g.Objects))
+
+				seq := g.Objects[0]
+				assert.String(t, "seq", seq.ID)
+				tassert.True(t, seq.IsDescendantOf(g.Root))
+				tassert.False(t, seq.IsDescendantOf(seq))
+				tassert.False(t, g.Root.IsDescendantOf(seq))
+
+				seqA := g.Objects[1]
+				assert.String(t, "seq.a", seqA.AbsID())
+				tassert.True(t, seqA.IsDescendantOf(seq))
+				tassert.True(t, seqA.IsDescendantOf(g.Root))
+
+				assert.String(t, "seq.message group", g.Objects[3].AbsID())
+				assert.String(t, "seq.message group.nested message group", g.Objects[4].AbsID())
+				tassert.False(t, g.Objects[4].IsDescendantOf(seqA))
+				tassert.True(t, g.Objects[4].IsDescendantOf(seq))
+				tassert.True(t, g.Objects[4].IsDescendantOf(g.Objects[3]))
+
+				a := g.Objects[5]
+				assert.String(t, "a", a.AbsID())
+				tassert.False(t, g.Root.IsDescendantOf(a))
+
+				b := g.Objects[6]
+				assert.String(t, "a.b", b.AbsID())
+				tassert.False(t, b.IsDescendantOf(seq))
+				tassert.True(t, b.IsDescendantOf(g.Root))
+				tassert.True(t, b.IsDescendantOf(a))
+
+				ade := g.Objects[9]
+				assert.String(t, "a.d.e", ade.AbsID())
+				tassert.False(t, ade.IsDescendantOf(b))
+				tassert.False(t, b.IsDescendantOf(ade))
+
+				adef := g.Objects[10]
+				assert.String(t, "a.d.e.f", adef.AbsID())
+				tassert.True(t, adef.IsDescendantOf(a))
+				tassert.True(t, adef.IsDescendantOf(ade))
+				tassert.False(t, ade.IsDescendantOf(adef))
+			},
+		},
 	}
 
 	for _, tc := range testCases {
