@@ -16,6 +16,7 @@ You may install `d2` through any of the following methods.
 - <a href="#windows" id="toc-windows">Windows</a>
   - <a href="#msys2" id="toc-msys2">MSYS2</a>
   - <a href="#wsl" id="toc-wsl">WSL</a>
+- <a href="#docker" id="toc-docker">Docker</a>
 - <a href="#coming-soon" id="toc-coming-soon">Coming soon</a>
 
 ## install.sh
