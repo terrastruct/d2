@@ -466,9 +466,19 @@ C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'pacman -Sy --noc
 C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'curl -fsSL https://d2lang.com/install.sh | sh -s -- --tala'
 C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'd2 --version'
 
-\$oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
-\$newpath = "\$oldpath;C:\msys64\usr\bin"
-Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH -Value \$newPath
+\$path = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name Path).Path
+if (\$path -notlike '*C:\msys64\usr\bin*') {
+  \$path = "\$path;C:\msys64\usr\bin"
+  Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name Path -Value \$path
+}
+if (\$path -notlike '*C:\msys64\usr\local\bin*') {
+  \$path = "\$path;C:\msys64\usr\local\bin"
+  Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name Path -Value \$path
+  Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name Path -Value ''
+}
+(Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name Path).Path
+
+Restart-Computer
 EOF
 
 # To run a POSIX script:
