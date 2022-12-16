@@ -462,15 +462,25 @@ EOF
 # Use the following to run a command in a pure MSYS2 shell:
 #   ssh "$CI_D2_WINDOWS_AMD64" 'C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c "echo hi"'
 
-# In case msys2 improves in the future and allows for noninteractive commands via ssh "$CI_D2_WINDOWS_AMD64" echo hi
-# The following will set the OpenSSH shell to MSYS2 instead of PowerShell.
-# But PowerShell as the default is better anyway as it gives us access to both the UNIX userspace and Windows tools like wix/dotnet/winget.
+# In case MSYS2 improves in the future and allows for noninteractive commands the
+# following will set the OpenSSH shell to MSYS2 instead of PowerShell.
+#
+# Right now, setting MSYS2 to the DefaultShell like this will make it start bash in
+# interactive mode always. Even for ssh "$CI_D2_WINDOWS_AMD64" echo hi. And so you'll end
+# up with a blank prompt on which to input commands instead of having it execute the
+# command you passed in via ssh.
+#
+# PowerShell as the default is better anyway as it gives us access to both the UNIX
+# userspace and Windows tools like wix/dotnet/winget.
+#
+# To set:
 #   <<EOF
 #   echo '@C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64' | Out-File C:\msys64\sshd_default_shell.cmd
 #   # utf8BOM -> utf8: https://stackoverflow.com/a/34969243/4283659
 #   \$null = New-Item -Force C:\msys64\sshd_default_shell.cmd -Value (Get-Content -Path C:\msys64\sshd_default_shell.cmd | Out-String)
 #   Set-ItemProperty -Path HKLM:\SOFTWARE\OpenSSH -Name DefaultShell -Value C:\msys64\sshd_default_shell.cmd
 #   EOF
+#
 # To undo:
 #   <<EOF
 #   Remove-ItemProperty -Path HKLM:\SOFTWARE\OpenSSH -Name DefaultShell
