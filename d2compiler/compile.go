@@ -657,7 +657,6 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 	obj.SQLTable = &d2target.SQLTable{}
 
 	parentID := obj.Parent.AbsID()
-	tableID := obj.AbsID()
 	for _, col := range obj.ChildrenArray {
 		if col.IDVal == "style" {
 			continue
@@ -689,7 +688,7 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 			srcID := e.Src.AbsID()
 			dstID := e.Dst.AbsID()
 			// skip edges between columns of the same table
-			if strings.HasPrefix(srcID, tableID) && strings.HasPrefix(dstID, tableID) {
+			if e.Src.IsDescendantOf(obj) && e.Dst.IsDescendantOf(obj) {
 				continue
 			}
 			if srcID == absID {
@@ -733,8 +732,8 @@ func flattenContainer(g *d2graph.Graph, obj *d2graph.Object) {
 		srcID := e.Src.AbsID()
 		dstID := e.Dst.AbsID()
 
-		srcIsChild := strings.HasPrefix(srcID, absID+".")
-		dstIsChild := strings.HasPrefix(dstID, absID+".")
+		srcIsChild := e.Src.IsDescendantOf(obj)
+		dstIsChild := e.Dst.IsDescendantOf(obj)
 		if srcIsChild && dstIsChild {
 			toRemove[e] = struct{}{}
 		} else if srcIsChild {
@@ -753,7 +752,7 @@ func flattenContainer(g *d2graph.Graph, obj *d2graph.Object) {
 	}
 	for _, e := range toAdd {
 		var newEdge *d2graph.Edge
-		if strings.HasPrefix(e.Src.AbsID(), absID+".") {
+		if e.Src.IsDescendantOf(obj) {
 			newEdge, _ = g.Root.Connect(obj.AbsIDArray(), e.Dst.AbsIDArray(), e.SrcArrow, e.DstArrow, e.Attributes.Label.Value)
 		} else {
 			newEdge, _ = g.Root.Connect(e.Src.AbsIDArray(), obj.AbsIDArray(), e.SrcArrow, e.DstArrow, e.Attributes.Label.Value)
@@ -781,7 +780,7 @@ func flattenContainer(g *d2graph.Graph, obj *d2graph.Object) {
 
 	for i := 0; i < len(g.Objects); i++ {
 		child := g.Objects[i]
-		if strings.HasPrefix(child.AbsID(), absID+".") {
+		if child.IsDescendantOf(obj) {
 			g.Objects = append(g.Objects[:i], g.Objects[i+1:]...)
 			i--
 			delete(obj.Children, child.ID)

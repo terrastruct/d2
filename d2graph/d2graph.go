@@ -424,6 +424,23 @@ func (obj *Object) AbsID() string {
 	return obj.ID
 }
 
+func (obj *Object) IsDescendantOf(ancestor *Object) bool {
+	if obj == ancestor || obj == nil || obj.Parent == nil {
+		return false
+	}
+	return obj.Parent.isDescendantOfRec(ancestor)
+}
+
+func (obj *Object) isDescendantOfRec(ancestor *Object) bool {
+	if obj == ancestor {
+		return true
+	}
+	if obj.Parent == nil {
+		return false
+	}
+	return obj.Parent.isDescendantOfRec(ancestor)
+}
+
 func (obj *Object) AbsIDArray() []string {
 	if obj.Parent == nil {
 		return nil
