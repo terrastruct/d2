@@ -483,10 +483,10 @@ EOF
 
 # To run a POSIX script:
 #   ssh "$CI_D2_WINDOWS_AMD64" sh -s -- <<EOF
-#   which wix
+#   wix --version
 #   EOF
 # To run a command in a pure MSYS2 shell:
-#   ssh "$CI_D2_WINDOWS_AMD64" 'C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c "echo hi"'
+#   ssh "$CI_D2_WINDOWS_AMD64" 'C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c "\"d2 --version\""'
 # To run a pure MSYS2 shell:
 #   ssh -t "$CI_D2_WINDOWS_AMD64" 'C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64'
 
