@@ -216,9 +216,23 @@ under plain Windows.
 aka Windows Subsystem for Linux if that's what you prefer. Installation is just like any
 other Linux system.
 
+## Docker
+
+https://hub.docker.com/repository/docker/terrastruct/d2
+
+We publish `amd64` and `arm64` images based on `debian:latest` for each release.
+
+Example usage:
+
+```sh
+echo 'x -> y' >helloworld.d2
+docker run --rm -it -u "$(id -u):$(id -g)" -v "$PWD:/root/src" \
+  -p 127.0.0.1:8080:8080 terrastruct/d2 --watch helloworld.d2
+# Visit http://127.0.0.1:8080
+```
+
 ## Coming soon
 
-- Docker image
 - rpm and deb packages
     - with repositories and standalone
 - homebrew core
