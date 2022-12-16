@@ -533,7 +533,7 @@ EOF
   printf '%s\n' "$gen_init_ps1" >&2
   warn '4. Run the following to be notified once installation is successful:'
   cat <<EOF
-  ssh-keygen -R ${REMOTE_HOST##*@} && until ssh $REMOTE_HOST d2 --version; do echo 'failed: retrying in 2s' && sleep 2; done && printf 'success\a\n'
+  ssh-keygen -R ${REMOTE_HOST##*@} && until ssh $REMOTE_HOST d2 --version; do echo 'failed: retrying in 5s' && sleep 5; done && printf 'success\a\n'
 EOF
 }
 
