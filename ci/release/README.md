@@ -2,7 +2,7 @@
 
 ## _install.sh
 
-The template for the install script in the root of the repository.
+The template for the install script in the root of the d2 repository.
 
 ### gen_install.sh
 

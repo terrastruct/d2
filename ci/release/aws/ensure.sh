@@ -418,7 +418,7 @@ init_remote_windows() {
 
 Invoke-WebRequest -Uri "https://github.com/msys2/msys2-installer/releases/download/2022-10-28/msys2-x86_64-20221028.exe" -OutFile "./msys2-x86_64.exe"
 ./msys2-x86_64.exe install --default-answer --confirm-command --root C:\msys64
-C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'pacman -Sy --noconfirm base-devel'
+C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'pacman -Sy --noconfirm base-devel vim'
 C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'curl -fsSL https://d2lang.com/install.sh | sh -s -- --tala'
 C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'd2 --version'
 
@@ -447,6 +447,8 @@ $(perl -pe 's#\n#\r\n#' "$ID_PUB_PATH" | jq -Rs .)
 # utf8BOM -> utf8: https://stackoverflow.com/a/34969243/4283659
 \$null = New-Item -Force "\$env:ProgramData\ssh\administrators_authorized_keys" -Value (Get-Content -Path "\$env:ProgramData\ssh\administrators_authorized_keys" | Out-String)
 get-acl "\$env:ProgramData\ssh\ssh_host_rsa_key" | set-acl "\$env:ProgramData\ssh\administrators_authorized_keys"
+
+New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -PropertyType String -Force
 
 Restart-Computer
 EOF
