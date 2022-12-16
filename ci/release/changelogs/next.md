@@ -2,6 +2,7 @@
 
 - Diagram padding can now can be configured in the CLI (default 100px).
   [https://github.com/terrastruct/d2/pull/431](https://github.com/terrastruct/d2/pull/431)
+- Connection label backgrounds can now be set with the `style.fill` keyword. [https://github.com/terrastruct/d2/pull/452](https://github.com/terrastruct/d2/pull/452)
 
 #### Improvements 🧹
 
