@@ -51,6 +51,13 @@ main() {
 
   JOBNAME=create runjob_filter create_remote_hosts
   JOBNAME=init && runjob_filter init_remote_hosts
+
+  FGCOLOR=2 header summary
+  echo "export CI_D2_LINUX_AMD64=$CI_D2_LINUX_AMD64"
+  echo "export CI_D2_LINUX_ARM64=$CI_D2_LINUX_ARM64"
+  echo "export CI_D2_MACOS_AMD64=$CI_D2_MACOS_AMD64"
+  echo "export CI_D2_MACOS_ARM64=$CI_D2_MACOS_ARM64"
+  echo "export CI_D2_WINDOWS_AMD64=$CI_D2_WINDOWS_AMD64"
 }
 
 create_remote_hosts() {
@@ -200,7 +207,7 @@ create_macos_arm64() {
   MACOS_ARM64_ID=$(aws ec2 describe-hosts --filter 'Name=state,Values=pending,available' 'Name=tag:Name,Values=ci-d2-macos-arm64' | jq -r '.Hosts[].HostId')
   if [ -z "$MACOS_ARM64_ID" ]; then
     MACOS_ARM64_ID=$(sh_c aws ec2 allocate-hosts --instance-type mac2.metal --quantity 1 --availability-zone us-west-2a \
-      --tag-specifications '"ResourceType=dedicated-host,Tags=[{Key=Name,Value=ci-d2-macos-amd64}]"' \
+      --tag-specifications '"ResourceType=dedicated-host,Tags=[{Key=Name,Value=ci-d2-macos-arm64}]"' \
       | jq -r .HostIds[0])
   fi
 
@@ -267,8 +274,6 @@ wait_remote_host_ip() {
 }
 
 alloc_static_ip() {
-  # No-op until our limit is increased.
-  return 0
   allocation_id=$(aws ec2 describe-addresses --filters "Name=tag:Name,Values=$REMOTE_NAME" | jq -r '.Addresses[].AllocationId')
   if [ -z "$allocation_id" ]; then
     sh_c aws ec2 allocate-address --tag-specifications "'ResourceType=elastic-ip,Tags=[{Key=Name,Value=$REMOTE_NAME}]'"
@@ -289,13 +294,6 @@ init_remote_hosts() {
   JOBNAME=$JOBNAME/macos/amd64 runjob_filter REMOTE_HOST=$CI_D2_MACOS_AMD64 REMOTE_NAME=ci-d2-macos-amd64 init_remote_macos
   JOBNAME=$JOBNAME/macos/arm64 runjob_filter REMOTE_HOST=$CI_D2_MACOS_ARM64 REMOTE_NAME=ci-d2-macos-arm64 init_remote_macos
   JOBNAME=$JOBNAME/windows/amd64 runjob_filter REMOTE_HOST=$CI_D2_WINDOWS_AMD64 REMOTE_NAME=ci-d2-windows-amd64 init_remote_windows
-
-  FGCOLOR=2 header summary
-  echo "export CI_D2_LINUX_AMD64=$CI_D2_LINUX_AMD64"
-  echo "export CI_D2_LINUX_ARM64=$CI_D2_LINUX_ARM64"
-  echo "export CI_D2_MACOS_AMD64=$CI_D2_MACOS_AMD64"
-  echo "export CI_D2_MACOS_ARM64=$CI_D2_MACOS_ARM64"
-  echo "export CI_D2_WINDOWS_AMD64=$CI_D2_WINDOWS_AMD64"
 
   # Windows and AWS SSM both defeated me.
   FGCOLOR=3 bigheader "WARNING: WINDOWS INITIALIZATION MUST BE COMPLETED MANUALLY OVER RDP AND POWERSHELL!"
@@ -449,6 +447,8 @@ $(perl -pe 's#\n#\r\n#' "$ID_PUB_PATH" | jq -Rs .)
 # utf8BOM -> utf8: https://stackoverflow.com/a/34969243/4283659
 \$null = New-Item -Force "\$env:ProgramData\ssh\administrators_authorized_keys" -Value (Get-Content -Path "\$env:ProgramData\ssh\administrators_authorized_keys" | Out-String)
 get-acl "\$env:ProgramData\ssh\ssh_host_rsa_key" | set-acl "\$env:ProgramData\ssh\administrators_authorized_keys"
+
+Restart-Computer
 EOF
 )
 
