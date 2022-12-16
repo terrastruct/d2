@@ -386,6 +386,7 @@ init_remote_env() {
 }
 
 wait_remote_host() {
+  ssh-keygen -R "${REMOTE_HOST##*@}"
   while true; do
     if sh_c ssh "$REMOTE_HOST" true; then
       break
@@ -402,7 +403,7 @@ wait_remote_host_windows() {
   while true; do
     if sh_c aws ssm start-session --target "$instance_id" \
     --document-name 'AWS-StartNonInteractiveCommand' \
-    --parameters "'{\"command\": [\"echo true; exit\"]}'"; then
+    --parameters "'{\"command\": [\"echo true\"]}'"; then
       break
     fi
     sleep 5
@@ -474,7 +475,6 @@ if (\$path -notlike '*C:\msys64\usr\bin*') {
 if (\$path -notlike '*C:\msys64\usr\local\bin*') {
   \$path = "\$path;C:\msys64\usr\local\bin"
   Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name Path -Value \$path
-  Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name Path -Value ''
 }
 (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name Path).Path
 
@@ -531,6 +531,10 @@ EOF
   warn "2. RDP into $REMOTE_HOST and open PowerShell."
   warn '3. Generate and execute C:\Users\Administrator\Desktop\init.ps1 with:'
   printf '%s\n' "$gen_init_ps1" >&2
+  warn '4. Run the following to be notified once installation is successful:'
+  cat <<EOF
+  ssh-keygen -R ${REMOTE_HOST##*@} && until ssh $REMOTE_HOST d2 --version; do echo 'failed: retrying in 2s' && sleep 2; done && printf 'success\a\n'
+EOF
 }
 
 main "$@"
