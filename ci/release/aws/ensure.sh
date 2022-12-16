@@ -416,34 +416,40 @@ init_remote_windows() {
   init_ps1=$(cat <<EOF
 \$ProgressPreference = 'SilentlyContinue'
 
-Invoke-WebRequest -Uri "https://github.com/msys2/msys2-installer/releases/download/2022-10-28/msys2-x86_64-20221028.exe" -OutFile "./msys2-x86_64.exe"
-./msys2-x86_64.exe install --default-answer --confirm-command --root C:\msys64
-C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'pacman -Sy --noconfirm base-devel vim rsync'
-C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'curl -fsSL https://d2lang.com/install.sh | sh -s -- --tala'
-C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'd2 --version'
+# Bootstrap PowerShell v7
+if ((\$PSVersionTable.PSVersion).Major -eq 5) {
+  Invoke-WebRequest -Uri https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3 -OutFile .\microsoft.ui.xaml.2.7.3.zip
+  Expand-Archive -Force .\microsoft.ui.xaml.2.7.3.zip
+  Add-AppxPackage .\microsoft.ui.xaml.2.7.3\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.7.appx
 
-\$oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
-\$newpath = “\$oldpath;C:\msys64\usr\bin”
-Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH -Value \$newPath
+  Invoke-WebRequest -Uri https://github.com/microsoft/winget-cli/releases/download/v1.3.2691/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -OutFile .\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+  Invoke-WebRequest -Uri https://github.com/microsoft/winget-cli/releases/download/v1.3.2691/7bcb1a0ab33340daa57fa5b81faec616_License1.xml -OutFile .\7bcb1a0ab33340daa57fa5b81faec616_License1.xml
+  Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
+  Add-AppxProvisionedPackage -online -PackagePath .\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -LicensePath .\7bcb1a0ab33340daa57fa5b81faec616_License1.xml -DependencyPackagePath Microsoft.VCLibs.x64.14.00.Desktop.appx
+  Add-AppxPackage .\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
 
-Invoke-WebRequest -Uri https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3 -OutFile .\microsoft.ui.xaml.2.7.3.zip
-Expand-Archive -Force .\microsoft.ui.xaml.2.7.3.zip
-Add-AppxPackage .\microsoft.ui.xaml.2.7.3\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.7.appx
+  winget install --silent --accept-package-agreements --accept-source-agreements Microsoft.DotNet.SDK.7
+  # Refresh env.
+  \$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+  dotnet tool install --global PowerShell --version 7.3.1
+  pwsh -c 'Enable-ExperimentalFeature PSNativeCommandErrorActionPreference'
+  pwsh .\Desktop\init.ps1
+  Exit
+}
 
-Invoke-WebRequest -Uri https://github.com/microsoft/winget-cli/releases/download/v1.3.2691/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -OutFile .\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
-Invoke-WebRequest -Uri https://github.com/microsoft/winget-cli/releases/download/v1.3.2691/7bcb1a0ab33340daa57fa5b81faec616_License1.xml -OutFile .\7bcb1a0ab33340daa57fa5b81faec616_License1.xml
-Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
-Add-AppxProvisionedPackage -online -PackagePath .\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -LicensePath .\7bcb1a0ab33340daa57fa5b81faec616_License1.xml -DependencyPackagePath Microsoft.VCLibs.x64.14.00.Desktop.appx
-Add-AppxPackage .\Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+Set-StrictMode -Version Latest
+\$ErrorActionPreference = "Stop"
+\$PSNativeCommandUseErrorActionPreference = \$true
 
-winget install --silent --accept-package-agreements --accept-source-agreements Microsoft.DotNet.SDK.7
-# Refresh env.
-\$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-dotnet tool install --global wix --version 4.0.0-preview.1
+if (-Not (Get-Command wix -errorAction SilentlyContinue)) {
+  dotnet tool install --global wix --version 4.0.0-preview.1
+}
 
 Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 Start-Service sshd
 Set-Service -Name sshd -StartupType 'Automatic'
+
+New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Users\Administrator\.dotnet\tools\pwsh.exe" -PropertyType String -Force
 
 ConvertFrom-Json -InputObject @'
 $(perl -pe 's#\n#\r\n#' "$ID_PUB_PATH" | jq -Rs .)
@@ -452,9 +458,17 @@ $(perl -pe 's#\n#\r\n#' "$ID_PUB_PATH" | jq -Rs .)
 \$null = New-Item -Force "\$env:ProgramData\ssh\administrators_authorized_keys" -Value (Get-Content -Path "\$env:ProgramData\ssh\administrators_authorized_keys" | Out-String)
 get-acl "\$env:ProgramData\ssh\ssh_host_rsa_key" | set-acl "\$env:ProgramData\ssh\administrators_authorized_keys"
 
-New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -PropertyType String -Force
+if (-Not (Test-Path -Path C:\msys64)) {
+  Invoke-WebRequest -Uri "https://github.com/msys2/msys2-installer/releases/download/2022-10-28/msys2-x86_64-20221028.exe" -OutFile "./msys2-x86_64.exe"
+  ./msys2-x86_64.exe install --default-answer --confirm-command --root C:\msys64
+}
+C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'pacman -Sy --noconfirm base-devel vim rsync'
+C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'curl -fsSL https://d2lang.com/install.sh | sh -s -- --tala'
+C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'd2 --version'
 
-Restart-Computer
+\$oldpath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).path
+\$newpath = "\$oldpath;C:\msys64\usr\bin"
+Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH -Value \$newPath
 EOF
 
 # To run a POSIX script:
