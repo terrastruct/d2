@@ -1020,7 +1020,7 @@ func Render(diagram *d2target.Diagram, pad int) ([]byte, error) {
 				labelMasks = append(labelMasks, labelMask)
 			}
 		} else {
-			return nil, fmt.Errorf("unknow object of type %T", obj)
+			return nil, fmt.Errorf("unknown object of type %T", obj)
 		}
 	}
 
