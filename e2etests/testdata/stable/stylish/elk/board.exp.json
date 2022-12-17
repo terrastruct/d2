@@ -46,7 +46,7 @@
       "type": "",
       "pos": {
         "x": 12,
-        "y": 238
+        "y": 359
       },
       "width": 114,
       "height": 126,
@@ -95,7 +95,8 @@
       "strokeDash": 5,
       "strokeWidth": 2,
       "stroke": "green",
-      "label": "",
+      "fill": "lavender",
+      "label": "in style",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -103,9 +104,9 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
+      "labelWidth": 47,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
       "route": [
         {
@@ -114,7 +115,7 @@
         },
         {
           "x": 69,
-          "y": 238
+          "y": 359
         }
       ],
       "animated": false,

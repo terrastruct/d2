@@ -207,6 +207,7 @@ type Connection struct {
 	StrokeDash  float64 `json:"strokeDash"`
 	StrokeWidth int     `json:"strokeWidth"`
 	Stroke      string  `json:"stroke"`
+	Fill        string  `json:"fill,omitempty"`
 
 	Text
 	LabelPosition   string  `json:"labelPosition"`

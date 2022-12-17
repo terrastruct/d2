@@ -200,6 +200,10 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 		connection.StrokeWidth, _ = strconv.Atoi(edge.Attributes.Style.StrokeWidth.Value)
 	}
 
+	if edge.Attributes.Style.Fill != nil {
+		connection.Fill = edge.Attributes.Style.Fill.Value
+	}
+
 	connection.FontSize = text.FontSize
 	if edge.Attributes.Style.FontSize != nil {
 		connection.FontSize, _ = strconv.Atoi(edge.Attributes.Style.FontSize.Value)

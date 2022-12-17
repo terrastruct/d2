@@ -432,6 +432,11 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		if connection.Color != "" {
 			fontColor = connection.Color
 		}
+
+		if connection.Fill != "" {
+			fmt.Fprintf(writer, `<rect x="%f" y="%f" width="%d" height="%d" style="fill:%s" />`,
+				labelTL.X, labelTL.Y, connection.LabelWidth, connection.LabelHeight, connection.Fill)
+		}
 		textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", connection.FontSize, fontColor)
 		x := labelTL.X + float64(connection.LabelWidth)/2
 		y := labelTL.Y + float64(connection.FontSize)
