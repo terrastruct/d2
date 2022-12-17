@@ -1020,23 +1020,22 @@ func Render(diagram *d2target.Diagram, pad int) ([]byte, error) {
 				labelMasks = append(labelMasks, labelMask)
 			}
 		} else {
-			return nil, fmt.Errorf("unknow object of type %T", obj)
+			return nil, fmt.Errorf("unknown object of type %T", obj)
 		}
 	}
 
-	if len(labelMasks) > 0 {
-		fmt.Fprint(buf, strings.Join([]string{
-			fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="0" y="0" width="%d" height="%d">`,
-				labelMaskID, w, h,
-			),
-			fmt.Sprintf(`<rect x="0" y="0" width="%d" height="%d" fill="white"></rect>`,
-				w,
-				h,
-			),
-			strings.Join(labelMasks, "\n"),
-			`</mask>`,
-		}, "\n"))
-	}
+	// Note: we always want this since we reference it on connections even if there end up being no masked labels
+	fmt.Fprint(buf, strings.Join([]string{
+		fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="0" y="0" width="%d" height="%d">`,
+			labelMaskID, w, h,
+		),
+		fmt.Sprintf(`<rect x="0" y="0" width="%d" height="%d" fill="white"></rect>`,
+			w,
+			h,
+		),
+		strings.Join(labelMasks, "\n"),
+		`</mask>`,
+	}, "\n"))
 
 	embedFonts(buf)
 
