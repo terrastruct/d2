@@ -131,7 +131,11 @@ func run(t *testing.T, tc testCase) {
 		assert.Success(t, err)
 		err = ioutil.WriteFile(pathGotSVG, svgBytes, 0600)
 		assert.Success(t, err)
-		defer os.Remove(pathGotSVG)
+		// if running from e2ereport.sh, we want to keep .got.svg on a failure
+		forReport := os.Getenv("E2E_REPORT") != ""
+		if !forReport {
+			defer os.Remove(pathGotSVG)
+		}
 
 		var xmlParsed interface{}
 		err = xml.Unmarshal(svgBytes, &xmlParsed)
@@ -142,6 +146,9 @@ func run(t *testing.T, tc testCase) {
 		if os.Getenv("SKIP_SVG_CHECK") == "" {
 			err = diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
 			assert.Success(t, err)
+		}
+		if forReport {
+			os.Remove(pathGotSVG)
 		}
 	}
 }
