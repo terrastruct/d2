@@ -38,8 +38,8 @@ https://user-images.githubusercontent.com/3120367/206125010-bd1fea8e-248a-43e7-8
 - <a href="#contributing" id="toc-contributing">Contributing</a>
 - <a href="#license" id="toc-license">License</a>
 - <a href="#related" id="toc-related">Related</a>
-  - <a href="#vscode-extension" id="toc-vscode-extension">VSCode extension</a>
-  - <a href="#vim-extension" id="toc-vim-extension">Vim extension</a>
+  - <a href="#official-plugins" id="toc-official-plugins">Official plugins</a>
+  - <a href="#community-plugins" id="toc-community-plugins">Community plugins</a>
   - <a href="#misc" id="toc-misc">Misc</a>
 - <a href="#faq" id="toc-faq">FAQ</a>
 
