@@ -45,6 +45,8 @@ func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
 	}
 	if obj.Attributes.Style.Fill != nil {
 		shape.Fill = obj.Attributes.Style.Fill.Value
+	} else if obj.Attributes.Shape.Value == d2target.ShapeText {
+		shape.Fill = "transparent"
 	}
 	if obj.Attributes.Style.Stroke != nil {
 		shape.Stroke = obj.Attributes.Style.Stroke.Value

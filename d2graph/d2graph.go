@@ -397,7 +397,10 @@ func (obj *Object) GetFill(theme *d2themes.Theme) string {
 
 func (obj *Object) GetStroke(theme *d2themes.Theme, dashGapSize interface{}) string {
 	shape := obj.Attributes.Shape.Value
-	if strings.EqualFold(shape, d2target.ShapeCode) || strings.EqualFold(shape, d2target.ShapeClass) || strings.EqualFold(shape, d2target.ShapeSQLTable) {
+	if strings.EqualFold(shape, d2target.ShapeCode) ||
+		strings.EqualFold(shape, d2target.ShapeClass) ||
+		strings.EqualFold(shape, d2target.ShapeSQLTable) ||
+		strings.EqualFold(shape, d2target.ShapeText) {
 		return theme.Colors.Neutrals.N1
 	}
 	if dashGapSize != 0.0 {
