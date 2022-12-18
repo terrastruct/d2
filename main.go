@@ -244,7 +244,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, pad, 
 			return svg, false, err
 		}
 	} else {
-		if len(out) > 0  && out[len(out)-1] != '\n' {
+		if len(out) > 0 && out[len(out)-1] != '\n' {
 			out = append(out, '\n')
 		}
 	}
