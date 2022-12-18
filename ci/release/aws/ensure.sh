@@ -347,6 +347,8 @@ init_remote_macos() {
   header "$REMOTE_NAME"
   wait_remote_host
 
+  sh_c ssh_copy_id -i="$ID_PUB_PATH" "$REMOTE_HOST"
+
   sh_c ssh "$REMOTE_HOST" '"/bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""'
 
   if sh_c ssh "$REMOTE_HOST" uname -m | grep -qF arm64; then
