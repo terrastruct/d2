@@ -468,7 +468,7 @@ if (-Not (Test-Path -Path C:\msys64)) {
   Invoke-WebRequest -Uri "https://github.com/msys2/msys2-installer/releases/download/2022-10-28/msys2-x86_64-20221028.exe" -OutFile "./msys2-x86_64.exe"
   ./msys2-x86_64.exe install --default-answer --confirm-command --root C:\msys64
 }
-C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'pacman -Sy --noconfirm base-devel vim rsync'
+C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'pacman -Sy --noconfirm base-devel vim rsync man'
 C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'curl -fsSL https://d2lang.com/install.sh | sh -s -- --tala'
 C:\msys64\msys2_shell.cmd -defterm -here -no-start -mingw64 -c 'd2 --version'
 
