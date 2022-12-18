@@ -158,6 +158,8 @@ You can always install from source:
 go install oss.terrastruct.com/d2@latest
 ```
 
+You need at least Go v1.18
+
 ### Source Release
 
 To install a release from source clone the repository and then:
@@ -172,6 +174,8 @@ Installing a real release will also install manpages and in the future other ass
 fonts and icons. Furthermore, when installing a non versioned commit, installing a release
 will ensure that `d2 --version` works correctly by embedding the commit hash into the `d2`
 binary.
+
+Remember, you need at least Go v1.18
 
 ## Windows
 
