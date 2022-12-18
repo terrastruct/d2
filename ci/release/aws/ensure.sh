@@ -381,6 +381,9 @@ init_remote_env() {
   if sh_c ssh "$REMOTE_HOST" uname | grep -qF Darwin; then
     sh_c ssh "$REMOTE_HOST" "sudo launchctl stop com.openssh.sshd"
   else
+    # ubuntu has $PATH hard coded in /etc/environment for some reason. It takes precedence
+    # over ~/.ssh/environment.
+    sh_c ssh "$REMOTE_HOST" "sudo rm /etc/environment"
     sh_c ssh "$REMOTE_HOST" "sudo systemctl restart sshd"
   fi
 }
