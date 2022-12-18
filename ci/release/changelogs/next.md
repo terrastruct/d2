@@ -7,8 +7,7 @@
 
 #### Improvements 🧹
 
-- `d2 fmt` now preserves leading comment spacing.
-  [#400](https://github.com/terrastruct/d2/issues/400)
+- `d2 fmt` now preserves leading comment spacing. [#400](https://github.com/terrastruct/d2/issues/400)
 
 #### Bugfixes ⛑️
 
