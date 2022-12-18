@@ -214,7 +214,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, pad, 
 		return nil, false, err
 	}
 
-	svg, err := d2svg.Render(diagram, int(pad))
+	svg, err := d2svg.Render(diagram, ruler, int(pad))
 	if err != nil {
 		return nil, false, err
 	}

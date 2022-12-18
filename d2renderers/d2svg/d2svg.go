@@ -589,7 +589,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	return borderMask + mainRect + renderedSides + renderedBorder
 }
 
-func drawShape(writer io.Writer, targetShape d2target.Shape) (labelMask string, err error) {
+func drawShape(writer io.Writer, targetShape d2target.Shape, ruler *textmeasure.Ruler) (labelMask string, err error) {
 	fmt.Fprintf(writer, `<g id="%s">`, escapeText(targetShape.ID))
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
@@ -629,7 +629,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) (labelMask string, 
 		fmt.Fprintf(writer, `</g></g>`)
 		return labelMask, nil
 	case d2target.ShapeSQLTable:
-		drawTable(writer, targetShape)
+		drawTable(writer, targetShape, ruler)
 		fmt.Fprintf(writer, `</g></g>`)
 		return labelMask, nil
 	case d2target.ShapeOval:
@@ -963,7 +963,7 @@ func embedFonts(buf *bytes.Buffer) {
 }
 
 // TODO minify output at end
-func Render(diagram *d2target.Diagram, pad int) ([]byte, error) {
+func Render(diagram *d2target.Diagram, ruler *textmeasure.Ruler, pad int) ([]byte, error) {
 	buf := &bytes.Buffer{}
 	w, h := setViewbox(buf, diagram, pad)
 
@@ -1022,7 +1022,7 @@ func Render(diagram *d2target.Diagram, pad int) ([]byte, error) {
 				labelMasks = append(labelMasks, labelMask)
 			}
 		} else if s, is := obj.(d2target.Shape); is {
-			labelMask, err := drawShape(buf, s)
+			labelMask, err := drawShape(buf, s, ruler)
 			if err != nil {
 				return nil, err
 			} else if labelMask != "" {

@@ -6,10 +6,14 @@ import (
 	"math"
 	"strings"
 
+	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
+	"oss.terrastruct.com/d2/lib/textmeasure"
 )
+
+const namePadding = 10
 
 func tableHeader(box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
 	str := fmt.Sprintf(`<rect class="class_header" x="%f" y="%f" width="%f" height="%f" fill="%s" />`,
@@ -43,7 +47,7 @@ func tableRow(box *geo.Box, nameText, typeText, constraintText string, fontSize,
 	// e.g. | diagram   int   FK |
 	nameTL := label.InsideMiddleLeft.GetPointOnBox(
 		box,
-		prefixPadding,
+		namePadding,
 		box.Width,
 		fontSize,
 	)
@@ -69,7 +73,7 @@ func tableRow(box *geo.Box, nameText, typeText, constraintText string, fontSize,
 
 		// TODO light font
 		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
-			nameTL.X+longestNameWidth,
+			nameTL.X+longestNameWidth+2*namePadding,
 			nameTL.Y+fontSize*3/4,
 			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, neutralColor),
 			escapeText(typeText),
@@ -97,7 +101,7 @@ func constraintAbbr(constraint string) string {
 	}
 }
 
-func drawTable(writer io.Writer, targetShape d2target.Shape) {
+func drawTable(writer io.Writer, targetShape d2target.Shape, ruler *textmeasure.Ruler) {
 	fmt.Fprintf(writer, `<rect class="shape" x="%d" y="%d" width="%d" height="%d" style="%s"/>`,
 		targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, shapeStyle(targetShape))
 
@@ -113,18 +117,18 @@ func drawTable(writer io.Writer, targetShape d2target.Shape) {
 		tableHeader(headerBox, targetShape.Label, float64(targetShape.LabelWidth), float64(targetShape.LabelHeight), float64(targetShape.FontSize)),
 	)
 
-	fontSize := float64(targetShape.FontSize)
+	font := d2fonts.SourceSansPro.Font(targetShape.FontSize, d2fonts.FONT_STYLE_REGULAR)
 	var longestNameWidth float64
 	for _, f := range targetShape.SQLTable.Columns {
-		// TODO measure text
-		longestNameWidth = math.Max(longestNameWidth, float64(len(f.Name))*fontSize*5/9)
+		w, _ := ruler.MeasurePrecise(font, f.Name)
+		longestNameWidth = math.Max(longestNameWidth, w)
 	}
 
 	rowBox := geo.NewBox(box.TopLeft.Copy(), box.Width, rowHeight)
 	rowBox.TopLeft.Y += headerBox.Height
 	for _, f := range targetShape.SQLTable.Columns {
 		fmt.Fprint(writer,
-			tableRow(rowBox, f.Name, f.Type, constraintAbbr(f.Constraint), fontSize, longestNameWidth),
+			tableRow(rowBox, f.Name, f.Type, constraintAbbr(f.Constraint), float64(targetShape.FontSize), longestNameWidth),
 		)
 		rowBox.TopLeft.Y += rowHeight
 		fmt.Fprintf(writer, `<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke-width:2;stroke:#0a0f25" />`,

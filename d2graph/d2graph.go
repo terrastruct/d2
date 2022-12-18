@@ -1011,14 +1011,14 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 				}
 				if c.Constraint != "" {
 					// covers UNQ constraint with padding
-					constraintWidth = 70.
+					constraintWidth = 60.
 				}
 			}
 
 			// The rows get padded a little due to header font being larger than row font
 			obj.Height = float64(dims.Height * (len(obj.SQLTable.Columns) + 1))
-			// Leave room for padding (20 on each side)
-			obj.Width = float64(maxNameWidth + maxTypeWidth + constraintWidth + 40)
+			// Leave room for padding (10 name 20 type 20 = 50)
+			obj.Width = float64(maxNameWidth + maxTypeWidth + constraintWidth + 50)
 
 		case d2target.ShapeText, d2target.ShapeCode:
 		}
