@@ -995,23 +995,30 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			obj.Width = float64(maxWidth + 100)
 
 		case d2target.ShapeSQLTable:
-			maxWidth := dims.Width
+			maxNameWidth := 0.
+			maxTypeWidth := 0.
+			constraintWidth := 0.
 
+			font := d2fonts.SourceSansPro.Font(d2fonts.FONT_SIZE_L, d2fonts.FONT_STYLE_REGULAR)
 			for _, c := range obj.SQLTable.Columns {
-				cdims := getTextDimensions(mtexts, ruler, c.Text())
-				if cdims == nil {
-					return fmt.Errorf("dimensions for column %#v not found", c.Text())
+				nameWidth, _ := ruler.MeasurePrecise(font, c.Name)
+				if maxNameWidth < nameWidth {
+					maxNameWidth = nameWidth
 				}
-				lineWidth := cdims.Width
-				if maxWidth < lineWidth {
-					maxWidth = lineWidth
+				typeWidth, _ := ruler.MeasurePrecise(font, c.Type)
+				if maxTypeWidth < typeWidth {
+					maxTypeWidth = typeWidth
+				}
+				if c.Constraint != "" {
+					// covers UNQ constraint with padding
+					constraintWidth = 70.
 				}
 			}
 
 			// The rows get padded a little due to header font being larger than row font
 			obj.Height = float64(dims.Height * (len(obj.SQLTable.Columns) + 1))
-			// Leave room for padding
-			obj.Width = float64(maxWidth + 100)
+			// Leave room for padding (20 on each side)
+			obj.Width = float64(maxNameWidth + maxTypeWidth + constraintWidth + 40)
 
 		case d2target.ShapeText, d2target.ShapeCode:
 		}
