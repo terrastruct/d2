@@ -1485,6 +1485,36 @@ alice -> bob: what does it mean to be well-adjusted
 bob -> alice: The ability to play bridge or golf as if they were games
 `,
 		},
+		{
+			name: "markdown_stroke_fill",
+			script: `
+container.md: |md
+# a header
+
+a line of text and an
+
+	{
+		indented: "block",
+		of: "json",
+	}
+
+walk into a bar.
+| {
+	style.stroke: darkorange
+}
+
+container -> no container
+
+no container: |md
+they did it in style
+|
+
+no container.style: {
+	stroke: red
+	fill: "#CEEDEE"
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
