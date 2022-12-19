@@ -145,7 +145,7 @@ one, please see [./d2renderers/d2fonts](./d2renderers/d2fonts).
 
 ## Export file types
 
-D2 currently supports SVG exports. More coming soon.
+D2 currently supports SVG and PNG exports. More coming soon.
 
 ## Language tooling
 
@@ -209,6 +209,7 @@ let us know and we'll be happy to include it here!
 - **Emacs extension**: [https://github.com/andorsk/d2-mode](https://github.com/andorsk/d2-mode)
 - **Telegram bot**: [https://github.com/meinside/telegram-d2-bot](https://github.com/meinside/telegram-d2-bot)
 - **Postgres importer**: [https://github.com/zekenie/d2-erd-from-postgres](https://github.com/zekenie/d2-erd-from-postgres)
+- **Structurizr to D2 exporter**: [https://github.com/goto1134/structurizr-d2-exporter](https://github.com/goto1134/structurizr-d2-exporter)
 
 ### Misc
 
