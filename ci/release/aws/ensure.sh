@@ -267,6 +267,7 @@ wait_remote_host_ip() {
       ip=$(sh_c aws ec2 describe-instances \
         --filters 'Name=instance-state-name,Values=pending,running,stopping,stopped' "Name=tag:Name,Values=$REMOTE_NAME" \
         | jq -r '.Reservations[].Instances[].PublicIpAddress')
+      ssh-keygen -R "$ip"
       break
     fi
     sleep 5
@@ -391,7 +392,6 @@ init_remote_env() {
 }
 
 wait_remote_host() {
-  ssh-keygen -R "${REMOTE_HOST##*@}"
   while true; do
     if sh_c ssh "$REMOTE_HOST" true; then
       break
@@ -538,7 +538,7 @@ EOF
   printf '%s\n' "$gen_init_ps1" >&2
   warn '4. Run the following to be notified once installation is successful:'
   cat <<EOF
-  ssh-keygen -R ${REMOTE_HOST##*@} && until ssh $REMOTE_HOST d2 --version; do echo 'failed: retrying in 5s' && sleep 5; done && printf 'success\a\n'
+  until ssh $REMOTE_HOST d2 --version; do echo 'failed: retrying in 5s' && sleep 5; done && printf 'success\a\n'
 EOF
 }
 
