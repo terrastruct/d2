@@ -220,7 +220,7 @@ Example usage:
 ```sh
 echo 'x -> y' >helloworld.d2
 docker run --rm -it -u "$(id -u):$(id -g)" -v "$PWD:/root/src" \
-  -p 127.0.0.1:8080:8080 terrastruct/d2 --watch helloworld.d2
+  -p 127.0.0.1:8080:8080 terrastruct/d2:v0.1.2 --watch helloworld.d2
 # Visit http://127.0.0.1:8080
 ```
 
