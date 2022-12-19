@@ -25,12 +25,6 @@ The simplified D2 flow at a package level looks like:
 
 ## Logistics
 
-- **Important**: Contributions to D2 require a CLA. We will never relicense D2, but we
-  need to retain full copyright for any modifications we might need to make in our
-  commercial offerings. Please email cla@terrastruct.com with your name and Github
-  username stating that you agree to [Terrastruct's
-  CLA](https://terrastruct-site-assets.s3.us-west-1.amazonaws.com/documents/terrastruct_cla.pdf).
-  You only have to do this the first time you contribute.
 - D2 uses Issues as TODOs. No auto-closing on staleness.
 - Branch off `master`.
 - Prefix pull request titles with a short descriptor of the domain, e.g. `d2renderer: Add
