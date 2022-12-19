@@ -770,7 +770,16 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) (labelMask string, 
 				)
 				// we need the self closing form in this svg/xhtml context
 				render = strings.ReplaceAll(render, "<hr>", "<hr />")
-				fmt.Fprintf(writer, `<div xmlns="http://www.w3.org/1999/xhtml" class="md">%v</div>`, render)
+
+				var mdStyle string
+				if targetShape.Fill != "" {
+					mdStyle = fmt.Sprintf("background-color:%s;", targetShape.Fill)
+				}
+				if targetShape.Stroke != "" {
+					mdStyle += fmt.Sprintf("color:%s;", targetShape.Stroke)
+				}
+
+				fmt.Fprintf(writer, `<div xmlns="http://www.w3.org/1999/xhtml" class="md" style="%s">%v</div>`, mdStyle, render)
 				fmt.Fprint(writer, `</foreignObject></g>`)
 			}
 		default:
