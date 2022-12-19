@@ -50,7 +50,7 @@ main() {
   fi
 
   JOBNAME=create runjob_filter create_remote_hosts
-  JOBNAME=init && runjob_filter init_remote_hosts
+  JOBNAME=init runjob_filter init_remote_hosts
 
   FGCOLOR=2 header summary
   echo "export CI_D2_LINUX_AMD64=$CI_D2_LINUX_AMD64"
