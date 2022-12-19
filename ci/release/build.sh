@@ -260,21 +260,21 @@ build_windows_msi() {
   REMOTE_HOST=$CI_D2_WINDOWS_AMD64
 
   ln -sf "../build/$VERSION/windows-amd64/d2-$VERSION/bin/d2.exe" ./ci/release/windows/d2.exe
-  sh_c rsync --archive --human-readable --copy-links --delete ./ci/release/windows/ "'$REMOTE_HOST:windows\'"
-  if ! echo "$VERSION" | grep '[0-9]\.[0-9].[0-9]'; then
+  sh_c rsync --archive --human-readable --copy-links --delete ./ci/release/windows/ "'$REMOTE_HOST:windows/'"
+  if ! echo "$VERSION" | grep '[0-9]\.[0-9]\.[0-9]'; then
     WIX_VERSION=0.0.0
   else
     WIX_VERSION=$VERSION
   fi
-  sh_c ssh "$REMOTE_HOST" "'cd .\\windows && wix build -arch x64 -d D2Version=$WIX_VERSION .\d2.wxs'"
+  sh_c ssh "$REMOTE_HOST" "'cd ./windows && wix build -arch x64 -d D2Version=$WIX_VERSION ./d2.wxs'"
 
   # --files-from shouldn't be necessary but for some reason selecting d2.msi directly
   # makes rsync error with:
-  # ERROR: rejecting unrequested file-list name: .\\windows\\d2.msi
+  # ERROR: rejecting unrequested file-list name: ./windows/d2.msi
   # rsync error: requested action not supported (code 4) at flist.c(1027) [Receiver=3.2.7]
   rsync_files=$(mktempd)/rsync-files
   echo d2.msi >$rsync_files
-  sh_c rsync --archive --human-readable --files-from "$rsync_files" "'$REMOTE_HOST:windows\\'" "./ci/release/build/$VERSION/d2-$VERSION-$OS-$ARCH.msi"
+  sh_c rsync --archive --human-readable --files-from "$rsync_files" "'$REMOTE_HOST:windows/'" "./ci/release/build/$VERSION/d2-$VERSION-$OS-$ARCH.msi"
 }
 
 main "$@"
