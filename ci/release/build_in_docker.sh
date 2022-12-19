@@ -5,7 +5,7 @@ cd -- "$(dirname "$0")/../.."
 
 tag="$(sh_c docker build \
   --build-arg GOVERSION="1.19.3.linux-$ARCH" \
-  -qf ./ci/release/builders/Dockerfile ./ci/release/builders)"
+  -qf ./ci/release/linux/Dockerfile ./ci/release/linux)"
 docker_run \
   -e DRY_RUN \
   -e HW_BUILD_DIR \

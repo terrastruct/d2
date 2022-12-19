@@ -40,6 +40,18 @@ b.1 -> b.1`,
 a: A
 b: B`,
 		},
+		{
+			name: "sequence_diagram_name_crash",
+			script: `foo: {
+	shape: sequence_diagram
+	a -> b
+}
+foobar: {
+	shape: sequence_diagram
+	c -> d
+}
+foo -> foobar`,
+		},
 	}
 
 	runa(t, tcs)

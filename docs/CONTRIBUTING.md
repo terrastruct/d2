@@ -1,19 +1,14 @@
 # Contributing
 
 <!-- toc -->
-
-- [CI](#ci)
-- [Flow](#flow)
-- [Logistics](#logistics)
-- [Dev](#dev)
-  * [Content](#content)
-  * [Tests](#tests)
-    + [Running tests](#running-tests)
-    + [Chaos tests](#chaos-tests)
-  * [Documentation](#documentation)
-  * [Questions](#questions)
-
-<!-- tocstop -->
+- <a href="#ci" id="toc-ci">CI</a>
+- <a href="#flow" id="toc-flow">Flow</a>
+- <a href="#logistics" id="toc-logistics">Logistics</a>
+- <a href="#dev" id="toc-dev">Dev</a>
+  - <a href="#content" id="toc-content">Content</a>
+  - <a href="#tests" id="toc-tests">Tests</a>
+  - <a href="#documentation" id="toc-documentation">Documentation</a>
+  - <a href="#questions" id="toc-questions">Questions</a>
 
 ## CI
 

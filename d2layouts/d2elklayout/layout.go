@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"strings"
 
 	"github.com/dop251/goja"
 
@@ -21,6 +22,7 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
+	"oss.terrastruct.com/d2/lib/shape"
 )
 
 //go:embed elk.js
@@ -288,6 +290,14 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 				Y: parentY + s.End.Y,
 			})
 		}
+
+		startIndex, endIndex := 0, len(points)-1
+		srcShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Src.Attributes.Shape.Value)], edge.Src.Box)
+		dstShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Dst.Attributes.Shape.Value)], edge.Dst.Box)
+
+		// trace the edge to the specific shape's border
+		points[startIndex] = shape.TraceToShapeBorder(srcShape, points[startIndex], points[startIndex+1])
+		points[endIndex] = shape.TraceToShapeBorder(dstShape, points[endIndex], points[endIndex-1])
 
 		if edge.Attributes.Label.Value != "" {
 			edge.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))

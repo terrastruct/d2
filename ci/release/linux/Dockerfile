@@ -8,5 +8,5 @@ RUN curl -fsSL "https://go.dev/dl/go$GOVERSION.tar.gz" >/tmp/go.tar.gz
 RUN tar -C /usr/local -xzf /tmp/go.tar.gz
 ENV PATH="/usr/local/go/bin:$PATH"
 
-RUN apt-get install -y build-essential
-RUN apt-get install -y rsync
+RUN apt-get install -y build-essential \
+  rsync
