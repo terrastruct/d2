@@ -9,6 +9,7 @@
 
 - `d2 fmt` now preserves leading comment spacing. [#400](https://github.com/terrastruct/d2/issues/400)
 - Markdown can now be styled with keywords stroke and fill. [https://github.com/terrastruct/d2/pull/460](https://github.com/terrastruct/d2/pull/460)
+- PNG export resolution increased by 2x to not be blurry exporting on retina displays. [https://github.com/terrastruct/d2/pull/445](https://github.com/terrastruct/d2/pull/445)
 
 #### Bugfixes ⛑️
 
