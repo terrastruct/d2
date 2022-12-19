@@ -466,8 +466,8 @@ func (sd *sequenceDiagram) routeMessages() error {
 		} else {
 			return fmt.Errorf("could not find center of %s", message.Dst.AbsID())
 		}
-		isToDescendant := strings.HasPrefix(message.Dst.AbsID(), message.Src.AbsID())
-		isFromDescendant := strings.HasPrefix(message.Src.AbsID(), message.Dst.AbsID())
+		isToDescendant := strings.HasPrefix(message.Dst.AbsID(), message.Src.AbsID()+".")
+		isFromDescendant := strings.HasPrefix(message.Src.AbsID(), message.Dst.AbsID()+".")
 		isSelfMessage := message.Src == message.Dst
 
 		if isSelfMessage || isToDescendant || isFromDescendant {

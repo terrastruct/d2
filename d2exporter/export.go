@@ -45,6 +45,8 @@ func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
 	}
 	if obj.Attributes.Style.Fill != nil {
 		shape.Fill = obj.Attributes.Style.Fill.Value
+	} else if obj.Attributes.Shape.Value == d2target.ShapeText {
+		shape.Fill = "transparent"
 	}
 	if obj.Attributes.Style.Stroke != nil {
 		shape.Stroke = obj.Attributes.Style.Stroke.Value
@@ -198,6 +200,10 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 
 	if edge.Attributes.Style.StrokeWidth != nil {
 		connection.StrokeWidth, _ = strconv.Atoi(edge.Attributes.Style.StrokeWidth.Value)
+	}
+
+	if edge.Attributes.Style.Fill != nil {
+		connection.Fill = edge.Attributes.Style.Fill.Value
 	}
 
 	connection.FontSize = text.FontSize

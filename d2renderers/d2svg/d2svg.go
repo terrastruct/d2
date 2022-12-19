@@ -432,6 +432,11 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		if connection.Color != "" {
 			fontColor = connection.Color
 		}
+
+		if connection.Fill != "" {
+			fmt.Fprintf(writer, `<rect x="%f" y="%f" width="%d" height="%d" style="fill:%s" />`,
+				labelTL.X, labelTL.Y, connection.LabelWidth, connection.LabelHeight, connection.Fill)
+		}
 		textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", connection.FontSize, fontColor)
 		x := labelTL.X + float64(connection.LabelWidth)/2
 		y := labelTL.Y + float64(connection.FontSize)
@@ -765,7 +770,16 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) (labelMask string, 
 				)
 				// we need the self closing form in this svg/xhtml context
 				render = strings.ReplaceAll(render, "<hr>", "<hr />")
-				fmt.Fprintf(writer, `<div xmlns="http://www.w3.org/1999/xhtml" class="md">%v</div>`, render)
+
+				var mdStyle string
+				if targetShape.Fill != "" {
+					mdStyle = fmt.Sprintf("background-color:%s;", targetShape.Fill)
+				}
+				if targetShape.Stroke != "" {
+					mdStyle += fmt.Sprintf("color:%s;", targetShape.Stroke)
+				}
+
+				fmt.Fprintf(writer, `<div xmlns="http://www.w3.org/1999/xhtml" class="md" style="%s">%v</div>`, mdStyle, render)
 				fmt.Fprint(writer, `</foreignObject></g>`)
 			}
 		default:
@@ -1015,23 +1029,22 @@ func Render(diagram *d2target.Diagram, pad int) ([]byte, error) {
 				labelMasks = append(labelMasks, labelMask)
 			}
 		} else {
-			return nil, fmt.Errorf("unknow object of type %T", obj)
+			return nil, fmt.Errorf("unknown object of type %T", obj)
 		}
 	}
 
-	if len(labelMasks) > 0 {
-		fmt.Fprint(buf, strings.Join([]string{
-			fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="0" y="0" width="%d" height="%d">`,
-				labelMaskID, w, h,
-			),
-			fmt.Sprintf(`<rect x="0" y="0" width="%d" height="%d" fill="white"></rect>`,
-				w,
-				h,
-			),
-			strings.Join(labelMasks, "\n"),
-			`</mask>`,
-		}, "\n"))
-	}
+	// Note: we always want this since we reference it on connections even if there end up being no masked labels
+	fmt.Fprint(buf, strings.Join([]string{
+		fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="0" y="0" width="%d" height="%d">`,
+			labelMaskID, w, h,
+		),
+		fmt.Sprintf(`<rect x="0" y="0" width="%d" height="%d" fill="white"></rect>`,
+			w,
+			h,
+		),
+		strings.Join(labelMasks, "\n"),
+		`</mask>`,
+	}, "\n"))
 
 	embedFonts(buf)
 

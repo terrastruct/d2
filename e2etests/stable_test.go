@@ -917,12 +917,13 @@ y: {
   }
 }
 
-x -> y: {
+x -> y: in style {
   style: {
     stroke: green
     opacity: 0.5
     stroke-width: 2
     stroke-dash: 5
+	fill: lavender
   }
 }
 `,
@@ -1041,6 +1042,7 @@ size S -> size M: custom 15 {
 }
 size XXXL -> custom 64: custom 48 {
 	style.font-size: 48
+	style.fill: lavender
 }
 `,
 		}, {
@@ -1481,6 +1483,36 @@ a.note: "just\na\nlong\nnote\nhere"`,
 			script: `shape: sequence_diagram
 alice -> bob: what does it mean to be well-adjusted
 bob -> alice: The ability to play bridge or golf as if they were games
+`,
+		},
+		{
+			name: "markdown_stroke_fill",
+			script: `
+container.md: |md
+# a header
+
+a line of text and an
+
+	{
+		indented: "block",
+		of: "json",
+	}
+
+walk into a bar.
+| {
+	style.stroke: darkorange
+}
+
+container -> no container
+
+no container: |md
+they did it in style
+|
+
+no container.style: {
+	stroke: red
+	fill: "#CEEDEE"
+}
 `,
 		},
 	}
