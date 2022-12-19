@@ -88,7 +88,7 @@ func layoutSequenceDiagram(g *d2graph.Graph, obj *d2graph.Object) (*sequenceDiag
 	var edges []*d2graph.Edge
 	for _, edge := range g.Edges {
 		// both Src and Dst must be inside the sequence diagram
-		if strings.HasPrefix(edge.Src.AbsID(), obj.AbsID()) && strings.HasPrefix(edge.Dst.AbsID(), obj.AbsID()) {
+		if obj == g.Root || (strings.HasPrefix(edge.Src.AbsID(), obj.AbsID()+".") && strings.HasPrefix(edge.Dst.AbsID(), obj.AbsID()+".")) {
 			edges = append(edges, edge)
 		}
 	}

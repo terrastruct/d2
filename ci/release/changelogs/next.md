@@ -15,3 +15,4 @@
 - Fixed `constraint` keyword setting label. [https://github.com/terrastruct/d2/issues/415](https://github.com/terrastruct/d2/issues/415)
 - Fixed serialization affecting binary plugins (TALA). [https://github.com/terrastruct/d2/pull/426](https://github.com/terrastruct/d2/pull/426)
 - Fixed a connection rendering bug that could happen in firefox when there were no connection labels. [https://github.com/terrastruct/d2/pull/453](https://github.com/terrastruct/d2/pull/453)
+- Fixed a crash when external connection IDs were prefixes of a sequence diagram ID. [https://github.com/terrastruct/d2/pull/462](https://github.com/terrastruct/d2/pull/462)
