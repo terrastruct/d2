@@ -455,7 +455,7 @@ Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 Start-Service sshd
 Set-Service -Name sshd -StartupType 'Automatic'
 
-New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\Users\Administrator\.dotnet\tools\pwsh.exe" -PropertyType String -Force
+New-ItemProperty -Path "HKLM:\SOFTWARE\OpenSSH" -Name DefaultShell -Value "C:\msys64\usr\bin\bash.exe" -PropertyType String -Force
 
 ConvertFrom-Json -InputObject @'
 $(perl -pe 's#\n#\r\n#' "$ID_PUB_PATH" | jq -Rs .)
