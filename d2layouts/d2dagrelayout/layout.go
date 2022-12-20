@@ -90,7 +90,14 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	for _, obj := range g.Objects {
 		id := obj.AbsID()
 		idToObj[id] = obj
-		loadScript += generateAddNodeLine(id, int(obj.Width), int(obj.Height))
+
+		height := obj.Height
+		if obj.LabelWidth != nil && obj.LabelHeight != nil {
+			if obj.Attributes.Shape.Value == d2target.ShapeImage {
+				height += float64(*obj.LabelHeight) + label.PADDING
+			}
+		}
+		loadScript += generateAddNodeLine(id, int(obj.Width), int(height))
 		if obj.Parent != g.Root {
 			loadScript += generateAddParentLine(id, obj.Parent.AbsID())
 		}
@@ -151,7 +158,11 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-			} else if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
+			} else if obj.Attributes.Shape.Value == d2target.ShapeImage {
+				obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
+				// remove the extra height we added to the node when passing to dagre
+				obj.Height -= float64(*obj.LabelHeight) + label.PADDING
+			} else if obj.Attributes.Icon != nil {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
 			} else {
 				obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
