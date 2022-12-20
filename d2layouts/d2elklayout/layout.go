@@ -308,7 +308,8 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 		points[endIndex] = shape.TraceToShapeBorder(dstShape, points[endIndex], points[endIndex-1])
 
 		if edge.Attributes.Label.Value != "" {
-			edge.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			// using the edge label position from elk layout
+			edge.LabelTL = geo.NewPoint(e.Labels[0].X+parentX, e.Labels[0].Y+parentY)
 		}
 
 		edge.Route = points
