@@ -71,6 +71,85 @@ table_constrained: sql_table_constrained_overflow {
 }
 `,
 		},
+		{
+			name: "elk_alignment",
+			script: `
+direction: down
+
+build_workflow: lambda-build.yaml {
+
+	push: Push to main branch {
+		style.font-size: 25
+	}
+
+	GHA: GitHub Actions {
+		style.font-size: 25
+	}
+
+	S3.style.font-size: 25
+	Terraform.style.font-size: 25
+	AWS.style.font-size: 25
+
+	push -> GHA: Triggers {
+		style.font-size: 20
+	}
+
+	GHA -> S3: Builds zip and pushes it {
+		style.font-size: 20
+	}
+
+	S3 <-> Terraform: Pulls zip to deploy {
+		style.font-size: 20
+	}
+
+	Terraform -> AWS: Changes live lambdas {
+		style.font-size: 20
+	}
+}
+
+deploy_workflow: lambda-deploy.yaml {
+
+	manual: Manual Trigger {
+		style.font-size: 25
+	}
+
+	GHA: GitHub Actions {
+		style.font-size: 25
+	}
+
+	AWS.style.font-size: 25
+
+	Manual -> GHA: Launches {
+		style.font-size: 20
+	}
+
+	GHA -> AWS: Builds zip\npushes them to S3.\n\nDeploys lambdas\nusing Terraform {
+		style.font-size: 20
+	}
+}
+
+apollo_workflow: apollo-deploy.yaml {
+
+	apollo: Apollo Repo {
+		style.font-size: 25
+	}
+
+	GHA: GitHub Actions {
+		style.font-size: 25
+	}
+
+	AWS.style.font-size: 25
+
+	apollo -> GHA: Triggered manually/push to master test test test test test test test {
+		style.font-size: 20
+	}
+
+	GHA -> AWS: test {
+		style.font-size: 20
+	}
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
