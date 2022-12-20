@@ -6,6 +6,11 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 )
 
+const (
+	NamePadding = 10
+	TypePadding = 20
+)
+
 type SQLTable struct {
 	Columns []SQLColumn `json:"columns"`
 }

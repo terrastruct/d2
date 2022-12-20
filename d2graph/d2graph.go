@@ -1026,8 +1026,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 
 			// The rows get padded a little due to header font being larger than row font
 			obj.Height = float64(dims.Height * (len(obj.SQLTable.Columns) + 1))
-			// Leave room for padding (10 name 20 type 20 = 50)
-			obj.Width = float64(maxNameWidth + maxTypeWidth + constraintWidth + 50)
+			obj.Width = float64(d2target.NamePadding + maxNameWidth + d2target.TypePadding + maxTypeWidth + d2target.TypePadding + constraintWidth)
 
 		case d2target.ShapeText, d2target.ShapeCode:
 		}

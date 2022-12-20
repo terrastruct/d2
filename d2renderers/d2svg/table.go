@@ -11,8 +11,6 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 )
 
-const namePadding = 10
-
 func tableHeader(box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
 	str := fmt.Sprintf(`<rect class="class_header" x="%f" y="%f" width="%f" height="%f" fill="%s" />`,
 		box.TopLeft.X, box.TopLeft.Y, box.Width, box.Height, "#0a0f25")
@@ -45,13 +43,13 @@ func tableRow(box *geo.Box, nameText, typeText, constraintText string, fontSize,
 	// e.g. | diagram   int   FK |
 	nameTL := label.InsideMiddleLeft.GetPointOnBox(
 		box,
-		namePadding,
+		d2target.NamePadding,
 		box.Width,
 		fontSize,
 	)
 	constraintTR := label.InsideMiddleRight.GetPointOnBox(
 		box,
-		typePadding,
+		d2target.TypePadding,
 		0,
 		fontSize,
 	)
@@ -71,7 +69,7 @@ func tableRow(box *geo.Box, nameText, typeText, constraintText string, fontSize,
 
 		// TODO light font
 		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
-			nameTL.X+longestNameWidth+2*namePadding,
+			nameTL.X+longestNameWidth+2*d2target.NamePadding,
 			nameTL.Y+fontSize*3/4,
 			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, neutralColor),
 			escapeText(typeText),
