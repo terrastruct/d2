@@ -8,7 +8,7 @@
         "x": 0,
         "y": 0
       },
-      "width": 206,
+      "width": 208,
       "height": 216,
       "opacity": 1,
       "strokeDash": 0,
@@ -28,32 +28,142 @@
       "methods": null,
       "columns": [
         {
-          "name": "id",
-          "type": "int",
+          "name": {
+            "label": "id",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 15,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "int",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 23,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": "orders.user_id"
         },
         {
-          "name": "name",
-          "type": "string",
+          "name": {
+            "label": "name",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 47,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "string",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 48,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": ""
         },
         {
-          "name": "email",
-          "type": "string",
+          "name": {
+            "label": "email",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 47,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "string",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 48,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": ""
         },
         {
-          "name": "password",
-          "type": "string",
+          "name": {
+            "label": "password",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 80,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "string",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 48,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": ""
         },
         {
-          "name": "last_login",
-          "type": "datetime",
+          "name": {
+            "label": "last_login",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 81,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "datetime",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 77,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": ""
         }
@@ -75,10 +185,10 @@
       "id": "products",
       "type": "sql_table",
       "pos": {
-        "x": 266,
+        "x": 268,
         "y": 18
       },
-      "width": 163,
+      "width": 164,
       "height": 180,
       "opacity": 1,
       "strokeDash": 0,
@@ -98,26 +208,114 @@
       "methods": null,
       "columns": [
         {
-          "name": "id",
-          "type": "int",
+          "name": {
+            "label": "id",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 15,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "int",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 23,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": "orders.product_id"
         },
         {
-          "name": "price",
-          "type": "decimal",
+          "name": {
+            "label": "price",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 42,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "decimal",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 67,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": ""
         },
         {
-          "name": "sku",
-          "type": "string",
+          "name": {
+            "label": "sku",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 29,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "string",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 48,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": ""
         },
         {
-          "name": "name",
-          "type": "string",
+          "name": {
+            "label": "name",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 47,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "string",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 48,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": ""
         }
@@ -139,10 +337,10 @@
       "id": "orders",
       "type": "sql_table",
       "pos": {
-        "x": 266,
+        "x": 268,
         "y": 316
       },
-      "width": 163,
+      "width": 164,
       "height": 144,
       "opacity": 1,
       "strokeDash": 0,
@@ -162,20 +360,86 @@
       "methods": null,
       "columns": [
         {
-          "name": "id",
-          "type": "int",
+          "name": {
+            "label": "id",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 15,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "int",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 23,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": ""
         },
         {
-          "name": "user_id",
-          "type": "int",
+          "name": {
+            "label": "user_id",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 61,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "int",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 23,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": ""
         },
         {
-          "name": "product_id",
-          "type": "int",
+          "name": {
+            "label": "product_id",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 91,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "int",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 23,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": ""
         }
@@ -197,10 +461,10 @@
       "id": "shipments",
       "type": "sql_table",
       "pos": {
-        "x": 489,
+        "x": 492,
         "y": 18
       },
-      "width": 243,
+      "width": 244,
       "height": 180,
       "opacity": 1,
       "strokeDash": 0,
@@ -220,26 +484,114 @@
       "methods": null,
       "columns": [
         {
-          "name": "id",
-          "type": "int",
+          "name": {
+            "label": "id",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 15,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "int",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 23,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": ""
         },
         {
-          "name": "order_id",
-          "type": "int",
+          "name": {
+            "label": "order_id",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 71,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "int",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 23,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": "orders.id"
         },
         {
-          "name": "tracking_number",
-          "type": "string",
+          "name": {
+            "label": "tracking_number",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 146,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "string",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 48,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": ""
         },
         {
-          "name": "status",
-          "type": "string",
+          "name": {
+            "label": "status",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 51,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "string",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 48,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": ""
         }
@@ -285,19 +637,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 103,
+          "x": 104,
           "y": 216
         },
         {
-          "x": 103,
+          "x": 104,
           "y": 256
         },
         {
-          "x": 135.6,
+          "x": 136.8,
           "y": 282.2
         },
         {
-          "x": 266,
+          "x": 268,
           "y": 347
         }
       ],
@@ -333,19 +685,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 347.5,
+          "x": 350,
           "y": 198
         },
         {
-          "x": 347.5,
+          "x": 350,
           "y": 252.4
         },
         {
-          "x": 347.5,
+          "x": 350,
           "y": 276
         },
         {
-          "x": 347.5,
+          "x": 350,
           "y": 316
         }
       ],
@@ -381,19 +733,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 610.5,
+          "x": 614,
           "y": 198
         },
         {
-          "x": 610.5,
+          "x": 614,
           "y": 252.4
         },
         {
-          "x": 574.1,
+          "x": 577.6,
           "y": 282.8
         },
         {
-          "x": 428.5,
+          "x": 432,
           "y": 350
         }
       ],

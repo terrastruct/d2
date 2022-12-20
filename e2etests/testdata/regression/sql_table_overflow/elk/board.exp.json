@@ -8,7 +8,7 @@
         "x": 12,
         "y": 12
       },
-      "width": 533,
+      "width": 534,
       "height": 108,
       "opacity": 1,
       "strokeDash": 0,
@@ -28,14 +28,58 @@
       "methods": null,
       "columns": [
         {
-          "name": "short",
-          "type": "loooooooooooooooooooong",
+          "name": {
+            "label": "short",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 45,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "loooooooooooooooooooong",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 242,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": ""
         },
         {
-          "name": "loooooooooooooooooooong",
-          "type": "short",
+          "name": {
+            "label": "loooooooooooooooooooong",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 242,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "short",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 45,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": ""
         }
@@ -60,7 +104,7 @@
         "x": 566,
         "y": 12
       },
-      "width": 593,
+      "width": 594,
       "height": 108,
       "opacity": 1,
       "strokeDash": 0,
@@ -80,14 +124,58 @@
       "methods": null,
       "columns": [
         {
-          "name": "short",
-          "type": "loooooooooooooooooooong",
+          "name": {
+            "label": "short",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 45,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "loooooooooooooooooooong",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 242,
+            "labelHeight": 26
+          },
           "constraint": "unique",
           "reference": ""
         },
         {
-          "name": "loooooooooooooooooooong",
-          "type": "short",
+          "name": {
+            "label": "loooooooooooooooooooong",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 242,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "short",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 45,
+            "labelHeight": 26
+          },
           "constraint": "foreign_key",
           "reference": ""
         }
