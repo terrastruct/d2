@@ -787,10 +787,10 @@
       "id": "t",
       "type": "sql_table",
       "pos": {
-        "x": 4759,
+        "x": 4783,
         "y": 150
       },
-      "width": 210,
+      "width": 161,
       "height": 108,
       "opacity": 1,
       "strokeDash": 0,
@@ -810,14 +810,58 @@
       "methods": null,
       "columns": [
         {
-          "name": "id",
-          "type": "int",
+          "name": {
+            "label": "id",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 15,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "int",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 23,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": ""
         },
         {
-          "name": "name",
-          "type": "varchar",
+          "name": {
+            "label": "name",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 47,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "varchar",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 64,
+            "labelHeight": 26
+          },
           "constraint": "",
           "reference": ""
         }
@@ -1570,7 +1614,7 @@
           "y": 2728
         },
         {
-          "x": 4864,
+          "x": 4863.5,
           "y": 2728
         }
       ],
@@ -2346,11 +2390,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 4864,
+          "x": 4863.5,
           "y": 258
         },
         {
-          "x": 4864,
+          "x": 4863.5,
           "y": 2858
         }
       ],

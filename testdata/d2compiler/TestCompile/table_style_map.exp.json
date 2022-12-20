@@ -247,8 +247,30 @@
         "sql_table": {
           "columns": [
             {
-              "name": "GetType()",
-              "type": "string",
+              "name": {
+                "label": "GetType()",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "type": {
+                "label": "string",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
               "constraint": "",
               "reference": ""
             }

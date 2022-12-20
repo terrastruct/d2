@@ -450,14 +450,58 @@
         "sql_table": {
           "columns": [
             {
-              "name": "id",
-              "type": "int",
+              "name": {
+                "label": "id",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "type": {
+                "label": "int",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
               "constraint": "",
               "reference": ""
             },
             {
-              "name": "dst_id",
-              "type": "int",
+              "name": {
+                "label": "dst_id",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "type": {
+                "label": "int",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
               "constraint": "",
               "reference": ""
             }
@@ -541,14 +585,58 @@
         "sql_table": {
           "columns": [
             {
-              "name": "id",
-              "type": "int",
+              "name": {
+                "label": "id",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "type": {
+                "label": "int",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
               "constraint": "",
               "reference": "src.dst_id"
             },
             {
-              "name": "name",
-              "type": "string",
+              "name": {
+                "label": "name",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "type": {
+                "label": "string",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
               "constraint": "",
               "reference": ""
             }

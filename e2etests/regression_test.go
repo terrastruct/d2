@@ -52,6 +52,25 @@ foobar: {
 }
 foo -> foobar`,
 		},
+		{
+			name: "sql_table_overflow",
+			script: `
+table: sql_table_overflow {
+	shape: sql_table
+	short: loooooooooooooooooooong
+	loooooooooooooooooooong: short
+}
+table_constrained: sql_table_constrained_overflow {
+	shape: sql_table
+	short: loooooooooooooooooooong {
+		constraint: unique
+	}
+	loooooooooooooooooooong: short {
+		constraint: foreign_key
+	}
+}
+`,
+		},
 	}
 
 	runa(t, tcs)

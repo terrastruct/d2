@@ -669,8 +669,8 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 			typ = ""
 		}
 		d2Col := d2target.SQLColumn{
-			Name: col.IDVal,
-			Type: typ,
+			Name: d2target.Text{Label: col.IDVal},
+			Type: d2target.Text{Label: typ},
 		}
 		// The only map a sql table field could have is to specify constraint
 		if col.Map != nil {

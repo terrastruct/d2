@@ -1,0 +1,198 @@
+{
+  "name": "",
+  "shapes": [
+    {
+      "id": "table",
+      "type": "sql_table",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 534,
+      "height": 108,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#FFFFFF",
+      "stroke": "#0A0F25",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": [
+        {
+          "name": {
+            "label": "short",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 45,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "loooooooooooooooooooong",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 242,
+            "labelHeight": 26
+          },
+          "constraint": "",
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "loooooooooooooooooooong",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 242,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "short",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 45,
+            "labelHeight": 26
+          },
+          "constraint": "",
+          "reference": ""
+        }
+      ],
+      "label": "sql_table_overflow",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 211,
+      "labelHeight": 36,
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "table_constrained",
+      "type": "sql_table",
+      "pos": {
+        "x": 594,
+        "y": 0
+      },
+      "width": 594,
+      "height": 108,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#FFFFFF",
+      "stroke": "#0A0F25",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": [
+        {
+          "name": {
+            "label": "short",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 45,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "loooooooooooooooooooong",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 242,
+            "labelHeight": 26
+          },
+          "constraint": "unique",
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "loooooooooooooooooooong",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 242,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "short",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 45,
+            "labelHeight": 26
+          },
+          "constraint": "foreign_key",
+          "reference": ""
+        }
+      ],
+      "label": "sql_table_constrained_overflow",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 350,
+      "labelHeight": 36,
+      "zIndex": 0,
+      "level": 1
+    }
+  ],
+  "connections": []
+}
