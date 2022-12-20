@@ -1465,8 +1465,8 @@ b`, g.Objects[0].Attributes.Label.Value)
 				if len(g.Objects) != 1 {
 					t.Fatal(g.Objects)
 				}
-				assert.String(t, `GetType()`, g.Objects[0].SQLTable.Columns[0].Name)
-				assert.String(t, `Is()`, g.Objects[0].SQLTable.Columns[1].Name)
+				assert.String(t, `GetType()`, g.Objects[0].SQLTable.Columns[0].Name.Label)
+				assert.String(t, `Is()`, g.Objects[0].SQLTable.Columns[1].Name.Label)
 			},
 		},
 		{
@@ -1490,8 +1490,8 @@ b`, g.Objects[0].Attributes.Label.Value)
 				if len(g.Objects[0].ChildrenArray) != 1 {
 					t.Fatal(g.Objects)
 				}
-				assert.String(t, `GetType()`, g.Objects[1].SQLTable.Columns[0].Name)
-				assert.String(t, `Is()`, g.Objects[1].SQLTable.Columns[1].Name)
+				assert.String(t, `GetType()`, g.Objects[1].SQLTable.Columns[0].Name.Label)
+				assert.String(t, `Is()`, g.Objects[1].SQLTable.Columns[1].Name.Label)
 			},
 		},
 		{

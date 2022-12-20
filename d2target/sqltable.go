@@ -11,15 +11,15 @@ type SQLTable struct {
 }
 
 type SQLColumn struct {
-	Name       string `json:"name"`
-	Type       string `json:"type"`
+	Name       Text   `json:"name"`
+	Type       Text   `json:"type"`
 	Constraint string `json:"constraint"`
 	Reference  string `json:"reference"`
 }
 
 func (c SQLColumn) Text() *MText {
 	return &MText{
-		Text:     fmt.Sprintf("%s%s%s%s", c.Name, c.Type, c.Constraint, c.Reference),
+		Text:     fmt.Sprintf("%s%s%s%s", c.Name.Label, c.Type.Label, c.Constraint, c.Reference),
 		FontSize: d2fonts.FONT_SIZE_L,
 		IsBold:   false,
 		IsItalic: false,

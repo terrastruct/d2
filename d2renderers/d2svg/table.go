@@ -3,14 +3,12 @@ package d2svg
 import (
 	"fmt"
 	"io"
-	"math"
 	"strings"
 
-	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/d2/lib/textmeasure"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 const namePadding = 10
@@ -101,7 +99,7 @@ func constraintAbbr(constraint string) string {
 	}
 }
 
-func drawTable(writer io.Writer, targetShape d2target.Shape, ruler *textmeasure.Ruler) {
+func drawTable(writer io.Writer, targetShape d2target.Shape) {
 	fmt.Fprintf(writer, `<rect class="shape" x="%d" y="%d" width="%d" height="%d" style="%s"/>`,
 		targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, shapeStyle(targetShape))
 
@@ -117,18 +115,16 @@ func drawTable(writer io.Writer, targetShape d2target.Shape, ruler *textmeasure.
 		tableHeader(headerBox, targetShape.Label, float64(targetShape.LabelWidth), float64(targetShape.LabelHeight), float64(targetShape.FontSize)),
 	)
 
-	font := d2fonts.SourceSansPro.Font(targetShape.FontSize, d2fonts.FONT_STYLE_REGULAR)
-	var longestNameWidth float64
+	var longestNameWidth int
 	for _, f := range targetShape.SQLTable.Columns {
-		w, _ := ruler.MeasurePrecise(font, f.Name)
-		longestNameWidth = math.Max(longestNameWidth, w)
+		longestNameWidth = go2.Max(longestNameWidth, f.Name.LabelWidth)
 	}
 
 	rowBox := geo.NewBox(box.TopLeft.Copy(), box.Width, rowHeight)
 	rowBox.TopLeft.Y += headerBox.Height
 	for _, f := range targetShape.SQLTable.Columns {
 		fmt.Fprint(writer,
-			tableRow(rowBox, f.Name, f.Type, constraintAbbr(f.Constraint), float64(targetShape.FontSize), longestNameWidth),
+			tableRow(rowBox, f.Name.Label, f.Type.Label, constraintAbbr(f.Constraint), float64(targetShape.FontSize), float64(longestNameWidth)),
 		)
 		rowBox.TopLeft.Y += rowHeight
 		fmt.Fprintf(writer, `<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke-width:2;stroke:#0a0f25" />`,
@@ -136,5 +132,4 @@ func drawTable(writer io.Writer, targetShape d2target.Shape, ruler *textmeasure.
 			rowBox.TopLeft.X+rowBox.Width, rowBox.TopLeft.Y,
 		)
 	}
-
 }

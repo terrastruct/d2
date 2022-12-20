@@ -995,23 +995,32 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			obj.Width = float64(maxWidth + 100)
 
 		case d2target.ShapeSQLTable:
-			maxNameWidth := 0.
-			maxTypeWidth := 0.
-			constraintWidth := 0.
+			maxNameWidth := 0
+			maxTypeWidth := 0
+			constraintWidth := 0
 
 			font := d2fonts.SourceSansPro.Font(d2fonts.FONT_SIZE_L, d2fonts.FONT_STYLE_REGULAR)
-			for _, c := range obj.SQLTable.Columns {
-				nameWidth, _ := ruler.MeasurePrecise(font, c.Name)
+			for i := range obj.SQLTable.Columns {
+				// Note: we want to set dimensions of actual column not the for loop copy of the struct
+				c := &obj.SQLTable.Columns[i]
+
+				nameWidth, nameHeight := ruler.Measure(font, c.Name.Label)
+				c.Name.LabelWidth = nameWidth
+				c.Name.LabelHeight = nameHeight
 				if maxNameWidth < nameWidth {
 					maxNameWidth = nameWidth
 				}
-				typeWidth, _ := ruler.MeasurePrecise(font, c.Type)
+
+				typeWidth, typeHeight := ruler.Measure(font, c.Type.Label)
+				c.Type.LabelWidth = typeWidth
+				c.Type.LabelHeight = typeHeight
 				if maxTypeWidth < typeWidth {
 					maxTypeWidth = typeWidth
 				}
+
 				if c.Constraint != "" {
 					// covers UNQ constraint with padding
-					constraintWidth = 60.
+					constraintWidth = 60
 				}
 			}
 
