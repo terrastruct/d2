@@ -2,7 +2,7 @@
 <svg
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="460" height="673" viewBox="-88 -88 460 673"><style type="text/css">
+width="463" height="673" viewBox="-88 -88 463 673"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -18,8 +18,8 @@ width="460" height="673" viewBox="-88 -88 460 673"><style type="text/css">
 }
 
 ]]>
-</style><g id="a"><g class="shape" ><rect x="159" y="12" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="215.500000" y="78.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">a</text></g><g id="b"><g class="shape" ><rect x="159" y="359" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="215.500000" y="425.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">b</text></g><g id="(a -&gt; b)[0]"><marker id="mk-1247258845" markerWidth="24.200000" markerHeight="18.000000" refX="20.800000" refY="9.000000" viewBox="0.000000 0.000000 24.200000 18.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="white" stroke="#0D32B2" stroke-width="2" points="0.000000,9.000000 11.000000,2.250000 22.000000,9.000000 11.000000,16.200000" /> </marker><path d="M 215.000000 140.000000 L 215.000000 355.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-1247258845)" mask="url(#2106140735)"/><text class="text-italic" x="112.500000" y="254.000000" style="text-anchor:middle;font-size:16px;fill:#676C7E">To err is human, to moo bovine</text><text class="text-italic" x="229.000000" y="162.000000" style="text-anchor:middle;font-size:16px;fill:black">1</text><text class="text-italic" x="229.000000" y="351.000000" style="text-anchor:middle;font-size:16px;fill:black">*</text></g><mask id="2106140735" maskUnits="userSpaceOnUse" x="0" y="0" width="460" height="673">
-<rect x="0" y="0" width="460" height="673" fill="white"></rect>
+</style><g id="a"><g class="shape" ><rect x="12" y="12" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="68.500000" y="78.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">a</text></g><g id="b"><g class="shape" ><rect x="12" y="359" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="68.500000" y="425.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">b</text></g><g id="(a -&gt; b)[0]"><marker id="mk-1247258845" markerWidth="24.200000" markerHeight="18.000000" refX="20.800000" refY="9.000000" viewBox="0.000000 0.000000 24.200000 18.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="white" stroke="#0D32B2" stroke-width="2" points="0.000000,9.000000 11.000000,2.250000 22.000000,9.000000 11.000000,16.200000" /> </marker><path d="M 68.500000 140.000000 L 68.500000 355.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-1247258845)" mask="url(#1775679852)"/><text class="text-italic" x="175.500000" y="254.000000" style="text-anchor:middle;font-size:16px;fill:#676C7E">To err is human, to moo bovine</text><text class="text-italic" x="82.500000" y="162.000000" style="text-anchor:middle;font-size:16px;fill:black">1</text><text class="text-italic" x="82.500000" y="351.000000" style="text-anchor:middle;font-size:16px;fill:black">*</text></g><mask id="1775679852" maskUnits="userSpaceOnUse" x="0" y="0" width="463" height="673">
+<rect x="0" y="0" width="463" height="673" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text-bold {
