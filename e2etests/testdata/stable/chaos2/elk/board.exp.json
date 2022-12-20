@@ -622,8 +622,12 @@
       "underline": false,
       "labelWidth": 15,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "",
       "labelPercentage": 0,
+      "labelTL": {
+        "x": 599,
+        "y": 1217
+      },
       "route": [
         {
           "x": 596,
@@ -661,8 +665,12 @@
       "underline": false,
       "labelWidth": 17,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "",
       "labelPercentage": 0,
+      "labelTL": {
+        "x": 574,
+        "y": 1302
+      },
       "route": [
         {
           "x": 593.1666666666666,
@@ -747,8 +755,12 @@
       "underline": false,
       "labelWidth": 17,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "",
       "labelPercentage": 0,
+      "labelTL": {
+        "x": 406,
+        "y": 389
+      },
       "route": [
         {
           "x": 424.9000000000001,
@@ -794,8 +806,12 @@
       "underline": false,
       "labelWidth": 16,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "",
       "labelPercentage": 0,
+      "labelTL": {
+        "x": 549,
+        "y": 286
+      },
       "route": [
         {
           "x": 567,
@@ -896,8 +912,12 @@
       "underline": false,
       "labelWidth": 16,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "",
       "labelPercentage": 0,
+      "labelTL": {
+        "x": 520,
+        "y": 286
+      },
       "route": [
         {
           "x": 540,
@@ -1006,8 +1026,12 @@
       "underline": false,
       "labelWidth": 16,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "",
       "labelPercentage": 0,
+      "labelTL": {
+        "x": 491,
+        "y": 286
+      },
       "route": [
         {
           "x": 514,
@@ -1053,8 +1077,12 @@
       "underline": false,
       "labelWidth": 16,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "",
       "labelPercentage": 0,
+      "labelTL": {
+        "x": 87,
+        "y": 389
+      },
       "route": [
         {
           "x": 461.00000000000006,
@@ -1108,8 +1136,12 @@
       "underline": false,
       "labelWidth": 16,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "",
       "labelPercentage": 0,
+      "labelTL": {
+        "x": 116,
+        "y": 389
+      },
       "route": [
         {
           "x": 464,

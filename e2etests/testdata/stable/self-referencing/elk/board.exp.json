@@ -325,8 +325,12 @@
       "underline": false,
       "labelWidth": 33,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "",
       "labelPercentage": 0,
+      "labelTL": {
+        "x": 12,
+        "y": 65
+      },
       "route": [
         {
           "x": 97,

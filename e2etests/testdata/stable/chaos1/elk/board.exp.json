@@ -225,8 +225,12 @@
       "underline": false,
       "labelWidth": 23,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "",
       "labelPercentage": 0,
+      "labelTL": {
+        "x": 278,
+        "y": 585
+      },
       "route": [
         {
           "x": 303,
@@ -264,8 +268,12 @@
       "underline": false,
       "labelWidth": 25,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "",
       "labelPercentage": 0,
+      "labelTL": {
+        "x": 276,
+        "y": 238
+      },
       "route": [
         {
           "x": 303,
