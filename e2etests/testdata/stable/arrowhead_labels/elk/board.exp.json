@@ -5,7 +5,7 @@
       "id": "a",
       "type": "",
       "pos": {
-        "x": 12,
+        "x": 56,
         "y": 12
       },
       "width": 113,
@@ -45,7 +45,7 @@
       "id": "b",
       "type": "",
       "pos": {
-        "x": 12,
+        "x": 56,
         "y": 359
       },
       "width": 113,
@@ -105,19 +105,15 @@
       "underline": false,
       "labelWidth": 201,
       "labelHeight": 21,
-      "labelPosition": "",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
-      "labelTL": {
-        "x": 75,
-        "y": 238
-      },
       "route": [
         {
-          "x": 68.5,
+          "x": 112.5,
           "y": 138
         },
         {
-          "x": 68.5,
+          "x": 112.5,
           "y": 359
         }
       ],

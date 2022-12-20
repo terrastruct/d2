@@ -5,10 +5,10 @@
       "id": "build_workflow",
       "type": "",
       "pos": {
-        "x": 856,
+        "x": 716,
         "y": 12
       },
-      "width": 513,
+      "width": 480,
       "height": 1099,
       "opacity": 1,
       "strokeDash": 0,
@@ -45,7 +45,7 @@
       "id": "build_workflow.push",
       "type": "",
       "pos": {
-        "x": 931,
+        "x": 791,
         "y": 87
       },
       "width": 330,
@@ -85,7 +85,7 @@
       "id": "build_workflow.GHA",
       "type": "",
       "pos": {
-        "x": 962,
+        "x": 822,
         "y": 290
       },
       "width": 269,
@@ -125,7 +125,7 @@
       "id": "build_workflow.S3",
       "type": "",
       "pos": {
-        "x": 1031,
+        "x": 891,
         "y": 493
       },
       "width": 131,
@@ -165,7 +165,7 @@
       "id": "build_workflow.Terraform",
       "type": "",
       "pos": {
-        "x": 987,
+        "x": 847,
         "y": 696
       },
       "width": 218,
@@ -205,7 +205,7 @@
       "id": "build_workflow.AWS",
       "type": "",
       "pos": {
-        "x": 1019,
+        "x": 879,
         "y": 899
       },
       "width": 155,
@@ -245,10 +245,10 @@
       "id": "deploy_workflow",
       "type": "",
       "pos": {
-        "x": 1389,
+        "x": 1216,
         "y": 175
       },
-      "width": 444,
+      "width": 421,
       "height": 773,
       "opacity": 1,
       "strokeDash": 0,
@@ -285,7 +285,7 @@
       "id": "deploy_workflow.manual",
       "type": "",
       "pos": {
-        "x": 1464,
+        "x": 1291,
         "y": 250
       },
       "width": 271,
@@ -325,7 +325,7 @@
       "id": "deploy_workflow.GHA",
       "type": "",
       "pos": {
-        "x": 1465,
+        "x": 1292,
         "y": 453
       },
       "width": 269,
@@ -365,7 +365,7 @@
       "id": "deploy_workflow.AWS",
       "type": "",
       "pos": {
-        "x": 1522,
+        "x": 1349,
         "y": 736
       },
       "width": 155,
@@ -408,7 +408,7 @@
         "x": 12,
         "y": 215
       },
-      "width": 823,
+      "width": 684,
       "height": 693,
       "opacity": 1,
       "strokeDash": 0,
@@ -445,7 +445,7 @@
       "id": "apollo_workflow.apollo",
       "type": "",
       "pos": {
-        "x": 103,
+        "x": 235,
         "y": 290
       },
       "width": 238,
@@ -485,7 +485,7 @@
       "id": "apollo_workflow.GHA",
       "type": "",
       "pos": {
-        "x": 87,
+        "x": 219,
         "y": 493
       },
       "width": 269,
@@ -525,7 +525,7 @@
       "id": "apollo_workflow.AWS",
       "type": "",
       "pos": {
-        "x": 144,
+        "x": 276,
         "y": 696
       },
       "width": 155,
@@ -585,19 +585,15 @@
       "underline": false,
       "labelWidth": 67,
       "labelHeight": 26,
-      "labelPosition": "",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
-      "labelTL": {
-        "x": 1102,
-        "y": 244
-      },
       "route": [
         {
-          "x": 1096,
+          "x": 956,
           "y": 224
         },
         {
-          "x": 1096,
+          "x": 956,
           "y": 290
         }
       ],
@@ -628,19 +624,15 @@
       "underline": false,
       "labelWidth": 192,
       "labelHeight": 26,
-      "labelPosition": "",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
-      "labelTL": {
-        "x": 1102,
-        "y": 447
-      },
       "route": [
         {
-          "x": 1096,
+          "x": 956,
           "y": 427
         },
         {
-          "x": 1096,
+          "x": 956,
           "y": 493
         }
       ],
@@ -671,19 +663,15 @@
       "underline": false,
       "labelWidth": 149,
       "labelHeight": 26,
-      "labelPosition": "",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
-      "labelTL": {
-        "x": 1102,
-        "y": 650
-      },
       "route": [
         {
-          "x": 1096,
+          "x": 956,
           "y": 630
         },
         {
-          "x": 1096,
+          "x": 956,
           "y": 696
         }
       ],
@@ -714,19 +702,15 @@
       "underline": false,
       "labelWidth": 179,
       "labelHeight": 26,
-      "labelPosition": "",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
-      "labelTL": {
-        "x": 1102,
-        "y": 853
-      },
       "route": [
         {
-          "x": 1096,
+          "x": 956,
           "y": 833
         },
         {
-          "x": 1096,
+          "x": 956,
           "y": 899
         }
       ],
@@ -757,19 +741,15 @@
       "underline": false,
       "labelWidth": 78,
       "labelHeight": 26,
-      "labelPosition": "",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
-      "labelTL": {
-        "x": 1606,
-        "y": 407
-      },
       "route": [
         {
-          "x": 1599.5,
+          "x": 1426.5,
           "y": 387
         },
         {
-          "x": 1599.5,
+          "x": 1426.5,
           "y": 453
         }
       ],
@@ -800,19 +780,15 @@
       "underline": false,
       "labelWidth": 153,
       "labelHeight": 106,
-      "labelPosition": "",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
-      "labelTL": {
-        "x": 1606,
-        "y": 610
-      },
       "route": [
         {
-          "x": 1599.5,
+          "x": 1426.5,
           "y": 590
         },
         {
-          "x": 1599.5,
+          "x": 1426.5,
           "y": 736
         }
       ],
@@ -843,19 +819,15 @@
       "underline": false,
       "labelWidth": 533,
       "labelHeight": 26,
-      "labelPosition": "",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
-      "labelTL": {
-        "x": 228,
-        "y": 447
-      },
       "route": [
         {
-          "x": 221.5,
+          "x": 353.5,
           "y": 427
         },
         {
-          "x": 221.5,
+          "x": 353.5,
           "y": 493
         }
       ],
@@ -886,19 +858,15 @@
       "underline": false,
       "labelWidth": 31,
       "labelHeight": 26,
-      "labelPosition": "",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
-      "labelTL": {
-        "x": 228,
-        "y": 650
-      },
       "route": [
         {
-          "x": 221.5,
+          "x": 353.5,
           "y": 630
         },
         {
-          "x": 221.5,
+          "x": 353.5,
           "y": 696
         }
       ],

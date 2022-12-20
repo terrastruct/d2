@@ -505,12 +505,8 @@
       "underline": false,
       "labelWidth": 42,
       "labelHeight": 13,
-      "labelPosition": "",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
-      "labelTL": {
-        "x": 1544,
-        "y": 282
-      },
       "route": [
         {
           "x": 1537.5,
@@ -548,12 +544,8 @@
       "underline": false,
       "labelWidth": 64,
       "labelHeight": 19,
-      "labelPosition": "",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
-      "labelTL": {
-        "x": 1710,
-        "y": 279
-      },
       "route": [
         {
           "x": 1703.5,
@@ -592,12 +584,8 @@
       "underline": false,
       "labelWidth": 199,
       "labelHeight": 61,
-      "labelPosition": "",
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
-      "labelTL": {
-        "x": 778,
-        "y": 258
-      },
       "route": [
         {
           "x": 771.5,
