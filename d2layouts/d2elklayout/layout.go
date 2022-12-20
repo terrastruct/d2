@@ -143,7 +143,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 
 	walk(g.Root, nil, func(obj, parent *d2graph.Object) {
 		height := obj.Height
-		if obj.Attributes.Shape.Value == d2target.ShapeImage {
+		if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
 			height += float64(*obj.LabelHeight) + label.PADDING
 		}
 
@@ -259,7 +259,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
 				obj.Height -= float64(*obj.LabelHeight) + label.PADDING
 			} else if obj.Attributes.Icon != nil {
-				obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
+				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 			} else {
 				obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			}
