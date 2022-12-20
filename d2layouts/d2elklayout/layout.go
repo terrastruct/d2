@@ -142,10 +142,15 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	}
 
 	walk(g.Root, nil, func(obj, parent *d2graph.Object) {
+		height := obj.Height
+		if obj.Attributes.Shape.Value == d2target.ShapeImage {
+			height += float64(*obj.LabelHeight) + label.PADDING
+		}
+
 		n := &ELKNode{
 			ID:     obj.AbsID(),
 			Width:  obj.Width,
-			Height: obj.Height,
+			Height: height,
 		}
 
 		if len(obj.ChildrenArray) > 0 {
@@ -250,7 +255,10 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-			} else if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
+			} else if obj.Attributes.Shape.Value == d2target.ShapeImage {
+				obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
+				obj.Height -= float64(*obj.LabelHeight) + label.PADDING
+			} else if obj.Attributes.Icon != nil {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
 			} else {
 				obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
