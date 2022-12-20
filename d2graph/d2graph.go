@@ -664,7 +664,6 @@ type Edge struct {
 	LabelDimensions d2target.TextDimensions `json:"label_dimensions"`
 	LabelPosition   *string                 `json:"labelPosition,omitempty"`
 	LabelPercentage *float64                `json:"labelPercentage,omitempty"`
-	LabelTL         *geo.Point              `json:"labelTL,omitempty"`
 
 	IsCurve bool         `json:"isCurve"`
 	Route   []*geo.Point `json:"route,omitempty"`

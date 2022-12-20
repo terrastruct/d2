@@ -43,11 +43,12 @@ type ELKNode struct {
 }
 
 type ELKLabel struct {
-	Text   string  `json:"text"`
-	X      float64 `json:"x"`
-	Y      float64 `json:"y"`
-	Width  float64 `json:"width"`
-	Height float64 `json:"height"`
+	Text          string            `json:"text"`
+	X             float64           `json:"x"`
+	Y             float64           `json:"y"`
+	Width         float64           `json:"width"`
+	Height        float64           `json:"height"`
+	LayoutOptions *ELKLayoutOptions `json:"layoutOptions,omitempty"`
 }
 
 type ELKPoint struct {
@@ -78,15 +79,14 @@ type ELKGraph struct {
 }
 
 type ELKLayoutOptions struct {
-	Algorithm          string  `json:"elk.algorithm,omitempty"`
-	HierarchyHandling  string  `json:"elk.hierarchyHandling,omitempty"`
-	NodeSpacing        float64 `json:"spacing.nodeNodeBetweenLayers,omitempty"`
-	Padding            string  `json:"elk.padding,omitempty"`
-	EdgeNodeSpacing    float64 `json:"spacing.edgeNodeBetweenLayers,omitempty"`
-	Direction          string  `json:"elk.direction"`
-	SelfLoopSpacing    float64 `json:"elk.spacing.nodeSelfLoop"`
-	EdgeLabelSpacing   float64 `json:"spacing.edgeLabel,omitempty"`
-	LabelSideSelection string  `json:"elk.layered.edgeLabels.sideSelection,omitempty"`
+	Algorithm         string  `json:"elk.algorithm,omitempty"`
+	HierarchyHandling string  `json:"elk.hierarchyHandling,omitempty"`
+	NodeSpacing       float64 `json:"spacing.nodeNodeBetweenLayers,omitempty"`
+	Padding           string  `json:"elk.padding,omitempty"`
+	EdgeNodeSpacing   float64 `json:"spacing.edgeNodeBetweenLayers,omitempty"`
+	Direction         string  `json:"elk.direction"`
+	SelfLoopSpacing   float64 `json:"elk.spacing.nodeSelfLoop"`
+	InlineEdgeLabels  bool    `json:"elk.edgeLabels.inline,omitempty"`
 }
 
 func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
@@ -109,13 +109,11 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	elkGraph := &ELKGraph{
 		ID: "root",
 		LayoutOptions: &ELKLayoutOptions{
-			Algorithm:          "layered",
-			HierarchyHandling:  "INCLUDE_CHILDREN",
-			NodeSpacing:        100.0,
-			EdgeNodeSpacing:    50.0,
-			SelfLoopSpacing:    50.0,
-			EdgeLabelSpacing:   5.0,
-			LabelSideSelection: "SMART_UP",
+			Algorithm:         "layered",
+			HierarchyHandling: "INCLUDE_CHILDREN",
+			NodeSpacing:       100.0,
+			EdgeNodeSpacing:   50.0,
+			SelfLoopSpacing:   50.0,
 		},
 	}
 	switch g.Root.Attributes.Direction.Value {
@@ -159,9 +157,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 
 		if len(obj.ChildrenArray) > 0 {
 			n.LayoutOptions = &ELKLayoutOptions{
-				Padding:            "[top=75,left=75,bottom=75,right=75]",
-				EdgeLabelSpacing:   5.0,
-				LabelSideSelection: "SMART_UP",
+				Padding: "[top=75,left=75,bottom=75,right=75]",
 			}
 		}
 
@@ -192,6 +188,9 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 				Text:   edge.Attributes.Label.Value,
 				Width:  float64(edge.LabelDimensions.Width),
 				Height: float64(edge.LabelDimensions.Height),
+				LayoutOptions: &ELKLayoutOptions{
+					InlineEdgeLabels: true,
+				},
 			})
 		}
 		elkGraph.Edges = append(elkGraph.Edges, e)
@@ -314,8 +313,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 		points[endIndex] = shape.TraceToShapeBorder(dstShape, points[endIndex], points[endIndex-1])
 
 		if edge.Attributes.Label.Value != "" {
-			// using the edge label position from elk layout
-			edge.LabelTL = geo.NewPoint(e.Labels[0].X+parentX, e.Labels[0].Y+parentY)
+			edge.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 		}
 
 		edge.Route = points

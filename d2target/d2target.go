@@ -210,9 +210,8 @@ type Connection struct {
 	Fill        string  `json:"fill,omitempty"`
 
 	Text
-	LabelPosition   string     `json:"labelPosition"`
-	LabelPercentage float64    `json:"labelPercentage"`
-	LabelTL         *geo.Point `json:"labelTL,omitempty"`
+	LabelPosition   string  `json:"labelPosition"`
+	LabelPercentage float64 `json:"labelPercentage"`
 
 	Route   []*geo.Point `json:"route"`
 	IsCurve bool         `json:"isCurve,omitempty"`
@@ -240,9 +239,6 @@ func BaseConnection() *Connection {
 }
 
 func (c *Connection) GetLabelTopLeft() *geo.Point {
-	if c.LabelTL != nil {
-		return c.LabelTL
-	}
 	return label.Position(c.LabelPosition).GetPointOnRoute(
 		c.Route,
 		float64(c.StrokeWidth),

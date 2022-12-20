@@ -242,9 +242,6 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 	if edge.LabelPercentage != nil {
 		connection.LabelPercentage = *edge.LabelPercentage
 	}
-	if edge.LabelTL != nil {
-		connection.LabelTL = edge.LabelTL.Copy()
-	}
 	connection.Route = edge.Route
 	connection.IsCurve = edge.IsCurve
 
