@@ -1515,6 +1515,78 @@ no container.style: {
 }
 `,
 		},
+		{
+			name: "overlapping_image_container_labels",
+			script: `
+root: {
+	shape: image
+	icon: https://icons.terrastruct.com/essentials/004-picture.svg
+}
+
+root -> container.root
+
+container: {
+	root: {
+		shape: image
+		icon: https://icons.terrastruct.com/essentials/004-picture.svg
+	}
+
+	left: {
+		root: {
+			shape: image
+			icon: https://icons.terrastruct.com/essentials/004-picture.svg
+		}
+		inner: {
+			left: {
+				shape: image
+				icon: https://icons.terrastruct.com/essentials/004-picture.svg
+			}
+			right: {
+				shape: image
+				icon: https://icons.terrastruct.com/essentials/004-picture.svg
+			}
+		}
+		root -> inner.left: {
+			label: to inner left
+		}
+		root -> inner.right: {
+			label: to inner right
+		}
+	}
+
+	right: {
+		root: {
+			shape: image
+			icon: https://icons.terrastruct.com/essentials/004-picture.svg
+		}
+		inner: {
+			left: {
+				shape: image
+				icon: https://icons.terrastruct.com/essentials/004-picture.svg
+			}
+			right: {
+				shape: image
+				icon: https://icons.terrastruct.com/essentials/004-picture.svg
+			}
+		}
+		root -> inner.left: {
+			label: to inner left
+		}
+		root -> inner.right: {
+			label: to inner right
+		}
+	}
+
+	root -> left.root: {
+		label: to left container root
+	}
+
+	root -> right.root: {
+		label: to right container root
+	}
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
