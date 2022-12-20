@@ -3,7 +3,7 @@ module oss.terrastruct.com/d2
 go 1.18
 
 require (
-	cdr.dev/slog v1.4.2-0.20220126003130-b94a5ff54f37
+	cdr.dev/slog v1.4.2-0.20221206192828-e4803b10ae17
 	github.com/PuerkitoBio/goquery v1.8.0
 	github.com/alecthomas/chroma v0.10.0
 	github.com/dop251/goja v0.0.0-20221118162653-d4bf6fde1b86
@@ -36,6 +36,7 @@ require (
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
