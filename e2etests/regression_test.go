@@ -150,6 +150,29 @@ apollo_workflow: apollo-deploy.yaml {
 }
 `,
 		},
+		{
+			name: "dagre_edge_label_spacing",
+			script: `direction: right
+
+build_workflow: lambda-build.yaml {
+
+	push: Push to main branch {
+		style.font-size: 25
+	}
+	GHA: GitHub Actions {
+		style.font-size: 25
+	}
+	S3.style.font-size: 25
+	Terraform.style.font-size: 25
+	AWS.style.font-size: 25
+
+	push -> GHA: Triggers
+	GHA -> S3: Builds zip & pushes it
+	S3 <-> Terraform: Pulls zip to deploy
+	Terraform -> AWS: Changes the live lambdas
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
