@@ -841,7 +841,7 @@ func getMarkdownDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t
 	return nil, fmt.Errorf("text not pre-measured and no ruler provided")
 }
 
-func getTextDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2target.MText) *d2target.TextDimensions {
+func getTextDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2target.MText, fontFamily *d2fonts.FontFamily) *d2target.TextDimensions {
 	if dims := findMeasured(mtexts, t); dims != nil {
 		return dims
 	}
@@ -861,7 +861,11 @@ func getTextDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2
 			} else if t.IsItalic {
 				style = d2fonts.FONT_STYLE_ITALIC
 			}
-			w, h = ruler.Measure(d2fonts.SourceSansPro.Font(t.FontSize, style), t.Text)
+			if fontFamily == nil {
+				defaultFont := d2fonts.SourceSansPro
+				fontFamily = &defaultFont
+			}
+			w, h = ruler.Measure(fontFamily.Font(t.FontSize, style), t.Text)
 		}
 		return d2target.NewTextDimensions(w, h)
 	}
@@ -870,13 +874,13 @@ func getTextDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2
 }
 
 func appendTextDedup(texts []*d2target.MText, t *d2target.MText) []*d2target.MText {
-	if getTextDimensions(texts, nil, t) == nil {
+	if getTextDimensions(texts, nil, t, nil) == nil {
 		return append(texts, t)
 	}
 	return texts
 }
 
-func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler) error {
+func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, fontFamily *d2fonts.FontFamily) error {
 	for _, obj := range g.Objects {
 		obj.Box = &geo.Box{}
 		// TODO fix edge cases for unnamed class etc
@@ -905,7 +909,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 			innerLabelPadding = 0
 		} else {
-			dims = getTextDimensions(mtexts, ruler, obj.Text())
+			dims = getTextDimensions(mtexts, ruler, obj.Text(), fontFamily)
 		}
 		if dims == nil {
 			if obj.Attributes.Shape.Value == d2target.ShapeImage {
@@ -959,7 +963,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			maxWidth := dims.Width
 
 			for _, f := range obj.Class.Fields {
-				fdims := getTextDimensions(mtexts, ruler, f.Text())
+				fdims := getTextDimensions(mtexts, ruler, f.Text(), fontFamily)
 				if fdims == nil {
 					return fmt.Errorf("dimensions for class field %#v not found", f.Text())
 				}
@@ -969,7 +973,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 				}
 			}
 			for _, m := range obj.Class.Methods {
-				mdims := getTextDimensions(mtexts, ruler, m.Text())
+				mdims := getTextDimensions(mtexts, ruler, m.Text(), fontFamily)
 				if mdims == nil {
 					return fmt.Errorf("dimensions for class method %#v not found", m.Text())
 				}
@@ -988,7 +992,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 			if anyRowText != nil {
 				// 10px of padding top and bottom so text doesn't look squished
-				rowHeight := getTextDimensions(mtexts, ruler, anyRowText).Height + 20
+				rowHeight := getTextDimensions(mtexts, ruler, anyRowText, fontFamily).Height + 20
 				obj.Height = float64(rowHeight * (len(obj.Class.Fields) + len(obj.Class.Methods) + 2))
 			}
 			// Leave room for padding
@@ -1043,7 +1047,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		for _, label := range endpointLabels {
 			t := edge.Text()
 			t.Text = label
-			dims := getTextDimensions(mtexts, ruler, t)
+			dims := getTextDimensions(mtexts, ruler, t, fontFamily)
 			edge.MinWidth += dims.Width
 			// Some padding as it's not totally near the end
 			edge.MinHeight += dims.Height + 5
@@ -1053,7 +1057,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			continue
 		}
 
-		dims := getTextDimensions(mtexts, ruler, edge.Text())
+		dims := getTextDimensions(mtexts, ruler, edge.Text(), fontFamily)
 		if dims == nil {
 			return fmt.Errorf("dimensions for edge label %#v not found", edge.Text())
 		}

@@ -216,7 +216,7 @@ func run(t *testing.T, tc testCase) {
 	ruler, err := textmeasure.NewRuler()
 	assert.JSON(t, nil, err)
 
-	err = g.SetDimensions(nil, ruler)
+	err = g.SetDimensions(nil, ruler, nil)
 	assert.JSON(t, nil, err)
 
 	err = d2dagrelayout.Layout(ctx, g)
@@ -224,7 +224,7 @@ func run(t *testing.T, tc testCase) {
 		t.Fatal(err)
 	}
 
-	got, err := d2exporter.Export(ctx, g, tc.themeID)
+	got, err := d2exporter.Export(ctx, g, tc.themeID, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

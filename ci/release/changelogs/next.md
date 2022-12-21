@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- `sketch` flag renders the diagram to look like it was sketched by hand. [#492](https://github.com/terrastruct/d2/pull/492)
+
 #### Improvements 🧹
 
 - Improved label placements for shapes with images to avoid overlapping container labels. [#474](https://github.com/terrastruct/d2/pull/474)

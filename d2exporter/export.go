@@ -5,15 +5,21 @@ import (
 	"strconv"
 
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 )
 
-func Export(ctx context.Context, g *d2graph.Graph, themeID int64) (*d2target.Diagram, error) {
+func Export(ctx context.Context, g *d2graph.Graph, themeID int64, fontFamily *d2fonts.FontFamily) (*d2target.Diagram, error) {
 	theme := d2themescatalog.Find(themeID)
 
 	diagram := d2target.NewDiagram()
+	if fontFamily == nil {
+		defaultFont := d2fonts.SourceSansPro
+		fontFamily = &defaultFont
+	}
+	diagram.FontFamily = fontFamily
 
 	diagram.Shapes = make([]d2target.Shape, len(g.Objects))
 	for i := range g.Objects {
