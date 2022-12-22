@@ -251,23 +251,18 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 		case "h1", "h2", "h3", "h4", "h5", "h6":
 			fontSize = HeaderToFontSize[n.Data]
 			fontStyle = d2fonts.FONT_STYLE_BOLD
-			font = fontFamily.Font(HeaderToFontSize[n.Data], fontStyle)
 			originalLineHeight := ruler.LineHeightFactor
 			ruler.LineHeightFactor = LineHeight_h
 			defer func() {
 				ruler.LineHeightFactor = originalLineHeight
 			}()
 		case "em":
-			font.Style = d2fonts.FONT_STYLE_ITALIC
 			fontStyle = d2fonts.FONT_STYLE_ITALIC
 		case "b", "strong":
-			font.Style = d2fonts.FONT_STYLE_BOLD
 			fontStyle = d2fonts.FONT_STYLE_BOLD
 		case "pre", "code":
 			fontFamily = go2.Pointer(d2fonts.SourceCodePro)
 			fontStyle = d2fonts.FONT_STYLE_REGULAR
-			font.Family = d2fonts.SourceCodePro
-			font.Style = d2fonts.FONT_STYLE_REGULAR
 			isCode = true
 		}
 
