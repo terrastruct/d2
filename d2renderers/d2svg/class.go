@@ -8,6 +8,7 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
+	"oss.terrastruct.com/d2/lib/svg"
 )
 
 func classHeader(box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
@@ -32,7 +33,7 @@ func classHeader(box *geo.Box, text string, textWidth, textHeight, fontSize floa
 				4+fontSize,
 				"white",
 			),
-			escapeText(text),
+			svg.EscapeText(text),
 		)
 	}
 	return str
@@ -73,14 +74,14 @@ func classRow(box *geo.Box, prefix, nameText, typeText string, fontSize float64)
 			prefixTL.X+prefixWidth,
 			prefixTL.Y+fontSize*3/4,
 			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, "black"),
-			escapeText(nameText),
+			svg.EscapeText(nameText),
 		),
 
 		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
 			typeTR.X,
 			typeTR.Y+fontSize*3/4,
 			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "end", fontSize, accentColor),
-			escapeText(typeText),
+			svg.EscapeText(typeText),
 		),
 	}, "\n")
 }
