@@ -5,7 +5,6 @@ package d2svg
 import (
 	"bytes"
 	_ "embed"
-	"encoding/xml"
 	"errors"
 	"fmt"
 	"hash/fnv"
@@ -357,7 +356,7 @@ func makeLabelMask(labelTL *geo.Point, width, height int) string {
 }
 
 func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, _ error) {
-	fmt.Fprintf(writer, `<g id="%s">`, escapeText(connection.ID))
+	fmt.Fprintf(writer, `<g id="%s">`, svg.EscapeText(connection.ID))
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(false, connection)
@@ -536,7 +535,7 @@ func render3dRect(targetShape d2target.Shape) string {
 		strings.Join(borderSegments, " "), borderStyle)
 
 	// create mask from border stroke, to cut away from the shape fills
-	maskID := fmt.Sprintf("border-mask-%v", escapeText(targetShape.ID))
+	maskID := fmt.Sprintf("border-mask-%v", svg.EscapeText(targetShape.ID))
 	borderMask := strings.Join([]string{
 		fmt.Sprintf(`<defs><mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
 			maskID, targetShape.Pos.X, targetShape.Pos.Y-threeDeeOffset, targetShape.Width+threeDeeOffset, targetShape.Height+threeDeeOffset,
@@ -583,7 +582,7 @@ func render3dRect(targetShape d2target.Shape) string {
 }
 
 func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, err error) {
-	fmt.Fprintf(writer, `<g id="%s">`, escapeText(targetShape.ID))
+	fmt.Fprintf(writer, `<g id="%s">`, svg.EscapeText(targetShape.ID))
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)
@@ -618,11 +617,27 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 
 	switch targetShape.Type {
 	case d2target.ShapeClass:
-		drawClass(writer, targetShape)
+		if sketchRunner != nil {
+			out, err := d2sketch.Class(sketchRunner, targetShape)
+			if err != nil {
+				return "", err
+			}
+			fmt.Fprintf(writer, out)
+		} else {
+			drawClass(writer, targetShape)
+		}
 		fmt.Fprintf(writer, `</g></g>`)
 		return labelMask, nil
 	case d2target.ShapeSQLTable:
-		drawTable(writer, targetShape)
+		if sketchRunner != nil {
+			out, err := d2sketch.Table(sketchRunner, targetShape)
+			if err != nil {
+				return "", err
+			}
+			fmt.Fprintf(writer, out)
+		} else {
+			drawTable(writer, targetShape)
+		}
 		fmt.Fprintf(writer, `</g></g>`)
 		return labelMask, nil
 	case d2target.ShapeOval:
@@ -823,15 +838,9 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 	return labelMask, nil
 }
 
-func escapeText(text string) string {
-	buf := new(bytes.Buffer)
-	_ = xml.EscapeText(buf, []byte(text))
-	return buf.String()
-}
-
 func renderText(text string, x, height float64) string {
 	if !strings.Contains(text, "\n") {
-		return escapeText(text)
+		return svg.EscapeText(text)
 	}
 	rendered := []string{}
 	lines := strings.Split(text, "\n")
@@ -840,7 +849,7 @@ func renderText(text string, x, height float64) string {
 		if i == 0 {
 			dy = 0
 		}
-		escaped := escapeText(line)
+		escaped := svg.EscapeText(line)
 		if escaped == "" {
 			// if there are multiple newlines in a row we still need text for the tspan to render
 			escaped = " "

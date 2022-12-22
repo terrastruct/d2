@@ -31,3 +31,16 @@ func (c SQLColumn) Text() *MText {
 		Shape:    "sql_table",
 	}
 }
+
+func (c SQLColumn) ConstraintAbbr() string {
+	switch c.Constraint {
+	case "primary_key":
+		return "PK"
+	case "foreign_key":
+		return "FK"
+	case "unique":
+		return "UNQ"
+	default:
+		return ""
+	}
+}
