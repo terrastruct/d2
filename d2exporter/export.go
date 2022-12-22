@@ -9,6 +9,7 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 func Export(ctx context.Context, g *d2graph.Graph, themeID int64, fontFamily *d2fonts.FontFamily) (*d2target.Diagram, error) {
@@ -16,8 +17,7 @@ func Export(ctx context.Context, g *d2graph.Graph, themeID int64, fontFamily *d2
 
 	diagram := d2target.NewDiagram()
 	if fontFamily == nil {
-		defaultFont := d2fonts.SourceSansPro
-		fontFamily = &defaultFont
+		fontFamily = go2.Pointer(d2fonts.SourceSansPro)
 	}
 	diagram.FontFamily = fontFamily
 

@@ -825,13 +825,13 @@ func findMeasured(mtexts []*d2target.MText, t1 *d2target.MText) *d2target.TextDi
 	return nil
 }
 
-func getMarkdownDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2target.MText) (*d2target.TextDimensions, error) {
+func getMarkdownDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2target.MText, fontFamily *d2fonts.FontFamily) (*d2target.TextDimensions, error) {
 	if dims := findMeasured(mtexts, t); dims != nil {
 		return dims, nil
 	}
 
 	if ruler != nil {
-		width, height, err := textmeasure.MeasureMarkdown(t.Text, ruler)
+		width, height, err := textmeasure.MeasureMarkdown(t.Text, ruler, fontFamily)
 		if err != nil {
 			return nil, err
 		}
@@ -862,8 +862,7 @@ func getTextDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2
 				style = d2fonts.FONT_STYLE_ITALIC
 			}
 			if fontFamily == nil {
-				defaultFont := d2fonts.SourceSansPro
-				fontFamily = &defaultFont
+				fontFamily = go2.Pointer(d2fonts.SourceSansPro)
 			}
 			w, h = ruler.Measure(fontFamily.Font(t.FontSize, style), t.Text)
 		}
@@ -902,7 +901,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 				dims = d2target.NewTextDimensions(width, height)
 			} else {
 				var err error
-				dims, err = getMarkdownDimensions(mtexts, ruler, obj.Text())
+				dims, err = getMarkdownDimensions(mtexts, ruler, obj.Text(), fontFamily)
 				if err != nil {
 					return err
 				}

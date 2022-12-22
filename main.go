@@ -14,10 +14,12 @@ import (
 	"github.com/spf13/pflag"
 	"go.uber.org/multierr"
 
+	"oss.terrastruct.com/util-go/go2"
 	"oss.terrastruct.com/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2plugin"
+	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
@@ -210,11 +212,15 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	}
 
 	layout := plugin.Layout
-	diagram, _, err := d2lib.Compile(ctx, string(input), &d2lib.CompileOptions{
+	opts := &d2lib.CompileOptions{
 		Layout:  layout,
 		Ruler:   ruler,
 		ThemeID: themeID,
-	})
+	}
+	if sketch {
+		opts.FontFamily = go2.Pointer(d2fonts.HandDrawn)
+	}
+	diagram, _, err := d2lib.Compile(ctx, string(input), opts)
 	if err != nil {
 		return nil, false, err
 	}
