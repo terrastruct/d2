@@ -39,24 +39,18 @@ func classHeader(box *geo.Box, text string, textWidth, textHeight, fontSize floa
 	return str
 }
 
-const (
-	prefixPadding = 10
-	prefixWidth   = 20
-	typePadding   = 20
-)
-
 func classRow(box *geo.Box, prefix, nameText, typeText string, fontSize float64) string {
 	// Row is made up of prefix, name, and type
 	// e.g. | + firstName   string  |
 	prefixTL := label.InsideMiddleLeft.GetPointOnBox(
 		box,
-		prefixPadding,
+		d2target.PrefixPadding,
 		box.Width,
 		fontSize,
 	)
 	typeTR := label.InsideMiddleRight.GetPointOnBox(
 		box,
-		typePadding,
+		d2target.TypePadding,
 		0,
 		fontSize,
 	)
@@ -71,7 +65,7 @@ func classRow(box *geo.Box, prefix, nameText, typeText string, fontSize float64)
 		),
 
 		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
-			prefixTL.X+prefixWidth,
+			prefixTL.X+d2target.PrefixWidth,
 			prefixTL.Y+fontSize*3/4,
 			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, "black"),
 			svg.EscapeText(nameText),
@@ -84,17 +78,6 @@ func classRow(box *geo.Box, prefix, nameText, typeText string, fontSize float64)
 			svg.EscapeText(typeText),
 		),
 	}, "\n")
-}
-
-func visibilityToken(visibility string) string {
-	switch visibility {
-	case "protected":
-		return "#"
-	case "private":
-		return "-"
-	default:
-		return "+"
-	}
 }
 
 func drawClass(writer io.Writer, targetShape d2target.Shape) {
@@ -115,9 +98,9 @@ func drawClass(writer io.Writer, targetShape d2target.Shape) {
 
 	rowBox := geo.NewBox(box.TopLeft.Copy(), box.Width, rowHeight)
 	rowBox.TopLeft.Y += headerBox.Height
-	for _, f := range targetShape.Class.Fields {
+	for _, f := range targetShape.Fields {
 		fmt.Fprint(writer,
-			classRow(rowBox, visibilityToken(f.Visibility), f.Name, f.Type, float64(targetShape.FontSize)),
+			classRow(rowBox, f.VisibilityToken(), f.Name, f.Type, float64(targetShape.FontSize)),
 		)
 		rowBox.TopLeft.Y += rowHeight
 	}
@@ -127,9 +110,9 @@ func drawClass(writer io.Writer, targetShape d2target.Shape) {
 		rowBox.TopLeft.X+rowBox.Width, rowBox.TopLeft.Y,
 		fmt.Sprintf("stroke-width:1;stroke:%v", targetShape.Stroke))
 
-	for _, m := range targetShape.Class.Methods {
+	for _, m := range targetShape.Methods {
 		fmt.Fprint(writer,
-			classRow(rowBox, visibilityToken(m.Visibility), m.Name, m.Return, float64(targetShape.FontSize)),
+			classRow(rowBox, m.VisibilityToken(), m.Name, m.Return, float64(targetShape.FontSize)),
 		)
 		rowBox.TopLeft.Y += rowHeight
 	}

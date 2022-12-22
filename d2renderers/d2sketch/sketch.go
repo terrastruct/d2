@@ -328,6 +328,149 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 	return output, nil
 }
 
+func Class(r *Runner, shape d2target.Shape) (string, error) {
+	output := ""
+	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
+		fill: "%s",
+		stroke: "%s",
+		strokeWidth: %d,
+		%s
+	});`, shape.Width, shape.Height, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	paths, err := computeRoughPaths(r, js)
+	if err != nil {
+		return "", err
+	}
+	for _, p := range paths {
+		output += fmt.Sprintf(
+			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
+			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
+		)
+	}
+
+	box := geo.NewBox(
+		geo.NewPoint(float64(shape.Pos.X), float64(shape.Pos.Y)),
+		float64(shape.Width),
+		float64(shape.Height),
+	)
+
+	rowHeight := box.Height / float64(2+len(shape.Class.Fields)+len(shape.Class.Methods))
+	headerBox := geo.NewBox(box.TopLeft, box.Width, 2*rowHeight)
+
+	js = fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %f, {
+		fill: "%s",
+		%s
+	});`, shape.Width, headerBox.Height, shape.Fill, baseRoughProps)
+	paths, err = computeRoughPaths(r, js)
+	if err != nil {
+		return "", err
+	}
+	for _, p := range paths {
+		// TODO header fill
+		output += fmt.Sprintf(
+			`<path class="class_header" transform="translate(%d %d)" d="%s" style="fill:%s" />`,
+			shape.Pos.X, shape.Pos.Y, p, "#0a0f25",
+		)
+	}
+
+	output += fmt.Sprintf(
+		`<rect class="sketch-overlay" transform="translate(%d %d)" width="%d" height="%f" />`,
+		shape.Pos.X, shape.Pos.Y, shape.Width, headerBox.Height,
+	)
+
+	if shape.Label != "" {
+		tl := label.InsideMiddleLeft.GetPointOnBox(
+			headerBox,
+			0,
+			float64(shape.LabelWidth),
+			float64(shape.LabelHeight),
+		)
+
+		// TODO header font color
+		output += fmt.Sprintf(`<text class="%s" x="%f" y="%f" style="%s">%s</text>`,
+			"text",
+			tl.X+float64(shape.LabelWidth)/2,
+			tl.Y+float64(shape.LabelHeight)*3/4,
+			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s",
+				"middle",
+				4+shape.FontSize,
+				"white",
+			),
+			svg.EscapeText(shape.Label),
+		)
+	}
+
+	rowBox := geo.NewBox(box.TopLeft.Copy(), box.Width, rowHeight)
+	rowBox.TopLeft.Y += headerBox.Height
+	for _, f := range shape.Fields {
+		output += classRow(rowBox, f.VisibilityToken(), f.Name, f.Type, float64(shape.FontSize))
+		rowBox.TopLeft.Y += rowHeight
+	}
+
+	js = fmt.Sprintf(`node = rc.line(%f, %f, %f, %f, {
+%s
+	});`, rowBox.TopLeft.X, rowBox.TopLeft.Y, rowBox.TopLeft.X+rowBox.Width, rowBox.TopLeft.Y, baseRoughProps)
+	paths, err = computeRoughPaths(r, js)
+	if err != nil {
+		return "", err
+	}
+	for _, p := range paths {
+		output += fmt.Sprintf(
+			`<path class="class_header" d="%s" style="fill:%s" />`,
+			p, "#0a0f25",
+		)
+	}
+
+	for _, m := range shape.Methods {
+		output += classRow(rowBox, m.VisibilityToken(), m.Name, m.Return, float64(shape.FontSize))
+		rowBox.TopLeft.Y += rowHeight
+	}
+
+	return output, nil
+}
+
+func classRow(box *geo.Box, prefix, nameText, typeText string, fontSize float64) string {
+	output := ""
+	prefixTL := label.InsideMiddleLeft.GetPointOnBox(
+		box,
+		d2target.PrefixPadding,
+		box.Width,
+		fontSize,
+	)
+	typeTR := label.InsideMiddleRight.GetPointOnBox(
+		box,
+		d2target.TypePadding,
+		0,
+		fontSize,
+	)
+
+	// TODO theme based
+	accentColor := "rgb(13, 50, 178)"
+
+	output += strings.Join([]string{
+		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
+			prefixTL.X,
+			prefixTL.Y+fontSize*3/4,
+			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, accentColor),
+			prefix,
+		),
+
+		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
+			prefixTL.X+d2target.PrefixWidth,
+			prefixTL.Y+fontSize*3/4,
+			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, "black"),
+			svg.EscapeText(nameText),
+		),
+
+		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
+			typeTR.X,
+			typeTR.Y+fontSize*3/4,
+			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s;", "end", fontSize, accentColor),
+			svg.EscapeText(typeText),
+		),
+	}, "\n")
+	return output
+}
+
 func computeRoughPaths(r *Runner, js string) ([]string, error) {
 	if _, err := r.run(js); err != nil {
 		return nil, err

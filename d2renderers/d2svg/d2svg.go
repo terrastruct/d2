@@ -617,7 +617,15 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 
 	switch targetShape.Type {
 	case d2target.ShapeClass:
-		drawClass(writer, targetShape)
+		if sketchRunner != nil {
+			out, err := d2sketch.Class(sketchRunner, targetShape)
+			if err != nil {
+				return "", err
+			}
+			fmt.Fprintf(writer, out)
+		} else {
+			drawClass(writer, targetShape)
+		}
 		fmt.Fprintf(writer, `</g></g>`)
 		return labelMask, nil
 	case d2target.ShapeSQLTable:
