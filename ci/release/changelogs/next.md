@@ -1,3 +1,6 @@
+![sketch](https://user-images.githubusercontent.com/3120367/209235066-d8ad6b3c-d19b-491d-b014-407f3c47407f.png)
+
+
 #### Features 🚀
 
 - `sketch` flag renders the diagram to look like it was sketched by hand. [#492](https://github.com/terrastruct/d2/pull/492)
