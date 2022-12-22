@@ -105,3 +105,11 @@ func (c *SvgPathContext) V(isLowerCase bool, y float64) {
 func (c *SvgPathContext) PathData() string {
 	return strings.Join(c.Commands, " ")
 }
+
+func GetStrokeDashAttributes(strokeWidth, dashGapSize float64) (float64, float64) {
+	// as the stroke width gets thicker, the dash gap gets smaller
+	scale := math.Log10(-0.6*strokeWidth+10.6)*0.5 + 0.5
+	scaledDashSize := strokeWidth * dashGapSize
+	scaledGapSize := scale * scaledDashSize
+	return scaledDashSize, scaledGapSize
+}

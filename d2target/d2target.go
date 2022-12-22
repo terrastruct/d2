@@ -10,6 +10,7 @@ import (
 
 	"oss.terrastruct.com/util-go/go2"
 
+	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
@@ -22,8 +23,9 @@ const (
 )
 
 type Diagram struct {
-	Name        string `json:"name"`
-	Description string `json:"description,omitempty"`
+	Name        string              `json:"name"`
+	Description string              `json:"description,omitempty"`
+	FontFamily  *d2fonts.FontFamily `json:"fontFamily,omitempty"`
 
 	Shapes      []Shape      `json:"shapes"`
 	Connections []Connection `json:"connections"`

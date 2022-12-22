@@ -125,7 +125,9 @@ func run(t *testing.T, tc testCase) {
 		dataPath := filepath.Join("testdata", strings.TrimPrefix(t.Name(), "TestE2E/"), layoutName)
 		pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
 
-		svgBytes, err := d2svg.Render(diagram, d2svg.DEFAULT_PADDING)
+		svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
+			Pad: d2svg.DEFAULT_PADDING,
+		})
 		assert.Success(t, err)
 		err = os.MkdirAll(dataPath, 0755)
 		assert.Success(t, err)
