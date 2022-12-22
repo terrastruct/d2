@@ -79,7 +79,7 @@ func RenderMarkdown(m string) (string, error) {
 func init() {
 	HeaderFonts = make(map[string]d2fonts.Font)
 	for header, fontSize := range HeaderToFontSize {
-		HeaderFonts[header] = d2fonts.SourceSansPro.Font(fontSize, d2fonts.FONT_STYLE_BOLD)
+		HeaderFonts[header] = d2fonts.HandDrawn.Font(fontSize, d2fonts.FONT_STYLE_BOLD)
 	}
 
 	markdownRenderer = goldmark.New(
@@ -111,7 +111,7 @@ func MeasureMarkdown(mdText string, ruler *Ruler) (width, height int, err error)
 		}()
 	}
 
-	font := d2fonts.SourceSansPro.Font(MarkdownFontSize, d2fonts.FONT_STYLE_REGULAR)
+	font := d2fonts.HandDrawn.Font(MarkdownFontSize, d2fonts.FONT_STYLE_REGULAR)
 
 	// TODO consider setting a max width + (manual) text wrapping
 	bodyNode := doc.Find("body").First().Nodes[0]
