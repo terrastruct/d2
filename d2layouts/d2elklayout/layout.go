@@ -43,11 +43,12 @@ type ELKNode struct {
 }
 
 type ELKLabel struct {
-	Text   string  `json:"text"`
-	X      float64 `json:"x"`
-	Y      float64 `json:"y"`
-	Width  float64 `json:"width"`
-	Height float64 `json:"height"`
+	Text          string            `json:"text"`
+	X             float64           `json:"x"`
+	Y             float64           `json:"y"`
+	Width         float64           `json:"width"`
+	Height        float64           `json:"height"`
+	LayoutOptions *ELKLayoutOptions `json:"layoutOptions,omitempty"`
 }
 
 type ELKPoint struct {
@@ -85,6 +86,7 @@ type ELKLayoutOptions struct {
 	EdgeNodeSpacing   float64 `json:"spacing.edgeNodeBetweenLayers,omitempty"`
 	Direction         string  `json:"elk.direction"`
 	SelfLoopSpacing   float64 `json:"elk.spacing.nodeSelfLoop"`
+	InlineEdgeLabels  bool    `json:"elk.edgeLabels.inline,omitempty"`
 }
 
 func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
@@ -186,6 +188,9 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 				Text:   edge.Attributes.Label.Value,
 				Width:  float64(edge.LabelDimensions.Width),
 				Height: float64(edge.LabelDimensions.Height),
+				LayoutOptions: &ELKLayoutOptions{
+					InlineEdgeLabels: true,
+				},
 			})
 		}
 		elkGraph.Edges = append(elkGraph.Edges, e)

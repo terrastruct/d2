@@ -393,32 +393,6 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		labelTL.Y = math.Round(labelTL.Y)
 
 		if label.Position(connection.LabelPosition).IsOnEdge() {
-			strokeWidth := float64(connection.StrokeWidth)
-			tl, br := geo.Route(connection.Route).GetBoundingBox()
-			tl.X -= strokeWidth
-			tl.Y -= strokeWidth
-			br.X += strokeWidth
-			br.Y += strokeWidth
-			if connection.SrcArrow != d2target.NoArrowhead {
-				width, height := arrowheadDimensions(connection.SrcArrow, strokeWidth)
-				tl.X -= width
-				tl.Y -= height
-				br.X += width
-				br.Y += height
-			}
-			if connection.DstArrow != d2target.NoArrowhead {
-				width, height := arrowheadDimensions(connection.DstArrow, strokeWidth)
-				tl.X -= width
-				tl.Y -= height
-				br.X += width
-				br.Y += height
-			}
-
-			tl.X = math.Min(tl.X, labelTL.X)
-			tl.Y = math.Min(tl.Y, labelTL.Y)
-			br.X = math.Max(br.X, labelTL.X+float64(connection.LabelWidth))
-			br.Y = math.Max(br.Y, labelTL.Y+float64(connection.LabelHeight))
-
 			labelMask = makeLabelMask(labelTL, connection.LabelWidth, connection.LabelHeight)
 		}
 	}
@@ -1093,12 +1067,11 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 
 	// Note: we always want this since we reference it on connections even if there end up being no masked labels
 	fmt.Fprint(buf, strings.Join([]string{
-		fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="0" y="0" width="%d" height="%d">`,
-			labelMaskID, w, h,
+		fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
+			labelMaskID, -pad, -pad, w, h,
 		),
-		fmt.Sprintf(`<rect x="0" y="0" width="%d" height="%d" fill="white"></rect>`,
-			w,
-			h,
+		fmt.Sprintf(`<rect x="%d" y="%d" width="%d" height="%d" fill="white"></rect>`,
+			-pad, -pad, w, h,
 		),
 		strings.Join(labelMasks, "\n"),
 		`</mask>`,
