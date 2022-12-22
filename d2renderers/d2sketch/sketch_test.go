@@ -45,7 +45,7 @@ func TestSketch(t *testing.T) {
 		`,
 		},
 		{
-			name: "chess",
+			name: "twitter",
 			script: `timeline mixer: "" {
   explanation: |md
     ## **Timeline mixer**
