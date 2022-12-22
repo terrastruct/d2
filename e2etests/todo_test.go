@@ -90,6 +90,124 @@ this is a message group: {
     }
 }`,
 		},
+		{
+			// dimensions set on containers are ignored
+			name: "shape_set_width_height",
+			script: `
+containers: {
+	circle container: {
+		shape: circle
+		width: 512
+		height: 256
+
+		diamond: {
+			shape: diamond
+			width: 128
+			height: 64
+		}
+	}
+	diamond container: {
+		shape: diamond
+		width: 512
+		height: 256
+
+		circle: {
+			shape: circle
+			width: 128
+			height: 64
+		}
+	}
+	oval container: {
+		shape: oval
+		width: 512
+		height: 256
+
+		hexagon: {
+			shape: hexagon
+			width: 128
+			height: 64
+		}
+	}
+	hexagon container: {
+		shape: hexagon
+		width: 512
+		height: 256
+
+		oval: {
+			shape: oval
+			width: 128
+			height: 64
+		}
+	}
+}
+
+cloud: {
+	shape: cloud
+	width: 512
+	height: 256
+}
+tall cylinder: {
+	shape: cylinder
+	width: 256
+	height: 512
+}
+cloud -> class -> tall cylinder ->  users
+
+users: {
+	shape: sql_table
+	id: int
+	name: string
+	email: string
+	password: string
+	last_login: datetime
+
+	width: 800
+	height: 400
+}
+
+class: {
+	shape: class
+	-num: int
+	-timeout: int
+	-pid
+
+	+getStatus(): Enum
+	+getJobs(): "Job[]"
+	+setTimeout(seconds int)
+
+	width: 800
+	height: 400
+}
+
+container -> text -> code -> small code
+
+text: {
+	label: |md
+	markdown text expanded to 800x400
+|
+	height: 800
+	width: 400
+}
+
+code: |go
+    a := 5
+    b := a + 7
+    fmt.Printf("%d", b)
+| {
+	width: 400
+	height: 300
+}
+
+small code: |go
+    a := 5
+    b := a + 7
+    fmt.Printf("%d", b)
+| {
+	width: 4
+	height: 3
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
