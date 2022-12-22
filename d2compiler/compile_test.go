@@ -95,9 +95,6 @@ x: {
 	height: 230
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2:3:2: width is only applicable to image shapes.
-d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2:4:2: height is only applicable to image shapes.
-`,
 		},
 		{
 			name: "basic_icon",

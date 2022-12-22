@@ -898,17 +898,36 @@ func appendTextDedup(texts []*d2target.MText, t *d2target.MText) []*d2target.MTe
 func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, fontFamily *d2fonts.FontFamily) error {
 	for _, obj := range g.Objects {
 		obj.Box = &geo.Box{}
-		// TODO fix edge cases for unnamed class etc
-		// Image shapes can set their own widths/heights
-		if obj.Attributes.Label.Value == "" && obj.Attributes.Shape.Value != d2target.ShapeImage {
-			obj.Width = 100
-			obj.Height = 100
-			continue
+
+		var setWidth int
+		var setHeight int
+		if obj.Attributes.Width != nil {
+			setWidth, _ = strconv.Atoi(obj.Attributes.Width.Value)
+		}
+		if obj.Attributes.Height != nil {
+			setHeight, _ = strconv.Atoi(obj.Attributes.Height.Value)
+		}
+		shapeType := strings.ToLower(obj.Attributes.Shape.Value)
+
+		switch shapeType {
+		case d2target.ShapeClass,
+			d2target.ShapeSQLTable,
+			d2target.ShapeCode,
+			d2target.ShapeImage,
+			d2target.ShapeText:
+			// edge cases for unnamed class, etc
+		default:
+			if obj.Attributes.Label.Value == "" && setWidth == 0 && setHeight == 0 {
+				obj.Width = 100
+				obj.Height = 100
+				continue
+			}
 		}
 
 		var dims *d2target.TextDimensions
 		var innerLabelPadding = INNER_LABEL_PADDING
-		if obj.Attributes.Shape.Value == d2target.ShapeText {
+		switch shapeType {
+		case d2target.ShapeText:
 			if obj.Attributes.Language == "latex" {
 				width, height, err := d2latex.Measure(obj.Text().Text)
 				if err != nil {
@@ -925,20 +944,30 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 				dims = GetTextDimensions(mtexts, ruler, obj.Text(), fontFamily)
 			}
 			innerLabelPadding = 0
-		} else if obj.Attributes.Shape.Value == d2target.ShapeClass {
+
+		case d2target.ShapeClass:
 			dims = GetTextDimensions(mtexts, ruler, obj.Text(), go2.Pointer(d2fonts.SourceCodePro))
-		} else {
+
+		default:
 			dims = GetTextDimensions(mtexts, ruler, obj.Text(), fontFamily)
 		}
+
+		if shapeType == d2target.ShapeSQLTable && obj.Attributes.Label.Value == "" {
+			// measure with placeholder text to determine height
+			placeholder := *obj.Text()
+			placeholder.Text = "Table"
+			dims = GetTextDimensions(mtexts, ruler, &placeholder, fontFamily)
+		}
+
 		if dims == nil {
-			if obj.Attributes.Shape.Value == d2target.ShapeImage {
+			if shapeType == d2target.ShapeImage {
 				dims = d2target.NewTextDimensions(0, 0)
 			} else {
 				return fmt.Errorf("dimensions for object label %#v not found", obj.Text())
 			}
 		}
 
-		switch obj.Attributes.Shape.Value {
+		switch shapeType {
 		case d2target.ShapeText, d2target.ShapeClass, d2target.ShapeSQLTable, d2target.ShapeCode:
 			// no labels
 		default:
@@ -954,29 +983,39 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		obj.Width = float64(dims.Width)
 		obj.Height = float64(dims.Height)
 
-		switch strings.ToLower(obj.Attributes.Shape.Value) {
+		// the set dimensions must be at least as large as the text
+		if float64(setWidth) > obj.Width {
+			obj.Width = float64(setWidth)
+		}
+		if float64(setHeight) > obj.Height {
+			obj.Height = float64(setHeight)
+		}
+
+		switch shapeType {
 		default:
-			obj.Width += 100
-			obj.Height += 100
+			if setWidth == 0 {
+				obj.Width += 100
+			}
+			if setHeight == 0 {
+				obj.Height += 100
+			}
 
 		case d2target.ShapeImage:
-			if obj.Attributes.Width != nil {
-				w, _ := strconv.Atoi(obj.Attributes.Width.Value)
-				obj.Width = float64(w)
-			} else {
+			if setWidth == 0 {
 				obj.Width = 128
 			}
-			if obj.Attributes.Height != nil {
-				h, _ := strconv.Atoi(obj.Attributes.Height.Value)
-				obj.Height = float64(h)
-			} else {
+			if setHeight == 0 {
 				obj.Height = 128
 			}
 
 		case d2target.ShapeSquare, d2target.ShapeCircle:
 			sideLength := go2.Max(obj.Width, obj.Height)
-			obj.Width = sideLength + 100
-			obj.Height = sideLength + 100
+			padding := 0.
+			if setWidth == 0 && setHeight == 0 {
+				padding = 100.
+			}
+			obj.Width = sideLength + padding
+			obj.Height = sideLength + padding
 
 		case d2target.ShapeClass:
 			maxWidth := dims.Width
@@ -1059,6 +1098,20 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 
 		case d2target.ShapeText, d2target.ShapeCode:
 		}
+
+		switch shapeType {
+		case d2target.ShapeClass,
+			d2target.ShapeSQLTable,
+			d2target.ShapeCode,
+			d2target.ShapeText:
+			if float64(setWidth) > obj.Width {
+				obj.Width = float64(setWidth)
+			}
+			if float64(setHeight) > obj.Height {
+				obj.Height = float64(setHeight)
+			}
+		}
+
 	}
 	for _, edge := range g.Edges {
 		endpointLabels := []string{}

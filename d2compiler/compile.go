@@ -801,13 +801,6 @@ func (c *compiler) validateKey(obj *d2graph.Object, m *d2ast.Map, mk *d2ast.Key)
 		c.errorf(mk.Range.Start, mk.Range.End, "image shapes cannot have children.")
 	}
 
-	if reserved == "width" && obj.Attributes.Shape.Value != d2target.ShapeImage {
-		c.errorf(mk.Range.Start, mk.Range.End, "width is only applicable to image shapes.")
-	}
-	if reserved == "height" && obj.Attributes.Shape.Value != d2target.ShapeImage {
-		c.errorf(mk.Range.Start, mk.Range.End, "height is only applicable to image shapes.")
-	}
-
 	in := d2target.IsShape(obj.Attributes.Shape.Value)
 	_, arrowheadIn := d2target.Arrowheads[obj.Attributes.Shape.Value]
 	if !in && arrowheadIn {
