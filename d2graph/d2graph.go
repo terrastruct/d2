@@ -862,8 +862,7 @@ func getTextDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2
 				style = d2fonts.FONT_STYLE_ITALIC
 			}
 			if fontFamily == nil {
-				defaultFont := d2fonts.SourceSansPro
-				fontFamily = &defaultFont
+				fontFamily = go2.Pointer(d2fonts.SourceSansPro)
 			}
 			w, h = ruler.Measure(fontFamily.Font(t.FontSize, style), t.Text)
 		}
