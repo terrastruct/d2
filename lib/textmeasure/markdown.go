@@ -106,7 +106,7 @@ func MeasureMarkdown(mdText string, ruler *Ruler, fontFamily *d2fonts.FontFamily
 
 	// TODO consider setting a max width + (manual) text wrapping
 	bodyNode := doc.Find("body").First().Nodes[0]
-	bodyAttrs := ruler.measureNode(0, bodyNode, fontFamily, MarkdownFontSize)
+	bodyAttrs := ruler.measureNode(0, bodyNode, fontFamily, MarkdownFontSize, d2fonts.FONT_STYLE_REGULAR)
 
 	return int(math.Ceil(bodyAttrs.width)), int(math.Ceil(bodyAttrs.height)), nil
 }
@@ -192,11 +192,11 @@ func (b *blockAttrs) isNotEmpty() bool {
 }
 
 // measures node dimensions to match rendering with styles in github-markdown.css
-func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.FontFamily, fontSize int) blockAttrs {
+func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.FontFamily, fontSize int, fontStyle d2fonts.FontStyle) blockAttrs {
 	if fontFamily == nil {
 		fontFamily = go2.Pointer(d2fonts.SourceSansPro)
 	}
-	font := fontFamily.Font(fontSize, d2fonts.FONT_STYLE_REGULAR)
+	font := fontFamily.Font(fontSize, fontStyle)
 
 	var parentElementType string
 	if n.Parent != nil && n.Parent.Type == html.ElementNode {
@@ -250,7 +250,8 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 		switch n.Data {
 		case "h1", "h2", "h3", "h4", "h5", "h6":
 			fontSize = HeaderToFontSize[n.Data]
-			font = fontFamily.Font(HeaderToFontSize[n.Data], d2fonts.FONT_STYLE_BOLD)
+			fontStyle = d2fonts.FONT_STYLE_BOLD
+			font = fontFamily.Font(HeaderToFontSize[n.Data], fontStyle)
 			originalLineHeight := ruler.LineHeightFactor
 			ruler.LineHeightFactor = LineHeight_h
 			defer func() {
@@ -258,10 +259,13 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			}()
 		case "em":
 			font.Style = d2fonts.FONT_STYLE_ITALIC
+			fontStyle = d2fonts.FONT_STYLE_ITALIC
 		case "b", "strong":
 			font.Style = d2fonts.FONT_STYLE_BOLD
+			fontStyle = d2fonts.FONT_STYLE_BOLD
 		case "pre", "code":
 			fontFamily = go2.Pointer(d2fonts.SourceCodePro)
+			fontStyle = d2fonts.FONT_STYLE_REGULAR
 			font.Family = d2fonts.SourceCodePro
 			font.Style = d2fonts.FONT_STYLE_REGULAR
 			isCode = true
@@ -278,7 +282,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			// first create blocks from combined inline elements, then combine all blocks
 			// current will be non-nil while inline elements are being combined into a block
 			for child := n.FirstChild; child != nil; child = child.NextSibling {
-				childBlock := ruler.measureNode(depth+1, child, fontFamily, fontSize)
+				childBlock := ruler.measureNode(depth+1, child, fontFamily, fontSize, fontStyle)
 
 				if child.Type == html.ElementNode && isBlockElement(child.Data) {
 					if current != nil {
