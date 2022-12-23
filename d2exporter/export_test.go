@@ -9,12 +9,14 @@ import (
 	"cdr.dev/slog"
 
 	tassert "github.com/stretchr/testify/assert"
+
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
 
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2exporter"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
+	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/geo"
@@ -237,7 +239,7 @@ func run(t *testing.T, tc testCase) {
 	err = g.SetDimensions(nil, ruler, nil)
 	assert.JSON(t, nil, err)
 
-	err = d2dagrelayout.Layout(ctx, g)
+	err = d2sequence.Layout(ctx, g, d2dagrelayout.Layout)
 	if err != nil {
 		t.Fatal(err)
 	}
