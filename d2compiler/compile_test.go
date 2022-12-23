@@ -1650,6 +1650,26 @@ choo: {
 				}
 			},
 		},
+		{
+			name: "sql-regression",
+
+			text: `a: {
+  style: {
+    fill: lemonchiffon
+  }
+
+  legend: {
+    shape: sql_table
+    "***": not in terraform yet
+  }
+
+  thing
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 3, len(g.Objects))
+			},
+		},
 	}
 
 	for _, tc := range testCases {
