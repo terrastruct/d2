@@ -1,11 +1,11 @@
 {
   "graph": {
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,0:0:0-12:0:124",
+      "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,0:0:0-10:0:87",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,0:0:0-11:1:123",
+            "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,0:0:0-9:1:86",
             "key": {
               "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,0:0:0-0:1:1",
               "path": [
@@ -25,7 +25,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,0:3:3-11:0:122",
+                "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,0:3:3-9:0:85",
                 "nodes": [
                   {
                     "map_key": {
@@ -91,17 +91,17 @@
                   },
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,5:2:46-8:3:112",
+                      "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,4:2:45-7:3:80",
                       "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,5:2:46-5:8:52",
+                        "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,4:2:45-4:3:46",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,5:2:46-5:8:52",
+                              "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,4:2:45-4:3:46",
                               "value": [
                                 {
-                                  "string": "legend",
-                                  "raw_string": "legend"
+                                  "string": "b",
+                                  "raw_string": "b"
                                 }
                               ]
                             }
@@ -111,17 +111,17 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,5:10:54-8:2:111",
+                          "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,4:5:48-7:2:79",
                           "nodes": [
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,6:4:60-6:20:76",
+                                "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,5:4:54-5:20:70",
                                 "key": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,6:4:60-6:9:65",
+                                  "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,5:4:54-5:9:59",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,6:4:60-6:9:65",
+                                        "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,5:4:54-5:9:59",
                                         "value": [
                                           {
                                             "string": "shape",
@@ -135,7 +135,7 @@
                                 "primary": {},
                                 "value": {
                                   "unquoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,6:11:67-6:20:76",
+                                    "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,5:11:61-5:20:70",
                                     "value": [
                                       {
                                         "string": "sql_table",
@@ -148,17 +148,17 @@
                             },
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,7:4:81-7:31:108",
+                                "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,6:4:75-6:5:76",
                                 "key": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,7:4:81-7:9:86",
+                                  "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,6:4:75-6:5:76",
                                   "path": [
                                     {
-                                      "double_quoted_string": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,7:4:81-7:9:86",
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,6:4:75-6:5:76",
                                         "value": [
                                           {
-                                            "string": "***",
-                                            "raw_string": "***"
+                                            "string": "c",
+                                            "raw_string": "c"
                                           }
                                         ]
                                       }
@@ -166,17 +166,7 @@
                                   ]
                                 },
                                 "primary": {},
-                                "value": {
-                                  "unquoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,7:11:88-7:31:108",
-                                    "value": [
-                                      {
-                                        "string": "not in terraform yet",
-                                        "raw_string": "not in terraform yet"
-                                      }
-                                    ]
-                                  }
-                                }
+                                "value": {}
                               }
                             }
                           ]
@@ -186,17 +176,17 @@
                   },
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,10:2:116-10:7:121",
+                      "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,8:2:83-8:3:84",
                       "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,10:2:116-10:7:121",
+                        "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,8:2:83-8:3:84",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,10:2:116-10:7:121",
+                              "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,8:2:83-8:3:84",
                               "value": [
                                 {
-                                  "string": "thing",
-                                  "raw_string": "thing"
+                                  "string": "d",
+                                  "raw_string": "d"
                                 }
                               ]
                             }
@@ -287,8 +277,8 @@
         "zIndex": 0
       },
       {
-        "id": "legend",
-        "id_val": "legend",
+        "id": "b",
+        "id_val": "b",
         "label_dimensions": {
           "width": 0,
           "height": 0
@@ -296,15 +286,15 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,5:2:46-5:8:52",
+              "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,4:2:45-4:3:46",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,5:2:46-5:8:52",
+                    "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,4:2:45-4:3:46",
                     "value": [
                       {
-                        "string": "legend",
-                        "raw_string": "legend"
+                        "string": "b",
+                        "raw_string": "b"
                       }
                     ]
                   }
@@ -319,7 +309,7 @@
           "columns": [
             {
               "name": {
-                "label": "***",
+                "label": "c",
                 "fontSize": 0,
                 "fontFamily": "",
                 "language": "",
@@ -331,7 +321,7 @@
                 "labelHeight": 0
               },
               "type": {
-                "label": "not in terraform yet",
+                "label": "",
                 "fontSize": 0,
                 "fontFamily": "",
                 "language": "",
@@ -349,7 +339,7 @@
         },
         "attributes": {
           "label": {
-            "value": "legend"
+            "value": "b"
           },
           "style": {},
           "near_key": null,
@@ -363,8 +353,8 @@
         "zIndex": 0
       },
       {
-        "id": "\"***\"",
-        "id_val": "***",
+        "id": "d",
+        "id_val": "d",
         "label_dimensions": {
           "width": 0,
           "height": 0
@@ -372,59 +362,15 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,7:4:81-7:9:86",
-              "path": [
-                {
-                  "double_quoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,7:4:81-7:9:86",
-                    "value": [
-                      {
-                        "string": "***",
-                        "raw_string": "***"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": 0
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": "not in terraform yet"
-          },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": ""
-          },
-          "direction": {
-            "value": ""
-          }
-        },
-        "zIndex": 0
-      },
-      {
-        "id": "thing",
-        "id_val": "thing",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
-        "references": [
-          {
-            "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,10:2:116-10:7:121",
+              "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,8:2:83-8:3:84",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,10:2:116-10:7:121",
+                    "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,8:2:83-8:3:84",
                     "value": [
                       {
-                        "string": "thing",
-                        "raw_string": "thing"
+                        "string": "d",
+                        "raw_string": "d"
                       }
                     ]
                   }
@@ -437,7 +383,7 @@
         ],
         "attributes": {
           "label": {
-            "value": "thing"
+            "value": "d"
           },
           "style": {},
           "near_key": null,

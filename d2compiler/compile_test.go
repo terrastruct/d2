@@ -1657,9 +1657,9 @@ choo: {
   style: {
     fill: lemonchiffon
   }
-  e: {
+  b: {
     shape: sql_table
-    b: c
+    c
   }
   d
 }
