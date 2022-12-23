@@ -1650,6 +1650,24 @@ choo: {
 				}
 			},
 		},
+		{
+			name: "sql-regression",
+
+			text: `a: {
+  style: {
+    fill: lemonchiffon
+  }
+  b: {
+    shape: sql_table
+    c
+  }
+  d
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 3, len(g.Objects))
+			},
+		},
 	}
 
 	for _, tc := range testCases {

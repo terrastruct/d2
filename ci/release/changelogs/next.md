@@ -16,3 +16,4 @@
 - Fixed an issue with elk layouts accounting for edge labels as if they were placed on the side of the edge. [#483](https://github.com/terrastruct/d2/pull/483)
 - Fixed an issue where dagre layouts may not have enough spacing for all edge labels. [#484](https://github.com/terrastruct/d2/pull/484)
 - Fixed connections being clipped if they were at the very top or left edges of the diagram. [#493](https://github.com/terrastruct/d2/pull/493)
+- Fixed edge case where style being defined in same scope as sql_table caused compiler to skip compiling sql_table. [#506](https://github.com/terrastruct/d2/issues/506)

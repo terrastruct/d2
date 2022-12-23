@@ -583,16 +583,25 @@ func (c *compiler) compileShapes(obj *d2graph.Object) {
 		c.compileShapes(obj)
 	}
 
-	for _, obj := range obj.ChildrenArray {
-		switch obj.Attributes.Shape.Value {
+	for i := 0; i < len(obj.ChildrenArray); i++ {
+		ch := obj.ChildrenArray[i]
+		switch ch.Attributes.Shape.Value {
 		case d2target.ShapeClass, d2target.ShapeSQLTable:
-			flattenContainer(obj.Graph, obj)
+			flattenContainer(obj.Graph, ch)
 		}
-		if obj.IDVal == "style" {
-			obj.Parent.Attributes.Style = obj.Attributes.Style
+		if ch.IDVal == "style" {
+			obj.Attributes.Style = ch.Attributes.Style
 			if obj.Graph != nil {
-				flattenContainer(obj.Graph, obj)
-				removeObject(obj.Graph, obj)
+				flattenContainer(obj.Graph, ch)
+				for i := 0; i < len(obj.Graph.Objects); i++ {
+					if obj.Graph.Objects[i] == ch {
+						obj.Graph.Objects = append(obj.Graph.Objects[:i], obj.Graph.Objects[i+1:]...)
+						break
+					}
+				}
+				delete(obj.Children, ch.ID)
+				obj.ChildrenArray = append(obj.ChildrenArray[:i], obj.ChildrenArray[i+1:]...)
+				i--
 			}
 		}
 	}
@@ -703,23 +712,6 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 		}
 
 		obj.SQLTable.Columns = append(obj.SQLTable.Columns, d2Col)
-	}
-}
-
-// TODO too similar to flattenContainer, should reconcile in a refactor
-func removeObject(g *d2graph.Graph, obj *d2graph.Object) {
-	for i := 0; i < len(obj.Graph.Objects); i++ {
-		if obj.Graph.Objects[i] == obj {
-			obj.Graph.Objects = append(obj.Graph.Objects[:i], obj.Graph.Objects[i+1:]...)
-			break
-		}
-	}
-	delete(obj.Parent.Children, obj.ID)
-	for i, child := range obj.Parent.ChildrenArray {
-		if obj == child {
-			obj.Parent.ChildrenArray = append(obj.Parent.ChildrenArray[:i], obj.Parent.ChildrenArray[i+1:]...)
-			break
-		}
 	}
 }
 
