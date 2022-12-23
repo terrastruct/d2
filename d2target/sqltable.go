@@ -1,5 +1,7 @@
 package d2target
 
+import "oss.terrastruct.com/d2/d2renderers/d2fonts"
+
 const (
 	NamePadding = 10
 	TypePadding = 20
@@ -20,14 +22,14 @@ func (c SQLColumn) Texts() []*MText {
 	return []*MText{
 		{
 			Text:     c.Name.Label,
-			FontSize: c.Name.FontSize,
+			FontSize: d2fonts.FONT_SIZE_L,
 			IsBold:   false,
 			IsItalic: false,
 			Shape:    "sql_table",
 		},
 		{
 			Text:     c.Type.Label,
-			FontSize: c.Type.FontSize,
+			FontSize: d2fonts.FONT_SIZE_L,
 			IsBold:   false,
 			IsItalic: false,
 			Shape:    "sql_table",

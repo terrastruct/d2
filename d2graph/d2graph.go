@@ -1002,23 +1002,29 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			maxTypeWidth := 0
 			constraintWidth := 0
 
-			font := d2fonts.SourceSansPro.Font(d2fonts.FONT_SIZE_L, d2fonts.FONT_STYLE_REGULAR)
 			for i := range obj.SQLTable.Columns {
 				// Note: we want to set dimensions of actual column not the for loop copy of the struct
 				c := &obj.SQLTable.Columns[i]
+				ctexts := c.Texts()
 
-				nameWidth, nameHeight := ruler.Measure(font, c.Name.Label)
-				c.Name.LabelWidth = nameWidth
-				c.Name.LabelHeight = nameHeight
-				if maxNameWidth < nameWidth {
-					maxNameWidth = nameWidth
+				nameDims := getTextDimensions(mtexts, ruler, ctexts[0], fontFamily)
+				if nameDims == nil {
+					return fmt.Errorf("dimensions for sql_table name %#v not found", ctexts[0].Text)
+				}
+				c.Name.LabelWidth = nameDims.Width
+				c.Name.LabelHeight = nameDims.Height
+				if maxNameWidth < nameDims.Width {
+					maxNameWidth = nameDims.Width
 				}
 
-				typeWidth, typeHeight := ruler.Measure(font, c.Type.Label)
-				c.Type.LabelWidth = typeWidth
-				c.Type.LabelHeight = typeHeight
-				if maxTypeWidth < typeWidth {
-					maxTypeWidth = typeWidth
+				typeDims := getTextDimensions(mtexts, ruler, ctexts[1], fontFamily)
+				if typeDims == nil {
+					return fmt.Errorf("dimensions for sql_table type %#v not found", ctexts[1].Text)
+				}
+				c.Type.LabelWidth = typeDims.Width
+				c.Type.LabelHeight = typeDims.Height
+				if maxTypeWidth < typeDims.Width {
+					maxTypeWidth = typeDims.Width
 				}
 
 				if c.Constraint != "" {
