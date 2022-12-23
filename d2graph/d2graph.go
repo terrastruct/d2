@@ -1084,7 +1084,9 @@ func (g *Graph) Texts() []*d2target.MText {
 			}
 		} else if obj.SQLTable != nil {
 			for _, column := range obj.SQLTable.Columns {
-				texts = appendTextDedup(texts, column.Text())
+				for _, t := range column.Texts() {
+					texts = appendTextDedup(texts, t)
+				}
 			}
 		}
 	}
