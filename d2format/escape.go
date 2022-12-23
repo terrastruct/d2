@@ -47,10 +47,6 @@ func escapeUnquotedValue(s string, inKey bool) string {
 		return `""`
 	}
 
-	if strings.EqualFold(s, "null") {
-		return "\\null"
-	}
-
 	var b strings.Builder
 	for i, r := range s {
 		switch r {

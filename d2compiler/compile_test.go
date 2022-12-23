@@ -1650,6 +1650,16 @@ choo: {
 				}
 			},
 		},
+		{
+			name: "null",
+
+			text: `null
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "null", g.Objects[0].ID)
+				tassert.Equal(t, "null", g.Objects[0].IDVal)
+			},
+		},
 	}
 
 	for _, tc := range testCases {
