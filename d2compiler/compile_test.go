@@ -1657,13 +1657,11 @@ choo: {
   style: {
     fill: lemonchiffon
   }
-
-  legend: {
+  e: {
     shape: sql_table
-    "***": not in terraform yet
+    b: c
   }
-
-  thing
+  d
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
