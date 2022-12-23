@@ -198,6 +198,7 @@
       "underline": false,
       "labelWidth": 30,
       "labelHeight": 26,
+      "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 1
     },
@@ -237,6 +238,7 @@
       "underline": false,
       "labelWidth": 57,
       "labelHeight": 26,
+      "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 1
     },
@@ -276,6 +278,7 @@
       "underline": false,
       "labelWidth": 78,
       "labelHeight": 26,
+      "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 2
     },
@@ -315,6 +318,7 @@
       "underline": false,
       "labelWidth": 58,
       "labelHeight": 26,
+      "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 1
     },
@@ -394,6 +398,7 @@
       "underline": false,
       "labelWidth": 38,
       "labelHeight": 26,
+      "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 1
     },
