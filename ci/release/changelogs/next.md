@@ -8,6 +8,7 @@
 #### Improvements 🧹
 
 - Improved label placements for shapes with images to avoid overlapping container labels. [#474](https://github.com/terrastruct/d2/pull/474)
+- Sequence diagram edge group labels have more reasonable padding. [#512](https://github.com/terrastruct/d2/pull/512)
 
 #### Bugfixes ⛑️
 
