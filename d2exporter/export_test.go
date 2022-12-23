@@ -8,6 +8,7 @@ import (
 
 	"cdr.dev/slog"
 
+	tassert "github.com/stretchr/testify/assert"
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
 
@@ -78,6 +79,23 @@ y: {shape: square}
 				if d.Shapes[0].Height != 230 {
 					t.Fatalf("expected height 230, got %v", d.Shapes[0].Height)
 				}
+			},
+		},
+		{
+			name: "sequence_group_position",
+
+			dsl: `hey {
+  shape: sequence_diagram
+	a
+	b
+  group: {
+    a -> b
+  }
+}
+`,
+			assertions: func(t *testing.T, d *d2target.Diagram) {
+				tassert.Equal(t, "hey.group", d.Shapes[3].ID)
+				tassert.Equal(t, "INSIDE_TOP_LEFT", d.Shapes[3].LabelPosition)
 			},
 		},
 	}
