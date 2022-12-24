@@ -19,3 +19,4 @@
 - Icons with query parameters are now being escaped to valid SVG XML. [#438](https://github.com/terrastruct/d2/issues/438)
 - Fixed connections being clipped if they were at the very top or left edges of the diagram. [#493](https://github.com/terrastruct/d2/pull/493)
 - Fixed edge case where style being defined in same scope as sql_table caused compiler to skip compiling sql_table. [#506](https://github.com/terrastruct/d2/issues/506)
+- Fixed panic when `constraint` value was not a string value. [#248](https://github.com/terrastruct/d2/issues/248)
