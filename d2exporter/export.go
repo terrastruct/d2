@@ -40,6 +40,11 @@ func applyTheme(shape *d2target.Shape, obj *d2graph.Object, theme *d2themes.Them
 	if obj.Attributes.Shape.Value == d2target.ShapeText {
 		shape.Color = theme.Colors.Neutrals.N1
 	}
+	if obj.Attributes.Shape.Value == d2target.ShapeSQLTable || obj.Attributes.Shape.Value == d2target.ShapeClass {
+		shape.PrimaryAccentColor = theme.Colors.B2
+		shape.SecondaryAccentColor = theme.Colors.AA2
+		shape.NeutralAccentColor = theme.Colors.Neutrals.N2
+	}
 }
 
 func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {

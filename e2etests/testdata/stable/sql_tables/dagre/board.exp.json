@@ -9,14 +9,14 @@
         "x": 0,
         "y": 0
       },
-      "width": 208,
+      "width": 268,
       "height": 216,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
-      "stroke": "#0A0F25",
+      "fill": "#0A0F25",
+      "stroke": "#FFFFFF",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -165,7 +165,7 @@
             "labelWidth": 77,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": "primary_key",
           "reference": ""
         }
       ],
@@ -180,13 +180,16 @@
       "labelWidth": 61,
       "labelHeight": 36,
       "zIndex": 0,
-      "level": 1
+      "level": 1,
+      "primaryAccentColor": "#0D32B2",
+      "secondaryAccentColor": "#4A6FF3",
+      "neutralAccentColor": "#676C7E"
     },
     {
       "id": "products",
       "type": "sql_table",
       "pos": {
-        "x": 268,
+        "x": 328,
         "y": 18
       },
       "width": 164,
@@ -195,8 +198,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
-      "stroke": "#0A0F25",
+      "fill": "#0A0F25",
+      "stroke": "#FFFFFF",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -332,13 +335,16 @@
       "labelWidth": 99,
       "labelHeight": 36,
       "zIndex": 0,
-      "level": 1
+      "level": 1,
+      "primaryAccentColor": "#0D32B2",
+      "secondaryAccentColor": "#4A6FF3",
+      "neutralAccentColor": "#676C7E"
     },
     {
       "id": "orders",
       "type": "sql_table",
       "pos": {
-        "x": 268,
+        "x": 328,
         "y": 316
       },
       "width": 164,
@@ -347,8 +353,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
-      "stroke": "#0A0F25",
+      "fill": "#0A0F25",
+      "stroke": "#FFFFFF",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -456,13 +462,16 @@
       "labelWidth": 74,
       "labelHeight": 36,
       "zIndex": 0,
-      "level": 1
+      "level": 1,
+      "primaryAccentColor": "#0D32B2",
+      "secondaryAccentColor": "#4A6FF3",
+      "neutralAccentColor": "#676C7E"
     },
     {
       "id": "shipments",
       "type": "sql_table",
       "pos": {
-        "x": 492,
+        "x": 552,
         "y": 18
       },
       "width": 244,
@@ -471,8 +480,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
-      "stroke": "#0A0F25",
+      "fill": "#0A0F25",
+      "stroke": "#FFFFFF",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -608,7 +617,10 @@
       "labelWidth": 116,
       "labelHeight": 36,
       "zIndex": 0,
-      "level": 1
+      "level": 1,
+      "primaryAccentColor": "#0D32B2",
+      "secondaryAccentColor": "#4A6FF3",
+      "neutralAccentColor": "#676C7E"
     }
   ],
   "connections": [
@@ -638,20 +650,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 104,
+          "x": 134,
           "y": 216
         },
         {
-          "x": 104,
+          "x": 134,
           "y": 256
         },
         {
-          "x": 136.8,
-          "y": 282.2
+          "x": 172.8,
+          "y": 283.2
         },
         {
-          "x": 268,
-          "y": 347
+          "x": 328,
+          "y": 352
         }
       ],
       "isCurve": true,
@@ -686,19 +698,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 350,
+          "x": 410,
           "y": 198
         },
         {
-          "x": 350,
+          "x": 410,
           "y": 252.4
         },
         {
-          "x": 350,
+          "x": 410,
           "y": 276
         },
         {
-          "x": 350,
+          "x": 410,
           "y": 316
         }
       ],
@@ -734,19 +746,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 614,
+          "x": 674,
           "y": 198
         },
         {
-          "x": 614,
+          "x": 674,
           "y": 252.4
         },
         {
-          "x": 577.6,
+          "x": 637.6,
           "y": 282.8
         },
         {
-          "x": 432,
+          "x": 492,
           "y": 350
         }
       ],

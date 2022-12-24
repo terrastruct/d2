@@ -12,9 +12,9 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 )
 
-func tableHeader(box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
+func tableHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
 	str := fmt.Sprintf(`<rect class="class_header" x="%f" y="%f" width="%f" height="%f" fill="%s" />`,
-		box.TopLeft.X, box.TopLeft.Y, box.Width, box.Height, "#0a0f25")
+		box.TopLeft.X, box.TopLeft.Y, box.Width, box.Height, shape.Fill)
 
 	if text != "" {
 		tl := label.InsideMiddleLeft.GetPointOnBox(
@@ -31,7 +31,7 @@ func tableHeader(box *geo.Box, text string, textWidth, textHeight, fontSize floa
 			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s",
 				"start",
 				4+fontSize,
-				"white",
+				shape.Stroke,
 			),
 			svg.EscapeText(text),
 		)
@@ -39,7 +39,7 @@ func tableHeader(box *geo.Box, text string, textWidth, textHeight, fontSize floa
 	return str
 }
 
-func tableRow(box *geo.Box, nameText, typeText, constraintText string, fontSize, longestNameWidth float64) string {
+func tableRow(shape d2target.Shape, box *geo.Box, nameText, typeText, constraintText string, fontSize, longestNameWidth float64) string {
 	// Row is made up of name, type, and constraint
 	// e.g. | diagram   int   FK |
 	nameTL := label.InsideMiddleLeft.GetPointOnBox(
@@ -55,31 +55,25 @@ func tableRow(box *geo.Box, nameText, typeText, constraintText string, fontSize,
 		fontSize,
 	)
 
-	// TODO theme based
-	primaryColor := "rgb(13, 50, 178)"
-	accentColor := "rgb(74, 111, 243)"
-	neutralColor := "rgb(103, 108, 126)"
-
 	return strings.Join([]string{
 		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
 			nameTL.X,
 			nameTL.Y+fontSize*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, primaryColor),
+			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, shape.PrimaryAccentColor),
 			svg.EscapeText(nameText),
 		),
 
-		// TODO light font
 		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
 			nameTL.X+longestNameWidth+2*d2target.NamePadding,
 			nameTL.Y+fontSize*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, neutralColor),
+			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, shape.NeutralAccentColor),
 			svg.EscapeText(typeText),
 		),
 
 		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
 			constraintTR.X,
 			constraintTR.Y+fontSize*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s;letter-spacing:2px;", "end", fontSize, accentColor),
+			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s;letter-spacing:2px;", "end", fontSize, shape.SecondaryAccentColor),
 			constraintText,
 		),
 	}, "\n")
@@ -98,7 +92,8 @@ func drawTable(writer io.Writer, targetShape d2target.Shape) {
 	headerBox := geo.NewBox(box.TopLeft, box.Width, rowHeight)
 
 	fmt.Fprint(writer,
-		tableHeader(headerBox, targetShape.Label, float64(targetShape.LabelWidth), float64(targetShape.LabelHeight), float64(targetShape.FontSize)),
+		tableHeader(targetShape, headerBox, targetShape.Label,
+			float64(targetShape.LabelWidth), float64(targetShape.LabelHeight), float64(targetShape.FontSize)),
 	)
 
 	var longestNameWidth int
@@ -110,12 +105,13 @@ func drawTable(writer io.Writer, targetShape d2target.Shape) {
 	rowBox.TopLeft.Y += headerBox.Height
 	for _, f := range targetShape.Columns {
 		fmt.Fprint(writer,
-			tableRow(rowBox, f.Name.Label, f.Type.Label, f.ConstraintAbbr(), float64(targetShape.FontSize), float64(longestNameWidth)),
+			tableRow(targetShape, rowBox, f.Name.Label, f.Type.Label, f.ConstraintAbbr(), float64(targetShape.FontSize), float64(longestNameWidth)),
 		)
 		rowBox.TopLeft.Y += rowHeight
-		fmt.Fprintf(writer, `<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke-width:2;stroke:#0a0f25" />`,
+		fmt.Fprintf(writer, `<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke-width:2;stroke:%s" />`,
 			rowBox.TopLeft.X, rowBox.TopLeft.Y,
 			rowBox.TopLeft.X+rowBox.Width, rowBox.TopLeft.Y,
+			targetShape.Fill,
 		)
 	}
 }

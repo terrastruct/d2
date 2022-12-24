@@ -863,8 +863,16 @@ func renderText(text string, x, height float64) string {
 func shapeStyle(shape d2target.Shape) string {
 	out := ""
 
-	out += fmt.Sprintf(`fill:%s;`, shape.Fill)
-	out += fmt.Sprintf(`stroke:%s;`, shape.Stroke)
+	if shape.Type == d2target.ShapeSQLTable || shape.Type == d2target.ShapeClass {
+		// Fill is used for header fill in these types
+		// This fill property is just background of rows
+		out += fmt.Sprintf(`fill:%s;`, shape.Stroke)
+		// Stroke (border) of these shapes should match the header fill
+		out += fmt.Sprintf(`stroke:%s;`, shape.Fill)
+	} else {
+		out += fmt.Sprintf(`fill:%s;`, shape.Fill)
+		out += fmt.Sprintf(`stroke:%s;`, shape.Stroke)
+	}
 	out += fmt.Sprintf(`opacity:%f;`, shape.Opacity)
 	out += fmt.Sprintf(`stroke-width:%d;`, shape.StrokeWidth)
 	if shape.StrokeDash != 0 {

@@ -255,7 +255,7 @@ shipments: {
 	shape: sql_table
 	id: int
 	order_id: int
-	tracking_number: string
+	tracking_number: string {constraint: primary_key}
 	status: string
 }
 

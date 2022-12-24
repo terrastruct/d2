@@ -66,8 +66,13 @@ func DefineFillPattern() string {
 func shapeStyle(shape d2target.Shape) string {
 	out := ""
 
-	out += fmt.Sprintf(`fill:%s;`, shape.Fill)
-	out += fmt.Sprintf(`stroke:%s;`, shape.Stroke)
+	if shape.Type == d2target.ShapeSQLTable || shape.Type == d2target.ShapeClass {
+		out += fmt.Sprintf(`fill:%s;`, shape.Stroke)
+		out += fmt.Sprintf(`stroke:%s;`, shape.Fill)
+	} else {
+		out += fmt.Sprintf(`fill:%s;`, shape.Fill)
+		out += fmt.Sprintf(`stroke:%s;`, shape.Stroke)
+	}
 	out += fmt.Sprintf(`opacity:%f;`, shape.Opacity)
 	out += fmt.Sprintf(`stroke-width:%d;`, shape.StrokeWidth)
 	if shape.StrokeDash != 0 {
@@ -226,10 +231,9 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 		return "", err
 	}
 	for _, p := range paths {
-		// TODO header fill
 		output += fmt.Sprintf(
 			`<path class="class_header" transform="translate(%d %d)" d="%s" style="fill:%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, "#0a0f25",
+			shape.Pos.X, shape.Pos.Y, p, shape.Fill,
 		)
 	}
 
@@ -241,7 +245,6 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.LabelHeight),
 		)
 
-		// TODO header font color
 		output += fmt.Sprintf(`<text class="%s" x="%f" y="%f" style="%s">%s</text>`,
 			"text",
 			tl.X,
@@ -249,7 +252,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s",
 				"start",
 				4+shape.FontSize,
-				"white",
+				shape.Stroke,
 			),
 			svg.EscapeText(shape.Label),
 		)
@@ -276,31 +279,23 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.FontSize),
 		)
 
-		// TODO theme based
-		primaryColor := "rgb(13, 50, 178)"
-		accentColor := "rgb(74, 111, 243)"
-		neutralColor := "rgb(103, 108, 126)"
-
 		output += strings.Join([]string{
 			fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
 				nameTL.X,
 				nameTL.Y+float64(shape.FontSize)*3/4,
-				fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", float64(shape.FontSize), primaryColor),
+				fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", float64(shape.FontSize), shape.PrimaryAccentColor),
 				svg.EscapeText(f.Name.Label),
 			),
-
-			// TODO light font
 			fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
 				nameTL.X+float64(longestNameWidth)+2*d2target.NamePadding,
 				nameTL.Y+float64(shape.FontSize)*3/4,
-				fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", float64(shape.FontSize), neutralColor),
+				fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", float64(shape.FontSize), shape.NeutralAccentColor),
 				svg.EscapeText(f.Type.Label),
 			),
-
 			fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
 				constraintTR.X,
 				constraintTR.Y+float64(shape.FontSize)*3/4,
-				fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s;letter-spacing:2px;", "end", float64(shape.FontSize), accentColor),
+				fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s;letter-spacing:2px;", "end", float64(shape.FontSize), shape.SecondaryAccentColor),
 				f.ConstraintAbbr(),
 			),
 		}, "\n")
@@ -316,8 +311,8 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 		}
 		for _, p := range paths {
 			output += fmt.Sprintf(
-				`<path class="class_header" d="%s" style="fill:%s" />`,
-				p, "#0a0f25",
+				`<path d="%s" style="fill:%s" />`,
+				p, shape.Fill,
 			)
 		}
 	}
@@ -365,10 +360,9 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 		return "", err
 	}
 	for _, p := range paths {
-		// TODO header fill
 		output += fmt.Sprintf(
 			`<path class="class_header" transform="translate(%d %d)" d="%s" style="fill:%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, "#0a0f25",
+			shape.Pos.X, shape.Pos.Y, p, shape.Fill,
 		)
 	}
 
@@ -385,7 +379,6 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.LabelHeight),
 		)
 
-		// TODO header font color
 		output += fmt.Sprintf(`<text class="%s" x="%f" y="%f" style="%s">%s</text>`,
 			"text",
 			tl.X+float64(shape.LabelWidth)/2,
@@ -393,7 +386,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s",
 				"middle",
 				4+shape.FontSize,
-				"white",
+				shape.Stroke,
 			),
 			svg.EscapeText(shape.Label),
 		)
@@ -402,7 +395,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	rowBox := geo.NewBox(box.TopLeft.Copy(), box.Width, rowHeight)
 	rowBox.TopLeft.Y += headerBox.Height
 	for _, f := range shape.Fields {
-		output += classRow(rowBox, f.VisibilityToken(), f.Name, f.Type, float64(shape.FontSize))
+		output += classRow(shape, rowBox, f.VisibilityToken(), f.Name, f.Type, float64(shape.FontSize))
 		rowBox.TopLeft.Y += rowHeight
 	}
 
@@ -416,19 +409,19 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	for _, p := range paths {
 		output += fmt.Sprintf(
 			`<path class="class_header" d="%s" style="fill:%s" />`,
-			p, "#0a0f25",
+			p, shape.Fill,
 		)
 	}
 
 	for _, m := range shape.Methods {
-		output += classRow(rowBox, m.VisibilityToken(), m.Name, m.Return, float64(shape.FontSize))
+		output += classRow(shape, rowBox, m.VisibilityToken(), m.Name, m.Return, float64(shape.FontSize))
 		rowBox.TopLeft.Y += rowHeight
 	}
 
 	return output, nil
 }
 
-func classRow(box *geo.Box, prefix, nameText, typeText string, fontSize float64) string {
+func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText string, fontSize float64) string {
 	output := ""
 	prefixTL := label.InsideMiddleLeft.GetPointOnBox(
 		box,
@@ -443,28 +436,25 @@ func classRow(box *geo.Box, prefix, nameText, typeText string, fontSize float64)
 		fontSize,
 	)
 
-	// TODO theme based
-	accentColor := "rgb(13, 50, 178)"
-
 	output += strings.Join([]string{
 		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
 			prefixTL.X,
 			prefixTL.Y+fontSize*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, accentColor),
+			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, shape.PrimaryAccentColor),
 			prefix,
 		),
 
 		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
 			prefixTL.X+d2target.PrefixWidth,
 			prefixTL.Y+fontSize*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, "black"),
+			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, shape.Fill),
 			svg.EscapeText(nameText),
 		),
 
 		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
 			typeTR.X,
 			typeTR.Y+fontSize*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s;", "end", fontSize, accentColor),
+			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s;", "end", fontSize, shape.SecondaryAccentColor),
 			svg.EscapeText(typeText),
 		),
 	}, "\n")
