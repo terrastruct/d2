@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"hash/fnv"
+	"html"
 	"io"
 	"sort"
 	"strings"
@@ -656,7 +657,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 
 	case d2target.ShapeImage:
 		fmt.Fprintf(writer, `<image href="%s" x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-			targetShape.Icon.String(),
+			html.EscapeString(targetShape.Icon.String()),
 			targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
 
 	// TODO should standardize "" to rectangle
@@ -716,7 +717,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		tl := iconPosition.GetPointOnBox(box, label.PADDING, float64(iconSize), float64(iconSize))
 
 		fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
-			targetShape.Icon.String(),
+			html.EscapeString(targetShape.Icon.String()),
 			tl.X,
 			tl.Y,
 			iconSize,
