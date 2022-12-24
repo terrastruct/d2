@@ -688,6 +688,10 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 					continue
 				}
 				if n.MapKey.Key.Path[0].Unbox().ScalarString() == "constraint" {
+					if n.MapKey.Value.StringBox().Unbox() == nil {
+						c.errorf(n.MapKey.GetRange().Start, n.MapKey.GetRange().End, "constraint value must be a string")
+						return
+					}
 					d2Col.Constraint = n.MapKey.Value.StringBox().Unbox().ScalarString()
 				}
 			}
