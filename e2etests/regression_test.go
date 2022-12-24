@@ -173,6 +173,13 @@ build_workflow: lambda-build.yaml {
 }
 `,
 		},
+		{
+			name: "query_param_escape",
+			script: `my network: {
+  icon: https://icons.terrastruct.com/infra/019-network.svg?fuga=1&hoge
+}
+`,
+		},
 	}
 
 	runa(t, tcs)

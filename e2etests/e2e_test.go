@@ -139,6 +139,7 @@ func run(t *testing.T, tc testCase) {
 			defer os.Remove(pathGotSVG)
 		}
 
+		// Check that it's valid SVG
 		var xmlParsed interface{}
 		err = xml.Unmarshal(svgBytes, &xmlParsed)
 		assert.Success(t, err)
