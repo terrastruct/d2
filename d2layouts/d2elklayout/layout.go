@@ -79,14 +79,16 @@ type ELKGraph struct {
 }
 
 type ELKLayoutOptions struct {
-	Algorithm         string  `json:"elk.algorithm,omitempty"`
-	HierarchyHandling string  `json:"elk.hierarchyHandling,omitempty"`
-	NodeSpacing       float64 `json:"spacing.nodeNodeBetweenLayers,omitempty"`
-	Padding           string  `json:"elk.padding,omitempty"`
-	EdgeNodeSpacing   float64 `json:"spacing.edgeNodeBetweenLayers,omitempty"`
-	Direction         string  `json:"elk.direction"`
-	SelfLoopSpacing   float64 `json:"elk.spacing.nodeSelfLoop"`
-	InlineEdgeLabels  bool    `json:"elk.edgeLabels.inline,omitempty"`
+	Algorithm           string  `json:"elk.algorithm,omitempty"`
+	HierarchyHandling   string  `json:"elk.hierarchyHandling,omitempty"`
+	NodeSpacing         float64 `json:"spacing.nodeNodeBetweenLayers,omitempty"`
+	Padding             string  `json:"elk.padding,omitempty"`
+	EdgeNodeSpacing     float64 `json:"spacing.edgeNodeBetweenLayers,omitempty"`
+	Direction           string  `json:"elk.direction"`
+	SelfLoopSpacing     float64 `json:"elk.spacing.nodeSelfLoop"`
+	InlineEdgeLabels    bool    `json:"elk.edgeLabels.inline,omitempty"`
+	ConsiderModelOrder  string  `json:"elk.layered.considerModelOrder.strategy,omitempty"`
+	ForceNodeModelOrder bool    `json:"elk.layered.crossingMinimization.forceNodeModelOrder,omitempty"`
 }
 
 func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
@@ -109,11 +111,12 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	elkGraph := &ELKGraph{
 		ID: "root",
 		LayoutOptions: &ELKLayoutOptions{
-			Algorithm:         "layered",
-			HierarchyHandling: "INCLUDE_CHILDREN",
-			NodeSpacing:       100.0,
-			EdgeNodeSpacing:   50.0,
-			SelfLoopSpacing:   50.0,
+			Algorithm:          "layered",
+			HierarchyHandling:  "INCLUDE_CHILDREN",
+			NodeSpacing:        100.0,
+			EdgeNodeSpacing:    50.0,
+			SelfLoopSpacing:    50.0,
+			ConsiderModelOrder: "NODES_AND_EDGES",
 		},
 	}
 	switch g.Root.Attributes.Direction.Value {
@@ -157,7 +160,8 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 
 		if len(obj.ChildrenArray) > 0 {
 			n.LayoutOptions = &ELKLayoutOptions{
-				Padding: "[top=75,left=75,bottom=75,right=75]",
+				Padding:             "[top=75,left=75,bottom=75,right=75]",
+				ForceNodeModelOrder: true,
 			}
 		}
 

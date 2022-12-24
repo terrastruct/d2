@@ -6,7 +6,7 @@
       "id": "build_workflow",
       "type": "",
       "pos": {
-        "x": 716,
+        "x": 12,
         "y": 12
       },
       "width": 480,
@@ -46,7 +46,7 @@
       "id": "build_workflow.push",
       "type": "",
       "pos": {
-        "x": 791,
+        "x": 87,
         "y": 87
       },
       "width": 330,
@@ -86,7 +86,7 @@
       "id": "build_workflow.GHA",
       "type": "",
       "pos": {
-        "x": 822,
+        "x": 118,
         "y": 290
       },
       "width": 269,
@@ -126,7 +126,7 @@
       "id": "build_workflow.S3",
       "type": "",
       "pos": {
-        "x": 891,
+        "x": 187,
         "y": 493
       },
       "width": 131,
@@ -166,7 +166,7 @@
       "id": "build_workflow.Terraform",
       "type": "",
       "pos": {
-        "x": 847,
+        "x": 143,
         "y": 696
       },
       "width": 218,
@@ -206,7 +206,7 @@
       "id": "build_workflow.AWS",
       "type": "",
       "pos": {
-        "x": 879,
+        "x": 175,
         "y": 899
       },
       "width": 155,
@@ -246,7 +246,7 @@
       "id": "deploy_workflow",
       "type": "",
       "pos": {
-        "x": 1216,
+        "x": 512,
         "y": 175
       },
       "width": 421,
@@ -286,7 +286,7 @@
       "id": "deploy_workflow.manual",
       "type": "",
       "pos": {
-        "x": 1291,
+        "x": 587,
         "y": 250
       },
       "width": 271,
@@ -326,7 +326,7 @@
       "id": "deploy_workflow.GHA",
       "type": "",
       "pos": {
-        "x": 1292,
+        "x": 588,
         "y": 453
       },
       "width": 269,
@@ -366,7 +366,7 @@
       "id": "deploy_workflow.AWS",
       "type": "",
       "pos": {
-        "x": 1349,
+        "x": 645,
         "y": 736
       },
       "width": 155,
@@ -406,7 +406,7 @@
       "id": "apollo_workflow",
       "type": "",
       "pos": {
-        "x": 12,
+        "x": 953,
         "y": 215
       },
       "width": 684,
@@ -446,7 +446,7 @@
       "id": "apollo_workflow.apollo",
       "type": "",
       "pos": {
-        "x": 235,
+        "x": 1176,
         "y": 290
       },
       "width": 238,
@@ -486,7 +486,7 @@
       "id": "apollo_workflow.GHA",
       "type": "",
       "pos": {
-        "x": 219,
+        "x": 1160,
         "y": 493
       },
       "width": 269,
@@ -526,7 +526,7 @@
       "id": "apollo_workflow.AWS",
       "type": "",
       "pos": {
-        "x": 276,
+        "x": 1217,
         "y": 696
       },
       "width": 155,
@@ -590,11 +590,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 956,
+          "x": 252,
           "y": 224
         },
         {
-          "x": 956,
+          "x": 252,
           "y": 290
         }
       ],
@@ -629,11 +629,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 956,
+          "x": 252,
           "y": 427
         },
         {
-          "x": 956,
+          "x": 252,
           "y": 493
         }
       ],
@@ -668,11 +668,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 956,
+          "x": 252,
           "y": 630
         },
         {
-          "x": 956,
+          "x": 252,
           "y": 696
         }
       ],
@@ -707,11 +707,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 956,
+          "x": 252,
           "y": 833
         },
         {
-          "x": 956,
+          "x": 252,
           "y": 899
         }
       ],
@@ -746,11 +746,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1426.5,
+          "x": 722.5,
           "y": 387
         },
         {
-          "x": 1426.5,
+          "x": 722.5,
           "y": 453
         }
       ],
@@ -785,11 +785,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1426.5,
+          "x": 722.5,
           "y": 590
         },
         {
-          "x": 1426.5,
+          "x": 722.5,
           "y": 736
         }
       ],
@@ -824,11 +824,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 353.5,
+          "x": 1294.5,
           "y": 427
         },
         {
-          "x": 353.5,
+          "x": 1294.5,
           "y": 493
         }
       ],
@@ -863,11 +863,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 353.5,
+          "x": 1294.5,
           "y": 630
         },
         {
-          "x": 353.5,
+          "x": 1294.5,
           "y": 696
         }
       ],
