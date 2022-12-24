@@ -1668,6 +1668,16 @@ choo: {
 				tassert.Equal(t, 3, len(g.Objects))
 			},
 		},
+		{
+			name: "sql-panic",
+			text: `test {
+    shape: sql_table
+    test_id: varchar(64) {constraint: [primary_key, foreign_key]}
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/sql-panic.d2:3:27: constraint value must be a string
+`,
+		},
 	}
 
 	for _, tc := range testCases {
