@@ -9,7 +9,6 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
-	"math"
 	"strings"
 
 	"github.com/dop251/goja"
@@ -257,7 +256,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 			parentX = parent.TopLeft.X
 			parentY = parent.TopLeft.Y
 		}
-		obj.TopLeft = geo.NewPoint(math.Round(parentX+n.X), math.Round(parentY+n.Y))
+		obj.TopLeft = geo.NewPoint(parentX+n.X, parentY+n.Y)
 		obj.Width = n.Width
 		obj.Height = n.Height
 
