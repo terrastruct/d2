@@ -180,6 +180,43 @@ build_workflow: lambda-build.yaml {
 }
 `,
 		},
+		{
+			name: "elk_order",
+			script: `queue: {
+  shape: queue
+  label: ''
+
+  M0
+  M1
+  M2
+  M3
+  M4
+  M5
+  M6
+}
+
+m0_desc: |md
+  Oldest message
+|
+m0_desc -> queue.M0
+
+m2_desc: |md
+  Offset
+|
+m2_desc -> queue.M2
+
+m5_desc: |md
+  Last message
+|
+m5_desc -> queue.M5
+
+m6_desc: |md
+  Next message will be\
+  inserted here
+|
+m6_desc -> queue.M6
+`,
+		},
 	}
 
 	runa(t, tcs)
