@@ -1189,6 +1189,32 @@ var StyleKeywords = map[string]struct{}{
 	"filled":   {},
 }
 
+var NearConstants = map[string]struct{}{
+	"top-left":   {},
+	"top-center": {},
+	"top-right":  {},
+
+	"center-left":  {},
+	"center-right": {},
+
+	"bottom-left":   {},
+	"bottom-center": {},
+	"bottom-right":  {},
+}
+
+var NearConstantsArray = []string{
+	"top-left",
+	"top-center",
+	"top-right",
+
+	"center-left",
+	"center-right",
+
+	"bottom-left",
+	"bottom-center",
+	"bottom-right",
+}
+
 func init() {
 	for k, v := range StyleKeywords {
 		ReservedKeywords[k] = v

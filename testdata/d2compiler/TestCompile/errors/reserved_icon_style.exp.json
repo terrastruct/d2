@@ -17,7 +17,7 @@
       },
       {
         "range": "d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2,0:0:0-0:1:1",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:1:1: near key \"y\" does not exist. It must be the absolute path to a shape."
+        "errmsg": "d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:1:1: near key \"y\" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right"
       }
     ]
   }
