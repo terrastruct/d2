@@ -9,6 +9,7 @@
 
 - Improved label placements for shapes with images to avoid overlapping container labels. [#474](https://github.com/terrastruct/d2/pull/474)
 - Themes are applied to sql_table and class shapes. [#521](https://github.com/terrastruct/d2/pull/521)
+- `class` shapes use monospaced font. [#521](https://github.com/terrastruct/d2/pull/521)
 - Sequence diagram edge group labels have more reasonable padding. [#512](https://github.com/terrastruct/d2/pull/512)
 - ELK layout engine preserves order of nodes. [#282](https://github.com/terrastruct/d2/issues/282)
 

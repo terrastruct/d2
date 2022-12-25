@@ -24,11 +24,10 @@ func classHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, tex
 		)
 
 		str += fmt.Sprintf(`<text class="%s" x="%f" y="%f" style="%s">%s</text>`,
-			// TODO use monospace font
-			"text",
+			"text-mono",
 			tl.X+textWidth/2,
 			tl.Y+textHeight*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s",
+			fmt.Sprintf(`text-anchor:%s;font-size:%vpx;fill:%s`,
 				"middle",
 				4+fontSize,
 				shape.Stroke,
@@ -56,21 +55,21 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 	)
 
 	return strings.Join([]string{
-		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
+		fmt.Sprintf(`<text class="text-mono" x="%f" y="%f" style="%s">%s</text>`,
 			prefixTL.X,
 			prefixTL.Y+fontSize*3/4,
 			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, shape.PrimaryAccentColor),
 			prefix,
 		),
 
-		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
+		fmt.Sprintf(`<text class="text-mono" x="%f" y="%f" style="%s">%s</text>`,
 			prefixTL.X+d2target.PrefixWidth,
 			prefixTL.Y+fontSize*3/4,
 			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, shape.Fill),
 			svg.EscapeText(nameText),
 		),
 
-		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
+		fmt.Sprintf(`<text class="text-mono" x="%f" y="%f" style="%s">%s</text>`,
 			typeTR.X,
 			typeTR.Y+fontSize*3/4,
 			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "end", fontSize, shape.SecondaryAccentColor),

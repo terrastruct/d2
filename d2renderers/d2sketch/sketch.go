@@ -372,7 +372,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	)
 
 	if shape.Label != "" {
-		tl := label.InsideMiddleLeft.GetPointOnBox(
+		tl := label.InsideMiddleCenter.GetPointOnBox(
 			headerBox,
 			0,
 			float64(shape.LabelWidth),
@@ -380,7 +380,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 		)
 
 		output += fmt.Sprintf(`<text class="%s" x="%f" y="%f" style="%s">%s</text>`,
-			"text",
+			"text-mono",
 			tl.X+float64(shape.LabelWidth)/2,
 			tl.Y+float64(shape.LabelHeight)*3/4,
 			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s",
@@ -437,21 +437,21 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 	)
 
 	output += strings.Join([]string{
-		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
+		fmt.Sprintf(`<text class="text-mono" x="%f" y="%f" style="%s">%s</text>`,
 			prefixTL.X,
 			prefixTL.Y+fontSize*3/4,
 			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, shape.PrimaryAccentColor),
 			prefix,
 		),
 
-		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
+		fmt.Sprintf(`<text class="text-mono" x="%f" y="%f" style="%s">%s</text>`,
 			prefixTL.X+d2target.PrefixWidth,
 			prefixTL.Y+fontSize*3/4,
 			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, shape.Fill),
 			svg.EscapeText(nameText),
 		),
 
-		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
+		fmt.Sprintf(`<text class="text-mono" x="%f" y="%f" style="%s">%s</text>`,
 			typeTR.X,
 			typeTR.Y+fontSize*3/4,
 			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s;", "end", fontSize, shape.SecondaryAccentColor),

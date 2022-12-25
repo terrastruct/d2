@@ -913,6 +913,8 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 				}
 			}
 			innerLabelPadding = 0
+		} else if obj.Attributes.Shape.Value == d2target.ShapeClass {
+			dims = getTextDimensions(mtexts, ruler, obj.Text(), go2.Pointer(d2fonts.SourceCodePro))
 		} else {
 			dims = getTextDimensions(mtexts, ruler, obj.Text(), fontFamily)
 		}
@@ -968,7 +970,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			maxWidth := dims.Width
 
 			for _, f := range obj.Class.Fields {
-				fdims := getTextDimensions(mtexts, ruler, f.Text(), fontFamily)
+				fdims := getTextDimensions(mtexts, ruler, f.Text(), go2.Pointer(d2fonts.SourceCodePro))
 				if fdims == nil {
 					return fmt.Errorf("dimensions for class field %#v not found", f.Text())
 				}
@@ -978,7 +980,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 				}
 			}
 			for _, m := range obj.Class.Methods {
-				mdims := getTextDimensions(mtexts, ruler, m.Text(), fontFamily)
+				mdims := getTextDimensions(mtexts, ruler, m.Text(), go2.Pointer(d2fonts.SourceCodePro))
 				if mdims == nil {
 					return fmt.Errorf("dimensions for class method %#v not found", m.Text())
 				}
@@ -997,7 +999,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 			if anyRowText != nil {
 				// 10px of padding top and bottom so text doesn't look squished
-				rowHeight := getTextDimensions(mtexts, ruler, anyRowText, fontFamily).Height + 20
+				rowHeight := getTextDimensions(mtexts, ruler, anyRowText, go2.Pointer(d2fonts.SourceCodePro)).Height + 20
 				obj.Height = float64(rowHeight * (len(obj.Class.Fields) + len(obj.Class.Methods) + 2))
 			}
 			// Leave room for padding
