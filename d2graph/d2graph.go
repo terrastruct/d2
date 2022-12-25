@@ -457,6 +457,9 @@ func (obj *Object) Text() *d2target.MText {
 	if obj.Class != nil || obj.SQLTable != nil {
 		fontSize = d2fonts.FONT_SIZE_XL
 	}
+	if obj.Class != nil {
+		isBold = false
+	}
 	return &d2target.MText{
 		Text:     obj.Attributes.Label.Value,
 		FontSize: fontSize,
