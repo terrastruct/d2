@@ -840,7 +840,7 @@ a -> md -> b
 	name: string
 	email: string
 	password: string
-	last_login: datetime
+	last_login: datetime { constraint: primary_key }
 }
 
 products: {

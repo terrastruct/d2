@@ -146,6 +146,11 @@ type Shape struct {
 
 	ZIndex int `json:"zIndex"`
 	Level  int `json:"level"`
+
+	// These are used for special shapes, sql_table and class
+	PrimaryAccentColor   string `json:"primaryAccentColor,omitempty"`
+	SecondaryAccentColor string `json:"secondaryAccentColor,omitempty"`
+	NeutralAccentColor   string `json:"neutralAccentColor,omitempty"`
 }
 
 func (s *Shape) SetType(t string) {
