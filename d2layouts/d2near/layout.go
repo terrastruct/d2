@@ -22,30 +22,22 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNears []*d2graph.Obje
 		return nil
 	}
 
-	// Imagine the grpah has two long texts, one at top center and one at top left.
+	// Imagine the graph has two long texts, one at top center and one at top left.
 	// Top left should go left enough to not collide with center.
 	// So place the center ones first, then the later ones will consider them for bounding box
-	for _, obj := range constantNears {
-		if strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "center") {
-			obj.TopLeft = geo.NewPoint(place(obj))
+	for _, processCenters := range []bool{true, false} {
+		for _, obj := range constantNears {
+			if processCenters == strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "center") {
+				obj.TopLeft = geo.NewPoint(place(obj))
+			}
 		}
-	}
-	for _, obj := range constantNears {
-		if strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "center") {
-			// The z-index for constant nears does not matter, as it will not collide
-			g.Objects = append(g.Objects, obj)
-		}
-	}
-
-	for _, obj := range constantNears {
-		if !strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "center") {
-			obj.TopLeft = geo.NewPoint(place(obj))
-		}
-	}
-	for _, obj := range constantNears {
-		if !strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "center") {
-			// The z-index for constant nears does not matter, as it will not collide
-			g.Objects = append(g.Objects, obj)
+		for _, obj := range constantNears {
+			if processCenters == strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "center") {
+				// The z-index for constant nears does not matter, as it will not collide
+				g.Objects = append(g.Objects, obj)
+				obj.Parent.Children[obj.ID] = obj
+				obj.Parent.ChildrenArray = append(obj.Parent.ChildrenArray, obj)
+			}
 		}
 	}
 
@@ -106,6 +98,13 @@ func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (nears []*d2gra
 			nears = append(nears, obj)
 			g.Objects = append(g.Objects[:i], g.Objects[i+1:]...)
 			i--
+			delete(obj.Parent.Children, obj.ID)
+			for i := 0; i < len(obj.Parent.ChildrenArray); i++ {
+				if obj.Parent.ChildrenArray[i] == obj {
+					obj.Parent.ChildrenArray = append(obj.Parent.ChildrenArray[:i], obj.Parent.ChildrenArray[i+1:]...)
+					break
+				}
+			}
 		}
 	}
 	return nears
