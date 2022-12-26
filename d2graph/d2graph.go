@@ -441,7 +441,14 @@ func (obj *Object) AbsIDArray() []string {
 }
 
 func (obj *Object) Text() *d2target.MText {
-	isBold := !obj.IsContainer()
+	isBold := !obj.IsContainer() && obj.Attributes.Shape.Value != "text"
+	isItalic := false
+	if obj.Attributes.Style.Bold != nil && obj.Attributes.Style.Bold.Value == "true" {
+		isBold = true
+	}
+	if obj.Attributes.Style.Italic != nil && obj.Attributes.Style.Italic.Value == "true" {
+		isItalic = true
+	}
 	fontSize := d2fonts.FONT_SIZE_M
 	if obj.OuterSequenceDiagram() == nil {
 		if obj.IsContainer() {
@@ -464,7 +471,7 @@ func (obj *Object) Text() *d2target.MText {
 		Text:     obj.Attributes.Label.Value,
 		FontSize: fontSize,
 		IsBold:   isBold,
-		IsItalic: false,
+		IsItalic: isItalic,
 		Language: obj.Attributes.Language,
 		Shape:    obj.Attributes.Shape.Value,
 
@@ -908,12 +915,14 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 					return err
 				}
 				dims = d2target.NewTextDimensions(width, height)
-			} else {
+			} else if obj.Attributes.Language != "" {
 				var err error
 				dims, err = getMarkdownDimensions(mtexts, ruler, obj.Text(), fontFamily)
 				if err != nil {
 					return err
 				}
+			} else {
+				dims = getTextDimensions(mtexts, ruler, obj.Text(), fontFamily)
 			}
 			innerLabelPadding = 0
 		} else if obj.Attributes.Shape.Value == d2target.ShapeClass {
