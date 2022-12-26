@@ -5,10 +5,10 @@ package d2svg
 import (
 	"bytes"
 	_ "embed"
-	"encoding/xml"
 	"errors"
 	"fmt"
 	"hash/fnv"
+	"html"
 	"io"
 	"sort"
 	"strings"
@@ -357,7 +357,7 @@ func makeLabelMask(labelTL *geo.Point, width, height int) string {
 }
 
 func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, _ error) {
-	fmt.Fprintf(writer, `<g id="%s">`, escapeText(connection.ID))
+	fmt.Fprintf(writer, `<g id="%s">`, svg.EscapeText(connection.ID))
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(false, connection)
@@ -536,7 +536,7 @@ func render3dRect(targetShape d2target.Shape) string {
 		strings.Join(borderSegments, " "), borderStyle)
 
 	// create mask from border stroke, to cut away from the shape fills
-	maskID := fmt.Sprintf("border-mask-%v", escapeText(targetShape.ID))
+	maskID := fmt.Sprintf("border-mask-%v", svg.EscapeText(targetShape.ID))
 	borderMask := strings.Join([]string{
 		fmt.Sprintf(`<defs><mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
 			maskID, targetShape.Pos.X, targetShape.Pos.Y-threeDeeOffset, targetShape.Width+threeDeeOffset, targetShape.Height+threeDeeOffset,
@@ -583,7 +583,7 @@ func render3dRect(targetShape d2target.Shape) string {
 }
 
 func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, err error) {
-	fmt.Fprintf(writer, `<g id="%s">`, escapeText(targetShape.ID))
+	fmt.Fprintf(writer, `<g id="%s">`, svg.EscapeText(targetShape.ID))
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)
@@ -618,11 +618,27 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 
 	switch targetShape.Type {
 	case d2target.ShapeClass:
-		drawClass(writer, targetShape)
+		if sketchRunner != nil {
+			out, err := d2sketch.Class(sketchRunner, targetShape)
+			if err != nil {
+				return "", err
+			}
+			fmt.Fprintf(writer, out)
+		} else {
+			drawClass(writer, targetShape)
+		}
 		fmt.Fprintf(writer, `</g></g>`)
 		return labelMask, nil
 	case d2target.ShapeSQLTable:
-		drawTable(writer, targetShape)
+		if sketchRunner != nil {
+			out, err := d2sketch.Table(sketchRunner, targetShape)
+			if err != nil {
+				return "", err
+			}
+			fmt.Fprintf(writer, out)
+		} else {
+			drawTable(writer, targetShape)
+		}
 		fmt.Fprintf(writer, `</g></g>`)
 		return labelMask, nil
 	case d2target.ShapeOval:
@@ -641,7 +657,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 
 	case d2target.ShapeImage:
 		fmt.Fprintf(writer, `<image href="%s" x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-			targetShape.Icon.String(),
+			html.EscapeString(targetShape.Icon.String()),
 			targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
 
 	// TODO should standardize "" to rectangle
@@ -701,7 +717,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		tl := iconPosition.GetPointOnBox(box, label.PADDING, float64(iconSize), float64(iconSize))
 
 		fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
-			targetShape.Icon.String(),
+			html.EscapeString(targetShape.Icon.String()),
 			tl.X,
 			tl.Y,
 			iconSize,
@@ -725,9 +741,11 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		} else if targetShape.Italic {
 			fontClass += "-italic"
 		}
+		if targetShape.Underline {
+			fontClass += " text-underline"
+		}
 
-		switch targetShape.Type {
-		case d2target.ShapeCode:
+		if targetShape.Type == d2target.ShapeCode {
 			lexer := lexers.Get(targetShape.Language)
 			if lexer == nil {
 				return labelMask, fmt.Errorf("code snippet lexer for %s not found", targetShape.Language)
@@ -768,38 +786,36 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				fmt.Fprint(writer, "</text>")
 			}
 			fmt.Fprintf(writer, "</g></g>")
-		case d2target.ShapeText:
-			if targetShape.Language == "latex" {
-				render, err := d2latex.Render(targetShape.Label)
-				if err != nil {
-					return labelMask, err
-				}
-				fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
-				fmt.Fprint(writer, render)
-				fmt.Fprintf(writer, "</g>")
-			} else {
-				render, err := textmeasure.RenderMarkdown(targetShape.Label)
-				if err != nil {
-					return labelMask, err
-				}
-				fmt.Fprintf(writer, `<g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="%f" y="%f" width="%d" height="%d">`,
-					box.TopLeft.X, box.TopLeft.Y, targetShape.Width, targetShape.Height,
-				)
-				// we need the self closing form in this svg/xhtml context
-				render = strings.ReplaceAll(render, "<hr>", "<hr />")
-
-				var mdStyle string
-				if targetShape.Fill != "" {
-					mdStyle = fmt.Sprintf("background-color:%s;", targetShape.Fill)
-				}
-				if targetShape.Stroke != "" {
-					mdStyle += fmt.Sprintf("color:%s;", targetShape.Stroke)
-				}
-
-				fmt.Fprintf(writer, `<div xmlns="http://www.w3.org/1999/xhtml" class="md" style="%s">%v</div>`, mdStyle, render)
-				fmt.Fprint(writer, `</foreignObject></g>`)
+		} else if targetShape.Type == d2target.ShapeText && targetShape.Language == "latex" {
+			render, err := d2latex.Render(targetShape.Label)
+			if err != nil {
+				return labelMask, err
 			}
-		default:
+			fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
+			fmt.Fprint(writer, render)
+			fmt.Fprintf(writer, "</g>")
+		} else if targetShape.Type == d2target.ShapeText && targetShape.Language != "" {
+			render, err := textmeasure.RenderMarkdown(targetShape.Label)
+			if err != nil {
+				return labelMask, err
+			}
+			fmt.Fprintf(writer, `<g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="%f" y="%f" width="%d" height="%d">`,
+				box.TopLeft.X, box.TopLeft.Y, targetShape.Width, targetShape.Height,
+			)
+			// we need the self closing form in this svg/xhtml context
+			render = strings.ReplaceAll(render, "<hr>", "<hr />")
+
+			var mdStyle string
+			if targetShape.Fill != "" {
+				mdStyle = fmt.Sprintf("background-color:%s;", targetShape.Fill)
+			}
+			if targetShape.Stroke != "" {
+				mdStyle += fmt.Sprintf("color:%s;", targetShape.Stroke)
+			}
+
+			fmt.Fprintf(writer, `<div xmlns="http://www.w3.org/1999/xhtml" class="md" style="%s">%v</div>`, mdStyle, render)
+			fmt.Fprint(writer, `</foreignObject></g>`)
+		} else {
 			fontColor := "black"
 			if targetShape.Color != "" {
 				fontColor = targetShape.Color
@@ -823,15 +839,9 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 	return labelMask, nil
 }
 
-func escapeText(text string) string {
-	buf := new(bytes.Buffer)
-	_ = xml.EscapeText(buf, []byte(text))
-	return buf.String()
-}
-
 func renderText(text string, x, height float64) string {
 	if !strings.Contains(text, "\n") {
-		return escapeText(text)
+		return svg.EscapeText(text)
 	}
 	rendered := []string{}
 	lines := strings.Split(text, "\n")
@@ -840,7 +850,7 @@ func renderText(text string, x, height float64) string {
 		if i == 0 {
 			dy = 0
 		}
-		escaped := escapeText(line)
+		escaped := svg.EscapeText(line)
 		if escaped == "" {
 			// if there are multiple newlines in a row we still need text for the tspan to render
 			escaped = " "
@@ -853,8 +863,16 @@ func renderText(text string, x, height float64) string {
 func shapeStyle(shape d2target.Shape) string {
 	out := ""
 
-	out += fmt.Sprintf(`fill:%s;`, shape.Fill)
-	out += fmt.Sprintf(`stroke:%s;`, shape.Stroke)
+	if shape.Type == d2target.ShapeSQLTable || shape.Type == d2target.ShapeClass {
+		// Fill is used for header fill in these types
+		// This fill property is just background of rows
+		out += fmt.Sprintf(`fill:%s;`, shape.Stroke)
+		// Stroke (border) of these shapes should match the header fill
+		out += fmt.Sprintf(`stroke:%s;`, shape.Fill)
+	} else {
+		out += fmt.Sprintf(`fill:%s;`, shape.Fill)
+		out += fmt.Sprintf(`stroke:%s;`, shape.Stroke)
+	}
 	out += fmt.Sprintf(`opacity:%f;`, shape.Opacity)
 	out += fmt.Sprintf(`stroke-width:%d;`, shape.StrokeWidth)
 	if shape.StrokeDash != 0 {
@@ -885,6 +903,7 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 
 	triggers := []string{
 		`class="text"`,
+		`class="text `,
 		`class="md"`,
 	}
 
@@ -899,6 +918,20 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 	src: url("%s");
 }`,
 				d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR)])
+			break
+		}
+	}
+
+	triggers = []string{
+		`text-underline`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			buf.WriteString(`
+.text-underline {
+  text-decoration: underline;
+}`)
 			break
 		}
 	}

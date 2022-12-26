@@ -583,16 +583,25 @@ func (c *compiler) compileShapes(obj *d2graph.Object) {
 		c.compileShapes(obj)
 	}
 
-	for _, obj := range obj.ChildrenArray {
-		switch obj.Attributes.Shape.Value {
+	for i := 0; i < len(obj.ChildrenArray); i++ {
+		ch := obj.ChildrenArray[i]
+		switch ch.Attributes.Shape.Value {
 		case d2target.ShapeClass, d2target.ShapeSQLTable:
-			flattenContainer(obj.Graph, obj)
+			flattenContainer(obj.Graph, ch)
 		}
-		if obj.IDVal == "style" {
-			obj.Parent.Attributes.Style = obj.Attributes.Style
+		if ch.IDVal == "style" {
+			obj.Attributes.Style = ch.Attributes.Style
 			if obj.Graph != nil {
-				flattenContainer(obj.Graph, obj)
-				removeObject(obj.Graph, obj)
+				flattenContainer(obj.Graph, ch)
+				for i := 0; i < len(obj.Graph.Objects); i++ {
+					if obj.Graph.Objects[i] == ch {
+						obj.Graph.Objects = append(obj.Graph.Objects[:i], obj.Graph.Objects[i+1:]...)
+						break
+					}
+				}
+				delete(obj.Children, ch.ID)
+				obj.ChildrenArray = append(obj.ChildrenArray[:i], obj.ChildrenArray[i+1:]...)
+				i--
 			}
 		}
 	}
@@ -679,6 +688,10 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 					continue
 				}
 				if n.MapKey.Key.Path[0].Unbox().ScalarString() == "constraint" {
+					if n.MapKey.Value.StringBox().Unbox() == nil {
+						c.errorf(n.MapKey.GetRange().Start, n.MapKey.GetRange().End, "constraint value must be a string")
+						return
+					}
 					d2Col.Constraint = n.MapKey.Value.StringBox().Unbox().ScalarString()
 				}
 			}
@@ -703,23 +716,6 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 		}
 
 		obj.SQLTable.Columns = append(obj.SQLTable.Columns, d2Col)
-	}
-}
-
-// TODO too similar to flattenContainer, should reconcile in a refactor
-func removeObject(g *d2graph.Graph, obj *d2graph.Object) {
-	for i := 0; i < len(obj.Graph.Objects); i++ {
-		if obj.Graph.Objects[i] == obj {
-			obj.Graph.Objects = append(obj.Graph.Objects[:i], obj.Graph.Objects[i+1:]...)
-			break
-		}
-	}
-	delete(obj.Parent.Children, obj.ID)
-	for i, child := range obj.Parent.ChildrenArray {
-		if obj == child {
-			obj.Parent.ChildrenArray = append(obj.Parent.ChildrenArray[:i], obj.Parent.ChildrenArray[i+1:]...)
-			break
-		}
 	}
 }
 
@@ -854,9 +850,14 @@ func (c *compiler) validateKeys(obj *d2graph.Object, m *d2ast.Map) {
 func (c *compiler) validateNear(g *d2graph.Graph) {
 	for _, obj := range g.Objects {
 		if obj.Attributes.NearKey != nil {
-			_, ok := g.Root.HasChild(d2graph.Key(obj.Attributes.NearKey))
-			if !ok {
-				c.errorf(obj.Attributes.NearKey.GetRange().Start, obj.Attributes.NearKey.GetRange().End, "near key %#v does not exist. It must be the absolute path to a shape.", d2format.Format(obj.Attributes.NearKey))
+			_, isKey := g.Root.HasChild(d2graph.Key(obj.Attributes.NearKey))
+			_, isConst := d2graph.NearConstants[d2graph.Key(obj.Attributes.NearKey)[0]]
+			if !isKey && !isConst {
+				c.errorf(obj.Attributes.NearKey.GetRange().Start, obj.Attributes.NearKey.GetRange().End, "near key %#v must be the absolute path to a shape or one of the following constants: %s", d2format.Format(obj.Attributes.NearKey), strings.Join(d2graph.NearConstantsArray, ", "))
+				continue
+			}
+			if !isKey && isConst && obj.Parent != g.Root {
+				c.errorf(obj.Attributes.NearKey.GetRange().Start, obj.Attributes.NearKey.GetRange().End, "constant near keys can only be set on root level shapes")
 				continue
 			}
 		}

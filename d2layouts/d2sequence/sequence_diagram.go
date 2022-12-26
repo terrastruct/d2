@@ -74,6 +74,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 			// Groups may have more nested groups
 			for len(queue) > 0 {
 				curr := queue[0]
+				curr.LabelPosition = go2.Pointer(string(label.InsideTopLeft))
 				groups = append(groups, curr)
 				queue = queue[1:]
 				queue = append(queue, curr.ChildrenArray...)

@@ -840,7 +840,7 @@ a -> md -> b
 	name: string
 	email: string
 	password: string
-	last_login: datetime
+	last_login: datetime { constraint: primary_key }
 }
 
 products: {
@@ -1585,6 +1585,45 @@ container: {
 		label: to right container root
 	}
 }
+`,
+		},
+		{
+			name: "constant_near_stress",
+			script: `x -> y
+The top of the mountain: { shape: text; near: top-center }
+Joe: { shape: person; near: center-left }
+Donald: { shape: person; near: center-right }
+bottom: |md
+	# Cats, no less liquid than their shadows, offer no angles to the wind.
+
+  If we can't fix it, it ain't broke.
+
+  Dieters live life in the fasting lane.
+| { near: bottom-center }
+i am top left: { shape: text; near: top-left }
+i am top right: { shape: text; near: top-right }
+i am bottom left: { shape: text; near: bottom-left }
+i am bottom right: { shape: text; near: bottom-right }
+`,
+		},
+		{
+			name: "constant_near_title",
+			script: `title: |md
+  # A winning strategy
+| { near: top-center }
+
+poll the people -> results
+results -> unfavorable -> poll the people
+results -> favorable -> will of the people
+`,
+		},
+		{
+			name: "text_font_sizes",
+			script: `bear: { shape: text; style.font-size: 22; style.bold: true }
+mama bear: { shape: text; style.font-size: 28; style.italic: true }
+papa bear: { shape: text; style.font-size: 32; style.underline: true }
+mama bear -> bear
+papa bear -> bear
 `,
 		},
 	}

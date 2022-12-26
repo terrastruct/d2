@@ -40,6 +40,11 @@ func applyTheme(shape *d2target.Shape, obj *d2graph.Object, theme *d2themes.Them
 	if obj.Attributes.Shape.Value == d2target.ShapeText {
 		shape.Color = theme.Colors.Neutrals.N1
 	}
+	if obj.Attributes.Shape.Value == d2target.ShapeSQLTable || obj.Attributes.Shape.Value == d2target.ShapeClass {
+		shape.PrimaryAccentColor = theme.Colors.B2
+		shape.SecondaryAccentColor = theme.Colors.AA2
+		shape.NeutralAccentColor = theme.Colors.Neutrals.N2
+	}
 }
 
 func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
@@ -76,19 +81,17 @@ func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
 	if obj.Attributes.Style.FontColor != nil {
 		shape.Color = obj.Attributes.Style.FontColor.Value
 	}
-	if obj.Attributes.Shape.Value != d2target.ShapeText {
-		if obj.Attributes.Style.Italic != nil {
-			shape.Italic, _ = strconv.ParseBool(obj.Attributes.Style.Italic.Value)
-		}
-		if obj.Attributes.Style.Bold != nil {
-			shape.Bold, _ = strconv.ParseBool(obj.Attributes.Style.Bold.Value)
-		}
-		if obj.Attributes.Style.Underline != nil {
-			shape.Underline, _ = strconv.ParseBool(obj.Attributes.Style.Underline.Value)
-		}
-		if obj.Attributes.Style.Font != nil {
-			shape.FontFamily = obj.Attributes.Style.Font.Value
-		}
+	if obj.Attributes.Style.Italic != nil {
+		shape.Italic, _ = strconv.ParseBool(obj.Attributes.Style.Italic.Value)
+	}
+	if obj.Attributes.Style.Bold != nil {
+		shape.Bold, _ = strconv.ParseBool(obj.Attributes.Style.Bold.Value)
+	}
+	if obj.Attributes.Style.Underline != nil {
+		shape.Underline, _ = strconv.ParseBool(obj.Attributes.Style.Underline.Value)
+	}
+	if obj.Attributes.Style.Font != nil {
+		shape.FontFamily = obj.Attributes.Style.Font.Value
 	}
 }
 

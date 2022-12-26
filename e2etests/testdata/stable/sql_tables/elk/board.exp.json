@@ -6,17 +6,17 @@
       "id": "users",
       "type": "sql_table",
       "pos": {
-        "x": 460,
+        "x": 12,
         "y": 12
       },
-      "width": 208,
+      "width": 268,
       "height": 216,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
-      "stroke": "#0A0F25",
+      "fill": "#0A0F25",
+      "stroke": "#FFFFFF",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -165,7 +165,7 @@
             "labelWidth": 77,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": "primary_key",
           "reference": ""
         }
       ],
@@ -180,13 +180,16 @@
       "labelWidth": 61,
       "labelHeight": 36,
       "zIndex": 0,
-      "level": 1
+      "level": 1,
+      "primaryAccentColor": "#0D32B2",
+      "secondaryAccentColor": "#4A6FF3",
+      "neutralAccentColor": "#676C7E"
     },
     {
       "id": "products",
       "type": "sql_table",
       "pos": {
-        "x": 276,
+        "x": 300,
         "y": 48
       },
       "width": 164,
@@ -195,8 +198,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
-      "stroke": "#0A0F25",
+      "fill": "#0A0F25",
+      "stroke": "#FFFFFF",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -332,13 +335,16 @@
       "labelWidth": 99,
       "labelHeight": 36,
       "zIndex": 0,
-      "level": 1
+      "level": 1,
+      "primaryAccentColor": "#0D32B2",
+      "secondaryAccentColor": "#4A6FF3",
+      "neutralAccentColor": "#676C7E"
     },
     {
       "id": "orders",
       "type": "sql_table",
       "pos": {
-        "x": 276,
+        "x": 300,
         "y": 328
       },
       "width": 164,
@@ -347,8 +353,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
-      "stroke": "#0A0F25",
+      "fill": "#0A0F25",
+      "stroke": "#FFFFFF",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -456,13 +462,16 @@
       "labelWidth": 74,
       "labelHeight": 36,
       "zIndex": 0,
-      "level": 1
+      "level": 1,
+      "primaryAccentColor": "#0D32B2",
+      "secondaryAccentColor": "#4A6FF3",
+      "neutralAccentColor": "#676C7E"
     },
     {
       "id": "shipments",
       "type": "sql_table",
       "pos": {
-        "x": 12,
+        "x": 484,
         "y": 48
       },
       "width": 244,
@@ -471,8 +480,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
-      "stroke": "#0A0F25",
+      "fill": "#0A0F25",
+      "stroke": "#FFFFFF",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -608,7 +617,10 @@
       "labelWidth": 116,
       "labelHeight": 36,
       "zIndex": 0,
-      "level": 1
+      "level": 1,
+      "primaryAccentColor": "#0D32B2",
+      "secondaryAccentColor": "#4A6FF3",
+      "neutralAccentColor": "#676C7E"
     }
   ],
   "connections": [
@@ -638,19 +650,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 564,
+          "x": 146,
           "y": 228
         },
         {
-          "x": 564,
+          "x": 146,
           "y": 278
         },
         {
-          "x": 399,
+          "x": 341,
           "y": 278
         },
         {
-          "x": 399,
+          "x": 341,
           "y": 328
         }
       ],
@@ -685,11 +697,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 358,
+          "x": 382,
           "y": 228
         },
         {
-          "x": 358,
+          "x": 382,
           "y": 328
         }
       ],
@@ -724,19 +736,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 134,
+          "x": 606,
           "y": 228
         },
         {
-          "x": 134,
+          "x": 606,
           "y": 278
         },
         {
-          "x": 317,
+          "x": 423,
           "y": 278
         },
         {
-          "x": 317,
+          "x": 423,
           "y": 328
         }
       ],

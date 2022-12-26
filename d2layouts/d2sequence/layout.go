@@ -69,6 +69,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 	layoutEdges, edgeOrder := getLayoutEdges(g, edgesToRemove)
 	g.Edges = layoutEdges
 	layoutObjects, objectOrder := getLayoutObjects(g, objectsToRemove)
+	// TODO this isn't a proper deletion because the objects still appear as children of the object
 	g.Objects = layoutObjects
 
 	if g.Root.IsSequenceDiagram() {

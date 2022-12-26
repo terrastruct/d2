@@ -225,6 +225,58 @@ diamond -> oval -> circle
 hexagon -> cloud
 `,
 		},
+		{
+			name: "sql_tables",
+			script: `users: {
+	shape: sql_table
+	id: int
+	name: string
+	email: string
+	password: string
+	last_login: datetime
+}
+
+products: {
+	shape: sql_table
+	id: int
+	price: decimal
+	sku: string
+	name: string
+}
+
+orders: {
+	shape: sql_table
+	id: int
+	user_id: int
+	product_id: int
+}
+
+shipments: {
+	shape: sql_table
+	id: int
+	order_id: int
+	tracking_number: string {constraint: primary_key}
+	status: string
+}
+
+users.id <-> orders.user_id
+products.id <-> orders.product_id
+shipments.order_id <-> orders.id`,
+		},
+		{
+			name: "class",
+			script: `manager: BatchManager {
+  shape: class
+  -num: int
+  -timeout: int
+  -pid
+
+  +getStatus(): Enum
+  +getJobs(): "Job[]"
+  +setTimeout(seconds int)
+}
+`,
+		},
 	}
 	runa(t, tcs)
 }
