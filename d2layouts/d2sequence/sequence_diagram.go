@@ -74,6 +74,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 			// Groups may have more nested groups
 			for len(queue) > 0 {
 				curr := queue[0]
+				curr.LabelPosition = go2.Pointer(string(label.InsideTopLeft))
 				groups = append(groups, curr)
 				queue = queue[1:]
 				queue = append(queue, curr.ChildrenArray...)
@@ -466,8 +467,8 @@ func (sd *sequenceDiagram) routeMessages() error {
 		} else {
 			return fmt.Errorf("could not find center of %s", message.Dst.AbsID())
 		}
-		isToDescendant := strings.HasPrefix(message.Dst.AbsID(), message.Src.AbsID())
-		isFromDescendant := strings.HasPrefix(message.Src.AbsID(), message.Dst.AbsID())
+		isToDescendant := strings.HasPrefix(message.Dst.AbsID(), message.Src.AbsID()+".")
+		isFromDescendant := strings.HasPrefix(message.Src.AbsID(), message.Dst.AbsID()+".")
 		isSelfMessage := message.Src == message.Dst
 
 		if isSelfMessage || isToDescendant || isFromDescendant {

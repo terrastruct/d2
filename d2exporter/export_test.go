@@ -8,12 +8,15 @@ import (
 
 	"cdr.dev/slog"
 
+	tassert "github.com/stretchr/testify/assert"
+
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
 
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2exporter"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
+	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/geo"
@@ -78,6 +81,23 @@ y: {shape: square}
 				if d.Shapes[0].Height != 230 {
 					t.Fatalf("expected height 230, got %v", d.Shapes[0].Height)
 				}
+			},
+		},
+		{
+			name: "sequence_group_position",
+
+			dsl: `hey {
+  shape: sequence_diagram
+	a
+	b
+  group: {
+    a -> b
+  }
+}
+`,
+			assertions: func(t *testing.T, d *d2target.Diagram) {
+				tassert.Equal(t, "hey.group", d.Shapes[3].ID)
+				tassert.Equal(t, "INSIDE_TOP_LEFT", d.Shapes[3].LabelPosition)
 			},
 		},
 	}
@@ -216,15 +236,15 @@ func run(t *testing.T, tc testCase) {
 	ruler, err := textmeasure.NewRuler()
 	assert.JSON(t, nil, err)
 
-	err = g.SetDimensions(nil, ruler)
+	err = g.SetDimensions(nil, ruler, nil)
 	assert.JSON(t, nil, err)
 
-	err = d2dagrelayout.Layout(ctx, g)
+	err = d2sequence.Layout(ctx, g, d2dagrelayout.Layout)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	got, err := d2exporter.Export(ctx, g, tc.themeID)
+	got, err := d2exporter.Export(ctx, g, tc.themeID, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

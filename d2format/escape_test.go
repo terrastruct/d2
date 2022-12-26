@@ -170,7 +170,7 @@ func TestEscapeUnquoted(t *testing.T) {
 		{
 			name: "null",
 			str:  `null`,
-			exp:  `\null`,
+			exp:  `'null'`,
 		},
 		{
 			name: "empty",

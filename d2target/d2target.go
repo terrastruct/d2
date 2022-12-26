@@ -10,6 +10,7 @@ import (
 
 	"oss.terrastruct.com/util-go/go2"
 
+	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
@@ -22,8 +23,9 @@ const (
 )
 
 type Diagram struct {
-	Name        string `json:"name"`
-	Description string `json:"description,omitempty"`
+	Name        string              `json:"name"`
+	Description string              `json:"description,omitempty"`
+	FontFamily  *d2fonts.FontFamily `json:"fontFamily,omitempty"`
 
 	Shapes      []Shape      `json:"shapes"`
 	Connections []Connection `json:"connections"`
@@ -144,6 +146,11 @@ type Shape struct {
 
 	ZIndex int `json:"zIndex"`
 	Level  int `json:"level"`
+
+	// These are used for special shapes, sql_table and class
+	PrimaryAccentColor   string `json:"primaryAccentColor,omitempty"`
+	SecondaryAccentColor string `json:"secondaryAccentColor,omitempty"`
+	NeutralAccentColor   string `json:"neutralAccentColor,omitempty"`
 }
 
 func (s *Shape) SetType(t string) {
@@ -207,6 +214,7 @@ type Connection struct {
 	StrokeDash  float64 `json:"strokeDash"`
 	StrokeWidth int     `json:"strokeWidth"`
 	Stroke      string  `json:"stroke"`
+	Fill        string  `json:"fill,omitempty"`
 
 	Text
 	LabelPosition   string  `json:"labelPosition"`

@@ -392,13 +392,22 @@ func (obj *Object) GetFill(theme *d2themes.Theme) string {
 		return theme.Colors.Neutrals.N5
 	}
 
+	if strings.EqualFold(shape, d2target.ShapeSQLTable) || strings.EqualFold(shape, d2target.ShapeClass) {
+		return theme.Colors.Neutrals.N1
+	}
+
 	return theme.Colors.Neutrals.N7
 }
 
 func (obj *Object) GetStroke(theme *d2themes.Theme, dashGapSize interface{}) string {
 	shape := obj.Attributes.Shape.Value
-	if strings.EqualFold(shape, d2target.ShapeCode) || strings.EqualFold(shape, d2target.ShapeClass) || strings.EqualFold(shape, d2target.ShapeSQLTable) {
+	if strings.EqualFold(shape, d2target.ShapeCode) ||
+		strings.EqualFold(shape, d2target.ShapeText) {
 		return theme.Colors.Neutrals.N1
+	}
+	if strings.EqualFold(shape, d2target.ShapeClass) ||
+		strings.EqualFold(shape, d2target.ShapeSQLTable) {
+		return theme.Colors.Neutrals.N7
 	}
 	if dashGapSize != 0.0 {
 		return theme.Colors.B2
@@ -432,7 +441,14 @@ func (obj *Object) AbsIDArray() []string {
 }
 
 func (obj *Object) Text() *d2target.MText {
-	isBold := !obj.IsContainer()
+	isBold := !obj.IsContainer() && obj.Attributes.Shape.Value != "text"
+	isItalic := false
+	if obj.Attributes.Style.Bold != nil && obj.Attributes.Style.Bold.Value == "true" {
+		isBold = true
+	}
+	if obj.Attributes.Style.Italic != nil && obj.Attributes.Style.Italic.Value == "true" {
+		isItalic = true
+	}
 	fontSize := d2fonts.FONT_SIZE_M
 	if obj.OuterSequenceDiagram() == nil {
 		if obj.IsContainer() {
@@ -448,11 +464,14 @@ func (obj *Object) Text() *d2target.MText {
 	if obj.Class != nil || obj.SQLTable != nil {
 		fontSize = d2fonts.FONT_SIZE_XL
 	}
+	if obj.Class != nil {
+		isBold = false
+	}
 	return &d2target.MText{
 		Text:     obj.Attributes.Label.Value,
 		FontSize: fontSize,
 		IsBold:   isBold,
-		IsItalic: false,
+		IsItalic: isItalic,
 		Language: obj.Attributes.Language,
 		Shape:    obj.Attributes.Shape.Value,
 
@@ -822,13 +841,13 @@ func findMeasured(mtexts []*d2target.MText, t1 *d2target.MText) *d2target.TextDi
 	return nil
 }
 
-func getMarkdownDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2target.MText) (*d2target.TextDimensions, error) {
+func getMarkdownDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2target.MText, fontFamily *d2fonts.FontFamily) (*d2target.TextDimensions, error) {
 	if dims := findMeasured(mtexts, t); dims != nil {
 		return dims, nil
 	}
 
 	if ruler != nil {
-		width, height, err := textmeasure.MeasureMarkdown(t.Text, ruler)
+		width, height, err := textmeasure.MeasureMarkdown(t.Text, ruler, fontFamily)
 		if err != nil {
 			return nil, err
 		}
@@ -838,7 +857,7 @@ func getMarkdownDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t
 	return nil, fmt.Errorf("text not pre-measured and no ruler provided")
 }
 
-func getTextDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2target.MText) *d2target.TextDimensions {
+func getTextDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2target.MText, fontFamily *d2fonts.FontFamily) *d2target.TextDimensions {
 	if dims := findMeasured(mtexts, t); dims != nil {
 		return dims
 	}
@@ -858,7 +877,10 @@ func getTextDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2
 			} else if t.IsItalic {
 				style = d2fonts.FONT_STYLE_ITALIC
 			}
-			w, h = ruler.Measure(d2fonts.SourceSansPro.Font(t.FontSize, style), t.Text)
+			if fontFamily == nil {
+				fontFamily = go2.Pointer(d2fonts.SourceSansPro)
+			}
+			w, h = ruler.Measure(fontFamily.Font(t.FontSize, style), t.Text)
 		}
 		return d2target.NewTextDimensions(w, h)
 	}
@@ -867,13 +889,13 @@ func getTextDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2
 }
 
 func appendTextDedup(texts []*d2target.MText, t *d2target.MText) []*d2target.MText {
-	if getTextDimensions(texts, nil, t) == nil {
+	if getTextDimensions(texts, nil, t, nil) == nil {
 		return append(texts, t)
 	}
 	return texts
 }
 
-func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler) error {
+func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, fontFamily *d2fonts.FontFamily) error {
 	for _, obj := range g.Objects {
 		obj.Box = &geo.Box{}
 		// TODO fix edge cases for unnamed class etc
@@ -893,16 +915,20 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 					return err
 				}
 				dims = d2target.NewTextDimensions(width, height)
-			} else {
+			} else if obj.Attributes.Language != "" {
 				var err error
-				dims, err = getMarkdownDimensions(mtexts, ruler, obj.Text())
+				dims, err = getMarkdownDimensions(mtexts, ruler, obj.Text(), fontFamily)
 				if err != nil {
 					return err
 				}
+			} else {
+				dims = getTextDimensions(mtexts, ruler, obj.Text(), fontFamily)
 			}
 			innerLabelPadding = 0
+		} else if obj.Attributes.Shape.Value == d2target.ShapeClass {
+			dims = getTextDimensions(mtexts, ruler, obj.Text(), go2.Pointer(d2fonts.SourceCodePro))
 		} else {
-			dims = getTextDimensions(mtexts, ruler, obj.Text())
+			dims = getTextDimensions(mtexts, ruler, obj.Text(), fontFamily)
 		}
 		if dims == nil {
 			if obj.Attributes.Shape.Value == d2target.ShapeImage {
@@ -956,7 +982,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			maxWidth := dims.Width
 
 			for _, f := range obj.Class.Fields {
-				fdims := getTextDimensions(mtexts, ruler, f.Text())
+				fdims := getTextDimensions(mtexts, ruler, f.Text(), go2.Pointer(d2fonts.SourceCodePro))
 				if fdims == nil {
 					return fmt.Errorf("dimensions for class field %#v not found", f.Text())
 				}
@@ -966,7 +992,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 				}
 			}
 			for _, m := range obj.Class.Methods {
-				mdims := getTextDimensions(mtexts, ruler, m.Text())
+				mdims := getTextDimensions(mtexts, ruler, m.Text(), go2.Pointer(d2fonts.SourceCodePro))
 				if mdims == nil {
 					return fmt.Errorf("dimensions for class method %#v not found", m.Text())
 				}
@@ -985,30 +1011,51 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 			if anyRowText != nil {
 				// 10px of padding top and bottom so text doesn't look squished
-				rowHeight := getTextDimensions(mtexts, ruler, anyRowText).Height + 20
+				rowHeight := getTextDimensions(mtexts, ruler, anyRowText, go2.Pointer(d2fonts.SourceCodePro)).Height + 20
 				obj.Height = float64(rowHeight * (len(obj.Class.Fields) + len(obj.Class.Methods) + 2))
 			}
 			// Leave room for padding
 			obj.Width = float64(maxWidth + 100)
 
 		case d2target.ShapeSQLTable:
-			maxWidth := dims.Width
+			maxNameWidth := 0
+			maxTypeWidth := 0
+			constraintWidth := 0
 
-			for _, c := range obj.SQLTable.Columns {
-				cdims := getTextDimensions(mtexts, ruler, c.Text())
-				if cdims == nil {
-					return fmt.Errorf("dimensions for column %#v not found", c.Text())
+			for i := range obj.SQLTable.Columns {
+				// Note: we want to set dimensions of actual column not the for loop copy of the struct
+				c := &obj.SQLTable.Columns[i]
+				ctexts := c.Texts()
+
+				nameDims := getTextDimensions(mtexts, ruler, ctexts[0], fontFamily)
+				if nameDims == nil {
+					return fmt.Errorf("dimensions for sql_table name %#v not found", ctexts[0].Text)
 				}
-				lineWidth := cdims.Width
-				if maxWidth < lineWidth {
-					maxWidth = lineWidth
+				c.Name.LabelWidth = nameDims.Width
+				c.Name.LabelHeight = nameDims.Height
+				if maxNameWidth < nameDims.Width {
+					maxNameWidth = nameDims.Width
+				}
+
+				typeDims := getTextDimensions(mtexts, ruler, ctexts[1], fontFamily)
+				if typeDims == nil {
+					return fmt.Errorf("dimensions for sql_table type %#v not found", ctexts[1].Text)
+				}
+				c.Type.LabelWidth = typeDims.Width
+				c.Type.LabelHeight = typeDims.Height
+				if maxTypeWidth < typeDims.Width {
+					maxTypeWidth = typeDims.Width
+				}
+
+				if c.Constraint != "" {
+					// covers UNQ constraint with padding
+					constraintWidth = 60
 				}
 			}
 
 			// The rows get padded a little due to header font being larger than row font
 			obj.Height = float64(dims.Height * (len(obj.SQLTable.Columns) + 1))
-			// Leave room for padding
-			obj.Width = float64(maxWidth + 100)
+			obj.Width = float64(d2target.NamePadding + maxNameWidth + d2target.TypePadding + maxTypeWidth + d2target.TypePadding + constraintWidth)
 
 		case d2target.ShapeText, d2target.ShapeCode:
 		}
@@ -1025,7 +1072,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		for _, label := range endpointLabels {
 			t := edge.Text()
 			t.Text = label
-			dims := getTextDimensions(mtexts, ruler, t)
+			dims := getTextDimensions(mtexts, ruler, t, fontFamily)
 			edge.MinWidth += dims.Width
 			// Some padding as it's not totally near the end
 			edge.MinHeight += dims.Height + 5
@@ -1035,7 +1082,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			continue
 		}
 
-		dims := getTextDimensions(mtexts, ruler, edge.Text())
+		dims := getTextDimensions(mtexts, ruler, edge.Text(), fontFamily)
 		if dims == nil {
 			return fmt.Errorf("dimensions for edge label %#v not found", edge.Text())
 		}
@@ -1063,7 +1110,9 @@ func (g *Graph) Texts() []*d2target.MText {
 			}
 		} else if obj.SQLTable != nil {
 			for _, column := range obj.SQLTable.Columns {
-				texts = appendTextDedup(texts, column.Text())
+				for _, t := range column.Texts() {
+					texts = appendTextDedup(texts, t)
+				}
 			}
 		}
 	}
@@ -1149,11 +1198,31 @@ var StyleKeywords = map[string]struct{}{
 	"filled":   {},
 }
 
+// TODO maybe autofmt should allow other values, and transform them to conform
+// e.g. left-center becomes center-left
+var NearConstantsArray = []string{
+	"top-left",
+	"top-center",
+	"top-right",
+
+	"center-left",
+	"center-right",
+
+	"bottom-left",
+	"bottom-center",
+	"bottom-right",
+}
+var NearConstants map[string]struct{}
+
 func init() {
 	for k, v := range StyleKeywords {
 		ReservedKeywords[k] = v
 	}
 	for k, v := range ReservedKeywordHolders {
 		ReservedKeywords[k] = v
+	}
+	NearConstants = make(map[string]struct{}, len(NearConstantsArray))
+	for _, k := range NearConstantsArray {
+		NearConstants[k] = struct{}{}
 	}
 }

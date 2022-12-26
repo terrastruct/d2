@@ -1,0 +1,39 @@
+<!--
+Wix documentation is nonexistent for v4. What exists is largely out of date and inconsistent.
+This file was pieced together from:
+1. https://www.firegiant.com/wix/tutorial/getting-started/
+  - This is for v3, I used wix convert to convert to v4
+2. https://wixtoolset.org/docs/reference/schema/wxs/
+3. Googling with trial and error
+-->
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+    <Package Name="D2" UpgradeCode="ac84fee7-eb67-4f5d-a08d-adef69538690" Language="1033" Codepage="utf-8" Version="$(var.D2Version)" Manufacturer="Terrastruct, Inc." InstallerVersion="200">
+        <SummaryInformation Keywords="Installer" Description="The D2 Installer" Manufacturer="Terrastruct, Inc." Codepage="1252" />
+        <Icon Id="d2.ico" SourceFile="d2.ico" />
+        <Property Id="ARPPRODUCTICON" Value="d2.ico" />
+
+        <Media Id="1" Cabinet="D2.cab" EmbedCab="yes" />
+
+        <Feature Id="Complete" Level="1">
+            <ComponentRef Id="Executable" />
+        </Feature>
+
+        <MajorUpgrade AllowSameVersionUpgrades='yes' DowngradeErrorMessage="A later version of [ProductName] is already installed. Setup will now exit."/>
+
+        <StandardDirectory Id="ProgramFiles64Folder">
+            <Directory Id="INSTALLDIR" Name="D2">
+                <Component Id="Executable" Guid="1090d036-c985-461f-94f6-3121dbcfcb48">
+                    <File Id="D2EXE" Name="d2.exe" Source="d2.exe" KeyPath="yes" />
+                    <Environment
+                      Id="D2PathEntry"
+                      Action="set"
+                      Part="last"
+                      Name="PATH"
+                      Permanent="no"
+                      System="yes"
+                      Value="[INSTALLDIR]" />
+                </Component>
+            </Directory>
+        </StandardDirectory>
+    </Package>
+</Wix>

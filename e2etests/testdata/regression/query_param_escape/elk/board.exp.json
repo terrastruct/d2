@@ -1,0 +1,58 @@
+{
+  "name": "",
+  "fontFamily": "SourceSansPro",
+  "shapes": [
+    {
+      "id": "my network",
+      "type": "",
+      "pos": {
+        "x": 12,
+        "y": 12
+      },
+      "width": 190,
+      "height": 152,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#F7F8FE",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": {
+        "Scheme": "https",
+        "Opaque": "",
+        "User": null,
+        "Host": "icons.terrastruct.com",
+        "Path": "/infra/019-network.svg",
+        "RawPath": "",
+        "ForceQuery": false,
+        "RawQuery": "fuga=1&hoge",
+        "Fragment": "",
+        "RawFragment": ""
+      },
+      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "my network",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 90,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
+    }
+  ],
+  "connections": []
+}

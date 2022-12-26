@@ -198,8 +198,30 @@
         "sql_table": {
           "columns": [
             {
-              "name": "x",
-              "type": "",
+              "name": {
+                "label": "x",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "type": {
+                "label": "",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
               "constraint": "",
               "reference": ""
             }

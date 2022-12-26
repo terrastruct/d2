@@ -1,5 +1,6 @@
 {
   "name": "",
+  "fontFamily": "SourceSansPro",
   "shapes": [
     {
       "id": "markdown",
@@ -54,8 +55,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
-      "stroke": "#0D32B2",
+      "fill": "transparent",
+      "stroke": "#0A0F25",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -73,7 +74,7 @@
       "language": "markdown",
       "color": "#0A0F25",
       "italic": false,
-      "bold": true,
+      "bold": false,
       "underline": false,
       "labelWidth": 459,
       "labelHeight": 48,

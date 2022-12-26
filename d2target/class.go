@@ -6,6 +6,11 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 )
 
+const (
+	PrefixPadding = 10
+	PrefixWidth   = 20
+)
+
 type Class struct {
 	Fields  []ClassField  `json:"fields"`
 	Methods []ClassMethod `json:"methods"`
@@ -27,6 +32,17 @@ func (cf ClassField) Text() *MText {
 	}
 }
 
+func (cf ClassField) VisibilityToken() string {
+	switch cf.Visibility {
+	case "protected":
+		return "#"
+	case "private":
+		return "-"
+	default:
+		return "+"
+	}
+}
+
 type ClassMethod struct {
 	Name       string `json:"name"`
 	Return     string `json:"return"`
@@ -40,5 +56,16 @@ func (cm ClassMethod) Text() *MText {
 		IsBold:   false,
 		IsItalic: false,
 		Shape:    "class",
+	}
+}
+
+func (cm ClassMethod) VisibilityToken() string {
+	switch cm.Visibility {
+	case "protected":
+		return "#"
+	case "private":
+		return "-"
+	default:
+		return "+"
 	}
 }

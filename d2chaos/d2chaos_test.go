@@ -120,7 +120,7 @@ func test(t *testing.T, textPath, text string) {
 		ruler, err := textmeasure.NewRuler()
 		assert.Nil(t, err)
 
-		err = g.SetDimensions(nil, ruler)
+		err = g.SetDimensions(nil, ruler, nil)
 		assert.Nil(t, err)
 
 		err = d2dagrelayout.Layout(ctx, g)
@@ -128,7 +128,7 @@ func test(t *testing.T, textPath, text string) {
 			t.Fatal(err)
 		}
 
-		_, err = d2exporter.Export(ctx, g, 0)
+		_, err = d2exporter.Export(ctx, g, 0, nil)
 		if err != nil {
 			t.Fatal(err)
 		}

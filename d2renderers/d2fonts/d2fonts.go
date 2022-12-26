@@ -1,6 +1,7 @@
 // d2fonts holds fonts for renderings
 
 // TODO write a script to do this as part of CI
+// Currently using an online converter: https://dopiaza.org/tools/datauri/index.php
 package d2fonts
 
 import (
@@ -8,7 +9,7 @@ import (
 	"strings"
 )
 
-type FontFamily int
+type FontFamily string
 type FontStyle string
 
 type Font struct {
@@ -38,8 +39,9 @@ const (
 	FONT_STYLE_BOLD    FontStyle = "bold"
 	FONT_STYLE_ITALIC  FontStyle = "italic"
 
-	SourceSansPro FontFamily = iota
-	SourceCodePro FontFamily = iota
+	SourceSansPro FontFamily = "SourceSansPro"
+	SourceCodePro FontFamily = "SourceCodePro"
+	HandDrawn     FontFamily = "HandDrawn"
 )
 
 var FontSizes = []int{
@@ -61,6 +63,7 @@ var FontStyles = []FontStyle{
 var FontFamilies = []FontFamily{
 	SourceSansPro,
 	SourceCodePro,
+	HandDrawn,
 }
 
 //go:embed encoded/SourceSansPro-Regular.txt
@@ -74,6 +77,12 @@ var sourceSansProItalicBase64 string
 
 //go:embed encoded/SourceCodePro-Regular.txt
 var sourceCodeProRegularBase64 string
+
+//go:embed encoded/ArchitectsDaughter-Regular.txt
+var architectsDaughterRegularBase64 string
+
+//go:embed encoded/FuzzyBubbles-Bold.txt
+var fuzzyBubblesBoldBase64 string
 
 //go:embed ttf/*
 var fontFacesFS embed.FS
@@ -99,6 +108,19 @@ func init() {
 			Family: SourceCodePro,
 			Style:  FONT_STYLE_REGULAR,
 		}: sourceCodeProRegularBase64,
+		{
+			Family: HandDrawn,
+			Style:  FONT_STYLE_REGULAR,
+		}: architectsDaughterRegularBase64,
+		{
+			Family: HandDrawn,
+			Style:  FONT_STYLE_ITALIC,
+			// This font has no italic, so just reuse regular
+		}: architectsDaughterRegularBase64,
+		{
+			Family: HandDrawn,
+			Style:  FONT_STYLE_BOLD,
+		}: fuzzyBubblesBoldBase64,
 	}
 
 	for k, v := range FontEncodings {
@@ -137,5 +159,25 @@ func init() {
 	FontFaces[Font{
 		Family: SourceSansPro,
 		Style:  FONT_STYLE_ITALIC,
+	}] = b
+	b, err = fontFacesFS.ReadFile("ttf/ArchitectsDaughter-Regular.ttf")
+	if err != nil {
+		panic(err)
+	}
+	FontFaces[Font{
+		Family: HandDrawn,
+		Style:  FONT_STYLE_REGULAR,
+	}] = b
+	FontFaces[Font{
+		Family: HandDrawn,
+		Style:  FONT_STYLE_ITALIC,
+	}] = b
+	b, err = fontFacesFS.ReadFile("ttf/FuzzyBubbles-Bold.ttf")
+	if err != nil {
+		panic(err)
+	}
+	FontFaces[Font{
+		Family: HandDrawn,
+		Style:  FONT_STYLE_BOLD,
 	}] = b
 }

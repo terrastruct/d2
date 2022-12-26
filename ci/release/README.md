@@ -2,7 +2,7 @@
 
 ## _install.sh
 
-The template for the install script in the root of the repository.
+The template for the install script in the root of the d2 repository.
 
 ### gen_install.sh
 
@@ -23,12 +23,12 @@ it depends on from ../sub/lib.
 > variables as we must compile d2 directly on each release target to include dagre.
 > See https://github.com/terrastruct/d2/issues/31
 
-Use `--host-only` to build only the release for the host's OS-ARCH pair.
+Use `--host-only` to build only the release for the host's `$OS-$ARCH` pair.
 
 ### build_docker.sh
 
 Helper script called by build.sh to build D2 on each linux runner inside Docker.
-The Dockerfile is in ./builders/Dockerfile
+The Dockerfile is in ./linux/Dockerfile
 
 ### _build.sh
 

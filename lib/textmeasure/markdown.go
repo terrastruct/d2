@@ -66,8 +66,6 @@ var HeaderToFontSize = map[string]int{
 	"h6": FONT_SIZE_H6,
 }
 
-var HeaderFonts map[string]d2fonts.Font
-
 func RenderMarkdown(m string) (string, error) {
 	var output bytes.Buffer
 	if err := markdownRenderer.Convert([]byte(m), &output); err != nil {
@@ -77,11 +75,6 @@ func RenderMarkdown(m string) (string, error) {
 }
 
 func init() {
-	HeaderFonts = make(map[string]d2fonts.Font)
-	for header, fontSize := range HeaderToFontSize {
-		HeaderFonts[header] = d2fonts.SourceSansPro.Font(fontSize, d2fonts.FONT_STYLE_BOLD)
-	}
-
 	markdownRenderer = goldmark.New(
 		goldmark.WithRendererOptions(
 			goldmarkHtml.WithUnsafe(),
@@ -90,7 +83,7 @@ func init() {
 	)
 }
 
-func MeasureMarkdown(mdText string, ruler *Ruler) (width, height int, err error) {
+func MeasureMarkdown(mdText string, ruler *Ruler, fontFamily *d2fonts.FontFamily) (width, height int, err error) {
 	render, err := RenderMarkdown(mdText)
 	if err != nil {
 		return width, height, err
@@ -111,11 +104,9 @@ func MeasureMarkdown(mdText string, ruler *Ruler) (width, height int, err error)
 		}()
 	}
 
-	font := d2fonts.SourceSansPro.Font(MarkdownFontSize, d2fonts.FONT_STYLE_REGULAR)
-
 	// TODO consider setting a max width + (manual) text wrapping
 	bodyNode := doc.Find("body").First().Nodes[0]
-	bodyAttrs := ruler.measureNode(0, bodyNode, font)
+	bodyAttrs := ruler.measureNode(0, bodyNode, fontFamily, MarkdownFontSize, d2fonts.FONT_STYLE_REGULAR)
 
 	return int(math.Ceil(bodyAttrs.width)), int(math.Ceil(bodyAttrs.height)), nil
 }
@@ -201,7 +192,12 @@ func (b *blockAttrs) isNotEmpty() bool {
 }
 
 // measures node dimensions to match rendering with styles in github-markdown.css
-func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) blockAttrs {
+func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.FontFamily, fontSize int, fontStyle d2fonts.FontStyle) blockAttrs {
+	if fontFamily == nil {
+		fontFamily = go2.Pointer(d2fonts.SourceSansPro)
+	}
+	font := fontFamily.Font(fontSize, fontStyle)
+
 	var parentElementType string
 	if n.Parent != nil && n.Parent.Type == html.ElementNode {
 		parentElementType = n.Parent.Data
@@ -253,19 +249,20 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) bloc
 		isCode := false
 		switch n.Data {
 		case "h1", "h2", "h3", "h4", "h5", "h6":
-			font = HeaderFonts[n.Data]
+			fontSize = HeaderToFontSize[n.Data]
+			fontStyle = d2fonts.FONT_STYLE_BOLD
 			originalLineHeight := ruler.LineHeightFactor
 			ruler.LineHeightFactor = LineHeight_h
 			defer func() {
 				ruler.LineHeightFactor = originalLineHeight
 			}()
 		case "em":
-			font.Style = d2fonts.FONT_STYLE_ITALIC
+			fontStyle = d2fonts.FONT_STYLE_ITALIC
 		case "b", "strong":
-			font.Style = d2fonts.FONT_STYLE_BOLD
+			fontStyle = d2fonts.FONT_STYLE_BOLD
 		case "pre", "code":
-			font.Family = d2fonts.SourceCodePro
-			font.Style = d2fonts.FONT_STYLE_REGULAR
+			fontFamily = go2.Pointer(d2fonts.SourceCodePro)
+			fontStyle = d2fonts.FONT_STYLE_REGULAR
 			isCode = true
 		}
 
@@ -280,7 +277,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) bloc
 			// first create blocks from combined inline elements, then combine all blocks
 			// current will be non-nil while inline elements are being combined into a block
 			for child := n.FirstChild; child != nil; child = child.NextSibling {
-				childBlock := ruler.measureNode(depth+1, child, font)
+				childBlock := ruler.measureNode(depth+1, child, fontFamily, fontSize, fontStyle)
 
 				if child.Type == html.ElementNode && isBlockElement(child.Data) {
 					if current != nil {
@@ -354,7 +351,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) bloc
 
 		switch n.Data {
 		case "blockquote":
-			block.width += (2*PaddingLR_blockquote_em + BorderLeft_blockquote_em) * float64(font.Size)
+			block.width += (2*PaddingLR_blockquote_em + BorderLeft_blockquote_em) * float64(fontSize)
 			block.marginBottom = go2.Max(block.marginBottom, MarginBottom_blockquote)
 		case "p":
 			if parentElementType == "li" {
@@ -366,7 +363,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) bloc
 			block.marginBottom = go2.Max(block.marginBottom, MarginBottom_h)
 			switch n.Data {
 			case "h1", "h2":
-				block.height += PaddingBottom_h1_h2_em * float64(font.Size)
+				block.height += PaddingBottom_h1_h2_em * float64(fontSize)
 			}
 		case "li":
 			block.width += PaddingLeft_ul_ol
@@ -386,8 +383,8 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, font d2fonts.Font) bloc
 			block.marginBottom = go2.Max(block.marginBottom, MarginBottom_pre)
 		case "code":
 			if parentElementType != "pre" {
-				block.width += 2 * PaddingLeftRight_code_em * float64(font.Size)
-				block.height += 2 * PaddingTopBottom_code_em * float64(font.Size)
+				block.width += 2 * PaddingLeftRight_code_em * float64(fontSize)
+				block.height += 2 * PaddingTopBottom_code_em * float64(fontSize)
 			}
 		case "hr":
 			block.height += Height_hr

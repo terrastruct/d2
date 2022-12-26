@@ -840,7 +840,7 @@ a -> md -> b
 	name: string
 	email: string
 	password: string
-	last_login: datetime
+	last_login: datetime { constraint: primary_key }
 }
 
 products: {
@@ -917,12 +917,13 @@ y: {
   }
 }
 
-x -> y: {
+x -> y: in style {
   style: {
     stroke: green
     opacity: 0.5
     stroke-width: 2
     stroke-dash: 5
+	fill: lavender
   }
 }
 `,
@@ -1041,6 +1042,7 @@ size S -> size M: custom 15 {
 }
 size XXXL -> custom 64: custom 48 {
 	style.font-size: 48
+	style.fill: lavender
 }
 `,
 		}, {
@@ -1481,6 +1483,147 @@ a.note: "just\na\nlong\nnote\nhere"`,
 			script: `shape: sequence_diagram
 alice -> bob: what does it mean to be well-adjusted
 bob -> alice: The ability to play bridge or golf as if they were games
+`,
+		},
+		{
+			name: "markdown_stroke_fill",
+			script: `
+container.md: |md
+# a header
+
+a line of text and an
+
+	{
+		indented: "block",
+		of: "json",
+	}
+
+walk into a bar.
+| {
+	style.stroke: darkorange
+}
+
+container -> no container
+
+no container: |md
+they did it in style
+|
+
+no container.style: {
+	stroke: red
+	fill: "#CEEDEE"
+}
+`,
+		},
+		{
+			name: "overlapping_image_container_labels",
+			script: `
+root: {
+	shape: image
+	icon: https://icons.terrastruct.com/essentials/004-picture.svg
+}
+
+root -> container.root
+
+container: {
+	root: {
+		shape: image
+		icon: https://icons.terrastruct.com/essentials/004-picture.svg
+	}
+
+	left: {
+		root: {
+			shape: image
+			icon: https://icons.terrastruct.com/essentials/004-picture.svg
+		}
+		inner: {
+			left: {
+				shape: image
+				icon: https://icons.terrastruct.com/essentials/004-picture.svg
+			}
+			right: {
+				shape: image
+				icon: https://icons.terrastruct.com/essentials/004-picture.svg
+			}
+		}
+		root -> inner.left: {
+			label: to inner left
+		}
+		root -> inner.right: {
+			label: to inner right
+		}
+	}
+
+	right: {
+		root: {
+			shape: image
+			icon: https://icons.terrastruct.com/essentials/004-picture.svg
+		}
+		inner: {
+			left: {
+				shape: image
+				icon: https://icons.terrastruct.com/essentials/004-picture.svg
+			}
+			right: {
+				shape: image
+				icon: https://icons.terrastruct.com/essentials/004-picture.svg
+			}
+		}
+		root -> inner.left: {
+			label: to inner left
+		}
+		root -> inner.right: {
+			label: to inner right
+		}
+	}
+
+	root -> left.root: {
+		label: to left container root
+	}
+
+	root -> right.root: {
+		label: to right container root
+	}
+}
+`,
+		},
+		{
+			name: "constant_near_stress",
+			script: `x -> y
+The top of the mountain: { shape: text; near: top-center }
+Joe: { shape: person; near: center-left }
+Donald: { shape: person; near: center-right }
+bottom: |md
+	# Cats, no less liquid than their shadows, offer no angles to the wind.
+
+  If we can't fix it, it ain't broke.
+
+  Dieters live life in the fasting lane.
+| { near: bottom-center }
+i am top left: { shape: text; near: top-left }
+i am top right: { shape: text; near: top-right }
+i am bottom left: { shape: text; near: bottom-left }
+i am bottom right: { shape: text; near: bottom-right }
+`,
+		},
+		{
+			name: "constant_near_title",
+			script: `title: |md
+  # A winning strategy
+| { near: top-center }
+
+poll the people -> results
+results -> unfavorable -> poll the people
+results -> favorable -> will of the people
+`,
+		},
+		{
+			name: "text_font_sizes",
+			script: `bear: { shape: text; style.font-size: 22; style.bold: true }
+mama bear: { shape: text; style.font-size: 28; style.italic: true }
+papa bear: { shape: text; style.font-size: 32; style.underline: true }
+mama bear -> bear
+papa bear -> bear
 `,
 		},
 	}
