@@ -741,9 +741,11 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		} else if targetShape.Italic {
 			fontClass += "-italic"
 		}
+		if targetShape.Underline {
+			fontClass += " text-underline"
+		}
 
-		switch targetShape.Type {
-		case d2target.ShapeCode:
+		if targetShape.Type == d2target.ShapeCode {
 			lexer := lexers.Get(targetShape.Language)
 			if lexer == nil {
 				return labelMask, fmt.Errorf("code snippet lexer for %s not found", targetShape.Language)
@@ -784,38 +786,36 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				fmt.Fprint(writer, "</text>")
 			}
 			fmt.Fprintf(writer, "</g></g>")
-		case d2target.ShapeText:
-			if targetShape.Language == "latex" {
-				render, err := d2latex.Render(targetShape.Label)
-				if err != nil {
-					return labelMask, err
-				}
-				fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
-				fmt.Fprint(writer, render)
-				fmt.Fprintf(writer, "</g>")
-			} else {
-				render, err := textmeasure.RenderMarkdown(targetShape.Label)
-				if err != nil {
-					return labelMask, err
-				}
-				fmt.Fprintf(writer, `<g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="%f" y="%f" width="%d" height="%d">`,
-					box.TopLeft.X, box.TopLeft.Y, targetShape.Width, targetShape.Height,
-				)
-				// we need the self closing form in this svg/xhtml context
-				render = strings.ReplaceAll(render, "<hr>", "<hr />")
-
-				var mdStyle string
-				if targetShape.Fill != "" {
-					mdStyle = fmt.Sprintf("background-color:%s;", targetShape.Fill)
-				}
-				if targetShape.Stroke != "" {
-					mdStyle += fmt.Sprintf("color:%s;", targetShape.Stroke)
-				}
-
-				fmt.Fprintf(writer, `<div xmlns="http://www.w3.org/1999/xhtml" class="md" style="%s">%v</div>`, mdStyle, render)
-				fmt.Fprint(writer, `</foreignObject></g>`)
+		} else if targetShape.Type == d2target.ShapeText && targetShape.Language == "latex" {
+			render, err := d2latex.Render(targetShape.Label)
+			if err != nil {
+				return labelMask, err
 			}
-		default:
+			fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
+			fmt.Fprint(writer, render)
+			fmt.Fprintf(writer, "</g>")
+		} else if targetShape.Type == d2target.ShapeText && targetShape.Language != "" {
+			render, err := textmeasure.RenderMarkdown(targetShape.Label)
+			if err != nil {
+				return labelMask, err
+			}
+			fmt.Fprintf(writer, `<g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="%f" y="%f" width="%d" height="%d">`,
+				box.TopLeft.X, box.TopLeft.Y, targetShape.Width, targetShape.Height,
+			)
+			// we need the self closing form in this svg/xhtml context
+			render = strings.ReplaceAll(render, "<hr>", "<hr />")
+
+			var mdStyle string
+			if targetShape.Fill != "" {
+				mdStyle = fmt.Sprintf("background-color:%s;", targetShape.Fill)
+			}
+			if targetShape.Stroke != "" {
+				mdStyle += fmt.Sprintf("color:%s;", targetShape.Stroke)
+			}
+
+			fmt.Fprintf(writer, `<div xmlns="http://www.w3.org/1999/xhtml" class="md" style="%s">%v</div>`, mdStyle, render)
+			fmt.Fprint(writer, `</foreignObject></g>`)
+		} else {
 			fontColor := "black"
 			if targetShape.Color != "" {
 				fontColor = targetShape.Color
@@ -903,6 +903,7 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 
 	triggers := []string{
 		`class="text"`,
+		`class="text `,
 		`class="md"`,
 	}
 
@@ -917,6 +918,20 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 	src: url("%s");
 }`,
 				d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR)])
+			break
+		}
+	}
+
+	triggers = []string{
+		`text-underline`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			buf.WriteString(`
+.text-underline {
+  text-decoration: underline;
+}`)
 			break
 		}
 	}

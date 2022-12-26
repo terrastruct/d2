@@ -1617,6 +1617,15 @@ results -> unfavorable -> poll the people
 results -> favorable -> will of the people
 `,
 		},
+		{
+			name: "text_font_sizes",
+			script: `bear: { shape: text; style.font-size: 22; style.bold: true }
+mama bear: { shape: text; style.font-size: 28; style.italic: true }
+papa bear: { shape: text; style.font-size: 32; style.underline: true }
+mama bear -> bear
+papa bear -> bear
+`,
+		},
 	}
 
 	runa(t, tcs)
