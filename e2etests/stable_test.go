@@ -1588,7 +1588,7 @@ container: {
 `,
 		},
 		{
-			name: "constant_near",
+			name: "constant_near_stress",
 			script: `x -> y
 The top of the mountain: { shape: text; near: top-center }
 Joe: { shape: person; near: center-left }
@@ -1604,6 +1604,17 @@ i am top left: { shape: text; near: top-left }
 i am top right: { shape: text; near: top-right }
 i am bottom left: { shape: text; near: bottom-left }
 i am bottom right: { shape: text; near: bottom-right }
+`,
+		},
+		{
+			name: "constant_near_title",
+			script: `title: |md
+  # A winning strategy
+| { near: top-center }
+
+poll the people -> results
+results -> unfavorable -> poll the people
+results -> favorable -> will of the people
 `,
 		},
 	}
