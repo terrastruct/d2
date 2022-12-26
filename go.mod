@@ -21,7 +21,7 @@ require (
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2
 	gonum.org/v1/plot v0.12.0
 	nhooyr.io/websocket v1.8.7
-	oss.terrastruct.com/util-go v0.0.0-20221226165730-8efd954f6a16
+	oss.terrastruct.com/util-go v0.0.0-20221226181616-c04ce7d1b79f
 )
 
 require (
