@@ -9,6 +9,7 @@ Hope everyone is enjoying the holidays this week!
 #### Features 🚀
 
 - `sketch` flag renders the diagram to look like it was sketched by hand. [#492](https://github.com/terrastruct/d2/pull/492)
+- `near` now takes constants like `top-center`, particularly useful for diagram titles. See [docs](https://d2lang.com/tour/text#how-do-i-position-text) for more. [#525](https://github.com/terrastruct/d2/pull/525)
 
 #### Improvements 🧹
 
