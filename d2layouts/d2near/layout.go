@@ -55,7 +55,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNears []*d2graph.Obje
 	return nil
 }
 
-// position returns the position of obj, taking into consideration its near value and the diagram
+// place returns the position of obj, taking into consideration its near value and the diagram
 func place(obj *d2graph.Object) (float64, float64) {
 	tl, br := boundingBox(obj.Graph)
 	w := br.X - tl.X
@@ -79,10 +79,10 @@ func place(obj *d2graph.Object) (float64, float64) {
 		return br.X + pad, br.Y + pad
 	}
 	return 0, 0
-
 }
 
-// WithoutConstantNears removes
+// WithoutConstantNears plucks out the graph objects which have "near" set to a constant value
+// This is to be called before layout engines so they don't take part in regular positioning
 func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (nears []*d2graph.Object) {
 	for i := 0; i < len(g.Objects); i++ {
 		obj := g.Objects[i]

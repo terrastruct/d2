@@ -1191,19 +1191,6 @@ var StyleKeywords = map[string]struct{}{
 
 // TODO maybe autofmt should allow other values, and transform them to conform
 // e.g. left-center becomes center-left
-var NearConstants = map[string]struct{}{
-	"top-left":   {},
-	"top-center": {},
-	"top-right":  {},
-
-	"center-left":  {},
-	"center-right": {},
-
-	"bottom-left":   {},
-	"bottom-center": {},
-	"bottom-right":  {},
-}
-
 var NearConstantsArray = []string{
 	"top-left",
 	"top-center",
@@ -1216,6 +1203,7 @@ var NearConstantsArray = []string{
 	"bottom-center",
 	"bottom-right",
 }
+var NearConstants map[string]struct{}
 
 func init() {
 	for k, v := range StyleKeywords {
@@ -1223,5 +1211,9 @@ func init() {
 	}
 	for k, v := range ReservedKeywordHolders {
 		ReservedKeywords[k] = v
+	}
+	NearConstants = make(map[string]struct{}, len(NearConstantsArray))
+	for _, k := range NearConstantsArray {
+		NearConstants[k] = struct{}{}
 	}
 }
