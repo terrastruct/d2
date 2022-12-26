@@ -76,7 +76,7 @@ var lodash;if(typeof require==="function"){try{lodash={cloneDeep:require("lodash
 /*
  * A nesting graph creates dummy nodes for the tops and bottoms of subgraphs,
  * adds appropriate edges to ensure that all cluster nodes are placed between
- * these boundries, and ensures that the graph is connected.
+ * these boundaries, and ensures that the graph is connected.
  *
  * In addition we ensure, through the use of the minlen property, that nodes
  * and subgraph border nodes to not end up on the same rank.
@@ -179,7 +179,7 @@ g.graph().nodeRankFactor=nodeSep}function dfs(g,root,nodeSep,weight,height,depth
 _.forEach(g[relationship](v),function(e){var u=e.v===v?e.w:e.v,edge=result.edge(u,v),weight=!_.isUndefined(edge)?edge.weight:0;result.setEdge(u,v,{weight:g.edge(e).weight+weight})});if(_.has(node,"minRank")){result.setNode(v,{borderLeft:node.borderLeft[rank],borderRight:node.borderRight[rank]})}}});return result}function createRootNode(g){var v;while(g.hasNode(v=_.uniqueId("_root")));return v}},{"../graphlib":7,"../lodash":10}],16:[function(require,module,exports){"use strict";var _=require("../lodash");module.exports=crossCount;
 /*
  * A function that takes a layering (an array of layers, each with an array of
- * ordererd nodes) and a graph and returns a weighted crossing count.
+ * ordered nodes) and a graph and returns a weighted crossing count.
  *
  * Pre-conditions:
  *
@@ -232,11 +232,11 @@ var cc=0;_.forEach(southEntries.forEach(function(entry){var index=entry.pos+firs
  * constraint graph this function will resolve any conflicts between the
  * constraint graph and the barycenters for the entries. If the barycenters for
  * an entry would violate a constraint in the constraint graph then we coalesce
- * the nodes in the conflict into a new node that respects the contraint and
+ * the nodes in the conflict into a new node that respects the constraint and
  * aggregates barycenter and weight information.
  *
  * This implementation is based on the description in Forster, "A Fast and
- * Simple Hueristic for Constrained Two-Level Crossing Reduction," thought it
+ * Simple Heuristic for Constrained Two-Level Crossing Reduction," though it
  * differs in some specific details.
  *
  * Pre-conditions:
@@ -482,7 +482,7 @@ rank=0}return label.rank=rank}_.forEach(g.sources(),dfs)}
  * ({x, y, width, height}) if it were pointing at the rectangle's center.
  */function intersectRect(rect,point){var x=rect.x;var y=rect.y;
 // Rectangle intersection algorithm from:
-// http://math.stackexchange.com/questions/108113/find-edge-between-two-boxes
+// https://math.stackexchange.com/questions/108113/find-edge-between-two-boxes
 var dx=point.x-x;var dy=point.y-y;var w=rect.width/2;var h=rect.height/2;if(!dx&&!dy){throw new Error("Not possible to find intersection inside of the rectangle")}var sx,sy;if(Math.abs(dy)*w>Math.abs(dx)*h){
 // Intersection is top or bottom of rect.
 if(dy<0){h=-h}sx=h*dx/dy;sy=h}else{
@@ -538,7 +538,7 @@ var offset=_.min(_.map(g.nodes(),function(v){return g.node(v).rank}));var layers
  */
 var lib=require("./lib");module.exports={Graph:lib.Graph,json:require("./lib/json"),alg:require("./lib/alg"),version:lib.version}},{"./lib":47,"./lib/alg":38,"./lib/json":48}],32:[function(require,module,exports){var _=require("../lodash");module.exports=components;function components(g){var visited={};var cmpts=[];var cmpt;function dfs(v){if(_.has(visited,v))return;visited[v]=true;cmpt.push(v);_.each(g.successors(v),dfs);_.each(g.predecessors(v),dfs)}_.each(g.nodes(),function(v){cmpt=[];dfs(v);if(cmpt.length){cmpts.push(cmpt)}});return cmpts}},{"../lodash":49}],33:[function(require,module,exports){var _=require("../lodash");module.exports=dfs;
 /*
- * A helper that preforms a pre- or post-order traversal on the input graph
+ * A helper that performs a pre- or post-order traversal on the input graph
  * and returns the nodes in the order they were visited. If the graph is
  * undirected then this algorithm will navigate using neighbors. If the graph
  * is directed then this algorithm will navigate using successors.
@@ -1114,7 +1114,7 @@ function baseHasIn(object,key){return object!=null&&key in Object(object)}module
 function baseIsNaN(value){return value!==value}module.exports=baseIsNaN},{}],102:[function(require,module,exports){var isFunction=require("./isFunction"),isMasked=require("./_isMasked"),isObject=require("./isObject"),toSource=require("./_toSource");
 /**
  * Used to match `RegExp`
- * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+ * [syntax characters](https://262.ecma-international.org/7.0/#sec-patterns).
  */var reRegExpChar=/[\\^$.*+?()[\]{}|]/g;
 /** Used to detect host constructors (Safari). */var reIsHostCtor=/^\[object .+?Constructor\]$/;
 /** Used for built-in method references. */var funcProto=Function.prototype,objectProto=Object.prototype;
@@ -1718,7 +1718,7 @@ var freeGlobal=typeof global=="object"&&global&&global.Object===Object&&global;m
 /** Used to check objects for own properties. */var hasOwnProperty=objectProto.hasOwnProperty;
 /**
  * Used to resolve the
- * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * [`toStringTag`](https://262.ecma-international.org/7.0/#sec-object.prototype.tostring)
  * of values.
  */var nativeObjectToString=objectProto.toString;
 /** Built-in value references. */var symToStringTag=Symbol?Symbol.toStringTag:undefined;
