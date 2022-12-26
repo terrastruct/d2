@@ -31,3 +31,4 @@ Hope everyone is enjoying the holidays this week!
 - Connections at the boundaries no longer get part of its stroke clipped. [#493](https://github.com/terrastruct/d2/pull/493)
 - Fixes edge case where `style` being defined in same scope as `sql_table` causes compiler to skip compiling `sql_table`. [#506](https://github.com/terrastruct/d2/issues/506)
 - Fixes panic passing a non-string value to `constraint`. [#248](https://github.com/terrastruct/d2/issues/248)
+- Fixes edge case where the key `null` was compiling wrongly. [#507](https://github.com/terrastruct/d2/issues/507)

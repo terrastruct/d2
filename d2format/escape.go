@@ -48,7 +48,7 @@ func escapeUnquotedValue(s string, inKey bool) string {
 	}
 
 	if strings.EqualFold(s, "null") {
-		return "\\null"
+		return `'null'`
 	}
 
 	var b strings.Builder
