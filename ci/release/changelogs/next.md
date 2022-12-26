@@ -9,14 +9,16 @@ Hope everyone is enjoying the holidays this week!
 #### Features 🚀
 
 - `sketch` flag renders the diagram to look like it was sketched by hand. [#492](https://github.com/terrastruct/d2/pull/492)
+- `near` now takes constants like `top-center`, particularly useful for diagram titles. See [docs](https://d2lang.com/tour/text#near-a-constant) for more. [#525](https://github.com/terrastruct/d2/pull/525)
 
 #### Improvements 🧹
 
 - Improved label placements for shapes with images and icons to avoid overlapping labels. [#474](https://github.com/terrastruct/d2/pull/474)
-- Themes are applied to sql_table and class shapes. [#521](https://github.com/terrastruct/d2/pull/521)
+- Themes are applied to `sql_table` and `class` shapes. [#521](https://github.com/terrastruct/d2/pull/521)
 - `class` shapes use monospaced font. [#521](https://github.com/terrastruct/d2/pull/521)
 - Sequence diagram edge group labels have more reasonable padding. [#512](https://github.com/terrastruct/d2/pull/512)
 - ELK layout engine preserves order of nodes. [#282](https://github.com/terrastruct/d2/issues/282)
+- Markdown headings set font-family explicitly, so that external stylesheets with more specific targeting don't override it. [#525](https://github.com/terrastruct/d2/pull/525)
 
 #### Bugfixes ⛑️
 

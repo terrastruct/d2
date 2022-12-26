@@ -850,9 +850,14 @@ func (c *compiler) validateKeys(obj *d2graph.Object, m *d2ast.Map) {
 func (c *compiler) validateNear(g *d2graph.Graph) {
 	for _, obj := range g.Objects {
 		if obj.Attributes.NearKey != nil {
-			_, ok := g.Root.HasChild(d2graph.Key(obj.Attributes.NearKey))
-			if !ok {
-				c.errorf(obj.Attributes.NearKey.GetRange().Start, obj.Attributes.NearKey.GetRange().End, "near key %#v does not exist. It must be the absolute path to a shape.", d2format.Format(obj.Attributes.NearKey))
+			_, isKey := g.Root.HasChild(d2graph.Key(obj.Attributes.NearKey))
+			_, isConst := d2graph.NearConstants[d2graph.Key(obj.Attributes.NearKey)[0]]
+			if !isKey && !isConst {
+				c.errorf(obj.Attributes.NearKey.GetRange().Start, obj.Attributes.NearKey.GetRange().End, "near key %#v must be the absolute path to a shape or one of the following constants: %s", d2format.Format(obj.Attributes.NearKey), strings.Join(d2graph.NearConstantsArray, ", "))
+				continue
+			}
+			if !isKey && isConst && obj.Parent != g.Root {
+				c.errorf(obj.Attributes.NearKey.GetRange().Start, obj.Attributes.NearKey.GetRange().End, "constant near keys can only be set on root level shapes")
 				continue
 			}
 		}

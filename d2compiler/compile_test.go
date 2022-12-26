@@ -1267,6 +1267,28 @@ x -> y: {
 			},
 		},
 		{
+			name: "near_constant",
+
+			text: `x.near: top-center
+`,
+		},
+		{
+			name: "near_bad_constant",
+
+			text: `x.near: txop-center
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_constant.d2:1:1: near key "txop-center" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right
+`,
+		},
+		{
+			name: "nested_near_constant",
+
+			text: `x.y.near: top-center
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/nested_near_constant.d2:1:1: constant near keys can only be set on root level shapes
+`,
+		},
+		{
 			name: "reserved_icon_near_style",
 
 			text: `x: {
@@ -1312,7 +1334,7 @@ y
 			expErr: `d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:3:9: bad icon url "::????:::%%orange": parse "::????:::%%orange": missing protocol scheme
 d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:4:18: expected "opacity" to be a number between 0.0 and 1.0
 d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:5:18: expected "opacity" to be a number between 0.0 and 1.0
-d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:1:1: near key "y" does not exist. It must be the absolute path to a shape.
+d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:1:1: near key "y" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right
 `,
 		},
 		{
