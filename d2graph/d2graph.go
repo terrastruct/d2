@@ -1189,6 +1189,8 @@ var StyleKeywords = map[string]struct{}{
 	"filled":   {},
 }
 
+// TODO maybe autofmt should allow other values, and transform them to conform
+// e.g. left-center becomes center-left
 var NearConstants = map[string]struct{}{
 	"top-left":   {},
 	"top-center": {},

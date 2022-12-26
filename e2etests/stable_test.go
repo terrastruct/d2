@@ -1587,6 +1587,25 @@ container: {
 }
 `,
 		},
+		{
+			name: "constant_near",
+			script: `x -> y
+The top of the mountain: { shape: text; near: top-center }
+Joe: { shape: person; near: center-left }
+Donald: { shape: person; near: center-right }
+bottom: |md
+	# Cats, no less liquid than their shadows, offer no angles to the wind.
+
+  If we can't fix it, it ain't broke.
+
+  Dieters live life in the fasting lane.
+| { near: bottom-center }
+i am top left: { shape: text; near: top-left }
+i am top right: { shape: text; near: top-right }
+i am bottom left: { shape: text; near: bottom-left }
+i am bottom right: { shape: text; near: bottom-right }
+`,
+		},
 	}
 
 	runa(t, tcs)
