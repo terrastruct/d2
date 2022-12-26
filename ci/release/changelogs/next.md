@@ -18,6 +18,7 @@ Hope everyone is enjoying the holidays this week!
 - `class` shapes use monospaced font. [#521](https://github.com/terrastruct/d2/pull/521)
 - Sequence diagram edge group labels have more reasonable padding. [#512](https://github.com/terrastruct/d2/pull/512)
 - ELK layout engine preserves order of nodes. [#282](https://github.com/terrastruct/d2/issues/282)
+- Non-markdown text (`shape: text` without language block) works with `bold`, `italic`, `underline`, and `font-size`. [#528](https://github.com/terrastruct/d2/pull/528)
 - Markdown headings set font-family explicitly, so that external stylesheets with more specific targeting don't override it. [#525](https://github.com/terrastruct/d2/pull/525)
 
 #### Bugfixes ⛑️
