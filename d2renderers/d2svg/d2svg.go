@@ -847,6 +847,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			targetShape.Pos.Y-tooltipIconLen/2,
 			tooltipIcon,
 		)
+		fmt.Fprintf(writer, `<title>%s</title>`, targetShape.Tooltip)
 	}
 
 	fmt.Fprintf(writer, `</g>`)
