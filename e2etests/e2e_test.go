@@ -17,9 +17,12 @@ import (
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
 
+	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2layouts/d2elklayout"
+	"oss.terrastruct.com/d2/d2layouts/d2near"
+	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2target"
@@ -88,6 +91,27 @@ func runa(t *testing.T, tcs []testCase) {
 	}
 }
 
+// serde exercises serializing and deserializing the graph
+func serde(t *testing.T, tc testCase, ruler *textmeasure.Ruler) {
+	ctx := context.Background()
+	ctx = log.WithTB(ctx, t, nil)
+	g, err := d2compiler.Compile("", strings.NewReader(tc.script), &d2compiler.CompileOptions{
+		UTF16: false,
+	})
+	tassert.Nil(t, err)
+	if len(g.Objects) > 0 {
+		err = g.SetDimensions(nil, ruler, nil)
+		tassert.Nil(t, err)
+		d2near.WithoutConstantNears(ctx, g)
+		d2sequence.WithoutSequenceDiagrams(ctx, g)
+	}
+	b, err := d2graph.SerializeGraph(g)
+	tassert.Nil(t, err)
+	var newG d2graph.Graph
+	err = d2graph.DeserializeGraph(b, &newG)
+	tassert.Nil(t, err)
+}
+
 func run(t *testing.T, tc testCase) {
 	ctx := context.Background()
 	ctx = log.WithTB(ctx, t, nil)
@@ -97,6 +121,8 @@ func run(t *testing.T, tc testCase) {
 	if !tassert.Nil(t, err) {
 		return
 	}
+
+	serde(t, tc, ruler)
 
 	layoutsTested := []string{"dagre", "elk"}
 
