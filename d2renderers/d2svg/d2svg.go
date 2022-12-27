@@ -39,9 +39,14 @@ const (
 	DEFAULT_PADDING            = 100
 	MIN_ARROWHEAD_STROKE_WIDTH = 2
 	threeDeeOffset             = 15
+
+	tooltipIconLen = 32
 )
 
 var multipleOffset = geo.NewVector(10, -10)
+
+//go:embed tooltip.svg
+var tooltipIcon string
 
 //go:embed style.css
 var styleCSS string
@@ -835,6 +840,15 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			}
 		}
 	}
+
+	if targetShape.Tooltip != "" {
+		fmt.Fprintf(writer, `<g transform="translate(%d %d) scale(2)">%s</g>`,
+			targetShape.Pos.X+targetShape.Width-tooltipIconLen/2,
+			targetShape.Pos.Y-tooltipIconLen/2,
+			tooltipIcon,
+		)
+	}
+
 	fmt.Fprintf(writer, `</g>`)
 	return labelMask, nil
 }
@@ -931,6 +945,20 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 			buf.WriteString(`
 .text-underline {
   text-decoration: underline;
+}`)
+			break
+		}
+	}
+
+	triggers = []string{
+		`tooltip-icon`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			buf.WriteString(`
+.tooltip-icon {
+	box-shadow: 0px 0px 32px rgba(31, 36, 58, 0.1);
 }`)
 			break
 		}
