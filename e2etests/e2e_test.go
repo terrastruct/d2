@@ -92,6 +92,7 @@ func runa(t *testing.T, tcs []testCase) {
 }
 
 // serde exercises serializing and deserializing the graph
+// We want to run all the steps leading up to serialization in the course of regular layout
 func serde(t *testing.T, tc testCase, ruler *textmeasure.Ruler) {
 	ctx := context.Background()
 	ctx = log.WithTB(ctx, t, nil)
