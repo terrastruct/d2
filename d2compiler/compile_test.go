@@ -1281,6 +1281,28 @@ x -> y: {
 `,
 		},
 		{
+			name: "near_bad_container",
+
+			text: `x: {
+  near: top-center
+  y
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_container.d2:1:1: constant near keys cannot be set on shapes with children
+`,
+		},
+		{
+			name: "near_bad_connected",
+
+			text: `x: {
+  near: top-center
+}
+x -> y
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_connected.d2:1:1: constant near keys cannot be set on connected shapes
+`,
+		},
+		{
 			name: "nested_near_constant",
 
 			text: `x.y.near: top-center

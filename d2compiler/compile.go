@@ -860,6 +860,23 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 				c.errorf(obj.Attributes.NearKey.GetRange().Start, obj.Attributes.NearKey.GetRange().End, "constant near keys can only be set on root level shapes")
 				continue
 			}
+			if !isKey && isConst && len(obj.ChildrenArray) > 0 {
+				c.errorf(obj.Attributes.NearKey.GetRange().Start, obj.Attributes.NearKey.GetRange().End, "constant near keys cannot be set on shapes with children")
+				continue
+			}
+			if !isKey && isConst {
+				is := false
+				for _, e := range g.Edges {
+					if e.Src == obj || e.Dst == obj {
+						is = true
+						break
+					}
+				}
+				if is {
+					c.errorf(obj.Attributes.NearKey.GetRange().Start, obj.Attributes.NearKey.GetRange().End, "constant near keys cannot be set on connected shapes")
+					continue
+				}
+			}
 		}
 	}
 }
