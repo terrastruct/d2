@@ -442,7 +442,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 			fontClass,
 			x, y,
 			textStyle,
-			renderText(connection.Label, x, float64(connection.LabelHeight)),
+			RenderText(connection.Label, x, float64(connection.LabelHeight)),
 		)
 	}
 
@@ -478,7 +478,7 @@ func renderArrowheadLabel(connection d2target.Connection, text string, position,
 	return fmt.Sprintf(`<text class="text-italic" x="%f" y="%f" style="%s">%s</text>`,
 		x, y,
 		textStyle,
-		renderText(text, x, height),
+		RenderText(text, x, height),
 	)
 }
 
@@ -833,7 +833,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				fontClass,
 				x, y,
 				textStyle,
-				renderText(targetShape.Label, x, float64(targetShape.LabelHeight)),
+				RenderText(targetShape.Label, x, float64(targetShape.LabelHeight)),
 			)
 			if targetShape.Blend {
 				labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight-d2graph.INNER_LABEL_PADDING)
@@ -854,7 +854,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 	return labelMask, nil
 }
 
-func renderText(text string, x, height float64) string {
+func RenderText(text string, x, height float64) string {
 	if !strings.Contains(text, "\n") {
 		return svg.EscapeText(text)
 	}
