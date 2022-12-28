@@ -40,7 +40,7 @@ const (
 	MIN_ARROWHEAD_STROKE_WIDTH = 2
 	threeDeeOffset             = 15
 
-	tooltipIconLen = 32
+	tooltipIconRadius = 16
 )
 
 var multipleOffset = geo.NewVector(10, -10)
@@ -843,8 +843,8 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 
 	if targetShape.Tooltip != "" {
 		fmt.Fprintf(writer, `<g transform="translate(%d %d)">%s</g>`,
-			targetShape.Pos.X+targetShape.Width-tooltipIconLen/2,
-			targetShape.Pos.Y-tooltipIconLen/2,
+			targetShape.Pos.X+targetShape.Width-tooltipIconRadius,
+			targetShape.Pos.Y-tooltipIconRadius,
 			TooltipIcon,
 		)
 		fmt.Fprintf(writer, `<title>%s</title>`, targetShape.Tooltip)
