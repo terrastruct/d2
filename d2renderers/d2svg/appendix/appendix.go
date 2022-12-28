@@ -18,11 +18,32 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 )
 
+//        ┌──────────────┐
+//        │              │
+//        │   DIAGRAM    │
+//        │              │
+// PAD_   │              │
+// SIDES  │              │
+//    │   │              │
+//    │   └──────────────┘
+//    ▼                   ◄──────  PAD_TOP
+//
+//    ─────────────────────────
+//
+//
+//         1. asdfasdf
+//
+//                        ◄──── SPACER
+//         2. qwerqwer
+//
+//
+
 const (
-	PAD_TOP     = 50
-	PAD_SIDES   = 40
+	PAD_TOP   = 50
+	PAD_SIDES = 40
+	SPACER    = 20
+
 	FONT_SIZE   = 16
-	SPACER      = 20
 	ICON_RADIUS = 16
 )
 
@@ -63,9 +84,9 @@ func AppendTooltips(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []by
 
 	widthMatch := widthRegex.FindStringSubmatch(svg)
 	heightMatch := heightRegex.FindStringSubmatch(svg)
-
 	newWidth := fmt.Sprintf(`width="%s"`, strconv.Itoa(viewboxWidth))
 	newHeight := fmt.Sprintf(`height="%s"`, strconv.Itoa(viewboxHeight))
+
 	svg = strings.Replace(svg, viewboxMatch[0], newViewbox, 1)
 	svg = strings.Replace(svg, widthMatch[0], newWidth, 1)
 	svg = strings.Replace(svg, heightMatch[0], newHeight, 1)
