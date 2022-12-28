@@ -29,10 +29,52 @@ func TestAppendix(t *testing.T) {
 
 	tcs := []testCase{
 		{
-			name: "basic",
+			name: "tooltip_wider_than_diagram",
 			script: `x: { tooltip: Total abstinence is easier than perfect moderation }
 y: { tooltip: Gee, I feel kind of LIGHT in the head now,\nknowing I can't make my satellite dish PAYMENTS! }
 x -> y
+`,
+		},
+		{
+			name: "diagram_wider_than_tooltip",
+			script: `shape: sequence_diagram
+
+customer
+issuer
+store: { tooltip: Like starbucks or something }
+acquirer: { tooltip: I'm not sure what this is }
+network
+customer bank
+store bank
+
+customer: {shape: person}
+customer bank: {
+  shape: image
+  icon: https://cdn-icons-png.flaticon.com/512/858/858170.png
+}
+store bank: {
+  shape: image
+  icon: https://cdn-icons-png.flaticon.com/512/858/858170.png
+}
+
+initial transaction: {
+  customer -> store: 1 banana please
+  store -> customer: '$10 dollars'
+}
+customer.internal -> customer.internal: "thinking: wow, inflation"
+customer.internal -> customer bank: checks bank account
+customer bank -> customer.internal: 'Savings: $11'
+customer."An error in judgement is about to occur"
+customer -> store: I can do that, here's my card
+payment processor behind the scenes: {
+  store -> acquirer: Run this card
+  acquirer -> network: Process to card issuer
+  simplified: {
+    network -> issuer: Process this payment
+    issuer -> customer bank: '$10 debit'
+    acquirer -> store bank: '$10 credit'
+  }
+}
 `,
 		},
 	}

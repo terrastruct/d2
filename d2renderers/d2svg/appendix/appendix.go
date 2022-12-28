@@ -19,10 +19,11 @@ import (
 )
 
 const (
-	PAD_TOP   = 50
-	PAD_SIDES = 40
-	FONT_SIZE = 16
-	SPACER    = 20
+	PAD_TOP     = 50
+	PAD_SIDES   = 40
+	FONT_SIZE   = 16
+	SPACER      = 20
+	ICON_RADIUS = 16
 )
 
 var viewboxRegex = regexp.MustCompile(`viewBox=\"([0-9\- ]+)\"`)
@@ -47,15 +48,14 @@ func AppendTooltips(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []by
 
 	tl, br := diagram.BoundingBox()
 	seperator := fmt.Sprintf(`<line x1="%d" y1="%d" x2="%d" y2="%d" stroke="#0A0F25" />`,
-		tl.X-PAD_SIDES, br.Y+PAD_TOP, go2.IntMax(w+PAD_SIDES, br.Y)+PAD_SIDES, br.Y+PAD_TOP)
+		tl.X-PAD_SIDES, br.Y+PAD_TOP, go2.IntMax(w, br.X)+PAD_SIDES, br.Y+PAD_TOP)
 	appendix = seperator + appendix
 
 	w -= viewboxPadLeft
 	w += PAD_SIDES * 2
 	if viewboxWidth < w {
-		viewboxWidth = w + PAD_SIDES
+		viewboxWidth = w
 	}
-	viewboxWidth += PAD_SIDES
 
 	viewboxHeight += h + PAD_TOP
 
@@ -80,6 +80,17 @@ func AppendTooltips(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []by
 	src: url("%s");
 }
 ]]></style>`, d2fonts.FontEncodings[d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_REGULAR)])
+	}
+	if !strings.Contains(svg, `font-family: "font-bold"`) {
+		appendix += fmt.Sprintf(`<style type="text/css"><![CDATA[
+.text-bold {
+	font-family: "font-bold";
+}
+@font-face {
+	font-family: font-bold;
+	src: url("%s");
+}
+]]></style>`, d2fonts.FontEncodings[d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_BOLD)])
 	}
 
 	closingIndex := strings.LastIndex(svg, "</svg>")
@@ -113,22 +124,19 @@ func generateTooltipLine(i, y int, text string, ruler *textmeasure.Ruler) (strin
 	mtext := &d2target.MText{
 		Text:     text,
 		FontSize: FONT_SIZE,
-		IsBold:   false,
-		IsItalic: false,
-		Language: "",
 	}
 
 	dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
 
 	// TODO box-shadow: 0px 0px 32px rgba(31, 36, 58, 0.1);
 	line := fmt.Sprintf(`<circle cx="%d" cy="%d" r="16" fill="transparent" stroke="#DEE1EB" />`,
-		0, y)
+		ICON_RADIUS, y)
 
 	line += fmt.Sprintf(`<text class="text-bold" x="%d" y="%d" style="font-size: %dpx;text-anchor:middle;">%d</text>`,
-		0, y+5, 16, i)
+		ICON_RADIUS, y+5, FONT_SIZE, i)
 
 	line += fmt.Sprintf(`<text class="text" x="%d" y="%d" style="font-size: %dpx;">%s</text>`,
-		32, y, FONT_SIZE, d2svg.RenderText(text, 32, float64(dims.Height)))
+		ICON_RADIUS*3, y, FONT_SIZE, d2svg.RenderText(text, ICON_RADIUS*3, float64(dims.Height)))
 
-	return line, dims.Width, dims.Height
+	return line, dims.Width + ICON_RADIUS*3, dims.Height
 }
