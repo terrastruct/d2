@@ -842,7 +842,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 	}
 
 	if targetShape.Tooltip != "" {
-		fmt.Fprintf(writer, `<g transform="translate(%d %d)">%s</g>`,
+		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="tooltip-icon">%s</g>`,
 			targetShape.Pos.X+targetShape.Width-tooltipIconRadius,
 			targetShape.Pos.Y-tooltipIconRadius,
 			TooltipIcon,
@@ -959,7 +959,7 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 		if strings.Contains(content, t) {
 			buf.WriteString(`
 .tooltip-icon {
-	box-shadow: 0px 0px 32px rgba(31, 36, 58, 0.1);
+	filter: drop-shadow(0px 0px 32px rgba(31, 36, 58, 0.1));
 }`)
 			break
 		}
