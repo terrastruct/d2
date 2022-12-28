@@ -899,13 +899,13 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 	for _, obj := range g.Objects {
 		obj.Box = &geo.Box{}
 
-		var setWidth int
-		var setHeight int
+		var desiredWidth int
+		var desiredHeight int
 		if obj.Attributes.Width != nil {
-			setWidth, _ = strconv.Atoi(obj.Attributes.Width.Value)
+			desiredWidth, _ = strconv.Atoi(obj.Attributes.Width.Value)
 		}
 		if obj.Attributes.Height != nil {
-			setHeight, _ = strconv.Atoi(obj.Attributes.Height.Value)
+			desiredHeight, _ = strconv.Atoi(obj.Attributes.Height.Value)
 		}
 		shapeType := strings.ToLower(obj.Attributes.Shape.Value)
 
@@ -917,7 +917,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			d2target.ShapeText:
 			// edge cases for unnamed class, etc
 		default:
-			if obj.Attributes.Label.Value == "" && setWidth == 0 && setHeight == 0 {
+			if obj.Attributes.Label.Value == "" && desiredWidth == 0 && desiredHeight == 0 {
 				obj.Width = 100
 				obj.Height = 100
 				continue
@@ -980,38 +980,31 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		dims.Width += innerLabelPadding
 		dims.Height += innerLabelPadding
 		obj.LabelDimensions = *dims
-		obj.Width = float64(dims.Width)
-		obj.Height = float64(dims.Height)
-
-		// the set dimensions must be at least as large as the text
-		if float64(setWidth) > obj.Width {
-			obj.Width = float64(setWidth)
-		}
-		if float64(setHeight) > obj.Height {
-			obj.Height = float64(setHeight)
-		}
+		// the desired dimensions must be at least as large as the text
+		obj.Width = float64(go2.Max(dims.Width, desiredWidth))
+		obj.Height = float64(go2.Max(dims.Height, desiredHeight))
 
 		switch shapeType {
 		default:
-			if setWidth == 0 {
+			if desiredWidth == 0 {
 				obj.Width += 100
 			}
-			if setHeight == 0 {
+			if desiredHeight == 0 {
 				obj.Height += 100
 			}
 
 		case d2target.ShapeImage:
-			if setWidth == 0 {
+			if desiredWidth == 0 {
 				obj.Width = 128
 			}
-			if setHeight == 0 {
+			if desiredHeight == 0 {
 				obj.Height = 128
 			}
 
 		case d2target.ShapeSquare, d2target.ShapeCircle:
 			sideLength := go2.Max(obj.Width, obj.Height)
 			padding := 0.
-			if setWidth == 0 && setHeight == 0 {
+			if desiredWidth == 0 && desiredHeight == 0 {
 				padding = 100.
 			}
 			obj.Width = sideLength + padding
@@ -1104,11 +1097,11 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			d2target.ShapeSQLTable,
 			d2target.ShapeCode,
 			d2target.ShapeText:
-			if float64(setWidth) > obj.Width {
-				obj.Width = float64(setWidth)
+			if float64(desiredWidth) > obj.Width {
+				obj.Width = float64(desiredWidth)
 			}
-			if float64(setHeight) > obj.Height {
-				obj.Height = float64(setHeight)
+			if float64(desiredHeight) > obj.Height {
+				obj.Height = float64(desiredHeight)
 			}
 		}
 
