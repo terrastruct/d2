@@ -169,8 +169,7 @@ func generateTooltipLine(i, y int, text string, ruler *textmeasure.Ruler) (strin
 
 	dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
 
-	// TODO box-shadow: 0px 0px 32px rgba(31, 36, 58, 0.1);
-	line := fmt.Sprintf(`<g transform="translate(%d %d)">%s</g>`,
+	line := fmt.Sprintf(`<g transform="translate(%d %d)" class="tooltip-icon">%s</g>`,
 		0, y, generateNumberedIcon(i, 0, 0))
 
 	line += fmt.Sprintf(`<text class="text" x="%d" y="%d" style="font-size: %dpx;">%s</text>`,
