@@ -46,7 +46,7 @@ const (
 var multipleOffset = geo.NewVector(10, -10)
 
 //go:embed tooltip.svg
-var tooltipIcon string
+var TooltipIcon string
 
 //go:embed style.css
 var styleCSS string
@@ -842,10 +842,10 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 	}
 
 	if targetShape.Tooltip != "" {
-		fmt.Fprintf(writer, `<g transform="translate(%d %d) scale(2)">%s</g>`,
+		fmt.Fprintf(writer, `<g transform="translate(%d %d)">%s</g>`,
 			targetShape.Pos.X+targetShape.Width-tooltipIconLen/2,
 			targetShape.Pos.Y-tooltipIconLen/2,
-			tooltipIcon,
+			TooltipIcon,
 		)
 		fmt.Fprintf(writer, `<title>%s</title>`, targetShape.Tooltip)
 	}

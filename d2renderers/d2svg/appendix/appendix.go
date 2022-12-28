@@ -96,6 +96,16 @@ func AppendTooltips(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []by
 	closingIndex := strings.LastIndex(svg, "</svg>")
 	svg = svg[:closingIndex] + appendix + svg[closingIndex:]
 
+	i := 1
+	for _, s := range diagram.Shapes {
+		if s.Tooltip != "" {
+			// The clip-path has a unique ID, so this won't replace any user icons
+			// In the existing SVG, the transform places it top-left, so we adjust
+			svg = strings.Replace(svg, d2svg.TooltipIcon, generateNumberedIcon(i, 0, ICON_RADIUS), 1)
+			i++
+		}
+	}
+
 	return []byte(svg)
 }
 
@@ -120,6 +130,16 @@ func generateTooltipAppendix(diagram *d2target.Diagram, ruler *textmeasure.Ruler
 `, tl.X, br.Y, (br.X - tl.X), strings.Join(tooltipLines, "\n")), maxWidth, totalHeight
 }
 
+func generateNumberedIcon(i, x, y int) string {
+	line := fmt.Sprintf(`<circle cx="%d" cy="%d" r="%d" fill="white" stroke="#DEE1EB" />`,
+		x+ICON_RADIUS, y, ICON_RADIUS)
+
+	line += fmt.Sprintf(`<text class="text-bold" x="%d" y="%d" style="font-size: %dpx;text-anchor:middle;">%d</text>`,
+		x+ICON_RADIUS, y+5, FONT_SIZE, i)
+
+	return line
+}
+
 func generateTooltipLine(i, y int, text string, ruler *textmeasure.Ruler) (string, int, int) {
 	mtext := &d2target.MText{
 		Text:     text,
@@ -129,11 +149,8 @@ func generateTooltipLine(i, y int, text string, ruler *textmeasure.Ruler) (strin
 	dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
 
 	// TODO box-shadow: 0px 0px 32px rgba(31, 36, 58, 0.1);
-	line := fmt.Sprintf(`<circle cx="%d" cy="%d" r="16" fill="transparent" stroke="#DEE1EB" />`,
-		ICON_RADIUS, y)
-
-	line += fmt.Sprintf(`<text class="text-bold" x="%d" y="%d" style="font-size: %dpx;text-anchor:middle;">%d</text>`,
-		ICON_RADIUS, y+5, FONT_SIZE, i)
+	line := fmt.Sprintf(`<g transform="translate(%d %d)">%s</g>`,
+		0, y, generateNumberedIcon(i, 0, 0))
 
 	line += fmt.Sprintf(`<text class="text" x="%d" y="%d" style="font-size: %dpx;">%s</text>`,
 		ICON_RADIUS*3, y, FONT_SIZE, d2svg.RenderText(text, ICON_RADIUS*3, float64(dims.Height)))
