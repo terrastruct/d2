@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- Tooltips on shapes. See [https://d2lang.com/tour/tooltips](https://d2lang.com/tour/tooltips). [#545](https://github.com/terrastruct/d2/pull/545)
+
 #### Improvements 🧹
 
 #### Bugfixes ⛑️

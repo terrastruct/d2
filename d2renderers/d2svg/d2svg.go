@@ -39,9 +39,14 @@ const (
 	DEFAULT_PADDING            = 100
 	MIN_ARROWHEAD_STROKE_WIDTH = 2
 	threeDeeOffset             = 15
+
+	tooltipIconRadius = 16
 )
 
 var multipleOffset = geo.NewVector(10, -10)
+
+//go:embed tooltip.svg
+var TooltipIcon string
 
 //go:embed style.css
 var styleCSS string
@@ -437,7 +442,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 			fontClass,
 			x, y,
 			textStyle,
-			renderText(connection.Label, x, float64(connection.LabelHeight)),
+			RenderText(connection.Label, x, float64(connection.LabelHeight)),
 		)
 	}
 
@@ -473,7 +478,7 @@ func renderArrowheadLabel(connection d2target.Connection, text string, position,
 	return fmt.Sprintf(`<text class="text-italic" x="%f" y="%f" style="%s">%s</text>`,
 		x, y,
 		textStyle,
-		renderText(text, x, height),
+		RenderText(text, x, height),
 	)
 }
 
@@ -828,18 +833,28 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				fontClass,
 				x, y,
 				textStyle,
-				renderText(targetShape.Label, x, float64(targetShape.LabelHeight)),
+				RenderText(targetShape.Label, x, float64(targetShape.LabelHeight)),
 			)
 			if targetShape.Blend {
 				labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight-d2graph.INNER_LABEL_PADDING)
 			}
 		}
 	}
+
+	if targetShape.Tooltip != "" {
+		fmt.Fprintf(writer, `<g transform="translate(%d %d)">%s</g>`,
+			targetShape.Pos.X+targetShape.Width-tooltipIconRadius,
+			targetShape.Pos.Y-tooltipIconRadius,
+			TooltipIcon,
+		)
+		fmt.Fprintf(writer, `<title>%s</title>`, targetShape.Tooltip)
+	}
+
 	fmt.Fprintf(writer, `</g>`)
 	return labelMask, nil
 }
 
-func renderText(text string, x, height float64) string {
+func RenderText(text string, x, height float64) string {
 	if !strings.Contains(text, "\n") {
 		return svg.EscapeText(text)
 	}
@@ -931,6 +946,20 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 			buf.WriteString(`
 .text-underline {
   text-decoration: underline;
+}`)
+			break
+		}
+	}
+
+	triggers = []string{
+		`tooltip-icon`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			buf.WriteString(`
+.tooltip-icon {
+	box-shadow: 0px 0px 32px rgba(31, 36, 58, 0.1);
 }`)
 			break
 		}

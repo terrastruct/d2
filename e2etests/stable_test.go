@@ -1626,6 +1626,13 @@ mama bear -> bear
 papa bear -> bear
 `,
 		},
+		{
+			name: "tooltips",
+			script: `x: { tooltip: Total abstinence is easier than perfect moderation }
+y: { tooltip: Gee, I feel kind of LIGHT in the head now,\nknowing I can't make my satellite dish PAYMENTS! }
+x -> y
+`,
+		},
 	}
 
 	runa(t, tcs)

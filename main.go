@@ -21,6 +21,7 @@ import (
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
+	"oss.terrastruct.com/d2/d2renderers/d2svg/appendix"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/imgbundler"
@@ -247,7 +248,8 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 
 	out := svg
 	if filepath.Ext(outputPath) == ".png" {
-		svg := svg
+		svg := appendix.AppendTooltips(diagram, ruler, svg)
+
 		if !bundle {
 			var bundleErr2 error
 			svg, bundleErr2 = imgbundler.BundleRemote(ctx, ms, svg)
