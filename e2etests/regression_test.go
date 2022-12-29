@@ -250,6 +250,20 @@ code: |go
 |
 `,
 		},
+		{
+			name: "elk_img_empty_label_panic",
+			script: `
+img: {
+	label: ""
+	shape: image
+	icon: https://icons.terrastruct.com/infra/019-network.svg
+}
+ico: {
+	label: ""
+	icon: https://icons.terrastruct.com/infra/019-network.svg
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
