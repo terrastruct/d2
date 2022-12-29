@@ -720,9 +720,7 @@ func (obj *Object) GetLabelSize(mtexts []*d2target.MText, ruler *textmeasure.Rul
 func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.Ruler, fontFamily *d2fonts.FontFamily, labelDims d2target.TextDimensions) (*d2target.TextDimensions, error) {
 	dims := d2target.TextDimensions{}
 
-	shapeType := strings.ToLower(obj.Attributes.Shape.Value)
-
-	switch shapeType {
+	switch strings.ToLower(obj.Attributes.Shape.Value) {
 	default:
 		return d2target.NewTextDimensions(labelDims.Width, labelDims.Height), nil
 
@@ -809,11 +807,11 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 		dims.Height = labelDims.Height * (len(obj.SQLTable.Columns) + 1)
 		dims.Width = d2target.NamePadding + maxNameWidth + d2target.TypePadding + maxTypeWidth + d2target.TypePadding + constraintWidth
 	}
+
 	return &dims, nil
 }
 
 func (obj *Object) GetPadding() (x, y float64) {
-
 	switch strings.ToLower(obj.Attributes.Shape.Value) {
 	case d2target.ShapeImage,
 		d2target.ShapeSQLTable,
@@ -1068,21 +1066,6 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			desiredHeight, _ = strconv.Atoi(obj.Attributes.Height.Value)
 		}
 		shapeType := strings.ToLower(obj.Attributes.Shape.Value)
-
-		// switch shapeType {
-		// case d2target.ShapeClass,
-		// 	d2target.ShapeSQLTable,
-		// 	d2target.ShapeCode,
-		// 	d2target.ShapeImage,
-		// 	d2target.ShapeText:
-		// 	// edge cases for unnamed class, etc
-		// default:
-		// 	if obj.Attributes.Label.Value == "" && desiredWidth == 0 && desiredHeight == 0 {
-		// 		obj.Width = 100
-		// 		obj.Height = 100
-		// 		continue
-		// 	}
-		// }
 
 		labelDims, err := obj.GetLabelSize(mtexts, ruler, fontFamily)
 		if err != nil {
