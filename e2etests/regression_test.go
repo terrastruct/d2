@@ -217,6 +217,39 @@ m6_desc: |md
 m6_desc -> queue.M6
 `,
 		},
+		{
+			name: "unnamed_class_table_code",
+			script: `
+
+class -> users -> code
+
+class: "" {
+	shape: class
+	-num: int
+	-timeout: int
+	-pid
+
+	+getStatus(): Enum
+	+getJobs(): "Job[]"
+	+setTimeout(seconds int)
+}
+
+users: "" {
+	shape: sql_table
+	id: int
+	name: string
+	email: string
+	password: string
+	last_login: datetime
+}
+
+code: |go
+    a := 5
+    b := a + 7
+    fmt.Printf("%d", b)
+|
+`,
+		},
 	}
 
 	runa(t, tcs)

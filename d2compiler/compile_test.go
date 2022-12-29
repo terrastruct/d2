@@ -95,8 +95,119 @@ x: {
 	height: 230
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2:3:2: width is only applicable to image shapes.
-d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2:4:2: height is only applicable to image shapes.
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatalf("expected 1 objects: %#v", g.Objects)
+				}
+				if g.Objects[0].ID != "hey" {
+					t.Fatalf("expected g.Objects[0].ID to be 'hey': %#v", g.Objects[0])
+				}
+				if g.Objects[0].Attributes.Shape.Value != d2target.ShapeHexagon {
+					t.Fatalf("expected g.Objects[0].Attributes.Shape.Value to be hexagon: %#v", g.Objects[0].Attributes.Shape.Value)
+				}
+				if g.Objects[0].Attributes.Width.Value != "200" {
+					t.Fatalf("expected g.Objects[0].Attributes.Width.Value to be 200: %#v", g.Objects[0].Attributes.Width.Value)
+				}
+				if g.Objects[0].Attributes.Height.Value != "230" {
+					t.Fatalf("expected g.Objects[0].Attributes.Height.Value to be 230: %#v", g.Objects[0].Attributes.Height.Value)
+				}
+			},
+		},
+		{
+			name: "equal_dimensions_on_circle",
+
+			text: `hey: "" {
+	shape: circle
+	width: 200
+	height: 230
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2:3:2: width and height must be equal for circle shapes
+d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2:4:2: width and height must be equal for circle shapes
+`,
+		},
+		{
+			name: "single_dimension_on_circle",
+
+			text: `hey: "" {
+	shape: circle
+	height: 230
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatalf("expected 1 objects: %#v", g.Objects)
+				}
+				if g.Objects[0].ID != "hey" {
+					t.Fatalf("expected ID to be 'hey': %#v", g.Objects[0])
+				}
+				if g.Objects[0].Attributes.Shape.Value != d2target.ShapeCircle {
+					t.Fatalf("expected Attributes.Shape.Value to be circle: %#v", g.Objects[0].Attributes.Shape.Value)
+				}
+				if g.Objects[0].Attributes.Width != nil {
+					t.Fatalf("expected Attributes.Width to be nil: %#v", g.Objects[0].Attributes.Width)
+				}
+				if g.Objects[0].Attributes.Height == nil {
+					t.Fatalf("Attributes.Height is nil")
+				}
+			},
+		},
+		{
+			name: "no_dimensions_on_containers",
+
+			text: `
+containers: {
+	circle container: {
+		shape: circle
+		width: 512
+
+		diamond: {
+			shape: diamond
+			width: 128
+			height: 64
+		}
+	}
+	diamond container: {
+		shape: diamond
+		width: 512
+		height: 256
+
+		circle: {
+			shape: circle
+			width: 128
+		}
+	}
+	oval container: {
+		shape: oval
+		width: 512
+		height: 256
+
+		hexagon: {
+			shape: hexagon
+			width: 128
+			height: 64
+		}
+	}
+	hexagon container: {
+		shape: hexagon
+		width: 512
+		height: 256
+
+		oval: {
+			shape: oval
+			width: 128
+			height: 64
+		}
+	}
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:5:3: width cannot be used on container: containers.circle container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:15:3: width cannot be used on container: containers.diamond container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:16:3: height cannot be used on container: containers.diamond container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:25:3: width cannot be used on container: containers.oval container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:26:3: height cannot be used on container: containers.oval container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:36:3: width cannot be used on container: containers.hexagon container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height cannot be used on container: containers.hexagon container
 `,
 		},
 		{

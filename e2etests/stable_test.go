@@ -1640,6 +1640,90 @@ x -> y
 x -> y
 `,
 		},
+		{
+			name: "unnamed_only_width",
+			script: `
+
+class -> users -> code -> package -> no width
+
+class: "" {
+	shape: class
+	-num: int
+	-timeout: int
+	-pid
+
+	+getStatus(): Enum
+	+getJobs(): "Job[]"
+	+setTimeout(seconds int)
+}
+
+users: "" {
+	shape: sql_table
+	id: int
+	name: string
+	email: string
+	password: string
+	last_login: datetime
+}
+
+code: |go
+    a := 5
+    b := a + 7
+    fmt.Printf("%d", b)
+|
+
+package: "" { shape: package }
+no width: ""
+
+
+class.width: 512
+users.width: 512
+code.width: 512
+package.width: 512
+`,
+		},
+		{
+			name: "unnamed_only_height",
+			script: `
+
+class -> users -> code -> package -> no height
+
+class: "" {
+	shape: class
+	-num: int
+	-timeout: int
+	-pid
+
+	+getStatus(): Enum
+	+getJobs(): "Job[]"
+	+setTimeout(seconds int)
+}
+
+users: "" {
+	shape: sql_table
+	id: int
+	name: string
+	email: string
+	password: string
+	last_login: datetime
+}
+
+code: |go
+    a := 5
+    b := a + 7
+    fmt.Printf("%d", b)
+|
+
+package: "" { shape: package }
+no height: ""
+
+
+class.height: 512
+users.height: 512
+code.height: 512
+package.height: 512
+`,
+		},
 	}
 
 	runa(t, tcs)
