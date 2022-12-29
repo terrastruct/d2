@@ -248,7 +248,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 
 	out := svg
 	if filepath.Ext(outputPath) == ".png" {
-		svg := appendix.AppendTooltips(diagram, ruler, svg)
+		svg := appendix.Append(diagram, ruler, svg)
 
 		if !bundle {
 			var bundleErr2 error

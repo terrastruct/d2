@@ -40,13 +40,16 @@ const (
 	MIN_ARROWHEAD_STROKE_WIDTH = 2
 	threeDeeOffset             = 15
 
-	tooltipIconRadius = 16
+	appendixIconRadius = 16
 )
 
 var multipleOffset = geo.NewVector(10, -10)
 
 //go:embed tooltip.svg
 var TooltipIcon string
+
+//go:embed link.svg
+var LinkIcon string
 
 //go:embed style.css
 var styleCSS string
@@ -588,6 +591,11 @@ func render3dRect(targetShape d2target.Shape) string {
 }
 
 func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, err error) {
+	closingTag := "</g>"
+	if targetShape.Link != "" {
+		fmt.Fprintf(writer, `<a href="%s" xlink:href="%[1]s">`, targetShape.Link)
+		closingTag += "</a>"
+	}
 	fmt.Fprintf(writer, `<g id="%s">`, svg.EscapeText(targetShape.ID))
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
@@ -632,7 +640,8 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		} else {
 			drawClass(writer, targetShape)
 		}
-		fmt.Fprintf(writer, `</g></g>`)
+		fmt.Fprintf(writer, `</g>`)
+		fmt.Fprintf(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeSQLTable:
 		if sketchRunner != nil {
@@ -644,7 +653,8 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		} else {
 			drawTable(writer, targetShape)
 		}
-		fmt.Fprintf(writer, `</g></g>`)
+		fmt.Fprintf(writer, `</g>`)
+		fmt.Fprintf(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeOval:
 		if targetShape.Multiple {
@@ -707,6 +717,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		}
 	}
 
+	// Closes the class=shape
 	fmt.Fprintf(writer, `</g>`)
 
 	if targetShape.Icon != nil && targetShape.Type != d2target.ShapeImage {
@@ -841,16 +852,26 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		}
 	}
 
+	rightPadForTooltip := 0
 	if targetShape.Tooltip != "" {
-		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="tooltip-icon">%s</g>`,
-			targetShape.Pos.X+targetShape.Width-tooltipIconRadius,
-			targetShape.Pos.Y-tooltipIconRadius,
+		rightPadForTooltip = 2 * appendixIconRadius
+		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
+			targetShape.Pos.X+targetShape.Width-appendixIconRadius,
+			targetShape.Pos.Y-appendixIconRadius,
 			TooltipIcon,
 		)
 		fmt.Fprintf(writer, `<title>%s</title>`, targetShape.Tooltip)
 	}
 
-	fmt.Fprintf(writer, `</g>`)
+	if targetShape.Link != "" {
+		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
+			targetShape.Pos.X+targetShape.Width-appendixIconRadius-rightPadForTooltip,
+			targetShape.Pos.Y-appendixIconRadius,
+			LinkIcon,
+		)
+	}
+
+	fmt.Fprintf(writer, closingTag)
 	return labelMask, nil
 }
 
@@ -952,13 +973,13 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 	}
 
 	triggers = []string{
-		`tooltip-icon`,
+		`appendix-icon`,
 	}
 
 	for _, t := range triggers {
 		if strings.Contains(content, t) {
 			buf.WriteString(`
-.tooltip-icon {
+.appendix-icon {
 	filter: drop-shadow(0px 0px 32px rgba(31, 36, 58, 0.1));
 }`)
 			break

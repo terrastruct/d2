@@ -51,10 +51,10 @@ var viewboxRegex = regexp.MustCompile(`viewBox=\"([0-9\- ]+)\"`)
 var widthRegex = regexp.MustCompile(`width=\"([0-9]+)\"`)
 var heightRegex = regexp.MustCompile(`height=\"([0-9]+)\"`)
 
-func AppendTooltips(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []byte {
+func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []byte {
 	svg := string(in)
 
-	appendix, w, h := generateTooltipAppendix(diagram, ruler, svg)
+	appendix, w, h := generateAppendix(diagram, ruler, svg)
 
 	if h == 0 {
 		return in
@@ -125,30 +125,37 @@ func AppendTooltips(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []by
 			svg = strings.Replace(svg, d2svg.TooltipIcon, generateNumberedIcon(i, 0, ICON_RADIUS), 1)
 			i++
 		}
+		if s.Link != "" {
+			svg = strings.Replace(svg, d2svg.LinkIcon, generateNumberedIcon(i, 0, ICON_RADIUS), 1)
+			i++
+		}
 	}
 
 	return []byte(svg)
 }
 
-func generateTooltipAppendix(diagram *d2target.Diagram, ruler *textmeasure.Ruler, svg string) (string, int, int) {
+func generateAppendix(diagram *d2target.Diagram, ruler *textmeasure.Ruler, svg string) (string, int, int) {
 	tl, br := diagram.BoundingBox()
 
 	maxWidth, totalHeight := 0, 0
 
-	var tooltipLines []string
+	var lines []string
 	i := 1
+
 	for _, s := range diagram.Shapes {
-		if s.Tooltip != "" {
-			line, w, h := generateTooltipLine(i, br.Y+(PAD_TOP*2)+totalHeight, s.Tooltip, ruler)
-			i++
-			tooltipLines = append(tooltipLines, line)
-			maxWidth = go2.IntMax(maxWidth, w)
-			totalHeight += h + SPACER
+		for _, txt := range []string{s.Tooltip, s.Link} {
+			if txt != "" {
+				line, w, h := generateLine(i, br.Y+(PAD_TOP*2)+totalHeight, txt, ruler)
+				i++
+				lines = append(lines, line)
+				maxWidth = go2.IntMax(maxWidth, w)
+				totalHeight += h + SPACER
+			}
 		}
 	}
 
 	return fmt.Sprintf(`<g x="%d" y="%d" width="%d" height="100%%">%s</g>
-`, tl.X, br.Y, (br.X - tl.X), strings.Join(tooltipLines, "\n")), maxWidth, totalHeight
+`, tl.X, br.Y, (br.X - tl.X), strings.Join(lines, "\n")), maxWidth, totalHeight
 }
 
 func generateNumberedIcon(i, x, y int) string {
@@ -161,7 +168,7 @@ func generateNumberedIcon(i, x, y int) string {
 	return line
 }
 
-func generateTooltipLine(i, y int, text string, ruler *textmeasure.Ruler) (string, int, int) {
+func generateLine(i, y int, text string, ruler *textmeasure.Ruler) (string, int, int) {
 	mtext := &d2target.MText{
 		Text:     text,
 		FontSize: FONT_SIZE,
@@ -169,7 +176,7 @@ func generateTooltipLine(i, y int, text string, ruler *textmeasure.Ruler) (strin
 
 	dims := d2graph.GetTextDimensions(nil, ruler, mtext, nil)
 
-	line := fmt.Sprintf(`<g transform="translate(%d %d)" class="tooltip-icon">%s</g>`,
+	line := fmt.Sprintf(`<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
 		0, y, generateNumberedIcon(i, 0, 0))
 
 	line += fmt.Sprintf(`<text class="text" x="%d" y="%d" style="font-size: %dpx;">%s</text>`,
