@@ -1633,6 +1633,13 @@ y: { tooltip: Gee, I feel kind of LIGHT in the head now,\nknowing I can't make m
 x -> y
 `,
 		},
+		{
+			name: "links",
+			script: `x: { link: https://d2lang.com }
+			y: { link: https://terrastruct.com; tooltip: Gee, I feel kind of LIGHT in the head now,\nknowing I can't make my satellite dish PAYMENTS! }
+x -> y
+`,
+		},
 	}
 
 	runa(t, tcs)
