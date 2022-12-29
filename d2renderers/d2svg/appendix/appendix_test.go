@@ -77,6 +77,13 @@ payment processor behind the scenes: {
 }
 `,
 		},
+		{
+			name: "links",
+			script: `x: { link: https://d2lang.com }
+			y: { link: https://terrastruct.com; tooltip: Gee, I feel kind of LIGHT in the head now,\nknowing I can't make my satellite dish PAYMENTS! }
+x -> y
+`,
+		},
 	}
 	runa(t, tcs)
 }
@@ -127,7 +134,7 @@ func run(t *testing.T, tc testCase) {
 		Pad: d2svg.DEFAULT_PADDING,
 	})
 	assert.Success(t, err)
-	svgBytes = appendix.AppendTooltips(diagram, ruler, svgBytes)
+	svgBytes = appendix.Append(diagram, ruler, svgBytes)
 
 	err = os.MkdirAll(dataPath, 0755)
 	assert.Success(t, err)
