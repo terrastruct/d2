@@ -593,7 +593,7 @@ func render3dRect(targetShape d2target.Shape) string {
 func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, err error) {
 	closingTag := "</g>"
 	if targetShape.Link != "" {
-		fmt.Fprintf(writer, `<a href="%s">`, targetShape.Link)
+		fmt.Fprintf(writer, `<a href="%s" xlink:href="%[1]s">`, targetShape.Link)
 		closingTag += "</a>"
 	}
 	fmt.Fprintf(writer, `<g id="%s">`, svg.EscapeText(targetShape.ID))
