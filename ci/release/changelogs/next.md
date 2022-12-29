@@ -11,3 +11,4 @@
 - Restricts where `near` key constant values can be used, with good error messages, instead of erroring (e.g. setting `near: top-center` on a container would cause bad layouts or error). [#538](https://github.com/terrastruct/d2/pull/538)
 - Fixes an error during ELK layout when images had empty labels. [#555](https://github.com/terrastruct/d2/pull/555)
 - Fixes rendering classes and tables with empty headers. [#498](https://github.com/terrastruct/d2/pull/498)
+- Fixes rendering sql tables with no columns. [#553](https://github.com/terrastruct/d2/pull/553)
