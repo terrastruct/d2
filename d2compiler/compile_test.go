@@ -153,6 +153,64 @@ d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2:4:2: width and 
 			},
 		},
 		{
+			name: "no_dimensions_on_containers",
+
+			text: `
+containers: {
+	circle container: {
+		shape: circle
+		width: 512
+
+		diamond: {
+			shape: diamond
+			width: 128
+			height: 64
+		}
+	}
+	diamond container: {
+		shape: diamond
+		width: 512
+		height: 256
+
+		circle: {
+			shape: circle
+			width: 128
+		}
+	}
+	oval container: {
+		shape: oval
+		width: 512
+		height: 256
+
+		hexagon: {
+			shape: hexagon
+			width: 128
+			height: 64
+		}
+	}
+	hexagon container: {
+		shape: hexagon
+		width: 512
+		height: 256
+
+		oval: {
+			shape: oval
+			width: 128
+			height: 64
+		}
+	}
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:5:3: width cannot be used on container: containers.circle container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:15:3: width cannot be used on container: containers.diamond container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:16:3: height cannot be used on container: containers.diamond container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:25:3: width cannot be used on container: containers.oval container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:26:3: height cannot be used on container: containers.oval container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:36:3: width cannot be used on container: containers.hexagon container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height cannot be used on container: containers.hexagon container
+`,
+		},
+		{
 			name: "basic_icon",
 
 			text: `hey: "" {

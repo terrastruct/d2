@@ -97,7 +97,6 @@ this is a message group: {
 containers: {
 	circle container: {
 		shape: circle
-		width: 512
 
 		diamond: {
 			shape: diamond
@@ -107,8 +106,6 @@ containers: {
 	}
 	diamond container: {
 		shape: diamond
-		width: 512
-		height: 256
 
 		circle: {
 			shape: circle
@@ -117,8 +114,6 @@ containers: {
 	}
 	oval container: {
 		shape: oval
-		width: 512
-		height: 256
 
 		hexagon: {
 			shape: hexagon
@@ -128,8 +123,6 @@ containers: {
 	}
 	hexagon container: {
 		shape: hexagon
-		width: 512
-		height: 256
 
 		oval: {
 			shape: oval
