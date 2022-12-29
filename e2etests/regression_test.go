@@ -264,6 +264,26 @@ ico: {
 }
 `,
 		},
+		{
+			name: "only_header_class_table",
+			script: `
+
+class: RefreshAuthorizationPolicyProtocolServerSideTranslatorProtocolBuffer {
+	shape: class
+}
+
+table: RefreshAuthorizationPolicyCache {
+	shape: sql_table
+}
+
+table with short col: RefreshAuthorizationPolicyCache {
+	shape: sql_table
+	ok
+}
+
+class -> table -> table with short col
+`,
+		},
 	}
 
 	runa(t, tcs)

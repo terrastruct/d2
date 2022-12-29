@@ -1,0 +1,259 @@
+{
+  "name": "",
+  "fontFamily": "SourceSansPro",
+  "shapes": [
+    {
+      "id": "class",
+      "type": "class",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 1082,
+      "height": 36,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#0A0F25",
+      "stroke": "#FFFFFF",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "RefreshAuthorizationPolicyProtocolServerSideTranslatorProtocolBuffer",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 982,
+      "labelHeight": 36,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "#0D32B2",
+      "secondaryAccentColor": "#4A6FF3",
+      "neutralAccentColor": "#676C7E"
+    },
+    {
+      "id": "table",
+      "type": "sql_table",
+      "pos": {
+        "x": 516,
+        "y": 136
+      },
+      "width": 50,
+      "height": 36,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#0A0F25",
+      "stroke": "#FFFFFF",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "RefreshAuthorizationPolicyCache",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 361,
+      "labelHeight": 36,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "#0D32B2",
+      "secondaryAccentColor": "#4A6FF3",
+      "neutralAccentColor": "#676C7E"
+    },
+    {
+      "id": "table with short col",
+      "type": "sql_table",
+      "pos": {
+        "x": 506,
+        "y": 272
+      },
+      "width": 71,
+      "height": 72,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#0A0F25",
+      "stroke": "#FFFFFF",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": [
+        {
+          "name": {
+            "label": "ok",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 21,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 0,
+            "labelHeight": 0
+          },
+          "constraint": "",
+          "reference": ""
+        }
+      ],
+      "label": "RefreshAuthorizationPolicyCache",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 361,
+      "labelHeight": 36,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "#0D32B2",
+      "secondaryAccentColor": "#4A6FF3",
+      "neutralAccentColor": "#676C7E"
+    }
+  ],
+  "connections": [
+    {
+      "id": "(class -> table)[0]",
+      "src": "class",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "table",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 541,
+          "y": 36
+        },
+        {
+          "x": 541,
+          "y": 76
+        },
+        {
+          "x": 541,
+          "y": 96
+        },
+        {
+          "x": 541,
+          "y": 136
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(table -> table with short col)[0]",
+      "src": "table",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "table with short col",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 541,
+          "y": 172
+        },
+        {
+          "x": 541,
+          "y": 212
+        },
+        {
+          "x": 541,
+          "y": 232
+        },
+        {
+          "x": 541,
+          "y": 272
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    }
+  ]
+}
