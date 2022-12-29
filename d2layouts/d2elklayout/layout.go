@@ -147,8 +147,10 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 
 	walk(g.Root, nil, func(obj, parent *d2graph.Object) {
 		height := obj.Height
-		if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
-			height += float64(*obj.LabelHeight) + label.PADDING
+		if obj.LabelWidth != nil && obj.LabelHeight != nil {
+			if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
+				height += float64(*obj.LabelHeight) + label.PADDING
+			}
 		}
 
 		n := &ELKNode{
