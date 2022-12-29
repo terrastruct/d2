@@ -68,8 +68,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 5,
-      "labelHeight": 5,
+      "labelWidth": 0,
+      "labelHeight": 0,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -84,7 +84,7 @@
         "y": 480
       },
       "width": 208,
-      "height": 216,
+      "height": 186,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -251,8 +251,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 64,
-      "labelHeight": 36,
+      "labelWidth": 59,
+      "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -264,7 +264,7 @@
       "type": "code",
       "pos": {
         "x": 125,
-        "y": 796
+        "y": 766
       },
       "width": 196,
       "height": 70,
@@ -366,11 +366,11 @@
       "route": [
         {
           "x": 223,
-          "y": 696
+          "y": 666
         },
         {
           "x": 223,
-          "y": 796
+          "y": 766
         }
       ],
       "animated": false,

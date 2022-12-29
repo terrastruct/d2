@@ -68,8 +68,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 5,
-      "labelHeight": 5,
+      "labelWidth": 0,
+      "labelHeight": 0,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -251,8 +251,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 64,
-      "labelHeight": 36,
+      "labelWidth": 59,
+      "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -302,10 +302,10 @@
       "id": "package",
       "type": "package",
       "pos": {
-        "x": 170,
+        "x": 173,
         "y": 1848
       },
-      "width": 105,
+      "width": 100,
       "height": 512,
       "opacity": 1,
       "strokeDash": 0,
@@ -332,8 +332,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 5,
-      "labelHeight": 5,
+      "labelWidth": 0,
+      "labelHeight": 0,
       "zIndex": 0,
       "level": 1
     },
@@ -486,7 +486,7 @@
           "y": 1748
         },
         {
-          "x": 224,
+          "x": 223,
           "y": 1848
         }
       ],
