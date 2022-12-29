@@ -203,6 +203,7 @@ let us know and we'll be happy to include it here!
 - **Vim extension**: [https://github.com/terrastruct/d2-vim](https://github.com/terrastruct/d2-vim)
 - **Obsidian plugin**: [https://github.com/terrastruct/d2-obsidian](https://github.com/terrastruct/d2-obsidian)
 - **Slack app**: [https://d2lang.com/tour/slack](https://d2lang.com/tour/slack)
+- **Discord plugin**: [https://d2lang.com/tour/discord](https://d2lang.com/tour/discord)
 
 ### Community plugins
 
