@@ -1,4 +1,3 @@
-
 <div align="center">
   <img src="./docs/assets/banner.png" alt="D2" />
   <h2>
