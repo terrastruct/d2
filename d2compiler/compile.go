@@ -797,8 +797,18 @@ func (c *compiler) validateKey(obj *d2graph.Object, m *d2ast.Map, mk *d2ast.Key)
 		return
 	}
 
-	if reserved == "" && obj.Attributes.Shape.Value == d2target.ShapeImage {
-		c.errorf(mk.Range.Start, mk.Range.End, "image shapes cannot have children.")
+	switch strings.ToLower(obj.Attributes.Shape.Value) {
+	case d2target.ShapeImage:
+		if reserved == "" {
+			c.errorf(mk.Range.Start, mk.Range.End, "image shapes cannot have children.")
+		}
+	case d2target.ShapeCircle, d2target.ShapeSquare:
+		checkEqual := (reserved == "width" && obj.Attributes.Height != nil) ||
+			(reserved == "height" && obj.Attributes.Width != nil)
+
+		if checkEqual && obj.Attributes.Width.Value != obj.Attributes.Height.Value {
+			c.errorf(mk.Range.Start, mk.Range.End, fmt.Sprintf("width and height must be equal for %s shapes", obj.Attributes.Shape.Value))
+		}
 	}
 
 	in := d2target.IsShape(obj.Attributes.Shape.Value)

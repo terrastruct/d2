@@ -98,7 +98,6 @@ containers: {
 	circle container: {
 		shape: circle
 		width: 512
-		height: 256
 
 		diamond: {
 			shape: diamond
@@ -114,7 +113,6 @@ containers: {
 		circle: {
 			shape: circle
 			width: 128
-			height: 64
 		}
 	}
 	oval container: {
