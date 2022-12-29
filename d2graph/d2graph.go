@@ -805,7 +805,9 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 
 		// The rows get padded a little due to header font being larger than row font
 		dims.Height = labelDims.Height * (len(obj.SQLTable.Columns) + 1)
-		dims.Width = d2target.NamePadding + maxNameWidth + d2target.TypePadding + maxTypeWidth + d2target.TypePadding + constraintWidth
+		headerWidth := d2target.HeaderPadding + labelDims.Width + d2target.HeaderPadding
+		rowsWidth := d2target.NamePadding + maxNameWidth + d2target.TypePadding + maxTypeWidth + d2target.TypePadding + constraintWidth
+		dims.Width = go2.Max(headerWidth, rowsWidth)
 	}
 
 	return &dims, nil
