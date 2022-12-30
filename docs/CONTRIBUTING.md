@@ -54,7 +54,7 @@ start work on an Issue, please leave a comment so others know that it's being wo
 
 ### Tests
 
-All code changes must include tests. D2 mostly has functional tests, and uses
+All code changes must include tests. D2 mostly has functional tests (see `e2etests` directory), and uses
 [diff](https://github.com/terrastruct/diff) as a framework that gives Git-style
 comparisons of expected vs actual output for each stage. There are ample examples in each
 package of this -- try changing some test and run it to see.
@@ -81,6 +81,11 @@ Run: `./ci/test.sh`
 
 CI runs tests with `-race` to catch potential race conditions. It's much slower, but if
 your machine can run it locally, you can do so with `./make.sh race`.
+
+If you had to change/add functional test cases (under `e2etests` directory), make sure
+you updated them before opening a PR.
+
+Run: `TESTDATA_ACCEPT=1 ./ci/test.sh` or `TA=1 ./ci/test.sh` for a shorter version.
 
 #### Chaos tests
 
