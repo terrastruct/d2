@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"os/exec"
+	"strconv"
 	"time"
 
 	"oss.terrastruct.com/util-go/xdefer"
@@ -68,13 +69,23 @@ func (p execPlugin) Flags(ctx context.Context) (_ []PluginSpecificFlag, err erro
 
 func (p *execPlugin) HydrateOpts(opts []byte) error {
 	if opts != nil {
-		var execOpts map[string]string
+		var execOpts map[string]interface{}
 		err := json.Unmarshal(opts, &execOpts)
 		if err != nil {
 			return xmain.UsageErrorf("non-exec layout options given for exec")
 		}
 
-		p.opts = execOpts
+		allString := make(map[string]string)
+		for k, v := range execOpts {
+			switch vt := v.(type) {
+			case string:
+				allString[k] = vt
+			case int64:
+				allString[k] = strconv.Itoa(int(vt))
+			}
+		}
+
+		p.opts = allString
 	}
 	return nil
 }
