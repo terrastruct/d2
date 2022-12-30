@@ -113,7 +113,11 @@ func (p execPlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
 		return err
 	}
 
-	cmd := exec.CommandContext(ctx, p.path, "layout")
+	args := []string{"layout"}
+	for k, v := range p.opts {
+		args = append(args, k, v)
+	}
+	cmd := exec.CommandContext(ctx, p.path, args...)
 
 	buffer := bytes.Buffer{}
 	buffer.Write(graphBytes)
