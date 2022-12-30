@@ -5,10 +5,10 @@ package d2svg
 import (
 	"bytes"
 	_ "embed"
-	"encoding/xml"
 	"errors"
 	"fmt"
 	"hash/fnv"
+	"html"
 	"io"
 	"sort"
 	"strings"
@@ -25,32 +25,50 @@ import (
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2latex"
+	"oss.terrastruct.com/d2/d2renderers/d2sketch"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/shape"
+	"oss.terrastruct.com/d2/lib/svg"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
 const (
-	padding                    = 100
+	DEFAULT_PADDING            = 100
 	MIN_ARROWHEAD_STROKE_WIDTH = 2
 	threeDeeOffset             = 15
+
+	appendixIconRadius = 16
 )
 
 var multipleOffset = geo.NewVector(10, -10)
 
+//go:embed tooltip.svg
+var TooltipIcon string
+
+//go:embed link.svg
+var LinkIcon string
+
 //go:embed style.css
 var styleCSS string
+
+//go:embed sketchstyle.css
+var sketchStyleCSS string
 
 //go:embed github-markdown.css
 var mdCSS string
 
-func setViewbox(writer io.Writer, diagram *d2target.Diagram) (width int, height int) {
+type RenderOpts struct {
+	Pad    int
+	Sketch bool
+}
+
+func setViewbox(writer io.Writer, diagram *d2target.Diagram, pad int) (width int, height int) {
 	tl, br := diagram.BoundingBox()
-	w := br.X - tl.X + padding*2
-	h := br.Y - tl.Y + padding*2
+	w := br.X - tl.X + pad*2
+	h := br.Y - tl.Y + pad*2
 	// TODO minify
 
 	// TODO background stuff. e.g. dotted, grid, colors
@@ -58,7 +76,7 @@ func setViewbox(writer io.Writer, diagram *d2target.Diagram) (width int, height 
 <svg
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="%d" height="%d" viewBox="%d %d %d %d">`, w, h, tl.X-padding, tl.Y-padding, w, h)
+width="%d" height="%d" viewBox="%d %d %d %d">`, w, h, tl.X-pad, tl.Y-pad, w, h)
 
 	return w, h
 }
@@ -346,8 +364,8 @@ func makeLabelMask(labelTL *geo.Point, width, height int) string {
 	)
 }
 
-func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape) (labelMask string) {
-	fmt.Fprintf(writer, `<g id="%s">`, escapeText(connection.ID))
+func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, _ error) {
+	fmt.Fprintf(writer, `<g id="%s">`, svg.EscapeText(connection.ID))
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(false, connection)
@@ -383,43 +401,26 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		labelTL.Y = math.Round(labelTL.Y)
 
 		if label.Position(connection.LabelPosition).IsOnEdge() {
-			strokeWidth := float64(connection.StrokeWidth)
-			tl, br := geo.Route(connection.Route).GetBoundingBox()
-			tl.X -= strokeWidth
-			tl.Y -= strokeWidth
-			br.X += strokeWidth
-			br.Y += strokeWidth
-			if connection.SrcArrow != d2target.NoArrowhead {
-				width, height := arrowheadDimensions(connection.SrcArrow, strokeWidth)
-				tl.X -= width
-				tl.Y -= height
-				br.X += width
-				br.Y += height
-			}
-			if connection.DstArrow != d2target.NoArrowhead {
-				width, height := arrowheadDimensions(connection.DstArrow, strokeWidth)
-				tl.X -= width
-				tl.Y -= height
-				br.X += width
-				br.Y += height
-			}
-
-			tl.X = math.Min(tl.X, labelTL.X)
-			tl.Y = math.Min(tl.Y, labelTL.Y)
-			br.X = math.Max(br.X, labelTL.X+float64(connection.LabelWidth))
-			br.Y = math.Max(br.Y, labelTL.Y+float64(connection.LabelHeight))
-
 			labelMask = makeLabelMask(labelTL, connection.LabelWidth, connection.LabelHeight)
 		}
 	}
 
-	fmt.Fprintf(writer, `<path d="%s" class="connection" style="fill:none;%s" %s%smask="url(#%s)"/>`,
-		pathData(connection, idToShape),
-		connectionStyle(connection),
+	path := pathData(connection, idToShape)
+	attrs := fmt.Sprintf(`%s%smask="url(#%s)"`,
 		markerStart,
 		markerEnd,
 		labelMaskID,
 	)
+	if sketchRunner != nil {
+		out, err := d2sketch.Connection(sketchRunner, connection, path, attrs)
+		if err != nil {
+			return "", err
+		}
+		fmt.Fprintf(writer, out)
+	} else {
+		fmt.Fprintf(writer, `<path d="%s" class="connection" style="fill:none;%s" %s/>`,
+			path, connectionStyle(connection), attrs)
+	}
 
 	if connection.Label != "" {
 		fontClass := "text"
@@ -432,6 +433,11 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		if connection.Color != "" {
 			fontColor = connection.Color
 		}
+
+		if connection.Fill != "" {
+			fmt.Fprintf(writer, `<rect x="%f" y="%f" width="%d" height="%d" style="fill:%s" />`,
+				labelTL.X, labelTL.Y, connection.LabelWidth, connection.LabelHeight, connection.Fill)
+		}
 		textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", connection.FontSize, fontColor)
 		x := labelTL.X + float64(connection.LabelWidth)/2
 		y := labelTL.Y + float64(connection.FontSize)
@@ -439,7 +445,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 			fontClass,
 			x, y,
 			textStyle,
-			renderText(connection.Label, x, float64(connection.LabelHeight)),
+			RenderText(connection.Label, x, float64(connection.LabelHeight)),
 		)
 	}
 
@@ -475,7 +481,7 @@ func renderArrowheadLabel(connection d2target.Connection, text string, position,
 	return fmt.Sprintf(`<text class="text-italic" x="%f" y="%f" style="%s">%s</text>`,
 		x, y,
 		textStyle,
-		renderText(text, x, height),
+		RenderText(text, x, height),
 	)
 }
 
@@ -538,7 +544,7 @@ func render3dRect(targetShape d2target.Shape) string {
 		strings.Join(borderSegments, " "), borderStyle)
 
 	// create mask from border stroke, to cut away from the shape fills
-	maskID := fmt.Sprintf("border-mask-%v", escapeText(targetShape.ID))
+	maskID := fmt.Sprintf("border-mask-%v", svg.EscapeText(targetShape.ID))
 	borderMask := strings.Join([]string{
 		fmt.Sprintf(`<defs><mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
 			maskID, targetShape.Pos.X, targetShape.Pos.Y-threeDeeOffset, targetShape.Width+threeDeeOffset, targetShape.Height+threeDeeOffset,
@@ -584,8 +590,13 @@ func render3dRect(targetShape d2target.Shape) string {
 	return borderMask + mainRect + renderedSides + renderedBorder
 }
 
-func drawShape(writer io.Writer, targetShape d2target.Shape) (labelMask string, err error) {
-	fmt.Fprintf(writer, `<g id="%s">`, escapeText(targetShape.ID))
+func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, err error) {
+	closingTag := "</g>"
+	if targetShape.Link != "" {
+		fmt.Fprintf(writer, `<a href="%s" xlink:href="%[1]s">`, targetShape.Link)
+		closingTag += "</a>"
+	}
+	fmt.Fprintf(writer, `<g id="%s">`, svg.EscapeText(targetShape.ID))
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)
@@ -620,22 +631,48 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) (labelMask string, 
 
 	switch targetShape.Type {
 	case d2target.ShapeClass:
-		drawClass(writer, targetShape)
-		fmt.Fprintf(writer, `</g></g>`)
+		if sketchRunner != nil {
+			out, err := d2sketch.Class(sketchRunner, targetShape)
+			if err != nil {
+				return "", err
+			}
+			fmt.Fprintf(writer, out)
+		} else {
+			drawClass(writer, targetShape)
+		}
+		fmt.Fprintf(writer, `</g>`)
+		fmt.Fprintf(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeSQLTable:
-		drawTable(writer, targetShape)
-		fmt.Fprintf(writer, `</g></g>`)
+		if sketchRunner != nil {
+			out, err := d2sketch.Table(sketchRunner, targetShape)
+			if err != nil {
+				return "", err
+			}
+			fmt.Fprintf(writer, out)
+		} else {
+			drawTable(writer, targetShape)
+		}
+		fmt.Fprintf(writer, `</g>`)
+		fmt.Fprintf(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeOval:
 		if targetShape.Multiple {
 			fmt.Fprint(writer, renderOval(multipleTL, width, height, style))
 		}
-		fmt.Fprint(writer, renderOval(tl, width, height, style))
+		if sketchRunner != nil {
+			out, err := d2sketch.Oval(sketchRunner, targetShape)
+			if err != nil {
+				return "", err
+			}
+			fmt.Fprintf(writer, out)
+		} else {
+			fmt.Fprint(writer, renderOval(tl, width, height, style))
+		}
 
 	case d2target.ShapeImage:
 		fmt.Fprintf(writer, `<image href="%s" x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-			targetShape.Icon.String(),
+			html.EscapeString(targetShape.Icon.String()),
 			targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
 
 	// TODO should standardize "" to rectangle
@@ -647,8 +684,16 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) (labelMask string, 
 				fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
 					targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style)
 			}
-			fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-				targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
+			if sketchRunner != nil {
+				out, err := d2sketch.Rect(sketchRunner, targetShape)
+				if err != nil {
+					return "", err
+				}
+				fmt.Fprintf(writer, out)
+			} else {
+				fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+					targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
+			}
 		}
 	case d2target.ShapeText, d2target.ShapeCode:
 	default:
@@ -659,11 +704,20 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) (labelMask string, 
 			}
 		}
 
-		for _, pathData := range s.GetSVGPathData() {
-			fmt.Fprintf(writer, `<path d="%s" style="%s"/>`, pathData, style)
+		if sketchRunner != nil {
+			out, err := d2sketch.Paths(sketchRunner, targetShape, s.GetSVGPathData())
+			if err != nil {
+				return "", err
+			}
+			fmt.Fprintf(writer, out)
+		} else {
+			for _, pathData := range s.GetSVGPathData() {
+				fmt.Fprintf(writer, `<path d="%s" style="%s"/>`, pathData, style)
+			}
 		}
 	}
 
+	// Closes the class=shape
 	fmt.Fprintf(writer, `</g>`)
 
 	if targetShape.Icon != nil && targetShape.Type != d2target.ShapeImage {
@@ -679,7 +733,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) (labelMask string, 
 		tl := iconPosition.GetPointOnBox(box, label.PADDING, float64(iconSize), float64(iconSize))
 
 		fmt.Fprintf(writer, `<image href="%s" x="%f" y="%f" width="%d" height="%d" />`,
-			targetShape.Icon.String(),
+			html.EscapeString(targetShape.Icon.String()),
 			tl.X,
 			tl.Y,
 			iconSize,
@@ -703,9 +757,11 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) (labelMask string, 
 		} else if targetShape.Italic {
 			fontClass += "-italic"
 		}
+		if targetShape.Underline {
+			fontClass += " text-underline"
+		}
 
-		switch targetShape.Type {
-		case d2target.ShapeCode:
+		if targetShape.Type == d2target.ShapeCode {
 			lexer := lexers.Get(targetShape.Language)
 			if lexer == nil {
 				return labelMask, fmt.Errorf("code snippet lexer for %s not found", targetShape.Language)
@@ -746,29 +802,36 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) (labelMask string, 
 				fmt.Fprint(writer, "</text>")
 			}
 			fmt.Fprintf(writer, "</g></g>")
-		case d2target.ShapeText:
-			if targetShape.Language == "latex" {
-				render, err := d2latex.Render(targetShape.Label)
-				if err != nil {
-					return labelMask, err
-				}
-				fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
-				fmt.Fprint(writer, render)
-				fmt.Fprintf(writer, "</g>")
-			} else {
-				render, err := textmeasure.RenderMarkdown(targetShape.Label)
-				if err != nil {
-					return labelMask, err
-				}
-				fmt.Fprintf(writer, `<g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="%f" y="%f" width="%d" height="%d">`,
-					box.TopLeft.X, box.TopLeft.Y, targetShape.Width, targetShape.Height,
-				)
-				// we need the self closing form in this svg/xhtml context
-				render = strings.ReplaceAll(render, "<hr>", "<hr />")
-				fmt.Fprintf(writer, `<div xmlns="http://www.w3.org/1999/xhtml" class="md">%v</div>`, render)
-				fmt.Fprint(writer, `</foreignObject></g>`)
+		} else if targetShape.Type == d2target.ShapeText && targetShape.Language == "latex" {
+			render, err := d2latex.Render(targetShape.Label)
+			if err != nil {
+				return labelMask, err
 			}
-		default:
+			fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
+			fmt.Fprint(writer, render)
+			fmt.Fprintf(writer, "</g>")
+		} else if targetShape.Type == d2target.ShapeText && targetShape.Language != "" {
+			render, err := textmeasure.RenderMarkdown(targetShape.Label)
+			if err != nil {
+				return labelMask, err
+			}
+			fmt.Fprintf(writer, `<g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="%f" y="%f" width="%d" height="%d">`,
+				box.TopLeft.X, box.TopLeft.Y, targetShape.Width, targetShape.Height,
+			)
+			// we need the self closing form in this svg/xhtml context
+			render = strings.ReplaceAll(render, "<hr>", "<hr />")
+
+			var mdStyle string
+			if targetShape.Fill != "" {
+				mdStyle = fmt.Sprintf("background-color:%s;", targetShape.Fill)
+			}
+			if targetShape.Stroke != "" {
+				mdStyle += fmt.Sprintf("color:%s;", targetShape.Stroke)
+			}
+
+			fmt.Fprintf(writer, `<div xmlns="http://www.w3.org/1999/xhtml" class="md" style="%s">%v</div>`, mdStyle, render)
+			fmt.Fprint(writer, `</foreignObject></g>`)
+		} else {
 			fontColor := "black"
 			if targetShape.Color != "" {
 				fontColor = targetShape.Color
@@ -781,26 +844,40 @@ func drawShape(writer io.Writer, targetShape d2target.Shape) (labelMask string, 
 				fontClass,
 				x, y,
 				textStyle,
-				renderText(targetShape.Label, x, float64(targetShape.LabelHeight)),
+				RenderText(targetShape.Label, x, float64(targetShape.LabelHeight)),
 			)
 			if targetShape.Blend {
 				labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight-d2graph.INNER_LABEL_PADDING)
 			}
 		}
 	}
-	fmt.Fprintf(writer, `</g>`)
+
+	rightPadForTooltip := 0
+	if targetShape.Tooltip != "" {
+		rightPadForTooltip = 2 * appendixIconRadius
+		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
+			targetShape.Pos.X+targetShape.Width-appendixIconRadius,
+			targetShape.Pos.Y-appendixIconRadius,
+			TooltipIcon,
+		)
+		fmt.Fprintf(writer, `<title>%s</title>`, targetShape.Tooltip)
+	}
+
+	if targetShape.Link != "" {
+		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
+			targetShape.Pos.X+targetShape.Width-appendixIconRadius-rightPadForTooltip,
+			targetShape.Pos.Y-appendixIconRadius,
+			LinkIcon,
+		)
+	}
+
+	fmt.Fprintf(writer, closingTag)
 	return labelMask, nil
 }
 
-func escapeText(text string) string {
-	buf := new(bytes.Buffer)
-	_ = xml.EscapeText(buf, []byte(text))
-	return buf.String()
-}
-
-func renderText(text string, x, height float64) string {
+func RenderText(text string, x, height float64) string {
 	if !strings.Contains(text, "\n") {
-		return escapeText(text)
+		return svg.EscapeText(text)
 	}
 	rendered := []string{}
 	lines := strings.Split(text, "\n")
@@ -809,7 +886,7 @@ func renderText(text string, x, height float64) string {
 		if i == 0 {
 			dy = 0
 		}
-		escaped := escapeText(line)
+		escaped := svg.EscapeText(line)
 		if escaped == "" {
 			// if there are multiple newlines in a row we still need text for the tspan to render
 			escaped = " "
@@ -822,12 +899,20 @@ func renderText(text string, x, height float64) string {
 func shapeStyle(shape d2target.Shape) string {
 	out := ""
 
-	out += fmt.Sprintf(`fill:%s;`, shape.Fill)
-	out += fmt.Sprintf(`stroke:%s;`, shape.Stroke)
+	if shape.Type == d2target.ShapeSQLTable || shape.Type == d2target.ShapeClass {
+		// Fill is used for header fill in these types
+		// This fill property is just background of rows
+		out += fmt.Sprintf(`fill:%s;`, shape.Stroke)
+		// Stroke (border) of these shapes should match the header fill
+		out += fmt.Sprintf(`stroke:%s;`, shape.Fill)
+	} else {
+		out += fmt.Sprintf(`fill:%s;`, shape.Fill)
+		out += fmt.Sprintf(`stroke:%s;`, shape.Stroke)
+	}
 	out += fmt.Sprintf(`opacity:%f;`, shape.Opacity)
 	out += fmt.Sprintf(`stroke-width:%d;`, shape.StrokeWidth)
 	if shape.StrokeDash != 0 {
-		dashSize, gapSize := getStrokeDashAttributes(float64(shape.StrokeWidth), shape.StrokeDash)
+		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(shape.StrokeWidth), shape.StrokeDash)
 		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
 	}
 
@@ -841,27 +926,20 @@ func connectionStyle(connection d2target.Connection) string {
 	out += fmt.Sprintf(`opacity:%f;`, connection.Opacity)
 	out += fmt.Sprintf(`stroke-width:%d;`, connection.StrokeWidth)
 	if connection.StrokeDash != 0 {
-		dashSize, gapSize := getStrokeDashAttributes(float64(connection.StrokeWidth), connection.StrokeDash)
+		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(connection.StrokeWidth), connection.StrokeDash)
 		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
 	}
 
 	return out
 }
 
-func getStrokeDashAttributes(strokeWidth, dashGapSize float64) (float64, float64) {
-	// as the stroke width gets thicker, the dash gap gets smaller
-	scale := math.Log10(-0.6*strokeWidth+10.6)*0.5 + 0.5
-	scaledDashSize := strokeWidth * dashGapSize
-	scaledGapSize := scale * scaledDashSize
-	return scaledDashSize, scaledGapSize
-}
-
-func embedFonts(buf *bytes.Buffer) {
+func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 	content := buf.String()
 	buf.WriteString(`<style type="text/css"><![CDATA[`)
 
 	triggers := []string{
 		`class="text"`,
+		`class="text `,
 		`class="md"`,
 	}
 
@@ -875,7 +953,35 @@ func embedFonts(buf *bytes.Buffer) {
 	font-family: font-regular;
 	src: url("%s");
 }`,
-				d2fonts.FontEncodings[d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_REGULAR)])
+				d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR)])
+			break
+		}
+	}
+
+	triggers = []string{
+		`text-underline`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			buf.WriteString(`
+.text-underline {
+  text-decoration: underline;
+}`)
+			break
+		}
+	}
+
+	triggers = []string{
+		`appendix-icon`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			buf.WriteString(`
+.appendix-icon {
+	filter: drop-shadow(0px 0px 32px rgba(31, 36, 58, 0.1));
+}`)
 			break
 		}
 	}
@@ -896,7 +1002,7 @@ func embedFonts(buf *bytes.Buffer) {
 	font-family: font-bold;
 	src: url("%s");
 }`,
-				d2fonts.FontEncodings[d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_BOLD)])
+				d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_BOLD)])
 			break
 		}
 	}
@@ -917,7 +1023,7 @@ func embedFonts(buf *bytes.Buffer) {
 	font-family: font-italic;
 	src: url("%s");
 }`,
-				d2fonts.FontEncodings[d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_ITALIC)])
+				d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_ITALIC)])
 			break
 		}
 	}
@@ -949,15 +1055,32 @@ func embedFonts(buf *bytes.Buffer) {
 }
 
 // TODO minify output at end
-func Render(diagram *d2target.Diagram) ([]byte, error) {
-	buf := &bytes.Buffer{}
-	w, h := setViewbox(buf, diagram)
+func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
+	var sketchRunner *d2sketch.Runner
+	pad := DEFAULT_PADDING
+	if opts != nil {
+		pad = opts.Pad
+		if opts.Sketch {
+			var err error
+			sketchRunner, err = d2sketch.InitSketchVM()
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
 
+	buf := &bytes.Buffer{}
+	w, h := setViewbox(buf, diagram, pad)
+
+	styleCSS2 := ""
+	if sketchRunner != nil {
+		styleCSS2 = "\n" + sketchStyleCSS
+	}
 	buf.WriteString(fmt.Sprintf(`<style type="text/css">
 <![CDATA[
-%s
+%s%s
 ]]>
-</style>`, styleCSS))
+</style>`, styleCSS, styleCSS2))
 
 	hasMarkdown := false
 	for _, s := range diagram.Shapes {
@@ -968,6 +1091,9 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 	}
 	if hasMarkdown {
 		fmt.Fprintf(buf, `<style type="text/css">%s</style>`, mdCSS)
+	}
+	if sketchRunner != nil {
+		fmt.Fprintf(buf, d2sketch.DefineFillPattern())
 	}
 
 	// only define shadow filter if a shape uses it
@@ -1003,37 +1129,38 @@ func Render(diagram *d2target.Diagram) ([]byte, error) {
 	markers := map[string]struct{}{}
 	for _, obj := range allObjects {
 		if c, is := obj.(d2target.Connection); is {
-			labelMask := drawConnection(buf, labelMaskID, c, markers, idToShape)
+			labelMask, err := drawConnection(buf, labelMaskID, c, markers, idToShape, sketchRunner)
+			if err != nil {
+				return nil, err
+			}
 			if labelMask != "" {
 				labelMasks = append(labelMasks, labelMask)
 			}
 		} else if s, is := obj.(d2target.Shape); is {
-			labelMask, err := drawShape(buf, s)
+			labelMask, err := drawShape(buf, s, sketchRunner)
 			if err != nil {
 				return nil, err
 			} else if labelMask != "" {
 				labelMasks = append(labelMasks, labelMask)
 			}
 		} else {
-			return nil, fmt.Errorf("unknow object of type %T", obj)
+			return nil, fmt.Errorf("unknown object of type %T", obj)
 		}
 	}
 
-	if len(labelMasks) > 0 {
-		fmt.Fprint(buf, strings.Join([]string{
-			fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="0" y="0" width="%d" height="%d">`,
-				labelMaskID, w, h,
-			),
-			fmt.Sprintf(`<rect x="0" y="0" width="%d" height="%d" fill="white"></rect>`,
-				w,
-				h,
-			),
-			strings.Join(labelMasks, "\n"),
-			`</mask>`,
-		}, "\n"))
-	}
+	// Note: we always want this since we reference it on connections even if there end up being no masked labels
+	fmt.Fprint(buf, strings.Join([]string{
+		fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
+			labelMaskID, -pad, -pad, w, h,
+		),
+		fmt.Sprintf(`<rect x="%d" y="%d" width="%d" height="%d" fill="white"></rect>`,
+			-pad, -pad, w, h,
+		),
+		strings.Join(labelMasks, "\n"),
+		`</mask>`,
+	}, "\n"))
 
-	embedFonts(buf)
+	embedFonts(buf, diagram.FontFamily)
 
 	buf.WriteString(`</svg>`)
 	return buf.Bytes(), nil

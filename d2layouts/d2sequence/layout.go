@@ -5,24 +5,14 @@ import (
 	"sort"
 	"strings"
 
-	"oss.terrastruct.com/util-go/go2"
-
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
+	"oss.terrastruct.com/util-go/go2"
 )
 
-// Layout runs the sequence diagram layout engine on objects of shape sequence_diagram
-//
-// 1. Traverse graph from root, skip objects with shape not `sequence_diagram`
-// 2. Construct a sequence diagram from all descendant objects and edges
-// 3. Remove those objects and edges from the main graph
-// 4. Run layout on sequence diagrams
-// 5. Set the resulting dimensions to the main graph shape
-// 6. Run core layouts (still without sequence diagram innards)
-// 7. Put back sequence diagram innards in correct location
-func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Context, g *d2graph.Graph) error) error {
+func WithoutSequenceDiagrams(ctx context.Context, g *d2graph.Graph) (map[string]*sequenceDiagram, map[string]int, map[string]int, error) {
 	objectsToRemove := make(map[*d2graph.Object]struct{})
 	edgesToRemove := make(map[*d2graph.Edge]struct{})
 	sequenceDiagrams := make(map[string]*sequenceDiagram)
@@ -42,7 +32,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 
 		sd, err := layoutSequenceDiagram(g, obj)
 		if err != nil {
-			return err
+			return nil, nil, nil, err
 		}
 		obj.Children = make(map[string]*d2graph.Object)
 		obj.ChildrenArray = nil
@@ -70,7 +60,26 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Conte
 	layoutEdges, edgeOrder := getLayoutEdges(g, edgesToRemove)
 	g.Edges = layoutEdges
 	layoutObjects, objectOrder := getLayoutObjects(g, objectsToRemove)
+	// TODO this isn't a proper deletion because the objects still appear as children of the object
 	g.Objects = layoutObjects
+
+	return sequenceDiagrams, objectOrder, edgeOrder, nil
+}
+
+// Layout runs the sequence diagram layout engine on objects of shape sequence_diagram
+//
+// 1. Traverse graph from root, skip objects with shape not `sequence_diagram`
+// 2. Construct a sequence diagram from all descendant objects and edges
+// 3. Remove those objects and edges from the main graph
+// 4. Run layout on sequence diagrams
+// 5. Set the resulting dimensions to the main graph shape
+// 6. Run core layouts (still without sequence diagram innards)
+// 7. Put back sequence diagram innards in correct location
+func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Context, g *d2graph.Graph) error) error {
+	sequenceDiagrams, objectOrder, edgeOrder, err := WithoutSequenceDiagrams(ctx, g)
+	if err != nil {
+		return err
+	}
 
 	if g.Root.IsSequenceDiagram() {
 		// the sequence diagram is the only layout engine if the whole diagram is
@@ -89,7 +98,7 @@ func layoutSequenceDiagram(g *d2graph.Graph, obj *d2graph.Object) (*sequenceDiag
 	var edges []*d2graph.Edge
 	for _, edge := range g.Edges {
 		// both Src and Dst must be inside the sequence diagram
-		if strings.HasPrefix(edge.Src.AbsID(), obj.AbsID()) && strings.HasPrefix(edge.Dst.AbsID(), obj.AbsID()) {
+		if obj == g.Root || (strings.HasPrefix(edge.Src.AbsID(), obj.AbsID()+".") && strings.HasPrefix(edge.Dst.AbsID(), obj.AbsID()+".")) {
 			edges = append(edges, edge)
 		}
 	}

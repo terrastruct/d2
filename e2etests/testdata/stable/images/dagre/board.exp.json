@@ -1,5 +1,6 @@
 {
   "name": "",
+  "fontFamily": "SourceSansPro",
   "shapes": [
     {
       "id": "a",
@@ -48,7 +49,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -57,7 +58,7 @@
       "type": "image",
       "pos": {
         "x": 0,
-        "y": 228
+        "y": 254
       },
       "width": 128,
       "height": 128,
@@ -99,7 +100,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 26,
-      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     }
@@ -132,19 +133,19 @@
       "route": [
         {
           "x": 64,
-          "y": 128
+          "y": 154
         },
         {
           "x": 64,
-          "y": 168
+          "y": 194
         },
         {
           "x": 64,
-          "y": 188
+          "y": 214
         },
         {
           "x": 64,
-          "y": 228
+          "y": 254
         }
       ],
       "isCurve": true,

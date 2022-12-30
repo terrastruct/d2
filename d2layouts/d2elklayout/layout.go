@@ -9,9 +9,10 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
-	"math"
+	"strings"
 
 	"github.com/dop251/goja"
+
 	"oss.terrastruct.com/util-go/xdefer"
 
 	"oss.terrastruct.com/util-go/go2"
@@ -20,6 +21,7 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
+	"oss.terrastruct.com/d2/lib/shape"
 )
 
 //go:embed elk.js
@@ -40,11 +42,12 @@ type ELKNode struct {
 }
 
 type ELKLabel struct {
-	Text   string  `json:"text"`
-	X      float64 `json:"x"`
-	Y      float64 `json:"y"`
-	Width  float64 `json:"width"`
-	Height float64 `json:"height"`
+	Text          string            `json:"text"`
+	X             float64           `json:"x"`
+	Y             float64           `json:"y"`
+	Width         float64           `json:"width"`
+	Height        float64           `json:"height"`
+	LayoutOptions *ELKLayoutOptions `json:"layoutOptions,omitempty"`
 }
 
 type ELKPoint struct {
@@ -75,13 +78,16 @@ type ELKGraph struct {
 }
 
 type ELKLayoutOptions struct {
-	Algorithm         string  `json:"elk.algorithm,omitempty"`
-	HierarchyHandling string  `json:"elk.hierarchyHandling,omitempty"`
-	NodeSpacing       float64 `json:"spacing.nodeNodeBetweenLayers,omitempty"`
-	Padding           string  `json:"elk.padding,omitempty"`
-	EdgeNodeSpacing   float64 `json:"spacing.edgeNodeBetweenLayers,omitempty"`
-	Direction         string  `json:"elk.direction"`
-	SelfLoopSpacing   float64 `json:"elk.spacing.nodeSelfLoop"`
+	Algorithm           string  `json:"elk.algorithm,omitempty"`
+	HierarchyHandling   string  `json:"elk.hierarchyHandling,omitempty"`
+	NodeSpacing         float64 `json:"spacing.nodeNodeBetweenLayers,omitempty"`
+	Padding             string  `json:"elk.padding,omitempty"`
+	EdgeNodeSpacing     float64 `json:"spacing.edgeNodeBetweenLayers,omitempty"`
+	Direction           string  `json:"elk.direction"`
+	SelfLoopSpacing     float64 `json:"elk.spacing.nodeSelfLoop"`
+	InlineEdgeLabels    bool    `json:"elk.edgeLabels.inline,omitempty"`
+	ConsiderModelOrder  string  `json:"elk.layered.considerModelOrder.strategy,omitempty"`
+	ForceNodeModelOrder bool    `json:"elk.layered.crossingMinimization.forceNodeModelOrder,omitempty"`
 }
 
 func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
@@ -104,11 +110,12 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	elkGraph := &ELKGraph{
 		ID: "root",
 		LayoutOptions: &ELKLayoutOptions{
-			Algorithm:         "layered",
-			HierarchyHandling: "INCLUDE_CHILDREN",
-			NodeSpacing:       100.0,
-			EdgeNodeSpacing:   50.0,
-			SelfLoopSpacing:   50.0,
+			Algorithm:          "layered",
+			HierarchyHandling:  "INCLUDE_CHILDREN",
+			NodeSpacing:        100.0,
+			EdgeNodeSpacing:    50.0,
+			SelfLoopSpacing:    50.0,
+			ConsiderModelOrder: "NODES_AND_EDGES",
 		},
 	}
 	switch g.Root.Attributes.Direction.Value {
@@ -139,15 +146,23 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	}
 
 	walk(g.Root, nil, func(obj, parent *d2graph.Object) {
+		height := obj.Height
+		if obj.LabelWidth != nil && obj.LabelHeight != nil {
+			if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
+				height += float64(*obj.LabelHeight) + label.PADDING
+			}
+		}
+
 		n := &ELKNode{
 			ID:     obj.AbsID(),
 			Width:  obj.Width,
-			Height: obj.Height,
+			Height: height,
 		}
 
 		if len(obj.ChildrenArray) > 0 {
 			n.LayoutOptions = &ELKLayoutOptions{
-				Padding: "[top=75,left=75,bottom=75,right=75]",
+				Padding:             "[top=75,left=75,bottom=75,right=75]",
+				ForceNodeModelOrder: true,
 			}
 		}
 
@@ -178,6 +193,9 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 				Text:   edge.Attributes.Label.Value,
 				Width:  float64(edge.LabelDimensions.Width),
 				Height: float64(edge.LabelDimensions.Height),
+				LayoutOptions: &ELKLayoutOptions{
+					InlineEdgeLabels: true,
+				},
 			})
 		}
 		elkGraph.Edges = append(elkGraph.Edges, e)
@@ -240,15 +258,18 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 			parentX = parent.TopLeft.X
 			parentY = parent.TopLeft.Y
 		}
-		obj.TopLeft = geo.NewPoint(math.Round(parentX+n.X), math.Round(parentY+n.Y))
+		obj.TopLeft = geo.NewPoint(parentX+n.X, parentY+n.Y)
 		obj.Width = n.Width
 		obj.Height = n.Height
 
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-			} else if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
-				obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
+			} else if obj.Attributes.Shape.Value == d2target.ShapeImage {
+				obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
+				obj.Height -= float64(*obj.LabelHeight) + label.PADDING
+			} else if obj.Attributes.Icon != nil {
+				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 			} else {
 				obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			}
@@ -287,6 +308,14 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 				Y: parentY + s.End.Y,
 			})
 		}
+
+		startIndex, endIndex := 0, len(points)-1
+		srcShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Src.Attributes.Shape.Value)], edge.Src.Box)
+		dstShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Dst.Attributes.Shape.Value)], edge.Dst.Box)
+
+		// trace the edge to the specific shape's border
+		points[startIndex] = shape.TraceToShapeBorder(srcShape, points[startIndex], points[startIndex+1])
+		points[endIndex] = shape.TraceToShapeBorder(dstShape, points[endIndex], points[endIndex-1])
 
 		if edge.Attributes.Label.Value != "" {
 			edge.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))

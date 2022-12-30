@@ -1,19 +1,14 @@
 # Contributing
 
 <!-- toc -->
-
-- [CI](#ci)
-- [Flow](#flow)
-- [Logistics](#logistics)
-- [Dev](#dev)
-  * [Content](#content)
-  * [Tests](#tests)
-    + [Running tests](#running-tests)
-    + [Chaos tests](#chaos-tests)
-  * [Documentation](#documentation)
-  * [Questions](#questions)
-
-<!-- tocstop -->
+- <a href="#ci" id="toc-ci">CI</a>
+- <a href="#flow" id="toc-flow">Flow</a>
+- <a href="#logistics" id="toc-logistics">Logistics</a>
+- <a href="#dev" id="toc-dev">Dev</a>
+  - <a href="#content" id="toc-content">Content</a>
+  - <a href="#tests" id="toc-tests">Tests</a>
+  - <a href="#documentation" id="toc-documentation">Documentation</a>
+  - <a href="#questions" id="toc-questions">Questions</a>
 
 ## CI
 
@@ -44,12 +39,6 @@ The simplified D2 flow at a package level looks like:
 
 ## Logistics
 
-- **Important**: Contributions to D2 require a CLA. We will never relicense D2, but we
-  need to retain full copyright for any modifications we might need to make in our
-  commercial offerings. Please email cla@terrastruct.com with your name and Github
-  username stating that you agree to [Terrastruct's
-  CLA](https://terrastruct-site-assets.s3.us-west-1.amazonaws.com/documents/terrastruct_cla.pdf).
-  You only have to do this the first time you contribute.
 - D2 uses Issues as TODOs. No auto-closing on staleness.
 - Branch off `master`.
 - Prefix pull request titles with a short descriptor of the domain, e.g. `d2renderer: Add

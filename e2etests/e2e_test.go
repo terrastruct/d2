@@ -17,9 +17,12 @@ import (
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
 
+	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2layouts/d2elklayout"
+	"oss.terrastruct.com/d2/d2layouts/d2near"
+	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2target"
@@ -88,6 +91,28 @@ func runa(t *testing.T, tcs []testCase) {
 	}
 }
 
+// serde exercises serializing and deserializing the graph
+// We want to run all the steps leading up to serialization in the course of regular layout
+func serde(t *testing.T, tc testCase, ruler *textmeasure.Ruler) {
+	ctx := context.Background()
+	ctx = log.WithTB(ctx, t, nil)
+	g, err := d2compiler.Compile("", strings.NewReader(tc.script), &d2compiler.CompileOptions{
+		UTF16: false,
+	})
+	tassert.Nil(t, err)
+	if len(g.Objects) > 0 {
+		err = g.SetDimensions(nil, ruler, nil)
+		tassert.Nil(t, err)
+		d2near.WithoutConstantNears(ctx, g)
+		d2sequence.WithoutSequenceDiagrams(ctx, g)
+	}
+	b, err := d2graph.SerializeGraph(g)
+	tassert.Nil(t, err)
+	var newG d2graph.Graph
+	err = d2graph.DeserializeGraph(b, &newG)
+	tassert.Nil(t, err)
+}
+
 func run(t *testing.T, tc testCase) {
 	ctx := context.Background()
 	ctx = log.WithTB(ctx, t, nil)
@@ -97,6 +122,8 @@ func run(t *testing.T, tc testCase) {
 	if !tassert.Nil(t, err) {
 		return
 	}
+
+	serde(t, tc, ruler)
 
 	layoutsTested := []string{"dagre", "elk"}
 
@@ -125,14 +152,21 @@ func run(t *testing.T, tc testCase) {
 		dataPath := filepath.Join("testdata", strings.TrimPrefix(t.Name(), "TestE2E/"), layoutName)
 		pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
 
-		svgBytes, err := d2svg.Render(diagram)
+		svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
+			Pad: d2svg.DEFAULT_PADDING,
+		})
 		assert.Success(t, err)
 		err = os.MkdirAll(dataPath, 0755)
 		assert.Success(t, err)
 		err = ioutil.WriteFile(pathGotSVG, svgBytes, 0600)
 		assert.Success(t, err)
-		defer os.Remove(pathGotSVG)
+		// if running from e2ereport.sh, we want to keep .got.svg on a failure
+		forReport := os.Getenv("E2E_REPORT") != ""
+		if !forReport {
+			defer os.Remove(pathGotSVG)
+		}
 
+		// Check that it's valid SVG
 		var xmlParsed interface{}
 		err = xml.Unmarshal(svgBytes, &xmlParsed)
 		assert.Success(t, err)
@@ -142,6 +176,9 @@ func run(t *testing.T, tc testCase) {
 		if os.Getenv("SKIP_SVG_CHECK") == "" {
 			err = diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
 			assert.Success(t, err)
+		}
+		if forReport {
+			os.Remove(pathGotSVG)
 		}
 	}
 }

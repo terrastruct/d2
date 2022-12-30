@@ -1,5 +1,6 @@
 {
   "name": "",
+  "fontFamily": "SourceSansPro",
   "shapes": [
     {
       "id": "rectangle",
@@ -45,7 +46,7 @@
       "id": "square",
       "type": "rectangle",
       "pos": {
-        "x": 21,
+        "x": 20,
         "y": 238
       },
       "width": 154,

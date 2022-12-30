@@ -4,13 +4,19 @@
     A modern diagram scripting language that turns text to diagrams.
   </h2>
 
-[Language docs](https://d2lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf) | [Comparisons](https://text-to-diagram.com)
+
+[Docs](https://d2lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf) | [Comparisons](https://text-to-diagram.com) | [Playground](https://play.d2lang.com)
 
 [![ci](https://github.com/terrastruct/d2/actions/workflows/ci.yml/badge.svg)](https://github.com/terrastruct/d2/actions/workflows/ci.yml)
+[![daily](https://github.com/terrastruct/d2/actions/workflows/daily.yml/badge.svg)](https://github.com/terrastruct/d2/actions/workflows/daily.yml)
 [![release](https://img.shields.io/github/v/release/terrastruct/d2)](https://github.com/terrastruct/d2/releases)
 [![discord](https://img.shields.io/discord/1039184639652265985?label=discord)](https://discord.gg/NF6X8K4eDq)
 [![twitter](https://img.shields.io/twitter/follow/terrastruct?style=social)](https://twitter.com/terrastruct)
 [![license](https://img.shields.io/github/license/terrastruct/d2?color=9cf)](./LICENSE.txt)
+
+<a href="https://play.d2lang.com">
+<img src="./docs/assets/playground_button.png" alt="D2 Playground button" width="200" />
+</a>
 
 https://user-images.githubusercontent.com/3120367/206125010-bd1fea8e-248a-43e7-8f85-0bbfca0c6e2a.mp4
 
@@ -32,9 +38,8 @@ https://user-images.githubusercontent.com/3120367/206125010-bd1fea8e-248a-43e7-8
 - <a href="#contributing" id="toc-contributing">Contributing</a>
 - <a href="#license" id="toc-license">License</a>
 - <a href="#related" id="toc-related">Related</a>
-  - <a href="#vscode-extension" id="toc-vscode-extension">VSCode extension</a>
-  - <a href="#vim-extension" id="toc-vim-extension">Vim extension</a>
-  - <a href="#language-docs" id="toc-language-docs">Language docs</a>
+  - <a href="#official-plugins" id="toc-official-plugins">Official plugins</a>
+  - <a href="#community-plugins" id="toc-community-plugins">Community plugins</a>
   - <a href="#misc" id="toc-misc">Misc</a>
 - <a href="#faq" id="toc-faq">FAQ</a>
 
@@ -140,7 +145,7 @@ one, please see [./d2renderers/d2fonts](./d2renderers/d2fonts).
 
 ## Export file types
 
-D2 currently supports SVG exports. More coming soon.
+D2 currently supports SVG and PNG exports. More coming soon.
 
 ## Language tooling
 
@@ -186,21 +191,37 @@ Open sourced under the Mozilla Public License 2.0. See [./LICENSE.txt](./LICENSE
 
 ## Related
 
-### VSCode extension
+We are constantly working on new plugins, integrations, extensions. Contributions are
+welcome in any official or community plugins. If you have somewhere in your workflow that
+you want to use D2, feel free to open a discussion. We have limited bandwidth and usually
+choose the most high-demand ones to work on. If you make something cool with D2 yourself,
+let us know and we'll be happy to include it here!
 
-[https://github.com/terrastruct/d2-vscode](https://github.com/terrastruct/d2-vscode)
+### Official plugins
 
-### Vim extension
+- **VSCode extension**: [https://github.com/terrastruct/d2-vscode](https://github.com/terrastruct/d2-vscode)
+- **Vim extension**: [https://github.com/terrastruct/d2-vim](https://github.com/terrastruct/d2-vim)
+- **Obsidian plugin**: [https://github.com/terrastruct/d2-obsidian](https://github.com/terrastruct/d2-obsidian)
+- **Slack app**: [https://d2lang.com/tour/slack](https://d2lang.com/tour/slack)
+- **Discord plugin**: [https://d2lang.com/tour/discord](https://d2lang.com/tour/discord)
 
-[https://github.com/terrastruct/d2-vim](https://github.com/terrastruct/d2-vim)
+### Community plugins
 
-### Language docs
-
-[https://github.com/terrastruct/d2-docs](https://github.com/terrastruct/d2-docs)
+- **Tree-sitter grammar**: [https://github.com/pleshevskiy/tree-sitter-d2](https://github.com/pleshevskiy/tree-sitter-d2)
+- **Emacs major mode**: [https://github.com/andorsk/d2-mode](https://github.com/andorsk/d2-mode)
+- **Goldmark extension**: [https://github.com/FurqanSoftware/goldmark-d2](https://github.com/FurqanSoftware/goldmark-d2)
+- **Telegram bot**: [https://github.com/meinside/telegram-d2-bot](https://github.com/meinside/telegram-d2-bot)
+- **Postgres importer**: [https://github.com/zekenie/d2-erd-from-postgres](https://github.com/zekenie/d2-erd-from-postgres)
+- **Structurizr to D2 exporter**: [https://github.com/goto1134/structurizr-d2-exporter](https://github.com/goto1134/structurizr-d2-exporter)
+- **MdBook preprocessor**: [https://github.com/danieleades/mdbook-d2](https://github.com/danieleades/mdbook-d2)
+- **D2 org-mode support**: [https://github.com/xcapaldi/ob-d2](https://github.com/xcapaldi/ob-d2)
+- **Python D2 diagram builder**: [https://github.com/MrBlenny/py-d2](https://github.com/MrBlenny/py-d2)
 
 ### Misc
 
-- [https://github.com/terrastruct/text-to-diagram-site](https://github.com/terrastruct/text-to-diagram-site)
+- **Comparison site**: [https://github.com/terrastruct/text-to-diagram-site](https://github.com/terrastruct/text-to-diagram-site)
+- **Playground**: [https://github.com/terrastruct/d2-playground](https://github.com/terrastruct/d2-playground)
+- **Language docs**: [https://github.com/terrastruct/d2-docs](https://github.com/terrastruct/d2-docs)
 
 ## FAQ
 

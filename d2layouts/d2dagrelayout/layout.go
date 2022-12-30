@@ -64,22 +64,35 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	}
 
 	rootAttrs := dagreGraphAttrs{
-		ranksep: 100,
 		edgesep: 40,
 		nodesep: 60,
 	}
+	isHorizontal := false
 	switch g.Root.Attributes.Direction.Value {
 	case "down":
 		rootAttrs.rankdir = "TB"
 	case "right":
 		rootAttrs.rankdir = "LR"
+		isHorizontal = true
 	case "left":
 		rootAttrs.rankdir = "RL"
+		isHorizontal = true
 	case "up":
 		rootAttrs.rankdir = "BT"
 	default:
 		rootAttrs.rankdir = "TB"
 	}
+
+	maxLabelSize := 0
+	for _, edge := range g.Edges {
+		size := edge.LabelDimensions.Width
+		if !isHorizontal {
+			size = edge.LabelDimensions.Height
+		}
+		maxLabelSize = go2.Max(maxLabelSize, size)
+	}
+	rootAttrs.ranksep = go2.Max(100, maxLabelSize+40)
+
 	configJS := setGraphAttrs(rootAttrs)
 	if _, err := vm.RunString(configJS); err != nil {
 		return err
@@ -90,7 +103,14 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 	for _, obj := range g.Objects {
 		id := obj.AbsID()
 		idToObj[id] = obj
-		loadScript += generateAddNodeLine(id, int(obj.Width), int(obj.Height))
+
+		height := obj.Height
+		if obj.LabelWidth != nil && obj.LabelHeight != nil {
+			if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
+				height += float64(*obj.LabelHeight) + label.PADDING
+			}
+		}
+		loadScript += generateAddNodeLine(id, int(obj.Width), int(height))
 		if obj.Parent != g.Root {
 			loadScript += generateAddParentLine(id, obj.Parent.AbsID())
 		}
@@ -151,8 +171,12 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-			} else if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
-				obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
+			} else if obj.Attributes.Shape.Value == d2target.ShapeImage {
+				obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
+				// remove the extra height we added to the node when passing to dagre
+				obj.Height -= float64(*obj.LabelHeight) + label.PADDING
+			} else if obj.Attributes.Icon != nil {
+				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 			} else {
 				obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			}
@@ -261,7 +285,7 @@ func escapeID(id string) string {
 	// fixes \\
 	id = strings.ReplaceAll(id, "\\", `\\`)
 	// replaces \n with \\n whenever \n is not preceded by \ (does not replace \\n)
-	re := regexp.MustCompile(`[^\\](\n)`)
+	re := regexp.MustCompile(`[^\\]\n`)
 	id = re.ReplaceAllString(id, `\\n`)
 	// avoid an unescaped \r becoming a \n in the layout result
 	id = strings.ReplaceAll(id, "\r", `\r`)

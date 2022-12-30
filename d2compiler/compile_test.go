@@ -7,13 +7,13 @@ import (
 	"testing"
 
 	tassert "github.com/stretchr/testify/assert"
-	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
 
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/util-go/assert"
+	"oss.terrastruct.com/util-go/diff"
 )
 
 func TestCompile(t *testing.T) {
@@ -95,8 +95,119 @@ x: {
 	height: 230
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2:3:2: width is only applicable to image shapes.
-d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2:4:2: height is only applicable to image shapes.
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatalf("expected 1 objects: %#v", g.Objects)
+				}
+				if g.Objects[0].ID != "hey" {
+					t.Fatalf("expected g.Objects[0].ID to be 'hey': %#v", g.Objects[0])
+				}
+				if g.Objects[0].Attributes.Shape.Value != d2target.ShapeHexagon {
+					t.Fatalf("expected g.Objects[0].Attributes.Shape.Value to be hexagon: %#v", g.Objects[0].Attributes.Shape.Value)
+				}
+				if g.Objects[0].Attributes.Width.Value != "200" {
+					t.Fatalf("expected g.Objects[0].Attributes.Width.Value to be 200: %#v", g.Objects[0].Attributes.Width.Value)
+				}
+				if g.Objects[0].Attributes.Height.Value != "230" {
+					t.Fatalf("expected g.Objects[0].Attributes.Height.Value to be 230: %#v", g.Objects[0].Attributes.Height.Value)
+				}
+			},
+		},
+		{
+			name: "equal_dimensions_on_circle",
+
+			text: `hey: "" {
+	shape: circle
+	width: 200
+	height: 230
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2:3:2: width and height must be equal for circle shapes
+d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2:4:2: width and height must be equal for circle shapes
+`,
+		},
+		{
+			name: "single_dimension_on_circle",
+
+			text: `hey: "" {
+	shape: circle
+	height: 230
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatalf("expected 1 objects: %#v", g.Objects)
+				}
+				if g.Objects[0].ID != "hey" {
+					t.Fatalf("expected ID to be 'hey': %#v", g.Objects[0])
+				}
+				if g.Objects[0].Attributes.Shape.Value != d2target.ShapeCircle {
+					t.Fatalf("expected Attributes.Shape.Value to be circle: %#v", g.Objects[0].Attributes.Shape.Value)
+				}
+				if g.Objects[0].Attributes.Width != nil {
+					t.Fatalf("expected Attributes.Width to be nil: %#v", g.Objects[0].Attributes.Width)
+				}
+				if g.Objects[0].Attributes.Height == nil {
+					t.Fatalf("Attributes.Height is nil")
+				}
+			},
+		},
+		{
+			name: "no_dimensions_on_containers",
+
+			text: `
+containers: {
+	circle container: {
+		shape: circle
+		width: 512
+
+		diamond: {
+			shape: diamond
+			width: 128
+			height: 64
+		}
+	}
+	diamond container: {
+		shape: diamond
+		width: 512
+		height: 256
+
+		circle: {
+			shape: circle
+			width: 128
+		}
+	}
+	oval container: {
+		shape: oval
+		width: 512
+		height: 256
+
+		hexagon: {
+			shape: hexagon
+			width: 128
+			height: 64
+		}
+	}
+	hexagon container: {
+		shape: hexagon
+		width: 512
+		height: 256
+
+		oval: {
+			shape: oval
+			width: 128
+			height: 64
+		}
+	}
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:5:3: width cannot be used on container: containers.circle container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:15:3: width cannot be used on container: containers.diamond container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:16:3: height cannot be used on container: containers.diamond container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:25:3: width cannot be used on container: containers.oval container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:26:3: height cannot be used on container: containers.oval container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:36:3: width cannot be used on container: containers.hexagon container
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height cannot be used on container: containers.hexagon container
 `,
 		},
 		{
@@ -1267,6 +1378,50 @@ x -> y: {
 			},
 		},
 		{
+			name: "near_constant",
+
+			text: `x.near: top-center
+`,
+		},
+		{
+			name: "near_bad_constant",
+
+			text: `x.near: txop-center
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_constant.d2:1:1: near key "txop-center" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right
+`,
+		},
+		{
+			name: "near_bad_container",
+
+			text: `x: {
+  near: top-center
+  y
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_container.d2:1:1: constant near keys cannot be set on shapes with children
+`,
+		},
+		{
+			name: "near_bad_connected",
+
+			text: `x: {
+  near: top-center
+}
+x -> y
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_connected.d2:1:1: constant near keys cannot be set on connected shapes
+`,
+		},
+		{
+			name: "nested_near_constant",
+
+			text: `x.y.near: top-center
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/nested_near_constant.d2:1:1: constant near keys can only be set on root level shapes
+`,
+		},
+		{
 			name: "reserved_icon_near_style",
 
 			text: `x: {
@@ -1312,7 +1467,7 @@ y
 			expErr: `d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:3:9: bad icon url "::????:::%%orange": parse "::????:::%%orange": missing protocol scheme
 d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:4:18: expected "opacity" to be a number between 0.0 and 1.0
 d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:5:18: expected "opacity" to be a number between 0.0 and 1.0
-d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:1:1: near key "y" does not exist. It must be the absolute path to a shape.
+d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:1:1: near key "y" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right
 `,
 		},
 		{
@@ -1465,8 +1620,8 @@ b`, g.Objects[0].Attributes.Label.Value)
 				if len(g.Objects) != 1 {
 					t.Fatal(g.Objects)
 				}
-				assert.String(t, `GetType()`, g.Objects[0].SQLTable.Columns[0].Name)
-				assert.String(t, `Is()`, g.Objects[0].SQLTable.Columns[1].Name)
+				assert.String(t, `GetType()`, g.Objects[0].SQLTable.Columns[0].Name.Label)
+				assert.String(t, `Is()`, g.Objects[0].SQLTable.Columns[1].Name.Label)
 			},
 		},
 		{
@@ -1490,8 +1645,8 @@ b`, g.Objects[0].Attributes.Label.Value)
 				if len(g.Objects[0].ChildrenArray) != 1 {
 					t.Fatal(g.Objects)
 				}
-				assert.String(t, `GetType()`, g.Objects[1].SQLTable.Columns[0].Name)
-				assert.String(t, `Is()`, g.Objects[1].SQLTable.Columns[1].Name)
+				assert.String(t, `GetType()`, g.Objects[1].SQLTable.Columns[0].Name.Label)
+				assert.String(t, `Is()`, g.Objects[1].SQLTable.Columns[1].Name.Label)
 			},
 		},
 		{
@@ -1619,6 +1774,17 @@ choo: {
 			},
 		},
 		{
+			name: "constraint_label",
+
+			text: `foo {
+  label: bar
+  constraint: BIZ
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.String(t, "bar", g.Objects[0].Attributes.Label.Value)
+			},
+		},
+		{
 			name: "invalid_direction",
 
 			text: `x: {
@@ -1638,6 +1804,44 @@ choo: {
 					t.Fatal(err)
 				}
 			},
+		},
+		{
+			name: "null",
+
+			text: `null
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "'null'", g.Objects[0].ID)
+				tassert.Equal(t, "null", g.Objects[0].IDVal)
+			},
+		},
+		{
+			name: "sql-regression",
+
+			text: `a: {
+  style: {
+    fill: lemonchiffon
+  }
+  b: {
+    shape: sql_table
+    c
+  }
+  d
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 3, len(g.Objects))
+			},
+		},
+		{
+			name: "sql-panic",
+			text: `test {
+    shape: sql_table
+    test_id: varchar(64) {constraint: [primary_key, foreign_key]}
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/sql-panic.d2:3:27: constraint value must be a string
+`,
 		},
 	}
 

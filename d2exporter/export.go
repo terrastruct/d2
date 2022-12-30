@@ -5,15 +5,21 @@ import (
 	"strconv"
 
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
+	"oss.terrastruct.com/util-go/go2"
 )
 
-func Export(ctx context.Context, g *d2graph.Graph, themeID int64) (*d2target.Diagram, error) {
+func Export(ctx context.Context, g *d2graph.Graph, themeID int64, fontFamily *d2fonts.FontFamily) (*d2target.Diagram, error) {
 	theme := d2themescatalog.Find(themeID)
 
 	diagram := d2target.NewDiagram()
+	if fontFamily == nil {
+		fontFamily = go2.Pointer(d2fonts.SourceSansPro)
+	}
+	diagram.FontFamily = fontFamily
 
 	diagram.Shapes = make([]d2target.Shape, len(g.Objects))
 	for i := range g.Objects {
@@ -34,6 +40,11 @@ func applyTheme(shape *d2target.Shape, obj *d2graph.Object, theme *d2themes.Them
 	if obj.Attributes.Shape.Value == d2target.ShapeText {
 		shape.Color = theme.Colors.Neutrals.N1
 	}
+	if obj.Attributes.Shape.Value == d2target.ShapeSQLTable || obj.Attributes.Shape.Value == d2target.ShapeClass {
+		shape.PrimaryAccentColor = theme.Colors.B2
+		shape.SecondaryAccentColor = theme.Colors.AA2
+		shape.NeutralAccentColor = theme.Colors.Neutrals.N2
+	}
 }
 
 func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
@@ -45,6 +56,8 @@ func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
 	}
 	if obj.Attributes.Style.Fill != nil {
 		shape.Fill = obj.Attributes.Style.Fill.Value
+	} else if obj.Attributes.Shape.Value == d2target.ShapeText {
+		shape.Fill = "transparent"
 	}
 	if obj.Attributes.Style.Stroke != nil {
 		shape.Stroke = obj.Attributes.Style.Stroke.Value
@@ -68,19 +81,17 @@ func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
 	if obj.Attributes.Style.FontColor != nil {
 		shape.Color = obj.Attributes.Style.FontColor.Value
 	}
-	if obj.Attributes.Shape.Value != d2target.ShapeText {
-		if obj.Attributes.Style.Italic != nil {
-			shape.Italic, _ = strconv.ParseBool(obj.Attributes.Style.Italic.Value)
-		}
-		if obj.Attributes.Style.Bold != nil {
-			shape.Bold, _ = strconv.ParseBool(obj.Attributes.Style.Bold.Value)
-		}
-		if obj.Attributes.Style.Underline != nil {
-			shape.Underline, _ = strconv.ParseBool(obj.Attributes.Style.Underline.Value)
-		}
-		if obj.Attributes.Style.Font != nil {
-			shape.FontFamily = obj.Attributes.Style.Font.Value
-		}
+	if obj.Attributes.Style.Italic != nil {
+		shape.Italic, _ = strconv.ParseBool(obj.Attributes.Style.Italic.Value)
+	}
+	if obj.Attributes.Style.Bold != nil {
+		shape.Bold, _ = strconv.ParseBool(obj.Attributes.Style.Bold.Value)
+	}
+	if obj.Attributes.Style.Underline != nil {
+		shape.Underline, _ = strconv.ParseBool(obj.Attributes.Style.Underline.Value)
+	}
+	if obj.Attributes.Style.Font != nil {
+		shape.FontFamily = obj.Attributes.Style.Font.Value
 	}
 }
 
@@ -198,6 +209,10 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 
 	if edge.Attributes.Style.StrokeWidth != nil {
 		connection.StrokeWidth, _ = strconv.Atoi(edge.Attributes.Style.StrokeWidth.Value)
+	}
+
+	if edge.Attributes.Style.Fill != nil {
+		connection.Fill = edge.Attributes.Style.Fill.Value
 	}
 
 	connection.FontSize = text.FontSize

@@ -1,5 +1,6 @@
 {
   "name": "",
+  "fontFamily": "SourceSansPro",
   "shapes": [
     {
       "id": "How this is rendered",
@@ -477,6 +478,7 @@
       "underline": false,
       "labelWidth": 185,
       "labelHeight": 26,
+      "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 2
     },

@@ -14,9 +14,7 @@ func TestSerialization(t *testing.T) {
 	t.Parallel()
 
 	g, err := d2compiler.Compile("", strings.NewReader("a.a.b -> a.a.c"), nil)
-	if err != nil {
-		t.Fatal(err)
-	}
+	assert.Nil(t, err)
 
 	asserts := func(g *d2graph.Graph) {
 		assert.Equal(t, 4, len(g.Objects))
@@ -41,15 +39,33 @@ func TestSerialization(t *testing.T) {
 	asserts(g)
 
 	b, err := d2graph.SerializeGraph(g)
-	if err != nil {
-		t.Fatal(err)
-	}
+	assert.Nil(t, err)
 
 	var newG d2graph.Graph
 	err = d2graph.DeserializeGraph(b, &newG)
-	if err != nil {
-		t.Fatal(err)
-	}
+	assert.Nil(t, err)
 
 	asserts(&newG)
+}
+
+func TestCasingRegression(t *testing.T) {
+	t.Parallel()
+
+	script := `UserCreatedTypeField`
+
+	g, err := d2compiler.Compile("", strings.NewReader(script), nil)
+	assert.Nil(t, err)
+
+	_, ok := g.Root.HasChild([]string{"UserCreatedTypeField"})
+	assert.True(t, ok)
+
+	b, err := d2graph.SerializeGraph(g)
+	assert.Nil(t, err)
+
+	var newG d2graph.Graph
+	err = d2graph.DeserializeGraph(b, &newG)
+	assert.Nil(t, err)
+
+	_, ok = newG.Root.HasChild([]string{"UserCreatedTypeField"})
+	assert.True(t, ok)
 }

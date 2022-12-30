@@ -14,11 +14,14 @@ import (
 	"github.com/spf13/pflag"
 	"go.uber.org/multierr"
 
+	"oss.terrastruct.com/util-go/go2"
 	"oss.terrastruct.com/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2plugin"
+	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
+	"oss.terrastruct.com/d2/d2renderers/d2svg/appendix"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/imgbundler"
@@ -46,7 +49,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	hostFlag := ms.Opts.String("HOST", "host", "h", "localhost", "host listening address when used with watch")
 	portFlag := ms.Opts.String("PORT", "port", "p", "0", "port listening address when used with watch")
-	bundleFlag, err := ms.Opts.Bool("D2_BUNDLE", "bundle", "b", true, "when outputting SVG, bundle all assets and layers into the output file.")
+	bundleFlag, err := ms.Opts.Bool("D2_BUNDLE", "bundle", "b", true, "when outputting SVG, bundle all assets and layers into the output file")
 	if err != nil {
 		return err
 	}
@@ -54,12 +57,20 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
-	layoutFlag := ms.Opts.String("D2_LAYOUT", "layout", "l", "dagre", `the layout engine used.`)
+	layoutFlag := ms.Opts.String("D2_LAYOUT", "layout", "l", "dagre", `the layout engine used`)
 	themeFlag, err := ms.Opts.Int64("D2_THEME", "theme", "t", 0, "the diagram theme ID. For a list of available options, see https://oss.terrastruct.com/d2")
 	if err != nil {
 		return err
 	}
+	padFlag, err := ms.Opts.Int64("D2_PAD", "pad", "", d2svg.DEFAULT_PADDING, "pixels padded around the rendered diagram")
+	if err != nil {
+		return err
+	}
 	versionFlag, err := ms.Opts.Bool("", "version", "v", false, "get the version")
+	if err != nil {
+		return err
+	}
+	sketchFlag, err := ms.Opts.Bool("D2_SKETCH", "sketch", "s", false, "render the diagram to look like it was sketched by hand")
 	if err != nil {
 		return err
 	}
@@ -160,7 +171,9 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		ms.Log.SetTS(true)
 		w, err := newWatcher(ctx, ms, watcherOpts{
 			layoutPlugin: plugin,
+			sketch:       *sketchFlag,
 			themeID:      *themeFlag,
+			pad:          *padFlag,
 			host:         *hostFlag,
 			port:         *portFlag,
 			inputPath:    inputPath,
@@ -177,7 +190,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	_, written, err := compile(ctx, ms, plugin, *themeFlag, inputPath, outputPath, *bundleFlag, pw.Page)
+	_, written, err := compile(ctx, ms, plugin, *sketchFlag, *padFlag, *themeFlag, inputPath, outputPath, *bundleFlag, pw.Page)
 	if err != nil {
 		if written {
 			return fmt.Errorf("failed to fully compile (partial render written): %w", err)
@@ -188,7 +201,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, themeID int64, inputPath, outputPath string, bundle bool, page playwright.Page) (_ []byte, written bool, _ error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad, themeID int64, inputPath, outputPath string, bundle bool, page playwright.Page) (_ []byte, written bool, _ error) {
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
 		return nil, false, err
@@ -200,19 +213,27 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, theme
 	}
 
 	layout := plugin.Layout
-	diagram, _, err := d2lib.Compile(ctx, string(input), &d2lib.CompileOptions{
+	opts := &d2lib.CompileOptions{
 		Layout:  layout,
 		Ruler:   ruler,
 		ThemeID: themeID,
+	}
+	if sketch {
+		opts.FontFamily = go2.Pointer(d2fonts.HandDrawn)
+	}
+	diagram, _, err := d2lib.Compile(ctx, string(input), opts)
+	if err != nil {
+		return nil, false, err
+	}
+
+	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
+		Pad:    int(pad),
+		Sketch: sketch,
 	})
 	if err != nil {
 		return nil, false, err
 	}
 
-	svg, err := d2svg.Render(diagram)
-	if err != nil {
-		return nil, false, err
-	}
 	svg, err = plugin.PostProcess(ctx, svg)
 	if err != nil {
 		return svg, false, err
@@ -227,7 +248,8 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, theme
 
 	out := svg
 	if filepath.Ext(outputPath) == ".png" {
-		svg := svg
+		svg := appendix.Append(diagram, ruler, svg)
+
 		if !bundle {
 			var bundleErr2 error
 			svg, bundleErr2 = imgbundler.BundleRemote(ctx, ms, svg)
@@ -237,6 +259,10 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, theme
 		out, err = png.ConvertSVG(ms, page, svg)
 		if err != nil {
 			return svg, false, err
+		}
+	} else {
+		if len(out) > 0 && out[len(out)-1] != '\n' {
+			out = append(out, '\n')
 		}
 	}
 

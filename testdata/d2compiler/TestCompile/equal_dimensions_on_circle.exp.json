@@ -1,0 +1,16 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2,2:1:26-2:11:36",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2:3:2: width and height must be equal for circle shapes"
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2,3:1:38-3:12:49",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2:4:2: width and height must be equal for circle shapes"
+      }
+    ]
+  }
+}

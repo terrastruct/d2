@@ -50,20 +50,16 @@ ensure_tmpdir() {
   if [ -n "${_TMPDIR-}" ]; then
     return
   fi
-
   _TMPDIR=$(mktemp -d)
   export _TMPDIR
-  trap temp_exittrap EXIT
 }
 
-temp_exittrap() {
-  if [ -n "${_TMPDIR-}" ]; then
-    rm -r "$_TMPDIR"
-  fi
-}
+if [ -z "${_TMPDIR-}" ]; then
+  trap 'rm -Rf "$_TMPDIR"' EXIT
+fi
+ensure_tmpdir
 
 temppath() {
-  ensure_tmpdir
   while true; do
     temppath=$_TMPDIR/$(</dev/urandom od -N8 -tx -An -v | tr -d '[:space:]')
     if [ ! -e "$temppath" ]; then
@@ -121,10 +117,14 @@ should_color() {
 }
 
 setaf() {
-  tput setaf "$1"
+  fg=$1
   shift
-  printf '%s' "$*"
-  tput sgr0
+  printf '%s\n' "$*" | while IFS= read -r line; do
+    tput setaf "$fg"
+    printf '%s' "$line"
+    tput sgr0
+    printf '\n'
+  done
 }
 
 _echo() {
@@ -273,7 +273,7 @@ header() {
 
 bigheader() {
   set -- "$(echo "$*" | sed "s/^/ * /")"
-  FGCOLOR=${FGCOLOR:-3} logp "/****************************************************************
+  FGCOLOR=${FGCOLOR:-6} logp "/****************************************************************
 $*
  ****************************************************************/"
 }
@@ -291,6 +291,16 @@ humanpath() {
 hide() {
   out="$(mktempd)/hideout"
   capcode "$@" >"$out" 2>&1
+  if [ "$code" -eq 0 ]; then
+    return
+  fi
+  cat "$out" >&2
+  return "$code"
+}
+
+hide_stderr() {
+  out="$(mktempd)/hideout"
+  capcode "$@" 2>"$out"
   if [ "$code" -eq 0 ]; then
     return
   fi
