@@ -804,7 +804,7 @@ func (c *compiler) validateKey(obj *d2graph.Object, m *d2ast.Map, mk *d2ast.Key)
 		if reserved == "" {
 			c.errorf(mk.Range.Start, mk.Range.End, "image shapes cannot have children.")
 		}
-	case d2target.ShapeCircle, d2target.ShapeSquare:
+	case d2target.ShapeCircle, d2target.ShapeSquare, d2target.ShapeDoubleCircle:
 		checkEqual := (reserved == "width" && obj.Attributes.Height != nil) ||
 			(reserved == "height" && obj.Attributes.Width != nil)
 
