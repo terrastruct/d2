@@ -22,27 +22,41 @@ type elkPlugin struct {
 }
 
 func (p elkPlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
-	// ms.Opts.String("", "elk-algorithm", "", d2elklayout.DefaultOpts.Algorithm, "number of pixels that separate nodes horizontally.")
-	//   _, err = ms.Opts.Int64("", "elk-nodeNodeBetweenLayers", "", int64(d2elklayout.DefaultOpts.NodeSpacing), "number of pixels that separate edges horizontally.")
-	//   if err != nil {
-	//     return err
-	//   }
-	//   ms.Opts.String("", "elk-padding", "", d2elklayout.DefaultOpts.Padding, "number of pixels that separate nodes horizontally.")
-	//   _, err = ms.Opts.Int64("", "elk-edgeNodeBetweenLayers", "", int64(d2elklayout.DefaultOpts.EdgeNodeSpacing), "number of pixels that separate edges horizontally.")
-	//   if err != nil {
-	//     return err
-	//   }
-	//   _, err = ms.Opts.Int64("", "elk-nodeSelfLoop", "", int64(d2elklayout.DefaultOpts.SelfLoopSpacing), "number of pixels that separate edges horizontally.")
-	//   if err != nil {
-	//     return err
-	//   }
 	return []PluginSpecificFlag{
 		{
 			Name:    "elk-algorithm",
 			Type:    "string",
 			Default: d2elklayout.DefaultOpts.Algorithm,
-			Usage:   "number of pixels that separate nodes horizontally.",
+			Usage:   "layout algorithm. https://www.eclipse.org/elk/reference/options/org-eclipse-elk-algorithm.html",
 			Tag:     "elk.algorithm",
+		},
+		{
+			Name:    "elk-nodeNodeBetweenLayers",
+			Type:    "int64",
+			Default: d2elklayout.DefaultOpts.NodeSpacing,
+			Usage:   "the spacing to be preserved between any pair of nodes of two adjacent layers. https://www.eclipse.org/elk/reference/options/org-eclipse-elk-layered-spacing-nodeNodeBetweenLayers.html",
+			Tag:     "spacing.nodeNodeBetweenLayers",
+		},
+		{
+			Name:    "elk-padding",
+			Type:    "string",
+			Default: d2elklayout.DefaultOpts.Padding,
+			Usage:   "the padding to be left to a parent element’s border when placing child elements. https://www.eclipse.org/elk/reference/options/org-eclipse-elk-padding.html",
+			Tag:     "elk.padding",
+		},
+		{
+			Name:    "elk-edgeNodeBetweenLayers",
+			Type:    "int64",
+			Default: d2elklayout.DefaultOpts.EdgeNodeSpacing,
+			Usage:   "the spacing to be preserved between nodes and edges that are routed next to the node’s layer. https://www.eclipse.org/elk/reference/options/org-eclipse-elk-layered-spacing-edgeNodeBetweenLayers.html",
+			Tag:     "spacing.edgeNodeBetweenLayers",
+		},
+		{
+			Name:    "elk-nodeSelfLoop",
+			Type:    "int64",
+			Default: d2elklayout.DefaultOpts.SelfLoopSpacing,
+			Usage:   "spacing to be preserved between a node and its self loops. https://www.eclipse.org/elk/reference/options/org-eclipse-elk-spacing-nodeSelfLoop.html",
+			Tag:     "elk.spacing.nodeSelfLoop",
 		},
 	}, nil
 }
