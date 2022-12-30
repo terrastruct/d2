@@ -1261,6 +1261,7 @@ class B {
       n = [];
     if (!t) return this._drawable("path", n, s);
     const i = (function (t, e) {
+      // prettier-ignore
       t = (t || "").replace(/\n/g, " ").replace(/(-\s)/g, "-").replace("/(\s\s)/g", " ");
       let s = new o(t);
       if (e.simplification) {
