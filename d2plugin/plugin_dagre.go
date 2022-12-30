@@ -18,7 +18,7 @@ func init() {
 }
 
 type dagrePlugin struct {
-	opts *d2dagrelayout.Opts
+	opts *d2dagrelayout.ConfigurableOpts
 }
 
 func (p dagrePlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
@@ -42,7 +42,7 @@ func (p dagrePlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
 
 func (p *dagrePlugin) HydrateOpts(opts []byte) error {
 	if opts != nil {
-		var dagreOpts d2dagrelayout.Opts
+		var dagreOpts d2dagrelayout.ConfigurableOpts
 		err := json.Unmarshal(opts, &dagreOpts)
 		if err != nil {
 			return xmain.UsageErrorf("non-dagre layout options given for dagre")

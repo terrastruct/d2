@@ -33,7 +33,7 @@ func (p elkPlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
 		{
 			Name:    "elk-nodeNodeBetweenLayers",
 			Type:    "int64",
-			Default: d2elklayout.DefaultOpts.NodeSpacing,
+			Default: int64(d2elklayout.DefaultOpts.NodeSpacing),
 			Usage:   "the spacing to be preserved between any pair of nodes of two adjacent layers. https://www.eclipse.org/elk/reference/options/org-eclipse-elk-layered-spacing-nodeNodeBetweenLayers.html",
 			Tag:     "spacing.nodeNodeBetweenLayers",
 		},
@@ -47,14 +47,14 @@ func (p elkPlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
 		{
 			Name:    "elk-edgeNodeBetweenLayers",
 			Type:    "int64",
-			Default: d2elklayout.DefaultOpts.EdgeNodeSpacing,
+			Default: int64(d2elklayout.DefaultOpts.EdgeNodeSpacing),
 			Usage:   "the spacing to be preserved between nodes and edges that are routed next to the node’s layer. https://www.eclipse.org/elk/reference/options/org-eclipse-elk-layered-spacing-edgeNodeBetweenLayers.html",
 			Tag:     "spacing.edgeNodeBetweenLayers",
 		},
 		{
 			Name:    "elk-nodeSelfLoop",
 			Type:    "int64",
-			Default: d2elklayout.DefaultOpts.SelfLoopSpacing,
+			Default: int64(d2elklayout.DefaultOpts.SelfLoopSpacing),
 			Usage:   "spacing to be preserved between a node and its self loops. https://www.eclipse.org/elk/reference/options/org-eclipse-elk-spacing-nodeSelfLoop.html",
 			Tag:     "elk.spacing.nodeSelfLoop",
 		},
