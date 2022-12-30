@@ -10,6 +10,7 @@ import (
 	"os/exec"
 
 	"oss.terrastruct.com/util-go/xexec"
+	"oss.terrastruct.com/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2graph"
 )
@@ -26,6 +27,15 @@ type PluginSpecificFlag struct {
 	Usage   string
 	// Must match the tag in the opt
 	Tag string
+}
+
+func (f *PluginSpecificFlag) AddToOpts(opts *xmain.Opts) {
+	switch f.Type {
+	case "string":
+		opts.String("", f.Name, "", f.Default.(string), f.Usage)
+	case "int64":
+		opts.Int64("", f.Name, "", f.Default.(int64), f.Usage)
+	}
 }
 
 type Plugin interface {

@@ -5,6 +5,7 @@ package d2plugin
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
@@ -53,18 +54,27 @@ func (p *dagrePlugin) HydrateOpts(opts []byte) error {
 	return nil
 }
 
-func (p dagrePlugin) Info(context.Context) (*PluginInfo, error) {
+func (p dagrePlugin) Info(ctx context.Context) (*PluginInfo, error) {
+	opts := xmain.NewOpts(nil, nil, nil)
+	flags, err := p.Flags(ctx)
+	if err != nil {
+		return nil, err
+	}
+	for _, f := range flags {
+		f.AddToOpts(opts)
+	}
+
 	return &PluginInfo{
 		Name:      "dagre",
 		ShortHelp: "The directed graph layout library Dagre",
-		LongHelp: `dagre is a directed graph layout library for JavaScript.
+		LongHelp: fmt.Sprintf(`dagre is a directed graph layout library for JavaScript.
 See https://github.com/dagrejs/dagre
-The implementation of this plugin is at: https://github.com/terrastruct/d2/tree/master/d2plugin/d2dagrelayout
 
-note: dagre is the primary layout algorithm for text to diagram generator Mermaid.js.
-      See https://github.com/mermaid-js/mermaid
-      We have a useful comparison at https://text-to-diagram.com/?example=basic&a=d2&b=mermaid
-`,
+Flags correspond to ones found at https://github.com/dagrejs/dagre/wiki. See dagre's reference for more on each.
+
+Flags:
+%s
+`, opts.Defaults()),
 	}, nil
 }
 

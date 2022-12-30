@@ -307,12 +307,9 @@ func populateLayoutOpts(ctx context.Context, ms *xmain.State) error {
 	}
 
 	for _, f := range pluginFlags {
-		switch f.Type {
-		case "string":
-			ms.Opts.String("", f.Name, "", f.Default.(string), f.Usage)
-		case "int64":
-			ms.Opts.Int64("", f.Name, "", f.Default.(int64), f.Usage)
-		}
+		f.AddToOpts(ms.Opts)
+		// Don't pollute the main d2 flagset with these. It'll be a lot
+		ms.Opts.Flags.MarkHidden(f.Name)
 	}
 
 	return nil
