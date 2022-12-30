@@ -61,6 +61,10 @@ type dagreOpts struct {
 	ConfigurableOpts
 }
 
+func DefaultLayout(ctx context.Context, g *d2graph.Graph) (err error) {
+	return Layout(ctx, g, nil)
+}
+
 func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err error) {
 	if opts == nil {
 		opts = &DefaultOpts

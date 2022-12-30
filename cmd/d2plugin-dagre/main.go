@@ -9,5 +9,5 @@ import (
 )
 
 func main() {
-	xmain.Main(d2plugin.Serve(d2plugin.DagrePlugin))
+	xmain.Main(d2plugin.Serve(&d2plugin.DagrePlugin))
 }
