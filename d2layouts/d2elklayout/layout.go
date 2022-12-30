@@ -31,23 +31,23 @@ var elkJS string
 var setupJS string
 
 type ELKNode struct {
-	ID            string            `json:"id"`
-	X             float64           `json:"x"`
-	Y             float64           `json:"y"`
-	Width         float64           `json:"width"`
-	Height        float64           `json:"height"`
-	Children      []*ELKNode        `json:"children,omitempty"`
-	Labels        []*ELKLabel       `json:"labels,omitempty"`
-	LayoutOptions *ELKLayoutOptions `json:"layoutOptions,omitempty"`
+	ID            string      `json:"id"`
+	X             float64     `json:"x"`
+	Y             float64     `json:"y"`
+	Width         float64     `json:"width"`
+	Height        float64     `json:"height"`
+	Children      []*ELKNode  `json:"children,omitempty"`
+	Labels        []*ELKLabel `json:"labels,omitempty"`
+	LayoutOptions *elkOpts    `json:"layoutOptions,omitempty"`
 }
 
 type ELKLabel struct {
-	Text          string            `json:"text"`
-	X             float64           `json:"x"`
-	Y             float64           `json:"y"`
-	Width         float64           `json:"width"`
-	Height        float64           `json:"height"`
-	LayoutOptions *ELKLayoutOptions `json:"layoutOptions,omitempty"`
+	Text          string   `json:"text"`
+	X             float64  `json:"x"`
+	Y             float64  `json:"y"`
+	Width         float64  `json:"width"`
+	Height        float64  `json:"height"`
+	LayoutOptions *elkOpts `json:"layoutOptions,omitempty"`
 }
 
 type ELKPoint struct {
@@ -71,18 +71,10 @@ type ELKEdge struct {
 }
 
 type ELKGraph struct {
-	ID            string            `json:"id"`
-	LayoutOptions *ELKLayoutOptions `json:"layoutOptions"`
-	Children      []*ELKNode        `json:"children,omitempty"`
-	Edges         []*ELKEdge        `json:"edges,omitempty"`
-}
-
-var DefaultOpts = ConfigurableOpts{
-	Algorithm:       "layered",
-	NodeSpacing:     100.0,
-	Padding:         "[top=75,left=75,bottom=75,right=75]",
-	EdgeNodeSpacing: 50.0,
-	SelfLoopSpacing: 50.0,
+	ID            string     `json:"id"`
+	LayoutOptions *elkOpts   `json:"layoutOptions"`
+	Children      []*ELKNode `json:"children,omitempty"`
+	Edges         []*ELKEdge `json:"edges,omitempty"`
 }
 
 type ConfigurableOpts struct {
@@ -93,7 +85,15 @@ type ConfigurableOpts struct {
 	SelfLoopSpacing int    `json:"elk.spacing.nodeSelfLoop"`
 }
 
-type ELKLayoutOptions struct {
+var DefaultOpts = ConfigurableOpts{
+	Algorithm:       "layered",
+	NodeSpacing:     100.0,
+	Padding:         "[top=75,left=75,bottom=75,right=75]",
+	EdgeNodeSpacing: 50.0,
+	SelfLoopSpacing: 50.0,
+}
+
+type elkOpts struct {
 	Direction           string `json:"elk.direction"`
 	HierarchyHandling   string `json:"elk.hierarchyHandling,omitempty"`
 	InlineEdgeLabels    bool   `json:"elk.edgeLabels.inline,omitempty"`
@@ -125,7 +125,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 	elkGraph := &ELKGraph{
 		ID: "root",
-		LayoutOptions: &ELKLayoutOptions{
+		LayoutOptions: &elkOpts{
 			HierarchyHandling:  "INCLUDE_CHILDREN",
 			ConsiderModelOrder: "NODES_AND_EDGES",
 			ConfigurableOpts:   *opts,
@@ -171,7 +171,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 
 		if len(obj.ChildrenArray) > 0 {
-			n.LayoutOptions = &ELKLayoutOptions{
+			n.LayoutOptions = &elkOpts{
 				ForceNodeModelOrder: true,
 				ConfigurableOpts: ConfigurableOpts{
 					Padding: opts.Padding,
@@ -206,7 +206,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				Text:   edge.Attributes.Label.Value,
 				Width:  float64(edge.LabelDimensions.Width),
 				Height: float64(edge.LabelDimensions.Height),
-				LayoutOptions: &ELKLayoutOptions{
+				LayoutOptions: &elkOpts{
 					InlineEdgeLabels: true,
 				},
 			})

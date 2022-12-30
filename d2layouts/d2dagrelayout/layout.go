@@ -30,12 +30,12 @@ var setupJS string
 //go:embed dagre.js
 var dagreJS string
 
-type Opts struct {
+type ConfigurableOpts struct {
 	NodeSep int
 	EdgeSep int
 }
 
-var DefaultOpts = Opts{
+var DefaultOpts = ConfigurableOpts{
 	NodeSep: 60,
 	EdgeSep: 40,
 }
@@ -52,16 +52,16 @@ type DagreEdge struct {
 	Points []*geo.Point `json:"points"`
 }
 
-type dagreGraphAttrs struct {
+type dagreOpts struct {
 	// for a top to bottom graph: ranksep is y spacing, nodesep is x spacing, edgesep is x spacing
 	ranksep int
-	edgesep int
-	nodesep int
 	// graph direction: tb (top to bottom)| bt | lr | rl
 	rankdir string
+
+	ConfigurableOpts
 }
 
-func Layout(ctx context.Context, g *d2graph.Graph, opts *Opts) (err error) {
+func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err error) {
 	if opts == nil {
 		opts = &DefaultOpts
 	}
@@ -76,9 +76,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *Opts) (err error) {
 		return err
 	}
 
-	rootAttrs := dagreGraphAttrs{
-		edgesep: opts.EdgeSep,
-		nodesep: opts.NodeSep,
+	rootAttrs := dagreOpts{
+		ConfigurableOpts: ConfigurableOpts{
+			EdgeSep: opts.EdgeSep,
+			NodeSep: opts.NodeSep,
+		},
 	}
 	isHorizontal := false
 	switch g.Root.Attributes.Direction.Value {
@@ -279,7 +281,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *Opts) (err error) {
 	return nil
 }
 
-func setGraphAttrs(attrs dagreGraphAttrs) string {
+func setGraphAttrs(attrs dagreOpts) string {
 	return fmt.Sprintf(`g.setGraph({
   ranksep: %d,
   edgesep: %d,
@@ -288,8 +290,8 @@ func setGraphAttrs(attrs dagreGraphAttrs) string {
 });
 `,
 		attrs.ranksep,
-		attrs.edgesep,
-		attrs.nodesep,
+		attrs.ConfigurableOpts.EdgeSep,
+		attrs.ConfigurableOpts.NodeSep,
 		attrs.rankdir,
 	)
 }
