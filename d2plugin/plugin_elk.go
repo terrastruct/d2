@@ -67,8 +67,7 @@ func (p *elkPlugin) HydrateOpts(opts []byte) error {
 		var elkOpts d2elklayout.ConfigurableOpts
 		err := json.Unmarshal(opts, &elkOpts)
 		if err != nil {
-			// TODO not right
-			return xmain.UsageErrorf("non-dagre layout options given for dagre")
+			return xmain.UsageErrorf("non-ELK layout options given for ELK")
 		}
 
 		p.opts = &elkOpts
