@@ -92,7 +92,7 @@ func (p elkPlugin) Info(ctx context.Context) (*PluginInfo, error) {
 Originally written in Java, it has been ported to Javascript and cross-compiled into D2.
 See https://github.com/kieler/elkjs for more.
 
-Flags correspond to ones found in https://www.eclipse.org/elk/reference.html. See ELK's reference for more on each.
+Flags correspond to ones found at https://www.eclipse.org/elk/reference.html. See ELK's reference for more on each.
 
 Flags:
 %s
