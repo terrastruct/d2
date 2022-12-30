@@ -167,11 +167,10 @@ func NewShape(shapeType string, box *geo.Box) Shape {
 // p is the prev point (used to calculate slope)
 // s is the point on the actual shape border that'll be returned
 //
-//	p
-//	│
-//	│
-//	▼
-//
+//      p
+//      │
+//      │
+//      ▼
 // ┌────r─────────────────────────┐
 // │                              │
 // │    │                         │
