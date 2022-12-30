@@ -19,7 +19,7 @@ func main() {
 	graph, _ := d2compiler.Compile("", strings.NewReader("x -> y"), nil)
 	ruler, _ := textmeasure.NewRuler()
 	_ = graph.SetDimensions(nil, ruler, nil)
-	_ = d2dagrelayout.Layout(context.Background(), graph)
+	_ = d2dagrelayout.Layout(context.Background(), graph, nil)
 	diagram, _ := d2exporter.Export(context.Background(), graph, d2themescatalog.NeutralDefault.ID, nil)
 	out, _ := d2svg.Render(diagram, &d2svg.RenderOpts{
 		Pad: d2svg.DEFAULT_PADDING,

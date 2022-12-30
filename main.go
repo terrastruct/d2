@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -75,6 +76,11 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		return err
 	}
 
+	err = populateLayoutOpts(ctx, ms)
+	if err != nil {
+		return err
+	}
+
 	err = ms.Opts.Flags.Parse(ms.Opts.Args)
 	if !errors.Is(err, pflag.ErrHelp) && err != nil {
 		return xmain.UsageErrorf("failed to parse flags: %v", err)
@@ -141,6 +147,11 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	if errors.Is(err, exec.ErrNotFound) {
 		return layoutNotFound(ctx, *layoutFlag)
 	} else if err != nil {
+		return err
+	}
+
+	err = parseLayoutOpts(ctx, ms, plugin)
+	if err != nil {
 		return err
 	}
 
@@ -287,4 +298,45 @@ func renameExt(fp string, newExt string) string {
 // TODO: remove after removing slog
 func DiscardSlog(ctx context.Context) context.Context {
 	return ctxlog.With(ctx, slog.Make(sloghuman.Sink(io.Discard)))
+}
+
+func populateLayoutOpts(ctx context.Context, ms *xmain.State) error {
+	pluginFlags, err := d2plugin.ListPluginFlags(ctx)
+	if err != nil {
+		return err
+	}
+
+	for _, f := range pluginFlags {
+		f.AddToOpts(ms.Opts)
+		// Don't pollute the main d2 flagset with these. It'll be a lot
+		ms.Opts.Flags.MarkHidden(f.Name)
+	}
+
+	return nil
+}
+
+func parseLayoutOpts(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin) error {
+	opts := make(map[string]interface{})
+	flags, err := plugin.Flags(ctx)
+	if err != nil {
+		return err
+	}
+	for _, f := range flags {
+		switch f.Type {
+		case "string":
+			val, _ := ms.Opts.Flags.GetString(f.Name)
+			opts[f.Tag] = val
+		case "int64":
+			val, _ := ms.Opts.Flags.GetInt64(f.Name)
+			opts[f.Tag] = val
+		}
+	}
+
+	b, err := json.Marshal(opts)
+	if err != nil {
+		return err
+	}
+
+	err = plugin.HydrateOpts(b)
+	return err
 }

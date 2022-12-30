@@ -10,6 +10,7 @@ import (
 	"os/exec"
 
 	"oss.terrastruct.com/util-go/xexec"
+	"oss.terrastruct.com/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2graph"
 )
@@ -19,9 +20,31 @@ import (
 // See plugin_* files for the plugins available for bundling.
 var plugins []Plugin
 
+type PluginSpecificFlag struct {
+	Name    string
+	Type    string
+	Default interface{}
+	Usage   string
+	// Must match the tag in the opt
+	Tag string
+}
+
+func (f *PluginSpecificFlag) AddToOpts(opts *xmain.Opts) {
+	switch f.Type {
+	case "string":
+		opts.String("", f.Name, "", f.Default.(string), f.Usage)
+	case "int64":
+		opts.Int64("", f.Name, "", f.Default.(int64), f.Usage)
+	}
+}
+
 type Plugin interface {
 	// Info returns the current info information of the plugin.
 	Info(context.Context) (*PluginInfo, error)
+
+	Flags(context.Context) ([]PluginSpecificFlag, error)
+
+	HydrateOpts([]byte) error
 
 	// Layout runs the plugin's autolayout algorithm on the input graph
 	// and returns a new graph with the computed placements.
@@ -108,4 +131,16 @@ func FindPlugin(ctx context.Context, name string) (Plugin, string, error) {
 	}
 
 	return &execPlugin{path: path}, path, nil
+}
+
+func ListPluginFlags(ctx context.Context) ([]PluginSpecificFlag, error) {
+	var out []PluginSpecificFlag
+	for _, p := range plugins {
+		flags, err := p.Flags(ctx)
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, flags...)
+	}
+	return out, nil
 }

@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"path/filepath"
 
+	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
@@ -15,8 +16,11 @@ import (
 // Remember to add if err != nil checks in production.
 func main() {
 	ruler, _ := textmeasure.NewRuler()
+	defaultLayout := func(ctx context.Context, g *d2graph.Graph) error {
+		return d2dagrelayout.Layout(ctx, g, nil)
+	}
 	diagram, _, _ := d2lib.Compile(context.Background(), "x -> y", &d2lib.CompileOptions{
-		Layout:  d2dagrelayout.Layout,
+		Layout:  defaultLayout,
 		Ruler:   ruler,
 		ThemeID: d2themescatalog.GrapeSoda.ID,
 	})

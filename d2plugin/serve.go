@@ -38,6 +38,8 @@ func Serve(p Plugin) xmain.RunFunc {
 		switch subcmd {
 		case "info":
 			return info(ctx, p, ms)
+		case "flags":
+			return flags(ctx, p, ms)
 		case "layout":
 			return layout(ctx, p, ms)
 		case "postprocess":
@@ -54,6 +56,22 @@ func info(ctx context.Context, p Plugin, ms *xmain.State) error {
 		return err
 	}
 	b, err := json.Marshal(info)
+	if err != nil {
+		return err
+	}
+	_, err = ms.Stdout.Write(b)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func flags(ctx context.Context, p Plugin, ms *xmain.State) error {
+	flags, err := p.Flags(ctx)
+	if err != nil {
+		return err
+	}
+	b, err := json.Marshal(flags)
 	if err != nil {
 		return err
 	}
