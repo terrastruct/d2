@@ -17,6 +17,20 @@ Most of D2's CI is open sourced in its own
 workflows. E.g. run `./make.sh fmt` to run the formatter. Please make sure all CI is
 passing for any PRs.
 
+Most of the CI scripts rely on a submodule shared between many D2 repositories:
+[https://github.com/terrastruct/ci](https://github.com/terrastruct/ci). You should fetch
+the submodule whenever it differs:
+
+```sh
+git submodule update --recursive
+```
+
+If running for the first time for a repo (e.g. new clone), add `--init`:
+
+```sh
+git submodule update --init --recursive
+```
+
 ## Flow
 
 The simplified D2 flow at a package level looks like:
