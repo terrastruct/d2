@@ -342,31 +342,4 @@ func parseLayoutOpts(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugi
 
 	err = plugin.HydrateOpts(b)
 	return err
-
-	// switch layout {
-	// case "dagre":
-	//   nodesep, _ := ms.Opts.Flags.GetInt64("dagre-nodesep")
-	//   edgesep, _ := ms.Opts.Flags.GetInt64("dagre-edgesep")
-	//   return d2dagrelayout.Opts{
-	//     NodeSep: int(nodesep),
-	//     EdgeSep: int(edgesep),
-	//   }, nil
-	// case "elk":
-	//   algorithm, _ := ms.Opts.Flags.GetString("elk-algorithm")
-	//   nodeSpacing, _ := ms.Opts.Flags.GetInt64("elk-nodeNodeBetweenLayers")
-	//   padding, _ := ms.Opts.Flags.GetString("elk-padding")
-	//   edgeNodeSpacing, _ := ms.Opts.Flags.GetInt64("elk-edgeNodeSpacing")
-	//   selfLoopSpacing, _ := ms.Opts.Flags.GetInt64("elk-nodeSelfLoop")
-	//   return d2elklayout.ConfigurableOpts{
-	//     Algorithm:       algorithm,
-	//     NodeSpacing:     int(nodeSpacing),
-	//     Padding:         padding,
-	//     EdgeNodeSpacing: int(edgeNodeSpacing),
-	//     SelfLoopSpacing: int(selfLoopSpacing),
-	//   }, nil
-	// default:
-	//
-	// }
-	//
-	// return nil, fmt.Errorf("unexpected error, layout not found for parsing opts")
 }
