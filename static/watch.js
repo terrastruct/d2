@@ -31,6 +31,25 @@ function init(reconnectDelay) {
       // setting innerHTML to only the actual svg innards. However then you also need to parse
       // out the width, height and viewbox out of the top level SVG tag and update those manually.
       d2SVG.innerHTML = msg.svg;
+
+      const svgEl = d2SVG.querySelector("svg");
+      let width = parseInt(svgEl.getAttribute("width"), 10);
+      let height = parseInt(svgEl.getAttribute("height"), 10);
+      let ratio;
+      if (width > height) {
+        if (width > window.innerWidth) {
+          ratio = window.innerWidth / width;
+        }
+      } else if (height > window.innerHeight) {
+        ratio = window.innerHeight / height;
+      }
+      // Scale svg fit to zoom
+      if (ratio) {
+        // body padding is 8px
+        svgEl.setAttribute("width", width * ratio - 16);
+        svgEl.setAttribute("height", height * ratio - 16);
+      }
+
       d2ErrDiv.style.display = "none";
     }
     if (msg.err) {
