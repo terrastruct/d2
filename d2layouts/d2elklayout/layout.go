@@ -77,6 +77,15 @@ type ELKGraph struct {
 	Edges         []*ELKEdge        `json:"edges,omitempty"`
 }
 
+var DefaultOpts = ELKLayoutOptions{
+	Algorithm:          "layered",
+	HierarchyHandling:  "INCLUDE_CHILDREN",
+	NodeSpacing:        100.0,
+	EdgeNodeSpacing:    50.0,
+	SelfLoopSpacing:    50.0,
+	ConsiderModelOrder: "NODES_AND_EDGES",
+}
+
 type ELKLayoutOptions struct {
 	Algorithm           string  `json:"elk.algorithm,omitempty"`
 	HierarchyHandling   string  `json:"elk.hierarchyHandling,omitempty"`
@@ -90,7 +99,10 @@ type ELKLayoutOptions struct {
 	ForceNodeModelOrder bool    `json:"elk.layered.crossingMinimization.forceNodeModelOrder,omitempty"`
 }
 
-func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
+func Layout(ctx context.Context, g *d2graph.Graph, opts *ELKLayoutOptions) (err error) {
+	if opts == nil {
+		opts = &DefaultOpts
+	}
 	defer xdefer.Errorf(&err, "failed to ELK layout")
 
 	vm := goja.New()

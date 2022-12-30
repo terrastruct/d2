@@ -30,6 +30,14 @@ var setupJS string
 //go:embed dagre.js
 var dagreJS string
 
+type Opts struct {
+	NodeSep int
+}
+
+var DefaultOpts = Opts{
+	NodeSep: 60,
+}
+
 type DagreNode struct {
 	ID     string  `json:"id"`
 	X      float64 `json:"x"`
@@ -51,7 +59,10 @@ type dagreGraphAttrs struct {
 	rankdir string
 }
 
-func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
+func Layout(ctx context.Context, g *d2graph.Graph, opts *Opts) (err error) {
+	if opts == nil {
+		opts = &DefaultOpts
+	}
 	defer xdefer.Errorf(&err, "failed to dagre layout")
 
 	debugJS := false
@@ -65,7 +76,7 @@ func Layout(ctx context.Context, g *d2graph.Graph) (err error) {
 
 	rootAttrs := dagreGraphAttrs{
 		edgesep: 40,
-		nodesep: 60,
+		nodesep: opts.NodeSep,
 	}
 	isHorizontal := false
 	switch g.Root.Attributes.Direction.Value {

@@ -17,6 +17,7 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 	"oss.terrastruct.com/util-go/xmain"
 
+	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
@@ -71,6 +72,11 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		return err
 	}
 	sketchFlag, err := ms.Opts.Bool("D2_SKETCH", "sketch", "s", false, "render the diagram to look like it was sketched by hand")
+	if err != nil {
+		return err
+	}
+
+	err = populateLayoutOpts(ms)
 	if err != nil {
 		return err
 	}
@@ -141,6 +147,16 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	if errors.Is(err, exec.ErrNotFound) {
 		return layoutNotFound(ctx, *layoutFlag)
 	} else if err != nil {
+		return err
+	}
+
+	layoutOpts, err := parseLayoutOpts(ms, *layoutFlag)
+	if err != nil {
+		return err
+	}
+
+	err = plugin.HydrateOpts(ctx, layoutOpts)
+	if err != nil {
 		return err
 	}
 
@@ -287,4 +303,23 @@ func renameExt(fp string, newExt string) string {
 // TODO: remove after removing slog
 func DiscardSlog(ctx context.Context) context.Context {
 	return ctxlog.With(ctx, slog.Make(sloghuman.Sink(io.Discard)))
+}
+
+func populateLayoutOpts(ms *xmain.State) error {
+	_, err := ms.Opts.Int64("", "dagre-nodesep", "", int64(d2dagrelayout.DefaultOpts.NodeSep), "number of pixels that separate nodes horizontally in the layout.")
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func parseLayoutOpts(ms *xmain.State, layout string) (interface{}, error) {
+	if layout == "dagre" {
+		nodesep, _ := ms.Opts.Flags.GetInt64("dagre-nodesep")
+		return d2dagrelayout.Opts{
+			NodeSep: int(nodesep),
+		}, nil
+	}
+
+	return nil, fmt.Errorf("unexpected error, layout not found for parsing opts")
 }

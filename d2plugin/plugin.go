@@ -23,6 +23,8 @@ type Plugin interface {
 	// Info returns the current info information of the plugin.
 	Info(context.Context) (*PluginInfo, error)
 
+	HydrateOpts(context.Context, interface{}) error
+
 	// Layout runs the plugin's autolayout algorithm on the input graph
 	// and returns a new graph with the computed placements.
 	Layout(context.Context, *d2graph.Graph) error

@@ -7,15 +7,30 @@ import (
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
+	"oss.terrastruct.com/util-go/xmain"
 )
 
 var DagrePlugin = dagrePlugin{}
 
 func init() {
-	plugins = append(plugins, DagrePlugin)
+	plugins = append(plugins, &DagrePlugin)
 }
 
-type dagrePlugin struct{}
+type dagrePlugin struct {
+	opts *d2dagrelayout.Opts
+}
+
+func (p *dagrePlugin) HydrateOpts(ctx context.Context, opts interface{}) error {
+	if opts != nil {
+		dagreOpts, ok := opts.(d2dagrelayout.Opts)
+		if !ok {
+			return xmain.UsageErrorf("non-dagre layout options given for dagre")
+		}
+
+		p.opts = &dagreOpts
+	}
+	return nil
+}
 
 func (p dagrePlugin) Info(context.Context) (*PluginInfo, error) {
 	return &PluginInfo{
@@ -33,7 +48,7 @@ note: dagre is the primary layout algorithm for text to diagram generator Mermai
 }
 
 func (p dagrePlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
-	return d2dagrelayout.Layout(ctx, g)
+	return d2dagrelayout.Layout(ctx, g, p.opts)
 }
 
 func (p dagrePlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) {

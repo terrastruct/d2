@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"oss.terrastruct.com/util-go/xdefer"
+	"oss.terrastruct.com/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2graph"
 )
@@ -37,6 +38,19 @@ import (
 // the error to stderr.
 type execPlugin struct {
 	path string
+	opts map[string]string
+}
+
+func (p execPlugin) HydrateOpts(ctx context.Context, opts interface{}) error {
+	if opts != nil {
+		execOpts, ok := opts.(map[string]string)
+		if !ok {
+			return xmain.UsageErrorf("non-exec layout options given for exec")
+		}
+
+		p.opts = execOpts
+	}
+	return nil
 }
 
 func (p execPlugin) Info(ctx context.Context) (_ *PluginInfo, err error) {
