@@ -331,6 +331,7 @@ const (
 	ShapeSQLTable        = "sql_table"
 	ShapeImage           = "image"
 	ShapeSequenceDiagram = "sequence_diagram"
+	ShapeDoubleCircle    = "double_circle"
 )
 
 var Shapes = []string{
@@ -357,6 +358,7 @@ var Shapes = []string{
 	ShapeSQLTable,
 	ShapeImage,
 	ShapeSequenceDiagram,
+	ShapeDoubleCircle,
 }
 
 func IsShape(s string) bool {

@@ -493,6 +493,17 @@ func renderOval(tl *geo.Point, width, height float64, style string) string {
 	return fmt.Sprintf(`<ellipse class="shape" cx="%f" cy="%f" rx="%f" ry="%f" style="%s" />`, cx, cy, rx, ry, style)
 }
 
+func renderDoubleCircle(tl *geo.Point, width, height float64, style string) string {
+	rx := width / 2
+	ry := height / 2
+	cx := tl.X + rx
+	cy := tl.Y + ry
+	return fmt.Sprintf(`<ellipse class="shape" cx="%f" cy="%f" rx="%f" ry="%f" style="%s" />
+		<ellipse class="shape" cx="%f" cy="%f" rx="%f" ry="%f" style="%s" />`,
+		cx, cy, rx-2, ry-2, style,
+		cx, cy, rx-10, ry-10, style)
+}
+
 func defineShadowFilter(writer io.Writer) {
 	fmt.Fprint(writer, `<defs>
 	<filter id="shadow-filter" width="200%" height="200%" x="-50%" y="-50%">
@@ -668,6 +679,19 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			fmt.Fprintf(writer, out)
 		} else {
 			fmt.Fprint(writer, renderOval(tl, width, height, style))
+		}
+	case d2target.ShapeDoubleCircle:
+		if targetShape.Multiple {
+			fmt.Fprint(writer, renderDoubleCircle(multipleTL, width, height, style))
+		}
+		if sketchRunner != nil {
+			out, err := d2sketch.Oval(sketchRunner, targetShape)
+			if err != nil {
+				return "", err
+			}
+			fmt.Fprintf(writer, out)
+		} else {
+			fmt.Fprint(writer, renderDoubleCircle(tl, width, height, style))
 		}
 
 	case d2target.ShapeImage:
