@@ -21,7 +21,7 @@ type elkPlugin struct {
 	opts *d2elklayout.ConfigurableOpts
 }
 
-func (p elkPlugin) Flags() []PluginSpecificFlag {
+func (p elkPlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
 	// ms.Opts.String("", "elk-algorithm", "", d2elklayout.DefaultOpts.Algorithm, "number of pixels that separate nodes horizontally.")
 	//   _, err = ms.Opts.Int64("", "elk-nodeNodeBetweenLayers", "", int64(d2elklayout.DefaultOpts.NodeSpacing), "number of pixels that separate edges horizontally.")
 	//   if err != nil {
@@ -44,7 +44,7 @@ func (p elkPlugin) Flags() []PluginSpecificFlag {
 			Usage:   "number of pixels that separate nodes horizontally.",
 			Tag:     "elk.algorithm",
 		},
-	}
+	}, nil
 }
 
 func (p *elkPlugin) HydrateOpts(opts []byte) error {

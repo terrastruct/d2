@@ -41,9 +41,29 @@ type execPlugin struct {
 	opts map[string]string
 }
 
-func (p execPlugin) Flags() []PluginSpecificFlag {
-	// TODO
-	return nil
+func (p execPlugin) Flags(ctx context.Context) (_ []PluginSpecificFlag, err error) {
+	ctx, cancel := context.WithTimeout(ctx, time.Second*10)
+	defer cancel()
+	cmd := exec.CommandContext(ctx, p.path, "flags")
+	defer xdefer.Errorf(&err, "failed to run %v", cmd.Args)
+
+	stdout, err := cmd.Output()
+	if err != nil {
+		ee := &exec.ExitError{}
+		if errors.As(err, &ee) && len(ee.Stderr) > 0 {
+			return nil, fmt.Errorf("%v\nstderr:\n%s", ee, ee.Stderr)
+		}
+		return nil, err
+	}
+
+	var flags []PluginSpecificFlag
+
+	err = json.Unmarshal(stdout, &flags)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal json: %w", err)
+	}
+
+	return flags, nil
 }
 
 func (p *execPlugin) HydrateOpts(opts []byte) error {

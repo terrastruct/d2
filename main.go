@@ -76,7 +76,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		return err
 	}
 
-	err = populateLayoutOpts(ms)
+	err = populateLayoutOpts(ctx, ms)
 	if err != nil {
 		return err
 	}
@@ -150,7 +150,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		return err
 	}
 
-	err = parseLayoutOpts(ms, plugin)
+	err = parseLayoutOpts(ctx, ms, plugin)
 	if err != nil {
 		return err
 	}
@@ -300,8 +300,11 @@ func DiscardSlog(ctx context.Context) context.Context {
 	return ctxlog.With(ctx, slog.Make(sloghuman.Sink(io.Discard)))
 }
 
-func populateLayoutOpts(ms *xmain.State) error {
-	pluginFlags := d2plugin.ListPluginFlags()
+func populateLayoutOpts(ctx context.Context, ms *xmain.State) error {
+	pluginFlags, err := d2plugin.ListPluginFlags(ctx)
+	if err != nil {
+		return err
+	}
 
 	for _, f := range pluginFlags {
 		switch f.Type {
@@ -315,9 +318,13 @@ func populateLayoutOpts(ms *xmain.State) error {
 	return nil
 }
 
-func parseLayoutOpts(ms *xmain.State, plugin d2plugin.Plugin) error {
+func parseLayoutOpts(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin) error {
 	opts := make(map[string]interface{})
-	for _, f := range plugin.Flags() {
+	flags, err := plugin.Flags(ctx)
+	if err != nil {
+		return err
+	}
+	for _, f := range flags {
 		switch f.Type {
 		case "string":
 			val, _ := ms.Opts.Flags.GetString(f.Name)

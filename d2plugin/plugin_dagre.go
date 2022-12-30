@@ -21,7 +21,7 @@ type dagrePlugin struct {
 	opts *d2dagrelayout.Opts
 }
 
-func (p dagrePlugin) Flags() []PluginSpecificFlag {
+func (p dagrePlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
 	return []PluginSpecificFlag{
 		{
 			Name:    "dagre-nodesep",
@@ -37,7 +37,7 @@ func (p dagrePlugin) Flags() []PluginSpecificFlag {
 			Usage:   "number of pixels that separate edges horizontally.",
 			Tag:     "edgesep",
 		},
-	}
+	}, nil
 }
 
 func (p *dagrePlugin) HydrateOpts(opts []byte) error {

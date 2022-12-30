@@ -32,7 +32,7 @@ type Plugin interface {
 	// Info returns the current info information of the plugin.
 	Info(context.Context) (*PluginInfo, error)
 
-	Flags() []PluginSpecificFlag
+	Flags(context.Context) ([]PluginSpecificFlag, error)
 
 	HydrateOpts([]byte) error
 
@@ -123,10 +123,14 @@ func FindPlugin(ctx context.Context, name string) (Plugin, string, error) {
 	return &execPlugin{path: path}, path, nil
 }
 
-func ListPluginFlags() []PluginSpecificFlag {
+func ListPluginFlags(ctx context.Context) ([]PluginSpecificFlag, error) {
 	var out []PluginSpecificFlag
 	for _, p := range plugins {
-		out = append(out, p.Flags()...)
+		flags, err := p.Flags(ctx)
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, flags...)
 	}
-	return out
+	return out, nil
 }
