@@ -32,7 +32,7 @@ Flags:
 
 Subcommands:
   %[1]s layout - Lists available layout engine options with short help
-  %[1]s layout [name] - Display long help for a particular layout engine
+  %[1]s layout [name] - Display long help for a particular layout engine, including its configuration options
   %[1]s fmt file.d2 - Format file.d2
 
 See more docs and the source code at https://oss.terrastruct.com/d2
@@ -75,7 +75,7 @@ Example:
   D2_LAYOUT=dagre d2 in.d2 out.svg
 
 Subcommands:
-  %s layout [layout name] - Display long help for a particular layout engine
+  %s layout [layout name] - Display long help for a particular layout engine, including its configuration options
 
 See more docs at https://oss.terrastruct.com/d2
 `, strings.Join(pluginLines, "\n"), ms.Name)
