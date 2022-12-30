@@ -41,10 +41,16 @@ type execPlugin struct {
 	opts map[string]string
 }
 
-func (p execPlugin) HydrateOpts(ctx context.Context, opts interface{}) error {
+func (p execPlugin) Flags() []PluginSpecificFlag {
+	// TODO
+	return nil
+}
+
+func (p *execPlugin) HydrateOpts(opts []byte) error {
 	if opts != nil {
-		execOpts, ok := opts.(map[string]string)
-		if !ok {
+		var execOpts map[string]string
+		err := json.Unmarshal(opts, &execOpts)
+		if err != nil {
 			return xmain.UsageErrorf("non-exec layout options given for exec")
 		}
 

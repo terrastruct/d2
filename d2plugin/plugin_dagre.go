@@ -4,6 +4,7 @@ package d2plugin
 
 import (
 	"context"
+	"encoding/json"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
@@ -20,10 +21,30 @@ type dagrePlugin struct {
 	opts *d2dagrelayout.Opts
 }
 
-func (p *dagrePlugin) HydrateOpts(ctx context.Context, opts interface{}) error {
+func (p dagrePlugin) Flags() []PluginSpecificFlag {
+	return []PluginSpecificFlag{
+		{
+			Name:    "dagre-nodesep",
+			Type:    "int64",
+			Default: int64(d2dagrelayout.DefaultOpts.NodeSep),
+			Usage:   "number of pixels that separate nodes horizontally.",
+			Tag:     "nodesep",
+		},
+		{
+			Name:    "dagre-edgesep",
+			Type:    "int64",
+			Default: int64(d2dagrelayout.DefaultOpts.EdgeSep),
+			Usage:   "number of pixels that separate edges horizontally.",
+			Tag:     "edgesep",
+		},
+	}
+}
+
+func (p *dagrePlugin) HydrateOpts(opts []byte) error {
 	if opts != nil {
-		dagreOpts, ok := opts.(d2dagrelayout.Opts)
-		if !ok {
+		var dagreOpts d2dagrelayout.Opts
+		err := json.Unmarshal(opts, &dagreOpts)
+		if err != nil {
 			return xmain.UsageErrorf("non-dagre layout options given for dagre")
 		}
 

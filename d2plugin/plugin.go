@@ -19,11 +19,22 @@ import (
 // See plugin_* files for the plugins available for bundling.
 var plugins []Plugin
 
+type PluginSpecificFlag struct {
+	Name    string
+	Type    string
+	Default interface{}
+	Usage   string
+	// Must match the tag in the opt
+	Tag string
+}
+
 type Plugin interface {
 	// Info returns the current info information of the plugin.
 	Info(context.Context) (*PluginInfo, error)
 
-	HydrateOpts(context.Context, interface{}) error
+	Flags() []PluginSpecificFlag
+
+	HydrateOpts([]byte) error
 
 	// Layout runs the plugin's autolayout algorithm on the input graph
 	// and returns a new graph with the computed placements.
@@ -110,4 +121,12 @@ func FindPlugin(ctx context.Context, name string) (Plugin, string, error) {
 	}
 
 	return &execPlugin{path: path}, path, nil
+}
+
+func ListPluginFlags() []PluginSpecificFlag {
+	var out []PluginSpecificFlag
+	for _, p := range plugins {
+		out = append(out, p.Flags()...)
+	}
+	return out
 }
