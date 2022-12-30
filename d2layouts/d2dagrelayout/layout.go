@@ -32,10 +32,12 @@ var dagreJS string
 
 type Opts struct {
 	NodeSep int
+	EdgeSep int
 }
 
 var DefaultOpts = Opts{
 	NodeSep: 60,
+	EdgeSep: 40,
 }
 
 type DagreNode struct {
@@ -75,7 +77,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *Opts) (err error) {
 	}
 
 	rootAttrs := dagreGraphAttrs{
-		edgesep: 40,
+		edgesep: opts.EdgeSep,
 		nodesep: opts.NodeSep,
 	}
 	isHorizontal := false

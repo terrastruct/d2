@@ -18,6 +18,7 @@ import (
 	"oss.terrastruct.com/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
+	"oss.terrastruct.com/d2/d2layouts/d2elklayout"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
@@ -306,18 +307,54 @@ func DiscardSlog(ctx context.Context) context.Context {
 }
 
 func populateLayoutOpts(ms *xmain.State) error {
-	_, err := ms.Opts.Int64("", "dagre-nodesep", "", int64(d2dagrelayout.DefaultOpts.NodeSep), "number of pixels that separate nodes horizontally in the layout.")
+	_, err := ms.Opts.Int64("", "dagre-nodesep", "", int64(d2dagrelayout.DefaultOpts.NodeSep), "number of pixels that separate nodes horizontally.")
 	if err != nil {
 		return err
 	}
+	_, err = ms.Opts.Int64("", "dagre-edgesep", "", int64(d2dagrelayout.DefaultOpts.EdgeSep), "number of pixels that separate edges horizontally.")
+	if err != nil {
+		return err
+	}
+
+	ms.Opts.String("", "elk-algorithm", "", d2elklayout.DefaultOpts.Algorithm, "number of pixels that separate nodes horizontally.")
+	_, err = ms.Opts.Int64("", "elk-nodeNodeBetweenLayers", "", int64(d2elklayout.DefaultOpts.NodeSpacing), "number of pixels that separate edges horizontally.")
+	if err != nil {
+		return err
+	}
+	ms.Opts.String("", "elk-padding", "", d2elklayout.DefaultOpts.Padding, "number of pixels that separate nodes horizontally.")
+	_, err = ms.Opts.Int64("", "elk-edgeNodeBetweenLayers", "", int64(d2elklayout.DefaultOpts.EdgeNodeSpacing), "number of pixels that separate edges horizontally.")
+	if err != nil {
+		return err
+	}
+	_, err = ms.Opts.Int64("", "elk-nodeSelfLoop", "", int64(d2elklayout.DefaultOpts.SelfLoopSpacing), "number of pixels that separate edges horizontally.")
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
 func parseLayoutOpts(ms *xmain.State, layout string) (interface{}, error) {
-	if layout == "dagre" {
+	switch layout {
+	case "dagre":
 		nodesep, _ := ms.Opts.Flags.GetInt64("dagre-nodesep")
+		edgesep, _ := ms.Opts.Flags.GetInt64("dagre-edgesep")
 		return d2dagrelayout.Opts{
 			NodeSep: int(nodesep),
+			EdgeSep: int(edgesep),
+		}, nil
+	case "elk":
+		algorithm, _ := ms.Opts.Flags.GetString("elk-algorithm")
+		nodeSpacing, _ := ms.Opts.Flags.GetInt64("elk-nodeNodeBetweenLayers")
+		padding, _ := ms.Opts.Flags.GetString("elk-padding")
+		edgeNodeSpacing, _ := ms.Opts.Flags.GetInt64("elk-edgeNodeSpacing")
+		selfLoopSpacing, _ := ms.Opts.Flags.GetInt64("elk-nodeSelfLoop")
+		return d2elklayout.ConfigurableOpts{
+			Algorithm:       algorithm,
+			NodeSpacing:     int(nodeSpacing),
+			Padding:         padding,
+			EdgeNodeSpacing: int(edgeNodeSpacing),
+			SelfLoopSpacing: int(selfLoopSpacing),
 		}, nil
 	}
 

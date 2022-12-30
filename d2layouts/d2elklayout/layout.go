@@ -77,29 +77,33 @@ type ELKGraph struct {
 	Edges         []*ELKEdge        `json:"edges,omitempty"`
 }
 
-var DefaultOpts = ELKLayoutOptions{
-	Algorithm:          "layered",
-	HierarchyHandling:  "INCLUDE_CHILDREN",
-	NodeSpacing:        100.0,
-	EdgeNodeSpacing:    50.0,
-	SelfLoopSpacing:    50.0,
-	ConsiderModelOrder: "NODES_AND_EDGES",
+var DefaultOpts = ConfigurableOpts{
+	Algorithm:       "layered",
+	NodeSpacing:     100.0,
+	Padding:         "[top=75,left=75,bottom=75,right=75]",
+	EdgeNodeSpacing: 50.0,
+	SelfLoopSpacing: 50.0,
+}
+
+type ConfigurableOpts struct {
+	Algorithm       string `json:"elk.algorithm,omitempty"`
+	NodeSpacing     int    `json:"spacing.nodeNodeBetweenLayers,omitempty"`
+	Padding         string `json:"elk.padding,omitempty"`
+	EdgeNodeSpacing int    `json:"spacing.edgeNodeBetweenLayers,omitempty"`
+	SelfLoopSpacing int    `json:"elk.spacing.nodeSelfLoop"`
 }
 
 type ELKLayoutOptions struct {
-	Algorithm           string  `json:"elk.algorithm,omitempty"`
-	HierarchyHandling   string  `json:"elk.hierarchyHandling,omitempty"`
-	NodeSpacing         float64 `json:"spacing.nodeNodeBetweenLayers,omitempty"`
-	Padding             string  `json:"elk.padding,omitempty"`
-	EdgeNodeSpacing     float64 `json:"spacing.edgeNodeBetweenLayers,omitempty"`
-	Direction           string  `json:"elk.direction"`
-	SelfLoopSpacing     float64 `json:"elk.spacing.nodeSelfLoop"`
-	InlineEdgeLabels    bool    `json:"elk.edgeLabels.inline,omitempty"`
-	ConsiderModelOrder  string  `json:"elk.layered.considerModelOrder.strategy,omitempty"`
-	ForceNodeModelOrder bool    `json:"elk.layered.crossingMinimization.forceNodeModelOrder,omitempty"`
+	Direction           string `json:"elk.direction"`
+	HierarchyHandling   string `json:"elk.hierarchyHandling,omitempty"`
+	InlineEdgeLabels    bool   `json:"elk.edgeLabels.inline,omitempty"`
+	ForceNodeModelOrder bool   `json:"elk.layered.crossingMinimization.forceNodeModelOrder,omitempty"`
+	ConsiderModelOrder  string `json:"elk.layered.considerModelOrder.strategy,omitempty"`
+
+	ConfigurableOpts
 }
 
-func Layout(ctx context.Context, g *d2graph.Graph, opts *ELKLayoutOptions) (err error) {
+func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err error) {
 	if opts == nil {
 		opts = &DefaultOpts
 	}
@@ -122,12 +126,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ELKLayoutOptions) (err 
 	elkGraph := &ELKGraph{
 		ID: "root",
 		LayoutOptions: &ELKLayoutOptions{
-			Algorithm:          "layered",
 			HierarchyHandling:  "INCLUDE_CHILDREN",
-			NodeSpacing:        100.0,
-			EdgeNodeSpacing:    50.0,
-			SelfLoopSpacing:    50.0,
 			ConsiderModelOrder: "NODES_AND_EDGES",
+			ConfigurableOpts:   *opts,
 		},
 	}
 	switch g.Root.Attributes.Direction.Value {
@@ -171,8 +172,10 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ELKLayoutOptions) (err 
 
 		if len(obj.ChildrenArray) > 0 {
 			n.LayoutOptions = &ELKLayoutOptions{
-				Padding:             "[top=75,left=75,bottom=75,right=75]",
 				ForceNodeModelOrder: true,
+				ConfigurableOpts: ConfigurableOpts{
+					Padding: opts.Padding,
+				},
 			}
 		}
 
