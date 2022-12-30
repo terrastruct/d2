@@ -132,7 +132,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		LayoutOptions: &elkOpts{
 			HierarchyHandling:  "INCLUDE_CHILDREN",
 			ConsiderModelOrder: "NODES_AND_EDGES",
-			ConfigurableOpts:   *opts,
+			ConfigurableOpts: ConfigurableOpts{
+				Algorithm:       opts.Algorithm,
+				NodeSpacing:     opts.NodeSpacing,
+				EdgeNodeSpacing: opts.EdgeNodeSpacing,
+				SelfLoopSpacing: opts.SelfLoopSpacing,
+			},
 		},
 	}
 	switch g.Root.Attributes.Direction.Value {
