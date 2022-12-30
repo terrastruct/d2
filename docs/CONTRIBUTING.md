@@ -22,6 +22,20 @@ Most of D2's CI is open sourced in its own
 workflows. E.g. run `./make.sh fmt` to run the formatter. Please make sure all CI is
 passing for any PRs.
 
+Most of the CI scripts rely on a submodule shared between many D2 repositories:
+[https://github.com/terrastruct/ci](https://github.com/terrastruct/ci). You should fetch
+the submodule whenever it differs:
+
+```sh
+git submodule update --recursive
+```
+
+If running for the first time for a repo (e.g. new clone), add `--init`:
+
+```sh
+git submodule update --init --recursive
+```
+
 ## Flow
 
 The simplified D2 flow at a package level looks like:
@@ -54,7 +68,7 @@ start work on an Issue, please leave a comment so others know that it's being wo
 
 ### Tests
 
-All code changes must include tests. D2 mostly has functional tests (see `e2etests` directory), and uses
+All code changes must include tests. D2 mostly has functional tests, and uses
 [diff](https://github.com/terrastruct/diff) as a framework that gives Git-style
 comparisons of expected vs actual output for each stage. There are ample examples in each
 package of this -- try changing some test and run it to see.
@@ -81,11 +95,6 @@ Run: `./ci/test.sh`
 
 CI runs tests with `-race` to catch potential race conditions. It's much slower, but if
 your machine can run it locally, you can do so with `./make.sh race`.
-
-If you had to change/add functional test cases (under `e2etests` directory), make sure
-you updated them before opening a PR.
-
-Run: `TESTDATA_ACCEPT=1 ./ci/test.sh` or `TA=1 ./ci/test.sh` for a shorter version.
 
 #### Chaos tests
 
