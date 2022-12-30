@@ -133,6 +133,47 @@ func Oval(r *Runner, shape d2target.Shape) (string, error) {
 	return output, nil
 }
 
+func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
+	js_big_circle := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
+		fill: "%s",
+		stroke: "%s",
+		strokeWidth: %d,
+		%s
+	});`, shape.Width/2, shape.Height/2, shape.Width, shape.Height, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	js_small_circle := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
+		fill: "%s",
+		stroke: "%s",
+		strokeWidth: %d,
+		%s
+	});`, shape.Width/2, shape.Height/2, shape.Width-15, shape.Height-15, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	paths_big_circle, err := computeRoughPaths(r, js_big_circle)
+	if err != nil {
+		return "", err
+	}
+	paths_small_circle, err := computeRoughPaths(r, js_small_circle)
+	if err != nil {
+		return "", err
+	}
+	output := ""
+	for _, p := range paths_big_circle {
+		output += fmt.Sprintf(
+			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
+			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
+		)
+	}
+	for _, p := range paths_small_circle {
+		output += fmt.Sprintf(
+			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
+			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
+		)
+	}
+	output += fmt.Sprintf(
+		`<ellipse class="sketch-overlay" transform="translate(%d %d)" rx="%d" ry="%d" />`,
+		shape.Pos.X+shape.Width/2, shape.Pos.Y+shape.Height/2, shape.Width/2, shape.Height/2,
+	)
+	return output, nil
+}
+
 // TODO need to personalize this per shape like we do in Terrastruct app
 func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 	output := ""

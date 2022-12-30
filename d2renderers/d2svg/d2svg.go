@@ -685,7 +685,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			fmt.Fprint(writer, renderDoubleCircle(multipleTL, width, height, style))
 		}
 		if sketchRunner != nil {
-			out, err := d2sketch.Oval(sketchRunner, targetShape)
+			out, err := d2sketch.DoubleOval(sketchRunner, targetShape)
 			if err != nil {
 				return "", err
 			}
