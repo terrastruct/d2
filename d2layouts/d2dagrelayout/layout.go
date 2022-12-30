@@ -31,8 +31,8 @@ var setupJS string
 var dagreJS string
 
 type ConfigurableOpts struct {
-	NodeSep int
-	EdgeSep int
+	NodeSep int `json:"nodesep"`
+	EdgeSep int `json:"edgesep"`
 }
 
 var DefaultOpts = ConfigurableOpts{
