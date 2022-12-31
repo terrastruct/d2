@@ -23,3 +23,8 @@ This release also gives more power to configure layouts. `width` and `height` ar
 - Fixes rendering of `sql_table` with no columns. [#553](https://github.com/terrastruct/d2/pull/553)
 - Restricts where `near` key constant values can be used, with good error messages, instead of erroring (e.g. setting `near: top-center` on a container would cause bad layouts or error). [#538](https://github.com/terrastruct/d2/pull/538)
 - Fixes panic when images with empty labels are rendered with ELK. [#555](https://github.com/terrastruct/d2/pull/555)
+
+#### Breaking changes
+
+- For usages of D2 as a library, `d2dagrelayout.Layout` and `d2elklayout.Layout` now accept a third parameter for options. If you would like to keep the defaults, change your code to call `dagrelayout.DefaultLayout` and `d2elklayout.DefaultLayout` respectively.
+
