@@ -1,10 +1,14 @@
-This release marks the introduction of interactive diagrams. Namely, `tooltip` and `link` can now be set, which allows you to hover to see more or click to go to an external link. This small change enables many possibilities, including richer integrations like internal wiki's that can be linked together through diagrams.
+This release marks the introduction of interactive diagrams. Namely, `tooltip` and `link` can now be set, which allows you to hover to see more or click to go to an external link. This small change enables many possibilities, including richer integrations like internal wiki's that can be linked together through diagrams. An icon will indicate that a shape has a tooltip that can be hovered over for more information, or a link.
+
+<img width="509" alt="Screen Shot 2022-12-30 at 6 47 45 PM" src="https://user-images.githubusercontent.com/3120367/210122771-b38003e7-2881-4708-a875-8066c465c16c.png">
 
 Since interactive features obviously won't work on static export formats like PNG, they will be included automatically in an appendix when exporting to those formats, like so:
 
-placeholder
+![tooltip](https://user-images.githubusercontent.com/3120367/210122793-582d3fc7-8e09-46f1-bb78-5dcc6cf1de55.png)
 
 This release also gives more power to configure layouts. `width` and `height` are D2 keywords which previouslly only worked on images, but now work on any non-containers. Additionally, all the layout engines have configurations exposed. D2 sets sensible defaults to each layout engine without any input, so this is meant to be an advanced feature for users who want that extra control.
+
+Happy new years!
 
 #### Features 🚀
 
@@ -26,5 +30,5 @@ This release also gives more power to configure layouts. `width` and `height` ar
 
 #### Breaking changes
 
-- For usages of D2 as a library, `d2dagrelayout.Layout` and `d2elklayout.Layout` now accept a third parameter for options. If you would like to keep the defaults, change your code to call `dagrelayout.DefaultLayout` and `d2elklayout.DefaultLayout` respectively.
+- For usages of D2 as a library, `d2dagrelayout.Layout` and `d2elklayout.Layout` now accept a third parameter for options. If you would like to keep the defaults, please change your code to call `dagrelayout.DefaultLayout` and `d2elklayout.DefaultLayout` respectively.
 
