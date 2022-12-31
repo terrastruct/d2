@@ -24,7 +24,6 @@ const (
 	CIRCLE_TYPE        = "Circle"
 	HEXAGON_TYPE       = "Hexagon"
 	CLOUD_TYPE         = "Cloud"
-	DOUBLE_CIRCLE_TYPE = "DoubleCircle"
 
 	TABLE_TYPE = "Table"
 	CLASS_TYPE = "Class"
@@ -109,8 +108,6 @@ func NewShape(shapeType string, box *geo.Box) Shape {
 		return NewCallout(box)
 	case CIRCLE_TYPE:
 		return NewCircle(box)
-	case DOUBLE_CIRCLE_TYPE:
-		return NewDoubleCircle(box)
 	case CLASS_TYPE:
 		return NewClass(box)
 	case CLOUD_TYPE:

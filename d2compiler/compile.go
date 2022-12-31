@@ -235,6 +235,8 @@ func (c *compiler) compileAttributes(attrs *d2graph.Attributes, mk *d2ast.Key) {
 		attrs.Width = &d2graph.Scalar{MapKey: mk}
 	} else if reserved == "height" {
 		attrs.Height = &d2graph.Scalar{MapKey: mk}
+	} else if reserved == "double-border" {
+		attrs.Style.DoubleBorder = &d2graph.Scalar{MapKey: mk}
 	}
 }
 
