@@ -2,7 +2,7 @@
 <svg
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="529" height="369" viewBox="-100 -100 529 369"><style type="text/css">
+width="533" height="373" viewBox="-102 -102 533 373"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -775,8 +775,8 @@ width="529" height="369" viewBox="-100 -100 529 369"><style type="text/css">
 .md .contains-task-list:dir(rtl) .task-list-item-checkbox {
   margin: 0 -1.6em 0.25em 0.2em;
 }
-</style><g id="bear"><g class="shape" ></g><text class="text-bold" x="165.000000" y="163.000000" style="text-anchor:middle;font-size:22px;fill:#0A0F25">bear</text></g><g id="mama bear"><g class="shape" ></g><text class="text-italic" x="67.500000" y="31.000000" style="text-anchor:middle;font-size:28px;fill:#676C7E">mama bear</text></g><g id="papa bear"><g class="shape" ></g><text class="text text-underline" x="262.000000" y="32.000000" style="text-anchor:middle;font-size:32px;fill:#0A0F25">papa bear</text></g><g id="(mama bear -&gt; bear)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 67.500000 41.500000 C 67.500000 80.700000 82.700000 101.000000 140.158332 138.801534" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#1676112826)"/></g><g id="(papa bear -&gt; bear)[0]"><path d="M 262.000000 43.000000 C 262.000000 81.000000 246.800000 101.000000 189.341668 138.801534" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#1676112826)"/></g><mask id="1676112826" maskUnits="userSpaceOnUse" x="-100" y="-100" width="529" height="369">
-<rect x="-100" y="-100" width="529" height="369" fill="white"></rect>
+</style><g id="bear"><g class="shape" ></g><text class="text-bold" x="165.000000" y="163.000000" style="text-anchor:middle;font-size:22px;fill:#0A0F25">bear</text></g><g id="mama bear"><g class="shape" ></g><text class="text-italic" x="67.500000" y="31.000000" style="text-anchor:middle;font-size:28px;fill:#676C7E">mama bear</text></g><g id="papa bear"><g class="shape" ></g><text class="text text-underline" x="262.000000" y="32.000000" style="text-anchor:middle;font-size:32px;fill:#0A0F25">papa bear</text></g><g id="(mama bear -&gt; bear)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 67.500000 41.500000 C 67.500000 80.700000 82.700000 101.000000 140.158332 138.801534" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#1676112826)"/></g><g id="(papa bear -&gt; bear)[0]"><path d="M 262.000000 43.000000 C 262.000000 81.000000 246.800000 101.000000 189.341668 138.801534" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#1676112826)"/></g><mask id="1676112826" maskUnits="userSpaceOnUse" x="-100" y="-100" width="533" height="373">
+<rect x="-100" y="-100" width="533" height="373" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text {
