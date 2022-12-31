@@ -282,10 +282,10 @@ const (
 	LineArrowhead Arrowhead = "line"
 
 	// Crows feet notation
-	CrowsFeetManyRequired Arrowhead = "crows-feet-many-required"
-	CrowsFeetManyOptional Arrowhead = "crows-feet-many-optional"
-	CrowsFeetOneRequired  Arrowhead = "crows-feet-one-required"
-	CrowsFeetOneOptional  Arrowhead = "crows-feet-one-optional"
+	CfOne          Arrowhead = "cf-one"
+	CfMany         Arrowhead = "cf-many"
+	CfOneRequired  Arrowhead = "cf-one-required"
+	CfManyRequired Arrowhead = "cf-many-required"
 )
 
 var Arrowheads = map[string]struct{}{
@@ -294,10 +294,10 @@ var Arrowheads = map[string]struct{}{
 	string(TriangleArrowhead):      {},
 	string(DiamondArrowhead):       {},
 	string(FilledDiamondArrowhead): {},
-	string(CrowsFeetManyRequired):  {},
-	string(CrowsFeetManyOptional):  {},
-	string(CrowsFeetOneRequired):   {},
-	string(CrowsFeetOneOptional):   {},
+	string(CfOne):                  {},
+	string(CfMany):                 {},
+	string(CfOneRequired):          {},
+	string(CfManyRequired):         {},
 }
 
 func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
@@ -309,14 +309,14 @@ func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
 		return DiamondArrowhead
 	case string(ArrowArrowhead):
 		return ArrowArrowhead
-	case string(CrowsFeetManyRequired):
-		return CrowsFeetManyRequired
-	case string(CrowsFeetManyOptional):
-		return CrowsFeetManyOptional
-	case string(CrowsFeetOneRequired):
-		return CrowsFeetOneRequired
-	case string(CrowsFeetOneOptional):
-		return CrowsFeetOneOptional
+	case string(CfOne):
+		return CfOne
+	case string(CfMany):
+		return CfMany
+	case string(CfOneRequired):
+		return CfOneRequired
+	case string(CfManyRequired):
+		return CfManyRequired
 	default:
 		return TriangleArrowhead
 	}
