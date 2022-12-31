@@ -34,7 +34,15 @@ func (f *PluginSpecificFlag) AddToOpts(opts *xmain.Opts) {
 	case "string":
 		opts.String("", f.Name, "", f.Default.(string), f.Usage)
 	case "int64":
-		opts.Int64("", f.Name, "", f.Default.(int64), f.Usage)
+		var val int64
+		switch defaultType := f.Default.(type) {
+		case int64:
+			val = defaultType
+		case float64:
+			// json unmarshals numbers to float64
+			val = int64(defaultType)
+		}
+		opts.Int64("", f.Name, "", val, f.Usage)
 	}
 }
 
@@ -142,5 +150,19 @@ func ListPluginFlags(ctx context.Context) ([]PluginSpecificFlag, error) {
 		}
 		out = append(out, flags...)
 	}
+
+	matches, err := xexec.SearchPath(binaryPrefix)
+	if err != nil {
+		return nil, err
+	}
+	for _, path := range matches {
+		p := &execPlugin{path: path}
+		flags, err := p.Flags(ctx)
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, flags...)
+	}
+
 	return out, nil
 }
