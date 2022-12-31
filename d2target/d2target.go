@@ -280,6 +280,12 @@ const (
 
 	// For fat arrows
 	LineArrowhead Arrowhead = "line"
+
+	// Crows feet notation
+	CrowsFeetManyRequired Arrowhead = "crows-feet-many-required"
+	CrowsFeetManyOptional Arrowhead = "crows-feet-many-optional"
+	CrowsFeetOneRequired  Arrowhead = "crows-feet-one-required"
+	CrowsFeetOneOptional  Arrowhead = "crows-feet-one-optional"
 )
 
 var Arrowheads = map[string]struct{}{
@@ -288,6 +294,10 @@ var Arrowheads = map[string]struct{}{
 	string(TriangleArrowhead):      {},
 	string(DiamondArrowhead):       {},
 	string(FilledDiamondArrowhead): {},
+	string(CrowsFeetManyRequired):  {},
+	string(CrowsFeetManyOptional):  {},
+	string(CrowsFeetOneRequired):   {},
+	string(CrowsFeetOneOptional):   {},
 }
 
 func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
@@ -299,6 +309,14 @@ func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
 		return DiamondArrowhead
 	case string(ArrowArrowhead):
 		return ArrowArrowhead
+	case string(CrowsFeetManyRequired):
+		return CrowsFeetManyRequired
+	case string(CrowsFeetManyOptional):
+		return CrowsFeetManyOptional
+	case string(CrowsFeetOneRequired):
+		return CrowsFeetOneRequired
+	case string(CrowsFeetOneOptional):
+		return CrowsFeetOneOptional
 	default:
 		return TriangleArrowhead
 	}

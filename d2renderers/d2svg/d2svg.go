@@ -113,6 +113,15 @@ func arrowheadDimensions(arrowhead d2target.Arrowhead, strokeWidth float64) (wid
 	case d2target.DiamondArrowhead:
 		widthMultiplier = 11
 		heightMultiplier = 9
+	case d2target.CrowsFeetManyOptional:
+		fallthrough
+	case d2target.CrowsFeetManyRequired:
+		fallthrough
+	case d2target.CrowsFeetOneOptional:
+		fallthrough
+	case d2target.CrowsFeetOneRequired:
+		widthMultiplier = 14
+		heightMultiplier = 15
 	}
 
 	clippedStrokeWidth := go2.Max(MIN_ARROWHEAD_STROKE_WIDTH, strokeWidth)
@@ -218,6 +227,53 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 				width*0.6, height/8,
 				width*1.1, height/2.0,
 				width*0.6, height*7/8,
+			)
+		}
+	case d2target.CrowsFeetOneRequired:
+		fallthrough
+	case d2target.CrowsFeetOneOptional:
+		fallthrough
+	case d2target.CrowsFeetManyRequired:
+		fallthrough
+	case d2target.CrowsFeetManyOptional:
+		attrs := fmt.Sprintf(`class="connection" stroke="%s" stroke-width="%d" fill="white"`, connection.Stroke, connection.StrokeWidth)
+		offset := 4.0 + (float64(connection.StrokeWidth) * 2.0)
+		var modifier string
+		if arrowhead == d2target.CrowsFeetManyRequired || arrowhead == d2target.CrowsFeetOneRequired {
+			modifier = fmt.Sprintf(`<path %s d="M%f,%f %f,%f M%f,%f %f,%f" />`,
+				attrs,
+				width, height/2.0,
+				offset/2.0+1.0, height/2.0,
+				offset, 0.,
+				offset, height,
+			)
+		} else {
+			modifier = fmt.Sprintf(`<circle %s cx="%f" cy="%f" r="%f" />`,
+				attrs,
+				offset/2.0+1.0, height/2.0,
+				offset/2.0,
+			)
+		}
+		if !isTarget {
+			attrs = fmt.Sprintf(`%s transform="scale(-1) translate(-%f, -%f)"`, attrs, width, height)
+		}
+		if arrowhead == d2target.CrowsFeetManyOptional || arrowhead == d2target.CrowsFeetManyRequired {
+			path = fmt.Sprintf(`<g %s>%s<path d="M%f,%f %f,%f M%f,%f %f,%f M%f,%f %f,%f" /></g>`,
+				attrs, modifier,
+				offset+2.0, height/2.0,
+				width+offset, height/2.0,
+				offset+2.0, height/2.0,
+				width+offset, 0.,
+				offset+2.0, height/2.0,
+				width+offset, height,
+			)
+		} else {
+			path = fmt.Sprintf(`<g %s>%s<path d="M%f,%f %f,%f M%f,%f %f,%f" /></g>`,
+				attrs, modifier,
+				offset+2.0, height/2.0,
+				width+offset, height/2.0,
+				offset*1.8, 0.,
+				offset*1.8, height,
 			)
 		}
 	default:
