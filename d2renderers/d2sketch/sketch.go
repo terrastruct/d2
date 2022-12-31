@@ -134,23 +134,23 @@ func Oval(r *Runner, shape d2target.Shape) (string, error) {
 }
 
 func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
-	js_big_circle := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
+	jsBigCircle := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
 		fill: "%s",
 		stroke: "%s",
 		strokeWidth: %d,
 		%s
 	});`, shape.Width/2, shape.Height/2, shape.Width, shape.Height, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
-	js_small_circle := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
+	jsSmallCircle := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
 		fill: "%s",
 		stroke: "%s",
 		strokeWidth: %d,
 		%s
 	});`, shape.Width/2, shape.Height/2, shape.Width-15, shape.Height-15, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
-	paths_big_circle, err := computeRoughPaths(r, js_big_circle)
+	paths_big_circle, err := computeRoughPaths(r, jsBigCircle)
 	if err != nil {
 		return "", err
 	}
-	paths_small_circle, err := computeRoughPaths(r, js_small_circle)
+	paths_small_circle, err := computeRoughPaths(r, jsSmallCircle)
 	if err != nil {
 		return "", err
 	}

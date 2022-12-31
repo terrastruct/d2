@@ -494,14 +494,7 @@ func renderOval(tl *geo.Point, width, height float64, style string) string {
 }
 
 func renderDoubleCircle(tl *geo.Point, width, height float64, style string) string {
-	rx := width / 2
-	ry := height / 2
-	cx := tl.X + rx
-	cy := tl.Y + ry
-	return fmt.Sprintf(`<ellipse class="shape" cx="%f" cy="%f" rx="%f" ry="%f" style="%s" />
-		<ellipse class="shape" cx="%f" cy="%f" rx="%f" ry="%f" style="%s" />`,
-		cx, cy, rx-2, ry-2, style,
-		cx, cy, rx-10, ry-10, style)
+	return renderOval(tl, width, height, style) + renderOval(&geo.Point{X: tl.X + 5, Y: tl.Y + 5}, width-10, height-10, style)
 }
 
 func defineShadowFilter(writer io.Writer) {
