@@ -39,6 +39,7 @@ The simplified D2 flow at a package level looks like:
 
 ## Logistics
 
+- Use Go 1.18. Go 1.19's autofmt inexplicably strips spacing from ASCII art in comments.
 - D2 uses Issues as TODOs. No auto-closing on staleness.
 - Branch off `master`.
 - Prefix pull request titles with a short descriptor of the domain, e.g. `d2renderer: Add
