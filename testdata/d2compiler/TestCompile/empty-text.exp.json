@@ -1,0 +1,12 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/empty-text.d2,0:3:3-1:0:7",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/empty-text.d2:1:4: block string cannot be empty"
+      }
+    ]
+  }
+}

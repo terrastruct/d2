@@ -1843,6 +1843,14 @@ choo: {
 			expErr: `d2/testdata/d2compiler/TestCompile/sql-panic.d2:3:27: constraint value must be a string
 `,
 		},
+		{
+			name: "empty-text",
+			text: `x: |md
+|
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/empty-text.d2:1:4: block string cannot be empty
+`,
+		},
 	}
 
 	for _, tc := range testCases {

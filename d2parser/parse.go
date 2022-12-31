@@ -1299,6 +1299,9 @@ func (p *parser) parseBlockString() *d2ast.BlockString {
 	defer func() {
 		bs.Value = trimSpaceAfterLastNewline(sb.String())
 		bs.Value = trimCommonIndent(bs.Value)
+		if strings.TrimSpace(bs.Value) == "" {
+			p.errorf(bs.Range.Start, p.readerPos, `block string cannot be empty`)
+		}
 	}()
 
 	// Do we have more symbol quotes?
