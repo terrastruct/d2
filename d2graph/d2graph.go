@@ -998,9 +998,6 @@ func findMeasured(mtexts []*d2target.MText, t1 *d2target.MText) *d2target.TextDi
 		}
 		return &mtexts[i].Dimensions
 	}
-	if strings.TrimSpace(t1.Text) == "" {
-		return d2target.NewTextDimensions(100, 100)
-	}
 	return nil
 }
 
@@ -1015,6 +1012,10 @@ func getMarkdownDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t
 			return nil, err
 		}
 		return d2target.NewTextDimensions(width, height), nil
+	}
+
+	if strings.TrimSpace(t.Text) == "" {
+		return d2target.NewTextDimensions(100, 100), nil
 	}
 
 	return nil, fmt.Errorf("text not pre-measured and no ruler provided")
