@@ -113,13 +113,7 @@ func arrowheadDimensions(arrowhead d2target.Arrowhead, strokeWidth float64) (wid
 	case d2target.DiamondArrowhead:
 		widthMultiplier = 11
 		heightMultiplier = 9
-	case d2target.CrowsFeetManyOptional:
-		fallthrough
-	case d2target.CrowsFeetManyRequired:
-		fallthrough
-	case d2target.CrowsFeetOneOptional:
-		fallthrough
-	case d2target.CrowsFeetOneRequired:
+	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
 		widthMultiplier = 14
 		heightMultiplier = 15
 	}
@@ -229,13 +223,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 				width*0.6, height*7/8,
 			)
 		}
-	case d2target.CrowsFeetOneRequired:
-		fallthrough
-	case d2target.CrowsFeetOneOptional:
-		fallthrough
-	case d2target.CrowsFeetManyRequired:
-		fallthrough
-	case d2target.CrowsFeetManyOptional:
+	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
 		attrs := fmt.Sprintf(`class="connection" stroke="%s" stroke-width="%d" fill="white"`, connection.Stroke, connection.StrokeWidth)
 		offset := 4.0 + (float64(connection.StrokeWidth) * 2.0)
 		var modifier string
