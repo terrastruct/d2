@@ -980,6 +980,9 @@ func (e *Edge) initIndex() {
 }
 
 func findMeasured(mtexts []*d2target.MText, t1 *d2target.MText) *d2target.TextDimensions {
+	if strings.TrimSpace(t1.Text) == "" {
+		return d2target.NewTextDimensions(0, 0)
+	}
 	for i, t2 := range mtexts {
 		if t1.Text != t2.Text {
 			continue
