@@ -1,16 +1,25 @@
+This release marks the introduction of interactive diagrams. Namely, `tooltip` and `link` can now be set, which allows you to hover to see more or click to go to an external link. This small change enables many possibilities, including richer integrations like internal wiki's that can be linked together through diagrams.
+
+Since interactive features obviously won't work on static export formats like PNG, they will be included automatically in an appendix when exporting to those formats, like so:
+
+placeholder
+
+This release also gives more power to configure layouts. `width` and `height` are D2 keywords which previouslly only worked on images, but now work on any non-containers. Additionally, all the layout engines have configurations exposed. D2 sets sensible defaults to each layout engine without any input, so this is meant to be an advanced feature for users who want that extra control.
+
 #### Features 🚀
 
 - Tooltips can be set on shapes. See [https://d2lang.com/tour/tooltips](https://d2lang.com/tour/interactive). [#548](https://github.com/terrastruct/d2/pull/548)
 - Links can be set on shapes. See [https://d2lang.com/tour/tooltips](https://d2lang.com/tour/interactive). [#548](https://github.com/terrastruct/d2/pull/548)
 - The `width` and `height` attributes are no longer restricted to images and can be applied to non-container shapes. [#498](https://github.com/terrastruct/d2/pull/498)
+- Layout engine options are exposed and configurable. See individual layout pages on [https://d2lang.com/tour/layouts](https://d2lang.com/tour/layouts) for list of configurations. [#563](https://github.com/terrastruct/d2/pull/563)
 
 #### Improvements 🧹
 
-- Watch mode now renders fit to screen. [#560](https://github.com/terrastruct/d2/pull/560)
+- Watch mode renders fit to screen. [#560](https://github.com/terrastruct/d2/pull/560)
 
 #### Bugfixes ⛑️
 
+- Fixes rendering `class` and `table` with empty headers. [#498](https://github.com/terrastruct/d2/pull/498)
+- Fixes rendering of `sql_table` with no columns. [#553](https://github.com/terrastruct/d2/pull/553)
 - Restricts where `near` key constant values can be used, with good error messages, instead of erroring (e.g. setting `near: top-center` on a container would cause bad layouts or error). [#538](https://github.com/terrastruct/d2/pull/538)
-- Fixes an error during ELK layout when images had empty labels. [#555](https://github.com/terrastruct/d2/pull/555)
-- Fixes rendering classes and tables with empty headers. [#498](https://github.com/terrastruct/d2/pull/498)
-- Fixes rendering sql tables with no columns. [#553](https://github.com/terrastruct/d2/pull/553)
+- Fixes panic when images with empty labels are rendered with ELK. [#555](https://github.com/terrastruct/d2/pull/555)
