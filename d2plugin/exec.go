@@ -126,7 +126,7 @@ func (p execPlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
 
 	args := []string{"layout"}
 	for k, v := range p.opts {
-		args = append(args, k, v)
+		args = append(args, fmt.Sprintf("--%s", k), v)
 	}
 	cmd := exec.CommandContext(ctx, p.path, args...)
 
