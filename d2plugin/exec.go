@@ -82,6 +82,8 @@ func (p *execPlugin) HydrateOpts(opts []byte) error {
 				allString[k] = vt
 			case int64:
 				allString[k] = strconv.Itoa(int(vt))
+			case float64:
+				allString[k] = strconv.Itoa(int(vt))
 			}
 		}
 

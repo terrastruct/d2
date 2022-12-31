@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -150,7 +149,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		return err
 	}
 
-	err = parseLayoutOpts(ctx, ms, plugin)
+	err = d2plugin.HydratePluginOpts(ctx, ms, plugin)
 	if err != nil {
 		return err
 	}
@@ -313,30 +312,4 @@ func populateLayoutOpts(ctx context.Context, ms *xmain.State) error {
 	}
 
 	return nil
-}
-
-func parseLayoutOpts(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin) error {
-	opts := make(map[string]interface{})
-	flags, err := plugin.Flags(ctx)
-	if err != nil {
-		return err
-	}
-	for _, f := range flags {
-		switch f.Type {
-		case "string":
-			val, _ := ms.Opts.Flags.GetString(f.Name)
-			opts[f.Tag] = val
-		case "int64":
-			val, _ := ms.Opts.Flags.GetInt64(f.Name)
-			opts[f.Tag] = val
-		}
-	}
-
-	b, err := json.Marshal(opts)
-	if err != nil {
-		return err
-	}
-
-	err = plugin.HydrateOpts(b)
-	return err
 }

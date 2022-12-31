@@ -7,6 +7,7 @@ package d2plugin
 
 import (
 	"context"
+	"encoding/json"
 	"os/exec"
 
 	"oss.terrastruct.com/util-go/xexec"
@@ -165,4 +166,29 @@ func ListPluginFlags(ctx context.Context) ([]PluginSpecificFlag, error) {
 	}
 
 	return out, nil
+}
+
+func HydratePluginOpts(ctx context.Context, ms *xmain.State, plugin Plugin) error {
+	opts := make(map[string]interface{})
+	flags, err := plugin.Flags(ctx)
+	if err != nil {
+		return err
+	}
+	for _, f := range flags {
+		switch f.Type {
+		case "string":
+			val, _ := ms.Opts.Flags.GetString(f.Name)
+			opts[f.Tag] = val
+		case "int64":
+			val, _ := ms.Opts.Flags.GetInt64(f.Name)
+			opts[f.Tag] = val
+		}
+	}
+
+	b, err := json.Marshal(opts)
+	if err != nil {
+		return err
+	}
+
+	return plugin.HydrateOpts(b)
 }

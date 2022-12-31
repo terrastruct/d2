@@ -41,6 +41,11 @@ func Serve(p Plugin) xmain.RunFunc {
 			return xmain.UsageErrorf("expected first argument to be subcmd name")
 		}
 
+		err = HydratePluginOpts(ctx, ms, p)
+		if err != nil {
+			return err
+		}
+
 		subcmd := ms.Opts.Flags.Arg(0)
 		switch subcmd {
 		case "info":
