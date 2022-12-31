@@ -149,7 +149,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		return err
 	}
 
-	err = d2plugin.ParsePluginOpts(ctx, ms, plugin)
+	err = d2plugin.HydratePluginOpts(ctx, ms, plugin)
 	if err != nil {
 		return err
 	}

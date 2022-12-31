@@ -41,7 +41,7 @@ func Serve(p Plugin) xmain.RunFunc {
 			return xmain.UsageErrorf("expected first argument to be subcmd name")
 		}
 
-		err = ParsePluginOpts(ctx, ms, p)
+		err = HydratePluginOpts(ctx, ms, p)
 		if err != nil {
 			return err
 		}
@@ -134,30 +134,4 @@ func postProcess(ctx context.Context, p Plugin, ms *xmain.State) error {
 		return err
 	}
 	return nil
-}
-
-func ParsePluginOpts(ctx context.Context, ms *xmain.State, plugin Plugin) error {
-	opts := make(map[string]interface{})
-	flags, err := plugin.Flags(ctx)
-	if err != nil {
-		return err
-	}
-	for _, f := range flags {
-		switch f.Type {
-		case "string":
-			val, _ := ms.Opts.Flags.GetString(f.Name)
-			opts[f.Tag] = val
-		case "int64":
-			val, _ := ms.Opts.Flags.GetInt64(f.Name)
-			opts[f.Tag] = val
-		}
-	}
-
-	b, err := json.Marshal(opts)
-	if err != nil {
-		return err
-	}
-
-	err = plugin.HydrateOpts(b)
-	return err
 }
