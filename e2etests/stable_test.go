@@ -42,14 +42,13 @@ oval: {shape: "oval"}
 circle: {shape: "circle"}
 hexagon: {shape: "hexagon"}
 cloud: {shape: "cloud"}
-double_circle: {shape: "double_circle"}
 
 rectangle -> square -> page
 parallelogram -> document -> cylinder
 queue -> package -> step
 callout -> stored_data -> person
 diamond -> oval -> circle
-hexagon -> cloud -> double_circle
+hexagon -> cloud
 `,
 		},
 		{
@@ -72,14 +71,13 @@ oval: {shape: "oval"}
 circle: {shape: "circle"}
 hexagon: {shape: "hexagon"}
 cloud: {shape: "cloud"}
-double_circle: {shape: "double_circle"}
 
 rectangle -> square -> page
 parallelogram -> document -> cylinder
 queue -> package -> step
 callout -> stored_data -> person
 diamond -> oval -> circle
-hexagon -> cloud -> double_circle
+hexagon -> cloud
 
 rectangle.multiple: true
 square.multiple: true
@@ -98,7 +96,6 @@ oval.multiple: true
 circle.multiple: true
 hexagon.multiple: true
 cloud.multiple: true
-double_circle.multiple: true
 `,
 		},
 		{
@@ -121,14 +118,13 @@ oval: {shape: "oval"}
 circle: {shape: "circle"}
 hexagon: {shape: "hexagon"}
 cloud: {shape: "cloud"}
-double_circle: {shape: "double_circle"}
 
 rectangle -> square -> page
 parallelogram -> document -> cylinder
 queue -> package -> step
 callout -> stored_data -> person
 diamond -> oval -> circle
-hexagon -> cloud -> double_circle
+hexagon -> cloud
 
 rectangle.shadow: true
 square.shadow: true
@@ -147,7 +143,6 @@ oval.shadow: true
 circle.shadow: true
 hexagon.shadow: true
 cloud.shadow: true
-double_circle.shadow: true
 `,
 		},
 		{

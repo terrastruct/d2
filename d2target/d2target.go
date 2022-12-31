@@ -143,9 +143,10 @@ type Shape struct {
 	Fill   string `json:"fill"`
 	Stroke string `json:"stroke"`
 
-	Shadow   bool `json:"shadow"`
-	ThreeDee bool `json:"3d"`
-	Multiple bool `json:"multiple"`
+	Shadow       bool `json:"shadow"`
+	ThreeDee     bool `json:"3d"`
+	Multiple     bool `json:"multiple"`
+	DoubleBorder bool `json:"double-border"`
 
 	Tooltip      string   `json:"tooltip"`
 	Link         string   `json:"link"`
