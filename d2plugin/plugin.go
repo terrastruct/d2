@@ -142,5 +142,19 @@ func ListPluginFlags(ctx context.Context) ([]PluginSpecificFlag, error) {
 		}
 		out = append(out, flags...)
 	}
+
+	matches, err := xexec.SearchPath(binaryPrefix)
+	if err != nil {
+		return nil, err
+	}
+	for _, path := range matches {
+		p := &execPlugin{path: path}
+		flags, err := p.Flags(ctx)
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, flags...)
+	}
+
 	return out, nil
 }
