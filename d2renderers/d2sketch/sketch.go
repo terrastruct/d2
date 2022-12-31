@@ -91,6 +91,47 @@ func Rect(r *Runner, shape d2target.Shape) (string, error) {
 	return output, nil
 }
 
+func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
+	jsBigRect := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
+		fill: "%s",
+		stroke: "%s",
+		strokeWidth: %d,
+		%s
+	});`, shape.Width, shape.Height, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	pathsBigRect, err := computeRoughPaths(r, jsBigRect)
+	if err != nil {
+		return "", err
+	}
+	jsSmallRect := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
+		fill: "%s",
+		stroke: "%s",
+		strokeWidth: %d,
+		%s
+	});`, shape.Width-10, shape.Height-10, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	pathsSmallRect, err := computeRoughPaths(r, jsSmallRect)
+	if err != nil {
+		return "", err
+	}
+	output := ""
+	for _, p := range pathsBigRect {
+		output += fmt.Sprintf(
+			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
+			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
+		)
+	}
+	for _, p := range pathsSmallRect {
+		output += fmt.Sprintf(
+			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
+			shape.Pos.X+5, shape.Pos.Y+5, p, shapeStyle(shape),
+		)
+	}
+	output += fmt.Sprintf(
+		`<rect class="sketch-overlay" transform="translate(%d %d)" width="%d" height="%d" />`,
+		shape.Pos.X, shape.Pos.Y, shape.Width, shape.Height,
+	)
+	return output, nil
+}
+
 func Oval(r *Runner, shape d2target.Shape) (string, error) {
 	js := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
 		fill: "%s",
@@ -129,22 +170,22 @@ func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
 		strokeWidth: %d,
 		%s
 	});`, shape.Width/2, shape.Height/2, shape.Width-15, shape.Height-15, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
-	paths_big_circle, err := computeRoughPaths(r, jsBigCircle)
+	pathsBigCircle, err := computeRoughPaths(r, jsBigCircle)
 	if err != nil {
 		return "", err
 	}
-	paths_small_circle, err := computeRoughPaths(r, jsSmallCircle)
+	pathsSmallCircle, err := computeRoughPaths(r, jsSmallCircle)
 	if err != nil {
 		return "", err
 	}
 	output := ""
-	for _, p := range paths_big_circle {
+	for _, p := range pathsBigCircle {
 		output += fmt.Sprintf(
 			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
 			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
 		)
 	}
-	for _, p := range paths_small_circle {
+	for _, p := range pathsSmallCircle {
 		output += fmt.Sprintf(
 			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
 			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),

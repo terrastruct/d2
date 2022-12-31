@@ -801,19 +801,40 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		if targetShape.ThreeDee {
 			fmt.Fprint(writer, render3dRect(targetShape))
 		} else {
-			if targetShape.Multiple {
-				fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-					targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style)
-			}
-			if sketchRunner != nil {
-				out, err := d2sketch.Rect(sketchRunner, targetShape)
-				if err != nil {
-					return "", err
+			if !targetShape.DoubleBorder {
+				if targetShape.Multiple {
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+						targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style)
 				}
-				fmt.Fprintf(writer, out)
+				if sketchRunner != nil {
+					out, err := d2sketch.Rect(sketchRunner, targetShape)
+					if err != nil {
+						return "", err
+					}
+					fmt.Fprintf(writer, out)
+				} else {
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+						targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
+				}
 			} else {
-				fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-					targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
+				if targetShape.Multiple {
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+						targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style)
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+						targetShape.Pos.X+15, targetShape.Pos.Y-5, targetShape.Width-10, targetShape.Height-10, style)
+				}
+				if sketchRunner != nil {
+					out, err := d2sketch.DoubleRect(sketchRunner, targetShape)
+					if err != nil {
+						return "", err
+					}
+					fmt.Fprintf(writer, out)
+				} else {
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+						targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+						targetShape.Pos.X+5, targetShape.Pos.Y+5, targetShape.Width-10, targetShape.Height-10, style)
+				}
 			}
 		}
 	case d2target.ShapeText, d2target.ShapeCode:
