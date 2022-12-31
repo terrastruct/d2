@@ -363,7 +363,7 @@ func (obj *Object) GetFill(theme *d2themes.Theme) string {
 
 	shape := obj.Attributes.Shape.Value
 
-	if shape == "" || strings.EqualFold(shape, d2target.ShapeSquare) || strings.EqualFold(shape, d2target.ShapeCircle) || strings.EqualFold(shape, d2target.ShapeDoubleCircle) || strings.EqualFold(shape, d2target.ShapeOval) || strings.EqualFold(shape, d2target.ShapeRectangle) {
+	if shape == "" || strings.EqualFold(shape, d2target.ShapeSquare) || strings.EqualFold(shape, d2target.ShapeCircle) || strings.EqualFold(shape, d2target.ShapeOval) || strings.EqualFold(shape, d2target.ShapeRectangle) {
 		if level == 1 {
 			if !obj.IsContainer() {
 				return theme.Colors.B6
@@ -1148,7 +1148,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		paddingX, paddingY := obj.GetPadding()
 
 		switch shapeType {
-		case d2target.ShapeSquare, d2target.ShapeCircle, d2target.ShapeDoubleCircle:
+		case d2target.ShapeSquare, d2target.ShapeCircle:
 			if desiredWidth != 0 || desiredHeight != 0 {
 				paddingX = 0.
 				paddingY = 0.

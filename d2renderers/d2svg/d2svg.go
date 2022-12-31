@@ -791,20 +791,6 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				fmt.Fprint(writer, renderDoubleOval(tl, width, height, style))
 			}
 		}
-	// case d2target.ShapeDoubleCircle:
-	// 	if targetShape.Multiple {
-	// 		fmt.Fprint(writer, renderDoubleCircle(multipleTL, width, height, style))
-	// 	}
-	// 	if sketchRunner != nil {
-	// 		out, err := d2sketch.DoubleOval(sketchRunner, targetShape)
-	// 		if err != nil {
-	// 			return "", err
-	// 		}
-	// 		fmt.Fprintf(writer, out)
-	// 	} else {
-	// 		fmt.Fprint(writer, renderDoubleCircle(tl, width, height, style))
-	// 	}
-
 	case d2target.ShapeImage:
 		fmt.Fprintf(writer, `<image href="%s" x="%d" y="%d" width="%d" height="%d" style="%s" />`,
 			html.EscapeString(targetShape.Icon.String()),
