@@ -12,8 +12,8 @@ Happy new years!
 
 #### Features 🚀
 
-- Tooltips can be set on shapes. See [https://d2lang.com/tour/tooltips](https://d2lang.com/tour/interactive). [#548](https://github.com/terrastruct/d2/pull/548)
-- Links can be set on shapes. See [https://d2lang.com/tour/tooltips](https://d2lang.com/tour/interactive). [#548](https://github.com/terrastruct/d2/pull/548)
+- Tooltips can be set on shapes. See [https://d2lang.com/tour/interactive](https://d2lang.com/tour/interactive). [#548](https://github.com/terrastruct/d2/pull/548)
+- Links can be set on shapes. See [https://d2lang.com/tour/interactive](https://d2lang.com/tour/interactive). [#548](https://github.com/terrastruct/d2/pull/548)
 - The `width` and `height` attributes are no longer restricted to images and can be applied to non-container shapes. [#498](https://github.com/terrastruct/d2/pull/498)
 - Layout engine options are exposed and configurable. See individual layout pages on [https://d2lang.com/tour/layouts](https://d2lang.com/tour/layouts) for list of configurations. [#563](https://github.com/terrastruct/d2/pull/563)
 
@@ -25,6 +25,7 @@ Happy new years!
 
 - Fixes rendering `class` and `table` with empty headers. [#498](https://github.com/terrastruct/d2/pull/498)
 - Fixes rendering of `sql_table` with no columns. [#553](https://github.com/terrastruct/d2/pull/553)
+- Diagram bounding boxes account for stroke widths. [#574](https://github.com/terrastruct/d2/pull/574)
 - Restricts where `near` key constant values can be used, with good error messages, instead of erroring (e.g. setting `near: top-center` on a container would cause bad layouts or error). [#538](https://github.com/terrastruct/d2/pull/538)
 - Fixes panic when images with empty labels are rendered with ELK. [#555](https://github.com/terrastruct/d2/pull/555)
 
