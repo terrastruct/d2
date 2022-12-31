@@ -55,10 +55,16 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 	y2 := int(math.MinInt32)
 
 	for _, targetShape := range diagram.Shapes {
-		x1 = go2.Min(x1, targetShape.Pos.X)
-		y1 = go2.Min(y1, targetShape.Pos.Y)
-		x2 = go2.Max(x2, targetShape.Pos.X+targetShape.Width)
-		y2 = go2.Max(y2, targetShape.Pos.Y+targetShape.Height)
+		x1 = go2.Min(x1, targetShape.Pos.X-targetShape.StrokeWidth)
+		y1 = go2.Min(y1, targetShape.Pos.Y-targetShape.StrokeWidth)
+		x2 = go2.Max(x2, targetShape.Pos.X+targetShape.Width+targetShape.StrokeWidth)
+		y2 = go2.Max(y2, targetShape.Pos.Y+targetShape.Height+targetShape.StrokeWidth)
+
+		if targetShape.Tooltip != "" || targetShape.Link != "" {
+			// 16 is the icon radius
+			y1 = go2.Min(y1, targetShape.Pos.Y-targetShape.StrokeWidth-16)
+			x2 = go2.Max(x2, targetShape.Pos.X+targetShape.StrokeWidth+targetShape.Width+16)
+		}
 
 		if targetShape.Label != "" {
 			labelPosition := label.Position(targetShape.LabelPosition)

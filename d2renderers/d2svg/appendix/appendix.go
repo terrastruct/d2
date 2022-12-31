@@ -153,6 +153,7 @@ func generateAppendix(diagram *d2target.Diagram, ruler *textmeasure.Ruler, svg s
 			}
 		}
 	}
+	totalHeight += SPACER
 
 	return fmt.Sprintf(`<g x="%d" y="%d" width="%d" height="100%%">%s</g>
 `, tl.X, br.Y, (br.X - tl.X), strings.Join(lines, "\n")), maxWidth, totalHeight
@@ -182,5 +183,5 @@ func generateLine(i, y int, text string, ruler *textmeasure.Ruler) (string, int,
 	line += fmt.Sprintf(`<text class="text" x="%d" y="%d" style="font-size: %dpx;">%s</text>`,
 		ICON_RADIUS*3, y, FONT_SIZE, d2svg.RenderText(text, ICON_RADIUS*3, float64(dims.Height)))
 
-	return line, dims.Width + ICON_RADIUS*3, dims.Height
+	return line, dims.Width + ICON_RADIUS*3, go2.IntMax(dims.Height, ICON_RADIUS*2)
 }
