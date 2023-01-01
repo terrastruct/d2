@@ -6,10 +6,10 @@
       "id": "class",
       "type": "class",
       "pos": {
-        "x": 0,
+        "x": 48,
         "y": 0
       },
-      "width": 422,
+      "width": 100,
       "height": 512,
       "opacity": 1,
       "strokeDash": 0,
@@ -80,10 +80,10 @@
       "id": "users",
       "type": "sql_table",
       "pos": {
-        "x": 107,
+        "x": 48,
         "y": 612
       },
-      "width": 208,
+      "width": 100,
       "height": 512,
       "opacity": 1,
       "strokeDash": 0,
@@ -112,8 +112,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "type": {
             "label": "int",
@@ -124,8 +124,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "constraint": "",
           "reference": ""
@@ -140,8 +140,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 47,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "type": {
             "label": "string",
@@ -152,8 +152,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 48,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "constraint": "",
           "reference": ""
@@ -168,8 +168,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 47,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "type": {
             "label": "string",
@@ -180,8 +180,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 48,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "constraint": "",
           "reference": ""
@@ -196,8 +196,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 80,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "type": {
             "label": "string",
@@ -208,8 +208,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 48,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "constraint": "",
           "reference": ""
@@ -224,8 +224,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 81,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "type": {
             "label": "datetime",
@@ -236,8 +236,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 77,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "constraint": "",
           "reference": ""
@@ -251,8 +251,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 59,
-      "labelHeight": 31,
+      "labelWidth": 0,
+      "labelHeight": 0,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -263,7 +263,7 @@
       "id": "code",
       "type": "code",
       "pos": {
-        "x": 113,
+        "x": 0,
         "y": 1224
       },
       "width": 196,
@@ -302,7 +302,7 @@
       "id": "package",
       "type": "package",
       "pos": {
-        "x": 161,
+        "x": 48,
         "y": 1836
       },
       "width": 100,
@@ -341,7 +341,7 @@
       "id": "no height",
       "type": "",
       "pos": {
-        "x": 161,
+        "x": 48,
         "y": 2448
       },
       "width": 100,
@@ -404,19 +404,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 211,
+          "x": 98,
           "y": 512
         },
         {
-          "x": 211,
+          "x": 98,
           "y": 552
         },
         {
-          "x": 211,
+          "x": 98,
           "y": 572
         },
         {
-          "x": 211,
+          "x": 98,
           "y": 612
         }
       ],
@@ -452,19 +452,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 211,
+          "x": 98,
           "y": 1124
         },
         {
-          "x": 211,
+          "x": 98,
           "y": 1164
         },
         {
-          "x": 211,
+          "x": 98,
           "y": 1184
         },
         {
-          "x": 211,
+          "x": 98,
           "y": 1224
         }
       ],
@@ -500,19 +500,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 211,
+          "x": 98,
           "y": 1736
         },
         {
-          "x": 211,
+          "x": 98,
           "y": 1776
         },
         {
-          "x": 211,
+          "x": 98,
           "y": 1796
         },
         {
-          "x": 211,
+          "x": 98,
           "y": 1836
         }
       ],
@@ -548,19 +548,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 211,
+          "x": 98,
           "y": 2348
         },
         {
-          "x": 211,
+          "x": 98,
           "y": 2388
         },
         {
-          "x": 211,
+          "x": 98,
           "y": 2408
         },
         {
-          "x": 211,
+          "x": 98,
           "y": 2448
         }
       ],

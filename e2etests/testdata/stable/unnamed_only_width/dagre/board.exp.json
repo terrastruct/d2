@@ -10,7 +10,7 @@
         "y": 0
       },
       "width": 512,
-      "height": 368,
+      "height": 100,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -81,10 +81,10 @@
       "type": "sql_table",
       "pos": {
         "x": 0,
-        "y": 468
+        "y": 200
       },
       "width": 512,
-      "height": 186,
+      "height": 100,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -112,8 +112,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "type": {
             "label": "int",
@@ -124,8 +124,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 23,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "constraint": "",
           "reference": ""
@@ -140,8 +140,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 47,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "type": {
             "label": "string",
@@ -152,8 +152,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 48,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "constraint": "",
           "reference": ""
@@ -168,8 +168,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 47,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "type": {
             "label": "string",
@@ -180,8 +180,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 48,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "constraint": "",
           "reference": ""
@@ -196,8 +196,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 80,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "type": {
             "label": "string",
@@ -208,8 +208,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 48,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "constraint": "",
           "reference": ""
@@ -224,8 +224,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 81,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "type": {
             "label": "datetime",
@@ -236,8 +236,8 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 77,
-            "labelHeight": 26
+            "labelWidth": 0,
+            "labelHeight": 0
           },
           "constraint": "",
           "reference": ""
@@ -251,8 +251,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 59,
-      "labelHeight": 31,
+      "labelWidth": 0,
+      "labelHeight": 0,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -264,7 +264,7 @@
       "type": "code",
       "pos": {
         "x": 0,
-        "y": 754
+        "y": 400
       },
       "width": 512,
       "height": 70,
@@ -303,7 +303,7 @@
       "type": "package",
       "pos": {
         "x": 0,
-        "y": 924
+        "y": 570
       },
       "width": 512,
       "height": 100,
@@ -342,7 +342,7 @@
       "type": "",
       "pos": {
         "x": 206,
-        "y": 1124
+        "y": 770
       },
       "width": 100,
       "height": 100,
@@ -405,19 +405,19 @@
       "route": [
         {
           "x": 256,
-          "y": 368
+          "y": 100
         },
         {
           "x": 256,
-          "y": 408
+          "y": 140
         },
         {
           "x": 256,
-          "y": 428
+          "y": 160
         },
         {
           "x": 256,
-          "y": 468
+          "y": 200
         }
       ],
       "isCurve": true,
@@ -453,19 +453,19 @@
       "route": [
         {
           "x": 256,
-          "y": 654
+          "y": 300
         },
         {
           "x": 256,
-          "y": 694
+          "y": 340
         },
         {
           "x": 256,
-          "y": 714
+          "y": 360
         },
         {
           "x": 256,
-          "y": 754
+          "y": 400
         }
       ],
       "isCurve": true,
@@ -501,19 +501,19 @@
       "route": [
         {
           "x": 256,
-          "y": 824
+          "y": 470
         },
         {
           "x": 256,
-          "y": 864
+          "y": 510
         },
         {
           "x": 256,
-          "y": 890.8
+          "y": 536.8
         },
         {
           "x": 256,
-          "y": 958
+          "y": 604
         }
       ],
       "isCurve": true,
@@ -549,19 +549,19 @@
       "route": [
         {
           "x": 256,
-          "y": 1024
+          "y": 670
         },
         {
           "x": 256,
-          "y": 1064
+          "y": 710
         },
         {
           "x": 256,
-          "y": 1084
+          "y": 730
         },
         {
           "x": 256,
-          "y": 1124
+          "y": 770
         }
       ],
       "isCurve": true,
