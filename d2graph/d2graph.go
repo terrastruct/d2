@@ -1014,10 +1014,6 @@ func getMarkdownDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t
 		return d2target.NewTextDimensions(width, height), nil
 	}
 
-	if strings.TrimSpace(t.Text) == "" {
-		return d2target.NewTextDimensions(100, 100), nil
-	}
-
 	return nil, fmt.Errorf("text not pre-measured and no ruler provided")
 }
 
@@ -1071,6 +1067,19 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		if obj.Attributes.Height != nil {
 			desiredHeight, _ = strconv.Atoi(obj.Attributes.Height.Value)
 		}
+
+		if obj.Attributes.Label.Value == "" && obj.Attributes.Shape.Value != d2target.ShapeImage {
+			obj.Width = DEFAULT_SHAPE_PADDING
+			obj.Height = DEFAULT_SHAPE_PADDING
+			if desiredWidth != 0 {
+				obj.Width = float64(desiredWidth)
+			}
+			if desiredHeight != 0 {
+				obj.Height = float64(desiredHeight)
+			}
+			continue
+		}
+
 		shapeType := strings.ToLower(obj.Attributes.Shape.Value)
 
 		labelDims, err := obj.GetLabelSize(mtexts, ruler, fontFamily)
