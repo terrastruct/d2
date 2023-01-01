@@ -284,6 +284,11 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 						attrs.Style.Multiple.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
+				case "double-border":
+					if attrs.Style.DoubleBorder != nil {
+						attrs.Style.DoubleBorder.MapKey.SetScalar(mk.Value.ScalarBox())
+						return nil
+					}
 				case "font":
 					if attrs.Style.Font != nil {
 						attrs.Style.Font.MapKey.SetScalar(mk.Value.ScalarBox())
