@@ -1068,7 +1068,10 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			desiredHeight, _ = strconv.Atoi(obj.Attributes.Height.Value)
 		}
 
-		if obj.Attributes.Label.Value == "" && obj.Attributes.Shape.Value != d2target.ShapeImage {
+		if obj.Attributes.Label.Value == "" &&
+			obj.Attributes.Shape.Value != d2target.ShapeImage &&
+			obj.Attributes.Shape.Value != d2target.ShapeSQLTable &&
+			obj.Attributes.Shape.Value != d2target.ShapeClass {
 			obj.Width = DEFAULT_SHAPE_PADDING
 			obj.Height = DEFAULT_SHAPE_PADDING
 			if desiredWidth != 0 {
