@@ -20,6 +20,7 @@
       "shadow": false,
       "3d": false,
       "multiple": false,
+      "double-border": false,
       "tooltip": "",
       "link": "",
       "icon": {
@@ -29,6 +30,7 @@
         "Host": "icons.terrastruct.com",
         "Path": "/infra/019-network.svg",
         "RawPath": "",
+        "OmitHost": false,
         "ForceQuery": false,
         "RawQuery": "",
         "Fragment": "",
@@ -70,6 +72,7 @@
       "shadow": false,
       "3d": false,
       "multiple": false,
+      "double-border": false,
       "tooltip": "",
       "link": "",
       "icon": {
@@ -79,6 +82,7 @@
         "Host": "icons.terrastruct.com",
         "Path": "/infra/019-network.svg",
         "RawPath": "",
+        "OmitHost": false,
         "ForceQuery": false,
         "RawQuery": "",
         "Fragment": "",
