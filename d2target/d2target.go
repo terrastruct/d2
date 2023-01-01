@@ -280,6 +280,12 @@ const (
 
 	// For fat arrows
 	LineArrowhead Arrowhead = "line"
+
+	// Crows feet notation
+	CfOne          Arrowhead = "cf-one"
+	CfMany         Arrowhead = "cf-many"
+	CfOneRequired  Arrowhead = "cf-one-required"
+	CfManyRequired Arrowhead = "cf-many-required"
 )
 
 var Arrowheads = map[string]struct{}{
@@ -288,6 +294,10 @@ var Arrowheads = map[string]struct{}{
 	string(TriangleArrowhead):      {},
 	string(DiamondArrowhead):       {},
 	string(FilledDiamondArrowhead): {},
+	string(CfOne):                  {},
+	string(CfMany):                 {},
+	string(CfOneRequired):          {},
+	string(CfManyRequired):         {},
 }
 
 func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
@@ -299,6 +309,14 @@ func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
 		return DiamondArrowhead
 	case string(ArrowArrowhead):
 		return ArrowArrowhead
+	case string(CfOne):
+		return CfOne
+	case string(CfMany):
+		return CfMany
+	case string(CfOneRequired):
+		return CfOneRequired
+	case string(CfManyRequired):
+		return CfManyRequired
 	default:
 		return TriangleArrowhead
 	}

@@ -1724,6 +1724,46 @@ code.height: 512
 package.height: 512
 `,
 		},
+		{
+			name: "crow_foot_arrowhead",
+			script: `
+a <-> b: {
+	style.stroke-width: 3
+	style.stroke: "#20222a"
+	source-arrowhead: {
+		shape: cf-many
+	}
+	target-arrowhead: {
+		shape: cf-many
+	}
+}
+c <--> d <-> f: {
+	style.stroke-width: 1
+	style.stroke: "orange"
+	source-arrowhead: {
+		shape: cf-many-required
+	}
+	target-arrowhead: {
+		shape: cf-many-required
+	}
+}
+g <--> h: {
+	source-arrowhead: {
+		shape: cf-one
+	}
+	target-arrowhead: {
+		shape: cf-one
+	}
+}
+e <--> f: {
+	source-arrowhead: {
+		shape: cf-one-required
+	}
+	target-arrowhead: {
+		shape: cf-one-required
+	}
+}`,
+		},
 	}
 
 	runa(t, tcs)
