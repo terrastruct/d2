@@ -1728,6 +1728,8 @@ package.height: 512
 			name: "crow_foot_arrowhead",
 			script: `
 a <-> b: {
+	style.stroke-width: 3
+	style.stroke: "#20222a"
 	source-arrowhead: {
 		shape: cf-many
 	}
@@ -1735,7 +1737,9 @@ a <-> b: {
 		shape: cf-many
 	}
 }
-c <--> d: {
+c <--> d <-> f: {
+	style.stroke-width: 1
+	style.stroke: "orange"
 	source-arrowhead: {
 		shape: cf-many-required
 	}

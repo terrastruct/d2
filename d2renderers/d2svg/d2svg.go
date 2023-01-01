@@ -225,18 +225,16 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 		}
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
 		attrs := fmt.Sprintf(`class="connection" stroke="%s" stroke-width="%d" fill="white"`, connection.Stroke, connection.StrokeWidth)
-		offset := 4.0 + (float64(connection.StrokeWidth) * 2.0)
+		offset := 4.0 + float64(connection.StrokeWidth*2)
 		var modifier string
 		if arrowhead == d2target.CfOneRequired || arrowhead == d2target.CfManyRequired {
-			modifier = fmt.Sprintf(`<path %s d="M%f,%f %f,%f M%f,%f %f,%f" />`,
+			modifier = fmt.Sprintf(`<path %s d="M%f,%f %f,%f"/>`,
 				attrs,
-				width, height/2.0,
-				offset/2.0+1.0, height/2.0,
 				offset, 0.,
 				offset, height,
 			)
 		} else {
-			modifier = fmt.Sprintf(`<circle %s cx="%f" cy="%f" r="%f" />`,
+			modifier = fmt.Sprintf(`<circle %s cx="%f" cy="%f" r="%f"/>`,
 				attrs,
 				offset/2.0+1.0, height/2.0,
 				offset/2.0,
@@ -246,9 +244,9 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 			attrs = fmt.Sprintf(`%s transform="scale(-1) translate(-%f, -%f)"`, attrs, width, height)
 		}
 		if arrowhead == d2target.CfMany || arrowhead == d2target.CfManyRequired {
-			path = fmt.Sprintf(`<g %s>%s<path d="M%f,%f %f,%f M%f,%f %f,%f M%f,%f %f,%f" /></g>`,
+			path = fmt.Sprintf(`<g %s>%s<path d="M%f,%f %f,%f M%f,%f %f,%f M%f,%f %f,%f"/></g>`,
 				attrs, modifier,
-				offset+2.0, height/2.0,
+				width-3.0, height/2.0,
 				width+offset, height/2.0,
 				offset+2.0, height/2.0,
 				width+offset, 0.,
@@ -256,9 +254,9 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 				width+offset, height,
 			)
 		} else {
-			path = fmt.Sprintf(`<g %s>%s<path d="M%f,%f %f,%f M%f,%f %f,%f" /></g>`,
+			path = fmt.Sprintf(`<g %s>%s<path d="M%f,%f %f,%f M%f,%f %f,%f"/></g>`,
 				attrs, modifier,
-				offset+2.0, height/2.0,
+				width-3.0, height/2.0,
 				width+offset, height/2.0,
 				offset*1.8, 0.,
 				offset*1.8, height,
