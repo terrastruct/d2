@@ -3,6 +3,9 @@ FROM debian:latest
 
 ARG TARGETARCH
 
+RUN apt-get update && \
+      apt-get install -y ca-certificates
+
 COPY ./d2-*-linux-$TARGETARCH.tar.gz /tmp
 RUN mkdir -p /usr/local/lib/d2 \
       && tar -C /usr/local/lib/d2 -xzf /tmp/d2-*-linux-"$TARGETARCH".tar.gz \
