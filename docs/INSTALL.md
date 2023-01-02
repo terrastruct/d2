@@ -179,7 +179,7 @@ Remember, you need at least Go v1.18
 
 ## Windows
 
-We have prebuilt releases of d2 available for Windows via `.msi` installers. The installer
+We have prebuilt [releases](https://github.com/terrastruct/d2/releases) of d2 available for Windows via `.msi` installers. The installer
 will add the `d2` binary to your `$PATH` so that you can execute `d2` in `cmd.exe` or
 `pwsh.exe`.
 
