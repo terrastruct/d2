@@ -12,6 +12,7 @@ function init(reconnectDelay) {
     `ws://${window.location.host}${window.location.pathname}watch`
   );
   let isInit = true;
+  let ratio;
   ws.onopen = () => {
     reconnectDelay = 1000;
     console.info("watch websocket opened");
@@ -33,11 +34,10 @@ function init(reconnectDelay) {
       // out the width, height and viewbox out of the top level SVG tag and update those manually.
       d2SVG.innerHTML = msg.svg;
 
+      const svgEl = d2SVG.querySelector("svg");
+      let width = parseInt(svgEl.getAttribute("width"), 10);
+      let height = parseInt(svgEl.getAttribute("height"), 10);
       if (isInit) {
-        const svgEl = d2SVG.querySelector("svg");
-        let width = parseInt(svgEl.getAttribute("width"), 10);
-        let height = parseInt(svgEl.getAttribute("height"), 10);
-        let ratio;
         if (width > height) {
           if (width > window.innerWidth) {
             ratio = window.innerWidth / width;
@@ -46,12 +46,12 @@ function init(reconnectDelay) {
           ratio = window.innerHeight / height;
         }
         // Scale svg fit to zoom
-        if (ratio) {
-          // body padding is 8px
-          svgEl.setAttribute("width", width * ratio - 16);
-          svgEl.setAttribute("height", height * ratio - 16);
-        }
         isInit = false;
+      }
+      if (ratio) {
+        // body padding is 8px
+        svgEl.setAttribute("width", width * ratio - 16);
+        svgEl.setAttribute("height", height * ratio - 16);
       }
 
       d2ErrDiv.style.display = "none";
