@@ -80,36 +80,54 @@ type PluginInfo struct {
 
 const binaryPrefix = "d2plugin-"
 
-func ListPlugins(ctx context.Context) ([]*PluginInfo, error) {
+func ListPlugins(ctx context.Context) ([]Plugin, error) {
 	// 1. Run Info on all bundled plugins in the global plugins array.
 	//    - set Type for each bundled plugin to "bundled".
 	// 2. Iterate through directories in $PATH and look for executables within these
 	//    directories with the prefix d2plugin-*
 	// 3. Run each plugin binary with the argument info. e.g. d2plugin-dagre info
 
-	var infoSlice []*PluginInfo
-
-	for _, p := range plugins {
-		info, err := p.Info(ctx)
-		if err != nil {
-			return nil, err
-		}
-		info.Type = "bundled"
-		infoSlice = append(infoSlice, info)
-	}
+	var ps []Plugin
+	ps = append(ps, plugins...)
 
 	matches, err := xexec.SearchPath(binaryPrefix)
 	if err != nil {
 		return nil, err
 	}
+BINARY_PLUGINS_LOOP:
 	for _, path := range matches {
 		p := &execPlugin{path: path}
 		info, err := p.Info(ctx)
 		if err != nil {
 			return nil, err
 		}
-		info.Type = "binary"
-		info.Path = path
+		for _, p2 := range ps {
+			info2, err := p2.Info(ctx)
+			if err != nil {
+				return nil, err
+			}
+			if info.Name == info2.Name {
+				continue BINARY_PLUGINS_LOOP
+			}
+		}
+		ps = append(ps, p)
+	}
+	return ps, nil
+}
+
+func ListPluginInfos(ctx context.Context, ps []Plugin) ([]*PluginInfo, error) {
+	var infoSlice []*PluginInfo
+	for _, p := range ps {
+		info, err := p.Info(ctx)
+		if err != nil {
+			return nil, err
+		}
+		if ep, ok := p.(*execPlugin); ok {
+			info.Type = "binary"
+			info.Path = ep.path
+		} else {
+			info.Type = "bundled"
+		}
 		infoSlice = append(infoSlice, info)
 	}
 
@@ -123,41 +141,22 @@ func ListPlugins(ctx context.Context) ([]*PluginInfo, error) {
 //    **NOTE** When D2 upgrades to go 1.19, remember to ignore exec.ErrDot
 // 3. If such a binary is found, it builds an execPlugin in exec.go
 //    to get a plugin implementation around the binary and returns it.
-func FindPlugin(ctx context.Context, name string) (Plugin, string, error) {
-	for _, p := range plugins {
+func FindPlugin(ctx context.Context, ps []Plugin, name string) (Plugin, error) {
+	for _, p := range ps {
 		info, err := p.Info(ctx)
-		if err != nil {
-			return nil, "", err
-		}
-		if info.Name == name {
-			return p, "", nil
-		}
-	}
-
-	path, err := exec.LookPath(binaryPrefix + name)
-	if err != nil {
-		return nil, "", err
-	}
-
-	return &execPlugin{path: path}, path, nil
-}
-
-func ListPluginFlags(ctx context.Context) ([]PluginSpecificFlag, error) {
-	var out []PluginSpecificFlag
-	for _, p := range plugins {
-		flags, err := p.Flags(ctx)
 		if err != nil {
 			return nil, err
 		}
-		out = append(out, flags...)
+		if info.Name == name {
+			return p, nil
+		}
 	}
+	return nil, exec.ErrNotFound
+}
 
-	matches, err := xexec.SearchPath(binaryPrefix)
-	if err != nil {
-		return nil, err
-	}
-	for _, path := range matches {
-		p := &execPlugin{path: path}
+func ListPluginFlags(ctx context.Context, ps []Plugin) ([]PluginSpecificFlag, error) {
+	var out []PluginSpecificFlag
+	for _, p := range ps {
 		flags, err := p.Flags(ctx)
 		if err != nil {
 			return nil, err
