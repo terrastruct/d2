@@ -53,7 +53,6 @@ func compileAST(path string, pe d2parser.ParseError, ast *d2ast.Map) (*d2graph.G
 		c.validateKeys(g.Root, ast)
 	}
 	c.compileEdges(g.Root, ast)
-	// TODO: simplify removeContainer by running before compileEdges
 	c.compileShapes(g.Root)
 	c.validateNear(g)
 
