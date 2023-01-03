@@ -5,7 +5,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 function init(reconnectDelay) {
   const d2ErrDiv = window.document.querySelector("#d2-err");
-  const d2SVG = window.document.querySelector("#d2-svg");
+  const d2SVG = window.document.querySelector("#d2-svg-container");
 
   const devMode = document.body.dataset.d2DevMode === "true";
   const ws = new WebSocket(
@@ -34,7 +34,7 @@ function init(reconnectDelay) {
       // out the width, height and viewbox out of the top level SVG tag and update those manually.
       d2SVG.innerHTML = msg.svg;
 
-      const svgEl = d2SVG.querySelector("svg");
+      const svgEl = d2SVG.querySelector("#d2-svg");
       let width = parseInt(svgEl.getAttribute("width"), 10);
       let height = parseInt(svgEl.getAttribute("height"), 10);
       if (isInit) {
