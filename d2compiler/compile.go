@@ -17,8 +17,6 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 )
 
-// TODO: should Parse even be exported? guess not. IR should contain list of files and
-// their AST.
 type CompileOptions struct {
 	UTF16 bool
 }
