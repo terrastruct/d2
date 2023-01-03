@@ -1128,6 +1128,8 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 ]]>
 </style>`, styleCSS, styleCSS2))
 
+	// this script won't run in --watch mode because script tags are ignored when added via el.innerHTML = element
+	// https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML
 	buf.WriteString(fmt.Sprintf(`<script type="application/javascript"><![CDATA[%s]]></script>`, fitToScreenScript))
 
 	hasMarkdown := false
