@@ -74,6 +74,7 @@ func setViewbox(writer io.Writer, diagram *d2target.Diagram, pad int) (width int
 	// TODO background stuff. e.g. dotted, grid, colors
 	fmt.Fprintf(writer, `<?xml version="1.0" encoding="utf-8"?>
 <svg
+id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 width="%d" height="%d" viewBox="%d %d %d %d">`, w, h, tl.X-pad, tl.Y-pad, w, h)

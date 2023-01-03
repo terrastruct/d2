@@ -1,10 +1,8 @@
 window.addEventListener("DOMContentLoaded", () => {
-  const svgEl = document.querySelector("svg");
-  const svgID = "d2-svg";
-  svgEl.setAttribute("id", svgID);
-  if (document.documentElement.getAttribute("id") !== svgID) {
+  if (document.documentElement.getAttribute("id") !== "d2-svg") {
     return;
   }
+  const svgEl = document.documentElement;
   let width = parseInt(svgEl.getAttribute("width"), 10);
   let height = parseInt(svgEl.getAttribute("height"), 10);
   let ratio;
