@@ -1096,6 +1096,9 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 	buf.WriteString(`]]></style>`)
 }
 
+//go:embed fitToScreen.js
+var fitToScreenScript string
+
 // TODO minify output at end
 func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	var sketchRunner *d2sketch.Runner
@@ -1123,6 +1126,8 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 %s%s
 ]]>
 </style>`, styleCSS, styleCSS2))
+
+	buf.WriteString(fmt.Sprintf(`<script type="application/javascript"><![CDATA[%s]]></script>`, fitToScreenScript))
 
 	hasMarkdown := false
 	for _, s := range diagram.Shapes {
