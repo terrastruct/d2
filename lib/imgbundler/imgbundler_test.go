@@ -55,6 +55,7 @@ func TestInlineRemote(t *testing.T) {
 
 	sampleSVG := fmt.Sprintf(`<?xml version="1.0" encoding="utf-8"?>
 <svg
+id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
@@ -171,6 +172,7 @@ func TestInlineLocal(t *testing.T) {
 
 	sampleSVG := fmt.Sprintf(`<?xml version="1.0" encoding="utf-8"?>
 <svg
+id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 width="328" height="587" viewBox="-100 -131 328 587"><style type="text/css">
