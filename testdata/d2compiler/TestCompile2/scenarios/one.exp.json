@@ -1,0 +1,455 @@
+{
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,0:0:0-10:0:65",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,0:0:0-0:4:4",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,0:0:0-0:4:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,0:0:0-0:4:4",
+                    "value": [
+                      {
+                        "string": "base",
+                        "raw_string": "base"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,2:0:6-9:1:64",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,2:0:6-2:6:12",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,2:0:6-2:6:12",
+                    "value": [
+                      {
+                        "string": "layers",
+                        "raw_string": "layers"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,2:8:14-9:0:63",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,3:2:18-5:3:38",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,3:2:18-3:5:21",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,3:2:18-3:5:21",
+                              "value": [
+                                {
+                                  "string": "one",
+                                  "raw_string": "one"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,3:7:23-5:2:37",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,4:4:29-4:9:34",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,4:4:29-4:9:34",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,4:4:29-4:9:34",
+                                        "value": [
+                                          {
+                                            "string": "santa",
+                                            "raw_string": "santa"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {}
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,6:2:41-8:3:62",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,6:2:41-6:5:44",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,6:2:41-6:5:44",
+                              "value": [
+                                {
+                                  "string": "two",
+                                  "raw_string": "two"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,6:7:46-8:2:61",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,7:4:52-7:10:58",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,7:4:52-7:10:58",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,7:4:52-7:10:58",
+                                        "value": [
+                                          {
+                                            "string": "clause",
+                                            "raw_string": "clause"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {}
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "base",
+        "id_val": "base",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,0:0:0-0:4:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,0:0:0-0:4:4",
+                    "value": [
+                      {
+                        "string": "base",
+                        "raw_string": "base"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "base"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "layers",
+        "id_val": "layers",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,2:0:6-2:6:12",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,2:0:6-2:6:12",
+                    "value": [
+                      {
+                        "string": "layers",
+                        "raw_string": "layers"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "layers"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "one",
+        "id_val": "one",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,3:2:18-3:5:21",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,3:2:18-3:5:21",
+                    "value": [
+                      {
+                        "string": "one",
+                        "raw_string": "one"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "one"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "santa",
+        "id_val": "santa",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,4:4:29-4:9:34",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,4:4:29-4:9:34",
+                    "value": [
+                      {
+                        "string": "santa",
+                        "raw_string": "santa"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "santa"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "two",
+        "id_val": "two",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,6:2:41-6:5:44",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,6:2:41-6:5:44",
+                    "value": [
+                      {
+                        "string": "two",
+                        "raw_string": "two"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "two"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "clause",
+        "id_val": "clause",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,7:4:52-7:10:58",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/scenarios/one.d2,7:4:52-7:10:58",
+                    "value": [
+                      {
+                        "string": "clause",
+                        "raw_string": "clause"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "clause"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

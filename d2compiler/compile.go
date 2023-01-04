@@ -148,7 +148,8 @@ func (c *compiler) compileArrowheads(edge *d2graph.Edge, m *d2ast.Map, mk *d2ast
 		return false
 	}
 	fakeParent := &d2graph.Object{
-		Children: make(map[string]*d2graph.Object),
+		Children:   make(map[string]*d2graph.Object),
+		Attributes: &d2graph.Attributes{},
 	}
 	detachedMK := &d2ast.Key{
 		Key:     arrowheadKey,
@@ -262,8 +263,8 @@ func (c *compiler) compileKey(obj *d2graph.Object, m *d2ast.Map, mk *d2ast.Key) 
 		}, unresolvedObj)
 	} else if obj.Parent == nil {
 		// Top level reserved key set on root.
-		c.compileAttributes(&obj.Attributes, mk)
-		c.applyScalar(&obj.Attributes, reserved, mk.Value.ScalarBox())
+		c.compileAttributes(obj.Attributes, mk)
+		c.applyScalar(obj.Attributes, reserved, mk.Value.ScalarBox())
 		return
 	}
 
@@ -271,13 +272,13 @@ func (c *compiler) compileKey(obj *d2graph.Object, m *d2ast.Map, mk *d2ast.Key) 
 		return
 	}
 
-	c.compileAttributes(&obj.Attributes, mk)
+	c.compileAttributes(obj.Attributes, mk)
 	if obj.Attributes.Style.Animated != nil {
 		c.errorf(mk.Range.Start, mk.Range.End, `key "animated" can only be applied to edges`)
 		return
 	}
 
-	c.applyScalar(&obj.Attributes, reserved, mk.Value.ScalarBox())
+	c.applyScalar(obj.Attributes, reserved, mk.Value.ScalarBox())
 	if mk.Value.Map != nil {
 		if reserved != "" {
 			c.errorf(mk.Range.Start, mk.Range.End, "cannot set reserved key %q to a map", reserved)
@@ -287,7 +288,7 @@ func (c *compiler) compileKey(obj *d2graph.Object, m *d2ast.Map, mk *d2ast.Key) 
 		c.compileKeys(obj, mk.Value.Map)
 	}
 
-	c.applyScalar(&obj.Attributes, reserved, mk.Primary)
+	c.applyScalar(obj.Attributes, reserved, mk.Primary)
 }
 
 func (c *compiler) applyScalar(attrs *d2graph.Attributes, reserved string, box d2ast.ScalarBox) {
@@ -438,8 +439,8 @@ func (c *compiler) compileEdge(edge *d2graph.Edge, m *d2ast.Map, mk *d2ast.Key) 
 		if len(mk.Edges) == 1 {
 			edge.Attributes.Label.MapKey = mk
 		}
-		c.applyScalar(&edge.Attributes, "", mk.Value.ScalarBox())
-		c.applyScalar(&edge.Attributes, "", mk.Primary)
+		c.applyScalar(edge.Attributes, "", mk.Value.ScalarBox())
+		c.applyScalar(edge.Attributes, "", mk.Primary)
 	} else {
 		c.compileEdgeKey(edge, m, mk)
 	}
@@ -487,8 +488,8 @@ func (c *compiler) compileEdgeKey(edge *d2graph.Edge, m *d2ast.Map, mk *d2ast.Ke
 	if ok {
 		return
 	}
-	c.compileAttributes(&edge.Attributes, mk)
-	c.applyScalar(&edge.Attributes, r, mk.Value.ScalarBox())
+	c.compileAttributes(edge.Attributes, mk)
+	c.applyScalar(edge.Attributes, r, mk.Value.ScalarBox())
 	if mk.Value.Map != nil {
 		for _, n := range mk.Value.Map.Nodes {
 			if n.MapKey != nil {

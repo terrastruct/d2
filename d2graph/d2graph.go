@@ -30,6 +30,10 @@ type Graph struct {
 	Root    *Object   `json:"root"`
 	Edges   []*Edge   `json:"edges"`
 	Objects []*Object `json:"objects"`
+
+	Layers    []*Graph `json:"layers,omitempty"`
+	Scenarios []*Graph `json:"scenarios,omitempty"`
+	Steps     []*Graph `json:"steps,omitempty"`
 }
 
 func NewGraph(ast *d2ast.Map) *Graph {
@@ -37,9 +41,10 @@ func NewGraph(ast *d2ast.Map) *Graph {
 		AST: ast,
 	}
 	d.Root = &Object{
-		Graph:    d,
-		Parent:   nil,
-		Children: make(map[string]*Object),
+		Graph:      d,
+		Parent:     nil,
+		Children:   make(map[string]*Object),
+		Attributes: &Attributes{},
 	}
 	return d
 }
@@ -52,6 +57,7 @@ type Scalar struct {
 }
 
 // TODO maybe rename to Shape
+// reminder: When adding new fields remember to update copy.go
 type Object struct {
 	Graph  *Graph  `json:"-"`
 	Parent *Object `json:"-"`
@@ -79,11 +85,12 @@ type Object struct {
 	Children      map[string]*Object `json:"-"`
 	ChildrenArray []*Object          `json:"-"`
 
-	Attributes Attributes `json:"attributes"`
+	Attributes *Attributes `json:"attributes,omitempty"`
 
 	ZIndex int `json:"zIndex"`
 }
 
+// reminder: When adding new fields remember to update copy.go
 type Attributes struct {
 	Label   Scalar   `json:"label"`
 	Style   Style    `json:"style"`
@@ -126,6 +133,7 @@ func (r Reference) InEdge() bool {
 	return r.Key != r.MapKey.Key
 }
 
+// reminder: When adding new fields remember to update copy.go
 type Style struct {
 	Opacity      *Scalar `json:"opacity,omitempty"`
 	Stroke       *Scalar `json:"stroke,omitempty"`
@@ -487,7 +495,7 @@ func (obj *Object) newObject(id string) *Object {
 	child := &Object{
 		ID:    id,
 		IDVal: idval,
-		Attributes: Attributes{
+		Attributes: &Attributes{
 			Label: Scalar{
 				Value: idval,
 			},
@@ -850,7 +858,7 @@ type Edge struct {
 	DstArrowhead *Attributes `json:"dstArrowhead,omitempty"`
 
 	References []EdgeReference `json:"references,omitempty"`
-	Attributes Attributes      `json:"attributes"`
+	Attributes *Attributes     `json:"attributes,omitempty"`
 
 	ZIndex int `json:"zIndex"`
 }
@@ -947,7 +955,7 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 	}
 
 	edge := &Edge{
-		Attributes: Attributes{
+		Attributes: &Attributes{
 			Label: Scalar{
 				Value: label,
 			},

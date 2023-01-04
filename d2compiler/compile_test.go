@@ -8,12 +8,13 @@ import (
 
 	tassert "github.com/stretchr/testify/assert"
 
+	"oss.terrastruct.com/util-go/assert"
+	"oss.terrastruct.com/util-go/diff"
+
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
 )
 
 func TestCompile(t *testing.T) {
@@ -1938,4 +1939,70 @@ Chinchillas_Collectibles.chinchilla -> Chinchillas.id`,
 			assert.Success(t, err)
 		})
 	}
+}
+
+func TestCompile2(t *testing.T) {
+	t.Parallel()
+
+	t.Run("scenarios", testScenarios)
+}
+
+func testScenarios(t *testing.T) {
+	t.Parallel()
+
+	tca := []struct {
+		name string
+		run  func(t *testing.T)
+	}{
+		{
+			name: "one",
+			run: func(t *testing.T) {
+				g := assertCompile(t, `base
+
+layers: {
+  one: {
+    santa
+  }
+  two: {
+    clause
+  }
+}
+`, "")
+				assert.JSON(t, 2, len(g.Layers))
+				assert.JSON(t, "one", g.Layers[0].Root.ID)
+				assert.JSON(t, "two", g.Layers[1].Root.ID)
+			},
+		},
+	}
+
+	for _, tc := range tca {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			tc.run(t)
+		})
+	}
+}
+
+func assertCompile(t *testing.T, text string, expErr string) *d2graph.Graph {
+	d2Path := fmt.Sprintf("d2/testdata/d2compiler/%v.d2", t.Name())
+	g, err := d2compiler.Compile(d2Path, strings.NewReader(text), nil)
+	if expErr != "" {
+		assert.Error(t, err)
+		assert.ErrorString(t, err, expErr)
+	} else {
+		assert.Success(t, err)
+	}
+
+	got := struct {
+		Graph *d2graph.Graph `json:"graph"`
+		Err   error          `json:"err"`
+	}{
+		Graph: g,
+		Err:   err,
+	}
+
+	err = diff.TestdataJSON(filepath.Join("..", "testdata", "d2compiler", t.Name()), got)
+	assert.Success(t, err)
+	return g
 }
