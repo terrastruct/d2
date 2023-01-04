@@ -39,9 +39,17 @@ const (
 	DEFAULT_PADDING            = 100
 	MIN_ARROWHEAD_STROKE_WIDTH = 2
 	threeDeeOffset             = 15
+
+	appendixIconRadius = 16
 )
 
 var multipleOffset = geo.NewVector(10, -10)
+
+//go:embed tooltip.svg
+var TooltipIcon string
+
+//go:embed link.svg
+var LinkIcon string
 
 //go:embed style.css
 var styleCSS string
@@ -66,6 +74,7 @@ func setViewbox(writer io.Writer, diagram *d2target.Diagram, pad int) (width int
 	// TODO background stuff. e.g. dotted, grid, colors
 	fmt.Fprintf(writer, `<?xml version="1.0" encoding="utf-8"?>
 <svg
+id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 width="%d" height="%d" viewBox="%d %d %d %d">`, w, h, tl.X-pad, tl.Y-pad, w, h)
@@ -105,6 +114,9 @@ func arrowheadDimensions(arrowhead d2target.Arrowhead, strokeWidth float64) (wid
 	case d2target.DiamondArrowhead:
 		widthMultiplier = 11
 		heightMultiplier = 9
+	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
+		widthMultiplier = 14
+		heightMultiplier = 15
 	}
 
 	clippedStrokeWidth := go2.Max(MIN_ARROWHEAD_STROKE_WIDTH, strokeWidth)
@@ -210,6 +222,45 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 				width*0.6, height/8,
 				width*1.1, height/2.0,
 				width*0.6, height*7/8,
+			)
+		}
+	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
+		attrs := fmt.Sprintf(`class="connection" stroke="%s" stroke-width="%d" fill="white"`, connection.Stroke, connection.StrokeWidth)
+		offset := 4.0 + float64(connection.StrokeWidth*2)
+		var modifier string
+		if arrowhead == d2target.CfOneRequired || arrowhead == d2target.CfManyRequired {
+			modifier = fmt.Sprintf(`<path %s d="M%f,%f %f,%f"/>`,
+				attrs,
+				offset, 0.,
+				offset, height,
+			)
+		} else {
+			modifier = fmt.Sprintf(`<circle %s cx="%f" cy="%f" r="%f"/>`,
+				attrs,
+				offset/2.0+1.0, height/2.0,
+				offset/2.0,
+			)
+		}
+		if !isTarget {
+			attrs = fmt.Sprintf(`%s transform="scale(-1) translate(-%f, -%f)"`, attrs, width, height)
+		}
+		if arrowhead == d2target.CfMany || arrowhead == d2target.CfManyRequired {
+			path = fmt.Sprintf(`<g %s>%s<path d="M%f,%f %f,%f M%f,%f %f,%f M%f,%f %f,%f"/></g>`,
+				attrs, modifier,
+				width-3.0, height/2.0,
+				width+offset, height/2.0,
+				offset+2.0, height/2.0,
+				width+offset, 0.,
+				offset+2.0, height/2.0,
+				width+offset, height,
+			)
+		} else {
+			path = fmt.Sprintf(`<g %s>%s<path d="M%f,%f %f,%f M%f,%f %f,%f"/></g>`,
+				attrs, modifier,
+				width-3.0, height/2.0,
+				width+offset, height/2.0,
+				offset*1.8, 0.,
+				offset*1.8, height,
 			)
 		}
 	default:
@@ -437,7 +488,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 			fontClass,
 			x, y,
 			textStyle,
-			renderText(connection.Label, x, float64(connection.LabelHeight)),
+			RenderText(connection.Label, x, float64(connection.LabelHeight)),
 		)
 	}
 
@@ -473,7 +524,7 @@ func renderArrowheadLabel(connection d2target.Connection, text string, position,
 	return fmt.Sprintf(`<text class="text-italic" x="%f" y="%f" style="%s">%s</text>`,
 		x, y,
 		textStyle,
-		renderText(text, x, height),
+		RenderText(text, x, height),
 	)
 }
 
@@ -583,6 +634,11 @@ func render3dRect(targetShape d2target.Shape) string {
 }
 
 func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, err error) {
+	closingTag := "</g>"
+	if targetShape.Link != "" {
+		fmt.Fprintf(writer, `<a href="%s" xlink:href="%[1]s">`, targetShape.Link)
+		closingTag += "</a>"
+	}
 	fmt.Fprintf(writer, `<g id="%s">`, svg.EscapeText(targetShape.ID))
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
@@ -627,7 +683,8 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		} else {
 			drawClass(writer, targetShape)
 		}
-		fmt.Fprintf(writer, `</g></g>`)
+		fmt.Fprintf(writer, `</g>`)
+		fmt.Fprintf(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeSQLTable:
 		if sketchRunner != nil {
@@ -639,7 +696,8 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		} else {
 			drawTable(writer, targetShape)
 		}
-		fmt.Fprintf(writer, `</g></g>`)
+		fmt.Fprintf(writer, `</g>`)
+		fmt.Fprintf(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeOval:
 		if targetShape.Multiple {
@@ -702,6 +760,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		}
 	}
 
+	// Closes the class=shape
 	fmt.Fprintf(writer, `</g>`)
 
 	if targetShape.Icon != nil && targetShape.Type != d2target.ShapeImage {
@@ -828,18 +887,38 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				fontClass,
 				x, y,
 				textStyle,
-				renderText(targetShape.Label, x, float64(targetShape.LabelHeight)),
+				RenderText(targetShape.Label, x, float64(targetShape.LabelHeight)),
 			)
 			if targetShape.Blend {
 				labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight-d2graph.INNER_LABEL_PADDING)
 			}
 		}
 	}
-	fmt.Fprintf(writer, `</g>`)
+
+	rightPadForTooltip := 0
+	if targetShape.Tooltip != "" {
+		rightPadForTooltip = 2 * appendixIconRadius
+		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
+			targetShape.Pos.X+targetShape.Width-appendixIconRadius,
+			targetShape.Pos.Y-appendixIconRadius,
+			TooltipIcon,
+		)
+		fmt.Fprintf(writer, `<title>%s</title>`, targetShape.Tooltip)
+	}
+
+	if targetShape.Link != "" {
+		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
+			targetShape.Pos.X+targetShape.Width-appendixIconRadius-rightPadForTooltip,
+			targetShape.Pos.Y-appendixIconRadius,
+			LinkIcon,
+		)
+	}
+
+	fmt.Fprintf(writer, closingTag)
 	return labelMask, nil
 }
 
-func renderText(text string, x, height float64) string {
+func RenderText(text string, x, height float64) string {
 	if !strings.Contains(text, "\n") {
 		return svg.EscapeText(text)
 	}
@@ -937,6 +1016,20 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 	}
 
 	triggers = []string{
+		`appendix-icon`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			buf.WriteString(`
+.appendix-icon {
+	filter: drop-shadow(0px 0px 32px rgba(31, 36, 58, 0.1));
+}`)
+			break
+		}
+	}
+
+	triggers = []string{
 		`class="text-bold"`,
 		`<b>`,
 		`<strong>`,
@@ -1004,6 +1097,9 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 	buf.WriteString(`]]></style>`)
 }
 
+//go:embed fitToScreen.js
+var fitToScreenScript string
+
 // TODO minify output at end
 func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	var sketchRunner *d2sketch.Runner
@@ -1031,6 +1127,10 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 %s%s
 ]]>
 </style>`, styleCSS, styleCSS2))
+
+	// this script won't run in --watch mode because script tags are ignored when added via el.innerHTML = element
+	// https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML
+	buf.WriteString(fmt.Sprintf(`<script type="application/javascript"><![CDATA[%s]]></script>`, fitToScreenScript))
 
 	hasMarkdown := false
 	for _, s := range diagram.Shapes {

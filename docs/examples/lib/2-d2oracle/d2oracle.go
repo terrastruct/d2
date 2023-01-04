@@ -17,7 +17,7 @@ func main() {
 	// From one.go
 	ruler, _ := textmeasure.NewRuler()
 	_, graph, _ := d2lib.Compile(context.Background(), "x -> y", &d2lib.CompileOptions{
-		Layout:  d2dagrelayout.Layout,
+		Layout:  d2dagrelayout.DefaultLayout,
 		Ruler:   ruler,
 		ThemeID: d2themescatalog.GrapeSoda.ID,
 	})

@@ -314,7 +314,7 @@ func run(t *testing.T, tc testCase) {
 	diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
 		Ruler:      ruler,
 		ThemeID:    0,
-		Layout:     d2dagrelayout.Layout,
+		Layout:     d2dagrelayout.DefaultLayout,
 		FontFamily: go2.Pointer(d2fonts.HandDrawn),
 	})
 	if !tassert.Nil(t, err) {

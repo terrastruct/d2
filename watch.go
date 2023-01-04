@@ -430,7 +430,7 @@ func (w *watcher) handleRoot(hw http.ResponseWriter, r *http.Request) {
 </head>
 <body data-d2-dev-mode=%t>
 	<div id="d2-err" style="display: none"></div>
-	<div id="d2-svg"></div>
+	<div id="d2-svg-container"></div>
 </body>
 </html>`, w.outputPath, w.devMode)
 }

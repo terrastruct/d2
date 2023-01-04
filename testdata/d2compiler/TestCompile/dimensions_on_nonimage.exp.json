@@ -1,16 +1,210 @@
 {
-  "graph": null,
-  "err": {
-    "ioerr": null,
-    "errs": [
-      {
-        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,2:1:28-2:11:38",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2:3:2: width is only applicable to image shapes."
+  "graph": {
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,0:0:0-5:0:54",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,0:0:0-4:1:53",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "hey",
+                        "raw_string": "hey"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {
+              "double_quoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,0:5:5-0:7:7",
+                "value": null
+              }
+            },
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,0:8:8-4:0:52",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,1:2:12-1:16:26",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,1:2:12-1:7:17",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,1:2:12-1:7:17",
+                              "value": [
+                                {
+                                  "string": "shape",
+                                  "raw_string": "shape"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,1:9:19-1:16:26",
+                          "value": [
+                            {
+                              "string": "hexagon",
+                              "raw_string": "hexagon"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,2:1:28-2:11:38",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,2:1:28-2:6:33",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,2:1:28-2:6:33",
+                              "value": [
+                                {
+                                  "string": "width",
+                                  "raw_string": "width"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "number": {
+                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,2:8:35-2:11:38",
+                          "raw": "200",
+                          "value": "200"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,3:1:40-3:12:51",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,3:1:40-3:7:46",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,3:1:40-3:7:46",
+                              "value": [
+                                {
+                                  "string": "height",
+                                  "raw_string": "height"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "number": {
+                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,3:9:48-3:12:51",
+                          "raw": "230",
+                          "value": "230"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
       },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
       {
-        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,3:1:40-3:12:51",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2:4:2: height is only applicable to image shapes."
+        "id": "hey",
+        "id_val": "hey",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "hey",
+                        "raw_string": "hey"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "width": {
+            "value": "200"
+          },
+          "height": {
+            "value": "230"
+          },
+          "near_key": null,
+          "shape": {
+            "value": "hexagon"
+          },
+          "direction": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
       }
     ]
-  }
+  },
+  "err": null
 }

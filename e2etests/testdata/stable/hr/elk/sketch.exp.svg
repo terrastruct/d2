@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg
+id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="938" height="786" viewBox="-88 -88 938 786"><style type="text/css">
+width="942" height="790" viewBox="-90 -90 942 790"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -18,7 +19,27 @@ width="938" height="786" viewBox="-88 -88 938 786"><style type="text/css">
 }
 
 ]]>
-</style><style type="text/css">.md em,
+</style><script type="application/javascript"><![CDATA[window.addEventListener("DOMContentLoaded", () => {
+  if (document.documentElement.getAttribute("id") !== "d2-svg") {
+    return;
+  }
+  const svgEl = document.documentElement;
+  let width = parseInt(svgEl.getAttribute("width"), 10);
+  let height = parseInt(svgEl.getAttribute("height"), 10);
+  let ratio;
+  if (width > height) {
+    if (width > window.innerWidth) {
+      ratio = window.innerWidth / width;
+    }
+  } else if (height > window.innerHeight) {
+    ratio = window.innerHeight / height;
+  }
+  if (ratio) {
+    svgEl.setAttribute("width", width * ratio - 16);
+    svgEl.setAttribute("height", height * ratio - 16);
+  }
+});
+]]></script><style type="text/css">.md em,
 .md dfn {
   font-family: "font-italic";
 }
@@ -779,8 +800,8 @@ width="938" height="786" viewBox="-88 -88 938 786"><style type="text/css">
 can <a href="/projects/markdown/syntax.text">see the source for it by adding '.text' to the URL</a>.</p>
 <hr />
 <h2>Overview</h2>
-</div></foreignObject></g></g><g id="a"><g class="shape" ><rect x="324" y="12" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="380.500000" y="78.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">a</text></g><g id="b"><g class="shape" ><rect x="324" y="472" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="380.500000" y="538.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">b</text></g><g id="(a -&gt; md)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 381.000000 140.000000 L 381.000000 234.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2975790206)"/></g><g id="(md -&gt; b)[0]"><path d="M 381.000000 374.000000 L 381.000000 468.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2975790206)"/></g><mask id="2975790206" maskUnits="userSpaceOnUse" x="-100" y="-100" width="938" height="786">
-<rect x="-100" y="-100" width="938" height="786" fill="white"></rect>
+</div></foreignObject></g></g><g id="a"><g class="shape" ><rect x="324" y="12" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="380.500000" y="78.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">a</text></g><g id="b"><g class="shape" ><rect x="324" y="472" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="380.500000" y="538.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">b</text></g><g id="(a -&gt; md)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 381.000000 140.000000 L 381.000000 234.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2975790206)"/></g><g id="(md -&gt; b)[0]"><path d="M 381.000000 374.000000 L 381.000000 468.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2975790206)"/></g><mask id="2975790206" maskUnits="userSpaceOnUse" x="-100" y="-100" width="942" height="790">
+<rect x="-100" y="-100" width="942" height="790" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text {

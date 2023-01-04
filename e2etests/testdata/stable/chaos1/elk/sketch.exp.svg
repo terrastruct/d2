@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg
+id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="630" height="869" viewBox="-88 -88 630 869"><style type="text/css">
+width="634" height="873" viewBox="-90 -90 634 873"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -18,8 +19,28 @@ width="630" height="869" viewBox="-88 -88 630 869"><style type="text/css">
 }
 
 ]]>
-</style><g id="aaa"><g class="shape" ><rect x="12" y="364" width="430" height="317" style="fill:#E3E9FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text" x="227.000000" y="397.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">aaa</text></g><g id="ddd"><g class="shape" ><path d="M 85 36 C 85 12 144.85 12 151.5 12 C 158.15 12 218 12 218 36 V 114 C 218 138 158.15 138 151.5 138 C 144.85 138 85 138 85 114 V 36 Z" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/><path d="M 85 36 C 85 60 144.85 60 151.5 60 C 158.15 60 218 60 218 36" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/></g><text class="text-bold" x="151.500000" y="90.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">ddd</text></g><g id="eee"><g class="shape" ><path d="M 238 120.5231 L 238 12 L 368 12 L 368 120.5231 C 346.3333 97.2206 324.6667 97.2206 303 120.5231 C 281.3333 143.8256 259.6667 143.8256 238 120.5231 Z" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/></g><text class="text-bold" x="303.000000" y="78.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">eee</text></g><g id="aaa.bbb"><g class="shape" ><path d="M 87 439 V 520 H 153 V 565 L 183 520 H 219 V 439 H 87 Z" style="fill:#FFFFFF;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/></g><text class="text-bold" x="153.000000" y="482.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">bbb</text></g><g id="aaa.ccc"><g class="shape" ><rect x="239" y="439" width="128" height="126" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="303.000000" y="505.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">ccc</text></g><g id="(aaa.ccc -- aaa)[0]"><path d="M 303.000000 567.000000 L 303.000000 679.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" mask="url(#4025362291)"/><text class="text-italic" x="303.500000" y="629.000000" style="text-anchor:middle;font-size:16px;fill:#676C7E">111</text></g><g id="(eee &lt;- aaa.ccc)[0]"><marker id="mk-2510427236" markerWidth="10.000000" markerHeight="12.000000" refX="3.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="10.000000,0.000000 0.000000,6.000000 10.000000,12.000000" /> </marker><path d="M 303.000000 125.000000 L 303.000000 437.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-start="url(#mk-2510427236)" mask="url(#4025362291)"/><text class="text-italic" x="303.500000" y="286.000000" style="text-anchor:middle;font-size:16px;fill:#676C7E">222</text></g><mask id="4025362291" maskUnits="userSpaceOnUse" x="-100" y="-100" width="630" height="869">
-<rect x="-100" y="-100" width="630" height="869" fill="white"></rect>
+</style><script type="application/javascript"><![CDATA[window.addEventListener("DOMContentLoaded", () => {
+  if (document.documentElement.getAttribute("id") !== "d2-svg") {
+    return;
+  }
+  const svgEl = document.documentElement;
+  let width = parseInt(svgEl.getAttribute("width"), 10);
+  let height = parseInt(svgEl.getAttribute("height"), 10);
+  let ratio;
+  if (width > height) {
+    if (width > window.innerWidth) {
+      ratio = window.innerWidth / width;
+    }
+  } else if (height > window.innerHeight) {
+    ratio = window.innerHeight / height;
+  }
+  if (ratio) {
+    svgEl.setAttribute("width", width * ratio - 16);
+    svgEl.setAttribute("height", height * ratio - 16);
+  }
+});
+]]></script><g id="aaa"><g class="shape" ><rect x="12" y="364" width="430" height="317" style="fill:#E3E9FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text" x="227.000000" y="397.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">aaa</text></g><g id="ddd"><g class="shape" ><path d="M 85 36 C 85 12 144.85 12 151.5 12 C 158.15 12 218 12 218 36 V 114 C 218 138 158.15 138 151.5 138 C 144.85 138 85 138 85 114 V 36 Z" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/><path d="M 85 36 C 85 60 144.85 60 151.5 60 C 158.15 60 218 60 218 36" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/></g><text class="text-bold" x="151.500000" y="90.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">ddd</text></g><g id="eee"><g class="shape" ><path d="M 238 120.5231 L 238 12 L 368 12 L 368 120.5231 C 346.3333 97.2206 324.6667 97.2206 303 120.5231 C 281.3333 143.8256 259.6667 143.8256 238 120.5231 Z" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/></g><text class="text-bold" x="303.000000" y="78.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">eee</text></g><g id="aaa.bbb"><g class="shape" ><path d="M 87 439 V 520 H 153 V 565 L 183 520 H 219 V 439 H 87 Z" style="fill:#FFFFFF;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/></g><text class="text-bold" x="153.000000" y="482.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">bbb</text></g><g id="aaa.ccc"><g class="shape" ><rect x="239" y="439" width="128" height="126" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="303.000000" y="505.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">ccc</text></g><g id="(aaa.ccc -- aaa)[0]"><path d="M 303.000000 567.000000 L 303.000000 679.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" mask="url(#4025362291)"/><text class="text-italic" x="303.500000" y="629.000000" style="text-anchor:middle;font-size:16px;fill:#676C7E">111</text></g><g id="(eee &lt;- aaa.ccc)[0]"><marker id="mk-2510427236" markerWidth="10.000000" markerHeight="12.000000" refX="3.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="10.000000,0.000000 0.000000,6.000000 10.000000,12.000000" /> </marker><path d="M 303.000000 125.000000 L 303.000000 437.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-start="url(#mk-2510427236)" mask="url(#4025362291)"/><text class="text-italic" x="303.500000" y="286.000000" style="text-anchor:middle;font-size:16px;fill:#676C7E">222</text></g><mask id="4025362291" maskUnits="userSpaceOnUse" x="-100" y="-100" width="634" height="873">
+<rect x="-100" y="-100" width="634" height="873" fill="white"></rect>
 <rect x="292.000000" y="613.000000" width="23" height="21" fill="black"></rect>
 <rect x="291.000000" y="270.000000" width="25" height="21" fill="black"></rect>
 </mask><style type="text/css"><![CDATA[

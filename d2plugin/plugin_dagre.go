@@ -4,36 +4,82 @@ package d2plugin
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
+	"oss.terrastruct.com/util-go/xmain"
 )
 
 var DagrePlugin = dagrePlugin{}
 
 func init() {
-	plugins = append(plugins, DagrePlugin)
+	plugins = append(plugins, &DagrePlugin)
 }
 
-type dagrePlugin struct{}
+type dagrePlugin struct {
+	opts *d2dagrelayout.ConfigurableOpts
+}
 
-func (p dagrePlugin) Info(context.Context) (*PluginInfo, error) {
+func (p dagrePlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
+	return []PluginSpecificFlag{
+		{
+			Name:    "dagre-nodesep",
+			Type:    "int64",
+			Default: int64(d2dagrelayout.DefaultOpts.NodeSep),
+			Usage:   "number of pixels that separate nodes horizontally.",
+			Tag:     "nodesep",
+		},
+		{
+			Name:    "dagre-edgesep",
+			Type:    "int64",
+			Default: int64(d2dagrelayout.DefaultOpts.EdgeSep),
+			Usage:   "number of pixels that separate edges horizontally.",
+			Tag:     "edgesep",
+		},
+	}, nil
+}
+
+func (p *dagrePlugin) HydrateOpts(opts []byte) error {
+	if opts != nil {
+		var dagreOpts d2dagrelayout.ConfigurableOpts
+		err := json.Unmarshal(opts, &dagreOpts)
+		if err != nil {
+			return xmain.UsageErrorf("non-dagre layout options given for dagre")
+		}
+
+		p.opts = &dagreOpts
+	}
+	return nil
+}
+
+func (p dagrePlugin) Info(ctx context.Context) (*PluginInfo, error) {
+	opts := xmain.NewOpts(nil, nil, nil)
+	flags, err := p.Flags(ctx)
+	if err != nil {
+		return nil, err
+	}
+	for _, f := range flags {
+		f.AddToOpts(opts)
+	}
+
 	return &PluginInfo{
 		Name:      "dagre",
 		ShortHelp: "The directed graph layout library Dagre",
-		LongHelp: `dagre is a directed graph layout library for JavaScript.
+		LongHelp: fmt.Sprintf(`dagre is a directed graph layout library for JavaScript.
 See https://github.com/dagrejs/dagre
-The implementation of this plugin is at: https://github.com/terrastruct/d2/tree/master/d2plugin/d2dagrelayout
 
-note: dagre is the primary layout algorithm for text to diagram generator Mermaid.js.
-      See https://github.com/mermaid-js/mermaid
-      We have a useful comparison at https://text-to-diagram.com/?example=basic&a=d2&b=mermaid
-`,
+Flags correspond to ones found at https://github.com/dagrejs/dagre/wiki. See dagre's reference for more on each.
+
+Flags:
+%s
+`, opts.Defaults()),
 	}, nil
 }
 
 func (p dagrePlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
-	return d2dagrelayout.Layout(ctx, g)
+	return d2dagrelayout.Layout(ctx, g, p.opts)
 }
 
 func (p dagrePlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) {

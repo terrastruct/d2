@@ -239,7 +239,7 @@ func run(t *testing.T, tc testCase) {
 	err = g.SetDimensions(nil, ruler, nil)
 	assert.JSON(t, nil, err)
 
-	err = d2sequence.Layout(ctx, g, d2dagrelayout.Layout)
+	err = d2sequence.Layout(ctx, g, d2dagrelayout.DefaultLayout)
 	if err != nil {
 		t.Fatal(err)
 	}

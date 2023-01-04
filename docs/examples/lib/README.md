@@ -15,7 +15,7 @@ D2 is built to be hackable -- the language has an API built on top of it to make
 programmatically.
 
 Modifying the previous example, this example demonstrates how
-[d2oracle](../../../d2oracle) can be used to create a new shape, style it programatically
+[d2oracle](../../../d2oracle) can be used to create a new shape, style it programmatically
 and then output the modified d2 script.
 
 This makes it easy to build functionality on top of D2. Terrastruct uses the
@@ -27,4 +27,4 @@ visual interface.
 `d2lib` from the first example is just a wrapper around the lower level APIs. They
 can be used directly and this example demonstrates such usage.
 
-This shouldn't be necessary for most usecases.
+This shouldn't be necessary for most use cases.

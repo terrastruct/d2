@@ -123,7 +123,7 @@ func test(t *testing.T, textPath, text string) {
 		err = g.SetDimensions(nil, ruler, nil)
 		assert.Nil(t, err)
 
-		err = d2dagrelayout.Layout(ctx, g)
+		err = d2dagrelayout.DefaultLayout(ctx, g)
 		if err != nil {
 			t.Fatal(err)
 		}

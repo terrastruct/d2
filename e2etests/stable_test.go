@@ -1626,6 +1626,144 @@ mama bear -> bear
 papa bear -> bear
 `,
 		},
+		{
+			name: "tooltips",
+			script: `x: { tooltip: Total abstinence is easier than perfect moderation }
+y: { tooltip: Gee, I feel kind of LIGHT in the head now,\nknowing I can't make my satellite dish PAYMENTS! }
+x -> y
+`,
+		},
+		{
+			name: "links",
+			script: `x: { link: https://d2lang.com }
+			y: { link: https://terrastruct.com; tooltip: Gee, I feel kind of LIGHT in the head now,\nknowing I can't make my satellite dish PAYMENTS! }
+x -> y
+`,
+		},
+		{
+			name: "unnamed_only_width",
+			script: `
+
+class -> users -> code -> package -> no width
+
+class: "" {
+	shape: class
+	-num: int
+	-timeout: int
+	-pid
+
+	+getStatus(): Enum
+	+getJobs(): "Job[]"
+	+setTimeout(seconds int)
+}
+
+users: "" {
+	shape: sql_table
+	id: int
+	name: string
+	email: string
+	password: string
+	last_login: datetime
+}
+
+code: |go
+    a := 5
+    b := a + 7
+    fmt.Printf("%d", b)
+|
+
+package: "" { shape: package }
+no width: ""
+
+
+class.width: 512
+users.width: 512
+code.width: 512
+package.width: 512
+`,
+		},
+		{
+			name: "unnamed_only_height",
+			script: `
+
+class -> users -> code -> package -> no height
+
+class: "" {
+	shape: class
+	-num: int
+	-timeout: int
+	-pid
+
+	+getStatus(): Enum
+	+getJobs(): "Job[]"
+	+setTimeout(seconds int)
+}
+
+users: "" {
+	shape: sql_table
+	id: int
+	name: string
+	email: string
+	password: string
+	last_login: datetime
+}
+
+code: |go
+    a := 5
+    b := a + 7
+    fmt.Printf("%d", b)
+|
+
+package: "" { shape: package }
+no height: ""
+
+
+class.height: 512
+users.height: 512
+code.height: 512
+package.height: 512
+`,
+		},
+		{
+			name: "crow_foot_arrowhead",
+			script: `
+a <-> b: {
+	style.stroke-width: 3
+	style.stroke: "#20222a"
+	source-arrowhead: {
+		shape: cf-many
+	}
+	target-arrowhead: {
+		shape: cf-many
+	}
+}
+c <--> d <-> f: {
+	style.stroke-width: 1
+	style.stroke: "orange"
+	source-arrowhead: {
+		shape: cf-many-required
+	}
+	target-arrowhead: {
+		shape: cf-many-required
+	}
+}
+g <--> h: {
+	source-arrowhead: {
+		shape: cf-one
+	}
+	target-arrowhead: {
+		shape: cf-one
+	}
+}
+e <--> f: {
+	source-arrowhead: {
+		shape: cf-one-required
+	}
+	target-arrowhead: {
+		shape: cf-one-required
+	}
+}`,
+		},
 	}
 
 	runa(t, tcs)

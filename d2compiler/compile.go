@@ -797,15 +797,18 @@ func (c *compiler) validateKey(obj *d2graph.Object, m *d2ast.Map, mk *d2ast.Key)
 		return
 	}
 
-	if reserved == "" && obj.Attributes.Shape.Value == d2target.ShapeImage {
-		c.errorf(mk.Range.Start, mk.Range.End, "image shapes cannot have children.")
-	}
+	switch strings.ToLower(obj.Attributes.Shape.Value) {
+	case d2target.ShapeImage:
+		if reserved == "" {
+			c.errorf(mk.Range.Start, mk.Range.End, "image shapes cannot have children.")
+		}
+	case d2target.ShapeCircle, d2target.ShapeSquare:
+		checkEqual := (reserved == "width" && obj.Attributes.Height != nil) ||
+			(reserved == "height" && obj.Attributes.Width != nil)
 
-	if reserved == "width" && obj.Attributes.Shape.Value != d2target.ShapeImage {
-		c.errorf(mk.Range.Start, mk.Range.End, "width is only applicable to image shapes.")
-	}
-	if reserved == "height" && obj.Attributes.Shape.Value != d2target.ShapeImage {
-		c.errorf(mk.Range.Start, mk.Range.End, "height is only applicable to image shapes.")
+		if checkEqual && obj.Attributes.Width.Value != obj.Attributes.Height.Value {
+			c.errorf(mk.Range.Start, mk.Range.End, fmt.Sprintf("width and height must be equal for %s shapes", obj.Attributes.Shape.Value))
+		}
 	}
 
 	in := d2target.IsShape(obj.Attributes.Shape.Value)
@@ -828,6 +831,14 @@ func (c *compiler) validateKey(obj *d2graph.Object, m *d2ast.Map, mk *d2ast.Key)
 		obj, _ = parent.HasChild(resolvedIDA)
 	} else if obj.Parent == nil {
 		return
+	}
+
+	switch strings.ToLower(obj.Attributes.Shape.Value) {
+	case d2target.ShapeSQLTable, d2target.ShapeClass:
+	default:
+		if len(obj.Children) > 0 && (reserved == "width" || reserved == "height") {
+			c.errorf(mk.Range.Start, mk.Range.End, fmt.Sprintf("%s cannot be used on container: %s", reserved, obj.AbsID()))
+		}
 	}
 
 	if len(mk.Edges) > 0 {
@@ -859,6 +870,23 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 			if !isKey && isConst && obj.Parent != g.Root {
 				c.errorf(obj.Attributes.NearKey.GetRange().Start, obj.Attributes.NearKey.GetRange().End, "constant near keys can only be set on root level shapes")
 				continue
+			}
+			if !isKey && isConst && len(obj.ChildrenArray) > 0 {
+				c.errorf(obj.Attributes.NearKey.GetRange().Start, obj.Attributes.NearKey.GetRange().End, "constant near keys cannot be set on shapes with children")
+				continue
+			}
+			if !isKey && isConst {
+				is := false
+				for _, e := range g.Edges {
+					if e.Src == obj || e.Dst == obj {
+						is = true
+						break
+					}
+				}
+				if is {
+					c.errorf(obj.Attributes.NearKey.GetRange().Start, obj.Attributes.NearKey.GetRange().End, "constant near keys cannot be set on connected shapes")
+					continue
+				}
 			}
 		}
 	}

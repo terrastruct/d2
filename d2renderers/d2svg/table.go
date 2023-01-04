@@ -19,8 +19,8 @@ func tableHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, tex
 	if text != "" {
 		tl := label.InsideMiddleLeft.GetPointOnBox(
 			box,
-			20,
-			textWidth,
+			float64(d2target.HeaderPadding),
+			float64(shape.Width),
 			textHeight,
 		)
 

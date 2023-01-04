@@ -217,6 +217,73 @@ m6_desc: |md
 m6_desc -> queue.M6
 `,
 		},
+		{
+			name: "unnamed_class_table_code",
+			script: `
+
+class -> users -> code
+
+class: "" {
+	shape: class
+	-num: int
+	-timeout: int
+	-pid
+
+	+getStatus(): Enum
+	+getJobs(): "Job[]"
+	+setTimeout(seconds int)
+}
+
+users: "" {
+	shape: sql_table
+	id: int
+	name: string
+	email: string
+	password: string
+	last_login: datetime
+}
+
+code: |go
+    a := 5
+    b := a + 7
+    fmt.Printf("%d", b)
+|
+`,
+		},
+		{
+			name: "elk_img_empty_label_panic",
+			script: `
+img: {
+	label: ""
+	shape: image
+	icon: https://icons.terrastruct.com/infra/019-network.svg
+}
+ico: {
+	label: ""
+	icon: https://icons.terrastruct.com/infra/019-network.svg
+}
+`,
+		},
+		{
+			name: "only_header_class_table",
+			script: `
+
+class: RefreshAuthorizationPolicyProtocolServerSideTranslatorProtocolBuffer {
+	shape: class
+}
+
+table: RefreshAuthorizationPolicyCache {
+	shape: sql_table
+}
+
+table with short col: RefreshAuthorizationPolicyCache {
+	shape: sql_table
+	ok
+}
+
+class -> table -> table with short col
+`,
+		},
 	}
 
 	runa(t, tcs)

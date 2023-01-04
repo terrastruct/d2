@@ -1,0 +1,36 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2,4:2:54-4:12:64",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:5:3: width cannot be used on container: containers.circle container"
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2,14:2:173-14:12:183",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:15:3: width cannot be used on container: containers.diamond container"
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2,15:2:186-15:13:197",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:16:3: height cannot be used on container: containers.diamond container"
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2,24:2:284-24:12:294",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:25:3: width cannot be used on container: containers.oval container"
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2,25:2:297-25:13:308",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:26:3: height cannot be used on container: containers.oval container"
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2,35:2:417-35:12:427",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:36:3: width cannot be used on container: containers.hexagon container"
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2,36:2:430-36:13:441",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height cannot be used on container: containers.hexagon container"
+      }
+    ]
+  }
+}
