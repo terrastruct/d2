@@ -40,9 +40,10 @@ import (
 type execPlugin struct {
 	path string
 	opts map[string]string
+	info *PluginInfo
 }
 
-func (p execPlugin) Flags(ctx context.Context) (_ []PluginSpecificFlag, err error) {
+func (p *execPlugin) Flags(ctx context.Context) (_ []PluginSpecificFlag, err error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Second*10)
 	defer cancel()
 	cmd := exec.CommandContext(ctx, p.path, "flags")
@@ -92,7 +93,11 @@ func (p *execPlugin) HydrateOpts(opts []byte) error {
 	return nil
 }
 
-func (p execPlugin) Info(ctx context.Context) (_ *PluginInfo, err error) {
+func (p *execPlugin) Info(ctx context.Context) (_ *PluginInfo, err error) {
+	if p.info != nil {
+		return p.info, nil
+	}
+
 	ctx, cancel := context.WithTimeout(ctx, time.Second*10)
 	defer cancel()
 	cmd := exec.CommandContext(ctx, p.path, "info")
@@ -114,10 +119,11 @@ func (p execPlugin) Info(ctx context.Context) (_ *PluginInfo, err error) {
 		return nil, fmt.Errorf("failed to unmarshal json: %w", err)
 	}
 
+	p.info = &info
 	return &info, nil
 }
 
-func (p execPlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
+func (p *execPlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute)
 	defer cancel()
 
@@ -152,7 +158,7 @@ func (p execPlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
 	return nil
 }
 
-func (p execPlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) {
+func (p *execPlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute)
 	defer cancel()
 
