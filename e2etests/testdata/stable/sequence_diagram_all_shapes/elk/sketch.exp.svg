@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg
+id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 width="5181" height="2986" viewBox="-78 -28 5181 2986"><style type="text/css">
@@ -18,7 +19,27 @@ width="5181" height="2986" viewBox="-78 -28 5181 2986"><style type="text/css">
 }
 
 ]]>
-</style><g id="a"><g class="shape" ><path d="M 24 132 V 213 H 99 V 258 L 129 213 H 174 V 132 H 24 Z" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/></g><text class="text" x="99.000000" y="175.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">a label</text></g><g id="b"><g class="shape" ><ellipse class="shape" cx="356.000000" cy="186.000000" rx="75.000000" ry="72.000000" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text" x="356.000000" y="181.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25"><tspan x="356.000000" dy="0.000000">b</tspan><tspan x="356.000000" dy="21.000000">labels</tspan></text></g><g id="c"><g class="shape" ><rect class="shape" x="481" y="74" width="302" height="184" style="fill:#FFFFFF;stroke:#EDF0FD;opacity:1.000000;stroke-width:2;"/><rect class="class_header" x="481.000000" y="74.000000" width="302.000000" height="92.000000" fill="#EDF0FD" /><text class="text-mono" x="632.000000" y="129.000000" style="text-anchor:middle;font-size:24px;fill:#FFFFFF">a class</text><line x1="481.000000" y1="166.000000" x2="783.000000" y2="166.000000" style="stroke-width:1;stroke:#EDF0FD" /><text class="text-mono" x="491.000000" y="194.000000" style="text-anchor:start;font-size:20px;fill:#0D32B2">+</text>
+</style><script type="application/javascript"><![CDATA[window.addEventListener("DOMContentLoaded", () => {
+  if (document.documentElement.getAttribute("id") !== "d2-svg") {
+    return;
+  }
+  const svgEl = document.documentElement;
+  let width = parseInt(svgEl.getAttribute("width"), 10);
+  let height = parseInt(svgEl.getAttribute("height"), 10);
+  let ratio;
+  if (width > height) {
+    if (width > window.innerWidth) {
+      ratio = window.innerWidth / width;
+    }
+  } else if (height > window.innerHeight) {
+    ratio = window.innerHeight / height;
+  }
+  if (ratio) {
+    svgEl.setAttribute("width", width * ratio - 16);
+    svgEl.setAttribute("height", height * ratio - 16);
+  }
+});
+]]></script><g id="a"><g class="shape" ><path d="M 24 132 V 213 H 99 V 258 L 129 213 H 174 V 132 H 24 Z" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/></g><text class="text" x="99.000000" y="175.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">a label</text></g><g id="b"><g class="shape" ><ellipse class="shape" cx="356.000000" cy="186.000000" rx="75.000000" ry="72.000000" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text" x="356.000000" y="181.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25"><tspan x="356.000000" dy="0.000000">b</tspan><tspan x="356.000000" dy="21.000000">labels</tspan></text></g><g id="c"><g class="shape" ><rect class="shape" x="481" y="74" width="302" height="184" style="fill:#FFFFFF;stroke:#EDF0FD;opacity:1.000000;stroke-width:2;"/><rect class="class_header" x="481.000000" y="74.000000" width="302.000000" height="92.000000" fill="#EDF0FD" /><text class="text-mono" x="632.000000" y="129.000000" style="text-anchor:middle;font-size:24px;fill:#FFFFFF">a class</text><line x1="481.000000" y1="166.000000" x2="783.000000" y2="166.000000" style="stroke-width:1;stroke:#EDF0FD" /><text class="text-mono" x="491.000000" y="194.000000" style="text-anchor:start;font-size:20px;fill:#0D32B2">+</text>
 <text class="text-mono" x="511.000000" y="194.000000" style="text-anchor:start;font-size:20px;fill:#EDF0FD">public() bool</text>
 <text class="text-mono" x="763.000000" y="194.000000" style="text-anchor:end;font-size:20px;fill:#4A6FF3">void</text><text class="text-mono" x="491.000000" y="240.000000" style="text-anchor:start;font-size:20px;fill:#0D32B2">-</text>
 <text class="text-mono" x="511.000000" y="240.000000" style="text-anchor:start;font-size:20px;fill:#EDF0FD">private() int</text>

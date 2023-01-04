@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg
+id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 width="2622" height="2644" viewBox="-90 -90 2622 2644"><style type="text/css">
@@ -18,7 +19,27 @@ width="2622" height="2644" viewBox="-90 -90 2622 2644"><style type="text/css">
 }
 
 ]]>
-</style><g id="containers"><g class="shape" ><rect x="12" y="12" width="1322" height="428" style="fill:#E3E9FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text" x="673.000000" y="45.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">containers</text></g><g id="cloud"><g class="shape" ><path d="M 1438.6169 273.4938 C 1438.6169 276.2134 1435.206 278.9325 1431.7958 278.9325 C 1388.3108 282.3315 1354.2045 317.0036 1354.2045 359.1535 C 1354.2045 404.023 1392.5738 440.0544 1441.1751 440.0544 H 1771.1511 C 1823.1633 440.0544 1865.7956 401.3034 1865.7956 354.3947 C 1865.7956 309.5252 1826.573 272.134 1777.1201 269.4149 C 1773.7092 269.4149 1770.299 267.3752 1769.4462 263.9762 C 1758.3615 218.4273 1707.202 184.4351 1647.5171 184.4351 C 1608.2951 184.4351 1573.336 198.7119 1551.1678 221.1464 C 1548.6096 223.866 1544.3467 224.5459 1541.7885 223.866 C 1533.2619 221.1464 1523.8832 219.7871 1513.6512 219.7871 C 1474.4287 219.1068 1442.0278 242.901 1438.6169 273.4938 Z" style="fill:#FFFFFF;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/></g><text class="text-bold" x="1610.000000" y="315.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">cloud</text></g><g id="tall cylinder"><g class="shape" ><path d="M 1482 1464 C 1482 1440 1597.2 1440 1610 1440 C 1622.8 1440 1738 1440 1738 1464 V 1928 C 1738 1952 1622.8 1952 1610 1952 C 1597.2 1952 1482 1952 1482 1928 V 1464 Z" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/><path d="M 1482 1464 C 1482 1488 1597.2 1488 1610 1488 C 1622.8 1488 1738 1488 1738 1464" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/></g><text class="text-bold" x="1610.000000" y="1711.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">tall cylinder</text></g><g id="users"><g class="shape" ><rect class="shape" x="1210" y="2052" width="800" height="400" style="fill:#FFFFFF;stroke:#0A0F25;opacity:1.000000;stroke-width:2;"/><rect class="class_header" x="1210.000000" y="2052.000000" width="800.000000" height="66.666667" fill="#0A0F25" /><text class="text" x="1230.000000" y="2094.333333" style="text-anchor:start;font-size:24px;fill:#FFFFFF">users</text><text class="text" x="1220.000000" y="2157.000000" style="text-anchor:start;font-size:20px;fill:#0D32B2">id</text>
+</style><script type="application/javascript"><![CDATA[window.addEventListener("DOMContentLoaded", () => {
+  if (document.documentElement.getAttribute("id") !== "d2-svg") {
+    return;
+  }
+  const svgEl = document.documentElement;
+  let width = parseInt(svgEl.getAttribute("width"), 10);
+  let height = parseInt(svgEl.getAttribute("height"), 10);
+  let ratio;
+  if (width > height) {
+    if (width > window.innerWidth) {
+      ratio = window.innerWidth / width;
+    }
+  } else if (height > window.innerHeight) {
+    ratio = window.innerHeight / height;
+  }
+  if (ratio) {
+    svgEl.setAttribute("width", width * ratio - 16);
+    svgEl.setAttribute("height", height * ratio - 16);
+  }
+});
+]]></script><g id="containers"><g class="shape" ><rect x="12" y="12" width="1322" height="428" style="fill:#E3E9FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text" x="673.000000" y="45.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">containers</text></g><g id="cloud"><g class="shape" ><path d="M 1438.6169 273.4938 C 1438.6169 276.2134 1435.206 278.9325 1431.7958 278.9325 C 1388.3108 282.3315 1354.2045 317.0036 1354.2045 359.1535 C 1354.2045 404.023 1392.5738 440.0544 1441.1751 440.0544 H 1771.1511 C 1823.1633 440.0544 1865.7956 401.3034 1865.7956 354.3947 C 1865.7956 309.5252 1826.573 272.134 1777.1201 269.4149 C 1773.7092 269.4149 1770.299 267.3752 1769.4462 263.9762 C 1758.3615 218.4273 1707.202 184.4351 1647.5171 184.4351 C 1608.2951 184.4351 1573.336 198.7119 1551.1678 221.1464 C 1548.6096 223.866 1544.3467 224.5459 1541.7885 223.866 C 1533.2619 221.1464 1523.8832 219.7871 1513.6512 219.7871 C 1474.4287 219.1068 1442.0278 242.901 1438.6169 273.4938 Z" style="fill:#FFFFFF;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/></g><text class="text-bold" x="1610.000000" y="315.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">cloud</text></g><g id="tall cylinder"><g class="shape" ><path d="M 1482 1464 C 1482 1440 1597.2 1440 1610 1440 C 1622.8 1440 1738 1440 1738 1464 V 1928 C 1738 1952 1622.8 1952 1610 1952 C 1597.2 1952 1482 1952 1482 1928 V 1464 Z" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/><path d="M 1482 1464 C 1482 1488 1597.2 1488 1610 1488 C 1622.8 1488 1738 1488 1738 1464" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;"/></g><text class="text-bold" x="1610.000000" y="1711.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">tall cylinder</text></g><g id="users"><g class="shape" ><rect class="shape" x="1210" y="2052" width="800" height="400" style="fill:#FFFFFF;stroke:#0A0F25;opacity:1.000000;stroke-width:2;"/><rect class="class_header" x="1210.000000" y="2052.000000" width="800.000000" height="66.666667" fill="#0A0F25" /><text class="text" x="1230.000000" y="2094.333333" style="text-anchor:start;font-size:24px;fill:#FFFFFF">users</text><text class="text" x="1220.000000" y="2157.000000" style="text-anchor:start;font-size:20px;fill:#0D32B2">id</text>
 <text class="text" x="1321.000000" y="2157.000000" style="text-anchor:start;font-size:20px;fill:#676C7E">int</text>
 <text class="text" x="1990.000000" y="2157.000000" style="text-anchor:end;font-size:20px;fill:#4A6FF3;letter-spacing:2px;"></text><line x1="1210.000000" y1="2185.333333" x2="2010.000000" y2="2185.333333" style="stroke-width:2;stroke:#0A0F25" /><text class="text" x="1220.000000" y="2223.666667" style="text-anchor:start;font-size:20px;fill:#0D32B2">name</text>
 <text class="text" x="1321.000000" y="2223.666667" style="text-anchor:start;font-size:20px;fill:#676C7E">string</text>

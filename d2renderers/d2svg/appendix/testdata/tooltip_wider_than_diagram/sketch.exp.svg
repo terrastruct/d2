@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg
+id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 width="566" height="751" viewBox="-102 -118 566 751"><style type="text/css">
@@ -18,7 +19,27 @@ width="566" height="751" viewBox="-102 -118 566 751"><style type="text/css">
 }
 
 ]]>
-</style><g id="x"><g class="shape" ><rect x="1" y="0" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="57.500000" y="66.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">x</text><g transform="translate(98 -16)" class="appendix-icon"><circle cx="16" cy="16" r="16" fill="white" stroke="#DEE1EB" /><text class="text-bold" x="16" y="21" style="font-size: 16px;text-anchor:middle;">1</text></g><title>Total abstinence is easier than perfect moderation</title></g><g id="y"><g class="shape" ><rect x="0" y="226" width="114" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="57.000000" y="292.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">y</text><g transform="translate(98 210)" class="appendix-icon"><circle cx="16" cy="16" r="16" fill="white" stroke="#DEE1EB" /><text class="text-bold" x="16" y="21" style="font-size: 16px;text-anchor:middle;">2</text></g><title>Gee, I feel kind of LIGHT in the head now,
+</style><script type="application/javascript"><![CDATA[window.addEventListener("DOMContentLoaded", () => {
+  if (document.documentElement.getAttribute("id") !== "d2-svg") {
+    return;
+  }
+  const svgEl = document.documentElement;
+  let width = parseInt(svgEl.getAttribute("width"), 10);
+  let height = parseInt(svgEl.getAttribute("height"), 10);
+  let ratio;
+  if (width > height) {
+    if (width > window.innerWidth) {
+      ratio = window.innerWidth / width;
+    }
+  } else if (height > window.innerHeight) {
+    ratio = window.innerHeight / height;
+  }
+  if (ratio) {
+    svgEl.setAttribute("width", width * ratio - 16);
+    svgEl.setAttribute("height", height * ratio - 16);
+  }
+});
+]]></script><g id="x"><g class="shape" ><rect x="1" y="0" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="57.500000" y="66.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">x</text><g transform="translate(98 -16)" class="appendix-icon"><circle cx="16" cy="16" r="16" fill="white" stroke="#DEE1EB" /><text class="text-bold" x="16" y="21" style="font-size: 16px;text-anchor:middle;">1</text></g><title>Total abstinence is easier than perfect moderation</title></g><g id="y"><g class="shape" ><rect x="0" y="226" width="114" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="57.000000" y="292.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">y</text><g transform="translate(98 210)" class="appendix-icon"><circle cx="16" cy="16" r="16" fill="white" stroke="#DEE1EB" /><text class="text-bold" x="16" y="21" style="font-size: 16px;text-anchor:middle;">2</text></g><title>Gee, I feel kind of LIGHT in the head now,
 knowing I can't make my satellite dish PAYMENTS!</title></g><g id="(x -&gt; y)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 57.000000 128.000000 C 57.000000 166.000000 57.000000 186.000000 57.000000 222.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#3421969999)"/></g><mask id="3421969999" maskUnits="userSpaceOnUse" x="-100" y="-100" width="334" height="572">
 <rect x="-100" y="-100" width="334" height="572" fill="white"></rect>
 

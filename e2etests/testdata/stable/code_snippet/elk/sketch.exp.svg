@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg
+id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
 width="959" height="822" viewBox="-90 -90 959 822"><style type="text/css">
@@ -18,7 +19,27 @@ width="959" height="822" viewBox="-90 -90 959 822"><style type="text/css">
 }
 
 ]]>
-</style><g id="hey"><g class="shape" ></g><g transform="translate(12.000000 238.000000)" style="opacity:1.000000"><rect class="shape" width="755" height="166" style="stroke: #0A0F25;fill:#ffffff" /><g transform="translate(6 6)"><text class="text-mono" x="0" y="1.000000em" xml:space="preserve"><tspan fill="#999988" font-style="italic">//&#160;RegisterHash&#160;registers&#160;a&#160;function&#160;that&#160;returns&#160;a&#160;new&#160;instance&#160;of&#160;the&#160;given
+</style><script type="application/javascript"><![CDATA[window.addEventListener("DOMContentLoaded", () => {
+  if (document.documentElement.getAttribute("id") !== "d2-svg") {
+    return;
+  }
+  const svgEl = document.documentElement;
+  let width = parseInt(svgEl.getAttribute("width"), 10);
+  let height = parseInt(svgEl.getAttribute("height"), 10);
+  let ratio;
+  if (width > height) {
+    if (width > window.innerWidth) {
+      ratio = window.innerWidth / width;
+    }
+  } else if (height > window.innerHeight) {
+    ratio = window.innerHeight / height;
+  }
+  if (ratio) {
+    svgEl.setAttribute("width", width * ratio - 16);
+    svgEl.setAttribute("height", height * ratio - 16);
+  }
+});
+]]></script><g id="hey"><g class="shape" ></g><g transform="translate(12.000000 238.000000)" style="opacity:1.000000"><rect class="shape" width="755" height="166" style="stroke: #0A0F25;fill:#ffffff" /><g transform="translate(6 6)"><text class="text-mono" x="0" y="1.000000em" xml:space="preserve"><tspan fill="#999988" font-style="italic">//&#160;RegisterHash&#160;registers&#160;a&#160;function&#160;that&#160;returns&#160;a&#160;new&#160;instance&#160;of&#160;the&#160;given
 </tspan></text><text class="text-mono" x="0" y="2.000000em" xml:space="preserve"><tspan fill="#999988" font-style="italic"></tspan><tspan fill="#999988" font-style="italic">//&#160;hash&#160;function.&#160;This&#160;is&#160;intended&#160;to&#160;be&#160;called&#160;from&#160;the&#160;init&#160;function&#160;in
 </tspan></text><text class="text-mono" x="0" y="3.000000em" xml:space="preserve"><tspan fill="#999988" font-style="italic"></tspan><tspan fill="#999988" font-style="italic">//&#160;packages&#160;that&#160;implement&#160;hash&#160;functions.
 </tspan></text><text class="text-mono" x="0" y="4.000000em" xml:space="preserve"><tspan fill="#999988" font-style="italic"></tspan><tspan fill="#000000" font-weight="bold">func</tspan>&#160;<tspan fill="#990000" font-weight="bold">RegisterHash</tspan>(h&#160;Hash,&#160;f&#160;<tspan fill="#000000" font-weight="bold">func</tspan>()&#160;hash.Hash)&#160;{
