@@ -291,7 +291,6 @@ func setGraphAttrs(attrs dagreOpts) string {
   edgesep: %d,
   nodesep: %d,
   rankdir: "%s",
-  labelpos: "c",
 });
 `,
 		attrs.ranksep,
@@ -322,5 +321,5 @@ func generateAddParentLine(childID, parentID string) string {
 }
 
 func generateAddEdgeLine(fromID, toID, edgeID string, width, height int) string {
-	return fmt.Sprintf("g.setEdge({v:`%s`, w:`%s`, name:`%s`}, { width:%d, height:%d });\n", escapeID(fromID), escapeID(toID), escapeID(edgeID), width, height)
+	return fmt.Sprintf("g.setEdge({v:`%s`, w:`%s`, name:`%s`}, { width:%d, height:%d, labelpos: `c` });\n", escapeID(fromID), escapeID(toID), escapeID(edgeID), width, height)
 }
