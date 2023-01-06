@@ -130,9 +130,9 @@ func run(t *testing.T, tc testCase) {
 	for _, layoutName := range layoutsTested {
 		var layout func(context.Context, *d2graph.Graph) error
 		if layoutName == "dagre" {
-			layout = d2dagrelayout.Layout
+			layout = d2dagrelayout.DefaultLayout
 		} else if layoutName == "elk" {
-			layout = d2elklayout.Layout
+			layout = d2elklayout.DefaultLayout
 		}
 		diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
 			Ruler:   ruler,

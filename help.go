@@ -32,30 +32,30 @@ Flags:
 
 Subcommands:
   %[1]s layout - Lists available layout engine options with short help
-  %[1]s layout [name] - Display long help for a particular layout engine
+  %[1]s layout [name] - Display long help for a particular layout engine, including its configuration options
   %[1]s fmt file.d2 - Format file.d2
 
 See more docs and the source code at https://oss.terrastruct.com/d2
 `, filepath.Base(ms.Name), ms.Opts.Defaults())
 }
 
-func layoutCmd(ctx context.Context, ms *xmain.State) error {
+func layoutCmd(ctx context.Context, ms *xmain.State, ps []d2plugin.Plugin) error {
 	if len(ms.Opts.Flags.Args()) == 1 {
-		return shortLayoutHelp(ctx, ms)
+		return shortLayoutHelp(ctx, ms, ps)
 	} else if len(ms.Opts.Flags.Args()) == 2 {
-		return longLayoutHelp(ctx, ms)
+		return longLayoutHelp(ctx, ms, ps)
 	} else {
-		return pluginSubcommand(ctx, ms)
+		return pluginSubcommand(ctx, ms, ps)
 	}
 }
 
-func shortLayoutHelp(ctx context.Context, ms *xmain.State) error {
+func shortLayoutHelp(ctx context.Context, ms *xmain.State, ps []d2plugin.Plugin) error {
 	var pluginLines []string
-	plugins, err := d2plugin.ListPlugins(ctx)
+	pinfos, err := d2plugin.ListPluginInfos(ctx, ps)
 	if err != nil {
 		return err
 	}
-	for _, p := range plugins {
+	for _, p := range pinfos {
 		var l string
 		if p.Type == "bundled" {
 			l = fmt.Sprintf("%s (bundled) - %s", p.Name, p.ShortHelp)
@@ -75,47 +75,50 @@ Example:
   D2_LAYOUT=dagre d2 in.d2 out.svg
 
 Subcommands:
-  %s layout [layout name] - Display long help for a particular layout engine
+  %s layout [layout name] - Display long help for a particular layout engine, including its configuration options
 
 See more docs at https://oss.terrastruct.com/d2
 `, strings.Join(pluginLines, "\n"), ms.Name)
 	return nil
 }
 
-func longLayoutHelp(ctx context.Context, ms *xmain.State) error {
+func longLayoutHelp(ctx context.Context, ms *xmain.State, ps []d2plugin.Plugin) error {
 	layout := ms.Opts.Flags.Arg(1)
-	plugin, path, err := d2plugin.FindPlugin(ctx, layout)
-	if errors.Is(err, exec.ErrNotFound) {
-		return layoutNotFound(ctx, layout)
+	plugin, err := d2plugin.FindPlugin(ctx, ps, layout)
+	if err != nil {
+		if errors.Is(err, exec.ErrNotFound) {
+			return layoutNotFound(ctx, ps, layout)
+		}
+		return err
 	}
 
-	pluginLocation := "bundled"
-	if path != "" {
-		pluginLocation = fmt.Sprintf("executable plugin at %s", humanPath(path))
-	}
-
-	pluginInfo, err := plugin.Info(ctx)
+	pinfo, err := plugin.Info(ctx)
 	if err != nil {
 		return err
 	}
 
-	if !strings.HasSuffix(pluginInfo.LongHelp, "\n") {
-		pluginInfo.LongHelp += "\n"
+	plocation := pinfo.Type
+	if pinfo.Type == "binary" {
+		plocation = fmt.Sprintf("executable plugin at %s", humanPath(pinfo.Path))
+	}
+
+	if !strings.HasSuffix(pinfo.LongHelp, "\n") {
+		pinfo.LongHelp += "\n"
 	}
 	fmt.Fprintf(ms.Stdout, `%s (%s):
 
-%s`, pluginInfo.Name, pluginLocation, pluginInfo.LongHelp)
+%s`, pinfo.Name, plocation, pinfo.LongHelp)
 
 	return nil
 }
 
-func layoutNotFound(ctx context.Context, layout string) error {
-	var names []string
-	plugins, err := d2plugin.ListPlugins(ctx)
+func layoutNotFound(ctx context.Context, ps []d2plugin.Plugin, layout string) error {
+	pinfos, err := d2plugin.ListPluginInfos(ctx, ps)
 	if err != nil {
 		return err
 	}
-	for _, p := range plugins {
+	var names []string
+	for _, p := range pinfos {
 		names = append(names, p.Name)
 	}
 
@@ -126,11 +129,14 @@ For more information on setup, please visit https://github.com/terrastruct/d2.`,
 		layout, strings.Join(names, ", "))
 }
 
-func pluginSubcommand(ctx context.Context, ms *xmain.State) error {
+func pluginSubcommand(ctx context.Context, ms *xmain.State, ps []d2plugin.Plugin) error {
 	layout := ms.Opts.Flags.Arg(1)
-	plugin, _, err := d2plugin.FindPlugin(ctx, layout)
-	if errors.Is(err, exec.ErrNotFound) {
-		return layoutNotFound(ctx, layout)
+	plugin, err := d2plugin.FindPlugin(ctx, ps, layout)
+	if err != nil {
+		if errors.Is(err, exec.ErrNotFound) {
+			return layoutNotFound(ctx, ps, layout)
+		}
+		return err
 	}
 
 	ms.Opts.Args = ms.Opts.Flags.Args()[2:]

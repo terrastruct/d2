@@ -7,9 +7,11 @@ import (
 	"errors"
 	"fmt"
 	"os/exec"
+	"strconv"
 	"time"
 
 	"oss.terrastruct.com/util-go/xdefer"
+	"oss.terrastruct.com/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2graph"
 )
@@ -37,9 +39,65 @@ import (
 // the error to stderr.
 type execPlugin struct {
 	path string
+	opts map[string]string
+	info *PluginInfo
 }
 
-func (p execPlugin) Info(ctx context.Context) (_ *PluginInfo, err error) {
+func (p *execPlugin) Flags(ctx context.Context) (_ []PluginSpecificFlag, err error) {
+	ctx, cancel := context.WithTimeout(ctx, time.Second*10)
+	defer cancel()
+	cmd := exec.CommandContext(ctx, p.path, "flags")
+	defer xdefer.Errorf(&err, "failed to run %v", cmd.Args)
+
+	stdout, err := cmd.Output()
+	if err != nil {
+		ee := &exec.ExitError{}
+		if errors.As(err, &ee) && len(ee.Stderr) > 0 {
+			return nil, fmt.Errorf("%v\nstderr:\n%s", ee, ee.Stderr)
+		}
+		return nil, err
+	}
+
+	var flags []PluginSpecificFlag
+
+	err = json.Unmarshal(stdout, &flags)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal json: %w", err)
+	}
+
+	return flags, nil
+}
+
+func (p *execPlugin) HydrateOpts(opts []byte) error {
+	if opts != nil {
+		var execOpts map[string]interface{}
+		err := json.Unmarshal(opts, &execOpts)
+		if err != nil {
+			return xmain.UsageErrorf("non-exec layout options given for exec")
+		}
+
+		allString := make(map[string]string)
+		for k, v := range execOpts {
+			switch vt := v.(type) {
+			case string:
+				allString[k] = vt
+			case int64:
+				allString[k] = strconv.Itoa(int(vt))
+			case float64:
+				allString[k] = strconv.Itoa(int(vt))
+			}
+		}
+
+		p.opts = allString
+	}
+	return nil
+}
+
+func (p *execPlugin) Info(ctx context.Context) (_ *PluginInfo, err error) {
+	if p.info != nil {
+		return p.info, nil
+	}
+
 	ctx, cancel := context.WithTimeout(ctx, time.Second*10)
 	defer cancel()
 	cmd := exec.CommandContext(ctx, p.path, "info")
@@ -61,10 +119,11 @@ func (p execPlugin) Info(ctx context.Context) (_ *PluginInfo, err error) {
 		return nil, fmt.Errorf("failed to unmarshal json: %w", err)
 	}
 
+	p.info = &info
 	return &info, nil
 }
 
-func (p execPlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
+func (p *execPlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute)
 	defer cancel()
 
@@ -73,7 +132,11 @@ func (p execPlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
 		return err
 	}
 
-	cmd := exec.CommandContext(ctx, p.path, "layout")
+	args := []string{"layout"}
+	for k, v := range p.opts {
+		args = append(args, fmt.Sprintf("--%s", k), v)
+	}
+	cmd := exec.CommandContext(ctx, p.path, args...)
 
 	buffer := bytes.Buffer{}
 	buffer.Write(graphBytes)
@@ -95,7 +158,7 @@ func (p execPlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
 	return nil
 }
 
-func (p execPlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) {
+func (p *execPlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute)
 	defer cancel()
 

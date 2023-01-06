@@ -21,6 +21,13 @@ import (
 // Also see execPlugin in exec.go for the d2 binary plugin protocol.
 func Serve(p Plugin) xmain.RunFunc {
 	return func(ctx context.Context, ms *xmain.State) (err error) {
+		fs, err := p.Flags(ctx)
+		if err != nil {
+			return err
+		}
+		for _, f := range fs {
+			f.AddToOpts(ms.Opts)
+		}
 		err = ms.Opts.Flags.Parse(ms.Opts.Args)
 		if !errors.Is(err, pflag.ErrHelp) && err != nil {
 			return xmain.UsageErrorf("failed to parse flags: %v", err)
@@ -34,10 +41,17 @@ func Serve(p Plugin) xmain.RunFunc {
 			return xmain.UsageErrorf("expected first argument to be subcmd name")
 		}
 
+		err = HydratePluginOpts(ctx, ms, p)
+		if err != nil {
+			return err
+		}
+
 		subcmd := ms.Opts.Flags.Arg(0)
 		switch subcmd {
 		case "info":
 			return info(ctx, p, ms)
+		case "flags":
+			return flags(ctx, p, ms)
 		case "layout":
 			return layout(ctx, p, ms)
 		case "postprocess":
@@ -54,6 +68,22 @@ func info(ctx context.Context, p Plugin, ms *xmain.State) error {
 		return err
 	}
 	b, err := json.Marshal(info)
+	if err != nil {
+		return err
+	}
+	_, err = ms.Stdout.Write(b)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func flags(ctx context.Context, p Plugin, ms *xmain.State) error {
+	flags, err := p.Flags(ctx)
+	if err != nil {
+		return err
+	}
+	b, err := json.Marshal(flags)
 	if err != nil {
 		return err
 	}

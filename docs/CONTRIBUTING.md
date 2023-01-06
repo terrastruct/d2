@@ -17,6 +17,20 @@ Most of D2's CI is open sourced in its own
 workflows. E.g. run `./make.sh fmt` to run the formatter. Please make sure all CI is
 passing for any PRs.
 
+Most of the CI scripts rely on a submodule shared between many D2 repositories:
+[https://github.com/terrastruct/ci](https://github.com/terrastruct/ci). You should fetch
+the submodule whenever it differs:
+
+```sh
+git submodule update --recursive
+```
+
+If running for the first time for a repo (e.g. new clone), add `--init`:
+
+```sh
+git submodule update --init --recursive
+```
+
 ## Flow
 
 The simplified D2 flow at a package level looks like:
@@ -25,6 +39,9 @@ The simplified D2 flow at a package level looks like:
 
 ## Logistics
 
+- Use Go 1.18. Go 1.19's autofmt inexplicably strips spacing from ASCII art in comments.
+- Please sign your commits
+  ([https://github.com/terrastruct/d2/pull/557#issuecomment-1367468730](https://github.com/terrastruct/d2/pull/557#issuecomment-1367468730)).
 - D2 uses Issues as TODOs. No auto-closing on staleness.
 - Branch off `master`.
 - Prefix pull request titles with a short descriptor of the domain, e.g. `d2renderer: Add

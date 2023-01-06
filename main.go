@@ -75,6 +75,15 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		return err
 	}
 
+	ps, err := d2plugin.ListPlugins(ctx)
+	if err != nil {
+		return err
+	}
+	err = populateLayoutOpts(ctx, ms, ps)
+	if err != nil {
+		return err
+	}
+
 	err = ms.Opts.Flags.Parse(ms.Opts.Args)
 	if !errors.Is(err, pflag.ErrHelp) && err != nil {
 		return xmain.UsageErrorf("failed to parse flags: %v", err)
@@ -88,7 +97,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	if len(ms.Opts.Flags.Args()) > 0 {
 		switch ms.Opts.Flags.Arg(0) {
 		case "layout":
-			return layoutCmd(ctx, ms)
+			return layoutCmd(ctx, ms, ps)
 		case "fmt":
 			return fmtCmd(ctx, ms)
 		case "version":
@@ -137,18 +146,28 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	ms.Log.Debug.Printf("using theme %s (ID: %d)", match.Name, *themeFlag)
 
-	plugin, path, err := d2plugin.FindPlugin(ctx, *layoutFlag)
-	if errors.Is(err, exec.ErrNotFound) {
-		return layoutNotFound(ctx, *layoutFlag)
-	} else if err != nil {
+	plugin, err := d2plugin.FindPlugin(ctx, ps, *layoutFlag)
+	if err != nil {
+		if errors.Is(err, exec.ErrNotFound) {
+			return layoutNotFound(ctx, ps, *layoutFlag)
+		}
 		return err
 	}
 
-	pluginLocation := "bundled"
-	if path != "" {
-		pluginLocation = fmt.Sprintf("executable plugin at %s", humanPath(path))
+	err = d2plugin.HydratePluginOpts(ctx, ms, plugin)
+	if err != nil {
+		return err
 	}
-	ms.Log.Debug.Printf("using layout plugin %s (%s)", *layoutFlag, pluginLocation)
+
+	pinfo, err := plugin.Info(ctx)
+	if err != nil {
+		return err
+	}
+	plocation := pinfo.Type
+	if pinfo.Type == "binary" {
+		plocation = fmt.Sprintf("executable plugin at %s", humanPath(pinfo.Path))
+	}
+	ms.Log.Debug.Printf("using layout plugin %s (%s)", *layoutFlag, plocation)
 
 	var pw png.Playwright
 	if filepath.Ext(outputPath) == ".png" {
@@ -287,4 +306,19 @@ func renameExt(fp string, newExt string) string {
 // TODO: remove after removing slog
 func DiscardSlog(ctx context.Context) context.Context {
 	return ctxlog.With(ctx, slog.Make(sloghuman.Sink(io.Discard)))
+}
+
+func populateLayoutOpts(ctx context.Context, ms *xmain.State, ps []d2plugin.Plugin) error {
+	pluginFlags, err := d2plugin.ListPluginFlags(ctx, ps)
+	if err != nil {
+		return err
+	}
+
+	for _, f := range pluginFlags {
+		f.AddToOpts(ms.Opts)
+		// Don't pollute the main d2 flagset with these. It'll be a lot
+		ms.Opts.Flags.MarkHidden(f.Name)
+	}
+
+	return nil
 }

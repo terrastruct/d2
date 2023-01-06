@@ -211,6 +211,15 @@ d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height c
 `,
 		},
 		{
+			name: "dimension_with_style",
+
+			text: `x: {
+  width: 200
+  style.multiple: true
+}
+`,
+		},
+		{
 			name: "basic_icon",
 
 			text: `hey: "" {

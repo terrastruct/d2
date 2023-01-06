@@ -836,7 +836,7 @@ func (c *compiler) validateKey(obj *d2graph.Object, m *d2ast.Map, mk *d2ast.Key)
 	switch strings.ToLower(obj.Attributes.Shape.Value) {
 	case d2target.ShapeSQLTable, d2target.ShapeClass:
 	default:
-		if len(obj.Children) > 0 && (reserved == "width" || reserved == "height") {
+		if len(obj.Children) > 0 && !(len(obj.Children) == 1 && obj.ChildrenArray[0].ID == "style") && (reserved == "width" || reserved == "height") {
 			c.errorf(mk.Range.Start, mk.Range.End, fmt.Sprintf("%s cannot be used on container: %s", reserved, obj.AbsID()))
 		}
 	}
