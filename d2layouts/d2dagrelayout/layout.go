@@ -149,7 +149,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			// for `b <- a`, edge.Edge is `a -> b` and we expect this routing result
 			src, dst = dst, src
 		}
-		loadScript += generateAddEdgeLine(src.AbsID(), dst.AbsID(), edge.AbsID())
+		loadScript += generateAddEdgeLine(src.AbsID(), dst.AbsID(), edge.AbsID(), edge.LabelDimensions.Width, edge.LabelDimensions.Height)
 	}
 
 	if debugJS {
@@ -291,6 +291,7 @@ func setGraphAttrs(attrs dagreOpts) string {
   edgesep: %d,
   nodesep: %d,
   rankdir: "%s",
+  labelpos: "c",
 });
 `,
 		attrs.ranksep,
@@ -320,7 +321,6 @@ func generateAddParentLine(childID, parentID string) string {
 	return fmt.Sprintf("g.setParent(`%s`, `%s`);\n", escapeID(childID), escapeID(parentID))
 }
 
-func generateAddEdgeLine(fromID, toID, edgeID string) string {
-	// in dagre v is from, w is to, name is to uniquely identify
-	return fmt.Sprintf("g.setEdge({v:`%s`, w:`%s`, name:`%s` });\n", escapeID(fromID), escapeID(toID), escapeID(edgeID))
+func generateAddEdgeLine(fromID, toID, edgeID string, width, height int) string {
+	return fmt.Sprintf("g.setEdge({v:`%s`, w:`%s`, name:`%s`}, { width:%d, height:%d });\n", escapeID(fromID), escapeID(toID), escapeID(edgeID), width, height)
 }
