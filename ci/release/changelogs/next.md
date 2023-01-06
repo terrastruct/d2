@@ -14,3 +14,4 @@
 - Fixes an error during ELK layout when images had empty labels. [#555](https://github.com/terrastruct/d2/pull/555)
 - Fixes rendering classes and tables with empty headers. [#498](https://github.com/terrastruct/d2/pull/498)
 - Fixes rendering sql tables with no columns. [#553](https://github.com/terrastruct/d2/pull/553)
+- Fixes routing between sql table columns if the column name is the prefix of the table name [#615](https://github.com/terrastruct/d2/pull/615)
