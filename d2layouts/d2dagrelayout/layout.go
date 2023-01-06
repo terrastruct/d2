@@ -86,31 +86,18 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			NodeSep: opts.NodeSep,
 		},
 	}
-	isHorizontal := false
 	switch g.Root.Attributes.Direction.Value {
 	case "down":
 		rootAttrs.rankdir = "TB"
 	case "right":
 		rootAttrs.rankdir = "LR"
-		isHorizontal = true
 	case "left":
 		rootAttrs.rankdir = "RL"
-		isHorizontal = true
 	case "up":
 		rootAttrs.rankdir = "BT"
 	default:
 		rootAttrs.rankdir = "TB"
 	}
-
-	maxLabelSize := 0
-	for _, edge := range g.Edges {
-		size := edge.LabelDimensions.Width
-		if !isHorizontal {
-			size = edge.LabelDimensions.Height
-		}
-		maxLabelSize = go2.Max(maxLabelSize, size)
-	}
-	rootAttrs.ranksep = go2.Max(100, maxLabelSize+40)
 
 	configJS := setGraphAttrs(rootAttrs)
 	if _, err := vm.RunString(configJS); err != nil {
