@@ -734,8 +734,8 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				}
 				fmt.Fprintf(writer, out)
 			} else {
-				fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-					targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
+				fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" rx="%d" />`,
+					targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style, targetShape.BorderRadius)
 			}
 		}
 	case d2target.ShapeText, d2target.ShapeCode:
