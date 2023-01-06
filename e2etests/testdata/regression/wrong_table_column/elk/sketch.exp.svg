@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg
+id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="497" height="696" viewBox="-88 -88 497 696"><style type="text/css">
+width="501" height="700" viewBox="-90 -90 501 700"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -18,7 +19,27 @@ width="497" height="696" viewBox="-88 -88 497 696"><style type="text/css">
 }
 
 ]]>
-</style><g id="Chinchillas"><g class="shape" ><rect class="shape" x="31" y="256" width="259" height="252" style="fill:#FFFFFF;stroke:#0A0F25;opacity:1.000000;stroke-width:2;"/><rect class="class_header" x="31.000000" y="256.000000" width="259.000000" height="36.000000" fill="#0A0F25" /><text class="text" x="51.000000" y="283.000000" style="text-anchor:start;font-size:24px;fill:#FFFFFF">Chinchillas</text><text class="text" x="41.000000" y="315.000000" style="text-anchor:start;font-size:20px;fill:#0D32B2">id</text>
+</style><script type="application/javascript"><![CDATA[window.addEventListener("DOMContentLoaded", () => {
+  if (document.documentElement.getAttribute("id") !== "d2-svg") {
+    return;
+  }
+  const svgEl = document.documentElement;
+  let width = parseInt(svgEl.getAttribute("width"), 10);
+  let height = parseInt(svgEl.getAttribute("height"), 10);
+  let ratio;
+  if (width > height) {
+    if (width > window.innerWidth) {
+      ratio = window.innerWidth / width;
+    }
+  } else if (height > window.innerHeight) {
+    ratio = window.innerHeight / height;
+  }
+  if (ratio) {
+    svgEl.setAttribute("width", width * ratio - 16);
+    svgEl.setAttribute("height", height * ratio - 16);
+  }
+});
+]]></script><g id="Chinchillas"><g class="shape" ><rect class="shape" x="31" y="256" width="259" height="252" style="fill:#FFFFFF;stroke:#0A0F25;opacity:1.000000;stroke-width:2;"/><rect class="class_header" x="31.000000" y="256.000000" width="259.000000" height="36.000000" fill="#0A0F25" /><text class="text" x="51.000000" y="283.000000" style="text-anchor:start;font-size:24px;fill:#FFFFFF">Chinchillas</text><text class="text" x="41.000000" y="315.000000" style="text-anchor:start;font-size:20px;fill:#0D32B2">id</text>
 <text class="text" x="162.000000" y="315.000000" style="text-anchor:start;font-size:20px;fill:#676C7E">int</text>
 <text class="text" x="270.000000" y="315.000000" style="text-anchor:end;font-size:20px;fill:#4A6FF3;letter-spacing:2px;">PK</text><line x1="31.000000" y1="328.000000" x2="290.000000" y2="328.000000" style="stroke-width:2;stroke:#0A0F25" /><text class="text" x="41.000000" y="351.000000" style="text-anchor:start;font-size:20px;fill:#0D32B2">whisker_len</text>
 <text class="text" x="162.000000" y="351.000000" style="text-anchor:start;font-size:20px;fill:#676C7E">int</text>
@@ -36,8 +57,8 @@ width="497" height="696" viewBox="-88 -88 497 696"><style type="text/css">
 <text class="text" x="130.000000" y="107.000000" style="text-anchor:start;font-size:20px;fill:#676C7E">id</text>
 <text class="text" x="289.000000" y="107.000000" style="text-anchor:end;font-size:20px;fill:#4A6FF3;letter-spacing:2px;">FK</text><line x1="12.000000" y1="120.000000" x2="309.000000" y2="120.000000" style="stroke-width:2;stroke:#0A0F25" /><text class="text" x="22.000000" y="143.000000" style="text-anchor:start;font-size:20px;fill:#0D32B2">chinchilla</text>
 <text class="text" x="130.000000" y="143.000000" style="text-anchor:start;font-size:20px;fill:#676C7E">id</text>
-<text class="text" x="289.000000" y="143.000000" style="text-anchor:end;font-size:20px;fill:#4A6FF3;letter-spacing:2px;">FK</text><line x1="12.000000" y1="156.000000" x2="309.000000" y2="156.000000" style="stroke-width:2;stroke:#0A0F25" /></g></g><g id="(Chinchillas_Collectibles -&gt; Chinchillas)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 160.500000 158.000000 L 160.500000 252.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2834576481)"/></g><mask id="2834576481" maskUnits="userSpaceOnUse" x="-100" y="-100" width="497" height="696">
-<rect x="-100" y="-100" width="497" height="696" fill="white"></rect>
+<text class="text" x="289.000000" y="143.000000" style="text-anchor:end;font-size:20px;fill:#4A6FF3;letter-spacing:2px;">FK</text><line x1="12.000000" y1="156.000000" x2="309.000000" y2="156.000000" style="stroke-width:2;stroke:#0A0F25" /></g></g><g id="(Chinchillas_Collectibles -&gt; Chinchillas)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 160.500000 158.000000 L 160.500000 252.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2834576481)"/></g><mask id="2834576481" maskUnits="userSpaceOnUse" x="-100" y="-100" width="501" height="700">
+<rect x="-100" y="-100" width="501" height="700" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text {
