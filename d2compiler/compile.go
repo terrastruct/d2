@@ -666,7 +666,7 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 	obj.SQLTable = &d2target.SQLTable{}
 
 	parentID := obj.Parent.AbsID()
-	tableID := obj.AbsID()
+	prefixTableID := obj.AbsID() + "."
 	for _, col := range obj.ChildrenArray {
 		if col.IDVal == "style" {
 			continue
@@ -702,7 +702,7 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 			srcID := e.Src.AbsID()
 			dstID := e.Dst.AbsID()
 			// skip edges between columns of the same table
-			if strings.HasPrefix(srcID, tableID) && strings.HasPrefix(dstID, tableID) {
+			if strings.HasPrefix(srcID, prefixTableID) && strings.HasPrefix(dstID, prefixTableID) {
 				continue
 			}
 			if srcID == absID {
