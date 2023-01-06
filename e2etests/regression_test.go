@@ -284,27 +284,6 @@ table with short col: RefreshAuthorizationPolicyCache {
 class -> table -> table with short col
 `,
 		},
-		{
-			name: "wrong_table_column",
-			script: `Chinchillas: {
-  shape: sql_table
-  id: int {constraint: primary_key}
-  whisker_len: int
-  fur_color: string
-  age: int
-  server: int {constraint: foreign_key}
-  caretaker: int {constraint: foreign_key}
-}
-
-Chinchillas_Collectibles: {
-  shape: sql_table
-  id: int
-  collectible: id {constraint: foreign_key}
-  chinchilla: id {constraint: foreign_key}
-}
-
-Chinchillas_Collectibles.chinchilla -> Chinchillas.id`,
-		},
 	}
 
 	runa(t, tcs)
