@@ -5,6 +5,8 @@
 
 #### Improvements 🧹
 
+- Dagre edges are spaced apart to prevent label overlap. [#618](https://github.com/terrastruct/d2/pull/618)
+
 #### Bugfixes ⛑️
 
 - Appendix seperator line no longer added to PNG export when appendix doesn't exist. [#582](https://github.com/terrastruct/d2/pull/582)
