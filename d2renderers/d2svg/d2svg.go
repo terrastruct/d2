@@ -27,6 +27,7 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2latex"
 	"oss.terrastruct.com/d2/d2renderers/d2sketch"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
@@ -61,11 +62,12 @@ var sketchStyleCSS string
 var mdCSS string
 
 type RenderOpts struct {
-	Pad    int
-	Sketch bool
+	Pad     int
+	Sketch  bool
+	ThemeID int64
 }
 
-func setViewbox(writer io.Writer, diagram *d2target.Diagram, pad int) (width int, height int) {
+func setViewbox(writer io.Writer, diagram *d2target.Diagram, pad int, bgColor string) (width int, height int) {
 	tl, br := diagram.BoundingBox()
 	w := br.X - tl.X + pad*2
 	h := br.Y - tl.Y + pad*2
@@ -75,9 +77,9 @@ func setViewbox(writer io.Writer, diagram *d2target.Diagram, pad int) (width int
 	fmt.Fprintf(writer, `<?xml version="1.0" encoding="utf-8"?>
 <svg
 id="d2-svg"
-style="background: white;"
+style="background: %s;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="%d" height="%d" viewBox="%d %d %d %d">`, w, h, tl.X-pad, tl.Y-pad, w, h)
+width="%d" height="%d" viewBox="%d %d %d %d">`, bgColor, w, h, tl.X-pad, tl.Y-pad, w, h)
 
 	return w, h
 }
@@ -123,7 +125,7 @@ func arrowheadDimensions(arrowhead d2target.Arrowhead, strokeWidth float64) (wid
 	return clippedStrokeWidth * widthMultiplier, clippedStrokeWidth * heightMultiplier
 }
 
-func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) string {
+func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2target.Connection) string {
 	arrowhead := connection.DstArrow
 	if !isTarget {
 		arrowhead = connection.SrcArrow
@@ -206,7 +208,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 			)
 		}
 	case d2target.DiamondArrowhead:
-		attrs := fmt.Sprintf(`class="connection" fill="white" stroke="%s" stroke-width="%d"`, connection.Stroke, connection.StrokeWidth)
+		attrs := fmt.Sprintf(`class="connection" fill="%s" stroke="%s" stroke-width="%d"`, bgColor, connection.Stroke, connection.StrokeWidth)
 		if isTarget {
 			path = fmt.Sprintf(`<polygon %s points="%f,%f %f,%f %f,%f %f,%f" />`,
 				attrs,
@@ -225,7 +227,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 			)
 		}
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
-		attrs := fmt.Sprintf(`class="connection" stroke="%s" stroke-width="%d" fill="white"`, connection.Stroke, connection.StrokeWidth)
+		attrs := fmt.Sprintf(`class="connection" stroke="%s" stroke-width="%d" fill="%s"`, connection.Stroke, connection.StrokeWidth, bgColor)
 		offset := 4.0 + float64(connection.StrokeWidth*2)
 		var modifier string
 		if arrowhead == d2target.CfOneRequired || arrowhead == d2target.CfManyRequired {
@@ -407,13 +409,13 @@ func makeLabelMask(labelTL *geo.Point, width, height int) string {
 	)
 }
 
-func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, _ error) {
+func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, _ error) {
 	fmt.Fprintf(writer, `<g id="%s">`, svg.EscapeText(connection.ID))
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(false, connection)
 		if _, in := markers[id]; !in {
-			marker := arrowheadMarker(false, id, connection)
+			marker := arrowheadMarker(false, id, bgColor, connection)
 			if marker == "" {
 				panic(fmt.Sprintf("received empty arrow head marker for: %#v", connection))
 			}
@@ -427,7 +429,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 	if connection.DstArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(true, connection)
 		if _, in := markers[id]; !in {
-			marker := arrowheadMarker(true, id, connection)
+			marker := arrowheadMarker(true, id, bgColor, connection)
 			if marker == "" {
 				panic(fmt.Sprintf("received empty arrow head marker for: %#v", connection))
 			}
@@ -500,7 +502,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		if length > 0 {
 			position = size / length
 		}
-		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.SrcLabel, position, size, size))
+		fmt.Fprint(writer, renderArrowheadLabel(fgColor, connection, connection.SrcLabel, position, size, size))
 	}
 	if connection.DstLabel != "" {
 		// TODO use arrowhead label dimensions https://github.com/terrastruct/d2/issues/183
@@ -509,16 +511,16 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		if length > 0 {
 			position -= size / length
 		}
-		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.DstLabel, position, size, size))
+		fmt.Fprint(writer, renderArrowheadLabel(fgColor, connection, connection.DstLabel, position, size, size))
 	}
 	fmt.Fprintf(writer, `</g>`)
 	return
 }
 
-func renderArrowheadLabel(connection d2target.Connection, text string, position, width, height float64) string {
+func renderArrowheadLabel(fgColor string, connection d2target.Connection, text string, position, width, height float64) string {
 	labelTL := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, width, height)
 
-	textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", connection.FontSize, "black")
+	textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", connection.FontSize, fgColor)
 	x := labelTL.X + width/2
 	y := labelTL.Y + float64(connection.FontSize)
 	return fmt.Sprintf(`<text class="text-italic" x="%f" y="%f" style="%s">%s</text>`,
@@ -1115,8 +1117,12 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 	}
 
+	theme := d2themescatalog.Find(opts.ThemeID)
+	bgColor := theme.Colors.Neutrals.N7
+	fgColor := theme.Colors.Neutrals.N1
+
 	buf := &bytes.Buffer{}
-	w, h := setViewbox(buf, diagram, pad)
+	w, h := setViewbox(buf, diagram, pad, bgColor)
 
 	styleCSS2 := ""
 	if sketchRunner != nil {
@@ -1179,7 +1185,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	markers := map[string]struct{}{}
 	for _, obj := range allObjects {
 		if c, is := obj.(d2target.Connection); is {
-			labelMask, err := drawConnection(buf, labelMaskID, c, markers, idToShape, sketchRunner)
+			labelMask, err := drawConnection(buf, bgColor, fgColor, labelMaskID, c, markers, idToShape, sketchRunner)
 			if err != nil {
 				return nil, err
 			}

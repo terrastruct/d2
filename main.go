@@ -248,6 +248,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
 		Pad:    int(pad),
 		Sketch: sketch,
+		ThemeID: themeID,
 	})
 	if err != nil {
 		return nil, false, err
