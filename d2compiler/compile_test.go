@@ -211,6 +211,15 @@ d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height c
 `,
 		},
 		{
+			name: "dimension_with_style",
+
+			text: `x: {
+  width: 200
+  style.multiple: true
+}
+`,
+		},
+		{
 			name: "basic_icon",
 
 			text: `hey: "" {
@@ -1842,6 +1851,31 @@ choo: {
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/sql-panic.d2:3:27: constraint value must be a string
 `,
+		},
+		{
+			name: "wrong_column_index",
+			text: `Chinchillas: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  whisker_len: int
+  fur_color: string
+  age: int
+  server: int {constraint: foreign_key}
+  caretaker: int {constraint: foreign_key}
+}
+
+Chinchillas_Collectibles: {
+  shape: sql_table
+  id: int
+  collectible: id {constraint: foreign_key}
+  chinchilla: id {constraint: foreign_key}
+}
+
+Chinchillas_Collectibles.chinchilla -> Chinchillas.id`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 0, *g.Edges[0].DstTableColumnIndex)
+				tassert.Equal(t, 2, *g.Edges[0].SrcTableColumnIndex)
+			},
 		},
 	}
 

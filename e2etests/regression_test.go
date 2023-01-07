@@ -284,6 +284,26 @@ table with short col: RefreshAuthorizationPolicyCache {
 class -> table -> table with short col
 `,
 		},
+		{
+			name: "overlapping-edge-label",
+			script: `k8s: Kubernetes
+k8s.m1: k8s-master1
+k8s.m2: k8s-master2
+k8s.m3: k8s-master3
+k8s.w1: k8s-worker1
+k8s.w2: k8s-worker2
+k8s.w3: k8s-worker3
+
+osvc: opensvc
+osvc.vm1: VM1
+osvc.vm2: VM2
+
+k8s -> osvc: keycloak
+k8s -> osvc: heptapod
+k8s -> osvc: harbor
+k8s -> osvc: vault
+`,
+		},
 	}
 
 	runa(t, tcs)
