@@ -68,7 +68,7 @@ type RenderOpts struct {
 	ThemeID  int64
 }
 
-func setViewbox(writer io.Writer, diagram *d2target.Diagram, pad int, bgColor string) (width int, height int) {
+func setViewbox(writer io.Writer, diagram *d2target.Diagram, pad int, bgColor string, fgColor string) (width int, height int) {
 	tl, br := diagram.BoundingBox()
 	w := br.X - tl.X + pad*2
 	h := br.Y - tl.Y + pad*2
@@ -78,9 +78,9 @@ func setViewbox(writer io.Writer, diagram *d2target.Diagram, pad int, bgColor st
 	fmt.Fprintf(writer, `<?xml version="1.0" encoding="utf-8"?>
 <svg
 id="d2-svg"
-style="background: %s;"
+style="background: %s; color: %s;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="%d" height="%d" viewBox="%d %d %d %d">`, bgColor, w, h, tl.X-pad, tl.Y-pad, w, h)
+width="%d" height="%d" viewBox="%d %d %d %d">`, bgColor, fgColor, w, h, tl.X-pad, tl.Y-pad, w, h)
 
 	return w, h
 }
@@ -1125,7 +1125,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	fgColor := theme.Colors.Neutrals.N1
 
 	buf := &bytes.Buffer{}
-	w, h := setViewbox(buf, diagram, pad, bgColor)
+	w, h := setViewbox(buf, diagram, pad, bgColor, fgColor)
 
 	styleCSS2 := ""
 	if sketchRunner != nil {
