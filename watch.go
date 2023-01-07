@@ -43,6 +43,7 @@ type watcherOpts struct {
 	themeID      int64
 	pad          int64
 	sketch       bool
+	sketchBg     bool
 	host         string
 	port         string
 	inputPath    string
@@ -356,7 +357,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.pw = newPW
 		}
 
-		svg, _, err := compile(ctx, w.ms, w.layoutPlugin, w.sketch, w.pad, w.themeID, w.inputPath, w.outputPath, w.bundle, w.pw.Page)
+		svg, _, err := compile(ctx, w.ms, w.layoutPlugin, w.sketch, w.sketchBg, w.pad, w.themeID, w.inputPath, w.outputPath, w.bundle, w.pw.Page)
 		errs := ""
 		if err != nil {
 			if len(svg) > 0 {

@@ -62,9 +62,10 @@ var sketchStyleCSS string
 var mdCSS string
 
 type RenderOpts struct {
-	Pad     int
-	Sketch  bool
-	ThemeID int64
+	Pad      int
+	Sketch   bool
+	SketchBg bool
+	ThemeID  int64
 }
 
 func setViewbox(writer io.Writer, diagram *d2target.Diagram, pad int, bgColor string) (width int, height int) {
@@ -1106,8 +1107,10 @@ var fitToScreenScript string
 func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	var sketchRunner *d2sketch.Runner
 	pad := DEFAULT_PADDING
+	sketchBg := true
 	if opts != nil {
 		pad = opts.Pad
+		sketchBg = opts.SketchBg
 		if opts.Sketch {
 			var err error
 			sketchRunner, err = d2sketch.InitSketchVM()
@@ -1128,11 +1131,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	if sketchRunner != nil {
 		styleCSS2 = "\n" + sketchStyleCSS
 	}
-	buf.WriteString(fmt.Sprintf(`<style type="text/css">
-<![CDATA[
-%s%s
-]]>
-</style>`, styleCSS, styleCSS2))
+	buf.WriteString(fmt.Sprintf(`<style type="text/css"><![CDATA[%s%s]]></style>`, styleCSS, styleCSS2))
 
 	// this script won't run in --watch mode because script tags are ignored when added via el.innerHTML = element
 	// https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML
@@ -1148,8 +1147,8 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	if hasMarkdown {
 		fmt.Fprintf(buf, `<style type="text/css">%s</style>`, mdCSS)
 	}
-	if sketchRunner != nil {
-		fmt.Fprintf(buf, d2sketch.DefineFillPattern())
+	if sketchRunner != nil && sketchBg {
+		fmt.Fprint(buf, d2sketch.DefineFillPattern())
 	}
 
 	// only define shadow filter if a shape uses it

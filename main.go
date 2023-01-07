@@ -75,6 +75,11 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		return err
 	}
 
+	sketchBgFlag, err := ms.Opts.Bool("D2_SKT_BG", "sketch_bg", "", true, "make the background look like it was sketched too")
+	if err != nil {
+		return err
+	}
+
 	ps, err := d2plugin.ListPlugins(ctx)
 	if err != nil {
 		return err
@@ -209,7 +214,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	_, written, err := compile(ctx, ms, plugin, *sketchFlag, *padFlag, *themeFlag, inputPath, outputPath, *bundleFlag, pw.Page)
+	_, written, err := compile(ctx, ms, plugin, *sketchFlag, *sketchBgFlag, *padFlag, *themeFlag, inputPath, outputPath, *bundleFlag, pw.Page)
 	if err != nil {
 		if written {
 			return fmt.Errorf("failed to fully compile (partial render written): %w", err)
@@ -220,7 +225,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad, themeID int64, inputPath, outputPath string, bundle bool, page playwright.Page) (_ []byte, written bool, _ error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, sketchBg bool, pad, themeID int64, inputPath, outputPath string, bundle bool, page playwright.Page) (_ []byte, written bool, _ error) {
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
 		return nil, false, err
@@ -246,9 +251,10 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	}
 
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad:    int(pad),
-		Sketch: sketch,
-		ThemeID: themeID,
+		Pad:      int(pad),
+		Sketch:   sketch,
+		SketchBg: sketchBg,
+		ThemeID:  themeID,
 	})
 	if err != nil {
 		return nil, false, err
