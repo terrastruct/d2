@@ -1,3 +1,5 @@
+// TODO: Remove boxes and cleanup like d2ir
+//
 // d2ast implements the d2 language's abstract syntax tree.
 //
 // Special characters to think about in parser:
