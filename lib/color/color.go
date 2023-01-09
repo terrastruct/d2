@@ -1,11 +1,36 @@
 package color
 
 import (
+	"regexp"
+
 	"github.com/lucasb-eyer/go-colorful"
 	"github.com/mazznoer/csscolorparser"
 )
 
+var themeRegex = regexp.MustCompile("^B[1-6]$")
+
 func Darken(colorString string) (string, error) {
+	if themeRegex.MatchString(colorString) {
+		switch colorString[1] {
+		case '1':
+			return B1, nil
+		case '2':
+			return B1, nil
+		case '3':
+			return B2, nil
+		case '4':
+			return B3, nil
+		case '5':
+			return B4, nil
+		case '6':
+			return B5, nil
+		}
+	}
+
+	return DarkenCSS(colorString)
+}
+
+func DarkenCSS(colorString string) (string, error) {
 	c, err := csscolorparser.Parse(colorString)
 	if err != nil {
 		return "", err

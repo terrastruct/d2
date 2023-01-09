@@ -618,6 +618,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	)
 	border := svg_style.NewThemableElement("path")
 	border.D = strings.Join(borderSegments, " ")
+	border.Fill = color.None
 	_, borderStroke := svg_style.ShapeTheme(targetShape)
 	border.Stroke = borderStroke
 	borderStyle := svg_style.ShapeStyle(targetShape)
@@ -646,6 +647,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	mainShape.Mask = fmt.Sprintf("url(#%s)", maskID)
 	mainShapeFill, _ := svg_style.ShapeTheme(targetShape)
 	mainShape.Fill = mainShapeFill
+	mainShape.Stroke = color.None
 	mainShape.Style = svg_style.ShapeStyle(targetShape)
 	mainShapeRendered := mainShape.Render()
 
@@ -663,18 +665,17 @@ func render3dRect(targetShape d2target.Shape) string {
 			fmt.Sprintf("%d,%d", v.X+targetShape.Pos.X, v.Y+targetShape.Pos.Y),
 		)
 	}
-	// TODO make darker color part of the theme?
-	darkerColor := targetShape.Fill
-	// darkerColor, err := color.Darken(targetShape.Fill)
-	// if err != nil {
-	// 	darkerColor = targetShape.Fill
-	// }
+	// TODO make darker color part of the theme? or just keep this bypass
+	darkerColor, err := color.Darken(targetShape.Fill)
+	if err != nil {
+		darkerColor = targetShape.Fill
+	}
 	sideShape := svg_style.NewThemableElement("polygon")
 	sideShape.Fill = darkerColor
 	sideShape.Points = strings.Join(sidePoints, " ")
 	sideShape.Mask = fmt.Sprintf("url(#%s)", maskID)
 	sideShape.Style = svg_style.ShapeStyle(targetShape)
-	renderedSides := mainShape.Render()
+	renderedSides := sideShape.Render()
 
 	return borderMask + mainShapeRendered + renderedSides + renderedBorder
 }
