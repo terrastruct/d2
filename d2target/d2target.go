@@ -11,7 +11,7 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/d2themes"
+	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/shape"
@@ -416,11 +416,11 @@ func NewTextDimensions(w, h int) *TextDimensions {
 	return &TextDimensions{Width: w, Height: h}
 }
 
-func (text MText) GetColor(theme *d2themes.Theme, isItalic bool) string {
+func (text MText) GetColor(isItalic bool) string {
 	if isItalic {
-		return theme.Colors.Neutrals.N2
+		return color.N2
 	}
-	return theme.Colors.Neutrals.N1
+	return color.N1
 }
 
 var DSL_SHAPE_TO_SHAPE_TYPE = map[string]string{

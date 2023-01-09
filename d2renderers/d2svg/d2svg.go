@@ -27,12 +27,12 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2latex"
 	"oss.terrastruct.com/d2/d2renderers/d2sketch"
 	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/shape"
 	"oss.terrastruct.com/d2/lib/svg"
+	svg_style "oss.terrastruct.com/d2/lib/svg/style"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
@@ -68,21 +68,12 @@ type RenderOpts struct {
 	ThemeID  int64
 }
 
-func setViewbox(writer io.Writer, diagram *d2target.Diagram, pad int, bgColor string, fgColor string) (width int, height int) {
+func dimensions(writer io.Writer, diagram *d2target.Diagram, pad int) (width, height int, topLeft, bottomRight d2target.Point) {
 	tl, br := diagram.BoundingBox()
 	w := br.X - tl.X + pad*2
 	h := br.Y - tl.Y + pad*2
-	// TODO minify
 
-	// TODO background stuff. e.g. dotted, grid, colors
-	fmt.Fprintf(writer, `<?xml version="1.0" encoding="utf-8"?>
-<svg
-id="d2-svg"
-style="background: %s; color: %s;"
-xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="%d" height="%d" viewBox="%d %d %d %d">`, bgColor, fgColor, w, h, tl.X-pad, tl.Y-pad, w, h)
-
-	return w, h
+	return w, h, tl, br
 }
 
 func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
@@ -94,7 +85,7 @@ func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
 	}
 
 	return fmt.Sprintf("mk-%s", hash(fmt.Sprintf("%s,%t,%d,%s",
-		arrowhead, isTarget, connection.StrokeWidth, connection.Stroke,
+		arrowhead, isTarget, connection.StrokeWidth, svg_style.ConnectionTheme(connection),
 	)))
 }
 
@@ -137,119 +128,136 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 	var path string
 	switch arrowhead {
 	case d2target.ArrowArrowhead:
-		attrs := fmt.Sprintf(`class="connection" fill="%s" stroke-width="%d"`, connection.Stroke, connection.StrokeWidth)
+		polygonEl := svg_style.NewThemableElement("polygon")
+		polygonEl.Fill = svg_style.ConnectionTheme(connection)
+		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+
 		if isTarget {
-			path = fmt.Sprintf(`<polygon %s points="%f,%f %f,%f %f,%f %f,%f" />`,
-				attrs,
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
 				0., 0.,
 				width, height/2,
 				0., height,
 				width/4, height/2,
 			)
 		} else {
-			path = fmt.Sprintf(`<polygon %s points="%f,%f %f,%f %f,%f %f,%f" />`,
-				attrs,
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
 				0., height/2,
 				width, 0.,
 				width*3/4, height/2,
 				width, height,
 			)
 		}
+		path = polygonEl.Render()
 	case d2target.TriangleArrowhead:
-		attrs := fmt.Sprintf(`class="connection" fill="%s" stroke-width="%d"`, connection.Stroke, connection.StrokeWidth)
+		polygonEl := svg_style.NewThemableElement("polygon")
+		polygonEl.Fill = svg_style.ConnectionTheme(connection)
+		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+
 		if isTarget {
-			path = fmt.Sprintf(`<polygon %s points="%f,%f %f,%f %f,%f" />`,
-				attrs,
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
 				0., 0.,
 				width, height/2.0,
 				0., height,
 			)
 		} else {
-			path = fmt.Sprintf(`<polygon %s points="%f,%f %f,%f %f,%f" />`,
-				attrs,
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
 				width, 0.,
 				0., height/2.0,
 				width, height,
 			)
 		}
+		path = polygonEl.Render()
 	case d2target.LineArrowhead:
-		attrs := fmt.Sprintf(`class="connection" fill="none" stroke="%s" stroke-width="%d"`, connection.Stroke, connection.StrokeWidth)
+		polylineEl := svg_style.NewThemableElement("polyline")
+		polylineEl.Fill = color.None
+		polylineEl.Stroke = svg_style.ConnectionTheme(connection)
+		polylineEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+
 		if isTarget {
-			path = fmt.Sprintf(`<polyline %s points="%f,%f %f,%f %f,%f"/>`,
-				attrs,
+			polylineEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
 				strokeWidth/2, strokeWidth/2,
 				width-strokeWidth/2, height/2,
 				strokeWidth/2, height-strokeWidth/2,
 			)
 		} else {
-			path = fmt.Sprintf(`<polyline %s points="%f,%f %f,%f %f,%f"/>`,
-				attrs,
+			polylineEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f",
 				width-strokeWidth/2, strokeWidth/2,
 				strokeWidth/2, height/2,
 				width-strokeWidth/2, height-strokeWidth/2,
 			)
 		}
+		path = polylineEl.Render()
 	case d2target.FilledDiamondArrowhead:
-		attrs := fmt.Sprintf(`class="connection" fill="%s" stroke-width="%d"`, connection.Stroke, connection.StrokeWidth)
+		polygonEl := svg_style.NewThemableElement("polygon")
+		polygonEl.Fill = svg_style.ConnectionTheme(connection)
+		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+
 		if isTarget {
-			path = fmt.Sprintf(`<polygon %s points="%f,%f %f,%f %f,%f %f,%f" />`,
-				attrs,
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
 				0., height/2.0,
 				width/2.0, 0.,
 				width, height/2.0,
 				width/2.0, height,
 			)
 		} else {
-			path = fmt.Sprintf(`<polygon %s points="%f,%f %f,%f %f,%f %f,%f" />`,
-				attrs,
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
 				0., height/2.0,
 				width/2.0, 0.,
 				width, height/2.0,
 				width/2.0, height,
 			)
 		}
+		path = polygonEl.Render()
 	case d2target.DiamondArrowhead:
-		attrs := fmt.Sprintf(`class="connection" fill="%s" stroke="%s" stroke-width="%d"`, bgColor, connection.Stroke, connection.StrokeWidth)
+		polygonEl := svg_style.NewThemableElement("polygon")
+		polygonEl.Fill = bgColor
+		polygonEl.Stroke = svg_style.ConnectionTheme(connection)
+		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+
 		if isTarget {
-			path = fmt.Sprintf(`<polygon %s points="%f,%f %f,%f %f,%f %f,%f" />`,
-				attrs,
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
 				0., height/2.0,
 				width/2, height/8,
 				width, height/2.0,
 				width/2.0, height*0.9,
 			)
 		} else {
-			path = fmt.Sprintf(`<polygon %s points="%f,%f %f,%f %f,%f %f,%f" />`,
-				attrs,
+			polygonEl.Points = fmt.Sprintf("%f,%f %f,%f %f,%f %f,%f",
 				width/8, height/2.0,
 				width*0.6, height/8,
 				width*1.1, height/2.0,
 				width*0.6, height*7/8,
 			)
 		}
+		path = polygonEl.Render()
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
-		attrs := fmt.Sprintf(`class="connection" stroke="%s" stroke-width="%d" fill="%s"`, connection.Stroke, connection.StrokeWidth, bgColor)
 		offset := 4.0 + float64(connection.StrokeWidth*2)
-		var modifier string
+
+		var modifierEl *svg_style.ThemableElement
 		if arrowhead == d2target.CfOneRequired || arrowhead == d2target.CfManyRequired {
-			modifier = fmt.Sprintf(`<path %s d="M%f,%f %f,%f"/>`,
-				attrs,
+			modifierEl := svg_style.NewThemableElement("path")
+			modifierEl.D = fmt.Sprintf("M%f,%f %f,%f",
 				offset, 0.,
 				offset, height,
 			)
+			modifierEl.Fill = bgColor
+			modifierEl.Stroke = svg_style.ConnectionTheme(connection)
+			modifierEl.Class = "connection"
+			modifierEl.Style = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 		} else {
-			modifier = fmt.Sprintf(`<circle %s cx="%f" cy="%f" r="%f"/>`,
-				attrs,
-				offset/2.0+1.0, height/2.0,
-				offset/2.0,
-			)
+			modifierEl := svg_style.NewThemableElement("circle")
+			modifierEl.Cx = offset/2.0 + 1.0
+			modifierEl.Cy = height / 2.0
+			modifierEl.R = offset / 2.0
+			modifierEl.Fill = bgColor
+			modifierEl.Stroke = svg_style.ConnectionTheme(connection)
+			modifierEl.Class = "connection"
+			modifierEl.Style = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 		}
-		if !isTarget {
-			attrs = fmt.Sprintf(`%s transform="scale(-1) translate(-%f, -%f)"`, attrs, width, height)
-		}
+
+		childPathEl := svg_style.NewThemableElement("path")
 		if arrowhead == d2target.CfMany || arrowhead == d2target.CfManyRequired {
-			path = fmt.Sprintf(`<g %s>%s<path d="M%f,%f %f,%f M%f,%f %f,%f M%f,%f %f,%f"/></g>`,
-				attrs, modifier,
+			childPathEl.D = fmt.Sprintf("M%f,%f %f,%f M%f,%f %f,%f M%f,%f %f,%f",
 				width-3.0, height/2.0,
 				width+offset, height/2.0,
 				offset+2.0, height/2.0,
@@ -258,14 +266,26 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 				width+offset, height,
 			)
 		} else {
-			path = fmt.Sprintf(`<g %s>%s<path d="M%f,%f %f,%f M%f,%f %f,%f"/></g>`,
-				attrs, modifier,
+			childPathEl.D = fmt.Sprintf("M%f,%f %f,%f M%f,%f %f,%f",
 				width-3.0, height/2.0,
 				width+offset, height/2.0,
 				offset*1.8, 0.,
 				offset*1.8, height,
 			)
 		}
+
+		gEl := svg_style.NewThemableElement("g")
+		gEl.Fill = bgColor
+		gEl.Stroke = svg_style.ConnectionTheme(connection)
+		gEl.Class = "connection"
+		gEl.Style = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+		if !isTarget {
+			gEl.Transform = fmt.Sprintf("scale(-1) translate(-%f, -%f)", width, height)
+		}
+		gEl.Content = fmt.Sprintf("%s%s",
+			modifierEl.Render(), childPathEl.Render(),
+		)
+		path = gEl.Render()
 	default:
 		return ""
 	}
@@ -462,10 +482,16 @@ func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskI
 		if err != nil {
 			return "", err
 		}
-		fmt.Fprintf(writer, out)
+		fmt.Fprint(writer, out)
 	} else {
-		fmt.Fprintf(writer, `<path d="%s" class="connection" style="fill:none;%s" %s/>`,
-			path, connectionStyle(connection), attrs)
+		pathEl := svg_style.NewThemableElement("path")
+		pathEl.D = path
+		pathEl.Fill = color.None
+		pathEl.Stroke = svg_style.ConnectionTheme(connection)
+		pathEl.Class = "connection"
+		pathEl.Style = svg_style.ConnectionStyle(connection)
+		pathEl.Attributes = attrs
+		fmt.Fprint(writer, pathEl.Render())
 	}
 
 	if connection.Label != "" {
@@ -475,24 +501,27 @@ func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskI
 		} else if connection.Italic {
 			fontClass += "-italic"
 		}
-		fontColor := "black"
-		if connection.Color != "" {
+		fontColor := color.N1
+		if connection.Color != color.Empty {
 			fontColor = connection.Color
 		}
 
-		if connection.Fill != "" {
-			fmt.Fprintf(writer, `<rect x="%f" y="%f" width="%d" height="%d" style="fill:%s" />`,
-				labelTL.X, labelTL.Y, connection.LabelWidth, connection.LabelHeight, connection.Fill)
+		if connection.Fill != color.Empty {
+			rectEl := svg_style.NewThemableElement("rect")
+			rectEl.X, rectEl.Y = labelTL.X, labelTL.Y
+			rectEl.Width, rectEl.Height = float64(connection.LabelWidth), float64(connection.LabelHeight)
+			rectEl.Fill = connection.Fill
+			fmt.Fprint(writer, rectEl.Render())
 		}
-		textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", connection.FontSize, fontColor)
-		x := labelTL.X + float64(connection.LabelWidth)/2
-		y := labelTL.Y + float64(connection.FontSize)
-		fmt.Fprintf(writer, `<text class="%s" x="%f" y="%f" style="%s">%s</text>`,
-			fontClass,
-			x, y,
-			textStyle,
-			RenderText(connection.Label, x, float64(connection.LabelHeight)),
-		)
+
+		textEl := svg_style.NewThemableElement("text")
+		textEl.X = labelTL.X + float64(connection.LabelWidth)/2
+		textEl.Y = labelTL.Y + float64(connection.FontSize)
+		textEl.Fill = fontColor
+		textEl.Class = fontClass
+		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", connection.FontSize)
+		textEl.Content = RenderText(connection.Label, textEl.X, float64(connection.LabelHeight))
+		fmt.Fprint(writer, textEl.Render())
 	}
 
 	length := geo.Route(connection.Route).Length()
@@ -521,22 +550,25 @@ func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskI
 func renderArrowheadLabel(fgColor string, connection d2target.Connection, text string, position, width, height float64) string {
 	labelTL := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, width, height)
 
-	textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", connection.FontSize, fgColor)
-	x := labelTL.X + width/2
-	y := labelTL.Y + float64(connection.FontSize)
-	return fmt.Sprintf(`<text class="text-italic" x="%f" y="%f" style="%s">%s</text>`,
-		x, y,
-		textStyle,
-		RenderText(text, x, height),
-	)
+	textEl := svg_style.NewThemableElement("text")
+	textEl.X = labelTL.X + width/2
+	textEl.Y = labelTL.Y + float64(connection.FontSize)
+	textEl.Fill = fgColor
+	textEl.Class = "text-italic"
+	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", connection.FontSize)
+	textEl.Content = RenderText(text, textEl.X, height)
+	return textEl.Render()
 }
 
-func renderOval(tl *geo.Point, width, height float64, style string) string {
-	rx := width / 2
-	ry := height / 2
-	cx := tl.X + rx
-	cy := tl.Y + ry
-	return fmt.Sprintf(`<ellipse class="shape" cx="%f" cy="%f" rx="%f" ry="%f" style="%s" />`, cx, cy, rx, ry, style)
+func renderOval(tl *geo.Point, width, height float64, fill, stroke, style string) string {
+	el := svg_style.NewThemableElement("ellipse")
+	el.Rx = width / 2
+	el.Ry = height / 2
+	el.Cx = tl.X + el.Rx
+	el.Cy = tl.Y + el.Ry
+	el.Class = "shape"
+	el.Style = style
+	return el.Render()
 }
 
 func defineShadowFilter(writer io.Writer) {
@@ -583,11 +615,13 @@ func render3dRect(targetShape d2target.Shape) string {
 	borderSegments = append(borderSegments,
 		lineTo(d2target.Point{X: targetShape.Width + threeDeeOffset, Y: -threeDeeOffset}),
 	)
-	border := targetShape
-	border.Fill = "none"
-	borderStyle := shapeStyle(border)
-	renderedBorder := fmt.Sprintf(`<path d="%s" style="%s"/>`,
-		strings.Join(borderSegments, " "), borderStyle)
+	border := svg_style.NewThemableElement("path")
+	border.D = strings.Join(borderSegments, " ")
+	_, borderStroke := svg_style.ShapeTheme(targetShape)
+	border.Stroke = borderStroke
+	borderStyle := svg_style.ShapeStyle(targetShape)
+	border.Style = borderStyle
+	renderedBorder := border.Render()
 
 	// create mask from border stroke, to cut away from the shape fills
 	maskID := fmt.Sprintf("border-mask-%v", svg.EscapeText(targetShape.ID))
@@ -603,11 +637,16 @@ func render3dRect(targetShape d2target.Shape) string {
 	}, "\n")
 
 	// render the main rectangle without stroke and the border mask
-	mainShape := targetShape
-	mainShape.Stroke = "none"
-	mainRect := fmt.Sprintf(`<rect x="%d" y="%d" width="%d" height="%d" style="%s" mask="url(#%s)"/>`,
-		targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, shapeStyle(mainShape), maskID,
-	)
+	mainShape := svg_style.NewThemableElement("rect")
+	mainShape.X = float64(targetShape.Pos.X)
+	mainShape.Y = float64(targetShape.Pos.Y)
+	mainShape.Width = float64(targetShape.Width)
+	mainShape.Height = float64(targetShape.Height)
+	mainShape.Mask = fmt.Sprintf("url(#%s)", maskID)
+	mainShapeFill, _ := svg_style.ShapeTheme(targetShape)
+	mainShape.Fill = mainShapeFill
+	mainShape.Style = svg_style.ShapeStyle(targetShape)
+	mainShapeRendered := mainShape.Render()
 
 	// render the side shapes in the darkened color without stroke and the border mask
 	var sidePoints []string
@@ -623,17 +662,20 @@ func render3dRect(targetShape d2target.Shape) string {
 			fmt.Sprintf("%d,%d", v.X+targetShape.Pos.X, v.Y+targetShape.Pos.Y),
 		)
 	}
-	darkerColor, err := color.Darken(targetShape.Fill)
-	if err != nil {
-		darkerColor = targetShape.Fill
-	}
-	sideShape := targetShape
+	// TODO make darker color part of the theme?
+	darkerColor := targetShape.Fill
+	// darkerColor, err := color.Darken(targetShape.Fill)
+	// if err != nil {
+	// 	darkerColor = targetShape.Fill
+	// }
+	sideShape := svg_style.NewThemableElement("polygon")
 	sideShape.Fill = darkerColor
-	sideShape.Stroke = "none"
-	renderedSides := fmt.Sprintf(`<polygon points="%s" style="%s" mask="url(#%s)"/>`,
-		strings.Join(sidePoints, " "), shapeStyle(sideShape), maskID)
+	sideShape.Points = strings.Join(sidePoints, " ")
+	sideShape.Mask = fmt.Sprintf("url(#%s)", maskID)
+	sideShape.Style = svg_style.ShapeStyle(targetShape)
+	renderedSides := mainShape.Render()
 
-	return borderMask + mainRect + renderedSides + renderedBorder
+	return borderMask + mainShapeRendered + renderedSides + renderedBorder
 }
 
 func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, err error) {
@@ -646,7 +688,8 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)
-	style := shapeStyle(targetShape)
+	fill, stroke := svg_style.ShapeTheme(targetShape)
+	style := svg_style.ShapeStyle(targetShape)
 	shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[targetShape.Type]
 
 	s := shape.NewShape(shapeType, geo.NewBox(tl, width, height))
@@ -682,12 +725,12 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			if err != nil {
 				return "", err
 			}
-			fmt.Fprintf(writer, out)
+			fmt.Fprint(writer, out)
 		} else {
 			drawClass(writer, targetShape)
 		}
 		fmt.Fprintf(writer, `</g>`)
-		fmt.Fprintf(writer, closingTag)
+		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeSQLTable:
 		if sketchRunner != nil {
@@ -695,31 +738,38 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			if err != nil {
 				return "", err
 			}
-			fmt.Fprintf(writer, out)
+			fmt.Fprint(writer, out)
 		} else {
 			drawTable(writer, targetShape)
 		}
 		fmt.Fprintf(writer, `</g>`)
-		fmt.Fprintf(writer, closingTag)
+		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeOval:
 		if targetShape.Multiple {
-			fmt.Fprint(writer, renderOval(multipleTL, width, height, style))
+			fmt.Fprint(writer, renderOval(multipleTL, width, height, fill, stroke, style))
 		}
 		if sketchRunner != nil {
 			out, err := d2sketch.Oval(sketchRunner, targetShape)
 			if err != nil {
 				return "", err
 			}
-			fmt.Fprintf(writer, out)
+			fmt.Fprint(writer, out)
 		} else {
-			fmt.Fprint(writer, renderOval(tl, width, height, style))
+			fmt.Fprint(writer, renderOval(tl, width, height, fill, stroke, style))
 		}
 
 	case d2target.ShapeImage:
-		fmt.Fprintf(writer, `<image href="%s" x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-			html.EscapeString(targetShape.Icon.String()),
-			targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
+		el := svg_style.NewThemableElement("image")
+		el.X = float64(targetShape.Pos.X)
+		el.Y = float64(targetShape.Pos.Y)
+		el.Width = float64(targetShape.Width)
+		el.Height = float64(targetShape.Height)
+		el.Href = html.EscapeString(targetShape.Icon.String())
+		el.Fill = fill
+		el.Stroke = stroke
+		el.Style = style
+		fmt.Fprint(writer, el.Render())
 
 	// TODO should standardize "" to rectangle
 	case d2target.ShapeRectangle, d2target.ShapeSequenceDiagram, "":
@@ -727,26 +777,45 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			fmt.Fprint(writer, render3dRect(targetShape))
 		} else {
 			if targetShape.Multiple {
-				fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-					targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style)
+				el := svg_style.NewThemableElement("rect")
+				el.X = float64(targetShape.Pos.X + 10)
+				el.Y = float64(targetShape.Pos.Y - 10)
+				el.Width = float64(targetShape.Width)
+				el.Height = float64(targetShape.Height)
+				el.Fill = fill
+				el.Stroke = stroke
+				el.Style = style
+				fmt.Fprint(writer, el.Render())
 			}
 			if sketchRunner != nil {
 				out, err := d2sketch.Rect(sketchRunner, targetShape)
 				if err != nil {
 					return "", err
 				}
-				fmt.Fprintf(writer, out)
+				fmt.Fprint(writer, out)
 			} else {
-				fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-					targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
+				el := svg_style.NewThemableElement("rect")
+				el.X = float64(targetShape.Pos.X)
+				el.Y = float64(targetShape.Pos.Y)
+				el.Width = float64(targetShape.Width)
+				el.Height = float64(targetShape.Height)
+				el.Fill = fill
+				el.Stroke = stroke
+				el.Style = style
+				fmt.Fprint(writer, el.Render())
 			}
 		}
 	case d2target.ShapeText, d2target.ShapeCode:
 	default:
 		if targetShape.Multiple {
 			multiplePathData := shape.NewShape(shapeType, geo.NewBox(multipleTL, width, height)).GetSVGPathData()
+			el := svg_style.NewThemableElement("path")
+			el.Fill = fill
+			el.Stroke = stroke
+			el.Style = style
 			for _, pathData := range multiplePathData {
-				fmt.Fprintf(writer, `<path d="%s" style="%s"/>`, pathData, style)
+				el.D = pathData
+				fmt.Fprint(writer, el.Render())
 			}
 		}
 
@@ -755,10 +824,15 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			if err != nil {
 				return "", err
 			}
-			fmt.Fprintf(writer, out)
+			fmt.Fprint(writer, out)
 		} else {
+			el := svg_style.NewThemableElement("path")
+			el.Fill = fill
+			el.Stroke = stroke
+			el.Style = style
 			for _, pathData := range s.GetSVGPathData() {
-				fmt.Fprintf(writer, `<path d="%s" style="%s"/>`, pathData, style)
+				el.D = pathData
+				fmt.Fprint(writer, el.Render())
 			}
 		}
 	}
@@ -826,11 +900,14 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			}
 
 			svgStyles := styleToSVG(style)
-			containerStyle := fmt.Sprintf(`stroke: %s;fill:%s`, targetShape.Stroke, style.Get(chroma.Background).Background.String())
-
 			fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
-			fmt.Fprintf(writer, `<rect class="shape" width="%d" height="%d" style="%s" />`,
-				targetShape.Width, targetShape.Height, containerStyle)
+			rectEl := svg_style.NewThemableElement("rect")
+			rectEl.Width = float64(targetShape.Width)
+			rectEl.Height = float64(targetShape.Height)
+			rectEl.Stroke = targetShape.Stroke
+			rectEl.Class = "shape"
+			rectEl.Style = fmt.Sprintf(`fill:%s`, style.Get(chroma.Background).Background.String())
+			fmt.Fprint(writer, rectEl.Render())
 			// Padding
 			fmt.Fprintf(writer, `<g transform="translate(6 6)">`)
 
@@ -867,31 +944,32 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			// we need the self closing form in this svg/xhtml context
 			render = strings.ReplaceAll(render, "<hr>", "<hr />")
 
-			var mdStyle string
-			if targetShape.Fill != "" {
-				mdStyle = fmt.Sprintf("background-color:%s;", targetShape.Fill)
+			mdEl := svg_style.NewThemableElement("div")
+			mdEl.Xmlns = "http://www.w3.org/1999/xhtml"
+			mdEl.Class = "md"
+			mdEl.Content = render
+			if targetShape.Fill != color.Empty {
+				mdEl.BackgroundColor = targetShape.Fill
 			}
-			if targetShape.Stroke != "" {
-				mdStyle += fmt.Sprintf("color:%s;", targetShape.Stroke)
+			if targetShape.Stroke != color.Empty {
+				mdEl.Color = targetShape.Stroke
 			}
-
-			fmt.Fprintf(writer, `<div xmlns="http://www.w3.org/1999/xhtml" class="md" style="%s">%v</div>`, mdStyle, render)
+			fmt.Fprint(writer, mdEl.Render())
 			fmt.Fprint(writer, `</foreignObject></g>`)
 		} else {
-			fontColor := "black"
-			if targetShape.Color != "" {
+			fontColor := color.N1
+			if targetShape.Color != color.Empty {
 				fontColor = targetShape.Color
 			}
-			textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", targetShape.FontSize, fontColor)
-			x := labelTL.X + float64(targetShape.LabelWidth)/2.
+			textEl := svg_style.NewThemableElement("text")
+			textEl.X = labelTL.X + float64(targetShape.LabelWidth)/2
 			// text is vertically positioned at its baseline which is at labelTL+FontSize
-			y := labelTL.Y + float64(targetShape.FontSize)
-			fmt.Fprintf(writer, `<text class="%s" x="%f" y="%f" style="%s">%s</text>`,
-				fontClass,
-				x, y,
-				textStyle,
-				RenderText(targetShape.Label, x, float64(targetShape.LabelHeight)),
-			)
+			textEl.Y = labelTL.Y + float64(targetShape.FontSize)
+			textEl.Fill = fontColor
+			textEl.Class = fontClass
+			textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", targetShape.FontSize)
+			textEl.Content = RenderText(targetShape.Label, textEl.X, float64(targetShape.LabelHeight))
+			fmt.Fprint(writer, textEl.Render())
 			if targetShape.Blend {
 				labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight-d2graph.INNER_LABEL_PADDING)
 			}
@@ -917,7 +995,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		)
 	}
 
-	fmt.Fprintf(writer, closingTag)
+	fmt.Fprint(writer, closingTag)
 	return labelMask, nil
 }
 
@@ -942,46 +1020,9 @@ func RenderText(text string, x, height float64) string {
 	return strings.Join(rendered, "")
 }
 
-func shapeStyle(shape d2target.Shape) string {
-	out := ""
-
-	if shape.Type == d2target.ShapeSQLTable || shape.Type == d2target.ShapeClass {
-		// Fill is used for header fill in these types
-		// This fill property is just background of rows
-		out += fmt.Sprintf(`fill:%s;`, shape.Stroke)
-		// Stroke (border) of these shapes should match the header fill
-		out += fmt.Sprintf(`stroke:%s;`, shape.Fill)
-	} else {
-		out += fmt.Sprintf(`fill:%s;`, shape.Fill)
-		out += fmt.Sprintf(`stroke:%s;`, shape.Stroke)
-	}
-	out += fmt.Sprintf(`opacity:%f;`, shape.Opacity)
-	out += fmt.Sprintf(`stroke-width:%d;`, shape.StrokeWidth)
-	if shape.StrokeDash != 0 {
-		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(shape.StrokeWidth), shape.StrokeDash)
-		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
-	}
-
-	return out
-}
-
-func connectionStyle(connection d2target.Connection) string {
-	out := ""
-
-	out += fmt.Sprintf(`stroke:%s;`, connection.Stroke)
-	out += fmt.Sprintf(`opacity:%f;`, connection.Opacity)
-	out += fmt.Sprintf(`stroke-width:%d;`, connection.StrokeWidth)
-	if connection.StrokeDash != 0 {
-		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(connection.StrokeWidth), connection.StrokeDash)
-		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
-	}
-
-	return out
-}
-
-func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
+func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) string {
 	content := buf.String()
-	buf.WriteString(`<style type="text/css"><![CDATA[`)
+	out := `<style type="text/css"><![CDATA[`
 
 	triggers := []string{
 		`class="text"`,
@@ -991,7 +1032,7 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 
 	for _, t := range triggers {
 		if strings.Contains(content, t) {
-			fmt.Fprintf(buf, `
+			out += fmt.Sprintf(`
 .text {
 	font-family: "font-regular";
 }
@@ -1010,10 +1051,10 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 
 	for _, t := range triggers {
 		if strings.Contains(content, t) {
-			buf.WriteString(`
+			out += `
 .text-underline {
   text-decoration: underline;
-}`)
+}`
 			break
 		}
 	}
@@ -1024,23 +1065,23 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 
 	for _, t := range triggers {
 		if strings.Contains(content, t) {
-			buf.WriteString(`
+			out += `
 .appendix-icon {
 	filter: drop-shadow(0px 0px 32px rgba(31, 36, 58, 0.1));
-}`)
+}`
 			break
 		}
 	}
 
 	triggers = []string{
-		`class="text-bold"`,
+		`class="text-bold`,
 		`<b>`,
 		`<strong>`,
 	}
 
 	for _, t := range triggers {
 		if strings.Contains(content, t) {
-			fmt.Fprintf(buf, `
+			out += fmt.Sprintf(`
 .text-bold {
 	font-family: "font-bold";
 }
@@ -1054,14 +1095,14 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 	}
 
 	triggers = []string{
-		`class="text-italic"`,
+		`class="text-italic`,
 		`<em>`,
 		`<dfn>`,
 	}
 
 	for _, t := range triggers {
 		if strings.Contains(content, t) {
-			fmt.Fprintf(buf, `
+			out += fmt.Sprintf(`
 .text-italic {
 	font-family: "font-italic";
 }
@@ -1075,7 +1116,7 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 	}
 
 	triggers = []string{
-		`class="text-mono"`,
+		`class="text-mono`,
 		`<pre>`,
 		`<code>`,
 		`<kbd>`,
@@ -1084,7 +1125,7 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 
 	for _, t := range triggers {
 		if strings.Contains(content, t) {
-			fmt.Fprintf(buf, `
+			out += fmt.Sprintf(`
 .text-mono {
 	font-family: "font-mono";
 }
@@ -1097,11 +1138,17 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 		}
 	}
 
-	buf.WriteString(`]]></style>`)
+	out += `]]></style>`
+	return out
 }
 
 //go:embed fitToScreen.js
 var fitToScreenScript string
+
+const (
+	BG_COLOR = color.N7
+	FG_COLOR = color.N1
+)
 
 // TODO minify output at end
 func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
@@ -1120,36 +1167,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 	}
 
-	theme := d2themescatalog.Find(opts.ThemeID)
-	bgColor := theme.Colors.Neutrals.N7
-	fgColor := theme.Colors.Neutrals.N1
-
 	buf := &bytes.Buffer{}
-	w, h := setViewbox(buf, diagram, pad, bgColor, fgColor)
-
-	styleCSS2 := ""
-	if sketchRunner != nil {
-		styleCSS2 = "\n" + sketchStyleCSS
-	}
-	buf.WriteString(fmt.Sprintf(`<style type="text/css"><![CDATA[%s%s]]></style>`, styleCSS, styleCSS2))
-
-	// this script won't run in --watch mode because script tags are ignored when added via el.innerHTML = element
-	// https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML
-	buf.WriteString(fmt.Sprintf(`<script type="application/javascript"><![CDATA[%s]]></script>`, fitToScreenScript))
-
-	hasMarkdown := false
-	for _, s := range diagram.Shapes {
-		if s.Label != "" && s.Type == d2target.ShapeText {
-			hasMarkdown = true
-			break
-		}
-	}
-	if hasMarkdown {
-		fmt.Fprintf(buf, `<style type="text/css">%s</style>`, mdCSS)
-	}
-	if sketchRunner != nil && sketchBg {
-		fmt.Fprint(buf, d2sketch.DefineFillPattern())
-	}
 
 	// only define shadow filter if a shape uses it
 	for _, s := range diagram.Shapes {
@@ -1184,7 +1202,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	markers := map[string]struct{}{}
 	for _, obj := range allObjects {
 		if c, is := obj.(d2target.Connection); is {
-			labelMask, err := drawConnection(buf, bgColor, fgColor, labelMaskID, c, markers, idToShape, sketchRunner)
+			labelMask, err := drawConnection(buf, BG_COLOR, FG_COLOR, labelMaskID, c, markers, idToShape, sketchRunner)
 			if err != nil {
 				return nil, err
 			}
@@ -1204,6 +1222,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 
 	// Note: we always want this since we reference it on connections even if there end up being no masked labels
+	w, h, tl, _ := dimensions(buf, diagram, pad)
 	fmt.Fprint(buf, strings.Join([]string{
 		fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
 			labelMaskID, -pad, -pad, w, h,
@@ -1215,10 +1234,48 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		`</mask>`,
 	}, "\n"))
 
-	embedFonts(buf, diagram.FontFamily)
+	// TODO minify
+	// TODO background stuff. e.g. dotted, grid, colors
+	containerEl := svg_style.NewThemableElement("rect")
+	containerEl.X = float64(tl.X - pad - 10) // TODO the background is not rendered all over the image
+	containerEl.Y = float64(tl.Y - pad - 10) // so I had to add 10 to the size - someone smarter than me please fix this
+	containerEl.Width = float64(w + 10*2)
+	containerEl.Height = float64(h + 10*2)
+	containerEl.Fill = color.N7
+	// containerEl.Color = color.N1 TODO this is useless as this element has no children
 
-	buf.WriteString(`</svg>`)
-	return buf.Bytes(), nil
+	// generate elements that will be appended to the SVG tag
+	styleCSS2 := ""
+	if sketchRunner != nil {
+		styleCSS2 = "\n" + sketchStyleCSS
+	}
+	svgOut := fmt.Sprintf(`<style type="text/css"><![CDATA[%s%s]]></style>`, styleCSS, styleCSS2)
+	// this script won't run in --watch mode because script tags are ignored when added via el.innerHTML = element
+	// https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML
+	svgOut += fmt.Sprintf(`<script type="application/javascript"><![CDATA[%s]]></script>`, fitToScreenScript)
+	hasMarkdown := false
+	for _, s := range diagram.Shapes {
+		if s.Label != "" && s.Type == d2target.ShapeText {
+			hasMarkdown = true
+			break
+		}
+	}
+	if hasMarkdown {
+		svgOut += fmt.Sprintf(`<style type="text/css">%s</style>`, mdCSS)
+	}
+	if sketchRunner != nil && sketchBg {
+		svgOut += d2sketch.DefineFillPattern()
+	}
+	svgOut += embedFonts(buf, diagram.FontFamily)
+
+	// render the document
+	docRendered := fmt.Sprintf(`<?xml version="1.0" encoding="utf-8"?><svg id="d2-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s</svg>`,
+		w, h, tl.X-pad, tl.Y-pad, w, h,
+		svgOut,
+		containerEl.Render(),
+		buf.String(),
+	)
+	return []byte(docRendered), nil
 }
 
 type DiagramObject interface {
