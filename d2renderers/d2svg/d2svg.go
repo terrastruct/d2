@@ -27,6 +27,7 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2latex"
 	"oss.terrastruct.com/d2/d2renderers/d2sketch"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
@@ -53,7 +54,7 @@ var TooltipIcon string
 var LinkIcon string
 
 //go:embed style.css
-var styleCSS string
+var baseStylesheet string
 
 //go:embed sketchstyle.css
 var sketchStyleCSS string
@@ -62,10 +63,10 @@ var sketchStyleCSS string
 var mdCSS string
 
 type RenderOpts struct {
-	Pad      int
-	Sketch   bool
-	SketchBg bool
-	ThemeID  int64
+	Pad         int
+	Sketch      bool
+	ThemeID     int64
+	DarkThemeID int64
 }
 
 func dimensions(writer io.Writer, diagram *d2target.Diagram, pad int) (width, height int, topLeft, bottomRight d2target.Point) {
@@ -1148,16 +1149,19 @@ var fitToScreenScript string
 const (
 	BG_COLOR = color.N7
 	FG_COLOR = color.N1
+
+	DEFAULT_THEME      int64 = 0
+	DEFAULT_DARK_THEME int64 = math.MaxInt64 // no theme selected
 )
 
 // TODO minify output at end
 func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	var sketchRunner *d2sketch.Runner
 	pad := DEFAULT_PADDING
-	sketchBg := true
+	themeID := DEFAULT_THEME
+	darkThemeID := DEFAULT_DARK_THEME
 	if opts != nil {
 		pad = opts.Pad
-		sketchBg = opts.SketchBg
 		if opts.Sketch {
 			var err error
 			sketchRunner, err = d2sketch.InitSketchVM()
@@ -1165,6 +1169,8 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 				return nil, err
 			}
 		}
+		themeID = opts.ThemeID
+		darkThemeID = opts.DarkThemeID
 	}
 
 	buf := &bytes.Buffer{}
@@ -1245,11 +1251,12 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	// containerEl.Color = color.N1 TODO this is useless as this element has no children
 
 	// generate elements that will be appended to the SVG tag
-	styleCSS2 := ""
+	themeStylesheet := themeCSS(themeID, darkThemeID)
+	sketchStylesheet := ""
 	if sketchRunner != nil {
-		styleCSS2 = "\n" + sketchStyleCSS
+		sketchStylesheet = "\n" + sketchStyleCSS
 	}
-	svgOut := fmt.Sprintf(`<style type="text/css"><![CDATA[%s%s]]></style>`, styleCSS, styleCSS2)
+	svgOut := fmt.Sprintf(`<style type="text/css"><![CDATA[%s%s%s]]></style>`, baseStylesheet, themeStylesheet, sketchStylesheet)
 	// this script won't run in --watch mode because script tags are ignored when added via el.innerHTML = element
 	// https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML
 	svgOut += fmt.Sprintf(`<script type="application/javascript"><![CDATA[%s]]></script>`, fitToScreenScript)
@@ -1263,7 +1270,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	if hasMarkdown {
 		svgOut += fmt.Sprintf(`<style type="text/css">%s</style>`, mdCSS)
 	}
-	if sketchRunner != nil && sketchBg {
+	if sketchRunner != nil {
 		svgOut += d2sketch.DefineFillPattern()
 	}
 	svgOut += embedFonts(buf, diagram.FontFamily)
@@ -1276,6 +1283,44 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		buf.String(),
 	)
 	return []byte(docRendered), nil
+}
+
+func themeCSS(themeID, darkThemeID int64) (stylesheet string) {
+	out := singleThemeRulesets(themeID)
+
+	if darkThemeID != math.MaxInt64 {
+		out += fmt.Sprintf("@media screen and (prefers-color-scheme:dark){%s}", singleThemeRulesets(darkThemeID))
+	}
+
+	return out
+}
+
+func singleThemeRulesets(themeID int64) (rulesets string) {
+	out := ""
+	theme := d2themescatalog.Find(themeID)
+	for _, property := range []string{"fill", "stroke", "background-color", "color"} {
+		out += fmt.Sprintf(".%s-N1{%s:%s;}.%s-N2{%s:%s;}.%s-N3{%s:%s;}.%s-N4{%s:%s;}.%s-N5{%s:%s;}.%s-N6{%s:%s;}.%s-N7{%s:%s;}.%s-B1{%s:%s;}.%s-B2{%s:%s;}.%s-B3{%s:%s;}.%s-B4{%s:%s;}.%s-B5{%s:%s;}.%s-B6{%s:%s;}.%s-AA2{%s:%s;}.%s-AA4{%s:%s;}.%s-AA5{%s:%s;}.%s-AB4{%s:%s;}.%s-AB5{%s:%s;}",
+			property, property, theme.Colors.Neutrals.N1,
+			property, property, theme.Colors.Neutrals.N2,
+			property, property, theme.Colors.Neutrals.N3,
+			property, property, theme.Colors.Neutrals.N4,
+			property, property, theme.Colors.Neutrals.N5,
+			property, property, theme.Colors.Neutrals.N6,
+			property, property, theme.Colors.Neutrals.N7,
+			property, property, theme.Colors.B1,
+			property, property, theme.Colors.B2,
+			property, property, theme.Colors.B3,
+			property, property, theme.Colors.B4,
+			property, property, theme.Colors.B5,
+			property, property, theme.Colors.B6,
+			property, property, theme.Colors.AA2,
+			property, property, theme.Colors.AA4,
+			property, property, theme.Colors.AA5,
+			property, property, theme.Colors.AB4,
+			property, property, theme.Colors.AB5,
+		)
+	}
+	return out
 }
 
 type DiagramObject interface {
