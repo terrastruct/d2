@@ -932,9 +932,12 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			if err != nil {
 				return labelMask, err
 			}
-			fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
-			fmt.Fprint(writer, render)
-			fmt.Fprintf(writer, "</g>")
+			gEl := svg_style.NewThemableElement("g")
+			gEl.Transform = fmt.Sprintf("translate(%f %f)", box.TopLeft.X, box.TopLeft.Y)
+			gEl.Color = targetShape.Stroke
+			gEl.Style = fmt.Sprintf("opacity:%f", targetShape.Opacity)
+			gEl.Content = render
+			fmt.Fprint(writer, gEl.Render())
 		} else if targetShape.Type == d2target.ShapeText && targetShape.Language != "" {
 			render, err := textmeasure.RenderMarkdown(targetShape.Label)
 			if err != nil {
@@ -950,12 +953,6 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			mdEl.Xmlns = "http://www.w3.org/1999/xhtml"
 			mdEl.Class = "md"
 			mdEl.Content = render
-			if targetShape.Fill != color.Empty {
-				mdEl.BackgroundColor = targetShape.Fill
-			}
-			if targetShape.Stroke != color.Empty {
-				mdEl.Color = targetShape.Stroke
-			}
 			fmt.Fprint(writer, mdEl.Render())
 			fmt.Fprint(writer, `</foreignObject></g>`)
 		} else {
@@ -1243,13 +1240,12 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 
 	// TODO minify
 	// TODO background stuff. e.g. dotted, grid, colors
-	containerEl := svg_style.NewThemableElement("rect")
-	containerEl.X = float64(tl.X - pad - 10) // TODO the background is not rendered all over the image
-	containerEl.Y = float64(tl.Y - pad - 10) // so I had to add 10 to the size - someone smarter than me please fix this
-	containerEl.Width = float64(w + 10*2)
-	containerEl.Height = float64(h + 10*2)
-	containerEl.Fill = color.N7
-	// containerEl.Color = color.N1 TODO this is useless as this element has no children
+	backgroundEl := svg_style.NewThemableElement("rect")
+	backgroundEl.X = float64(tl.X - pad - 10) // TODO the background is not rendered all over the image
+	backgroundEl.Y = float64(tl.Y - pad - 10) // so I had to add 10 to the size - someone smarter than me please fix this
+	backgroundEl.Width = float64(w + 10*2)    // new observations: adding even 10 to the size seems to fail at higher image sizes?
+	backgroundEl.Height = float64(h + 10*2)
+	backgroundEl.Fill = color.N7
 
 	// generate elements that will be appended to the SVG tag
 	themeStylesheet := themeCSS(themeID, darkThemeID)
@@ -1280,7 +1276,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	docRendered := fmt.Sprintf(`<?xml version="1.0" encoding="utf-8"?><svg id="d2-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s</svg>`,
 		w, h, tl.X-pad, tl.Y-pad, w, h,
 		svgOut,
-		containerEl.Render(),
+		backgroundEl.Render(),
 		buf.String(),
 	)
 	return []byte(docRendered), nil
@@ -1299,6 +1295,7 @@ func themeCSS(themeID, darkThemeID int64) (stylesheet string) {
 func singleThemeRulesets(themeID int64) (rulesets string) {
 	out := ""
 	theme := d2themescatalog.Find(themeID)
+
 	for _, property := range []string{"fill", "stroke", "background-color", "color"} {
 		out += fmt.Sprintf(".%s-N1{%s:%s;}.%s-N2{%s:%s;}.%s-N3{%s:%s;}.%s-N4{%s:%s;}.%s-N5{%s:%s;}.%s-N6{%s:%s;}.%s-N7{%s:%s;}.%s-B1{%s:%s;}.%s-B2{%s:%s;}.%s-B3{%s:%s;}.%s-B4{%s:%s;}.%s-B5{%s:%s;}.%s-B6{%s:%s;}.%s-AA2{%s:%s;}.%s-AA4{%s:%s;}.%s-AA5{%s:%s;}.%s-AB4{%s:%s;}.%s-AB5{%s:%s;}",
 			property, property, theme.Colors.Neutrals.N1,
@@ -1321,6 +1318,17 @@ func singleThemeRulesets(themeID int64) (rulesets string) {
 			property, property, theme.Colors.AB5,
 		)
 	}
+
+	out += fmt.Sprintf(".md{--color-fg-default:%s;--color-fg-muted:%s;--color-fg-subtle:%s;--color-canvas-default:%s;--color-canvas-subtle:%s;--color-border-default:%s;--color-border-muted:%s;--color-neutral-muted:%s;--color-accent-fg:%s;--color-accent-emphasis:%s;--color-attention-subtle:%s;--color-danger-fg:%s;}",
+		theme.Colors.Neutrals.N1, theme.Colors.Neutrals.N2, theme.Colors.Neutrals.N3,
+		theme.Colors.Neutrals.N7, theme.Colors.Neutrals.N6,
+		theme.Colors.B1, theme.Colors.B2,
+		theme.Colors.Neutrals.N6, // TODO maybe N5 --color-border-default
+		theme.Colors.B2, theme.Colors.B2,
+		theme.Colors.Neutrals.N2, // TODO or N3 --color-attention-subtle
+		"red",
+	)
+
 	return out
 }
 
