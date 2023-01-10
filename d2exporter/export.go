@@ -7,14 +7,11 @@ import (
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/d2themes"
-	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
+	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/util-go/go2"
 )
 
-func Export(ctx context.Context, g *d2graph.Graph, themeID int64, fontFamily *d2fonts.FontFamily) (*d2target.Diagram, error) {
-	theme := d2themescatalog.Find(themeID)
-
+func Export(ctx context.Context, g *d2graph.Graph, fontFamily *d2fonts.FontFamily) (*d2target.Diagram, error) {
 	diagram := d2target.NewDiagram()
 	if fontFamily == nil {
 		fontFamily = go2.Pointer(d2fonts.SourceSansPro)
@@ -23,27 +20,27 @@ func Export(ctx context.Context, g *d2graph.Graph, themeID int64, fontFamily *d2
 
 	diagram.Shapes = make([]d2target.Shape, len(g.Objects))
 	for i := range g.Objects {
-		diagram.Shapes[i] = toShape(g.Objects[i], &theme)
+		diagram.Shapes[i] = toShape(g.Objects[i])
 	}
 
 	diagram.Connections = make([]d2target.Connection, len(g.Edges))
 	for i := range g.Edges {
-		diagram.Connections[i] = toConnection(g.Edges[i], &theme)
+		diagram.Connections[i] = toConnection(g.Edges[i])
 	}
 
 	return diagram, nil
 }
 
-func applyTheme(shape *d2target.Shape, obj *d2graph.Object, theme *d2themes.Theme) {
-	shape.Stroke = obj.GetStroke(theme, shape.StrokeDash)
-	shape.Fill = obj.GetFill(theme)
+func applyTheme(shape *d2target.Shape, obj *d2graph.Object) {
+	shape.Stroke = obj.GetStroke(shape.StrokeDash)
+	shape.Fill = obj.GetFill()
 	if obj.Attributes.Shape.Value == d2target.ShapeText {
-		shape.Color = theme.Colors.Neutrals.N1
+		shape.Color = color.N1
 	}
 	if obj.Attributes.Shape.Value == d2target.ShapeSQLTable || obj.Attributes.Shape.Value == d2target.ShapeClass {
-		shape.PrimaryAccentColor = theme.Colors.B2
-		shape.SecondaryAccentColor = theme.Colors.AA2
-		shape.NeutralAccentColor = theme.Colors.Neutrals.N2
+		shape.PrimaryAccentColor = color.B2
+		shape.SecondaryAccentColor = color.AA2
+		shape.NeutralAccentColor = color.N2
 	}
 }
 
@@ -95,7 +92,7 @@ func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
 	}
 }
 
-func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
+func toShape(obj *d2graph.Object) d2target.Shape {
 	shape := d2target.BaseShape()
 	shape.SetType(obj.Attributes.Shape.Value)
 	shape.ID = obj.AbsID()
@@ -120,8 +117,8 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	}
 
 	applyStyles(shape, obj)
-	applyTheme(shape, obj, theme)
-	shape.Color = text.GetColor(theme, shape.Italic)
+	applyTheme(shape, obj)
+	shape.Color = text.GetColor(shape.Italic)
 	applyStyles(shape, obj)
 
 	switch obj.Attributes.Shape.Value {
@@ -153,7 +150,7 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	return *shape
 }
 
-func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection {
+func toConnection(edge *d2graph.Edge) d2target.Connection {
 	connection := d2target.BaseConnection()
 	connection.ID = edge.AbsID()
 	connection.ZIndex = edge.ZIndex
@@ -202,7 +199,7 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 	if edge.Attributes.Style.StrokeDash != nil {
 		connection.StrokeDash, _ = strconv.ParseFloat(edge.Attributes.Style.StrokeDash.Value, 64)
 	}
-	connection.Stroke = edge.GetStroke(theme, connection.StrokeDash)
+	connection.Stroke = edge.GetStroke(connection.StrokeDash)
 	if edge.Attributes.Style.Stroke != nil {
 		connection.Stroke = edge.Attributes.Style.Stroke.Value
 	}
@@ -231,7 +228,7 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 		connection.Italic, _ = strconv.ParseBool(edge.Attributes.Style.Italic.Value)
 	}
 
-	connection.Color = text.GetColor(theme, connection.Italic)
+	connection.Color = text.GetColor(connection.Italic)
 	if edge.Attributes.Style.FontColor != nil {
 		connection.Color = edge.Attributes.Style.FontColor.Value
 	}

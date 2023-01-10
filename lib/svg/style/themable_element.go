@@ -1,0 +1,233 @@
+package style
+
+import (
+	"fmt"
+	"math"
+	"regexp"
+
+	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/lib/color"
+	"oss.terrastruct.com/d2/lib/svg"
+)
+
+func ShapeStyle(shape d2target.Shape) string {
+	out := ""
+
+	out += fmt.Sprintf(`opacity:%f;`, shape.Opacity)
+	out += fmt.Sprintf(`stroke-width:%d;`, shape.StrokeWidth)
+	if shape.StrokeDash != 0 {
+		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(shape.StrokeWidth), shape.StrokeDash)
+		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
+	}
+
+	return out
+}
+
+func ShapeTheme(shape d2target.Shape) (fill, stroke string) {
+	if shape.Type == d2target.ShapeSQLTable || shape.Type == d2target.ShapeClass {
+		// Fill is used for header fill in these types
+		// This fill property is just background of rows
+		fill = shape.Stroke
+		// Stroke (border) of these shapes should match the header fill
+		stroke = shape.Fill
+	} else {
+		fill = shape.Fill
+		stroke = shape.Stroke
+	}
+	return fill, stroke
+}
+
+func ConnectionStyle(connection d2target.Connection) string {
+	out := ""
+
+	out += fmt.Sprintf(`opacity:%f;`, connection.Opacity)
+	out += fmt.Sprintf(`stroke-width:%d;`, connection.StrokeWidth)
+	if connection.StrokeDash != 0 {
+		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(connection.StrokeWidth), connection.StrokeDash)
+		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
+	}
+
+	return out
+}
+
+func ConnectionTheme(connection d2target.Connection) (stroke string) {
+	return connection.Stroke
+}
+
+// ThemableElement is a helper class for creating new XML elements.
+// This should be preffered over formatting and must be used
+// whenever Fill, Stroke, BackgroundColor or Color contains a color from a theme.
+// i.e. N[1-7] | B[1-6] | AA[245] | AB[45]
+type ThemableElement struct {
+	tag string
+
+	X      float64
+	X1     float64
+	X2     float64
+	Y      float64
+	Y1     float64
+	Y2     float64
+	Width  float64
+	Height float64
+	R      float64
+	Rx     float64
+	Ry     float64
+	Cx     float64
+	Cy     float64
+
+	D         string
+	Mask      string
+	Points    string
+	Transform string
+	Href      string
+	Xmlns     string
+
+	Fill            string
+	Stroke          string
+	BackgroundColor string
+	Color           string
+
+	Class      string
+	Style      string
+	Attributes string
+
+	Content string
+}
+
+func NewThemableElement(tag string) *ThemableElement {
+	return &ThemableElement{
+		tag,
+		math.MaxFloat64,
+		math.MaxFloat64,
+		math.MaxFloat64,
+		math.MaxFloat64,
+		math.MaxFloat64,
+		math.MaxFloat64,
+		math.MaxFloat64,
+		math.MaxFloat64,
+		math.MaxFloat64,
+		math.MaxFloat64,
+		math.MaxFloat64,
+		math.MaxFloat64,
+		math.MaxFloat64,
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		color.Empty,
+		color.Empty,
+		color.Empty,
+		color.Empty,
+		"",
+		"",
+		"",
+		"",
+	}
+}
+
+func (el *ThemableElement) Render() string {
+	re := regexp.MustCompile(`^N[1-7]|B[1-6]|AA[245]|AB[45]$`)
+
+	out := "<" + el.tag
+
+	if el.X != math.MaxFloat64 {
+		out += fmt.Sprintf(` x="%f"`, el.X)
+	}
+	if el.X1 != math.MaxFloat64 {
+		out += fmt.Sprintf(` x1="%f"`, el.X1)
+	}
+	if el.X2 != math.MaxFloat64 {
+		out += fmt.Sprintf(` x2="%f"`, el.X2)
+	}
+	if el.Y != math.MaxFloat64 {
+		out += fmt.Sprintf(` y="%f"`, el.Y)
+	}
+	if el.Y1 != math.MaxFloat64 {
+		out += fmt.Sprintf(` y1="%f"`, el.Y1)
+	}
+	if el.Y2 != math.MaxFloat64 {
+		out += fmt.Sprintf(` y2="%f"`, el.Y2)
+	}
+	if el.Width != math.MaxFloat64 {
+		out += fmt.Sprintf(` width="%f"`, el.Width)
+	}
+	if el.Height != math.MaxFloat64 {
+		out += fmt.Sprintf(` height="%f"`, el.Height)
+	}
+	if el.R != math.MaxFloat64 {
+		out += fmt.Sprintf(` r="%f"`, el.R)
+	}
+	if el.Rx != math.MaxFloat64 {
+		out += fmt.Sprintf(` rx="%f"`, el.Rx)
+	}
+	if el.Ry != math.MaxFloat64 {
+		out += fmt.Sprintf(` ry="%f"`, el.Ry)
+	}
+	if el.Cx != math.MaxFloat64 {
+		out += fmt.Sprintf(` cx="%f"`, el.Cx)
+	}
+	if el.Cy != math.MaxFloat64 {
+		out += fmt.Sprintf(` cy="%f"`, el.Cy)
+	}
+
+	if len(el.D) > 0 {
+		out += fmt.Sprintf(` d="%s"`, el.D)
+	}
+	if len(el.Mask) > 0 {
+		out += fmt.Sprintf(` mask="%s"`, el.Mask)
+	}
+	if len(el.Points) > 0 {
+		out += fmt.Sprintf(` points="%s"`, el.Points)
+	}
+	if len(el.Transform) > 0 {
+		out += fmt.Sprintf(` transform="%s"`, el.Transform)
+	}
+	if len(el.Href) > 0 {
+		out += fmt.Sprintf(` href="%s"`, el.Href)
+	}
+	if len(el.Xmlns) > 0 {
+		out += fmt.Sprintf(` xmlns="%s"`, el.Xmlns)
+	}
+
+	class := el.Class
+	style := el.Style
+
+	// Add class {property}-{theme color} if the color is from a theme, set the property otherwise
+	if re.MatchString(el.Stroke) {
+		class += fmt.Sprintf(" stroke-%s", el.Stroke)
+	} else if len(el.Stroke) > 0 {
+		out += fmt.Sprintf(` stroke="%s"`, el.Stroke)
+	}
+	if re.MatchString(el.Fill) {
+		class += fmt.Sprintf(" fill-%s", el.Fill)
+	} else if len(el.Fill) > 0 {
+		out += fmt.Sprintf(` fill="%s"`, el.Fill)
+	}
+	if re.MatchString(el.BackgroundColor) {
+		class += fmt.Sprintf(" background-color-%s", el.BackgroundColor)
+	} else if len(el.BackgroundColor) > 0 {
+		out += fmt.Sprintf(` background-color="%s"`, el.BackgroundColor)
+	}
+	if re.MatchString(el.Color) {
+		class += fmt.Sprintf(" color-%s", el.Color)
+	} else if len(el.Color) > 0 {
+		out += fmt.Sprintf(` color="%s"`, el.Color)
+	}
+
+	if len(class) > 0 {
+		out += fmt.Sprintf(` class="%s"`, class)
+	}
+	if len(style) > 0 {
+		out += fmt.Sprintf(` style="%s"`, style)
+	}
+	if len(el.Attributes) > 0 {
+		out += fmt.Sprintf(` %s`, el.Attributes)
+	}
+
+	if len(el.Content) > 0 {
+		return fmt.Sprintf("%s>%s</%s>", out, el.Content, el.tag)
+	}
+	return out + " />"
+}

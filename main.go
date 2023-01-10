@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -59,6 +60,10 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	layoutFlag := ms.Opts.String("D2_LAYOUT", "layout", "l", "dagre", `the layout engine used`)
 	themeFlag, err := ms.Opts.Int64("D2_THEME", "theme", "t", 0, "the diagram theme ID. For a list of available options, see https://oss.terrastruct.com/d2")
+	if err != nil {
+		return err
+	}
+	darkThemeFlag, err := ms.Opts.Int64("D2_D_THEME", "dark_theme", "", math.MaxInt64, "the diagram dark theme ID. When left unset only the theme will be applied")
 	if err != nil {
 		return err
 	}
@@ -146,6 +151,14 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	ms.Log.Debug.Printf("using theme %s (ID: %d)", match.Name, *themeFlag)
 
+	if *darkThemeFlag != math.MaxInt64 {
+		match = d2themescatalog.Find(*darkThemeFlag)
+		if match == (d2themes.Theme{}) {
+			return xmain.UsageErrorf("--dark_theme could not be found. The available options are:\n%s\nYou provided: %d", d2themescatalog.CLIString(), *darkThemeFlag)
+		}
+		ms.Log.Debug.Printf("using dark theme %s (ID: %d)", match.Name, *darkThemeFlag)
+	}
+
 	plugin, err := d2plugin.FindPlugin(ctx, ps, *layoutFlag)
 	if err != nil {
 		if errors.Is(err, exec.ErrNotFound) {
@@ -171,6 +184,9 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 
 	var pw png.Playwright
 	if filepath.Ext(outputPath) == ".png" {
+		if *darkThemeFlag != math.MaxInt64 {
+			return xmain.UsageErrorf("--dark_theme cannot be used while exporting to another format other than .svg")
+		}
 		pw, err = png.InitPlaywright()
 		if err != nil {
 			return err
@@ -192,6 +208,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 			layoutPlugin: plugin,
 			sketch:       *sketchFlag,
 			themeID:      *themeFlag,
+			darkThemeID:  *darkThemeFlag,
 			pad:          *padFlag,
 			host:         *hostFlag,
 			port:         *portFlag,
@@ -209,7 +226,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	_, written, err := compile(ctx, ms, plugin, *sketchFlag, *padFlag, *themeFlag, inputPath, outputPath, *bundleFlag, pw.Page)
+	_, written, err := compile(ctx, ms, plugin, *sketchFlag, *padFlag, *themeFlag, *darkThemeFlag, inputPath, outputPath, *bundleFlag, pw.Page)
 	if err != nil {
 		if written {
 			return fmt.Errorf("failed to fully compile (partial render written): %w", err)
@@ -220,7 +237,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad, themeID int64, inputPath, outputPath string, bundle bool, page playwright.Page) (_ []byte, written bool, _ error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad, themeID, themeDarkID int64, inputPath, outputPath string, bundle bool, page playwright.Page) (_ []byte, written bool, _ error) {
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
 		return nil, false, err
@@ -233,9 +250,8 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 
 	layout := plugin.Layout
 	opts := &d2lib.CompileOptions{
-		Layout:  layout,
-		Ruler:   ruler,
-		ThemeID: themeID,
+		Layout: layout,
+		Ruler:  ruler,
 	}
 	if sketch {
 		opts.FontFamily = go2.Pointer(d2fonts.HandDrawn)
@@ -246,8 +262,10 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	}
 
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad:    int(pad),
-		Sketch: sketch,
+		Pad:         int(pad),
+		Sketch:      sketch,
+		ThemeID:     themeID,
+		DarkThemeID: themeDarkID,
 	})
 	if err != nil {
 		return nil, false, err

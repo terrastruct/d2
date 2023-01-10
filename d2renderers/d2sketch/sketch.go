@@ -3,16 +3,17 @@ package d2sketch
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
 
 	_ "embed"
 
 	"github.com/dop251/goja"
 
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/svg"
+	svg_style "oss.terrastruct.com/d2/lib/svg/style"
 	"oss.terrastruct.com/util-go/go2"
 )
 
@@ -63,43 +64,26 @@ func DefineFillPattern() string {
 </defs>`, fillPattern)
 }
 
-func shapeStyle(shape d2target.Shape) string {
-	out := ""
-
-	if shape.Type == d2target.ShapeSQLTable || shape.Type == d2target.ShapeClass {
-		out += fmt.Sprintf(`fill:%s;`, shape.Stroke)
-		out += fmt.Sprintf(`stroke:%s;`, shape.Fill)
-	} else {
-		out += fmt.Sprintf(`fill:%s;`, shape.Fill)
-		out += fmt.Sprintf(`stroke:%s;`, shape.Stroke)
-	}
-	out += fmt.Sprintf(`opacity:%f;`, shape.Opacity)
-	out += fmt.Sprintf(`stroke-width:%d;`, shape.StrokeWidth)
-	if shape.StrokeDash != 0 {
-		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(shape.StrokeWidth), shape.StrokeDash)
-		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
-	}
-
-	return out
-}
-
 func Rect(r *Runner, shape d2target.Shape) (string, error) {
 	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
-		fill: "%s",
-		stroke: "%s",
+		fill: "#000",
+		stroke: "#000",
 		strokeWidth: %d,
 		%s
-	});`, shape.Width, shape.Height, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	});`, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
 	paths, err := computeRoughPaths(r, js)
 	if err != nil {
 		return "", err
 	}
 	output := ""
+	pathEl := svg_style.NewThemableElement("path")
+	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
+	pathEl.Fill, pathEl.Stroke = svg_style.ShapeTheme(shape)
+	pathEl.Class = "shape"
+	pathEl.Style = svg_style.ShapeStyle(shape)
 	for _, p := range paths {
-		output += fmt.Sprintf(
-			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
 	output += fmt.Sprintf(
 		`<rect class="sketch-overlay" transform="translate(%d %d)" width="%d" height="%d" />`,
@@ -110,21 +94,24 @@ func Rect(r *Runner, shape d2target.Shape) (string, error) {
 
 func Oval(r *Runner, shape d2target.Shape) (string, error) {
 	js := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
-		fill: "%s",
-		stroke: "%s",
+		fill: "#000",
+		stroke: "#000",
 		strokeWidth: %d,
 		%s
-	});`, shape.Width/2, shape.Height/2, shape.Width, shape.Height, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	});`, shape.Width/2, shape.Height/2, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
 	paths, err := computeRoughPaths(r, js)
 	if err != nil {
 		return "", err
 	}
 	output := ""
+	pathEl := svg_style.NewThemableElement("path")
+	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
+	pathEl.Fill, pathEl.Stroke = svg_style.ShapeTheme(shape)
+	pathEl.Class = "shape"
+	pathEl.Style = svg_style.ShapeStyle(shape)
 	for _, p := range paths {
-		output += fmt.Sprintf(
-			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
 	output += fmt.Sprintf(
 		`<ellipse class="sketch-overlay" transform="translate(%d %d)" rx="%d" ry="%d" />`,
@@ -138,20 +125,22 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 	output := ""
 	for _, path := range paths {
 		js := fmt.Sprintf(`node = rc.path("%s", {
-		fill: "%s",
-		stroke: "%s",
+		fill: "#000",
+		stroke: "#000",
 		strokeWidth: %d,
 		%s
-	});`, path, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	});`, path, shape.StrokeWidth, baseRoughProps)
 		sketchPaths, err := computeRoughPaths(r, js)
 		if err != nil {
 			return "", err
 		}
+		pathEl := svg_style.NewThemableElement("path")
+		pathEl.Fill, pathEl.Stroke = svg_style.ShapeTheme(shape)
+		pathEl.Class = "shape"
+		pathEl.Style = svg_style.ShapeStyle(shape)
 		for _, p := range sketchPaths {
-			output += fmt.Sprintf(
-				`<path class="shape" d="%s" style="%s" />`,
-				p, shapeStyle(shape),
-			)
+			pathEl.D = p
+			output += pathEl.Render()
 		}
 		for _, p := range sketchPaths {
 			output += fmt.Sprintf(
@@ -163,20 +152,6 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 	return output, nil
 }
 
-func connectionStyle(connection d2target.Connection) string {
-	out := ""
-
-	out += fmt.Sprintf(`stroke:%s;`, connection.Stroke)
-	out += fmt.Sprintf(`opacity:%f;`, connection.Opacity)
-	out += fmt.Sprintf(`stroke-width:%d;`, connection.StrokeWidth)
-	if connection.StrokeDash != 0 {
-		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(connection.StrokeWidth), connection.StrokeDash)
-		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
-	}
-
-	return out
-}
-
 func Connection(r *Runner, connection d2target.Connection, path, attrs string) (string, error) {
 	roughness := 1.0
 	js := fmt.Sprintf(`node = rc.path("%s", {roughness: %f, seed: 1});`, path, roughness)
@@ -185,11 +160,15 @@ func Connection(r *Runner, connection d2target.Connection, path, attrs string) (
 		return "", err
 	}
 	output := ""
+	pathEl := svg_style.NewThemableElement("path")
+	pathEl.Fill = color.None
+	pathEl.Stroke = svg_style.ConnectionTheme(connection)
+	pathEl.Class = "connection"
+	pathEl.Style = svg_style.ConnectionStyle(connection)
+	pathEl.Attributes = attrs
 	for _, p := range paths {
-		output += fmt.Sprintf(
-			`<path class="connection" fill="none" d="%s" style="%s" %s/>`,
-			p, connectionStyle(connection), attrs,
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
 	return output, nil
 }
@@ -198,20 +177,23 @@ func Connection(r *Runner, connection d2target.Connection, path, attrs string) (
 func Table(r *Runner, shape d2target.Shape) (string, error) {
 	output := ""
 	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
-		fill: "%s",
-		stroke: "%s",
+		fill: "#000",
+		stroke: "#000",
 		strokeWidth: %d,
 		%s
-	});`, shape.Width, shape.Height, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	});`, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
 	paths, err := computeRoughPaths(r, js)
 	if err != nil {
 		return "", err
 	}
+	pathEl := svg_style.NewThemableElement("path")
+	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
+	pathEl.Fill, pathEl.Stroke = svg_style.ShapeTheme(shape)
+	pathEl.Class = "shape"
+	pathEl.Style = svg_style.ShapeStyle(shape)
 	for _, p := range paths {
-		output += fmt.Sprintf(
-			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
 
 	box := geo.NewBox(
@@ -223,18 +205,20 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 	headerBox := geo.NewBox(box.TopLeft, box.Width, rowHeight)
 
 	js = fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %f, {
-		fill: "%s",
+		fill: "#000",
 		%s
-	});`, shape.Width, rowHeight, shape.Fill, baseRoughProps)
+	});`, shape.Width, rowHeight, baseRoughProps)
 	paths, err = computeRoughPaths(r, js)
 	if err != nil {
 		return "", err
 	}
+	pathEl = svg_style.NewThemableElement("path")
+	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
+	pathEl.Fill = shape.Fill
+	pathEl.Class = "class_header"
 	for _, p := range paths {
-		output += fmt.Sprintf(
-			`<path class="class_header" transform="translate(%d %d)" d="%s" style="fill:%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shape.Fill,
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
 
 	if shape.Label != "" {
@@ -245,17 +229,16 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.LabelHeight),
 		)
 
-		output += fmt.Sprintf(`<text class="%s" x="%f" y="%f" style="%s">%s</text>`,
-			"text",
-			tl.X,
-			tl.Y+float64(shape.LabelHeight)*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s",
-				"start",
-				4+shape.FontSize,
-				shape.Stroke,
-			),
-			svg.EscapeText(shape.Label),
+		textEl := svg_style.NewThemableElement("text")
+		textEl.X = tl.X
+		textEl.Y = tl.Y + float64(shape.LabelHeight)*3/4
+		textEl.Fill = shape.Stroke
+		textEl.Class = "text"
+		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx",
+			"start", 4+shape.FontSize,
 		)
+		textEl.Content = svg.EscapeText(shape.Label)
+		output += textEl.Render()
 	}
 
 	var longestNameWidth int
@@ -279,26 +262,26 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.FontSize),
 		)
 
-		output += strings.Join([]string{
-			fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
-				nameTL.X,
-				nameTL.Y+float64(shape.FontSize)*3/4,
-				fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", float64(shape.FontSize), shape.PrimaryAccentColor),
-				svg.EscapeText(f.Name.Label),
-			),
-			fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
-				nameTL.X+float64(longestNameWidth)+2*d2target.NamePadding,
-				nameTL.Y+float64(shape.FontSize)*3/4,
-				fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", float64(shape.FontSize), shape.NeutralAccentColor),
-				svg.EscapeText(f.Type.Label),
-			),
-			fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
-				constraintTR.X,
-				constraintTR.Y+float64(shape.FontSize)*3/4,
-				fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s;letter-spacing:2px;", "end", float64(shape.FontSize), shape.SecondaryAccentColor),
-				f.ConstraintAbbr(),
-			),
-		}, "\n")
+		textEl := svg_style.NewThemableElement("text")
+		textEl.X = nameTL.X
+		textEl.Y = nameTL.Y + float64(shape.FontSize)*3/4
+		textEl.Fill = shape.PrimaryAccentColor
+		textEl.Class = "text"
+		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "start", float64(shape.FontSize))
+		textEl.Content = svg.EscapeText(f.Name.Label)
+		output += textEl.Render()
+
+		textEl.X = nameTL.X + float64(longestNameWidth) + 2*d2target.NamePadding
+		textEl.Fill = shape.NeutralAccentColor
+		textEl.Content = svg.EscapeText(f.Type.Label)
+		output += textEl.Render()
+
+		textEl.X = constraintTR.X
+		textEl.Y = constraintTR.Y + float64(shape.FontSize)*3/4
+		textEl.Fill = shape.SecondaryAccentColor
+		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx;letter-spacing:2px", "end", float64(shape.FontSize))
+		textEl.Content = f.ConstraintAbbr()
+		output += textEl.Render()
 
 		rowBox.TopLeft.Y += rowHeight
 
@@ -309,11 +292,11 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 		if err != nil {
 			return "", err
 		}
+		pathEl := svg_style.NewThemableElement("path")
+		pathEl.Fill = shape.Fill
 		for _, p := range paths {
-			output += fmt.Sprintf(
-				`<path d="%s" style="fill:%s" />`,
-				p, shape.Fill,
-			)
+			pathEl.D = p
+			output += pathEl.Render()
 		}
 	}
 	output += fmt.Sprintf(
@@ -326,20 +309,22 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 func Class(r *Runner, shape d2target.Shape) (string, error) {
 	output := ""
 	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
-		fill: "%s",
-		stroke: "%s",
+		fill: "#000",
+		stroke: "#000",
 		strokeWidth: %d,
 		%s
-	});`, shape.Width, shape.Height, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	});`, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
 	paths, err := computeRoughPaths(r, js)
 	if err != nil {
 		return "", err
 	}
+	pathEl := svg_style.NewThemableElement("path")
+	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
+	pathEl.Fill, pathEl.Stroke = svg_style.ShapeTheme(shape)
+	pathEl.Class = "shape"
 	for _, p := range paths {
-		output += fmt.Sprintf(
-			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
 
 	box := geo.NewBox(
@@ -352,18 +337,20 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	headerBox := geo.NewBox(box.TopLeft, box.Width, 2*rowHeight)
 
 	js = fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %f, {
-		fill: "%s",
+		fill: "#000",
 		%s
-	});`, shape.Width, headerBox.Height, shape.Fill, baseRoughProps)
+	});`, shape.Width, headerBox.Height, baseRoughProps)
 	paths, err = computeRoughPaths(r, js)
 	if err != nil {
 		return "", err
 	}
+	pathEl = svg_style.NewThemableElement("path")
+	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
+	pathEl.Fill = shape.Fill
+	pathEl.Class = "class_header"
 	for _, p := range paths {
-		output += fmt.Sprintf(
-			`<path class="class_header" transform="translate(%d %d)" d="%s" style="fill:%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shape.Fill,
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
 
 	output += fmt.Sprintf(
@@ -379,17 +366,17 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.LabelHeight),
 		)
 
-		output += fmt.Sprintf(`<text class="%s" x="%f" y="%f" style="%s">%s</text>`,
-			"text-mono",
-			tl.X+float64(shape.LabelWidth)/2,
-			tl.Y+float64(shape.LabelHeight)*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s",
-				"middle",
-				4+shape.FontSize,
-				shape.Stroke,
-			),
-			svg.EscapeText(shape.Label),
+		textEl := svg_style.NewThemableElement("text")
+		textEl.X = tl.X + float64(shape.LabelWidth)/2
+		textEl.Y = tl.Y + float64(shape.LabelHeight)*3/4
+		textEl.Fill = shape.Stroke
+		textEl.Class = "text-mono"
+		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx",
+			"middle",
+			4+shape.FontSize,
 		)
+		textEl.Content = svg.EscapeText(shape.Label)
+		output += textEl.Render()
 	}
 
 	rowBox := geo.NewBox(box.TopLeft.Copy(), box.Width, rowHeight)
@@ -406,11 +393,12 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	pathEl = svg_style.NewThemableElement("path")
+	pathEl.Fill = shape.Fill
+	pathEl.Class = "class_header"
 	for _, p := range paths {
-		output += fmt.Sprintf(
-			`<path class="class_header" d="%s" style="fill:%s" />`,
-			p, shape.Fill,
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
 
 	for _, m := range shape.Methods {
@@ -436,28 +424,27 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 		fontSize,
 	)
 
-	output += strings.Join([]string{
-		fmt.Sprintf(`<text class="text-mono" x="%f" y="%f" style="%s">%s</text>`,
-			prefixTL.X,
-			prefixTL.Y+fontSize*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, shape.PrimaryAccentColor),
-			prefix,
-		),
+	textEl := svg_style.NewThemableElement("text")
+	textEl.X = prefixTL.X
+	textEl.Y = prefixTL.Y + fontSize*3/4
+	textEl.Fill = shape.PrimaryAccentColor
+	textEl.Class = "text-mono"
+	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "start", fontSize)
+	textEl.Content = prefix
+	output += textEl.Render()
 
-		fmt.Sprintf(`<text class="text-mono" x="%f" y="%f" style="%s">%s</text>`,
-			prefixTL.X+d2target.PrefixWidth,
-			prefixTL.Y+fontSize*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, shape.Fill),
-			svg.EscapeText(nameText),
-		),
+	textEl.X = prefixTL.X + d2target.PrefixWidth
+	textEl.Fill = shape.Fill
+	textEl.Content = svg.EscapeText(nameText)
+	output += textEl.Render()
 
-		fmt.Sprintf(`<text class="text-mono" x="%f" y="%f" style="%s">%s</text>`,
-			typeTR.X,
-			typeTR.Y+fontSize*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s;", "end", fontSize, shape.SecondaryAccentColor),
-			svg.EscapeText(typeText),
-		),
-	}, "\n")
+	textEl.X = typeTR.X
+	textEl.Y = typeTR.Y + fontSize*3/4
+	textEl.Fill = shape.SecondaryAccentColor
+	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "end", fontSize)
+	textEl.Content = svg.EscapeText(typeText)
+	output += textEl.Render()
+
 	return output
 }
 
