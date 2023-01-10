@@ -278,7 +278,7 @@ const (
 	DiamondArrowhead       Arrowhead = "diamond"
 	FilledDiamondArrowhead Arrowhead = "filled-diamond"
 	CircleArrowhead        Arrowhead = "circle"
-	FilledCircleArrowhead  Arrowhead = "circle-filled"
+	FilledCircleArrowhead  Arrowhead = "filled-circle"
 
 	// For fat arrows
 	LineArrowhead Arrowhead = "line"
