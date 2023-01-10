@@ -1241,10 +1241,10 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	// TODO minify
 	// TODO background stuff. e.g. dotted, grid, colors
 	backgroundEl := svg_style.NewThemableElement("rect")
-	backgroundEl.X = float64(tl.X - pad - 10) // TODO the background is not rendered all over the image
-	backgroundEl.Y = float64(tl.Y - pad - 10) // so I had to add 10 to the size - someone smarter than me please fix this
-	backgroundEl.Width = float64(w + 10*2)    // new observations: adding even 10 to the size seems to fail at higher image sizes?
-	backgroundEl.Height = float64(h + 10*2)
+	backgroundEl.X = float64(tl.X - pad)
+	backgroundEl.Y = float64(tl.Y - pad)
+	backgroundEl.Width = float64(w)
+	backgroundEl.Height = float64(h)
 	backgroundEl.Fill = color.N7
 
 	// generate elements that will be appended to the SVG tag
@@ -1323,7 +1323,7 @@ func singleThemeRulesets(themeID int64) (rulesets string) {
 		theme.Colors.Neutrals.N1, theme.Colors.Neutrals.N2, theme.Colors.Neutrals.N3,
 		theme.Colors.Neutrals.N7, theme.Colors.Neutrals.N6,
 		theme.Colors.B1, theme.Colors.B2,
-		theme.Colors.Neutrals.N6, // TODO maybe N5 --color-border-default
+		theme.Colors.Neutrals.N6,
 		theme.Colors.B2, theme.Colors.B2,
 		theme.Colors.Neutrals.N2, // TODO or N3 --color-attention-subtle
 		"red",
