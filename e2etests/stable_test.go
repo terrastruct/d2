@@ -1776,7 +1776,7 @@ a <-> b: circle {
   }
 }
 
-c <--> d: circle-filled {
+c <-> d: circle-filled {
   source-arrowhead: {
     shape: circle
     style.filled: true
