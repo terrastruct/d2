@@ -1,7 +1,7 @@
 FROM debian:10
 
 RUN apt-get update
-RUN apt-get install -y curl
+RUN apt-get install -y curl ca-certificates
 
 ARG GOVERSION=
 RUN curl -fsSL "https://go.dev/dl/go$GOVERSION.tar.gz" >/tmp/go.tar.gz
