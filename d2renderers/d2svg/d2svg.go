@@ -226,34 +226,32 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 		}
 	case d2target.FilledCircleArrowhead:
 		attrs := fmt.Sprintf(`class="connection" fill="%s" stroke-width="%d"`, connection.Stroke, connection.StrokeWidth)
-		offset := 4.0 + float64(connection.StrokeWidth*2)
 		if isTarget {
 			path = fmt.Sprintf(`<circle %s cx="%f" cy="%f" r="%f"/>`,
 				attrs,
-				offset+11, height/2,
-				offset*1.2,
+				width/2+5, height/2,
+				width/3,
 			)
 		} else {
 			path = fmt.Sprintf(`<circle %s cx="%f" cy="%f" r="%f"/>`,
 				attrs,
-				offset+1, height/2,
-				offset*1.2,
+				width/2-5, height/2,
+				width/3,
 			)
 		}
 	case d2target.CircleArrowhead:
 		attrs := fmt.Sprintf(`class="connection" fill="white" stroke="%s" stroke-width="%d"`, connection.Stroke, connection.StrokeWidth)
-		offset := 4.0 + float64(connection.StrokeWidth*2)
 		if isTarget {
 			path = fmt.Sprintf(`<circle %s cx="%f" cy="%f" r="%f"/>`,
 				attrs,
-				offset+12, height/2,
-				offset*1.2,
+				width/2+5, height/2,
+				width/3.2,
 			)
 		} else {
 			path = fmt.Sprintf(`<circle %s cx="%f" cy="%f" r="%f"/>`,
 				attrs,
-				offset+4, height/2,
-				offset*1.2,
+				width/2-5, height/2,
+				width/3.2,
 			)
 		}
 
@@ -304,14 +302,6 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 	refY := height / 2
 	switch arrowhead {
 	case d2target.DiamondArrowhead:
-		if isTarget {
-			refX = width - 0.6*strokeWidth
-		} else {
-			refX = width/8 + 0.6*strokeWidth
-		}
-		width *= 1.1
-
-	case d2target.CircleArrowhead:
 		if isTarget {
 			refX = width - 0.6*strokeWidth
 		} else {
