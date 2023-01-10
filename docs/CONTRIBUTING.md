@@ -88,6 +88,12 @@ Run: `./ci/test.sh`
 CI runs tests with `-race` to catch potential race conditions. It's much slower, but if
 your machine can run it locally, you can do so with `./make.sh race`.
 
+If you add a new test and run, it will show failure. That's because the vast majority of
+D2's tests are comparing outputs. You don't define the expected output manually. The
+testing library generates it and it's checked into version control if it looks right. So
+for the first run of a new test, it has no expected output, and will fail. To accept the
+  result as the expected, run the test with environment variable `TESTDATA_ACCEPT=1`.
+
 #### Chaos tests
 
 D2 has [chaos tests](https://en.wikipedia.org/wiki/Chaos_engineering) which produce random
