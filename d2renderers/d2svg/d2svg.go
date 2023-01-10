@@ -114,10 +114,7 @@ func arrowheadDimensions(arrowhead d2target.Arrowhead, strokeWidth float64) (wid
 	case d2target.DiamondArrowhead:
 		widthMultiplier = 11
 		heightMultiplier = 9
-	case d2target.FilledCircleArrowhead, d2target.CircleArrowhead:
-		widthMultiplier = 14
-		heightMultiplier = 15
-	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
+	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired, d2target.FilledCircleArrowhead, d2target.CircleArrowhead:
 		widthMultiplier = 14
 		heightMultiplier = 15
 	}
