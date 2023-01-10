@@ -230,13 +230,13 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 		if isTarget {
 			path = fmt.Sprintf(`<circle %s cx="%f" cy="%f" r="%f"/>`,
 				attrs,
-				offset+9, height/2,
+				offset+11, height/2,
 				offset*1.2,
 			)
 		} else {
 			path = fmt.Sprintf(`<circle %s cx="%f" cy="%f" r="%f"/>`,
 				attrs,
-				offset+3, height/2,
+				offset+1, height/2,
 				offset*1.2,
 			)
 		}
@@ -246,13 +246,13 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 		if isTarget {
 			path = fmt.Sprintf(`<circle %s cx="%f" cy="%f" r="%f"/>`,
 				attrs,
-				offset+10, height/2,
+				offset+12, height/2,
 				offset*1.2,
 			)
 		} else {
 			path = fmt.Sprintf(`<circle %s cx="%f" cy="%f" r="%f"/>`,
 				attrs,
-				offset+6, height/2,
+				offset+4, height/2,
 				offset*1.2,
 			)
 		}
