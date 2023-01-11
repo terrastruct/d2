@@ -263,18 +263,20 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		path := make([]*geo.Point, 0)
 		path = append(path, points[0])
-		path = append(path, points[0].AddVector(vectors[0].Multiply(.8)))
-		for i := 1; i < len(vectors)-2; i++ {
-			p := points[i]
-			v := vectors[i]
-			path = append(path, p.AddVector(v.Multiply(.2)))
-			path = append(path, p.AddVector(v.Multiply(.5)))
-			path = append(path, p.AddVector(v.Multiply(.8)))
+		if len(vectors) > 1 {
+			path = append(path, points[0].AddVector(vectors[0].Multiply(.8)))
+			for i := 1; i < len(vectors)-2; i++ {
+				p := points[i]
+				v := vectors[i]
+				path = append(path, p.AddVector(v.Multiply(.2)))
+				path = append(path, p.AddVector(v.Multiply(.5)))
+				path = append(path, p.AddVector(v.Multiply(.8)))
+			}
+			path = append(path, points[len(points)-2].AddVector(vectors[len(vectors)-1].Multiply(.2)))
+			edge.IsCurve = true
 		}
-		path = append(path, points[len(points)-2].AddVector(vectors[len(vectors)-1].Multiply(.2)))
 		path = append(path, points[len(points)-1])
 
-		edge.IsCurve = true
 		edge.Route = path
 		// compile needs to assign edge label positions
 		if edge.Attributes.Label.Value != "" {
