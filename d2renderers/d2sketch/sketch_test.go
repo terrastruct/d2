@@ -277,6 +277,26 @@ shipments.order_id <-> orders.id`,
 }
 `,
 		},
+		{
+			name: "bright_overlay",
+			script: `a.style.fill = "#fff"
+`,
+		},
+		{
+			name: "normal_overlay",
+			script: `a.style.fill = "#ccc"
+`,
+		},
+		{
+			name: "dark_overlay",
+			script: `a.style.fill = "#555"
+`,
+		},
+		{
+			name: "darker_overlay",
+			script: `a.style.fill = "#000"
+`,
+		},
 	}
 	runa(t, tcs)
 }
