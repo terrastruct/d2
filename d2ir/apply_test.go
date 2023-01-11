@@ -7,20 +7,17 @@ import (
 	"strings"
 	"testing"
 
+	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
 
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2ir"
 	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/internal/assert"
 )
 
 type testCase struct {
 	name string
-	text string
-	base *d2ir.Map
-
-	exp func(testing.TB, *d2ir.Map, error)
+	run  func(testing.TB, *d2ir.Map)
 }
 
 func TestApply(t *testing.T) {
@@ -30,12 +27,13 @@ func TestApply(t *testing.T) {
 }
 
 func testApplySimple(t *testing.T) {
-	tcs := []testCase{
+	t.Parallel()
+
+	tca := []testCase{
 		{
 			name: "one",
-			text: `x`,
-
-			exp: func(t testing.TB, m *d2ir.Map, err error) {
+			run: func(t testing.TB, m *d2ir.Map) {
+				err := parse(t, m, `x`)
 				assert.Success(t, err)
 				assertField(t, m, 1, 0, nil)
 
@@ -44,9 +42,8 @@ func testApplySimple(t *testing.T) {
 		},
 		{
 			name: "nested",
-			text: `x.y -> z.p`,
-
-			exp: func(t testing.TB, m *d2ir.Map, err error) {
+			run: func(t testing.TB, m *d2ir.Map) {
+				err := parse(t, m, `x.y -> z.p`)
 				assert.Success(t, err)
 				assertField(t, m, 4, 1, nil)
 
@@ -65,9 +62,8 @@ func testApplySimple(t *testing.T) {
 		},
 		{
 			name: "underscore_parent",
-			text: `x._ -> z`,
-
-			exp: func(t testing.TB, m *d2ir.Map, err error) {
+			run: func(t testing.TB, m *d2ir.Map) {
+				err := parse(t, m, `x._ -> z`)
 				assert.Success(t, err)
 				assertField(t, m, 2, 1, nil)
 
@@ -83,63 +79,76 @@ func testApplySimple(t *testing.T) {
 		},
 	}
 
-	runa(t, tcs)
+	runa(t, tca)
 }
 
-func runa(t *testing.T, tcs []testCase) {
-	for _, tc := range tcs {
+func runa(t *testing.T, tca []testCase) {
+	for _, tc := range tca {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-
-			run(t, tc)
+			m := &d2ir.Map{}
+			tc.run(t, m)
 		})
 	}
 }
 
-func run(t testing.TB, tc testCase) {
+func parse(t testing.TB, dst *d2ir.Map, text string) error {
+	t.Helper()
+
 	d2Path := fmt.Sprintf("d2/testdata/d2ir/%v.d2", t.Name())
-	ast, err := d2parser.Parse(d2Path, strings.NewReader(tc.text), nil)
-	if err != nil {
-		tc.exp(t, nil, err)
-		t.FailNow()
-		return
-	}
+	ast, err := d2parser.Parse(d2Path, strings.NewReader(text), nil)
+	assert.Success(t, err)
 
-	dst := tc.base.Copy(nil).(*d2ir.Map)
 	err = d2ir.Apply(dst, ast)
-	tc.exp(t, dst, err)
-
-	err = diff.Testdata(filepath.Join("..", "testdata", "d2ir", t.Name()), dst)
 	if err != nil {
-		tc.exp(t, nil, err)
-		t.FailNow()
-		return
+		return err
 	}
+
+	err = diff.TestdataJSON(filepath.Join("..", "testdata", "d2ir", t.Name()), dst)
+	return err
 }
 
 func assertField(t testing.TB, n d2ir.Node, nfields, nedges int, primary interface{}, ida ...string) *d2ir.Field {
 	t.Helper()
 
-	m := d2ir.NodeToMap(n)
-	p := d2ir.NodeToPrimary(n)
+	var m *d2ir.Map
+	p := &d2ir.Scalar{
+		Value: &d2ast.Null{},
+	}
+	switch n := n.(type) {
+	case *d2ir.Field:
+		mm, ok := n.Composite.(*d2ir.Map)
+		if ok {
+			m = mm
+		} else {
+			t.Fatalf("unexpected d2ir.Field.Composite %T", n.Composite)
+		}
+		p = n.Primary
+	case *d2ir.Map:
+		m = n
+		p.Value = &d2ast.Null{}
+	default:
+		t.Fatalf("unexpected d2ir.Node %T", n)
+	}
 
 	var f *d2ir.Field
+	var ok bool
 	if len(ida) > 0 {
-		f = m.Get(ida)
-		if f == nil {
-			t.Fatalf("expected field %#v in map %#v but not found", ida, m)
+		f, ok = m.Get(ida)
+		if !ok {
+			t.Fatalf("expected field %v in map %s", ida, m)
 		}
 		p = f.Primary
-		m = d2ir.NodeToMap(f)
+		if f_m, ok := f.Composite.(*d2ir.Map); ok {
+			m = f_m
+		} else {
+			m = &d2ir.Map{}
+		}
 	}
 
-	if m.FieldCount() != nfields {
-		t.Fatalf("expected %d fields but got %d", nfields, m.FieldCount())
-	}
-	if m.EdgeCount() != nedges {
-		t.Fatalf("expected %d edges but got %d", nedges, m.EdgeCount())
-	}
+	assert.Equal(t, nfields, m.FieldCount())
+	assert.Equal(t, nedges, m.EdgeCount())
 	if !p.Equal(makeScalar(primary)) {
 		t.Fatalf("expected primary %#v but %#v", primary, p)
 	}
@@ -150,19 +159,27 @@ func assertField(t testing.TB, n d2ir.Node, nfields, nedges int, primary interfa
 func assertEdge(t testing.TB, n d2ir.Node, nfields int, primary interface{}, eid *d2ir.EdgeID) *d2ir.Edge {
 	t.Helper()
 
-	m := d2ir.NodeToMap(n)
-
-	e := m.GetEdge(eid)
-	if e == nil {
-		t.Fatalf("expected edge %#v in map %#v but not found", eid, m)
+	var m *d2ir.Map
+	switch n := n.(type) {
+	case *d2ir.Field:
+		mm, ok := n.Composite.(*d2ir.Map)
+		if ok {
+			m = mm
+		} else {
+			t.Fatalf("unexpected d2ir.Field.Composite %T", n.Composite)
+		}
+	case *d2ir.Map:
+		m = n
+	default:
+		t.Fatalf("unexpected d2ir.Node %T", n)
 	}
 
-	if e.Map.FieldCount() != nfields {
-		t.Fatalf("expected %d fields but got %d", nfields, e.Map.FieldCount())
+	e, ok := m.GetEdge(eid)
+	if !ok {
+		t.Fatalf("expected edge %v in map %s but not found", eid, m)
 	}
-	if e.Map.EdgeCount() != 0 {
-		t.Fatalf("expected %d edges but got %d", 0, e.Map.EdgeCount())
-	}
+
+	assert.Equal(t, nfields, e.Map.FieldCount())
 	if !e.Primary.Equal(makeScalar(primary)) {
 		t.Fatalf("expected primary %#v but %#v", primary, e.Primary)
 	}

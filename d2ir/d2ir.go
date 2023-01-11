@@ -1,6 +1,8 @@
 package d2ir
 
 import (
+	"encoding/json"
+	"fmt"
 	"strings"
 
 	"oss.terrastruct.com/d2/d2ast"
@@ -51,6 +53,7 @@ func (n *Edge) node()   {}
 func (n *Array) node()  {}
 func (n *Map) node()    {}
 
+func (n *Scalar) Parent() Parent { return n.parent }
 func (n *Field) Parent() Parent { return n.parent }
 func (n *Edge) Parent() Parent  { return n.parent }
 func (n *Array) Parent() Parent { return n.parent }
@@ -77,6 +80,17 @@ func (s *Scalar) Copy(newp Parent) Node {
 }
 
 func (s *Scalar) Equal(s2 *Scalar) bool {
+	if s == nil {
+		if s2 == nil {
+			return true
+		}
+		_, ok := s2.Value.(*d2ast.Null)
+		return ok
+	}
+	if s2 == nil {
+		_, ok := s.Value.(*d2ast.Null)
+		return ok
+	}
 	return s.Value.ScalarString() == s2.Value.ScalarString() && s.Value.Type() == s2.Value.Type()
 }
 
@@ -113,10 +127,10 @@ type Field struct {
 
 	Name string `json:"name"`
 
-	Primary   *Scalar   `json:"primary"`
-	Composite Composite `json:"composite"`
+	Primary   *Scalar   `json:"primary,omitempty"`
+	Composite Composite `json:"composite,omitempty"`
 
-	Refs []KeyReference `json:"refs"`
+	Refs []KeyReference `json:"refs,omitempty"`
 }
 
 func (f *Field) Copy(newp Parent) Node {
@@ -203,10 +217,10 @@ type Edge struct {
 
 	ID *EdgeID `json:"edge_id"`
 
-	Primary *Scalar `json:"primary"`
-	Map     *Map    `json:"map"`
+	Primary *Scalar `json:"primary,omitempty"`
+	Map     *Map    `json:"map,omitempty"`
 
-	Refs []EdgeReference `json:"refs"`
+	Refs []EdgeReference `json:"refs,omitempty"`
 }
 
 func (e *Edge) Copy(newp Parent) Node {
@@ -383,4 +397,12 @@ func (m *Map) GetEdge(eid *EdgeID) (*Edge, bool) {
 		}
 	}
 	return nil, false
+}
+
+func (m *Map) String() string {
+	b, err := json.Marshal(m)
+	if err != nil {
+		panic(fmt.Sprintf("d2ir: failed to marshal d2ir.Map: %v", err))
+	}
+	return string(b)
 }

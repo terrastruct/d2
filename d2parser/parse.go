@@ -45,7 +45,7 @@ func Parse(path string, r io.RuneReader, opts *ParseOptions) (*d2ast.Map, error)
 	}
 
 	m := p.parseMap(true)
-	if !p.err.empty() {
+	if !p.err.Empty() {
 		return m, p.err
 	}
 	return m, nil
@@ -57,7 +57,7 @@ func ParseKey(key string) (*d2ast.KeyPath, error) {
 	}
 
 	k := p.parseKey()
-	if !p.err.empty() {
+	if !p.err.Empty() {
 		return nil, fmt.Errorf("failed to parse key %q: %w", key, p.err)
 	}
 	if k == nil {
@@ -72,7 +72,7 @@ func ParseMapKey(mapKey string) (*d2ast.Key, error) {
 	}
 
 	mk := p.parseMapKey()
-	if !p.err.empty() {
+	if !p.err.Empty() {
 		return nil, fmt.Errorf("failed to parse map key %q: %w", mapKey, p.err)
 	}
 	if mk == nil {
@@ -87,7 +87,7 @@ func ParseValue(value string) (d2ast.Value, error) {
 	}
 
 	v := p.parseValue()
-	if !p.err.empty() {
+	if !p.err.Empty() {
 		return nil, fmt.Errorf("failed to parse value %q: %w", value, p.err)
 	}
 	if v.Unbox() == nil {
@@ -130,7 +130,7 @@ type ParseError struct {
 	Errors  []d2ast.Error `json:"errs"`
 }
 
-func (pe ParseError) empty() bool {
+func (pe ParseError) Empty() bool {
 	return pe.IOError == nil && len(pe.Errors) == 0
 }
 

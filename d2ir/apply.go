@@ -24,7 +24,10 @@ func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 func Apply(dst *Map, ast *d2ast.Map) error {
 	var c compiler
 	c.apply(dst, ast)
-	return c.err
+	if !c.err.Empty() {
+		return c.err
+	}
+	return nil
 }
 
 func (c *compiler) apply(dst *Map, ast *d2ast.Map) {
