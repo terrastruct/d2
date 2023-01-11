@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
 )
 
@@ -23,28 +23,29 @@ func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 
 func Apply(dst *Map, ast *d2ast.Map) error {
 	var c compiler
-	c.apply(dst, ast)
+	c.compileMap(dst, ast)
 	if !c.err.Empty() {
 		return c.err
 	}
 	return nil
 }
 
-func (c *compiler) apply(dst *Map, ast *d2ast.Map) {
+func (c *compiler) compileMap(dst *Map, ast *d2ast.Map) {
 	for _, n := range ast.Nodes {
-		if n.MapKey == nil {
-			continue
+		switch {
+		case n.MapKey != nil:
+			c.compileField(dst, n.MapKey)
+		case n.Substitution != nil:
+			panic("TODO")
 		}
-
-		c.applyKey(dst, n.MapKey)
 	}
 }
 
-func (c *compiler) applyKey(dst *Map, k *d2ast.Key) {
+func (c *compiler) compileField(dst *Map, k *d2ast.Key) {
 	if k.Key != nil && len(k.Key.Path) > 0 {
-		f, ok := dst.Ensure(d2graph.Key(k.Key))
+		f, ok := dst.Ensure(d2format.KeyPath(k.Key))
 		if !ok {
-			c.errorf(k.Key, "cannot index into array")
+			c.errorf(k, "cannot index into array")
 			return
 		}
 
@@ -55,6 +56,28 @@ func (c *compiler) applyKey(dst *Map, k *d2ast.Key) {
 					Value:  k.Primary.Unbox(),
 				}
 			}
+			if k.Value.Array != nil {
+				a := &Array{
+					parent: f,
+				}
+				c.compileArray(a, k.Value.Array)
+				f.Composite = a
+			} else if k.Value.Map != nil {
+				m := &Map{
+					parent: f,
+				}
+				c.compileMap(m, k.Value.Map)
+				f.Composite = m
+			} else if k.Value.ScalarBox().Unbox() != nil {
+				f.Primary = &Scalar{
+					parent: f,
+					Value:  k.Value.ScalarBox().Unbox(),
+				}
+			}
 		}
 	}
+}
+
+func (c *compiler) compileArray(dst *Array, a *d2ast.Array) {
+	panic(fmt.Sprintf("TODO"))
 }

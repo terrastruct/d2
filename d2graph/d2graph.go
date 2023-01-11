@@ -1238,16 +1238,7 @@ func (g *Graph) Texts() []*d2target.MText {
 }
 
 func Key(k *d2ast.KeyPath) []string {
-	var ids []string
-	for _, s := range k.Path {
-		// We format each string of the key to ensure the resulting strings can be parsed
-		// correctly.
-		n := &d2ast.KeyPath{
-			Path: []*d2ast.StringBox{d2ast.MakeValueBox(d2ast.RawString(s.Unbox().ScalarString(), true)).StringBox()},
-		}
-		ids = append(ids, d2format.Format(n))
-	}
-	return ids
+	return d2format.KeyPath(k)
 }
 
 var ReservedKeywords = map[string]struct{}{

@@ -11,6 +11,7 @@ import (
 	"oss.terrastruct.com/util-go/diff"
 
 	"oss.terrastruct.com/d2/d2ast"
+	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2ir"
 	"oss.terrastruct.com/d2/d2parser"
 )
@@ -31,13 +32,69 @@ func testApplySimple(t *testing.T) {
 
 	tca := []testCase{
 		{
-			name: "one",
+			name: "field",
 			run: func(t testing.TB, m *d2ir.Map) {
 				err := parse(t, m, `x`)
 				assert.Success(t, err)
 				assertField(t, m, 1, 0, nil)
 
 				assertField(t, m, 0, 0, nil, "x")
+			},
+		},
+		{
+			name: "field/label",
+			run: func(t testing.TB, m *d2ir.Map) {
+				err := parse(t, m, `x: yes`)
+				assert.Success(t, err)
+				assertField(t, m, 1, 0, nil)
+
+				assertField(t, m, 0, 0, "yes", "x")
+			},
+		},
+		{
+			name: "field/label/nested",
+			run: func(t testing.TB, m *d2ir.Map) {
+				err := parse(t, m, `x.y: yes`)
+				assert.Success(t, err)
+				assertField(t, m, 2, 0, nil)
+
+				assertField(t, m, 1, 0, nil, "x")
+				assertField(t, m, 0, 0, "yes", "x", "y")
+			},
+		},
+		{
+			name: "primary",
+			run: func(t testing.TB, m *d2ir.Map) {
+				err := parse(t, m, `x: yes { pqrs }`)
+				assert.Success(t, err)
+				assertField(t, m, 2, 0, nil)
+
+				assertField(t, m, 1, 0, "yes", "x")
+				assertField(t, m, 0, 0, nil, "x", "pqrs")
+			},
+		},
+		{
+			name: "primary/nested",
+			run: func(t testing.TB, m *d2ir.Map) {
+				err := parse(t, m, `x.y: yes { pqrs }`)
+				assert.Success(t, err)
+				assertField(t, m, 3, 0, nil)
+
+				assertField(t, m, 2, 0, nil, "x")
+				assertField(t, m, 1, 0, "yes", "x", "y")
+				assertField(t, m, 0, 0, nil, "x", "y", "pqrs")
+			},
+		},
+		{
+			name: "edge",
+			run: func(t testing.TB, m *d2ir.Map) {
+				err := parse(t, m, `x -> y`)
+				assert.Success(t, err)
+				assertField(t, m, 2, 1, nil)
+				assertEdge(t, m, 0, nil, `(x -> y)[0]`)
+
+				assertField(t, m, 0, 0, nil, "x")
+				assertField(t, m, 0, 0, nil, "y")
 			},
 		},
 		{
@@ -53,11 +110,7 @@ func testApplySimple(t *testing.T) {
 				assertField(t, m, 1, 0, nil, "z")
 				assertField(t, m, 0, 0, nil, "z", "p")
 
-				assertEdge(t, m, 0, nil, &d2ir.EdgeID{
-					[]string{"x", "y"}, false,
-					[]string{"z", "p"}, true,
-					-1,
-				})
+				assertEdge(t, m, 0, nil, "(x.y -> z.p)[0]")
 			},
 		},
 		{
@@ -70,11 +123,7 @@ func testApplySimple(t *testing.T) {
 				assertField(t, m, 0, 0, nil, "x")
 				assertField(t, m, 0, 0, nil, "z")
 
-				assertEdge(t, m, 0, nil, &d2ir.EdgeID{
-					[]string{"x"}, false,
-					[]string{"z"}, true,
-					-1,
-				})
+				assertEdge(t, m, 0, nil, "(x -> z)[0]")
 			},
 		},
 	}
@@ -150,14 +199,30 @@ func assertField(t testing.TB, n d2ir.Node, nfields, nedges int, primary interfa
 	assert.Equal(t, nfields, m.FieldCount())
 	assert.Equal(t, nedges, m.EdgeCount())
 	if !makeScalar(p).Equal(makeScalar(primary)) {
-		t.Fatalf("expected primary %#v but %#v", primary, p)
+		t.Fatalf("expected primary %#v but got %s", primary, p)
 	}
 
 	return f
 }
 
-func assertEdge(t testing.TB, n d2ir.Node, nfields int, primary interface{}, eid *d2ir.EdgeID) *d2ir.Edge {
+func parseEdgeID(t testing.TB, eids string) *d2ir.EdgeID {
 	t.Helper()
+	k, err := d2parser.ParseMapKey(eids)
+	assert.Success(t, err)
+
+	return &d2ir.EdgeID{
+		SrcPath:  d2format.KeyPath(k.Edges[0].Src),
+		SrcArrow: k.Edges[0].SrcArrow == "<",
+		DstPath:  d2format.KeyPath(k.Edges[0].Dst),
+		DstArrow: k.Edges[0].DstArrow == ">",
+		Index:    *k.EdgeIndex.Int,
+	}
+}
+
+func assertEdge(t testing.TB, n d2ir.Node, nfields int, primary interface{}, eids string) *d2ir.Edge {
+	t.Helper()
+
+	eid := parseEdgeID(t, eids)
 
 	var m *d2ir.Map
 	switch n := n.(type) {
@@ -181,7 +246,7 @@ func assertEdge(t testing.TB, n d2ir.Node, nfields int, primary interface{}, eid
 
 	assert.Equal(t, nfields, e.Map.FieldCount())
 	if !makeScalar(e.Primary).Equal(makeScalar(primary)) {
-		t.Fatalf("expected primary %#v but %#v", primary, e.Primary)
+		t.Fatalf("expected primary %#v but %s", primary, e.Primary)
 	}
 
 	return e

@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"oss.terrastruct.com/d2/d2ast"
+	"oss.terrastruct.com/d2/d2format"
 )
 
 type Node interface {
@@ -54,10 +55,10 @@ func (n *Array) node()  {}
 func (n *Map) node()    {}
 
 func (n *Scalar) Parent() Parent { return n.parent }
-func (n *Field) Parent() Parent { return n.parent }
-func (n *Edge) Parent() Parent  { return n.parent }
-func (n *Array) Parent() Parent { return n.parent }
-func (n *Map) Parent() Parent   { return n.parent }
+func (n *Field) Parent() Parent  { return n.parent }
+func (n *Edge) Parent() Parent   { return n.parent }
+func (n *Array) Parent() Parent  { return n.parent }
+func (n *Map) Parent() Parent    { return n.parent }
 
 func (n *Scalar) value() {}
 func (n *Array) value()  {}
@@ -80,7 +81,17 @@ func (s *Scalar) Copy(newp Parent) Node {
 }
 
 func (s *Scalar) Equal(s2 *Scalar) bool {
-	return s.Value.ScalarString() == s2.Value.ScalarString() && s.Value.Type() == s2.Value.Type()
+	if _, ok := s.Value.(d2ast.String); ok {
+		if _, ok = s2.Value.(d2ast.String); ok {
+			return s.Value.ScalarString() == s2.Value.ScalarString()
+		}
+	}
+	return s.Value.Type() == s2.Value.Type() && s.Value.ScalarString() == s2.Value.ScalarString()
+
+}
+
+func (s *Scalar) String() string {
+	return d2format.Format(s.Value)
 }
 
 type Map struct {

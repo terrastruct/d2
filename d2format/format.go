@@ -397,3 +397,16 @@ func (p *printer) edgeIndex(ei *d2ast.EdgeIndex) {
 	}
 	p.sb.WriteByte(']')
 }
+
+func KeyPath(kp *d2ast.KeyPath) []string {
+	var ids []string
+	for _, s := range kp.Path {
+		// We format each string of the key to ensure the resulting strings can be parsed
+		// correctly.
+		n := &d2ast.KeyPath{
+			Path: []*d2ast.StringBox{d2ast.MakeValueBox(d2ast.RawString(s.Unbox().ScalarString(), true)).StringBox()},
+		}
+		ids = append(ids, Format(n))
+	}
+	return ids
+}
