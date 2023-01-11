@@ -114,6 +114,9 @@ func arrowheadDimensions(arrowhead d2target.Arrowhead, strokeWidth float64) (wid
 	case d2target.DiamondArrowhead:
 		widthMultiplier = 11
 		heightMultiplier = 9
+	case d2target.FilledCircleArrowhead, d2target.CircleArrowhead:
+		widthMultiplier = 14
+		heightMultiplier = 14
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
 		widthMultiplier = 14
 		heightMultiplier = 15
@@ -224,6 +227,37 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 				width*0.6, height*7/8,
 			)
 		}
+	case d2target.FilledCircleArrowhead:
+		attrs := fmt.Sprintf(`class="connection" fill="%s" stroke-width="%d"`, connection.Stroke, connection.StrokeWidth)
+		if isTarget {
+			path = fmt.Sprintf(`<circle %s clip-path="circle()" cx="%f" cy="%f" r="%f"/>`,
+				attrs,
+				width-10.3+strokeWidth/3, height/2,
+				width/2.9,
+			)
+		} else {
+			path = fmt.Sprintf(`<circle %s clip-path="circle()" cx="%f" cy="%f" r="%f"/>`,
+				attrs,
+				width-19+strokeWidth/3, height/2,
+				width/2.9,
+			)
+		}
+	case d2target.CircleArrowhead:
+		attrs := fmt.Sprintf(`class="connection" fill="white" stroke="%s" stroke-width="%d"`, connection.Stroke, connection.StrokeWidth)
+		if isTarget {
+			path = fmt.Sprintf(`<circle %s cx="%f" cy="%f" r="%f"/>`,
+				attrs,
+				width/2+3.6+strokeWidth/3, height/2,
+				width/3.2,
+			)
+		} else {
+			path = fmt.Sprintf(`<circle %s cx="%f" cy="%f" r="%f"/>`,
+				attrs,
+				width/2-4.9+strokeWidth/3, height/2,
+				width/3.2,
+			)
+		}
+
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
 		attrs := fmt.Sprintf(`class="connection" stroke="%s" stroke-width="%d" fill="white"`, connection.Stroke, connection.StrokeWidth)
 		offset := 4.0 + float64(connection.StrokeWidth*2)
