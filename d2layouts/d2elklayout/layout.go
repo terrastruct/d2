@@ -94,11 +94,13 @@ var DefaultOpts = ConfigurableOpts{
 }
 
 type elkOpts struct {
-	Direction           string `json:"elk.direction"`
-	HierarchyHandling   string `json:"elk.hierarchyHandling,omitempty"`
-	InlineEdgeLabels    bool   `json:"elk.edgeLabels.inline,omitempty"`
-	ForceNodeModelOrder bool   `json:"elk.layered.crossingMinimization.forceNodeModelOrder,omitempty"`
-	ConsiderModelOrder  string `json:"elk.layered.considerModelOrder.strategy,omitempty"`
+	Thoroughness                 int    `json:"elk.layered.thoroughness,omitempty"`
+	EdgeEdgeBetweenLayersSpacing int    `json:"elk.layered.spacing.edgeEdgeBetweenLayers,omitempty"`
+	Direction                    string `json:"elk.direction"`
+	HierarchyHandling            string `json:"elk.hierarchyHandling,omitempty"`
+	InlineEdgeLabels             bool   `json:"elk.edgeLabels.inline,omitempty"`
+	ForceNodeModelOrder          bool   `json:"elk.layered.crossingMinimization.forceNodeModelOrder,omitempty"`
+	ConsiderModelOrder           string `json:"elk.layered.considerModelOrder.strategy,omitempty"`
 
 	ConfigurableOpts
 }
@@ -130,8 +132,10 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	elkGraph := &ELKGraph{
 		ID: "root",
 		LayoutOptions: &elkOpts{
-			HierarchyHandling:  "INCLUDE_CHILDREN",
-			ConsiderModelOrder: "NODES_AND_EDGES",
+			Thoroughness:                 20,
+			EdgeEdgeBetweenLayersSpacing: 50,
+			HierarchyHandling:            "INCLUDE_CHILDREN",
+			ConsiderModelOrder:           "NODES_AND_EDGES",
 			ConfigurableOpts: ConfigurableOpts{
 				Algorithm:       opts.Algorithm,
 				NodeSpacing:     opts.NodeSpacing,
@@ -183,9 +187,15 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		if len(obj.ChildrenArray) > 0 {
 			n.LayoutOptions = &elkOpts{
-				ForceNodeModelOrder: true,
+				ForceNodeModelOrder:          true,
+				Thoroughness:                 20,
+				EdgeEdgeBetweenLayersSpacing: 50,
+				HierarchyHandling:            "INCLUDE_CHILDREN",
+				ConsiderModelOrder:           "NODES_AND_EDGES",
 				ConfigurableOpts: ConfigurableOpts{
-					Padding: opts.Padding,
+					NodeSpacing:     opts.NodeSpacing,
+					EdgeNodeSpacing: opts.EdgeNodeSpacing,
+					Padding:         opts.Padding,
 				},
 			}
 		}
