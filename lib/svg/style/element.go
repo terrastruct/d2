@@ -3,56 +3,9 @@ package style
 import (
 	"fmt"
 	"math"
-	"regexp"
 
-	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/color"
-	"oss.terrastruct.com/d2/lib/svg"
 )
-
-func ShapeStyle(shape d2target.Shape) string {
-	out := ""
-
-	out += fmt.Sprintf(`opacity:%f;`, shape.Opacity)
-	out += fmt.Sprintf(`stroke-width:%d;`, shape.StrokeWidth)
-	if shape.StrokeDash != 0 {
-		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(shape.StrokeWidth), shape.StrokeDash)
-		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
-	}
-
-	return out
-}
-
-func ShapeTheme(shape d2target.Shape) (fill, stroke string) {
-	if shape.Type == d2target.ShapeSQLTable || shape.Type == d2target.ShapeClass {
-		// Fill is used for header fill in these types
-		// This fill property is just background of rows
-		fill = shape.Stroke
-		// Stroke (border) of these shapes should match the header fill
-		stroke = shape.Fill
-	} else {
-		fill = shape.Fill
-		stroke = shape.Stroke
-	}
-	return fill, stroke
-}
-
-func ConnectionStyle(connection d2target.Connection) string {
-	out := ""
-
-	out += fmt.Sprintf(`opacity:%f;`, connection.Opacity)
-	out += fmt.Sprintf(`stroke-width:%d;`, connection.StrokeWidth)
-	if connection.StrokeDash != 0 {
-		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(connection.StrokeWidth), connection.StrokeDash)
-		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
-	}
-
-	return out
-}
-
-func ConnectionTheme(connection d2target.Connection) (stroke string) {
-	return connection.Stroke
-}
 
 // ThemableElement is a helper class for creating new XML elements.
 // This should be preffered over formatting and must be used
@@ -128,8 +81,6 @@ func NewThemableElement(tag string) *ThemableElement {
 }
 
 func (el *ThemableElement) Render() string {
-	re := regexp.MustCompile(`^N[1-7]|B[1-6]|AA[245]|AB[45]$`)
-
 	out := "<" + el.tag
 
 	if el.X != math.MaxFloat64 {
@@ -195,22 +146,22 @@ func (el *ThemableElement) Render() string {
 	style := el.Style
 
 	// Add class {property}-{theme color} if the color is from a theme, set the property otherwise
-	if re.MatchString(el.Stroke) {
+	if color.IsThemeColor(el.Stroke) {
 		class += fmt.Sprintf(" stroke-%s", el.Stroke)
 	} else if len(el.Stroke) > 0 {
 		out += fmt.Sprintf(` stroke="%s"`, el.Stroke)
 	}
-	if re.MatchString(el.Fill) {
+	if color.IsThemeColor(el.Fill) {
 		class += fmt.Sprintf(" fill-%s", el.Fill)
 	} else if len(el.Fill) > 0 {
 		out += fmt.Sprintf(` fill="%s"`, el.Fill)
 	}
-	if re.MatchString(el.BackgroundColor) {
+	if color.IsThemeColor(el.BackgroundColor) {
 		class += fmt.Sprintf(" background-color-%s", el.BackgroundColor)
 	} else if len(el.BackgroundColor) > 0 {
 		out += fmt.Sprintf(` background-color="%s"`, el.BackgroundColor)
 	}
-	if re.MatchString(el.Color) {
+	if color.IsThemeColor(el.Color) {
 		class += fmt.Sprintf(" color-%s", el.Color)
 	} else if len(el.Color) > 0 {
 		out += fmt.Sprintf(` color="%s"`, el.Color)

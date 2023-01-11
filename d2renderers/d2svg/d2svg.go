@@ -56,9 +56,6 @@ var LinkIcon string
 //go:embed style.css
 var baseStylesheet string
 
-//go:embed sketchstyle.css
-var sketchStyleCSS string
-
 //go:embed github-markdown.css
 var mdCSS string
 
@@ -1248,12 +1245,11 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	backgroundEl.Fill = color.N7
 
 	// generate elements that will be appended to the SVG tag
-	themeStylesheet := themeCSS(themeID, darkThemeID)
-	sketchStylesheet := ""
-	if sketchRunner != nil {
-		sketchStylesheet = "\n" + sketchStyleCSS
+	themeStylesheet, err := themeCSS(themeID, darkThemeID)
+	if err != nil {
+		return nil, err
 	}
-	svgOut := fmt.Sprintf(`<style type="text/css"><![CDATA[%s%s%s]]></style>`, baseStylesheet, themeStylesheet, sketchStylesheet)
+	svgOut := fmt.Sprintf(`<style type="text/css"><![CDATA[%s%s]]></style>`, baseStylesheet, themeStylesheet)
 	// this script won't run in --watch mode because script tags are ignored when added via el.innerHTML = element
 	// https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML
 	svgOut += fmt.Sprintf(`<script type="application/javascript"><![CDATA[%s]]></script>`, fitToScreenScript)
@@ -1268,7 +1264,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		svgOut += fmt.Sprintf(`<style type="text/css">%s</style>`, mdCSS)
 	}
 	if sketchRunner != nil {
-		svgOut += d2sketch.DefineFillPattern()
+		svgOut += d2sketch.DefineFillPatterns()
 	}
 	svgOut += embedFonts(buf, diagram.FontFamily)
 
@@ -1282,20 +1278,29 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	return []byte(docRendered), nil
 }
 
-func themeCSS(themeID, darkThemeID int64) (stylesheet string) {
-	out := singleThemeRulesets(themeID)
-
-	if darkThemeID != math.MaxInt64 {
-		out += fmt.Sprintf("@media screen and (prefers-color-scheme:dark){%s}", singleThemeRulesets(darkThemeID))
+// TODO include only colors that are being used to reduce size
+func themeCSS(themeID, darkThemeID int64) (stylesheet string, err error) {
+	out, err := singleThemeRulesets(themeID)
+	if err != nil {
+		return "", err
 	}
 
-	return out
+	if darkThemeID != math.MaxInt64 {
+		darkOut, err := singleThemeRulesets(darkThemeID)
+		if err != nil {
+			return "", err
+		}
+		out += fmt.Sprintf("@media screen and (prefers-color-scheme:dark){%s}", darkOut)
+	}
+
+	return out, nil
 }
 
-func singleThemeRulesets(themeID int64) (rulesets string) {
+func singleThemeRulesets(themeID int64) (rulesets string, err error) {
 	out := ""
 	theme := d2themescatalog.Find(themeID)
 
+	// Global theme colors
 	for _, property := range []string{"fill", "stroke", "background-color", "color"} {
 		out += fmt.Sprintf(".%s-N1{%s:%s;}.%s-N2{%s:%s;}.%s-N3{%s:%s;}.%s-N4{%s:%s;}.%s-N5{%s:%s;}.%s-N6{%s:%s;}.%s-N7{%s:%s;}.%s-B1{%s:%s;}.%s-B2{%s:%s;}.%s-B3{%s:%s;}.%s-B4{%s:%s;}.%s-B5{%s:%s;}.%s-B6{%s:%s;}.%s-AA2{%s:%s;}.%s-AA4{%s:%s;}.%s-AA5{%s:%s;}.%s-AB4{%s:%s;}.%s-AB5{%s:%s;}",
 			property, property, theme.Colors.Neutrals.N1,
@@ -1319,6 +1324,7 @@ func singleThemeRulesets(themeID int64) (rulesets string) {
 		)
 	}
 
+	// Markdown specific rulesets
 	out += fmt.Sprintf(".md{--color-fg-default:%s;--color-fg-muted:%s;--color-fg-subtle:%s;--color-canvas-default:%s;--color-canvas-subtle:%s;--color-border-default:%s;--color-border-muted:%s;--color-neutral-muted:%s;--color-accent-fg:%s;--color-accent-emphasis:%s;--color-attention-subtle:%s;--color-danger-fg:%s;}",
 		theme.Colors.Neutrals.N1, theme.Colors.Neutrals.N2, theme.Colors.Neutrals.N3,
 		theme.Colors.Neutrals.N7, theme.Colors.Neutrals.N6,
@@ -1329,7 +1335,91 @@ func singleThemeRulesets(themeID int64) (rulesets string) {
 		"red",
 	)
 
-	return out
+	// Sketch style specific rulesets
+	lc, err := color.LuminanceCategory(theme.Colors.B1)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B1, lc, blendMode(lc))
+	lc, err = color.LuminanceCategory(theme.Colors.B2)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B2, lc, blendMode(lc))
+	lc, err = color.LuminanceCategory(theme.Colors.B3)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B3, lc, blendMode(lc))
+	lc, err = color.LuminanceCategory(theme.Colors.B4)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B4, lc, blendMode(lc))
+	lc, err = color.LuminanceCategory(theme.Colors.B5)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B5, lc, blendMode(lc))
+	lc, err = color.LuminanceCategory(theme.Colors.B6)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B6, lc, blendMode(lc))
+
+	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N1)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N1, lc, blendMode(lc))
+	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N2)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N2, lc, blendMode(lc))
+	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N3)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N3, lc, blendMode(lc))
+	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N4)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N4, lc, blendMode(lc))
+	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N5)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N5, lc, blendMode(lc))
+	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N6)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N6, lc, blendMode(lc))
+	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N7)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N7, lc, blendMode(lc))
+
+	// TODO Add the rest of the colors so we can allow the user to specify theme colors too
+
+	return out, nil
+}
+
+func blendMode(lc string) string {
+	switch lc {
+	case "bright":
+		return "darken"
+	case "normal":
+		return "color-burn"
+	case "dark":
+		return "overlay"
+	case "darker":
+		return "lighten"
+	}
+	panic("invalid luminance category")
 }
 
 type DiagramObject interface {

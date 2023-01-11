@@ -1,16 +1,21 @@
 package color
 
 import (
+	"fmt"
 	"regexp"
 
 	"github.com/lucasb-eyer/go-colorful"
 	"github.com/mazznoer/csscolorparser"
 )
 
-var themeRegex = regexp.MustCompile("^B[1-6]$")
+var themeColorRegex = regexp.MustCompile(`^N[1-7]|B[1-6]|AA[245]|AB[45]$`)
+
+func IsThemeColor(colorString string) bool {
+	return themeColorRegex.Match([]byte(colorString))
+}
 
 func Darken(colorString string) (string, error) {
-	if themeRegex.MatchString(colorString) {
+	if IsThemeColor(colorString) {
 		switch colorString[1] {
 		case '1':
 			return B1, nil
@@ -24,13 +29,15 @@ func Darken(colorString string) (string, error) {
 			return B4, nil
 		case '6':
 			return B5, nil
+		default:
+			return "", fmt.Errorf("darkening color \"%s\" is not yet supported", colorString) // TODO Add the rest of the colors so we can allow the user to specify theme colors too
 		}
 	}
 
-	return DarkenCSS(colorString)
+	return darkenCSS(colorString)
 }
 
-func DarkenCSS(colorString string) (string, error) {
+func darkenCSS(colorString string) (string, error) {
 	c, err := csscolorparser.Parse(colorString)
 	if err != nil {
 		return "", err
@@ -38,6 +45,38 @@ func DarkenCSS(colorString string) (string, error) {
 	h, s, l := colorful.Color{R: c.R, G: c.G, B: c.B}.Hsl()
 	// decrease luminance by 10%
 	return colorful.Hsl(h, s, l-.1).Clamped().Hex(), nil
+}
+
+func LuminanceCategory(colorString string) (string, error) {
+	l, err := Luminance(colorString)
+	if err != nil {
+		return "", err
+	}
+
+	switch {
+	case l >= .88:
+		return "bright", nil
+	case l >= .55:
+		return "normal", nil
+	case l >= .30:
+		return "dark", nil
+	default:
+		return "darker", nil
+	}
+}
+
+func Luminance(colorString string) (float64, error) {
+	c, err := csscolorparser.Parse(colorString)
+	if err != nil {
+		return 0, err
+	}
+
+	l := float64(
+		float64(0.299)*float64(c.R) +
+			float64(0.587)*float64(c.G) +
+			float64(0.114)*float64(c.B),
+	)
+	return l, nil
 }
 
 const (
