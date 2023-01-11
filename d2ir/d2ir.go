@@ -80,17 +80,6 @@ func (s *Scalar) Copy(newp Parent) Node {
 }
 
 func (s *Scalar) Equal(s2 *Scalar) bool {
-	if s == nil {
-		if s2 == nil {
-			return true
-		}
-		_, ok := s2.Value.(*d2ast.Null)
-		return ok
-	}
-	if s2 == nil {
-		_, ok := s.Value.(*d2ast.Null)
-		return ok
-	}
 	return s.Value.ScalarString() == s2.Value.ScalarString() && s.Value.Type() == s2.Value.Type()
 }
 

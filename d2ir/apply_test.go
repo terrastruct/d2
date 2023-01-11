@@ -149,7 +149,7 @@ func assertField(t testing.TB, n d2ir.Node, nfields, nedges int, primary interfa
 
 	assert.Equal(t, nfields, m.FieldCount())
 	assert.Equal(t, nedges, m.EdgeCount())
-	if !p.Equal(makeScalar(primary)) {
+	if !makeScalar(p).Equal(makeScalar(primary)) {
 		t.Fatalf("expected primary %#v but %#v", primary, p)
 	}
 
@@ -180,7 +180,7 @@ func assertEdge(t testing.TB, n d2ir.Node, nfields int, primary interface{}, eid
 	}
 
 	assert.Equal(t, nfields, e.Map.FieldCount())
-	if !e.Primary.Equal(makeScalar(primary)) {
+	if !makeScalar(e.Primary).Equal(makeScalar(primary)) {
 		t.Fatalf("expected primary %#v but %#v", primary, e.Primary)
 	}
 
@@ -190,6 +190,12 @@ func assertEdge(t testing.TB, n d2ir.Node, nfields int, primary interface{}, eid
 func makeScalar(v interface{}) *d2ir.Scalar {
 	s := &d2ir.Scalar{}
 	switch v := v.(type) {
+	case *d2ir.Scalar:
+		if v == nil {
+			s.Value = &d2ast.Null{}
+			return s
+		}
+		return v
 	case bool:
 		s.Value = &d2ast.Boolean{
 			Value: v,
