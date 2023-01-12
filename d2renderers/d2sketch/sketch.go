@@ -63,26 +63,6 @@ func DefineFillPattern() string {
 </defs>`, fillPattern)
 }
 
-func shapeStyle(shape d2target.Shape) string {
-	out := ""
-
-	if shape.Type == d2target.ShapeSQLTable || shape.Type == d2target.ShapeClass {
-		out += fmt.Sprintf(`fill:%s;`, shape.Stroke)
-		out += fmt.Sprintf(`stroke:%s;`, shape.Fill)
-	} else {
-		out += fmt.Sprintf(`fill:%s;`, shape.Fill)
-		out += fmt.Sprintf(`stroke:%s;`, shape.Stroke)
-	}
-	out += fmt.Sprintf(`opacity:%f;`, shape.Opacity)
-	out += fmt.Sprintf(`stroke-width:%d;`, shape.StrokeWidth)
-	if shape.StrokeDash != 0 {
-		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(shape.StrokeWidth), shape.StrokeDash)
-		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
-	}
-
-	return out
-}
-
 func Rect(r *Runner, shape d2target.Shape) (string, error) {
 	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
 		fill: "%s",
@@ -98,7 +78,7 @@ func Rect(r *Runner, shape d2target.Shape) (string, error) {
 	for _, p := range paths {
 		output += fmt.Sprintf(
 			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
+			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
 		)
 	}
 	output += fmt.Sprintf(
@@ -123,7 +103,7 @@ func Oval(r *Runner, shape d2target.Shape) (string, error) {
 	for _, p := range paths {
 		output += fmt.Sprintf(
 			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
+			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
 		)
 	}
 	output += fmt.Sprintf(
@@ -150,7 +130,7 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 		for _, p := range sketchPaths {
 			output += fmt.Sprintf(
 				`<path class="shape" d="%s" style="%s" />`,
-				p, shapeStyle(shape),
+				p, shape.CSSStyle(),
 			)
 		}
 		for _, p := range sketchPaths {
@@ -163,20 +143,6 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 	return output, nil
 }
 
-func connectionStyle(connection d2target.Connection) string {
-	out := ""
-
-	out += fmt.Sprintf(`stroke:%s;`, connection.Stroke)
-	out += fmt.Sprintf(`opacity:%f;`, connection.Opacity)
-	out += fmt.Sprintf(`stroke-width:%d;`, connection.StrokeWidth)
-	if connection.StrokeDash != 0 {
-		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(connection.StrokeWidth), connection.StrokeDash)
-		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
-	}
-
-	return out
-}
-
 func Connection(r *Runner, connection d2target.Connection, path, attrs string) (string, error) {
 	roughness := 1.0
 	js := fmt.Sprintf(`node = rc.path("%s", {roughness: %f, seed: 1});`, path, roughness)
@@ -185,10 +151,14 @@ func Connection(r *Runner, connection d2target.Connection, path, attrs string) (
 		return "", err
 	}
 	output := ""
+	animatedClass := ""
+	if connection.Animated {
+		animatedClass = " animated-connection"
+	}
 	for _, p := range paths {
 		output += fmt.Sprintf(
-			`<path class="connection" fill="none" d="%s" style="%s" %s/>`,
-			p, connectionStyle(connection), attrs,
+			`<path class="connection%s" fill="none" d="%s" style="%s" %s/>`,
+			animatedClass, p, connection.CSSStyle(), attrs,
 		)
 	}
 	return output, nil
@@ -210,7 +180,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 	for _, p := range paths {
 		output += fmt.Sprintf(
 			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
+			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
 		)
 	}
 
@@ -338,7 +308,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	for _, p := range paths {
 		output += fmt.Sprintf(
 			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
+			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
 		)
 	}
 

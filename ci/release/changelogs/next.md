@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- `animated` keyword implemented for connections. [#652](https://github.com/terrastruct/d2/pull/652)
+
 #### Improvements 🧹
 
 - ELK layouts tuned to have better defaults. [#627](https://github.com/terrastruct/d2/pull/627)

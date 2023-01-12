@@ -461,8 +461,12 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		}
 		fmt.Fprintf(writer, out)
 	} else {
-		fmt.Fprintf(writer, `<path d="%s" class="connection" style="fill:none;%s" %s/>`,
-			path, connectionStyle(connection), attrs)
+		animatedClass := ""
+		if connection.Animated {
+			animatedClass = " animated-connection"
+		}
+		fmt.Fprintf(writer, `<path d="%s" class="connection%s" style="fill:none;%s" %s/>`,
+			path, animatedClass, connection.CSSStyle(), attrs)
 	}
 
 	if connection.Label != "" {
@@ -582,7 +586,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	)
 	border := targetShape
 	border.Fill = "none"
-	borderStyle := shapeStyle(border)
+	borderStyle := border.CSSStyle()
 	renderedBorder := fmt.Sprintf(`<path d="%s" style="%s"/>`,
 		strings.Join(borderSegments, " "), borderStyle)
 
@@ -603,7 +607,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	mainShape := targetShape
 	mainShape.Stroke = "none"
 	mainRect := fmt.Sprintf(`<rect x="%d" y="%d" width="%d" height="%d" style="%s" mask="url(#%s)"/>`,
-		targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, shapeStyle(mainShape), maskID,
+		targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, mainShape.CSSStyle(), maskID,
 	)
 
 	// render the side shapes in the darkened color without stroke and the border mask
@@ -628,7 +632,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	sideShape.Fill = darkerColor
 	sideShape.Stroke = "none"
 	renderedSides := fmt.Sprintf(`<polygon points="%s" style="%s" mask="url(#%s)"/>`,
-		strings.Join(sidePoints, " "), shapeStyle(sideShape), maskID)
+		strings.Join(sidePoints, " "), sideShape.CSSStyle(), maskID)
 
 	return borderMask + mainRect + renderedSides + renderedBorder
 }
@@ -643,7 +647,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)
-	style := shapeStyle(targetShape)
+	style := targetShape.CSSStyle()
 	shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[targetShape.Type]
 
 	s := shape.NewShape(shapeType, geo.NewBox(tl, width, height))
@@ -939,43 +943,6 @@ func RenderText(text string, x, height float64) string {
 	return strings.Join(rendered, "")
 }
 
-func shapeStyle(shape d2target.Shape) string {
-	out := ""
-
-	if shape.Type == d2target.ShapeSQLTable || shape.Type == d2target.ShapeClass {
-		// Fill is used for header fill in these types
-		// This fill property is just background of rows
-		out += fmt.Sprintf(`fill:%s;`, shape.Stroke)
-		// Stroke (border) of these shapes should match the header fill
-		out += fmt.Sprintf(`stroke:%s;`, shape.Fill)
-	} else {
-		out += fmt.Sprintf(`fill:%s;`, shape.Fill)
-		out += fmt.Sprintf(`stroke:%s;`, shape.Stroke)
-	}
-	out += fmt.Sprintf(`opacity:%f;`, shape.Opacity)
-	out += fmt.Sprintf(`stroke-width:%d;`, shape.StrokeWidth)
-	if shape.StrokeDash != 0 {
-		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(shape.StrokeWidth), shape.StrokeDash)
-		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
-	}
-
-	return out
-}
-
-func connectionStyle(connection d2target.Connection) string {
-	out := ""
-
-	out += fmt.Sprintf(`stroke:%s;`, connection.Stroke)
-	out += fmt.Sprintf(`opacity:%f;`, connection.Opacity)
-	out += fmt.Sprintf(`stroke-width:%d;`, connection.StrokeWidth)
-	if connection.StrokeDash != 0 {
-		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(connection.StrokeWidth), connection.StrokeDash)
-		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
-	}
-
-	return out
-}
-
 func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 	content := buf.String()
 	buf.WriteString(`<style type="text/css"><![CDATA[`)
@@ -1011,6 +978,23 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 .text-underline {
   text-decoration: underline;
 }`)
+			break
+		}
+	}
+
+	triggers = []string{
+		`animated-connection`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			buf.WriteString(`
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 0;
+  }
+}
+`)
 			break
 		}
 	}
