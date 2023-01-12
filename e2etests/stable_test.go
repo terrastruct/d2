@@ -1764,6 +1764,13 @@ e <--> f: {
 	}
 }`,
 		},
+		{
+			name: "animated",
+			script: `
+your love life will be -> happy: { style.animated: true }
+your love life will be -> harmonious: { style.animated: true }
+`,
+		},
 	}
 
 	runa(t, tcs)

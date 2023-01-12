@@ -461,8 +461,12 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		}
 		fmt.Fprintf(writer, out)
 	} else {
-		fmt.Fprintf(writer, `<path d="%s" class="connection" style="fill:none;%s" %s/>`,
-			path, connectionStyle(connection), attrs)
+		animatedClass := ""
+		if connection.Animated {
+			animatedClass = " animated-connection"
+		}
+		fmt.Fprintf(writer, `<path d="%s" class="connection%s" style="fill:none;%s" %s/>`,
+			path, animatedClass, connectionStyle(connection), attrs)
 	}
 
 	if connection.Label != "" {
@@ -968,11 +972,14 @@ func connectionStyle(connection d2target.Connection) string {
 	out += fmt.Sprintf(`stroke:%s;`, connection.Stroke)
 	out += fmt.Sprintf(`opacity:%f;`, connection.Opacity)
 	out += fmt.Sprintf(`stroke-width:%d;`, connection.StrokeWidth)
-	if connection.StrokeDash != 0 {
-		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(connection.StrokeWidth), connection.StrokeDash)
+	strokeDash := connection.StrokeDash
+	if strokeDash == 0 && connection.Animated {
+		strokeDash = 5
+	}
+	if strokeDash != 0 {
+		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(connection.StrokeWidth), strokeDash)
 		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
 	}
-
 	return out
 }
 
@@ -1010,6 +1017,27 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 			buf.WriteString(`
 .text-underline {
   text-decoration: underline;
+}`)
+			break
+		}
+	}
+
+	triggers = []string{
+		`animated-connection`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			buf.WriteString(`
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 30;
+  }
+}
+
+.animated-connection {
+  stroke-dasharray: 15 15;
+  animation: dashdraw 0.5s linear infinite;
 }`)
 			break
 		}

@@ -18,18 +18,6 @@ width="1537" height="1560" viewBox="-90 -90 1537 1560"><style type="text/css">
   opacity: 0.5;
 }
 
-
-@keyframes dashdraw {
-  from {
-    stroke-dashoffset: 30;
-  }
-}
-
-path[stroke-dasharray] {
-  stroke-dasharray: 15 15;
-  animation: dashdraw 0.5s linear infinite;
-}
-
 ]]>
 </style><script type="application/javascript"><![CDATA[window.addEventListener("DOMContentLoaded", () => {
   if (document.documentElement.getAttribute("id") !== "d2-svg") {
