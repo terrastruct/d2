@@ -63,26 +63,6 @@ func DefineFillPattern() string {
 </defs>`, fillPattern)
 }
 
-func shapeStyle(shape d2target.Shape) string {
-	out := ""
-
-	if shape.Type == d2target.ShapeSQLTable || shape.Type == d2target.ShapeClass {
-		out += fmt.Sprintf(`fill:%s;`, shape.Stroke)
-		out += fmt.Sprintf(`stroke:%s;`, shape.Fill)
-	} else {
-		out += fmt.Sprintf(`fill:%s;`, shape.Fill)
-		out += fmt.Sprintf(`stroke:%s;`, shape.Stroke)
-	}
-	out += fmt.Sprintf(`opacity:%f;`, shape.Opacity)
-	out += fmt.Sprintf(`stroke-width:%d;`, shape.StrokeWidth)
-	if shape.StrokeDash != 0 {
-		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(shape.StrokeWidth), shape.StrokeDash)
-		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
-	}
-
-	return out
-}
-
 func Rect(r *Runner, shape d2target.Shape) (string, error) {
 	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
 		fill: "%s",
@@ -98,7 +78,7 @@ func Rect(r *Runner, shape d2target.Shape) (string, error) {
 	for _, p := range paths {
 		output += fmt.Sprintf(
 			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
+			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
 		)
 	}
 	output += fmt.Sprintf(
@@ -123,7 +103,7 @@ func Oval(r *Runner, shape d2target.Shape) (string, error) {
 	for _, p := range paths {
 		output += fmt.Sprintf(
 			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
+			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
 		)
 	}
 	output += fmt.Sprintf(
@@ -150,7 +130,7 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 		for _, p := range sketchPaths {
 			output += fmt.Sprintf(
 				`<path class="shape" d="%s" style="%s" />`,
-				p, shapeStyle(shape),
+				p, shape.CSSStyle(),
 			)
 		}
 		for _, p := range sketchPaths {
@@ -200,7 +180,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 	for _, p := range paths {
 		output += fmt.Sprintf(
 			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
+			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
 		)
 	}
 
@@ -328,7 +308,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	for _, p := range paths {
 		output += fmt.Sprintf(
 			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
+			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
 		)
 	}
 

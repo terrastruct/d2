@@ -160,6 +160,29 @@ type Shape struct {
 	NeutralAccentColor   string `json:"neutralAccentColor,omitempty"`
 }
 
+func (s Shape) CSSStyle() string {
+	out := ""
+
+	if s.Type == ShapeSQLTable || s.Type == ShapeClass {
+		// Fill is used for header fill in these types
+		// This fill property is just background of rows
+		out += fmt.Sprintf(`fill:%s;`, s.Stroke)
+		// Stroke (border) of these shapes should match the header fill
+		out += fmt.Sprintf(`stroke:%s;`, s.Fill)
+	} else {
+		out += fmt.Sprintf(`fill:%s;`, s.Fill)
+		out += fmt.Sprintf(`stroke:%s;`, s.Stroke)
+	}
+	out += fmt.Sprintf(`opacity:%f;`, s.Opacity)
+	out += fmt.Sprintf(`stroke-width:%d;`, s.StrokeWidth)
+	if s.StrokeDash != 0 {
+		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(s.StrokeWidth), s.StrokeDash)
+		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
+	}
+
+	return out
+}
+
 func (s *Shape) SetType(t string) {
 	// Some types are synonyms of other types, but with hinting for autolayout
 	// They should only have one representation in the final export
