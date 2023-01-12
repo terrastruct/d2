@@ -1769,6 +1769,32 @@ e <--> f: {
 			script: `
 your love life will be -> happy: { style.animated: true }
 your love life will be -> harmonious: { style.animated: true }
+
+boredom <- immortality: { style.animated: true }
+
+Friday <-> Monday: { style.animated: true }
+
+Insomnia -- Sleep: { style.animated: true }
+Insomnia -- Wake: {
+	style: {
+		animated: true
+		stroke-width: 2
+	}
+}
+
+Insomnia -- Dream: {
+	style: {
+		animated: true
+		stroke-width: 8
+	}
+}
+
+Listen <-> Talk: {
+	style.animated: true
+	source-arrowhead.shape: cf-one
+	target-arrowhead.shape: diamond
+	label: hear
+}
 `,
 		},
 	}

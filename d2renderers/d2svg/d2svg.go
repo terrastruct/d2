@@ -979,6 +979,15 @@ func connectionStyle(connection d2target.Connection) string {
 	if strokeDash != 0 {
 		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(connection.StrokeWidth), strokeDash)
 		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
+
+		if connection.Animated {
+			dashOffset := -10
+			if connection.SrcArrow != d2target.NoArrowhead && connection.DstArrow == d2target.NoArrowhead {
+				dashOffset = 10
+			}
+			out += fmt.Sprintf(`stroke-dashoffset:%f;`, float64(dashOffset)*(dashSize+gapSize))
+			out += fmt.Sprintf(`animation: dashdraw %fs linear infinite;`, gapSize*0.5)
+		}
 	}
 	return out
 }
@@ -1031,14 +1040,10 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 			buf.WriteString(`
 @keyframes dashdraw {
   from {
-    stroke-dashoffset: 30;
+    stroke-dashoffset: 0;
   }
 }
-
-.animated-connection {
-  stroke-dasharray: 15 15;
-  animation: dashdraw 0.5s linear infinite;
-}`)
+`)
 			break
 		}
 	}
