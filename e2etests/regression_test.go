@@ -311,6 +311,26 @@ k8s -> osvc: vault
 |
 `,
 		},
+		{
+			name: "dagre_broken_arrowhead",
+			script: `
+a.b -> a.c: "line 1\nline 2\nline 3\nline 4" {
+	style: {
+		font-color: red
+		stroke: red
+	}
+	target-arrowhead: {
+		shape: diamond
+	}
+}
+a.1 -> a.c
+a.2 <-> a.c
+a.c {
+	style.stroke: white
+	d
+}
+`,
+		},
 	}
 
 	runa(t, tcs)

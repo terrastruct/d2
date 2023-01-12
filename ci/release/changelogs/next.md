@@ -8,3 +8,5 @@
 - Code snippets of unrecognized languages will render (just without syntax highlighting). [#650](https://github.com/terrastruct/d2/pull/650)
 
 #### Bugfixes ⛑️
+
+- Fixes arrowheads sometimes appearing broken in dagre layouts. [#649](https://github.com/terrastruct/d2/pull/649)
