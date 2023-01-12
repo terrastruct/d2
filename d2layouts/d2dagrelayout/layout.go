@@ -30,6 +30,8 @@ var setupJS string
 //go:embed dagre.js
 var dagreJS string
 
+const MIN_SEGMENT_LEN = 10
+
 type ConfigurableOpts struct {
 	NodeSep int `json:"nodesep"`
 	EdgeSep int `json:"edgesep"`
@@ -243,6 +245,47 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					end = intersections[0]
 					endIndex = i
 					break
+				}
+			}
+		}
+
+		// arrowheads can appear broken if segments are very short from dagre routing a point just outside the shape
+		// to fix this, we try extending the previous segment into the shape instead of having a very short segment
+		if !start.Equals(points[0]) && startIndex+2 < len(points) {
+			newStartingSegment := *geo.NewSegment(start, points[startIndex+1])
+			if newStartingSegment.Length() < MIN_SEGMENT_LEN {
+				// we don't want a very short segment right next to the source because it will mess up the arrowhead
+				// instead we want to extend the next segment into the shape border if possible
+				nextStart := points[startIndex+1]
+				nextEnd := points[startIndex+2]
+
+				// Note: in other direction to extend towards source
+				nextSegment := *geo.NewSegment(nextStart, nextEnd)
+				v := nextSegment.ToVector()
+				extendedStart := nextEnd.ToVector().Add(v.AddLength(MIN_SEGMENT_LEN)).ToPoint()
+				extended := *geo.NewSegment(nextEnd, extendedStart)
+
+				if intersections := edge.Src.Box.Intersections(extended); len(intersections) > 0 {
+					start = intersections[0]
+					startIndex += 1
+				}
+			}
+		}
+		if !end.Equals(points[len(points)-1]) && endIndex-2 >= 0 {
+			newEndingSegment := *geo.NewSegment(end, points[endIndex-1])
+			if newEndingSegment.Length() < MIN_SEGMENT_LEN {
+				// extend the prev segment into the shape border if possible
+				prevStart := points[endIndex-2]
+				prevEnd := points[endIndex-1]
+
+				prevSegment := *geo.NewSegment(prevStart, prevEnd)
+				v := prevSegment.ToVector()
+				extendedEnd := prevStart.ToVector().Add(v.AddLength(MIN_SEGMENT_LEN)).ToPoint()
+				extended := *geo.NewSegment(prevStart, extendedEnd)
+
+				if intersections := edge.Dst.Box.Intersections(extended); len(intersections) > 0 {
+					end = intersections[0]
+					endIndex -= 1
 				}
 			}
 		}

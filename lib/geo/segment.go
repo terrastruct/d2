@@ -114,3 +114,11 @@ func (segment *Segment) GetBounds(segments []*Segment, buffer float64) (float64,
 	}
 	return floor, ceil
 }
+
+func (segment Segment) Length() float64 {
+	return EuclideanDistance(segment.Start.X, segment.Start.Y, segment.End.X, segment.End.Y)
+}
+
+func (segment Segment) ToVector() Vector {
+	return NewVector(segment.End.X-segment.Start.X, segment.End.Y-segment.Start.Y)
+}
