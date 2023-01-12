@@ -10,3 +10,15 @@
   mix-blend-mode: multiply;
   opacity: 0.5;
 }
+
+
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 30;
+  }
+}
+
+path[stroke-dasharray] {
+  stroke-dasharray: 15 15;
+  animation: dashdraw 0.5s linear infinite;
+}
