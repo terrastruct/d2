@@ -1,3 +1,47 @@
 input: |d2
-  hello
+  hello -> world
 |
+
+input -> compiler.parse
+
+compiler: {
+  parse -> AST
+  AST: Abstract Syntax Tree {
+    shape: oval
+  }
+
+  AST -> compile
+}
+
+compiler.compile -> graph
+graph: Graph\n(shapes & connections) {
+  shape: oval
+}
+
+graph -> Set Dimensions
+Set Dimensions -> Use ruler to measure all texts -> measured graph
+Set Dimensions -> Use given, premeasured dimensions -> measured graph
+
+measured graph: {
+  shape: oval
+}
+
+measured graph -> layout engine -> positioned graph
+
+positioned graph -> exporter -> diagram
+
+diagram: finalized diagram (styled) {
+  shape: oval
+}
+
+diagram -> render SVG
+
+render SVG -> use sketch post processor: optional
+
+use sketch post processor -> SVG bytes
+
+SVG bytes: {
+  shape: oval
+}
+
+SVG bytes -> screenshot for PNG: optional
