@@ -16,22 +16,53 @@ func IsThemeColor(colorString string) bool {
 
 func Darken(colorString string) (string, error) {
 	if IsThemeColor(colorString) {
-		switch colorString[1] {
-		case '1':
-			return B1, nil
-		case '2':
-			return B1, nil
-		case '3':
-			return B2, nil
-		case '4':
-			return B3, nil
-		case '5':
-			return B4, nil
-		case '6':
-			return B5, nil
-		default:
-			return "", fmt.Errorf("darkening color \"%s\" is not yet supported", colorString) // TODO Add the rest of the colors so we can allow the user to specify theme colors too
+		switch {
+		case colorString[0] == 'B':
+			switch colorString[1] {
+			case '1', '2':
+				return B1, nil
+			case '3':
+				return B2, nil
+			case '4':
+				return B3, nil
+			case '5':
+				return B4, nil
+			case '6':
+				return B5, nil
+			}
+
+		case colorString[0:2] == "AA":
+			switch colorString[2] {
+			case '2', '4':
+				return AA2, nil
+			case '5':
+				return AA4, nil
+			}
+
+		case colorString[0:2] == "AB":
+			switch colorString[2] {
+			case '4', '5':
+				return AB4, nil
+			}
+
+		case colorString[0] == 'N':
+			switch colorString[1] {
+			case '1', '2':
+				return N1, nil
+			case '3':
+				return N2, nil
+			case '4':
+				return N3, nil
+			case '5':
+				return N4, nil
+			case '6':
+				return N5, nil
+			case '7':
+				return N6, nil
+			}
 		}
+
+		return "", fmt.Errorf("invalid color \"%s\"", colorString)
 	}
 
 	return darkenCSS(colorString)

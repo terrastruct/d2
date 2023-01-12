@@ -1336,6 +1336,7 @@ func singleThemeRulesets(themeID int64) (rulesets string, err error) {
 	)
 
 	// Sketch style specific rulesets
+	// B
 	lc, err := color.LuminanceCategory(theme.Colors.B1)
 	if err != nil {
 		return "", err
@@ -1367,6 +1368,36 @@ func singleThemeRulesets(themeID int64) (rulesets string, err error) {
 	}
 	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.B6, lc, blendMode(lc))
 
+	// AA
+	lc, err = color.LuminanceCategory(theme.Colors.AA2)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AA2, lc, blendMode(lc))
+	lc, err = color.LuminanceCategory(theme.Colors.AA4)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AA4, lc, blendMode(lc))
+	lc, err = color.LuminanceCategory(theme.Colors.AA5)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AA5, lc, blendMode(lc))
+
+	// AB
+	lc, err = color.LuminanceCategory(theme.Colors.AB4)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AB4, lc, blendMode(lc))
+	lc, err = color.LuminanceCategory(theme.Colors.AB5)
+	if err != nil {
+		return "", err
+	}
+	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.AB5, lc, blendMode(lc))
+
+	// Neutrals
 	lc, err = color.LuminanceCategory(theme.Colors.Neutrals.N1)
 	if err != nil {
 		return "", err
@@ -1402,8 +1433,6 @@ func singleThemeRulesets(themeID int64) (rulesets string, err error) {
 		return "", err
 	}
 	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N7, lc, blendMode(lc))
-
-	// TODO Add the rest of the colors so we can allow the user to specify theme colors too
 
 	return out, nil
 }
