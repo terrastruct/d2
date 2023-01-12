@@ -304,6 +304,13 @@ k8s -> osvc: harbor
 k8s -> osvc: vault
 `,
 		},
+		{
+			name: "no-lexer",
+			script: `x: |d2
+  x -> y
+|
+`,
+		},
 	}
 
 	runa(t, tcs)

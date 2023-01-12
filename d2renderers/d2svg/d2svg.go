@@ -883,7 +883,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		if targetShape.Type == d2target.ShapeCode {
 			lexer := lexers.Get(targetShape.Language)
 			if lexer == nil {
-				return labelMask, fmt.Errorf("code snippet lexer for %s not found", targetShape.Language)
+				lexer = lexers.Fallback
 			}
 			style := styles.Get("github")
 			if style == nil {
