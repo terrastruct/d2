@@ -466,7 +466,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 			animatedClass = " animated-connection"
 		}
 		fmt.Fprintf(writer, `<path d="%s" class="connection%s" style="fill:none;%s" %s/>`,
-			path, animatedClass, connectionStyle(connection), attrs)
+			path, animatedClass, connection.CSSStyle(), attrs)
 	}
 
 	if connection.Label != "" {
@@ -963,32 +963,6 @@ func shapeStyle(shape d2target.Shape) string {
 		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
 	}
 
-	return out
-}
-
-func connectionStyle(connection d2target.Connection) string {
-	out := ""
-
-	out += fmt.Sprintf(`stroke:%s;`, connection.Stroke)
-	out += fmt.Sprintf(`opacity:%f;`, connection.Opacity)
-	out += fmt.Sprintf(`stroke-width:%d;`, connection.StrokeWidth)
-	strokeDash := connection.StrokeDash
-	if strokeDash == 0 && connection.Animated {
-		strokeDash = 5
-	}
-	if strokeDash != 0 {
-		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(connection.StrokeWidth), strokeDash)
-		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
-
-		if connection.Animated {
-			dashOffset := -10
-			if connection.SrcArrow != d2target.NoArrowhead && connection.DstArrow == d2target.NoArrowhead {
-				dashOffset = 10
-			}
-			out += fmt.Sprintf(`stroke-dashoffset:%f;`, float64(dashOffset)*(dashSize+gapSize))
-			out += fmt.Sprintf(`animation: dashdraw %fs linear infinite;`, gapSize*0.5)
-		}
-	}
 	return out
 }
 

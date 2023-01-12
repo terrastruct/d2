@@ -40,6 +40,11 @@ func TestSketch(t *testing.T) {
 		`,
 		},
 		{
+			name: "animated",
+			script: `winter.snow -> summer.sun -> trees -> winter.snow: { style.animated: true }
+		`,
+		},
+		{
 			name: "connection label",
 			script: `a -> b: hello
 		`,

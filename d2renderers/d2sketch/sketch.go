@@ -163,20 +163,6 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 	return output, nil
 }
 
-func connectionStyle(connection d2target.Connection) string {
-	out := ""
-
-	out += fmt.Sprintf(`stroke:%s;`, connection.Stroke)
-	out += fmt.Sprintf(`opacity:%f;`, connection.Opacity)
-	out += fmt.Sprintf(`stroke-width:%d;`, connection.StrokeWidth)
-	if connection.StrokeDash != 0 {
-		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(connection.StrokeWidth), connection.StrokeDash)
-		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
-	}
-
-	return out
-}
-
 func Connection(r *Runner, connection d2target.Connection, path, attrs string) (string, error) {
 	roughness := 1.0
 	js := fmt.Sprintf(`node = rc.path("%s", {roughness: %f, seed: 1});`, path, roughness)
@@ -185,10 +171,14 @@ func Connection(r *Runner, connection d2target.Connection, path, attrs string) (
 		return "", err
 	}
 	output := ""
+	animatedClass := ""
+	if connection.Animated {
+		animatedClass = " animated-connection"
+	}
 	for _, p := range paths {
 		output += fmt.Sprintf(
-			`<path class="connection" fill="none" d="%s" style="%s" %s/>`,
-			p, connectionStyle(connection), attrs,
+			`<path class="connection%s" fill="none" d="%s" style="%s" %s/>`,
+			animatedClass, p, connection.CSSStyle(), attrs,
 		)
 	}
 	return output, nil
