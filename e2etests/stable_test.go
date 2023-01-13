@@ -1797,6 +1797,16 @@ Listen <-> Talk: {
 }
 `,
 		},
+		{
+			name: "sql_table_tooltip_animated",
+			script: `
+x: {
+  shape: sql_table
+	y
+	tooltip: I like turtles
+}
+`,
+		},
 	}
 
 	runa(t, tcs)

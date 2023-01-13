@@ -687,6 +687,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		} else {
 			drawClass(writer, targetShape)
 		}
+		addAppendixItems(writer, targetShape)
 		fmt.Fprintf(writer, `</g>`)
 		fmt.Fprintf(writer, closingTag)
 		return labelMask, nil
@@ -700,6 +701,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		} else {
 			drawTable(writer, targetShape)
 		}
+		addAppendixItems(writer, targetShape)
 		fmt.Fprintf(writer, `</g>`)
 		fmt.Fprintf(writer, closingTag)
 		return labelMask, nil
@@ -899,27 +901,31 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		}
 	}
 
-	rightPadForTooltip := 0
-	if targetShape.Tooltip != "" {
-		rightPadForTooltip = 2 * appendixIconRadius
-		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
-			targetShape.Pos.X+targetShape.Width-appendixIconRadius,
-			targetShape.Pos.Y-appendixIconRadius,
-			TooltipIcon,
-		)
-		fmt.Fprintf(writer, `<title>%s</title>`, targetShape.Tooltip)
-	}
-
-	if targetShape.Link != "" {
-		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
-			targetShape.Pos.X+targetShape.Width-appendixIconRadius-rightPadForTooltip,
-			targetShape.Pos.Y-appendixIconRadius,
-			LinkIcon,
-		)
-	}
+	addAppendixItems(writer, targetShape)
 
 	fmt.Fprintf(writer, closingTag)
 	return labelMask, nil
+}
+
+func addAppendixItems(writer io.Writer, shape d2target.Shape) {
+	rightPadForTooltip := 0
+	if shape.Tooltip != "" {
+		rightPadForTooltip = 2 * appendixIconRadius
+		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
+			shape.Pos.X+shape.Width-appendixIconRadius,
+			shape.Pos.Y-appendixIconRadius,
+			TooltipIcon,
+		)
+		fmt.Fprintf(writer, `<title>%s</title>`, shape.Tooltip)
+	}
+
+	if shape.Link != "" {
+		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
+			shape.Pos.X+shape.Width-appendixIconRadius-rightPadForTooltip,
+			shape.Pos.Y-appendixIconRadius,
+			LinkIcon,
+		)
+	}
 }
 
 func RenderText(text string, x, height float64) string {
