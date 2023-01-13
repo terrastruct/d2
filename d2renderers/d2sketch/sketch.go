@@ -595,7 +595,7 @@ func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeW
 	return
 }
 
-func Arrowheads(r *Runner, connection d2target.Connection) (string, error) {
+func Arrowheads(r *Runner, connection d2target.Connection, srcAdj, dstAdj *geo.Point) (string, error) {
 	arrowPaths := []string{}
 
 	if connection.SrcArrow != d2target.NoArrowhead {
@@ -608,13 +608,8 @@ func Arrowheads(r *Runner, connection d2target.Connection) (string, error) {
 		startingVector := startingSegment.ToVector().Reverse()
 		angle := startingVector.Degrees()
 
-		// TODO get src shape stroke width
-		srcStrokeWidth := 2
-		distance := float64(connection.StrokeWidth) + (float64(connection.StrokeWidth)+float64(srcStrokeWidth))/2.0
-
-		sourceAdjustment := startingVector.Unit().Multiply(-distance).ToPoint()
 		transform := fmt.Sprintf(`transform="translate(%f %f) rotate(%v)"`,
-			startingSegment.Start.X+sourceAdjustment.X, startingSegment.Start.Y+sourceAdjustment.Y, angle,
+			startingSegment.Start.X+srcAdj.X, startingSegment.Start.Y+srcAdj.Y, angle,
 		)
 
 		roughPaths, err := computeRoughPaths(r, arrowJS)
@@ -650,16 +645,8 @@ func Arrowheads(r *Runner, connection d2target.Connection) (string, error) {
 		endingVector := endingSegment.ToVector()
 		angle := endingVector.Degrees()
 
-		// TODO get dst shape stroke width
-		dstStrokeWidth := 2
-		distance := (float64(connection.StrokeWidth) + float64(dstStrokeWidth)) / 2.0
-		if connection.DstArrow != d2target.NoArrowhead {
-			distance += float64(connection.StrokeWidth)
-		}
-
-		targetAdjustment := endingVector.Unit().Multiply(-distance).ToPoint()
 		transform := fmt.Sprintf(`transform="translate(%f %f) rotate(%v)"`,
-			endingSegment.End.X+targetAdjustment.X, endingSegment.End.Y+targetAdjustment.Y, angle,
+			endingSegment.End.X+dstAdj.X, endingSegment.End.Y+dstAdj.Y, angle,
 		)
 
 		roughPaths, err := computeRoughPaths(r, arrowJS)
