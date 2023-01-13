@@ -10,7 +10,6 @@ import (
 	"hash/fnv"
 	"html"
 	"io"
-	"regexp"
 	"sort"
 	"strings"
 
@@ -60,8 +59,6 @@ var sketchStyleCSS string
 
 //go:embed github-markdown.css
 var mdCSS string
-
-var strokeWidthRE = regexp.MustCompile(`(.*stroke-width):(.+?);(.*)`)
 
 type RenderOpts struct {
 	Pad    int
@@ -461,16 +458,11 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		fmt.Fprint(writer, out)
 
 		// render sketch arrowheads separately
-		// TODO add sketch specific arrowheads
-		if markerStart != "" || markerEnd != "" {
-			// set stroke width to 0
-			style := strokeWidthRE.ReplaceAllString(connection.CSSStyle(), `$1:0;$3`)
-			fmt.Fprintf(writer, `<path d="%s" class="connection" style="fill:none;%s" %s%s/>`,
-				path, style,
-				markerStart,
-				markerEnd,
-			)
+		arrowPaths, err := d2sketch.Arrowheads(sketchRunner, connection)
+		if err != nil {
+			return "", err
 		}
+		fmt.Fprint(writer, arrowPaths)
 	} else {
 		animatedClass := ""
 		if connection.Animated {
