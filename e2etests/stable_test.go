@@ -1805,6 +1805,15 @@ x: {
 	y
 	tooltip: I like turtles
 }
+
+a: {
+  shape: sql_table
+	b
+}
+
+x.y -> a.b: {
+  style.animated: true
+}
 `,
 		},
 	}

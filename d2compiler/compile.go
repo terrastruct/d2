@@ -763,7 +763,7 @@ func flattenContainer(g *d2graph.Graph, obj *d2graph.Object) {
 			newEdge.DstTableColumnIndex = new(int)
 			*newEdge.DstTableColumnIndex = *e.DstTableColumnIndex
 		}
-		newEdge.Attributes.Label = e.Attributes.Label
+		newEdge.Attributes = e.Attributes
 		newEdge.References = e.References
 	}
 	updatedEdges := []*d2graph.Edge{}

@@ -1598,6 +1598,25 @@ b`, g.Objects[0].Attributes.Label.Value)
 			},
 		},
 		{
+			name: "table_connection_attr",
+
+			text: `x: {
+  shape: sql_table
+  y
+}
+a: {
+  shape: sql_table
+  b
+}
+x.y -> a.b: {
+  style.animated: true
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "true", g.Edges[0].Attributes.Style.Animated.Value)
+			},
+		},
+		{
 			name: "class_paren",
 
 			text: `_shape_: "shape" {

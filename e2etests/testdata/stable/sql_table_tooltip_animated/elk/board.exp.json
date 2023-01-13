@@ -54,7 +54,7 @@
             "labelHeight": 0
           },
           "constraint": "",
-          "reference": ""
+          "reference": "a.b"
         }
       ],
       "label": "x",
@@ -72,7 +72,118 @@
       "primaryAccentColor": "#0D32B2",
       "secondaryAccentColor": "#4A6FF3",
       "neutralAccentColor": "#676C7E"
+    },
+    {
+      "id": "a",
+      "type": "sql_table",
+      "pos": {
+        "x": 12,
+        "y": 184
+      },
+      "width": 60,
+      "height": 72,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#0A0F25",
+      "stroke": "#FFFFFF",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": [
+        {
+          "name": {
+            "label": "b",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 10,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 0,
+            "labelHeight": 0
+          },
+          "constraint": "",
+          "reference": ""
+        }
+      ],
+      "label": "a",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 16,
+      "labelHeight": 36,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "#0D32B2",
+      "secondaryAccentColor": "#4A6FF3",
+      "neutralAccentColor": "#676C7E"
     }
   ],
-  "connections": []
+  "connections": [
+    {
+      "id": "(x -> a)[0]",
+      "src": "x",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "a",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 42,
+          "y": 84
+        },
+        {
+          "x": 42,
+          "y": 184
+        }
+      ],
+      "animated": true,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    }
+  ]
 }
