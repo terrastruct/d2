@@ -1813,6 +1813,7 @@ a: {
 
 x.y -> a.b: {
   style.animated: true
+	target-arrowhead.shape: cf-many
 }
 `,
 		},
