@@ -3,6 +3,7 @@ package d2sketch
 import (
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"strings"
 
 	_ "embed"
@@ -32,6 +33,8 @@ hachureGap: 16,
 fillStyle: "solid",
 bowing: 2,
 seed: 1,`
+
+var floatRE = regexp.MustCompile(`(\d+)\.(\d+)`)
 
 func (r *Runner) run(js string) (goja.Value, error) {
 	vm := (*goja.Runtime)(r)
@@ -488,6 +491,17 @@ func extractRoughPaths(r *Runner) ([]roughPath, error) {
 	err = json.Unmarshal([]byte(val.String()), &roughPaths)
 	if err != nil {
 		return nil, err
+	}
+
+	// we want to have a fixed precision to the decimals in the path data
+	for i := range roughPaths {
+		// truncate all floats in path to only use up to 6 decimal places
+		roughPaths[i].Attrs.D = floatRE.ReplaceAllStringFunc(roughPaths[i].Attrs.D, func(floatStr string) string {
+			i := strings.Index(floatStr, ".")
+			decimalLen := len(floatStr) - i - 1
+			end := i + go2.Min(decimalLen, 6)
+			return floatStr[:end+1]
+		})
 	}
 
 	return roughPaths, nil
