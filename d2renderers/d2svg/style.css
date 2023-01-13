@@ -7,7 +7,7 @@
   stroke-linejoin: round;
 }
 .blend {
-  mix-Blend-mode: multiply;
+  mix-blend-mode: multiply;
   opacity: 0.5;
 }
 
