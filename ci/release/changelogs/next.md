@@ -10,3 +10,5 @@
 #### Bugfixes ⛑️
 
 - Fixes arrowheads sometimes appearing broken in dagre layouts. [#649](https://github.com/terrastruct/d2/pull/649)
+- Fixes attributes being ignored for `sql_table` to `sql_table` connections. [#658](https://github.com/terrastruct/d2/pull/658)
+- Fixes tooltip/link attributes being ignored for `sql_table` and `class`. [#658](https://github.com/terrastruct/d2/pull/658)
