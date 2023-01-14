@@ -10,7 +10,7 @@
         "y": 226
       },
       "width": 95,
-      "height": 110,
+      "height": 115,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,7 +37,7 @@
       "bold": false,
       "underline": false,
       "labelWidth": 95,
-      "labelHeight": 110,
+      "labelHeight": 115,
       "zIndex": 0,
       "level": 1
     },
@@ -86,7 +86,7 @@
       "type": "",
       "pos": {
         "x": 0,
-        "y": 436
+        "y": 441
       },
       "width": 113,
       "height": 126,
@@ -198,19 +198,19 @@
       "route": [
         {
           "x": 56.5,
-          "y": 336
+          "y": 341
         },
         {
           "x": 56.5,
-          "y": 376
+          "y": 381
         },
         {
           "x": 56.5,
-          "y": 396
+          "y": 401
         },
         {
           "x": 56.5,
-          "y": 436
+          "y": 441
         }
       ],
       "isCurve": true,
