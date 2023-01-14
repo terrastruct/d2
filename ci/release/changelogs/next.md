@@ -15,3 +15,4 @@
 - Fixes tooltip/link attributes being ignored for `sql_table` and `class`. [#658](https://github.com/terrastruct/d2/pull/658)
 - Fixes arrowheads sometimes appearing broken with sketch on. [#656](https://github.com/terrastruct/d2/pull/656)
 - Fixes code snippets not being tall enough with leading newlines. [#664](https://github.com/terrastruct/d2/pull/664)
+- Icon URLs that needed escaping (e.g. with ampersands) are handled correctly by CLI. [#666](https://github.com/terrastruct/d2/pull/666)
