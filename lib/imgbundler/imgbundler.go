@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	"html"
 	"io/ioutil"
 	"mime"
 	"net/http"
@@ -66,7 +67,7 @@ func filterImageElements(imgs [][][]byte, isRemote bool) [][][]byte {
 			continue
 		}
 
-		u, err := url.Parse(href)
+		u, err := url.Parse(html.UnescapeString(href))
 		isRemoteImg := err == nil && strings.HasPrefix(u.Scheme, "http")
 
 		if isRemoteImg == isRemote {
@@ -147,9 +148,9 @@ func worker(ctx context.Context, href []byte, isRemote bool) ([]byte, error) {
 	var mimeType string
 	var err error
 	if isRemote {
-		buf, mimeType, err = httpGet(ctx, string(href))
+		buf, mimeType, err = httpGet(ctx, html.UnescapeString(string(href)))
 	} else {
-		buf, err = os.ReadFile(string(href))
+		buf, err = os.ReadFile(html.UnescapeString(string(href)))
 	}
 	if err != nil {
 		return nil, err
@@ -194,7 +195,7 @@ func httpGet(ctx context.Context, href string) ([]byte, string, error) {
 func sniffMimeType(href, buf []byte, isRemote bool) string {
 	p := string(href)
 	if isRemote {
-		u, err := url.Parse(p)
+		u, err := url.Parse(html.UnescapeString(p))
 		if err != nil {
 			p = ""
 		} else {
