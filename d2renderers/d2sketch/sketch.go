@@ -587,7 +587,7 @@ func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeW
 			stroke,
 		)
 		extraJS = fmt.Sprintf(
-			`node = rc.circle(-22, 0, 8, { strokeWidth: %d, stroke: "%s", fill: "white", fillStyle: "solid", fillWeight: 1, seed: 2 })`,
+			`node = rc.circle(-22, 0, 8, { strokeWidth: %d, stroke: "%s", fill: "white", fillStyle: "solid", fillWeight: 1, seed: 5 })`,
 			strokeWidth,
 			stroke,
 		)
