@@ -552,28 +552,28 @@ func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeW
 		arrowJS = fmt.Sprintf(
 			// TODO why does fillStyle: "zigzag" error with path
 			`node = rc.path(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 4, seed: 2 })`,
-			`"M-20,-10 -20,10 M-2,10 -20,0 M-2,-10 -20,0"`,
+			`"M-15,-10 -15,10 M0,10 -15,0 M0,-10 -15,0"`,
 			strokeWidth,
 			stroke,
 			stroke,
 		)
 	case d2target.CfMany:
 		arrowJS = fmt.Sprintf(
-			`node = rc.path(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 4, seed: 4 })`,
-			`"M-2,10 -20,0 M-2,-10 -20,0"`,
+			`node = rc.path(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 4, seed: 8 })`,
+			`"M0,10 -15,0 M0,-10 -15,0"`,
 			strokeWidth,
 			stroke,
 			stroke,
 		)
 		extraJS = fmt.Sprintf(
-			`node = rc.circle(-22, 0, 8, { strokeWidth: %d, stroke: "%s", fill: "white", fillStyle: "solid", fillWeight: 1, seed: 4 })`,
+			`node = rc.circle(-20, 0, 8, { strokeWidth: %d, stroke: "%s", fill: "white", fillStyle: "solid", fillWeight: 1, seed: 4 })`,
 			strokeWidth,
 			stroke,
 		)
 	case d2target.CfOneRequired:
 		arrowJS = fmt.Sprintf(
 			`node = rc.path(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 4, seed: 3 })`,
-			`"M-20,-10 -20,10 M-15,-10 -15,10"`,
+			`"M-15,-10 -15,10 M-10,-10 -10,10"`,
 			strokeWidth,
 			stroke,
 			stroke,
@@ -587,7 +587,7 @@ func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeW
 			stroke,
 		)
 		extraJS = fmt.Sprintf(
-			`node = rc.circle(-22, 0, 8, { strokeWidth: %d, stroke: "%s", fill: "white", fillStyle: "solid", fillWeight: 1, seed: 5 })`,
+			`node = rc.circle(-20, 0, 8, { strokeWidth: %d, stroke: "%s", fill: "white", fillStyle: "solid", fillWeight: 1, seed: 5 })`,
 			strokeWidth,
 			stroke,
 		)
