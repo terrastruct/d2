@@ -285,8 +285,9 @@ shipments.order_id <-> orders.id`,
 		{
 			name: "arrowheads",
 			script: `
-a.0 <-> b.0: <->
-a.1 -- b.1: --
+a: ""
+b: ""
+a.1 -- b.1: none
 a.2 <-> b.2: arrow {
 	source-arrowhead.shape: arrow
 	target-arrowhead.shape: arrow
