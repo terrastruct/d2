@@ -1027,6 +1027,27 @@ func GetTextDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2
 		var h int
 		if t.Language != "" {
 			w, h = ruler.Measure(d2fonts.SourceCodePro.Font(t.FontSize, d2fonts.FONT_STYLE_REGULAR), t.Text)
+
+			// count empty leading and trailing lines since ruler will not be able to measure it
+			lines := strings.Split(t.Text, "\n")
+			leadingLines := 0
+			for _, line := range lines {
+				if strings.TrimSpace(line) == "" {
+					leadingLines++
+				} else {
+					break
+				}
+			}
+			trailingLines := 0
+			for i := len(lines) - 1; i >= 0; i-- {
+				if strings.TrimSpace(lines[i]) == "" {
+					trailingLines++
+				} else {
+					break
+				}
+			}
+			h += t.FontSize * (leadingLines + trailingLines)
+
 			// padding
 			w += 12
 			h += 12
