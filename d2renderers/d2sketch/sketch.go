@@ -572,7 +572,7 @@ func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeW
 		)
 	case d2target.CfOneRequired:
 		arrowJS = fmt.Sprintf(
-			`node = rc.path(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 4, seed: 3 })`,
+			`node = rc.path(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 4, seed: 2 })`,
 			`"M-15,-10 -15,10 M-10,-10 -10,10"`,
 			strokeWidth,
 			stroke,
