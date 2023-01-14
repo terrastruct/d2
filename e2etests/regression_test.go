@@ -331,6 +331,39 @@ a.c {
 }
 `,
 		},
+		{
+			name: "code_leading_trailing_newlines",
+			script: `
+hello world: |python
+
+
+  # 2 leading, 2 trailing
+  def hello():
+
+    print "world"
+
+
+|
+
+no trailing: |python
+
+
+  # 2 leading
+  def hello():
+
+    print "world"
+|
+
+no leading: |python
+  # 2 trailing
+  def hello():
+
+    print "world"
+
+
+|
+`,
+		},
 	}
 
 	runa(t, tcs)
