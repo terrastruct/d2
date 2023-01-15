@@ -29,7 +29,7 @@ func TestAddVector(t *testing.T) {
 
 func TestToVector(t *testing.T) {
 	p := &Point{3.5, 6.7}
-	v := p.toVector()
+	v := p.ToVector()
 
 	if v[0] != p.X || v[1] != p.Y {
 		t.Fatalf("Expected Vector (%v) coordinates to match the point (%v)", p, v)

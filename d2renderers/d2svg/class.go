@@ -88,7 +88,7 @@ func drawClass(writer io.Writer, targetShape d2target.Shape) {
 	el.Width = float64(targetShape.Width)
 	el.Height = float64(targetShape.Height)
 	el.Fill, el.Stroke = svg_style.ShapeTheme(targetShape)
-	el.Style = svg_style.ShapeStyle(targetShape)
+	el.Style = targetShape.CSSStyle()
 	fmt.Fprint(writer, el.Render())
 
 	box := geo.NewBox(
