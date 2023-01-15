@@ -42,6 +42,7 @@ https://user-images.githubusercontent.com/3120367/206125010-bd1fea8e-248a-43e7-8
   - <a href="#community-plugins" id="toc-community-plugins">Community plugins</a>
   - <a href="#misc" id="toc-misc">Misc</a>
 - <a href="#faq" id="toc-faq">FAQ</a>
+- <a href="#open-source-projects-documenting-with-d2" id="toc-open-source-projects-documenting-with-d2">Open-source projects documenting with D2</a>
 
 ## What does D2 look like?
 
