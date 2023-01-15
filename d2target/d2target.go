@@ -163,16 +163,6 @@ type Shape struct {
 func (s Shape) CSSStyle() string {
 	out := ""
 
-	if s.Type == ShapeSQLTable || s.Type == ShapeClass {
-		// Fill is used for header fill in these types
-		// This fill property is just background of rows
-		out += fmt.Sprintf(`fill:%s;`, s.Stroke)
-		// Stroke (border) of these shapes should match the header fill
-		out += fmt.Sprintf(`stroke:%s;`, s.Fill)
-	} else {
-		out += fmt.Sprintf(`fill:%s;`, s.Fill)
-		out += fmt.Sprintf(`stroke:%s;`, s.Stroke)
-	}
 	out += fmt.Sprintf(`opacity:%f;`, s.Opacity)
 	out += fmt.Sprintf(`stroke-width:%d;`, s.StrokeWidth)
 	if s.StrokeDash != 0 {
@@ -278,7 +268,6 @@ func BaseConnection() *Connection {
 func (c Connection) CSSStyle() string {
 	out := ""
 
-	out += fmt.Sprintf(`stroke:%s;`, c.Stroke)
 	out += fmt.Sprintf(`opacity:%f;`, c.Opacity)
 	out += fmt.Sprintf(`stroke-width:%d;`, c.StrokeWidth)
 	strokeDash := c.StrokeDash
