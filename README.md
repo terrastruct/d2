@@ -240,3 +240,21 @@ let us know and we'll be happy to include it here!
   - Please open up a Github Issue.
 - I have a private inquiry.
   - Please reach out at [hi@d2lang.com](hi@d2lang.com).
+
+### Open-source projects documenting with D2
+
+Do you have or see an open-source project documenting with D2? Please submit a PR
+appending to this list.
+
+- [BYCEPS](https://github.com/byceps/byceps) - BYCEPS is a self-hosted web platform to run
+  LAN parties.
+- [Ivy Wallet](https://github.com/Ivy-Apps/ivy-wallet) - Ivy Wallet is an open-source
+  money manager app for Android.
+- [Block Protocol](https://github.com/blockprotocol/blockprotocol) - The Block Protocol is
+  an open standard for building and using data-driven blocks.
+- [Terraform OCI VSCode Server](https://github.com/timoa/terraform-oci-vscode-server) -
+  Terraform project that deploys VSCode Server on Oracle Cloud Infrastructure.
+- [Learn EVM Attacks](https://github.com/coinspect/learn-evm-attacks) - Learn & Contribute
+  on previously exploited vulnerabilities across several EVM projects.
+- [Re:Earth](https://github.com/reearth/reearth-web) - A free, open and highly extensible
+  WebGIS platform.
