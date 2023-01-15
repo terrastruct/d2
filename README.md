@@ -243,18 +243,18 @@ let us know and we'll be happy to include it here!
 
 ### Open-source projects documenting with D2
 
-Do you have or see an open-source project documenting with D2? Please submit a PR
-appending to this list.
+Do you have or see an open-source project with `.d2` files? Please submit a PR adding to
+this list (ordered by star count, desc).
 
-- [BYCEPS](https://github.com/byceps/byceps) - BYCEPS is a self-hosted web platform to run
-  LAN parties.
-- [Ivy Wallet](https://github.com/Ivy-Apps/ivy-wallet) - Ivy Wallet is an open-source
-  money manager app for Android.
 - [Block Protocol](https://github.com/blockprotocol/blockprotocol) - The Block Protocol is
   an open standard for building and using data-driven blocks.
-- [Terraform OCI VSCode Server](https://github.com/timoa/terraform-oci-vscode-server) -
-  Terraform project that deploys VSCode Server on Oracle Cloud Infrastructure.
+- [Ivy Wallet](https://github.com/Ivy-Apps/ivy-wallet) - Ivy Wallet is an open-source
+  money manager app for Android.
 - [Learn EVM Attacks](https://github.com/coinspect/learn-evm-attacks) - Learn & Contribute
   on previously exploited vulnerabilities across several EVM projects.
+- [BYCEPS](https://github.com/byceps/byceps) - BYCEPS is a self-hosted web platform to run
+  LAN parties.
 - [Re:Earth](https://github.com/reearth/reearth-web) - A free, open and highly extensible
   WebGIS platform.
+- [Terraform OCI VSCode Server](https://github.com/timoa/terraform-oci-vscode-server) -
+  Terraform project that deploys VSCode Server on Oracle Cloud Infrastructure.
