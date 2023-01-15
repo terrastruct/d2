@@ -242,7 +242,7 @@ let us know and we'll be happy to include it here!
 - I have a private inquiry.
   - Please reach out at [hi@d2lang.com](hi@d2lang.com).
 
-### Open-source projects documenting with D2
+## Open-source projects documenting with D2
 
 Do you have or see an open-source project with `.d2` files? Please submit a PR adding to
 this list (ordered by star count, desc).
