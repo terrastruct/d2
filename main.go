@@ -49,7 +49,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	hostFlag := ms.Opts.String("HOST", "host", "h", "localhost", "host listening address when used with watch")
 	portFlag := ms.Opts.String("PORT", "port", "p", "0", "port listening address when used with watch")
-	bundleFlag, err := ms.Opts.Bool("D2_BUNDLE", "bundle", "b", true, "when outputting SVG, bundle all assets and layers into the output file")
+	bundleFlag, err := ms.Opts.Bool("D2_BUNDLE", "bundle", "b", false, "when outputting SVG, bundle all assets and layers into the output file")
 	if err != nil {
 		return err
 	}
