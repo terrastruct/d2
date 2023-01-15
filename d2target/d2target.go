@@ -15,6 +15,7 @@ import (
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/shape"
+	"oss.terrastruct.com/d2/lib/svg"
 )
 
 const (
@@ -159,6 +160,19 @@ type Shape struct {
 	NeutralAccentColor   string `json:"neutralAccentColor,omitempty"`
 }
 
+func (s Shape) CSSStyle() string {
+	out := ""
+
+	out += fmt.Sprintf(`opacity:%f;`, s.Opacity)
+	out += fmt.Sprintf(`stroke-width:%d;`, s.StrokeWidth)
+	if s.StrokeDash != 0 {
+		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(s.StrokeWidth), s.StrokeDash)
+		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
+	}
+
+	return out
+}
+
 func (s *Shape) SetType(t string) {
 	// Some types are synonyms of other types, but with hinting for autolayout
 	// They should only have one representation in the final export
@@ -249,6 +263,31 @@ func BaseConnection() *Connection {
 			FontFamily: "DEFAULT",
 		},
 	}
+}
+
+func (c Connection) CSSStyle() string {
+	out := ""
+
+	out += fmt.Sprintf(`opacity:%f;`, c.Opacity)
+	out += fmt.Sprintf(`stroke-width:%d;`, c.StrokeWidth)
+	strokeDash := c.StrokeDash
+	if strokeDash == 0 && c.Animated {
+		strokeDash = 5
+	}
+	if strokeDash != 0 {
+		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(c.StrokeWidth), strokeDash)
+		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
+
+		if c.Animated {
+			dashOffset := -10
+			if c.SrcArrow != NoArrowhead && c.DstArrow == NoArrowhead {
+				dashOffset = 10
+			}
+			out += fmt.Sprintf(`stroke-dashoffset:%f;`, float64(dashOffset)*(dashSize+gapSize))
+			out += fmt.Sprintf(`animation: dashdraw %fs linear infinite;`, gapSize*0.5)
+		}
+	}
+	return out
 }
 
 func (c *Connection) GetLabelTopLeft() *geo.Point {

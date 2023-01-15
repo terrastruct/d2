@@ -328,17 +328,25 @@ func arrowheadAdjustment(start, end *geo.Point, arrowhead d2target.Arrowhead, ed
 	return v.Unit().Multiply(-distance).ToPoint()
 }
 
-// returns the path's d attribute for the given connection
-func pathData(connection d2target.Connection, idToShape map[string]d2target.Shape) string {
-	var path []string
+func getArrowheadAdjustments(connection d2target.Connection, idToShape map[string]d2target.Shape) (srcAdj, dstAdj *geo.Point) {
 	route := connection.Route
 	srcShape := idToShape[connection.Src]
 	dstShape := idToShape[connection.Dst]
 
-	sourceAdjustment := arrowheadAdjustment(route[0], route[1], connection.SrcArrow, connection.StrokeWidth, srcShape.StrokeWidth)
+	sourceAdjustment := arrowheadAdjustment(route[1], route[0], connection.SrcArrow, connection.StrokeWidth, srcShape.StrokeWidth)
+
+	targetAdjustment := arrowheadAdjustment(route[len(route)-2], route[len(route)-1], connection.DstArrow, connection.StrokeWidth, dstShape.StrokeWidth)
+	return sourceAdjustment, targetAdjustment
+}
+
+// returns the path's d attribute for the given connection
+func pathData(connection d2target.Connection, srcAdj, dstAdj *geo.Point) string {
+	var path []string
+	route := connection.Route
+
 	path = append(path, fmt.Sprintf("M %f %f",
-		route[0].X-sourceAdjustment.X,
-		route[0].Y-sourceAdjustment.Y,
+		route[0].X+srcAdj.X,
+		route[0].Y+srcAdj.Y,
 	))
 
 	if connection.IsCurve {
@@ -351,12 +359,11 @@ func pathData(connection d2target.Connection, idToShape map[string]d2target.Shap
 			))
 		}
 		// final curve target adjustment
-		targetAdjustment := arrowheadAdjustment(route[i+1], route[i+2], connection.DstArrow, connection.StrokeWidth, dstShape.StrokeWidth)
 		path = append(path, fmt.Sprintf("C %f %f %f %f %f %f",
 			route[i].X, route[i].Y,
 			route[i+1].X, route[i+1].Y,
-			route[i+2].X+targetAdjustment.X,
-			route[i+2].Y+targetAdjustment.Y,
+			route[i+2].X+dstAdj.X,
+			route[i+2].Y+dstAdj.Y,
 		))
 	} else {
 		for i := 1; i < len(route)-1; i++ {
@@ -408,12 +415,9 @@ func pathData(connection d2target.Connection, idToShape map[string]d2target.Shap
 		}
 
 		lastPoint := route[len(route)-1]
-		secondToLastPoint := route[len(route)-2]
-
-		targetAdjustment := arrowheadAdjustment(secondToLastPoint, lastPoint, connection.DstArrow, connection.StrokeWidth, dstShape.StrokeWidth)
 		path = append(path, fmt.Sprintf("L %f %f",
-			lastPoint.X+targetAdjustment.X,
-			lastPoint.Y+targetAdjustment.Y,
+			lastPoint.X+dstAdj.X,
+			lastPoint.Y+dstAdj.Y,
 		))
 	}
 
@@ -469,26 +473,30 @@ func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskI
 		}
 	}
 
-	path := pathData(connection, idToShape)
-	attrs := fmt.Sprintf(`%s%smask="url(#%s)"`,
-		markerStart,
-		markerEnd,
-		labelMaskID,
-	)
+	srcAdj, dstAdj := getArrowheadAdjustments(connection, idToShape)
+	path := pathData(connection, srcAdj, dstAdj)
+	mask := fmt.Sprintf(`mask="url(#%s)"`, labelMaskID)
 	if sketchRunner != nil {
-		out, err := d2sketch.Connection(sketchRunner, connection, path, attrs)
+		out, err := d2sketch.Connection(sketchRunner, connection, path, mask)
 		if err != nil {
 			return "", err
 		}
 		fmt.Fprint(writer, out)
+
+		// render sketch arrowheads separately
+		arrowPaths, err := d2sketch.Arrowheads(sketchRunner, connection, srcAdj, dstAdj)
+		if err != nil {
+			return "", err
+		}
+		fmt.Fprint(writer, arrowPaths)
 	} else {
 		pathEl := svg_style.NewThemableElement("path")
 		pathEl.D = path
 		pathEl.Fill = color.None
 		pathEl.Stroke = svg_style.ConnectionTheme(connection)
-		pathEl.Class = "connection"
-		pathEl.Style = svg_style.ConnectionStyle(connection)
-		pathEl.Attributes = attrs
+		pathEl.Class = "connection animated-connection"
+		pathEl.Style = connection.CSSStyle()
+		pathEl.Attributes = fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
 		fmt.Fprint(writer, pathEl.Render())
 	}
 
@@ -618,7 +626,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	border.Fill = color.None
 	_, borderStroke := svg_style.ShapeTheme(targetShape)
 	border.Stroke = borderStroke
-	borderStyle := svg_style.ShapeStyle(targetShape)
+	borderStyle := targetShape.CSSStyle()
 	border.Style = borderStyle
 	renderedBorder := border.Render()
 
@@ -645,7 +653,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	mainShapeFill, _ := svg_style.ShapeTheme(targetShape)
 	mainShape.Fill = mainShapeFill
 	mainShape.Stroke = color.None
-	mainShape.Style = svg_style.ShapeStyle(targetShape)
+	mainShape.Style = targetShape.CSSStyle()
 	mainShapeRendered := mainShape.Render()
 
 	// render the side shapes in the darkened color without stroke and the border mask
@@ -671,7 +679,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	sideShape.Fill = darkerColor
 	sideShape.Points = strings.Join(sidePoints, " ")
 	sideShape.Mask = fmt.Sprintf("url(#%s)", maskID)
-	sideShape.Style = svg_style.ShapeStyle(targetShape)
+	sideShape.Style = targetShape.CSSStyle()
 	renderedSides := sideShape.Render()
 
 	return borderMask + mainShapeRendered + renderedSides + renderedBorder
@@ -688,7 +696,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)
 	fill, stroke := svg_style.ShapeTheme(targetShape)
-	style := svg_style.ShapeStyle(targetShape)
+	style := targetShape.CSSStyle()
 	shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[targetShape.Type]
 
 	s := shape.NewShape(shapeType, geo.NewBox(tl, width, height))
@@ -728,6 +736,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		} else {
 			drawClass(writer, targetShape)
 		}
+		addAppendixItems(writer, targetShape)
 		fmt.Fprintf(writer, `</g>`)
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
@@ -741,6 +750,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		} else {
 			drawTable(writer, targetShape)
 		}
+		addAppendixItems(writer, targetShape)
 		fmt.Fprintf(writer, `</g>`)
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
@@ -972,27 +982,31 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		}
 	}
 
+	addAppendixItems(writer, targetShape)
+
+	fmt.Fprintf(writer, closingTag)
+	return labelMask, nil
+}
+
+func addAppendixItems(writer io.Writer, shape d2target.Shape) {
 	rightPadForTooltip := 0
-	if targetShape.Tooltip != "" {
+	if shape.Tooltip != "" {
 		rightPadForTooltip = 2 * appendixIconRadius
 		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
-			targetShape.Pos.X+targetShape.Width-appendixIconRadius,
-			targetShape.Pos.Y-appendixIconRadius,
+			shape.Pos.X+shape.Width-appendixIconRadius,
+			shape.Pos.Y-appendixIconRadius,
 			TooltipIcon,
 		)
-		fmt.Fprintf(writer, `<title>%s</title>`, targetShape.Tooltip)
+		fmt.Fprintf(writer, `<title>%s</title>`, shape.Tooltip)
 	}
 
-	if targetShape.Link != "" {
+	if shape.Link != "" {
 		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
-			targetShape.Pos.X+targetShape.Width-appendixIconRadius-rightPadForTooltip,
-			targetShape.Pos.Y-appendixIconRadius,
+			shape.Pos.X+shape.Width-appendixIconRadius-rightPadForTooltip,
+			shape.Pos.Y-appendixIconRadius,
 			LinkIcon,
 		)
 	}
-
-	fmt.Fprint(writer, closingTag)
-	return labelMask, nil
 }
 
 func RenderText(text string, x, height float64) string {
@@ -1051,6 +1065,23 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) string {
 .text-underline {
   text-decoration: underline;
 }`
+			break
+		}
+	}
+
+	triggers = []string{
+		`animated-connection`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			out += `
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 0;
+  }
+}
+`
 			break
 		}
 	}

@@ -90,7 +90,7 @@ func drawTable(writer io.Writer, targetShape d2target.Shape) {
 	rectEl.Height = float64(targetShape.Height)
 	rectEl.Fill, rectEl.Stroke = svg_style.ShapeTheme(targetShape)
 	rectEl.Class = "shape"
-	rectEl.Style = svg_style.ShapeStyle(targetShape)
+	rectEl.Style = targetShape.CSSStyle()
 	fmt.Fprint(writer, rectEl.Render())
 
 	box := geo.NewBox(

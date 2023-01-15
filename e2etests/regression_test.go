@@ -311,6 +311,59 @@ k8s -> osvc: vault
 |
 `,
 		},
+		{
+			name: "dagre_broken_arrowhead",
+			script: `
+a.b -> a.c: "line 1\nline 2\nline 3\nline 4" {
+	style: {
+		font-color: red
+		stroke: red
+	}
+	target-arrowhead: {
+		shape: diamond
+	}
+}
+a.1 -> a.c
+a.2 <-> a.c
+a.c {
+	style.stroke: white
+	d
+}
+`,
+		},
+		{
+			name: "code_leading_trailing_newlines",
+			script: `
+hello world: |python
+
+
+  # 2 leading, 2 trailing
+  def hello():
+
+    print "world"
+
+
+|
+
+no trailing: |python
+
+
+  # 2 leading
+  def hello():
+
+    print "world"
+|
+
+no leading: |python
+  # 2 trailing
+  def hello():
+
+    print "world"
+
+
+|
+`,
+		},
 	}
 
 	runa(t, tcs)
