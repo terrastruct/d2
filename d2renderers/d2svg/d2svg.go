@@ -233,14 +233,14 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 
 			path = fmt.Sprintf(`<circle %s clip-path="circle()" cx="%f" cy="%f" r="%f"/>`,
 				attrs,
-				3.2*4+2.2,
+				(height/1.6)/strokeWidth*2,
 				(height/1.6)/strokeWidth*2,
 				(width/3.2)/strokeWidth*2,
 			)
 		} else {
 			path = fmt.Sprintf(`<circle %s clip-path="circle()" cx="%f" cy="%f" r="%f"/>`,
 				attrs,
-				3.2*4+2.2,
+				(height/1.6)/strokeWidth*2,
 				(height/1.6)/strokeWidth*2,
 				(width/3.2)/strokeWidth*2,
 			)
@@ -250,14 +250,14 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 		if isTarget {
 			path = fmt.Sprintf(`<circle %s cx="%f" cy="%f" r="%f"/>`,
 				attrs,
-				3.2*4+2.2,
+				(height/1.6)/strokeWidth*2,
 				(height/1.6)/strokeWidth*2,
 				(width/3.2)/strokeWidth*2,
 			)
 		} else {
 			path = fmt.Sprintf(`<circle %s cx="%f" cy="%f" r="%f"/>`,
 				attrs,
-				3.2*4+2.2,
+				(height/1.6)/strokeWidth*2,
 				(height/1.6)/strokeWidth*2,
 				(width/3.2)/strokeWidth*2,
 			)
