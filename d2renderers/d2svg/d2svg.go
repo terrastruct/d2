@@ -238,7 +238,7 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 
 		var modifierEl *svg_style.ThemableElement
 		if arrowhead == d2target.CfOneRequired || arrowhead == d2target.CfManyRequired {
-			modifierEl := svg_style.NewThemableElement("path")
+			modifierEl = svg_style.NewThemableElement("path")
 			modifierEl.D = fmt.Sprintf("M%f,%f %f,%f",
 				offset, 0.,
 				offset, height,
@@ -246,16 +246,16 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 			modifierEl.Fill = bgColor
 			modifierEl.Stroke = svg_style.ConnectionTheme(connection)
 			modifierEl.Class = "connection"
-			modifierEl.Style = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+			modifierEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 		} else {
-			modifierEl := svg_style.NewThemableElement("circle")
+			modifierEl = svg_style.NewThemableElement("circle")
 			modifierEl.Cx = offset/2.0 + 1.0
 			modifierEl.Cy = height / 2.0
 			modifierEl.R = offset / 2.0
 			modifierEl.Fill = bgColor
 			modifierEl.Stroke = svg_style.ConnectionTheme(connection)
 			modifierEl.Class = "connection"
-			modifierEl.Style = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+			modifierEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 		}
 
 		childPathEl := svg_style.NewThemableElement("path")
@@ -278,13 +278,13 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 		}
 
 		gEl := svg_style.NewThemableElement("g")
-		gEl.Fill = bgColor
-		gEl.Stroke = svg_style.ConnectionTheme(connection)
-		gEl.Class = "connection"
-		gEl.Style = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 		if !isTarget {
 			gEl.Transform = fmt.Sprintf("scale(-1) translate(-%f, -%f)", width, height)
 		}
+		gEl.Fill = bgColor
+		gEl.Stroke = svg_style.ConnectionTheme(connection)
+		gEl.Class = "connection"
+		gEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 		gEl.Content = fmt.Sprintf("%s%s",
 			modifierEl.Render(), childPathEl.Render(),
 		)

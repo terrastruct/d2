@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/xml"
 	"io/ioutil"
+	"math"
 	"os"
 	"path/filepath"
 	"strings"
@@ -329,23 +330,27 @@ a.9 <-> b.9: cf-one-required {
 `,
 		},
 		{
-			name: "bright_overlay",
-			script: `a.style.fill = "#fff"
-`,
-		},
-		{
-			name: "normal_overlay",
-			script: `a.style.fill = "#ccc"
-`,
-		},
-		{
-			name: "dark_overlay",
-			script: `a.style.fill = "#555"
-`,
-		},
-		{
-			name: "darker_overlay",
-			script: `a.style.fill = "#000"
+			name: "overlay",
+			script: `bright: {
+	style.stroke: "#000"
+	style.font-color: "#000"
+	style.fill: "#fff"
+}
+normal: {
+	style.stroke: "#000"
+	style.font-color: "#000"
+	style.fill: "#ccc"
+}
+dark: {
+	style.stroke: "#000"
+	style.font-color: "#fff"
+	style.fill: "#555"
+}
+darker: {
+	style.stroke: "#000"
+	style.font-color: "#fff"
+	style.fill: "#000"
+}
 `,
 		},
 	}
@@ -395,9 +400,10 @@ func run(t *testing.T, tc testCase) {
 	pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
 
 	svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad:     d2svg.DEFAULT_PADDING,
-		Sketch:  true,
-		ThemeID: 0,
+		Pad:         d2svg.DEFAULT_PADDING,
+		Sketch:      true,
+		ThemeID:     0,
+		DarkThemeID: math.MaxInt64,
 	})
 	assert.Success(t, err)
 	err = os.MkdirAll(dataPath, 0755)
