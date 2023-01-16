@@ -572,7 +572,7 @@ func extractPathData(roughPaths []roughPath) ([]string, error) {
 	return paths, nil
 }
 
-func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeWidth int) (arrowJS, extraJS string) {
+func ArrowheadJS(r *Runner, bgColor string, arrowhead d2target.Arrowhead, stroke string, strokeWidth int) (arrowJS, extraJS string) {
 	// Note: selected each seed that looks the good for consistent renders
 	switch arrowhead {
 	case d2target.ArrowArrowhead:
@@ -592,10 +592,11 @@ func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeW
 		)
 	case d2target.DiamondArrowhead:
 		arrowJS = fmt.Sprintf(
-			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "white", fillStyle: "solid", seed: 1 })`,
+			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", seed: 1 })`,
 			`[[-20, 0], [-10, 5], [0, 0], [-10, -5], [-20, 0]]`,
 			strokeWidth,
 			stroke,
+			bgColor,
 		)
 	case d2target.FilledDiamondArrowhead:
 		arrowJS = fmt.Sprintf(
@@ -623,9 +624,10 @@ func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeW
 			stroke,
 		)
 		extraJS = fmt.Sprintf(
-			`node = rc.circle(-20, 0, 8, { strokeWidth: %d, stroke: "%s", fill: "white", fillStyle: "solid", fillWeight: 1, seed: 4 })`,
+			`node = rc.circle(-20, 0, 8, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 1, seed: 4 })`,
 			strokeWidth,
 			stroke,
+			bgColor,
 		)
 	case d2target.CfOneRequired:
 		arrowJS = fmt.Sprintf(
@@ -644,19 +646,20 @@ func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeW
 			stroke,
 		)
 		extraJS = fmt.Sprintf(
-			`node = rc.circle(-20, 0, 8, { strokeWidth: %d, stroke: "%s", fill: "white", fillStyle: "solid", fillWeight: 1, seed: 5 })`,
+			`node = rc.circle(-20, 0, 8, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 1, seed: 5 })`,
 			strokeWidth,
 			stroke,
+			bgColor,
 		)
 	}
 	return
 }
 
-func Arrowheads(r *Runner, connection d2target.Connection, srcAdj, dstAdj *geo.Point) (string, error) {
+func Arrowheads(r *Runner, bgColor string, connection d2target.Connection, srcAdj, dstAdj *geo.Point) (string, error) {
 	arrowPaths := []string{}
 
 	if connection.SrcArrow != d2target.NoArrowhead {
-		arrowJS, extraJS := ArrowheadJS(r, connection.SrcArrow, connection.Stroke, connection.StrokeWidth)
+		arrowJS, extraJS := ArrowheadJS(r, bgColor, connection.SrcArrow, connection.Stroke, connection.StrokeWidth)
 		if arrowJS == "" {
 			return "", nil
 		}
@@ -694,7 +697,7 @@ func Arrowheads(r *Runner, connection d2target.Connection, srcAdj, dstAdj *geo.P
 	}
 
 	if connection.DstArrow != d2target.NoArrowhead {
-		arrowJS, extraJS := ArrowheadJS(r, connection.DstArrow, connection.Stroke, connection.StrokeWidth)
+		arrowJS, extraJS := ArrowheadJS(r, bgColor, connection.DstArrow, connection.Stroke, connection.StrokeWidth)
 		if arrowJS == "" {
 			return "", nil
 		}

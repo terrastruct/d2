@@ -489,7 +489,7 @@ func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskI
 		fmt.Fprint(writer, out)
 
 		// render sketch arrowheads separately
-		arrowPaths, err := d2sketch.Arrowheads(sketchRunner, connection, srcAdj, dstAdj)
+		arrowPaths, err := d2sketch.Arrowheads(sketchRunner, bgColor, connection, srcAdj, dstAdj)
 		if err != nil {
 			return "", err
 		}
@@ -994,7 +994,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 
 	addAppendixItems(writer, targetShape)
 
-	fmt.Fprintf(writer, closingTag)
+	fmt.Fprint(writer, closingTag)
 	return labelMask, nil
 }
 
