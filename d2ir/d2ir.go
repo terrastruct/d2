@@ -2,6 +2,7 @@ package d2ir
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -155,7 +156,8 @@ type EdgeID struct {
 	DstPath  []string `json:"dst_path"`
 	DstArrow bool     `json:"dst_arrow"`
 
-	Index int `json:"index"`
+	// If nil, then any EdgeID with equal src/dst/arrows matches.
+	Index *int `json:"index"`
 }
 
 func (eid *EdgeID) Copy() *EdgeID {
@@ -167,9 +169,11 @@ func (eid *EdgeID) Copy() *EdgeID {
 	return eid
 }
 
-func (eid *EdgeID) Equal(eid2 *EdgeID) bool {
-	if eid.Index != eid2.Index {
-		return false
+func (eid *EdgeID) Match(eid2 *EdgeID) bool {
+	if eid.Index != nil && eid2.Index != nil {
+		if *eid.Index != *eid2.Index {
+			return false
+		}
 	}
 
 	if len(eid.SrcPath) != len(eid2.SrcPath) {
@@ -272,29 +276,40 @@ type RefContext struct {
 	Scope *d2ast.Map  `json:"-"`
 }
 
-func (m *Map) FieldCount() int {
+func (m *Map) FieldCountRecursive() int {
+	if m == nil {
+		return 0
+	}
 	acc := len(m.Fields)
 	for _, f := range m.Fields {
 		if f_m, ok := f.Composite.(*Map); ok {
-			acc += f_m.FieldCount()
+			acc += f_m.FieldCountRecursive()
+		}
+	}
+	for _, e := range m.Edges {
+		if e.Map != nil {
+			acc += e.Map.FieldCountRecursive()
 		}
 	}
 	return acc
 }
 
-func (m *Map) EdgeCount() int {
+func (m *Map) EdgeCountRecursive() int {
+	if m == nil {
+		return 0
+	}
 	acc := len(m.Edges)
 	for _, e := range m.Edges {
 		if e.Map != nil {
-			acc += e.Map.EdgeCount()
+			acc += e.Map.EdgeCountRecursive()
 		}
 	}
 	return acc
 }
 
-func (m *Map) Get(ida []string) (*Field, bool) {
+func (m *Map) Get(ida []string) *Field {
 	if len(ida) == 0 {
-		return nil, false
+		return nil
 	}
 
 	s := ida[0]
@@ -305,18 +320,18 @@ func (m *Map) Get(ida []string) (*Field, bool) {
 			continue
 		}
 		if len(rest) == 0 {
-			return f, true
+			return f
 		}
 		if f_m, ok := f.Composite.(*Map); ok {
 			return f_m.Get(rest)
 		}
 	}
-	return nil, false
+	return nil
 }
 
-func (m *Map) Ensure(ida []string) (*Field, bool) {
+func (m *Map) Ensure(ida []string) (*Field, error) {
 	if len(ida) == 0 {
-		return nil, false
+		return nil, errors.New("empty ida")
 	}
 
 	s := ida[0]
@@ -327,13 +342,13 @@ func (m *Map) Ensure(ida []string) (*Field, bool) {
 			continue
 		}
 		if len(rest) == 0 {
-			return f, true
+			return f, nil
 		}
 		switch fc := f.Composite.(type) {
 		case *Map:
 			return fc.Ensure(rest)
 		case *Array:
-			return nil, false
+			return nil, errors.New("cannot index into array")
 		}
 		f.Composite = &Map{
 			parent: f,
@@ -347,7 +362,7 @@ func (m *Map) Ensure(ida []string) (*Field, bool) {
 	}
 	m.Fields = append(m.Fields, f)
 	if len(rest) == 0 {
-		return f, true
+		return f, nil
 	}
 	f.Composite = &Map{
 		parent: f,
@@ -378,25 +393,58 @@ func (m *Map) Delete(ida []string) bool {
 	return false
 }
 
-func (m *Map) GetEdge(eid *EdgeID) (*Edge, bool) {
+func (m *Map) GetEdges(eid *EdgeID) []*Edge {
 	common, eid := eid.trimCommon()
 	if len(common) > 0 {
-		f, ok := m.Get(common)
-		if !ok {
-			return nil, false
+		f := m.Get(common)
+		if f == nil {
+			return nil
 		}
 		if f_m, ok := f.Composite.(*Map); ok {
-			return f_m.GetEdge(eid)
+			return f_m.GetEdges(eid)
 		}
-		return nil, false
+		return nil
 	}
 
+	var ea []*Edge
 	for _, e := range m.Edges {
-		if e.ID.Equal(eid) {
-			return e, true
+		if e.ID.Match(eid) {
+			ea = append(ea, e)
 		}
 	}
-	return nil, false
+	return ea
+}
+
+func (m *Map) EnsureEdge(eid *EdgeID) (*Edge, error) {
+	common, eid := eid.trimCommon()
+	if len(common) > 0 {
+		f, err := m.Ensure(common)
+		if err != nil {
+			return nil, err
+		}
+		switch fc := f.Composite.(type) {
+		case *Map:
+			return fc.EnsureEdge(eid)
+		case *Array:
+			return nil, errors.New("cannot index into array")
+		}
+		f.Composite = &Map{
+			parent: f,
+		}
+		return f.Composite.(*Map).EnsureEdge(eid)
+	}
+
+	eid.Index = nil
+	ea := m.GetEdges(eid)
+	index := len(ea)
+	eid.Index = &index
+	e := &Edge{
+		parent: m,
+		ID:     eid,
+	}
+	m.Edges = append(m.Edges, e)
+
+	return e, nil
 }
 
 func (m *Map) String() string {
@@ -405,4 +453,19 @@ func (m *Map) String() string {
 		panic(fmt.Sprintf("d2ir: failed to marshal d2ir.Map: %v", err))
 	}
 	return string(b)
+}
+
+func NewEdgeIDs(k *d2ast.Key) (eida []*EdgeID) {
+	for _, ke := range k.Edges {
+		eida = append(eida, &EdgeID{
+			SrcPath:  d2format.KeyPath(ke.Src),
+			SrcArrow: ke.SrcArrow == "<",
+			DstPath:  d2format.KeyPath(ke.Dst),
+			DstArrow: ke.DstArrow == ">",
+		})
+	}
+	if k.EdgeIndex != nil && k.EdgeIndex.Int != nil {
+		eida[0].Index = k.EdgeIndex.Int
+	}
+	return eida
 }

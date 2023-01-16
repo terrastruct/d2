@@ -1,0 +1,27 @@
+{
+  "fields": [
+    {
+      "name": "x",
+      "primary": {
+        "value": {
+          "range": "d2/testdata/d2ir/TestCompile/simple/primary.d2,0:3:3-0:6:6",
+          "value": [
+            {
+              "string": "yes",
+              "raw_string": "yes"
+            }
+          ]
+        }
+      },
+      "composite": {
+        "fields": [
+          {
+            "name": "pqrs"
+          }
+        ],
+        "edges": null
+      }
+    }
+  ],
+  "edges": null
+}

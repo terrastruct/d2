@@ -1,0 +1,35 @@
+{
+  "fields": [
+    {
+      "name": "x",
+      "composite": {
+        "fields": [
+          {
+            "name": "y",
+            "primary": {
+              "value": {
+                "range": "d2/testdata/d2ir/TestCompile/simple/primary/nested.d2,0:5:5-0:8:8",
+                "value": [
+                  {
+                    "string": "yes",
+                    "raw_string": "yes"
+                  }
+                ]
+              }
+            },
+            "composite": {
+              "fields": [
+                {
+                  "name": "pqrs"
+                }
+              ],
+              "edges": null
+            }
+          }
+        ],
+        "edges": null
+      }
+    }
+  ],
+  "edges": null
+}

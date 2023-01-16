@@ -11,7 +11,6 @@ import (
 	"oss.terrastruct.com/util-go/diff"
 
 	"oss.terrastruct.com/d2/d2ast"
-	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2ir"
 	"oss.terrastruct.com/d2/d2parser"
 )
@@ -21,13 +20,13 @@ type testCase struct {
 	run  func(testing.TB, *d2ir.Map)
 }
 
-func TestApply(t *testing.T) {
+func TestCompile(t *testing.T) {
 	t.Parallel()
 
-	t.Run("simple", testApplySimple)
+	t.Run("roots", testCompileRoots)
 }
 
-func testApplySimple(t *testing.T) {
+func testCompileRoots(t *testing.T) {
 	t.Parallel()
 
 	tca := []testCase{
@@ -118,7 +117,7 @@ func testApplySimple(t *testing.T) {
 			run: func(t testing.TB, m *d2ir.Map) {
 				err := parse(t, m, `x._ -> z`)
 				assert.Success(t, err)
-				assertField(t, m, 2, 1, nil)
+				assertField(t, m, 3, 1, nil)
 
 				assertField(t, m, 0, 0, nil, "x")
 				assertField(t, m, 0, 0, nil, "z")
@@ -149,7 +148,7 @@ func parse(t testing.TB, dst *d2ir.Map, text string) error {
 	ast, err := d2parser.Parse(d2Path, strings.NewReader(text), nil)
 	assert.Success(t, err)
 
-	err = d2ir.Apply(dst, ast)
+	err = d2ir.Compile(dst, ast)
 	if err != nil {
 		return err
 	}
@@ -182,10 +181,9 @@ func assertField(t testing.TB, n d2ir.Node, nfields, nedges int, primary interfa
 	}
 
 	var f *d2ir.Field
-	var ok bool
 	if len(ida) > 0 {
-		f, ok = m.Get(ida)
-		if !ok {
+		f = m.Get(ida)
+		if f == nil {
 			t.Fatalf("expected field %v in map %s", ida, m)
 		}
 		p = f.Primary
@@ -196,8 +194,8 @@ func assertField(t testing.TB, n d2ir.Node, nfields, nedges int, primary interfa
 		}
 	}
 
-	assert.Equal(t, nfields, m.FieldCount())
-	assert.Equal(t, nedges, m.EdgeCount())
+	assert.Equal(t, nfields, m.FieldCountRecursive())
+	assert.Equal(t, nedges, m.EdgeCountRecursive())
 	if !makeScalar(p).Equal(makeScalar(primary)) {
 		t.Fatalf("expected primary %#v but got %s", primary, p)
 	}
@@ -205,24 +203,13 @@ func assertField(t testing.TB, n d2ir.Node, nfields, nedges int, primary interfa
 	return f
 }
 
-func parseEdgeID(t testing.TB, eids string) *d2ir.EdgeID {
-	t.Helper()
-	k, err := d2parser.ParseMapKey(eids)
-	assert.Success(t, err)
-
-	return &d2ir.EdgeID{
-		SrcPath:  d2format.KeyPath(k.Edges[0].Src),
-		SrcArrow: k.Edges[0].SrcArrow == "<",
-		DstPath:  d2format.KeyPath(k.Edges[0].Dst),
-		DstArrow: k.Edges[0].DstArrow == ">",
-		Index:    *k.EdgeIndex.Int,
-	}
-}
-
 func assertEdge(t testing.TB, n d2ir.Node, nfields int, primary interface{}, eids string) *d2ir.Edge {
 	t.Helper()
 
-	eid := parseEdgeID(t, eids)
+	k, err := d2parser.ParseMapKey(eids)
+	assert.Success(t, err)
+
+	eid := d2ir.NewEdgeIDs(k)[0]
 
 	var m *d2ir.Map
 	switch n := n.(type) {
@@ -239,12 +226,13 @@ func assertEdge(t testing.TB, n d2ir.Node, nfields int, primary interface{}, eid
 		t.Fatalf("unexpected d2ir.Node %T", n)
 	}
 
-	e, ok := m.GetEdge(eid)
-	if !ok {
-		t.Fatalf("expected edge %v in map %s but not found", eid, m)
+	ea := m.GetEdges(eid)
+	if len(ea) != 1 {
+		t.Fatalf("expected single edge %v in map %s but not found", eid, m)
 	}
+	e := ea[0]
 
-	assert.Equal(t, nfields, e.Map.FieldCount())
+	assert.Equal(t, nfields, e.Map.FieldCountRecursive())
 	if !makeScalar(e.Primary).Equal(makeScalar(primary)) {
 		t.Fatalf("expected primary %#v but %s", primary, e.Primary)
 	}

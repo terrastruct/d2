@@ -1,0 +1,25 @@
+{
+  "fields": [
+    {
+      "name": "x"
+    },
+    {
+      "name": "y"
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": {
+        "src_path": [
+          "x"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "y"
+        ],
+        "dst_arrow": true,
+        "index": 0
+      }
+    }
+  ]
+}

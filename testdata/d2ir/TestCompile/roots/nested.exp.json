@@ -1,0 +1,43 @@
+{
+  "fields": [
+    {
+      "name": "x",
+      "composite": {
+        "fields": [
+          {
+            "name": "y"
+          }
+        ],
+        "edges": null
+      }
+    },
+    {
+      "name": "z",
+      "composite": {
+        "fields": [
+          {
+            "name": "p"
+          }
+        ],
+        "edges": null
+      }
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": {
+        "src_path": [
+          "x",
+          "y"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "z",
+          "p"
+        ],
+        "dst_arrow": true,
+        "index": 0
+      }
+    }
+  ]
+}
