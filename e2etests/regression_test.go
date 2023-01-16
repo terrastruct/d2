@@ -364,6 +364,14 @@ no leading: |python
 |
 `,
 		},
+		{
+			name: "md_h1_li_li",
+			script: mdTestScript(`
+# hey
+- they
+	1. they
+`),
+		},
 	}
 
 	runa(t, tcs)
