@@ -134,7 +134,7 @@ type Field struct {
 	Primary   *Scalar   `json:"primary,omitempty"`
 	Composite Composite `json:"composite,omitempty"`
 
-	Refs []KeyReference `json:"refs,omitempty"`
+	References []KeyReference `json:"references,omitempty"`
 }
 
 func (f *Field) Copy(newp Parent) Node {
@@ -142,7 +142,7 @@ func (f *Field) Copy(newp Parent) Node {
 	f = &tmp
 
 	f.parent = newp.(*Map)
-	f.Refs = append([]KeyReference(nil), f.Refs...)
+	f.References = append([]KeyReference(nil), f.References...)
 	if f.Primary != nil {
 		f.Primary = f.Primary.Copy(f).(*Scalar)
 	}
@@ -242,7 +242,7 @@ type Edge struct {
 	Primary *Scalar `json:"primary,omitempty"`
 	Map     *Map    `json:"map,omitempty"`
 
-	Refs []EdgeReference `json:"refs,omitempty"`
+	References []EdgeReference `json:"references,omitempty"`
 }
 
 func (e *Edge) Copy(newp Parent) Node {
@@ -250,7 +250,7 @@ func (e *Edge) Copy(newp Parent) Node {
 	e = &tmp
 
 	e.parent = newp.(*Map)
-	e.Refs = append([]EdgeReference(nil), e.Refs...)
+	e.References = append([]EdgeReference(nil), e.References...)
 	if e.Primary != nil {
 		e.Primary = e.Primary.Copy(e).(*Scalar)
 	}
@@ -281,17 +281,47 @@ type KeyReference struct {
 	String  *d2ast.StringBox `json:"string"`
 	KeyPath *d2ast.KeyPath   `json:"key_path"`
 
-	RefCtx *RefContext `json:"ref_ctx"`
+	Context *RefContext `json:"-"`
+}
+
+func (kr KeyReference) KeyPathIndex() int {
+	for i, sb := range kr.KeyPath.Path {
+		if sb == kr.String {
+			return i
+		}
+	}
+	panic("d2ir.KeyReference.KeyPathIndex: String not in KeyPath?")
+}
+
+func (kr KeyReference) EdgeDest() bool {
+	return kr.KeyPath == kr.Context.Edge.Dst
+}
+
+func (kr KeyReference) InEdge() bool {
+	return kr.KeyPath != kr.Context.Key.Key
 }
 
 type EdgeReference struct {
-	RefCtx *RefContext `json:"ref_ctx"`
+	Context *RefContext `json:"-"`
 }
 
 type RefContext struct {
-	Key   *d2ast.Key  `json:"-"`
-	Edge  *d2ast.Edge `json:"-"`
-	Scope *d2ast.Map  `json:"-"`
+	Key   *d2ast.Key
+	Edge  *d2ast.Edge
+	Scope *d2ast.Map
+
+	// UnresolvedScopeMap is prior to interpreting _
+	ScopeMap *Map
+	UnresolvedScopeMap *Map
+}
+
+func (rc RefContext) EdgeIndex() int {
+	for i, e := range rc.Context.Key.Edges {
+		if e == rc.Context.Edge {
+			return i
+		}
+	}
+	panic("d2ir.RefContext.EdgeIndex: Edge not in Key.Edges?")
 }
 
 func (m *Map) FieldCountRecursive() int {
@@ -540,4 +570,38 @@ func (m *Map) ast() d2ast.Node {
 		astMap.Nodes = append(astMap.Nodes, d2ast.MakeMapNodeBox(e.ast().(d2ast.MapNode)))
 	}
 	return astMap
+}
+
+func (m *Map) appendKeyReferences(i int, kp *d2ast.KeyPath, refctx *RefContext) {
+	sb := kp.Path[i]
+	f := m.Get([]string{sb.Unbox().ScalarString()})
+	if f == nil {
+		return
+	}
+
+	f.References = append(f.References, KeyReference{
+		String: sb,
+		KeyPath: kp,
+		Context: refctx,
+	})
+	if f_m, ok := f.Composite.(*Map); ok {
+		f_m.appendReferences(i+1, kp, refctx)
+	}
+}
+
+func (m *Map) appendEdgeReferences(e *Edge, refctx *RefContext) {
+	sb := kp.Path[i]
+	f := m.Get([]string{sb.Unbox().ScalarString()})
+	if f == nil {
+		return
+	}
+
+	f.References = append(f.References, KeyReference{
+		String: sb,
+		KeyPath: kp,
+		Context: refctx,
+	})
+	if f_m, ok := f.Composite.(*Map); ok {
+		f_m.appendReferences(i+1, kp, refctx)
+	}
 }

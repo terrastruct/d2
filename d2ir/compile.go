@@ -187,6 +187,8 @@ func (c *compiler) compileArray(dst *Array, a *d2ast.Array) {
 				parent: dst,
 				Value:  v,
 			}
+		case *d2ast.Substitution:
+			panic("TODO")
 		}
 
 		dst.Values = append(dst.Values, irv)
