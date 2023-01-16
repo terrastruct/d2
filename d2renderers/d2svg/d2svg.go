@@ -128,6 +128,7 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 	case d2target.ArrowArrowhead:
 		polygonEl := svg_style.NewThemableElement("polygon")
 		polygonEl.Fill = svg_style.ConnectionTheme(connection)
+		polygonEl.Class = "connection"
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
 		if isTarget {
@@ -149,6 +150,7 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 	case d2target.TriangleArrowhead:
 		polygonEl := svg_style.NewThemableElement("polygon")
 		polygonEl.Fill = svg_style.ConnectionTheme(connection)
+		polygonEl.Class = "connection"
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
 		if isTarget {
@@ -168,6 +170,7 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 	case d2target.LineArrowhead:
 		polylineEl := svg_style.NewThemableElement("polyline")
 		polylineEl.Fill = color.None
+		polylineEl.Class = "connection"
 		polylineEl.Stroke = svg_style.ConnectionTheme(connection)
 		polylineEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
@@ -187,6 +190,7 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 		path = polylineEl.Render()
 	case d2target.FilledDiamondArrowhead:
 		polygonEl := svg_style.NewThemableElement("polygon")
+		polygonEl.Class = "connection"
 		polygonEl.Fill = svg_style.ConnectionTheme(connection)
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
@@ -208,6 +212,7 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 		path = polygonEl.Render()
 	case d2target.DiamondArrowhead:
 		polygonEl := svg_style.NewThemableElement("polygon")
+		polygonEl.Class = "connection"
 		polygonEl.Fill = bgColor
 		polygonEl.Stroke = svg_style.ConnectionTheme(connection)
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
@@ -490,11 +495,16 @@ func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskI
 		}
 		fmt.Fprint(writer, arrowPaths)
 	} else {
+		animatedClass := ""
+		if connection.Animated {
+			animatedClass = " animated-connection"
+		}
+
 		pathEl := svg_style.NewThemableElement("path")
 		pathEl.D = path
 		pathEl.Fill = color.None
 		pathEl.Stroke = svg_style.ConnectionTheme(connection)
-		pathEl.Class = "connection animated-connection"
+		pathEl.Class = fmt.Sprintf("connection%s", animatedClass)
 		pathEl.Style = connection.CSSStyle()
 		pathEl.Attributes = fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
 		fmt.Fprint(writer, pathEl.Render())

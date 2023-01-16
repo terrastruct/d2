@@ -191,10 +191,15 @@ func Connection(r *Runner, connection d2target.Connection, path, attrs string) (
 		return "", err
 	}
 	output := ""
+	animatedClass := ""
+	if connection.Animated {
+		animatedClass = " animated-connection"
+	}
+
 	pathEl := svg_style.NewThemableElement("path")
 	pathEl.Fill = color.None
 	pathEl.Stroke = svg_style.ConnectionTheme(connection)
-	pathEl.Class = "connection"
+	pathEl.Class = fmt.Sprintf("connection%s", animatedClass)
 	pathEl.Style = connection.CSSStyle()
 	pathEl.Attributes = attrs
 	for _, p := range paths {
@@ -527,12 +532,6 @@ type roughPath struct {
 
 func (rp roughPath) StyleCSS() string {
 	style := ""
-	if rp.Style.Fill != "" {
-		style += fmt.Sprintf("fill:%s;", rp.Style.Fill)
-	}
-	if rp.Style.Stroke != "" {
-		style += fmt.Sprintf("stroke:%s;", rp.Style.Stroke)
-	}
 	if rp.Style.StrokeWidth != "" {
 		style += fmt.Sprintf("stroke-width:%s;", rp.Style.StrokeWidth)
 	}
@@ -682,13 +681,15 @@ func Arrowheads(r *Runner, connection d2target.Connection, srcAdj, dstAdj *geo.P
 			roughPaths = append(roughPaths, extraPaths...)
 		}
 
+		pathEl := svg_style.NewThemableElement("path")
+		pathEl.Class = "connection"
+		pathEl.Attributes = transform
 		for _, rp := range roughPaths {
-			pathStr := fmt.Sprintf(`<path class="connection" d="%s" style="%s" %s/>`,
-				rp.Attrs.D,
-				rp.StyleCSS(),
-				transform,
-			)
-			arrowPaths = append(arrowPaths, pathStr)
+			pathEl.D = rp.Attrs.D
+			pathEl.Fill = rp.Style.Fill
+			pathEl.Stroke = rp.Style.Stroke
+			pathEl.Style = rp.StyleCSS()
+			arrowPaths = append(arrowPaths, pathEl.Render())
 		}
 	}
 
@@ -719,13 +720,15 @@ func Arrowheads(r *Runner, connection d2target.Connection, srcAdj, dstAdj *geo.P
 			roughPaths = append(roughPaths, extraPaths...)
 		}
 
+		pathEl := svg_style.NewThemableElement("path")
+		pathEl.Class = "connection"
+		pathEl.Attributes = transform
 		for _, rp := range roughPaths {
-			pathStr := fmt.Sprintf(`<path class="connection" d="%s" style="%s" %s/>`,
-				rp.Attrs.D,
-				rp.StyleCSS(),
-				transform,
-			)
-			arrowPaths = append(arrowPaths, pathStr)
+			pathEl.D = rp.Attrs.D
+			pathEl.Fill = rp.Style.Fill
+			pathEl.Stroke = rp.Style.Stroke
+			pathEl.Style = rp.StyleCSS()
+			arrowPaths = append(arrowPaths, pathEl.Render())
 		}
 	}
 
