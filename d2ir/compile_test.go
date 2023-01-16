@@ -214,12 +214,7 @@ func testCompileField(t *testing.T) {
 				assertField(t, m, 1, 0, nil)
 
 				f := assertField(t, m, 0, 0, nil, "x")
-				f_a, ok := f.Composite.(*d2ir.Array)
-				if !ok {
-					t.Fatalf("unexpected type: %T", f.Composite)
-				} else {
-					assert.Equal(t, 4, len(f_a.Values))
-				}
+				assert.String(t, `[1; 2; 3; 4]`, f.Composite.String())
 			},
 		},
 	}

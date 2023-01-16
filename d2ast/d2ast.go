@@ -650,6 +650,14 @@ type KeyPath struct {
 	Path  []*StringBox `json:"path"`
 }
 
+func MakeKeyPath(a []string) *KeyPath {
+	var kp *KeyPath
+	for _, el := range a {
+		kp.Path = append(kp.Path, MakeValueBox(RawString(el, true)).StringBox())
+	}
+	return kp
+}
+
 type Edge struct {
 	Range Range `json:"range"`
 
@@ -729,6 +737,37 @@ type ArrayNodeBox struct {
 	BlockString        *BlockString        `json:"block_string,omitempty"`
 	Array              *Array              `json:"array,omitempty"`
 	Map                *Map                `json:"map,omitempty"`
+}
+
+func MakeArrayNodeBox(an ArrayNode) ArrayNodeBox {
+	var ab ArrayNodeBox
+	switch an := an.(type) {
+	case *Comment:
+		ab.Comment = an
+	case *BlockComment:
+		ab.BlockComment = an
+	case *Substitution:
+		ab.Substitution = an
+	case *Null:
+		ab.Null = an
+	case *Boolean:
+		ab.Boolean = an
+	case *Number:
+		ab.Number = an
+	case *UnquotedString:
+		ab.UnquotedString = an
+	case *DoubleQuotedString:
+		ab.DoubleQuotedString = an
+	case *SingleQuotedString:
+		ab.SingleQuotedString = an
+	case *BlockString:
+		ab.BlockString = an
+	case *Array:
+		ab.Array = an
+	case *Map:
+		ab.Map = an
+	}
+	return ab
 }
 
 func (ab ArrayNodeBox) Unbox() ArrayNode {

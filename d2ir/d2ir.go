@@ -1,7 +1,6 @@
 package d2ir
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"strings"
@@ -12,7 +11,9 @@ import (
 
 type Node interface {
 	node()
+	ast() d2ast.Node
 	Copy(newp Parent) Node
+	fmt.Stringer
 }
 
 var _ Node = &Scalar{}
@@ -68,6 +69,12 @@ func (n *Map) value()    {}
 func (n *Array) composite() {}
 func (n *Map) composite()   {}
 
+func (n *Scalar) String() string { return d2format.Format(n.ast()) }
+func (n *Field) String() string  { return d2format.Format(n.ast()) }
+func (n *Edge) String() string   { return d2format.Format(n.ast()) }
+func (n *Array) String() string  { return d2format.Format(n.ast()) }
+func (n *Map) String() string    { return d2format.Format(n.ast()) }
+
 type Scalar struct {
 	parent Parent
 	Value  d2ast.Scalar `json:"value"`
@@ -89,10 +96,6 @@ func (s *Scalar) Equal(s2 *Scalar) bool {
 	}
 	return s.Value.Type() == s2.Value.Type() && s.Value.ScalarString() == s2.Value.ScalarString()
 
-}
-
-func (s *Scalar) String() string {
-	return d2format.Format(s.Value)
 }
 
 type Map struct {
@@ -158,6 +161,21 @@ type EdgeID struct {
 
 	// If nil, then any EdgeID with equal src/dst/arrows matches.
 	Index *int `json:"index"`
+}
+
+func NewEdgeIDs(k *d2ast.Key) (eida []*EdgeID) {
+	for _, ke := range k.Edges {
+		eida = append(eida, &EdgeID{
+			SrcPath:  d2format.KeyPath(ke.Src),
+			SrcArrow: ke.SrcArrow == "<",
+			DstPath:  d2format.KeyPath(ke.Dst),
+			DstArrow: ke.DstArrow == ">",
+		})
+	}
+	if k.EdgeIndex != nil && k.EdgeIndex.Int != nil {
+		eida[0].Index = k.EdgeIndex.Int
+	}
+	return eida
 }
 
 func (eid *EdgeID) Copy() *EdgeID {
@@ -447,25 +465,79 @@ func (m *Map) EnsureEdge(eid *EdgeID) (*Edge, error) {
 	return e, nil
 }
 
-func (m *Map) String() string {
-	b, err := json.Marshal(m)
-	if err != nil {
-		panic(fmt.Sprintf("d2ir: failed to marshal d2ir.Map: %v", err))
-	}
-	return string(b)
+func (s *Scalar) ast() d2ast.Node {
+	return s.Value
 }
 
-func NewEdgeIDs(k *d2ast.Key) (eida []*EdgeID) {
-	for _, ke := range k.Edges {
-		eida = append(eida, &EdgeID{
-			SrcPath:  d2format.KeyPath(ke.Src),
-			SrcArrow: ke.SrcArrow == "<",
-			DstPath:  d2format.KeyPath(ke.Dst),
-			DstArrow: ke.DstArrow == ">",
-		})
+func (f *Field) ast() d2ast.Node {
+	k := &d2ast.Key{
+		Key: &d2ast.KeyPath{
+			Path: []*d2ast.StringBox{
+				d2ast.MakeValueBox(d2ast.RawString(f.Name, true)).StringBox(),
+			},
+		},
 	}
-	if k.EdgeIndex != nil && k.EdgeIndex.Int != nil {
-		eida[0].Index = k.EdgeIndex.Int
+
+	if f.Primary != nil {
+		k.Primary = d2ast.MakeValueBox(f.Primary.ast().(d2ast.Value)).ScalarBox()
 	}
-	return eida
+	if f.Composite != nil {
+		k.Value = d2ast.MakeValueBox(f.Composite.ast().(d2ast.Value))
+	}
+
+	return k
+}
+
+func (e *Edge) ast() d2ast.Node {
+	astEdge := &d2ast.Edge{}
+
+	astEdge.Src = d2ast.MakeKeyPath(e.ID.SrcPath)
+	if e.ID.SrcArrow {
+		astEdge.SrcArrow = "<"
+	}
+	astEdge.Dst = d2ast.MakeKeyPath(e.ID.DstPath)
+	if e.ID.DstArrow {
+		astEdge.DstArrow = ">"
+	}
+
+	k := &d2ast.Key{
+		Edges: []*d2ast.Edge{astEdge},
+	}
+
+	if e.Primary != nil {
+		k.Primary = d2ast.MakeValueBox(e.Primary.ast().(d2ast.Value)).ScalarBox()
+	}
+	if e.Map != nil {
+		k.Value = d2ast.MakeValueBox(e.Map.ast().(*d2ast.Map))
+	}
+
+	return k
+}
+
+func (a *Array) ast() d2ast.Node {
+	if a == nil {
+		return nil
+	}
+	astArray := &d2ast.Array{}
+	for _, av := range a.Values {
+		astArray.Nodes = append(astArray.Nodes, d2ast.MakeArrayNodeBox(av.ast().(d2ast.ArrayNode)))
+	}
+	return astArray
+}
+
+func (m *Map) ast() d2ast.Node {
+	if m == nil {
+		return nil
+	}
+	astMap := &d2ast.Map{}
+	if m.parent != nil {
+		astMap.Range = d2ast.MakeRange(",1:0:0-1:0:0")
+	}
+	for _, f := range m.Fields {
+		astMap.Nodes = append(astMap.Nodes, d2ast.MakeMapNodeBox(f.ast().(d2ast.MapNode)))
+	}
+	for _, e := range m.Edges {
+		astMap.Nodes = append(astMap.Nodes, d2ast.MakeMapNodeBox(e.ast().(d2ast.MapNode)))
+	}
+	return astMap
 }
