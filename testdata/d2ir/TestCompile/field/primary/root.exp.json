@@ -4,7 +4,7 @@
       "name": "x",
       "primary": {
         "value": {
-          "range": "d2/testdata/d2ir/TestCompile/simple/field/label.d2,0:3:3-0:6:6",
+          "range": "d2/testdata/d2ir/TestCompile/field/primary/root.d2,0:3:3-0:6:6",
           "value": [
             {
               "string": "yes",
@@ -12,6 +12,14 @@
             }
           ]
         }
+      },
+      "composite": {
+        "fields": [
+          {
+            "name": "pqrs"
+          }
+        ],
+        "edges": null
       }
     }
   ],

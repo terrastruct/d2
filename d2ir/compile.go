@@ -167,5 +167,28 @@ func (c *compiler) compileEdges(dst *Map, k *d2ast.Key) {
 }
 
 func (c *compiler) compileArray(dst *Array, a *d2ast.Array) {
-	panic(fmt.Sprintf("TODO"))
+	for _, an := range a.Nodes {
+		var irv Value
+		switch v := an.Unbox().(type) {
+		case *d2ast.Array:
+			ira := &Array{
+				parent: dst,
+			}
+			c.compileArray(ira, v)
+			irv = ira
+		case *d2ast.Map:
+			irm := &Map{
+				parent: dst,
+			}
+			c.compileMap(irm, v)
+			irv = irm
+		case d2ast.Scalar:
+			irv = &Scalar{
+				parent: dst,
+				Value:  v,
+			}
+		}
+
+		dst.Values = append(dst.Values, irv)
+	}
 }

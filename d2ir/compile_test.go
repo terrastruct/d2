@@ -15,119 +15,16 @@ import (
 	"oss.terrastruct.com/d2/d2parser"
 )
 
-type testCase struct {
-	name string
-	run  func(testing.TB, *d2ir.Map)
-}
-
 func TestCompile(t *testing.T) {
 	t.Parallel()
 
-	t.Run("roots", testCompileRoots)
+	t.Run("field", testCompileField)
+	t.Run("edge", testCompileEdge)
 }
 
-func testCompileRoots(t *testing.T) {
-	t.Parallel()
-
-	tca := []testCase{
-		{
-			name: "field",
-			run: func(t testing.TB, m *d2ir.Map) {
-				err := parse(t, m, `x`)
-				assert.Success(t, err)
-				assertField(t, m, 1, 0, nil)
-
-				assertField(t, m, 0, 0, nil, "x")
-			},
-		},
-		{
-			name: "field/label",
-			run: func(t testing.TB, m *d2ir.Map) {
-				err := parse(t, m, `x: yes`)
-				assert.Success(t, err)
-				assertField(t, m, 1, 0, nil)
-
-				assertField(t, m, 0, 0, "yes", "x")
-			},
-		},
-		{
-			name: "field/label/nested",
-			run: func(t testing.TB, m *d2ir.Map) {
-				err := parse(t, m, `x.y: yes`)
-				assert.Success(t, err)
-				assertField(t, m, 2, 0, nil)
-
-				assertField(t, m, 1, 0, nil, "x")
-				assertField(t, m, 0, 0, "yes", "x", "y")
-			},
-		},
-		{
-			name: "primary",
-			run: func(t testing.TB, m *d2ir.Map) {
-				err := parse(t, m, `x: yes { pqrs }`)
-				assert.Success(t, err)
-				assertField(t, m, 2, 0, nil)
-
-				assertField(t, m, 1, 0, "yes", "x")
-				assertField(t, m, 0, 0, nil, "x", "pqrs")
-			},
-		},
-		{
-			name: "primary/nested",
-			run: func(t testing.TB, m *d2ir.Map) {
-				err := parse(t, m, `x.y: yes { pqrs }`)
-				assert.Success(t, err)
-				assertField(t, m, 3, 0, nil)
-
-				assertField(t, m, 2, 0, nil, "x")
-				assertField(t, m, 1, 0, "yes", "x", "y")
-				assertField(t, m, 0, 0, nil, "x", "y", "pqrs")
-			},
-		},
-		{
-			name: "edge",
-			run: func(t testing.TB, m *d2ir.Map) {
-				err := parse(t, m, `x -> y`)
-				assert.Success(t, err)
-				assertField(t, m, 2, 1, nil)
-				assertEdge(t, m, 0, nil, `(x -> y)[0]`)
-
-				assertField(t, m, 0, 0, nil, "x")
-				assertField(t, m, 0, 0, nil, "y")
-			},
-		},
-		{
-			name: "nested",
-			run: func(t testing.TB, m *d2ir.Map) {
-				err := parse(t, m, `x.y -> z.p`)
-				assert.Success(t, err)
-				assertField(t, m, 4, 1, nil)
-
-				assertField(t, m, 1, 0, nil, "x")
-				assertField(t, m, 0, 0, nil, "x", "y")
-
-				assertField(t, m, 1, 0, nil, "z")
-				assertField(t, m, 0, 0, nil, "z", "p")
-
-				assertEdge(t, m, 0, nil, "(x.y -> z.p)[0]")
-			},
-		},
-		{
-			name: "underscore_parent",
-			run: func(t testing.TB, m *d2ir.Map) {
-				err := parse(t, m, `x._ -> z`)
-				assert.Success(t, err)
-				assertField(t, m, 3, 1, nil)
-
-				assertField(t, m, 0, 0, nil, "x")
-				assertField(t, m, 0, 0, nil, "z")
-
-				assertEdge(t, m, 0, nil, "(x -> z)[0]")
-			},
-		},
-	}
-
-	runa(t, tca)
+type testCase struct {
+	name string
+	run  func(testing.TB, *d2ir.Map)
 }
 
 func runa(t *testing.T, tca []testCase) {
@@ -272,4 +169,137 @@ func makeScalar(v interface{}) *d2ir.Scalar {
 		s.Value = &d2ast.Null{}
 	}
 	return s
+}
+
+func testCompileField(t *testing.T) {
+	t.Parallel()
+	t.Run("primary", testCompileFieldPrimary)
+	tca := []testCase{
+		{
+			name: "root",
+			run: func(t testing.TB, m *d2ir.Map) {
+				err := parse(t, m, `x`)
+				assert.Success(t, err)
+				assertField(t, m, 1, 0, nil)
+
+				assertField(t, m, 0, 0, nil, "x")
+			},
+		},
+		{
+			name: "label",
+			run: func(t testing.TB, m *d2ir.Map) {
+				err := parse(t, m, `x: yes`)
+				assert.Success(t, err)
+				assertField(t, m, 1, 0, nil)
+
+				assertField(t, m, 0, 0, "yes", "x")
+			},
+		},
+		{
+			name: "nested",
+			run: func(t testing.TB, m *d2ir.Map) {
+				err := parse(t, m, `x.y: yes`)
+				assert.Success(t, err)
+				assertField(t, m, 2, 0, nil)
+
+				assertField(t, m, 1, 0, nil, "x")
+				assertField(t, m, 0, 0, "yes", "x", "y")
+			},
+		},
+		{
+			name: "array",
+			run: func(t testing.TB, m *d2ir.Map) {
+				err := parse(t, m, `x: [1;2;3;4]`)
+				assert.Success(t, err)
+				assertField(t, m, 1, 0, nil)
+
+				f := assertField(t, m, 0, 0, nil, "x")
+				f_a, ok := f.Composite.(*d2ir.Array)
+				if !ok {
+					t.Fatalf("unexpected type: %T", f.Composite)
+				} else {
+					assert.Equal(t, 4, len(f_a.Values))
+				}
+			},
+		},
+	}
+	runa(t, tca)
+}
+
+func testCompileFieldPrimary(t *testing.T) {
+	t.Parallel()
+	tca := []testCase{
+		{
+			name: "root",
+			run: func(t testing.TB, m *d2ir.Map) {
+				err := parse(t, m, `x: yes { pqrs }`)
+				assert.Success(t, err)
+				assertField(t, m, 2, 0, nil)
+
+				assertField(t, m, 1, 0, "yes", "x")
+				assertField(t, m, 0, 0, nil, "x", "pqrs")
+			},
+		},
+		{
+			name: "nested",
+			run: func(t testing.TB, m *d2ir.Map) {
+				err := parse(t, m, `x.y: yes { pqrs }`)
+				assert.Success(t, err)
+				assertField(t, m, 3, 0, nil)
+
+				assertField(t, m, 2, 0, nil, "x")
+				assertField(t, m, 1, 0, "yes", "x", "y")
+				assertField(t, m, 0, 0, nil, "x", "y", "pqrs")
+			},
+		},
+	}
+	runa(t, tca)
+}
+
+func testCompileEdge(t *testing.T) {
+	t.Parallel()
+	tca := []testCase{
+		{
+			name: "edge",
+			run: func(t testing.TB, m *d2ir.Map) {
+				err := parse(t, m, `x -> y`)
+				assert.Success(t, err)
+				assertField(t, m, 2, 1, nil)
+				assertEdge(t, m, 0, nil, `(x -> y)[0]`)
+
+				assertField(t, m, 0, 0, nil, "x")
+				assertField(t, m, 0, 0, nil, "y")
+			},
+		},
+		{
+			name: "nested",
+			run: func(t testing.TB, m *d2ir.Map) {
+				err := parse(t, m, `x.y -> z.p`)
+				assert.Success(t, err)
+				assertField(t, m, 4, 1, nil)
+
+				assertField(t, m, 1, 0, nil, "x")
+				assertField(t, m, 0, 0, nil, "x", "y")
+
+				assertField(t, m, 1, 0, nil, "z")
+				assertField(t, m, 0, 0, nil, "z", "p")
+
+				assertEdge(t, m, 0, nil, "(x.y -> z.p)[0]")
+			},
+		},
+		{
+			name: "underscore",
+			run: func(t testing.TB, m *d2ir.Map) {
+				err := parse(t, m, `x._ -> z`)
+				assert.Success(t, err)
+				assertField(t, m, 3, 1, nil)
+
+				assertField(t, m, 0, 0, nil, "x")
+				assertField(t, m, 0, 0, nil, "z")
+
+				assertEdge(t, m, 0, nil, "(x -> z)[0]")
+			},
+		},
+	}
+	runa(t, tca)
 }
