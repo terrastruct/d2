@@ -651,7 +651,7 @@ type KeyPath struct {
 }
 
 func MakeKeyPath(a []string) *KeyPath {
-	var kp *KeyPath
+	kp := &KeyPath{}
 	for _, el := range a {
 		kp.Path = append(kp.Path, MakeValueBox(RawString(el, true)).StringBox())
 	}

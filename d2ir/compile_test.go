@@ -79,7 +79,7 @@ func assertField(t testing.TB, n d2ir.Node, nfields, nedges int, primary interfa
 
 	var f *d2ir.Field
 	if len(ida) > 0 {
-		f = m.Get(ida)
+		f = m.GetField(ida)
 		if f == nil {
 			t.Fatalf("expected field %v in map %s", ida, m)
 		}
@@ -255,7 +255,7 @@ func testCompileEdge(t *testing.T) {
 	t.Parallel()
 	tca := []testCase{
 		{
-			name: "edge",
+			name: "root",
 			run: func(t testing.TB, m *d2ir.Map) {
 				err := parse(t, m, `x -> y`)
 				assert.Success(t, err)
@@ -285,14 +285,14 @@ func testCompileEdge(t *testing.T) {
 		{
 			name: "underscore",
 			run: func(t testing.TB, m *d2ir.Map) {
-				err := parse(t, m, `x._ -> z`)
+				err := parse(t, m, `p: { _.x -> z }`)
 				assert.Success(t, err)
 				assertField(t, m, 3, 1, nil)
 
 				assertField(t, m, 0, 0, nil, "x")
-				assertField(t, m, 0, 0, nil, "z")
+				assertField(t, m, 1, 0, nil, "p")
 
-				assertEdge(t, m, 0, nil, "(x -> z)[0]")
+				assertEdge(t, m, 0, nil, "(x -> p.z)[0]")
 			},
 		},
 	}

@@ -50,7 +50,7 @@ func (c *compiler) compileKey(dst *Map, k *d2ast.Key) {
 }
 
 func (c *compiler) compileField(dst *Map, k *d2ast.Key) {
-	f, err := dst.Ensure(d2format.KeyPath(k.Key))
+	f, err := dst.EnsureField(d2format.KeyPath(k.Key))
 	if err != nil {
 		c.errorf(k, err.Error())
 		return
@@ -88,7 +88,7 @@ func (c *compiler) compileField(dst *Map, k *d2ast.Key) {
 
 func (c *compiler) compileEdges(dst *Map, k *d2ast.Key) {
 	if k.Key != nil && len(k.Key.Path) > 0 {
-		f, err := dst.Ensure(d2format.KeyPath(k.Key))
+		f, err := dst.EnsureField(d2format.KeyPath(k.Key))
 		if err != nil {
 			c.errorf(k, err.Error())
 			return
@@ -115,23 +115,22 @@ func (c *compiler) compileEdges(dst *Map, k *d2ast.Key) {
 			}
 			e = ea[0]
 		} else {
-			var err error
+			_, err := dst.EnsureField(eid.SrcPath)
+			if err != nil {
+				c.errorf(k.Edges[i].Src, err.Error())
+				continue
+			}
+			_, err = dst.EnsureField(eid.DstPath)
+			if err != nil {
+				c.errorf(k.Edges[i].Dst, err.Error())
+				continue
+			}
+
 			e, err = dst.EnsureEdge(eid)
 			if err != nil {
 				c.errorf(k.Edges[i], err.Error())
 				continue
 			}
-		}
-
-		_, err := dst.Ensure(eid.SrcPath)
-		if err != nil {
-			c.errorf(k.Edges[i].Src, err.Error())
-			continue
-		}
-		_, err = dst.Ensure(eid.DstPath)
-		if err != nil {
-			c.errorf(k.Edges[i].Dst, err.Error())
-			continue
 		}
 
 		if k.EdgeKey != nil {

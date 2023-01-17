@@ -1,18 +1,10 @@
 {
   "fields": [
     {
-      "name": "p",
-      "composite": {
-        "fields": [
-          {
-            "name": "z"
-          }
-        ],
-        "edges": null
-      }
+      "name": "x"
     },
     {
-      "name": "x"
+      "name": "y"
     }
   ],
   "edges": [
@@ -23,8 +15,7 @@
         ],
         "src_arrow": false,
         "dst_path": [
-          "p",
-          "z"
+          "y"
         ],
         "dst_arrow": true,
         "index": 0
