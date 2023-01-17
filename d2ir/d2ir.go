@@ -316,8 +316,8 @@ type RefContext struct {
 }
 
 func (rc RefContext) EdgeIndex() int {
-	for i, e := range rc.Context.Key.Edges {
-		if e == rc.Context.Edge {
+	for i, e := range rc.Key.Edges {
+		if e == rc.Edge {
 			return i
 		}
 	}
@@ -584,24 +584,18 @@ func (m *Map) appendKeyReferences(i int, kp *d2ast.KeyPath, refctx *RefContext) 
 		KeyPath: kp,
 		Context: refctx,
 	})
+	if i+1 == len(kp.Path) {
+		return
+	}
 	if f_m, ok := f.Composite.(*Map); ok {
-		f_m.appendReferences(i+1, kp, refctx)
+		f_m.appendKeyReferences(i+1, kp, refctx)
 	}
 }
 
 func (m *Map) appendEdgeReferences(e *Edge, refctx *RefContext) {
-	sb := kp.Path[i]
-	f := m.Get([]string{sb.Unbox().ScalarString()})
-	if f == nil {
-		return
-	}
-
-	f.References = append(f.References, KeyReference{
-		String: sb,
-		KeyPath: kp,
+	e.References = append(e.References, EdgeReference{
 		Context: refctx,
 	})
-	if f_m, ok := f.Composite.(*Map); ok {
-		f_m.appendReferences(i+1, kp, refctx)
-	}
+	m.appendKeyReferences(0, refctx.Edge.Src, refctx)
+	m.appendKeyReferences(0, refctx.Edge.Dst, refctx)
 }
