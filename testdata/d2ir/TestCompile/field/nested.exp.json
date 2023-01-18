@@ -66,11 +66,95 @@
                     }
                   ]
                 }
-              }
+              },
+              "references": [
+                {
+                  "string": {
+                    "unquoted_string": {
+                      "range": "TestCompile/field/nested.d2,0:2:2-0:3:3",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  },
+                  "key_path": {
+                    "range": "TestCompile/field/nested.d2,0:0:0-0:3:3",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/field/nested.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "x",
+                              "raw_string": "x"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/field/nested.d2,0:2:2-0:3:3",
+                          "value": [
+                            {
+                              "string": "y",
+                              "raw_string": "y"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
             }
           ],
           "edges": null
-        }
+        },
+        "references": [
+          {
+            "string": {
+              "unquoted_string": {
+                "range": "TestCompile/field/nested.d2,0:0:0-0:1:1",
+                "value": [
+                  {
+                    "string": "x",
+                    "raw_string": "x"
+                  }
+                ]
+              }
+            },
+            "key_path": {
+              "range": "TestCompile/field/nested.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "TestCompile/field/nested.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "TestCompile/field/nested.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
       }
     ],
     "edges": null

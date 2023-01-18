@@ -79,22 +79,190 @@
         "composite": {
           "fields": [
             {
-              "name": "y"
+              "name": "y",
+              "references": [
+                {
+                  "string": {
+                    "unquoted_string": {
+                      "range": "TestCompile/edge/nested.d2,0:2:2-0:3:3",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  },
+                  "key_path": {
+                    "range": "TestCompile/edge/nested.d2,0:0:0-0:4:4",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edge/nested.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "x",
+                              "raw_string": "x"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edge/nested.d2,0:2:2-0:3:3",
+                          "value": [
+                            {
+                              "string": "y",
+                              "raw_string": "y"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
             }
           ],
           "edges": null
-        }
+        },
+        "references": [
+          {
+            "string": {
+              "unquoted_string": {
+                "range": "TestCompile/edge/nested.d2,0:0:0-0:1:1",
+                "value": [
+                  {
+                    "string": "x",
+                    "raw_string": "x"
+                  }
+                ]
+              }
+            },
+            "key_path": {
+              "range": "TestCompile/edge/nested.d2,0:0:0-0:4:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "TestCompile/edge/nested.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "TestCompile/edge/nested.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
       },
       {
         "name": "z",
         "composite": {
           "fields": [
             {
-              "name": "p"
+              "name": "p",
+              "references": [
+                {
+                  "string": {
+                    "unquoted_string": {
+                      "range": "TestCompile/edge/nested.d2,0:9:9-0:10:10",
+                      "value": [
+                        {
+                          "string": "p",
+                          "raw_string": "p"
+                        }
+                      ]
+                    }
+                  },
+                  "key_path": {
+                    "range": "TestCompile/edge/nested.d2,0:6:6-0:10:10",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edge/nested.d2,0:7:7-0:8:8",
+                          "value": [
+                            {
+                              "string": "z",
+                              "raw_string": "z"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edge/nested.d2,0:9:9-0:10:10",
+                          "value": [
+                            {
+                              "string": "p",
+                              "raw_string": "p"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
             }
           ],
           "edges": null
-        }
+        },
+        "references": [
+          {
+            "string": {
+              "unquoted_string": {
+                "range": "TestCompile/edge/nested.d2,0:7:7-0:8:8",
+                "value": [
+                  {
+                    "string": "z",
+                    "raw_string": "z"
+                  }
+                ]
+              }
+            },
+            "key_path": {
+              "range": "TestCompile/edge/nested.d2,0:6:6-0:10:10",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "TestCompile/edge/nested.d2,0:7:7-0:8:8",
+                    "value": [
+                      {
+                        "string": "z",
+                        "raw_string": "z"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "TestCompile/edge/nested.d2,0:9:9-0:10:10",
+                    "value": [
+                      {
+                        "string": "p",
+                        "raw_string": "p"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
       }
     ],
     "edges": [
@@ -111,7 +279,10 @@
           ],
           "dst_arrow": true,
           "index": 0
-        }
+        },
+        "references": [
+          {}
+        ]
       }
     ]
   }

@@ -53,10 +53,72 @@
   "base": {
     "fields": [
       {
-        "name": "x"
+        "name": "x",
+        "references": [
+          {
+            "string": {
+              "unquoted_string": {
+                "range": "TestCompile/edge/root.d2,0:0:0-0:1:1",
+                "value": [
+                  {
+                    "string": "x",
+                    "raw_string": "x"
+                  }
+                ]
+              }
+            },
+            "key_path": {
+              "range": "TestCompile/edge/root.d2,0:0:0-0:2:2",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "TestCompile/edge/root.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
       },
       {
-        "name": "y"
+        "name": "y",
+        "references": [
+          {
+            "string": {
+              "unquoted_string": {
+                "range": "TestCompile/edge/root.d2,0:5:5-0:6:6",
+                "value": [
+                  {
+                    "string": "y",
+                    "raw_string": "y"
+                  }
+                ]
+              }
+            },
+            "key_path": {
+              "range": "TestCompile/edge/root.d2,0:4:4-0:6:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "TestCompile/edge/root.d2,0:5:5-0:6:6",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
       }
     ],
     "edges": [
@@ -71,7 +133,10 @@
           ],
           "dst_arrow": true,
           "index": 0
-        }
+        },
+        "references": [
+          {}
+        ]
       }
     ]
   }

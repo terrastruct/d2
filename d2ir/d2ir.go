@@ -338,7 +338,7 @@ func (kr FieldReference) EdgeDest() bool {
 }
 
 func (kr FieldReference) InEdge() bool {
-	return kr.KeyPath != kr.Context.Key.Key
+	return kr.Context.Edge != nil
 }
 
 type EdgeReference struct {
@@ -349,6 +349,11 @@ type RefContext struct {
 	Key   *d2ast.Key
 	Edge  *d2ast.Edge
 	Scope *d2ast.Map
+}
+
+func (rc *RefContext) Copy() *RefContext {
+	tmp := *rc
+	return &tmp
 }
 
 // UnresolvedScopeMap is scope prior to interpreting _

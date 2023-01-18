@@ -96,7 +96,38 @@
               }
             }
           ]
-        }
+        },
+        "references": [
+          {
+            "string": {
+              "unquoted_string": {
+                "range": "TestCompile/field/array.d2,0:0:0-0:1:1",
+                "value": [
+                  {
+                    "string": "x",
+                    "raw_string": "x"
+                  }
+                ]
+              }
+            },
+            "key_path": {
+              "range": "TestCompile/field/array.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "TestCompile/field/array.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
       }
     ],
     "edges": null

@@ -84,11 +84,73 @@
         "composite": {
           "fields": [
             {
-              "name": "pqrs"
+              "name": "pqrs",
+              "references": [
+                {
+                  "string": {
+                    "unquoted_string": {
+                      "range": "TestCompile/field/primary/root.d2,0:9:9-0:13:13",
+                      "value": [
+                        {
+                          "string": "pqrs",
+                          "raw_string": "pqrs"
+                        }
+                      ]
+                    }
+                  },
+                  "key_path": {
+                    "range": "TestCompile/field/primary/root.d2,0:9:9-0:14:14",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/field/primary/root.d2,0:9:9-0:13:13",
+                          "value": [
+                            {
+                              "string": "pqrs",
+                              "raw_string": "pqrs"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
             }
           ],
           "edges": null
-        }
+        },
+        "references": [
+          {
+            "string": {
+              "unquoted_string": {
+                "range": "TestCompile/field/primary/root.d2,0:0:0-0:1:1",
+                "value": [
+                  {
+                    "string": "x",
+                    "raw_string": "x"
+                  }
+                ]
+              }
+            },
+            "key_path": {
+              "range": "TestCompile/field/primary/root.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "TestCompile/field/primary/root.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
       }
     ],
     "edges": null
