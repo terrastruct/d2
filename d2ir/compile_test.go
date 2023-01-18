@@ -413,6 +413,57 @@ steps: {
 				assertQuery(t, m, 0, 0, nil, "steps.nuclear.quiche")
 			},
 		},
+		{
+			name: "recursive",
+			run: func(t testing.TB) {
+				m, err := compile(t, `x -> y
+steps: {
+	bingo: { p.q.z }
+	nuclear: {
+		quiche
+		scenarios: {
+			bavarian: {
+				perseverance
+			}
+		}
+	}
+}`)
+				assert.Success(t, err)
+
+				assertQuery(t, m, 16, 3, nil, "")
+
+				assertQuery(t, m, 0, 0, nil, "x")
+				assertQuery(t, m, 0, 0, nil, "y")
+				assertQuery(t, m, 0, 0, nil, `(x -> y)[0]`)
+
+				assertQuery(t, m, 5, 1, nil, "steps.bingo")
+				assertQuery(t, m, 0, 0, nil, "steps.bingo.x")
+				assertQuery(t, m, 0, 0, nil, "steps.bingo.y")
+				assertQuery(t, m, 0, 0, nil, `steps.bingo.(x -> y)[0]`)
+				assertQuery(t, m, 2, 0, nil, "steps.bingo.p")
+				assertQuery(t, m, 1, 0, nil, "steps.bingo.p.q")
+				assertQuery(t, m, 0, 0, nil, "steps.bingo.p.q.z")
+
+				assertQuery(t, m, 6, 1, nil, "steps.nuclear")
+				assertQuery(t, m, 0, 0, nil, "steps.nuclear.x")
+				assertQuery(t, m, 0, 0, nil, "steps.nuclear.y")
+				assertQuery(t, m, 0, 0, nil, `steps.nuclear.(x -> y)[0]`)
+				assertQuery(t, m, 2, 0, nil, "steps.nuclear.p")
+				assertQuery(t, m, 1, 0, nil, "steps.nuclear.p.q")
+				assertQuery(t, m, 0, 0, nil, "steps.nuclear.p.q.z")
+				assertQuery(t, m, 0, 0, nil, "steps.nuclear.quiche")
+
+				assertQuery(t, m, 6, 1, nil, "steps.nuclear.scenarios.bavarian")
+				assertQuery(t, m, 0, 0, nil, "steps.nuclear.scenarios.bavarian.x")
+				assertQuery(t, m, 0, 0, nil, "steps.nuclear.scenarios.bavarian.y")
+				assertQuery(t, m, 0, 0, nil, `steps.nuclear.scenarios.bavarian.(x -> y)[0]`)
+				assertQuery(t, m, 2, 0, nil, "steps.nuclear.scenarios.bavarian.p")
+				assertQuery(t, m, 1, 0, nil, "steps.nuclear.scenarios.bavarian.p.q")
+				assertQuery(t, m, 0, 0, nil, "steps.nuclear.scenarios.bavarian.p.q.z")
+				assertQuery(t, m, 0, 0, nil, "steps.nuclear.scenarios.bavarian.quiche")
+				assertQuery(t, m, 0, 0, nil, "steps.nuclear.scenarios.bavarian.perseverance")
+			},
+		},
 	}
 	runa(t, tca)
 }
