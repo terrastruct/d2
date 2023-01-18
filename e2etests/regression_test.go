@@ -372,6 +372,16 @@ no leading: |python
 	1. they
 `),
 		},
+		{
+			name: "elk_loop_panic",
+			script: `x: {
+  a
+  b
+}
+
+x.a -> x.a
+`,
+		},
 	}
 
 	runa(t, tcs)

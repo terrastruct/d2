@@ -20,3 +20,4 @@
 - Fixes code snippets not being tall enough with leading newlines. [#664](https://github.com/terrastruct/d2/pull/664)
 - Icon URLs that needed escaping (e.g. with ampersands) are handled correctly by CLI. [#666](https://github.com/terrastruct/d2/pull/666)
 - Fixes markdown shapes being slightly too short for their text in some cases. [#665](https://github.com/terrastruct/d2/pull/665)
+- Fixes self-connections inside layouts when using ELK. [#676](https://github.com/terrastruct/d2/pull/676)
