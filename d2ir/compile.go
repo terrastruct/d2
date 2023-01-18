@@ -21,13 +21,22 @@ func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 	})
 }
 
-func Compile(dst *Map, ast *d2ast.Map) error {
-	var c compiler
-	c.compileMap(dst, ast)
-	if !c.err.Empty() {
-		return c.err
+func Compile(ast *d2ast.Map) (*IR, error) {
+	ir := &IR{
+		AST: ast,
+		Map: &Map{},
 	}
-	return nil
+
+	c := &compiler{}
+	c.compile(ir)
+	if !c.err.Empty() {
+		return nil, c.err
+	}
+	return ir, nil
+}
+
+func (c *compiler) compile(ir *IR) {
+	c.compileMap(ir.Map, ir.AST)
 }
 
 func (c *compiler) compileMap(dst *Map, ast *d2ast.Map) {

@@ -1,8 +1,38 @@
 {
-  "fields": [
-    {
-      "name": "x"
-    }
-  ],
-  "edges": null
+  "ast": {
+    "range": "TestCompile/field/root.d2,0:0:0-0:1:1",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "TestCompile/field/root.d2,0:0:0-0:1:1",
+          "key": {
+            "range": "TestCompile/field/root.d2,0:0:0-0:1:1",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/field/root.d2,0:0:0-0:1:1",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {}
+        }
+      }
+    ]
+  },
+  "base": {
+    "fields": [
+      {
+        "name": "x"
+      }
+    ],
+    "edges": null
+  }
 }

@@ -1,25 +1,78 @@
 {
-  "fields": [
-    {
-      "name": "x"
-    },
-    {
-      "name": "y"
-    }
-  ],
-  "edges": [
-    {
-      "edge_id": {
-        "src_path": [
-          "x"
-        ],
-        "src_arrow": false,
-        "dst_path": [
-          "y"
-        ],
-        "dst_arrow": true,
-        "index": 0
+  "ast": {
+    "range": "TestCompile/edge/root.d2,0:0:0-0:6:6",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "TestCompile/edge/root.d2,0:0:0-0:6:6",
+          "edges": [
+            {
+              "range": "TestCompile/edge/root.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/edge/root.d2,0:0:0-0:2:2",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edge/root.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/edge/root.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edge/root.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            }
+          ],
+          "primary": {},
+          "value": {}
+        }
       }
-    }
-  ]
+    ]
+  },
+  "base": {
+    "fields": [
+      {
+        "name": "x"
+      },
+      {
+        "name": "y"
+      }
+    ],
+    "edges": [
+      {
+        "edge_id": {
+          "src_path": [
+            "x"
+          ],
+          "src_arrow": false,
+          "dst_path": [
+            "y"
+          ],
+          "dst_arrow": true,
+          "index": 0
+        }
+      }
+    ]
+  }
 }

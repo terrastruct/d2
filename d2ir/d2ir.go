@@ -13,13 +13,14 @@ import (
 
 type Node interface {
 	node()
-	ast() d2ast.Node
+	Copy(parent Node) Node
 	Parent() Node
-	Copy(newp Node) Node
 
+	ast() d2ast.Node
 	fmt.Stringer
 }
 
+var _ Node = &IR{}
 var _ Node = &Scalar{}
 var _ Node = &Field{}
 var _ Node = &Edge{}
@@ -44,12 +45,14 @@ type Composite interface {
 var _ Composite = &Array{}
 var _ Composite = &Map{}
 
+func (n *IR) node()     {}
 func (n *Scalar) node() {}
 func (n *Field) node()  {}
 func (n *Edge) node()   {}
 func (n *Array) node()  {}
 func (n *Map) node()    {}
 
+func (n *IR) Parent() Node     { return n.parent }
 func (n *Scalar) Parent() Node { return n.parent }
 func (n *Field) Parent() Node  { return n.parent }
 func (n *Edge) Parent() Node   { return n.parent }
@@ -59,15 +62,34 @@ func (n *Map) Parent() Node    { return n.parent }
 func (n *Scalar) value() {}
 func (n *Array) value()  {}
 func (n *Map) value()    {}
+func (n *IR) value()     {}
 
 func (n *Array) composite() {}
 func (n *Map) composite()   {}
+func (n *IR) composite()    {}
 
+func (n *IR) String() string     { return d2format.Format(n.ast()) }
 func (n *Scalar) String() string { return d2format.Format(n.ast()) }
 func (n *Field) String() string  { return d2format.Format(n.ast()) }
 func (n *Edge) String() string   { return d2format.Format(n.ast()) }
 func (n *Array) String() string  { return d2format.Format(n.ast()) }
 func (n *Map) String() string    { return d2format.Format(n.ast()) }
+
+type IR struct {
+	parent Node
+
+	AST *d2ast.Map `json:"ast"`
+	Map *Map       `json:"base"`
+}
+
+func (ir *IR) Copy(newp Node) Node {
+	tmp := *ir
+	ir = &tmp
+
+	ir.parent = newp.(*IR)
+	ir.Map = ir.Map.Copy(ir).(*Map)
+	return ir
+}
 
 type Scalar struct {
 	parent Node
@@ -115,9 +137,9 @@ func (m *Map) Copy(newp Node) Node {
 }
 
 // Root reports whether the Map is the root of the D2 tree.
-// The root map has no parent.
 func (m *Map) Root() bool {
-	return m.parent == nil
+	_, ok := m.parent.(*IR)
+	return ok
 }
 
 type Field struct {
@@ -222,16 +244,16 @@ func (eid *EdgeID) resolveUnderscores(m *Map) (*EdgeID, *Map, error) {
 		if eid.SrcPath[0] == "_" {
 			eid.SrcPath = eid.SrcPath[1:]
 		} else {
-			mf := parentField(m)
+			mf := ParentField(m)
 			eid.SrcPath = append([]string{mf.Name}, eid.SrcPath...)
 		}
 		if eid.DstPath[0] == "_" {
 			eid.DstPath = eid.DstPath[1:]
 		} else {
-			mf := parentField(m)
+			mf := ParentField(m)
 			eid.DstPath = append([]string{mf.Name}, eid.DstPath...)
 		}
-		m = parentMap(m)
+		m = ParentMap(m)
 		if m == nil {
 			return nil, nil, errors.New("invalid underscore")
 		}
@@ -327,12 +349,29 @@ type RefContext struct {
 	Key   *d2ast.Key
 	Edge  *d2ast.Edge
 	Scope *d2ast.Map
-
-	// UnresolvedScopeMap is prior to interpreting _
-	UnresolvedScopeMap *Map
 }
 
-func (rc RefContext) EdgeIndex() int {
+// UnresolvedScopeMap is scope prior to interpreting _
+// It does this by finding the referenced *Map of rc.Scope
+func (rc *RefContext) UnresolvedScopeMap(m *Map) *Map {
+	for {
+		fm := ParentField(m)
+		if fm == nil {
+			return m
+		}
+		for _, ref := range fm.References {
+			if ref.KeyPath != ref.Context.Key.Key {
+				continue
+			}
+			if ref.Context.Key.Value.Unbox() == rc.Scope {
+				return m
+			}
+		}
+		m = ParentMap(m)
+	}
+}
+
+func (rc *RefContext) EdgeIndex() int {
 	for i, e := range rc.Key.Edges {
 		if e == rc.Edge {
 			return i
@@ -379,7 +418,7 @@ func (m *Map) EdgeCountRecursive() int {
 
 func (m *Map) GetField(ida []string) *Field {
 	for len(ida) > 0 && ida[0] == "_" {
-		m = parentMap(m)
+		m = ParentMap(m)
 		if m == nil {
 			return nil
 		}
@@ -415,7 +454,7 @@ func (m *Map) getField(ida []string) *Field {
 
 func (m *Map) EnsureField(ida []string) (*Field, error) {
 	for len(ida) > 0 && ida[0] == "_" {
-		m = parentMap(m)
+		m = ParentMap(m)
 		if m == nil {
 			return nil, errors.New("invalid underscore")
 		}
@@ -469,7 +508,7 @@ func (m *Map) ensureField(ida []string) (*Field, error) {
 	return f.Composite.(*Map).ensureField(rest)
 }
 
-func (m *Map) Delete(ida []string) bool {
+func (m *Map) DeleteField(ida []string) bool {
 	if len(ida) == 0 {
 		return false
 	}
@@ -486,7 +525,7 @@ func (m *Map) Delete(ida []string) bool {
 			return true
 		}
 		if f_m, ok := f.Composite.(*Map); ok {
-			return f_m.Delete(rest)
+			return f_m.DeleteField(rest)
 		}
 	}
 	return false
@@ -554,6 +593,10 @@ func (m *Map) EnsureEdge(eid *EdgeID) (*Edge, error) {
 	return e, nil
 }
 
+func (ir *IR) ast() d2ast.Node {
+	return ir.Map.ast()
+}
+
 func (s *Scalar) ast() d2ast.Node {
 	return s.Value
 }
@@ -619,7 +662,7 @@ func (m *Map) ast() d2ast.Node {
 		return nil
 	}
 	astMap := &d2ast.Map{}
-	if m.parent == nil {
+	if m.Root() {
 		astMap.Range = d2ast.MakeRange(",0:0:0-1:0:0")
 	} else {
 		astMap.Range = d2ast.MakeRange(",1:0:0-2:0:0")
@@ -661,7 +704,33 @@ func (m *Map) appendEdgeReferences(e *Edge, refctx *RefContext) {
 	m.appendFieldReferences(0, refctx.Edge.Dst, refctx)
 }
 
-func parentMap(n Node) *Map {
+func ToMap(n Node) *Map {
+	switch n := n.(type) {
+	case *Map:
+		return n
+	case *IR:
+		return n.Map
+	case *Field:
+		return ToMap(n.Composite)
+	case *Edge:
+		return n.Map
+	default:
+		return nil
+	}
+}
+
+func ToScalar(n Node) *Scalar {
+	switch n := n.(type) {
+	case *Field:
+		return n.Primary
+	case *Edge:
+		return n.Primary
+	default:
+		return nil
+	}
+}
+
+func ParentMap(n Node) *Map {
 	for n.Parent() != nil {
 		n = n.Parent()
 		if n_m, ok := n.(*Map); ok {
@@ -671,7 +740,7 @@ func parentMap(n Node) *Map {
 	return nil
 }
 
-func parentField(n Node) *Field {
+func ParentField(n Node) *Field {
 	for n.Parent() != nil {
 		n = n.Parent()
 		if n_f, ok := n.(*Field); ok {

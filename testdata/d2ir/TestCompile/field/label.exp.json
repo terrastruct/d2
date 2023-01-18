@@ -1,19 +1,59 @@
 {
-  "fields": [
-    {
-      "name": "x",
-      "primary": {
-        "value": {
-          "range": "d2/testdata/d2ir/TestCompile/field/label.d2,0:3:3-0:6:6",
-          "value": [
-            {
-              "string": "yes",
-              "raw_string": "yes"
+  "ast": {
+    "range": "TestCompile/field/label.d2,0:0:0-0:6:6",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "TestCompile/field/label.d2,0:0:0-0:6:6",
+          "key": {
+            "range": "TestCompile/field/label.d2,0:0:0-0:1:1",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/field/label.d2,0:0:0-0:1:1",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {
+            "unquoted_string": {
+              "range": "TestCompile/field/label.d2,0:3:3-0:6:6",
+              "value": [
+                {
+                  "string": "yes",
+                  "raw_string": "yes"
+                }
+              ]
             }
-          ]
+          }
         }
       }
-    }
-  ],
-  "edges": null
+    ]
+  },
+  "base": {
+    "fields": [
+      {
+        "name": "x",
+        "primary": {
+          "value": {
+            "range": "TestCompile/field/label.d2,0:3:3-0:6:6",
+            "value": [
+              {
+                "string": "yes",
+                "raw_string": "yes"
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "edges": null
+  }
 }
