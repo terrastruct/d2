@@ -1,3 +1,6 @@
+![animated connection example](https://user-images.githubusercontent.com/3120367/213055161-e6f1918b-150c-4beb-b61c-3ea05cc29f00.svg)
+
+
 #### Features 🚀
 
 - `animated` keyword implemented for connections. [#652](https://github.com/terrastruct/d2/pull/652)
