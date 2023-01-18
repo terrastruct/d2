@@ -386,7 +386,8 @@ func (m *Map) FieldCountRecursive() int {
 	}
 	acc := len(m.Fields)
 	for _, f := range m.Fields {
-		if f_m, ok := f.Composite.(*Map); ok {
+		f_m := ToMap(f)
+		if f_m != nil {
 			acc += f_m.FieldCountRecursive()
 		}
 	}
@@ -404,7 +405,8 @@ func (m *Map) EdgeCountRecursive() int {
 	}
 	acc := len(m.Edges)
 	for _, f := range m.Fields {
-		if f_m, ok := f.Composite.(*Map); ok {
+		f_m := ToMap(f)
+		if f_m != nil {
 			acc += f_m.EdgeCountRecursive()
 		}
 	}
@@ -445,7 +447,8 @@ func (m *Map) getField(ida []string) *Field {
 		if len(rest) == 0 {
 			return f
 		}
-		if f_m, ok := f.Composite.(*Map); ok {
+		f_m := ToMap(f)
+		if f_m != nil {
 			return f_m.getField(rest)
 		}
 	}
@@ -482,16 +485,17 @@ func (m *Map) ensureField(ida []string) (*Field, error) {
 		if len(rest) == 0 {
 			return f, nil
 		}
-		switch fc := f.Composite.(type) {
-		case *Map:
-			return fc.ensureField(rest)
-		case *Array:
+		if _, ok := f.Composite.(*Array); ok {
 			return nil, errors.New("cannot index into array")
 		}
-		f.Composite = &Map{
-			parent: f,
+		f_m := ToMap(f)
+		if f_m == nil {
+			f_m = &Map{
+				parent: f,
+			}
+			f.Composite = f_m
 		}
-		return f.Composite.(*Map).ensureField(rest)
+		return f_m.ensureField(rest)
 	}
 
 	f := &Field{
@@ -502,10 +506,11 @@ func (m *Map) ensureField(ida []string) (*Field, error) {
 	if len(rest) == 0 {
 		return f, nil
 	}
-	f.Composite = &Map{
+	f_m := &Map{
 		parent: f,
 	}
-	return f.Composite.(*Map).ensureField(rest)
+	f.Composite = f_m
+	return f_m.ensureField(rest)
 }
 
 func (m *Map) DeleteField(ida []string) bool {
@@ -524,7 +529,8 @@ func (m *Map) DeleteField(ida []string) bool {
 			copy(m.Fields[i:], m.Fields[i+1:])
 			return true
 		}
-		if f_m, ok := f.Composite.(*Map); ok {
+		f_m := ToMap(f)
+		if f_m != nil {
 			return f_m.DeleteField(rest)
 		}
 	}
@@ -542,7 +548,8 @@ func (m *Map) GetEdges(eid *EdgeID) []*Edge {
 		if f == nil {
 			return nil
 		}
-		if f_m, ok := f.Composite.(*Map); ok {
+		f_m := ToMap(f)
+		if f_m != nil {
 			return f_m.GetEdges(eid)
 		}
 		return nil
@@ -568,16 +575,17 @@ func (m *Map) EnsureEdge(eid *EdgeID) (*Edge, error) {
 		if err != nil {
 			return nil, err
 		}
-		switch fc := f.Composite.(type) {
-		case *Map:
-			return fc.EnsureEdge(eid)
-		case *Array:
+		if _, ok := f.Composite.(*Array); ok {
 			return nil, errors.New("cannot index into array")
 		}
-		f.Composite = &Map{
-			parent: f,
+		f_m := ToMap(f)
+		if f_m == nil {
+			f_m = &Map{
+				parent: f,
+			}
+			f.Composite = f_m
 		}
-		return f.Composite.(*Map).EnsureEdge(eid)
+		return f_m.EnsureEdge(eid)
 	}
 
 	eid.Index = nil
@@ -691,7 +699,8 @@ func (m *Map) appendFieldReferences(i int, kp *d2ast.KeyPath, refctx *RefContext
 	if i+1 == len(kp.Path) {
 		return
 	}
-	if f_m, ok := f.Composite.(*Map); ok {
+	f_m := ToMap(f)
+	if f_m != nil {
 		f_m.appendFieldReferences(i+1, kp, refctx)
 	}
 }
