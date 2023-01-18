@@ -658,6 +658,13 @@ func MakeKeyPath(a []string) *KeyPath {
 	return kp
 }
 
+func (kp *KeyPath) IDA() (ida []string) {
+	for _, el := range kp.Path {
+		ida = append(ida, el.Unbox().ScalarString())
+	}
+	return ida
+}
+
 type Edge struct {
 	Range Range `json:"range"`
 

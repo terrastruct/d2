@@ -27,7 +27,7 @@ func TestCopy(t *testing.T) {
 	}
 	m2 := &d2ir.Map{
 		Fields: []*d2ir.Field{
-			{Primary: s},
+			{Primary_: s},
 		},
 	}
 
@@ -35,13 +35,13 @@ func TestCopy(t *testing.T) {
 	f := &d2ir.Field{
 		Name: keyStr,
 
-		Primary:   s,
+		Primary_:  s,
 		Composite: a,
 	}
 	e := &d2ir.Edge{
 
-		Primary: s,
-		Map:     m2,
+		Primary_: s,
+		Map_:     m2,
 	}
 	m := &d2ir.Map{
 
@@ -54,7 +54,7 @@ func TestCopy(t *testing.T) {
 
 	assert.Equal(t, m, m.Fields[0].Parent())
 	assert.Equal(t, keyStr, m.Fields[0].Name)
-	assert.Equal(t, m.Fields[0], m.Fields[0].Primary.Parent())
+	assert.Equal(t, m.Fields[0], m.Fields[0].Primary_.Parent())
 	assert.Equal(t, m.Fields[0], m.Fields[0].Composite.(*d2ir.Array).Parent())
 
 	assert.Equal(t,
@@ -63,9 +63,9 @@ func TestCopy(t *testing.T) {
 	)
 
 	assert.Equal(t, m, m.Edges[0].Parent())
-	assert.Equal(t, m.Edges[0], m.Edges[0].Primary.Parent())
-	assert.Equal(t, m.Edges[0], m.Edges[0].Map.Parent())
+	assert.Equal(t, m.Edges[0], m.Edges[0].Primary_.Parent())
+	assert.Equal(t, m.Edges[0], m.Edges[0].Map_.Parent())
 
-	assert.Equal(t, m.Edges[0].Map, m.Edges[0].Map.Fields[0].Parent())
-	assert.Equal(t, m.Edges[0].Map.Fields[0], m.Edges[0].Map.Fields[0].Primary.Parent())
+	assert.Equal(t, m.Edges[0].Map_, m.Edges[0].Map_.Fields[0].Parent())
+	assert.Equal(t, m.Edges[0].Map_.Fields[0], m.Edges[0].Map_.Fields[0].Primary_.Parent())
 }

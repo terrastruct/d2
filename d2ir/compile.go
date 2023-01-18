@@ -14,17 +14,62 @@ func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 }
 
 func Compile(ast *d2ast.Map) (*Map, error) {
-	m := &Map{}
 	c := &compiler{}
-	c.compile(m, ast)
+	m := &Map{}
+	c.compileMap(m, ast)
+	c.compileScenarios(m)
+	c.compileSteps(m)
 	if !c.err.Empty() {
 		return nil, c.err
 	}
 	return m, nil
 }
 
-func (c *compiler) compile(dst *Map, ast *d2ast.Map) {
-	c.compileMap(dst, ast)
+func (c *compiler) compileScenarios(m *Map) {
+	scenariosf := m.GetField("scenarios")
+	if scenariosf == nil {
+		return
+	}
+	scenarios := scenariosf.Map()
+	if scenarios == nil {
+		return
+	}
+
+	for _, sf := range scenarios.Fields {
+		if sf.Map() == nil {
+			sf.Composite = &Map{
+				parent: sf,
+			}
+		}
+		base := m.Copy(sf).(*Map)
+		sf.Composite = Overlay(base, sf.Map())
+	}
+}
+
+func (c *compiler) compileSteps(m *Map) {
+	stepsf := m.GetField("steps")
+	if stepsf == nil {
+		return
+	}
+	steps := stepsf.Map()
+	if steps == nil {
+		return
+	}
+	for i, sf := range steps.Fields {
+		if sf.Map() == nil {
+			sf.Composite = &Map{
+				parent: sf,
+			}
+		}
+
+		var base *Map
+		if i == 0 {
+			base = m.Copy(sf).(*Map)
+		} else {
+			base = steps.Fields[i-1].Map().Copy(sf).(*Map)
+		}
+		sf.Composite = Overlay(base, sf.Map())
+	}
 }
 
 func (c *compiler) compileMap(dst *Map, ast *d2ast.Map) {
@@ -57,7 +102,7 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 	}
 
 	if refctx.Key.Primary.Unbox() != nil {
-		f.Primary = &Scalar{
+		f.Primary_ = &Scalar{
 			parent: f,
 			Value:  refctx.Key.Primary.Unbox(),
 		}
@@ -69,16 +114,14 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		c.compileArray(a, refctx.Key.Value.Array)
 		f.Composite = a
 	} else if refctx.Key.Value.Map != nil {
-		f_m := ChildMap(f)
-		if f_m == nil {
-			f_m = &Map{
+		if f.Map() == nil {
+			f.Composite = &Map{
 				parent: f,
 			}
-			f.Composite = f_m
 		}
-		c.compileMap(f_m, refctx.Key.Value.Map)
+		c.compileMap(f.Map(), refctx.Key.Value.Map)
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
-		f.Primary = &Scalar{
+		f.Primary_ = &Scalar{
 			parent: f,
 			Value:  refctx.Key.Value.ScalarBox().Unbox(),
 		}
@@ -96,14 +139,12 @@ func (c *compiler) compileEdges(dst *Map, refctx *RefContext) {
 			c.errorf(refctx.Key.Key, "cannot index into array")
 			return
 		}
-		f_m := ChildMap(f)
-		if f_m == nil {
-			f_m = &Map{
+		if f.Map() == nil {
+			f.Composite = &Map{
 				parent: f,
 			}
-			f.Composite = f_m
 		}
-		dst = f_m
+		dst = f.Map()
 	}
 
 	eida := NewEdgeIDs(refctx.Key)
@@ -144,25 +185,25 @@ func (c *compiler) compileEdges(dst *Map, refctx *RefContext) {
 		}
 
 		if refctx.Key.EdgeKey != nil {
-			if e.Map == nil {
-				e.Map = &Map{
+			if e.Map_ == nil {
+				e.Map_ = &Map{
 					parent: e,
 				}
 			}
-			c.compileField(e.Map, refctx.Key.EdgeKey, refctx)
+			c.compileField(e.Map_, refctx.Key.EdgeKey, refctx)
 		} else {
 			if refctx.Key.Primary.Unbox() != nil {
-				e.Primary = &Scalar{
+				e.Primary_ = &Scalar{
 					parent: e,
 					Value:  refctx.Key.Primary.Unbox(),
 				}
 			} else if refctx.Key.Value.Map != nil {
-				if e.Map == nil {
-					e.Map = &Map{
+				if e.Map_ == nil {
+					e.Map_ = &Map{
 						parent: e,
 					}
 				}
-				c.compileMap(e.Map, refctx.Key.Value.Map)
+				c.compileMap(e.Map_, refctx.Key.Value.Map)
 			} else if refctx.Key.Value.Unbox() != nil {
 				c.errorf(refctx.Key.Value.Unbox(), "edges cannot be assigned arrays")
 				continue

@@ -20,7 +20,9 @@ func TestCompile(t *testing.T) {
 
 	t.Run("fields", testCompileFields)
 	t.Run("edges", testCompileEdges)
-	t.Run("layer", testCompileLayers)
+	t.Run("layers", testCompileLayers)
+	t.Run("scenarios", testCompileScenarios)
+	t.Run("steps", testCompileSteps)
 }
 
 type testCase struct {
@@ -57,23 +59,20 @@ func compile(t testing.TB, text string) (*d2ir.Map, error) {
 	return m, nil
 }
 
-func assertField(t testing.TB, n d2ir.Node, nfields, nedges int, primary interface{}, ida ...string) *d2ir.Field {
+func assertQueryOne(t testing.TB, n d2ir.Node, nfields, nedges int, primary interface{}, idStr string) d2ir.Node {
 	t.Helper()
 
-	m := d2ir.ChildMap(n)
-	if m == nil {
-		t.Fatalf("nil m from %T", n)
-	}
-	p := d2ir.ToScalar(n)
+	m := n.Map()
+	p := n.Primary()
 
-	var f *d2ir.Field
-	if len(ida) > 0 {
-		f = m.GetField(ida...)
-		if f == nil {
-			t.Fatalf("expected field %v in map %s", ida, m)
-		}
-		p = f.Primary
-		m = d2ir.ChildMap(f)
+	if idStr != "" {
+		var err error
+		n, err = m.QueryOne(idStr)
+		assert.Success(t, err)
+		assert.NotEqual(t, n, nil)
+
+		p = n.Primary()
+		m = n.Map()
 	}
 
 	assert.Equal(t, nfields, m.FieldCountRecursive())
@@ -82,34 +81,7 @@ func assertField(t testing.TB, n d2ir.Node, nfields, nedges int, primary interfa
 		t.Fatalf("expected primary %#v but got %s", primary, p)
 	}
 
-	return f
-}
-
-func assertEdge(t testing.TB, n d2ir.Node, nfields int, primary interface{}, eids string) *d2ir.Edge {
-	t.Helper()
-
-	k, err := d2parser.ParseMapKey(eids)
-	assert.Success(t, err)
-
-	eid := d2ir.NewEdgeIDs(k)[0]
-
-	m := d2ir.ChildMap(n)
-	if m == nil {
-		t.Fatalf("nil m from %T", n)
-	}
-
-	ea := m.GetEdges(eid)
-	if len(ea) != 1 {
-		t.Fatalf("expected single edge %v in map %s but not found", eid, m)
-	}
-	e := ea[0]
-
-	assert.Equal(t, nfields, e.Map.FieldCountRecursive())
-	if !makeScalar(e.Primary).Equal(makeScalar(primary)) {
-		t.Fatalf("expected primary %#v but %s", primary, e.Primary)
-	}
-
-	return e
+	return n
 }
 
 func makeScalar(v interface{}) *d2ir.Scalar {
@@ -148,16 +120,15 @@ func makeScalar(v interface{}) *d2ir.Scalar {
 
 func testCompileFields(t *testing.T) {
 	t.Parallel()
-	t.Run("primary", testCompileFieldPrimary)
 	tca := []testCase{
 		{
 			name: "root",
 			run: func(t testing.TB) {
 				m, err := compile(t, `x`)
 				assert.Success(t, err)
-				assertField(t, m, 1, 0, nil)
+				assertQueryOne(t, m, 1, 0, nil, "")
 
-				assertField(t, m, 0, 0, nil, "x")
+				assertQueryOne(t, m, 0, 0, nil, "x")
 			},
 		},
 		{
@@ -165,9 +136,9 @@ func testCompileFields(t *testing.T) {
 			run: func(t testing.TB) {
 				m, err := compile(t, `x: yes`)
 				assert.Success(t, err)
-				assertField(t, m, 1, 0, nil)
+				assertQueryOne(t, m, 1, 0, nil, "")
 
-				assertField(t, m, 0, 0, "yes", "x")
+				assertQueryOne(t, m, 0, 0, "yes", "x")
 			},
 		},
 		{
@@ -175,10 +146,10 @@ func testCompileFields(t *testing.T) {
 			run: func(t testing.TB) {
 				m, err := compile(t, `x.y: yes`)
 				assert.Success(t, err)
-				assertField(t, m, 2, 0, nil)
+				assertQueryOne(t, m, 2, 0, nil, "")
 
-				assertField(t, m, 1, 0, nil, "x")
-				assertField(t, m, 0, 0, "yes", "x", "y")
+				assertQueryOne(t, m, 1, 0, nil, "x")
+				assertQueryOne(t, m, 0, 0, "yes", "x.y")
 			},
 		},
 		{
@@ -186,44 +157,56 @@ func testCompileFields(t *testing.T) {
 			run: func(t testing.TB) {
 				m, err := compile(t, `x: [1;2;3;4]`)
 				assert.Success(t, err)
-				assertField(t, m, 1, 0, nil)
+				assertQueryOne(t, m, 1, 0, nil, "")
 
-				f := assertField(t, m, 0, 0, nil, "x")
+				f := assertQueryOne(t, m, 0, 0, nil, "x").(*d2ir.Field)
 				assert.String(t, `[1; 2; 3; 4]`, f.Composite.String())
 			},
 		},
-	}
-	runa(t, tca)
-}
-
-func testCompileFieldPrimary(t *testing.T) {
-	t.Parallel()
-	tca := []testCase{
 		{
-			name: "root",
+			name: "null",
 			run: func(t testing.TB) {
-				m, err := compile(t, `x: yes { pqrs }`)
+				m, err := compile(t, `pq: pq
+pq: null`)
 				assert.Success(t, err)
-				assertField(t, m, 2, 0, nil)
-
-				assertField(t, m, 1, 0, "yes", "x")
-				assertField(t, m, 0, 0, nil, "x", "pqrs")
-			},
-		},
-		{
-			name: "nested",
-			run: func(t testing.TB) {
-				m, err := compile(t, `x.y: yes { pqrs }`)
-				assert.Success(t, err)
-				assertField(t, m, 3, 0, nil)
-
-				assertField(t, m, 2, 0, nil, "x")
-				assertField(t, m, 1, 0, "yes", "x", "y")
-				assertField(t, m, 0, 0, nil, "x", "y", "pqrs")
+				assertQueryOne(t, m, 1, 0, nil, "")
+				// null doesn't delete pq from *Map so that for language tooling
+				// we maintain the references.
+				// Instead d2compiler will ensure it doesn't get rendered.
+				assertQueryOne(t, m, 0, 0, nil, "pq")
 			},
 		},
 	}
 	runa(t, tca)
+	t.Run("primary", func(t *testing.T) {
+		t.Parallel()
+		tca := []testCase{
+			{
+				name: "root",
+				run: func(t testing.TB) {
+					m, err := compile(t, `x: yes { pqrs }`)
+					assert.Success(t, err)
+					assertQueryOne(t, m, 2, 0, nil, "")
+
+					assertQueryOne(t, m, 1, 0, "yes", "x")
+					assertQueryOne(t, m, 0, 0, nil, "x.pqrs")
+				},
+			},
+			{
+				name: "nested",
+				run: func(t testing.TB) {
+					m, err := compile(t, `x.y: yes { pqrs }`)
+					assert.Success(t, err)
+					assertQueryOne(t, m, 3, 0, nil, "")
+
+					assertQueryOne(t, m, 2, 0, nil, "x")
+					assertQueryOne(t, m, 1, 0, "yes", "x.y")
+					assertQueryOne(t, m, 0, 0, nil, "x.y.pqrs")
+				},
+			},
+		}
+		runa(t, tca)
+	})
 }
 
 func testCompileEdges(t *testing.T) {
@@ -234,11 +217,11 @@ func testCompileEdges(t *testing.T) {
 			run: func(t testing.TB) {
 				m, err := compile(t, `x -> y`)
 				assert.Success(t, err)
-				assertField(t, m, 2, 1, nil)
-				assertEdge(t, m, 0, nil, `(x -> y)[0]`)
+				assertQueryOne(t, m, 2, 1, nil, "")
+				assertQueryOne(t, m, 0, 0, nil, `(x -> y)[0]`)
 
-				assertField(t, m, 0, 0, nil, "x")
-				assertField(t, m, 0, 0, nil, "y")
+				assertQueryOne(t, m, 0, 0, nil, "x")
+				assertQueryOne(t, m, 0, 0, nil, "y")
 			},
 		},
 		{
@@ -246,15 +229,15 @@ func testCompileEdges(t *testing.T) {
 			run: func(t testing.TB) {
 				m, err := compile(t, `x.y -> z.p`)
 				assert.Success(t, err)
-				assertField(t, m, 4, 1, nil)
+				assertQueryOne(t, m, 4, 1, nil, "")
 
-				assertField(t, m, 1, 0, nil, "x")
-				assertField(t, m, 0, 0, nil, "x", "y")
+				assertQueryOne(t, m, 1, 0, nil, "x")
+				assertQueryOne(t, m, 0, 0, nil, "x.y")
 
-				assertField(t, m, 1, 0, nil, "z")
-				assertField(t, m, 0, 0, nil, "z", "p")
+				assertQueryOne(t, m, 1, 0, nil, "z")
+				assertQueryOne(t, m, 0, 0, nil, "z.p")
 
-				assertEdge(t, m, 0, nil, "(x.y -> z.p)[0]")
+				assertQueryOne(t, m, 0, 0, nil, "(x.y -> z.p)[0]")
 			},
 		},
 		{
@@ -262,46 +245,49 @@ func testCompileEdges(t *testing.T) {
 			run: func(t testing.TB) {
 				m, err := compile(t, `p: { _.x -> z }`)
 				assert.Success(t, err)
-				assertField(t, m, 3, 1, nil)
+				assertQueryOne(t, m, 3, 1, nil, "")
 
-				assertField(t, m, 0, 0, nil, "x")
-				assertField(t, m, 1, 0, nil, "p")
+				assertQueryOne(t, m, 0, 0, nil, "x")
+				assertQueryOne(t, m, 1, 0, nil, "p")
 
-				assertEdge(t, m, 0, nil, "(x -> p.z)[0]")
+				assertQueryOne(t, m, 0, 0, nil, "(x -> p.z)[0]")
+			},
+		},
+		{
+			name: "chain",
+			run: func(t testing.TB) {
+				m, err := compile(t, `a -> b -> c -> d`)
+				assert.Success(t, err)
+				assertQueryOne(t, m, 4, 3, nil, "")
+
+				assertQueryOne(t, m, 0, 0, nil, "a")
+				assertQueryOne(t, m, 0, 0, nil, "b")
+				assertQueryOne(t, m, 0, 0, nil, "c")
+				assertQueryOne(t, m, 0, 0, nil, "d")
+				assertQueryOne(t, m, 0, 0, nil, "(a -> b)[0]")
+				assertQueryOne(t, m, 0, 0, nil, "(b -> c)[0]")
+				assertQueryOne(t, m, 0, 0, nil, "(c -> d)[0]")
 			},
 		},
 	}
 	runa(t, tca)
-}
-
-func testCompileLayers(t *testing.T) {
-	t.Parallel()
 	t.Run("errs", func(t *testing.T) {
+		t.Parallel()
 		tca := []testCase{
 			{
-				name: "bad_edge/1",
+				name: "bad_edge",
 				run: func(t testing.TB) {
-					_, err := compile(t, `layers.x -> layers.y`)
-					assert.ErrorString(t, err, `TestCompile/layer/errs/bad_edge/1.d2:1:1: cannot create edges between layers, scenarios or steps`)
-				},
-			},
-			{
-				name: "bad_edge/2",
-				run: func(t testing.TB) {
-					_, err := compile(t, `layers -> scenarios`)
-					assert.ErrorString(t, err, `TestCompile/layer/errs/bad_edge/2.d2:1:1: cannot create edges between layers, scenarios or steps`)
-				},
-			},
-			{
-				name: "bad_edge/3",
-				run: func(t testing.TB) {
-					_, err := compile(t, `layers.x.y -> steps.z.p`)
-					assert.ErrorString(t, err, `TestCompile/layer/errs/bad_edge/3.d2:1:1: cannot create edges between layers, scenarios or steps`)
+					_, err := compile(t, `(x -> y): { p -> q }`)
+					assert.ErrorString(t, err, `TestCompile/edges/errs/bad_edge.d2:1:13: cannot create edge inside edge`)
 				},
 			},
 		}
 		runa(t, tca)
 	})
+}
+
+func testCompileLayers(t *testing.T) {
+	t.Parallel()
 	tca := []testCase{
 		{
 			name: "root",
@@ -312,13 +298,119 @@ layers: {
 }`)
 				assert.Success(t, err)
 
-				assertField(t, m, 7, 1, nil)
-				assertEdge(t, m, 0, nil, `(x -> y)[0]`)
+				assertQueryOne(t, m, 7, 1, nil, "")
+				assertQueryOne(t, m, 0, 0, nil, `(x -> y)[0]`)
 
-				assertField(t, m, 0, 0, nil, "x")
-				assertField(t, m, 0, 0, nil, "y")
+				assertQueryOne(t, m, 0, 0, nil, "x")
+				assertQueryOne(t, m, 0, 0, nil, "y")
 
-				assertField(t, m, 3, 0, nil, "layers", "bingo")
+				assertQueryOne(t, m, 3, 0, nil, "layers.bingo")
+			},
+		},
+	}
+	runa(t, tca)
+	t.Run("errs", func(t *testing.T) {
+		t.Parallel()
+		tca := []testCase{
+			{
+				name: "bad_edge/1",
+				run: func(t testing.TB) {
+					_, err := compile(t, `layers.x -> layers.y`)
+					assert.ErrorString(t, err, `TestCompile/layers/errs/bad_edge/1.d2:1:1: cannot create edges between layers, scenarios or steps`)
+				},
+			},
+			{
+				name: "bad_edge/2",
+				run: func(t testing.TB) {
+					_, err := compile(t, `layers -> scenarios`)
+					assert.ErrorString(t, err, `TestCompile/layers/errs/bad_edge/2.d2:1:1: cannot create edges between layers, scenarios or steps`)
+				},
+			},
+			{
+				name: "bad_edge/3",
+				run: func(t testing.TB) {
+					_, err := compile(t, `layers.x.y -> steps.z.p`)
+					assert.ErrorString(t, err, `TestCompile/layers/errs/bad_edge/3.d2:1:1: cannot create edges between layers, scenarios or steps`)
+				},
+			},
+		}
+		runa(t, tca)
+	})
+}
+
+func testCompileScenarios(t *testing.T) {
+	t.Parallel()
+	tca := []testCase{
+		{
+			name: "root",
+			run: func(t testing.TB) {
+				m, err := compile(t, `x -> y
+scenarios: {
+	bingo: { p.q.z }
+	nuclear: { quiche }
+}`)
+				assert.Success(t, err)
+
+				assertQueryOne(t, m, 13, 3, nil, "")
+
+				assertQueryOne(t, m, 0, 0, nil, "x")
+				assertQueryOne(t, m, 0, 0, nil, "y")
+				assertQueryOne(t, m, 0, 0, nil, `(x -> y)[0]`)
+
+				assertQueryOne(t, m, 5, 1, nil, "scenarios.bingo")
+				assertQueryOne(t, m, 0, 0, nil, "scenarios.bingo.x")
+				assertQueryOne(t, m, 0, 0, nil, "scenarios.bingo.y")
+				assertQueryOne(t, m, 0, 0, nil, `scenarios.bingo.(x -> y)[0]`)
+				assertQueryOne(t, m, 2, 0, nil, "scenarios.bingo.p")
+				assertQueryOne(t, m, 1, 0, nil, "scenarios.bingo.p.q")
+				assertQueryOne(t, m, 0, 0, nil, "scenarios.bingo.p.q.z")
+
+				assertQueryOne(t, m, 3, 1, nil, "scenarios.nuclear")
+				assertQueryOne(t, m, 0, 0, nil, "scenarios.nuclear.x")
+				assertQueryOne(t, m, 0, 0, nil, "scenarios.nuclear.y")
+				assertQueryOne(t, m, 0, 0, nil, `scenarios.nuclear.(x -> y)[0]`)
+				assertQueryOne(t, m, 0, 0, nil, "scenarios.nuclear.quiche")
+			},
+		},
+	}
+	runa(t, tca)
+}
+
+func testCompileSteps(t *testing.T) {
+	t.Parallel()
+	tca := []testCase{
+		{
+			name: "root",
+			run: func(t testing.TB) {
+				m, err := compile(t, `x -> y
+steps: {
+	bingo: { p.q.z }
+	nuclear: { quiche }
+}`)
+				assert.Success(t, err)
+
+				assertQueryOne(t, m, 16, 3, nil, "")
+
+				assertQueryOne(t, m, 0, 0, nil, "x")
+				assertQueryOne(t, m, 0, 0, nil, "y")
+				assertQueryOne(t, m, 0, 0, nil, `(x -> y)[0]`)
+
+				assertQueryOne(t, m, 5, 1, nil, "steps.bingo")
+				assertQueryOne(t, m, 0, 0, nil, "steps.bingo.x")
+				assertQueryOne(t, m, 0, 0, nil, "steps.bingo.y")
+				assertQueryOne(t, m, 0, 0, nil, `steps.bingo.(x -> y)[0]`)
+				assertQueryOne(t, m, 2, 0, nil, "steps.bingo.p")
+				assertQueryOne(t, m, 1, 0, nil, "steps.bingo.p.q")
+				assertQueryOne(t, m, 0, 0, nil, "steps.bingo.p.q.z")
+
+				assertQueryOne(t, m, 6, 1, nil, "steps.nuclear")
+				assertQueryOne(t, m, 0, 0, nil, "steps.nuclear.x")
+				assertQueryOne(t, m, 0, 0, nil, "steps.nuclear.y")
+				assertQueryOne(t, m, 0, 0, nil, `steps.nuclear.(x -> y)[0]`)
+				assertQueryOne(t, m, 2, 0, nil, "steps.nuclear.p")
+				assertQueryOne(t, m, 1, 0, nil, "steps.nuclear.p.q")
+				assertQueryOne(t, m, 0, 0, nil, "steps.nuclear.p.q.z")
+				assertQueryOne(t, m, 0, 0, nil, "steps.nuclear.quiche")
 			},
 		},
 	}

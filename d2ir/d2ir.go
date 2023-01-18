@@ -20,6 +20,8 @@ type Node interface {
 	node()
 	Copy(parent Node) Node
 	Parent() Node
+	Primary() *Scalar
+	Map() *Map
 
 	ast() d2ast.Node
 	fmt.Stringer
@@ -61,6 +63,23 @@ func (n *Edge) Parent() Node   { return n.parent }
 func (n *Array) Parent() Node  { return n.parent }
 func (n *Map) Parent() Node    { return n.parent }
 
+func (n *Scalar) Primary() *Scalar { return n }
+func (n *Field) Primary() *Scalar  { return n.Primary_ }
+func (n *Edge) Primary() *Scalar   { return n.Primary_ }
+func (n *Array) Primary() *Scalar  { return nil }
+func (n *Map) Primary() *Scalar    { return nil }
+
+func (n *Scalar) Map() *Map { return nil }
+func (n *Field) Map() *Map {
+	if n.Composite == nil {
+		return nil
+	}
+	return n.Composite.Map()
+}
+func (n *Edge) Map() *Map  { return n.Map_ }
+func (n *Array) Map() *Map { return nil }
+func (n *Map) Map() *Map   { return n }
+
 func (n *Scalar) value() {}
 func (n *Array) value()  {}
 func (n *Map) value()    {}
@@ -94,7 +113,6 @@ func (s *Scalar) Equal(s2 *Scalar) bool {
 		}
 	}
 	return s.Value.Type() == s2.Value.Type() && s.Value.ScalarString() == s2.Value.ScalarString()
-
 }
 
 type Map struct {
@@ -103,17 +121,19 @@ type Map struct {
 	Edges  []*Edge  `json:"edges"`
 }
 
+// Copy copies the map m without layers/scenarios/steps.
 func (m *Map) Copy(newp Node) Node {
 	tmp := *m
 	m = &tmp
 
 	m.parent = newp
-	m.Fields = append([]*Field(nil), m.Fields...)
-	for i := range m.Fields {
-		if hasLayerKeywords(m.Fields[i].Name) != -1 {
+	pfields := m.Fields
+	m.Fields = make([]*Field, 0, len(pfields))
+	for _, f := range pfields {
+		if hasLayerKeywords(f.Name) != -1 {
 			continue
 		}
-		m.Fields[i] = m.Fields[i].Copy(m).(*Field)
+		m.Fields = append(m.Fields, f.Copy(m).(*Field))
 	}
 	m.Edges = append([]*Edge(nil), m.Edges...)
 	for i := range m.Edges {
@@ -130,9 +150,9 @@ func (m *Map) Root() bool {
 type LayerKind string
 
 const (
-	LayerLayer LayerKind = "layer"
+	LayerLayer    LayerKind = "layer"
 	LayerScenario LayerKind = "scenario"
-	LayerStep LayerKind = "step"
+	LayerStep     LayerKind = "step"
 )
 
 // NodeLayerKind reports whether n represents the root of a layer.
@@ -166,7 +186,7 @@ type Field struct {
 
 	Name string `json:"name"`
 
-	Primary   *Scalar   `json:"primary,omitempty"`
+	Primary_  *Scalar   `json:"primary,omitempty"`
 	Composite Composite `json:"composite,omitempty"`
 
 	References []FieldReference `json:"references,omitempty"`
@@ -178,8 +198,8 @@ func (f *Field) Copy(newp Node) Node {
 
 	f.parent = newp.(*Map)
 	f.References = append([]FieldReference(nil), f.References...)
-	if f.Primary != nil {
-		f.Primary = f.Primary.Copy(f).(*Scalar)
+	if f.Primary_ != nil {
+		f.Primary_ = f.Primary_.Copy(f).(*Scalar)
 	}
 	if f.Composite != nil {
 		f.Composite = f.Composite.Copy(f).(Composite)
@@ -200,15 +220,16 @@ type EdgeID struct {
 
 func NewEdgeIDs(k *d2ast.Key) (eida []*EdgeID) {
 	for _, ke := range k.Edges {
-		eida = append(eida, &EdgeID{
-			SrcPath:  d2format.KeyPath(ke.Src),
+		eid := &EdgeID{
+			SrcPath:  ke.Src.IDA(),
 			SrcArrow: ke.SrcArrow == "<",
-			DstPath:  d2format.KeyPath(ke.Dst),
+			DstPath:  ke.Dst.IDA(),
 			DstArrow: ke.DstArrow == ">",
-		})
-	}
-	if k.EdgeIndex != nil && k.EdgeIndex.Int != nil {
-		eida[0].Index = k.EdgeIndex.Int
+		}
+		if k.EdgeIndex != nil {
+			eid.Index = k.EdgeIndex.Int
+		}
+		eida = append(eida, eid)
 	}
 	return eida
 }
@@ -298,8 +319,8 @@ type Edge struct {
 
 	ID *EdgeID `json:"edge_id"`
 
-	Primary *Scalar `json:"primary,omitempty"`
-	Map     *Map    `json:"map,omitempty"`
+	Primary_ *Scalar `json:"primary,omitempty"`
+	Map_     *Map    `json:"map,omitempty"`
 
 	References []EdgeReference `json:"references,omitempty"`
 }
@@ -310,11 +331,11 @@ func (e *Edge) Copy(newp Node) Node {
 
 	e.parent = newp.(*Map)
 	e.References = append([]EdgeReference(nil), e.References...)
-	if e.Primary != nil {
-		e.Primary = e.Primary.Copy(e).(*Scalar)
+	if e.Primary_ != nil {
+		e.Primary_ = e.Primary_.Copy(e).(*Scalar)
 	}
-	if e.Map != nil {
-		e.Map = e.Map.Copy(e).(*Map)
+	if e.Map_ != nil {
+		e.Map_ = e.Map_.Copy(e).(*Map)
 	}
 	return e
 }
@@ -410,14 +431,13 @@ func (m *Map) FieldCountRecursive() int {
 	}
 	acc := len(m.Fields)
 	for _, f := range m.Fields {
-		f_m := ChildMap(f)
-		if f_m != nil {
-			acc += f_m.FieldCountRecursive()
+		if f.Map() != nil {
+			acc += f.Map().FieldCountRecursive()
 		}
 	}
 	for _, e := range m.Edges {
-		if e.Map != nil {
-			acc += e.Map.FieldCountRecursive()
+		if e.Map_ != nil {
+			acc += e.Map_.FieldCountRecursive()
 		}
 	}
 	return acc
@@ -429,14 +449,13 @@ func (m *Map) EdgeCountRecursive() int {
 	}
 	acc := len(m.Edges)
 	for _, f := range m.Fields {
-		f_m := ChildMap(f)
-		if f_m != nil {
-			acc += f_m.EdgeCountRecursive()
+		if f.Map() != nil {
+			acc += f.Map().EdgeCountRecursive()
 		}
 	}
 	for _, e := range m.Edges {
-		if e.Map != nil {
-			acc += e.Map.EdgeCountRecursive()
+		if e.Map_ != nil {
+			acc += e.Map_.EdgeCountRecursive()
 		}
 	}
 	return acc
@@ -471,9 +490,8 @@ func (m *Map) getField(ida []string) *Field {
 		if len(rest) == 0 {
 			return f
 		}
-		f_m := ChildMap(f)
-		if f_m != nil {
-			return f_m.getField(rest)
+		if f.Map() != nil {
+			return f.Map().getField(rest)
 		}
 	}
 	return nil
@@ -522,14 +540,12 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 		if _, ok := f.Composite.(*Array); ok {
 			return nil, d2parser.Errorf(kp.Path[i].Unbox(), "cannot index into array")
 		}
-		f_m := ChildMap(f)
-		if f_m == nil {
-			f_m = &Map{
+		if f.Map() == nil {
+			f.Composite = &Map{
 				parent: f,
 			}
-			f.Composite = f_m
 		}
-		return f_m.ensureField(i+1, kp, refctx)
+		return f.Map().ensureField(i+1, kp, refctx)
 	}
 
 	f := &Field{
@@ -545,11 +561,10 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 	if i+1 == len(kp.Path) {
 		return f, nil
 	}
-	f_m := &Map{
+	f.Composite = &Map{
 		parent: f,
 	}
-	f.Composite = f_m
-	return f_m.ensureField(i+1, kp, refctx)
+	return f.Map().ensureField(i+1, kp, refctx)
 }
 
 func (m *Map) DeleteField(ida []string) bool {
@@ -568,9 +583,8 @@ func (m *Map) DeleteField(ida []string) bool {
 			copy(m.Fields[i:], m.Fields[i+1:])
 			return true
 		}
-		f_m := ChildMap(f)
-		if f_m != nil {
-			return f_m.DeleteField(rest)
+		if f.Map() != nil {
+			return f.Map().DeleteField(rest)
 		}
 	}
 	return false
@@ -587,9 +601,8 @@ func (m *Map) GetEdges(eid *EdgeID) []*Edge {
 		if f == nil {
 			return nil
 		}
-		f_m := ChildMap(f)
-		if f_m != nil {
-			return f_m.GetEdges(eid)
+		if f.Map() != nil {
+			return f.Map().GetEdges(eid)
 		}
 		return nil
 	}
@@ -604,6 +617,10 @@ func (m *Map) GetEdges(eid *EdgeID) []*Edge {
 }
 
 func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
+	if ParentEdge(m) != nil {
+		return nil, d2parser.Errorf(refctx.Edge, "cannot create edge inside edge")
+	}
+
 	eid, m, err := eid.resolveUnderscores(m)
 	if err != nil {
 		return nil, d2parser.Errorf(refctx.Edge, err.Error())
@@ -620,14 +637,12 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
 		if _, ok := f.Composite.(*Array); ok {
 			return nil, d2parser.Errorf(refctx.Edge.Src, "cannot index into array")
 		}
-		f_m := ChildMap(f)
-		if f_m == nil {
-			f_m = &Map{
+		if f.Map() == nil {
+			f.Composite = &Map{
 				parent: f,
 			}
-			f.Composite = f_m
 		}
-		return f_m.CreateEdge(eid, refctx)
+		return f.Map().CreateEdge(eid, refctx)
 	}
 
 	ij := hasLayerKeywords(eid.SrcPath...)
@@ -680,8 +695,8 @@ func (f *Field) ast() d2ast.Node {
 		},
 	}
 
-	if f.Primary != nil {
-		k.Primary = d2ast.MakeValueBox(f.Primary.ast().(d2ast.Value)).ScalarBox()
+	if f.Primary_ != nil {
+		k.Primary = d2ast.MakeValueBox(f.Primary_.ast().(d2ast.Value)).ScalarBox()
 	}
 	if f.Composite != nil {
 		k.Value = d2ast.MakeValueBox(f.Composite.ast().(d2ast.Value))
@@ -706,11 +721,11 @@ func (e *Edge) ast() d2ast.Node {
 		Edges: []*d2ast.Edge{astEdge},
 	}
 
-	if e.Primary != nil {
-		k.Primary = d2ast.MakeValueBox(e.Primary.ast().(d2ast.Value)).ScalarBox()
+	if e.Primary_ != nil {
+		k.Primary = d2ast.MakeValueBox(e.Primary_.ast().(d2ast.Value)).ScalarBox()
 	}
-	if e.Map != nil {
-		k.Value = d2ast.MakeValueBox(e.Map.ast().(*d2ast.Map))
+	if e.Map_ != nil {
+		k.Value = d2ast.MakeValueBox(e.Map_.ast().(*d2ast.Map))
 	}
 
 	return k
@@ -761,41 +776,16 @@ func (m *Map) appendFieldReferences(i int, kp *d2ast.KeyPath, refctx *RefContext
 	if i+1 == len(kp.Path) {
 		return
 	}
-	f_m := ChildMap(f)
-	if f_m != nil {
-		f_m.appendFieldReferences(i+1, kp, refctx)
-	}
-}
-
-func ChildMap(n Node) *Map {
-	switch n := n.(type) {
-	case *Map:
-		return n
-	case *Field:
-		return ChildMap(n.Composite)
-	case *Edge:
-		return n.Map
-	default:
-		return nil
-	}
-}
-
-func ToScalar(n Node) *Scalar {
-	switch n := n.(type) {
-	case *Field:
-		return n.Primary
-	case *Edge:
-		return n.Primary
-	default:
-		return nil
+	if f.Map() != nil {
+		f.Map().appendFieldReferences(i+1, kp, refctx)
 	}
 }
 
 func ParentMap(n Node) *Map {
 	for n.Parent() != nil {
 		n = n.Parent()
-		if n_m, ok := n.(*Map); ok {
-			return n_m
+		if m, ok := n.(*Map); ok {
+			return m
 		}
 	}
 	return nil
@@ -804,15 +794,16 @@ func ParentMap(n Node) *Map {
 func ParentField(n Node) *Field {
 	for n.Parent() != nil {
 		n = n.Parent()
-		if n_f, ok := n.(*Field); ok {
-			return n_f
+		if f, ok := n.(*Field); ok {
+			return f
 		}
 	}
 	return nil
 }
 
-func ParentLayer(n Node) Node {
+func ParentLayer(n Node) *Map {
 	for {
+		// ParentMap and not ParentField so we get the root layer too.
 		m := ParentMap(n)
 		if m == nil {
 			return nil
@@ -822,6 +813,16 @@ func ParentLayer(n Node) Node {
 		}
 		n = m
 	}
+}
+
+func ParentEdge(n Node) *Edge {
+	for n.Parent() != nil {
+		n = n.Parent()
+		if e, ok := n.(*Edge); ok {
+			return e
+		}
+	}
+	return nil
 }
 
 func countUnderscores(p []string) int {
