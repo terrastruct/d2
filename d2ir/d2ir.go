@@ -110,6 +110,9 @@ func (m *Map) Copy(newp Node) Node {
 	m.parent = newp
 	m.Fields = append([]*Field(nil), m.Fields...)
 	for i := range m.Fields {
+		if hasLayerKeywords(m.Fields[i].Name) != -1 {
+			continue
+		}
 		m.Fields[i] = m.Fields[i].Copy(m).(*Field)
 	}
 	m.Edges = append([]*Edge(nil), m.Edges...)
@@ -124,25 +127,38 @@ func (m *Map) Root() bool {
 	return m.parent == nil
 }
 
-// Layer reports whether n represents the root of a layer.
-func IsLayer(n Node) bool {
+type LayerKind string
+
+const (
+	LayerLayer LayerKind = "layer"
+	LayerScenario LayerKind = "scenario"
+	LayerStep LayerKind = "step"
+)
+
+// NodeLayerKind reports whether n represents the root of a layer.
+// n should be *Field or *Map
+func NodeLayerKind(n Node) LayerKind {
 	switch n := n.(type) {
 	case *Field:
 		n = ParentField(n)
 		if n != nil {
 			switch n.Name {
-			case "layers", "scenarios", "steps":
-				return true
+			case "layers":
+				return LayerLayer
+			case "scenarios":
+				return LayerScenario
+			case "steps":
+				return LayerStep
 			}
 		}
 	case *Map:
 		f := ParentField(n)
 		if f == nil {
-			return true
+			return LayerLayer
 		}
-		return IsLayer(f)
+		return NodeLayerKind(f)
 	}
-	return false
+	return ""
 }
 
 type Field struct {
@@ -485,11 +501,8 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 		return nil, d2parser.Errorf(kp.Path[i].Unbox(), `parent "_" can only be used in the beginning of paths, e.g. "_.x"`)
 	}
 
-	switch head {
-	case "layers", "scenarios", "steps":
-		if !IsLayer(m) {
-			return nil, d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a layer root", head)
-		}
+	if hasLayerKeywords(head) != -1 && NodeLayerKind(m) == "" {
+		return nil, d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a layer root", head)
 	}
 
 	for _, f := range m.Fields {
@@ -617,20 +630,20 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
 		return f_m.CreateEdge(eid, refctx)
 	}
 
-	ij := hasLayerKeyword(eid.SrcPath)
+	ij := hasLayerKeywords(eid.SrcPath...)
 	if ij != -1 {
 		return nil, d2parser.Errorf(refctx.Edge.Src.Path[ij].Unbox(), "cannot create edges between layers, scenarios or steps")
 	}
 	src := m.GetField(eid.SrcPath...)
-	if IsLayer(src) {
+	if NodeLayerKind(src) != "" {
 		return nil, d2parser.Errorf(refctx.Edge.Src, "cannot create edges between layers, scenarios or steps")
 	}
-	ij = hasLayerKeyword(eid.DstPath)
+	ij = hasLayerKeywords(eid.DstPath...)
 	if ij != -1 {
 		return nil, d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "cannot create edges between layers, scenarios or steps")
 	}
 	dst := m.GetField(eid.DstPath...)
-	if IsLayer(dst) {
+	if NodeLayerKind(dst) != "" {
 		return nil, d2parser.Errorf(refctx.Edge.Dst, "cannot create edges between layers, scenarios or steps")
 	}
 
@@ -804,7 +817,7 @@ func ParentLayer(n Node) Node {
 		if m == nil {
 			return nil
 		}
-		if IsLayer(m) {
+		if NodeLayerKind(m) != "" {
 			return m
 		}
 		n = m
@@ -822,7 +835,7 @@ func countUnderscores(p []string) int {
 	return count
 }
 
-func hasLayerKeyword(ida []string) int {
+func hasLayerKeywords(ida ...string) int {
 	for i := range ida {
 		switch ida[i] {
 		case "layers", "scenarios", "steps":
