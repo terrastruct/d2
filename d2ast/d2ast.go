@@ -404,7 +404,7 @@ func (s *SingleQuotedString) scalar() {}
 func (s *BlockString) scalar()        {}
 
 // TODO: mistake, move into parse.go
-func (n *Null) ScalarString() string    { return n.Type() }
+func (n *Null) ScalarString() string    { return "" }
 func (b *Boolean) ScalarString() string { return strconv.FormatBool(b.Value) }
 func (n *Number) ScalarString() string  { return n.Raw }
 func (s *UnquotedString) ScalarString() string {
