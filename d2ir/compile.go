@@ -13,10 +13,8 @@ func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 	c.err.Errors = append(c.err.Errors, d2parser.Errorf(n, f, v...).(d2ast.Error))
 }
 
-func Compile(ast *d2ast.Map) (*Layer, error) {
-	l := &Layer{
-		AST: ast,
-	}
+func Compile(ast *d2ast.Map) (*Map, error) {
+	l := &Layer{}
 	l.Map = &Map{
 		parent: l,
 	}
@@ -75,7 +73,7 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		c.compileArray(a, refctx.Key.Value.Array)
 		f.Composite = a
 	} else if refctx.Key.Value.Map != nil {
-		f_m := ToMap(f)
+		f_m := ChildMap(f)
 		if f_m == nil {
 			f_m = &Map{
 				parent: f,
@@ -102,7 +100,7 @@ func (c *compiler) compileEdges(dst *Map, refctx *RefContext) {
 			c.errorf(refctx.Key.Key, "cannot index into array")
 			return
 		}
-		f_m := ToMap(f)
+		f_m := ChildMap(f)
 		if f_m == nil {
 			f_m = &Map{
 				parent: f,

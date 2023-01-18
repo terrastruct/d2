@@ -60,7 +60,7 @@ func compile(t testing.TB, text string) (*d2ir.Layer, error) {
 func assertField(t testing.TB, n d2ir.Node, nfields, nedges int, primary interface{}, ida ...string) *d2ir.Field {
 	t.Helper()
 
-	m := d2ir.ToMap(n)
+	m := d2ir.ChildMap(n)
 	if m == nil {
 		t.Fatalf("nil m from %T", n)
 	}
@@ -73,7 +73,7 @@ func assertField(t testing.TB, n d2ir.Node, nfields, nedges int, primary interfa
 			t.Fatalf("expected field %v in map %s", ida, m)
 		}
 		p = f.Primary
-		m = d2ir.ToMap(f)
+		m = d2ir.ChildMap(f)
 	}
 
 	assert.Equal(t, nfields, m.FieldCountRecursive())
@@ -93,7 +93,7 @@ func assertEdge(t testing.TB, n d2ir.Node, nfields int, primary interface{}, eid
 
 	eid := d2ir.NewEdgeIDs(k)[0]
 
-	m := d2ir.ToMap(n)
+	m := d2ir.ChildMap(n)
 	if m == nil {
 		t.Fatalf("nil m from %T", n)
 	}

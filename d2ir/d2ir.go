@@ -82,8 +82,6 @@ func (n *Map) String() string    { return d2format.Format(n.ast()) }
 
 type Layer struct {
 	parent Node
-
-	AST *d2ast.Map `json:"ast"`
 	Map *Map       `json:"base"`
 }
 
@@ -148,8 +146,20 @@ func (m *Map) Root() bool {
 
 // Layer reports whether the Map represents the root of a layer.
 func (m *Map) Layer() bool {
-	_, ok := m.parent.(*Layer)
-	return ok
+	f := ParentField(m)
+	if f == nil {
+		return true
+	}
+	f = ParentField(f)
+	if f == nil {
+		return false
+	}
+	switch f.Name {
+	case "layers", "scenarios", "steps":
+		return true
+	default:
+		return false
+	}
 }
 
 type Field struct {
@@ -401,7 +411,7 @@ func (m *Map) FieldCountRecursive() int {
 	}
 	acc := len(m.Fields)
 	for _, f := range m.Fields {
-		f_m := ToMap(f)
+		f_m := ChildMap(f)
 		if f_m != nil {
 			acc += f_m.FieldCountRecursive()
 		}
@@ -420,7 +430,7 @@ func (m *Map) EdgeCountRecursive() int {
 	}
 	acc := len(m.Edges)
 	for _, f := range m.Fields {
-		f_m := ToMap(f)
+		f_m := ChildMap(f)
 		if f_m != nil {
 			acc += f_m.EdgeCountRecursive()
 		}
@@ -462,7 +472,7 @@ func (m *Map) getField(ida []string) *Field {
 		if len(rest) == 0 {
 			return f
 		}
-		f_m := ToMap(f)
+		f_m := ChildMap(f)
 		if f_m != nil {
 			return f_m.getField(rest)
 		}
@@ -489,13 +499,13 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 	head := kp.Path[i].Unbox().ScalarString()
 
 	if head == "_" {
-		return nil, d2parser.Errorf(kp, `parent "_" can only be used in the beginning of paths, e.g. "_.x"`)
+		return nil, d2parser.Errorf(kp.Path[i].Unbox(), `parent "_" can only be used in the beginning of paths, e.g. "_.x"`)
 	}
 
 	switch head {
 	case "layers", "scenarios", "steps":
 		if !m.Layer() {
-			return nil, d2parser.Errorf(kp, "%s is only allowed at a layer root", head)
+			return nil, d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a layer root", head)
 		}
 	}
 
@@ -514,9 +524,9 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 			return f, nil
 		}
 		if _, ok := f.Composite.(*Array); ok {
-			return nil, d2parser.Errorf(kp, "cannot index into array")
+			return nil, d2parser.Errorf(kp.Path[i].Unbox(), "cannot index into array")
 		}
-		f_m := ToMap(f)
+		f_m := ChildMap(f)
 		if f_m == nil {
 			f_m = &Map{
 				parent: f,
@@ -534,6 +544,28 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 			KeyPath: kp,
 			Context: refctx,
 		}},
+	}
+	pf := ParentField(m)
+	switch pf.Name {
+	case "layers", "scenarios", "steps":
+		var l *Layer
+		switch pf.Name {
+		case "layers":
+			l = &Layer{
+				parent: f,
+			}
+			l.Map = &Map{parent: l}
+		case "scenarios":
+			l = ParentLayer(m).Copy(f)
+		case "steps":
+			panic("TODO")
+		}
+		f.Composite = l
+
+		if kp == refctx.Key.Key && refctx.Edge == nil {
+			kp.
+		}
+		l.AST = 
 	}
 	m.Fields = append(m.Fields, f)
 	if i+1 == len(kp.Path) {
@@ -562,7 +594,7 @@ func (m *Map) DeleteField(ida []string) bool {
 			copy(m.Fields[i:], m.Fields[i+1:])
 			return true
 		}
-		f_m := ToMap(f)
+		f_m := ChildMap(f)
 		if f_m != nil {
 			return f_m.DeleteField(rest)
 		}
@@ -581,7 +613,7 @@ func (m *Map) GetEdges(eid *EdgeID) []*Edge {
 		if f == nil {
 			return nil
 		}
-		f_m := ToMap(f)
+		f_m := ChildMap(f)
 		if f_m != nil {
 			return f_m.GetEdges(eid)
 		}
@@ -612,9 +644,9 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
 			return nil, err
 		}
 		if _, ok := f.Composite.(*Array); ok {
-			return nil, d2parser.Errorf(refctx.Edge, "cannot index into array")
+			return nil, d2parser.Errorf(refctx.Edge.Src, "cannot index into array")
 		}
-		f_m := ToMap(f)
+		f_m := ChildMap(f)
 		if f_m == nil {
 			f_m = &Map{
 				parent: f,
@@ -738,20 +770,18 @@ func (m *Map) appendFieldReferences(i int, kp *d2ast.KeyPath, refctx *RefContext
 	if i+1 == len(kp.Path) {
 		return
 	}
-	f_m := ToMap(f)
+	f_m := ChildMap(f)
 	if f_m != nil {
 		f_m.appendFieldReferences(i+1, kp, refctx)
 	}
 }
 
-func ToMap(n Node) *Map {
+func ChildMap(n Node) *Map {
 	switch n := n.(type) {
 	case *Map:
 		return n
-	case *Layer:
-		return n.Map
 	case *Field:
-		return ToMap(n.Composite)
+		return ChildMap(n.Composite)
 	case *Edge:
 		return n.Map
 	default:
@@ -790,6 +820,16 @@ func ParentField(n Node) *Field {
 	return nil
 }
 
+func ParentLayer(n Node) *Layer {
+	for n.Parent() != nil {
+		n = n.Parent()
+		if n_f, ok := n.(*Layer); ok {
+			return n_f
+		}
+	}
+	return nil
+}
+
 func countUnderscores(p []string) int {
 	var count int
 	for _, el := range p {
@@ -799,15 +839,4 @@ func countUnderscores(p []string) int {
 		count++
 	}
 	return count
-}
-
-func IDA(n Node) (ida []string) {
-	for {
-		f := ParentField(n)
-		if f == nil {
-			return ida
-		}
-		ida = append(ida, f.Name)
-		n = f
-	}
 }
