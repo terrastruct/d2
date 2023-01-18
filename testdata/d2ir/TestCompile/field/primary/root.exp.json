@@ -113,6 +113,30 @@
                         }
                       }
                     ]
+                  },
+                  "context": {
+                    "key": {
+                      "range": "TestCompile/field/primary/root.d2,0:9:9-0:14:14",
+                      "key": {
+                        "range": "TestCompile/field/primary/root.d2,0:9:9-0:14:14",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/field/primary/root.d2,0:9:9-0:13:13",
+                              "value": [
+                                {
+                                  "string": "pqrs",
+                                  "raw_string": "pqrs"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    },
+                    "edge": null
                   }
                 }
               ]
@@ -148,6 +172,69 @@
                   }
                 }
               ]
+            },
+            "context": {
+              "key": {
+                "range": "TestCompile/field/primary/root.d2,0:0:0-0:15:15",
+                "key": {
+                  "range": "TestCompile/field/primary/root.d2,0:0:0-0:1:1",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/field/primary/root.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {
+                  "unquoted_string": {
+                    "range": "TestCompile/field/primary/root.d2,0:3:3-0:6:6",
+                    "value": [
+                      {
+                        "string": "yes",
+                        "raw_string": "yes"
+                      }
+                    ]
+                  }
+                },
+                "value": {
+                  "map": {
+                    "range": "TestCompile/field/primary/root.d2,0:7:7-0:14:14",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": "TestCompile/field/primary/root.d2,0:9:9-0:14:14",
+                          "key": {
+                            "range": "TestCompile/field/primary/root.d2,0:9:9-0:14:14",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/field/primary/root.d2,0:9:9-0:13:13",
+                                  "value": [
+                                    {
+                                      "string": "pqrs",
+                                      "raw_string": "pqrs"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {}
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              "edge": null
             }
           }
         ]

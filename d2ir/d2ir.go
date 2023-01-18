@@ -321,7 +321,7 @@ type FieldReference struct {
 	String  *d2ast.StringBox `json:"string"`
 	KeyPath *d2ast.KeyPath   `json:"key_path"`
 
-	Context *RefContext `json:"-"`
+	Context *RefContext `json:"context"`
 }
 
 func (kr FieldReference) KeyPathIndex() int {
@@ -342,13 +342,13 @@ func (kr FieldReference) InEdge() bool {
 }
 
 type EdgeReference struct {
-	Context *RefContext `json:"-"`
+	Context *RefContext `json:"context"`
 }
 
 type RefContext struct {
-	Key   *d2ast.Key
-	Edge  *d2ast.Edge
-	Scope *d2ast.Map
+	Key   *d2ast.Key `json:"key"`
+	Edge  *d2ast.Edge `json:"edge"`
+	Scope *d2ast.Map `json:"-"`
 }
 
 func (rc *RefContext) Copy() *RefContext {

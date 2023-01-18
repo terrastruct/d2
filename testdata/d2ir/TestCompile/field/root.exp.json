@@ -59,6 +59,30 @@
                   }
                 }
               ]
+            },
+            "context": {
+              "key": {
+                "range": "TestCompile/field/root.d2,0:0:0-0:1:1",
+                "key": {
+                  "range": "TestCompile/field/root.d2,0:0:0-0:1:1",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/field/root.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {}
+              },
+              "edge": null
             }
           }
         ]

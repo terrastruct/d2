@@ -128,6 +128,30 @@
                               }
                             }
                           ]
+                        },
+                        "context": {
+                          "key": {
+                            "range": "TestCompile/field/primary/nested.d2,0:11:11-0:16:16",
+                            "key": {
+                              "range": "TestCompile/field/primary/nested.d2,0:11:11-0:16:16",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/field/primary/nested.d2,0:11:11-0:15:15",
+                                    "value": [
+                                      {
+                                        "string": "pqrs",
+                                        "raw_string": "pqrs"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "primary": {},
+                            "value": {}
+                          },
+                          "edge": null
                         }
                       }
                     ]
@@ -174,6 +198,80 @@
                         }
                       }
                     ]
+                  },
+                  "context": {
+                    "key": {
+                      "range": "TestCompile/field/primary/nested.d2,0:0:0-0:17:17",
+                      "key": {
+                        "range": "TestCompile/field/primary/nested.d2,0:0:0-0:3:3",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/field/primary/nested.d2,0:0:0-0:1:1",
+                              "value": [
+                                {
+                                  "string": "x",
+                                  "raw_string": "x"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/field/primary/nested.d2,0:2:2-0:3:3",
+                              "value": [
+                                {
+                                  "string": "y",
+                                  "raw_string": "y"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {
+                        "unquoted_string": {
+                          "range": "TestCompile/field/primary/nested.d2,0:5:5-0:8:8",
+                          "value": [
+                            {
+                              "string": "yes",
+                              "raw_string": "yes"
+                            }
+                          ]
+                        }
+                      },
+                      "value": {
+                        "map": {
+                          "range": "TestCompile/field/primary/nested.d2,0:9:9-0:16:16",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "TestCompile/field/primary/nested.d2,0:11:11-0:16:16",
+                                "key": {
+                                  "range": "TestCompile/field/primary/nested.d2,0:11:11-0:16:16",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/field/primary/nested.d2,0:11:11-0:15:15",
+                                        "value": [
+                                          {
+                                            "string": "pqrs",
+                                            "raw_string": "pqrs"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {}
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "edge": null
                   }
                 }
               ]
@@ -220,6 +318,80 @@
                   }
                 }
               ]
+            },
+            "context": {
+              "key": {
+                "range": "TestCompile/field/primary/nested.d2,0:0:0-0:17:17",
+                "key": {
+                  "range": "TestCompile/field/primary/nested.d2,0:0:0-0:3:3",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/field/primary/nested.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/field/primary/nested.d2,0:2:2-0:3:3",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {
+                  "unquoted_string": {
+                    "range": "TestCompile/field/primary/nested.d2,0:5:5-0:8:8",
+                    "value": [
+                      {
+                        "string": "yes",
+                        "raw_string": "yes"
+                      }
+                    ]
+                  }
+                },
+                "value": {
+                  "map": {
+                    "range": "TestCompile/field/primary/nested.d2,0:9:9-0:16:16",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": "TestCompile/field/primary/nested.d2,0:11:11-0:16:16",
+                          "key": {
+                            "range": "TestCompile/field/primary/nested.d2,0:11:11-0:16:16",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/field/primary/nested.d2,0:11:11-0:15:15",
+                                  "value": [
+                                    {
+                                      "string": "pqrs",
+                                      "raw_string": "pqrs"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {}
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              "edge": null
             }
           }
         ]
