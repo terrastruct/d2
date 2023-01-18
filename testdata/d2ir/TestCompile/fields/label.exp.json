@@ -1,16 +1,16 @@
 {
   "ast": {
-    "range": "TestCompile/field/label.d2,0:0:0-0:6:6",
+    "range": "TestCompile/fields/label.d2,0:0:0-0:6:6",
     "nodes": [
       {
         "map_key": {
-          "range": "TestCompile/field/label.d2,0:0:0-0:6:6",
+          "range": "TestCompile/fields/label.d2,0:0:0-0:6:6",
           "key": {
-            "range": "TestCompile/field/label.d2,0:0:0-0:1:1",
+            "range": "TestCompile/fields/label.d2,0:0:0-0:1:1",
             "path": [
               {
                 "unquoted_string": {
-                  "range": "TestCompile/field/label.d2,0:0:0-0:1:1",
+                  "range": "TestCompile/fields/label.d2,0:0:0-0:1:1",
                   "value": [
                     {
                       "string": "x",
@@ -24,7 +24,7 @@
           "primary": {},
           "value": {
             "unquoted_string": {
-              "range": "TestCompile/field/label.d2,0:3:3-0:6:6",
+              "range": "TestCompile/fields/label.d2,0:3:3-0:6:6",
               "value": [
                 {
                   "string": "yes",
@@ -43,7 +43,7 @@
         "name": "x",
         "primary": {
           "value": {
-            "range": "TestCompile/field/label.d2,0:3:3-0:6:6",
+            "range": "TestCompile/fields/label.d2,0:3:3-0:6:6",
             "value": [
               {
                 "string": "yes",
@@ -55,22 +55,20 @@
         "references": [
           {
             "string": {
-              "unquoted_string": {
-                "range": "TestCompile/field/label.d2,0:0:0-0:1:1",
-                "value": [
-                  {
-                    "string": "x",
-                    "raw_string": "x"
-                  }
-                ]
-              }
+              "range": "TestCompile/fields/label.d2,0:0:0-0:1:1",
+              "value": [
+                {
+                  "string": "x",
+                  "raw_string": "x"
+                }
+              ]
             },
             "key_path": {
-              "range": "TestCompile/field/label.d2,0:0:0-0:1:1",
+              "range": "TestCompile/fields/label.d2,0:0:0-0:1:1",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "TestCompile/field/label.d2,0:0:0-0:1:1",
+                    "range": "TestCompile/fields/label.d2,0:0:0-0:1:1",
                     "value": [
                       {
                         "string": "x",
@@ -83,13 +81,13 @@
             },
             "context": {
               "key": {
-                "range": "TestCompile/field/label.d2,0:0:0-0:6:6",
+                "range": "TestCompile/fields/label.d2,0:0:0-0:6:6",
                 "key": {
-                  "range": "TestCompile/field/label.d2,0:0:0-0:1:1",
+                  "range": "TestCompile/fields/label.d2,0:0:0-0:1:1",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "TestCompile/field/label.d2,0:0:0-0:1:1",
+                        "range": "TestCompile/fields/label.d2,0:0:0-0:1:1",
                         "value": [
                           {
                             "string": "x",
@@ -103,7 +101,7 @@
                 "primary": {},
                 "value": {
                   "unquoted_string": {
-                    "range": "TestCompile/field/label.d2,0:3:3-0:6:6",
+                    "range": "TestCompile/fields/label.d2,0:3:3-0:6:6",
                     "value": [
                       {
                         "string": "yes",

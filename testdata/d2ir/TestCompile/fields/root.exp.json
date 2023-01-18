@@ -1,16 +1,16 @@
 {
   "ast": {
-    "range": "TestCompile/field/root.d2,0:0:0-0:1:1",
+    "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
     "nodes": [
       {
         "map_key": {
-          "range": "TestCompile/field/root.d2,0:0:0-0:1:1",
+          "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
           "key": {
-            "range": "TestCompile/field/root.d2,0:0:0-0:1:1",
+            "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
             "path": [
               {
                 "unquoted_string": {
-                  "range": "TestCompile/field/root.d2,0:0:0-0:1:1",
+                  "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
                   "value": [
                     {
                       "string": "x",
@@ -34,22 +34,20 @@
         "references": [
           {
             "string": {
-              "unquoted_string": {
-                "range": "TestCompile/field/root.d2,0:0:0-0:1:1",
-                "value": [
-                  {
-                    "string": "x",
-                    "raw_string": "x"
-                  }
-                ]
-              }
+              "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
+              "value": [
+                {
+                  "string": "x",
+                  "raw_string": "x"
+                }
+              ]
             },
             "key_path": {
-              "range": "TestCompile/field/root.d2,0:0:0-0:1:1",
+              "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "TestCompile/field/root.d2,0:0:0-0:1:1",
+                    "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
                     "value": [
                       {
                         "string": "x",
@@ -62,13 +60,13 @@
             },
             "context": {
               "key": {
-                "range": "TestCompile/field/root.d2,0:0:0-0:1:1",
+                "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
                 "key": {
-                  "range": "TestCompile/field/root.d2,0:0:0-0:1:1",
+                  "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "TestCompile/field/root.d2,0:0:0-0:1:1",
+                        "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
                         "value": [
                           {
                             "string": "x",

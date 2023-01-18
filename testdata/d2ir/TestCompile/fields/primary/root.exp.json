@@ -1,16 +1,16 @@
 {
   "ast": {
-    "range": "TestCompile/field/primary/root.d2,0:0:0-0:15:15",
+    "range": "TestCompile/fields/primary/root.d2,0:0:0-0:15:15",
     "nodes": [
       {
         "map_key": {
-          "range": "TestCompile/field/primary/root.d2,0:0:0-0:15:15",
+          "range": "TestCompile/fields/primary/root.d2,0:0:0-0:15:15",
           "key": {
-            "range": "TestCompile/field/primary/root.d2,0:0:0-0:1:1",
+            "range": "TestCompile/fields/primary/root.d2,0:0:0-0:1:1",
             "path": [
               {
                 "unquoted_string": {
-                  "range": "TestCompile/field/primary/root.d2,0:0:0-0:1:1",
+                  "range": "TestCompile/fields/primary/root.d2,0:0:0-0:1:1",
                   "value": [
                     {
                       "string": "x",
@@ -23,7 +23,7 @@
           },
           "primary": {
             "unquoted_string": {
-              "range": "TestCompile/field/primary/root.d2,0:3:3-0:6:6",
+              "range": "TestCompile/fields/primary/root.d2,0:3:3-0:6:6",
               "value": [
                 {
                   "string": "yes",
@@ -34,17 +34,17 @@
           },
           "value": {
             "map": {
-              "range": "TestCompile/field/primary/root.d2,0:7:7-0:14:14",
+              "range": "TestCompile/fields/primary/root.d2,0:7:7-0:14:14",
               "nodes": [
                 {
                   "map_key": {
-                    "range": "TestCompile/field/primary/root.d2,0:9:9-0:14:14",
+                    "range": "TestCompile/fields/primary/root.d2,0:9:9-0:14:14",
                     "key": {
-                      "range": "TestCompile/field/primary/root.d2,0:9:9-0:14:14",
+                      "range": "TestCompile/fields/primary/root.d2,0:9:9-0:14:14",
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "TestCompile/field/primary/root.d2,0:9:9-0:13:13",
+                            "range": "TestCompile/fields/primary/root.d2,0:9:9-0:13:13",
                             "value": [
                               {
                                 "string": "pqrs",
@@ -72,7 +72,7 @@
         "name": "x",
         "primary": {
           "value": {
-            "range": "TestCompile/field/primary/root.d2,0:3:3-0:6:6",
+            "range": "TestCompile/fields/primary/root.d2,0:3:3-0:6:6",
             "value": [
               {
                 "string": "yes",
@@ -88,22 +88,20 @@
               "references": [
                 {
                   "string": {
-                    "unquoted_string": {
-                      "range": "TestCompile/field/primary/root.d2,0:9:9-0:13:13",
-                      "value": [
-                        {
-                          "string": "pqrs",
-                          "raw_string": "pqrs"
-                        }
-                      ]
-                    }
+                    "range": "TestCompile/fields/primary/root.d2,0:9:9-0:13:13",
+                    "value": [
+                      {
+                        "string": "pqrs",
+                        "raw_string": "pqrs"
+                      }
+                    ]
                   },
                   "key_path": {
-                    "range": "TestCompile/field/primary/root.d2,0:9:9-0:14:14",
+                    "range": "TestCompile/fields/primary/root.d2,0:9:9-0:14:14",
                     "path": [
                       {
                         "unquoted_string": {
-                          "range": "TestCompile/field/primary/root.d2,0:9:9-0:13:13",
+                          "range": "TestCompile/fields/primary/root.d2,0:9:9-0:13:13",
                           "value": [
                             {
                               "string": "pqrs",
@@ -116,13 +114,13 @@
                   },
                   "context": {
                     "key": {
-                      "range": "TestCompile/field/primary/root.d2,0:9:9-0:14:14",
+                      "range": "TestCompile/fields/primary/root.d2,0:9:9-0:14:14",
                       "key": {
-                        "range": "TestCompile/field/primary/root.d2,0:9:9-0:14:14",
+                        "range": "TestCompile/fields/primary/root.d2,0:9:9-0:14:14",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "TestCompile/field/primary/root.d2,0:9:9-0:13:13",
+                              "range": "TestCompile/fields/primary/root.d2,0:9:9-0:13:13",
                               "value": [
                                 {
                                   "string": "pqrs",
@@ -147,22 +145,20 @@
         "references": [
           {
             "string": {
-              "unquoted_string": {
-                "range": "TestCompile/field/primary/root.d2,0:0:0-0:1:1",
-                "value": [
-                  {
-                    "string": "x",
-                    "raw_string": "x"
-                  }
-                ]
-              }
+              "range": "TestCompile/fields/primary/root.d2,0:0:0-0:1:1",
+              "value": [
+                {
+                  "string": "x",
+                  "raw_string": "x"
+                }
+              ]
             },
             "key_path": {
-              "range": "TestCompile/field/primary/root.d2,0:0:0-0:1:1",
+              "range": "TestCompile/fields/primary/root.d2,0:0:0-0:1:1",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "TestCompile/field/primary/root.d2,0:0:0-0:1:1",
+                    "range": "TestCompile/fields/primary/root.d2,0:0:0-0:1:1",
                     "value": [
                       {
                         "string": "x",
@@ -175,13 +171,13 @@
             },
             "context": {
               "key": {
-                "range": "TestCompile/field/primary/root.d2,0:0:0-0:15:15",
+                "range": "TestCompile/fields/primary/root.d2,0:0:0-0:15:15",
                 "key": {
-                  "range": "TestCompile/field/primary/root.d2,0:0:0-0:1:1",
+                  "range": "TestCompile/fields/primary/root.d2,0:0:0-0:1:1",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "TestCompile/field/primary/root.d2,0:0:0-0:1:1",
+                        "range": "TestCompile/fields/primary/root.d2,0:0:0-0:1:1",
                         "value": [
                           {
                             "string": "x",
@@ -194,7 +190,7 @@
                 },
                 "primary": {
                   "unquoted_string": {
-                    "range": "TestCompile/field/primary/root.d2,0:3:3-0:6:6",
+                    "range": "TestCompile/fields/primary/root.d2,0:3:3-0:6:6",
                     "value": [
                       {
                         "string": "yes",
@@ -205,17 +201,17 @@
                 },
                 "value": {
                   "map": {
-                    "range": "TestCompile/field/primary/root.d2,0:7:7-0:14:14",
+                    "range": "TestCompile/fields/primary/root.d2,0:7:7-0:14:14",
                     "nodes": [
                       {
                         "map_key": {
-                          "range": "TestCompile/field/primary/root.d2,0:9:9-0:14:14",
+                          "range": "TestCompile/fields/primary/root.d2,0:9:9-0:14:14",
                           "key": {
-                            "range": "TestCompile/field/primary/root.d2,0:9:9-0:14:14",
+                            "range": "TestCompile/fields/primary/root.d2,0:9:9-0:14:14",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": "TestCompile/field/primary/root.d2,0:9:9-0:13:13",
+                                  "range": "TestCompile/fields/primary/root.d2,0:9:9-0:13:13",
                                   "value": [
                                     {
                                       "string": "pqrs",

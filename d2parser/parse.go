@@ -130,6 +130,15 @@ type ParseError struct {
 	Errors  []d2ast.Error `json:"errs"`
 }
 
+func Errorf(n d2ast.Node, f string, v ...interface{}) error {
+	f = "%v: " + f
+	v = append([]interface{}{n.GetRange()}, v...)
+	return d2ast.Error{
+		Range:   n.GetRange(),
+		Message: fmt.Sprintf(f, v...),
+	}
+}
+
 func (pe ParseError) Empty() bool {
 	return pe.IOError == nil && len(pe.Errors) == 0
 }

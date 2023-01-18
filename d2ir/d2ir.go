@@ -1,3 +1,5 @@
+// Package d2ir implements a tree data structure to keep track of the resolved value of D2
+// keys.
 package d2ir
 
 import (
@@ -9,8 +11,11 @@ import (
 
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2format"
+	"oss.terrastruct.com/d2/d2parser"
 )
 
+// Most errors returned by a node should be created with d2parser.Errorf
+// to indicate the offending AST node.
 type Node interface {
 	node()
 	Copy(parent Node) Node
@@ -20,7 +25,7 @@ type Node interface {
 	fmt.Stringer
 }
 
-var _ Node = &IR{}
+var _ Node = &Layer{}
 var _ Node = &Scalar{}
 var _ Node = &Field{}
 var _ Node = &Edge{}
@@ -45,14 +50,14 @@ type Composite interface {
 var _ Composite = &Array{}
 var _ Composite = &Map{}
 
-func (n *IR) node()     {}
+func (n *Layer) node()  {}
 func (n *Scalar) node() {}
 func (n *Field) node()  {}
 func (n *Edge) node()   {}
 func (n *Array) node()  {}
 func (n *Map) node()    {}
 
-func (n *IR) Parent() Node     { return n.parent }
+func (n *Layer) Parent() Node  { return n.parent }
 func (n *Scalar) Parent() Node { return n.parent }
 func (n *Field) Parent() Node  { return n.parent }
 func (n *Edge) Parent() Node   { return n.parent }
@@ -62,33 +67,33 @@ func (n *Map) Parent() Node    { return n.parent }
 func (n *Scalar) value() {}
 func (n *Array) value()  {}
 func (n *Map) value()    {}
-func (n *IR) value()     {}
+func (n *Layer) value()  {}
 
 func (n *Array) composite() {}
 func (n *Map) composite()   {}
-func (n *IR) composite()    {}
+func (n *Layer) composite() {}
 
-func (n *IR) String() string     { return d2format.Format(n.ast()) }
+func (n *Layer) String() string  { return d2format.Format(n.ast()) }
 func (n *Scalar) String() string { return d2format.Format(n.ast()) }
 func (n *Field) String() string  { return d2format.Format(n.ast()) }
 func (n *Edge) String() string   { return d2format.Format(n.ast()) }
 func (n *Array) String() string  { return d2format.Format(n.ast()) }
 func (n *Map) String() string    { return d2format.Format(n.ast()) }
 
-type IR struct {
+type Layer struct {
 	parent Node
 
 	AST *d2ast.Map `json:"ast"`
 	Map *Map       `json:"base"`
 }
 
-func (ir *IR) Copy(newp Node) Node {
-	tmp := *ir
-	ir = &tmp
+func (l *Layer) Copy(newp Node) Node {
+	tmp := *l
+	l = &tmp
 
-	ir.parent = newp.(*IR)
-	ir.Map = ir.Map.Copy(ir).(*Map)
-	return ir
+	l.parent = newp.(*Layer)
+	l.Map = l.Map.Copy(l).(*Map)
+	return l
 }
 
 type Scalar struct {
@@ -138,7 +143,12 @@ func (m *Map) Copy(newp Node) Node {
 
 // Root reports whether the Map is the root of the D2 tree.
 func (m *Map) Root() bool {
-	_, ok := m.parent.(*IR)
+	return ParentMap(m) == nil
+}
+
+// Layer reports whether the Map represents the root of a layer.
+func (m *Map) Layer() bool {
+	_, ok := m.parent.(*Layer)
 	return ok
 }
 
@@ -318,7 +328,7 @@ func (a *Array) Copy(newp Node) Node {
 }
 
 type FieldReference struct {
-	String  *d2ast.StringBox `json:"string"`
+	String  d2ast.String `json:"string"`
 	KeyPath *d2ast.KeyPath   `json:"key_path"`
 
 	Context *RefContext `json:"context"`
@@ -326,7 +336,7 @@ type FieldReference struct {
 
 func (kr FieldReference) KeyPathIndex() int {
 	for i, sb := range kr.KeyPath.Path {
-		if sb == kr.String {
+		if sb.Unbox() == kr.String {
 			return i
 		}
 	}
@@ -346,9 +356,9 @@ type EdgeReference struct {
 }
 
 type RefContext struct {
-	Key   *d2ast.Key `json:"key"`
+	Key   *d2ast.Key  `json:"key"`
 	Edge  *d2ast.Edge `json:"edge"`
-	Scope *d2ast.Map `json:"-"`
+	Scope *d2ast.Map  `json:"-"`
 }
 
 func (rc *RefContext) Copy() *RefContext {
@@ -423,7 +433,7 @@ func (m *Map) EdgeCountRecursive() int {
 	return acc
 }
 
-func (m *Map) GetField(ida []string) *Field {
+func (m *Map) GetField(ida ...string) *Field {
 	for len(ida) > 0 && ida[0] == "_" {
 		m = ParentMap(m)
 		if m == nil {
@@ -460,38 +470,51 @@ func (m *Map) getField(ida []string) *Field {
 	return nil
 }
 
-func (m *Map) EnsureField(ida []string) (*Field, error) {
-	for len(ida) > 0 && ida[0] == "_" {
+func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext) (*Field, error) {
+	i := 0
+	for kp.Path[i].Unbox().ScalarString() == "_" {
 		m = ParentMap(m)
 		if m == nil {
-			return nil, errors.New("invalid underscore")
+			return nil, d2parser.Errorf(kp.Path[i].Unbox(), "invalid underscore: no parent")
 		}
-		ida = ida[1:]
+		if i+1 == len(kp.Path) {
+			return nil, d2parser.Errorf(kp.Path[i].Unbox(), "field key must contain more than underscores")
+		}
+		i++
 	}
-	return m.ensureField(ida)
+	return m.ensureField(i, kp, refctx)
 }
 
-func (m *Map) ensureField(ida []string) (*Field, error) {
-	if len(ida) == 0 {
-		return nil, errors.New("invalid underscore")
+func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field, error) {
+	head := kp.Path[i].Unbox().ScalarString()
+
+	if head == "_" {
+		return nil, d2parser.Errorf(kp, `parent "_" can only be used in the beginning of paths, e.g. "_.x"`)
 	}
 
-	s := ida[0]
-	rest := ida[1:]
-
-	if s == "_" {
-		return nil, errors.New(`parent "_" can only be used in the beginning of paths, e.g. "_.x"`)
+	switch head {
+	case "layers", "scenarios", "steps":
+		if !m.Layer() {
+			return nil, d2parser.Errorf(kp, "%s is only allowed at a layer root", head)
+		}
 	}
 
 	for _, f := range m.Fields {
-		if !strings.EqualFold(f.Name, s) {
+		if !strings.EqualFold(f.Name, head) {
 			continue
 		}
-		if len(rest) == 0 {
+
+		f.References = append(f.References, FieldReference{
+			String:  kp.Path[i].Unbox(),
+			KeyPath: kp,
+			Context: refctx,
+		})
+
+		if i+1 == len(kp.Path) {
 			return f, nil
 		}
 		if _, ok := f.Composite.(*Array); ok {
-			return nil, errors.New("cannot index into array")
+			return nil, d2parser.Errorf(kp, "cannot index into array")
 		}
 		f_m := ToMap(f)
 		if f_m == nil {
@@ -500,22 +523,27 @@ func (m *Map) ensureField(ida []string) (*Field, error) {
 			}
 			f.Composite = f_m
 		}
-		return f_m.ensureField(rest)
+		return f_m.ensureField(i+1, kp, refctx)
 	}
 
 	f := &Field{
 		parent: m,
-		Name:   s,
+		Name:   head,
+		References: []FieldReference{{
+			String:  kp.Path[i].Unbox(),
+			KeyPath: kp,
+			Context: refctx,
+		}},
 	}
 	m.Fields = append(m.Fields, f)
-	if len(rest) == 0 {
+	if i+1 == len(kp.Path) {
 		return f, nil
 	}
 	f_m := &Map{
 		parent: f,
 	}
 	f.Composite = f_m
-	return f_m.ensureField(rest)
+	return f_m.ensureField(i+1, kp, refctx)
 }
 
 func (m *Map) DeleteField(ida []string) bool {
@@ -549,7 +577,7 @@ func (m *Map) GetEdges(eid *EdgeID) []*Edge {
 	}
 	common, eid := eid.trimCommon()
 	if len(common) > 0 {
-		f := m.GetField(common)
+		f := m.GetField(common...)
 		if f == nil {
 			return nil
 		}
@@ -569,19 +597,22 @@ func (m *Map) GetEdges(eid *EdgeID) []*Edge {
 	return ea
 }
 
-func (m *Map) EnsureEdge(eid *EdgeID) (*Edge, error) {
+func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
 	eid, m, err := eid.resolveUnderscores(m)
 	if err != nil {
-		return nil, err
+		return nil, d2parser.Errorf(refctx.Edge, err.Error())
 	}
 	common, eid := eid.trimCommon()
 	if len(common) > 0 {
-		f, err := m.EnsureField(common)
+		tmp := *refctx.Edge.Src
+		kp := &tmp
+		kp.Path = kp.Path[:len(common)]
+		f, err := m.EnsureField(kp, refctx)
 		if err != nil {
 			return nil, err
 		}
 		if _, ok := f.Composite.(*Array); ok {
-			return nil, errors.New("cannot index into array")
+			return nil, d2parser.Errorf(refctx.Edge, "cannot index into array")
 		}
 		f_m := ToMap(f)
 		if f_m == nil {
@@ -590,7 +621,7 @@ func (m *Map) EnsureEdge(eid *EdgeID) (*Edge, error) {
 			}
 			f.Composite = f_m
 		}
-		return f_m.EnsureEdge(eid)
+		return f_m.CreateEdge(eid, refctx)
 	}
 
 	eid.Index = nil
@@ -600,14 +631,17 @@ func (m *Map) EnsureEdge(eid *EdgeID) (*Edge, error) {
 	e := &Edge{
 		parent: m,
 		ID:     eid,
+		References: []EdgeReference{{
+			Context: refctx,
+		}},
 	}
 	m.Edges = append(m.Edges, e)
 
 	return e, nil
 }
 
-func (ir *IR) ast() d2ast.Node {
-	return ir.Map.ast()
+func (l *Layer) ast() d2ast.Node {
+	return l.Map.ast()
 }
 
 func (s *Scalar) ast() d2ast.Node {
@@ -691,13 +725,13 @@ func (m *Map) ast() d2ast.Node {
 
 func (m *Map) appendFieldReferences(i int, kp *d2ast.KeyPath, refctx *RefContext) {
 	sb := kp.Path[i]
-	f := m.GetField([]string{sb.Unbox().ScalarString()})
+	f := m.GetField(sb.Unbox().ScalarString())
 	if f == nil {
 		return
 	}
 
 	f.References = append(f.References, FieldReference{
-		String:  sb,
+		String:  sb.Unbox(),
 		KeyPath: kp,
 		Context: refctx,
 	})
@@ -710,19 +744,11 @@ func (m *Map) appendFieldReferences(i int, kp *d2ast.KeyPath, refctx *RefContext
 	}
 }
 
-func (m *Map) appendEdgeReferences(e *Edge, refctx *RefContext) {
-	e.References = append(e.References, EdgeReference{
-		Context: refctx,
-	})
-	m.appendFieldReferences(0, refctx.Edge.Src, refctx)
-	m.appendFieldReferences(0, refctx.Edge.Dst, refctx)
-}
-
 func ToMap(n Node) *Map {
 	switch n := n.(type) {
 	case *Map:
 		return n
-	case *IR:
+	case *Layer:
 		return n.Map
 	case *Field:
 		return ToMap(n.Composite)
@@ -773,4 +799,15 @@ func countUnderscores(p []string) int {
 		count++
 	}
 	return count
+}
+
+func IDA(n Node) (ida []string) {
+	for {
+		f := ParentField(n)
+		if f == nil {
+			return ida
+		}
+		ida = append(ida, f.Name)
+		n = f
+	}
 }
