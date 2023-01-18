@@ -25,7 +25,6 @@ type Node interface {
 	fmt.Stringer
 }
 
-var _ Node = &Layer{}
 var _ Node = &Scalar{}
 var _ Node = &Field{}
 var _ Node = &Edge{}
@@ -50,14 +49,12 @@ type Composite interface {
 var _ Composite = &Array{}
 var _ Composite = &Map{}
 
-func (n *Layer) node()  {}
 func (n *Scalar) node() {}
 func (n *Field) node()  {}
 func (n *Edge) node()   {}
 func (n *Array) node()  {}
 func (n *Map) node()    {}
 
-func (n *Layer) Parent() Node  { return n.parent }
 func (n *Scalar) Parent() Node { return n.parent }
 func (n *Field) Parent() Node  { return n.parent }
 func (n *Edge) Parent() Node   { return n.parent }
@@ -67,32 +64,15 @@ func (n *Map) Parent() Node    { return n.parent }
 func (n *Scalar) value() {}
 func (n *Array) value()  {}
 func (n *Map) value()    {}
-func (n *Layer) value()  {}
 
 func (n *Array) composite() {}
 func (n *Map) composite()   {}
-func (n *Layer) composite() {}
 
-func (n *Layer) String() string  { return d2format.Format(n.ast()) }
 func (n *Scalar) String() string { return d2format.Format(n.ast()) }
 func (n *Field) String() string  { return d2format.Format(n.ast()) }
 func (n *Edge) String() string   { return d2format.Format(n.ast()) }
 func (n *Array) String() string  { return d2format.Format(n.ast()) }
 func (n *Map) String() string    { return d2format.Format(n.ast()) }
-
-type Layer struct {
-	parent Node
-	Map *Map       `json:"base"`
-}
-
-func (l *Layer) Copy(newp Node) Node {
-	tmp := *l
-	l = &tmp
-
-	l.parent = newp.(*Layer)
-	l.Map = l.Map.Copy(l).(*Map)
-	return l
-}
 
 type Scalar struct {
 	parent Node
@@ -544,28 +524,6 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 			KeyPath: kp,
 			Context: refctx,
 		}},
-	}
-	pf := ParentField(m)
-	switch pf.Name {
-	case "layers", "scenarios", "steps":
-		var l *Layer
-		switch pf.Name {
-		case "layers":
-			l = &Layer{
-				parent: f,
-			}
-			l.Map = &Map{parent: l}
-		case "scenarios":
-			l = ParentLayer(m).Copy(f)
-		case "steps":
-			panic("TODO")
-		}
-		f.Composite = l
-
-		if kp == refctx.Key.Key && refctx.Edge == nil {
-			kp.
-		}
-		l.AST = 
 	}
 	m.Fields = append(m.Fields, f)
 	if i+1 == len(kp.Path) {
