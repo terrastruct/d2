@@ -59,7 +59,7 @@ func compile(t testing.TB, text string) (*d2ir.Map, error) {
 	return m, nil
 }
 
-func assertQueryOne(t testing.TB, n d2ir.Node, nfields, nedges int, primary interface{}, idStr string) d2ir.Node {
+func assertQuery(t testing.TB, n d2ir.Node, nfields, nedges int, primary interface{}, idStr string) d2ir.Node {
 	t.Helper()
 
 	m := n.Map()
@@ -67,7 +67,7 @@ func assertQueryOne(t testing.TB, n d2ir.Node, nfields, nedges int, primary inte
 
 	if idStr != "" {
 		var err error
-		n, err = m.QueryOne(idStr)
+		n, err = m.Query(idStr)
 		assert.Success(t, err)
 		assert.NotEqual(t, n, nil)
 
@@ -126,9 +126,9 @@ func testCompileFields(t *testing.T) {
 			run: func(t testing.TB) {
 				m, err := compile(t, `x`)
 				assert.Success(t, err)
-				assertQueryOne(t, m, 1, 0, nil, "")
+				assertQuery(t, m, 1, 0, nil, "")
 
-				assertQueryOne(t, m, 0, 0, nil, "x")
+				assertQuery(t, m, 0, 0, nil, "x")
 			},
 		},
 		{
@@ -136,9 +136,9 @@ func testCompileFields(t *testing.T) {
 			run: func(t testing.TB) {
 				m, err := compile(t, `x: yes`)
 				assert.Success(t, err)
-				assertQueryOne(t, m, 1, 0, nil, "")
+				assertQuery(t, m, 1, 0, nil, "")
 
-				assertQueryOne(t, m, 0, 0, "yes", "x")
+				assertQuery(t, m, 0, 0, "yes", "x")
 			},
 		},
 		{
@@ -146,10 +146,10 @@ func testCompileFields(t *testing.T) {
 			run: func(t testing.TB) {
 				m, err := compile(t, `x.y: yes`)
 				assert.Success(t, err)
-				assertQueryOne(t, m, 2, 0, nil, "")
+				assertQuery(t, m, 2, 0, nil, "")
 
-				assertQueryOne(t, m, 1, 0, nil, "x")
-				assertQueryOne(t, m, 0, 0, "yes", "x.y")
+				assertQuery(t, m, 1, 0, nil, "x")
+				assertQuery(t, m, 0, 0, "yes", "x.y")
 			},
 		},
 		{
@@ -157,9 +157,9 @@ func testCompileFields(t *testing.T) {
 			run: func(t testing.TB) {
 				m, err := compile(t, `x: [1;2;3;4]`)
 				assert.Success(t, err)
-				assertQueryOne(t, m, 1, 0, nil, "")
+				assertQuery(t, m, 1, 0, nil, "")
 
-				f := assertQueryOne(t, m, 0, 0, nil, "x").(*d2ir.Field)
+				f := assertQuery(t, m, 0, 0, nil, "x").(*d2ir.Field)
 				assert.String(t, `[1; 2; 3; 4]`, f.Composite.String())
 			},
 		},
@@ -169,11 +169,11 @@ func testCompileFields(t *testing.T) {
 				m, err := compile(t, `pq: pq
 pq: null`)
 				assert.Success(t, err)
-				assertQueryOne(t, m, 1, 0, nil, "")
+				assertQuery(t, m, 1, 0, nil, "")
 				// null doesn't delete pq from *Map so that for language tooling
 				// we maintain the references.
 				// Instead d2compiler will ensure it doesn't get rendered.
-				assertQueryOne(t, m, 0, 0, nil, "pq")
+				assertQuery(t, m, 0, 0, nil, "pq")
 			},
 		},
 	}
@@ -186,10 +186,10 @@ pq: null`)
 				run: func(t testing.TB) {
 					m, err := compile(t, `x: yes { pqrs }`)
 					assert.Success(t, err)
-					assertQueryOne(t, m, 2, 0, nil, "")
+					assertQuery(t, m, 2, 0, nil, "")
 
-					assertQueryOne(t, m, 1, 0, "yes", "x")
-					assertQueryOne(t, m, 0, 0, nil, "x.pqrs")
+					assertQuery(t, m, 1, 0, "yes", "x")
+					assertQuery(t, m, 0, 0, nil, "x.pqrs")
 				},
 			},
 			{
@@ -197,11 +197,11 @@ pq: null`)
 				run: func(t testing.TB) {
 					m, err := compile(t, `x.y: yes { pqrs }`)
 					assert.Success(t, err)
-					assertQueryOne(t, m, 3, 0, nil, "")
+					assertQuery(t, m, 3, 0, nil, "")
 
-					assertQueryOne(t, m, 2, 0, nil, "x")
-					assertQueryOne(t, m, 1, 0, "yes", "x.y")
-					assertQueryOne(t, m, 0, 0, nil, "x.y.pqrs")
+					assertQuery(t, m, 2, 0, nil, "x")
+					assertQuery(t, m, 1, 0, "yes", "x.y")
+					assertQuery(t, m, 0, 0, nil, "x.y.pqrs")
 				},
 			},
 		}
@@ -217,11 +217,11 @@ func testCompileEdges(t *testing.T) {
 			run: func(t testing.TB) {
 				m, err := compile(t, `x -> y`)
 				assert.Success(t, err)
-				assertQueryOne(t, m, 2, 1, nil, "")
-				assertQueryOne(t, m, 0, 0, nil, `(x -> y)[0]`)
+				assertQuery(t, m, 2, 1, nil, "")
+				assertQuery(t, m, 0, 0, nil, `(x -> y)[0]`)
 
-				assertQueryOne(t, m, 0, 0, nil, "x")
-				assertQueryOne(t, m, 0, 0, nil, "y")
+				assertQuery(t, m, 0, 0, nil, "x")
+				assertQuery(t, m, 0, 0, nil, "y")
 			},
 		},
 		{
@@ -229,15 +229,15 @@ func testCompileEdges(t *testing.T) {
 			run: func(t testing.TB) {
 				m, err := compile(t, `x.y -> z.p`)
 				assert.Success(t, err)
-				assertQueryOne(t, m, 4, 1, nil, "")
+				assertQuery(t, m, 4, 1, nil, "")
 
-				assertQueryOne(t, m, 1, 0, nil, "x")
-				assertQueryOne(t, m, 0, 0, nil, "x.y")
+				assertQuery(t, m, 1, 0, nil, "x")
+				assertQuery(t, m, 0, 0, nil, "x.y")
 
-				assertQueryOne(t, m, 1, 0, nil, "z")
-				assertQueryOne(t, m, 0, 0, nil, "z.p")
+				assertQuery(t, m, 1, 0, nil, "z")
+				assertQuery(t, m, 0, 0, nil, "z.p")
 
-				assertQueryOne(t, m, 0, 0, nil, "(x.y -> z.p)[0]")
+				assertQuery(t, m, 0, 0, nil, "(x.y -> z.p)[0]")
 			},
 		},
 		{
@@ -245,12 +245,12 @@ func testCompileEdges(t *testing.T) {
 			run: func(t testing.TB) {
 				m, err := compile(t, `p: { _.x -> z }`)
 				assert.Success(t, err)
-				assertQueryOne(t, m, 3, 1, nil, "")
+				assertQuery(t, m, 3, 1, nil, "")
 
-				assertQueryOne(t, m, 0, 0, nil, "x")
-				assertQueryOne(t, m, 1, 0, nil, "p")
+				assertQuery(t, m, 0, 0, nil, "x")
+				assertQuery(t, m, 1, 0, nil, "p")
 
-				assertQueryOne(t, m, 0, 0, nil, "(x -> p.z)[0]")
+				assertQuery(t, m, 0, 0, nil, "(x -> p.z)[0]")
 			},
 		},
 		{
@@ -258,15 +258,15 @@ func testCompileEdges(t *testing.T) {
 			run: func(t testing.TB) {
 				m, err := compile(t, `a -> b -> c -> d`)
 				assert.Success(t, err)
-				assertQueryOne(t, m, 4, 3, nil, "")
+				assertQuery(t, m, 4, 3, nil, "")
 
-				assertQueryOne(t, m, 0, 0, nil, "a")
-				assertQueryOne(t, m, 0, 0, nil, "b")
-				assertQueryOne(t, m, 0, 0, nil, "c")
-				assertQueryOne(t, m, 0, 0, nil, "d")
-				assertQueryOne(t, m, 0, 0, nil, "(a -> b)[0]")
-				assertQueryOne(t, m, 0, 0, nil, "(b -> c)[0]")
-				assertQueryOne(t, m, 0, 0, nil, "(c -> d)[0]")
+				assertQuery(t, m, 0, 0, nil, "a")
+				assertQuery(t, m, 0, 0, nil, "b")
+				assertQuery(t, m, 0, 0, nil, "c")
+				assertQuery(t, m, 0, 0, nil, "d")
+				assertQuery(t, m, 0, 0, nil, "(a -> b)[0]")
+				assertQuery(t, m, 0, 0, nil, "(b -> c)[0]")
+				assertQuery(t, m, 0, 0, nil, "(c -> d)[0]")
 			},
 		},
 	}
@@ -298,13 +298,13 @@ layers: {
 }`)
 				assert.Success(t, err)
 
-				assertQueryOne(t, m, 7, 1, nil, "")
-				assertQueryOne(t, m, 0, 0, nil, `(x -> y)[0]`)
+				assertQuery(t, m, 7, 1, nil, "")
+				assertQuery(t, m, 0, 0, nil, `(x -> y)[0]`)
 
-				assertQueryOne(t, m, 0, 0, nil, "x")
-				assertQueryOne(t, m, 0, 0, nil, "y")
+				assertQuery(t, m, 0, 0, nil, "x")
+				assertQuery(t, m, 0, 0, nil, "y")
 
-				assertQueryOne(t, m, 3, 0, nil, "layers.bingo")
+				assertQuery(t, m, 3, 0, nil, "layers.bingo")
 			},
 		},
 	}
@@ -351,25 +351,25 @@ scenarios: {
 }`)
 				assert.Success(t, err)
 
-				assertQueryOne(t, m, 13, 3, nil, "")
+				assertQuery(t, m, 13, 3, nil, "")
 
-				assertQueryOne(t, m, 0, 0, nil, "x")
-				assertQueryOne(t, m, 0, 0, nil, "y")
-				assertQueryOne(t, m, 0, 0, nil, `(x -> y)[0]`)
+				assertQuery(t, m, 0, 0, nil, "x")
+				assertQuery(t, m, 0, 0, nil, "y")
+				assertQuery(t, m, 0, 0, nil, `(x -> y)[0]`)
 
-				assertQueryOne(t, m, 5, 1, nil, "scenarios.bingo")
-				assertQueryOne(t, m, 0, 0, nil, "scenarios.bingo.x")
-				assertQueryOne(t, m, 0, 0, nil, "scenarios.bingo.y")
-				assertQueryOne(t, m, 0, 0, nil, `scenarios.bingo.(x -> y)[0]`)
-				assertQueryOne(t, m, 2, 0, nil, "scenarios.bingo.p")
-				assertQueryOne(t, m, 1, 0, nil, "scenarios.bingo.p.q")
-				assertQueryOne(t, m, 0, 0, nil, "scenarios.bingo.p.q.z")
+				assertQuery(t, m, 5, 1, nil, "scenarios.bingo")
+				assertQuery(t, m, 0, 0, nil, "scenarios.bingo.x")
+				assertQuery(t, m, 0, 0, nil, "scenarios.bingo.y")
+				assertQuery(t, m, 0, 0, nil, `scenarios.bingo.(x -> y)[0]`)
+				assertQuery(t, m, 2, 0, nil, "scenarios.bingo.p")
+				assertQuery(t, m, 1, 0, nil, "scenarios.bingo.p.q")
+				assertQuery(t, m, 0, 0, nil, "scenarios.bingo.p.q.z")
 
-				assertQueryOne(t, m, 3, 1, nil, "scenarios.nuclear")
-				assertQueryOne(t, m, 0, 0, nil, "scenarios.nuclear.x")
-				assertQueryOne(t, m, 0, 0, nil, "scenarios.nuclear.y")
-				assertQueryOne(t, m, 0, 0, nil, `scenarios.nuclear.(x -> y)[0]`)
-				assertQueryOne(t, m, 0, 0, nil, "scenarios.nuclear.quiche")
+				assertQuery(t, m, 3, 1, nil, "scenarios.nuclear")
+				assertQuery(t, m, 0, 0, nil, "scenarios.nuclear.x")
+				assertQuery(t, m, 0, 0, nil, "scenarios.nuclear.y")
+				assertQuery(t, m, 0, 0, nil, `scenarios.nuclear.(x -> y)[0]`)
+				assertQuery(t, m, 0, 0, nil, "scenarios.nuclear.quiche")
 			},
 		},
 	}
@@ -389,28 +389,28 @@ steps: {
 }`)
 				assert.Success(t, err)
 
-				assertQueryOne(t, m, 16, 3, nil, "")
+				assertQuery(t, m, 16, 3, nil, "")
 
-				assertQueryOne(t, m, 0, 0, nil, "x")
-				assertQueryOne(t, m, 0, 0, nil, "y")
-				assertQueryOne(t, m, 0, 0, nil, `(x -> y)[0]`)
+				assertQuery(t, m, 0, 0, nil, "x")
+				assertQuery(t, m, 0, 0, nil, "y")
+				assertQuery(t, m, 0, 0, nil, `(x -> y)[0]`)
 
-				assertQueryOne(t, m, 5, 1, nil, "steps.bingo")
-				assertQueryOne(t, m, 0, 0, nil, "steps.bingo.x")
-				assertQueryOne(t, m, 0, 0, nil, "steps.bingo.y")
-				assertQueryOne(t, m, 0, 0, nil, `steps.bingo.(x -> y)[0]`)
-				assertQueryOne(t, m, 2, 0, nil, "steps.bingo.p")
-				assertQueryOne(t, m, 1, 0, nil, "steps.bingo.p.q")
-				assertQueryOne(t, m, 0, 0, nil, "steps.bingo.p.q.z")
+				assertQuery(t, m, 5, 1, nil, "steps.bingo")
+				assertQuery(t, m, 0, 0, nil, "steps.bingo.x")
+				assertQuery(t, m, 0, 0, nil, "steps.bingo.y")
+				assertQuery(t, m, 0, 0, nil, `steps.bingo.(x -> y)[0]`)
+				assertQuery(t, m, 2, 0, nil, "steps.bingo.p")
+				assertQuery(t, m, 1, 0, nil, "steps.bingo.p.q")
+				assertQuery(t, m, 0, 0, nil, "steps.bingo.p.q.z")
 
-				assertQueryOne(t, m, 6, 1, nil, "steps.nuclear")
-				assertQueryOne(t, m, 0, 0, nil, "steps.nuclear.x")
-				assertQueryOne(t, m, 0, 0, nil, "steps.nuclear.y")
-				assertQueryOne(t, m, 0, 0, nil, `steps.nuclear.(x -> y)[0]`)
-				assertQueryOne(t, m, 2, 0, nil, "steps.nuclear.p")
-				assertQueryOne(t, m, 1, 0, nil, "steps.nuclear.p.q")
-				assertQueryOne(t, m, 0, 0, nil, "steps.nuclear.p.q.z")
-				assertQueryOne(t, m, 0, 0, nil, "steps.nuclear.quiche")
+				assertQuery(t, m, 6, 1, nil, "steps.nuclear")
+				assertQuery(t, m, 0, 0, nil, "steps.nuclear.x")
+				assertQuery(t, m, 0, 0, nil, "steps.nuclear.y")
+				assertQuery(t, m, 0, 0, nil, `steps.nuclear.(x -> y)[0]`)
+				assertQuery(t, m, 2, 0, nil, "steps.nuclear.p")
+				assertQuery(t, m, 1, 0, nil, "steps.nuclear.p.q")
+				assertQuery(t, m, 0, 0, nil, "steps.nuclear.p.q.z")
+				assertQuery(t, m, 0, 0, nil, "steps.nuclear.quiche")
 			},
 		},
 	}

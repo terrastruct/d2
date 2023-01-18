@@ -6,8 +6,8 @@ import (
 	"oss.terrastruct.com/d2/d2parser"
 )
 
-// Query is only for tests and debugging.
-func (m *Map) Query(idStr string) (na []Node, _ error) {
+// QueryAll is only for tests and debugging.
+func (m *Map) QueryAll(idStr string) (na []Node, _ error) {
 	k, err := d2parser.ParseMapKey(idStr)
 	if err != nil {
 		return nil, err
@@ -45,8 +45,9 @@ func (m *Map) Query(idStr string) (na []Node, _ error) {
 	return na, nil
 }
 
-func (m *Map) QueryOne(idStr string) (Node, error) {
-	na, err := m.Query(idStr)
+// Query is only for tests and debugging.
+func (m *Map) Query(idStr string) (Node, error) {
+	na, err := m.QueryAll(idStr)
 	if err != nil {
 		return nil, err
 	}
