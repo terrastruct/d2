@@ -147,11 +147,12 @@ func (pe ParseError) Error() string {
 	var sb strings.Builder
 	if pe.IOError != nil {
 		sb.WriteString(pe.IOError.Error())
-		sb.WriteByte('\n')
 	}
-	for _, err := range pe.Errors {
+	for i, err := range pe.Errors {
+		if pe.IOError != nil || i > 0 {
+			sb.WriteByte('\n')
+		}
 		sb.WriteString(err.Error())
-		sb.WriteByte('\n')
 	}
 	return sb.String()
 }

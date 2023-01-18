@@ -276,6 +276,25 @@ func testCompileEdges(t *testing.T) {
 
 func testCompileLayers(t *testing.T) {
 	t.Parallel()
+	t.Run("errs", func(t *testing.T) {
+		tca := []testCase{
+			{
+				name: "bad_edge/1",
+				run: func(t testing.TB) {
+					_, err := compile(t, `layers.x -> layers.y`)
+					assert.ErrorString(t, err, `TestCompile/layer/errs/bad_edge/1.d2:1:1: cannot create edges between layers, scenarios or steps`)
+				},
+			},
+			{
+				name: "bad_edge/2",
+				run: func(t testing.TB) {
+					_, err := compile(t, `layers -> scenarios`)
+					assert.ErrorString(t, err, `TestCompile/layer/errs/bad_edge/2.d2:1:1: cannot create edges between layers, scenarios or steps`)
+				},
+			},
+		}
+		runa(t, tca)
+	})
 	tca := []testCase{
 		{
 			name: "root",

@@ -242,8 +242,7 @@ d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height c
   }
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/shape_unquoted_hex.d2:3:10: missing value after colon
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/shape_unquoted_hex.d2:3:10: missing value after colon`,
 		},
 		{
 			name: "edge_unquoted_hex",
@@ -254,8 +253,7 @@ d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height c
   }
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/edge_unquoted_hex.d2:3:10: missing value after colon
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/edge_unquoted_hex.d2:3:10: missing value after colon`,
 		},
 		{
 			name: "blank_underscore",
@@ -265,8 +263,7 @@ d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height c
   _
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/blank_underscore.d2:3:3: invalid use of parent "_"
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/blank_underscore.d2:3:3: invalid use of parent "_"`,
 		},
 		{
 			name: "image_non_style",
@@ -277,8 +274,7 @@ d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height c
   name: y
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/image_non_style.d2:4:3: image shapes cannot have children.
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/image_non_style.d2:4:3: image shapes cannot have children.`,
 		},
 		{
 			name: "stroke-width",
@@ -303,8 +299,7 @@ d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height c
   style.stroke-width: -1
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/illegal-stroke-width.d2:2:23: expected "stroke-width" to be a number between 0 and 15
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/illegal-stroke-width.d2:2:23: expected "stroke-width" to be a number between 0 and 15`,
 		},
 		{
 			name: "underscore_parent_create",
@@ -457,8 +452,7 @@ x: {
 			text: `
 _.x
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_root.d2:2:1: parent "_" cannot be used in the root scope
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_root.d2:2:1: parent "_" cannot be used in the root scope`,
 		},
 		{
 			name: "underscore_parent_middle_path",
@@ -468,8 +462,7 @@ x: {
   y._.z
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_middle_path.d2:3:3: parent "_" can only be used in the beginning of paths, e.g. "_.x"
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_middle_path.d2:3:3: parent "_" can only be used in the beginning of paths, e.g. "_.x"`,
 		},
 		{
 			name: "underscore_parent_sandwich_path",
@@ -479,8 +472,7 @@ x: {
   _.z._
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_sandwich_path.d2:3:3: parent "_" can only be used in the beginning of paths, e.g. "_.x"
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_sandwich_path.d2:3:3: parent "_" can only be used in the beginning of paths, e.g. "_.x"`,
 		},
 		{
 			name: "underscore_edge",
@@ -997,8 +989,7 @@ x -> y: {
 
 			text: `x: {shape: triangle}
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/object_arrowhead_shape.d2:1:5: invalid shape, can only set "triangle" for arrowheads
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/object_arrowhead_shape.d2:1:5: invalid shape, can only set "triangle" for arrowheads`,
 		},
 		{
 			name: "edge_flat_label_arrowhead",
@@ -1084,8 +1075,7 @@ x -> y: {
   space -> stars
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/nested_edge.d2:1:1: edges cannot be nested within another edge
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/nested_edge.d2:1:1: edges cannot be nested within another edge`,
 		},
 		{
 			name: "shape_edge_style",
@@ -1095,8 +1085,7 @@ x: {
 	style.animated: true
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/shape_edge_style.d2:3:2: key "animated" can only be applied to edges
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/shape_edge_style.d2:3:2: key "animated" can only be applied to edges`,
 		},
 		{
 			name: "edge_chain_map",
@@ -1352,8 +1341,7 @@ x -> y: {
   z
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/edge_map_non_reserved.d2:2:1: edge map keys must be reserved keywords
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/edge_map_non_reserved.d2:2:1: edge map keys must be reserved keywords`,
 		},
 		{
 			name: "url_link",
@@ -1398,8 +1386,7 @@ x -> y: {
 
 			text: `x.near: txop-center
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_constant.d2:1:1: near key "txop-center" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_constant.d2:1:1: near key "txop-center" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right`,
 		},
 		{
 			name: "near_bad_container",
@@ -1409,8 +1396,7 @@ x -> y: {
   y
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_container.d2:1:1: constant near keys cannot be set on shapes with children
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_container.d2:1:1: constant near keys cannot be set on shapes with children`,
 		},
 		{
 			name: "near_bad_connected",
@@ -1420,16 +1406,14 @@ x -> y: {
 }
 x -> y
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_connected.d2:1:1: constant near keys cannot be set on connected shapes
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_connected.d2:1:1: constant near keys cannot be set on connected shapes`,
 		},
 		{
 			name: "nested_near_constant",
 
 			text: `x.y.near: top-center
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/nested_near_constant.d2:1:1: constant near keys can only be set on root level shapes
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/nested_near_constant.d2:1:1: constant near keys can only be set on root level shapes`,
 		},
 		{
 			name: "reserved_icon_near_style",
@@ -1477,15 +1461,13 @@ y
 			expErr: `d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:3:9: bad icon url "::????:::%%orange": parse "::????:::%%orange": missing protocol scheme
 d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:4:18: expected "opacity" to be a number between 0.0 and 1.0
 d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:5:18: expected "opacity" to be a number between 0.0 and 1.0
-d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:1:1: near key "y" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right
-`,
+d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:1:1: near key "y" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right`,
 		},
 		{
 			name: "errors/missing_shape_icon",
 
-			text: `x.shape: image`,
-			expErr: `d2/testdata/d2compiler/TestCompile/errors/missing_shape_icon.d2:1:1: image shape must include an "icon" field
-`,
+			text:   `x.shape: image`,
+			expErr: `d2/testdata/d2compiler/TestCompile/errors/missing_shape_icon.d2:1:1: image shape must include an "icon" field`,
 		},
 		{
 			name: "edge_in_column",
@@ -1501,8 +1483,7 @@ d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:1:1: near key "
 			text: `x: {style.opacity: 0.4}
 y -> x.style
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/edge_to_style.d2:2:1: cannot connect to reserved keyword
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/edge_to_style.d2:2:1: cannot connect to reserved keyword`,
 		},
 		{
 			name: "escaped_id",
@@ -1683,8 +1664,7 @@ x.y -> a.b: {
 
 			text: `SVP1.style.shape: oval
 SVP1.style.3d: true`,
-			expErr: `d2/testdata/d2compiler/TestCompile/3d_oval.d2:2:1: key "3d" can only be applied to squares and rectangles
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/3d_oval.d2:2:1: key "3d" can only be applied to squares and rectangles`,
 		}, {
 			name: "edge_column_index",
 			text: `src: {
@@ -1741,8 +1721,7 @@ dst.id <-> src.dst_id
 }
 b -> x.a
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/leaky_sequence.d2:5:1: connections within sequence diagrams can connect only to other objects within the same sequence diagram
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/leaky_sequence.d2:5:1: connections within sequence diagrams can connect only to other objects within the same sequence diagram`,
 		},
 		{
 			name: "sequence_scoping",
@@ -1819,8 +1798,7 @@ choo: {
 			text: `x: {
   direction: diagonal
 }`,
-			expErr: `d2/testdata/d2compiler/TestCompile/invalid_direction.d2:2:14: direction must be one of up, down, right, left, got "diagonal"
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/invalid_direction.d2:2:14: direction must be one of up, down, right, left, got "diagonal"`,
 		},
 		{
 			name: "self-referencing",
@@ -1869,8 +1847,7 @@ choo: {
     test_id: varchar(64) {constraint: [primary_key, foreign_key]}
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/sql-panic.d2:3:27: constraint value must be a string
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/sql-panic.d2:3:27: constraint value must be a string`,
 		},
 		{
 			name: "wrong_column_index",
