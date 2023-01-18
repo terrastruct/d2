@@ -16,7 +16,9 @@ func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 func Compile(ast *d2ast.Map) (*Layer, error) {
 	l := &Layer{
 		AST: ast,
-		Map: &Map{},
+	}
+	l.Map = &Map{
+		parent: l,
 	}
 
 	c := &compiler{}
