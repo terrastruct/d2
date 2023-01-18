@@ -1,11 +1,51 @@
 {
-  "ast": {
-    "range": "TestCompile/fields/array.d2,0:0:0-0:12:12",
-    "nodes": [
-      {
-        "map_key": {
-          "range": "TestCompile/fields/array.d2,0:0:0-0:12:12",
-          "key": {
+  "fields": [
+    {
+      "name": "x",
+      "composite": {
+        "values": [
+          {
+            "value": {
+              "range": "TestCompile/fields/array.d2,0:4:4-0:5:5",
+              "raw": "1",
+              "value": "1"
+            }
+          },
+          {
+            "value": {
+              "range": "TestCompile/fields/array.d2,0:6:6-0:7:7",
+              "raw": "2",
+              "value": "2"
+            }
+          },
+          {
+            "value": {
+              "range": "TestCompile/fields/array.d2,0:8:8-0:9:9",
+              "raw": "3",
+              "value": "3"
+            }
+          },
+          {
+            "value": {
+              "range": "TestCompile/fields/array.d2,0:10:10-0:11:11",
+              "raw": "4",
+              "value": "4"
+            }
+          }
+        ]
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/fields/array.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          },
+          "key_path": {
             "range": "TestCompile/fields/array.d2,0:0:0-0:1:1",
             "path": [
               {
@@ -21,171 +61,67 @@
               }
             ]
           },
-          "primary": {},
-          "value": {
-            "array": {
-              "range": "TestCompile/fields/array.d2,0:3:3-0:11:11",
-              "nodes": [
-                {
-                  "number": {
-                    "range": "TestCompile/fields/array.d2,0:4:4-0:5:5",
-                    "raw": "1",
-                    "value": "1"
-                  }
-                },
-                {
-                  "number": {
-                    "range": "TestCompile/fields/array.d2,0:6:6-0:7:7",
-                    "raw": "2",
-                    "value": "2"
-                  }
-                },
-                {
-                  "number": {
-                    "range": "TestCompile/fields/array.d2,0:8:8-0:9:9",
-                    "raw": "3",
-                    "value": "3"
-                  }
-                },
-                {
-                  "number": {
-                    "range": "TestCompile/fields/array.d2,0:10:10-0:11:11",
-                    "raw": "4",
-                    "value": "4"
-                  }
-                }
-              ]
-            }
-          }
-        }
-      }
-    ]
-  },
-  "base": {
-    "fields": [
-      {
-        "name": "x",
-        "composite": {
-          "values": [
-            {
-              "value": {
-                "range": "TestCompile/fields/array.d2,0:4:4-0:5:5",
-                "raw": "1",
-                "value": "1"
-              }
-            },
-            {
-              "value": {
-                "range": "TestCompile/fields/array.d2,0:6:6-0:7:7",
-                "raw": "2",
-                "value": "2"
-              }
-            },
-            {
-              "value": {
-                "range": "TestCompile/fields/array.d2,0:8:8-0:9:9",
-                "raw": "3",
-                "value": "3"
-              }
-            },
-            {
-              "value": {
-                "range": "TestCompile/fields/array.d2,0:10:10-0:11:11",
-                "raw": "4",
-                "value": "4"
-              }
-            }
-          ]
-        },
-        "references": [
-          {
-            "string": {
-              "range": "TestCompile/fields/array.d2,0:0:0-0:1:1",
-              "value": [
-                {
-                  "string": "x",
-                  "raw_string": "x"
-                }
-              ]
-            },
-            "key_path": {
-              "range": "TestCompile/fields/array.d2,0:0:0-0:1:1",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "TestCompile/fields/array.d2,0:0:0-0:1:1",
-                    "value": [
-                      {
-                        "string": "x",
-                        "raw_string": "x"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "context": {
+          "context": {
+            "key": {
+              "range": "TestCompile/fields/array.d2,0:0:0-0:12:12",
               "key": {
-                "range": "TestCompile/fields/array.d2,0:0:0-0:12:12",
-                "key": {
-                  "range": "TestCompile/fields/array.d2,0:0:0-0:1:1",
-                  "path": [
+                "range": "TestCompile/fields/array.d2,0:0:0-0:1:1",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/fields/array.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "array": {
+                  "range": "TestCompile/fields/array.d2,0:3:3-0:11:11",
+                  "nodes": [
                     {
-                      "unquoted_string": {
-                        "range": "TestCompile/fields/array.d2,0:0:0-0:1:1",
-                        "value": [
-                          {
-                            "string": "x",
-                            "raw_string": "x"
-                          }
-                        ]
+                      "number": {
+                        "range": "TestCompile/fields/array.d2,0:4:4-0:5:5",
+                        "raw": "1",
+                        "value": "1"
+                      }
+                    },
+                    {
+                      "number": {
+                        "range": "TestCompile/fields/array.d2,0:6:6-0:7:7",
+                        "raw": "2",
+                        "value": "2"
+                      }
+                    },
+                    {
+                      "number": {
+                        "range": "TestCompile/fields/array.d2,0:8:8-0:9:9",
+                        "raw": "3",
+                        "value": "3"
+                      }
+                    },
+                    {
+                      "number": {
+                        "range": "TestCompile/fields/array.d2,0:10:10-0:11:11",
+                        "raw": "4",
+                        "value": "4"
                       }
                     }
                   ]
-                },
-                "primary": {},
-                "value": {
-                  "array": {
-                    "range": "TestCompile/fields/array.d2,0:3:3-0:11:11",
-                    "nodes": [
-                      {
-                        "number": {
-                          "range": "TestCompile/fields/array.d2,0:4:4-0:5:5",
-                          "raw": "1",
-                          "value": "1"
-                        }
-                      },
-                      {
-                        "number": {
-                          "range": "TestCompile/fields/array.d2,0:6:6-0:7:7",
-                          "raw": "2",
-                          "value": "2"
-                        }
-                      },
-                      {
-                        "number": {
-                          "range": "TestCompile/fields/array.d2,0:8:8-0:9:9",
-                          "raw": "3",
-                          "value": "3"
-                        }
-                      },
-                      {
-                        "number": {
-                          "range": "TestCompile/fields/array.d2,0:10:10-0:11:11",
-                          "raw": "4",
-                          "value": "4"
-                        }
-                      }
-                    ]
-                  }
                 }
-              },
-              "edge": null
-            }
+              }
+            },
+            "edge": null
           }
-        ]
-      }
-    ],
-    "edges": null
-  }
+        }
+      ]
+    }
+  ],
+  "edges": null
 }

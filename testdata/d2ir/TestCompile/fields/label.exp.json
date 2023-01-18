@@ -1,11 +1,30 @@
 {
-  "ast": {
-    "range": "TestCompile/fields/label.d2,0:0:0-0:6:6",
-    "nodes": [
-      {
-        "map_key": {
-          "range": "TestCompile/fields/label.d2,0:0:0-0:6:6",
-          "key": {
+  "fields": [
+    {
+      "name": "x",
+      "primary": {
+        "value": {
+          "range": "TestCompile/fields/label.d2,0:3:3-0:6:6",
+          "value": [
+            {
+              "string": "yes",
+              "raw_string": "yes"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/fields/label.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          },
+          "key_path": {
             "range": "TestCompile/fields/label.d2,0:0:0-0:1:1",
             "path": [
               {
@@ -21,102 +40,43 @@
               }
             ]
           },
-          "primary": {},
-          "value": {
-            "unquoted_string": {
-              "range": "TestCompile/fields/label.d2,0:3:3-0:6:6",
-              "value": [
-                {
-                  "string": "yes",
-                  "raw_string": "yes"
-                }
-              ]
-            }
-          }
-        }
-      }
-    ]
-  },
-  "base": {
-    "fields": [
-      {
-        "name": "x",
-        "primary": {
-          "value": {
-            "range": "TestCompile/fields/label.d2,0:3:3-0:6:6",
-            "value": [
-              {
-                "string": "yes",
-                "raw_string": "yes"
-              }
-            ]
-          }
-        },
-        "references": [
-          {
-            "string": {
-              "range": "TestCompile/fields/label.d2,0:0:0-0:1:1",
-              "value": [
-                {
-                  "string": "x",
-                  "raw_string": "x"
-                }
-              ]
-            },
-            "key_path": {
-              "range": "TestCompile/fields/label.d2,0:0:0-0:1:1",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "TestCompile/fields/label.d2,0:0:0-0:1:1",
-                    "value": [
-                      {
-                        "string": "x",
-                        "raw_string": "x"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "context": {
+          "context": {
+            "key": {
+              "range": "TestCompile/fields/label.d2,0:0:0-0:6:6",
               "key": {
-                "range": "TestCompile/fields/label.d2,0:0:0-0:6:6",
-                "key": {
-                  "range": "TestCompile/fields/label.d2,0:0:0-0:1:1",
-                  "path": [
+                "range": "TestCompile/fields/label.d2,0:0:0-0:1:1",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/fields/label.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/fields/label.d2,0:3:3-0:6:6",
+                  "value": [
                     {
-                      "unquoted_string": {
-                        "range": "TestCompile/fields/label.d2,0:0:0-0:1:1",
-                        "value": [
-                          {
-                            "string": "x",
-                            "raw_string": "x"
-                          }
-                        ]
-                      }
+                      "string": "yes",
+                      "raw_string": "yes"
                     }
                   ]
-                },
-                "primary": {},
-                "value": {
-                  "unquoted_string": {
-                    "range": "TestCompile/fields/label.d2,0:3:3-0:6:6",
-                    "value": [
-                      {
-                        "string": "yes",
-                        "raw_string": "yes"
-                      }
-                    ]
-                  }
                 }
-              },
-              "edge": null
-            }
+              }
+            },
+            "edge": null
           }
-        ]
-      }
-    ],
-    "edges": null
-  }
+        }
+      ]
+    }
+  ],
+  "edges": null
 }

@@ -630,10 +630,6 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
 	return e, nil
 }
 
-func (l *Layer) ast() d2ast.Node {
-	return l.Map.ast()
-}
-
 func (s *Scalar) ast() d2ast.Node {
 	return s.Value
 }
@@ -778,14 +774,17 @@ func ParentField(n Node) *Field {
 	return nil
 }
 
-func ParentLayer(n Node) *Layer {
-	for n.Parent() != nil {
-		n = n.Parent()
-		if n_f, ok := n.(*Layer); ok {
-			return n_f
+func ParentLayer(n Node) *Map {
+	for {
+		m := ParentMap(n)
+		if m == nil {
+			return nil
 		}
+		if m.Layer() {
+			return m
+		}
+		n = m
 	}
-	return nil
 }
 
 func countUnderscores(p []string) int {

@@ -1,12 +1,80 @@
 {
-  "ast": {
-    "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
-    "nodes": [
-      {
-        "map_key": {
-          "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
-          "edges": [
-            {
+  "fields": [
+    {
+      "name": "x",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "key": {
+              "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
+              "edges": [
+                {
+                  "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
+                  "src": {
+                    "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "x",
+                              "raw_string": "x"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "y",
+                              "raw_string": "y"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            },
+            "edge": {
               "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
               "src": {
                 "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
@@ -43,347 +111,226 @@
               },
               "dst_arrow": ">"
             }
-          ],
-          "primary": {},
-          "value": {}
+          }
         }
-      }
-    ]
-  },
-  "base": {
-    "fields": [
-      {
-        "name": "x",
-        "references": [
-          {
-            "string": {
-              "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
-              "value": [
-                {
-                  "string": "x",
-                  "raw_string": "x"
+      ]
+    },
+    {
+      "name": "y",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
+            "value": [
+              {
+                "string": "y",
+                "raw_string": "y"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
+                  "value": [
+                    {
+                      "string": "y",
+                      "raw_string": "y"
+                    }
+                  ]
                 }
-              ]
-            },
-            "key_path": {
-              "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
-              "path": [
+              }
+            ]
+          },
+          "context": {
+            "key": {
+              "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
+              "edges": [
                 {
-                  "unquoted_string": {
-                    "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
-                    "value": [
+                  "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
+                  "src": {
+                    "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
+                    "path": [
                       {
-                        "string": "x",
-                        "raw_string": "x"
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "x",
+                              "raw_string": "x"
+                            }
+                          ]
+                        }
                       }
                     ]
-                  }
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "y",
+                              "raw_string": "y"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
                 }
-              ]
+              ],
+              "primary": {},
+              "value": {}
             },
-            "context": {
-              "key": {
-                "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
-                "edges": [
+            "edge": {
+              "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
+                "path": [
                   {
-                    "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
-                    "src": {
-                      "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
-                      "path": [
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
+                      "value": [
                         {
-                          "unquoted_string": {
-                            "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
-                            "value": [
-                              {
-                                "string": "x",
-                                "raw_string": "x"
-                              }
-                            ]
-                          }
+                          "string": "x",
+                          "raw_string": "x"
                         }
                       ]
-                    },
-                    "src_arrow": "",
-                    "dst": {
-                      "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
-                      "path": [
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
-                            "value": [
-                              {
-                                "string": "y",
-                                "raw_string": "y"
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    },
-                    "dst_arrow": ">"
+                    }
                   }
-                ],
-                "primary": {},
-                "value": {}
+                ]
               },
-              "edge": {
-                "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
-                "src": {
-                  "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
-                        "value": [
-                          {
-                            "string": "x",
-                            "raw_string": "x"
-                          }
-                        ]
-                      }
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
                     }
-                  ]
-                },
-                "src_arrow": "",
-                "dst": {
-                  "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
-                        "value": [
-                          {
-                            "string": "y",
-                            "raw_string": "y"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "dst_arrow": ">"
-              }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
             }
           }
-        ]
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": {
+        "src_path": [
+          "x"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "y"
+        ],
+        "dst_arrow": true,
+        "index": 0
       },
-      {
-        "name": "y",
-        "references": [
-          {
-            "string": {
-              "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
-              "value": [
+      "references": [
+        {
+          "context": {
+            "key": {
+              "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
+              "edges": [
                 {
-                  "string": "y",
-                  "raw_string": "y"
-                }
-              ]
-            },
-            "key_path": {
-              "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
-                    "value": [
+                  "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
+                  "src": {
+                    "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
+                    "path": [
                       {
-                        "string": "y",
-                        "raw_string": "y"
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "x",
+                              "raw_string": "x"
+                            }
+                          ]
+                        }
                       }
                     ]
-                  }
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "y",
+                              "raw_string": "y"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
                 }
-              ]
+              ],
+              "primary": {},
+              "value": {}
             },
-            "context": {
-              "key": {
-                "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
-                "edges": [
+            "edge": {
+              "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
+                "path": [
                   {
-                    "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
-                    "src": {
-                      "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
-                      "path": [
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
+                      "value": [
                         {
-                          "unquoted_string": {
-                            "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
-                            "value": [
-                              {
-                                "string": "x",
-                                "raw_string": "x"
-                              }
-                            ]
-                          }
+                          "string": "x",
+                          "raw_string": "x"
                         }
                       ]
-                    },
-                    "src_arrow": "",
-                    "dst": {
-                      "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
-                      "path": [
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
-                            "value": [
-                              {
-                                "string": "y",
-                                "raw_string": "y"
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    },
-                    "dst_arrow": ">"
+                    }
                   }
-                ],
-                "primary": {},
-                "value": {}
+                ]
               },
-              "edge": {
-                "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
-                "src": {
-                  "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
-                        "value": [
-                          {
-                            "string": "x",
-                            "raw_string": "x"
-                          }
-                        ]
-                      }
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
                     }
-                  ]
-                },
-                "src_arrow": "",
-                "dst": {
-                  "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
-                        "value": [
-                          {
-                            "string": "y",
-                            "raw_string": "y"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "dst_arrow": ">"
-              }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
             }
           }
-        ]
-      }
-    ],
-    "edges": [
-      {
-        "edge_id": {
-          "src_path": [
-            "x"
-          ],
-          "src_arrow": false,
-          "dst_path": [
-            "y"
-          ],
-          "dst_arrow": true,
-          "index": 0
-        },
-        "references": [
-          {
-            "context": {
-              "key": {
-                "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
-                "edges": [
-                  {
-                    "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
-                    "src": {
-                      "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
-                      "path": [
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
-                            "value": [
-                              {
-                                "string": "x",
-                                "raw_string": "x"
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    },
-                    "src_arrow": "",
-                    "dst": {
-                      "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
-                      "path": [
-                        {
-                          "unquoted_string": {
-                            "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
-                            "value": [
-                              {
-                                "string": "y",
-                                "raw_string": "y"
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    },
-                    "dst_arrow": ">"
-                  }
-                ],
-                "primary": {},
-                "value": {}
-              },
-              "edge": {
-                "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
-                "src": {
-                  "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
-                        "value": [
-                          {
-                            "string": "x",
-                            "raw_string": "x"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "src_arrow": "",
-                "dst": {
-                  "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
-                        "value": [
-                          {
-                            "string": "y",
-                            "raw_string": "y"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "dst_arrow": ">"
-              }
-            }
-          }
-        ]
-      }
-    ]
-  }
+        }
+      ]
+    }
+  ]
 }

@@ -1,11 +1,19 @@
 {
-  "ast": {
-    "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
-    "nodes": [
-      {
-        "map_key": {
-          "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
-          "key": {
+  "fields": [
+    {
+      "name": "x",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          },
+          "key_path": {
             "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
             "path": [
               {
@@ -21,71 +29,33 @@
               }
             ]
           },
-          "primary": {},
-          "value": {}
-        }
-      }
-    ]
-  },
-  "base": {
-    "fields": [
-      {
-        "name": "x",
-        "references": [
-          {
-            "string": {
+          "context": {
+            "key": {
               "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
-              "value": [
-                {
-                  "string": "x",
-                  "raw_string": "x"
-                }
-              ]
-            },
-            "key_path": {
-              "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
-                    "value": [
-                      {
-                        "string": "x",
-                        "raw_string": "x"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "context": {
               "key": {
                 "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
-                "key": {
-                  "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
-                        "value": [
-                          {
-                            "string": "x",
-                            "raw_string": "x"
-                          }
-                        ]
-                      }
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
                     }
-                  ]
-                },
-                "primary": {},
-                "value": {}
+                  }
+                ]
               },
-              "edge": null
-            }
+              "primary": {},
+              "value": {}
+            },
+            "edge": null
           }
-        ]
-      }
-    ],
-    "edges": null
-  }
+        }
+      ]
+    }
+  ],
+  "edges": null
 }

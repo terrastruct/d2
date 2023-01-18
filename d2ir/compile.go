@@ -14,21 +14,17 @@ func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 }
 
 func Compile(ast *d2ast.Map) (*Map, error) {
-	l := &Layer{}
-	l.Map = &Map{
-		parent: l,
-	}
-
+	m := &Map{}
 	c := &compiler{}
-	c.compile(l)
+	c.compile(m, ast)
 	if !c.err.Empty() {
 		return nil, c.err
 	}
-	return l, nil
+	return m, nil
 }
 
-func (c *compiler) compile(l *Layer) {
-	c.compileMap(l.Map, l.AST)
+func (c *compiler) compile(dst *Map, ast *d2ast.Map) {
+	c.compileMap(dst, ast)
 }
 
 func (c *compiler) compileMap(dst *Map, ast *d2ast.Map) {
