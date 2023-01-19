@@ -4,6 +4,7 @@
 #### Features 🚀
 
 - `animated` keyword implemented for connections. [#652](https://github.com/terrastruct/d2/pull/652)
+- `border-radius` keyword implemented for squares/rectangles. [#688](https://github.com/terrastruct/d2/pull/688)
 
 #### Improvements 🧹
 
