@@ -340,6 +340,11 @@ x -> a: {
   label: You don't have to know how the computer works,\njust how to work the computer.
   style.opacity: 0.4
 }
+users: {
+	shape: sql_table
+	last_login: datetime
+	style.opacity: 0.4
+}
 `,
 		},
 	}

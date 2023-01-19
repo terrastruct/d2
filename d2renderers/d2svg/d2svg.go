@@ -848,7 +848,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			svgStyles := styleToSVG(style)
 			containerStyle := fmt.Sprintf(`stroke: %s;fill:%s`, targetShape.Stroke, style.Get(chroma.Background).Background.String())
 
-			fmt.Fprintf(writer, `<g transform="translate(%f %f)"">`, box.TopLeft.X, box.TopLeft.Y)
+			fmt.Fprintf(writer, `<g transform="translate(%f %f)">`, box.TopLeft.X, box.TopLeft.Y)
 			fmt.Fprintf(writer, `<rect class="shape" width="%d" height="%d" style="%s" />`,
 				targetShape.Width, targetShape.Height, containerStyle)
 			// Padding
