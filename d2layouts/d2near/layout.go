@@ -152,5 +152,14 @@ func boundingBox(g *d2graph.Graph) (tl, br *geo.Point) {
 		}
 	}
 
+	if math.IsInf(x1, 1) && math.IsInf(x2, -1) {
+		x1 = 0
+		x2 = 0
+	}
+	if math.IsInf(y1, 1) && math.IsInf(y2, -1) {
+		y1 = 0
+		y2 = 0
+	}
+
 	return geo.NewPoint(x1, y1), geo.NewPoint(x2, y2)
 }
