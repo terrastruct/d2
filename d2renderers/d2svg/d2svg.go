@@ -412,7 +412,11 @@ func makeLabelMask(labelTL *geo.Point, width, height int) string {
 }
 
 func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, _ error) {
-	fmt.Fprintf(writer, `<g id="%s">`, svg.EscapeText(connection.ID))
+	opacityStyle := ""
+	if connection.Opacity != 1.0 {
+		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
+	}
+	fmt.Fprintf(writer, `<g id="%s"%s>`, svg.EscapeText(connection.ID), opacityStyle)
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(false, connection)
@@ -651,7 +655,12 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		fmt.Fprintf(writer, `<a href="%s" xlink:href="%[1]s">`, targetShape.Link)
 		closingTag += "</a>"
 	}
-	fmt.Fprintf(writer, `<g id="%s">`, svg.EscapeText(targetShape.ID))
+	// Opacity is a unique style, it applies to everything for a shape
+	opacityStyle := ""
+	if targetShape.Opacity != 1.0 {
+		opacityStyle = fmt.Sprintf(" style='opacity:%f'", targetShape.Opacity)
+	}
+	fmt.Fprintf(writer, `<g id="%s"%s>`, svg.EscapeText(targetShape.ID), opacityStyle)
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)
@@ -839,7 +848,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			svgStyles := styleToSVG(style)
 			containerStyle := fmt.Sprintf(`stroke: %s;fill:%s`, targetShape.Stroke, style.Get(chroma.Background).Background.String())
 
-			fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
+			fmt.Fprintf(writer, `<g transform="translate(%f %f)">`, box.TopLeft.X, box.TopLeft.Y)
 			fmt.Fprintf(writer, `<rect class="shape" width="%d" height="%d" style="%s" />`,
 				targetShape.Width, targetShape.Height, containerStyle)
 			// Padding
@@ -864,7 +873,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			if err != nil {
 				return labelMask, err
 			}
-			fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
+			fmt.Fprintf(writer, `<g transform="translate(%f %f)">`, box.TopLeft.X, box.TopLeft.Y)
 			fmt.Fprint(writer, render)
 			fmt.Fprintf(writer, "</g>")
 		} else if targetShape.Type == d2target.ShapeText && targetShape.Language != "" {

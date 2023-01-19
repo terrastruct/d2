@@ -382,6 +382,20 @@ no leading: |python
 x.a -> x.a
 `,
 		},
+		{
+			name: "opacity-on-label",
+			script: `x.style.opacity: 0.4
+y: |md
+  linux: because a PC is a terrible thing to waste
+| {
+	style.opacity: 0.4
+}
+x -> a: {
+  label: You don't have to know how the computer works,\njust how to work the computer.
+  style.opacity: 0.4
+}
+`,
+		},
 	}
 
 	runa(t, tcs)

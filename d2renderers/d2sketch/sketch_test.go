@@ -328,6 +328,25 @@ a.9 <-> b.9: cf-one-required {
 }
 `,
 		},
+		{
+			name: "opacity",
+			script: `x.style.opacity: 0.4
+y: |md
+  linux: because a PC is a terrible thing to waste
+| {
+	style.opacity: 0.4
+}
+x -> a: {
+  label: You don't have to know how the computer works,\njust how to work the computer.
+  style.opacity: 0.4
+}
+users: {
+	shape: sql_table
+	last_login: datetime
+	style.opacity: 0.4
+}
+`,
+		},
 	}
 	runa(t, tcs)
 }

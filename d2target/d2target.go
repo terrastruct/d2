@@ -173,7 +173,6 @@ func (s Shape) CSSStyle() string {
 		out += fmt.Sprintf(`fill:%s;`, s.Fill)
 		out += fmt.Sprintf(`stroke:%s;`, s.Stroke)
 	}
-	out += fmt.Sprintf(`opacity:%f;`, s.Opacity)
 	out += fmt.Sprintf(`stroke-width:%d;`, s.StrokeWidth)
 	if s.StrokeDash != 0 {
 		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(s.StrokeWidth), s.StrokeDash)
@@ -279,7 +278,6 @@ func (c Connection) CSSStyle() string {
 	out := ""
 
 	out += fmt.Sprintf(`stroke:%s;`, c.Stroke)
-	out += fmt.Sprintf(`opacity:%f;`, c.Opacity)
 	out += fmt.Sprintf(`stroke-width:%d;`, c.StrokeWidth)
 	strokeDash := c.StrokeDash
 	if strokeDash == 0 && c.Animated {
