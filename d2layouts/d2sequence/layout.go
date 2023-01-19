@@ -17,43 +17,45 @@ func WithoutSequenceDiagrams(ctx context.Context, g *d2graph.Graph) (map[string]
 	edgesToRemove := make(map[*d2graph.Edge]struct{})
 	sequenceDiagrams := make(map[string]*sequenceDiagram)
 
-	queue := make([]*d2graph.Object, 1, len(g.Objects))
-	queue[0] = g.Root
-	for len(queue) > 0 {
-		obj := queue[0]
-		queue = queue[1:]
-		if len(obj.ChildrenArray) == 0 {
-			continue
-		}
-		if obj.Attributes.Shape.Value != d2target.ShapeSequenceDiagram {
-			queue = append(queue, obj.ChildrenArray...)
-			continue
-		}
+	if len(g.Objects) > 0 {
+		queue := make([]*d2graph.Object, 1, len(g.Objects))
+		queue[0] = g.Root
+		for len(queue) > 0 {
+			obj := queue[0]
+			queue = queue[1:]
+			if len(obj.ChildrenArray) == 0 {
+				continue
+			}
+			if obj.Attributes.Shape.Value != d2target.ShapeSequenceDiagram {
+				queue = append(queue, obj.ChildrenArray...)
+				continue
+			}
 
-		sd, err := layoutSequenceDiagram(g, obj)
-		if err != nil {
-			return nil, nil, nil, err
-		}
-		obj.Children = make(map[string]*d2graph.Object)
-		obj.ChildrenArray = nil
-		obj.Box = geo.NewBox(nil, sd.getWidth()+GROUP_CONTAINER_PADDING*2, sd.getHeight()+GROUP_CONTAINER_PADDING*2)
-		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-		sequenceDiagrams[obj.AbsID()] = sd
+			sd, err := layoutSequenceDiagram(g, obj)
+			if err != nil {
+				return nil, nil, nil, err
+			}
+			obj.Children = make(map[string]*d2graph.Object)
+			obj.ChildrenArray = nil
+			obj.Box = geo.NewBox(nil, sd.getWidth()+GROUP_CONTAINER_PADDING*2, sd.getHeight()+GROUP_CONTAINER_PADDING*2)
+			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+			sequenceDiagrams[obj.AbsID()] = sd
 
-		for _, edge := range sd.messages {
-			edgesToRemove[edge] = struct{}{}
-		}
-		for _, obj := range sd.actors {
-			objectsToRemove[obj] = struct{}{}
-		}
-		for _, obj := range sd.notes {
-			objectsToRemove[obj] = struct{}{}
-		}
-		for _, obj := range sd.groups {
-			objectsToRemove[obj] = struct{}{}
-		}
-		for _, obj := range sd.spans {
-			objectsToRemove[obj] = struct{}{}
+			for _, edge := range sd.messages {
+				edgesToRemove[edge] = struct{}{}
+			}
+			for _, obj := range sd.actors {
+				objectsToRemove[obj] = struct{}{}
+			}
+			for _, obj := range sd.notes {
+				objectsToRemove[obj] = struct{}{}
+			}
+			for _, obj := range sd.groups {
+				objectsToRemove[obj] = struct{}{}
+			}
+			for _, obj := range sd.spans {
+				objectsToRemove[obj] = struct{}{}
+			}
 		}
 	}
 

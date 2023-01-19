@@ -1817,6 +1817,20 @@ x.y -> a.b: {
 }
 `,
 		},
+		{
+			name: "near-alone",
+			script: `
+x: {
+	near: top-center
+}
+y: {
+	near: bottom-center
+}
+z: {
+	near: center-left
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
