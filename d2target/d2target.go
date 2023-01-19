@@ -21,6 +21,8 @@ import (
 const (
 	DEFAULT_ICON_SIZE = 32
 	MAX_ICON_SIZE     = 64
+
+	THREE_DEE_OFFSET = 15
 )
 
 type Diagram struct {
@@ -87,6 +89,11 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			y1 = go2.Min(y1, int(labelTL.Y))
 			x2 = go2.Max(x2, int(labelTL.X)+targetShape.LabelWidth)
 			y2 = go2.Max(y2, int(labelTL.Y)+targetShape.LabelHeight)
+		}
+
+		if targetShape.ThreeDee {
+			y1 = go2.Min(y1, targetShape.Pos.Y-THREE_DEE_OFFSET-targetShape.StrokeWidth)
+			x2 = go2.Max(x2, targetShape.Pos.X+THREE_DEE_OFFSET+targetShape.Width+targetShape.StrokeWidth)
 		}
 	}
 

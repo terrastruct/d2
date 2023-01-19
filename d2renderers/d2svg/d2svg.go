@@ -38,7 +38,6 @@ import (
 const (
 	DEFAULT_PADDING            = 100
 	MIN_ARROWHEAD_STROKE_WIDTH = 2
-	threeDeeOffset             = 15
 
 	appendixIconRadius = 16
 )
@@ -578,9 +577,9 @@ func render3dRect(targetShape d2target.Shape) string {
 		moveTo(d2target.Point{X: 0, Y: 0}),
 	)
 	for _, v := range []d2target.Point{
-		{X: threeDeeOffset, Y: -threeDeeOffset},
-		{X: targetShape.Width + threeDeeOffset, Y: -threeDeeOffset},
-		{X: targetShape.Width + threeDeeOffset, Y: targetShape.Height - threeDeeOffset},
+		{X: d2target.THREE_DEE_OFFSET, Y: -d2target.THREE_DEE_OFFSET},
+		{X: targetShape.Width + d2target.THREE_DEE_OFFSET, Y: -d2target.THREE_DEE_OFFSET},
+		{X: targetShape.Width + d2target.THREE_DEE_OFFSET, Y: targetShape.Height - d2target.THREE_DEE_OFFSET},
 		{X: targetShape.Width, Y: targetShape.Height},
 		{X: 0, Y: targetShape.Height},
 		{X: 0, Y: 0},
@@ -594,7 +593,7 @@ func render3dRect(targetShape d2target.Shape) string {
 		moveTo(d2target.Point{X: targetShape.Width, Y: 0}),
 	)
 	borderSegments = append(borderSegments,
-		lineTo(d2target.Point{X: targetShape.Width + threeDeeOffset, Y: -threeDeeOffset}),
+		lineTo(d2target.Point{X: targetShape.Width + d2target.THREE_DEE_OFFSET, Y: -d2target.THREE_DEE_OFFSET}),
 	)
 	border := targetShape
 	border.Fill = "none"
@@ -606,10 +605,10 @@ func render3dRect(targetShape d2target.Shape) string {
 	maskID := fmt.Sprintf("border-mask-%v", svg.EscapeText(targetShape.ID))
 	borderMask := strings.Join([]string{
 		fmt.Sprintf(`<defs><mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
-			maskID, targetShape.Pos.X, targetShape.Pos.Y-threeDeeOffset, targetShape.Width+threeDeeOffset, targetShape.Height+threeDeeOffset,
+			maskID, targetShape.Pos.X, targetShape.Pos.Y-d2target.THREE_DEE_OFFSET, targetShape.Width+d2target.THREE_DEE_OFFSET, targetShape.Height+d2target.THREE_DEE_OFFSET,
 		),
 		fmt.Sprintf(`<rect x="%d" y="%d" width="%d" height="%d" fill="white"></rect>`,
-			targetShape.Pos.X, targetShape.Pos.Y-threeDeeOffset, targetShape.Width+threeDeeOffset, targetShape.Height+threeDeeOffset,
+			targetShape.Pos.X, targetShape.Pos.Y-d2target.THREE_DEE_OFFSET, targetShape.Width+d2target.THREE_DEE_OFFSET, targetShape.Height+d2target.THREE_DEE_OFFSET,
 		),
 		fmt.Sprintf(`<path d="%s" style="%s;stroke:#000;fill:none;opacity:1;"/></mask></defs>`,
 			strings.Join(borderSegments, ""), borderStyle),
@@ -626,9 +625,9 @@ func render3dRect(targetShape d2target.Shape) string {
 	var sidePoints []string
 	for _, v := range []d2target.Point{
 		{X: 0, Y: 0},
-		{X: threeDeeOffset, Y: -threeDeeOffset},
-		{X: targetShape.Width + threeDeeOffset, Y: -threeDeeOffset},
-		{X: targetShape.Width + threeDeeOffset, Y: targetShape.Height - threeDeeOffset},
+		{X: d2target.THREE_DEE_OFFSET, Y: -d2target.THREE_DEE_OFFSET},
+		{X: targetShape.Width + d2target.THREE_DEE_OFFSET, Y: -d2target.THREE_DEE_OFFSET},
+		{X: targetShape.Width + d2target.THREE_DEE_OFFSET, Y: targetShape.Height - d2target.THREE_DEE_OFFSET},
 		{X: targetShape.Width, Y: targetShape.Height},
 		{X: targetShape.Width, Y: 0},
 	} {
