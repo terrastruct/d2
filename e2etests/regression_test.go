@@ -390,6 +390,10 @@ y: |md
 | {
 	style.opacity: 0.4
 }
+x -> a: {
+  label: You don't have to know how the computer works,\njust how to work the computer.
+  style.opacity: 0.4
+}
 `,
 		},
 	}
