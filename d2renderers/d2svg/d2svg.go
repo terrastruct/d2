@@ -42,8 +42,6 @@ const (
 	appendixIconRadius = 16
 )
 
-var multipleOffset = geo.NewVector(10, -10)
-
 //go:embed tooltip.svg
 var TooltipIcon string
 
@@ -689,7 +687,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 
 	var multipleTL *geo.Point
 	if targetShape.Multiple {
-		multipleTL = tl.AddVector(multipleOffset)
+		multipleTL = tl.AddVector(geo.NewVector(d2target.MULTIPLE_OFFSET, -d2target.MULTIPLE_OFFSET))
 	}
 
 	switch targetShape.Type {
