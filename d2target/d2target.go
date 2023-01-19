@@ -69,6 +69,11 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			x2 = go2.Max(x2, targetShape.Pos.X+targetShape.StrokeWidth+targetShape.Width+16)
 		}
 
+		if targetShape.ThreeDee {
+			y1 = go2.Min(y1, targetShape.Pos.Y-THREE_DEE_OFFSET-targetShape.StrokeWidth)
+			x2 = go2.Max(x2, targetShape.Pos.X+THREE_DEE_OFFSET+targetShape.Width+targetShape.StrokeWidth)
+		}
+
 		if targetShape.Label != "" {
 			labelPosition := label.Position(targetShape.LabelPosition)
 			if !labelPosition.IsOutside() {
@@ -89,11 +94,6 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			y1 = go2.Min(y1, int(labelTL.Y))
 			x2 = go2.Max(x2, int(labelTL.X)+targetShape.LabelWidth)
 			y2 = go2.Max(y2, int(labelTL.Y)+targetShape.LabelHeight)
-		}
-
-		if targetShape.ThreeDee {
-			y1 = go2.Min(y1, targetShape.Pos.Y-THREE_DEE_OFFSET-targetShape.StrokeWidth)
-			x2 = go2.Max(x2, targetShape.Pos.X+THREE_DEE_OFFSET+targetShape.Width+targetShape.StrokeWidth)
 		}
 	}
 

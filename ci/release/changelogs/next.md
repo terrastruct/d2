@@ -17,6 +17,7 @@
 - Fixes attributes being ignored for `sql_table` to `sql_table` connections. [#658](https://github.com/terrastruct/d2/pull/658)
 - Fixes tooltip/link attributes being ignored for `sql_table` and `class`. [#658](https://github.com/terrastruct/d2/pull/658)
 - Fixes arrowheads sometimes appearing broken with sketch on. [#656](https://github.com/terrastruct/d2/pull/656)
+- Bounding box was not account for 3d offsets, which made them look cut off with 0 padding. [#684](https://github.com/terrastruct/d2/pull/684)
 - Fixes code snippets not being tall enough with leading newlines. [#664](https://github.com/terrastruct/d2/pull/664)
 - Opacity was not being applied to labels of shapes (and other edge cases). [#677](https://github.com/terrastruct/d2/pull/677)
 - Icon URLs that needed escaping (e.g. with ampersands) are handled correctly by CLI. [#666](https://github.com/terrastruct/d2/pull/666)
