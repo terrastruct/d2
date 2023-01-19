@@ -885,6 +885,9 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			if targetShape.Stroke != "" {
 				mdStyle += fmt.Sprintf("color:%s;", targetShape.Stroke)
 			}
+			if targetShape.Opacity != 1.0 {
+				mdStyle += fmt.Sprintf("opacity:%f;", targetShape.Opacity)
+			}
 
 			fmt.Fprintf(writer, `<div xmlns="http://www.w3.org/1999/xhtml" class="md" style="%s">%v</div>`, mdStyle, render)
 			fmt.Fprint(writer, `</foreignObject></g>`)
@@ -894,6 +897,9 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				fontColor = targetShape.Color
 			}
 			textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", targetShape.FontSize, fontColor)
+			if targetShape.Opacity != 1.0 {
+				textStyle += fmt.Sprintf(";opacity:%f;", targetShape.Opacity)
+			}
 			x := labelTL.X + float64(targetShape.LabelWidth)/2.
 			// text is vertically positioned at its baseline which is at labelTL+FontSize
 			y := labelTL.Y + float64(targetShape.FontSize)
