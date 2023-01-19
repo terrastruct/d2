@@ -44,6 +44,7 @@ const (
 )
 
 var multipleOffset = geo.NewVector(10, -10)
+var borderOffset = geo.NewVector(5, 5)
 
 //go:embed tooltip.svg
 var TooltipIcon string
@@ -494,7 +495,8 @@ func renderOval(tl *geo.Point, width, height float64, style string) string {
 }
 
 func renderDoubleOval(tl *geo.Point, width, height float64, style string) string {
-	return renderOval(tl, width, height, style) + renderOval(&geo.Point{X: tl.X + 5, Y: tl.Y + 5}, width-10, height-10, style)
+	var innerTL *geo.Point = tl.AddVector(borderOffset)
+	return renderOval(tl, width, height, style) + renderOval(innerTL, width-10, height-10, style)
 }
 
 func defineShadowFilter(writer io.Writer) {
@@ -661,20 +663,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		fmt.Fprintf(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeOval:
-		if !targetShape.DoubleBorder {
-			if targetShape.Multiple {
-				fmt.Fprint(writer, renderOval(multipleTL, width, height, style))
-			}
-			if sketchRunner != nil {
-				out, err := d2sketch.Oval(sketchRunner, targetShape)
-				if err != nil {
-					return "", err
-				}
-				fmt.Fprintf(writer, out)
-			} else {
-				fmt.Fprint(writer, renderOval(tl, width, height, style))
-			}
-		} else {
+		if targetShape.DoubleBorder {
 			if targetShape.Multiple {
 				fmt.Fprint(writer, renderDoubleOval(multipleTL, width, height, style))
 			}
@@ -686,6 +675,19 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				fmt.Fprintf(writer, out)
 			} else {
 				fmt.Fprint(writer, renderDoubleOval(tl, width, height, style))
+			}
+		} else {
+			if targetShape.Multiple {
+				fmt.Fprint(writer, renderOval(multipleTL, width, height, style))
+			}
+			if sketchRunner != nil {
+				out, err := d2sketch.Oval(sketchRunner, targetShape)
+				if err != nil {
+					return "", err
+				}
+				fmt.Fprintf(writer, out)
+			} else {
+				fmt.Fprint(writer, renderOval(tl, width, height, style))
 			}
 		}
 	case d2target.ShapeImage:
