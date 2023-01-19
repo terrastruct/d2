@@ -1831,6 +1831,17 @@ z: {
 }
 `,
 		},
+		{
+			name: "border-radius",
+			script: `
+x: {
+	style.border-radius: 4
+}
+y: {
+	style.border-radius: 10
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
