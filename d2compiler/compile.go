@@ -757,13 +757,15 @@ func flattenContainer(g *d2graph.Graph, obj *d2graph.Object) {
 		// TODO more attributes
 		if e.SrcTableColumnIndex != nil {
 			newEdge.SrcTableColumnIndex = new(int)
+			newEdge.SrcArrowhead = e.SrcArrowhead
 			*newEdge.SrcTableColumnIndex = *e.SrcTableColumnIndex
 		}
 		if e.DstTableColumnIndex != nil {
 			newEdge.DstTableColumnIndex = new(int)
+			newEdge.DstArrowhead = e.DstArrowhead
 			*newEdge.DstTableColumnIndex = *e.DstTableColumnIndex
 		}
-		newEdge.Attributes.Label = e.Attributes.Label
+		newEdge.Attributes = e.Attributes
 		newEdge.References = e.References
 	}
 	updatedEdges := []*d2graph.Edge{}

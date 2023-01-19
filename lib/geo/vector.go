@@ -76,3 +76,15 @@ func GetUnitNormalVector(x1, y1, x2, y2 float64) (float64, float64) {
 	length := EuclideanDistance(x1, y1, x2, y2)
 	return normalX / length, normalY / length
 }
+
+func (a Vector) Radians() float64 {
+	return math.Atan2(a[1], a[0])
+}
+
+func (a Vector) Degrees() float64 {
+	return a.Radians() * 180 / math.Pi
+}
+
+func (a Vector) Reverse() Vector {
+	return a.Multiply(-1)
+}

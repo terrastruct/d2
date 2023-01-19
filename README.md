@@ -42,6 +42,7 @@ https://user-images.githubusercontent.com/3120367/206125010-bd1fea8e-248a-43e7-8
   - <a href="#community-plugins" id="toc-community-plugins">Community plugins</a>
   - <a href="#misc" id="toc-misc">Misc</a>
 - <a href="#faq" id="toc-faq">FAQ</a>
+- <a href="#open-source-projects-documenting-with-d2" id="toc-open-source-projects-documenting-with-d2">Open-source projects documenting with D2</a>
 
 ## What does D2 look like?
 
@@ -218,6 +219,7 @@ let us know and we'll be happy to include it here!
 - **D2 org-mode support**: [https://github.com/xcapaldi/ob-d2](https://github.com/xcapaldi/ob-d2)
 - **Python D2 diagram builder**: [https://github.com/MrBlenny/py-d2](https://github.com/MrBlenny/py-d2)
 - **Clojure D2 transpiler**: [https://github.com/judepayne/dictim](https://github.com/judepayne/dictim)
+- **JavaScript D2 diagram builder**: [https://github.com/Kreshnik/d2lang-js](https://github.com/Kreshnik/d2lang-js)
 
 ### Misc
 
@@ -240,3 +242,21 @@ let us know and we'll be happy to include it here!
   - Please open up a Github Issue.
 - I have a private inquiry.
   - Please reach out at [hi@d2lang.com](hi@d2lang.com).
+
+## Open-source projects documenting with D2
+
+Do you have or see an open-source project with `.d2` files? Please submit a PR adding to
+this list (ordered by star count, desc).
+
+- [Block Protocol](https://github.com/blockprotocol/blockprotocol) - The Block Protocol is
+  an open standard for building and using data-driven blocks.
+- [Ivy Wallet](https://github.com/Ivy-Apps/ivy-wallet) - Ivy Wallet is an open-source
+  money manager app for Android.
+- [Learn EVM Attacks](https://github.com/coinspect/learn-evm-attacks) - Learn & Contribute
+  on previously exploited vulnerabilities across several EVM projects.
+- [BYCEPS](https://github.com/byceps/byceps) - BYCEPS is a self-hosted web platform to run
+  LAN parties.
+- [Re:Earth](https://github.com/reearth/reearth-web) - A free, open and highly extensible
+  WebGIS platform.
+- [Terraform OCI VSCode Server](https://github.com/timoa/terraform-oci-vscode-server) -
+  Terraform project that deploys VSCode Server on Oracle Cloud Infrastructure.
