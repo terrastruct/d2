@@ -307,16 +307,13 @@ func (c Connection) CSSStyle() string {
 }
 
 func (c *Connection) GetLabelTopLeft() *geo.Point {
-	p := label.Position(c.LabelPosition).GetPointOnRoute(
+	return label.Position(c.LabelPosition).GetPointOnRoute(
 		c.Route,
 		float64(c.StrokeWidth),
 		c.LabelPercentage,
 		float64(c.LabelWidth),
 		float64(c.LabelHeight),
 	)
-	p.Y -= float64(c.LabelHeight) / 2
-
-	return p
 }
 
 func (c Connection) GetZIndex() int {
