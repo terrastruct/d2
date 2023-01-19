@@ -40,6 +40,11 @@ func TestSketch(t *testing.T) {
 		`,
 		},
 		{
+			name: "animated",
+			script: `winter.snow -> summer.sun -> trees -> winter.snow: { style.animated: true }
+		`,
+		},
+		{
 			name: "connection label",
 			script: `a -> b: hello
 		`,
@@ -274,6 +279,71 @@ shipments.order_id <-> orders.id`,
   +getStatus(): Enum
   +getJobs(): "Job[]"
   +setTimeout(seconds int)
+}
+`,
+		},
+		{
+			name: "arrowheads",
+			script: `
+a: ""
+b: ""
+a.1 -- b.1: none
+a.2 <-> b.2: arrow {
+	source-arrowhead.shape: arrow
+	target-arrowhead.shape: arrow
+}
+a.3 <-> b.3: triangle {
+	source-arrowhead.shape: triangle
+	target-arrowhead.shape: triangle
+}
+a.4 <-> b.4: diamond {
+	source-arrowhead.shape: diamond
+	target-arrowhead.shape: diamond
+}
+a.5 <-> b.5: diamond filled {
+	source-arrowhead: {
+		shape: diamond
+		style.filled: true
+	}
+	target-arrowhead: {
+		shape: diamond
+		style.filled: true
+	}
+}
+a.6 <-> b.6: cf-many {
+	source-arrowhead.shape: cf-many
+	target-arrowhead.shape: cf-many
+}
+a.7 <-> b.7: cf-many-required {
+	source-arrowhead.shape: cf-many-required
+	target-arrowhead.shape: cf-many-required
+}
+a.8 <-> b.8: cf-one {
+	source-arrowhead.shape: cf-one
+	target-arrowhead.shape: cf-one
+}
+a.9 <-> b.9: cf-one-required {
+	source-arrowhead.shape: cf-one-required
+	target-arrowhead.shape: cf-one-required
+}
+`,
+		},
+		{
+			name: "opacity",
+			script: `x.style.opacity: 0.4
+y: |md
+  linux: because a PC is a terrible thing to waste
+| {
+	style.opacity: 0.4
+}
+x -> a: {
+  label: You don't have to know how the computer works,\njust how to work the computer.
+  style.opacity: 0.4
+}
+users: {
+	shape: sql_table
+	last_login: datetime
+	style.opacity: 0.4
 }
 `,
 		},

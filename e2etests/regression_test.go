@@ -304,6 +304,98 @@ k8s -> osvc: harbor
 k8s -> osvc: vault
 `,
 		},
+		{
+			name: "no-lexer",
+			script: `x: |d2
+  x -> y
+|
+`,
+		},
+		{
+			name: "dagre_broken_arrowhead",
+			script: `
+a.b -> a.c: "line 1\nline 2\nline 3\nline 4" {
+	style: {
+		font-color: red
+		stroke: red
+	}
+	target-arrowhead: {
+		shape: diamond
+	}
+}
+a.1 -> a.c
+a.2 <-> a.c
+a.c {
+	style.stroke: white
+	d
+}
+`,
+		},
+		{
+			name: "code_leading_trailing_newlines",
+			script: `
+hello world: |python
+
+
+  # 2 leading, 2 trailing
+  def hello():
+
+    print "world"
+
+
+|
+
+no trailing: |python
+
+
+  # 2 leading
+  def hello():
+
+    print "world"
+|
+
+no leading: |python
+  # 2 trailing
+  def hello():
+
+    print "world"
+
+
+|
+`,
+		},
+		{
+			name: "md_h1_li_li",
+			script: mdTestScript(`
+# hey
+- they
+	1. they
+`),
+		},
+		{
+			name: "elk_loop_panic",
+			script: `x: {
+  a
+  b
+}
+
+x.a -> x.a
+`,
+		},
+		{
+			name: "opacity-on-label",
+			script: `x.style.opacity: 0.4
+y: |md
+  linux: because a PC is a terrible thing to waste
+| {
+	style.opacity: 0.4
+}
+x -> a: {
+  label: You don't have to know how the computer works,\njust how to work the computer.
+  style.opacity: 0.4
+}
+`,
+		},
 	}
 
 	runa(t, tcs)

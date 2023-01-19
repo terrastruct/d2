@@ -347,17 +347,25 @@ func arrowheadAdjustment(start, end *geo.Point, arrowhead d2target.Arrowhead, ed
 	return v.Unit().Multiply(-distance).ToPoint()
 }
 
-// returns the path's d attribute for the given connection
-func pathData(connection d2target.Connection, idToShape map[string]d2target.Shape) string {
-	var path []string
+func getArrowheadAdjustments(connection d2target.Connection, idToShape map[string]d2target.Shape) (srcAdj, dstAdj *geo.Point) {
 	route := connection.Route
 	srcShape := idToShape[connection.Src]
 	dstShape := idToShape[connection.Dst]
 
-	sourceAdjustment := arrowheadAdjustment(route[0], route[1], connection.SrcArrow, connection.StrokeWidth, srcShape.StrokeWidth)
+	sourceAdjustment := arrowheadAdjustment(route[1], route[0], connection.SrcArrow, connection.StrokeWidth, srcShape.StrokeWidth)
+
+	targetAdjustment := arrowheadAdjustment(route[len(route)-2], route[len(route)-1], connection.DstArrow, connection.StrokeWidth, dstShape.StrokeWidth)
+	return sourceAdjustment, targetAdjustment
+}
+
+// returns the path's d attribute for the given connection
+func pathData(connection d2target.Connection, srcAdj, dstAdj *geo.Point) string {
+	var path []string
+	route := connection.Route
+
 	path = append(path, fmt.Sprintf("M %f %f",
-		route[0].X-sourceAdjustment.X,
-		route[0].Y-sourceAdjustment.Y,
+		route[0].X+srcAdj.X,
+		route[0].Y+srcAdj.Y,
 	))
 
 	if connection.IsCurve {
@@ -370,12 +378,11 @@ func pathData(connection d2target.Connection, idToShape map[string]d2target.Shap
 			))
 		}
 		// final curve target adjustment
-		targetAdjustment := arrowheadAdjustment(route[i+1], route[i+2], connection.DstArrow, connection.StrokeWidth, dstShape.StrokeWidth)
 		path = append(path, fmt.Sprintf("C %f %f %f %f %f %f",
 			route[i].X, route[i].Y,
 			route[i+1].X, route[i+1].Y,
-			route[i+2].X+targetAdjustment.X,
-			route[i+2].Y+targetAdjustment.Y,
+			route[i+2].X+dstAdj.X,
+			route[i+2].Y+dstAdj.Y,
 		))
 	} else {
 		for i := 1; i < len(route)-1; i++ {
@@ -427,12 +434,9 @@ func pathData(connection d2target.Connection, idToShape map[string]d2target.Shap
 		}
 
 		lastPoint := route[len(route)-1]
-		secondToLastPoint := route[len(route)-2]
-
-		targetAdjustment := arrowheadAdjustment(secondToLastPoint, lastPoint, connection.DstArrow, connection.StrokeWidth, dstShape.StrokeWidth)
 		path = append(path, fmt.Sprintf("L %f %f",
-			lastPoint.X+targetAdjustment.X,
-			lastPoint.Y+targetAdjustment.Y,
+			lastPoint.X+dstAdj.X,
+			lastPoint.Y+dstAdj.Y,
 		))
 	}
 
@@ -448,7 +452,11 @@ func makeLabelMask(labelTL *geo.Point, width, height int) string {
 }
 
 func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, _ error) {
-	fmt.Fprintf(writer, `<g id="%s">`, svg.EscapeText(connection.ID))
+	opacityStyle := ""
+	if connection.Opacity != 1.0 {
+		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
+	}
+	fmt.Fprintf(writer, `<g id="%s"%s>`, svg.EscapeText(connection.ID), opacityStyle)
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(false, connection)
@@ -488,21 +496,29 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		}
 	}
 
-	path := pathData(connection, idToShape)
-	attrs := fmt.Sprintf(`%s%smask="url(#%s)"`,
-		markerStart,
-		markerEnd,
-		labelMaskID,
-	)
+	srcAdj, dstAdj := getArrowheadAdjustments(connection, idToShape)
+	path := pathData(connection, srcAdj, dstAdj)
+	mask := fmt.Sprintf(`mask="url(#%s)"`, labelMaskID)
 	if sketchRunner != nil {
-		out, err := d2sketch.Connection(sketchRunner, connection, path, attrs)
+		out, err := d2sketch.Connection(sketchRunner, connection, path, mask)
 		if err != nil {
 			return "", err
 		}
-		fmt.Fprintf(writer, out)
+		fmt.Fprint(writer, out)
+
+		// render sketch arrowheads separately
+		arrowPaths, err := d2sketch.Arrowheads(sketchRunner, connection, srcAdj, dstAdj)
+		if err != nil {
+			return "", err
+		}
+		fmt.Fprint(writer, arrowPaths)
 	} else {
-		fmt.Fprintf(writer, `<path d="%s" class="connection" style="fill:none;%s" %s/>`,
-			path, connectionStyle(connection), attrs)
+		animatedClass := ""
+		if connection.Animated {
+			animatedClass = " animated-connection"
+		}
+		fmt.Fprintf(writer, `<path d="%s" class="connection%s" style="fill:none;%s" %s%s%s/>`,
+			path, animatedClass, connection.CSSStyle(), markerStart, markerEnd, mask)
 	}
 
 	if connection.Label != "" {
@@ -622,7 +638,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	)
 	border := targetShape
 	border.Fill = "none"
-	borderStyle := shapeStyle(border)
+	borderStyle := border.CSSStyle()
 	renderedBorder := fmt.Sprintf(`<path d="%s" style="%s"/>`,
 		strings.Join(borderSegments, " "), borderStyle)
 
@@ -643,7 +659,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	mainShape := targetShape
 	mainShape.Stroke = "none"
 	mainRect := fmt.Sprintf(`<rect x="%d" y="%d" width="%d" height="%d" style="%s" mask="url(#%s)"/>`,
-		targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, shapeStyle(mainShape), maskID,
+		targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, mainShape.CSSStyle(), maskID,
 	)
 
 	// render the side shapes in the darkened color without stroke and the border mask
@@ -668,7 +684,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	sideShape.Fill = darkerColor
 	sideShape.Stroke = "none"
 	renderedSides := fmt.Sprintf(`<polygon points="%s" style="%s" mask="url(#%s)"/>`,
-		strings.Join(sidePoints, " "), shapeStyle(sideShape), maskID)
+		strings.Join(sidePoints, " "), sideShape.CSSStyle(), maskID)
 
 	return borderMask + mainRect + renderedSides + renderedBorder
 }
@@ -679,11 +695,16 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		fmt.Fprintf(writer, `<a href="%s" xlink:href="%[1]s">`, targetShape.Link)
 		closingTag += "</a>"
 	}
-	fmt.Fprintf(writer, `<g id="%s">`, svg.EscapeText(targetShape.ID))
+	// Opacity is a unique style, it applies to everything for a shape
+	opacityStyle := ""
+	if targetShape.Opacity != 1.0 {
+		opacityStyle = fmt.Sprintf(" style='opacity:%f'", targetShape.Opacity)
+	}
+	fmt.Fprintf(writer, `<g id="%s"%s>`, svg.EscapeText(targetShape.ID), opacityStyle)
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)
-	style := shapeStyle(targetShape)
+	style := targetShape.CSSStyle()
 	shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[targetShape.Type]
 
 	s := shape.NewShape(shapeType, geo.NewBox(tl, width, height))
@@ -723,6 +744,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		} else {
 			drawClass(writer, targetShape)
 		}
+		addAppendixItems(writer, targetShape)
 		fmt.Fprintf(writer, `</g>`)
 		fmt.Fprintf(writer, closingTag)
 		return labelMask, nil
@@ -736,6 +758,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		} else {
 			drawTable(writer, targetShape)
 		}
+		addAppendixItems(writer, targetShape)
 		fmt.Fprintf(writer, `</g>`)
 		fmt.Fprintf(writer, closingTag)
 		return labelMask, nil
@@ -847,7 +870,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		if targetShape.Type == d2target.ShapeCode {
 			lexer := lexers.Get(targetShape.Language)
 			if lexer == nil {
-				return labelMask, fmt.Errorf("code snippet lexer for %s not found", targetShape.Language)
+				lexer = lexers.Fallback
 			}
 			style := styles.Get("github")
 			if style == nil {
@@ -865,7 +888,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			svgStyles := styleToSVG(style)
 			containerStyle := fmt.Sprintf(`stroke: %s;fill:%s`, targetShape.Stroke, style.Get(chroma.Background).Background.String())
 
-			fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
+			fmt.Fprintf(writer, `<g transform="translate(%f %f)">`, box.TopLeft.X, box.TopLeft.Y)
 			fmt.Fprintf(writer, `<rect class="shape" width="%d" height="%d" style="%s" />`,
 				targetShape.Width, targetShape.Height, containerStyle)
 			// Padding
@@ -890,7 +913,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			if err != nil {
 				return labelMask, err
 			}
-			fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
+			fmt.Fprintf(writer, `<g transform="translate(%f %f)">`, box.TopLeft.X, box.TopLeft.Y)
 			fmt.Fprint(writer, render)
 			fmt.Fprintf(writer, "</g>")
 		} else if targetShape.Type == d2target.ShapeText && targetShape.Language != "" {
@@ -935,27 +958,31 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		}
 	}
 
-	rightPadForTooltip := 0
-	if targetShape.Tooltip != "" {
-		rightPadForTooltip = 2 * appendixIconRadius
-		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
-			targetShape.Pos.X+targetShape.Width-appendixIconRadius,
-			targetShape.Pos.Y-appendixIconRadius,
-			TooltipIcon,
-		)
-		fmt.Fprintf(writer, `<title>%s</title>`, targetShape.Tooltip)
-	}
-
-	if targetShape.Link != "" {
-		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
-			targetShape.Pos.X+targetShape.Width-appendixIconRadius-rightPadForTooltip,
-			targetShape.Pos.Y-appendixIconRadius,
-			LinkIcon,
-		)
-	}
+	addAppendixItems(writer, targetShape)
 
 	fmt.Fprintf(writer, closingTag)
 	return labelMask, nil
+}
+
+func addAppendixItems(writer io.Writer, shape d2target.Shape) {
+	rightPadForTooltip := 0
+	if shape.Tooltip != "" {
+		rightPadForTooltip = 2 * appendixIconRadius
+		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
+			shape.Pos.X+shape.Width-appendixIconRadius,
+			shape.Pos.Y-appendixIconRadius,
+			TooltipIcon,
+		)
+		fmt.Fprintf(writer, `<title>%s</title>`, shape.Tooltip)
+	}
+
+	if shape.Link != "" {
+		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
+			shape.Pos.X+shape.Width-appendixIconRadius-rightPadForTooltip,
+			shape.Pos.Y-appendixIconRadius,
+			LinkIcon,
+		)
+	}
 }
 
 func RenderText(text string, x, height float64) string {
@@ -977,43 +1004,6 @@ func RenderText(text string, x, height float64) string {
 		rendered = append(rendered, fmt.Sprintf(`<tspan x="%f" dy="%f">%s</tspan>`, x, dy, escaped))
 	}
 	return strings.Join(rendered, "")
-}
-
-func shapeStyle(shape d2target.Shape) string {
-	out := ""
-
-	if shape.Type == d2target.ShapeSQLTable || shape.Type == d2target.ShapeClass {
-		// Fill is used for header fill in these types
-		// This fill property is just background of rows
-		out += fmt.Sprintf(`fill:%s;`, shape.Stroke)
-		// Stroke (border) of these shapes should match the header fill
-		out += fmt.Sprintf(`stroke:%s;`, shape.Fill)
-	} else {
-		out += fmt.Sprintf(`fill:%s;`, shape.Fill)
-		out += fmt.Sprintf(`stroke:%s;`, shape.Stroke)
-	}
-	out += fmt.Sprintf(`opacity:%f;`, shape.Opacity)
-	out += fmt.Sprintf(`stroke-width:%d;`, shape.StrokeWidth)
-	if shape.StrokeDash != 0 {
-		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(shape.StrokeWidth), shape.StrokeDash)
-		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
-	}
-
-	return out
-}
-
-func connectionStyle(connection d2target.Connection) string {
-	out := ""
-
-	out += fmt.Sprintf(`stroke:%s;`, connection.Stroke)
-	out += fmt.Sprintf(`opacity:%f;`, connection.Opacity)
-	out += fmt.Sprintf(`stroke-width:%d;`, connection.StrokeWidth)
-	if connection.StrokeDash != 0 {
-		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(connection.StrokeWidth), connection.StrokeDash)
-		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
-	}
-
-	return out
 }
 
 func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
@@ -1051,6 +1041,23 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 .text-underline {
   text-decoration: underline;
 }`)
+			break
+		}
+	}
+
+	triggers = []string{
+		`animated-connection`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			buf.WriteString(`
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 0;
+  }
+}
+`)
 			break
 		}
 	}

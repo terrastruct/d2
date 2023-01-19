@@ -187,12 +187,12 @@ func (p *Point) DistanceToLine(p1, p2 *Point) float64 {
 
 // Moves the given point by Vector
 func (start *Point) AddVector(v Vector) *Point {
-	return start.toVector().Add(v).ToPoint()
+	return start.ToVector().Add(v).ToPoint()
 }
 
 // Creates a Vector of the size between start and endpoint, pointing to endpoint
 func (start *Point) VectorTo(endpoint *Point) Vector {
-	return endpoint.toVector().Minus(start.toVector())
+	return endpoint.ToVector().Minus(start.ToVector())
 }
 
 func (p *Point) FormattedCoordinates() string {
@@ -205,7 +205,7 @@ func (q *Point) OnSegment(p, r *Point) bool {
 }
 
 // Creates a Vector pointing to point
-func (endpoint *Point) toVector() Vector {
+func (endpoint *Point) ToVector() Vector {
 	return []float64{endpoint.X, endpoint.Y}
 }
 

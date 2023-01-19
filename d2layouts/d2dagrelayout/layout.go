@@ -30,6 +30,8 @@ var setupJS string
 //go:embed dagre.js
 var dagreJS string
 
+const MIN_SEGMENT_LEN = 10
+
 type ConfigurableOpts struct {
 	NodeSep int `json:"nodesep"`
 	EdgeSep int `json:"edgesep"`
@@ -247,6 +249,47 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
+		// arrowheads can appear broken if segments are very short from dagre routing a point just outside the shape
+		// to fix this, we try extending the previous segment into the shape instead of having a very short segment
+		if !start.Equals(points[0]) && startIndex+2 < len(points) {
+			newStartingSegment := *geo.NewSegment(start, points[startIndex+1])
+			if newStartingSegment.Length() < MIN_SEGMENT_LEN {
+				// we don't want a very short segment right next to the source because it will mess up the arrowhead
+				// instead we want to extend the next segment into the shape border if possible
+				nextStart := points[startIndex+1]
+				nextEnd := points[startIndex+2]
+
+				// Note: in other direction to extend towards source
+				nextSegment := *geo.NewSegment(nextStart, nextEnd)
+				v := nextSegment.ToVector()
+				extendedStart := nextEnd.ToVector().Add(v.AddLength(MIN_SEGMENT_LEN)).ToPoint()
+				extended := *geo.NewSegment(nextEnd, extendedStart)
+
+				if intersections := edge.Src.Box.Intersections(extended); len(intersections) > 0 {
+					start = intersections[0]
+					startIndex += 1
+				}
+			}
+		}
+		if !end.Equals(points[len(points)-1]) && endIndex-2 >= 0 {
+			newEndingSegment := *geo.NewSegment(end, points[endIndex-1])
+			if newEndingSegment.Length() < MIN_SEGMENT_LEN {
+				// extend the prev segment into the shape border if possible
+				prevStart := points[endIndex-2]
+				prevEnd := points[endIndex-1]
+
+				prevSegment := *geo.NewSegment(prevStart, prevEnd)
+				v := prevSegment.ToVector()
+				extendedEnd := prevStart.ToVector().Add(v.AddLength(MIN_SEGMENT_LEN)).ToPoint()
+				extended := *geo.NewSegment(prevStart, extendedEnd)
+
+				if intersections := edge.Dst.Box.Intersections(extended); len(intersections) > 0 {
+					end = intersections[0]
+					endIndex -= 1
+				}
+			}
+		}
+
 		srcShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Src.Attributes.Shape.Value)], edge.Src.Box)
 		dstShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Dst.Attributes.Shape.Value)], edge.Dst.Box)
 
@@ -263,18 +306,20 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		path := make([]*geo.Point, 0)
 		path = append(path, points[0])
-		path = append(path, points[0].AddVector(vectors[0].Multiply(.8)))
-		for i := 1; i < len(vectors)-2; i++ {
-			p := points[i]
-			v := vectors[i]
-			path = append(path, p.AddVector(v.Multiply(.2)))
-			path = append(path, p.AddVector(v.Multiply(.5)))
-			path = append(path, p.AddVector(v.Multiply(.8)))
+		if len(vectors) > 1 {
+			path = append(path, points[0].AddVector(vectors[0].Multiply(.8)))
+			for i := 1; i < len(vectors)-2; i++ {
+				p := points[i]
+				v := vectors[i]
+				path = append(path, p.AddVector(v.Multiply(.2)))
+				path = append(path, p.AddVector(v.Multiply(.5)))
+				path = append(path, p.AddVector(v.Multiply(.8)))
+			}
+			path = append(path, points[len(points)-2].AddVector(vectors[len(vectors)-1].Multiply(.2)))
+			edge.IsCurve = true
 		}
-		path = append(path, points[len(points)-2].AddVector(vectors[len(vectors)-1].Multiply(.2)))
 		path = append(path, points[len(points)-1])
 
-		edge.IsCurve = true
 		edge.Route = path
 		// compile needs to assign edge label positions
 		if edge.Attributes.Label.Value != "" {
