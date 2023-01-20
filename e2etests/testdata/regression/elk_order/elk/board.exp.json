@@ -9,8 +9,8 @@
         "x": 12,
         "y": 165
       },
-      "width": 1146,
-      "height": 276,
+      "width": 656,
+      "height": 206,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -48,8 +48,8 @@
         "x": 87,
         "y": 240
       },
-      "width": 125,
-      "height": 126,
+      "width": 55,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -85,11 +85,11 @@
       "id": "queue.M1",
       "type": "",
       "pos": {
-        "x": 232,
+        "x": 162,
         "y": 240
       },
-      "width": 125,
-      "height": 126,
+      "width": 55,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -125,11 +125,11 @@
       "id": "queue.M2",
       "type": "",
       "pos": {
-        "x": 377,
+        "x": 237,
         "y": 240
       },
-      "width": 125,
-      "height": 126,
+      "width": 55,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -165,11 +165,11 @@
       "id": "queue.M3",
       "type": "",
       "pos": {
-        "x": 522,
+        "x": 312,
         "y": 240
       },
-      "width": 125,
-      "height": 126,
+      "width": 55,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -205,11 +205,11 @@
       "id": "queue.M4",
       "type": "",
       "pos": {
-        "x": 667,
+        "x": 387,
         "y": 240
       },
-      "width": 126,
-      "height": 126,
+      "width": 56,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -245,11 +245,11 @@
       "id": "queue.M5",
       "type": "",
       "pos": {
-        "x": 813,
+        "x": 463,
         "y": 240
       },
-      "width": 125,
-      "height": 126,
+      "width": 55,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -285,11 +285,11 @@
       "id": "queue.M6",
       "type": "",
       "pos": {
-        "x": 958,
+        "x": 538,
         "y": 240
       },
-      "width": 125,
-      "height": 126,
+      "width": 55,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -325,7 +325,7 @@
       "id": "m0_desc",
       "type": "text",
       "pos": {
-        "x": 96,
+        "x": 61,
         "y": 36
       },
       "width": 106,
@@ -364,7 +364,7 @@
       "id": "m2_desc",
       "type": "text",
       "pos": {
-        "x": 419,
+        "x": 244,
         "y": 36
       },
       "width": 41,
@@ -403,7 +403,7 @@
       "id": "m5_desc",
       "type": "text",
       "pos": {
-        "x": 830,
+        "x": 385,
         "y": 36
       },
       "width": 90,
@@ -442,7 +442,7 @@
       "id": "m6_desc",
       "type": "text",
       "pos": {
-        "x": 950,
+        "x": 495,
         "y": 12
       },
       "width": 140,
@@ -505,11 +505,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 149.5,
+          "x": 114.5,
           "y": 60
         },
         {
-          "x": 149.5,
+          "x": 114.5,
           "y": 240
         }
       ],
@@ -544,11 +544,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 439.5,
+          "x": 264.5,
           "y": 60
         },
         {
-          "x": 439.5,
+          "x": 264.5,
           "y": 240
         }
       ],
@@ -583,11 +583,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 875.5,
+          "x": 430.5,
           "y": 60
         },
         {
-          "x": 875.5,
+          "x": 430.5,
+          "y": 110
+        },
+        {
+          "x": 490.5,
+          "y": 110
+        },
+        {
+          "x": 490.5,
           "y": 240
         }
       ],
@@ -622,11 +630,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1020.5,
+          "x": 565.5,
           "y": 60
         },
         {
-          "x": 1020.5,
+          "x": 565.5,
           "y": 240
         }
       ],

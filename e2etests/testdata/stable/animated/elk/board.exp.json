@@ -6,11 +6,11 @@
       "id": "your love life will be",
       "type": "",
       "pos": {
-        "x": 111,
+        "x": 53,
         "y": 12
       },
-      "width": 247,
-      "height": 126,
+      "width": 177,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -47,10 +47,10 @@
       "type": "",
       "pos": {
         "x": 12,
-        "y": 238
+        "y": 168
       },
-      "width": 149,
-      "height": 126,
+      "width": 79,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -86,11 +86,11 @@
       "id": "harmonious",
       "type": "",
       "pos": {
-        "x": 181,
-        "y": 238
+        "x": 111,
+        "y": 168
       },
-      "width": 190,
-      "height": 126,
+      "width": 120,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -126,11 +126,11 @@
       "id": "boredom",
       "type": "",
       "pos": {
-        "x": 402,
+        "x": 262,
         "y": 12
       },
-      "width": 168,
-      "height": 126,
+      "width": 98,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -166,11 +166,11 @@
       "id": "immortality",
       "type": "",
       "pos": {
-        "x": 391,
-        "y": 238
+        "x": 251,
+        "y": 168
       },
-      "width": 191,
-      "height": 126,
+      "width": 121,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -206,11 +206,11 @@
       "id": "Friday",
       "type": "",
       "pos": {
-        "x": 607,
+        "x": 397,
         "y": 12
       },
-      "width": 150,
-      "height": 126,
+      "width": 80,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -246,11 +246,11 @@
       "id": "Monday",
       "type": "",
       "pos": {
-        "x": 602,
-        "y": 238
+        "x": 392,
+        "y": 168
       },
-      "width": 161,
-      "height": 126,
+      "width": 91,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -286,11 +286,11 @@
       "id": "Insomnia",
       "type": "",
       "pos": {
-        "x": 935,
+        "x": 585,
         "y": 12
       },
-      "width": 170,
-      "height": 126,
+      "width": 100,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -326,11 +326,11 @@
       "id": "Sleep",
       "type": "",
       "pos": {
-        "x": 783,
-        "y": 238
+        "x": 503,
+        "y": 168
       },
-      "width": 145,
-      "height": 126,
+      "width": 75,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -366,11 +366,11 @@
       "id": "Wake",
       "type": "",
       "pos": {
-        "x": 948,
-        "y": 238
+        "x": 598,
+        "y": 168
       },
-      "width": 144,
-      "height": 126,
+      "width": 74,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -406,11 +406,11 @@
       "id": "Dream",
       "type": "",
       "pos": {
-        "x": 1112,
-        "y": 238
+        "x": 692,
+        "y": 168
       },
-      "width": 151,
-      "height": 126,
+      "width": 81,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -446,11 +446,11 @@
       "id": "Listen",
       "type": "",
       "pos": {
-        "x": 1225,
+        "x": 770,
         "y": 12
       },
-      "width": 148,
-      "height": 126,
+      "width": 78,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -486,11 +486,11 @@
       "id": "Talk",
       "type": "",
       "pos": {
-        "x": 1231,
-        "y": 464
+        "x": 776,
+        "y": 324
       },
-      "width": 136,
-      "height": 126,
+      "width": 66,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -550,20 +550,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 193.66666666666652,
-          "y": 138
+          "x": 112,
+          "y": 68
         },
         {
-          "x": 193.66666666666652,
-          "y": 188
+          "x": 112,
+          "y": 118
         },
         {
-          "x": 86.5,
-          "y": 188
+          "x": 51.5,
+          "y": 118
         },
         {
-          "x": 86.5,
-          "y": 238
+          "x": 51.5,
+          "y": 168
         }
       ],
       "animated": true,
@@ -597,12 +597,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 275.9999999999999,
-          "y": 138
+          "x": 171,
+          "y": 68
         },
         {
-          "x": 276,
-          "y": 238
+          "x": 171,
+          "y": 168
         }
       ],
       "animated": true,
@@ -636,12 +636,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 486.5,
-          "y": 138
+          "x": 311.5,
+          "y": 68
         },
         {
-          "x": 486.5,
-          "y": 238
+          "x": 311.5,
+          "y": 168
         }
       ],
       "animated": true,
@@ -675,12 +675,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 682.5,
-          "y": 138
+          "x": 437.5,
+          "y": 68
         },
         {
-          "x": 682.5,
-          "y": 238
+          "x": 437.5,
+          "y": 168
         }
       ],
       "animated": true,
@@ -714,20 +714,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 977.5,
-          "y": 138
+          "x": 610,
+          "y": 68
         },
         {
-          "x": 977.5,
-          "y": 188
+          "x": 610,
+          "y": 118
         },
         {
-          "x": 855.5,
-          "y": 188
+          "x": 540.5,
+          "y": 118
         },
         {
-          "x": 855.5,
-          "y": 238
+          "x": 540.5,
+          "y": 168
         }
       ],
       "animated": true,
@@ -761,12 +761,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1020,
-          "y": 138
+          "x": 635,
+          "y": 68
         },
         {
-          "x": 1020,
-          "y": 238
+          "x": 635,
+          "y": 168
         }
       ],
       "animated": true,
@@ -800,20 +800,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1062.5,
-          "y": 138
+          "x": 660,
+          "y": 68
         },
         {
-          "x": 1062.5,
-          "y": 188
+          "x": 660,
+          "y": 118
         },
         {
-          "x": 1187.5,
-          "y": 188
+          "x": 732.5,
+          "y": 118
         },
         {
-          "x": 1187.5,
-          "y": 238
+          "x": 732.5,
+          "y": 168
         }
       ],
       "animated": true,
@@ -847,12 +847,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1299,
-          "y": 138
+          "x": 809,
+          "y": 68
         },
         {
-          "x": 1299,
-          "y": 464
+          "x": 809,
+          "y": 324
         }
       ],
       "animated": true,

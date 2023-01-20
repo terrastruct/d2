@@ -22,7 +22,7 @@ import (
 )
 
 const INNER_LABEL_PADDING int = 5
-const DEFAULT_SHAPE_PADDING = 100.
+const DEFAULT_SHAPE_PADDING = 30.
 
 // TODO: Refactor with a light abstract layer on top of AST implementing scenarios,
 // variables, imports, substitutions and then a final set of structures representing

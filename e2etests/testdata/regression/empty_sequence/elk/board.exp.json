@@ -9,8 +9,8 @@
         "x": 25,
         "y": 12
       },
-      "width": 140,
-      "height": 126,
+      "width": 70,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -47,10 +47,10 @@
       "type": "sequence_diagram",
       "pos": {
         "x": 12,
-        "y": 238
+        "y": 168
       },
-      "width": 166,
-      "height": 126,
+      "width": 96,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -110,12 +110,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 95,
-          "y": 138
+          "x": 60,
+          "y": 68
         },
         {
-          "x": 95,
-          "y": 238
+          "x": 60,
+          "y": 168
         }
       ],
       "animated": false,

@@ -6,11 +6,11 @@
       "id": "a",
       "type": "",
       "pos": {
-        "x": 56,
+        "x": 91,
         "y": 12
       },
-      "width": 113,
-      "height": 126,
+      "width": 43,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -46,11 +46,11 @@
       "id": "b",
       "type": "",
       "pos": {
-        "x": 56,
-        "y": 359
+        "x": 91,
+        "y": 289
       },
-      "width": 113,
-      "height": 126,
+      "width": 43,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -111,11 +111,11 @@
       "route": [
         {
           "x": 112.5,
-          "y": 138
+          "y": 68
         },
         {
           "x": 112.5,
-          "y": 359
+          "y": 289
         }
       ],
       "animated": false,

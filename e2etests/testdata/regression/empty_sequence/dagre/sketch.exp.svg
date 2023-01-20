@@ -3,7 +3,7 @@
 id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="366" height="552" viewBox="-100 -100 366 552"><style type="text/css">
+width="296" height="412" viewBox="-100 -100 296 412"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -39,8 +39,8 @@ width="366" height="552" viewBox="-100 -100 366 552"><style type="text/css">
     svgEl.setAttribute("height", height * ratio - 16);
   }
 });
-]]></script><g id="A"><g class="shape" ><rect x="13" y="0" width="140" height="126" style="fill:#FFFFFF;stroke:#0D32B2;stroke-width:0;" /></g><text class="text-bold" x="83.000000" y="66.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">hello</text></g><g id="B"><g class="shape" ><rect x="0" y="226" width="166" height="126" style="fill:#FFFFFF;stroke:#0D32B2;stroke-width:0;" /></g><text class="text-bold" x="83.000000" y="292.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">goodbye</text></g><g id="(A -&gt; B)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 83.000000 127.000000 C 83.000000 166.000000 83.000000 186.000000 83.000000 223.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#3774985050)"/></g><mask id="3774985050" maskUnits="userSpaceOnUse" x="-100" y="-100" width="366" height="552">
-<rect x="-100" y="-100" width="366" height="552" fill="white"></rect>
+]]></script><g id="A"><g class="shape" ><rect x="13" y="0" width="70" height="56" style="fill:#FFFFFF;stroke:#0D32B2;stroke-width:0;" /></g><text class="text-bold" x="48.000000" y="31.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">hello</text></g><g id="B"><g class="shape" ><rect x="0" y="156" width="96" height="56" style="fill:#FFFFFF;stroke:#0D32B2;stroke-width:0;" /></g><text class="text-bold" x="48.000000" y="187.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">goodbye</text></g><g id="(A -&gt; B)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 48.000000 57.000000 C 48.000000 96.000000 48.000000 116.000000 48.000000 153.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#3743876653)"/></g><mask id="3743876653" maskUnits="userSpaceOnUse" x="-100" y="-100" width="296" height="412">
+<rect x="-100" y="-100" width="296" height="412" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text-bold {

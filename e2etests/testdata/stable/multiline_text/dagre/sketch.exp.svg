@@ -3,7 +3,7 @@
 id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="406" height="362" viewBox="-102 -102 406 362"><style type="text/css">
+width="336" height="292" viewBox="-102 -102 336 292"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -39,8 +39,8 @@ width="406" height="362" viewBox="-102 -102 406 362"><style type="text/css">
     svgEl.setAttribute("height", height * ratio - 16);
   }
 });
-]]></script><g id="hey"><g class="shape" ><rect x="0" y="0" width="202" height="158" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="101.000000" y="66.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25"><tspan x="101.000000" dy="0.000000">this</tspan><tspan x="101.000000" dy="19.333333">goes</tspan><tspan x="101.000000" dy="19.333333">multiple lines</tspan></text></g><mask id="2998533480" maskUnits="userSpaceOnUse" x="-100" y="-100" width="406" height="362">
-<rect x="-100" y="-100" width="406" height="362" fill="white"></rect>
+]]></script><g id="hey"><g class="shape" ><rect x="0" y="0" width="132" height="88" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="66.000000" y="31.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25"><tspan x="66.000000" dy="0.000000">this</tspan><tspan x="66.000000" dy="19.333333">goes</tspan><tspan x="66.000000" dy="19.333333">multiple lines</tspan></text></g><mask id="1797003008" maskUnits="userSpaceOnUse" x="-100" y="-100" width="336" height="292">
+<rect x="-100" y="-100" width="336" height="292" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text-bold {

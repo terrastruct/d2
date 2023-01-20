@@ -3,7 +3,7 @@
 id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="317" height="771" viewBox="-90 -90 317 771"><style type="text/css">
+width="299" height="631" viewBox="-90 -90 299 631"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -796,7 +796,7 @@ width="317" height="771" viewBox="-90 -90 317 771"><style type="text/css">
 .md .contains-task-list:dir(rtl) .task-list-item-checkbox {
   margin: 0 -1.6em 0.25em 0.2em;
 }
-</style><g id="md"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="21.000000" y="238.000000" width="95" height="115"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:transparent;color:#0A0F25;"><h1>hey</h1>
+</style><g id="md"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="12.000000" y="168.000000" width="95" height="115"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:transparent;color:#0A0F25;"><h1>hey</h1>
 <ul>
 <li>they
 <ol>
@@ -804,8 +804,8 @@ width="317" height="771" viewBox="-90 -90 317 771"><style type="text/css">
 </ol>
 </li>
 </ul>
-</div></foreignObject></g></g><g id="a"><g class="shape" ><rect x="12" y="12" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="68.500000" y="78.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">a</text></g><g id="b"><g class="shape" ><rect x="12" y="453" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="68.500000" y="519.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">b</text></g><g id="(a -&gt; md)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 68.500000 140.000000 L 68.500000 234.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#3094678150)"/></g><g id="(md -&gt; b)[0]"><path d="M 68.500000 355.000000 L 68.500000 449.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#3094678150)"/></g><mask id="3094678150" maskUnits="userSpaceOnUse" x="-100" y="-100" width="317" height="771">
-<rect x="-100" y="-100" width="317" height="771" fill="white"></rect>
+</div></foreignObject></g></g><g id="a"><g class="shape" ><rect x="38" y="12" width="43" height="56" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="59.500000" y="43.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">a</text></g><g id="b"><g class="shape" ><rect x="38" y="383" width="43" height="56" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="59.500000" y="414.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">b</text></g><g id="(a -&gt; md)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 59.500000 70.000000 L 59.500000 164.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#516680480)"/></g><g id="(md -&gt; b)[0]"><path d="M 59.500000 285.000000 L 59.500000 379.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#516680480)"/></g><mask id="516680480" maskUnits="userSpaceOnUse" x="-100" y="-100" width="299" height="631">
+<rect x="-100" y="-100" width="299" height="631" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text {

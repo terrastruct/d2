@@ -6,11 +6,11 @@
       "id": "foo baz",
       "type": "",
       "pos": {
-        "x": 173,
+        "x": 103,
         "y": 0
       },
-      "width": 159,
-      "height": 126,
+      "width": 89,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -49,8 +49,8 @@
         "x": 1,
         "y": 0
       },
-      "width": 112,
-      "height": 126,
+      "width": 42,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -87,10 +87,10 @@
       "type": "",
       "pos": {
         "x": 0,
-        "y": 226
+        "y": 156
       },
-      "width": 113,
-      "height": 126,
+      "width": 43,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -126,11 +126,11 @@
       "id": "hello",
       "type": "",
       "pos": {
-        "x": 182,
-        "y": 226
+        "x": 112,
+        "y": 156
       },
-      "width": 140,
-      "height": 126,
+      "width": 70,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -190,20 +190,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 56.5,
-          "y": 126
+          "x": 21.5,
+          "y": 56
         },
         {
-          "x": 56.5,
-          "y": 166
+          "x": 21.5,
+          "y": 96
         },
         {
-          "x": 56.5,
-          "y": 186
+          "x": 21.5,
+          "y": 116
         },
         {
-          "x": 56.5,
-          "y": 226
+          "x": 21.5,
+          "y": 156
         }
       ],
       "isCurve": true,
@@ -238,20 +238,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 252,
-          "y": 126
+          "x": 147,
+          "y": 56
         },
         {
-          "x": 252,
-          "y": 166
+          "x": 147,
+          "y": 96
         },
         {
-          "x": 252,
-          "y": 186
+          "x": 147,
+          "y": 116
         },
         {
-          "x": 252,
-          "y": 226
+          "x": 147,
+          "y": 156
         }
       ],
       "isCurve": true,

@@ -6,8 +6,8 @@
       "id": "md",
       "type": "text",
       "pos": {
-        "x": 45,
-        "y": 238
+        "x": 12,
+        "y": 168
       },
       "width": 46,
       "height": 24,
@@ -45,11 +45,11 @@
       "id": "a",
       "type": "",
       "pos": {
-        "x": 12,
+        "x": 13,
         "y": 12
       },
-      "width": 113,
-      "height": 126,
+      "width": 43,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -85,11 +85,11 @@
       "id": "b",
       "type": "",
       "pos": {
-        "x": 12,
-        "y": 362
+        "x": 13,
+        "y": 292
       },
-      "width": 113,
-      "height": 126,
+      "width": 43,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -149,12 +149,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 68.5,
-          "y": 138
+          "x": 35,
+          "y": 68
         },
         {
-          "x": 68.5,
-          "y": 238
+          "x": 35,
+          "y": 168
         }
       ],
       "animated": false,
@@ -188,12 +188,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 68.5,
-          "y": 262
+          "x": 35,
+          "y": 192
         },
         {
-          "x": 68.5,
-          "y": 362
+          "x": 35,
+          "y": 292
         }
       ],
       "animated": false,

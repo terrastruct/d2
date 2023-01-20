@@ -10,7 +10,7 @@
         "y": 74
       },
       "width": 150,
-      "height": 126,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -50,7 +50,7 @@
         "y": 74
       },
       "width": 150,
-      "height": 126,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -90,7 +90,7 @@
         "y": 74
       },
       "width": 150,
-      "height": 126,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -130,7 +130,7 @@
         "y": 74
       },
       "width": 150,
-      "height": 126,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -166,11 +166,11 @@
       "id": "a.explanation",
       "type": "page",
       "pos": {
-        "x": 7,
-        "y": 460
+        "x": 42,
+        "y": 390
       },
-      "width": 184,
-      "height": 126,
+      "width": 114,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -206,11 +206,11 @@
       "id": "a.another explanation",
       "type": "page",
       "pos": {
-        "x": -21,
-        "y": 716
+        "x": 13,
+        "y": 576
       },
-      "width": 241,
-      "height": 126,
+      "width": 171,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -246,11 +246,11 @@
       "id": "b.\"Some one who believes imaginary things\\n appear right before your i's.\"",
       "type": "page",
       "pos": {
-        "x": 160,
-        "y": 1102
+        "x": 195,
+        "y": 892
       },
-      "width": 378,
-      "height": 142,
+      "width": 308,
+      "height": 72,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -286,11 +286,11 @@
       "id": "d.The earth is like a tiny grain of sand, only much, much heavier",
       "type": "page",
       "pos": {
-        "x": 591,
-        "y": 1504
+        "x": 626,
+        "y": 1224
       },
-      "width": 516,
-      "height": 126,
+      "width": 446,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -351,11 +351,11 @@
       "route": [
         {
           "x": 99,
-          "y": 330
+          "y": 260
         },
         {
           "x": 349,
-          "y": 330
+          "y": 260
         }
       ],
       "animated": false,
@@ -390,11 +390,11 @@
       "route": [
         {
           "x": 349,
-          "y": 972
+          "y": 762
         },
         {
           "x": 599,
-          "y": 972
+          "y": 762
         }
       ],
       "animated": false,
@@ -429,11 +429,11 @@
       "route": [
         {
           "x": 599,
-          "y": 1374
+          "y": 1094
         },
         {
           "x": 349,
-          "y": 1374
+          "y": 1094
         }
       ],
       "animated": false,
@@ -468,11 +468,11 @@
       "route": [
         {
           "x": 99,
-          "y": 200
+          "y": 130
         },
         {
           "x": 99,
-          "y": 1760
+          "y": 1410
         }
       ],
       "animated": false,
@@ -507,11 +507,11 @@
       "route": [
         {
           "x": 349,
-          "y": 200
+          "y": 130
         },
         {
           "x": 349,
-          "y": 1760
+          "y": 1410
         }
       ],
       "animated": false,
@@ -546,11 +546,11 @@
       "route": [
         {
           "x": 599,
-          "y": 200
+          "y": 130
         },
         {
           "x": 599,
-          "y": 1760
+          "y": 1410
         }
       ],
       "animated": false,
@@ -585,11 +585,11 @@
       "route": [
         {
           "x": 849,
-          "y": 200
+          "y": 130
         },
         {
           "x": 849,
-          "y": 1760
+          "y": 1410
         }
       ],
       "animated": false,

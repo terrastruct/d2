@@ -9,8 +9,8 @@
         "x": 0,
         "y": 0
       },
-      "width": 2628,
-      "height": 237,
+      "width": 2278,
+      "height": 167,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -49,8 +49,8 @@
         "x": 105,
         "y": 50
       },
-      "width": 330,
-      "height": 137,
+      "width": 260,
+      "height": 67,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -86,11 +86,11 @@
       "id": "build_workflow.GHA",
       "type": "",
       "pos": {
-        "x": 698,
+        "x": 628,
         "y": 50
       },
-      "width": 269,
-      "height": 137,
+      "width": 199,
+      "height": 67,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -126,11 +126,11 @@
       "id": "build_workflow.S3",
       "type": "",
       "pos": {
-        "x": 1314,
+        "x": 1174,
         "y": 50
       },
-      "width": 131,
-      "height": 137,
+      "width": 61,
+      "height": 67,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -166,11 +166,11 @@
       "id": "build_workflow.Terraform",
       "type": "",
       "pos": {
-        "x": 1773,
+        "x": 1563,
         "y": 50
       },
-      "width": 218,
-      "height": 137,
+      "width": 148,
+      "height": 67,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -206,11 +206,11 @@
       "id": "build_workflow.AWS",
       "type": "",
       "pos": {
-        "x": 2369,
+        "x": 2089,
         "y": 50
       },
-      "width": 155,
-      "height": 137,
+      "width": 85,
+      "height": 67,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -270,20 +270,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 435.5,
-          "y": 118.5
+          "x": 365.5,
+          "y": 83.5
         },
         {
-          "x": 539.9,
-          "y": 118.5
+          "x": 469.9,
+          "y": 83.5
         },
         {
-          "x": 592.3,
-          "y": 118.5
+          "x": 522.3,
+          "y": 83.5
         },
         {
-          "x": 697.5,
-          "y": 118.5
+          "x": 627.5,
+          "y": 83.5
         }
       ],
       "isCurve": true,
@@ -318,20 +318,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 966.5,
-          "y": 118.5
+          "x": 826.5,
+          "y": 83.5
         },
         {
-          "x": 1105.3,
-          "y": 118.5
+          "x": 965.3,
+          "y": 83.5
         },
         {
-          "x": 1174.7,
-          "y": 118.5
+          "x": 1034.7,
+          "y": 83.5
         },
         {
-          "x": 1313.5,
-          "y": 118.5
+          "x": 1173.5,
+          "y": 83.5
         }
       ],
       "isCurve": true,
@@ -366,20 +366,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1445.5,
-          "y": 118.5
+          "x": 1235.5,
+          "y": 83.5
         },
         {
-          "x": 1575.9,
-          "y": 118.5
+          "x": 1365.9,
+          "y": 83.5
         },
         {
-          "x": 1641.3,
-          "y": 118.5
+          "x": 1431.3,
+          "y": 83.5
         },
         {
-          "x": 1772.5,
-          "y": 118.5
+          "x": 1562.5,
+          "y": 83.5
         }
       ],
       "isCurve": true,
@@ -414,20 +414,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1991.5,
-          "y": 118.5
+          "x": 1711.5,
+          "y": 83.5
         },
         {
-          "x": 2141.9,
-          "y": 118.5
+          "x": 1861.9,
+          "y": 83.5
         },
         {
-          "x": 2217.3,
-          "y": 118.5
+          "x": 1937.3,
+          "y": 83.5
         },
         {
-          "x": 2368.5,
-          "y": 118.5
+          "x": 2088.5,
+          "y": 83.5
         }
       ],
       "isCurve": true,

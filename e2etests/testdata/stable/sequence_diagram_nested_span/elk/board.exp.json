@@ -10,7 +10,7 @@
         "y": 74
       },
       "width": 150,
-      "height": 126,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 5,
@@ -47,7 +47,7 @@
       "type": "rectangle",
       "pos": {
         "x": 93,
-        "y": 1094
+        "y": 1024
       },
       "width": 12,
       "height": 80,
@@ -85,11 +85,11 @@
       "id": "itemResponse",
       "type": "",
       "pos": {
-        "x": 249,
+        "x": 274,
         "y": 74
       },
-      "width": 200,
-      "height": 126,
+      "width": 150,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -126,7 +126,7 @@
       "type": "rectangle",
       "pos": {
         "x": 343,
-        "y": 314
+        "y": 244
       },
       "width": 12,
       "height": 162,
@@ -168,7 +168,7 @@
         "y": 74
       },
       "width": 150,
-      "height": 126,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -205,7 +205,7 @@
       "type": "rectangle",
       "pos": {
         "x": 593,
-        "y": 428
+        "y": 358
       },
       "width": 12,
       "height": 698,
@@ -244,7 +244,7 @@
       "type": "rectangle",
       "pos": {
         "x": 589,
-        "y": 444
+        "y": 374
       },
       "width": 20,
       "height": 162,
@@ -282,11 +282,11 @@
       "id": "essayRubric",
       "type": "",
       "pos": {
-        "x": 756,
+        "x": 774,
         "y": 74
       },
-      "width": 186,
-      "height": 126,
+      "width": 150,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -323,7 +323,7 @@
       "type": "rectangle",
       "pos": {
         "x": 843,
-        "y": 542
+        "y": 472
       },
       "width": 12,
       "height": 340,
@@ -362,7 +362,7 @@
       "type": "rectangle",
       "pos": {
         "x": 839,
-        "y": 558
+        "y": 488
       },
       "width": 20,
       "height": 308,
@@ -401,7 +401,7 @@
       "type": "rectangle",
       "pos": {
         "x": 835,
-        "y": 574
+        "y": 504
       },
       "width": 28,
       "height": 162,
@@ -439,11 +439,11 @@
       "id": "concept",
       "type": "",
       "pos": {
-        "x": 1019,
+        "x": 1024,
         "y": 74
       },
-      "width": 160,
-      "height": 126,
+      "width": 150,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -480,7 +480,7 @@
       "type": "rectangle",
       "pos": {
         "x": 1093,
-        "y": 656
+        "y": 586
       },
       "width": 12,
       "height": 388,
@@ -519,7 +519,7 @@
       "type": "rectangle",
       "pos": {
         "x": 1089,
-        "y": 672
+        "y": 602
       },
       "width": 20,
       "height": 356,
@@ -558,7 +558,7 @@
       "type": "rectangle",
       "pos": {
         "x": 1085,
-        "y": 688
+        "y": 618
       },
       "width": 28,
       "height": 324,
@@ -597,7 +597,7 @@
       "type": "rectangle",
       "pos": {
         "x": 1081,
-        "y": 704
+        "y": 634
       },
       "width": 36,
       "height": 292,
@@ -635,11 +635,11 @@
       "id": "itemOutcome",
       "type": "",
       "pos": {
-        "x": 1251,
+        "x": 1274,
         "y": 74
       },
-      "width": 197,
-      "height": 126,
+      "width": 150,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -676,7 +676,7 @@
       "type": "rectangle",
       "pos": {
         "x": 1343,
-        "y": 900
+        "y": 830
       },
       "width": 12,
       "height": 420,
@@ -715,7 +715,7 @@
       "type": "rectangle",
       "pos": {
         "x": 1339,
-        "y": 916
+        "y": 846
       },
       "width": 20,
       "height": 388,
@@ -754,7 +754,7 @@
       "type": "rectangle",
       "pos": {
         "x": 1335,
-        "y": 932
+        "y": 862
       },
       "width": 28,
       "height": 356,
@@ -793,7 +793,7 @@
       "type": "rectangle",
       "pos": {
         "x": 1331,
-        "y": 948
+        "y": 878
       },
       "width": 36,
       "height": 324,
@@ -832,7 +832,7 @@
       "type": "rectangle",
       "pos": {
         "x": 1327,
-        "y": 964
+        "y": 894
       },
       "width": 44,
       "height": 292,
@@ -871,7 +871,7 @@
       "type": "rectangle",
       "pos": {
         "x": 343,
-        "y": 1354
+        "y": 1284
       },
       "width": 12,
       "height": 80,
@@ -934,11 +934,11 @@
       "route": [
         {
           "x": 99,
-          "y": 330
+          "y": 260
         },
         {
           "x": 343,
-          "y": 330
+          "y": 260
         }
       ],
       "animated": false,
@@ -973,11 +973,11 @@
       "route": [
         {
           "x": 355,
-          "y": 460
+          "y": 390
         },
         {
           "x": 589,
-          "y": 460
+          "y": 390
         }
       ],
       "animated": false,
@@ -1012,11 +1012,11 @@
       "route": [
         {
           "x": 609,
-          "y": 590
+          "y": 520
         },
         {
           "x": 835,
-          "y": 590
+          "y": 520
         }
       ],
       "animated": false,
@@ -1051,11 +1051,11 @@
       "route": [
         {
           "x": 863,
-          "y": 720
+          "y": 650
         },
         {
           "x": 1081,
-          "y": 720
+          "y": 650
         }
       ],
       "animated": false,
@@ -1090,11 +1090,11 @@
       "route": [
         {
           "x": 605,
-          "y": 850
+          "y": 780
         },
         {
           "x": 839,
-          "y": 850
+          "y": 780
         }
       ],
       "animated": false,
@@ -1129,11 +1129,11 @@
       "route": [
         {
           "x": 1117,
-          "y": 980
+          "y": 910
         },
         {
-          "x": 1327.5,
-          "y": 980
+          "x": 1327,
+          "y": 910
         }
       ],
       "animated": false,
@@ -1168,11 +1168,11 @@
       "route": [
         {
           "x": 105,
-          "y": 1110
+          "y": 1040
         },
         {
           "x": 593,
-          "y": 1110
+          "y": 1040
         }
       ],
       "animated": false,
@@ -1206,12 +1206,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1327.5,
-          "y": 1240
+          "x": 1327,
+          "y": 1170
         },
         {
           "x": 99,
-          "y": 1240
+          "y": 1170
         }
       ],
       "animated": false,
@@ -1246,11 +1246,11 @@
       "route": [
         {
           "x": 99,
-          "y": 1370
+          "y": 1300
         },
         {
           "x": 343,
-          "y": 1370
+          "y": 1300
         }
       ],
       "animated": false,
@@ -1285,11 +1285,11 @@
       "route": [
         {
           "x": 99,
-          "y": 200
+          "y": 130
         },
         {
           "x": 99,
-          "y": 1500
+          "y": 1430
         }
       ],
       "animated": false,
@@ -1324,11 +1324,11 @@
       "route": [
         {
           "x": 349,
-          "y": 200
+          "y": 130
         },
         {
           "x": 349,
-          "y": 1500
+          "y": 1430
         }
       ],
       "animated": false,
@@ -1363,11 +1363,11 @@
       "route": [
         {
           "x": 599,
-          "y": 200
+          "y": 130
         },
         {
           "x": 599,
-          "y": 1500
+          "y": 1430
         }
       ],
       "animated": false,
@@ -1402,11 +1402,11 @@
       "route": [
         {
           "x": 849,
-          "y": 200
+          "y": 130
         },
         {
           "x": 849,
-          "y": 1500
+          "y": 1430
         }
       ],
       "animated": false,
@@ -1441,11 +1441,11 @@
       "route": [
         {
           "x": 1099,
-          "y": 200
+          "y": 130
         },
         {
           "x": 1099,
-          "y": 1500
+          "y": 1430
         }
       ],
       "animated": false,
@@ -1479,12 +1479,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1349.5,
-          "y": 200
+          "x": 1349,
+          "y": 130
         },
         {
-          "x": 1349.5,
-          "y": 1500
+          "x": 1349,
+          "y": 1430
         }
       ],
       "animated": false,

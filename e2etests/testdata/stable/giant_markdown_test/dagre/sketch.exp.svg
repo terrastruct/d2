@@ -3,7 +3,7 @@
 id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="3255" height="5509" viewBox="-102 -102 3255 5509"><style type="text/css">
+width="3255" height="5369" viewBox="-102 -102 3255 5369"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -796,7 +796,7 @@ width="3255" height="5509" viewBox="-102 -102 3255 5509"><style type="text/css">
 .md .contains-task-list:dir(rtl) .task-list-item-checkbox {
   margin: 0 -1.6em 0.25em 0.2em;
 }
-</style><g id="md"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="0.000000" y="226.000000" width="3051" height="4853"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:transparent;color:#0A0F25;"><h1>Markdown: Syntax</h1>
+</style><g id="md"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="0.000000" y="156.000000" width="3051" height="4853"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:transparent;color:#0A0F25;"><h1>Markdown: Syntax</h1>
 <ul>
 <li><a href="#overview">Overview</a>
 <ul>
@@ -1053,8 +1053,8 @@ title for the link, surrounded in quotes. For example:</p>
 <h3>Code</h3>
 <p>Unlike a pre-formatted code block, a code span indicates code within a
 normal paragraph. For example:</p>
-</div></foreignObject></g></g><g id="a"><g class="shape" ><rect x="1469" y="0" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="1525.500000" y="66.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">a</text></g><g id="b"><g class="shape" ><rect x="1469" y="5179" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="1525.500000" y="5245.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">b</text></g><g id="(a -&gt; md)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 1525.500000 128.000000 C 1525.500000 166.000000 1525.500000 186.000000 1525.500000 222.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#828432686)"/></g><g id="(md -&gt; b)[0]"><path d="M 1525.500000 5081.000000 C 1525.500000 5119.000000 1525.500000 5139.000000 1525.500000 5175.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#828432686)"/></g><mask id="828432686" maskUnits="userSpaceOnUse" x="-100" y="-100" width="3255" height="5509">
-<rect x="-100" y="-100" width="3255" height="5509" fill="white"></rect>
+</div></foreignObject></g></g><g id="a"><g class="shape" ><rect x="1504" y="0" width="43" height="56" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="1525.500000" y="31.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">a</text></g><g id="b"><g class="shape" ><rect x="1504" y="5109" width="43" height="56" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="1525.500000" y="5140.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">b</text></g><g id="(a -&gt; md)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 1525.500000 58.000000 C 1525.500000 96.000000 1525.500000 116.000000 1525.500000 152.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#736726860)"/></g><g id="(md -&gt; b)[0]"><path d="M 1525.500000 5011.000000 C 1525.500000 5049.000000 1525.500000 5069.000000 1525.500000 5105.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#736726860)"/></g><mask id="736726860" maskUnits="userSpaceOnUse" x="-100" y="-100" width="3255" height="5369">
+<rect x="-100" y="-100" width="3255" height="5369" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text {

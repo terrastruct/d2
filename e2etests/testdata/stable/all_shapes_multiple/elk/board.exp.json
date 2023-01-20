@@ -9,8 +9,8 @@
         "x": 12,
         "y": 12
       },
-      "width": 171,
-      "height": 126,
+      "width": 101,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -47,10 +47,10 @@
       "type": "rectangle",
       "pos": {
         "x": 20,
-        "y": 238
+        "y": 168
       },
-      "width": 154,
-      "height": 154,
+      "width": 84,
+      "height": 84,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -87,10 +87,10 @@
       "type": "page",
       "pos": {
         "x": 28,
-        "y": 492
+        "y": 352
       },
-      "width": 139,
-      "height": 126,
+      "width": 69,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -126,11 +126,11 @@
       "id": "parallelogram",
       "type": "parallelogram",
       "pos": {
-        "x": 203,
+        "x": 133,
         "y": 12
       },
-      "width": 204,
-      "height": 126,
+      "width": 134,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -166,11 +166,11 @@
       "id": "document",
       "type": "document",
       "pos": {
-        "x": 216,
-        "y": 252
+        "x": 146,
+        "y": 182
       },
-      "width": 177,
-      "height": 126,
+      "width": 107,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -206,11 +206,11 @@
       "id": "cylinder",
       "type": "cylinder",
       "pos": {
-        "x": 223,
-        "y": 492
+        "x": 153,
+        "y": 352
       },
-      "width": 164,
-      "height": 126,
+      "width": 94,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -246,11 +246,11 @@
       "id": "queue",
       "type": "queue",
       "pos": {
-        "x": 427,
+        "x": 287,
         "y": 12
       },
-      "width": 149,
-      "height": 126,
+      "width": 79,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -286,11 +286,11 @@
       "id": "package",
       "type": "package",
       "pos": {
-        "x": 420,
-        "y": 252
+        "x": 280,
+        "y": 182
       },
-      "width": 163,
-      "height": 126,
+      "width": 93,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -326,11 +326,11 @@
       "id": "step",
       "type": "step",
       "pos": {
-        "x": 433,
-        "y": 492
+        "x": 293,
+        "y": 352
       },
-      "width": 136,
-      "height": 126,
+      "width": 66,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -366,11 +366,11 @@
       "id": "callout",
       "type": "callout",
       "pos": {
-        "x": 621,
+        "x": 411,
         "y": 12
       },
-      "width": 155,
-      "height": 126,
+      "width": 85,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -406,11 +406,11 @@
       "id": "stored_data",
       "type": "stored_data",
       "pos": {
-        "x": 603,
-        "y": 252
+        "x": 393,
+        "y": 182
       },
-      "width": 191,
-      "height": 126,
+      "width": 121,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -446,11 +446,11 @@
       "id": "person",
       "type": "person",
       "pos": {
-        "x": 622,
-        "y": 492
+        "x": 412,
+        "y": 352
       },
-      "width": 153,
-      "height": 126,
+      "width": 83,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -486,11 +486,11 @@
       "id": "diamond",
       "type": "diamond",
       "pos": {
-        "x": 798,
+        "x": 518,
         "y": 12
       },
-      "width": 168,
-      "height": 126,
+      "width": 98,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -526,11 +526,11 @@
       "id": "oval",
       "type": "oval",
       "pos": {
-        "x": 814,
-        "y": 252
+        "x": 534,
+        "y": 182
       },
-      "width": 136,
-      "height": 126,
+      "width": 66,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -566,11 +566,11 @@
       "id": "circle",
       "type": "oval",
       "pos": {
-        "x": 810,
-        "y": 492
+        "x": 530,
+        "y": 352
       },
-      "width": 144,
-      "height": 144,
+      "width": 74,
+      "height": 74,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -606,11 +606,11 @@
       "id": "hexagon",
       "type": "hexagon",
       "pos": {
-        "x": 986,
+        "x": 636,
         "y": 12
       },
-      "width": 165,
-      "height": 126,
+      "width": 95,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -646,11 +646,11 @@
       "id": "cloud",
       "type": "cloud",
       "pos": {
-        "x": 996,
-        "y": 238
+        "x": 646,
+        "y": 168
       },
-      "width": 145,
-      "height": 126,
+      "width": 75,
+      "height": 56,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -710,12 +710,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 97.5,
-          "y": 138
+          "x": 62.5,
+          "y": 68
         },
         {
-          "x": 97.5,
-          "y": 238
+          "x": 62.5,
+          "y": 168
         }
       ],
       "animated": false,
@@ -749,12 +749,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 97.5,
-          "y": 392
+          "x": 62.5,
+          "y": 252
         },
         {
-          "x": 98,
-          "y": 492
+          "x": 63,
+          "y": 352
         }
       ],
       "animated": false,
@@ -788,12 +788,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 305,
-          "y": 138
+          "x": 200,
+          "y": 68
         },
         {
-          "x": 306,
-          "y": 252
+          "x": 201,
+          "y": 182
         }
       ],
       "animated": false,
@@ -827,12 +827,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 305,
-          "y": 361
+          "x": 200,
+          "y": 230
         },
         {
-          "x": 305,
-          "y": 492
+          "x": 200,
+          "y": 352
         }
       ],
       "animated": false,
@@ -866,12 +866,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 501,
-          "y": 138
+          "x": 326,
+          "y": 68
         },
         {
-          "x": 502,
-          "y": 252
+          "x": 327,
+          "y": 182
         }
       ],
       "animated": false,
@@ -905,12 +905,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 501,
-          "y": 378
+          "x": 326,
+          "y": 238
         },
         {
-          "x": 502,
-          "y": 492
+          "x": 327,
+          "y": 354
         }
       ],
       "animated": false,
@@ -944,12 +944,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 699,
-          "y": 138
+          "x": 454,
+          "y": 68
         },
         {
-          "x": 699,
-          "y": 252
+          "x": 453,
+          "y": 182
         }
       ],
       "animated": false,
@@ -983,12 +983,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 698,
-          "y": 378
+          "x": 453,
+          "y": 238
         },
         {
-          "x": 699,
-          "y": 492
+          "x": 454,
+          "y": 352
         }
       ],
       "animated": false,
@@ -1022,12 +1022,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 882,
-          "y": 138
+          "x": 567,
+          "y": 68
         },
         {
-          "x": 882,
-          "y": 252
+          "x": 567,
+          "y": 182
         }
       ],
       "animated": false,
@@ -1061,12 +1061,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 882,
-          "y": 378
+          "x": 567,
+          "y": 238
         },
         {
-          "x": 882,
-          "y": 492
+          "x": 567,
+          "y": 352
         }
       ],
       "animated": false,
@@ -1100,12 +1100,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1068,
-          "y": 138
+          "x": 684,
+          "y": 68
         },
         {
-          "x": 1069,
-          "y": 240
+          "x": 683,
+          "y": 169
         }
       ],
       "animated": false,

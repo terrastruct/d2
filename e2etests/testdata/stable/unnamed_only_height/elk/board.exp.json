@@ -302,10 +302,10 @@
       "id": "package",
       "type": "package",
       "pos": {
-        "x": 173,
+        "x": 208,
         "y": 1848
       },
-      "width": 100,
+      "width": 30,
       "height": 512,
       "opacity": 1,
       "strokeDash": 0,
@@ -341,11 +341,11 @@
       "id": "no height",
       "type": "",
       "pos": {
-        "x": 173,
+        "x": 208,
         "y": 2460
       },
-      "width": 100,
-      "height": 100,
+      "width": 30,
+      "height": 30,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
