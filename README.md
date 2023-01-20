@@ -132,8 +132,8 @@ In addition to being a runnable CLI tool, D2 can also be used to produce diagram
 Go programs.
 
 For examples, see [./docs/examples/lib](./docs/examples/lib). This [blog
-post](https://terrastruct.com/blog/post/generate-diagrams-programmatically/) also demos
-an complete, runnable example of using D2 as a library for a real-world use case.
+post](https://terrastruct.com/blog/post/generate-diagrams-programmatically/) also demos a
+complete, runnable example of using D2 as a library for a real-world use case.
 
 ## Themes
 
