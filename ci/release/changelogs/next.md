@@ -4,11 +4,10 @@ Thank you to the new contributors that have been joining us. If you want to get 
 
 Have you enjoyed using D2? We're redesigning some of the site and will have a section for testimonials. If you'd like to be included with a few words alongside your name or public profile, please email us at hi@d2lang.com (or just post it somewhere and let us know)!
 
-![animated connection example](https://user-images.githubusercontent.com/3120367/213055161-e6f1918b-150c-4beb-b61c-3ea05cc29f00.svg)
-
 #### Features 🚀
 
 - `animated` keyword implemented for connections. [#652](https://github.com/terrastruct/d2/pull/652)
+![animated connection example](https://user-images.githubusercontent.com/3120367/213055161-e6f1918b-150c-4beb-b61c-3ea05cc29f00.svg)
 - `border-radius` keyword implemented for squares/rectangles. [#688](https://github.com/terrastruct/d2/pull/688)
 - `circle` arrowheads. [#634](https://github.com/terrastruct/d2/pull/634)
 
