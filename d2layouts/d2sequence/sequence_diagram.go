@@ -471,7 +471,17 @@ func (sd *sequenceDiagram) routeMessages() error {
 		isFromDescendant := strings.HasPrefix(message.Src.AbsID(), message.Dst.AbsID()+".")
 		isSelfMessage := message.Src == message.Dst
 
-		if isSelfMessage || isToDescendant || isFromDescendant {
+		currSrc := message.Src
+		for !currSrc.Parent.IsSequenceDiagram() {
+			currSrc = currSrc.Parent
+		}
+		currDst := message.Dst
+		for !currDst.Parent.IsSequenceDiagram() {
+			currDst = currDst.Parent
+		}
+		isToSibling := currSrc == currDst
+
+		if isSelfMessage || isToDescendant || isFromDescendant || isToSibling {
 			midX := startX + SELF_MESSAGE_HORIZONTAL_TRAVEL
 			endY := startY + MIN_MESSAGE_DISTANCE
 			message.Route = []*geo.Point{

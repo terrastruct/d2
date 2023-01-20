@@ -1865,6 +1865,18 @@ y: {
 }
 `,
 		},
+		{
+			name: "sequence-inter-span-self",
+			script: `
+shape: sequence_diagram
+a: A
+b: B
+
+a.sp1 -> b: foo
+a.sp1 -> a.sp2: redirect
+a.sp2 -> b: bar
+`,
+		},
 	}
 
 	runa(t, tcs)
