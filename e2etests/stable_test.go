@@ -1765,6 +1765,29 @@ e <--> f: {
 }`,
 		},
 		{
+			name: "circle_arrowhead",
+			script: `
+a <-> b: circle {
+  source-arrowhead: {
+    shape: circle
+  }
+  target-arrowhead: {
+    shape: circle
+  }
+}
+
+c <-> d: filled-circle {
+  source-arrowhead: {
+    shape: circle
+    style.filled: true
+  }
+  target-arrowhead: {
+    shape: circle
+    style.filled: true
+  }
+}`,
+		},
+		{
 			name: "animated",
 			script: `
 your love life will be -> happy: { style.animated: true }
