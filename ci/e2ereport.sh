@@ -11,7 +11,7 @@ if [ -z "${NO_OPEN:-}" ]; then
   if [ -s "$REPORT_OUTPUT" ]; then
     if command -v open >/dev/null; then
       open $REPORT_OUTPUT
-    elif [ -x "$(command -v xdg-open)" ]; then
+    elif [ -x "$(command -v xdg-open >/dev/null)" ]; then
       xdg-open $REPORT_OUTPUT
     else
       echo "Please open $REPORT_OUTPUT"
