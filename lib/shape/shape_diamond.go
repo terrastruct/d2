@@ -52,8 +52,6 @@ func (s shapeDiamond) Perimeter() []geo.Intersectable {
 func (s shapeDiamond) GetSVGPathData() []string {
 	return []string{
 		diamondPath(s.Box).PathData(),
-		// debugging
-		boxPath(s.GetInnerBox()).PathData(),
 	}
 }
 

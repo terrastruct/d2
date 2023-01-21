@@ -69,8 +69,6 @@ func (s shapePackage) Perimeter() []geo.Intersectable {
 func (s shapePackage) GetSVGPathData() []string {
 	return []string{
 		packagePath(s.Box).PathData(),
-		// debugging
-		boxPath(s.GetInnerBox()).PathData(),
 	}
 }
 

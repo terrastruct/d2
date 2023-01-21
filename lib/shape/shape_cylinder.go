@@ -74,8 +74,6 @@ func (s shapeCylinder) GetSVGPathData() []string {
 	return []string{
 		cylinderOuterPath(s.Box).PathData(),
 		cylinderInnerPath(s.Box).PathData(),
-		// debugging
-		boxPath(s.GetInnerBox()).PathData(),
 	}
 }
 

@@ -114,7 +114,5 @@ func (s shapeCloud) Perimeter() []geo.Intersectable {
 func (s shapeCloud) GetSVGPathData() []string {
 	return []string{
 		cloudPath(s.Box).PathData(),
-		// debugging
-		boxPath(s.GetInnerBox()).PathData(),
 	}
 }

@@ -70,8 +70,6 @@ func (s shapeQueue) GetSVGPathData() []string {
 	return []string{
 		queueOuterPath(s.Box).PathData(),
 		queueInnerPath(s.Box).PathData(),
-		// debugging
-		boxPath(s.GetInnerBox()).PathData(),
 	}
 }
 

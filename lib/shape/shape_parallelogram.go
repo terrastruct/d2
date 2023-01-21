@@ -51,8 +51,6 @@ func (s shapeParallelogram) Perimeter() []geo.Intersectable {
 func (s shapeParallelogram) GetSVGPathData() []string {
 	return []string{
 		parallelogramPath(s.Box).PathData(),
-		// debugging
-		boxPath(s.GetInnerBox()).PathData(),
 	}
 }
 

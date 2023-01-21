@@ -51,8 +51,6 @@ func (s shapeStep) Perimeter() []geo.Intersectable {
 func (s shapeStep) GetSVGPathData() []string {
 	return []string{
 		stepPath(s.Box).PathData(),
-		// debugging
-		boxPath(s.GetInnerBox()).PathData(),
 	}
 }
 

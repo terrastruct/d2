@@ -63,8 +63,6 @@ func (s shapePerson) Perimeter() []geo.Intersectable {
 func (s shapePerson) GetSVGPathData() []string {
 	return []string{
 		personPath(s.Box).PathData(),
-		// debugging
-		boxPath(s.GetInnerBox()).PathData(),
 	}
 }
 

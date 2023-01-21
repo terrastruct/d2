@@ -63,10 +63,3 @@ func (s shapeOval) GetInsidePlacement(width, height, padding float64) geo.Point 
 func (s shapeOval) Perimeter() []geo.Intersectable {
 	return []geo.Intersectable{geo.NewEllipse(s.Box.Center(), s.Box.Width/2, s.Box.Height/2)}
 }
-
-// debugging
-func (s shapeOval) GetSVGPathData() []string {
-	return []string{
-		boxPath(s.GetInnerBox()).PathData(),
-	}
-}

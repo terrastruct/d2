@@ -46,8 +46,6 @@ func (s shapeHexagon) Perimeter() []geo.Intersectable {
 func (s shapeHexagon) GetSVGPathData() []string {
 	return []string{
 		hexagonPath(s.Box).PathData(),
-		// debugging
-		boxPath(s.GetInnerBox()).PathData(),
 	}
 }
 

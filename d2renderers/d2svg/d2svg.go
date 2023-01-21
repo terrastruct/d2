@@ -795,11 +795,6 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			}
 		}
 
-		// debugging
-		for _, pathData := range s.GetSVGPathData() {
-			fmt.Fprintf(writer, `<path d="%s" style="%s"/>`, pathData, style)
-		}
-
 	case d2target.ShapeImage:
 		fmt.Fprintf(writer, `<image href="%s" x="%d" y="%d" width="%d" height="%d" style="%s" />`,
 			html.EscapeString(targetShape.Icon.String()),

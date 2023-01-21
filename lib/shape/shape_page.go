@@ -83,8 +83,6 @@ func (s shapePage) GetSVGPathData() []string {
 	return []string{
 		pageOuterPath(s.Box).PathData(),
 		pageInnerPath(s.Box).PathData(),
-		// debugging
-		boxPath(s.GetInnerBox()).PathData(),
 	}
 }
 
