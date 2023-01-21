@@ -8,6 +8,7 @@ compiler: {
   parse -> AST
   AST: Abstract Syntax Tree {
     shape: oval
+  fill: honeydew
   }
 
   AST -> compile
@@ -16,6 +17,7 @@ compiler: {
 compiler.compile -> graph
 graph: Graph\n(shapes & connections) {
   shape: oval
+  fill: honeydew
 }
 
 graph -> Set Dimensions
@@ -24,14 +26,21 @@ Set Dimensions -> Use given, premeasured dimensions -> measured graph
 
 measured graph: {
   shape: oval
+  fill: honeydew
 }
 
 measured graph -> layout engine -> positioned graph
+
+positioned graph: {
+  shape: oval
+  fill: honeydew
+}
 
 positioned graph -> exporter -> diagram
 
 diagram: finalized diagram (styled) {
   shape: oval
+  fill: honeydew
 }
 
 diagram -> render SVG
@@ -42,6 +51,7 @@ use sketch post processor -> SVG bytes
 
 SVG bytes: {
   shape: oval
+  fill: honeydew
 }
 
 SVG bytes -> screenshot for PNG: optional
