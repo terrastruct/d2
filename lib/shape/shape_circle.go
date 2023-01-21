@@ -19,13 +19,23 @@ func NewCircle(box *geo.Box) Shape {
 	}
 }
 
+func (s shapeCircle) GetInnerBox() *geo.Box {
+	width := s.Box.Width
+	height := s.Box.Height
+	insideTL := s.GetInsidePlacement(width, height, 0)
+	tl := s.Box.TopLeft.Copy()
+	width -= 2 * (insideTL.X - tl.X)
+	height -= 2 * (insideTL.Y - tl.Y)
+	return geo.NewBox(&insideTL, width, height)
+}
+
 func (s shapeCircle) AspectRatio1() bool {
 	return true
 }
 
 func (s shapeCircle) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
-	radius := math.Ceil(math.Sqrt(math.Pow(width/2, 2)+math.Pow(height/2, 2))) + padding
-	return radius * 2, radius * 2
+	diameter := math.Ceil(math.Sqrt(2 * math.Pow(math.Max(width, height)+2*padding, 2)))
+	return diameter, diameter
 }
 
 func (s shapeCircle) GetInsidePlacement(width, height, padding float64) geo.Point {

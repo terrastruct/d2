@@ -9,6 +9,8 @@ type shapeStoredData struct {
 	*baseShape
 }
 
+const storedDataWedgeWidth = 15.
+
 func NewStoredData(box *geo.Box) Shape {
 	return shapeStoredData{
 		baseShape: &baseShape{
@@ -18,8 +20,16 @@ func NewStoredData(box *geo.Box) Shape {
 	}
 }
 
+func (s shapeStoredData) GetInnerBox() *geo.Box {
+	width := s.Box.Width
+	tl := s.Box.TopLeft.Copy()
+	width -= 2 * storedDataWedgeWidth
+	tl.X += storedDataWedgeWidth
+	return geo.NewBox(tl, width, s.Box.Height)
+}
+
 func storedDataPath(box *geo.Box) *svg.SvgPathContext {
-	wedgeWidth := 15.0
+	wedgeWidth := storedDataWedgeWidth
 	multiplier := 0.27
 	if box.Width < wedgeWidth*2 {
 		wedgeWidth = box.Width / 2.0
@@ -43,5 +53,12 @@ func (s shapeStoredData) Perimeter() []geo.Intersectable {
 func (s shapeStoredData) GetSVGPathData() []string {
 	return []string{
 		storedDataPath(s.Box).PathData(),
+		// debugging
+		boxPath(s.GetInnerBox()).PathData(),
 	}
+}
+
+func (s shapeStoredData) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
+	totalWidth := width + padding*2 + 2*storedDataWedgeWidth
+	return totalWidth, height + padding*2
 }

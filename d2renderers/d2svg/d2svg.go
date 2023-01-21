@@ -42,7 +42,7 @@ const (
 	appendixIconRadius = 16
 )
 
-var multipleOffset = geo.NewVector(10, -10)
+var multipleOffset = geo.NewVector(d2target.MULTIPLE_OFFSET, -d2target.MULTIPLE_OFFSET)
 
 //go:embed tooltip.svg
 var TooltipIcon string
@@ -734,7 +734,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 
 	var multipleTL *geo.Point
 	if targetShape.Multiple {
-		multipleTL = tl.AddVector(geo.NewVector(d2target.MULTIPLE_OFFSET, -d2target.MULTIPLE_OFFSET))
+		multipleTL = tl.AddVector(multipleOffset)
 	}
 
 	switch targetShape.Type {
@@ -744,13 +744,13 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			if err != nil {
 				return "", err
 			}
-			fmt.Fprintf(writer, out)
+			fmt.Fprint(writer, out)
 		} else {
 			drawClass(writer, targetShape)
 		}
 		addAppendixItems(writer, targetShape)
-		fmt.Fprintf(writer, `</g>`)
-		fmt.Fprintf(writer, closingTag)
+		fmt.Fprint(writer, `</g>`)
+		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeSQLTable:
 		if sketchRunner != nil {
@@ -758,13 +758,13 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			if err != nil {
 				return "", err
 			}
-			fmt.Fprintf(writer, out)
+			fmt.Fprint(writer, out)
 		} else {
 			drawTable(writer, targetShape)
 		}
 		addAppendixItems(writer, targetShape)
-		fmt.Fprintf(writer, `</g>`)
-		fmt.Fprintf(writer, closingTag)
+		fmt.Fprint(writer, `</g>`)
+		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeOval:
 		if targetShape.DoubleBorder {
@@ -776,7 +776,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				if err != nil {
 					return "", err
 				}
-				fmt.Fprintf(writer, out)
+				fmt.Fprint(writer, out)
 			} else {
 				fmt.Fprint(writer, renderDoubleOval(tl, width, height, style))
 			}
@@ -789,10 +789,15 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				if err != nil {
 					return "", err
 				}
-				fmt.Fprintf(writer, out)
+				fmt.Fprint(writer, out)
 			} else {
 				fmt.Fprint(writer, renderOval(tl, width, height, style))
 			}
+		}
+
+		// debugging
+		for _, pathData := range s.GetSVGPathData() {
+			fmt.Fprintf(writer, `<path d="%s" style="%s"/>`, pathData, style)
 		}
 
 	case d2target.ShapeImage:
@@ -815,7 +820,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					if err != nil {
 						return "", err
 					}
-					fmt.Fprintf(writer, out)
+					fmt.Fprint(writer, out)
 				} else {
 					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
 						targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
@@ -832,7 +837,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					if err != nil {
 						return "", err
 					}
-					fmt.Fprintf(writer, out)
+					fmt.Fprint(writer, out)
 				} else {
 					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
 						targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
@@ -855,7 +860,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			if err != nil {
 				return "", err
 			}
-			fmt.Fprintf(writer, out)
+			fmt.Fprint(writer, out)
 		} else {
 			for _, pathData := range s.GetSVGPathData() {
 				fmt.Fprintf(writer, `<path d="%s" style="%s"/>`, pathData, style)
@@ -864,7 +869,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 	}
 
 	// Closes the class=shape
-	fmt.Fprintf(writer, `</g>`)
+	fmt.Fprint(writer, `</g>`)
 
 	if targetShape.Icon != nil && targetShape.Type != d2target.ShapeImage {
 		iconPosition := label.Position(targetShape.IconPosition)
@@ -895,7 +900,11 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		} else {
 			box = s.GetInnerBox()
 		}
-		labelTL := labelPosition.GetPointOnBox(box, label.PADDING, float64(targetShape.LabelWidth), float64(targetShape.LabelHeight))
+		labelTL := labelPosition.GetPointOnBox(box, label.PADDING,
+			float64(targetShape.LabelWidth),
+			// TODO consider further
+			float64(targetShape.LabelHeight-d2graph.INNER_LABEL_PADDING),
+		)
 
 		fontClass := "text"
 		if targetShape.Bold {
@@ -932,7 +941,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			fmt.Fprintf(writer, `<rect class="shape" width="%d" height="%d" style="%s" />`,
 				targetShape.Width, targetShape.Height, containerStyle)
 			// Padding
-			fmt.Fprintf(writer, `<g transform="translate(6 6)">`)
+			fmt.Fprint(writer, `<g transform="translate(6 6)">`)
 
 			for index, tokens := range chroma.SplitTokensIntoLines(iterator.Tokens()) {
 				// TODO mono font looks better with 1.2 em (use px equivalent), but textmeasure needs to account for it. Not obvious how that should be done
@@ -947,7 +956,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				}
 				fmt.Fprint(writer, "</text>")
 			}
-			fmt.Fprintf(writer, "</g></g>")
+			fmt.Fprint(writer, "</g></g>")
 		} else if targetShape.Type == d2target.ShapeText && targetShape.Language == "latex" {
 			render, err := d2latex.Render(targetShape.Label)
 			if err != nil {
@@ -955,7 +964,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			}
 			fmt.Fprintf(writer, `<g transform="translate(%f %f)">`, box.TopLeft.X, box.TopLeft.Y)
 			fmt.Fprint(writer, render)
-			fmt.Fprintf(writer, "</g>")
+			fmt.Fprint(writer, "</g>")
 		} else if targetShape.Type == d2target.ShapeText && targetShape.Language != "" {
 			render, err := textmeasure.RenderMarkdown(targetShape.Label)
 			if err != nil {
@@ -1000,7 +1009,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 
 	addAppendixItems(writer, targetShape)
 
-	fmt.Fprintf(writer, closingTag)
+	fmt.Fprint(writer, closingTag)
 	return labelMask, nil
 }
 
@@ -1230,7 +1239,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		fmt.Fprintf(buf, `<style type="text/css">%s</style>`, mdCSS)
 	}
 	if sketchRunner != nil {
-		fmt.Fprintf(buf, d2sketch.DefineFillPattern())
+		fmt.Fprint(buf, d2sketch.DefineFillPattern())
 	}
 
 	// only define shadow filter if a shape uses it

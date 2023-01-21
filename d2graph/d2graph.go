@@ -18,6 +18,7 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/shape"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
@@ -1117,14 +1118,14 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			continue
 		}
 
-		shapeType := strings.ToLower(obj.Attributes.Shape.Value)
+		dslShape := strings.ToLower(obj.Attributes.Shape.Value)
 
 		labelDims, err := obj.GetLabelSize(mtexts, ruler, fontFamily)
 		if err != nil {
 			return err
 		}
 
-		switch shapeType {
+		switch dslShape {
 		case d2target.ShapeText, d2target.ShapeClass, d2target.ShapeSQLTable, d2target.ShapeCode:
 			// no labels
 		default:
@@ -1134,7 +1135,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 		}
 
-		if shapeType != d2target.ShapeText && obj.Attributes.Label.Value != "" {
+		if dslShape != d2target.ShapeText && obj.Attributes.Label.Value != "" {
 			labelDims.Width += INNER_LABEL_PADDING
 			labelDims.Height += INNER_LABEL_PADDING
 		}
@@ -1150,7 +1151,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 
 		paddingX, paddingY := obj.GetPadding()
 
-		switch shapeType {
+		switch dslShape {
 		case d2target.ShapeSquare, d2target.ShapeCircle:
 			if desiredWidth != 0 || desiredHeight != 0 {
 				paddingX = 0.
@@ -1169,6 +1170,12 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 				obj.Height += float64(paddingY)
 			}
 		}
+		contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(defaultDims.Width), float64(defaultDims.Height))
+		shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
+		s := shape.NewShape(shapeType, contentBox)
+		newWidth, newHeight := s.GetDimensionsToFit(contentBox.Width, contentBox.Height, paddingX/2)
+		obj.Width = newWidth
+		obj.Height = newHeight
 	}
 	for _, edge := range g.Edges {
 		endpointLabels := []string{}

@@ -19,6 +19,16 @@ func NewOval(box *geo.Box) Shape {
 	}
 }
 
+func (s shapeOval) GetInnerBox() *geo.Box {
+	width := s.Box.Width
+	height := s.Box.Height
+	insideTL := s.GetInsidePlacement(width, height, 0)
+	tl := s.Box.TopLeft.Copy()
+	width -= 2 * (insideTL.X - tl.X)
+	height -= 2 * (insideTL.Y - tl.Y)
+	return geo.NewBox(&insideTL, width, height)
+}
+
 func (s shapeOval) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
 	theta := math.Atan2(height, width)
 	// add padding in direction of diagonal so there is padding distance between top left and border
@@ -52,4 +62,11 @@ func (s shapeOval) GetInsidePlacement(width, height, padding float64) geo.Point 
 
 func (s shapeOval) Perimeter() []geo.Intersectable {
 	return []geo.Intersectable{geo.NewEllipse(s.Box.Center(), s.Box.Width/2, s.Box.Height/2)}
+}
+
+// debugging
+func (s shapeOval) GetSVGPathData() []string {
+	return []string{
+		boxPath(s.GetInnerBox()).PathData(),
+	}
 }

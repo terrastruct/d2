@@ -11,6 +11,15 @@ type shapePackage struct {
 	*baseShape
 }
 
+const (
+	packageTopMinHeight     = 34.
+	packageTopMaxHeight     = 55.
+	packageTopMinWidth      = 50.
+	packageTopMaxWidth      = 150.
+	packageHorizontalScalar = 0.5
+	packageVerticalScalar   = 0.2
+)
+
 func NewPackage(box *geo.Box) Shape {
 	return shapePackage{
 		baseShape: &baseShape{
@@ -20,22 +29,27 @@ func NewPackage(box *geo.Box) Shape {
 	}
 }
 
-func packagePath(box *geo.Box) *svg.SvgPathContext {
-	const MIN_TOP_HEIGHT = 34
-	const MAX_TOP_HEIGHT = 55
-	const MIN_TOP_WIDTH = 50
-	const MAX_TOP_WIDTH = 150
+func (s shapePackage) GetInnerBox() *geo.Box {
+	tl := s.Box.TopLeft.Copy()
+	height := s.Box.Height
 
-	const horizontalScalar = 0.5
-	topWidth := box.Width * horizontalScalar
-	if box.Width >= 2*MIN_TOP_WIDTH {
-		topWidth = math.Min(MAX_TOP_WIDTH, math.Max(MIN_TOP_WIDTH, topWidth))
+	_, topHeight := getTopDimensions(s.Box)
+	tl.Y += topHeight
+	height -= topHeight
+	return geo.NewBox(tl, s.Box.Width, height)
+}
+
+func getTopDimensions(box *geo.Box) (width, height float64) {
+	width = box.Width * packageHorizontalScalar
+	if box.Width >= 2*packageTopMinWidth {
+		width = math.Min(packageTopMaxWidth, math.Max(packageTopMinWidth, width))
 	}
-	const verticalScalar = 0.2
-	topHeight := box.Height * verticalScalar
-	if box.Height >= 2*MIN_TOP_HEIGHT {
-		topHeight = math.Min(MAX_TOP_HEIGHT, math.Max(MIN_TOP_HEIGHT, topHeight))
-	}
+	height = math.Min(packageTopMaxHeight, box.Height*packageVerticalScalar)
+	return width, height
+}
+
+func packagePath(box *geo.Box) *svg.SvgPathContext {
+	topWidth, topHeight := getTopDimensions(box)
 
 	pc := svg.NewSVGPathContext(box.TopLeft, 1, 1)
 	pc.StartAt(pc.Absolute(0, 0))
@@ -55,5 +69,18 @@ func (s shapePackage) Perimeter() []geo.Intersectable {
 func (s shapePackage) GetSVGPathData() []string {
 	return []string{
 		packagePath(s.Box).PathData(),
+		// debugging
+		boxPath(s.GetInnerBox()).PathData(),
 	}
+}
+
+func (s shapePackage) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
+	innerHeight := height + padding*2
+	// We want to compute what the topHeight will be to add to inner height;
+	// topHeight=(verticalScalar * totalHeight) and totalHeight=(topHeight + innerHeight)
+	// so solving for topHeight we get: topHeight=innerHeight * (verticalScalar/(1-verticalScalar))
+	topHeight := innerHeight * packageVerticalScalar / (1. - packageVerticalScalar)
+	totalHeight := innerHeight + math.Min(topHeight, packageTopMaxHeight)
+
+	return width + padding*2, totalHeight
 }

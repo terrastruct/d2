@@ -18,6 +18,19 @@ func NewPerson(box *geo.Box) Shape {
 	}
 }
 
+const (
+	personShoulderWidthFactor = 20.2 / 68.3
+)
+
+func (s shapePerson) GetInnerBox() *geo.Box {
+	width := s.Box.Width
+	tl := s.Box.TopLeft.Copy()
+	shoulderWidth := personShoulderWidthFactor * width
+	tl.X += shoulderWidth
+	width -= shoulderWidth * 2
+	return geo.NewBox(tl, width, s.Box.Height)
+}
+
 func personPath(box *geo.Box) *svg.SvgPathContext {
 	pc := svg.NewSVGPathContext(box.TopLeft, box.Width/68.3, box.Height/77.4)
 
@@ -50,5 +63,16 @@ func (s shapePerson) Perimeter() []geo.Intersectable {
 func (s shapePerson) GetSVGPathData() []string {
 	return []string{
 		personPath(s.Box).PathData(),
+		// debugging
+		boxPath(s.GetInnerBox()).PathData(),
 	}
+}
+
+func (s shapePerson) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
+	totalWidth := width + padding*2
+	// see shapePackage
+	shoulderWidth := totalWidth * personShoulderWidthFactor / (1 - 2*personShoulderWidthFactor)
+	totalWidth += 2 * shoulderWidth
+	totalHeight := height + padding*2
+	return totalWidth, totalHeight
 }

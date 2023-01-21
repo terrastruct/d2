@@ -20,6 +20,14 @@ func NewStep(box *geo.Box) Shape {
 
 const STEP_WEDGE_WIDTH = 35.0
 
+func (s shapeStep) GetInnerBox() *geo.Box {
+	width := s.Box.Width
+	tl := s.Box.TopLeft.Copy()
+	width -= 2 * STEP_WEDGE_WIDTH
+	tl.X += STEP_WEDGE_WIDTH
+	return geo.NewBox(tl, width, s.Box.Height)
+}
+
 func stepPath(box *geo.Box) *svg.SvgPathContext {
 	wedgeWidth := STEP_WEDGE_WIDTH
 	if box.Width <= wedgeWidth {
@@ -43,5 +51,12 @@ func (s shapeStep) Perimeter() []geo.Intersectable {
 func (s shapeStep) GetSVGPathData() []string {
 	return []string{
 		stepPath(s.Box).PathData(),
+		// debugging
+		boxPath(s.GetInnerBox()).PathData(),
 	}
+}
+
+func (s shapeStep) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
+	totalWidth := width + padding*2 + 2*STEP_WEDGE_WIDTH
+	return totalWidth, height + padding*2
 }

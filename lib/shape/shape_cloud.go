@@ -40,6 +40,24 @@ func NewCloud(box *geo.Box) Shape {
 	}
 }
 
+func (s shapeCloud) GetInnerBox() *geo.Box {
+	width := s.Box.Width
+	height := s.Box.Height
+	insideTL := s.GetInsidePlacement(width, height, 0)
+	aspectRatio := width / height
+	if aspectRatio > CLOUD_WIDE_ASPECT_BOUNDARY {
+		width *= CLOUD_WIDE_INNER_WIDTH
+		height *= CLOUD_WIDE_INNER_HEIGHT
+	} else if aspectRatio < CLOUD_TALL_ASPECT_BOUNDARY {
+		width *= CLOUD_TALL_INNER_WIDTH
+		height *= CLOUD_TALL_INNER_HEIGHT
+	} else {
+		width *= CLOUD_SQUARE_INNER_WIDTH
+		height *= CLOUD_SQUARE_INNER_HEIGHT
+	}
+	return geo.NewBox(&insideTL, width, height)
+}
+
 func (s shapeCloud) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
 	width += padding
 	height += padding
@@ -96,5 +114,7 @@ func (s shapeCloud) Perimeter() []geo.Intersectable {
 func (s shapeCloud) GetSVGPathData() []string {
 	return []string{
 		cloudPath(s.Box).PathData(),
+		// debugging
+		boxPath(s.GetInnerBox()).PathData(),
 	}
 }

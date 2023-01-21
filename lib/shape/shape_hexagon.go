@@ -18,6 +18,14 @@ func NewHexagon(box *geo.Box) Shape {
 	}
 }
 
+func (s shapeHexagon) GetInnerBox() *geo.Box {
+	width := s.Box.Width
+	tl := s.Box.TopLeft.Copy()
+	tl.X += width / 4.
+	width /= 2.
+	return geo.NewBox(tl, width, s.Box.Height)
+}
+
 func hexagonPath(box *geo.Box) *svg.SvgPathContext {
 	halfYFactor := 43.6 / 87.3
 	pc := svg.NewSVGPathContext(box.TopLeft, box.Width, box.Height)
@@ -38,5 +46,12 @@ func (s shapeHexagon) Perimeter() []geo.Intersectable {
 func (s shapeHexagon) GetSVGPathData() []string {
 	return []string{
 		hexagonPath(s.Box).PathData(),
+		// debugging
+		boxPath(s.GetInnerBox()).PathData(),
 	}
+}
+
+func (s shapeHexagon) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
+	totalWidth := 2 * (width + 2*padding)
+	return totalWidth, height + 2*padding
 }

@@ -4,6 +4,7 @@ import (
 	"math"
 
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/svg"
 )
 
 const (
@@ -90,6 +91,8 @@ func (s baseShape) GetInnerTopLeft(_, _, padding float64) geo.Point {
 	return *geo.NewPoint(s.Box.TopLeft.X+padding, s.Box.TopLeft.Y+padding)
 }
 
+// return the minimum shape dimensions needed to fit content (width x height)
+// in the shape's innerBox with padding
 func (s baseShape) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
 	return width + padding*2, height + padding*2
 }
@@ -208,4 +211,14 @@ func TraceToShapeBorder(shape Shape, rectBorderPoint, prevPoint *geo.Point) *geo
 	}
 
 	return geo.NewPoint(math.Round(closestPoint.X), math.Round(closestPoint.Y))
+}
+
+func boxPath(box *geo.Box) *svg.SvgPathContext {
+	pc := svg.NewSVGPathContext(box.TopLeft, 1, 1)
+	pc.StartAt(pc.Absolute(0, 0))
+	pc.L(false, box.Width, 0)
+	pc.L(false, box.Width, box.Height)
+	pc.L(false, 0, box.Height)
+	pc.Z()
+	return pc
 }

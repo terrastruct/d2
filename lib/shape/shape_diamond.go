@@ -18,6 +18,17 @@ func NewDiamond(box *geo.Box) Shape {
 	}
 }
 
+func (s shapeDiamond) GetInnerBox() *geo.Box {
+	width := s.Box.Width
+	height := s.Box.Height
+	tl := s.Box.TopLeft.Copy()
+	tl.X += width / 4.
+	tl.Y += height / 4.
+	width /= 2.
+	height /= 2.
+	return geo.NewBox(tl, width, height)
+}
+
 func diamondPath(box *geo.Box) *svg.SvgPathContext {
 	pc := svg.NewSVGPathContext(box.TopLeft, box.Width/77, box.Height/76.9)
 	pc.StartAt(pc.Absolute(38.5, 76.9))
@@ -41,5 +52,13 @@ func (s shapeDiamond) Perimeter() []geo.Intersectable {
 func (s shapeDiamond) GetSVGPathData() []string {
 	return []string{
 		diamondPath(s.Box).PathData(),
+		// debugging
+		boxPath(s.GetInnerBox()).PathData(),
 	}
+}
+
+func (s shapeDiamond) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
+	totalWidth := 2 * (width + 2*padding)
+	totalHeight := 2 * (height + 2*padding)
+	return totalWidth, totalHeight
 }
