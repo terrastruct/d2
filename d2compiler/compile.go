@@ -168,6 +168,9 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 }
 
 func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
+	if f.Primary() == nil {
+		return
+	}
 	scalar := f.Primary().Value
 	switch f.Name {
 	case "label":
@@ -240,6 +243,9 @@ func (c *compiler) compileStyle(attrs *d2graph.Attributes, m *d2ir.Map) {
 }
 
 func (c *compiler) compileStyleField(attrs *d2graph.Attributes, f *d2ir.Field) {
+	if f.Primary() == nil {
+		return
+	}
 	scalar := f.Primary().Value
 	err := attrs.Style.Apply(f.Name, scalar.ScalarString())
 	if err != nil {

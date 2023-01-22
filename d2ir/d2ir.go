@@ -235,7 +235,8 @@ func NodeLayerKind(n Node) LayerKind {
 }
 
 type Field struct {
-	parent *Map
+	// *Map.
+	parent Node
 
 	Name string `json:"name"`
 
@@ -249,7 +250,7 @@ func (f *Field) Copy(newParent Node) Node {
 	tmp := *f
 	f = &tmp
 
-	f.parent = newParent.(*Map)
+	f.parent = newParent
 	f.References = append([]*FieldReference(nil), f.References...)
 	if f.Primary_ != nil {
 		f.Primary_ = f.Primary_.Copy(f).(*Scalar)
@@ -397,7 +398,8 @@ func (eid *EdgeID) trimCommon() (common []string, _ *EdgeID) {
 }
 
 type Edge struct {
-	parent *Map
+	// *Map
+	parent Node
 
 	ID *EdgeID `json:"edge_id"`
 
@@ -411,7 +413,7 @@ func (e *Edge) Copy(newParent Node) Node {
 	tmp := *e
 	e = &tmp
 
-	e.parent = newParent.(*Map)
+	e.parent = newParent
 	e.References = append([]*EdgeReference(nil), e.References...)
 	if e.Primary_ != nil {
 		e.Primary_ = e.Primary_.Copy(e).(*Scalar)
@@ -898,8 +900,11 @@ func (m *Map) appendFieldReferences(i int, kp *d2ast.KeyPath, refctx *RefContext
 }
 
 func ParentMap(n Node) *Map {
-	for n.Parent() != nil {
+	for {
 		n = n.Parent()
+		if n == nil {
+			return nil
+		}
 		if m, ok := n.(*Map); ok {
 			return m
 		}
@@ -908,8 +913,11 @@ func ParentMap(n Node) *Map {
 }
 
 func ParentField(n Node) *Field {
-	for n.Parent() != nil {
+	for {
 		n = n.Parent()
+		if n == nil {
+			return nil
+		}
 		if f, ok := n.(*Field); ok {
 			return f
 		}
@@ -932,8 +940,11 @@ func ParentLayer(n Node) *Map {
 }
 
 func ParentEdge(n Node) *Edge {
-	for n.Parent() != nil {
+	for {
 		n = n.Parent()
+		if n == nil {
+			return nil
+		}
 		if e, ok := n.(*Edge); ok {
 			return e
 		}
