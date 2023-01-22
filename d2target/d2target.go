@@ -26,6 +26,8 @@ const (
 	MULTIPLE_OFFSET  = 10
 )
 
+var borderOffset = geo.NewVector(5, 5)
+
 type Diagram struct {
 	Name        string              `json:"name"`
 	Description string              `json:"description,omitempty"`
