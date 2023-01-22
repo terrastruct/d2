@@ -41,7 +41,7 @@ func (c *compiler) compileScenarios(m *Map) {
 				parent: sf,
 			}
 		}
-		base := m.Copy(sf).(*Map)
+		base := m.CopyBase(sf)
 		sf.Composite = Overlay(base, sf.Map())
 		c.compileScenarios(sf.Map())
 		c.compileSteps(sf.Map())
@@ -66,9 +66,9 @@ func (c *compiler) compileSteps(m *Map) {
 
 		var base *Map
 		if i == 0 {
-			base = m.Copy(sf).(*Map)
+			base = m.CopyBase(sf)
 		} else {
-			base = steps.Fields[i-1].Map().Copy(sf).(*Map)
+			base = steps.Fields[i-1].Map().CopyBase(sf)
 		}
 		sf.Composite = Overlay(base, sf.Map())
 		c.compileScenarios(sf.Map())
