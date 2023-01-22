@@ -592,7 +592,7 @@ func renderOval(tl *geo.Point, width, height float64, style string) string {
 }
 
 func renderDoubleOval(tl *geo.Point, width, height float64, style string) string {
-	var innerTL *geo.Point = tl.AddVector(d2target.BorderOffset)
+	var innerTL *geo.Point = tl.AddVector(geo.NewVector(d2target.INNER_BORDER_OFFSET, d2target.INNER_BORDER_OFFSET))
 	return renderOval(tl, width, height, style) + renderOval(innerTL, width-10, height-10, style)
 }
 

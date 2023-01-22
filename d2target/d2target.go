@@ -24,11 +24,9 @@ const (
 
 	THREE_DEE_OFFSET = 15
 	MULTIPLE_OFFSET  = 10
+
+	INNER_BORDER_OFFSET = 5
 )
-
-var BorderOffset = geo.NewVector(5, 5)
-
-const INNER_BORDER_OFFSET = 5
 
 type Diagram struct {
 	Name        string              `json:"name"`
