@@ -44,7 +44,6 @@ const (
 )
 
 var multipleOffset = geo.NewVector(10, -10)
-var borderOffset = geo.NewVector(5, 5)
 
 //go:embed tooltip.svg
 var TooltipIcon string
@@ -495,7 +494,7 @@ func renderOval(tl *geo.Point, width, height float64, style string) string {
 }
 
 func renderDoubleOval(tl *geo.Point, width, height float64, style string) string {
-	var innerTL *geo.Point = tl.AddVector(borderOffset)
+	var innerTL *geo.Point = tl.AddVector(d2target.BorderOffset)
 	return renderOval(tl, width, height, style) + renderOval(innerTL, width-10, height-10, style)
 }
 

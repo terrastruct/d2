@@ -22,7 +22,7 @@ const (
 	MAX_ICON_SIZE     = 64
 )
 
-var borderOffset = geo.NewVector(5, 5)
+var BorderOffset = geo.NewVector(5, 5)
 
 type Diagram struct {
 	Name        string              `json:"name"`
