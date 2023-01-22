@@ -1946,8 +1946,8 @@ layers: {
 }
 `, "")
 				assert.JSON(t, 2, len(g.Layers))
-				assert.JSON(t, "one", g.Layers[0].Root.ID)
-				assert.JSON(t, "two", g.Layers[1].Root.ID)
+				assert.JSON(t, "one", g.Layers[0].Name)
+				assert.JSON(t, "two", g.Layers[1].Name)
 			},
 		},
 	}
