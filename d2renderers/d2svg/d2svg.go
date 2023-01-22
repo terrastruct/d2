@@ -719,7 +719,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
 						targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style)
 					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-						targetShape.Pos.X+15, targetShape.Pos.Y-5, targetShape.Width-10, targetShape.Height-10, style)
+						targetShape.Pos.X+10+d2target.INNER_BORDER_OFFSET, targetShape.Pos.Y-10+d2target.INNER_BORDER_OFFSET, targetShape.Width-2*d2target.INNER_BORDER_OFFSET, targetShape.Height-2*d2target.INNER_BORDER_OFFSET, style)
 				}
 				if sketchRunner != nil {
 					out, err := d2sketch.DoubleRect(sketchRunner, targetShape)
@@ -731,7 +731,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
 						targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
 					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-						targetShape.Pos.X+5, targetShape.Pos.Y+5, targetShape.Width-10, targetShape.Height-10, style)
+						targetShape.Pos.X+d2target.INNER_BORDER_OFFSET, targetShape.Pos.Y+d2target.INNER_BORDER_OFFSET, targetShape.Width-2*d2target.INNER_BORDER_OFFSET, targetShape.Height-2*d2target.INNER_BORDER_OFFSET, style)
 				}
 			}
 		}
