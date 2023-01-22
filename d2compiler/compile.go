@@ -88,7 +88,6 @@ func compileIR(pe d2parser.ParseError, m *d2ir.Map) (*d2graph.Graph, error) {
 	if len(c.err.Errors) == 0 {
 		c.validateKeys(g.Root, m)
 	}
-	c.compileShapes(g.Root)
 	c.validateNear(g)
 
 	if len(c.err.Errors) > 0 {
@@ -109,6 +108,14 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 	for _, f := range m.Fields {
 		c.compileField(obj, f)
 	}
+
+	switch obj.Attributes.Shape.Value {
+	case d2target.ShapeClass:
+		c.compileClass(obj, m)
+	case d2target.ShapeSQLTable:
+		c.compileSQLTable(obj, m)
+	}
+
 	for _, e := range m.Edges {
 		c.compileEdge(obj, m, e)
 	}
@@ -370,26 +377,19 @@ func (c *compiler) compileShapes(obj *d2graph.Object) {
 			c.compileClass(obj)
 		case d2target.ShapeSQLTable:
 			c.compileSQLTable(obj)
-		case d2target.ShapeImage:
-			c.compileImage(obj)
 		}
 		c.compileShapes(obj)
 	}
 }
 
-func (c *compiler) compileImage(obj *d2graph.Object) {
-	if obj.Attributes.Icon == nil {
-		c.errorf(obj.Attributes.Shape.MapKey, `image shape must include an "icon" field`)
-	}
-}
-
 func (c *compiler) compileClass(obj *d2graph.Object) {
-	obj.Class = &d2target.Class{}
+	if len(m.Edges) > 0 {
+		c.errorf(m.Edges[0].LastAST(), "class shapes cannot have edges inside")
+		return
+	}
 
+	obj.Class = &d2target.Class{}
 	for _, f := range obj.ChildrenArray {
-		if f.IDVal == "style" {
-			continue
-		}
 		visiblity := "public"
 		name := f.IDVal
 		// See https://www.uml-diagrams.org/visibility.html
@@ -430,17 +430,22 @@ func (c *compiler) compileClass(obj *d2graph.Object) {
 			})
 		}
 	}
+
+	obj.Children = nil
+	obj.ChildrenArray = nil
 }
 
 func (c *compiler) compileSQLTable(obj *d2graph.Object) {
+	if len(m.Edges) > 0 {
+		c.errorf(m.Edges[0].LastAST(), "sql_table shapes cannot have edges inside")
+		return
+	}
+
 	obj.SQLTable = &d2target.SQLTable{}
 
 	parentID := obj.Parent.AbsID()
 	tableIDPrefix := obj.AbsID() + "."
 	for _, col := range obj.ChildrenArray {
-		if col.IDVal == "style" {
-			continue
-		}
 		typ := col.Attributes.Label.Value
 		if typ == col.IDVal {
 			// Not great, AST should easily allow specifying alternate primary field
@@ -467,26 +472,11 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 			}
 		}
 
-		absID := col.AbsID()
-		for _, e := range obj.Graph.Edges {
-			srcID := e.Src.AbsID()
-			dstID := e.Dst.AbsID()
-			// skip edges between columns of the same table
-			if strings.HasPrefix(srcID, tableIDPrefix) && strings.HasPrefix(dstID, tableIDPrefix) {
-				continue
-			}
-			if srcID == absID {
-				d2Col.Reference = strings.TrimPrefix(dstID, parentID+".")
-				e.SrcTableColumnIndex = new(int)
-				*e.SrcTableColumnIndex = len(obj.SQLTable.Columns)
-			} else if dstID == absID {
-				e.DstTableColumnIndex = new(int)
-				*e.DstTableColumnIndex = len(obj.SQLTable.Columns)
-			}
-		}
-
 		obj.SQLTable.Columns = append(obj.SQLTable.Columns, d2Col)
 	}
+
+	obj.Children = nil
+	obj.ChildrenArray = nil
 }
 
 func (c *compiler) validateKeys(obj *d2graph.Object, m *d2ir.Map) {
@@ -528,6 +518,18 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 				c.errorf(f.LastPrimaryKey(), `key "3d" can only be applied to squares and rectangles`)
 			}
 		case "shape":
+			switch obj.Attributes.Shape.Value {
+			case d2target.ShapeSQLTable, d2target.ShapeClass:
+			case d2target.ShapeImage:
+				if obj.Attributes.Icon == nil {
+					c.errorf(f.LastPrimaryKey(), `image shape must include an "icon" field`)
+				}
+			default:
+				if len(obj.Children) > 0 && (f.Name == "width" || f.Name == "height") {
+					c.errorf(f.LastPrimaryKey(), mk.Range.End, fmt.Sprintf("%s cannot be used on container: %s", f.Name, obj.AbsID()))
+				}
+			}
+
 			in := d2target.IsShape(obj.Attributes.Shape.Value)
 			_, arrowheadIn := d2target.Arrowheads[obj.Attributes.Shape.Value]
 			if !in && arrowheadIn {
