@@ -206,6 +206,10 @@ func (c *compiler) compileEdges(dst *Map, refctx *RefContext) {
 					parent: e,
 					Value:  refctx.Key.Primary.Unbox(),
 				}
+			}
+			if refctx.Key.Value.Array != nil {
+				c.errorf(refctx.Key.Value.Unbox(), "edges cannot be assigned arrays")
+				continue
 			} else if refctx.Key.Value.Map != nil {
 				if e.Map_ == nil {
 					e.Map_ = &Map{
@@ -213,9 +217,11 @@ func (c *compiler) compileEdges(dst *Map, refctx *RefContext) {
 					}
 				}
 				c.compileMap(e.Map_, refctx.Key.Value.Map)
-			} else if refctx.Key.Value.Unbox() != nil {
-				c.errorf(refctx.Key.Value.Unbox(), "edges cannot be assigned arrays")
-				continue
+			} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
+				e.Primary_ = &Scalar{
+					parent: e,
+					Value:  refctx.Key.Value.ScalarBox().Unbox(),
+				}
 			}
 		}
 	}

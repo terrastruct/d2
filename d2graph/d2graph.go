@@ -987,7 +987,7 @@ func addSQLTableColumnIndexes(e *Edge, srcID, dstID []string, obj, src, dst *Obj
 		}
 		objAbsID := obj.AbsIDArray()
 		srcAbsID := src.AbsIDArray()
-		if len(objAbsID) + len(srcID) > len(srcAbsID) {
+		if len(objAbsID)+len(srcID) > len(srcAbsID) {
 			for i, d2col := range src.SQLTable.Columns {
 				if d2col.Name.Label == srcID[len(srcID)-1] {
 					d2col.Reference = dst.AbsID()
@@ -1001,7 +1001,7 @@ func addSQLTableColumnIndexes(e *Edge, srcID, dstID []string, obj, src, dst *Obj
 	if dst.Attributes.Shape.Value == d2target.ShapeSQLTable {
 		objAbsID := obj.AbsIDArray()
 		dstAbsID := dst.AbsIDArray()
-		if len(objAbsID) + len(dstID) > len(dstAbsID) {
+		if len(objAbsID)+len(dstID) > len(dstAbsID) {
 			for i, d2col := range dst.SQLTable.Columns {
 				if d2col.Name.Label == dstID[len(dstID)-1] {
 					d2col.Reference = dst.AbsID()
@@ -1284,7 +1284,11 @@ func Key(k *d2ast.KeyPath) []string {
 	return d2format.KeyPath(k)
 }
 
-var ReservedKeywords = map[string]struct{}{
+// All reserved keywords. See init below.
+var ReservedKeywords map[string]struct{}
+
+// Non Style/Holder keywords.
+var SimpleReservedKeywords = map[string]struct{}{
 	"label":      {},
 	"desc":       {},
 	"shape":      {},
@@ -1351,6 +1355,10 @@ var NearConstantsArray = []string{
 var NearConstants map[string]struct{}
 
 func init() {
+	ReservedKeywords = make(map[string]struct{})
+	for k, v := range SimpleReservedKeywords {
+		ReservedKeywords[k] = v
+	}
 	for k, v := range StyleKeywords {
 		ReservedKeywords[k] = v
 	}

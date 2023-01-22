@@ -123,7 +123,7 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 
 func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 	keyword := strings.ToLower(f.Name)
-	_, isReserved := d2graph.ReservedKeywords[keyword]
+	_, isReserved := d2graph.SimpleReservedKeywords[keyword]
 	if isReserved {
 		c.compileReserved(obj.Attributes, f)
 		return
@@ -141,6 +141,18 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 	}
 	if f.Map() != nil {
 		c.compileMap(obj, f.Map())
+	}
+
+	for _, er := range f.References {
+		obj.References = append(obj.References, d2graph.Reference{
+			Key: er.KeyPath,
+			KeyPathIndex: er.KeyPathIndex(),
+
+			MapKey: er.Context.Key,
+			MapKeyEdgeIndex: er.Context.EdgeIndex(),
+			Scope: er.Context.Scope,
+			ScopeObj: obj.Parent,
+		})
 	}
 }
 
@@ -246,13 +258,16 @@ func (c *compiler) compileStyleField(attrs *d2graph.Attributes, f *d2ir.Field) {
 	if f.Primary() == nil {
 		return
 	}
+	compileStyleFieldInit(attrs, f)
 	scalar := f.Primary().Value
 	err := attrs.Style.Apply(f.Name, scalar.ScalarString())
 	if err != nil {
 		c.errorf(scalar, err.Error())
 		return
 	}
+}
 
+func compileStyleFieldInit(attrs *d2graph.Attributes, f *d2ir.Field) {
 	switch f.Name {
 	case "opacity":
 		attrs.Style.Opacity = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
@@ -315,11 +330,21 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 			c.compileEdgeField(edge, f)
 		}
 	}
+
+	for _, er := range e.References {
+		edge.References = append(edge.References, d2graph.EdgeReference{
+			Edge: er.Context.Edge,
+			MapKey: er.Context.Key,
+			MapKeyEdgeIndex: er.Context.EdgeIndex(),
+			Scope: er.Context.Scope,
+			ScopeObj: obj,
+		})
+	}
 }
 
 func (c *compiler) compileEdgeField(edge *d2graph.Edge, f *d2ir.Field) {
 	keyword := strings.ToLower(f.Name)
-	_, isReserved := d2graph.ReservedKeywords[keyword]
+	_, isReserved := d2graph.SimpleReservedKeywords[keyword]
 	if isReserved {
 		c.compileReserved(edge.Attributes, f)
 		return
@@ -354,7 +379,7 @@ func (c *compiler) compileArrowheads(edge *d2graph.Edge, f *d2ir.Field) {
 
 	for _, f2 := range f.Map().Fields {
 		keyword := strings.ToLower(f2.Name)
-		_, isReserved := d2graph.ReservedKeywords[keyword]
+		_, isReserved := d2graph.SimpleReservedKeywords[keyword]
 		if isReserved {
 			c.compileReserved(attrs, f2)
 			continue
@@ -474,8 +499,8 @@ func (c *compiler) validateKeys(obj *d2graph.Object, m *d2ir.Map) {
 }
 
 func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
-		keyword := strings.ToLower(f.Name)
-	_, isReserved := d2graph.ReservedKeywords[keyword]
+	keyword := strings.ToLower(f.Name)
+	_, isReserved := d2graph.SimpleReservedKeywords[keyword]
 	if isReserved {
 		switch obj.Attributes.Shape.Value {
 		case d2target.ShapeSQLTable, d2target.ShapeClass:

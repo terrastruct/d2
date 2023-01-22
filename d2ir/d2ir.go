@@ -105,12 +105,12 @@ func (n *Array) String() string  { return d2format.Format(n.ast()) }
 func (n *Map) String() string    { return d2format.Format(n.ast()) }
 
 func (n *Scalar) LastRef() Reference { return parentRef(n) }
-func (n *Map) LastRef() Reference { return parentRef(n) }
-func (n *Array) LastRef() Reference { return parentRef(n) }
+func (n *Map) LastRef() Reference    { return parentRef(n) }
+func (n *Array) LastRef() Reference  { return parentRef(n) }
 
 func (n *Scalar) LastPrimaryKey() *d2ast.Key { return parentPrimaryKey(n) }
-func (n *Map) LastPrimaryKey() *d2ast.Key { return parentPrimaryKey(n) }
-func (n *Array) LastPrimaryKey() *d2ast.Key { return parentPrimaryKey(n) }
+func (n *Map) LastPrimaryKey() *d2ast.Key    { return parentPrimaryKey(n) }
+func (n *Array) LastPrimaryKey() *d2ast.Key  { return parentPrimaryKey(n) }
 
 type Reference interface {
 	reference()
@@ -213,7 +213,7 @@ func NodeLayerKind(n Node) LayerKind {
 	var f *Field
 	switch n := n.(type) {
 	case *Field:
-		f = ParentField(n)
+		f = n
 	case *Map:
 		f = ParentField(n)
 	}
@@ -540,7 +540,7 @@ func (rc *RefContext) EdgeIndex() int {
 			return i
 		}
 	}
-	panic("d2ir.RefContext.EdgeIndex: Edge not in Key.Edges?")
+	return -1
 }
 
 func (m *Map) FieldCountRecursive() int {
@@ -909,7 +909,6 @@ func ParentMap(n Node) *Map {
 			return m
 		}
 	}
-	return nil
 }
 
 func ParentField(n Node) *Field {
@@ -922,20 +921,17 @@ func ParentField(n Node) *Field {
 			return f
 		}
 	}
-	return nil
 }
 
-func ParentLayer(n Node) *Map {
+func ParentLayer(n Node) Node {
 	for {
-		// ParentMap and not ParentField so we get the root layer too.
-		m := ParentMap(n)
-		if m == nil {
+		n = n.Parent()
+		if n == nil {
 			return nil
 		}
-		if NodeLayerKind(m) != "" {
-			return m
+		if NodeLayerKind(n) != "" {
+			return n
 		}
-		n = m
 	}
 }
 
@@ -949,7 +945,6 @@ func ParentEdge(n Node) *Edge {
 			return e
 		}
 	}
-	return nil
 }
 
 func countUnderscores(p []string) int {
