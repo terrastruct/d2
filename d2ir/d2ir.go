@@ -18,13 +18,21 @@ import (
 // to indicate the offending AST node.
 type Node interface {
 	node()
-	Copy(parent Node) Node
+	Copy(newParent Node) Node
 	Parent() Node
 	Primary() *Scalar
 	Map() *Map
 
-	AST() d2ast.Node
+	ast() d2ast.Node
 	fmt.Stringer
+
+	LastRef() Reference
+	LastPrimaryKey() *d2ast.Key
+}
+
+type Reference interface {
+	reference()
+	AST() d2ast.Node
 }
 
 var _ Node = &Scalar{}
@@ -71,12 +79,20 @@ func (n *Map) Primary() *Scalar    { return nil }
 
 func (n *Scalar) Map() *Map { return nil }
 func (n *Field) Map() *Map {
+	if n == nil {
+		return nil
+	}
 	if n.Composite == nil {
 		return nil
 	}
 	return n.Composite.Map()
 }
-func (n *Edge) Map() *Map  { return n.Map_ }
+func (n *Edge) Map() *Map {
+	if n == nil {
+		return nil
+	}
+	return n.Map_
+}
 func (n *Array) Map() *Map { return nil }
 func (n *Map) Map() *Map   { return n }
 
@@ -87,22 +103,22 @@ func (n *Map) value()    {}
 func (n *Array) composite() {}
 func (n *Map) composite()   {}
 
-func (n *Scalar) String() string { return d2format.Format(n.AST()) }
-func (n *Field) String() string  { return d2format.Format(n.AST()) }
-func (n *Edge) String() string   { return d2format.Format(n.AST()) }
-func (n *Array) String() string  { return d2format.Format(n.AST()) }
-func (n *Map) String() string    { return d2format.Format(n.AST()) }
+func (n *Scalar) String() string { return d2format.Format(n.ast()) }
+func (n *Field) String() string  { return d2format.Format(n.ast()) }
+func (n *Edge) String() string   { return d2format.Format(n.ast()) }
+func (n *Array) String() string  { return d2format.Format(n.ast()) }
+func (n *Map) String() string    { return d2format.Format(n.ast()) }
 
 type Scalar struct {
 	parent Node
 	Value  d2ast.Scalar `json:"value"`
 }
 
-func (s *Scalar) Copy(newp Node) Node {
+func (s *Scalar) Copy(newParent Node) Node {
 	tmp := *s
 	s = &tmp
 
-	s.parent = newp
+	s.parent = newParent
 	return s
 }
 
@@ -121,11 +137,11 @@ type Map struct {
 	Edges  []*Edge  `json:"edges"`
 }
 
-func (m *Map) Copy(newp Node) Node {
+func (m *Map) Copy(newParent Node) Node {
 	tmp := *m
 	m = &tmp
 
-	m.parent = newp
+	m.parent = newParent
 	pfields := m.Fields
 	m.Fields = make([]*Field, 0, len(pfields))
 	for _, f := range pfields {
@@ -139,11 +155,11 @@ func (m *Map) Copy(newp Node) Node {
 }
 
 // CopyBase copies the map m without layers/scenarios/steps.
-func (m *Map) CopyBase(newp Node) *Map {
+func (m *Map) CopyBase(newParent Node) *Map {
 	layers := m.DeleteField("layers")
 	scenarios := m.DeleteField("scenarios")
 	steps := m.DeleteField("steps")
-	m2 := m.Copy(newp).(*Map)
+	m2 := m.Copy(newParent).(*Map)
 	if layers != nil {
 		m.Fields = append(m.Fields, layers)
 	}
@@ -159,6 +175,17 @@ func (m *Map) CopyBase(newp Node) *Map {
 // Root reports whether the Map is the root of the D2 tree.
 func (m *Map) Root() bool {
 	return m.parent == nil
+}
+
+func (f *Map) LastRef() *MapReference {
+	if f.parent == nil {
+		return nil
+	}
+	return f.References[len(f.References)-1]
+}
+
+func (f *Map) LastAST() d2ast.Node {
+	return f.LastRef().String
 }
 
 type LayerKind string
@@ -206,11 +233,11 @@ type Field struct {
 	References []FieldReference `json:"references,omitempty"`
 }
 
-func (f *Field) Copy(newp Node) Node {
+func (f *Field) Copy(newParent Node) Node {
 	tmp := *f
 	f = &tmp
 
-	f.parent = newp.(*Map)
+	f.parent = newParent.(*Map)
 	f.References = append([]FieldReference(nil), f.References...)
 	if f.Primary_ != nil {
 		f.Primary_ = f.Primary_.Copy(f).(*Scalar)
@@ -219,6 +246,39 @@ func (f *Field) Copy(newp Node) Node {
 		f.Composite = f.Composite.Copy(f).(Composite)
 	}
 	return f
+}
+
+func (f *Field) LastPrimaryRef() *FieldReference {
+	inEdge := ParentEdge(f) != nil
+	for i := len(f.References) - 1; i >= 0; i-- {
+		fr := f.References[i]
+		if inEdge && len(fr.Context.Key.Edges) > 0 {
+			if fr.String == fr.Context.Key.EdgeKey.Path[len(fr.Context.Key.EdgeKey.Path)-1].Unbox() {
+				return fr
+			}
+		} else {
+			if fr.String == fr.Context.Key.Key.Path[len(fr.Context.Key.Key.Path)-1].Unbox() {
+				return fr
+			}
+		}
+	}
+	return nil
+}
+
+func (f *Field) LastPrimaryKey() *d2ast.Key {
+	fr := f.LastModification()
+	if fr == nil {
+		return nil
+	}
+	return fr.Context.Key
+}
+
+func (f *Field) LastRef() *FieldReference {
+	return f.References[len(f.References)-1]
+}
+
+func (f *Field) LastAST() d2ast.Node {
+	return f.LastRef().String
 }
 
 type EdgeID struct {
@@ -339,11 +399,11 @@ type Edge struct {
 	References []EdgeReference `json:"references,omitempty"`
 }
 
-func (e *Edge) Copy(newp Node) Node {
+func (e *Edge) Copy(newParent Node) Node {
 	tmp := *e
 	e = &tmp
 
-	e.parent = newp.(*Map)
+	e.parent = newParent.(*Map)
 	e.References = append([]EdgeReference(nil), e.References...)
 	if e.Primary_ != nil {
 		e.Primary_ = e.Primary_.Copy(e).(*Scalar)
@@ -354,16 +414,42 @@ func (e *Edge) Copy(newp Node) Node {
 	return e
 }
 
+func (e *Edge) LastPrimaryRef() *EdgeReference {
+	for i := len(e.References) - 1; i >= 0; i-- {
+		fr := e.References[i]
+		if fr.Context.Key.EdgeKey == nil {
+			return fr
+		}
+	}
+	return nil
+}
+
+func (e *Edge) LastPrimaryKey() *d2ast.Key {
+	fr := f.LastModification()
+	if fr == nil {
+		return nil
+	}
+	return fr.Context.Key
+}
+
+func (e *Edge) LastRef() *EdgeReference {
+	return e.References[len(e.References)-1]
+}
+
+func (e *Edge) LastAST() d2ast.Node {
+	return e.LastRef().Context.Edge
+}
+
 type Array struct {
 	parent Node
 	Values []Value `json:"values"`
 }
 
-func (a *Array) Copy(newp Node) Node {
+func (a *Array) Copy(newParent Node) Node {
 	tmp := *a
 	a = &tmp
 
-	a.parent = newp
+	a.parent = newParent
 	a.Values = append([]Value(nil), a.Values...)
 	for i := range a.Values {
 		a.Values[i] = a.Values[i].Copy(a).(Value)
@@ -400,8 +486,8 @@ type EdgeReference struct {
 }
 
 type RefContext struct {
-	Key   *d2ast.Key  `json:"key"`
 	Edge  *d2ast.Edge `json:"edge"`
+	Key   *d2ast.Key  `json:"key"`
 	Scope *d2ast.Map  `json:"-"`
 }
 
@@ -696,11 +782,11 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
 	return e, nil
 }
 
-func (s *Scalar) AST() d2ast.Node {
+func (s *Scalar) ast() d2ast.Node {
 	return s.Value
 }
 
-func (f *Field) AST() d2ast.Node {
+func (f *Field) ast() d2ast.Node {
 	k := &d2ast.Key{
 		Key: &d2ast.KeyPath{
 			Path: []*d2ast.StringBox{
@@ -710,16 +796,16 @@ func (f *Field) AST() d2ast.Node {
 	}
 
 	if f.Primary_ != nil {
-		k.Primary = d2ast.MakeValueBox(f.Primary_.AST().(d2ast.Value)).ScalarBox()
+		k.Primary = d2ast.MakeValueBox(f.Primary_.ast().(d2ast.Value)).ScalarBox()
 	}
 	if f.Composite != nil {
-		k.Value = d2ast.MakeValueBox(f.Composite.AST().(d2ast.Value))
+		k.Value = d2ast.MakeValueBox(f.Composite.ast().(d2ast.Value))
 	}
 
 	return k
 }
 
-func (e *Edge) AST() d2ast.Node {
+func (e *Edge) ast() d2ast.Node {
 	astEdge := &d2ast.Edge{}
 
 	astEdge.Src = d2ast.MakeKeyPath(e.ID.SrcPath)
@@ -736,27 +822,27 @@ func (e *Edge) AST() d2ast.Node {
 	}
 
 	if e.Primary_ != nil {
-		k.Primary = d2ast.MakeValueBox(e.Primary_.AST().(d2ast.Value)).ScalarBox()
+		k.Primary = d2ast.MakeValueBox(e.Primary_.ast().(d2ast.Value)).ScalarBox()
 	}
 	if e.Map_ != nil {
-		k.Value = d2ast.MakeValueBox(e.Map_.AST().(*d2ast.Map))
+		k.Value = d2ast.MakeValueBox(e.Map_.ast().(*d2ast.Map))
 	}
 
 	return k
 }
 
-func (a *Array) AST() d2ast.Node {
+func (a *Array) ast() d2ast.Node {
 	if a == nil {
 		return nil
 	}
 	astArray := &d2ast.Array{}
 	for _, av := range a.Values {
-		astArray.Nodes = append(astArray.Nodes, d2ast.MakeArrayNodeBox(av.AST().(d2ast.ArrayNode)))
+		astArray.Nodes = append(astArray.Nodes, d2ast.MakeArrayNodeBox(av.ast().(d2ast.ArrayNode)))
 	}
 	return astArray
 }
 
-func (m *Map) AST() d2ast.Node {
+func (m *Map) ast() d2ast.Node {
 	if m == nil {
 		return nil
 	}
@@ -767,10 +853,10 @@ func (m *Map) AST() d2ast.Node {
 		astMap.Range = d2ast.MakeRange(",1:0:0-2:0:0")
 	}
 	for _, f := range m.Fields {
-		astMap.Nodes = append(astMap.Nodes, d2ast.MakeMapNodeBox(f.AST().(d2ast.MapNode)))
+		astMap.Nodes = append(astMap.Nodes, d2ast.MakeMapNodeBox(f.ast().(d2ast.MapNode)))
 	}
 	for _, e := range m.Edges {
-		astMap.Nodes = append(astMap.Nodes, d2ast.MakeMapNodeBox(e.AST().(d2ast.MapNode)))
+		astMap.Nodes = append(astMap.Nodes, d2ast.MakeMapNodeBox(e.ast().(d2ast.MapNode)))
 	}
 	return astMap
 }

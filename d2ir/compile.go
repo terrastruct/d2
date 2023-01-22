@@ -37,9 +37,7 @@ func (c *compiler) compileScenarios(m *Map) {
 
 	for _, sf := range scenarios.Fields {
 		if sf.Map() == nil {
-			sf.Composite = &Map{
-				parent: sf,
-			}
+			continue
 		}
 		base := m.CopyBase(sf)
 		sf.Composite = Overlay(base, sf.Map())
@@ -59,9 +57,7 @@ func (c *compiler) compileSteps(m *Map) {
 	}
 	for i, sf := range steps.Fields {
 		if sf.Map() == nil {
-			sf.Composite = &Map{
-				parent: sf,
-			}
+			continue
 		}
 
 		var base *Map

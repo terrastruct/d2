@@ -377,7 +377,7 @@ container -> c: edge 1
 }
 
 func TestSelfEdges(t *testing.T) {
-	g := d2graph.NewGraph(nil)
+	g := d2graph.NewGraph()
 	g.Root.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
 	n1 := g.Root.EnsureChild([]string{"n1"})
 	n1.Box = geo.NewBox(nil, 100, 100)
@@ -413,7 +413,7 @@ func TestSelfEdges(t *testing.T) {
 }
 
 func TestSequenceToDescendant(t *testing.T) {
-	g := d2graph.NewGraph(nil)
+	g := d2graph.NewGraph()
 	g.Root.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
 	a := g.Root.EnsureChild([]string{"a"})
 	a.Box = geo.NewBox(nil, 100, 100)

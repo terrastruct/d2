@@ -25,7 +25,8 @@ const INNER_LABEL_PADDING int = 5
 const DEFAULT_SHAPE_PADDING = 100.
 
 type Graph struct {
-	AST *d2ast.Map `json:"ast"`
+	Name string     `json:"name"`
+	AST  *d2ast.Map `json:"ast"`
 
 	Root    *Object   `json:"root"`
 	Edges   []*Edge   `json:"edges"`
@@ -36,10 +37,8 @@ type Graph struct {
 	Steps     []*Graph `json:"steps,omitempty"`
 }
 
-func NewGraph(ast *d2ast.Map) *Graph {
-	d := &Graph{
-		AST: ast,
-	}
+func NewGraph() *Graph {
+	d := &Graph{}
 	d.Root = &Object{
 		Graph:      d,
 		Parent:     nil,
@@ -552,6 +551,7 @@ func (obj *Object) HasEdge(mk *d2ast.Key) (*Edge, bool) {
 	return nil, false
 }
 
+// TODO: remove once not used anywhere
 func ResolveUnderscoreKey(ida []string, obj *Object) (resolvedObj *Object, resolvedIDA []string, _ error) {
 	if len(ida) > 0 && !obj.IsSequenceDiagram() {
 		objSD := obj.OuterSequenceDiagram()
@@ -635,6 +635,12 @@ func (obj *Object) FindEdges(mk *d2ast.Key) ([]*Edge, bool) {
 // EnsureChild grabs the child by ids or creates it if it does not exist including all
 // intermediate nodes.
 func (obj *Object) EnsureChild(ids []string) *Object {
+	switch obj.Attributes.Shape.Value {
+	case d2target.ShapeClass, d2target.ShapeSQLTable:
+		// This will only be called for connecting edges where we want to truncate to the
+		// container.
+		return obj
+	}
 	_, is := ReservedKeywordHolders[ids[0]]
 	if len(ids) == 1 && !is {
 		_, ok := ReservedKeywords[ids[0]]
@@ -954,7 +960,7 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 		return nil, errors.New("connections within sequence diagrams can connect only to other objects within the same sequence diagram")
 	}
 
-	edge := &Edge{
+	e := &Edge{
 		Attributes: &Attributes{
 			Label: Scalar{
 				Value: label,
@@ -965,10 +971,40 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 		Dst:      dst,
 		DstArrow: dstArrow,
 	}
-	edge.initIndex()
+	e.initIndex()
 
-	obj.Graph.Edges = append(obj.Graph.Edges, edge)
-	return edge, nil
+	if src.Attributes.Shape.Value == d2target.ShapeSQLTable {
+		objAbsID := obj.AbsIDArray()
+		srcAbsID := src.AbsIDArray()
+		if len(objAbsID) + len(srcID) > len(srcAbsID) {
+			for i, d2col := range src.SQLTable.Columns {
+				if d2col.Name.Label == srcID[len(srcID)-1] {
+					d2col.Reference = dst.AbsID()
+					e.SrcTableColumnIndex = new(int)
+					*e.SrcTableColumnIndex = i
+					break
+				}
+			}
+		}
+	}
+	if dst.Attributes.Shape.Value == d2target.ShapeSQLTable {
+		objAbsID := obj.AbsIDArray()
+		dstAbsID := dst.AbsIDArray()
+		if len(objAbsID) + len(dstID) > len(dstAbsID) {
+			for i, d2col := range dst.SQLTable.Columns {
+				if d2col.Name.Label == dstID[len(dstID)-1] {
+					d2col.Reference = dst.AbsID()
+					e.DstTableColumnIndex = new(int)
+					*e.DstTableColumnIndex = i
+					break
+				}
+			}
+		}
+	}
+
+
+	obj.Graph.Edges = append(obj.Graph.Edges, e)
+	return e, nil
 }
 
 // TODO: Treat undirectional/bidirectional edge here and in HasEdge flipped. Same with
