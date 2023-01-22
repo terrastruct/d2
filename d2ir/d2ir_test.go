@@ -39,12 +39,10 @@ func TestCopy(t *testing.T) {
 		Composite: a,
 	}
 	e := &d2ir.Edge{
-
 		Primary_: s,
 		Map_:     m2,
 	}
 	m := &d2ir.Map{
-
 		Fields: []*d2ir.Field{f},
 		Edges:  []*d2ir.Edge{e},
 	}

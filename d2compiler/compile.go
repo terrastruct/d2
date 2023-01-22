@@ -111,13 +111,13 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 
 	switch obj.Attributes.Shape.Value {
 	case d2target.ShapeClass:
-		c.compileClass(obj, m)
+		c.compileClass(obj)
 	case d2target.ShapeSQLTable:
-		c.compileSQLTable(obj, m)
+		c.compileSQLTable(obj)
 	}
 
 	for _, e := range m.Edges {
-		c.compileEdge(obj, m, e)
+		c.compileEdge(obj, e)
 	}
 }
 
@@ -137,7 +137,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 
 	obj = obj.EnsureChild([]string{f.Name})
 	if f.Primary() != nil {
-		c.compileLabel(obj, f)
+		c.compileLabel(obj.Attributes, f)
 	}
 	if f.Map() != nil {
 		c.compileMap(obj, f.Map())
@@ -167,11 +167,11 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 	attrs.Label.MapKey = f.LastPrimaryKey()
 }
 
-func (c *compiler) compileReserved(attrs *d2graph.Attributes, f d2ir.Node) {
+func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 	scalar := f.Primary().Value
 	switch f.Name {
 	case "label":
-		c.compileLabel(obj, f)
+		c.compileLabel(attrs, f)
 	case "shape":
 		in := d2target.IsShape(scalar.ScalarString())
 		if !in {
@@ -233,7 +233,13 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f d2ir.Node) {
 	}
 }
 
-func (c *compiler) compileStyle(attrs *d2graph.Attributes, f d2ir.Node) {
+func (c *compiler) compileStyle(attrs *d2graph.Attributes, m *d2ir.Map) {
+	for _, f := range m.Fields {
+		c.compileStyleField(attrs, f)
+	}
+}
+
+func (c *compiler) compileStyleField(attrs *d2graph.Attributes, f *d2ir.Field) {
 	scalar := f.Primary().Value
 	err := attrs.Style.Apply(f.Name, scalar.ScalarString())
 	if err != nil {
@@ -286,7 +292,7 @@ func (c *compiler) compileStyle(attrs *d2graph.Attributes, f d2ir.Node) {
 func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 	edge, err := obj.Connect(e.ID.SrcPath, e.ID.DstPath, e.ID.SrcArrow, e.ID.DstArrow, "")
 	if err != nil {
-		c.errorf(e, err.Error())
+		c.errorf(e.References[0].AST(), err.Error())
 		return
 	}
 
@@ -297,7 +303,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 		for _, f := range e.Map().Fields {
 			_, ok := d2graph.ReservedKeywords[f.Name]
 			if !ok {
-				c.errorf(mk, `edge map keys must be reserved keywords`)
+				c.errorf(f.References[0].AST(), `edge map keys must be reserved keywords`)
 				continue
 			}
 			c.compileEdgeField(edge, f)
@@ -320,7 +326,7 @@ func (c *compiler) compileEdgeField(edge *d2graph.Edge, f *d2ir.Field) {
 	}
 
 	if f.Primary() != nil {
-		c.compileLabel(edge, f)
+		c.compileLabel(edge.Attributes, f)
 	}
 
 	if f.Name == "source-arrowhead" || f.Name == "target-arrowhead" {
@@ -341,6 +347,7 @@ func (c *compiler) compileArrowheads(edge *d2graph.Edge, f *d2ir.Field) {
 	}
 
 	for _, f2 := range f.Map().Fields {
+		keyword := strings.ToLower(f2.Name)
 		_, isReserved := d2graph.ReservedKeywords[keyword]
 		if isReserved {
 			c.compileReserved(attrs, f2)
@@ -352,7 +359,7 @@ func (c *compiler) compileArrowheads(edge *d2graph.Edge, f *d2ir.Field) {
 			c.compileStyle(attrs, f2.Map())
 			continue
 		} else {
-			c.errorf(mk, `source-arrowhead/target-arrowhead map keys must be reserved keywords`)
+			c.errorf(f2.LastRef().AST(), `source-arrowhead/target-arrowhead map keys must be reserved keywords`)
 			continue
 		}
 	}
@@ -370,24 +377,7 @@ var ShortToFullLanguageAliases = map[string]string{
 }
 var FullToShortLanguageAliases map[string]string
 
-func (c *compiler) compileShapes(obj *d2graph.Object) {
-	for _, obj := range obj.ChildrenArray {
-		switch obj.Attributes.Shape.Value {
-		case d2target.ShapeClass:
-			c.compileClass(obj)
-		case d2target.ShapeSQLTable:
-			c.compileSQLTable(obj)
-		}
-		c.compileShapes(obj)
-	}
-}
-
 func (c *compiler) compileClass(obj *d2graph.Object) {
-	if len(m.Edges) > 0 {
-		c.errorf(m.Edges[0].LastAST(), "class shapes cannot have edges inside")
-		return
-	}
-
 	obj.Class = &d2target.Class{}
 	for _, f := range obj.ChildrenArray {
 		visiblity := "public"
@@ -436,15 +426,7 @@ func (c *compiler) compileClass(obj *d2graph.Object) {
 }
 
 func (c *compiler) compileSQLTable(obj *d2graph.Object) {
-	if len(m.Edges) > 0 {
-		c.errorf(m.Edges[0].LastAST(), "sql_table shapes cannot have edges inside")
-		return
-	}
-
 	obj.SQLTable = &d2target.SQLTable{}
-
-	parentID := obj.Parent.AbsID()
-	tableIDPrefix := obj.AbsID() + "."
 	for _, col := range obj.ChildrenArray {
 		typ := col.Attributes.Label.Value
 		if typ == col.IDVal {
@@ -480,12 +462,13 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 }
 
 func (c *compiler) validateKeys(obj *d2graph.Object, m *d2ir.Map) {
-	for _, n := range m.Fields {
+	for _, f := range m.Fields {
 		c.validateKey(obj, f)
 	}
 }
 
 func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
+		keyword := strings.ToLower(f.Name)
 	_, isReserved := d2graph.ReservedKeywords[keyword]
 	if isReserved {
 		switch obj.Attributes.Shape.Value {
@@ -526,7 +509,7 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 				}
 			default:
 				if len(obj.Children) > 0 && (f.Name == "width" || f.Name == "height") {
-					c.errorf(f.LastPrimaryKey(), mk.Range.End, fmt.Sprintf("%s cannot be used on container: %s", f.Name, obj.AbsID()))
+					c.errorf(f.LastPrimaryKey(), fmt.Sprintf("%s cannot be used on container: %s", f.Name, obj.AbsID()))
 				}
 			}
 
@@ -540,12 +523,12 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 	}
 
 	if obj.Attributes.Shape.Value == d2target.ShapeImage {
-		c.errorf(mk, "image shapes cannot have children.")
+		c.errorf(obj.Attributes.Shape.MapKey, "image shapes cannot have children.")
 		return
 	}
 
-	obj = obj.HasChild([]string{f.Name})
-	if f.Map() != nil {
+	obj, ok := obj.HasChild([]string{f.Name})
+	if ok && f.Map() != nil {
 		c.validateKeys(obj, f.Map())
 	}
 }

@@ -973,7 +973,18 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 	}
 	e.initIndex()
 
+	addSQLTableColumnIndexes(e, srcID, dstID, obj, src, dst)
+
+	obj.Graph.Edges = append(obj.Graph.Edges, e)
+	return e, nil
+}
+
+func addSQLTableColumnIndexes(e *Edge, srcID, dstID []string, obj, src, dst *Object) {
 	if src.Attributes.Shape.Value == d2target.ShapeSQLTable {
+		if src == dst {
+			// Ignore edge to column inside table.
+			return
+		}
 		objAbsID := obj.AbsIDArray()
 		srcAbsID := src.AbsIDArray()
 		if len(objAbsID) + len(srcID) > len(srcAbsID) {
@@ -1001,10 +1012,6 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 			}
 		}
 	}
-
-
-	obj.Graph.Edges = append(obj.Graph.Edges, e)
-	return e, nil
 }
 
 // TODO: Treat undirectional/bidirectional edge here and in HasEdge flipped. Same with

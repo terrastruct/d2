@@ -30,11 +30,6 @@ type Node interface {
 	LastPrimaryKey() *d2ast.Key
 }
 
-type Reference interface {
-	reference()
-	AST() d2ast.Node
-}
-
 var _ Node = &Scalar{}
 var _ Node = &Field{}
 var _ Node = &Edge{}
@@ -109,6 +104,26 @@ func (n *Edge) String() string   { return d2format.Format(n.ast()) }
 func (n *Array) String() string  { return d2format.Format(n.ast()) }
 func (n *Map) String() string    { return d2format.Format(n.ast()) }
 
+func (n *Scalar) LastRef() Reference { return parentRef(n) }
+func (n *Map) LastRef() Reference { return parentRef(n) }
+func (n *Array) LastRef() Reference { return parentRef(n) }
+
+func (n *Scalar) LastPrimaryKey() *d2ast.Key { return parentPrimaryKey(n) }
+func (n *Map) LastPrimaryKey() *d2ast.Key { return parentPrimaryKey(n) }
+func (n *Array) LastPrimaryKey() *d2ast.Key { return parentPrimaryKey(n) }
+
+type Reference interface {
+	reference()
+	// Most specific AST node for the reference.
+	AST() d2ast.Node
+}
+
+var _ Reference = &FieldReference{}
+var _ Reference = &EdgeReference{}
+
+func (r *FieldReference) reference() {}
+func (r *EdgeReference) reference()  {}
+
 type Scalar struct {
 	parent Node
 	Value  d2ast.Scalar `json:"value"`
@@ -174,18 +189,14 @@ func (m *Map) CopyBase(newParent Node) *Map {
 
 // Root reports whether the Map is the root of the D2 tree.
 func (m *Map) Root() bool {
-	return m.parent == nil
-}
-
-func (f *Map) LastRef() *MapReference {
-	if f.parent == nil {
-		return nil
+	// m.parent exists even on the root map as we store the root AST in
+	// m.parent.References[0].Context.Map for reporting error messages about the whole IR.
+	// Or if otherwise needed.
+	f, ok := m.parent.(*Field)
+	if !ok {
+		return false
 	}
-	return f.References[len(f.References)-1]
-}
-
-func (f *Map) LastAST() d2ast.Node {
-	return f.LastRef().String
+	return f.Name == ""
 }
 
 type LayerKind string
@@ -199,25 +210,26 @@ const (
 // NodeLayerKind reports whether n represents the root of a layer.
 // n should be *Field or *Map
 func NodeLayerKind(n Node) LayerKind {
+	var f *Field
 	switch n := n.(type) {
 	case *Field:
-		n = ParentField(n)
-		if n != nil {
-			switch n.Name {
-			case "layers":
-				return LayerLayer
-			case "scenarios":
-				return LayerScenario
-			case "steps":
-				return LayerStep
-			}
-		}
+		f = ParentField(n)
 	case *Map:
-		f := ParentField(n)
-		if f == nil {
-			return LayerLayer
-		}
-		return NodeLayerKind(f)
+		f = ParentField(n)
+	}
+	if f == nil {
+		return ""
+	}
+	switch f.Name {
+	case "layers":
+		return LayerLayer
+	case "scenarios":
+		return LayerScenario
+	case "steps":
+		return LayerStep
+	case "":
+		// root
+		return LayerLayer
 	}
 	return ""
 }
@@ -230,7 +242,7 @@ type Field struct {
 	Primary_  *Scalar   `json:"primary,omitempty"`
 	Composite Composite `json:"composite,omitempty"`
 
-	References []FieldReference `json:"references,omitempty"`
+	References []*FieldReference `json:"references,omitempty"`
 }
 
 func (f *Field) Copy(newParent Node) Node {
@@ -238,7 +250,7 @@ func (f *Field) Copy(newParent Node) Node {
 	f = &tmp
 
 	f.parent = newParent.(*Map)
-	f.References = append([]FieldReference(nil), f.References...)
+	f.References = append([]*FieldReference(nil), f.References...)
 	if f.Primary_ != nil {
 		f.Primary_ = f.Primary_.Copy(f).(*Scalar)
 	}
@@ -248,7 +260,7 @@ func (f *Field) Copy(newParent Node) Node {
 	return f
 }
 
-func (f *Field) LastPrimaryRef() *FieldReference {
+func (f *Field) lastPrimaryRef() *FieldReference {
 	inEdge := ParentEdge(f) != nil
 	for i := len(f.References) - 1; i >= 0; i-- {
 		fr := f.References[i]
@@ -266,19 +278,15 @@ func (f *Field) LastPrimaryRef() *FieldReference {
 }
 
 func (f *Field) LastPrimaryKey() *d2ast.Key {
-	fr := f.LastModification()
+	fr := f.lastPrimaryRef()
 	if fr == nil {
 		return nil
 	}
 	return fr.Context.Key
 }
 
-func (f *Field) LastRef() *FieldReference {
+func (f *Field) LastRef() Reference {
 	return f.References[len(f.References)-1]
-}
-
-func (f *Field) LastAST() d2ast.Node {
-	return f.LastRef().String
 }
 
 type EdgeID struct {
@@ -396,7 +404,7 @@ type Edge struct {
 	Primary_ *Scalar `json:"primary,omitempty"`
 	Map_     *Map    `json:"map,omitempty"`
 
-	References []EdgeReference `json:"references,omitempty"`
+	References []*EdgeReference `json:"references,omitempty"`
 }
 
 func (e *Edge) Copy(newParent Node) Node {
@@ -404,7 +412,7 @@ func (e *Edge) Copy(newParent Node) Node {
 	e = &tmp
 
 	e.parent = newParent.(*Map)
-	e.References = append([]EdgeReference(nil), e.References...)
+	e.References = append([]*EdgeReference(nil), e.References...)
 	if e.Primary_ != nil {
 		e.Primary_ = e.Primary_.Copy(e).(*Scalar)
 	}
@@ -414,7 +422,7 @@ func (e *Edge) Copy(newParent Node) Node {
 	return e
 }
 
-func (e *Edge) LastPrimaryRef() *EdgeReference {
+func (e *Edge) lastPrimaryRef() *EdgeReference {
 	for i := len(e.References) - 1; i >= 0; i-- {
 		fr := e.References[i]
 		if fr.Context.Key.EdgeKey == nil {
@@ -425,19 +433,15 @@ func (e *Edge) LastPrimaryRef() *EdgeReference {
 }
 
 func (e *Edge) LastPrimaryKey() *d2ast.Key {
-	fr := f.LastModification()
-	if fr == nil {
+	er := e.lastPrimaryRef()
+	if er == nil {
 		return nil
 	}
-	return fr.Context.Key
+	return er.Context.Key
 }
 
-func (e *Edge) LastRef() *EdgeReference {
+func (e *Edge) LastRef() Reference {
 	return e.References[len(e.References)-1]
-}
-
-func (e *Edge) LastAST() d2ast.Node {
-	return e.LastRef().Context.Edge
 }
 
 type Array struct {
@@ -464,25 +468,37 @@ type FieldReference struct {
 	Context *RefContext `json:"context"`
 }
 
-func (kr FieldReference) KeyPathIndex() int {
-	for i, sb := range kr.KeyPath.Path {
-		if sb.Unbox() == kr.String {
+func (fr *FieldReference) KeyPathIndex() int {
+	for i, sb := range fr.KeyPath.Path {
+		if sb.Unbox() == fr.String {
 			return i
 		}
 	}
 	panic("d2ir.KeyReference.KeyPathIndex: String not in KeyPath?")
 }
 
-func (kr FieldReference) EdgeDest() bool {
-	return kr.KeyPath == kr.Context.Edge.Dst
+func (fr *FieldReference) EdgeDest() bool {
+	return fr.KeyPath == fr.Context.Edge.Dst
 }
 
-func (kr FieldReference) InEdge() bool {
-	return kr.Context.Edge != nil
+func (fr *FieldReference) InEdge() bool {
+	return fr.Context.Edge != nil
+}
+
+func (fr *FieldReference) AST() d2ast.Node {
+	if fr.String == nil {
+		// Root map.
+		return fr.Context.Scope
+	}
+	return fr.String
 }
 
 type EdgeReference struct {
 	Context *RefContext `json:"context"`
+}
+
+func (er *EdgeReference) AST() d2ast.Node {
+	return er.Context.Edge
 }
 
 type RefContext struct {
@@ -628,7 +644,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 			continue
 		}
 
-		f.References = append(f.References, FieldReference{
+		f.References = append(f.References, &FieldReference{
 			String:  kp.Path[i].Unbox(),
 			KeyPath: kp,
 			Context: refctx,
@@ -651,7 +667,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 	f := &Field{
 		parent: m,
 		Name:   head,
-		References: []FieldReference{{
+		References: []*FieldReference{{
 			String:  kp.Path[i].Unbox(),
 			KeyPath: kp,
 			Context: refctx,
@@ -773,7 +789,7 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
 	e := &Edge{
 		parent: m,
 		ID:     eid,
-		References: []EdgeReference{{
+		References: []*EdgeReference{{
 			Context: refctx,
 		}},
 	}
@@ -868,7 +884,7 @@ func (m *Map) appendFieldReferences(i int, kp *d2ast.KeyPath, refctx *RefContext
 		return
 	}
 
-	f.References = append(f.References, FieldReference{
+	f.References = append(f.References, &FieldReference{
 		String:  sb.Unbox(),
 		KeyPath: kp,
 		Context: refctx,
@@ -944,4 +960,28 @@ func hasLayerKeywords(ida ...string) int {
 		}
 	}
 	return -1
+}
+
+func parentRef(n Node) Reference {
+	f := ParentField(n)
+	if f != nil {
+		return f.LastRef()
+	}
+	e := ParentEdge(n)
+	if e != nil {
+		return e.LastRef()
+	}
+	return nil
+}
+
+func parentPrimaryKey(n Node) *d2ast.Key {
+	f := ParentField(n)
+	if f != nil {
+		return f.LastPrimaryKey()
+	}
+	e := ParentEdge(n)
+	if e != nil {
+		return e.LastPrimaryKey()
+	}
+	return nil
 }

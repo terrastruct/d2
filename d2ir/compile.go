@@ -15,7 +15,16 @@ func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 
 func Compile(ast *d2ast.Map) (*Map, error) {
 	c := &compiler{}
-	m := &Map{}
+	m := &Map{
+		parent: &Field{
+			Name: "",
+			References: []*FieldReference{{
+				Context: &RefContext{
+					Scope: ast,
+				},
+			}},
+		},
+	}
 	c.compileMap(m, ast)
 	c.compileScenarios(m)
 	c.compileSteps(m)
@@ -160,7 +169,7 @@ func (c *compiler) compileEdges(dst *Map, refctx *RefContext) {
 				continue
 			}
 			e = ea[0]
-			e.References = append(e.References, EdgeReference{
+			e.References = append(e.References, &EdgeReference{
 				Context: refctx,
 			})
 			dst.appendFieldReferences(0, refctx.Edge.Src, refctx)
