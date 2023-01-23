@@ -73,8 +73,8 @@ func (s shapeQueue) GetSVGPathData() []string {
 	}
 }
 
-func (s shapeQueue) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
+func (s shapeQueue) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	// 1 arc left, width+ padding, 2 arcs right
-	totalWidth := 3*defaultArcDepth + width + padding*2
-	return totalWidth, height + padding*2
+	totalWidth := 3*defaultArcDepth + width + paddingX
+	return totalWidth, height + paddingY
 }

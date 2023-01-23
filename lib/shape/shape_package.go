@@ -72,13 +72,13 @@ func (s shapePackage) GetSVGPathData() []string {
 	}
 }
 
-func (s shapePackage) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
-	innerHeight := height + padding*2
+func (s shapePackage) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	innerHeight := height + paddingY
 	// We want to compute what the topHeight will be to add to inner height;
 	// topHeight=(verticalScalar * totalHeight) and totalHeight=(topHeight + innerHeight)
 	// so solving for topHeight we get: topHeight=innerHeight * (verticalScalar/(1-verticalScalar))
 	topHeight := innerHeight * packageVerticalScalar / (1. - packageVerticalScalar)
 	totalHeight := innerHeight + math.Min(topHeight, packageTopMaxHeight)
 
-	return width + padding*2, totalHeight
+	return width + paddingX, totalHeight
 }

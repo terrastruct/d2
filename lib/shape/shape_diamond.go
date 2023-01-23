@@ -55,8 +55,8 @@ func (s shapeDiamond) GetSVGPathData() []string {
 	}
 }
 
-func (s shapeDiamond) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
-	totalWidth := 2 * (width + 2*padding)
-	totalHeight := 2 * (height + 2*padding)
+func (s shapeDiamond) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	totalWidth := 2 * (width + paddingX)
+	totalHeight := 2 * (height + paddingY)
 	return totalWidth, totalHeight
 }

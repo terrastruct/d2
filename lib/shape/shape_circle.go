@@ -33,8 +33,8 @@ func (s shapeCircle) AspectRatio1() bool {
 	return true
 }
 
-func (s shapeCircle) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
-	diameter := math.Ceil(math.Sqrt(2 * math.Pow(math.Max(width, height)+2*padding, 2)))
+func (s shapeCircle) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	diameter := math.Ceil(math.Sqrt(2 * math.Pow(math.Max(width+paddingX, height+paddingY), 2)))
 	return diameter, diameter
 }
 

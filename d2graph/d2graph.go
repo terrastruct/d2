@@ -23,7 +23,7 @@ import (
 )
 
 const INNER_LABEL_PADDING int = 5
-const DEFAULT_SHAPE_PADDING = 100.
+const DEFAULT_SHAPE_SIZE = 100.
 
 // TODO: Refactor with a light abstract layer on top of AST implementing scenarios,
 // variables, imports, substitutions and then a final set of structures representing
@@ -827,21 +827,6 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 	return &dims, nil
 }
 
-func (obj *Object) GetPadding() (x, y float64) {
-	switch strings.ToLower(obj.Attributes.Shape.Value) {
-	case d2target.ShapeImage,
-		d2target.ShapeSQLTable,
-		d2target.ShapeText,
-		d2target.ShapeCode:
-		return 0., 0.
-	case d2target.ShapeClass:
-		// TODO fix class row width measurements (see SQL table)
-		return 100., 0.
-	default:
-		return DEFAULT_SHAPE_PADDING, DEFAULT_SHAPE_PADDING
-	}
-}
-
 type Edge struct {
 	Index int `json:"index"`
 
@@ -1107,8 +1092,8 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			obj.Attributes.Shape.Value != d2target.ShapeImage &&
 			obj.Attributes.Shape.Value != d2target.ShapeSQLTable &&
 			obj.Attributes.Shape.Value != d2target.ShapeClass {
-			obj.Width = DEFAULT_SHAPE_PADDING
-			obj.Height = DEFAULT_SHAPE_PADDING
+			obj.Width = DEFAULT_SHAPE_SIZE
+			obj.Height = DEFAULT_SHAPE_SIZE
 			if desiredWidth != 0 {
 				obj.Width = float64(desiredWidth)
 			}
@@ -1149,10 +1134,13 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		obj.Width = float64(go2.Max(defaultDims.Width, desiredWidth))
 		obj.Height = float64(go2.Max(defaultDims.Height, desiredHeight))
 
-		paddingX, paddingY := obj.GetPadding()
+		shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
+		contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(defaultDims.Width), float64(defaultDims.Height))
+		s := shape.NewShape(shapeType, contentBox)
 
-		switch dslShape {
-		case d2target.ShapeSquare, d2target.ShapeCircle:
+		paddingX, paddingY := s.GetDefaultPadding()
+
+		if s.AspectRatio1() {
 			if desiredWidth != 0 || desiredHeight != 0 {
 				paddingX = 0.
 				paddingY = 0.
@@ -1161,8 +1149,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			sideLength := math.Max(obj.Width+paddingX, obj.Height+paddingY)
 			obj.Width = sideLength
 			obj.Height = sideLength
-
-		default:
+		} else {
 			if desiredWidth == 0 {
 				obj.Width += float64(paddingX)
 			}
@@ -1170,12 +1157,12 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 				obj.Height += float64(paddingY)
 			}
 		}
-		contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(defaultDims.Width), float64(defaultDims.Height))
-		shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
-		s := shape.NewShape(shapeType, contentBox)
-		newWidth, newHeight := s.GetDimensionsToFit(contentBox.Width, contentBox.Height, paddingX/2)
-		obj.Width = newWidth
-		obj.Height = newHeight
+
+		if desiredWidth == 0 && desiredHeight == 0 {
+			newWidth, newHeight := s.GetDimensionsToFit(contentBox.Width, contentBox.Height, paddingX, paddingY)
+			obj.Width = newWidth
+			obj.Height = newHeight
+		}
 	}
 	for _, edge := range g.Edges {
 		endpointLabels := []string{}

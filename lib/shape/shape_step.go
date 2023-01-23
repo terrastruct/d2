@@ -54,7 +54,7 @@ func (s shapeStep) GetSVGPathData() []string {
 	}
 }
 
-func (s shapeStep) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
-	totalWidth := width + padding*2 + 2*STEP_WEDGE_WIDTH
-	return totalWidth, height + padding*2
+func (s shapeStep) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	totalWidth := width + paddingX + 2*STEP_WEDGE_WIDTH
+	return totalWidth, height + paddingY
 }

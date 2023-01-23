@@ -54,7 +54,7 @@ func (s shapeParallelogram) GetSVGPathData() []string {
 	}
 }
 
-func (s shapeParallelogram) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
-	totalWidth := width + padding*2 + parallelWedgeWidth*2
-	return totalWidth, height + padding*2
+func (s shapeParallelogram) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	totalWidth := width + paddingX + parallelWedgeWidth*2
+	return totalWidth, height + paddingY
 }

@@ -77,8 +77,8 @@ func (s shapeCylinder) GetSVGPathData() []string {
 	}
 }
 
-func (s shapeCylinder) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
+func (s shapeCylinder) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	// 2 arcs top, height + padding, 1 arc bottom
-	totalHeight := height + padding*2 + 3*defaultArcDepth
-	return width + padding*2, totalHeight
+	totalHeight := height + paddingY + 3*defaultArcDepth
+	return width + paddingX, totalHeight
 }

@@ -58,9 +58,10 @@ func (s shapeCloud) GetInnerBox() *geo.Box {
 	return geo.NewBox(&insideTL, width, height)
 }
 
-func (s shapeCloud) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
-	width += padding
-	height += padding
+func (s shapeCloud) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	// TODO /2?
+	width += paddingX
+	height += paddingY
 	aspectRatio := width / height
 	// use the inner box with the closest aspect ratio (wide, tall, or square box)
 	if aspectRatio > CLOUD_WIDE_ASPECT_BOUNDARY {
@@ -115,4 +116,8 @@ func (s shapeCloud) GetSVGPathData() []string {
 	return []string{
 		cloudPath(s.Box).PathData(),
 	}
+}
+
+func (s shapeCloud) GetDefaultPadding() (paddingX, paddingY float64) {
+	return 50, 50
 }

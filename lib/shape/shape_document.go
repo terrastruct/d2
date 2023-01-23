@@ -52,7 +52,7 @@ func (s shapeDocument) GetSVGPathData() []string {
 	}
 }
 
-func (s shapeDocument) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
-	baseHeight := (height + padding*2) * docPathHeight / docPathInnerBottom
-	return width + padding*2, baseHeight
+func (s shapeDocument) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	baseHeight := (height + paddingX) * docPathHeight / docPathInnerBottom
+	return width + paddingY, baseHeight
 }

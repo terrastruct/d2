@@ -86,9 +86,9 @@ func (s shapePage) GetSVGPathData() []string {
 	}
 }
 
-func (s shapePage) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
-	totalWidth := width + padding*2
-	totalHeight := height + padding*2
+func (s shapePage) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	totalWidth := width + paddingX
+	totalHeight := height + paddingY
 	// add space for corner with short pages
 	if totalHeight < 3*pageCornerHeight {
 		totalWidth += pageCornerWidth

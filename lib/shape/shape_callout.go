@@ -71,14 +71,14 @@ func (s shapeCallout) GetSVGPathData() []string {
 	}
 }
 
-func (s shapeCallout) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
+func (s shapeCallout) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	// return the minimum shape dimensions needed to fit content (width x height)
 	// in the shape's innerBox with padding
-	baseHeight := height + padding*2
+	baseHeight := height + paddingY
 	if baseHeight < defaultTipHeight {
 		baseHeight *= 2
 	} else {
 		baseHeight += defaultTipHeight
 	}
-	return width + padding*2, baseHeight
+	return width + paddingX, baseHeight
 }

@@ -19,3 +19,8 @@ func NewClass(box *geo.Box) Shape {
 		},
 	}
 }
+
+func (s shapeClass) GetDefaultPadding() (paddingX, paddingY float64) {
+	// TODO fix class row width measurements (see SQL table)
+	return 100, 0
+}

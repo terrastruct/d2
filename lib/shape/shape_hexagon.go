@@ -49,7 +49,7 @@ func (s shapeHexagon) GetSVGPathData() []string {
 	}
 }
 
-func (s shapeHexagon) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
-	totalWidth := 2 * (width + 2*padding)
-	return totalWidth, height + 2*padding
+func (s shapeHexagon) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	totalWidth := 2 * (width + paddingX)
+	return totalWidth, height + paddingY
 }

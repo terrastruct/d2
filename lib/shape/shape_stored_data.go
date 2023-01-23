@@ -56,7 +56,7 @@ func (s shapeStoredData) GetSVGPathData() []string {
 	}
 }
 
-func (s shapeStoredData) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
-	totalWidth := width + padding*2 + 2*storedDataWedgeWidth
-	return totalWidth, height + padding*2
+func (s shapeStoredData) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	totalWidth := width + paddingX + 2*storedDataWedgeWidth
+	return totalWidth, height + paddingY
 }

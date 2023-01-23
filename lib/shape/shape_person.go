@@ -66,11 +66,11 @@ func (s shapePerson) GetSVGPathData() []string {
 	}
 }
 
-func (s shapePerson) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
-	totalWidth := width + padding*2
+func (s shapePerson) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	totalWidth := width + paddingX
 	// see shapePackage
 	shoulderWidth := totalWidth * personShoulderWidthFactor / (1 - 2*personShoulderWidthFactor)
 	totalWidth += 2 * shoulderWidth
-	totalHeight := height + padding*2
+	totalHeight := height + paddingY
 	return totalWidth, totalHeight
 }
