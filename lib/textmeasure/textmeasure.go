@@ -4,6 +4,7 @@
 package textmeasure
 
 import (
+	"fmt"
 	"math"
 	"unicode"
 	"unicode/utf8"
@@ -138,7 +139,12 @@ func NewRuler() (*Ruler, error) {
 func (r *Ruler) addFontSize(font d2fonts.Font) {
 	sizeless := font
 	sizeless.Size = 0
-	face := truetype.NewFace(r.ttfs[sizeless], &truetype.Options{
+	ttf := r.ttfs[sizeless]
+	if ttf == nil {
+		panic(fmt.Errorf("sizeless font %s not found with style %s", font.Family, font.Style))
+	}
+
+	face := truetype.NewFace(ttf, &truetype.Options{
 		Size: float64(font.Size),
 	})
 	atlas := NewAtlas(face, ASCII)
