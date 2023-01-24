@@ -1,5 +1,6 @@
 {
   "graph": {
+    "name": "",
     "ast": {
       "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,0:0:0-17:53:406",
       "nodes": [
@@ -707,6 +708,9 @@
         },
         "direction": {
           "value": ""
+        },
+        "constraint": {
+          "value": ""
         }
       },
       "zIndex": 0
@@ -741,6 +745,9 @@
           },
           "direction": {
             "value": ""
+          },
+          "constraint": {
+            "value": ""
           }
         },
         "zIndex": 0
@@ -773,7 +780,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           },
           {
             "key": {
@@ -990,6 +997,9 @@
           },
           "direction": {
             "value": ""
+          },
+          "constraint": {
+            "value": ""
           }
         },
         "zIndex": 0
@@ -1020,7 +1030,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           },
           {
             "key": {
@@ -1138,7 +1148,7 @@
                 "labelHeight": 0
               },
               "constraint": "foreign_key",
-              "reference": "Chinchillas.id"
+              "reference": ""
             }
           ]
         },
@@ -1152,6 +1162,9 @@
             "value": "sql_table"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },

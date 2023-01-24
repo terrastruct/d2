@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 537,
         "y": 288
@@ -44,7 +44,7 @@
     },
     {
       "id": "b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 537,
         "y": 514
@@ -84,7 +84,7 @@
     },
     {
       "id": "c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 404,
         "y": 288
@@ -124,7 +124,7 @@
     },
     {
       "id": "d",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 443,
         "y": 940
@@ -164,7 +164,7 @@
     },
     {
       "id": "e",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 406,
         "y": 1592
@@ -204,7 +204,7 @@
     },
     {
       "id": "f",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 140,
         "y": 1266
@@ -244,7 +244,7 @@
     },
     {
       "id": "g",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 157,
         "y": 940
@@ -284,7 +284,7 @@
     },
     {
       "id": "h",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 23,
         "y": 940
@@ -324,7 +324,7 @@
     },
     {
       "id": "i",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 257,
         "y": 1818
@@ -364,7 +364,7 @@
     },
     {
       "id": "j",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 577,
         "y": 12
@@ -404,7 +404,7 @@
     },
     {
       "id": "k",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 255,
         "y": 2044
@@ -444,7 +444,7 @@
     },
     {
       "id": "l",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 474,
         "y": 1266
@@ -484,7 +484,7 @@
     },
     {
       "id": "m",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 291,
         "y": 940
@@ -524,7 +524,7 @@
     },
     {
       "id": "n",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 273,
         "y": 1592
@@ -564,7 +564,7 @@
     },
     {
       "id": "o",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 577,
         "y": 940
@@ -604,7 +604,7 @@
     },
     {
       "id": "p",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 711,
         "y": 940
@@ -644,7 +644,7 @@
     },
     {
       "id": "q",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 406,
         "y": 1818

@@ -30,6 +30,43 @@
             ]
           },
           "context": {
+            "edge": {
+              "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
             "key": {
               "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
               "edges": [
@@ -73,43 +110,6 @@
               ],
               "primary": {},
               "value": {}
-            },
-            "edge": {
-              "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
-              "src": {
-                "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
-                      "value": [
-                        {
-                          "string": "x",
-                          "raw_string": "x"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "src_arrow": "",
-              "dst": {
-                "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
-                      "value": [
-                        {
-                          "string": "y",
-                          "raw_string": "y"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "dst_arrow": ">"
             }
           }
         }
@@ -145,6 +145,43 @@
             ]
           },
           "context": {
+            "edge": {
+              "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
             "key": {
               "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
               "edges": [
@@ -188,43 +225,6 @@
               ],
               "primary": {},
               "value": {}
-            },
-            "edge": {
-              "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
-              "src": {
-                "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
-                      "value": [
-                        {
-                          "string": "x",
-                          "raw_string": "x"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "src_arrow": "",
-              "dst": {
-                "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
-                      "value": [
-                        {
-                          "string": "y",
-                          "raw_string": "y"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "dst_arrow": ">"
             }
           }
         }
@@ -268,6 +268,43 @@
                         ]
                       },
                       "context": {
+                        "edge": {
+                          "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
+                          "src": {
+                            "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
+                                  "value": [
+                                    {
+                                      "string": "y",
+                                      "raw_string": "y"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
                         "key": {
                           "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
                           "edges": [
@@ -311,43 +348,6 @@
                           ],
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": {
-                          "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
-                          "src": {
-                            "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
-                                  "value": [
-                                    {
-                                      "string": "x",
-                                      "raw_string": "x"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "src_arrow": "",
-                          "dst": {
-                            "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
-                                  "value": [
-                                    {
-                                      "string": "y",
-                                      "raw_string": "y"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "dst_arrow": ">"
                         }
                       }
                     }
@@ -383,6 +383,43 @@
                         ]
                       },
                       "context": {
+                        "edge": {
+                          "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
+                          "src": {
+                            "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
+                                  "value": [
+                                    {
+                                      "string": "y",
+                                      "raw_string": "y"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
                         "key": {
                           "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
                           "edges": [
@@ -426,43 +463,6 @@
                           ],
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": {
-                          "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
-                          "src": {
-                            "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
-                                  "value": [
-                                    {
-                                      "string": "x",
-                                      "raw_string": "x"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "src_arrow": "",
-                          "dst": {
-                            "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
-                                  "value": [
-                                    {
-                                      "string": "y",
-                                      "raw_string": "y"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "dst_arrow": ">"
                         }
                       }
                     }
@@ -528,6 +528,7 @@
                                     ]
                                   },
                                   "context": {
+                                    "edge": null,
                                     "key": {
                                       "range": "TestCompile/steps/recursive.d2,2:10:26-2:16:32",
                                       "key": {
@@ -570,8 +571,7 @@
                                       },
                                       "primary": {},
                                       "value": {}
-                                    },
-                                    "edge": null
+                                    }
                                   }
                                 }
                               ]
@@ -629,6 +629,7 @@
                               ]
                             },
                             "context": {
+                              "edge": null,
                               "key": {
                                 "range": "TestCompile/steps/recursive.d2,2:10:26-2:16:32",
                                 "key": {
@@ -671,8 +672,7 @@
                                 },
                                 "primary": {},
                                 "value": {}
-                              },
-                              "edge": null
+                              }
                             }
                           }
                         ]
@@ -730,6 +730,7 @@
                         ]
                       },
                       "context": {
+                        "edge": null,
                         "key": {
                           "range": "TestCompile/steps/recursive.d2,2:10:26-2:16:32",
                           "key": {
@@ -772,8 +773,7 @@
                           },
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": null
+                        }
                       }
                     }
                   ]
@@ -795,6 +795,43 @@
                   "references": [
                     {
                       "context": {
+                        "edge": {
+                          "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
+                          "src": {
+                            "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
+                                  "value": [
+                                    {
+                                      "string": "y",
+                                      "raw_string": "y"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
                         "key": {
                           "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
                           "edges": [
@@ -838,43 +875,6 @@
                           ],
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": {
-                          "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
-                          "src": {
-                            "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
-                                  "value": [
-                                    {
-                                      "string": "x",
-                                      "raw_string": "x"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "src_arrow": "",
-                          "dst": {
-                            "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
-                                  "value": [
-                                    {
-                                      "string": "y",
-                                      "raw_string": "y"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "dst_arrow": ">"
                         }
                       }
                     }
@@ -910,6 +910,7 @@
                   ]
                 },
                 "context": {
+                  "edge": null,
                   "key": {
                     "range": "TestCompile/steps/recursive.d2,2:1:17-2:17:33",
                     "key": {
@@ -981,8 +982,7 @@
                         ]
                       }
                     }
-                  },
-                  "edge": null
+                  }
                 }
               }
             ]
@@ -1021,6 +1021,43 @@
                         ]
                       },
                       "context": {
+                        "edge": {
+                          "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
+                          "src": {
+                            "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
+                                  "value": [
+                                    {
+                                      "string": "y",
+                                      "raw_string": "y"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
                         "key": {
                           "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
                           "edges": [
@@ -1064,43 +1101,6 @@
                           ],
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": {
-                          "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
-                          "src": {
-                            "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
-                                  "value": [
-                                    {
-                                      "string": "x",
-                                      "raw_string": "x"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "src_arrow": "",
-                          "dst": {
-                            "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
-                                  "value": [
-                                    {
-                                      "string": "y",
-                                      "raw_string": "y"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "dst_arrow": ">"
                         }
                       }
                     }
@@ -1136,6 +1136,43 @@
                         ]
                       },
                       "context": {
+                        "edge": {
+                          "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
+                          "src": {
+                            "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
+                                  "value": [
+                                    {
+                                      "string": "y",
+                                      "raw_string": "y"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
                         "key": {
                           "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
                           "edges": [
@@ -1179,43 +1216,6 @@
                           ],
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": {
-                          "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
-                          "src": {
-                            "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
-                                  "value": [
-                                    {
-                                      "string": "x",
-                                      "raw_string": "x"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "src_arrow": "",
-                          "dst": {
-                            "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
-                                  "value": [
-                                    {
-                                      "string": "y",
-                                      "raw_string": "y"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "dst_arrow": ">"
                         }
                       }
                     }
@@ -1281,6 +1281,7 @@
                                     ]
                                   },
                                   "context": {
+                                    "edge": null,
                                     "key": {
                                       "range": "TestCompile/steps/recursive.d2,2:10:26-2:16:32",
                                       "key": {
@@ -1323,8 +1324,7 @@
                                       },
                                       "primary": {},
                                       "value": {}
-                                    },
-                                    "edge": null
+                                    }
                                   }
                                 }
                               ]
@@ -1382,6 +1382,7 @@
                               ]
                             },
                             "context": {
+                              "edge": null,
                               "key": {
                                 "range": "TestCompile/steps/recursive.d2,2:10:26-2:16:32",
                                 "key": {
@@ -1424,8 +1425,7 @@
                                 },
                                 "primary": {},
                                 "value": {}
-                              },
-                              "edge": null
+                              }
                             }
                           }
                         ]
@@ -1483,6 +1483,7 @@
                         ]
                       },
                       "context": {
+                        "edge": null,
                         "key": {
                           "range": "TestCompile/steps/recursive.d2,2:10:26-2:16:32",
                           "key": {
@@ -1525,8 +1526,7 @@
                           },
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": null
+                        }
                       }
                     }
                   ]
@@ -1561,6 +1561,7 @@
                         ]
                       },
                       "context": {
+                        "edge": null,
                         "key": {
                           "range": "TestCompile/steps/recursive.d2,4:2:48-4:8:54",
                           "key": {
@@ -1581,8 +1582,7 @@
                           },
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": null
+                        }
                       }
                     }
                   ]
@@ -1625,6 +1625,43 @@
                                     ]
                                   },
                                   "context": {
+                                    "edge": {
+                                      "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
+                                      "src": {
+                                        "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
+                                              "value": [
+                                                {
+                                                  "string": "x",
+                                                  "raw_string": "x"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "src_arrow": "",
+                                      "dst": {
+                                        "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
+                                              "value": [
+                                                {
+                                                  "string": "y",
+                                                  "raw_string": "y"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "dst_arrow": ">"
+                                    },
                                     "key": {
                                       "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
                                       "edges": [
@@ -1668,43 +1705,6 @@
                                       ],
                                       "primary": {},
                                       "value": {}
-                                    },
-                                    "edge": {
-                                      "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
-                                      "src": {
-                                        "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
-                                        "path": [
-                                          {
-                                            "unquoted_string": {
-                                              "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
-                                              "value": [
-                                                {
-                                                  "string": "x",
-                                                  "raw_string": "x"
-                                                }
-                                              ]
-                                            }
-                                          }
-                                        ]
-                                      },
-                                      "src_arrow": "",
-                                      "dst": {
-                                        "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
-                                        "path": [
-                                          {
-                                            "unquoted_string": {
-                                              "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
-                                              "value": [
-                                                {
-                                                  "string": "y",
-                                                  "raw_string": "y"
-                                                }
-                                              ]
-                                            }
-                                          }
-                                        ]
-                                      },
-                                      "dst_arrow": ">"
                                     }
                                   }
                                 }
@@ -1740,6 +1740,43 @@
                                     ]
                                   },
                                   "context": {
+                                    "edge": {
+                                      "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
+                                      "src": {
+                                        "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
+                                              "value": [
+                                                {
+                                                  "string": "x",
+                                                  "raw_string": "x"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "src_arrow": "",
+                                      "dst": {
+                                        "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
+                                              "value": [
+                                                {
+                                                  "string": "y",
+                                                  "raw_string": "y"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "dst_arrow": ">"
+                                    },
                                     "key": {
                                       "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
                                       "edges": [
@@ -1783,43 +1820,6 @@
                                       ],
                                       "primary": {},
                                       "value": {}
-                                    },
-                                    "edge": {
-                                      "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
-                                      "src": {
-                                        "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
-                                        "path": [
-                                          {
-                                            "unquoted_string": {
-                                              "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
-                                              "value": [
-                                                {
-                                                  "string": "x",
-                                                  "raw_string": "x"
-                                                }
-                                              ]
-                                            }
-                                          }
-                                        ]
-                                      },
-                                      "src_arrow": "",
-                                      "dst": {
-                                        "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
-                                        "path": [
-                                          {
-                                            "unquoted_string": {
-                                              "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
-                                              "value": [
-                                                {
-                                                  "string": "y",
-                                                  "raw_string": "y"
-                                                }
-                                              ]
-                                            }
-                                          }
-                                        ]
-                                      },
-                                      "dst_arrow": ">"
                                     }
                                   }
                                 }
@@ -1885,6 +1885,7 @@
                                                 ]
                                               },
                                               "context": {
+                                                "edge": null,
                                                 "key": {
                                                   "range": "TestCompile/steps/recursive.d2,2:10:26-2:16:32",
                                                   "key": {
@@ -1927,8 +1928,7 @@
                                                   },
                                                   "primary": {},
                                                   "value": {}
-                                                },
-                                                "edge": null
+                                                }
                                               }
                                             }
                                           ]
@@ -1986,6 +1986,7 @@
                                           ]
                                         },
                                         "context": {
+                                          "edge": null,
                                           "key": {
                                             "range": "TestCompile/steps/recursive.d2,2:10:26-2:16:32",
                                             "key": {
@@ -2028,8 +2029,7 @@
                                             },
                                             "primary": {},
                                             "value": {}
-                                          },
-                                          "edge": null
+                                          }
                                         }
                                       }
                                     ]
@@ -2087,6 +2087,7 @@
                                     ]
                                   },
                                   "context": {
+                                    "edge": null,
                                     "key": {
                                       "range": "TestCompile/steps/recursive.d2,2:10:26-2:16:32",
                                       "key": {
@@ -2129,8 +2130,7 @@
                                       },
                                       "primary": {},
                                       "value": {}
-                                    },
-                                    "edge": null
+                                    }
                                   }
                                 }
                               ]
@@ -2165,6 +2165,7 @@
                                     ]
                                   },
                                   "context": {
+                                    "edge": null,
                                     "key": {
                                       "range": "TestCompile/steps/recursive.d2,4:2:48-4:8:54",
                                       "key": {
@@ -2185,8 +2186,7 @@
                                       },
                                       "primary": {},
                                       "value": {}
-                                    },
-                                    "edge": null
+                                    }
                                   }
                                 }
                               ]
@@ -2221,6 +2221,7 @@
                                     ]
                                   },
                                   "context": {
+                                    "edge": null,
                                     "key": {
                                       "range": "TestCompile/steps/recursive.d2,7:4:89-7:16:101",
                                       "key": {
@@ -2241,8 +2242,7 @@
                                       },
                                       "primary": {},
                                       "value": {}
-                                    },
-                                    "edge": null
+                                    }
                                   }
                                 }
                               ]
@@ -2264,6 +2264,43 @@
                               "references": [
                                 {
                                   "context": {
+                                    "edge": {
+                                      "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
+                                      "src": {
+                                        "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
+                                              "value": [
+                                                {
+                                                  "string": "x",
+                                                  "raw_string": "x"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "src_arrow": "",
+                                      "dst": {
+                                        "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
+                                              "value": [
+                                                {
+                                                  "string": "y",
+                                                  "raw_string": "y"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "dst_arrow": ">"
+                                    },
                                     "key": {
                                       "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
                                       "edges": [
@@ -2307,43 +2344,6 @@
                                       ],
                                       "primary": {},
                                       "value": {}
-                                    },
-                                    "edge": {
-                                      "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
-                                      "src": {
-                                        "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
-                                        "path": [
-                                          {
-                                            "unquoted_string": {
-                                              "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
-                                              "value": [
-                                                {
-                                                  "string": "x",
-                                                  "raw_string": "x"
-                                                }
-                                              ]
-                                            }
-                                          }
-                                        ]
-                                      },
-                                      "src_arrow": "",
-                                      "dst": {
-                                        "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
-                                        "path": [
-                                          {
-                                            "unquoted_string": {
-                                              "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
-                                              "value": [
-                                                {
-                                                  "string": "y",
-                                                  "raw_string": "y"
-                                                }
-                                              ]
-                                            }
-                                          }
-                                        ]
-                                      },
-                                      "dst_arrow": ">"
                                     }
                                   }
                                 }
@@ -2379,6 +2379,7 @@
                               ]
                             },
                             "context": {
+                              "edge": null,
                               "key": {
                                 "range": "TestCompile/steps/recursive.d2,6:3:73-8:4:106",
                                 "key": {
@@ -2428,8 +2429,7 @@
                                     ]
                                   }
                                 }
-                              },
-                              "edge": null
+                              }
                             }
                           }
                         ]
@@ -2465,6 +2465,7 @@
                         ]
                       },
                       "context": {
+                        "edge": null,
                         "key": {
                           "range": "TestCompile/steps/recursive.d2,5:2:57-9:3:110",
                           "key": {
@@ -2543,8 +2544,7 @@
                               ]
                             }
                           }
-                        },
-                        "edge": null
+                        }
                       }
                     }
                   ]
@@ -2566,6 +2566,43 @@
                   "references": [
                     {
                       "context": {
+                        "edge": {
+                          "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
+                          "src": {
+                            "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
+                                  "value": [
+                                    {
+                                      "string": "y",
+                                      "raw_string": "y"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
                         "key": {
                           "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
                           "edges": [
@@ -2609,43 +2646,6 @@
                           ],
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": {
-                          "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
-                          "src": {
-                            "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
-                                  "value": [
-                                    {
-                                      "string": "x",
-                                      "raw_string": "x"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "src_arrow": "",
-                          "dst": {
-                            "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
-                                  "value": [
-                                    {
-                                      "string": "y",
-                                      "raw_string": "y"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "dst_arrow": ">"
                         }
                       }
                     }
@@ -2681,6 +2681,7 @@
                   ]
                 },
                 "context": {
+                  "edge": null,
                   "key": {
                     "range": "TestCompile/steps/recursive.d2,3:1:35-10:2:113",
                     "key": {
@@ -2811,8 +2812,7 @@
                         ]
                       }
                     }
-                  },
-                  "edge": null
+                  }
                 }
               }
             ]
@@ -2848,6 +2848,7 @@
             ]
           },
           "context": {
+            "edge": null,
             "key": {
               "range": "TestCompile/steps/recursive.d2,1:0:7-11:1:115",
               "key": {
@@ -3081,8 +3082,7 @@
                   ]
                 }
               }
-            },
-            "edge": null
+            }
           }
         }
       ]
@@ -3104,6 +3104,43 @@
       "references": [
         {
           "context": {
+            "edge": {
+              "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
             "key": {
               "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
               "edges": [
@@ -3147,43 +3184,6 @@
               ],
               "primary": {},
               "value": {}
-            },
-            "edge": {
-              "range": "TestCompile/steps/recursive.d2,0:0:0-0:6:6",
-              "src": {
-                "range": "TestCompile/steps/recursive.d2,0:0:0-0:2:2",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/steps/recursive.d2,0:0:0-0:1:1",
-                      "value": [
-                        {
-                          "string": "x",
-                          "raw_string": "x"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "src_arrow": "",
-              "dst": {
-                "range": "TestCompile/steps/recursive.d2,0:4:4-0:6:6",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/steps/recursive.d2,0:5:5-0:6:6",
-                      "value": [
-                        {
-                          "string": "y",
-                          "raw_string": "y"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "dst_arrow": ">"
             }
           }
         }

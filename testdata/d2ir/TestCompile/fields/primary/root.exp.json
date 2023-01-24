@@ -45,6 +45,7 @@
                   ]
                 },
                 "context": {
+                  "edge": null,
                   "key": {
                     "range": "TestCompile/fields/primary/root.d2,0:9:9-0:14:14",
                     "key": {
@@ -65,8 +66,7 @@
                     },
                     "primary": {},
                     "value": {}
-                  },
-                  "edge": null
+                  }
                 }
               }
             ]
@@ -102,6 +102,7 @@
             ]
           },
           "context": {
+            "edge": null,
             "key": {
               "range": "TestCompile/fields/primary/root.d2,0:0:0-0:15:15",
               "key": {
@@ -161,8 +162,7 @@
                   ]
                 }
               }
-            },
-            "edge": null
+            }
           }
         }
       ]

@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "eight",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 244,
         "y": 12
@@ -44,7 +44,7 @@
     },
     {
       "id": "sixteen",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 228,
         "y": 344
@@ -84,7 +84,7 @@
     },
     {
       "id": "thirty two",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 183,
         "y": 701
@@ -124,7 +124,7 @@
     },
     {
       "id": "sixty four",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 119,
         "y": 1108
@@ -164,7 +164,7 @@
     },
     {
       "id": "ninety nine",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 1596

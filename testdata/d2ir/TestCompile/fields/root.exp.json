@@ -30,6 +30,7 @@
             ]
           },
           "context": {
+            "edge": null,
             "key": {
               "range": "TestCompile/fields/root.d2,0:0:0-0:1:1",
               "key": {
@@ -50,8 +51,7 @@
               },
               "primary": {},
               "value": {}
-            },
-            "edge": null
+            }
           }
         }
       ]

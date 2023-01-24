@@ -41,6 +41,7 @@
             ]
           },
           "context": {
+            "edge": null,
             "key": {
               "range": "TestCompile/fields/label.d2,0:0:0-0:6:6",
               "key": {
@@ -71,8 +72,7 @@
                   ]
                 }
               }
-            },
-            "edge": null
+            }
           }
         }
       ]

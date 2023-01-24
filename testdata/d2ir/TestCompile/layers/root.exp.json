@@ -30,6 +30,43 @@
             ]
           },
           "context": {
+            "edge": {
+              "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
             "key": {
               "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
               "edges": [
@@ -73,43 +110,6 @@
               ],
               "primary": {},
               "value": {}
-            },
-            "edge": {
-              "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
-              "src": {
-                "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
-                      "value": [
-                        {
-                          "string": "x",
-                          "raw_string": "x"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "src_arrow": "",
-              "dst": {
-                "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
-                      "value": [
-                        {
-                          "string": "y",
-                          "raw_string": "y"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "dst_arrow": ">"
             }
           }
         }
@@ -145,6 +145,43 @@
             ]
           },
           "context": {
+            "edge": {
+              "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
             "key": {
               "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
               "edges": [
@@ -188,43 +225,6 @@
               ],
               "primary": {},
               "value": {}
-            },
-            "edge": {
-              "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
-              "src": {
-                "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
-                      "value": [
-                        {
-                          "string": "x",
-                          "raw_string": "x"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "src_arrow": "",
-              "dst": {
-                "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
-                      "value": [
-                        {
-                          "string": "y",
-                          "raw_string": "y"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "dst_arrow": ">"
             }
           }
         }
@@ -298,6 +298,7 @@
                                     ]
                                   },
                                   "context": {
+                                    "edge": null,
                                     "key": {
                                       "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
                                       "key": {
@@ -340,8 +341,7 @@
                                       },
                                       "primary": {},
                                       "value": {}
-                                    },
-                                    "edge": null
+                                    }
                                   }
                                 }
                               ]
@@ -399,6 +399,7 @@
                               ]
                             },
                             "context": {
+                              "edge": null,
                               "key": {
                                 "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
                                 "key": {
@@ -441,8 +442,7 @@
                                 },
                                 "primary": {},
                                 "value": {}
-                              },
-                              "edge": null
+                              }
                             }
                           }
                         ]
@@ -500,6 +500,7 @@
                         ]
                       },
                       "context": {
+                        "edge": null,
                         "key": {
                           "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
                           "key": {
@@ -542,8 +543,7 @@
                           },
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": null
+                        }
                       }
                     }
                   ]
@@ -579,6 +579,7 @@
                   ]
                 },
                 "context": {
+                  "edge": null,
                   "key": {
                     "range": "TestCompile/layers/root.d2,2:1:18-2:17:34",
                     "key": {
@@ -650,8 +651,7 @@
                         ]
                       }
                     }
-                  },
-                  "edge": null
+                  }
                 }
               }
             ]
@@ -687,6 +687,7 @@
             ]
           },
           "context": {
+            "edge": null,
             "key": {
               "range": "TestCompile/layers/root.d2,1:0:7-3:1:36",
               "key": {
@@ -787,8 +788,7 @@
                   ]
                 }
               }
-            },
-            "edge": null
+            }
           }
         }
       ]
@@ -810,6 +810,43 @@
       "references": [
         {
           "context": {
+            "edge": {
+              "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
             "key": {
               "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
               "edges": [
@@ -853,43 +890,6 @@
               ],
               "primary": {},
               "value": {}
-            },
-            "edge": {
-              "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
-              "src": {
-                "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
-                      "value": [
-                        {
-                          "string": "x",
-                          "raw_string": "x"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "src_arrow": "",
-              "dst": {
-                "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
-                      "value": [
-                        {
-                          "string": "y",
-                          "raw_string": "y"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "dst_arrow": ">"
             }
           }
         }

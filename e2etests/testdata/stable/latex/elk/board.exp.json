@@ -6,11 +6,11 @@
       "id": "a",
       "type": "text",
       "pos": {
-        "x": 12,
-        "y": 175
+        "x": 41,
+        "y": 179
       },
-      "width": 382,
-      "height": 101,
+      "width": 10,
+      "height": 9,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -28,7 +28,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "\\\\Huge{\\\\frac{\\\\alpha g^2}{\\\\omega^5} e^{[ -0.74\\\\bigl\\\\{\\\\frac{\\\\omega U_\\\\omega 19.5}{g}\\\\bigr\\\\}^{\\\\!-4}\\\\,]}}",
+      "label": "a",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "latex",
@@ -36,8 +36,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 382,
-      "labelHeight": 101,
+      "labelWidth": 10,
+      "labelHeight": 9,
       "zIndex": 0,
       "level": 1
     },
@@ -45,11 +45,11 @@
       "id": "b",
       "type": "text",
       "pos": {
-        "x": 414,
-        "y": 217
+        "x": 71,
+        "y": 177
       },
-      "width": 65,
-      "height": 18,
+      "width": 8,
+      "height": 13,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -67,7 +67,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "e = mc^2",
+      "label": "b",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "latex",
@@ -75,8 +75,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 65,
-      "labelHeight": 18,
+      "labelWidth": 8,
+      "labelHeight": 13,
       "zIndex": 0,
       "level": 1
     },
@@ -84,11 +84,11 @@
       "id": "z",
       "type": "text",
       "pos": {
-        "x": 143,
+        "x": 69,
         "y": 12
       },
-      "width": 179,
-      "height": 51,
+      "width": 9,
+      "height": 9,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -106,7 +106,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "gibberish\\\\; math:\\\\sum_{i=0}^\\\\infty i^2",
+      "label": "z",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "latex",
@@ -114,17 +114,17 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 179,
-      "labelHeight": 51,
+      "labelWidth": 9,
+      "labelHeight": 9,
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 339,
-        "y": 389
+        "x": 12,
+        "y": 397
       },
       "width": 214,
       "height": 126,
@@ -161,10 +161,10 @@
     },
     {
       "id": "sugar",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 499,
-        "y": 163
+        "x": 99,
+        "y": 121
       },
       "width": 146,
       "height": 126,
@@ -201,10 +201,10 @@
     },
     {
       "id": "solution",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 364,
-        "y": 736
+        "x": 37,
+        "y": 744
       },
       "width": 164,
       "height": 126,
@@ -267,12 +267,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 203,
-          "y": 63
+          "x": 72.5,
+          "y": 21
         },
         {
-          "x": 203,
-          "y": 175.5
+          "x": 72.5,
+          "y": 71
+        },
+        {
+          "x": 46.5,
+          "y": 71
+        },
+        {
+          "x": 46.5,
+          "y": 179.5
         }
       ],
       "animated": false,
@@ -306,20 +314,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 262.6666666666667,
-          "y": 63
+          "x": 75.5,
+          "y": 21
         },
         {
-          "x": 262.6666666666667,
-          "y": 113
-        },
-        {
-          "x": 446.5,
-          "y": 113
-        },
-        {
-          "x": 446.5,
-          "y": 217
+          "x": 75.5,
+          "y": 177.5
         }
       ],
       "animated": false,
@@ -353,20 +353,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 203,
-          "y": 276.5
+          "x": 46.5,
+          "y": 188.5
         },
         {
-          "x": 203,
-          "y": 339
+          "x": 46.5,
+          "y": 347
         },
         {
-          "x": 393,
-          "y": 339
+          "x": 65.5,
+          "y": 347
         },
         {
-          "x": 393,
-          "y": 389
+          "x": 65.5,
+          "y": 397
         }
       ],
       "animated": false,
@@ -400,12 +400,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 446.5,
-          "y": 235
+          "x": 75.5,
+          "y": 190.5
         },
         {
-          "x": 446.5,
-          "y": 389
+          "x": 75.5,
+          "y": 297
+        },
+        {
+          "x": 119,
+          "y": 297
+        },
+        {
+          "x": 119,
+          "y": 397
         }
       ],
       "animated": false,
@@ -439,20 +447,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 572,
-          "y": 289
+          "x": 172.5,
+          "y": 247
         },
         {
-          "x": 572,
-          "y": 339
-        },
-        {
-          "x": 500,
-          "y": 339
-        },
-        {
-          "x": 500,
-          "y": 389
+          "x": 172.5,
+          "y": 397
         }
       ],
       "animated": false,
@@ -486,12 +486,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 446.5,
-          "y": 515
+          "x": 119,
+          "y": 523
         },
         {
-          "x": 446.5,
-          "y": 736
+          "x": 119,
+          "y": 744
         }
       ],
       "animated": false,

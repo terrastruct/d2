@@ -116,6 +116,7 @@ type Reference interface {
 	reference()
 	// Most specific AST node for the reference.
 	AST() d2ast.Node
+	Primary() bool
 }
 
 var _ Reference = &FieldReference{}
@@ -214,7 +215,11 @@ func (m *Map) Root() bool {
 	if !ok {
 		return false
 	}
-	return f.Name == ""
+	return f.Root()
+}
+
+func (f *Field) Root() bool {
+	return f.parent == nil
 }
 
 type LayerKind string
@@ -237,7 +242,7 @@ func NodeLayerKind(n Node) LayerKind {
 		f = ParentField(n)
 	case *Map:
 		f = ParentField(n)
-		if f.Name == "" {
+		if f.Root() {
 			return LayerLayer
 		}
 		f = ParentField(f)
@@ -286,7 +291,7 @@ func (f *Field) Copy(newParent Node) Node {
 
 func (f *Field) lastPrimaryRef() *FieldReference {
 	for i := len(f.References) - 1; i >= 0; i-- {
-		if f.References[i].OurValue() {
+		if f.References[i].Primary() {
 			return f.References[i]
 		}
 	}
@@ -485,13 +490,13 @@ type FieldReference struct {
 	Context *RefContext `json:"context"`
 }
 
-// OurValue returns true if the Value in Context.Key.Value corresponds to the Field
+// Primary returns true if the Value in Context.Key.Value corresponds to the Field
 // represented by String.
-func (fr *FieldReference) OurValue() bool {
+func (fr *FieldReference) Primary() bool {
 	if fr.KeyPath == fr.Context.Key.Key {
-		return fr.KeyPathIndex() == len(fr.KeyPath.Path)-1
+		return len(fr.Context.Key.Edges) == 0 && fr.KeyPathIndex() == len(fr.KeyPath.Path)-1
 	} else if fr.KeyPath == fr.Context.Key.EdgeKey {
-		return fr.KeyPathIndex() == len(fr.KeyPath.Path)-1
+		return len(fr.Context.Key.Edges) == 1 && fr.KeyPathIndex() == len(fr.KeyPath.Path)-1
 	}
 	return false
 }
@@ -527,6 +532,12 @@ type EdgeReference struct {
 
 func (er *EdgeReference) AST() d2ast.Node {
 	return er.Context.Edge
+}
+
+// Primary returns true if the Value in Context.Key.Value corresponds to the *Edge
+// represented by Context.Edge
+func (er *EdgeReference) Primary() bool {
+	return len(er.Context.Key.Edges) == 1 && er.Context.Key.EdgeKey == nil
 }
 
 type RefContext struct {
@@ -653,11 +664,14 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 			continue
 		}
 
-		f.References = append(f.References, &FieldReference{
-			String:  kp.Path[i].Unbox(),
-			KeyPath: kp,
-			Context: refctx,
-		})
+		// Don't add references for fake common KeyPath from trimCommon in CreateEdge.
+		if refctx != nil {
+			f.References = append(f.References, &FieldReference{
+				String:  kp.Path[i].Unbox(),
+				KeyPath: kp,
+				Context: refctx,
+			})
+		}
 
 		if i+1 == len(kp.Path) {
 			return f, nil
@@ -676,11 +690,14 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 	f := &Field{
 		parent: m,
 		Name:   head,
-		References: []*FieldReference{{
+	}
+	// Don't add references for fake common KeyPath from trimCommon in CreateEdge.
+	if refctx != nil {
+		f.References = append(f.References, &FieldReference{
 			String:  kp.Path[i].Unbox(),
 			KeyPath: kp,
 			Context: refctx,
-		}},
+		})
 	}
 	m.Fields = append(m.Fields, f)
 	if i+1 == len(kp.Path) {
@@ -755,7 +772,7 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
 		tmp := *refctx.Edge.Src
 		kp := &tmp
 		kp.Path = kp.Path[:len(common)]
-		f, err := m.EnsureField(kp, refctx)
+		f, err := m.EnsureField(kp, nil)
 		if err != nil {
 			return nil, err
 		}
@@ -1003,15 +1020,25 @@ func IDA(n Node) (ida []string) {
 	for {
 		f, ok := n.(*Field)
 		if ok {
-			if f.Name == "" {
+			if f.Root() {
+				reverseIDA(ida)
 				return ida
 			}
 			ida = append(ida, f.Name)
 		}
 		f = ParentField(n)
 		if f == nil {
+			reverseIDA(ida)
 			return ida
 		}
 		n = f
+	}
+}
+
+func reverseIDA(ida []string) {
+	for i := 0; i < len(ida)/2; i++ {
+		tmp := ida[i]
+		ida[i] = ida[len(ida)-i-1]
+		ida[len(ida)-i-1] = tmp
 	}
 }

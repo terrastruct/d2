@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "size XS",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1104,
         "y": 419
@@ -44,7 +44,7 @@
     },
     {
       "id": "size S",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 15,
         "y": 35
@@ -84,7 +84,7 @@
     },
     {
       "id": "size M",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 419
@@ -124,7 +124,7 @@
     },
     {
       "id": "size L",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 175,
         "y": 19
@@ -164,7 +164,7 @@
     },
     {
       "id": "size XL",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 348,
         "y": 17
@@ -204,7 +204,7 @@
     },
     {
       "id": "size XXL",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 545,
         "y": 14
@@ -244,7 +244,7 @@
     },
     {
       "id": "size XXXL",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 769,
         "y": 12
@@ -284,7 +284,7 @@
     },
     {
       "id": "custom 8",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1108,
         "y": 42
@@ -324,7 +324,7 @@
     },
     {
       "id": "custom 12",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1265,
         "y": 24
@@ -364,7 +364,7 @@
     },
     {
       "id": "custom 18",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1445,
         "y": 21
@@ -404,7 +404,7 @@
     },
     {
       "id": "custom 21",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1651,
         "y": 19
@@ -444,7 +444,7 @@
     },
     {
       "id": "custom 64",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 691,
         "y": 419

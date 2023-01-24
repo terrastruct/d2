@@ -6,11 +6,11 @@
       "id": "md",
       "type": "text",
       "pos": {
-        "x": 9,
+        "x": 45,
         "y": 226
       },
-      "width": 95,
-      "height": 115,
+      "width": 23,
+      "height": 24,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -28,7 +28,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "\n# hey\n- they\n\t1. they\n",
+      "label": "md",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -36,14 +36,14 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 95,
-      "labelHeight": 115,
+      "labelWidth": 23,
+      "labelHeight": 24,
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
         "y": 0
@@ -83,10 +83,10 @@
     },
     {
       "id": "b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 441
+        "y": 350
       },
       "width": 113,
       "height": 126,
@@ -198,19 +198,19 @@
       "route": [
         {
           "x": 56.5,
-          "y": 341
+          "y": 250
         },
         {
           "x": 56.5,
-          "y": 381
+          "y": 290
         },
         {
           "x": 56.5,
-          "y": 401
+          "y": 310
         },
         {
           "x": 56.5,
-          "y": 441
+          "y": 350
         }
       ],
       "isCurve": true,

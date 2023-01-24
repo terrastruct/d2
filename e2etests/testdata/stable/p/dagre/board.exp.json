@@ -6,10 +6,10 @@
       "id": "md",
       "type": "text",
       "pos": {
-        "x": 0,
+        "x": 45,
         "y": 226
       },
-      "width": 1857,
+      "width": 23,
       "height": 24,
       "opacity": 1,
       "strokeDash": 0,
@@ -28,7 +28,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "\nA paragraph is simply one or more consecutive lines of text, separated\nby one or more blank lines. (A blank line is any line that looks like a\nblank line -- a line containing nothing but spaces or tabs is considered\nblank.) Normal paragraphs should not be indented with spaces or tabs.\n",
+      "label": "md",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -36,16 +36,16 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 1857,
+      "labelWidth": 23,
       "labelHeight": 24,
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 872,
+        "x": 0,
         "y": 0
       },
       "width": 113,
@@ -83,9 +83,9 @@
     },
     {
       "id": "b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 872,
+        "x": 0,
         "y": 350
       },
       "width": 113,
@@ -149,19 +149,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 928.5,
+          "x": 56.5,
           "y": 126
         },
         {
-          "x": 928.5,
+          "x": 56.5,
           "y": 166
         },
         {
-          "x": 928.5,
+          "x": 56.5,
           "y": 186
         },
         {
-          "x": 928.5,
+          "x": 56.5,
           "y": 226
         }
       ],
@@ -197,19 +197,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 928.5,
+          "x": 56.5,
           "y": 250
         },
         {
-          "x": 928.5,
+          "x": 56.5,
           "y": 290
         },
         {
-          "x": 928.5,
+          "x": 56.5,
           "y": 310
         },
         {
-          "x": 928.5,
+          "x": 56.5,
           "y": 350
         }
       ],

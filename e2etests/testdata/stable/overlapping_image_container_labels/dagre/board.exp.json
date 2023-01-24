@@ -55,7 +55,7 @@
     },
     {
       "id": "container",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
         "y": 254
@@ -146,7 +146,7 @@
     },
     {
       "id": "container.left",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 40,
         "y": 579
@@ -237,7 +237,7 @@
     },
     {
       "id": "container.left.inner",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 80,
         "y": 904
@@ -379,7 +379,7 @@
     },
     {
       "id": "container.right",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 576,
         "y": 579
@@ -470,7 +470,7 @@
     },
     {
       "id": "container.right.inner",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 616,
         "y": 904
@@ -612,54 +612,6 @@
     }
   ],
   "connections": [
-    {
-      "id": "(root -> container.root)[0]",
-      "src": "root",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "container.root",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 556,
-          "y": 154
-        },
-        {
-          "x": 556,
-          "y": 194
-        },
-        {
-          "x": 556,
-          "y": 264
-        },
-        {
-          "x": 556,
-          "y": 304
-        }
-      ],
-      "isCurve": true,
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 0
-    },
     {
       "id": "container.left.(root -> inner.left)[0]",
       "src": "container.left.root",
@@ -940,6 +892,54 @@
         {
           "x": 824,
           "y": 629
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(root -> container.root)[0]",
+      "src": "root",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "container.root",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 556,
+          "y": 154
+        },
+        {
+          "x": 556,
+          "y": 194
+        },
+        {
+          "x": 556,
+          "y": 264
+        },
+        {
+          "x": 556,
+          "y": 304
         }
       ],
       "isCurve": true,

@@ -155,9 +155,14 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 		c.compileMap(obj, f.Map())
 	}
 
+	if obj.Attributes.Label.MapKey == nil {
+		obj.Attributes.Label.MapKey = f.LastPrimaryKey()
+	}
 	for _, fr := range f.References {
-		if fr.OurValue() && fr.Context.Key.Value.Map != nil {
-			obj.Map = fr.Context.Key.Value.Map
+		if fr.Primary() {
+			if fr.Context.Key.Value.Map != nil {
+				obj.Map = fr.Context.Key.Value.Map
+			}
 		}
 		scopeObjIDA := d2ir.IDA(fr.Context.ScopeMap)
 		scopeObj, _ := obj.Graph.Root.HasChild(scopeObjIDA)
@@ -358,9 +363,10 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 		}
 	}
 
+	edge.Attributes.Label.MapKey = e.LastPrimaryKey()
 	for _, er := range e.References {
 		scopeObjIDA := d2ir.IDA(er.Context.ScopeMap)
-		scopeObj, _ := edge.Src.Graph.Root.HasChild(scopeObjIDA)
+		scopeObj, _ := edge.Src.Graph.Root.HasChild(d2graphIDA(scopeObjIDA))
 		edge.References = append(edge.References, d2graph.EdgeReference{
 			Edge:            er.Context.Edge,
 			MapKey:          er.Context.Key,
@@ -532,44 +538,34 @@ func (c *compiler) validateKeys(obj *d2graph.Object, m *d2ir.Map) {
 
 func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 	keyword := strings.ToLower(f.Name)
-	_, isReserved := d2graph.SimpleReservedKeywords[keyword]
+	_, isReserved := d2graph.ReservedKeywords[keyword]
 	if isReserved {
 		switch obj.Attributes.Shape.Value {
 		case d2target.ShapeSQLTable, d2target.ShapeClass:
 		default:
 			if len(obj.Children) > 0 && (f.Name == "width" || f.Name == "height") {
-				c.errorf(f.LastPrimaryKey(), mk.Range.End, fmt.Sprintf("%s cannot be used on container: %s", f.Name, obj.AbsID()))
+				c.errorf(f.LastPrimaryKey(), fmt.Sprintf("%s cannot be used on container: %s", f.Name, obj.AbsID()))
 			}
 		}
 
 		switch obj.Attributes.Shape.Value {
 		case d2target.ShapeCircle, d2target.ShapeSquare:
-			checkEqual := (reserved == "width" && obj.Attributes.Height != nil) || (reserved == "height" && obj.Attributes.Width != nil)
+			checkEqual := (keyword == "width" && obj.Attributes.Height != nil) || (keyword == "height" && obj.Attributes.Width != nil)
 			if checkEqual && obj.Attributes.Width.Value != obj.Attributes.Height.Value {
 				c.errorf(f.LastPrimaryKey(), "width and height must be equal for %s shapes", obj.Attributes.Shape.Value)
 			}
 		}
 
 		switch f.Name {
-		case "width":
-			if obj.Attributes.Shape.Value != d2target.ShapeImage {
-				c.errorf(f.LastPrimaryKey(), "width is only applicable to image shapes.")
-			}
-		case "height":
-			if obj.Attributes.Shape.Value != d2target.ShapeImage {
-				c.errorf(f.LastPrimaryKey(), "height is only applicable to image shapes.")
+		case "style":
+			if obj.Attributes.Style.ThreeDee != nil {
+				if !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeRectangle) {
+					c.errorf(obj.Attributes.Style.ThreeDee.MapKey, `key "3d" can only be applied to squares and rectangles`)
+				}
 			}
 		case "shape":
-			switch obj.Attributes.Shape.Value {
-			case d2target.ShapeSQLTable, d2target.ShapeClass:
-			case d2target.ShapeImage:
-				if obj.Attributes.Icon == nil {
-					c.errorf(f.LastPrimaryKey(), `image shape must include an "icon" field`)
-				}
-			default:
-				if len(obj.Children) > 0 && (f.Name == "width" || f.Name == "height") {
-					c.errorf(f.LastPrimaryKey(), fmt.Sprintf("%s cannot be used on container: %s", f.Name, obj.AbsID()))
-				}
+			if obj.Attributes.Shape.Value == d2target.ShapeImage && obj.Attributes.Icon == nil {
+				c.errorf(f.LastPrimaryKey(), `image shape must include an "icon" field`)
 			}
 
 			in := d2target.IsShape(obj.Attributes.Shape.Value)
@@ -579,12 +575,6 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 			}
 		}
 		return
-	}
-
-	if obj.Attributes.Style.ThreeDee != nil {
-		if !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeRectangle) {
-			c.errorf(obj.Attributes.Style.ThreeDee.MapKey, `key "3d" can only be applied to squares and rectangles`)
-		}
 	}
 
 	if obj.Attributes.Shape.Value == d2target.ShapeImage {

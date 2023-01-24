@@ -6,10 +6,10 @@
       "id": "md",
       "type": "text",
       "pos": {
-        "x": 12,
+        "x": 57,
         "y": 238
       },
-      "width": 1857,
+      "width": 23,
       "height": 24,
       "opacity": 1,
       "strokeDash": 0,
@@ -28,7 +28,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "\nA paragraph is simply one or more consecutive lines of text, separated\nby one or more blank lines. (A blank line is any line that looks like a\nblank line -- a line containing nothing but spaces or tabs is considered\nblank.) Normal paragraphs should not be indented with spaces or tabs.\n",
+      "label": "md",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -36,16 +36,16 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 1857,
+      "labelWidth": 23,
       "labelHeight": 24,
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 884,
+        "x": 12,
         "y": 12
       },
       "width": 113,
@@ -83,9 +83,9 @@
     },
     {
       "id": "b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 884,
+        "x": 12,
         "y": 362
       },
       "width": 113,
@@ -149,11 +149,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 940.5,
+          "x": 68.5,
           "y": 138
         },
         {
-          "x": 940.5,
+          "x": 68.5,
           "y": 238
         }
       ],
@@ -188,11 +188,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 940.5,
+          "x": 68.5,
           "y": 262
         },
         {
-          "x": 940.5,
+          "x": 68.5,
           "y": 362
         }
       ],

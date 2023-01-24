@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 68,
         "y": 12
@@ -44,7 +44,7 @@
     },
     {
       "id": "b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 49,
         "y": 238
@@ -84,7 +84,7 @@
     },
     {
       "id": "c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 572,
         "y": 238
@@ -124,7 +124,7 @@
     },
     {
       "id": "d",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 30,
         "y": 464
@@ -164,7 +164,7 @@
     },
     {
       "id": "e",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 291,
         "y": 464
@@ -204,7 +204,7 @@
     },
     {
       "id": "f",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 554,
         "y": 464
@@ -244,7 +244,7 @@
     },
     {
       "id": "g",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 821,
         "y": 464
@@ -284,7 +284,7 @@
     },
     {
       "id": "h",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 690
@@ -324,7 +324,7 @@
     },
     {
       "id": "i",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 145,
         "y": 690
@@ -364,7 +364,7 @@
     },
     {
       "id": "j",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 274,
         "y": 690
@@ -404,7 +404,7 @@
     },
     {
       "id": "k",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 404,
         "y": 690
@@ -444,7 +444,7 @@
     },
     {
       "id": "l",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 537,
         "y": 690
@@ -484,7 +484,7 @@
     },
     {
       "id": "m",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 666,
         "y": 690
@@ -524,7 +524,7 @@
     },
     {
       "id": "n",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 803,
         "y": 690
@@ -564,7 +564,7 @@
     },
     {
       "id": "o",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 936,
         "y": 690

@@ -391,7 +391,6 @@ func Delete(g *d2graph.Graph, key string) (_ *d2graph.Graph, err error) {
 	if g != g2 {
 		return g2, nil
 	}
-	g = g2
 
 	if len(mk.Edges) == 1 {
 		obj := g.Root

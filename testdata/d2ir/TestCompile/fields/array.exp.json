@@ -62,6 +62,7 @@
             ]
           },
           "context": {
+            "edge": null,
             "key": {
               "range": "TestCompile/fields/array.d2,0:0:0-0:12:12",
               "key": {
@@ -116,8 +117,7 @@
                   ]
                 }
               }
-            },
-            "edge": null
+            }
           }
         }
       ]

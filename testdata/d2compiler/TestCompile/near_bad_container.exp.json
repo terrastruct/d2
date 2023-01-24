@@ -4,8 +4,8 @@
     "ioerr": null,
     "errs": [
       {
-        "range": "d2/testdata/d2compiler/TestCompile/near_bad_container.d2,0:0:0-0:10:10",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/near_bad_container.d2:1:1: constant near keys cannot be set on shapes with children"
+        "range": "d2/testdata/d2compiler/TestCompile/near_bad_container.d2,1:8:13-1:18:23",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/near_bad_container.d2:2:9: constant near keys cannot be set on shapes with children"
       }
     ]
   }

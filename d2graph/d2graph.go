@@ -497,6 +497,9 @@ func (obj *Object) newObject(id string) *Object {
 			Label: Scalar{
 				Value: idval,
 			},
+			Shape: Scalar{
+				Value: d2target.ShapeRectangle,
+			},
 		},
 
 		Graph:  obj.Graph,
@@ -649,25 +652,34 @@ func (obj *Object) ensureChildEdge(ids []string) *Object {
 
 // EnsureChild grabs the child by ids or creates it if it does not exist including all
 // intermediate nodes.
-func (obj *Object) EnsureChild(ids []string) *Object {
-	_, is := ReservedKeywordHolders[ids[0]]
-	if len(ids) == 1 && !is {
-		_, ok := ReservedKeywords[ids[0]]
+func (obj *Object) EnsureChild(ida []string) *Object {
+	seq := obj.OuterSequenceDiagram()
+	if seq != nil {
+		for _, c := range seq.ChildrenArray {
+			if c.ID == ida[0] {
+				obj = seq
+				break
+			}
+		}
+	}
+	_, is := ReservedKeywordHolders[ida[0]]
+	if len(ida) == 1 && !is {
+		_, ok := ReservedKeywords[ida[0]]
 		if ok {
 			return obj
 		}
 	}
 
-	id := ids[0]
-	ids = ids[1:]
+	id := ida[0]
+	ida = ida[1:]
 
 	child, ok := obj.Children[strings.ToLower(id)]
 	if !ok {
 		child = obj.newObject(id)
 	}
 
-	if len(ids) >= 1 {
-		return child.EnsureChild(ids)
+	if len(ida) >= 1 {
+		return child.EnsureChild(ida)
 	}
 	return child
 }
@@ -944,15 +956,6 @@ func (e *Edge) AbsID() string {
 }
 
 func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label string) (*Edge, error) {
-	srcObj, srcID, err := ResolveUnderscoreKey(srcID, obj)
-	if err != nil {
-		return nil, err
-	}
-	dstObj, dstID, err := ResolveUnderscoreKey(dstID, obj)
-	if err != nil {
-		return nil, err
-	}
-
 	for _, id := range [][]string{srcID, dstID} {
 		for _, p := range id {
 			if _, ok := ReservedKeywords[p]; ok {
@@ -961,8 +964,8 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 		}
 	}
 
-	src := srcObj.ensureChildEdge(srcID)
-	dst := dstObj.ensureChildEdge(dstID)
+	src := obj.ensureChildEdge(srcID)
+	dst := obj.ensureChildEdge(dstID)
 
 	if src.OuterSequenceDiagram() != dst.OuterSequenceDiagram() {
 		return nil, errors.New("connections within sequence diagrams can connect only to other objects within the same sequence diagram")

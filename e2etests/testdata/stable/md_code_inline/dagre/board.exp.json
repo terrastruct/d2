@@ -6,10 +6,10 @@
       "id": "md",
       "type": "text",
       "pos": {
-        "x": 34,
+        "x": 45,
         "y": 226
       },
-      "width": 46,
+      "width": 23,
       "height": 24,
       "opacity": 1,
       "strokeDash": 0,
@@ -28,7 +28,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "`code`",
+      "label": "md",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -36,14 +36,14 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 46,
+      "labelWidth": 23,
       "labelHeight": 24,
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
         "y": 0
@@ -83,7 +83,7 @@
     },
     {
       "id": "b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
         "y": 350

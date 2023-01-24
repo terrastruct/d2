@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "x",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 116,
         "y": 12
@@ -49,7 +49,7 @@
         "x": 249,
         "y": 63
       },
-      "width": 304,
+      "width": 8,
       "height": 24,
       "opacity": 0.4,
       "strokeDash": 0,
@@ -68,7 +68,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "linux: because a PC is a terrible thing to waste",
+      "label": "y",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -76,14 +76,14 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 304,
+      "labelWidth": 8,
       "labelHeight": 24,
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 116,
         "y": 375

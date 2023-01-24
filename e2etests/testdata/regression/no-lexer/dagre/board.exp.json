@@ -9,7 +9,7 @@
         "x": 0,
         "y": 0
       },
-      "width": 73,
+      "width": 25,
       "height": 38,
       "opacity": 1,
       "strokeDash": 0,
@@ -28,7 +28,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "x -> y",
+      "label": "x",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "d2",
@@ -36,7 +36,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 73,
+      "labelWidth": 25,
       "labelHeight": 38,
       "zIndex": 0,
       "level": 1

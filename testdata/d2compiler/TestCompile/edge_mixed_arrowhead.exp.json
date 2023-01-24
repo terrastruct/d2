@@ -1,5 +1,6 @@
 {
   "graph": {
+    "name": "",
     "ast": {
       "range": "d2/testdata/d2compiler/TestCompile/edge_mixed_arrowhead.d2,0:0:0-6:0:97",
       "nodes": [
@@ -225,6 +226,9 @@
         },
         "direction": {
           "value": ""
+        },
+        "constraint": {
+          "value": ""
         }
       },
       "zIndex": 0
@@ -251,6 +255,9 @@
           },
           "direction": {
             "value": ""
+          },
+          "constraint": {
+            "value": ""
           }
         },
         "dst_arrow": true,
@@ -264,6 +271,9 @@
             "value": "diamond"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -285,6 +295,9 @@
             "value": ""
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -348,9 +361,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -412,9 +428,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },

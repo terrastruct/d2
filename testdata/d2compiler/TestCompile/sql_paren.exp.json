@@ -1,5 +1,6 @@
 {
   "graph": {
+    "name": "",
     "ast": {
       "range": "d2/testdata/d2compiler/TestCompile/sql_paren.d2,0:0:0-5:1:73",
       "nodes": [
@@ -161,11 +162,14 @@
         },
         "direction": {
           "value": ""
+        },
+        "constraint": {
+          "value": ""
         }
       },
       "zIndex": 0
     },
-    "edges": [],
+    "edges": null,
     "objects": [
       {
         "id": "_shape_",
@@ -193,7 +197,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "sql_table": {
@@ -266,6 +270,9 @@
             "value": "sql_table"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },

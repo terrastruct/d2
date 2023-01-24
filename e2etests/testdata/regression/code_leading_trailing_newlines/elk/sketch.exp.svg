@@ -3,7 +3,7 @@
 id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="803" height="354" viewBox="-90 -90 803 354"><style type="text/css">
+width="600" height="242" viewBox="-90 -90 600 242"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -39,25 +39,8 @@ width="803" height="354" viewBox="-90 -90 803 354"><style type="text/css">
     svgEl.setAttribute("height", height * ratio - 16);
   }
 });
-]]></script><g id="hello world"><g class="shape" ></g><g transform="translate(12.000000 12.000000)"><rect class="shape" width="239" height="150" style="stroke: #0A0F25;fill:#ffffff" /><g transform="translate(6 6)"><text class="text-mono" x="0" y="1.000000em" xml:space="preserve">
-</text><text class="text-mono" x="0" y="2.000000em" xml:space="preserve">
-</text><text class="text-mono" x="0" y="3.000000em" xml:space="preserve"><tspan fill="#999988" font-style="italic">#&#160;2&#160;leading,&#160;2&#160;trailing</tspan>
-</text><text class="text-mono" x="0" y="4.000000em" xml:space="preserve"><tspan fill="#000000" font-weight="bold">def</tspan>&#160;<tspan fill="#990000" font-weight="bold">hello</tspan>():
-</text><text class="text-mono" x="0" y="5.000000em" xml:space="preserve">
-</text><text class="text-mono" x="0" y="6.000000em" xml:space="preserve">&#160;&#160;<tspan fill="#0086b3">print</tspan>&#160;<tspan fill="#dd1144"></tspan><tspan fill="#dd1144">&quot;</tspan><tspan fill="#dd1144">world</tspan><tspan fill="#dd1144">&quot;</tspan>
-</text><text class="text-mono" x="0" y="7.000000em" xml:space="preserve">
-</text></g></g></g><g id="no trailing"><g class="shape" ></g><g transform="translate(271.000000 28.000000)"><rect class="shape" width="160" height="118" style="stroke: #0A0F25;fill:#ffffff" /><g transform="translate(6 6)"><text class="text-mono" x="0" y="1.000000em" xml:space="preserve">
-</text><text class="text-mono" x="0" y="2.000000em" xml:space="preserve">
-</text><text class="text-mono" x="0" y="3.000000em" xml:space="preserve"><tspan fill="#999988" font-style="italic">#&#160;2&#160;leading</tspan>
-</text><text class="text-mono" x="0" y="4.000000em" xml:space="preserve"><tspan fill="#000000" font-weight="bold">def</tspan>&#160;<tspan fill="#990000" font-weight="bold">hello</tspan>():
-</text><text class="text-mono" x="0" y="5.000000em" xml:space="preserve">
-</text><text class="text-mono" x="0" y="6.000000em" xml:space="preserve">&#160;&#160;<tspan fill="#0086b3">print</tspan>&#160;<tspan fill="#dd1144"></tspan><tspan fill="#dd1144">&quot;</tspan><tspan fill="#dd1144">world</tspan><tspan fill="#dd1144">&quot;</tspan></text></g></g></g><g id="no leading"><g class="shape" ></g><g transform="translate(451.000000 28.000000)"><rect class="shape" width="160" height="118" style="stroke: #0A0F25;fill:#ffffff" /><g transform="translate(6 6)"><text class="text-mono" x="0" y="1.000000em" xml:space="preserve"><tspan fill="#999988" font-style="italic">#&#160;2&#160;trailing</tspan>
-</text><text class="text-mono" x="0" y="2.000000em" xml:space="preserve"><tspan fill="#000000" font-weight="bold">def</tspan>&#160;<tspan fill="#990000" font-weight="bold">hello</tspan>():
-</text><text class="text-mono" x="0" y="3.000000em" xml:space="preserve">
-</text><text class="text-mono" x="0" y="4.000000em" xml:space="preserve">&#160;&#160;<tspan fill="#0086b3">print</tspan>&#160;<tspan fill="#dd1144"></tspan><tspan fill="#dd1144">&quot;</tspan><tspan fill="#dd1144">world</tspan><tspan fill="#dd1144">&quot;</tspan>
-</text><text class="text-mono" x="0" y="5.000000em" xml:space="preserve">
-</text></g></g></g><mask id="571076990" maskUnits="userSpaceOnUse" x="-100" y="-100" width="803" height="354">
-<rect x="-100" y="-100" width="803" height="354" fill="white"></rect>
+]]></script><g id="hello world"><g class="shape" ></g><g transform="translate(12.000000 12.000000)"><rect class="shape" width="121" height="38" style="stroke: #0A0F25;fill:#ffffff" /><g transform="translate(6 6)"><text class="text-mono" x="0" y="1.000000em" xml:space="preserve">hello&#160;world</text></g></g></g><g id="no trailing"><g class="shape" ></g><g transform="translate(153.000000 12.000000)"><rect class="shape" width="122" height="38" style="stroke: #0A0F25;fill:#ffffff" /><g transform="translate(6 6)"><text class="text-mono" x="0" y="1.000000em" xml:space="preserve">no&#160;trailing</text></g></g></g><g id="no leading"><g class="shape" ></g><g transform="translate(295.000000 12.000000)"><rect class="shape" width="113" height="38" style="stroke: #0A0F25;fill:#ffffff" /><g transform="translate(6 6)"><text class="text-mono" x="0" y="1.000000em" xml:space="preserve">no&#160;leading</text></g></g></g><mask id="1520027167" maskUnits="userSpaceOnUse" x="-100" y="-100" width="600" height="242">
+<rect x="-100" y="-100" width="600" height="242" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text-mono {

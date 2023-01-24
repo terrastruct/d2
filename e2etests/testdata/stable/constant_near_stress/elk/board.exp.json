@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "x",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 12
@@ -44,7 +44,7 @@
     },
     {
       "id": "y",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 238
@@ -126,11 +126,11 @@
       "id": "bottom",
       "type": "text",
       "pos": {
-        "x": -402,
+        "x": 43,
         "y": 384
       },
-      "width": 943,
-      "height": 131,
+      "width": 51,
+      "height": 24,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -148,7 +148,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "# Cats, no less liquid than their shadows, offer no angles to the wind.\n\nIf we can't fix it, it ain't broke.\n\nDieters live life in the fasting lane.",
+      "label": "bottom",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -156,8 +156,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 943,
-      "labelHeight": 131,
+      "labelWidth": 51,
+      "labelHeight": 24,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -166,7 +166,7 @@
       "id": "Joe",
       "type": "person",
       "pos": {
-        "x": -553,
+        "x": -163,
         "y": 125
       },
       "width": 131,
@@ -206,7 +206,7 @@
       "id": "Donald",
       "type": "person",
       "pos": {
-        "x": 560,
+        "x": 170,
         "y": 125
       },
       "width": 155,
@@ -246,7 +246,7 @@
       "id": "i am top left",
       "type": "text",
       "pos": {
-        "x": -502,
+        "x": -112,
         "y": -29
       },
       "width": 80,
@@ -286,7 +286,7 @@
       "id": "i am top right",
       "type": "text",
       "pos": {
-        "x": 560,
+        "x": 170,
         "y": -29
       },
       "width": 90,
@@ -326,7 +326,7 @@
       "id": "i am bottom left",
       "type": "text",
       "pos": {
-        "x": -529,
+        "x": -139,
         "y": 384
       },
       "width": 107,
@@ -366,7 +366,7 @@
       "id": "i am bottom right",
       "type": "text",
       "pos": {
-        "x": 560,
+        "x": 170,
         "y": 384
       },
       "width": 117,

@@ -55,7 +55,7 @@
     },
     {
       "id": "container",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 271
@@ -146,7 +146,7 @@
     },
     {
       "id": "container.left",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 87,
         "y": 726
@@ -237,7 +237,7 @@
     },
     {
       "id": "container.left.inner",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 162,
         "y": 1181
@@ -379,7 +379,7 @@
     },
     {
       "id": "container.right",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 683,
         "y": 726
@@ -470,7 +470,7 @@
     },
     {
       "id": "container.right.inner",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 758,
         "y": 1181
@@ -612,45 +612,6 @@
     }
   ],
   "connections": [
-    {
-      "id": "(root -> container.root)[0]",
-      "src": "root",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "container.root",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 343.6666666666667,
-          "y": 166
-        },
-        {
-          "x": 343.6666666666667,
-          "y": 346
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 0
-    },
     {
       "id": "container.left.(root -> inner.left)[0]",
       "src": "container.left.root",
@@ -918,6 +879,45 @@
         {
           "x": 918.3333333333334,
           "y": 801
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(root -> container.root)[0]",
+      "src": "root",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "container.root",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 343.6666666666667,
+          "y": 166
+        },
+        {
+          "x": 343.6666666666667,
+          "y": 346
         }
       ],
       "animated": false,

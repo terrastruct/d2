@@ -6,11 +6,11 @@
       "id": "hey",
       "type": "code",
       "pos": {
-        "x": 12,
+        "x": 46,
         "y": 238
       },
-      "width": 755,
-      "height": 166,
+      "width": 45,
+      "height": 38,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -28,7 +28,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "// RegisterHash registers a function that returns a new instance of the given\n// hash function. This is intended to be called from the init function in\n// packages that implement hash functions.\nfunc RegisterHash(h Hash, f func() hash.Hash) {\n\tif h >= maxHash {\n\t\tpanic(\"crypto: RegisterHash of unknown hash function\")\n\t}\n\thashes[h] = f\n}",
+      "label": "hey",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "golang",
@@ -36,16 +36,16 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 755,
-      "labelHeight": 166,
+      "labelWidth": 45,
+      "labelHeight": 38,
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "x",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 333,
+        "x": 12,
         "y": 12
       },
       "width": 113,
@@ -83,10 +83,10 @@
     },
     {
       "id": "y",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 332,
-        "y": 504
+        "x": 12,
+        "y": 376
       },
       "width": 114,
       "height": 126,
@@ -149,11 +149,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 389.5,
+          "x": 69,
           "y": 138
         },
         {
-          "x": 389.5,
+          "x": 69,
           "y": 238
         }
       ],
@@ -188,12 +188,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 389.5,
-          "y": 404
+          "x": 69,
+          "y": 276
         },
         {
-          "x": 389.5,
-          "y": 504
+          "x": 69,
+          "y": 376
         }
       ],
       "animated": false,

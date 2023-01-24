@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "scorer",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 24,
         "y": 74
@@ -83,7 +83,7 @@
     },
     {
       "id": "itemResponse",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 249,
         "y": 74
@@ -162,7 +162,7 @@
     },
     {
       "id": "item",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 524,
         "y": 74
@@ -240,8 +240,86 @@
       "level": 2
     },
     {
+      "id": "item.t2",
+      "type": "rectangle",
+      "pos": {
+        "x": 593,
+        "y": 1484
+      },
+      "width": 12,
+      "height": 80,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#E3E9FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 19,
+      "labelHeight": 26,
+      "zIndex": 2,
+      "level": 2
+    },
+    {
+      "id": "item.t3",
+      "type": "rectangle",
+      "pos": {
+        "x": 593,
+        "y": 1614
+      },
+      "width": 12,
+      "height": 80,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#E3E9FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 19,
+      "labelHeight": 26,
+      "zIndex": 2,
+      "level": 2
+    },
+    {
       "id": "essayRubric",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 756,
         "y": 74
@@ -359,7 +437,7 @@
     },
     {
       "id": "concept",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1019,
         "y": 74
@@ -438,7 +516,7 @@
     },
     {
       "id": "itemOutcome",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1251,
         "y": 74
@@ -482,84 +560,6 @@
       "pos": {
         "x": 1343,
         "y": 1354
-      },
-      "width": 12,
-      "height": 80,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#E3E9FD",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 19,
-      "labelHeight": 26,
-      "zIndex": 2,
-      "level": 2
-    },
-    {
-      "id": "item.t2",
-      "type": "rectangle",
-      "pos": {
-        "x": 593,
-        "y": 1484
-      },
-      "width": 12,
-      "height": 80,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#E3E9FD",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 19,
-      "labelHeight": 26,
-      "zIndex": 2,
-      "level": 2
-    },
-    {
-      "id": "item.t3",
-      "type": "rectangle",
-      "pos": {
-        "x": 593,
-        "y": 1614
       },
       "width": 12,
       "height": 80,

@@ -30,6 +30,43 @@
             ]
           },
           "context": {
+            "edge": {
+              "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
             "key": {
               "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
               "edges": [
@@ -73,43 +110,6 @@
               ],
               "primary": {},
               "value": {}
-            },
-            "edge": {
-              "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
-              "src": {
-                "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
-                      "value": [
-                        {
-                          "string": "x",
-                          "raw_string": "x"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "src_arrow": "",
-              "dst": {
-                "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
-                      "value": [
-                        {
-                          "string": "y",
-                          "raw_string": "y"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "dst_arrow": ">"
             }
           }
         }
@@ -145,6 +145,43 @@
             ]
           },
           "context": {
+            "edge": {
+              "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
             "key": {
               "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
               "edges": [
@@ -188,43 +225,6 @@
               ],
               "primary": {},
               "value": {}
-            },
-            "edge": {
-              "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
-              "src": {
-                "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
-                      "value": [
-                        {
-                          "string": "x",
-                          "raw_string": "x"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "src_arrow": "",
-              "dst": {
-                "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
-                      "value": [
-                        {
-                          "string": "y",
-                          "raw_string": "y"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "dst_arrow": ">"
             }
           }
         }
@@ -247,6 +247,43 @@
       "references": [
         {
           "context": {
+            "edge": {
+              "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
             "key": {
               "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
               "edges": [
@@ -290,43 +327,6 @@
               ],
               "primary": {},
               "value": {}
-            },
-            "edge": {
-              "range": "TestCompile/edges/root.d2,0:0:0-0:6:6",
-              "src": {
-                "range": "TestCompile/edges/root.d2,0:0:0-0:2:2",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/edges/root.d2,0:0:0-0:1:1",
-                      "value": [
-                        {
-                          "string": "x",
-                          "raw_string": "x"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "src_arrow": "",
-              "dst": {
-                "range": "TestCompile/edges/root.d2,0:4:4-0:6:6",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/edges/root.d2,0:5:5-0:6:6",
-                      "value": [
-                        {
-                          "string": "y",
-                          "raw_string": "y"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "dst_arrow": ">"
             }
           }
         }

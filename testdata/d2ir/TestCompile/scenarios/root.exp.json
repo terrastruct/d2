@@ -30,6 +30,43 @@
             ]
           },
           "context": {
+            "edge": {
+              "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
             "key": {
               "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
               "edges": [
@@ -73,43 +110,6 @@
               ],
               "primary": {},
               "value": {}
-            },
-            "edge": {
-              "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
-              "src": {
-                "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
-                      "value": [
-                        {
-                          "string": "x",
-                          "raw_string": "x"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "src_arrow": "",
-              "dst": {
-                "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
-                      "value": [
-                        {
-                          "string": "y",
-                          "raw_string": "y"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "dst_arrow": ">"
             }
           }
         }
@@ -145,6 +145,43 @@
             ]
           },
           "context": {
+            "edge": {
+              "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
             "key": {
               "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
               "edges": [
@@ -188,43 +225,6 @@
               ],
               "primary": {},
               "value": {}
-            },
-            "edge": {
-              "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
-              "src": {
-                "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
-                      "value": [
-                        {
-                          "string": "x",
-                          "raw_string": "x"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "src_arrow": "",
-              "dst": {
-                "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
-                      "value": [
-                        {
-                          "string": "y",
-                          "raw_string": "y"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "dst_arrow": ">"
             }
           }
         }
@@ -268,6 +268,43 @@
                         ]
                       },
                       "context": {
+                        "edge": {
+                          "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
+                          "src": {
+                            "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
+                                  "value": [
+                                    {
+                                      "string": "y",
+                                      "raw_string": "y"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
                         "key": {
                           "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
                           "edges": [
@@ -311,43 +348,6 @@
                           ],
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": {
-                          "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
-                          "src": {
-                            "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
-                                  "value": [
-                                    {
-                                      "string": "x",
-                                      "raw_string": "x"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "src_arrow": "",
-                          "dst": {
-                            "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
-                                  "value": [
-                                    {
-                                      "string": "y",
-                                      "raw_string": "y"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "dst_arrow": ">"
                         }
                       }
                     }
@@ -383,6 +383,43 @@
                         ]
                       },
                       "context": {
+                        "edge": {
+                          "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
+                          "src": {
+                            "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
+                                  "value": [
+                                    {
+                                      "string": "y",
+                                      "raw_string": "y"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
                         "key": {
                           "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
                           "edges": [
@@ -426,43 +463,6 @@
                           ],
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": {
-                          "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
-                          "src": {
-                            "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
-                                  "value": [
-                                    {
-                                      "string": "x",
-                                      "raw_string": "x"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "src_arrow": "",
-                          "dst": {
-                            "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
-                                  "value": [
-                                    {
-                                      "string": "y",
-                                      "raw_string": "y"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "dst_arrow": ">"
                         }
                       }
                     }
@@ -528,6 +528,7 @@
                                     ]
                                   },
                                   "context": {
+                                    "edge": null,
                                     "key": {
                                       "range": "TestCompile/scenarios/root.d2,2:10:30-2:16:36",
                                       "key": {
@@ -570,8 +571,7 @@
                                       },
                                       "primary": {},
                                       "value": {}
-                                    },
-                                    "edge": null
+                                    }
                                   }
                                 }
                               ]
@@ -629,6 +629,7 @@
                               ]
                             },
                             "context": {
+                              "edge": null,
                               "key": {
                                 "range": "TestCompile/scenarios/root.d2,2:10:30-2:16:36",
                                 "key": {
@@ -671,8 +672,7 @@
                                 },
                                 "primary": {},
                                 "value": {}
-                              },
-                              "edge": null
+                              }
                             }
                           }
                         ]
@@ -730,6 +730,7 @@
                         ]
                       },
                       "context": {
+                        "edge": null,
                         "key": {
                           "range": "TestCompile/scenarios/root.d2,2:10:30-2:16:36",
                           "key": {
@@ -772,8 +773,7 @@
                           },
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": null
+                        }
                       }
                     }
                   ]
@@ -795,6 +795,43 @@
                   "references": [
                     {
                       "context": {
+                        "edge": {
+                          "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
+                          "src": {
+                            "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
+                                  "value": [
+                                    {
+                                      "string": "y",
+                                      "raw_string": "y"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
                         "key": {
                           "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
                           "edges": [
@@ -838,43 +875,6 @@
                           ],
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": {
-                          "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
-                          "src": {
-                            "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
-                                  "value": [
-                                    {
-                                      "string": "x",
-                                      "raw_string": "x"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "src_arrow": "",
-                          "dst": {
-                            "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
-                                  "value": [
-                                    {
-                                      "string": "y",
-                                      "raw_string": "y"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "dst_arrow": ">"
                         }
                       }
                     }
@@ -910,6 +910,7 @@
                   ]
                 },
                 "context": {
+                  "edge": null,
                   "key": {
                     "range": "TestCompile/scenarios/root.d2,2:1:21-2:17:37",
                     "key": {
@@ -981,8 +982,7 @@
                         ]
                       }
                     }
-                  },
-                  "edge": null
+                  }
                 }
               }
             ]
@@ -1021,6 +1021,43 @@
                         ]
                       },
                       "context": {
+                        "edge": {
+                          "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
+                          "src": {
+                            "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
+                                  "value": [
+                                    {
+                                      "string": "y",
+                                      "raw_string": "y"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
                         "key": {
                           "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
                           "edges": [
@@ -1064,43 +1101,6 @@
                           ],
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": {
-                          "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
-                          "src": {
-                            "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
-                                  "value": [
-                                    {
-                                      "string": "x",
-                                      "raw_string": "x"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "src_arrow": "",
-                          "dst": {
-                            "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
-                                  "value": [
-                                    {
-                                      "string": "y",
-                                      "raw_string": "y"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "dst_arrow": ">"
                         }
                       }
                     }
@@ -1136,6 +1136,43 @@
                         ]
                       },
                       "context": {
+                        "edge": {
+                          "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
+                          "src": {
+                            "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
+                                  "value": [
+                                    {
+                                      "string": "y",
+                                      "raw_string": "y"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
                         "key": {
                           "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
                           "edges": [
@@ -1179,43 +1216,6 @@
                           ],
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": {
-                          "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
-                          "src": {
-                            "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
-                                  "value": [
-                                    {
-                                      "string": "x",
-                                      "raw_string": "x"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "src_arrow": "",
-                          "dst": {
-                            "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
-                                  "value": [
-                                    {
-                                      "string": "y",
-                                      "raw_string": "y"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "dst_arrow": ">"
                         }
                       }
                     }
@@ -1251,6 +1251,7 @@
                         ]
                       },
                       "context": {
+                        "edge": null,
                         "key": {
                           "range": "TestCompile/scenarios/root.d2,3:12:50-3:19:57",
                           "key": {
@@ -1271,8 +1272,7 @@
                           },
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": null
+                        }
                       }
                     }
                   ]
@@ -1294,6 +1294,43 @@
                   "references": [
                     {
                       "context": {
+                        "edge": {
+                          "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
+                          "src": {
+                            "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "src_arrow": "",
+                          "dst": {
+                            "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
+                                  "value": [
+                                    {
+                                      "string": "y",
+                                      "raw_string": "y"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "dst_arrow": ">"
+                        },
                         "key": {
                           "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
                           "edges": [
@@ -1337,43 +1374,6 @@
                           ],
                           "primary": {},
                           "value": {}
-                        },
-                        "edge": {
-                          "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
-                          "src": {
-                            "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
-                                  "value": [
-                                    {
-                                      "string": "x",
-                                      "raw_string": "x"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "src_arrow": "",
-                          "dst": {
-                            "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
-                                  "value": [
-                                    {
-                                      "string": "y",
-                                      "raw_string": "y"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "dst_arrow": ">"
                         }
                       }
                     }
@@ -1409,6 +1409,7 @@
                   ]
                 },
                 "context": {
+                  "edge": null,
                   "key": {
                     "range": "TestCompile/scenarios/root.d2,3:1:39-3:20:58",
                     "key": {
@@ -1458,8 +1459,7 @@
                         ]
                       }
                     }
-                  },
-                  "edge": null
+                  }
                 }
               }
             ]
@@ -1495,6 +1495,7 @@
             ]
           },
           "context": {
+            "edge": null,
             "key": {
               "range": "TestCompile/scenarios/root.d2,1:0:7-4:1:60",
               "key": {
@@ -1647,8 +1648,7 @@
                   ]
                 }
               }
-            },
-            "edge": null
+            }
           }
         }
       ]
@@ -1670,6 +1670,43 @@
       "references": [
         {
           "context": {
+            "edge": {
+              "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
             "key": {
               "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
               "edges": [
@@ -1713,43 +1750,6 @@
               ],
               "primary": {},
               "value": {}
-            },
-            "edge": {
-              "range": "TestCompile/scenarios/root.d2,0:0:0-0:6:6",
-              "src": {
-                "range": "TestCompile/scenarios/root.d2,0:0:0-0:2:2",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/scenarios/root.d2,0:0:0-0:1:1",
-                      "value": [
-                        {
-                          "string": "x",
-                          "raw_string": "x"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "src_arrow": "",
-              "dst": {
-                "range": "TestCompile/scenarios/root.d2,0:4:4-0:6:6",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/scenarios/root.d2,0:5:5-0:6:6",
-                      "value": [
-                        {
-                          "string": "y",
-                          "raw_string": "y"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "dst_arrow": ">"
             }
           }
         }

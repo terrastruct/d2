@@ -263,10 +263,10 @@
       "id": "code",
       "type": "code",
       "pos": {
-        "x": 113,
+        "x": 184,
         "y": 1224
       },
-      "width": 196,
+      "width": 54,
       "height": 512,
       "opacity": 1,
       "strokeDash": 0,
@@ -285,7 +285,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "a := 5\nb := a + 7\nfmt.Printf(\"%d\", b)",
+      "label": "code",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "golang",
@@ -293,8 +293,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 196,
-      "labelHeight": 70,
+      "labelWidth": 54,
+      "labelHeight": 38,
       "zIndex": 0,
       "level": 1
     },
@@ -339,7 +339,7 @@
     },
     {
       "id": "no height",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 161,
         "y": 2448

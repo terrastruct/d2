@@ -7,7 +7,7 @@
       "type": "queue",
       "pos": {
         "x": 0,
-        "y": 148
+        "y": 124
       },
       "width": 1336,
       "height": 226,
@@ -43,10 +43,10 @@
     },
     {
       "id": "queue.M0",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 50,
-        "y": 198
+        "y": 174
       },
       "width": 125,
       "height": 126,
@@ -83,10 +83,10 @@
     },
     {
       "id": "queue.M1",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 235,
-        "y": 198
+        "y": 174
       },
       "width": 125,
       "height": 126,
@@ -123,10 +123,10 @@
     },
     {
       "id": "queue.M2",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 420,
-        "y": 198
+        "y": 174
       },
       "width": 125,
       "height": 126,
@@ -163,10 +163,10 @@
     },
     {
       "id": "queue.M3",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 605,
-        "y": 198
+        "y": 174
       },
       "width": 125,
       "height": 126,
@@ -203,10 +203,10 @@
     },
     {
       "id": "queue.M4",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 790,
-        "y": 198
+        "y": 174
       },
       "width": 126,
       "height": 126,
@@ -243,10 +243,10 @@
     },
     {
       "id": "queue.M5",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 976,
-        "y": 198
+        "y": 174
       },
       "width": 125,
       "height": 126,
@@ -283,10 +283,10 @@
     },
     {
       "id": "queue.M6",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1161,
-        "y": 198
+        "y": 174
       },
       "width": 125,
       "height": 126,
@@ -325,10 +325,10 @@
       "id": "m0_desc",
       "type": "text",
       "pos": {
-        "x": 60,
-        "y": 12
+        "x": 82,
+        "y": 0
       },
-      "width": 106,
+      "width": 61,
       "height": 24,
       "opacity": 1,
       "strokeDash": 0,
@@ -347,7 +347,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "Oldest message",
+      "label": "m0_desc",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -355,7 +355,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 106,
+      "labelWidth": 61,
       "labelHeight": 24,
       "zIndex": 0,
       "level": 1
@@ -364,10 +364,10 @@
       "id": "m2_desc",
       "type": "text",
       "pos": {
-        "x": 462,
-        "y": 12
+        "x": 452,
+        "y": 0
       },
-      "width": 41,
+      "width": 61,
       "height": 24,
       "opacity": 1,
       "strokeDash": 0,
@@ -386,7 +386,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "Offset",
+      "label": "m2_desc",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -394,7 +394,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 41,
+      "labelWidth": 61,
       "labelHeight": 24,
       "zIndex": 0,
       "level": 1
@@ -403,10 +403,10 @@
       "id": "m5_desc",
       "type": "text",
       "pos": {
-        "x": 994,
-        "y": 12
+        "x": 1008,
+        "y": 0
       },
-      "width": 90,
+      "width": 61,
       "height": 24,
       "opacity": 1,
       "strokeDash": 0,
@@ -425,7 +425,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "Last message",
+      "label": "m5_desc",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -433,7 +433,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 90,
+      "labelWidth": 61,
       "labelHeight": 24,
       "zIndex": 0,
       "level": 1
@@ -442,11 +442,11 @@
       "id": "m6_desc",
       "type": "text",
       "pos": {
-        "x": 1154,
+        "x": 1193,
         "y": 0
       },
-      "width": 140,
-      "height": 48,
+      "width": 61,
+      "height": 24,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -464,7 +464,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "Next message will be\\\ninserted here",
+      "label": "m6_desc",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -472,8 +472,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 140,
-      "labelHeight": 48,
+      "labelWidth": 61,
+      "labelHeight": 24,
       "zIndex": 0,
       "level": 1
     }
@@ -506,19 +506,19 @@
       "route": [
         {
           "x": 112.5,
-          "y": 36
+          "y": 24
         },
         {
           "x": 112.5,
-          "y": 85.6
+          "y": 64
         },
         {
           "x": 112.5,
-          "y": 158
+          "y": 134
         },
         {
           "x": 112.5,
-          "y": 198
+          "y": 174
         }
       ],
       "isCurve": true,
@@ -554,19 +554,19 @@
       "route": [
         {
           "x": 482.5,
-          "y": 36
+          "y": 24
         },
         {
           "x": 482.5,
-          "y": 85.6
+          "y": 64
         },
         {
           "x": 482.5,
-          "y": 158
+          "y": 134
         },
         {
           "x": 482.5,
-          "y": 198
+          "y": 174
         }
       ],
       "isCurve": true,
@@ -602,19 +602,19 @@
       "route": [
         {
           "x": 1038.5,
-          "y": 36
+          "y": 24
         },
         {
           "x": 1038.5,
-          "y": 85.6
+          "y": 64
         },
         {
           "x": 1038.5,
-          "y": 158
+          "y": 134
         },
         {
           "x": 1038.5,
-          "y": 198
+          "y": 174
         }
       ],
       "isCurve": true,
@@ -650,19 +650,19 @@
       "route": [
         {
           "x": 1223.5,
-          "y": 48
+          "y": 24
         },
         {
           "x": 1223.5,
-          "y": 88
+          "y": 64
         },
         {
           "x": 1223.5,
-          "y": 158
+          "y": 134
         },
         {
           "x": 1223.5,
-          "y": 198
+          "y": 174
         }
       ],
       "isCurve": true,

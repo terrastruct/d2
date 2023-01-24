@@ -3,7 +3,7 @@
 id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="277" height="242" viewBox="-102 -102 277 242"><style type="text/css">
+width="229" height="242" viewBox="-102 -102 229 242"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -39,8 +39,8 @@ width="277" height="242" viewBox="-102 -102 277 242"><style type="text/css">
     svgEl.setAttribute("height", height * ratio - 16);
   }
 });
-]]></script><g id="x"><g class="shape" ></g><g transform="translate(0.000000 0.000000)"><rect class="shape" width="73" height="38" style="stroke: #0A0F25;fill:#ffffff" /><g transform="translate(6 6)"><text class="text-mono" x="0" y="1.000000em" xml:space="preserve">x&#160;-&gt;&#160;y</text></g></g></g><mask id="2286635367" maskUnits="userSpaceOnUse" x="-100" y="-100" width="277" height="242">
-<rect x="-100" y="-100" width="277" height="242" fill="white"></rect>
+]]></script><g id="x"><g class="shape" ></g><g transform="translate(0.000000 0.000000)"><rect class="shape" width="25" height="38" style="stroke: #0A0F25;fill:#ffffff" /><g transform="translate(6 6)"><text class="text-mono" x="0" y="1.000000em" xml:space="preserve">x</text></g></g></g><mask id="16689142" maskUnits="userSpaceOnUse" x="-100" y="-100" width="229" height="242">
+<rect x="-100" y="-100" width="229" height="242" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text-mono {

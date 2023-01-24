@@ -9,8 +9,8 @@
         "x": 0,
         "y": 0
       },
-      "width": 239,
-      "height": 150,
+      "width": 121,
+      "height": 38,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -28,7 +28,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "\n\n# 2 leading, 2 trailing\ndef hello():\n\n  print \"world\"\n\n",
+      "label": "hello world",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "python",
@@ -36,8 +36,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 239,
-      "labelHeight": 150,
+      "labelWidth": 121,
+      "labelHeight": 38,
       "zIndex": 0,
       "level": 1
     },
@@ -45,11 +45,11 @@
       "id": "no trailing",
       "type": "code",
       "pos": {
-        "x": 299,
-        "y": 16
+        "x": 181,
+        "y": 0
       },
-      "width": 160,
-      "height": 118,
+      "width": 122,
+      "height": 38,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -67,7 +67,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "\n\n# 2 leading\ndef hello():\n\n  print \"world\"",
+      "label": "no trailing",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "python",
@@ -75,8 +75,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 160,
-      "labelHeight": 118,
+      "labelWidth": 122,
+      "labelHeight": 38,
       "zIndex": 0,
       "level": 1
     },
@@ -84,11 +84,11 @@
       "id": "no leading",
       "type": "code",
       "pos": {
-        "x": 519,
-        "y": 16
+        "x": 363,
+        "y": 0
       },
-      "width": 160,
-      "height": 118,
+      "width": 113,
+      "height": 38,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -106,7 +106,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "# 2 trailing\ndef hello():\n\n  print \"world\"\n\n",
+      "label": "no leading",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "python",
@@ -114,8 +114,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 160,
-      "labelHeight": 118,
+      "labelWidth": 113,
+      "labelHeight": 38,
       "zIndex": 0,
       "level": 1
     }

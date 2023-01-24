@@ -30,6 +30,43 @@
             ]
           },
           "context": {
+            "edge": {
+              "range": "TestCompile/edges/chain.d2,0:0:0-0:7:7",
+              "src": {
+                "range": "TestCompile/edges/chain.d2,0:0:0-0:2:2",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/chain.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "a",
+                          "raw_string": "a"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/edges/chain.d2,0:4:4-0:7:7",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "b",
+                          "raw_string": "b"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
             "key": {
               "range": "TestCompile/edges/chain.d2,0:0:0-0:16:16",
               "edges": [
@@ -147,43 +184,6 @@
               ],
               "primary": {},
               "value": {}
-            },
-            "edge": {
-              "range": "TestCompile/edges/chain.d2,0:0:0-0:7:7",
-              "src": {
-                "range": "TestCompile/edges/chain.d2,0:0:0-0:2:2",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/edges/chain.d2,0:0:0-0:1:1",
-                      "value": [
-                        {
-                          "string": "a",
-                          "raw_string": "a"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "src_arrow": "",
-              "dst": {
-                "range": "TestCompile/edges/chain.d2,0:4:4-0:7:7",
-                "path": [
-                  {
-                    "unquoted_string": {
-                      "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
-                      "value": [
-                        {
-                          "string": "b",
-                          "raw_string": "b"
-                        }
-                      ]
-                    }
-                  }
-                ]
-              },
-              "dst_arrow": ">"
             }
           }
         }
@@ -219,124 +219,6 @@
             ]
           },
           "context": {
-            "key": {
-              "range": "TestCompile/edges/chain.d2,0:0:0-0:16:16",
-              "edges": [
-                {
-                  "range": "TestCompile/edges/chain.d2,0:0:0-0:7:7",
-                  "src": {
-                    "range": "TestCompile/edges/chain.d2,0:0:0-0:2:2",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:0:0-0:1:1",
-                          "value": [
-                            {
-                              "string": "a",
-                              "raw_string": "a"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "src_arrow": "",
-                  "dst": {
-                    "range": "TestCompile/edges/chain.d2,0:4:4-0:7:7",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
-                          "value": [
-                            {
-                              "string": "b",
-                              "raw_string": "b"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "dst_arrow": ">"
-                },
-                {
-                  "range": "TestCompile/edges/chain.d2,0:4:4-0:12:12",
-                  "src": {
-                    "range": "TestCompile/edges/chain.d2,0:4:4-0:7:7",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
-                          "value": [
-                            {
-                              "string": "b",
-                              "raw_string": "b"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "src_arrow": "",
-                  "dst": {
-                    "range": "TestCompile/edges/chain.d2,0:9:9-0:12:12",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
-                          "value": [
-                            {
-                              "string": "c",
-                              "raw_string": "c"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "dst_arrow": ">"
-                },
-                {
-                  "range": "TestCompile/edges/chain.d2,0:9:9-0:16:16",
-                  "src": {
-                    "range": "TestCompile/edges/chain.d2,0:9:9-0:12:12",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
-                          "value": [
-                            {
-                              "string": "c",
-                              "raw_string": "c"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "src_arrow": "",
-                  "dst": {
-                    "range": "TestCompile/edges/chain.d2,0:14:14-0:16:16",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:15:15-0:16:16",
-                          "value": [
-                            {
-                              "string": "d",
-                              "raw_string": "d"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "dst_arrow": ">"
-                }
-              ],
-              "primary": {},
-              "value": {}
-            },
             "edge": {
               "range": "TestCompile/edges/chain.d2,0:0:0-0:7:7",
               "src": {
@@ -373,36 +255,7 @@
                 ]
               },
               "dst_arrow": ">"
-            }
-          }
-        },
-        {
-          "string": {
-            "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
-            "value": [
-              {
-                "string": "b",
-                "raw_string": "b"
-              }
-            ]
-          },
-          "key_path": {
-            "range": "TestCompile/edges/chain.d2,0:4:4-0:7:7",
-            "path": [
-              {
-                "unquoted_string": {
-                  "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
-                  "value": [
-                    {
-                      "string": "b",
-                      "raw_string": "b"
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          "context": {
+            },
             "key": {
               "range": "TestCompile/edges/chain.d2,0:0:0-0:16:16",
               "edges": [
@@ -520,7 +373,36 @@
               ],
               "primary": {},
               "value": {}
-            },
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
+            "value": [
+              {
+                "string": "b",
+                "raw_string": "b"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/edges/chain.d2,0:4:4-0:7:7",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
+                  "value": [
+                    {
+                      "string": "b",
+                      "raw_string": "b"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
             "edge": {
               "range": "TestCompile/edges/chain.d2,0:4:4-0:12:12",
               "src": {
@@ -557,6 +439,124 @@
                 ]
               },
               "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/edges/chain.d2,0:0:0-0:16:16",
+              "edges": [
+                {
+                  "range": "TestCompile/edges/chain.d2,0:0:0-0:7:7",
+                  "src": {
+                    "range": "TestCompile/edges/chain.d2,0:0:0-0:2:2",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/edges/chain.d2,0:4:4-0:7:7",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                },
+                {
+                  "range": "TestCompile/edges/chain.d2,0:4:4-0:12:12",
+                  "src": {
+                    "range": "TestCompile/edges/chain.d2,0:4:4-0:7:7",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/edges/chain.d2,0:9:9-0:12:12",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
+                          "value": [
+                            {
+                              "string": "c",
+                              "raw_string": "c"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                },
+                {
+                  "range": "TestCompile/edges/chain.d2,0:9:9-0:16:16",
+                  "src": {
+                    "range": "TestCompile/edges/chain.d2,0:9:9-0:12:12",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
+                          "value": [
+                            {
+                              "string": "c",
+                              "raw_string": "c"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/edges/chain.d2,0:14:14-0:16:16",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:15:15-0:16:16",
+                          "value": [
+                            {
+                              "string": "d",
+                              "raw_string": "d"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
             }
           }
         }
@@ -592,124 +592,6 @@
             ]
           },
           "context": {
-            "key": {
-              "range": "TestCompile/edges/chain.d2,0:0:0-0:16:16",
-              "edges": [
-                {
-                  "range": "TestCompile/edges/chain.d2,0:0:0-0:7:7",
-                  "src": {
-                    "range": "TestCompile/edges/chain.d2,0:0:0-0:2:2",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:0:0-0:1:1",
-                          "value": [
-                            {
-                              "string": "a",
-                              "raw_string": "a"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "src_arrow": "",
-                  "dst": {
-                    "range": "TestCompile/edges/chain.d2,0:4:4-0:7:7",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
-                          "value": [
-                            {
-                              "string": "b",
-                              "raw_string": "b"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "dst_arrow": ">"
-                },
-                {
-                  "range": "TestCompile/edges/chain.d2,0:4:4-0:12:12",
-                  "src": {
-                    "range": "TestCompile/edges/chain.d2,0:4:4-0:7:7",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
-                          "value": [
-                            {
-                              "string": "b",
-                              "raw_string": "b"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "src_arrow": "",
-                  "dst": {
-                    "range": "TestCompile/edges/chain.d2,0:9:9-0:12:12",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
-                          "value": [
-                            {
-                              "string": "c",
-                              "raw_string": "c"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "dst_arrow": ">"
-                },
-                {
-                  "range": "TestCompile/edges/chain.d2,0:9:9-0:16:16",
-                  "src": {
-                    "range": "TestCompile/edges/chain.d2,0:9:9-0:12:12",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
-                          "value": [
-                            {
-                              "string": "c",
-                              "raw_string": "c"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "src_arrow": "",
-                  "dst": {
-                    "range": "TestCompile/edges/chain.d2,0:14:14-0:16:16",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:15:15-0:16:16",
-                          "value": [
-                            {
-                              "string": "d",
-                              "raw_string": "d"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "dst_arrow": ">"
-                }
-              ],
-              "primary": {},
-              "value": {}
-            },
             "edge": {
               "range": "TestCompile/edges/chain.d2,0:4:4-0:12:12",
               "src": {
@@ -746,36 +628,7 @@
                 ]
               },
               "dst_arrow": ">"
-            }
-          }
-        },
-        {
-          "string": {
-            "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
-            "value": [
-              {
-                "string": "c",
-                "raw_string": "c"
-              }
-            ]
-          },
-          "key_path": {
-            "range": "TestCompile/edges/chain.d2,0:9:9-0:12:12",
-            "path": [
-              {
-                "unquoted_string": {
-                  "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
-                  "value": [
-                    {
-                      "string": "c",
-                      "raw_string": "c"
-                    }
-                  ]
-                }
-              }
-            ]
-          },
-          "context": {
+            },
             "key": {
               "range": "TestCompile/edges/chain.d2,0:0:0-0:16:16",
               "edges": [
@@ -893,7 +746,36 @@
               ],
               "primary": {},
               "value": {}
-            },
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
+            "value": [
+              {
+                "string": "c",
+                "raw_string": "c"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/edges/chain.d2,0:9:9-0:12:12",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
+                  "value": [
+                    {
+                      "string": "c",
+                      "raw_string": "c"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
             "edge": {
               "range": "TestCompile/edges/chain.d2,0:9:9-0:16:16",
               "src": {
@@ -930,6 +812,124 @@
                 ]
               },
               "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/edges/chain.d2,0:0:0-0:16:16",
+              "edges": [
+                {
+                  "range": "TestCompile/edges/chain.d2,0:0:0-0:7:7",
+                  "src": {
+                    "range": "TestCompile/edges/chain.d2,0:0:0-0:2:2",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/edges/chain.d2,0:4:4-0:7:7",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                },
+                {
+                  "range": "TestCompile/edges/chain.d2,0:4:4-0:12:12",
+                  "src": {
+                    "range": "TestCompile/edges/chain.d2,0:4:4-0:7:7",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/edges/chain.d2,0:9:9-0:12:12",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
+                          "value": [
+                            {
+                              "string": "c",
+                              "raw_string": "c"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                },
+                {
+                  "range": "TestCompile/edges/chain.d2,0:9:9-0:16:16",
+                  "src": {
+                    "range": "TestCompile/edges/chain.d2,0:9:9-0:12:12",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
+                          "value": [
+                            {
+                              "string": "c",
+                              "raw_string": "c"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/edges/chain.d2,0:14:14-0:16:16",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:15:15-0:16:16",
+                          "value": [
+                            {
+                              "string": "d",
+                              "raw_string": "d"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
             }
           }
         }
@@ -965,124 +965,6 @@
             ]
           },
           "context": {
-            "key": {
-              "range": "TestCompile/edges/chain.d2,0:0:0-0:16:16",
-              "edges": [
-                {
-                  "range": "TestCompile/edges/chain.d2,0:0:0-0:7:7",
-                  "src": {
-                    "range": "TestCompile/edges/chain.d2,0:0:0-0:2:2",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:0:0-0:1:1",
-                          "value": [
-                            {
-                              "string": "a",
-                              "raw_string": "a"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "src_arrow": "",
-                  "dst": {
-                    "range": "TestCompile/edges/chain.d2,0:4:4-0:7:7",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
-                          "value": [
-                            {
-                              "string": "b",
-                              "raw_string": "b"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "dst_arrow": ">"
-                },
-                {
-                  "range": "TestCompile/edges/chain.d2,0:4:4-0:12:12",
-                  "src": {
-                    "range": "TestCompile/edges/chain.d2,0:4:4-0:7:7",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
-                          "value": [
-                            {
-                              "string": "b",
-                              "raw_string": "b"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "src_arrow": "",
-                  "dst": {
-                    "range": "TestCompile/edges/chain.d2,0:9:9-0:12:12",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
-                          "value": [
-                            {
-                              "string": "c",
-                              "raw_string": "c"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "dst_arrow": ">"
-                },
-                {
-                  "range": "TestCompile/edges/chain.d2,0:9:9-0:16:16",
-                  "src": {
-                    "range": "TestCompile/edges/chain.d2,0:9:9-0:12:12",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
-                          "value": [
-                            {
-                              "string": "c",
-                              "raw_string": "c"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "src_arrow": "",
-                  "dst": {
-                    "range": "TestCompile/edges/chain.d2,0:14:14-0:16:16",
-                    "path": [
-                      {
-                        "unquoted_string": {
-                          "range": "TestCompile/edges/chain.d2,0:15:15-0:16:16",
-                          "value": [
-                            {
-                              "string": "d",
-                              "raw_string": "d"
-                            }
-                          ]
-                        }
-                      }
-                    ]
-                  },
-                  "dst_arrow": ">"
-                }
-              ],
-              "primary": {},
-              "value": {}
-            },
             "edge": {
               "range": "TestCompile/edges/chain.d2,0:9:9-0:16:16",
               "src": {
@@ -1119,28 +1001,7 @@
                 ]
               },
               "dst_arrow": ">"
-            }
-          }
-        }
-      ]
-    }
-  ],
-  "edges": [
-    {
-      "edge_id": {
-        "src_path": [
-          "a"
-        ],
-        "src_arrow": false,
-        "dst_path": [
-          "b"
-        ],
-        "dst_arrow": true,
-        "index": 0
-      },
-      "references": [
-        {
-          "context": {
+            },
             "key": {
               "range": "TestCompile/edges/chain.d2,0:0:0-0:16:16",
               "edges": [
@@ -1258,7 +1119,28 @@
               ],
               "primary": {},
               "value": {}
-            },
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": {
+        "src_path": [
+          "a"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "b"
+        ],
+        "dst_arrow": true,
+        "index": 0
+      },
+      "references": [
+        {
+          "context": {
             "edge": {
               "range": "TestCompile/edges/chain.d2,0:0:0-0:7:7",
               "src": {
@@ -1295,26 +1177,7 @@
                 ]
               },
               "dst_arrow": ">"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "edge_id": {
-        "src_path": [
-          "b"
-        ],
-        "src_arrow": false,
-        "dst_path": [
-          "c"
-        ],
-        "dst_arrow": true,
-        "index": 0
-      },
-      "references": [
-        {
-          "context": {
+            },
             "key": {
               "range": "TestCompile/edges/chain.d2,0:0:0-0:16:16",
               "edges": [
@@ -1432,7 +1295,26 @@
               ],
               "primary": {},
               "value": {}
-            },
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "b"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "c"
+        ],
+        "dst_arrow": true,
+        "index": 0
+      },
+      "references": [
+        {
+          "context": {
             "edge": {
               "range": "TestCompile/edges/chain.d2,0:4:4-0:12:12",
               "src": {
@@ -1469,26 +1351,7 @@
                 ]
               },
               "dst_arrow": ">"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "edge_id": {
-        "src_path": [
-          "c"
-        ],
-        "src_arrow": false,
-        "dst_path": [
-          "d"
-        ],
-        "dst_arrow": true,
-        "index": 0
-      },
-      "references": [
-        {
-          "context": {
+            },
             "key": {
               "range": "TestCompile/edges/chain.d2,0:0:0-0:16:16",
               "edges": [
@@ -1606,7 +1469,26 @@
               ],
               "primary": {},
               "value": {}
-            },
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "c"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "d"
+        ],
+        "dst_arrow": true,
+        "index": 0
+      },
+      "references": [
+        {
+          "context": {
             "edge": {
               "range": "TestCompile/edges/chain.d2,0:9:9-0:16:16",
               "src": {
@@ -1643,6 +1525,124 @@
                 ]
               },
               "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/edges/chain.d2,0:0:0-0:16:16",
+              "edges": [
+                {
+                  "range": "TestCompile/edges/chain.d2,0:0:0-0:7:7",
+                  "src": {
+                    "range": "TestCompile/edges/chain.d2,0:0:0-0:2:2",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "a",
+                              "raw_string": "a"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/edges/chain.d2,0:4:4-0:7:7",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                },
+                {
+                  "range": "TestCompile/edges/chain.d2,0:4:4-0:12:12",
+                  "src": {
+                    "range": "TestCompile/edges/chain.d2,0:4:4-0:7:7",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "b",
+                              "raw_string": "b"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/edges/chain.d2,0:9:9-0:12:12",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
+                          "value": [
+                            {
+                              "string": "c",
+                              "raw_string": "c"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                },
+                {
+                  "range": "TestCompile/edges/chain.d2,0:9:9-0:16:16",
+                  "src": {
+                    "range": "TestCompile/edges/chain.d2,0:9:9-0:12:12",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:10:10-0:11:11",
+                          "value": [
+                            {
+                              "string": "c",
+                              "raw_string": "c"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/edges/chain.d2,0:14:14-0:16:16",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/chain.d2,0:15:15-0:16:16",
+                          "value": [
+                            {
+                              "string": "d",
+                              "raw_string": "d"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
             }
           }
         }

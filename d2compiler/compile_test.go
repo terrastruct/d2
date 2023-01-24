@@ -124,8 +124,7 @@ x: {
 }
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2:3:2: width and height must be equal for circle shapes
-d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2:4:2: width and height must be equal for circle shapes
-`,
+d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2:4:2: width and height must be equal for circle shapes`,
 		},
 		{
 			name: "single_dimension_on_circle",
@@ -208,8 +207,7 @@ d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:16:3: height c
 d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:25:3: width cannot be used on container: containers.oval container
 d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:26:3: height cannot be used on container: containers.oval container
 d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:36:3: width cannot be used on container: containers.hexagon container
-d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height cannot be used on container: containers.hexagon container
-`,
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height cannot be used on container: containers.hexagon container`,
 		},
 		{
 			name: "dimension_with_style",
@@ -1751,6 +1749,35 @@ choo: {
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				tassert.Equal(t, 4, len(g.Objects))
 				tassert.Equal(t, 3, len(g.Root.ChildrenArray))
+			},
+		},
+		{
+			name: "sequence_container",
+
+			text: `shape: sequence_diagram
+x.y.q -> j.y.p
+ok: {
+	x.y.q -> j.y.p
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 7, len(g.Objects))
+				tassert.Equal(t, 3, len(g.Root.ChildrenArray))
+			},
+		},
+		{
+			name: "sequence_container_2",
+
+			text: `shape: sequence_diagram
+x.y.q
+ok: {
+	x.y.q -> j.y.p
+	meow
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 8, len(g.Objects))
+				tassert.Equal(t, 2, len(g.Root.ChildrenArray))
 			},
 		},
 		{

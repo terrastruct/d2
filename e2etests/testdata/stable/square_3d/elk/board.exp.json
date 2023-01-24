@@ -9,7 +9,7 @@
         "x": 12,
         "y": 12
       },
-      "width": 171,
+      "width": 135,
       "height": 126,
       "opacity": 1,
       "strokeDash": 0,
@@ -18,7 +18,7 @@
       "fill": "#F7F8FE",
       "stroke": "#0D32B2",
       "shadow": false,
-      "3d": true,
+      "3d": false,
       "multiple": false,
       "tooltip": "",
       "link": "",
@@ -28,7 +28,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "rectangle",
+      "label": "true",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -36,7 +36,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 71,
+      "labelWidth": 35,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -46,11 +46,11 @@
       "id": "square",
       "type": "rectangle",
       "pos": {
-        "x": 20,
+        "x": 12,
         "y": 238
       },
-      "width": 154,
-      "height": 154,
+      "width": 135,
+      "height": 135,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -58,7 +58,7 @@
       "fill": "#F7F8FE",
       "stroke": "#0D32B2",
       "shadow": false,
-      "3d": true,
+      "3d": false,
       "multiple": false,
       "tooltip": "",
       "link": "",
@@ -68,7 +68,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "square",
+      "label": "true",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -76,7 +76,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 54,
+      "labelWidth": 35,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -110,11 +110,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 97.5,
+          "x": 79.5,
           "y": 138
         },
         {
-          "x": 97.5,
+          "x": 79.5,
           "y": 238
         }
       ],

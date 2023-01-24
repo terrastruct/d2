@@ -56,6 +56,7 @@
                   ]
                 },
                 "context": {
+                  "edge": null,
                   "key": {
                     "range": "TestCompile/fields/nested.d2,0:0:0-0:8:8",
                     "key": {
@@ -97,8 +98,7 @@
                         ]
                       }
                     }
-                  },
-                  "edge": null
+                  }
                 }
               }
             ]
@@ -145,6 +145,7 @@
             ]
           },
           "context": {
+            "edge": null,
             "key": {
               "range": "TestCompile/fields/nested.d2,0:0:0-0:8:8",
               "key": {
@@ -186,8 +187,7 @@
                   ]
                 }
               }
-            },
-            "edge": null
+            }
           }
         }
       ]

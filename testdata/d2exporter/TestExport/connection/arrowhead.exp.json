@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "x",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
         "y": 0
@@ -43,7 +43,7 @@
     },
     {
       "id": "y",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
         "y": 0
@@ -86,7 +86,7 @@
       "id": "(x -> y)[0]",
       "src": "x",
       "srcArrow": "none",
-      "srcLabel": "If you've done six impossible things before breakfast, why not round it",
+      "srcLabel": "",
       "dst": "y",
       "dstArrow": "filled-diamond",
       "dstLabel": "A man with one watch knows what time it is.",

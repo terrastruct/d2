@@ -12,7 +12,7 @@ import (
 
 	"cdr.dev/slog"
 
-	tassert "github.com/stretchr/testify/assert"
+	trequire "github.com/stretchr/testify/require"
 
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
@@ -99,18 +99,18 @@ func serde(t *testing.T, tc testCase, ruler *textmeasure.Ruler) {
 	g, err := d2compiler.Compile("", strings.NewReader(tc.script), &d2compiler.CompileOptions{
 		UTF16: false,
 	})
-	tassert.Nil(t, err)
+	trequire.Nil(t, err)
 	if len(g.Objects) > 0 {
 		err = g.SetDimensions(nil, ruler, nil)
-		tassert.Nil(t, err)
+		trequire.Nil(t, err)
 		d2near.WithoutConstantNears(ctx, g)
 		d2sequence.WithoutSequenceDiagrams(ctx, g)
 	}
 	b, err := d2graph.SerializeGraph(g)
-	tassert.Nil(t, err)
+	trequire.Nil(t, err)
 	var newG d2graph.Graph
 	err = d2graph.DeserializeGraph(b, &newG)
-	tassert.Nil(t, err)
+	trequire.Nil(t, err)
 }
 
 func run(t *testing.T, tc testCase) {
@@ -119,9 +119,7 @@ func run(t *testing.T, tc testCase) {
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
 	ruler, err := textmeasure.NewRuler()
-	if !tassert.Nil(t, err) {
-		return
-	}
+	trequire.Nil(t, err)
 
 	serde(t, tc, ruler)
 
@@ -139,9 +137,7 @@ func run(t *testing.T, tc testCase) {
 			ThemeID: 0,
 			Layout:  layout,
 		})
-		if !tassert.Nil(t, err) {
-			return
-		}
+		trequire.Nil(t, err)
 
 		if tc.assertions != nil {
 			t.Run("assertions", func(t *testing.T) {

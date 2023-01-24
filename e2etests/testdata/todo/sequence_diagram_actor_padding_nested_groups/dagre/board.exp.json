@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 24,
         "y": 74
@@ -44,7 +44,7 @@
     },
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 274,
         "y": 74
@@ -84,7 +84,7 @@
     },
     {
       "id": "c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 524,
         "y": 74
@@ -124,10 +124,10 @@
     },
     {
       "id": "this is a message group",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": -47,
-        "y": 420
+        "y": 194
       },
       "width": 542,
       "height": 696,
@@ -164,10 +164,10 @@
     },
     {
       "id": "this is a message group.and this is a nested message group",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": -23,
-        "y": 550
+        "y": 218
       },
       "width": 494,
       "height": 542,
@@ -204,10 +204,10 @@
     },
     {
       "id": "this is a message group.and this is a nested message group.what about more nesting",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1,
-        "y": 680
+        "y": 242
       },
       "width": 446,
       "height": 388,
@@ -244,10 +244,10 @@
     },
     {
       "id": "this is a message group.and this is a nested message group.what about more nesting.yo",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 25,
-        "y": 810
+        "y": 266
       },
       "width": 398,
       "height": 234,
@@ -284,10 +284,10 @@
     },
     {
       "id": "this is a message group.and this is a nested message group.what about more nesting.yo.yo",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 49,
-        "y": 940
+        "y": 290
       },
       "width": 350,
       "height": 80,
@@ -325,45 +325,6 @@
   ],
   "connections": [
     {
-      "id": "(b -> c)[0]",
-      "src": "b",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "c",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 99,
-          "y": 330
-        },
-        {
-          "x": 599,
-          "y": 330
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 4
-    },
-    {
       "id": "(a -> b)[0]",
       "src": "a",
       "srcArrow": "none",
@@ -390,11 +351,11 @@
       "route": [
         {
           "x": 349,
-          "y": 460
+          "y": 330
         },
         {
           "x": 99,
-          "y": 460
+          "y": 330
         }
       ],
       "animated": false,
@@ -429,11 +390,11 @@
       "route": [
         {
           "x": 349,
-          "y": 590
+          "y": 460
         },
         {
           "x": 99,
-          "y": 590
+          "y": 460
         }
       ],
       "animated": false,
@@ -468,11 +429,11 @@
       "route": [
         {
           "x": 349,
-          "y": 720
+          "y": 590
         },
         {
           "x": 99,
-          "y": 720
+          "y": 590
         }
       ],
       "animated": false,
@@ -507,11 +468,11 @@
       "route": [
         {
           "x": 349,
-          "y": 850
+          "y": 720
         },
         {
           "x": 99,
-          "y": 850
+          "y": 720
         }
       ],
       "animated": false,
@@ -546,10 +507,49 @@
       "route": [
         {
           "x": 349,
-          "y": 980
+          "y": 850
         },
         {
           "x": 99,
+          "y": 850
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 4
+    },
+    {
+      "id": "(b -> c)[0]",
+      "src": "b",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "c",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 99,
+          "y": 980
+        },
+        {
+          "x": 599,
           "y": 980
         }
       ],

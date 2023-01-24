@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "poll the people",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 81,
         "y": 12
@@ -44,7 +44,7 @@
     },
     {
       "id": "results",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 74,
         "y": 238
@@ -84,7 +84,7 @@
     },
     {
       "id": "unfavorable",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 232,
         "y": 464
@@ -124,7 +124,7 @@
     },
     {
       "id": "favorable",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 39,
         "y": 464
@@ -164,7 +164,7 @@
     },
     {
       "id": "will of the people",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 690
@@ -206,11 +206,11 @@
       "id": "title",
       "type": "text",
       "pos": {
-        "x": 84,
-        "y": -59
+        "x": 204,
+        "y": -32
       },
-      "width": 266,
-      "height": 51,
+      "width": 27,
+      "height": 24,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -228,7 +228,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "# A winning strategy",
+      "label": "title",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -236,8 +236,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 266,
-      "labelHeight": 51,
+      "labelWidth": 27,
+      "labelHeight": 24,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1

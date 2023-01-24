@@ -1,5 +1,6 @@
 {
   "graph": {
+    "name": "",
     "ast": {
       "range": "d2/testdata/d2oracle/TestRename/edges.d2,0:0:0-5:0:74",
       "nodes": [
@@ -413,6 +414,9 @@
         },
         "direction": {
           "value": ""
+        },
+        "constraint": {
+          "value": ""
         }
       },
       "zIndex": 0
@@ -445,6 +449,9 @@
           },
           "direction": {
             "value": ""
+          },
+          "constraint": {
+            "value": ""
           }
         },
         "zIndex": 0
@@ -475,6 +482,77 @@
             "value": ""
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -507,6 +585,9 @@
           },
           "direction": {
             "value": ""
+          },
+          "constraint": {
+            "value": ""
           }
         },
         "zIndex": 0
@@ -538,67 +619,8 @@
           },
           "direction": {
             "value": ""
-          }
-        },
-        "zIndex": 0
-      },
-      {
-        "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
-        "isCurve": false,
-        "src_arrow": false,
-        "dst_arrow": true,
-        "references": [
-          {
-            "map_key_edge_index": 0
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": ""
           },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": ""
-          },
-          "direction": {
-            "value": ""
-          }
-        },
-        "zIndex": 0
-      },
-      {
-        "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
-        "isCurve": false,
-        "src_arrow": false,
-        "dst_arrow": true,
-        "references": [
-          {
-            "map_key_edge_index": 1
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": ""
-          },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": ""
-          },
-          "direction": {
+          "constraint": {
             "value": ""
           }
         },
@@ -614,26 +636,6 @@
           "height": 0
         },
         "references": [
-          {
-            "key": {
-              "range": "d2/testdata/d2oracle/TestRename/edges.d2,1:0:38-1:1:39",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestRename/edges.d2,1:0:38-1:1:39",
-                    "value": [
-                      {
-                        "string": "q",
-                        "raw_string": "q"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": 0
-          },
           {
             "key": {
               "range": "d2/testdata/d2oracle/TestRename/edges.d2,0:0:0-0:6:6",
@@ -757,6 +759,26 @@
             },
             "key_path_index": 0,
             "map_key_edge_index": 3
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/edges.d2,1:0:38-1:1:39",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/edges.d2,1:0:38-1:1:39",
+                    "value": [
+                      {
+                        "string": "q",
+                        "raw_string": "q"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -766,9 +788,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -782,26 +807,6 @@
           "height": 0
         },
         "references": [
-          {
-            "key": {
-              "range": "d2/testdata/d2oracle/TestRename/edges.d2,3:2:61-3:5:64",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestRename/edges.d2,3:2:61-3:5:64",
-                    "value": [
-                      {
-                        "string": "%%%",
-                        "raw_string": "%%%"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": 0
-          },
           {
             "key": {
               "range": "d2/testdata/d2oracle/TestRename/edges.d2,0:0:0-0:6:6",
@@ -945,6 +950,26 @@
             },
             "key_path_index": 0,
             "map_key_edge_index": 1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/edges.d2,3:2:61-3:5:64",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/edges.d2,3:2:61-3:5:64",
+                    "value": [
+                      {
+                        "string": "%%%",
+                        "raw_string": "%%%"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -954,9 +979,126 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "q",
+        "id_val": "q",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/edges.d2,2:2:45-2:4:47",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/edges.d2,2:2:45-2:3:46",
+                    "value": [
+                      {
+                        "string": "q",
+                        "raw_string": "q"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "q"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "+",
+        "id_val": "+",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/edges.d2,2:6:49-2:9:52",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/edges.d2,2:7:50-2:8:51",
+                    "value": [
+                      {
+                        "string": "+",
+                        "raw_string": "+"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/edges.d2,2:6:49-2:9:52",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/edges.d2,2:7:50-2:8:51",
+                    "value": [
+                      {
+                        "string": "+",
+                        "raw_string": "+"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "+"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -1040,9 +1182,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -1126,9 +1271,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -1212,9 +1360,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -1298,117 +1449,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
             "value": ""
-          }
-        },
-        "zIndex": 0
-      },
-      {
-        "id": "q",
-        "id_val": "q",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
-        "references": [
-          {
-            "key": {
-              "range": "d2/testdata/d2oracle/TestRename/edges.d2,2:2:45-2:4:47",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestRename/edges.d2,2:2:45-2:3:46",
-                    "value": [
-                      {
-                        "string": "q",
-                        "raw_string": "q"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": 0
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": "q"
           },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": ""
-          },
-          "direction": {
-            "value": ""
-          }
-        },
-        "zIndex": 0
-      },
-      {
-        "id": "+",
-        "id_val": "+",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
-        "references": [
-          {
-            "key": {
-              "range": "d2/testdata/d2oracle/TestRename/edges.d2,2:6:49-2:9:52",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestRename/edges.d2,2:7:50-2:8:51",
-                    "value": [
-                      {
-                        "string": "+",
-                        "raw_string": "+"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": 0
-          },
-          {
-            "key": {
-              "range": "d2/testdata/d2oracle/TestRename/edges.d2,2:6:49-2:9:52",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestRename/edges.d2,2:7:50-2:8:51",
-                    "value": [
-                      {
-                        "string": "+",
-                        "raw_string": "+"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": 1
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": "+"
-          },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": ""
-          },
-          "direction": {
+          "constraint": {
             "value": ""
           }
         },

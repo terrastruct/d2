@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "k8s",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
         "y": 0
@@ -44,7 +44,7 @@
     },
     {
       "id": "k8s.m1",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 116,
         "y": 50
@@ -84,7 +84,7 @@
     },
     {
       "id": "k8s.m2",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 368,
         "y": 50
@@ -124,7 +124,7 @@
     },
     {
       "id": "k8s.m3",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 620,
         "y": 50
@@ -164,7 +164,7 @@
     },
     {
       "id": "k8s.w1",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 872,
         "y": 50
@@ -204,7 +204,7 @@
     },
     {
       "id": "k8s.w2",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1125,
         "y": 50
@@ -244,7 +244,7 @@
     },
     {
       "id": "k8s.w3",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1378,
         "y": 50
@@ -284,7 +284,7 @@
     },
     {
       "id": "osvc",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
         "y": 347
@@ -324,7 +324,7 @@
     },
     {
       "id": "osvc.vm1",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 171,
         "y": 397
@@ -364,7 +364,7 @@
     },
     {
       "id": "osvc.vm2",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 369,
         "y": 397

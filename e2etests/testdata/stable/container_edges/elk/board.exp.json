@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 162,
         "y": 12
@@ -44,7 +44,7 @@
     },
     {
       "id": "g",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 87,
         "y": 293
@@ -84,7 +84,7 @@
     },
     {
       "id": "g.b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 162,
         "y": 368
@@ -123,8 +123,48 @@
       "level": 2
     },
     {
+      "id": "g.e",
+      "type": "rectangle",
+      "pos": {
+        "x": 295,
+        "y": 368
+      },
+      "width": 113,
+      "height": 126,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#EDF0FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "e",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 13,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
       "id": "d",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 679
@@ -164,7 +204,7 @@
     },
     {
       "id": "d.h",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 87,
         "y": 759
@@ -204,7 +244,7 @@
     },
     {
       "id": "d.h.c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 162,
         "y": 834
@@ -243,48 +283,8 @@
       "level": 3
     },
     {
-      "id": "g.e",
-      "type": "",
-      "pos": {
-        "x": 295,
-        "y": 368
-      },
-      "width": 113,
-      "height": 126,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "e",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": true,
-      "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 2
-    },
-    {
       "id": "f",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 445,
         "y": 679

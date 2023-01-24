@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 24,
         "y": 74
@@ -41,124 +41,6 @@
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
-    },
-    {
-      "id": "b",
-      "type": "",
-      "pos": {
-        "x": 274,
-        "y": 74
-      },
-      "width": 150,
-      "height": 126,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "b",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 1
-    },
-    {
-      "id": "b.1",
-      "type": "rectangle",
-      "pos": {
-        "x": 343,
-        "y": 654
-      },
-      "width": 12,
-      "height": 228,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#E3E9FD",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 12,
-      "labelHeight": 26,
-      "zIndex": 2,
-      "level": 2
-    },
-    {
-      "id": "b.1.2",
-      "type": "rectangle",
-      "pos": {
-        "x": 339,
-        "y": 784
-      },
-      "width": 20,
-      "height": 82,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
-      "zIndex": 2,
-      "level": 3
     },
     {
       "id": "a.1",
@@ -239,6 +121,124 @@
       "level": 3
     },
     {
+      "id": "b",
+      "type": "rectangle",
+      "pos": {
+        "x": 274,
+        "y": 74
+      },
+      "width": 150,
+      "height": 126,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#EDF0FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "b",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 13,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "b.1",
+      "type": "rectangle",
+      "pos": {
+        "x": 343,
+        "y": 314
+      },
+      "width": 12,
+      "height": 568,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#E3E9FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 12,
+      "labelHeight": 26,
+      "zIndex": 2,
+      "level": 2
+    },
+    {
+      "id": "b.1.2",
+      "type": "rectangle",
+      "pos": {
+        "x": 339,
+        "y": 394
+      },
+      "width": 20,
+      "height": 472,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#EDF0FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 13,
+      "labelHeight": 26,
+      "zIndex": 2,
+      "level": 3
+    },
+    {
       "id": "b.3",
       "type": "rectangle",
       "pos": {
@@ -280,6 +280,53 @@
   ],
   "connections": [
     {
+      "id": "b.(1 -> 1.2)[0]",
+      "src": "b.1",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "b.1.2",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "to deeper descendant",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 143,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 355,
+          "y": 330
+        },
+        {
+          "x": 449,
+          "y": 330
+        },
+        {
+          "x": 449,
+          "y": 410
+        },
+        {
+          "x": 359,
+          "y": 410
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 4
+    },
+    {
       "id": "(a -> a)[0]",
       "src": "a",
       "srcArrow": "none",
@@ -306,19 +353,19 @@
       "route": [
         {
           "x": 99,
-          "y": 330
+          "y": 460
         },
         {
           "x": 199,
-          "y": 330
+          "y": 460
         },
         {
           "x": 199,
-          "y": 410
+          "y": 540
         },
         {
           "x": 99,
-          "y": 410
+          "y": 540
         }
       ],
       "animated": false,
@@ -353,11 +400,11 @@
       "route": [
         {
           "x": 99,
-          "y": 460
+          "y": 590
         },
         {
           "x": 349,
-          "y": 460
+          "y": 590
         }
       ],
       "animated": false,
@@ -392,53 +439,6 @@
       "route": [
         {
           "x": 349,
-          "y": 590
-        },
-        {
-          "x": 449,
-          "y": 590
-        },
-        {
-          "x": 449,
-          "y": 670
-        },
-        {
-          "x": 355,
-          "y": 670
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 4
-    },
-    {
-      "id": "b.(1 -> 1.2)[0]",
-      "src": "b.1",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "b.1.2",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "to deeper descendant",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 143,
-      "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 355,
           "y": 720
         },
         {
@@ -450,7 +450,7 @@
           "y": 800
         },
         {
-          "x": 359,
+          "x": 355,
           "y": 800
         }
       ],

@@ -1,5 +1,6 @@
 {
   "graph": {
+    "name": "",
     "ast": {
       "range": "d2/testdata/d2oracle/TestSet/block_string_multiline.d2,0:0:0-5:0:146",
       "nodes": [
@@ -53,6 +54,9 @@
         },
         "direction": {
           "value": ""
+        },
+        "constraint": {
+          "value": ""
         }
       },
       "zIndex": 0
@@ -85,12 +89,12 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
           "label": {
-            "value": "# header\nHe has not acquired a fortune; the fortune has acquired him.\nHe has not acquired a fortune; the fortune has acquired him."
+            "value": "x"
           },
           "style": {},
           "near_key": null,
@@ -99,6 +103,9 @@
             "value": "text"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },

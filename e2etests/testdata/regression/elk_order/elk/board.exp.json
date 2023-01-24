@@ -7,7 +7,7 @@
       "type": "queue",
       "pos": {
         "x": 12,
-        "y": 165
+        "y": 141
       },
       "width": 1146,
       "height": 276,
@@ -43,10 +43,10 @@
     },
     {
       "id": "queue.M0",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 87,
-        "y": 240
+        "y": 216
       },
       "width": 125,
       "height": 126,
@@ -83,10 +83,10 @@
     },
     {
       "id": "queue.M1",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 232,
-        "y": 240
+        "y": 216
       },
       "width": 125,
       "height": 126,
@@ -123,10 +123,10 @@
     },
     {
       "id": "queue.M2",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 377,
-        "y": 240
+        "y": 216
       },
       "width": 125,
       "height": 126,
@@ -163,10 +163,10 @@
     },
     {
       "id": "queue.M3",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 522,
-        "y": 240
+        "y": 216
       },
       "width": 125,
       "height": 126,
@@ -203,10 +203,10 @@
     },
     {
       "id": "queue.M4",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 667,
-        "y": 240
+        "y": 216
       },
       "width": 126,
       "height": 126,
@@ -243,10 +243,10 @@
     },
     {
       "id": "queue.M5",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 813,
-        "y": 240
+        "y": 216
       },
       "width": 125,
       "height": 126,
@@ -283,10 +283,10 @@
     },
     {
       "id": "queue.M6",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 958,
-        "y": 240
+        "y": 216
       },
       "width": 125,
       "height": 126,
@@ -325,10 +325,10 @@
       "id": "m0_desc",
       "type": "text",
       "pos": {
-        "x": 96,
-        "y": 36
+        "x": 119,
+        "y": 12
       },
-      "width": 106,
+      "width": 61,
       "height": 24,
       "opacity": 1,
       "strokeDash": 0,
@@ -347,7 +347,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "Oldest message",
+      "label": "m0_desc",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -355,7 +355,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 106,
+      "labelWidth": 61,
       "labelHeight": 24,
       "zIndex": 0,
       "level": 1
@@ -364,10 +364,10 @@
       "id": "m2_desc",
       "type": "text",
       "pos": {
-        "x": 419,
-        "y": 36
+        "x": 409,
+        "y": 12
       },
-      "width": 41,
+      "width": 61,
       "height": 24,
       "opacity": 1,
       "strokeDash": 0,
@@ -386,7 +386,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "Offset",
+      "label": "m2_desc",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -394,7 +394,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 41,
+      "labelWidth": 61,
       "labelHeight": 24,
       "zIndex": 0,
       "level": 1
@@ -403,10 +403,10 @@
       "id": "m5_desc",
       "type": "text",
       "pos": {
-        "x": 830,
-        "y": 36
+        "x": 845,
+        "y": 12
       },
-      "width": 90,
+      "width": 61,
       "height": 24,
       "opacity": 1,
       "strokeDash": 0,
@@ -425,7 +425,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "Last message",
+      "label": "m5_desc",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -433,7 +433,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 90,
+      "labelWidth": 61,
       "labelHeight": 24,
       "zIndex": 0,
       "level": 1
@@ -442,11 +442,11 @@
       "id": "m6_desc",
       "type": "text",
       "pos": {
-        "x": 950,
+        "x": 990,
         "y": 12
       },
-      "width": 140,
-      "height": 48,
+      "width": 61,
+      "height": 24,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -464,7 +464,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "Next message will be\\\ninserted here",
+      "label": "m6_desc",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -472,8 +472,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 140,
-      "labelHeight": 48,
+      "labelWidth": 61,
+      "labelHeight": 24,
       "zIndex": 0,
       "level": 1
     }
@@ -506,11 +506,11 @@
       "route": [
         {
           "x": 149.5,
-          "y": 60
+          "y": 36
         },
         {
           "x": 149.5,
-          "y": 240
+          "y": 216
         }
       ],
       "animated": false,
@@ -545,11 +545,11 @@
       "route": [
         {
           "x": 439.5,
-          "y": 60
+          "y": 36
         },
         {
           "x": 439.5,
-          "y": 240
+          "y": 216
         }
       ],
       "animated": false,
@@ -584,11 +584,11 @@
       "route": [
         {
           "x": 875.5,
-          "y": 60
+          "y": 36
         },
         {
           "x": 875.5,
-          "y": 240
+          "y": 216
         }
       ],
       "animated": false,
@@ -623,11 +623,11 @@
       "route": [
         {
           "x": 1020.5,
-          "y": 60
+          "y": 36
         },
         {
           "x": 1020.5,
-          "y": 240
+          "y": 216
         }
       ],
       "animated": false,
