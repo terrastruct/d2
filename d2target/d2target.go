@@ -30,8 +30,6 @@ const (
 
 var BorderOffset = geo.NewVector(5, 5)
 
-const INNER_BORDER_OFFSET = 5
-
 type Diagram struct {
 	Name        string              `json:"name"`
 	Description string              `json:"description,omitempty"`
