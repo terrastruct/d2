@@ -98,7 +98,7 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 		strokeWidth: %d,
 		%s
 	});`, shape.Width, shape.Height, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
-	pathsBigRect, err := computeRoughPaths(r, jsBigRect)
+	pathsBigRect, err := computeRoughPathData(r, jsBigRect)
 	if err != nil {
 		return "", err
 	}
@@ -108,7 +108,7 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 		strokeWidth: %d,
 		%s
 	});`, shape.Width-d2target.INNER_BORDER_OFFSET*2, shape.Height-d2target.INNER_BORDER_OFFSET*2, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
-	pathsSmallRect, err := computeRoughPaths(r, jsSmallRect)
+	pathsSmallRect, err := computeRoughPathData(r, jsSmallRect)
 	if err != nil {
 		return "", err
 	}
@@ -116,13 +116,13 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 	for _, p := range pathsBigRect {
 		output += fmt.Sprintf(
 			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
+			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
 		)
 	}
 	for _, p := range pathsSmallRect {
 		output += fmt.Sprintf(
 			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X+d2target.INNER_BORDER_OFFSET, shape.Pos.Y+d2target.INNER_BORDER_OFFSET, p, shapeStyle(shape),
+			shape.Pos.X+d2target.INNER_BORDER_OFFSET, shape.Pos.Y+d2target.INNER_BORDER_OFFSET, p, shape.CSSStyle(),
 		)
 	}
 	output += fmt.Sprintf(
@@ -170,11 +170,11 @@ func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
 		strokeWidth: %d,
 		%s
 	});`, shape.Width/2, shape.Height/2, shape.Width-d2target.INNER_BORDER_OFFSET*2, shape.Height-d2target.INNER_BORDER_OFFSET*2, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
-	pathsBigCircle, err := computeRoughPaths(r, jsBigCircle)
+	pathsBigCircle, err := computeRoughPathData(r, jsBigCircle)
 	if err != nil {
 		return "", err
 	}
-	pathsSmallCircle, err := computeRoughPaths(r, jsSmallCircle)
+	pathsSmallCircle, err := computeRoughPathData(r, jsSmallCircle)
 	if err != nil {
 		return "", err
 	}
@@ -182,13 +182,13 @@ func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
 	for _, p := range pathsBigCircle {
 		output += fmt.Sprintf(
 			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
+			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
 		)
 	}
 	for _, p := range pathsSmallCircle {
 		output += fmt.Sprintf(
 			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shapeStyle(shape),
+			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
 		)
 	}
 	output += fmt.Sprintf(

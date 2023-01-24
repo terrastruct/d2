@@ -794,6 +794,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				fmt.Fprint(writer, renderOval(tl, width, height, style))
 			}
 		}
+
 	case d2target.ShapeImage:
 		fmt.Fprintf(writer, `<image href="%s" x="%d" y="%d" width="%d" height="%d" style="%s" />`,
 			html.EscapeString(targetShape.Icon.String()),
