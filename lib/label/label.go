@@ -317,5 +317,6 @@ func (labelPosition Position) GetPointOnRoute(route geo.Route, strokeWidth, labe
 
 // TODO probably use math.Big
 func chopPrecision(f float64) float64 {
-	return math.Round(f*10000) / 10000
+	// bring down to float32 precision before rounding for consistency across architectures
+	return math.Round(float64(float32(f*10000)) / 10000)
 }
