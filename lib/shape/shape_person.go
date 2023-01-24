@@ -72,6 +72,13 @@ func (s shapePerson) GetDimensionsToFit(width, height, paddingX, paddingY float6
 	shoulderWidth := totalWidth * personShoulderWidthFactor / (1 - 2*personShoulderWidthFactor)
 	totalWidth += 2 * shoulderWidth
 	totalHeight := height + paddingY
+
+	// prevent the shape's aspect ratio from becoming too extreme
+	if totalWidth > 1.5*totalHeight {
+		totalHeight = totalWidth / 1.5
+	} else if totalHeight > 1.5*totalWidth {
+		totalWidth = totalHeight / 1.5
+	}
 	return totalWidth, totalHeight
 }
 
