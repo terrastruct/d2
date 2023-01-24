@@ -437,10 +437,10 @@ ensure_prefix() {
   if [ -n "${PREFIX-}" ]; then
     return
   fi
-  # The reason for checking whether bin is writable is that on macOS you have /usr/local
+  # The reason for checking whether lib is writable is that on macOS you have /usr/local
   # owned by root but you don't need root to write to its subdirectories which is all we
   # need to do.
-  if ! is_writable_dir "/usr/local/bin"; then
+  if ! is_writable_dir "/usr/local/lib"; then
     # This also handles M1 Mac's which do not allow modifications to /usr/local even
     # with sudo.
     PREFIX=$HOME/.local
@@ -453,10 +453,10 @@ ensure_prefix_sh_c() {
   ensure_prefix
 
   sh_c="sh_c"
-  # The reason for checking whether bin is writable is that on macOS you have /usr/local
+  # The reason for checking whether lib is writable is that on macOS you have /usr/local
   # owned by root but you don't need root to write to its subdirectories which is all we
   # need to do.
-  if ! is_writable_dir "$PREFIX/bin"; then
+  if ! is_writable_dir "$PREFIX/lib"; then
     sh_c="sudo_sh_c"
   fi
 }
