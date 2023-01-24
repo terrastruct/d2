@@ -96,6 +96,8 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 
 	if len(ms.Opts.Flags.Args()) > 0 {
 		switch ms.Opts.Flags.Arg(0) {
+		case "init-playwright":
+			return initPlaywright()
 		case "layout":
 			return layoutCmd(ctx, ms, ps)
 		case "fmt":
@@ -321,4 +323,12 @@ func populateLayoutOpts(ctx context.Context, ms *xmain.State, ps []d2plugin.Plug
 	}
 
 	return nil
+}
+
+func initPlaywright() error {
+	pw, err := png.InitPlaywright()
+	if err != nil {
+		return err
+	}
+	return pw.Cleanup()
 }
