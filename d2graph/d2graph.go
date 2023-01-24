@@ -738,6 +738,9 @@ func (obj *Object) GetLabelSize(mtexts []*d2target.MText, ruler *textmeasure.Rul
 	}
 
 	if dims == nil {
+		if obj.Text().Text == "" {
+			return d2target.NewTextDimensions(0, 0), nil
+		}
 		if shapeType == d2target.ShapeImage {
 			dims = d2target.NewTextDimensions(0, 0)
 		} else {
@@ -759,7 +762,7 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 		return d2target.NewTextDimensions(128, 128), nil
 
 	case d2target.ShapeClass:
-		maxWidth := labelDims.Width
+		maxWidth := go2.Max(12, labelDims.Width)
 
 		for _, f := range obj.Class.Fields {
 			fdims := GetTextDimensions(mtexts, ruler, f.Text(), go2.Pointer(d2fonts.SourceCodePro))
@@ -795,7 +798,7 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 			rowHeight := GetTextDimensions(mtexts, ruler, anyRowText, go2.Pointer(d2fonts.SourceCodePro)).Height + 20
 			dims.Height = rowHeight * (len(obj.Class.Fields) + len(obj.Class.Methods) + 2)
 		} else {
-			dims.Height = labelDims.Height
+			dims.Height = go2.Max(12, labelDims.Height)
 		}
 
 	case d2target.ShapeSQLTable:
@@ -835,10 +838,10 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 		}
 
 		// The rows get padded a little due to header font being larger than row font
-		dims.Height = labelDims.Height * (len(obj.SQLTable.Columns) + 1)
+		dims.Height = go2.Max(12, labelDims.Height*(len(obj.SQLTable.Columns)+1))
 		headerWidth := d2target.HeaderPadding + labelDims.Width + d2target.HeaderPadding
 		rowsWidth := d2target.NamePadding + maxNameWidth + d2target.TypePadding + maxTypeWidth + d2target.TypePadding + constraintWidth
-		dims.Width = go2.Max(headerWidth, rowsWidth)
+		dims.Width = go2.Max(12, go2.Max(headerWidth, rowsWidth))
 	}
 
 	return &dims, nil
