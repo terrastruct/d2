@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg
+id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="562" height="731" viewBox="-88 -88 562 731"><style type="text/css">
+width="566" height="736" viewBox="-90 -90 566 736"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -18,7 +19,27 @@ width="562" height="731" viewBox="-88 -88 562 731"><style type="text/css">
 }
 
 ]]>
-</style><style type="text/css">.md em,
+</style><script type="application/javascript"><![CDATA[window.addEventListener("DOMContentLoaded", () => {
+  if (document.documentElement.getAttribute("id") !== "d2-svg") {
+    return;
+  }
+  const svgEl = document.documentElement;
+  let width = parseInt(svgEl.getAttribute("width"), 10);
+  let height = parseInt(svgEl.getAttribute("height"), 10);
+  let ratio;
+  if (width > height) {
+    if (width > window.innerWidth) {
+      ratio = window.innerWidth / width;
+    }
+  } else if (height > window.innerHeight) {
+    ratio = window.innerHeight / height;
+  }
+  if (ratio) {
+    svgEl.setAttribute("width", width * ratio - 16);
+    svgEl.setAttribute("height", height * ratio - 16);
+  }
+});
+]]></script><style type="text/css">.md em,
 .md dfn {
   font-family: "font-italic";
 }
@@ -775,8 +796,8 @@ width="562" height="731" viewBox="-88 -88 562 731"><style type="text/css">
 .md .contains-task-list:dir(rtl) .task-list-item-checkbox {
   margin: 0 -1.6em 0.25em 0.2em;
 }
-</style><g id="container"><g class="shape" ><rect x="12" y="12" width="362" height="407" style="fill:#E3E9FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text" x="193.000000" y="45.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">container</text></g><g id="no container"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="134.000000" y="519.000000" width="118" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:#CEEDEE;color:red;"><p>they did it in style</p>
-</div></foreignObject></g></g><g id="container.md"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="87.000000" y="87.000000" width="212" height="257"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:transparent;color:darkorange;"><h1>a header</h1>
+</style><g id="container"><g class="shape" ><rect x="12" y="12" width="362" height="408" style="fill:#E3E9FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text" x="193.000000" y="45.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">container</text></g><g id="no container"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="134.000000" y="520.000000" width="118" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:#CEEDEE;color:red;"><p>they did it in style</p>
+</div></foreignObject></g></g><g id="container.md"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="87.000000" y="87.000000" width="212" height="258"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:transparent;color:darkorange;"><h1>a header</h1>
 <p>a line of text and an</p>
 <pre><code>{
 	indented: &quot;block&quot;,
@@ -784,8 +805,8 @@ width="562" height="731" viewBox="-88 -88 562 731"><style type="text/css">
 }
 </code></pre>
 <p>walk into a bar.</p>
-</div></foreignObject></g></g><g id="(container -&gt; no container)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 193.000000 421.000000 L 193.000000 515.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2939693785)"/></g><mask id="2939693785" maskUnits="userSpaceOnUse" x="-100" y="-100" width="562" height="731">
-<rect x="-100" y="-100" width="562" height="731" fill="white"></rect>
+</div></foreignObject></g></g><g id="(container -&gt; no container)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 193.000000 422.000000 L 193.000000 516.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2200516868)"/></g><mask id="2200516868" maskUnits="userSpaceOnUse" x="-100" y="-100" width="566" height="736">
+<rect x="-100" y="-100" width="566" height="736" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text {

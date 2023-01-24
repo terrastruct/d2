@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg
+id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="494" height="1178" viewBox="-100 -100 494 1178"><style type="text/css">
+width="498" height="1182" viewBox="-102 -102 498 1182"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -18,8 +19,28 @@ width="494" height="1178" viewBox="-100 -100 494 1178"><style type="text/css">
 }
 
 ]]>
-</style><g id="a"><g class="shape" ><rect x="41" y="0" width="213" height="226" style="fill:#E3E9FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text" x="147.500000" y="33.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">a</text></g><g id="c"><g class="shape" ><rect x="40" y="326" width="214" height="226" style="fill:#E3E9FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text" x="147.000000" y="359.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">c</text></g><g id="f"><g class="shape" ><rect x="0" y="652" width="294" height="326" style="fill:#E3E9FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text" x="147.000000" y="685.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">f</text></g><g id="a.b"><g class="shape" ><rect x="91" y="50" width="113" height="126" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="147.500000" y="116.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">b</text></g><g id="c.d"><g class="shape" ><rect x="90" y="376" width="114" height="126" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="147.000000" y="442.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">d</text></g><g id="f.h"><g class="shape" ><rect x="40" y="702" width="214" height="226" style="fill:#EDF0FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text" x="147.000000" y="731.000000" style="text-anchor:middle;font-size:24px;fill:#0A0F25">h</text></g><g id="f.h.g"><g class="shape" ><rect x="90" y="752" width="114" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="147.000000" y="818.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">g</text></g><g id="(a.b -&gt; c.d)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 147.000000 178.000000 C 147.000000 216.000000 147.000000 236.000000 147.000000 251.000000 C 147.000000 266.000000 147.000000 336.000000 147.000000 372.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#1611065554)"/></g><g id="(c.d -&gt; f.h.g)[0]"><path d="M 147.000000 504.000000 C 147.000000 542.000000 147.000000 562.000000 147.000000 577.000000 C 147.000000 592.000000 147.000000 612.000000 147.000000 627.000000 C 147.000000 642.000000 147.000000 712.000000 147.000000 748.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#1611065554)"/></g><mask id="1611065554" maskUnits="userSpaceOnUse" x="-100" y="-100" width="494" height="1178">
-<rect x="-100" y="-100" width="494" height="1178" fill="white"></rect>
+</style><script type="application/javascript"><![CDATA[window.addEventListener("DOMContentLoaded", () => {
+  if (document.documentElement.getAttribute("id") !== "d2-svg") {
+    return;
+  }
+  const svgEl = document.documentElement;
+  let width = parseInt(svgEl.getAttribute("width"), 10);
+  let height = parseInt(svgEl.getAttribute("height"), 10);
+  let ratio;
+  if (width > height) {
+    if (width > window.innerWidth) {
+      ratio = window.innerWidth / width;
+    }
+  } else if (height > window.innerHeight) {
+    ratio = window.innerHeight / height;
+  }
+  if (ratio) {
+    svgEl.setAttribute("width", width * ratio - 16);
+    svgEl.setAttribute("height", height * ratio - 16);
+  }
+});
+]]></script><g id="a"><g class="shape" ><rect x="41" y="0" width="213" height="226" style="fill:#E3E9FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text" x="147.500000" y="33.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">a</text></g><g id="c"><g class="shape" ><rect x="40" y="326" width="214" height="226" style="fill:#E3E9FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text" x="147.000000" y="359.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">c</text></g><g id="f"><g class="shape" ><rect x="0" y="652" width="294" height="326" style="fill:#E3E9FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text" x="147.000000" y="685.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">f</text></g><g id="a.b"><g class="shape" ><rect x="91" y="50" width="113" height="126" style="fill:#EDF0FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="147.500000" y="116.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">b</text></g><g id="c.d"><g class="shape" ><rect x="90" y="376" width="114" height="126" style="fill:#EDF0FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="147.000000" y="442.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">d</text></g><g id="f.h"><g class="shape" ><rect x="40" y="702" width="214" height="226" style="fill:#EDF0FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text" x="147.000000" y="731.000000" style="text-anchor:middle;font-size:24px;fill:#0A0F25">h</text></g><g id="f.h.g"><g class="shape" ><rect x="90" y="752" width="114" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="147.000000" y="818.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">g</text></g><g id="(a.b -&gt; c.d)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 147.000000 178.000000 C 147.000000 216.000000 147.000000 236.000000 147.000000 251.000000 C 147.000000 266.000000 147.000000 336.000000 147.000000 372.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#1611065554)"/></g><g id="(c.d -&gt; f.h.g)[0]"><path d="M 147.000000 504.000000 C 147.000000 542.000000 147.000000 562.000000 147.000000 577.000000 C 147.000000 592.000000 147.000000 612.000000 147.000000 627.000000 C 147.000000 642.000000 147.000000 712.000000 147.000000 748.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#1611065554)"/></g><mask id="1611065554" maskUnits="userSpaceOnUse" x="-100" y="-100" width="498" height="1182">
+<rect x="-100" y="-100" width="498" height="1182" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text {

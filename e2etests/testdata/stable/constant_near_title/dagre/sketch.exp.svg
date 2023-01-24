@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg
+id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="651" height="1074" viewBox="-100 -170 651 1074"><style type="text/css">
+width="655" height="1079" viewBox="-102 -173 655 1079"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -18,7 +19,27 @@ width="651" height="1074" viewBox="-100 -170 651 1074"><style type="text/css">
 }
 
 ]]>
-</style><style type="text/css">.md em,
+</style><script type="application/javascript"><![CDATA[window.addEventListener("DOMContentLoaded", () => {
+  if (document.documentElement.getAttribute("id") !== "d2-svg") {
+    return;
+  }
+  const svgEl = document.documentElement;
+  let width = parseInt(svgEl.getAttribute("width"), 10);
+  let height = parseInt(svgEl.getAttribute("height"), 10);
+  let ratio;
+  if (width > height) {
+    if (width > window.innerWidth) {
+      ratio = window.innerWidth / width;
+    }
+  } else if (height > window.innerHeight) {
+    ratio = window.innerHeight / height;
+  }
+  if (ratio) {
+    svgEl.setAttribute("width", width * ratio - 16);
+    svgEl.setAttribute("height", height * ratio - 16);
+  }
+});
+]]></script><style type="text/css">.md em,
 .md dfn {
   font-family: "font-italic";
 }
@@ -775,9 +796,9 @@ width="651" height="1074" viewBox="-100 -170 651 1074"><style type="text/css">
 .md .contains-task-list:dir(rtl) .task-list-item-checkbox {
   margin: 0 -1.6em 0.25em 0.2em;
 }
-</style><g id="poll the people"><g class="shape" ><rect x="112" y="0" width="210" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="217.000000" y="66.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">poll the people</text></g><g id="results"><g class="shape" ><rect x="241" y="226" width="153" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="317.500000" y="292.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">results</text></g><g id="unfavorable"><g class="shape" ><rect x="0" y="452" width="191" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="95.500000" y="518.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">unfavorable</text></g><g id="favorable"><g class="shape" ><rect x="251" y="452" width="173" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="337.500000" y="518.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">favorable</text></g><g id="will of the people"><g class="shape" ><rect x="224" y="678" width="227" height="126" style="fill:#F7F8FE;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="337.500000" y="744.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">will of the people</text></g><g id="title"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="92.000000" y="-70.000000" width="266" height="50"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:transparent;color:#0A0F25;"><h1>A winning strategy</h1>
-</div></foreignObject></g></g><g id="(poll the people -&gt; results)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 274.142553 127.491173 C 308.561947 166.000000 317.500000 186.000000 317.500000 222.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#3951171514)"/></g><g id="(results -&gt; unfavorable)[0]"><path d="M 248.578114 353.365067 C 207.207965 392.000000 187.500000 412.000000 154.175859 449.026823" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#3951171514)"/></g><g id="(unfavorable -&gt; poll the people)[0]"><path d="M 84.000993 450.030609 C 77.269912 412.000000 75.500000 379.400000 75.500000 345.500000 C 75.500000 311.600000 87.900000 166.000000 134.386348 128.511010" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#3951171514)"/></g><g id="(results -&gt; favorable)[0]"><path d="M 328.999007 353.969391 C 335.730088 392.000000 337.500000 412.000000 337.500000 448.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#3951171514)"/></g><g id="(favorable -&gt; will of the people)[0]"><path d="M 337.500000 580.000000 C 337.500000 618.000000 337.500000 638.000000 337.500000 674.000000" class="connection" style="fill:none;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#3951171514)"/></g><mask id="3951171514" maskUnits="userSpaceOnUse" x="-100" y="-100" width="651" height="1074">
-<rect x="-100" y="-100" width="651" height="1074" fill="white"></rect>
+</style><g id="poll the people"><g class="shape" ><rect x="112" y="0" width="210" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="217.000000" y="66.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">poll the people</text></g><g id="results"><g class="shape" ><rect x="241" y="226" width="153" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="317.500000" y="292.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">results</text></g><g id="unfavorable"><g class="shape" ><rect x="0" y="452" width="191" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="95.500000" y="518.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">unfavorable</text></g><g id="favorable"><g class="shape" ><rect x="251" y="452" width="173" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="337.500000" y="518.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">favorable</text></g><g id="will of the people"><g class="shape" ><rect x="224" y="678" width="227" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="337.500000" y="744.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">will of the people</text></g><g id="title"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="92.000000" y="-71.000000" width="266" height="51"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:transparent;color:#0A0F25;"><h1>A winning strategy</h1>
+</div></foreignObject></g></g><g id="(poll the people -&gt; results)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 274.142553 127.491173 C 308.561947 166.000000 317.500000 186.000000 317.500000 222.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2931282031)"/></g><g id="(results -&gt; unfavorable)[0]"><path d="M 248.578114 353.365067 C 207.207965 392.000000 187.500000 412.000000 154.175859 449.026823" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2931282031)"/></g><g id="(unfavorable -&gt; poll the people)[0]"><path d="M 84.000993 450.030609 C 77.269912 412.000000 75.500000 379.400000 75.500000 345.500000 C 75.500000 311.600000 87.900000 166.000000 134.386348 128.511010" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2931282031)"/></g><g id="(results -&gt; favorable)[0]"><path d="M 328.999007 353.969391 C 335.730088 392.000000 337.500000 412.000000 337.500000 448.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2931282031)"/></g><g id="(favorable -&gt; will of the people)[0]"><path d="M 337.500000 580.000000 C 337.500000 618.000000 337.500000 638.000000 337.500000 674.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2931282031)"/></g><mask id="2931282031" maskUnits="userSpaceOnUse" x="-100" y="-100" width="655" height="1079">
+<rect x="-100" y="-100" width="655" height="1079" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text {
