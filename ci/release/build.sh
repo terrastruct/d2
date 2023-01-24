@@ -253,6 +253,7 @@ build_docker_image() {
   if [ -n "${PUSH_DOCKER-}" -o -n "${RELEASE-}" ]; then
     flags='--push --platform linux/amd64,linux/arm64'
   fi
+  sh_c rsync --archive --human-readable ./ci/release/Dockerfile_entrypoint.sh "./ci/release/build/$VERSION"
   sh_c docker buildx build $flags -t "$D2_DOCKER_IMAGE:$VERSION" -t "$D2_DOCKER_IMAGE:latest" --build-arg "VERSION=$VERSION" -f ./ci/release/Dockerfile "./ci/release/build/$VERSION"
 }
 
