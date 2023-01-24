@@ -34,7 +34,7 @@ func (s shapeCircle) AspectRatio1() bool {
 }
 
 func (s shapeCircle) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
-	diameter := math.Ceil(math.Sqrt(2 * math.Pow(math.Max(width+paddingX, height+paddingY), 2)))
+	diameter := math.Ceil(math.Sqrt(math.Pow(width+paddingX, 2) + math.Pow(height+paddingY, 2)))
 	return diameter, diameter
 }
 
@@ -47,5 +47,5 @@ func (s shapeCircle) Perimeter() []geo.Intersectable {
 }
 
 func (s shapeCircle) GetDefaultPadding() (paddingX, paddingY float64) {
-	return defaultPadding / 2, defaultPadding / 2
+	return defaultPadding / math.Sqrt2, defaultPadding / math.Sqrt2
 }
