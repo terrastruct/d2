@@ -750,7 +750,7 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 				return nil, fmt.Errorf("dimensions for class field %#v not found", f.Text())
 			}
 			lineWidth := fdims.Width
-			if maxWidth < lineWidth {
+			if lineWidth > maxWidth {
 				maxWidth = lineWidth
 			}
 		}
@@ -760,11 +760,11 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 				return nil, fmt.Errorf("dimensions for class method %#v not found", m.Text())
 			}
 			lineWidth := mdims.Width
-			if maxWidth < lineWidth {
+			if lineWidth > maxWidth {
 				maxWidth = lineWidth
 			}
 		}
-		dims.Width = maxWidth
+		dims.Width = d2target.PrefixPadding + d2target.PrefixWidth + maxWidth + d2target.CenterPadding + d2target.TypePadding
 
 		// All rows should be the same height
 		var anyRowText *d2target.MText
@@ -774,8 +774,7 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 			anyRowText = obj.Class.Methods[0].Text()
 		}
 		if anyRowText != nil {
-			// 10px of padding top and bottom so text doesn't look squished
-			rowHeight := GetTextDimensions(mtexts, ruler, anyRowText, go2.Pointer(d2fonts.SourceCodePro)).Height + 20
+			rowHeight := GetTextDimensions(mtexts, ruler, anyRowText, go2.Pointer(d2fonts.SourceCodePro)).Height + d2target.VerticalPadding
 			dims.Height = rowHeight * (len(obj.Class.Fields) + len(obj.Class.Methods) + 2)
 		} else {
 			dims.Height = go2.Max(12, labelDims.Height)
