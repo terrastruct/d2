@@ -15,17 +15,9 @@ func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 
 func Compile(ast *d2ast.Map) (*Map, error) {
 	c := &compiler{}
-	m := &Map{
-		parent: &Field{
-			Name: "",
-			References: []*FieldReference{{
-				Context: &RefContext{
-					Scope: ast,
-				},
-			}},
-		},
-	}
-	m.parent.(*Field).References[0].Context.ScopeMap = m
+	m := &Map{}
+	m.initRoot()
+	m.parent.(*Field).References[0].Context.Scope = ast
 	c.compileMap(m, ast)
 	c.compileScenarios(m)
 	c.compileSteps(m)

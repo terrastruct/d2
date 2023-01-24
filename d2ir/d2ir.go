@@ -152,6 +152,17 @@ type Map struct {
 	Edges  []*Edge  `json:"edges"`
 }
 
+func (m *Map) initRoot() {
+	m.parent = &Field{
+		Name: "",
+		References: []*FieldReference{{
+			Context: &RefContext{
+				ScopeMap: m,
+			},
+		}},
+	}
+}
+
 func (m *Map) Copy(newParent Node) Node {
 	tmp := *m
 	m = &tmp
@@ -187,6 +198,13 @@ func (m *Map) CopyBase(newParent Node) *Map {
 	return m2
 }
 
+// CopyRoot copies the map such that it is now the root of a diagram.
+func (m *Map) CopyRoot() *Map {
+	m = m.CopyBase(nil)
+	m.initRoot()
+	return m
+}
+
 // Root reports whether the Map is the root of the D2 tree.
 func (m *Map) Root() bool {
 	// m.parent exists even on the root map as we store the root AST in
@@ -213,9 +231,16 @@ func NodeLayerKind(n Node) LayerKind {
 	var f *Field
 	switch n := n.(type) {
 	case *Field:
-		f = n
+		if n.Name == "" {
+			return LayerLayer
+		}
+		f = ParentField(n)
 	case *Map:
 		f = ParentField(n)
+		if f.Name == "" {
+			return LayerLayer
+		}
+		f = ParentField(f)
 	}
 	if f == nil {
 		return ""
@@ -227,11 +252,9 @@ func NodeLayerKind(n Node) LayerKind {
 		return LayerScenario
 	case "steps":
 		return LayerStep
-	case "":
-		// root
-		return LayerLayer
+	default:
+		return ""
 	}
-	return ""
 }
 
 type Field struct {

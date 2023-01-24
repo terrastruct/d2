@@ -263,7 +263,7 @@ d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height c
   _
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/blank_underscore.d2:3:3: invalid use of parent "_"`,
+			expErr: `d2/testdata/d2compiler/TestCompile/blank_underscore.d2:3:3: field key must contain more than underscores`,
 		},
 		{
 			name: "image_non_style",
@@ -451,7 +451,7 @@ x: {
 			text: `
 _.x
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_root.d2:2:1: parent "_" cannot be used in the root scope`,
+			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_root.d2:2:1: invalid underscore: no parent`,
 		},
 		{
 			name: "underscore_parent_middle_path",
@@ -461,7 +461,7 @@ x: {
   y._.z
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_middle_path.d2:3:3: parent "_" can only be used in the beginning of paths, e.g. "_.x"`,
+			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_middle_path.d2:3:5: parent "_" can only be used in the beginning of paths, e.g. "_.x"`,
 		},
 		{
 			name: "underscore_parent_sandwich_path",
@@ -471,7 +471,7 @@ x: {
   _.z._
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_sandwich_path.d2:3:3: parent "_" can only be used in the beginning of paths, e.g. "_.x"`,
+			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_sandwich_path.d2:3:7: parent "_" can only be used in the beginning of paths, e.g. "_.x"`,
 		},
 		{
 			name: "underscore_edge",
@@ -1074,7 +1074,7 @@ x -> y: {
   space -> stars
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/nested_edge.d2:1:1: edges cannot be nested within another edge`,
+			expErr: `d2/testdata/d2compiler/TestCompile/nested_edge.d2:2:3: cannot create edge inside edge`,
 		},
 		{
 			name: "shape_edge_style",
@@ -1340,7 +1340,7 @@ x -> y: {
   z
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/edge_map_non_reserved.d2:2:1: edge map keys must be reserved keywords`,
+			expErr: `d2/testdata/d2compiler/TestCompile/edge_map_non_reserved.d2:3:3: edge map keys must be reserved keywords`,
 		},
 		{
 			name: "url_link",
@@ -1385,7 +1385,7 @@ x -> y: {
 
 			text: `x.near: txop-center
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_constant.d2:1:1: near key "txop-center" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_constant.d2:1:9: near key "txop-center" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right`,
 		},
 		{
 			name: "near_bad_container",
@@ -1395,7 +1395,7 @@ x -> y: {
   y
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_container.d2:1:1: constant near keys cannot be set on shapes with children`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_container.d2:2:9: constant near keys cannot be set on shapes with children`,
 		},
 		{
 			name: "near_bad_connected",
@@ -1405,14 +1405,14 @@ x -> y: {
 }
 x -> y
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_connected.d2:1:1: constant near keys cannot be set on connected shapes`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_connected.d2:2:9: constant near keys cannot be set on connected shapes`,
 		},
 		{
 			name: "nested_near_constant",
 
 			text: `x.y.near: top-center
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/nested_near_constant.d2:1:1: constant near keys can only be set on root level shapes`,
+			expErr: `d2/testdata/d2compiler/TestCompile/nested_near_constant.d2:1:11: constant near keys can only be set on root level shapes`,
 		},
 		{
 			name: "reserved_icon_near_style",
@@ -1458,9 +1458,8 @@ y
 }
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:3:9: bad icon url "::????:::%%orange": parse "::????:::%%orange": missing protocol scheme
-d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:4:18: expected "opacity" to be a number between 0.0 and 1.0
 d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:5:18: expected "opacity" to be a number between 0.0 and 1.0
-d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:1:1: near key "y" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right`,
+d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:2:9: near key "y" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right`,
 		},
 		{
 			name: "errors/missing_shape_icon",
@@ -1562,7 +1561,7 @@ b`, g.Objects[0].Attributes.Label.Value)
   GetType(): string
   style: {
     opacity: 0.4
-    color: blue
+    font-color: blue
   }
 }
 `,
@@ -1661,7 +1660,7 @@ x.y -> a.b: {
 		{
 			name: "3d_oval",
 
-			text: `SVP1.style.shape: oval
+			text: `SVP1.shape: oval
 SVP1.style.3d: true`,
 			expErr: `d2/testdata/d2compiler/TestCompile/3d_oval.d2:2:1: key "3d" can only be applied to squares and rectangles`,
 		}, {

@@ -40,60 +40,62 @@ func Compile(path string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph
 		return nil, err
 	}
 
-	g, err := compileIR(pe, ir.CopyBase(nil))
+	g, err := compileIR(pe, ir)
 	if err != nil {
 		return nil, err
 	}
 	g.AST = ast
-
-	err = compileLayersField(pe, g, ir, "layers")
-	if err != nil {
-		return nil, err
-	}
-	err = compileLayersField(pe, g, ir, "scenarios")
-	if err != nil {
-		return nil, err
-	}
-	err = compileLayersField(pe, g, ir, "steps")
 	return g, err
 }
 
-func compileLayersField(pe d2parser.ParseError, g *d2graph.Graph, ir *d2ir.Map, fieldName string) error {
-	layers := ir.GetField(fieldName)
-	if layers.Map() == nil {
-		return nil
-	}
-	for _, f := range layers.Map().Fields {
-		if f.Map() == nil {
-			continue
-		}
-		g2, err := compileIR(pe, f.Map())
-		if err != nil {
-			return err
-		}
-		g2.Name = f.Name
-		g.Layers = append(g.Layers, g2)
-	}
-	return nil
-}
-
 func compileIR(pe d2parser.ParseError, m *d2ir.Map) (*d2graph.Graph, error) {
-	g := d2graph.NewGraph()
-
 	c := &compiler{
 		err: pe,
 	}
 
+	g := c.compileLayer(m)
+	if len(c.err.Errors) > 0 {
+		return nil, c.err
+	}
+	return g, nil
+}
+
+func (c *compiler) compileLayer(ir *d2ir.Map) *d2graph.Graph {
+	g := d2graph.NewGraph()
+
+	m := ir.CopyRoot()
 	c.compileMap(g.Root, m)
 	if len(c.err.Errors) == 0 {
 		c.validateKeys(g.Root, m)
 	}
 	c.validateNear(g)
 
-	if len(c.err.Errors) > 0 {
-		return nil, c.err
+	c.compileLayersField(g, ir, "layers")
+	c.compileLayersField(g, ir, "scenarios")
+	c.compileLayersField(g, ir, "steps")
+	return g
+}
+
+func (c *compiler) compileLayersField(g *d2graph.Graph, ir *d2ir.Map, fieldName string) {
+	layers := ir.GetField(fieldName)
+	if layers.Map() == nil {
+		return
 	}
-	return g, nil
+	for _, f := range layers.Map().Fields {
+		if f.Map() == nil {
+			continue
+		}
+		g2 := c.compileLayer(f.Map())
+		g2.Name = f.Name
+		switch fieldName {
+		case "layers":
+			g.Layers = append(g.Layers, g2)
+		case "scenarios":
+			g.Scenarios = append(g.Scenarios, g2)
+		case "steps":
+			g.Steps = append(g.Steps, g2)
+		}
+	}
 }
 
 type compiler struct {
@@ -139,6 +141,9 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			return
 		}
 		c.compileStyle(obj.Attributes, f.Map())
+		if obj.Attributes.Style.Animated != nil {
+			c.errorf(obj.Attributes.Style.Animated.MapKey, `key "animated" can only be applied to edges`)
+		}
 		return
 	}
 
@@ -204,7 +209,8 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		c.compileLabel(attrs, f)
 	case "shape":
 		in := d2target.IsShape(scalar.ScalarString())
-		if !in {
+		_, isArrowhead := d2target.Arrowheads[scalar.ScalarString()]
+		if !in && !isArrowhead {
 			c.errorf(scalar, "unknown shape %q", scalar.ScalarString())
 			return
 		}
@@ -227,6 +233,7 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 			c.errorf(scalar, "bad near key %#v: %s", scalar.ScalarString(), err)
 			return
 		}
+		nearKey.Range = scalar.GetRange()
 		attrs.NearKey = nearKey
 	case "tooltip":
 		attrs.Tooltip = scalar.ScalarString()
@@ -378,10 +385,6 @@ func (c *compiler) compileEdgeField(edge *d2graph.Edge, f *d2ir.Field) {
 		return
 	}
 
-	if f.Primary() != nil {
-		c.compileLabel(edge.Attributes, f)
-	}
-
 	if f.Name == "source-arrowhead" || f.Name == "target-arrowhead" {
 		if f.Map() != nil {
 			c.compileArrowheads(edge, f)
@@ -397,6 +400,10 @@ func (c *compiler) compileArrowheads(edge *d2graph.Edge, f *d2ir.Field) {
 	} else {
 		edge.DstArrowhead = &d2graph.Attributes{}
 		attrs = edge.DstArrowhead
+	}
+
+	if f.Primary() != nil {
+		c.compileLabel(attrs, f)
 	}
 
 	for _, f2 := range f.Map().Fields {
@@ -552,10 +559,6 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 			if obj.Attributes.Shape.Value != d2target.ShapeImage {
 				c.errorf(f.LastPrimaryKey(), "height is only applicable to image shapes.")
 			}
-		case "3d":
-			if obj.Attributes.Shape.Value != "" && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeRectangle) {
-				c.errorf(f.LastPrimaryKey(), `key "3d" can only be applied to squares and rectangles`)
-			}
 		case "shape":
 			switch obj.Attributes.Shape.Value {
 			case d2target.ShapeSQLTable, d2target.ShapeClass:
@@ -578,8 +581,14 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 		return
 	}
 
+	if obj.Attributes.Style.ThreeDee != nil {
+		if !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeRectangle) {
+			c.errorf(obj.Attributes.Style.ThreeDee.MapKey, `key "3d" can only be applied to squares and rectangles`)
+		}
+	}
+
 	if obj.Attributes.Shape.Value == d2target.ShapeImage {
-		c.errorf(obj.Attributes.Shape.MapKey, "image shapes cannot have children.")
+		c.errorf(f.LastRef().AST(), "image shapes cannot have children.")
 		return
 	}
 
