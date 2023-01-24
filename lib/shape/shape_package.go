@@ -82,3 +82,7 @@ func (s shapePackage) GetDimensionsToFit(width, height, paddingX, paddingY float
 
 	return width + paddingX, totalHeight
 }
+
+func (s shapePackage) GetDefaultPadding() (paddingX, paddingY float64) {
+	return defaultPadding, .8 * defaultPadding
+}

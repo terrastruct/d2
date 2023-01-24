@@ -82,3 +82,7 @@ func (s shapeCylinder) GetDimensionsToFit(width, height, paddingX, paddingY floa
 	totalHeight := height + paddingY + 3*defaultArcDepth
 	return width + paddingX, totalHeight
 }
+
+func (s shapeCylinder) GetDefaultPadding() (paddingX, paddingY float64) {
+	return defaultPadding, defaultPadding / 2
+}

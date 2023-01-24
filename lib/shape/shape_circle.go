@@ -45,3 +45,7 @@ func (s shapeCircle) GetInsidePlacement(width, height, padding float64) geo.Poin
 func (s shapeCircle) Perimeter() []geo.Intersectable {
 	return []geo.Intersectable{geo.NewEllipse(s.Box.Center(), s.Box.Width/2, s.Box.Height/2)}
 }
+
+func (s shapeCircle) GetDefaultPadding() (paddingX, paddingY float64) {
+	return defaultPadding / 2, defaultPadding / 2
+}

@@ -78,3 +78,7 @@ func (s shapeQueue) GetDimensionsToFit(width, height, paddingX, paddingY float64
 	totalWidth := 3*defaultArcDepth + width + paddingX
 	return totalWidth, height + paddingY
 }
+
+func (s shapeQueue) GetDefaultPadding() (paddingX, paddingY float64) {
+	return defaultPadding / 2, defaultPadding
+}

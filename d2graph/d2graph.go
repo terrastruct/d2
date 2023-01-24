@@ -1157,6 +1157,18 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 		}
 
+		// give shapes with icons extra padding
+		if obj.Attributes.Icon != nil {
+			paddingX += 20
+			paddingY += 20
+		}
+		if obj.Attributes.Link != "" {
+			paddingX += 32
+		}
+		if obj.Attributes.Tooltip != "" {
+			paddingX += 32
+		}
+
 		if desiredWidth == 0 && desiredHeight == 0 {
 			newWidth, newHeight := s.GetDimensionsToFit(contentBox.Width, contentBox.Height, paddingX, paddingY)
 			obj.Width = newWidth

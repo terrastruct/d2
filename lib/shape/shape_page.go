@@ -97,3 +97,7 @@ func (s shapePage) GetDimensionsToFit(width, height, paddingX, paddingY float64)
 	totalHeight = math.Max(totalHeight, pageCornerHeight)
 	return totalWidth, totalHeight
 }
+
+func (s shapePage) GetDefaultPadding() (paddingX, paddingY float64) {
+	return defaultPadding, pageCornerHeight + defaultPadding
+}

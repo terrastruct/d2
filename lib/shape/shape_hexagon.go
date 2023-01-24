@@ -53,3 +53,7 @@ func (s shapeHexagon) GetDimensionsToFit(width, height, paddingX, paddingY float
 	totalWidth := 2 * (width + paddingX)
 	return totalWidth, height + paddingY
 }
+
+func (s shapeHexagon) GetDefaultPadding() (paddingX, paddingY float64) {
+	return defaultPadding / 4, defaultPadding
+}

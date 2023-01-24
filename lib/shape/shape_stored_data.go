@@ -60,3 +60,7 @@ func (s shapeStoredData) GetDimensionsToFit(width, height, paddingX, paddingY fl
 	totalWidth := width + paddingX + 2*storedDataWedgeWidth
 	return totalWidth, height + paddingY
 }
+
+func (s shapeStoredData) GetDefaultPadding() (paddingX, paddingY float64) {
+	return defaultPadding - 10, defaultPadding
+}

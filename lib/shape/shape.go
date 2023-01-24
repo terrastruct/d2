@@ -31,6 +31,8 @@ const (
 	TEXT_TYPE  = "Text"
 	CODE_TYPE  = "Code"
 	IMAGE_TYPE = "Image"
+
+	defaultPadding = 40.
 )
 
 type Shape interface {
@@ -101,7 +103,7 @@ func (s baseShape) GetDimensionsToFit(width, height, paddingX, paddingY float64)
 }
 
 func (s baseShape) GetDefaultPadding() (paddingX, paddingY float64) {
-	return 100., 100.
+	return defaultPadding, defaultPadding
 }
 
 func (s baseShape) Perimeter() []geo.Intersectable {
