@@ -37,6 +37,7 @@ func TestE2E(t *testing.T) {
 	t.Run("stable", testStable)
 	t.Run("regression", testRegression)
 	t.Run("todo", testTodo)
+	t.Run("measured", testMeasured)
 }
 
 func testSanity(t *testing.T) {
@@ -73,6 +74,7 @@ a -> c
 type testCase struct {
 	name       string
 	script     string
+	mtexts     []*d2target.MText
 	assertions func(t *testing.T, diagram *d2target.Diagram)
 	skip       bool
 }
@@ -118,12 +120,16 @@ func run(t *testing.T, tc testCase) {
 	ctx = log.WithTB(ctx, t, nil)
 	ctx = log.Leveled(ctx, slog.LevelDebug)
 
-	ruler, err := textmeasure.NewRuler()
-	if !tassert.Nil(t, err) {
-		return
-	}
+	var ruler *textmeasure.Ruler
+	var err error
+	if tc.mtexts == nil {
+		ruler, err = textmeasure.NewRuler()
+		if !tassert.Nil(t, err) {
+			return
+		}
 
-	serde(t, tc, ruler)
+		serde(t, tc, ruler)
+	}
 
 	layoutsTested := []string{"dagre", "elk"}
 
@@ -132,12 +138,17 @@ func run(t *testing.T, tc testCase) {
 		if layoutName == "dagre" {
 			layout = d2dagrelayout.DefaultLayout
 		} else if layoutName == "elk" {
+			// If measured texts exists, we are specifically exercising text measurements, no need to run on both layouts
+			if tc.mtexts != nil {
+				continue
+			}
 			layout = d2elklayout.DefaultLayout
 		}
 		diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
-			Ruler:   ruler,
-			ThemeID: 0,
-			Layout:  layout,
+			Ruler:         ruler,
+			MeasuredTexts: tc.mtexts,
+			ThemeID:       0,
+			Layout:        layout,
 		})
 		if !tassert.Nil(t, err) {
 			return
