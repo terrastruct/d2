@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg
-id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="763" height="352" viewBox="-102 -102 763 352"><style type="text/css">
+width="759" height="348" viewBox="-100 -100 759 348"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -19,27 +18,7 @@ width="763" height="352" viewBox="-102 -102 763 352"><style type="text/css">
 }
 
 ]]>
-</style><script type="application/javascript"><![CDATA[window.addEventListener("DOMContentLoaded", () => {
-  if (document.documentElement.getAttribute("id") !== "d2-svg") {
-    return;
-  }
-  const svgEl = document.documentElement;
-  let width = parseInt(svgEl.getAttribute("width"), 10);
-  let height = parseInt(svgEl.getAttribute("height"), 10);
-  let ratio;
-  if (width > height) {
-    if (width > window.innerWidth) {
-      ratio = window.innerWidth / width;
-    }
-  } else if (height > window.innerHeight) {
-    ratio = window.innerHeight / height;
-  }
-  if (ratio) {
-    svgEl.setAttribute("width", width * ratio - 16);
-    svgEl.setAttribute("height", height * ratio - 16);
-  }
-});
-]]></script><style type="text/css">.md em,
+</style><style type="text/css">.md em,
 .md dfn {
   font-family: "font-italic";
 }
@@ -796,10 +775,10 @@ width="763" height="352" viewBox="-102 -102 763 352"><style type="text/css">
 .md .contains-task-list:dir(rtl) .task-list-item-checkbox {
   margin: 0 -1.6em 0.25em 0.2em;
 }
-</style><g id="markdown"><g class="shape" ><rect x="0" y="0" width="559" height="148" style="fill:#E3E9FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text" x="279.500000" y="33.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">markdown</text></g><g id="markdown.md"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="50.000000" y="50.000000" width="459" height="48"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:transparent;color:#0A0F25;"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br />
+</style><g id="markdown"><g class="shape" ><rect x="0" y="0" width="559" height="148" style="fill:#E3E9FD;stroke:#0D32B2;opacity:1.000000;stroke-width:2;" /></g><text class="text" x="279.500000" y="33.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">markdown</text></g><g id="markdown.md"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="50.000000" y="50.000000" width="459" height="48"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:transparent;color:#0A0F25;"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,<br />
 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-</div></foreignObject></g></g><mask id="2893698109" maskUnits="userSpaceOnUse" x="-100" y="-100" width="763" height="352">
-<rect x="-100" y="-100" width="763" height="352" fill="white"></rect>
+</div></foreignObject></g></g><mask id="304040365" maskUnits="userSpaceOnUse" x="-100" y="-100" width="759" height="348">
+<rect x="-100" y="-100" width="759" height="348" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text {
