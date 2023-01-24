@@ -48,9 +48,7 @@ type Shape interface {
 	// placing a rectangle of the given size and padding inside the shape, return the position relative to the shape's TopLeft
 	GetInsidePlacement(width, height, padding float64) geo.Point
 
-	// TODO note change to interface
 	GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64)
-
 	GetDefaultPadding() (paddingX, paddingY float64)
 
 	// Perimeter returns a slice of geo.Intersectables that together constitute the shape border
@@ -89,10 +87,6 @@ func (s baseShape) GetInnerBox() *geo.Box {
 }
 
 func (s baseShape) GetInsidePlacement(_, _, padding float64) geo.Point {
-	return *geo.NewPoint(s.Box.TopLeft.X+padding, s.Box.TopLeft.Y+padding)
-}
-
-func (s baseShape) GetInnerTopLeft(_, _, padding float64) geo.Point {
 	return *geo.NewPoint(s.Box.TopLeft.X+padding, s.Box.TopLeft.Y+padding)
 }
 

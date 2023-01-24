@@ -59,7 +59,6 @@ func (s shapeCloud) GetInnerBox() *geo.Box {
 }
 
 func (s shapeCloud) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
-	// TODO /2?
 	width += paddingX
 	height += paddingY
 	aspectRatio := width / height
@@ -75,7 +74,6 @@ func (s shapeCloud) GetDimensionsToFit(width, height, paddingX, paddingY float64
 
 func (s shapeCloud) GetInsidePlacement(width, height, padding float64) geo.Point {
 	r := s.Box
-	// only using padding/2 since there's already quite a bit of padding away from the corners
 	width += padding
 	height += padding
 	aspectRatio := width / height
