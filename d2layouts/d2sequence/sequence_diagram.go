@@ -225,7 +225,7 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 	for _, n := range sd.notes {
 		inGroup := false
 		for _, ref := range n.References {
-			curr := ref.UnresolvedScopeObj
+			curr := ref.ScopeObj
 			for curr != nil {
 				if curr == group {
 					inGroup = true

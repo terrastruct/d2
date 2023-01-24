@@ -65,7 +65,7 @@ func (obj *Object) ContainsAnyObject(objects []*Object) bool {
 
 func (o *Object) ContainedBy(obj *Object) bool {
 	for _, ref := range o.References {
-		curr := ref.UnresolvedScopeObj
+		curr := ref.ScopeObj
 		for curr != nil {
 			if curr == obj {
 				return true

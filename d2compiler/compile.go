@@ -105,7 +105,14 @@ func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 }
 
 func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
+	shape := m.GetField("shape")
+	if shape != nil {
+		c.compileField(obj, shape)
+	}
 	for _, f := range m.Fields {
+		if f.Name == "shape" {
+			continue
+		}
 		c.compileField(obj, f)
 	}
 
@@ -135,7 +142,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 		return
 	}
 
-	obj = obj.EnsureChild([]string{f.Name})
+	obj = obj.EnsureChild(d2graphIDA([]string{f.Name}))
 	if f.Primary() != nil {
 		c.compileLabel(obj.Attributes, f)
 	}
@@ -143,15 +150,20 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 		c.compileMap(obj, f.Map())
 	}
 
-	for _, er := range f.References {
+	for _, fr := range f.References {
+		if fr.OurValue() && fr.Context.Key.Value.Map != nil {
+			obj.Map = fr.Context.Key.Value.Map
+		}
+		scopeObjIDA := d2ir.IDA(fr.Context.ScopeMap)
+		scopeObj, _ := obj.Graph.Root.HasChild(scopeObjIDA)
 		obj.References = append(obj.References, d2graph.Reference{
-			Key: er.KeyPath,
-			KeyPathIndex: er.KeyPathIndex(),
+			Key:          fr.KeyPath,
+			KeyPathIndex: fr.KeyPathIndex(),
 
-			MapKey: er.Context.Key,
-			MapKeyEdgeIndex: er.Context.EdgeIndex(),
-			Scope: er.Context.Scope,
-			ScopeObj: obj.Parent,
+			MapKey:          fr.Context.Key,
+			MapKeyEdgeIndex: fr.Context.EdgeIndex(),
+			Scope:           fr.Context.Scope,
+			ScopeObj:        scopeObj,
 		})
 	}
 }
@@ -181,6 +193,9 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 
 func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 	if f.Primary() == nil {
+		if f.Composite != nil {
+			c.errorf(f.LastPrimaryKey(), "reserved field %v does not accept composite", f.Name)
+		}
 		return
 	}
 	scalar := f.Primary().Value
@@ -244,7 +259,12 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Direction.Value = scalar.ScalarString()
 		attrs.Direction.MapKey = f.LastPrimaryKey()
 	case "constraint":
-		// Compilation for shape-specific keywords happens elsewhere
+		if _, ok := scalar.(d2ast.String); !ok {
+			c.errorf(f.LastPrimaryKey(), "constraint value must be a string")
+			return
+		}
+		attrs.Constraint.Value = scalar.ScalarString()
+		attrs.Constraint.MapKey = f.LastPrimaryKey()
 	}
 }
 
@@ -311,7 +331,7 @@ func compileStyleFieldInit(attrs *d2graph.Attributes, f *d2ir.Field) {
 }
 
 func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
-	edge, err := obj.Connect(e.ID.SrcPath, e.ID.DstPath, e.ID.SrcArrow, e.ID.DstArrow, "")
+	edge, err := obj.Connect(d2graphIDA(e.ID.SrcPath), d2graphIDA(e.ID.DstPath), e.ID.SrcArrow, e.ID.DstArrow, "")
 	if err != nil {
 		c.errorf(e.References[0].AST(), err.Error())
 		return
@@ -332,12 +352,14 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 	}
 
 	for _, er := range e.References {
+		scopeObjIDA := d2ir.IDA(er.Context.ScopeMap)
+		scopeObj, _ := edge.Src.Graph.Root.HasChild(scopeObjIDA)
 		edge.References = append(edge.References, d2graph.EdgeReference{
-			Edge: er.Context.Edge,
-			MapKey: er.Context.Key,
+			Edge:            er.Context.Edge,
+			MapKey:          er.Context.Key,
 			MapKeyEdgeIndex: er.Context.EdgeIndex(),
-			Scope: er.Context.Scope,
-			ScopeObj: obj,
+			Scope:           er.Context.Scope,
+			ScopeObj:        scopeObj,
 		})
 	}
 }
@@ -452,6 +474,14 @@ func (c *compiler) compileClass(obj *d2graph.Object) {
 		}
 	}
 
+	for _, ch := range obj.ChildrenArray {
+		for i := 0; i < len(obj.Graph.Objects); i++ {
+			if obj.Graph.Objects[i] == ch {
+				obj.Graph.Objects = append(obj.Graph.Objects[:i], obj.Graph.Objects[i+1:]...)
+				i--
+			}
+		}
+	}
 	obj.Children = nil
 	obj.ChildrenArray = nil
 }
@@ -469,25 +499,20 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 			Name: d2target.Text{Label: col.IDVal},
 			Type: d2target.Text{Label: typ},
 		}
-		// The only map a sql table field could have is to specify constraint
-		if col.Map != nil {
-			for _, n := range col.Map.Nodes {
-				if n.MapKey.Key == nil || len(n.MapKey.Key.Path) == 0 {
-					continue
-				}
-				if n.MapKey.Key.Path[0].Unbox().ScalarString() == "constraint" {
-					if n.MapKey.Value.StringBox().Unbox() == nil {
-						c.errorf(n.MapKey, "constraint value must be a string")
-						return
-					}
-					d2Col.Constraint = n.MapKey.Value.StringBox().Unbox().ScalarString()
-				}
-			}
+		if col.Attributes.Constraint.Value != "" {
+			d2Col.Constraint = col.Attributes.Constraint.Value
 		}
-
 		obj.SQLTable.Columns = append(obj.SQLTable.Columns, d2Col)
 	}
 
+	for _, ch := range obj.ChildrenArray {
+		for i := 0; i < len(obj.Graph.Objects); i++ {
+			if obj.Graph.Objects[i] == ch {
+				obj.Graph.Objects = append(obj.Graph.Objects[:i], obj.Graph.Objects[i+1:]...)
+				i--
+			}
+		}
+	}
 	obj.Children = nil
 	obj.ChildrenArray = nil
 }
@@ -603,4 +628,14 @@ func init() {
 	for k, v := range ShortToFullLanguageAliases {
 		FullToShortLanguageAliases[v] = k
 	}
+}
+
+func d2graphIDA(irIDA []string) (ida []string) {
+	for _, el := range irIDA {
+		n := &d2ast.KeyPath{
+			Path: []*d2ast.StringBox{d2ast.MakeValueBox(d2ast.RawString(el, true)).StringBox()},
+		}
+		ida = append(ida, d2format.Format(n))
+	}
+	return ida
 }

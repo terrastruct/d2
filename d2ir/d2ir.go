@@ -262,17 +262,9 @@ func (f *Field) Copy(newParent Node) Node {
 }
 
 func (f *Field) lastPrimaryRef() *FieldReference {
-	inEdge := ParentEdge(f) != nil
 	for i := len(f.References) - 1; i >= 0; i-- {
-		fr := f.References[i]
-		if inEdge && len(fr.Context.Key.Edges) > 0 {
-			if fr.String == fr.Context.Key.EdgeKey.Path[len(fr.Context.Key.EdgeKey.Path)-1].Unbox() {
-				return fr
-			}
-		} else {
-			if fr.String == fr.Context.Key.Key.Path[len(fr.Context.Key.Key.Path)-1].Unbox() {
-				return fr
-			}
+		if f.References[i].OurValue() {
+			return f.References[i]
 		}
 	}
 	return nil
@@ -470,6 +462,17 @@ type FieldReference struct {
 	Context *RefContext `json:"context"`
 }
 
+// OurValue returns true if the Value in Context.Key.Value corresponds to the Field
+// represented by String.
+func (fr *FieldReference) OurValue() bool {
+	if fr.KeyPath == fr.Context.Key.Key {
+		return fr.KeyPathIndex() == len(fr.KeyPath.Path)-1
+	} else if fr.KeyPath == fr.Context.Key.EdgeKey {
+		return fr.KeyPathIndex() == len(fr.KeyPath.Path)-1
+	}
+	return false
+}
+
 func (fr *FieldReference) KeyPathIndex() int {
 	for i, sb := range fr.KeyPath.Path {
 		if sb.Unbox() == fr.String {
@@ -504,34 +507,15 @@ func (er *EdgeReference) AST() d2ast.Node {
 }
 
 type RefContext struct {
-	Edge  *d2ast.Edge `json:"edge"`
-	Key   *d2ast.Key  `json:"key"`
-	Scope *d2ast.Map  `json:"-"`
+	Edge     *d2ast.Edge `json:"edge"`
+	Key      *d2ast.Key  `json:"key"`
+	Scope    *d2ast.Map  `json:"-"`
+	ScopeMap *Map        `json:"-"`
 }
 
 func (rc *RefContext) Copy() *RefContext {
 	tmp := *rc
 	return &tmp
-}
-
-// UnresolvedScopeMap is scope prior to interpreting _
-// It does this by finding the referenced *Map of rc.Scope
-func (rc *RefContext) UnresolvedScopeMap(m *Map) *Map {
-	for {
-		fm := ParentField(m)
-		if fm == nil {
-			return m
-		}
-		for _, ref := range fm.References {
-			if ref.KeyPath != ref.Context.Key.Key {
-				continue
-			}
-			if ref.Context.Key.Value.Unbox() == rc.Scope {
-				return m
-			}
-		}
-		m = ParentMap(m)
-	}
 }
 
 func (rc *RefContext) EdgeIndex() int {
@@ -990,4 +974,21 @@ func parentPrimaryKey(n Node) *d2ast.Key {
 		return e.LastPrimaryKey()
 	}
 	return nil
+}
+
+func IDA(n Node) (ida []string) {
+	for {
+		f, ok := n.(*Field)
+		if ok {
+			if f.Name == "" {
+				return ida
+			}
+			ida = append(ida, f.Name)
+		}
+		f = ParentField(n)
+		if f == nil {
+			return ida
+		}
+		n = f
+	}
 }

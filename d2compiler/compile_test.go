@@ -336,8 +336,7 @@ x: {
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				tassert.Equal(t, "y", g.Objects[1].ID)
-				tassert.Equal(t, g.Root.AbsID(), g.Objects[1].References[0].ScopeObj.AbsID())
-				tassert.Equal(t, g.Objects[0].AbsID(), g.Objects[1].References[0].UnresolvedScopeObj.AbsID())
+				tassert.Equal(t, g.Objects[0].AbsID(), g.Objects[1].References[0].ScopeObj.AbsID())
 			},
 		},
 		{
@@ -1847,7 +1846,7 @@ choo: {
     test_id: varchar(64) {constraint: [primary_key, foreign_key]}
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/sql-panic.d2:3:27: constraint value must be a string`,
+			expErr: `d2/testdata/d2compiler/TestCompile/sql-panic.d2:3:27: reserved field constraint does not accept composite`,
 		},
 		{
 			name: "wrong_column_index",
@@ -1932,7 +1931,7 @@ func testScenarios(t *testing.T) {
 		run  func(t *testing.T)
 	}{
 		{
-			name: "one",
+			name: "root",
 			run: func(t *testing.T) {
 				g := assertCompile(t, `base
 
@@ -1948,6 +1947,34 @@ layers: {
 				assert.JSON(t, 2, len(g.Layers))
 				assert.JSON(t, "one", g.Layers[0].Name)
 				assert.JSON(t, "two", g.Layers[1].Name)
+			},
+		},
+		{
+			name: "recursive",
+			run: func(t *testing.T) {
+				g := assertCompile(t, `base
+
+layers: {
+  one: {
+    santa
+  }
+  two: {
+    clause
+		steps: {
+			seinfeld: {
+				reindeer
+			}
+			missoula: {
+				montana
+			}
+		}
+  }
+}
+`, "")
+				assert.Equal(t, 2, len(g.Layers))
+				assert.Equal(t, "one", g.Layers[0].Name)
+				assert.Equal(t, "two", g.Layers[1].Name)
+				assert.Equal(t, 2, len(g.Layers[1].Steps))
 			},
 		},
 	}

@@ -25,6 +25,7 @@ func Compile(ast *d2ast.Map) (*Map, error) {
 			}},
 		},
 	}
+	m.parent.(*Field).References[0].Context.ScopeMap = m
 	c.compileMap(m, ast)
 	c.compileScenarios(m)
 	c.compileSteps(m)
@@ -85,9 +86,10 @@ func (c *compiler) compileMap(dst *Map, ast *d2ast.Map) {
 	for _, n := range ast.Nodes {
 		switch {
 		case n.MapKey != nil:
-			c.compileKey(dst, &RefContext{
-				Key:   n.MapKey,
-				Scope: ast,
+			c.compileKey(&RefContext{
+				Key:      n.MapKey,
+				Scope:    ast,
+				ScopeMap: dst,
 			})
 		case n.Substitution != nil:
 			panic("TODO")
@@ -95,11 +97,11 @@ func (c *compiler) compileMap(dst *Map, ast *d2ast.Map) {
 	}
 }
 
-func (c *compiler) compileKey(dst *Map, refctx *RefContext) {
+func (c *compiler) compileKey(refctx *RefContext) {
 	if len(refctx.Key.Edges) == 0 {
-		c.compileField(dst, refctx.Key.Key, refctx)
+		c.compileField(refctx.ScopeMap, refctx.Key.Key, refctx)
 	} else {
-		c.compileEdges(dst, refctx)
+		c.compileEdges(refctx)
 	}
 }
 
@@ -137,9 +139,9 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 	}
 }
 
-func (c *compiler) compileEdges(dst *Map, refctx *RefContext) {
+func (c *compiler) compileEdges(refctx *RefContext) {
 	if refctx.Key.Key != nil {
-		f, err := dst.EnsureField(refctx.Key.Key, refctx)
+		f, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx)
 		if err != nil {
 			c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 			return
@@ -153,7 +155,7 @@ func (c *compiler) compileEdges(dst *Map, refctx *RefContext) {
 				parent: f,
 			}
 		}
-		dst = f.Map()
+		refctx.ScopeMap = f.Map()
 	}
 
 	eida := NewEdgeIDs(refctx.Key)
@@ -163,7 +165,7 @@ func (c *compiler) compileEdges(dst *Map, refctx *RefContext) {
 
 		var e *Edge
 		if eid.Index != nil {
-			ea := dst.GetEdges(eid)
+			ea := refctx.ScopeMap.GetEdges(eid)
 			if len(ea) == 0 {
 				c.errorf(refctx.Edge, "indexed edge does not exist")
 				continue
@@ -172,21 +174,21 @@ func (c *compiler) compileEdges(dst *Map, refctx *RefContext) {
 			e.References = append(e.References, &EdgeReference{
 				Context: refctx,
 			})
-			dst.appendFieldReferences(0, refctx.Edge.Src, refctx)
-			dst.appendFieldReferences(0, refctx.Edge.Dst, refctx)
+			refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Src, refctx)
+			refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Dst, refctx)
 		} else {
-			_, err := dst.EnsureField(refctx.Edge.Src, refctx)
+			_, err := refctx.ScopeMap.EnsureField(refctx.Edge.Src, refctx)
 			if err != nil {
 				c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 				continue
 			}
-			_, err = dst.EnsureField(refctx.Edge.Dst, refctx)
+			_, err = refctx.ScopeMap.EnsureField(refctx.Edge.Dst, refctx)
 			if err != nil {
 				c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 				continue
 			}
 
-			e, err = dst.CreateEdge(eid, refctx)
+			e, err = refctx.ScopeMap.CreateEdge(eid, refctx)
 			if err != nil {
 				c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 				continue

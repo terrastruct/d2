@@ -1104,7 +1104,7 @@ func move(g *d2graph.Graph, key, newKey string) (*d2graph.Graph, error) {
 				Key:    detachedMK.Key,
 				MapKey: detachedMK,
 				Scope:  mostNestedRef.Scope,
-			}, mostNestedRef.UnresolvedScopeObj)
+			}, mostNestedRef.ScopeObj)
 		}
 	}
 
@@ -1279,8 +1279,8 @@ func move(g *d2graph.Graph, key, newKey string) (*d2graph.Graph, error) {
 
 		// We don't want this to be underscore-resolved scope. We want to ignore underscores
 		var scopeak []string
-		if ref.UnresolvedScopeObj != g.Root {
-			scopek, err := d2parser.ParseKey(ref.UnresolvedScopeObj.AbsID())
+		if ref.ScopeObj != g.Root {
+			scopek, err := d2parser.ParseKey(ref.ScopeObj.AbsID())
 			if err != nil {
 				return nil, err
 			}

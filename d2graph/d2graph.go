@@ -108,7 +108,8 @@ type Attributes struct {
 	// TODO: default to ShapeRectangle instead of empty string
 	Shape Scalar `json:"shape"`
 
-	Direction Scalar `json:"direction"`
+	Direction  Scalar `json:"direction"`
+	Constraint Scalar `json:"constraint"`
 }
 
 // TODO references at the root scope should have their Scope set to root graph AST
@@ -119,9 +120,7 @@ type Reference struct {
 	MapKey          *d2ast.Key `json:"-"`
 	MapKeyEdgeIndex int        `json:"map_key_edge_index"`
 	Scope           *d2ast.Map `json:"-"`
-	// The ScopeObj and UnresolvedScopeObj are the same except when the key contains underscores
-	ScopeObj           *Object `json:"-"`
-	UnresolvedScopeObj *Object `json:"-"`
+	ScopeObj        *Object    `json:"-"`
 }
 
 func (r Reference) MapKeyEdgeDest() bool {
@@ -517,6 +516,9 @@ func (obj *Object) newObject(id string) *Object {
 }
 
 func (obj *Object) HasChild(ids []string) (*Object, bool) {
+	if len(ids) == 0 {
+		return obj, true
+	}
 	if len(ids) == 1 && ids[0] != "style" {
 		_, ok := ReservedKeywords[ids[0]]
 		if ok {
@@ -632,15 +634,22 @@ func (obj *Object) FindEdges(mk *d2ast.Key) ([]*Edge, bool) {
 	return ea, true
 }
 
+func (obj *Object) ensureChildEdge(ids []string) *Object {
+	for i := range ids {
+		switch obj.Attributes.Shape.Value {
+		case d2target.ShapeClass, d2target.ShapeSQLTable:
+			// This will only be called for connecting edges where we want to truncate to the
+			// container.
+			return obj
+		}
+		obj = obj.EnsureChild(ids[i : i+1])
+	}
+	return obj
+}
+
 // EnsureChild grabs the child by ids or creates it if it does not exist including all
 // intermediate nodes.
 func (obj *Object) EnsureChild(ids []string) *Object {
-	switch obj.Attributes.Shape.Value {
-	case d2target.ShapeClass, d2target.ShapeSQLTable:
-		// This will only be called for connecting edges where we want to truncate to the
-		// container.
-		return obj
-	}
 	_, is := ReservedKeywordHolders[ids[0]]
 	if len(ids) == 1 && !is {
 		_, ok := ReservedKeywords[ids[0]]
@@ -664,8 +673,7 @@ func (obj *Object) EnsureChild(ids []string) *Object {
 }
 
 func (obj *Object) AppendReferences(ida []string, ref Reference, unresolvedObj *Object) {
-	ref.ScopeObj = obj
-	ref.UnresolvedScopeObj = unresolvedObj
+	ref.ScopeObj = unresolvedObj
 	numUnderscores := 0
 	for i := range ida {
 		if ida[i] == "_" {
@@ -953,8 +961,8 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 		}
 	}
 
-	src := srcObj.EnsureChild(srcID)
-	dst := dstObj.EnsureChild(dstID)
+	src := srcObj.ensureChildEdge(srcID)
+	dst := dstObj.ensureChildEdge(dstID)
 
 	if src.OuterSequenceDiagram() != dst.OuterSequenceDiagram() {
 		return nil, errors.New("connections within sequence diagrams can connect only to other objects within the same sequence diagram")
