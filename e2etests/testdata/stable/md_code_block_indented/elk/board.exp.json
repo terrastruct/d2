@@ -7,7 +7,7 @@
       "type": "text",
       "pos": {
         "x": 12,
-        "y": 238
+        "y": 178
       },
       "width": 212,
       "height": 151,
@@ -46,11 +46,11 @@
       "id": "a",
       "type": "",
       "pos": {
-        "x": 61,
+        "x": 91,
         "y": 12
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -87,11 +87,11 @@
       "id": "b",
       "type": "",
       "pos": {
-        "x": 61,
-        "y": 489
+        "x": 91,
+        "y": 429
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -153,11 +153,11 @@
       "route": [
         {
           "x": 118,
-          "y": 138
+          "y": 78
         },
         {
           "x": 118,
-          "y": 238
+          "y": 178
         }
       ],
       "animated": false,
@@ -192,11 +192,11 @@
       "route": [
         {
           "x": 118,
-          "y": 389
+          "y": 329
         },
         {
           "x": 118,
-          "y": 489
+          "y": 429
         }
       ],
       "animated": false,

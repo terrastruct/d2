@@ -6,11 +6,11 @@
       "id": "x",
       "type": "",
       "pos": {
-        "x": 12,
+        "x": 28,
         "y": 12
       },
-      "width": 113,
-      "height": 126,
+      "width": 85,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -48,10 +48,10 @@
       "type": "",
       "pos": {
         "x": 12,
-        "y": 238
+        "y": 178
       },
-      "width": 114,
-      "height": 126,
+      "width": 118,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -112,12 +112,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 69,
-          "y": 138
+          "x": 71,
+          "y": 78
         },
         {
-          "x": 69,
-          "y": 238
+          "x": 71,
+          "y": 178
         }
       ],
       "animated": false,

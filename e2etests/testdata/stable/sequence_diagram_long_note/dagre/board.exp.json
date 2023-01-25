@@ -10,7 +10,7 @@
         "y": 74
       },
       "width": 150,
-      "height": 126,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -47,11 +47,11 @@
       "id": "b.note",
       "type": "page",
       "pos": {
-        "x": -163,
-        "y": 460
+        "x": -133,
+        "y": 400
       },
-      "width": 525,
-      "height": 126,
+      "width": 465,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -88,11 +88,11 @@
       "id": "a",
       "type": "",
       "pos": {
-        "x": 337,
+        "x": 307,
         "y": 74
       },
       "width": 150,
-      "height": 126,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -130,10 +130,10 @@
       "type": "page",
       "pos": {
         "x": 343,
-        "y": 716
+        "y": 596
       },
-      "width": 137,
-      "height": 190,
+      "width": 77,
+      "height": 130,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -194,12 +194,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 412,
-          "y": 330
+          "x": 382,
+          "y": 270
         },
         {
           "x": 99,
-          "y": 330
+          "y": 270
         }
       ],
       "animated": false,
@@ -234,11 +234,11 @@
       "route": [
         {
           "x": 99,
-          "y": 200
+          "y": 140
         },
         {
           "x": 99,
-          "y": 1036
+          "y": 856
         }
       ],
       "animated": false,
@@ -272,12 +272,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 412,
-          "y": 200
+          "x": 382,
+          "y": 140
         },
         {
-          "x": 412,
-          "y": 1036
+          "x": 382,
+          "y": 856
         }
       ],
       "animated": false,

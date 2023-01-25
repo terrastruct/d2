@@ -9,8 +9,8 @@
         "x": 12,
         "y": 12
       },
-      "width": 159,
-      "height": 126,
+      "width": 99,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -47,11 +47,11 @@
       "id": "1",
       "type": "",
       "pos": {
-        "x": 191,
+        "x": 131,
         "y": 12
       },
-      "width": 112,
-      "height": 126,
+      "width": 52,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -88,11 +88,11 @@
       "id": "2",
       "type": "",
       "pos": {
-        "x": 190,
-        "y": 238
+        "x": 130,
+        "y": 178
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -130,10 +130,10 @@
       "type": "",
       "pos": {
         "x": 21,
-        "y": 238
+        "y": 178
       },
-      "width": 140,
-      "height": 126,
+      "width": 80,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -194,12 +194,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 247,
-          "y": 138
+          "x": 157,
+          "y": 78
         },
         {
-          "x": 247,
-          "y": 238
+          "x": 157,
+          "y": 178
         }
       ],
       "animated": false,
@@ -233,12 +233,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 91.5,
-          "y": 138
+          "x": 61.5,
+          "y": 78
         },
         {
-          "x": 91.5,
-          "y": 238
+          "x": 61.5,
+          "y": 178
         }
       ],
       "animated": false,

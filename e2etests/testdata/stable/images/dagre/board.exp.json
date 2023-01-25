@@ -9,8 +9,8 @@
         "x": 0,
         "y": 0
       },
-      "width": 128,
-      "height": 128,
+      "width": 148,
+      "height": 148,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -59,10 +59,10 @@
       "type": "image",
       "pos": {
         "x": 0,
-        "y": 254
+        "y": 274
       },
-      "width": 128,
-      "height": 128,
+      "width": 148,
+      "height": 148,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -134,20 +134,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 64,
-          "y": 154
+          "x": 74,
+          "y": 174
         },
         {
-          "x": 64,
-          "y": 194
-        },
-        {
-          "x": 64,
+          "x": 74,
           "y": 214
         },
         {
-          "x": 64,
-          "y": 254
+          "x": 74,
+          "y": 234
+        },
+        {
+          "x": 74,
+          "y": 274
         }
       ],
       "isCurve": true,

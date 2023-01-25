@@ -10,7 +10,7 @@
         "y": 74
       },
       "width": 150,
-      "height": 126,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -47,11 +47,11 @@
       "id": "b",
       "type": "",
       "pos": {
-        "x": 337,
+        "x": 307,
         "y": 74
       },
       "width": 150,
-      "height": 126,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -88,11 +88,11 @@
       "id": "c",
       "type": "",
       "pos": {
-        "x": 629,
+        "x": 589,
         "y": 74
       },
-      "width": 190,
-      "height": 126,
+      "width": 150,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -129,11 +129,11 @@
       "id": "this is a message group",
       "type": "",
       "pos": {
-        "x": -97,
-        "y": 290
+        "x": -67,
+        "y": 230
       },
-      "width": 655,
-      "height": 952,
+      "width": 595,
+      "height": 892,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -170,11 +170,11 @@
       "id": "this is a message group.and this is a nested message group",
       "type": "",
       "pos": {
-        "x": -73,
-        "y": 420
+        "x": -43,
+        "y": 360
       },
-      "width": 607,
-      "height": 798,
+      "width": 547,
+      "height": 738,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -211,11 +211,11 @@
       "id": "this is a message group.and this is a nested message group.what about more nesting",
       "type": "",
       "pos": {
-        "x": -49,
-        "y": 550
+        "x": -19,
+        "y": 490
       },
-      "width": 559,
-      "height": 644,
+      "width": 499,
+      "height": 584,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -252,11 +252,11 @@
       "id": "this is a message group.and this is a nested message group.what about more nesting.crazy town",
       "type": "",
       "pos": {
-        "x": -25,
-        "y": 680
+        "x": 5,
+        "y": 620
       },
-      "width": 511,
-      "height": 490,
+      "width": 451,
+      "height": 430,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -293,11 +293,11 @@
       "id": "a.a note",
       "type": "page",
       "pos": {
-        "x": 25,
-        "y": 720
+        "x": 55,
+        "y": 660
       },
-      "width": 148,
-      "height": 126,
+      "width": 88,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -335,9 +335,9 @@
       "type": "",
       "pos": {
         "x": 49,
-        "y": 1066
+        "y": 946
       },
-      "width": 413,
+      "width": 383,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -375,10 +375,10 @@
       "id": "alt",
       "type": "",
       "pos": {
-        "x": 338,
-        "y": 1172
+        "x": 308,
+        "y": 1052
       },
-      "width": 460,
+      "width": 430,
       "height": 518,
       "opacity": 1,
       "strokeDash": 0,
@@ -416,10 +416,10 @@
       "id": "alt.case 1",
       "type": "",
       "pos": {
-        "x": 362,
-        "y": 1196
+        "x": 332,
+        "y": 1076
       },
-      "width": 412,
+      "width": 382,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -457,10 +457,10 @@
       "id": "alt.case 2",
       "type": "",
       "pos": {
-        "x": 362,
-        "y": 1326
+        "x": 332,
+        "y": 1206
       },
-      "width": 412,
+      "width": 382,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -498,10 +498,10 @@
       "id": "alt.case 3",
       "type": "",
       "pos": {
-        "x": 362,
-        "y": 1456
+        "x": 332,
+        "y": 1336
       },
-      "width": 412,
+      "width": 382,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -539,10 +539,10 @@
       "id": "alt.case 4",
       "type": "",
       "pos": {
-        "x": 362,
-        "y": 1586
+        "x": 332,
+        "y": 1466
       },
-      "width": 412,
+      "width": 382,
       "height": 80,
       "opacity": 1,
       "strokeDash": 0,
@@ -581,10 +581,10 @@
       "type": "page",
       "pos": {
         "x": 149,
-        "y": 2076
+        "y": 1896
       },
-      "width": 525,
-      "height": 126,
+      "width": 465,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -621,11 +621,11 @@
       "id": "a.note",
       "type": "page",
       "pos": {
-        "x": 30,
-        "y": 1756
+        "x": 60,
+        "y": 1636
       },
-      "width": 137,
-      "height": 190,
+      "width": 77,
+      "height": 130,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -687,11 +687,11 @@
       "route": [
         {
           "x": 99,
-          "y": 330
+          "y": 270
         },
         {
-          "x": 412,
-          "y": 330
+          "x": 382,
+          "y": 270
         }
       ],
       "animated": false,
@@ -726,11 +726,11 @@
       "route": [
         {
           "x": 99,
-          "y": 460
+          "y": 400
         },
         {
-          "x": 412,
-          "y": 460
+          "x": 382,
+          "y": 400
         }
       ],
       "animated": false,
@@ -765,11 +765,11 @@
       "route": [
         {
           "x": 99,
-          "y": 590
+          "y": 530
         },
         {
-          "x": 412,
-          "y": 590
+          "x": 382,
+          "y": 530
         }
       ],
       "animated": false,
@@ -804,11 +804,11 @@
       "route": [
         {
           "x": 99,
-          "y": 976
+          "y": 856
         },
         {
-          "x": 412,
-          "y": 976
+          "x": 382,
+          "y": 856
         }
       ],
       "animated": false,
@@ -843,11 +843,11 @@
       "route": [
         {
           "x": 99,
-          "y": 1106
+          "y": 986
         },
         {
-          "x": 412,
-          "y": 1106
+          "x": 382,
+          "y": 986
         }
       ],
       "animated": false,
@@ -881,12 +881,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 412,
-          "y": 1236
+          "x": 382,
+          "y": 1116
         },
         {
-          "x": 724,
-          "y": 1236
+          "x": 664,
+          "y": 1116
         }
       ],
       "animated": false,
@@ -920,12 +920,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 412,
-          "y": 1366
+          "x": 382,
+          "y": 1246
         },
         {
-          "x": 724,
-          "y": 1366
+          "x": 664,
+          "y": 1246
         }
       ],
       "animated": false,
@@ -959,12 +959,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 412,
-          "y": 1496
+          "x": 382,
+          "y": 1376
         },
         {
-          "x": 724,
-          "y": 1496
+          "x": 664,
+          "y": 1376
         }
       ],
       "animated": false,
@@ -998,12 +998,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 412,
-          "y": 1626
+          "x": 382,
+          "y": 1506
         },
         {
-          "x": 724,
-          "y": 1626
+          "x": 664,
+          "y": 1506
         }
       ],
       "animated": false,
@@ -1038,11 +1038,11 @@
       "route": [
         {
           "x": 99,
-          "y": 200
+          "y": 140
         },
         {
           "x": 99,
-          "y": 2332
+          "y": 2092
         }
       ],
       "animated": false,
@@ -1076,12 +1076,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 412,
-          "y": 200
+          "x": 382,
+          "y": 140
         },
         {
-          "x": 412,
-          "y": 2332
+          "x": 382,
+          "y": 2092
         }
       ],
       "animated": false,
@@ -1115,12 +1115,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 724,
-          "y": 200
+          "x": 664,
+          "y": 140
         },
         {
-          "x": 724,
-          "y": 2332
+          "x": 664,
+          "y": 2092
         }
       ],
       "animated": false,

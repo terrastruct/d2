@@ -9,8 +9,8 @@
         "x": 12,
         "y": 12
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -48,10 +48,10 @@
       "type": "",
       "pos": {
         "x": 12,
-        "y": 238
+        "y": 178
       },
-      "width": 114,
-      "height": 126,
+      "width": 54,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -88,7 +88,7 @@
       "id": "The top of the mountain",
       "type": "text",
       "pos": {
-        "x": -12,
+        "x": -42,
         "y": -29
       },
       "width": 162,
@@ -129,8 +129,8 @@
       "id": "bottom",
       "type": "text",
       "pos": {
-        "x": -402,
-        "y": 384
+        "x": -432,
+        "y": 264
       },
       "width": 943,
       "height": 131,
@@ -171,10 +171,10 @@
       "type": "person",
       "pos": {
         "x": -553,
-        "y": 125
+        "y": 94
       },
-      "width": 131,
-      "height": 126,
+      "width": 101,
+      "height": 67,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -211,11 +211,11 @@
       "id": "Donald",
       "type": "person",
       "pos": {
-        "x": 560,
-        "y": 125
+        "x": 530,
+        "y": 74
       },
-      "width": 155,
-      "height": 126,
+      "width": 160,
+      "height": 107,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -252,7 +252,7 @@
       "id": "i am top left",
       "type": "text",
       "pos": {
-        "x": -502,
+        "x": -532,
         "y": -29
       },
       "width": 80,
@@ -293,7 +293,7 @@
       "id": "i am top right",
       "type": "text",
       "pos": {
-        "x": 560,
+        "x": 530,
         "y": -29
       },
       "width": 90,
@@ -334,8 +334,8 @@
       "id": "i am bottom left",
       "type": "text",
       "pos": {
-        "x": -529,
-        "y": 384
+        "x": -559,
+        "y": 264
       },
       "width": 107,
       "height": 21,
@@ -375,8 +375,8 @@
       "id": "i am bottom right",
       "type": "text",
       "pos": {
-        "x": 560,
-        "y": 384
+        "x": 530,
+        "y": 264
       },
       "width": 117,
       "height": 21,
@@ -440,12 +440,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 69,
-          "y": 138
+          "x": 39,
+          "y": 78
         },
         {
-          "x": 69,
-          "y": 238
+          "x": 39,
+          "y": 178
         }
       ],
       "animated": false,

@@ -3,7 +3,7 @@
 id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="368" height="355" viewBox="-107 -122 368 355"><style type="text/css">
+width="308" height="295" viewBox="-107 -122 308 295"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -39,10 +39,10 @@ width="368" height="355" viewBox="-107 -122 368 355"><style type="text/css">
     svgEl.setAttribute("height", height * ratio - 16);
   }
 });
-]]></script><g id="cube" style='opacity:0.500000'><g class="shape" ><defs><mask id="border-mask-cube" maskUnits="userSpaceOnUse" x="0" y="-15" width="154" height="141">
-<rect x="0" y="-15" width="154" height="141" fill="white"></rect>
-<path d="M0,0L15,-15L154,-15L154,111L139,126L0,126L0,0L139,0L139,126M139,0L154,-15" style="fill:none;stroke:#53C0D8;stroke-width:7;;stroke:#000;fill:none;opacity:1;"/></mask></defs><rect x="0" y="0" width="139" height="126" style="fill:orange;stroke:none;stroke-width:7;" mask="url(#border-mask-cube)"/><polygon points="0,0 15,-15 154,-15 154,111 139,126 139,0" style="fill:#cc8400;stroke:none;stroke-width:7;" mask="url(#border-mask-cube)"/><path d="M0,0 L15,-15 L154,-15 L154,111 L139,126 L0,126 L0,0 L139,0 L139,126 M139,0 L154,-15" style="fill:none;stroke:#53C0D8;stroke-width:7;"/></g><text class="text-bold" x="69.500000" y="66.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">cube</text></g><mask id="819922043" maskUnits="userSpaceOnUse" x="-100" y="-100" width="368" height="355">
-<rect x="-100" y="-100" width="368" height="355" fill="white"></rect>
+]]></script><g id="cube" style='opacity:0.500000'><g class="shape" ><defs><mask id="border-mask-cube" maskUnits="userSpaceOnUse" x="0" y="-15" width="94" height="81">
+<rect x="0" y="-15" width="94" height="81" fill="white"></rect>
+<path d="M0,0L15,-15L94,-15L94,51L79,66L0,66L0,0L79,0L79,66M79,0L94,-15" style="fill:none;stroke:#53C0D8;stroke-width:7;;stroke:#000;fill:none;opacity:1;"/></mask></defs><rect x="0" y="0" width="79" height="66" style="fill:orange;stroke:none;stroke-width:7;" mask="url(#border-mask-cube)"/><polygon points="0,0 15,-15 94,-15 94,51 79,66 79,0" style="fill:#cc8400;stroke:none;stroke-width:7;" mask="url(#border-mask-cube)"/><path d="M0,0 L15,-15 L94,-15 L94,51 L79,66 L0,66 L0,0 L79,0 L79,66 M79,0 L94,-15" style="fill:none;stroke:#53C0D8;stroke-width:7;"/></g><text class="text-bold" x="39.500000" y="38.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">cube</text></g><mask id="4051038455" maskUnits="userSpaceOnUse" x="-100" y="-100" width="308" height="295">
+<rect x="-100" y="-100" width="308" height="295" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text-bold {

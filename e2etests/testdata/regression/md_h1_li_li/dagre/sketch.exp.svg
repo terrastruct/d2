@@ -3,7 +3,7 @@
 id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="317" height="771" viewBox="-102 -102 317 771"><style type="text/css">
+width="299" height="651" viewBox="-102 -102 299 651"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -796,7 +796,7 @@ width="317" height="771" viewBox="-102 -102 317 771"><style type="text/css">
 .md .contains-task-list:dir(rtl) .task-list-item-checkbox {
   margin: 0 -1.6em 0.25em 0.2em;
 }
-</style><g id="md"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="9.000000" y="226.000000" width="95" height="115"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:transparent;color:#0A0F25;"><h1>hey</h1>
+</style><g id="md"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="0.000000" y="166.000000" width="95" height="115"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:transparent;color:#0A0F25;"><h1>hey</h1>
 <ul>
 <li>they
 <ol>
@@ -804,8 +804,8 @@ width="317" height="771" viewBox="-102 -102 317 771"><style type="text/css">
 </ol>
 </li>
 </ul>
-</div></foreignObject></g></g><g id="a"><g class="shape" ><rect x="0" y="0" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="56.500000" y="66.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">a</text></g><g id="b"><g class="shape" ><rect x="0" y="441" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="56.500000" y="507.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">b</text></g><g id="(a -&gt; md)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 56.500000 128.000000 C 56.500000 166.000000 56.500000 186.000000 56.500000 222.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2837502795)"/></g><g id="(md -&gt; b)[0]"><path d="M 56.500000 343.000000 C 56.500000 381.000000 56.500000 401.000000 56.500000 437.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2837502795)"/></g><mask id="2837502795" maskUnits="userSpaceOnUse" x="-100" y="-100" width="317" height="771">
-<rect x="-100" y="-100" width="317" height="771" fill="white"></rect>
+</div></foreignObject></g></g><g id="a"><g class="shape" ><rect x="21" y="0" width="53" height="66" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="47.500000" y="38.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">a</text></g><g id="b"><g class="shape" ><rect x="21" y="381" width="53" height="66" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="47.500000" y="419.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">b</text></g><g id="(a -&gt; md)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 47.500000 68.000000 C 47.500000 106.000000 47.500000 126.000000 47.500000 162.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#4487205)"/></g><g id="(md -&gt; b)[0]"><path d="M 47.500000 283.000000 C 47.500000 321.000000 47.500000 341.000000 47.500000 377.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#4487205)"/></g><mask id="4487205" maskUnits="userSpaceOnUse" x="-100" y="-100" width="299" height="651">
+<rect x="-100" y="-100" width="299" height="651" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text {

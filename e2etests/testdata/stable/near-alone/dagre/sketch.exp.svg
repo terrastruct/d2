@@ -3,7 +3,7 @@
 id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="450" height="496" viewBox="-291 -248 450 496"><style type="text/css">
+width="330" height="376" viewBox="-201 -188 330 376"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -39,8 +39,8 @@ width="450" height="496" viewBox="-291 -248 450 496"><style type="text/css">
     svgEl.setAttribute("height", height * ratio - 16);
   }
 });
-]]></script><g id="x"><g class="shape" ><rect x="-56" y="-146" width="113" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="0.500000" y="-80.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">x</text></g><g id="y"><g class="shape" ><rect x="-57" y="20" width="114" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="0.000000" y="86.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">y</text></g><g id="z"><g class="shape" ><rect x="-189" y="-63" width="112" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="-133.000000" y="3.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">z</text></g><mask id="4000320260" maskUnits="userSpaceOnUse" x="-100" y="-100" width="450" height="496">
-<rect x="-100" y="-100" width="450" height="496" fill="white"></rect>
+]]></script><g id="x"><g class="shape" ><rect x="-26" y="-86" width="53" height="66" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="0.500000" y="-47.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">x</text></g><g id="y"><g class="shape" ><rect x="-27" y="20" width="54" height="66" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="0.000000" y="58.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">y</text></g><g id="z"><g class="shape" ><rect x="-99" y="-33" width="52" height="66" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="-73.000000" y="5.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">z</text></g><mask id="1827775704" maskUnits="userSpaceOnUse" x="-100" y="-100" width="330" height="376">
+<rect x="-100" y="-100" width="330" height="376" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text-bold {
