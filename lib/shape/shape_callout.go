@@ -1,6 +1,8 @@
 package shape
 
 import (
+	"math"
+
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
 )
@@ -80,7 +82,7 @@ func (s shapeCallout) GetDimensionsToFit(width, height, paddingX, paddingY float
 	} else {
 		baseHeight += defaultTipHeight
 	}
-	return width + paddingX, baseHeight
+	return math.Ceil(width + paddingX), math.Ceil(baseHeight)
 }
 
 func (s shapeCallout) GetDefaultPadding() (paddingX, paddingY float64) {

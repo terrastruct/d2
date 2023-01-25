@@ -80,7 +80,7 @@ func (s shapePackage) GetDimensionsToFit(width, height, paddingX, paddingY float
 	topHeight := innerHeight * packageVerticalScalar / (1. - packageVerticalScalar)
 	totalHeight := innerHeight + math.Min(topHeight, packageTopMaxHeight)
 
-	return width + paddingX, totalHeight
+	return math.Ceil(width + paddingX), math.Ceil(totalHeight)
 }
 
 func (s shapePackage) GetDefaultPadding() (paddingX, paddingY float64) {

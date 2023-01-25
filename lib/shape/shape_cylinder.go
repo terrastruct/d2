@@ -1,6 +1,8 @@
 package shape
 
 import (
+	"math"
+
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
 )
@@ -80,7 +82,7 @@ func (s shapeCylinder) GetSVGPathData() []string {
 func (s shapeCylinder) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	// 2 arcs top, height + padding, 1 arc bottom
 	totalHeight := height + paddingY + 3*defaultArcDepth
-	return width + paddingX, totalHeight
+	return math.Ceil(width + paddingX), math.Ceil(totalHeight)
 }
 
 func (s shapeCylinder) GetDefaultPadding() (paddingX, paddingY float64) {

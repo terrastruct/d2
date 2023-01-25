@@ -1,6 +1,8 @@
 package shape
 
 import (
+	"math"
+
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
 )
@@ -51,7 +53,7 @@ func (s shapeHexagon) GetSVGPathData() []string {
 
 func (s shapeHexagon) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	totalWidth := 2 * (width + paddingX)
-	return totalWidth, height + paddingY
+	return math.Ceil(totalWidth), math.Ceil(height + paddingY)
 }
 
 func (s shapeHexagon) GetDefaultPadding() (paddingX, paddingY float64) {

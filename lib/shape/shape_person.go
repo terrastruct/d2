@@ -1,6 +1,8 @@
 package shape
 
 import (
+	"math"
+
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
 )
@@ -79,7 +81,7 @@ func (s shapePerson) GetDimensionsToFit(width, height, paddingX, paddingY float6
 	} else if totalHeight > 1.5*totalWidth {
 		totalWidth = totalHeight / 1.5
 	}
-	return totalWidth, totalHeight
+	return math.Ceil(totalWidth), math.Ceil(totalHeight)
 }
 
 func (s shapePerson) GetDefaultPadding() (paddingX, paddingY float64) {

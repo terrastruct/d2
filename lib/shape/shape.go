@@ -93,7 +93,7 @@ func (s baseShape) GetInsidePlacement(_, _, padding float64) geo.Point {
 // return the minimum shape dimensions needed to fit content (width x height)
 // in the shape's innerBox with padding
 func (s baseShape) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
-	return width + paddingX, height + paddingY
+	return math.Ceil(width + paddingX), math.Ceil(height + paddingY)
 }
 
 func (s baseShape) GetDefaultPadding() (paddingX, paddingY float64) {

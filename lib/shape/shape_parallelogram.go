@@ -1,6 +1,8 @@
 package shape
 
 import (
+	"math"
+
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
 )
@@ -56,5 +58,5 @@ func (s shapeParallelogram) GetSVGPathData() []string {
 
 func (s shapeParallelogram) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	totalWidth := width + paddingX + parallelWedgeWidth*2
-	return totalWidth, height + paddingY
+	return math.Ceil(totalWidth), math.Ceil(height + paddingY)
 }

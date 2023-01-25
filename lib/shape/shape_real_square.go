@@ -28,6 +28,6 @@ func (s shapeRealSquare) IsRectangular() bool {
 }
 
 func (s shapeRealSquare) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
-	sideLength := math.Max(width+paddingX, height+paddingY)
+	sideLength := math.Ceil(math.Max(width+paddingX, height+paddingY))
 	return sideLength, sideLength
 }

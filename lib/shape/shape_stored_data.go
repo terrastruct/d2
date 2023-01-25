@@ -1,6 +1,8 @@
 package shape
 
 import (
+	"math"
+
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
 )
@@ -58,7 +60,7 @@ func (s shapeStoredData) GetSVGPathData() []string {
 
 func (s shapeStoredData) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	totalWidth := width + paddingX + 2*storedDataWedgeWidth
-	return totalWidth, height + paddingY
+	return math.Ceil(totalWidth), math.Ceil(height + paddingY)
 }
 
 func (s shapeStoredData) GetDefaultPadding() (paddingX, paddingY float64) {

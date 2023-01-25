@@ -95,7 +95,7 @@ func (s shapePage) GetDimensionsToFit(width, height, paddingX, paddingY float64)
 	}
 	totalWidth = math.Max(totalWidth, 2*pageCornerWidth)
 	totalHeight = math.Max(totalHeight, pageCornerHeight)
-	return totalWidth, totalHeight
+	return math.Ceil(totalWidth), math.Ceil(totalHeight)
 }
 
 func (s shapePage) GetDefaultPadding() (paddingX, paddingY float64) {

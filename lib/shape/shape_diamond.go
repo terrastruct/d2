@@ -1,6 +1,8 @@
 package shape
 
 import (
+	"math"
+
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
 )
@@ -58,7 +60,7 @@ func (s shapeDiamond) GetSVGPathData() []string {
 func (s shapeDiamond) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	totalWidth := 2 * (width + paddingX)
 	totalHeight := 2 * (height + paddingY)
-	return totalWidth, totalHeight
+	return math.Ceil(totalWidth), math.Ceil(totalHeight)
 }
 
 func (s shapeDiamond) GetDefaultPadding() (paddingX, paddingY float64) {
