@@ -4,7 +4,6 @@
 package textmeasure
 
 import (
-	"fmt"
 	"math"
 	"unicode"
 	"unicode/utf8"
@@ -16,6 +15,7 @@ import (
 )
 
 const TAB_SIZE = 4
+const SIZELESS_FONT_SIZE = 0
 
 // ASCII is a set of all ASCII runes. These runes are codepoints from 32 to 127 inclusive.
 var ASCII []rune
@@ -136,15 +136,26 @@ func NewRuler() (*Ruler, error) {
 	return r, nil
 }
 
-func (r *Ruler) addFontSize(font d2fonts.Font) {
-	sizeless := font
-	sizeless.Size = 0
-	ttf := r.ttfs[sizeless]
-	if ttf == nil {
-		panic(fmt.Errorf("sizeless font %s not found with style %s", font.Family, font.Style))
+func (r *Ruler) HasFontFamilyLoaded(fontFamily *d2fonts.FontFamily) bool {
+	for _, fontStyle := range d2fonts.FontStyles {
+		font := d2fonts.Font{
+			Family: *fontFamily,
+			Style:  fontStyle,
+			Size:   SIZELESS_FONT_SIZE,
+		}
+		_, ok := r.ttfs[font]
+		if !ok {
+			return false
+		}
 	}
 
-	face := truetype.NewFace(ttf, &truetype.Options{
+	return true
+}
+
+func (r *Ruler) addFontSize(font d2fonts.Font) {
+	sizeless := font
+	sizeless.Size = SIZELESS_FONT_SIZE
+	face := truetype.NewFace(r.ttfs[sizeless], &truetype.Options{
 		Size: float64(font.Size),
 	})
 	atlas := NewAtlas(face, ASCII)
