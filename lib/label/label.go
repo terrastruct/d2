@@ -266,7 +266,7 @@ func (labelPosition Position) GetPointOnRoute(route geo.Route, strokeWidth, labe
 		offsetX := strokeWidth/2 + float64(PADDING) + width/2
 		offsetY := strokeWidth/2 + float64(PADDING) + height/2
 
-		return geo.NewPoint(chopPrecision(basePoint.X+normalX*offsetX), chopPrecision(basePoint.Y+normalY*offsetY))
+		return geo.NewPoint(basePoint.X+normalX*offsetX, basePoint.Y+normalY*offsetY)
 	}
 
 	var labelCenter *geo.Point
@@ -310,8 +310,8 @@ func (labelPosition Position) GetPointOnRoute(route geo.Route, strokeWidth, labe
 		return nil
 	}
 	// convert from center to top left
-	labelCenter.X -= chopPrecision(width / 2)
-	labelCenter.Y -= chopPrecision(height / 2)
+	labelCenter.X = chopPrecision(labelCenter.X - width/2)
+	labelCenter.Y = chopPrecision(labelCenter.Y - height/2)
 	return labelCenter
 }
 
