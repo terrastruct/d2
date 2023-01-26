@@ -1568,8 +1568,15 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	backgroundEl.Height = float64(h)
 	backgroundEl.Fill = BG_COLOR
 
+	fitToScreenWrapper := fmt.Sprintf(`<svg %s preserveAspectRatio="xMinYMin meet" viewBox="0 0 %d %d">`,
+		`xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"`,
+		w, h,
+	)
+
 	// TODO minify
-	docRendered := fmt.Sprintf(`<?xml version="1.0" encoding="utf-8"?><svg id="d2-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s</svg>`,
+	docRendered := fmt.Sprintf(`%s%s<svg id="d2-svg" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s</svg></svg>`,
+		`<?xml version="1.0" encoding="utf-8"?>`,
+		fitToScreenWrapper,
 		w, h, left, top, w, h,
 		backgroundEl.Render(), // must be first
 		upperBuf.String(),
