@@ -63,6 +63,10 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	disableFitToScreenFlag, err := ms.Opts.Bool("D2_DISABLE_FIT_TO_SCREEN", "disable-fit-to-screen", "", false, "disable fit to screen")
+	if err != nil {
+		return err
+	}
 	layoutFlag := ms.Opts.String("D2_LAYOUT", "layout", "l", "dagre", `the layout engine used`)
 	themeFlag, err := ms.Opts.Int64("D2_THEME", "theme", "t", 0, "the diagram theme ID")
 	if err != nil {
@@ -236,19 +240,20 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			return xmain.UsageErrorf("-w[atch] cannot be combined with reading input from stdin")
 		}
 		w, err := newWatcher(ctx, ms, watcherOpts{
-			layoutPlugin:  plugin,
-			sketch:        *sketchFlag,
-			center:        *centerFlag,
-			themeID:       *themeFlag,
-			darkThemeID:   darkThemeFlag,
-			pad:           *padFlag,
-			host:          *hostFlag,
-			port:          *portFlag,
-			inputPath:     inputPath,
-			outputPath:    outputPath,
-			bundle:        *bundleFlag,
-			forceAppendix: *forceAppendixFlag,
-			pw:            pw,
+			layoutPlugin:       plugin,
+			sketch:             *sketchFlag,
+			center:             *centerFlag,
+			themeID:            *themeFlag,
+			darkThemeID:        darkThemeFlag,
+			pad:                *padFlag,
+			host:               *hostFlag,
+			port:               *portFlag,
+			inputPath:          inputPath,
+			outputPath:         outputPath,
+			bundle:             *bundleFlag,
+			forceAppendix:      *forceAppendixFlag,
+			disableFitToScreen: *disableFitToScreenFlag,
+			pw:                 pw,
 		})
 		if err != nil {
 			return err
@@ -259,7 +264,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	_, written, err := compile(ctx, ms, plugin, *sketchFlag, *centerFlag, *padFlag, *themeFlag, darkThemeFlag, inputPath, outputPath, *bundleFlag, *forceAppendixFlag, pw.Page)
+	_, written, err := compile(ctx, ms, plugin, *sketchFlag, *centerFlag, *padFlag, *themeFlag, darkThemeFlag, inputPath, outputPath, *bundleFlag, *forceAppendixFlag, *disableFitToScreen, pw.Page)
 	if err != nil {
 		if written {
 			return fmt.Errorf("failed to fully compile (partial render written): %w", err)
@@ -269,7 +274,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch, center bool, pad, themeID int64, darkThemeID *int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page) (_ []byte, written bool, _ error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch, center bool, pad, themeID int64, darkThemeID *int64, inputPath, outputPath string, bundle, forceAppendix bool, disableFitToScreen bool, page playwright.Page) (_ []byte, written bool, _ error) {
 	start := time.Now()
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
@@ -318,7 +323,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 		svg, err = renderPDF(ctx, ms, plugin, sketch, center, pad, themeID, outputPath, page, ruler, diagram, nil, nil, pageMap)
 	} else {
 		compileDur := time.Since(start)
-		svg, err = render(ctx, ms, compileDur, plugin, sketch, center, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
+		svg, err = render(ctx, ms, compileDur, plugin, sketch, center, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, disableFitToScreen, page, ruler, diagram)
 	}
 	if err != nil {
 		return svg, false, err
@@ -332,7 +337,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	return svg, true, nil
 }
 
-func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, sketch, center bool, pad int64, themeID int64, darkThemeID *int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
+func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, sketch, center bool, pad int64, themeID int64, darkThemeID *int64, inputPath, outputPath string, bundle, forceAppendix bool, disableFitToScreen bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
 	if diagram.Name != "" {
 		ext := filepath.Ext(outputPath)
 		outputPath = strings.TrimSuffix(outputPath, ext)
@@ -411,12 +416,13 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch, center bool, pad int64, themeID int64, darkThemeID *int64, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
 	toPNG := filepath.Ext(outputPath) == ".png"
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad:           int(pad),
-		Sketch:        sketch,
-		Center:        center,
-		ThemeID:       themeID,
-		DarkThemeID:   darkThemeID,
-		SetDimensions: toPNG,
+		Pad:                int(pad),
+		Sketch:             sketch,
+		Center:             center,
+		ThemeID:            themeID,
+		DarkThemeID:        darkThemeID,
+		SetDimensions:      toPNG,
+		DisableFitToScreen: disableFitToScreen,
 	})
 	if err != nil {
 		return nil, err

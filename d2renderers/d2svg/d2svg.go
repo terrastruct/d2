@@ -78,7 +78,8 @@ type RenderOpts struct {
 	ThemeID     int64
 	DarkThemeID *int64
 	// disables the fit to screen behavior and ensures the exported svg has the exact dimensions
-	SetDimensions bool
+	SetDimensions      bool
+	DisableFitToScreen bool
 }
 
 func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height int) {
@@ -1649,6 +1650,37 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 
 	buf := &bytes.Buffer{}
+	w, h := setViewbox(buf, diagram, pad)
+
+	styleCSS2 := ""
+	if sketchRunner != nil {
+		styleCSS2 = "\n" + sketchStyleCSS
+	}
+	buf.WriteString(fmt.Sprintf(`<style type="text/css">
+<![CDATA[
+%s%s
+]]>
+</style>`, styleCSS, styleCSS2))
+
+	// this script won't run in --watch mode because script tags are ignored when added via el.innerHTML = element
+	// https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML
+	if !opts.DisableFitToScreen {
+		buf.WriteString(fmt.Sprintf(`<script type="application/javascript"><![CDATA[%s]]></script>`, fitToScreenScript))
+	}
+
+	hasMarkdown := false
+	for _, s := range diagram.Shapes {
+		if s.Label != "" && s.Type == d2target.ShapeText {
+			hasMarkdown = true
+			break
+		}
+	}
+	if hasMarkdown {
+		fmt.Fprintf(buf, `<style type="text/css">%s</style>`, mdCSS)
+	}
+	if sketchRunner != nil {
+		fmt.Fprintf(buf, d2sketch.DefineFillPattern())
+	}
 
 	// only define shadow filter if a shape uses it
 	for _, s := range diagram.Shapes {
@@ -1845,6 +1877,9 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		w, h,
 		dimensions,
 	)
+	if opts.DisableFitToScreen {
+		fitToScreenWrapper = ``
+	}
 
 	// TODO minify
 	docRendered := fmt.Sprintf(`%s%s<svg id="d2-svg" class="%s" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s%s</svg></svg>`,
