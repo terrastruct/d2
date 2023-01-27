@@ -1093,22 +1093,33 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			desiredHeight, _ = strconv.Atoi(obj.Attributes.Height.Value)
 		}
 
+		dslShape := strings.ToLower(obj.Attributes.Shape.Value)
+
 		if obj.Attributes.Label.Value == "" &&
-			obj.Attributes.Shape.Value != d2target.ShapeImage &&
-			obj.Attributes.Shape.Value != d2target.ShapeSQLTable &&
-			obj.Attributes.Shape.Value != d2target.ShapeClass {
-			obj.Width = DEFAULT_SHAPE_SIZE
-			obj.Height = DEFAULT_SHAPE_SIZE
-			if desiredWidth != 0 {
-				obj.Width = float64(desiredWidth)
+			dslShape != d2target.ShapeImage &&
+			dslShape != d2target.ShapeSQLTable &&
+			dslShape != d2target.ShapeClass {
+
+			if dslShape == d2target.ShapeCircle || dslShape == d2target.ShapeSquare {
+				sideLength := DEFAULT_SHAPE_SIZE
+				if desiredWidth != 0 || desiredHeight != 0 {
+					sideLength = math.Max(float64(desiredWidth), float64(desiredHeight))
+				}
+				obj.Width = sideLength
+				obj.Height = sideLength
+			} else {
+				obj.Width = DEFAULT_SHAPE_SIZE
+				obj.Height = DEFAULT_SHAPE_SIZE
+				if desiredWidth != 0 {
+					obj.Width = float64(desiredWidth)
+				}
+				if desiredHeight != 0 {
+					obj.Height = float64(desiredHeight)
+				}
 			}
-			if desiredHeight != 0 {
-				obj.Height = float64(desiredHeight)
-			}
+
 			continue
 		}
-
-		dslShape := strings.ToLower(obj.Attributes.Shape.Value)
 
 		labelDims, err := obj.GetLabelSize(mtexts, ruler, fontFamily)
 		if err != nil {
