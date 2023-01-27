@@ -97,3 +97,10 @@ func (e *Edge) ContainedBy(obj *Object) bool {
 	}
 	return false
 }
+
+func (e *Edge) GetGroup() *Object {
+	for _, ref := range e.References {
+		return ref.ScopeObj
+	}
+	return nil
+}
