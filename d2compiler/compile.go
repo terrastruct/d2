@@ -235,6 +235,12 @@ func (c *compiler) compileAttributes(attrs *d2graph.Attributes, mk *d2ast.Key) {
 		attrs.Width = &d2graph.Scalar{MapKey: mk}
 	} else if reserved == "height" {
 		attrs.Height = &d2graph.Scalar{MapKey: mk}
+	} else if reserved == "double-border" {
+		if attrs.Shape.Value != "" && !strings.EqualFold(attrs.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(attrs.Shape.Value, d2target.ShapeRectangle) && !strings.EqualFold(attrs.Shape.Value, d2target.ShapeCircle) && !strings.EqualFold(attrs.Shape.Value, d2target.ShapeOval) {
+			c.errorf(mk.Range.Start, mk.Range.End, `key "double-border" can only be applied to squares, rectangles, circles, ovals`)
+			return
+		}
+		attrs.Style.DoubleBorder = &d2graph.Scalar{MapKey: mk}
 	}
 }
 

@@ -44,6 +44,8 @@ const (
 	appendixIconRadius = 16
 )
 
+var multipleOffset = geo.NewVector(10, -10)
+
 //go:embed tooltip.svg
 var TooltipIcon string
 
@@ -620,9 +622,15 @@ func renderOval(tl *geo.Point, width, height float64, fill, stroke, style string
 	el.Ry = height / 2
 	el.Cx = tl.X + el.Rx
 	el.Cy = tl.Y + el.Ry
+	el.Fill, el.Stroke = fill, stroke
 	el.Class = "shape"
 	el.Style = style
 	return el.Render()
+}
+
+func renderDoubleOval(tl *geo.Point, width, height float64, fill, stroke, style string) string {
+	var innerTL *geo.Point = tl.AddVector(geo.NewVector(d2target.INNER_BORDER_OFFSET, d2target.INNER_BORDER_OFFSET))
+	return renderOval(tl, width, height, fill, stroke, style) + renderOval(innerTL, width-10, height-10, fill, stroke, style)
 }
 
 func defineShadowFilter(writer io.Writer) {
@@ -808,17 +816,32 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeOval:
-		if targetShape.Multiple {
-			fmt.Fprint(writer, renderOval(multipleTL, width, height, fill, stroke, style))
-		}
-		if sketchRunner != nil {
-			out, err := d2sketch.Oval(sketchRunner, targetShape)
-			if err != nil {
-				return "", err
+		if targetShape.DoubleBorder {
+			if targetShape.Multiple {
+				fmt.Fprint(writer, renderDoubleOval(multipleTL, width, height, fill, stroke, style))
 			}
-			fmt.Fprint(writer, out)
+			if sketchRunner != nil {
+				out, err := d2sketch.DoubleOval(sketchRunner, targetShape)
+				if err != nil {
+					return "", err
+				}
+				fmt.Fprintf(writer, out)
+			} else {
+				fmt.Fprint(writer, renderDoubleOval(tl, width, height, fill, stroke, style))
+			}
 		} else {
-			fmt.Fprint(writer, renderOval(tl, width, height, fill, stroke, style))
+			if targetShape.Multiple {
+				fmt.Fprint(writer, renderOval(multipleTL, width, height, fill, stroke, style))
+			}
+			if sketchRunner != nil {
+				out, err := d2sketch.Oval(sketchRunner, targetShape)
+				if err != nil {
+					return "", err
+				}
+				fmt.Fprintf(writer, out)
+			} else {
+				fmt.Fprint(writer, renderOval(tl, width, height, fill, stroke, style))
+			}
 		}
 
 	case d2target.ShapeImage:
@@ -838,33 +861,84 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		if targetShape.ThreeDee {
 			fmt.Fprint(writer, render3dRect(targetShape))
 		} else {
-			if targetShape.Multiple {
-				el := svg_style.NewThemableElement("rect")
-				el.X = float64(targetShape.Pos.X + 10)
-				el.Y = float64(targetShape.Pos.Y - 10)
-				el.Width = float64(targetShape.Width)
-				el.Height = float64(targetShape.Height)
-				el.Fill = fill
-				el.Stroke = stroke
-				el.Style = style
-				fmt.Fprint(writer, el.Render())
-			}
-			if sketchRunner != nil {
-				out, err := d2sketch.Rect(sketchRunner, targetShape)
-				if err != nil {
-					return "", err
+			if !targetShape.DoubleBorder {
+				if targetShape.Multiple {
+					el := svg_style.NewThemableElement("rect")
+					el.X = float64(targetShape.Pos.X + 10)
+					el.Y = float64(targetShape.Pos.Y - 10)
+					el.Width = float64(targetShape.Width)
+					el.Height = float64(targetShape.Height)
+					el.Fill = fill
+					el.Stroke = stroke
+					el.Style = style
+					fmt.Fprint(writer, el.Render())
 				}
-				fmt.Fprint(writer, out)
+				if sketchRunner != nil {
+					out, err := d2sketch.Rect(sketchRunner, targetShape)
+					if err != nil {
+						return "", err
+					}
+					fmt.Fprint(writer, out)
+				} else {
+					el := svg_style.NewThemableElement("rect")
+					el.X = float64(targetShape.Pos.X)
+					el.Y = float64(targetShape.Pos.Y)
+					el.Width = float64(targetShape.Width)
+					el.Height = float64(targetShape.Height)
+					el.Fill = fill
+					el.Stroke = stroke
+					el.Style = style
+					fmt.Fprint(writer, el.Render())
+				}
 			} else {
-				el := svg_style.NewThemableElement("rect")
-				el.X = float64(targetShape.Pos.X)
-				el.Y = float64(targetShape.Pos.Y)
-				el.Width = float64(targetShape.Width)
-				el.Height = float64(targetShape.Height)
-				el.Fill = fill
-				el.Stroke = stroke
-				el.Style = style
-				fmt.Fprint(writer, el.Render())
+				if targetShape.Multiple {
+					el := svg_style.NewThemableElement("rect")
+					el.X = float64(targetShape.Pos.X + 10)
+					el.Y = float64(targetShape.Pos.Y - 10)
+					el.Width = float64(targetShape.Width)
+					el.Height = float64(targetShape.Height)
+					el.Fill = fill
+					el.Stroke = stroke
+					el.Style = style
+					fmt.Fprint(writer, el.Render())
+
+					el = svg_style.NewThemableElement("rect")
+					el.X = float64(targetShape.Pos.X + 10 + d2target.INNER_BORDER_OFFSET)
+					el.Y = float64(targetShape.Pos.Y - 10 + d2target.INNER_BORDER_OFFSET)
+					el.Width = float64(targetShape.Width - 2*d2target.INNER_BORDER_OFFSET)
+					el.Height = float64(targetShape.Height - 2*d2target.INNER_BORDER_OFFSET)
+					el.Fill = fill
+					el.Stroke = stroke
+					el.Style = style
+					fmt.Fprint(writer, el.Render())
+				}
+				if sketchRunner != nil {
+					out, err := d2sketch.DoubleRect(sketchRunner, targetShape)
+					if err != nil {
+						return "", err
+					}
+					fmt.Fprint(writer, out)
+				} else {
+					el := svg_style.NewThemableElement("rect")
+					el.X = float64(targetShape.Pos.X)
+					el.Y = float64(targetShape.Pos.Y)
+					el.Width = float64(targetShape.Width)
+					el.Height = float64(targetShape.Height)
+					el.Fill = fill
+					el.Stroke = stroke
+					el.Style = style
+					fmt.Fprint(writer, el.Render())
+
+					el = svg_style.NewThemableElement("rect")
+					el.X = float64(targetShape.Pos.X + d2target.INNER_BORDER_OFFSET)
+					el.Y = float64(targetShape.Pos.Y + d2target.INNER_BORDER_OFFSET)
+					el.Width = float64(targetShape.Width - 2*d2target.INNER_BORDER_OFFSET)
+					el.Height = float64(targetShape.Height - 2*d2target.INNER_BORDER_OFFSET)
+					el.Fill = fill
+					el.Stroke = stroke
+					el.Style = style
+					fmt.Fprint(writer, el.Render())
+				}
 			}
 		}
 	case d2target.ShapeText, d2target.ShapeCode:

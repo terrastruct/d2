@@ -5,6 +5,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
+	"math"
 	"os"
 	"path/filepath"
 	"strings"
@@ -147,7 +148,6 @@ func run(t *testing.T, tc testCase) {
 		diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
 			Ruler:         ruler,
 			MeasuredTexts: tc.mtexts,
-			ThemeID:       0,
 			Layout:        layout,
 		})
 		if !tassert.Nil(t, err) {
@@ -164,7 +164,9 @@ func run(t *testing.T, tc testCase) {
 		pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
 
 		svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-			Pad: d2svg.DEFAULT_PADDING,
+			Pad:         d2svg.DEFAULT_PADDING,
+			ThemeID:     0,
+			DarkThemeID: math.MaxInt64,
 		})
 		assert.Success(t, err)
 		err = os.MkdirAll(dataPath, 0755)
