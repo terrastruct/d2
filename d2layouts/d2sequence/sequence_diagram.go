@@ -490,6 +490,7 @@ func (sd *sequenceDiagram) routeMessages() error {
 				geo.NewPoint(midX, endY),
 				geo.NewPoint(endX, endY),
 			}
+			messageOffset += MIN_MESSAGE_DISTANCE
 		} else {
 			message.Route = []*geo.Point{
 				geo.NewPoint(startX, startY),
