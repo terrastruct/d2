@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -323,7 +324,10 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 		}
 	}
 
-	outputPath = layerOutputPath(outputPath, diagram)
+	err = os.MkdirAll(filepath.Dir(outputPath), 0755)
+	if err != nil {
+		return svg, err
+	}
 	err = ms.WritePath(outputPath, out)
 	if err != nil {
 		return svg, err
@@ -340,7 +344,7 @@ func layerOutputPath(outputPath string, d *d2target.Diagram) string {
 	}
 	ext := filepath.Ext(outputPath)
 	outputPath = strings.TrimSuffix(outputPath, ext)
-	outputPath += "-" + d.Name
+	outputPath += "/" + d.Name
 	outputPath += ext
 	return outputPath
 }
