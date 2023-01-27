@@ -1877,6 +1877,62 @@ a.sp1 -> a.sp2: redirect
 a.sp2 -> b: bar
 `,
 		},
+		{
+			name: "complex-layers",
+			script: `
+desc: Multi-layer diagram of a home.
+
+window: {
+  style.double-border: true
+}
+roof
+garage
+
+layers: {
+  window: {
+    blinds
+    glass
+  }
+  roof: {
+    shingles
+    starlink
+    utility hookup
+  }
+  garage: {
+    tools
+    vehicles
+  }
+  repair: {
+    desc: How to repair a home.
+
+    steps: {
+      1: {
+        find contractors: {
+          craigslist
+          facebook
+        }
+      }
+      2: {
+        find contractors -> solicit quotes
+      }
+      3: {
+        obtain quotes -> negotiate
+      }
+      4: {
+        negotiate -> book the best bid
+      }
+    }
+  }
+}
+
+scenarios: {
+  storm: {
+    water
+    rain
+    thunder
+  }
+}`,
+		},
 	}
 
 	runa(t, tcs)

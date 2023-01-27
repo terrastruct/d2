@@ -268,6 +268,8 @@ type Field struct {
 
 	Name string `json:"name"`
 
+	// Primary_ to avoid clashing with Primary(). We need to keep it exported for
+	// encoding/json to marshal it so cannot prefix _ instead.
 	Primary_  *Scalar   `json:"primary,omitempty"`
 	Composite Composite `json:"composite,omitempty"`
 

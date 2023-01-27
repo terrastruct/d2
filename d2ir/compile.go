@@ -61,7 +61,6 @@ func (c *compiler) compileSteps(m *Map) {
 		if sf.Map() == nil {
 			continue
 		}
-
 		var base *Map
 		if i == 0 {
 			base = m.CopyBase(sf)
@@ -243,7 +242,7 @@ func (c *compiler) compileArray(dst *Array, a *d2ast.Array) {
 				Value:  v,
 			}
 		case *d2ast.Substitution:
-			panic("TODO")
+			// panic("TODO")
 		}
 
 		dst.Values = append(dst.Values, irv)
