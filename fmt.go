@@ -17,26 +17,24 @@ func fmtCmd(ctx context.Context, ms *xmain.State) (err error) {
 
 	ms.Opts = xmain.NewOpts(ms.Env, ms.Log, ms.Opts.Flags.Args()[1:])
 	if len(ms.Opts.Args) == 0 {
-		return xmain.UsageErrorf("fmt must be passed the file to be formatted")
-	} else if len(ms.Opts.Args) > 1 {
-		return xmain.UsageErrorf("fmt accepts only one argument for the file to be formatted")
+		return xmain.UsageErrorf("fmt must be passed at least one file to be formatted")
 	}
 
-	inputPath := ms.Opts.Args[0]
-	input, err := ms.ReadPath(inputPath)
-	if err != nil {
-		return err
-	}
+	for _, inputPath := range ms.Opts.Args {
+		input, err := ms.ReadPath(inputPath)
+		if err != nil {
+			return err
+		}
 
-	m, err := d2parser.Parse(inputPath, bytes.NewReader(input), nil)
-	if err != nil {
-		return err
-	}
+		m, err := d2parser.Parse(inputPath, bytes.NewReader(input), nil)
+		if err != nil {
+			return err
+		}
 
-	output := []byte(d2format.Format(m))
-	if !bytes.Equal(output, input) {
-		return ms.WritePath(inputPath, output)
+		output := []byte(d2format.Format(m))
+		if !bytes.Equal(output, input) {
+			return ms.WritePath(inputPath, output)
+		}
 	}
-
 	return nil
 }

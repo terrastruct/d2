@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"io/ioutil"
+	"math"
 	"path/filepath"
 
 	"oss.terrastruct.com/d2/d2graph"
@@ -20,12 +21,13 @@ func main() {
 		return d2dagrelayout.Layout(ctx, g, nil)
 	}
 	diagram, _, _ := d2lib.Compile(context.Background(), "x -> y", &d2lib.CompileOptions{
-		Layout:  defaultLayout,
-		Ruler:   ruler,
-		ThemeID: d2themescatalog.GrapeSoda.ID,
+		Layout: defaultLayout,
+		Ruler:  ruler,
 	})
 	out, _ := d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad: d2svg.DEFAULT_PADDING,
+		Pad:         d2svg.DEFAULT_PADDING,
+		ThemeID:     d2themescatalog.GrapeSoda.ID,
+		DarkThemeID: math.MaxInt64,
 	})
 	_ = ioutil.WriteFile(filepath.Join("out.svg"), out, 0600)
 }

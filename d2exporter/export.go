@@ -90,6 +90,9 @@ func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
 	if obj.Attributes.Style.Font != nil {
 		shape.FontFamily = obj.Attributes.Style.Font.Value
 	}
+	if obj.Attributes.Style.DoubleBorder != nil {
+		shape.DoubleBorder, _ = strconv.ParseBool(obj.Attributes.Style.DoubleBorder.Value)
+	}
 }
 
 func toShape(obj *d2graph.Object) d2target.Shape {

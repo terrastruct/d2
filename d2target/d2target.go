@@ -24,7 +24,11 @@ const (
 
 	THREE_DEE_OFFSET = 15
 	MULTIPLE_OFFSET  = 10
+
+	INNER_BORDER_OFFSET = 5
 )
+
+var BorderOffset = geo.NewVector(5, 5)
 
 type Diagram struct {
 	Name        string              `json:"name"`
@@ -143,9 +147,10 @@ type Shape struct {
 	Fill   string `json:"fill"`
 	Stroke string `json:"stroke"`
 
-	Shadow   bool `json:"shadow"`
-	ThreeDee bool `json:"3d"`
-	Multiple bool `json:"multiple"`
+	Shadow       bool `json:"shadow"`
+	ThreeDee     bool `json:"3d"`
+	Multiple     bool `json:"multiple"`
+	DoubleBorder bool `json:"double-border"`
 
 	Tooltip      string   `json:"tooltip"`
 	Link         string   `json:"link"`

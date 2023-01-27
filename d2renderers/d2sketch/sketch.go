@@ -106,6 +106,57 @@ func Rect(r *Runner, shape d2target.Shape) (string, error) {
 	return output, nil
 }
 
+func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
+	jsBigRect := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
+		fill: "#000",
+		stroke: "#000",
+		strokeWidth: %d,
+		%s
+	});`, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
+	pathsBigRect, err := computeRoughPathData(r, jsBigRect)
+	if err != nil {
+		return "", err
+	}
+	jsSmallRect := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
+		fill: "#000",
+		stroke: "#000",
+		strokeWidth: %d,
+		%s
+	});`, shape.Width-d2target.INNER_BORDER_OFFSET*2, shape.Height-d2target.INNER_BORDER_OFFSET*2, shape.StrokeWidth, baseRoughProps)
+	pathsSmallRect, err := computeRoughPathData(r, jsSmallRect)
+	if err != nil {
+		return "", err
+	}
+
+	output := ""
+
+	pathEl := svg_style.NewThemableElement("path")
+	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
+	pathEl.Fill, pathEl.Stroke = svg_style.ShapeTheme(shape)
+	pathEl.Class = "shape"
+	pathEl.Style = shape.CSSStyle()
+	for _, p := range pathsBigRect {
+		pathEl.D = p
+		output += pathEl.Render()
+	}
+
+	pathEl = svg_style.NewThemableElement("path")
+	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X+d2target.INNER_BORDER_OFFSET, shape.Pos.Y+d2target.INNER_BORDER_OFFSET)
+	pathEl.Fill, pathEl.Stroke = svg_style.ShapeTheme(shape)
+	pathEl.Class = "shape"
+	pathEl.Style = shape.CSSStyle()
+	for _, p := range pathsSmallRect {
+		pathEl.D = p
+		output += pathEl.Render()
+	}
+
+	output += fmt.Sprintf(
+		`<rect class="sketch-overlay" transform="translate(%d %d)" width="%d" height="%d" />`,
+		shape.Pos.X, shape.Pos.Y, shape.Width, shape.Height,
+	)
+	return output, nil
+}
+
 func Oval(r *Runner, shape d2target.Shape) (string, error) {
 	js := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
 		fill: "#000",
@@ -141,6 +192,57 @@ func Oval(r *Runner, shape d2target.Shape) (string, error) {
 	}
 	output += renderedSO
 
+	return output, nil
+}
+
+func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
+	jsBigCircle := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
+		fill: "#000",
+		stroke: "#000",
+		strokeWidth: %d,
+		%s
+	});`, shape.Width/2, shape.Height/2, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
+	jsSmallCircle := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
+		fill: "#000",
+		stroke: "#000",
+		strokeWidth: %d,
+		%s
+	});`, shape.Width/2, shape.Height/2, shape.Width-d2target.INNER_BORDER_OFFSET*2, shape.Height-d2target.INNER_BORDER_OFFSET*2, shape.StrokeWidth, baseRoughProps)
+	pathsBigCircle, err := computeRoughPathData(r, jsBigCircle)
+	if err != nil {
+		return "", err
+	}
+	pathsSmallCircle, err := computeRoughPathData(r, jsSmallCircle)
+	if err != nil {
+		return "", err
+	}
+
+	output := ""
+
+	pathEl := svg_style.NewThemableElement("path")
+	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
+	pathEl.Fill, pathEl.Stroke = svg_style.ShapeTheme(shape)
+	pathEl.Class = "shape"
+	pathEl.Style = shape.CSSStyle()
+	for _, p := range pathsBigCircle {
+		pathEl.D = p
+		output += pathEl.Render()
+	}
+
+	pathEl = svg_style.NewThemableElement("path")
+	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
+	pathEl.Fill, pathEl.Stroke = svg_style.ShapeTheme(shape)
+	pathEl.Class = "shape"
+	pathEl.Style = shape.CSSStyle()
+	for _, p := range pathsSmallCircle {
+		pathEl.D = p
+		output += pathEl.Render()
+	}
+
+	output += fmt.Sprintf(
+		`<ellipse class="sketch-overlay" transform="translate(%d %d)" rx="%d" ry="%d" />`,
+		shape.Pos.X+shape.Width/2, shape.Pos.Y+shape.Height/2, shape.Width/2, shape.Height/2,
+	)
 	return output, nil
 }
 
