@@ -40,12 +40,9 @@ import (
 const (
 	DEFAULT_PADDING            = 100
 	MIN_ARROWHEAD_STROKE_WIDTH = 2
-	threeDeeOffset             = 15
 
 	appendixIconRadius = 16
 )
-
-var multipleOffset = geo.NewVector(10, -10)
 
 //go:embed tooltip.svg
 var TooltipIcon string
@@ -106,6 +103,9 @@ func arrowheadDimensions(arrowhead d2target.Arrowhead, strokeWidth float64) (wid
 	case d2target.DiamondArrowhead:
 		widthMultiplier = 11
 		heightMultiplier = 9
+	case d2target.FilledCircleArrowhead, d2target.CircleArrowhead:
+		widthMultiplier = 12
+		heightMultiplier = 12
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
 		widthMultiplier = 14
 		heightMultiplier = 15
@@ -233,6 +233,40 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 			)
 		}
 		path = polygonEl.Render()
+	case d2target.FilledCircleArrowhead:
+		radius := width / 2
+
+		circleEl := svg_style.NewThemableElement("circle")
+		circleEl.Cy = radius
+		circleEl.R = radius - strokeWidth/2
+		circleEl.Fill = connection.Stroke
+		circleEl.Class = "connection"
+		circleEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+
+		if isTarget {
+			circleEl.Cx = radius + strokeWidth/2
+		} else {
+			circleEl.Cy = radius - strokeWidth/2
+		}
+
+		path = circleEl.Render()
+	case d2target.CircleArrowhead:
+		radius := width / 2
+
+		circleEl := svg_style.NewThemableElement("circle")
+		circleEl.Cy = radius
+		circleEl.R = radius - strokeWidth
+		circleEl.Fill = bgColor
+		circleEl.Stroke = connection.Stroke
+		circleEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
+
+		if isTarget {
+			circleEl.Cx = radius + strokeWidth/2
+		} else {
+			circleEl.Cx = radius - strokeWidth/2
+		}
+
+		path = circleEl.Render()
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
 		offset := 4.0 + float64(connection.StrokeWidth*2)
 
@@ -438,7 +472,11 @@ func makeLabelMask(labelTL *geo.Point, width, height int) string {
 }
 
 func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, _ error) {
-	fmt.Fprintf(writer, `<g id="%s">`, svg.EscapeText(connection.ID))
+	opacityStyle := ""
+	if connection.Opacity != 1.0 {
+		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
+	}
+	fmt.Fprintf(writer, `<g id="%s"%s>`, svg.EscapeText(connection.ID), opacityStyle)
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(false, connection)
@@ -613,9 +651,9 @@ func render3dRect(targetShape d2target.Shape) string {
 		moveTo(d2target.Point{X: 0, Y: 0}),
 	)
 	for _, v := range []d2target.Point{
-		{X: threeDeeOffset, Y: -threeDeeOffset},
-		{X: targetShape.Width + threeDeeOffset, Y: -threeDeeOffset},
-		{X: targetShape.Width + threeDeeOffset, Y: targetShape.Height - threeDeeOffset},
+		{X: d2target.THREE_DEE_OFFSET, Y: -d2target.THREE_DEE_OFFSET},
+		{X: targetShape.Width + d2target.THREE_DEE_OFFSET, Y: -d2target.THREE_DEE_OFFSET},
+		{X: targetShape.Width + d2target.THREE_DEE_OFFSET, Y: targetShape.Height - d2target.THREE_DEE_OFFSET},
 		{X: targetShape.Width, Y: targetShape.Height},
 		{X: 0, Y: targetShape.Height},
 		{X: 0, Y: 0},
@@ -629,7 +667,7 @@ func render3dRect(targetShape d2target.Shape) string {
 		moveTo(d2target.Point{X: targetShape.Width, Y: 0}),
 	)
 	borderSegments = append(borderSegments,
-		lineTo(d2target.Point{X: targetShape.Width + threeDeeOffset, Y: -threeDeeOffset}),
+		lineTo(d2target.Point{X: targetShape.Width + d2target.THREE_DEE_OFFSET, Y: -d2target.THREE_DEE_OFFSET}),
 	)
 	border := svg_style.NewThemableElement("path")
 	border.D = strings.Join(borderSegments, " ")
@@ -644,10 +682,10 @@ func render3dRect(targetShape d2target.Shape) string {
 	maskID := fmt.Sprintf("border-mask-%v", svg.EscapeText(targetShape.ID))
 	borderMask := strings.Join([]string{
 		fmt.Sprintf(`<defs><mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
-			maskID, targetShape.Pos.X, targetShape.Pos.Y-threeDeeOffset, targetShape.Width+threeDeeOffset, targetShape.Height+threeDeeOffset,
+			maskID, targetShape.Pos.X, targetShape.Pos.Y-d2target.THREE_DEE_OFFSET, targetShape.Width+d2target.THREE_DEE_OFFSET, targetShape.Height+d2target.THREE_DEE_OFFSET,
 		),
 		fmt.Sprintf(`<rect x="%d" y="%d" width="%d" height="%d" fill="white"></rect>`,
-			targetShape.Pos.X, targetShape.Pos.Y-threeDeeOffset, targetShape.Width+threeDeeOffset, targetShape.Height+threeDeeOffset,
+			targetShape.Pos.X, targetShape.Pos.Y-d2target.THREE_DEE_OFFSET, targetShape.Width+d2target.THREE_DEE_OFFSET, targetShape.Height+d2target.THREE_DEE_OFFSET,
 		),
 		fmt.Sprintf(`<path d="%s" style="%s;stroke:#000;fill:none;opacity:1;"/></mask></defs>`,
 			strings.Join(borderSegments, ""), borderStyle),
@@ -670,9 +708,9 @@ func render3dRect(targetShape d2target.Shape) string {
 	var sidePoints []string
 	for _, v := range []d2target.Point{
 		{X: 0, Y: 0},
-		{X: threeDeeOffset, Y: -threeDeeOffset},
-		{X: targetShape.Width + threeDeeOffset, Y: -threeDeeOffset},
-		{X: targetShape.Width + threeDeeOffset, Y: targetShape.Height - threeDeeOffset},
+		{X: d2target.THREE_DEE_OFFSET, Y: -d2target.THREE_DEE_OFFSET},
+		{X: targetShape.Width + d2target.THREE_DEE_OFFSET, Y: -d2target.THREE_DEE_OFFSET},
+		{X: targetShape.Width + d2target.THREE_DEE_OFFSET, Y: targetShape.Height - d2target.THREE_DEE_OFFSET},
 		{X: targetShape.Width, Y: targetShape.Height},
 		{X: targetShape.Width, Y: 0},
 	} {
@@ -701,7 +739,12 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		fmt.Fprintf(writer, `<a href="%s" xlink:href="%[1]s">`, targetShape.Link)
 		closingTag += "</a>"
 	}
-	fmt.Fprintf(writer, `<g id="%s">`, svg.EscapeText(targetShape.ID))
+	// Opacity is a unique style, it applies to everything for a shape
+	opacityStyle := ""
+	if targetShape.Opacity != 1.0 {
+		opacityStyle = fmt.Sprintf(" style='opacity:%f'", targetShape.Opacity)
+	}
+	fmt.Fprintf(writer, `<g id="%s"%s>`, svg.EscapeText(targetShape.ID), opacityStyle)
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)
@@ -732,7 +775,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 
 	var multipleTL *geo.Point
 	if targetShape.Multiple {
-		multipleTL = tl.AddVector(multipleOffset)
+		multipleTL = tl.AddVector(geo.NewVector(d2target.MULTIPLE_OFFSET, -d2target.MULTIPLE_OFFSET))
 	}
 
 	switch targetShape.Type {
@@ -919,7 +962,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			}
 
 			svgStyles := styleToSVG(style)
-			fmt.Fprintf(writer, `<g transform="translate(%f %f)" style="opacity:%f">`, box.TopLeft.X, box.TopLeft.Y, targetShape.Opacity)
+			fmt.Fprintf(writer, `<g transform="translate(%f %f)">`, box.TopLeft.X, box.TopLeft.Y)
 			rectEl := svg_style.NewThemableElement("rect")
 			rectEl.Width = float64(targetShape.Width)
 			rectEl.Height = float64(targetShape.Height)
@@ -952,7 +995,6 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			gEl := svg_style.NewThemableElement("g")
 			gEl.Transform = fmt.Sprintf("translate(%f %f)", box.TopLeft.X, box.TopLeft.Y)
 			gEl.Color = targetShape.Stroke
-			gEl.Style = fmt.Sprintf("opacity:%f", targetShape.Opacity)
 			gEl.Content = render
 			fmt.Fprint(writer, gEl.Render())
 		} else if targetShape.Type == d2target.ShapeText && targetShape.Language != "" {

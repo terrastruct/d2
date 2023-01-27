@@ -364,6 +364,38 @@ no leading: |python
 |
 `,
 		},
+		{
+			name: "md_h1_li_li",
+			script: mdTestScript(`
+# hey
+- they
+	1. they
+`),
+		},
+		{
+			name: "elk_loop_panic",
+			script: `x: {
+  a
+  b
+}
+
+x.a -> x.a
+`,
+		},
+		{
+			name: "opacity-on-label",
+			script: `x.style.opacity: 0.4
+y: |md
+  linux: because a PC is a terrible thing to waste
+| {
+	style.opacity: 0.4
+}
+x -> a: {
+  label: You don't have to know how the computer works,\njust how to work the computer.
+  style.opacity: 0.4
+}
+`,
+		},
 	}
 
 	runa(t, tcs)

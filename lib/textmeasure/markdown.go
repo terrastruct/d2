@@ -2,6 +2,7 @@ package textmeasure
 
 import (
 	"bytes"
+	"fmt"
 	"math"
 	"strings"
 
@@ -33,6 +34,7 @@ const (
 	MarginTop_h            = 24
 	MarginBottom_h         = 16
 	PaddingBottom_h1_h2_em = 0.3
+	BorderBottom_h1_h2     = 1
 
 	Height_hr          = 4
 	MarginTopBottom_hr = 24
@@ -203,6 +205,18 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 		parentElementType = n.Parent.Data
 	}
 
+	debugMeasure := false
+	var depthStr string
+	if debugMeasure {
+		if depth == 0 {
+			fmt.Println()
+		}
+		depthStr = "┌"
+		for i := 0; i < depth; i++ {
+			depthStr += "-"
+		}
+	}
+
 	switch n.Type {
 	case html.TextNode:
 		if strings.TrimSpace(n.Data) == "" {
@@ -244,6 +258,9 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			w *= FontSize_pre_code_em
 			h *= FontSize_pre_code_em
 		}
+		if debugMeasure {
+			fmt.Printf("%stext(%v,%v)\n", depthStr, w, h)
+		}
 		return blockAttrs{w + spaceWidths, h, 0, 0}
 	case html.ElementNode:
 		isCode := false
@@ -273,58 +290,58 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			last := getPrev(n.LastChild)
 
 			var blocks []blockAttrs
-			var current *blockAttrs
+			var inlineBlock *blockAttrs
 			// first create blocks from combined inline elements, then combine all blocks
-			// current will be non-nil while inline elements are being combined into a block
+			// inlineBlock will be non-nil while inline elements are being combined into a block
+			endInlineBlock := func() {
+				if !isCode && inlineBlock.height > 0 && inlineBlock.height < MarkdownLineHeightPx {
+					inlineBlock.height = MarkdownLineHeightPx
+				}
+				blocks = append(blocks, *inlineBlock)
+				inlineBlock = nil
+			}
 			for child := n.FirstChild; child != nil; child = child.NextSibling {
 				childBlock := ruler.measureNode(depth+1, child, fontFamily, fontSize, fontStyle)
 
 				if child.Type == html.ElementNode && isBlockElement(child.Data) {
-					if current != nil {
-						blocks = append(blocks, *current)
+					if inlineBlock != nil {
+						endInlineBlock()
 					}
-					current = &blockAttrs{}
+					newBlock := &blockAttrs{}
+					newBlock.width = childBlock.width
+					newBlock.height = childBlock.height
 					if child == first && n.Data == "blockquote" {
-						current.marginTop = 0.
+						newBlock.marginTop = 0.
 					} else {
-						current.marginTop = childBlock.marginTop
+						newBlock.marginTop = childBlock.marginTop
 					}
 					if child == last && n.Data == "blockquote" {
-						current.marginBottom = 0.
+						newBlock.marginBottom = 0.
 					} else {
-						current.marginBottom = childBlock.marginBottom
+						newBlock.marginBottom = childBlock.marginBottom
 					}
 
-					current.width = childBlock.width
-					current.height = childBlock.height
-					blocks = append(blocks, *current)
-					current = nil
+					blocks = append(blocks, *newBlock)
 				} else if child.Type == html.ElementNode && child.Data == "br" {
-					if current != nil {
-						if !isCode && current.height > 0 && current.height < MarkdownLineHeightPx {
-							current.height = MarkdownLineHeightPx
-						}
-						blocks = append(blocks, *current)
-						current = nil
+					if inlineBlock != nil {
+						endInlineBlock()
 					}
 				} else if childBlock.isNotEmpty() {
-					if current == nil {
-						current = &childBlock
+					if inlineBlock == nil {
+						// start inline block with child
+						inlineBlock = &childBlock
 					} else {
-						current.marginTop = go2.Max(current.marginTop, childBlock.marginTop)
-						current.marginBottom = go2.Max(current.marginBottom, childBlock.marginBottom)
+						// stack inline element dimensions horizontally
+						inlineBlock.width += childBlock.width
+						inlineBlock.height = go2.Max(inlineBlock.height, childBlock.height)
 
-						current.width += childBlock.width
-						current.height = go2.Max(current.height, childBlock.height)
+						inlineBlock.marginTop = go2.Max(inlineBlock.marginTop, childBlock.marginTop)
+						inlineBlock.marginBottom = go2.Max(inlineBlock.marginBottom, childBlock.marginBottom)
 					}
 				}
 			}
-			if current != nil {
-				if !isCode && current.height > 0 && current.height < MarkdownLineHeightPx {
-					current.height = MarkdownLineHeightPx
-				}
-				blocks = append(blocks, *current)
-				current = nil
+			if inlineBlock != nil {
+				endInlineBlock()
 			}
 
 			var prevMarginBottom float64
@@ -363,7 +380,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			block.marginBottom = go2.Max(block.marginBottom, MarginBottom_h)
 			switch n.Data {
 			case "h1", "h2":
-				block.height += PaddingBottom_h1_h2_em * float64(fontSize)
+				block.height += PaddingBottom_h1_h2_em*float64(fontSize) + BorderBottom_h1_h2
 			}
 		case "li":
 			block.width += PaddingLeft_ul_ol
@@ -393,6 +410,9 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 		}
 		if block.height > 0 && block.height < MarkdownLineHeightPx {
 			block.height = MarkdownLineHeightPx
+		}
+		if debugMeasure {
+			fmt.Printf("%s%s(%v,%v) mt:%v mb:%v\n", depthStr, n.Data, block.width, block.height, block.marginTop, block.marginBottom)
 		}
 		return block
 	}
