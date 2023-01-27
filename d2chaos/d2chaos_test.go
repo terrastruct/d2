@@ -128,7 +128,7 @@ func test(t *testing.T, textPath, text string) {
 			t.Fatal(err)
 		}
 
-		_, err = d2exporter.Export(ctx, g, 0, nil)
+		_, err = d2exporter.Export(ctx, g, nil)
 		if err != nil {
 			t.Fatal(err)
 		}

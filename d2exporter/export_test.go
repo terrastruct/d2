@@ -244,7 +244,7 @@ func run(t *testing.T, tc testCase) {
 		t.Fatal(err)
 	}
 
-	got, err := d2exporter.Export(ctx, g, tc.themeID, nil)
+	got, err := d2exporter.Export(ctx, g, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
