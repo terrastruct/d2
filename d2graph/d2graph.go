@@ -1163,10 +1163,12 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 		}
 
-		// give shapes with icons extra padding
+		// give shapes with icons extra padding to fit their label
 		if obj.Attributes.Icon != nil {
-			paddingX += 20
-			paddingY += 20
+			labelHeight := float64(obj.LabelDimensions.Height)
+			// Evenly pad enough to fit label above icon
+			paddingX += labelHeight
+			paddingY += labelHeight
 		}
 		switch shapeType {
 		case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE, shape.IMAGE_TYPE:
