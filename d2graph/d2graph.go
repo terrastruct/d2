@@ -764,6 +764,12 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 				maxWidth = lineWidth
 			}
 		}
+		//    ┌─PrefixWidth ┌─CenterPadding
+		// ┌─┬─┬───────┬──────┬───┬──┐
+		// │ + getJobs()      Job[]  │
+		// └─┴─┴───────┴──────┴───┴──┘
+		//  └─PrefixPadding        └──TypePadding
+		//     ├───────┤   +  ├───┤  = maxWidth
 		dims.Width = d2target.PrefixPadding + d2target.PrefixWidth + maxWidth + d2target.CenterPadding + d2target.TypePadding
 
 		// All rows should be the same height
