@@ -85,6 +85,10 @@ func (c *compiler) compileLayersField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 		if f.Map() == nil {
 			continue
 		}
+		if g.GetLayer(f.Name) != nil {
+			c.errorf(f.References[0].AST(), "layer name %v already used by another layer", f.Name)
+			continue
+		}
 		g2 := c.compileLayer(f.Map())
 		g2.Name = f.Name
 		switch fieldName {

@@ -1384,3 +1384,22 @@ func init() {
 		NearConstants[k] = struct{}{}
 	}
 }
+
+func (g *Graph) GetLayer(name string) *Graph {
+	for _, l := range g.Layers {
+		if l.Name == name {
+			return l
+		}
+	}
+	for _, l := range g.Scenarios {
+		if l.Name == name {
+			return l
+		}
+	}
+	for _, l := range g.Steps {
+		if l.Name == name {
+			return l
+		}
+	}
+	return nil
+}

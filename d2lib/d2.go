@@ -44,32 +44,68 @@ func Compile(ctx context.Context, input string, opts *CompileOptions) (*d2target
 		return nil, nil, err
 	}
 
+	d, err := compile(ctx, g, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	return d, g, nil
+}
+
+func compile(ctx context.Context, g *d2graph.Graph, opts *CompileOptions) (*d2target.Diagram, error) {
 	if len(g.Objects) > 0 {
-		err = g.SetDimensions(opts.MeasuredTexts, opts.Ruler, opts.FontFamily)
+		err := g.SetDimensions(opts.MeasuredTexts, opts.Ruler, opts.FontFamily)
 		if err != nil {
-			return nil, nil, err
+			return nil, err
 		}
 
 		coreLayout, err := getLayout(opts)
 		if err != nil {
-			return nil, nil, err
+			return nil, err
 		}
 
 		constantNears := d2near.WithoutConstantNears(ctx, g)
 
 		err = d2sequence.Layout(ctx, g, coreLayout)
 		if err != nil {
-			return nil, nil, err
+			return nil, err
 		}
 
 		err = d2near.Layout(ctx, g, constantNears)
 		if err != nil {
-			return nil, nil, err
+			return nil, err
 		}
 	}
 
-	diagram, err := d2exporter.Export(ctx, g, opts.ThemeID, opts.FontFamily)
-	return diagram, g, err
+	d, err := d2exporter.Export(ctx, g, opts.ThemeID, opts.FontFamily)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, l := range g.Layers {
+		ld, err := compile(ctx, l, opts)
+		if err != nil {
+			return nil, err
+		}
+		ld.Type = "layer"
+		d.Layers = append(d.Layers, ld)
+	}
+	for _, l := range g.Scenarios {
+		ld, err := compile(ctx, l, opts)
+		if err != nil {
+			return nil, err
+		}
+		ld.Type = "scenario"
+		d.Scenarios = append(d.Scenarios, ld)
+	}
+	for _, l := range g.Steps {
+		ld, err := compile(ctx, l, opts)
+		if err != nil {
+			return nil, err
+		}
+		ld.Type = "step"
+		d.Steps = append(d.Steps, ld)
+	}
+	return d, nil
 }
 
 func getLayout(opts *CompileOptions) (func(context.Context, *d2graph.Graph) error, error) {

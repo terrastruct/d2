@@ -1,10 +1,11 @@
 {
   "name": "",
+  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
         "y": 0
@@ -42,5 +43,8 @@
       "level": 1
     }
   ],
-  "connections": []
+  "connections": [],
+  "layers": null,
+  "scenarios": null,
+  "steps": null
 }

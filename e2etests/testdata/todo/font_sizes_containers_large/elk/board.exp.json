@@ -1,5 +1,6 @@
 {
   "name": "",
+  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -203,5 +204,8 @@
       "level": 5
     }
   ],
-  "connections": []
+  "connections": [],
+  "layers": null,
+  "scenarios": null,
+  "steps": null
 }

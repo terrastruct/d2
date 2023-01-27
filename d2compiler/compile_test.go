@@ -2003,6 +2003,24 @@ layers: {
 				assert.Equal(t, 2, len(g.Layers[1].Steps))
 			},
 		},
+		{
+			name: "recursive",
+			run: func(t *testing.T) {
+				assertCompile(t, `base
+
+layers: {
+  one: {
+    santa
+  }
+}
+steps: {
+	one: {
+		clause
+	}
+}
+`, `d2/testdata/d2compiler/TestCompile2/scenarios/recursive#01.d2:9:2: layer name one already used by another layer`)
+			},
+		},
 	}
 
 	for _, tc := range tca {
