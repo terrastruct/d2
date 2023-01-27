@@ -396,6 +396,56 @@ x -> a: {
 }
 `,
 		},
+		{
+			name: "sequence_diagram_self_edge_group_overlap",
+			script: `
+shape: sequence_diagram
+a: A
+b: B
+c: C
+group 1: {
+	a -> a
+}
+group 2: {
+	a -> b
+}
+group 3: {
+	a -> a.a
+}
+group 4: {
+	a.a -> b
+}
+group 5: {
+	b -> b
+	b -> b
+}
+group 6: {
+	b -> a
+}
+group 7: {
+	a -> a
+}
+group 8: {
+	a -> a
+}
+a -> a
+group 9: {
+	a -> a
+}
+a -> a
+
+b -> c
+group 10: {
+	c -> c
+}
+b -> c
+group 11: {
+	c -> c
+}
+b -> c
+
+`,
+		},
 	}
 
 	runa(t, tcs)

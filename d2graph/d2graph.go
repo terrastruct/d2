@@ -150,6 +150,7 @@ type Style struct {
 	Italic       *Scalar `json:"italic,omitempty"`
 	Underline    *Scalar `json:"underline,omitempty"`
 	Filled       *Scalar `json:"filled,omitempty"`
+	DoubleBorder *Scalar `json:"doubleBorder,omitempty"`
 }
 
 func (s *Style) Apply(key, value string) error {
@@ -303,6 +304,15 @@ func (s *Style) Apply(key, value string) error {
 			return errors.New(`expected "filled" to be true or false`)
 		}
 		s.Filled.Value = value
+	case "double-border":
+		if s.DoubleBorder == nil {
+			break
+		}
+		_, err := strconv.ParseBool(value)
+		if err != nil {
+			return errors.New(`expected "double-border" to be true or false`)
+		}
+		s.DoubleBorder.Value = value
 	default:
 		return fmt.Errorf("unknown style key: %s", key)
 	}
@@ -1341,8 +1351,9 @@ var StyleKeywords = map[string]struct{}{
 	"underline":  {},
 
 	// Only for shapes
-	"shadow":   {},
-	"multiple": {},
+	"shadow":        {},
+	"multiple":      {},
+	"double-border": {},
 
 	// Only for squares
 	"3d": {},

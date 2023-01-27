@@ -343,6 +343,8 @@ func compileStyleFieldInit(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Width = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "height":
 		attrs.Height = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+	case "double-border":
+		attrs.Style.DoubleBorder = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	}
 }
 
@@ -565,6 +567,11 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 			if obj.Attributes.Style.ThreeDee != nil {
 				if !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeRectangle) {
 					c.errorf(obj.Attributes.Style.ThreeDee.MapKey, `key "3d" can only be applied to squares and rectangles`)
+				}
+			}
+			if obj.Attributes.Style.DoubleBorder != nil {
+				if obj.Attributes.Shape.Value != "" && obj.Attributes.Shape.Value != d2target.ShapeSquare && obj.Attributes.Shape.Value != d2target.ShapeRectangle && obj.Attributes.Shape.Value != d2target.ShapeCircle && obj.Attributes.Shape.Value != d2target.ShapeOval {
+					c.errorf(obj.Attributes.Style.DoubleBorder.MapKey, `key "double-border" can only be applied to squares, rectangles, circles, ovals`)
 				}
 			}
 		case "shape":
