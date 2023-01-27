@@ -100,7 +100,9 @@ func (e *Edge) ContainedBy(obj *Object) bool {
 
 func (e *Edge) GetGroup() *Object {
 	for _, ref := range e.References {
-		return ref.ScopeObj
+		if ref.ScopeObj.IsSequenceDiagramGroup() {
+			return ref.ScopeObj
+		}
 	}
 	return nil
 }
