@@ -9,3 +9,5 @@
 #### Improvements 🧹
 
 #### Bugfixes ⛑️
+
+- Fixes groups overlapping in sequence diagrams when they end in a self loop. [#728](https://github.com/terrastruct/d2/pull/728)
