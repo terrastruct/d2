@@ -195,6 +195,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				ConfigurableOpts: ConfigurableOpts{
 					NodeSpacing:     opts.NodeSpacing,
 					EdgeNodeSpacing: opts.EdgeNodeSpacing,
+					SelfLoopSpacing: opts.SelfLoopSpacing,
 					Padding:         opts.Padding,
 				},
 			}

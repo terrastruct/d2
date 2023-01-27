@@ -27,12 +27,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNears []*d2graph.Obje
 	// So place the center ones first, then the later ones will consider them for bounding box
 	for _, processCenters := range []bool{true, false} {
 		for _, obj := range constantNears {
-			if processCenters == strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "center") {
+			if processCenters == strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "-center") {
 				obj.TopLeft = geo.NewPoint(place(obj))
 			}
 		}
 		for _, obj := range constantNears {
-			if processCenters == strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "center") {
+			if processCenters == strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "-center") {
 				// The z-index for constant nears does not matter, as it will not collide
 				g.Objects = append(g.Objects, obj)
 				obj.Parent.Children[obj.ID] = obj
@@ -150,6 +150,15 @@ func boundingBox(g *d2graph.Graph) (tl, br *geo.Point) {
 				}
 			}
 		}
+	}
+
+	if math.IsInf(x1, 1) && math.IsInf(x2, -1) {
+		x1 = 0
+		x2 = 0
+	}
+	if math.IsInf(y1, 1) && math.IsInf(y2, -1) {
+		y1 = 0
+		y2 = 0
 	}
 
 	return geo.NewPoint(x1, y1), geo.NewPoint(x2, y2)

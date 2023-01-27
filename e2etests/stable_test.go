@@ -1765,6 +1765,29 @@ e <--> f: {
 }`,
 		},
 		{
+			name: "circle_arrowhead",
+			script: `
+a <-> b: circle {
+  source-arrowhead: {
+    shape: circle
+  }
+  target-arrowhead: {
+    shape: circle
+  }
+}
+
+c <-> d: filled-circle {
+  source-arrowhead: {
+    shape: circle
+    style.filled: true
+  }
+  target-arrowhead: {
+    shape: circle
+    style.filled: true
+  }
+}`,
+		},
+		{
 			name: "animated",
 			script: `
 your love life will be -> happy: { style.animated: true }
@@ -1815,6 +1838,43 @@ x.y -> a.b: {
   style.animated: true
 	target-arrowhead.shape: cf-many
 }
+`,
+		},
+		{
+			name: "near-alone",
+			script: `
+x: {
+	near: top-center
+}
+y: {
+	near: bottom-center
+}
+z: {
+	near: center-left
+}
+`,
+		},
+		{
+			name: "border-radius",
+			script: `
+x: {
+	style.border-radius: 4
+}
+y: {
+	style.border-radius: 10
+}
+`,
+		},
+		{
+			name: "sequence-inter-span-self",
+			script: `
+shape: sequence_diagram
+a: A
+b: B
+
+a.sp1 -> b: foo
+a.sp1 -> a.sp2: redirect
+a.sp2 -> b: bar
 `,
 		},
 	}

@@ -21,6 +21,9 @@ import (
 const (
 	DEFAULT_ICON_SIZE = 32
 	MAX_ICON_SIZE     = 64
+
+	THREE_DEE_OFFSET = 15
+	MULTIPLE_OFFSET  = 10
 )
 
 type Diagram struct {
@@ -65,6 +68,15 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			// 16 is the icon radius
 			y1 = go2.Min(y1, targetShape.Pos.Y-targetShape.StrokeWidth-16)
 			x2 = go2.Max(x2, targetShape.Pos.X+targetShape.StrokeWidth+targetShape.Width+16)
+		}
+
+		if targetShape.ThreeDee {
+			y1 = go2.Min(y1, targetShape.Pos.Y-THREE_DEE_OFFSET-targetShape.StrokeWidth)
+			x2 = go2.Max(x2, targetShape.Pos.X+THREE_DEE_OFFSET+targetShape.Width+targetShape.StrokeWidth)
+		}
+		if targetShape.Multiple {
+			y1 = go2.Min(y1, targetShape.Pos.Y-MULTIPLE_OFFSET-targetShape.StrokeWidth)
+			x2 = go2.Max(x2, targetShape.Pos.X+MULTIPLE_OFFSET+targetShape.Width+targetShape.StrokeWidth)
 		}
 
 		if targetShape.Label != "" {
@@ -163,11 +175,13 @@ type Shape struct {
 func (s Shape) CSSStyle() string {
 	out := ""
 
-	out += fmt.Sprintf(`opacity:%f;`, s.Opacity)
 	out += fmt.Sprintf(`stroke-width:%d;`, s.StrokeWidth)
 	if s.StrokeDash != 0 {
 		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(s.StrokeWidth), s.StrokeDash)
 		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
+	}
+	if s.BorderRadius != 0 {
+		out += fmt.Sprintf(`rx:%d;`, s.BorderRadius)
 	}
 
 	return out
@@ -268,7 +282,6 @@ func BaseConnection() *Connection {
 func (c Connection) CSSStyle() string {
 	out := ""
 
-	out += fmt.Sprintf(`opacity:%f;`, c.Opacity)
 	out += fmt.Sprintf(`stroke-width:%d;`, c.StrokeWidth)
 	strokeDash := c.StrokeDash
 	if strokeDash == 0 && c.Animated {
@@ -316,6 +329,8 @@ const (
 	TriangleArrowhead      Arrowhead = "triangle"
 	DiamondArrowhead       Arrowhead = "diamond"
 	FilledDiamondArrowhead Arrowhead = "filled-diamond"
+	CircleArrowhead        Arrowhead = "circle"
+	FilledCircleArrowhead  Arrowhead = "filled-circle"
 
 	// For fat arrows
 	LineArrowhead Arrowhead = "line"
@@ -333,6 +348,8 @@ var Arrowheads = map[string]struct{}{
 	string(TriangleArrowhead):      {},
 	string(DiamondArrowhead):       {},
 	string(FilledDiamondArrowhead): {},
+	string(CircleArrowhead):        {},
+	string(FilledCircleArrowhead):  {},
 	string(CfOne):                  {},
 	string(CfMany):                 {},
 	string(CfOneRequired):          {},
@@ -346,6 +363,11 @@ func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
 			return FilledDiamondArrowhead
 		}
 		return DiamondArrowhead
+	case string(CircleArrowhead):
+		if filled {
+			return FilledCircleArrowhead
+		}
+		return CircleArrowhead
 	case string(ArrowArrowhead):
 		return ArrowArrowhead
 	case string(CfOne):
