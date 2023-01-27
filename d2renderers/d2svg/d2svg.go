@@ -42,6 +42,8 @@ const (
 	appendixIconRadius = 16
 )
 
+var multipleOffset = geo.NewVector(10, -10)
+
 //go:embed tooltip.svg
 var TooltipIcon string
 
@@ -589,6 +591,11 @@ func renderOval(tl *geo.Point, width, height float64, style string) string {
 	return fmt.Sprintf(`<ellipse class="shape" cx="%f" cy="%f" rx="%f" ry="%f" style="%s" />`, cx, cy, rx, ry, style)
 }
 
+func renderDoubleOval(tl *geo.Point, width, height float64, style string) string {
+	var innerTL *geo.Point = tl.AddVector(geo.NewVector(d2target.INNER_BORDER_OFFSET, d2target.INNER_BORDER_OFFSET))
+	return renderOval(tl, width, height, style) + renderOval(innerTL, width-10, height-10, style)
+}
+
 func defineShadowFilter(writer io.Writer) {
 	fmt.Fprint(writer, `<defs>
 	<filter id="shadow-filter" width="200%" height="200%" x="-50%" y="-50%">
@@ -760,17 +767,32 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		fmt.Fprintf(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeOval:
-		if targetShape.Multiple {
-			fmt.Fprint(writer, renderOval(multipleTL, width, height, style))
-		}
-		if sketchRunner != nil {
-			out, err := d2sketch.Oval(sketchRunner, targetShape)
-			if err != nil {
-				return "", err
+		if targetShape.DoubleBorder {
+			if targetShape.Multiple {
+				fmt.Fprint(writer, renderDoubleOval(multipleTL, width, height, style))
 			}
-			fmt.Fprintf(writer, out)
+			if sketchRunner != nil {
+				out, err := d2sketch.DoubleOval(sketchRunner, targetShape)
+				if err != nil {
+					return "", err
+				}
+				fmt.Fprintf(writer, out)
+			} else {
+				fmt.Fprint(writer, renderDoubleOval(tl, width, height, style))
+			}
 		} else {
-			fmt.Fprint(writer, renderOval(tl, width, height, style))
+			if targetShape.Multiple {
+				fmt.Fprint(writer, renderOval(multipleTL, width, height, style))
+			}
+			if sketchRunner != nil {
+				out, err := d2sketch.Oval(sketchRunner, targetShape)
+				if err != nil {
+					return "", err
+				}
+				fmt.Fprintf(writer, out)
+			} else {
+				fmt.Fprint(writer, renderOval(tl, width, height, style))
+			}
 		}
 
 	case d2target.ShapeImage:
@@ -783,19 +805,40 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		if targetShape.ThreeDee {
 			fmt.Fprint(writer, render3dRect(targetShape))
 		} else {
-			if targetShape.Multiple {
-				fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-					targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style)
-			}
-			if sketchRunner != nil {
-				out, err := d2sketch.Rect(sketchRunner, targetShape)
-				if err != nil {
-					return "", err
+			if !targetShape.DoubleBorder {
+				if targetShape.Multiple {
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+						targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style)
 				}
-				fmt.Fprintf(writer, out)
+				if sketchRunner != nil {
+					out, err := d2sketch.Rect(sketchRunner, targetShape)
+					if err != nil {
+						return "", err
+					}
+					fmt.Fprintf(writer, out)
+				} else {
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+						targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
+				}
 			} else {
-				fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-					targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
+				if targetShape.Multiple {
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+						targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style)
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+						targetShape.Pos.X+10+d2target.INNER_BORDER_OFFSET, targetShape.Pos.Y-10+d2target.INNER_BORDER_OFFSET, targetShape.Width-2*d2target.INNER_BORDER_OFFSET, targetShape.Height-2*d2target.INNER_BORDER_OFFSET, style)
+				}
+				if sketchRunner != nil {
+					out, err := d2sketch.DoubleRect(sketchRunner, targetShape)
+					if err != nil {
+						return "", err
+					}
+					fmt.Fprintf(writer, out)
+				} else {
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+						targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
+						targetShape.Pos.X+d2target.INNER_BORDER_OFFSET, targetShape.Pos.Y+d2target.INNER_BORDER_OFFSET, targetShape.Width-2*d2target.INNER_BORDER_OFFSET, targetShape.Height-2*d2target.INNER_BORDER_OFFSET, style)
+				}
 			}
 		}
 	case d2target.ShapeText, d2target.ShapeCode:
