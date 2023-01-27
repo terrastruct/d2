@@ -6,4 +6,13 @@
 
 #### Improvements 🧹
 
+- Reduces default padding of shapes. [#702](https://github.com/terrastruct/d2/pull/702)
+- Ensures labels fit inside shapes with shape-specific inner bounding boxes. [#702](https://github.com/terrastruct/d2/pull/702)
+- Improves package shape dimensions with short height. [#702](https://github.com/terrastruct/d2/pull/702)
+- Keeps person shape from becoming too distorted. [#702](https://github.com/terrastruct/d2/pull/702)
+- Ensures shapes with icons have enough padding for their labels. [#702](https://github.com/terrastruct/d2/pull/702)
+
 #### Bugfixes ⛑️
+
+- Fixed dimensions of unlabeled squares or circles with only a set width or height. [#702](https://github.com/terrastruct/d2/pull/702)
+- Fixed scaling of actor shapes in sequence diagrams. [#702](https://github.com/terrastruct/d2/pull/702)
