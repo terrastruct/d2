@@ -1,8 +1,10 @@
-inputFile \
-  -> d2parser\
-  -> d2ast\
-  -> d2compiler\
-  -> d2graph\
-  -> d2layouts/d2dagrelayout\
-  -> d2exporter\
-  -> d2target
+# How we actually want it formatted (d2 fmt removes line continuations currently):
+# inputFile \
+#  -> d2parser\
+#  -> d2ast\
+#  -> d2compiler\
+#  -> d2graph\
+#  -> d2layouts/d2dagrelayout\
+#  -> d2exporter\
+#  -> d2target
+inputFile -> d2parser -> d2ast -> d2compiler -> d2graph -> d2layouts/d2dagrelayout -> d2exporter -> d2target
