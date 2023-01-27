@@ -1136,33 +1136,11 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			return err
 		}
 
-		obj.Width = float64(go2.Max(defaultDims.Width, desiredWidth))
-		obj.Height = float64(go2.Max(defaultDims.Height, desiredHeight))
-
 		shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
 		contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(defaultDims.Width), float64(defaultDims.Height))
 		s := shape.NewShape(shapeType, contentBox)
 
 		paddingX, paddingY := s.GetDefaultPadding()
-
-		if s.AspectRatio1() {
-			if desiredWidth != 0 || desiredHeight != 0 {
-				paddingX = 0.
-				paddingY = 0.
-			}
-
-			sideLength := math.Max(obj.Width+paddingX, obj.Height+paddingY)
-			obj.Width = sideLength
-			obj.Height = sideLength
-		} else {
-			if desiredWidth == 0 {
-				obj.Width += float64(paddingX)
-			}
-			if desiredHeight == 0 {
-				obj.Height += float64(paddingY)
-			}
-		}
-
 		// give shapes with icons extra padding to fit their label
 		if obj.Attributes.Icon != nil {
 			labelHeight := float64(obj.LabelDimensions.Height)
@@ -1181,10 +1159,23 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 		}
 
-		if desiredWidth == 0 && desiredHeight == 0 {
-			newWidth, newHeight := s.GetDimensionsToFit(contentBox.Width, contentBox.Height, paddingX, paddingY)
-			obj.Width = newWidth
-			obj.Height = newHeight
+		// width and height will be set to desired values unless it is too small to fit the content with 0 padding
+		// in which case that minimum size will be used
+		if desiredWidth != 0 || desiredHeight != 0 {
+			paddingX = 0.
+			paddingY = 0.
+			if dslShape != d2target.ShapeText && obj.Attributes.Label.Value != "" {
+				contentBox.Width -= float64(INNER_LABEL_PADDING)
+				contentBox.Height -= float64(INNER_LABEL_PADDING)
+			}
+		}
+		fitWidth, fitHeight := s.GetDimensionsToFit(contentBox.Width, contentBox.Height, paddingX, paddingY)
+		obj.Width = math.Max(float64(desiredWidth), fitWidth)
+		obj.Height = math.Max(float64(desiredHeight), fitHeight)
+		if s.AspectRatio1() {
+			sideLength := math.Max(obj.Width, obj.Height)
+			obj.Width = sideLength
+			obj.Height = sideLength
 		}
 	}
 	for _, edge := range g.Edges {
