@@ -69,13 +69,3 @@ func (cm ClassMethod) VisibilityToken() string {
 		return "+"
 	}
 }
-
-func (c *Class) Copy() *Class {
-	if c == nil {
-		return nil
-	}
-	return &Class{
-		Fields:  append([]ClassField(nil), c.Fields...),
-		Methods: append([]ClassMethod(nil), c.Methods...),
-	}
-}

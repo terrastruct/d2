@@ -17,6 +17,6 @@ If a change results in test diffs, you can run this script to generate a visual 
 report with the old vs new renders.
 
 ```
-go run ./e2etests/report/main.go
+go run ./e2etests/report/main.go -delta
 open ./e2etests/out/e2e_report.html
 ```

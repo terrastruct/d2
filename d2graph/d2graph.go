@@ -1438,7 +1438,7 @@ func (g *Graph) GetBoard(name string) *Graph {
 	return nil
 }
 
-func (g *Graph) SortEdgesByAST() *Graph {
+func (g *Graph) SortEdgesByAST() {
 	edges := append([]*Edge(nil), g.Edges...)
 	sort.Slice(edges, func(i, j int) bool {
 		e1 := edges[i]
@@ -1448,7 +1448,5 @@ func (g *Graph) SortEdgesByAST() *Graph {
 		}
 		return e1.References[0].Edge.Range.Before(edges[j].References[0].Edge.Range)
 	})
-	g2 := *g
-	g2.Edges = edges
-	return &g2
+	g.Edges = edges
 }

@@ -42,7 +42,7 @@ func Compile(path string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph
 	if err != nil {
 		return nil, err
 	}
-	g = g.SortEdgesByAST()
+	g.SortEdgesByAST()
 	return g, nil
 }
 

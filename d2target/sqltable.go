@@ -50,12 +50,3 @@ func (c SQLColumn) ConstraintAbbr() string {
 		return ""
 	}
 }
-
-func (st *SQLTable) Copy() *SQLTable {
-	if st == nil {
-		return nil
-	}
-	return &SQLTable{
-		Columns: append([]SQLColumn(nil), st.Columns...),
-	}
-}

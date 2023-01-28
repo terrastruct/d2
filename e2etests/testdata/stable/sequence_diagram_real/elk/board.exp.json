@@ -577,45 +577,6 @@
   ],
   "connections": [
     {
-      "id": "How this is rendered.(d2layout.layout -> d2dagrelayout)[0]",
-      "src": "How this is rendered.d2layout.layout",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "How this is rendered.d2dagrelayout",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "run core engine on rest",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 151,
-      "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 867.5,
-          "y": 1414
-        },
-        {
-          "x": 2133,
-          "y": 1414
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 4
-    },
-    {
       "id": "How this is rendered.(CLI -> d2ast)[0]",
       "src": "How this is rendered.CLI",
       "srcArrow": "none",
@@ -842,6 +803,45 @@
         {
           "x": 1866.5,
           "y": 1284
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 4
+    },
+    {
+      "id": "How this is rendered.(d2layout.layout -> d2dagrelayout)[0]",
+      "src": "How this is rendered.d2layout.layout",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "How this is rendered.d2dagrelayout",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "run core engine on rest",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 151,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 867.5,
+          "y": 1414
+        },
+        {
+          "x": 2133,
+          "y": 1414
         }
       ],
       "animated": false,
@@ -1082,6 +1082,357 @@
       "tooltip": "",
       "icon": null,
       "zIndex": 4
+    },
+    {
+      "id": "(How this is rendered.CLI -- )[0]",
+      "src": "How this is rendered.CLI",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "CLI-lifeline-end-1708808208",
+      "dstArrow": "none",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 111,
+          "y": 248
+        },
+        {
+          "x": 111,
+          "y": 2324
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 1
+    },
+    {
+      "id": "(How this is rendered.d2ast -- )[0]",
+      "src": "How this is rendered.d2ast",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "d2ast-lifeline-end-2301832456",
+      "dstArrow": "none",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 361,
+          "y": 248
+        },
+        {
+          "x": 361,
+          "y": 2324
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 1
+    },
+    {
+      "id": "(How this is rendered.d2compiler -- )[0]",
+      "src": "How this is rendered.d2compiler",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "d2compiler-lifeline-end-4225513585",
+      "dstArrow": "none",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 611,
+          "y": 248
+        },
+        {
+          "x": 611,
+          "y": 2324
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 1
+    },
+    {
+      "id": "(How this is rendered.d2layout -- )[0]",
+      "src": "How this is rendered.d2layout",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "d2layout-lifeline-end-1285981920",
+      "dstArrow": "none",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 861.5,
+          "y": 248
+        },
+        {
+          "x": 861.5,
+          "y": 2324
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 1
+    },
+    {
+      "id": "(How this is rendered.d2exporter -- )[0]",
+      "src": "How this is rendered.d2exporter",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "d2exporter-lifeline-end-882815229",
+      "dstArrow": "none",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1111,
+          "y": 248
+        },
+        {
+          "x": 1111,
+          "y": 2324
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 1
+    },
+    {
+      "id": "(How this is rendered.d2themes -- )[0]",
+      "src": "How this is rendered.d2themes",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "d2themes-lifeline-end-1104056036",
+      "dstArrow": "none",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1361.5,
+          "y": 248
+        },
+        {
+          "x": 1361.5,
+          "y": 2324
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 1
+    },
+    {
+      "id": "(How this is rendered.d2renderer -- )[0]",
+      "src": "How this is rendered.d2renderer",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "d2renderer-lifeline-end-3212976943",
+      "dstArrow": "none",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1611.5,
+          "y": 248
+        },
+        {
+          "x": 1611.5,
+          "y": 2324
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 1
+    },
+    {
+      "id": "(How this is rendered.d2sequencelayout -- )[0]",
+      "src": "How this is rendered.d2sequencelayout",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "d2sequencelayout-lifeline-end-3085844671",
+      "dstArrow": "none",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1866.5,
+          "y": 248
+        },
+        {
+          "x": 1866.5,
+          "y": 2324
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 1
+    },
+    {
+      "id": "(How this is rendered.d2dagrelayout -- )[0]",
+      "src": "How this is rendered.d2dagrelayout",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "d2dagrelayout-lifeline-end-3371915605",
+      "dstArrow": "none",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 6,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 2133,
+          "y": 248
+        },
+        {
+          "x": 2133,
+          "y": 2324
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 1
     }
   ]
 }
