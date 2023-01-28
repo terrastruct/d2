@@ -771,108 +771,6 @@
         "references": [
           {
             "map_key_edge_index": 0
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": ""
-          },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": ""
-          },
-          "direction": {
-            "value": ""
-          },
-          "constraint": {
-            "value": ""
-          }
-        },
-        "zIndex": 0
-      },
-      {
-        "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
-        "isCurve": false,
-        "src_arrow": false,
-        "dst_arrow": true,
-        "references": [
-          {
-            "map_key_edge_index": 1
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": ""
-          },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": ""
-          },
-          "direction": {
-            "value": ""
-          },
-          "constraint": {
-            "value": ""
-          }
-        },
-        "zIndex": 0
-      },
-      {
-        "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
-        "isCurve": false,
-        "src_arrow": false,
-        "dst_arrow": true,
-        "references": [
-          {
-            "map_key_edge_index": 0
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": "furbling, v.:"
-          },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": ""
-          },
-          "direction": {
-            "value": ""
-          },
-          "constraint": {
-            "value": ""
-          }
-        },
-        "zIndex": 0
-      },
-      {
-        "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
-        "isCurve": false,
-        "src_arrow": false,
-        "dst_arrow": true,
-        "references": [
-          {
-            "map_key_edge_index": 0
           },
           {
             "map_key_edge_index": 0
@@ -983,6 +881,108 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "furbling, v.:"
           },
           "style": {},
           "near_key": null,

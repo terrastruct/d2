@@ -907,198 +907,6 @@
   ],
   "connections": [
     {
-      "id": "finally.(a -> tree)[0]",
-      "src": "finally.a",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "finally.tree",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 1443.5,
-          "y": 369.04470588235296
-        },
-        {
-          "x": 1318.7,
-          "y": 435.4089411764706
-        },
-        {
-          "x": 1287.5,
-          "y": 462
-        },
-        {
-          "x": 1287.5,
-          "y": 502
-        }
-      ],
-      "isCurve": true,
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 0
-    },
-    {
-      "id": "finally.(inside -> a)[0]",
-      "src": "finally.inside",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "finally.a",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 1500,
-          "y": 176
-        },
-        {
-          "x": 1500,
-          "y": 216
-        },
-        {
-          "x": 1500,
-          "y": 236
-        },
-        {
-          "x": 1500,
-          "y": 276
-        }
-      ],
-      "isCurve": true,
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 0
-    },
-    {
-      "id": "finally.(tree -> hierarchy)[0]",
-      "src": "finally.tree",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "finally.hierarchy",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 1287.5,
-          "y": 628
-        },
-        {
-          "x": 1287.5,
-          "y": 668
-        },
-        {
-          "x": 1287.5,
-          "y": 688
-        },
-        {
-          "x": 1287.5,
-          "y": 728
-        }
-      ],
-      "isCurve": true,
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 0
-    },
-    {
-      "id": "finally.(a -> root)[0]",
-      "src": "finally.a",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "finally.root",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 1489.9646017699115,
-          "y": 402
-        },
-        {
-          "x": 1483.5929203539822,
-          "y": 442
-        },
-        {
-          "x": 1482,
-          "y": 462
-        },
-        {
-          "x": 1482,
-          "y": 502
-        }
-      ],
-      "isCurve": true,
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 0
-    },
-    {
       "id": "(a -> tree)[0]",
       "src": "a",
       "srcArrow": "none",
@@ -1747,6 +1555,198 @@
           "y": 530
         }
       ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "finally.(a -> tree)[0]",
+      "src": "finally.a",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "finally.tree",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1443.5,
+          "y": 369.04470588235296
+        },
+        {
+          "x": 1318.7,
+          "y": 435.4089411764706
+        },
+        {
+          "x": 1287.5,
+          "y": 462
+        },
+        {
+          "x": 1287.5,
+          "y": 502
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "finally.(inside -> a)[0]",
+      "src": "finally.inside",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "finally.a",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1500,
+          "y": 176
+        },
+        {
+          "x": 1500,
+          "y": 216
+        },
+        {
+          "x": 1500,
+          "y": 236
+        },
+        {
+          "x": 1500,
+          "y": 276
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "finally.(tree -> hierarchy)[0]",
+      "src": "finally.tree",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "finally.hierarchy",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1287.5,
+          "y": 628
+        },
+        {
+          "x": 1287.5,
+          "y": 668
+        },
+        {
+          "x": 1287.5,
+          "y": 688
+        },
+        {
+          "x": 1287.5,
+          "y": 728
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "finally.(a -> root)[0]",
+      "src": "finally.a",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "finally.root",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1489.9646017699115,
+          "y": 402
+        },
+        {
+          "x": 1483.5929203539822,
+          "y": 442
+        },
+        {
+          "x": 1482,
+          "y": 462
+        },
+        {
+          "x": 1482,
+          "y": 502
+        }
+      ],
+      "isCurve": true,
       "animated": false,
       "tooltip": "",
       "icon": null,

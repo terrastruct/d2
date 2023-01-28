@@ -169,6 +169,90 @@
   ],
   "connections": [
     {
+      "id": "(a.b -> a)[0]",
+      "src": "a.b",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "a",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 244,
+          "y": 173.24723247232473
+        },
+        {
+          "x": 270.66666666666663,
+          "y": 154.64944649446494
+        },
+        {
+          "x": 279,
+          "y": 150
+        },
+        {
+          "x": 281.5,
+          "y": 150
+        },
+        {
+          "x": 284,
+          "y": 150
+        },
+        {
+          "x": 287.33333333333337,
+          "y": 162.6
+        },
+        {
+          "x": 289.83333333333337,
+          "y": 181.5
+        },
+        {
+          "x": 292.3333333333333,
+          "y": 200.4
+        },
+        {
+          "x": 292.3333333333333,
+          "y": 225.6
+        },
+        {
+          "x": 289.83333333333337,
+          "y": 244.5
+        },
+        {
+          "x": 287.33333333333337,
+          "y": 263.4
+        },
+        {
+          "x": 270.66666666666663,
+          "y": 271.35055350553506
+        },
+        {
+          "x": 244,
+          "y": 252.75276752767527
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
       "id": "a.(b -> b.c)[0]",
       "src": "a.b",
       "srcArrow": "none",
@@ -286,90 +370,6 @@
           "y": 237.9953596287703
         }
       ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 0
-    },
-    {
-      "id": "(a.b -> a)[0]",
-      "src": "a.b",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "a",
-      "dstArrow": "triangle",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 244,
-          "y": 173.24723247232473
-        },
-        {
-          "x": 270.66666666666663,
-          "y": 154.64944649446494
-        },
-        {
-          "x": 279,
-          "y": 150
-        },
-        {
-          "x": 281.5,
-          "y": 150
-        },
-        {
-          "x": 284,
-          "y": 150
-        },
-        {
-          "x": 287.33333333333337,
-          "y": 162.6
-        },
-        {
-          "x": 289.83333333333337,
-          "y": 181.5
-        },
-        {
-          "x": 292.3333333333333,
-          "y": 200.4
-        },
-        {
-          "x": 292.3333333333333,
-          "y": 225.6
-        },
-        {
-          "x": 289.83333333333337,
-          "y": 244.5
-        },
-        {
-          "x": 287.33333333333337,
-          "y": 263.4
-        },
-        {
-          "x": 270.66666666666663,
-          "y": 271.35055350553506
-        },
-        {
-          "x": 244,
-          "y": 252.75276752767527
-        }
-      ],
-      "isCurve": true,
       "animated": false,
       "tooltip": "",
       "icon": null,
