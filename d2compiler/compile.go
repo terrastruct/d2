@@ -135,6 +135,11 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 
 func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 	keyword := strings.ToLower(f.Name)
+	_, isStyleReserved := d2graph.StyleKeywords[keyword]
+	if isStyleReserved {
+		c.errorf(f.LastRef().AST(), "%v must be style.%v", f.Name, f.Name)
+		return
+	}
 	_, isReserved := d2graph.SimpleReservedKeywords[keyword]
 	if isReserved {
 		c.compileReserved(obj.Attributes, f)

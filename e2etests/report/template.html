@@ -4,13 +4,13 @@
     <div class="cases">
       {{range .Tests}}
       <div class="case">
-        <h1><a href="../{{.GotSVG}}">{{.Name}}</a></h1>
+        <h1><a href="../../{{.GotSVG}}">{{.Name}}</a></h1>
         {{ if .ExpSVG }}
         <h2>Expected</h2>
-        <img src="../{{.ExpSVG}}" width="100%" />
+        <img src="../../{{.ExpSVG}}" width="100%" />
         <h2>Got</h2>
         {{ end }}
-        <img src="../{{.GotSVG}}" width="100%" />
+        <img src="../../{{.GotSVG}}" width="100%" />
       </div>
       {{end}}
     </div>

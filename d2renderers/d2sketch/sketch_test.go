@@ -63,7 +63,7 @@ func TestSketch(t *testing.T) {
 }
 People discovery: "People discovery \nservice"
 admixer: Ad mixer {
-  fill: "#c1a2f3"
+  style.fill: "#c1a2f3"
 }
 
 onboarding service: "Onboarding \nservice"
@@ -107,7 +107,7 @@ Android: {
 
 web -> twitter fe
 timeline scorer: "Timeline\nScorer" {
-  fill: "#ffdef1"
+  style.fill "#ffdef1"
 }
 home ranker: Home Ranker
 
@@ -119,7 +119,7 @@ timeline mixer -> home ranker: {
 }
 timeline mixer -> timeline service
 home mixer: Home mixer {
-  # fill: "#c1a2f3"
+  # style.fill "#c1a2f3"
 }
 container0.graphql -> home mixer: {
   style.stroke-dash: 4
@@ -146,7 +146,7 @@ prediction service2: Prediction Service {
   icon: https://cdn-icons-png.flaticon.com/512/6461/6461819.png
 }
 home scorer: Home Scorer {
-  fill: "#ffdef1"
+  style.fill "#ffdef1"
 }
 manhattan: Manhattan
 memcache: Memcache {
@@ -154,15 +154,15 @@ memcache: Memcache {
 }
 
 fetch: Fetch {
-  multiple: true
+  style.multiple: true
   shape: step
 }
 feature: Feature {
-  multiple: true
+  style.multiple: true
   shape: step
 }
 scoring: Scoring {
-  multiple: true
+  style.multiple: true
   shape: step
 }
 fetch -> feature

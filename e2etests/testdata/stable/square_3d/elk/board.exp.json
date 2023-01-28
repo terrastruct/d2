@@ -10,7 +10,7 @@
         "x": 12,
         "y": 12
       },
-      "width": 135,
+      "width": 171,
       "height": 126,
       "opacity": 1,
       "strokeDash": 0,
@@ -19,7 +19,7 @@
       "fill": "#F7F8FE",
       "stroke": "#0D32B2",
       "shadow": false,
-      "3d": false,
+      "3d": true,
       "multiple": false,
       "double-border": false,
       "tooltip": "",
@@ -30,7 +30,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "true",
+      "label": "rectangle",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -38,7 +38,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 35,
+      "labelWidth": 71,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -48,11 +48,11 @@
       "id": "square",
       "type": "rectangle",
       "pos": {
-        "x": 12,
+        "x": 20,
         "y": 238
       },
-      "width": 135,
-      "height": 135,
+      "width": 154,
+      "height": 154,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -60,7 +60,7 @@
       "fill": "#F7F8FE",
       "stroke": "#0D32B2",
       "shadow": false,
-      "3d": false,
+      "3d": true,
       "multiple": false,
       "double-border": false,
       "tooltip": "",
@@ -71,7 +71,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "true",
+      "label": "square",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -79,7 +79,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 35,
+      "labelWidth": 54,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -113,11 +113,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 79.5,
+          "x": 97.5,
           "y": 138
         },
         {
-          "x": 79.5,
+          "x": 97.5,
           "y": 238
         }
       ],

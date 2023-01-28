@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+	stdlog "log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -144,6 +145,13 @@ func main() {
 		}
 
 		path := os.Getenv("REPORT_OUTPUT")
+		if path == "" {
+			path = filepath.Join(testDir, "./out/e2e_report.html")
+		}
+		err = os.MkdirAll(filepath.Dir(path), 0755)
+		if err != nil {
+			stdlog.Fatal(err)
+		}
 		f, err := os.Create(path)
 		if err != nil {
 			panic(fmt.Errorf("error creating file `%s`. %v", path, err))
