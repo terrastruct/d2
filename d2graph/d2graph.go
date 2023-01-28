@@ -56,7 +56,6 @@ type Scalar struct {
 }
 
 // TODO maybe rename to Shape
-// reminder: When adding new fields remember to update copy.go
 type Object struct {
 	Graph  *Graph  `json:"-"`
 	Parent *Object `json:"-"`
@@ -89,7 +88,6 @@ type Object struct {
 	ZIndex int `json:"zIndex"`
 }
 
-// reminder: When adding new fields remember to update copy.go
 type Attributes struct {
 	Label   Scalar   `json:"label"`
 	Style   Style    `json:"style"`
@@ -131,7 +129,6 @@ func (r Reference) InEdge() bool {
 	return r.Key != r.MapKey.Key
 }
 
-// reminder: When adding new fields remember to update copy.go
 type Style struct {
 	Opacity      *Scalar `json:"opacity,omitempty"`
 	Stroke       *Scalar `json:"stroke,omitempty"`
