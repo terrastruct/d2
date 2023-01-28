@@ -1,17 +1,16 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
       "id": "md",
       "type": "text",
       "pos": {
-        "x": 57,
+        "x": 12,
         "y": 238
       },
-      "width": 23,
-      "height": 24,
+      "width": 920,
+      "height": 376,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -30,7 +29,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "md",
+      "label": "\nList items may consist of multiple paragraphs. Each subsequent\nparagraph in a list item must be indented by either 4 spaces\nor one tab:\n\n1.  This is a list item with two paragraphs. Lorem ipsum dolor\n    sit amet, consectetuer adipiscing elit. Aliquam hendrerit\n    mi posuere lectus.\n\n    Vestibulum enim wisi, viverra nec, fringilla in, laoreet\n    vitae, risus. Donec sit amet nisl. Aliquam semper ipsum\n    sit amet velit.\n\n2.  Suspendisse id sem consectetuer libero luctus adipiscing.\n\nIt looks nice if you indent every line of the subsequent\nparagraphs, but here again, Markdown will allow you to be\nlazy:\n\n- This is a list item with two paragraphs.\n\n      This is the second paragraph in the list item. You're\n\n  only required to indent the first line. Lorem ipsum dolor\n  sit amet, consectetuer adipiscing elit.\n\n- Another item in the same list.\n",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -38,8 +37,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 23,
-      "labelHeight": 24,
+      "labelWidth": 920,
+      "labelHeight": 376,
       "zIndex": 0,
       "level": 1
     },
@@ -47,7 +46,7 @@
       "id": "a",
       "type": "rectangle",
       "pos": {
-        "x": 12,
+        "x": 415,
         "y": 12
       },
       "width": 113,
@@ -88,8 +87,8 @@
       "id": "b",
       "type": "rectangle",
       "pos": {
-        "x": 12,
-        "y": 362
+        "x": 415,
+        "y": 714
       },
       "width": 113,
       "height": 126,
@@ -153,11 +152,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 68.5,
+          "x": 472,
           "y": 138
         },
         {
-          "x": 68.5,
+          "x": 472,
           "y": 238
         }
       ],
@@ -192,12 +191,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 68.5,
-          "y": 262
+          "x": 472,
+          "y": 614
         },
         {
-          "x": 68.5,
-          "y": 362
+          "x": 472,
+          "y": 714
         }
       ],
       "animated": false,
@@ -205,8 +204,5 @@
       "icon": null,
       "zIndex": 0
     }
-  ],
-  "layers": null,
-  "scenarios": null,
-  "steps": null
+  ]
 }

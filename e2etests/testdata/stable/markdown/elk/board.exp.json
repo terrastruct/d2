@@ -1,17 +1,16 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
       "id": "hey",
       "type": "text",
       "pos": {
-        "x": 56,
+        "x": 12,
         "y": 238
       },
-      "width": 25,
-      "height": 24,
+      "width": 531,
+      "height": 187,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -30,7 +29,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "hey",
+      "label": "# Every frustum longs to be a cone\n\n- A continuing flow of paper is sufficient to continue the flow of paper\n- Please remain calm, it's no use both of us being hysterical at the same time\n- Visits always give pleasure: if not on arrival, then on the departure\n\n*Festivity Level 1*: Your guests are chatting amiably with each other.",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -38,8 +37,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 25,
-      "labelHeight": 24,
+      "labelWidth": 531,
+      "labelHeight": 187,
       "zIndex": 0,
       "level": 1
     },
@@ -47,7 +46,7 @@
       "id": "x",
       "type": "rectangle",
       "pos": {
-        "x": 12,
+        "x": 221,
         "y": 12
       },
       "width": 113,
@@ -88,8 +87,8 @@
       "id": "y",
       "type": "rectangle",
       "pos": {
-        "x": 12,
-        "y": 362
+        "x": 220,
+        "y": 525
       },
       "width": 114,
       "height": 126,
@@ -153,11 +152,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 69,
+          "x": 277.5,
           "y": 138
         },
         {
-          "x": 69,
+          "x": 277.5,
           "y": 238
         }
       ],
@@ -192,12 +191,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 69,
-          "y": 262
+          "x": 277.5,
+          "y": 425
         },
         {
-          "x": 69,
-          "y": 362
+          "x": 277.5,
+          "y": 525
         }
       ],
       "animated": false,
@@ -205,8 +204,5 @@
       "icon": null,
       "zIndex": 0
     }
-  ],
-  "layers": null,
-  "scenarios": null,
-  "steps": null
+  ]
 }

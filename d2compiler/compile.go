@@ -42,7 +42,8 @@ func Compile(path string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph
 	if err != nil {
 		return nil, err
 	}
-	return g, err
+	g = g.SortEdgesByAST()
+	return g, nil
 }
 
 func compileIR(ast *d2ast.Map, m *d2ir.Map) (*d2graph.Graph, error) {
@@ -203,6 +204,7 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 		} else {
 			attrs.Shape.Value = d2target.ShapeCode
 		}
+		attrs.Label.Value = scalar.ScalarString()
 	default:
 		attrs.Label.Value = scalar.ScalarString()
 	}

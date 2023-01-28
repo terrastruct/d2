@@ -1,6 +1,5 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -459,7 +458,7 @@
       "type": "rectangle",
       "pos": {
         "x": 49,
-        "y": 1860
+        "y": 2070
       },
       "width": 200,
       "height": 160,
@@ -500,7 +499,7 @@
       "type": "rectangle",
       "pos": {
         "x": 549,
-        "y": 2070
+        "y": 2540
       },
       "width": 200,
       "height": 160,
@@ -541,7 +540,7 @@
       "type": "rectangle",
       "pos": {
         "x": 549,
-        "y": 2280
+        "y": 2880
       },
       "width": 200,
       "height": 160,
@@ -1005,19 +1004,19 @@
       "route": [
         {
           "x": 99,
-          "y": 1900
+          "y": 2110
         },
         {
           "x": 199,
-          "y": 1900
+          "y": 2110
         },
         {
           "x": 199,
-          "y": 1980
+          "y": 2190
         },
         {
           "x": 99,
-          "y": 1980
+          "y": 2190
         }
       ],
       "animated": false,
@@ -1052,19 +1051,19 @@
       "route": [
         {
           "x": 599,
-          "y": 2110
+          "y": 2580
         },
         {
           "x": 699,
-          "y": 2110
+          "y": 2580
         },
         {
           "x": 699,
-          "y": 2190
+          "y": 2660
         },
         {
           "x": 599,
-          "y": 2190
+          "y": 2660
         }
       ],
       "animated": false,
@@ -1099,19 +1098,19 @@
       "route": [
         {
           "x": 599,
-          "y": 2320
+          "y": 2920
         },
         {
           "x": 699,
-          "y": 2320
+          "y": 2920
         },
         {
           "x": 699,
-          "y": 2400
+          "y": 3000
         },
         {
           "x": 599,
-          "y": 2400
+          "y": 3000
         }
       ],
       "animated": false,
@@ -1146,19 +1145,19 @@
       "route": [
         {
           "x": 99,
-          "y": 2530
+          "y": 1900
         },
         {
           "x": 199,
-          "y": 2530
+          "y": 1900
         },
         {
           "x": 199,
-          "y": 2610
+          "y": 1980
         },
         {
           "x": 99,
-          "y": 2610
+          "y": 1980
         }
       ],
       "animated": false,
@@ -1193,19 +1192,19 @@
       "route": [
         {
           "x": 99,
-          "y": 2660
+          "y": 2320
         },
         {
           "x": 199,
-          "y": 2660
+          "y": 2320
         },
         {
           "x": 199,
-          "y": 2740
+          "y": 2400
         },
         {
           "x": 99,
-          "y": 2740
+          "y": 2400
         }
       ],
       "animated": false,
@@ -1240,11 +1239,11 @@
       "route": [
         {
           "x": 349,
-          "y": 2790
+          "y": 2450
         },
         {
           "x": 599,
-          "y": 2790
+          "y": 2450
         }
       ],
       "animated": false,
@@ -1279,11 +1278,11 @@
       "route": [
         {
           "x": 349,
-          "y": 2920
+          "y": 2790
         },
         {
           "x": 599,
-          "y": 2920
+          "y": 2790
         }
       ],
       "animated": false,
@@ -1318,137 +1317,17 @@
       "route": [
         {
           "x": 349,
-          "y": 3050
+          "y": 3130
         },
         {
           "x": 599,
-          "y": 3050
+          "y": 3130
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
       "zIndex": 4
-    },
-    {
-      "id": "(a -- )[0]",
-      "src": "a",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "a-lifeline-end-2251863791",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 6,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 99,
-          "y": 200
-        },
-        {
-          "x": 99,
-          "y": 3180
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 1
-    },
-    {
-      "id": "(b -- )[0]",
-      "src": "b",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "b-lifeline-end-668380428",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 6,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 349,
-          "y": 200
-        },
-        {
-          "x": 349,
-          "y": 3180
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 1
-    },
-    {
-      "id": "(c -- )[0]",
-      "src": "c",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "c-lifeline-end-955173837",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 6,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 599,
-          "y": 200
-        },
-        {
-          "x": 599,
-          "y": 3180
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 1
     }
-  ],
-  "layers": null,
-  "scenarios": null,
-  "steps": null
+  ]
 }

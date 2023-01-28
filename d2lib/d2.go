@@ -86,7 +86,6 @@ func compile(ctx context.Context, g *d2graph.Graph, opts *CompileOptions) (*d2ta
 		if err != nil {
 			return nil, err
 		}
-		ld.Type = "layer"
 		d.Layers = append(d.Layers, ld)
 	}
 	for _, l := range g.Scenarios {
@@ -94,7 +93,6 @@ func compile(ctx context.Context, g *d2graph.Graph, opts *CompileOptions) (*d2ta
 		if err != nil {
 			return nil, err
 		}
-		ld.Type = "scenario"
 		d.Scenarios = append(d.Scenarios, ld)
 	}
 	for _, l := range g.Steps {
@@ -102,7 +100,6 @@ func compile(ctx context.Context, g *d2graph.Graph, opts *CompileOptions) (*d2ta
 		if err != nil {
 			return nil, err
 		}
-		ld.Type = "step"
 		d.Steps = append(d.Steps, ld)
 	}
 	return d, nil

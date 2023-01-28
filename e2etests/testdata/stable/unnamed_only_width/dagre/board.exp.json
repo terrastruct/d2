@@ -1,6 +1,5 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -270,7 +269,7 @@
         "y": 754
       },
       "width": 512,
-      "height": 38,
+      "height": 70,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -289,7 +288,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "code",
+      "label": "a := 5\nb := a + 7\nfmt.Printf(\"%d\", b)",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "golang",
@@ -297,8 +296,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 54,
-      "labelHeight": 38,
+      "labelWidth": 196,
+      "labelHeight": 70,
       "zIndex": 0,
       "level": 1
     },
@@ -307,7 +306,7 @@
       "type": "package",
       "pos": {
         "x": 0,
-        "y": 892
+        "y": 924
       },
       "width": 512,
       "height": 100,
@@ -347,7 +346,7 @@
       "type": "rectangle",
       "pos": {
         "x": 206,
-        "y": 1092
+        "y": 1124
       },
       "width": 100,
       "height": 100,
@@ -507,19 +506,19 @@
       "route": [
         {
           "x": 256,
-          "y": 792
+          "y": 824
         },
         {
           "x": 256,
-          "y": 832
+          "y": 864
         },
         {
           "x": 256,
-          "y": 858.8
+          "y": 890.8
         },
         {
           "x": 256,
-          "y": 926
+          "y": 958
         }
       ],
       "isCurve": true,
@@ -555,19 +554,19 @@
       "route": [
         {
           "x": 256,
-          "y": 992
+          "y": 1024
         },
         {
           "x": 256,
-          "y": 1032
+          "y": 1064
         },
         {
           "x": 256,
-          "y": 1052
+          "y": 1084
         },
         {
           "x": 256,
-          "y": 1092
+          "y": 1124
         }
       ],
       "isCurve": true,
@@ -576,8 +575,5 @@
       "icon": null,
       "zIndex": 0
     }
-  ],
-  "layers": null,
-  "scenarios": null,
-  "steps": null
+  ]
 }

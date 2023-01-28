@@ -1,17 +1,16 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
       "id": "hey",
       "type": "code",
       "pos": {
-        "x": 35,
+        "x": 0,
         "y": 226
       },
-      "width": 45,
-      "height": 38,
+      "width": 755,
+      "height": 166,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -30,7 +29,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "hey",
+      "label": "// RegisterHash registers a function that returns a new instance of the given\n// hash function. This is intended to be called from the init function in\n// packages that implement hash functions.\nfunc RegisterHash(h Hash, f func() hash.Hash) {\n\tif h >= maxHash {\n\t\tpanic(\"crypto: RegisterHash of unknown hash function\")\n\t}\n\thashes[h] = f\n}",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "golang",
@@ -38,8 +37,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 45,
-      "labelHeight": 38,
+      "labelWidth": 755,
+      "labelHeight": 166,
       "zIndex": 0,
       "level": 1
     },
@@ -47,7 +46,7 @@
       "id": "x",
       "type": "rectangle",
       "pos": {
-        "x": 1,
+        "x": 321,
         "y": 0
       },
       "width": 113,
@@ -88,8 +87,8 @@
       "id": "y",
       "type": "rectangle",
       "pos": {
-        "x": 0,
-        "y": 364
+        "x": 321,
+        "y": 492
       },
       "width": 114,
       "height": 126,
@@ -153,19 +152,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 57,
+          "x": 377.5,
           "y": 126
         },
         {
-          "x": 57,
+          "x": 377.5,
           "y": 166
         },
         {
-          "x": 57,
+          "x": 377.5,
           "y": 186
         },
         {
-          "x": 57,
+          "x": 377.5,
           "y": 226
         }
       ],
@@ -201,20 +200,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 57,
-          "y": 264
+          "x": 377.5,
+          "y": 392
         },
         {
-          "x": 57,
-          "y": 304
+          "x": 377.5,
+          "y": 432
         },
         {
-          "x": 57,
-          "y": 324
+          "x": 377.5,
+          "y": 452
         },
         {
-          "x": 57,
-          "y": 364
+          "x": 377.5,
+          "y": 492
         }
       ],
       "isCurve": true,
@@ -223,8 +222,5 @@
       "icon": null,
       "zIndex": 0
     }
-  ],
-  "layers": null,
-  "scenarios": null,
-  "steps": null
+  ]
 }

@@ -1,17 +1,16 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
       "id": "md",
       "type": "text",
       "pos": {
-        "x": 57,
+        "x": 12,
         "y": 238
       },
-      "width": 23,
-      "height": 24,
+      "width": 3051,
+      "height": 4853,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -30,7 +29,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "md",
+      "label": "# Markdown: Syntax\n\n- [Overview](#overview)\n  - [Philosophy](#philosophy)\n  - [Inline HTML](#html)\n  - [Automatic Escaping for Special Characters](#autoescape)\n- [Block Elements](#block)\n  - [Paragraphs and Line Breaks](#p)\n  - [Headers](#header)\n  - [Blockquotes](#blockquote)\n  - [Lists](#list)\n  - [Code Blocks](#precode)\n  - [Horizontal Rules](#hr)\n- [Span Elements](#span)\n  - [Links](#link)\n  - [Emphasis](#em)\n  - [Code](#code)\n  - [Images](#img)\n- [Miscellaneous](#misc)\n  - [Backslash Escapes](#backslash)\n  - [Automatic Links](#autolink)\n\n**Note:** This document is itself written using Markdown; you\ncan [see the source for it by adding '.text' to the URL](/projects/markdown/syntax.text).\n\n---\n\n## Overview\n\n### Philosophy\n\nMarkdown is intended to be as easy-to-read and easy-to-write as is feasible.\n\nReadability, however, is emphasized above all else. A Markdown-formatted\ndocument should be publishable as-is, as plain text, without looking\nlike it's been marked up with tags or formatting instructions. While\nMarkdown's syntax has been influenced by several existing text-to-HTML\nfilters -- including [Setext](http://docutils.sourceforge.net/mirror/setext.html), [atx](http://www.aaronsw.com/2002/atx/), [Textile](http://textism.com/tools/textile/), [reStructuredText](http://docutils.sourceforge.net/rst.html),\n[Grutatext](http://www.triptico.com/software/grutatxt.html), and [EtText](http://ettext.taint.org/doc/) -- the single biggest source of\ninspiration for Markdown's syntax is the format of plain text email.\n\n## Block Elements\n\n### Paragraphs and Line Breaks\n\nA paragraph is simply one or more consecutive lines of text, separated\nby one or more blank lines. (A blank line is any line that looks like a\nblank line -- a line containing nothing but spaces or tabs is considered\nblank.) Normal paragraphs should not be indented with spaces or tabs.\n\nThe implication of the \"one or more consecutive lines of text\" rule is\nthat Markdown supports \"hard-wrapped\" text paragraphs. This differs\nsignificantly from most other text-to-HTML formatters (including Movable\nType's \"Convert Line Breaks\" option) which translate every line break\nend a line with two or more spaces, then type return.\n\n### Headers\n\nMarkdown supports two styles of headers, [Setext] [1] and [atx] [2].\n\nOptionally, you may \"close\" atx-style headers. This is purely\ncosmetic -- you can use this if you think it looks better. The\nclosing hashes don't even need to match the number of hashes\nused to open the header. (The number of opening hashes\ndetermines the header level.)\n\n### Blockquotes\n\nfamiliar with quoting passages of text in an email message, then you\nknow how to create a blockquote in Markdown. It looks best if you hard\n\n> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,\n> consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.\n> Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.\n>\n> Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse\n> id sem consectetuer libero luctus adipiscing.\n\nline of a hard-wrapped paragraph:\n\n> This is a blockquote with two paragraphs. Lorem ipsum dolor sit amet,\n> consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus.\n> Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.\n\n> Donec sit amet nisl. Aliquam semper ipsum sit amet velit. Suspendisse\n> id sem consectetuer libero luctus adipiscing.\n\nBlockquotes can be nested (i.e. a blockquote-in-a-blockquote) by\n\n> This is the first level of quoting.\n>\n> > This is nested blockquote.\n>\n> Back to the first level.\n\nBlockquotes can contain other Markdown elements, including headers, lists,\nand code blocks:\n\n> ## This is a header.\n>\n> 1.  This is the first list item.\n> 2.  This is the second list item.\n>\n> Here's some example code:\n>\n>     return shell_exec(\"echo $input  $markdown_script\");\n\nAny decent text editor should make email-style quoting easy. For\nexample, with BBEdit, you can make a selection and choose Increase\nQuote Level from the Text menu.\n\n### Lists\n\nMarkdown supports ordered (numbered) and unordered (bulleted) lists.\n\nUnordered lists use asterisks, pluses, and hyphens -- interchangably\n-- as list markers:\n\n- Red\n- Green\n- Blue\n\nis equivalent to:\n\n- Red\n- Green\n- Blue\n\nand:\n\n- Red\n- Green\n- Blue\n\nOrdered lists use numbers followed by periods:\n\n1.  Bird\n2.  McHale\n3.  Parish\n\nIt's important to note that the actual numbers you use to mark the\nlist have no effect on the HTML output Markdown produces. The HTML\nMarkdown produces from the above list is:\n\nIf you instead wrote the list in Markdown like this:\n\n1.  Bird\n1.  McHale\n1.  Parish\n\nor even:\n\n3. Bird\n1. McHale\n1. Parish\n\nyou'd get the exact same HTML output. The point is, if you want to,\nyou can use ordinal numbers in your ordered Markdown lists, so that\nthe numbers in your source match the numbers in your published HTML.\nBut if you want to be lazy, you don't have to.\n\nTo make lists look nice, you can wrap items with hanging indents:\n\n- Lorem ipsum dolor sit amet, consectetuer adipiscing elit.\n  Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,\n  viverra nec, fringilla in, laoreet vitae, risus.\n- Donec sit amet nisl. Aliquam semper ipsum sit amet velit.\n  Suspendisse id sem consectetuer libero luctus adipiscing.\n\nBut if you want to be lazy, you don't have to:\n\n- Lorem ipsum dolor sit amet, consectetuer adipiscing elit.\n  Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,\n  viverra nec, fringilla in, laoreet vitae, risus.\n- Donec sit amet nisl. Aliquam semper ipsum sit amet velit.\n  Suspendisse id sem consectetuer libero luctus adipiscing.\n\nList items may consist of multiple paragraphs. Each subsequent\nparagraph in a list item must be indented by either 4 spaces\nor one tab:\n\n1.  This is a list item with two paragraphs. Lorem ipsum dolor\n    sit amet, consectetuer adipiscing elit. Aliquam hendrerit\n    mi posuere lectus.\n\n    Vestibulum enim wisi, viverra nec, fringilla in, laoreet\n    vitae, risus. Donec sit amet nisl. Aliquam semper ipsum\n    sit amet velit.\n\n2.  Suspendisse id sem consectetuer libero luctus adipiscing.\n\nIt looks nice if you indent every line of the subsequent\nparagraphs, but here again, Markdown will allow you to be\nlazy:\n\n- This is a list item with two paragraphs.\n\n      This is the second paragraph in the list item. You're\n\n  only required to indent the first line. Lorem ipsum dolor\n  sit amet, consectetuer adipiscing elit.\n\n- Another item in the same list.\n\ndelimiters need to be indented:\n\n- A list item with a blockquote:\n\n  > This is a blockquote\n  > inside a list item.\n\nTo put a code block within a list item, the code block needs\nto be indented _twice_ -- 8 spaces or two tabs:\n\n- A list item with a code block:\n\n### Code Blocks\n\nPre-formatted code blocks are used for writing about programming or\nmarkup source code. Rather than forming normal paragraphs, the lines\nof a code block are interpreted literally. Markdown wraps a code block\n\nTo produce a code block in Markdown, simply indent every line of the\nblock by at least 4 spaces or 1 tab.\n\nThis is a normal paragraph:\n\n    This is a code block.\n\nHere is an example of AppleScript:\n\n    tell application \"Foo\"\n        beep\n    end tell\n\nA code block continues until it reaches a line that is not indented\n(or the end of the article).\n\nare automatically converted into HTML entities. This makes it very\neasy to include example HTML source code using Markdown -- just paste\nit and indent it, and Markdown will handle the hassle of encoding the\nampersands and angle brackets. For example, this:\n\nRegular Markdown syntax is not processed within code blocks. E.g.,\nasterisks are just literal asterisks within a code block. This means\nit's also easy to use Markdown to write about Markdown's own syntax.\n\n## Span Elements\n\n### Links\n\nMarkdown supports two style of links: _inline_ and _reference_.\n\nIn both styles, the link text is delimited by [square brackets].\n\nTo create an inline link, use a set of regular parentheses immediately\nafter the link text's closing square bracket. Inside the parentheses,\nput the URL where you want the link to point, along with an _optional_\ntitle for the link, surrounded in quotes. For example:\n\nThis is [an example](http://example.com/) inline link.\n\n[This link](http://example.net/) has no title attribute.\n\n### Emphasis\n\n_single asterisks_\n\n_single underscores_\n\n**double asterisks**\n\n**double underscores**\n\n### Code\n\nUnlike a pre-formatted code block, a code span indicates code within a\nnormal paragraph. For example:\n",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -38,8 +37,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 23,
-      "labelHeight": 24,
+      "labelWidth": 3051,
+      "labelHeight": 4853,
       "zIndex": 0,
       "level": 1
     },
@@ -47,7 +46,7 @@
       "id": "a",
       "type": "rectangle",
       "pos": {
-        "x": 12,
+        "x": 1481,
         "y": 12
       },
       "width": 113,
@@ -88,8 +87,8 @@
       "id": "b",
       "type": "rectangle",
       "pos": {
-        "x": 12,
-        "y": 362
+        "x": 1481,
+        "y": 5191
       },
       "width": 113,
       "height": 126,
@@ -153,11 +152,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 68.5,
+          "x": 1537.5,
           "y": 138
         },
         {
-          "x": 68.5,
+          "x": 1537.5,
           "y": 238
         }
       ],
@@ -192,12 +191,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 68.5,
-          "y": 262
+          "x": 1537.5,
+          "y": 5091
         },
         {
-          "x": 68.5,
-          "y": 362
+          "x": 1537.5,
+          "y": 5191
         }
       ],
       "animated": false,
@@ -205,8 +204,5 @@
       "icon": null,
       "zIndex": 0
     }
-  ],
-  "layers": null,
-  "scenarios": null,
-  "steps": null
+  ]
 }

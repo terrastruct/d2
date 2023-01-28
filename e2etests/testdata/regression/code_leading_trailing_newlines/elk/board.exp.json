@@ -1,6 +1,5 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -10,8 +9,8 @@
         "x": 12,
         "y": 12
       },
-      "width": 121,
-      "height": 38,
+      "width": 239,
+      "height": 150,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -30,7 +29,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "hello world",
+      "label": "\n\n# 2 leading, 2 trailing\ndef hello():\n\n  print \"world\"\n\n",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "python",
@@ -38,8 +37,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 121,
-      "labelHeight": 38,
+      "labelWidth": 239,
+      "labelHeight": 150,
       "zIndex": 0,
       "level": 1
     },
@@ -47,11 +46,11 @@
       "id": "no trailing",
       "type": "code",
       "pos": {
-        "x": 153,
-        "y": 12
+        "x": 271,
+        "y": 28
       },
-      "width": 122,
-      "height": 38,
+      "width": 160,
+      "height": 118,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -70,7 +69,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "no trailing",
+      "label": "\n\n# 2 leading\ndef hello():\n\n  print \"world\"",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "python",
@@ -78,8 +77,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 122,
-      "labelHeight": 38,
+      "labelWidth": 160,
+      "labelHeight": 118,
       "zIndex": 0,
       "level": 1
     },
@@ -87,11 +86,11 @@
       "id": "no leading",
       "type": "code",
       "pos": {
-        "x": 295,
-        "y": 12
+        "x": 451,
+        "y": 28
       },
-      "width": 113,
-      "height": 38,
+      "width": 160,
+      "height": 118,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -110,7 +109,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "no leading",
+      "label": "# 2 trailing\ndef hello():\n\n  print \"world\"\n\n",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "python",
@@ -118,14 +117,11 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 113,
-      "labelHeight": 38,
+      "labelWidth": 160,
+      "labelHeight": 118,
       "zIndex": 0,
       "level": 1
     }
   ],
-  "connections": [],
-  "layers": null,
-  "scenarios": null,
-  "steps": null
+  "connections": []
 }

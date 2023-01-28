@@ -1,6 +1,5 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -781,7 +780,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "text",
+      "label": "markdown text expanded to 800x400",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -789,7 +788,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 27,
+      "labelWidth": 247,
       "labelHeight": 24,
       "zIndex": 0,
       "level": 1
@@ -821,7 +820,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "code",
+      "label": "a := 5\nb := a + 7\nfmt.Printf(\"%d\", b)",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "golang",
@@ -829,8 +828,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 54,
-      "labelHeight": 38,
+      "labelWidth": 196,
+      "labelHeight": 70,
       "zIndex": 0,
       "level": 1
     },
@@ -838,11 +837,11 @@
       "id": "small code",
       "type": "code",
       "pos": {
-        "x": 2174,
+        "x": 2132,
         "y": 2052
       },
-      "width": 112,
-      "height": 38,
+      "width": 196,
+      "height": 70,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -861,7 +860,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "small code",
+      "label": "a := 5\nb := a + 7\nfmt.Printf(\"%d\", b)",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "golang",
@@ -869,8 +868,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 112,
-      "labelHeight": 38,
+      "labelWidth": 196,
+      "labelHeight": 70,
       "zIndex": 0,
       "level": 1
     }
@@ -1110,8 +1109,5 @@
       "icon": null,
       "zIndex": 0
     }
-  ],
-  "layers": null,
-  "scenarios": null,
-  "steps": null
+  ]
 }

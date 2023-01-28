@@ -1,16 +1,15 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
       "id": "md",
       "type": "text",
       "pos": {
-        "x": 57,
+        "x": 45,
         "y": 238
       },
-      "width": 23,
+      "width": 46,
       "height": 24,
       "opacity": 1,
       "strokeDash": 0,
@@ -30,7 +29,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "md",
+      "label": "`code`",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -38,7 +37,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 23,
+      "labelWidth": 46,
       "labelHeight": 24,
       "zIndex": 0,
       "level": 1
@@ -205,8 +204,5 @@
       "icon": null,
       "zIndex": 0
     }
-  ],
-  "layers": null,
-  "scenarios": null,
-  "steps": null
+  ]
 }

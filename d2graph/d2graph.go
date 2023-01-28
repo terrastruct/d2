@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"net/url"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -1435,4 +1436,19 @@ func (g *Graph) GetBoard(name string) *Graph {
 		}
 	}
 	return nil
+}
+
+func (g *Graph) SortEdgesByAST() *Graph {
+	edges := append([]*Edge(nil), g.Edges...)
+	sort.Slice(edges, func(i, j int) bool {
+		e1 := edges[i]
+		e2 := edges[j]
+		if len(e1.References) == 0 || len(e2.References) == 0 {
+			return i < j
+		}
+		return e1.References[0].Edge.Range.Before(edges[j].References[0].Edge.Range)
+	})
+	g2 := *g
+	g2.Edges = edges
+	return &g2
 }

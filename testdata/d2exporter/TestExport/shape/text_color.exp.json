@@ -1,6 +1,5 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -30,7 +29,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "x",
+      "label": "yo",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -44,8 +43,5 @@
       "level": 1
     }
   ],
-  "connections": [],
-  "layers": null,
-  "scenarios": null,
-  "steps": null
+  "connections": []
 }

@@ -1,6 +1,5 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -270,7 +269,7 @@
         "y": 766
       },
       "width": 512,
-      "height": 38,
+      "height": 70,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -289,7 +288,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "code",
+      "label": "a := 5\nb := a + 7\nfmt.Printf(\"%d\", b)",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "golang",
@@ -297,8 +296,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 54,
-      "labelHeight": 38,
+      "labelWidth": 196,
+      "labelHeight": 70,
       "zIndex": 0,
       "level": 1
     },
@@ -307,7 +306,7 @@
       "type": "package",
       "pos": {
         "x": 12,
-        "y": 904
+        "y": 936
       },
       "width": 512,
       "height": 100,
@@ -347,7 +346,7 @@
       "type": "rectangle",
       "pos": {
         "x": 218,
-        "y": 1104
+        "y": 1136
       },
       "width": 100,
       "height": 100,
@@ -489,11 +488,11 @@
       "route": [
         {
           "x": 268,
-          "y": 804
+          "y": 836
         },
         {
           "x": 268,
-          "y": 938
+          "y": 970
         }
       ],
       "animated": false,
@@ -528,11 +527,11 @@
       "route": [
         {
           "x": 268,
-          "y": 1004
+          "y": 1036
         },
         {
           "x": 268,
-          "y": 1104
+          "y": 1136
         }
       ],
       "animated": false,
@@ -540,8 +539,5 @@
       "icon": null,
       "zIndex": 0
     }
-  ],
-  "layers": null,
-  "scenarios": null,
-  "steps": null
+  ]
 }

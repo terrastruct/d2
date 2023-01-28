@@ -151,6 +151,10 @@ func (r *Range) UnmarshalText(b []byte) (err error) {
 	return r.End.UnmarshalText(end)
 }
 
+func (r Range) Before(r2 Range) bool {
+	return r.Start.Before(r2.Start)
+}
+
 // Position represents a line:column and byte position in a file.
 //
 // note: Line and Column are zero indexed.
@@ -257,6 +261,10 @@ func (p Position) SubtractString(s string, byUTF16 bool) Position {
 		p = p.Subtract(r, byUTF16)
 	}
 	return p
+}
+
+func (p Position) Before(p2 Position) bool {
+	return p.Byte < p2.Byte
 }
 
 // MapNode is implemented by nodes that may be children of Maps.

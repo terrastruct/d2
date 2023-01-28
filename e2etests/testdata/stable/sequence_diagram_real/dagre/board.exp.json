@@ -1,6 +1,5 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -254,10 +253,10 @@
       "type": "rectangle",
       "pos": {
         "x": 843,
-        "y": 606
+        "y": 1126
       },
       "width": 12,
-      "height": 942,
+      "height": 422,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -539,7 +538,7 @@
       "type": "rectangle",
       "pos": {
         "x": 805,
-        "y": 582
+        "y": 1362
       },
       "width": 1365,
       "height": 80,
@@ -604,11 +603,11 @@
       "route": [
         {
           "x": 855.5,
-          "y": 622
+          "y": 1402
         },
         {
           "x": 2121,
-          "y": 622
+          "y": 1402
         }
       ],
       "animated": false,
@@ -643,11 +642,11 @@
       "route": [
         {
           "x": 99,
-          "y": 496
+          "y": 366
         },
         {
           "x": 349,
-          "y": 496
+          "y": 366
         }
       ],
       "animated": false,
@@ -682,11 +681,11 @@
       "route": [
         {
           "x": 349,
-          "y": 626
+          "y": 496
         },
         {
           "x": 99,
-          "y": 626
+          "y": 496
         }
       ],
       "animated": false,
@@ -721,11 +720,11 @@
       "route": [
         {
           "x": 99,
-          "y": 756
+          "y": 626
         },
         {
           "x": 599,
-          "y": 756
+          "y": 626
         }
       ],
       "animated": false,
@@ -760,11 +759,11 @@
       "route": [
         {
           "x": 599,
-          "y": 1142
+          "y": 1012
         },
         {
           "x": 99,
-          "y": 1142
+          "y": 1012
         }
       ],
       "animated": false,
@@ -799,11 +798,11 @@
       "route": [
         {
           "x": 99,
-          "y": 1272
+          "y": 1142
         },
         {
           "x": 843.5,
-          "y": 1272
+          "y": 1142
         }
       ],
       "animated": false,
@@ -838,11 +837,11 @@
       "route": [
         {
           "x": 855.5,
-          "y": 1402
+          "y": 1272
         },
         {
           "x": 1854.5,
-          "y": 1402
+          "y": 1272
         }
       ],
       "animated": false,
@@ -1083,360 +1082,6 @@
       "tooltip": "",
       "icon": null,
       "zIndex": 4
-    },
-    {
-      "id": "(How this is rendered.CLI -- )[0]",
-      "src": "How this is rendered.CLI",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "CLI-lifeline-end-1708808208",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 6,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 99,
-          "y": 236
-        },
-        {
-          "x": 99,
-          "y": 2312
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 1
-    },
-    {
-      "id": "(How this is rendered.d2ast -- )[0]",
-      "src": "How this is rendered.d2ast",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "d2ast-lifeline-end-2301832456",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 6,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 349,
-          "y": 236
-        },
-        {
-          "x": 349,
-          "y": 2312
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 1
-    },
-    {
-      "id": "(How this is rendered.d2compiler -- )[0]",
-      "src": "How this is rendered.d2compiler",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "d2compiler-lifeline-end-4225513585",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 6,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 599,
-          "y": 236
-        },
-        {
-          "x": 599,
-          "y": 2312
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 1
-    },
-    {
-      "id": "(How this is rendered.d2layout -- )[0]",
-      "src": "How this is rendered.d2layout",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "d2layout-lifeline-end-1285981920",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 6,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 849.5,
-          "y": 236
-        },
-        {
-          "x": 849.5,
-          "y": 2312
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 1
-    },
-    {
-      "id": "(How this is rendered.d2exporter -- )[0]",
-      "src": "How this is rendered.d2exporter",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "d2exporter-lifeline-end-882815229",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 6,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 1099,
-          "y": 236
-        },
-        {
-          "x": 1099,
-          "y": 2312
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 1
-    },
-    {
-      "id": "(How this is rendered.d2themes -- )[0]",
-      "src": "How this is rendered.d2themes",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "d2themes-lifeline-end-1104056036",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 6,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 1349.5,
-          "y": 236
-        },
-        {
-          "x": 1349.5,
-          "y": 2312
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 1
-    },
-    {
-      "id": "(How this is rendered.d2renderer -- )[0]",
-      "src": "How this is rendered.d2renderer",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "d2renderer-lifeline-end-3212976943",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 6,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 1599.5,
-          "y": 236
-        },
-        {
-          "x": 1599.5,
-          "y": 2312
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 1
-    },
-    {
-      "id": "(How this is rendered.d2sequencelayout -- )[0]",
-      "src": "How this is rendered.d2sequencelayout",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "d2sequencelayout-lifeline-end-3085844671",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 6,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 1854.5,
-          "y": 236
-        },
-        {
-          "x": 1854.5,
-          "y": 2312
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 1
-    },
-    {
-      "id": "(How this is rendered.d2dagrelayout -- )[0]",
-      "src": "How this is rendered.d2dagrelayout",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "d2dagrelayout-lifeline-end-3371915605",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 6,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 2121,
-          "y": 236
-        },
-        {
-          "x": 2121,
-          "y": 2312
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 1
     }
-  ],
-  "layers": null,
-  "scenarios": null,
-  "steps": null
+  ]
 }

@@ -1,17 +1,16 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
       "id": "a",
       "type": "text",
       "pos": {
-        "x": 33,
-        "y": 168
+        "x": 0,
+        "y": 164
       },
-      "width": 10,
-      "height": 9,
+      "width": 382,
+      "height": 101,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -30,7 +29,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "a",
+      "label": "\\\\Huge{\\\\frac{\\\\alpha g^2}{\\\\omega^5} e^{[ -0.74\\\\bigl\\\\{\\\\frac{\\\\omega U_\\\\omega 19.5}{g}\\\\bigr\\\\}^{\\\\!-4}\\\\,]}}",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "latex",
@@ -38,8 +37,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 10,
-      "labelHeight": 9,
+      "labelWidth": 382,
+      "labelHeight": 101,
       "zIndex": 0,
       "level": 1
     },
@@ -47,11 +46,11 @@
       "id": "b",
       "type": "text",
       "pos": {
-        "x": 103,
-        "y": 166
+        "x": 442,
+        "y": 205
       },
-      "width": 8,
-      "height": 13,
+      "width": 65,
+      "height": 18,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -70,7 +69,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "b",
+      "label": "e = mc^2",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "latex",
@@ -78,8 +77,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 8,
-      "labelHeight": 13,
+      "labelWidth": 65,
+      "labelHeight": 18,
       "zIndex": 0,
       "level": 1
     },
@@ -87,11 +86,11 @@
       "id": "z",
       "type": "text",
       "pos": {
-        "x": 68,
+        "x": 243,
         "y": 0
       },
-      "width": 9,
-      "height": 9,
+      "width": 179,
+      "height": 51,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -110,7 +109,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "z",
+      "label": "gibberish\\\\; math:\\\\sum_{i=0}^\\\\infty i^2",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "latex",
@@ -118,8 +117,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 9,
-      "labelHeight": 9,
+      "labelWidth": 179,
+      "labelHeight": 51,
       "zIndex": 0,
       "level": 1
     },
@@ -127,8 +126,8 @@
       "id": "c",
       "type": "rectangle",
       "pos": {
-        "x": 0,
-        "y": 335
+        "x": 368,
+        "y": 377
       },
       "width": 214,
       "height": 126,
@@ -168,8 +167,8 @@
       "id": "sugar",
       "type": "rectangle",
       "pos": {
-        "x": 171,
-        "y": 109
+        "x": 567,
+        "y": 151
       },
       "width": 146,
       "height": 126,
@@ -209,8 +208,8 @@
       "id": "solution",
       "type": "rectangle",
       "pos": {
-        "x": 25,
-        "y": 582
+        "x": 393,
+        "y": 624
       },
       "width": 164,
       "height": 126,
@@ -274,20 +273,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 69.65137614678899,
-          "y": 9
+          "x": 284.87417218543044,
+          "y": 51
         },
         {
-          "x": 44.330275229357795,
-          "y": 49
+          "x": 209.7748344370861,
+          "y": 91
         },
         {
-          "x": 38,
-          "y": 80.7
+          "x": 191,
+          "y": 113.5
         },
         {
-          "x": 38,
-          "y": 167.5
+          "x": 191,
+          "y": 163.5
         }
       ],
       "isCurve": true,
@@ -322,20 +321,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 75.34862385321101,
-          "y": 9
+          "x": 380.62582781456956,
+          "y": 51
         },
         {
-          "x": 100.6697247706422,
-          "y": 49
+          "x": 455.7251655629139,
+          "y": 91
         },
         {
-          "x": 107,
-          "y": 80.3
+          "x": 474.5,
+          "y": 121.8
         },
         {
-          "x": 107,
-          "y": 165.5
+          "x": 474.5,
+          "y": 205
         }
       ],
       "isCurve": true,
@@ -370,20 +369,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 38,
-          "y": 177.5
+          "x": 191,
+          "y": 265.5
         },
         {
-          "x": 38,
-          "y": 263.5
+          "x": 191,
+          "y": 314.7
         },
         {
-          "x": 44.2,
-          "y": 295
+          "x": 226.3,
+          "y": 341.0701940035273
         },
         {
-          "x": 69,
-          "y": 335
+          "x": 367.5,
+          "y": 397.35097001763666
         }
       ],
       "isCurve": true,
@@ -418,20 +417,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 107,
-          "y": 179.5
+          "x": 474.5,
+          "y": 223
         },
         {
-          "x": 107,
-          "y": 263.9
+          "x": 474.5,
+          "y": 306.2
         },
         {
-          "x": 107,
-          "y": 295
+          "x": 474.5,
+          "y": 337
         },
         {
-          "x": 107,
-          "y": 335
+          "x": 474.5,
+          "y": 377
         }
       ],
       "isCurve": true,
@@ -466,20 +465,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 244,
-          "y": 235
+          "x": 640,
+          "y": 277
         },
         {
-          "x": 244,
-          "y": 275
+          "x": 640,
+          "y": 317
         },
         {
-          "x": 231.8,
-          "y": 295
+          "x": 625.4,
+          "y": 337
         },
         {
-          "x": 183,
-          "y": 335
+          "x": 567,
+          "y": 377
         }
       ],
       "isCurve": true,
@@ -514,20 +513,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 107,
-          "y": 461
+          "x": 474.5,
+          "y": 503
         },
         {
-          "x": 107,
-          "y": 509.4
+          "x": 474.5,
+          "y": 551.4
         },
         {
-          "x": 107,
-          "y": 533.7
+          "x": 474.5,
+          "y": 575.7
         },
         {
-          "x": 107,
-          "y": 582.5
+          "x": 474.5,
+          "y": 624.5
         }
       ],
       "isCurve": true,
@@ -536,8 +535,5 @@
       "icon": null,
       "zIndex": 0
     }
-  ],
-  "layers": null,
-  "scenarios": null,
-  "steps": null
+  ]
 }

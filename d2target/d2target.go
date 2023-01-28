@@ -32,16 +32,15 @@ var BorderOffset = geo.NewVector(5, 5)
 
 type Diagram struct {
 	Name        string              `json:"name"`
-	Type        string              `json:"type"`
 	Description string              `json:"description,omitempty"`
 	FontFamily  *d2fonts.FontFamily `json:"fontFamily,omitempty"`
 
 	Shapes      []Shape      `json:"shapes"`
 	Connections []Connection `json:"connections"`
 
-	Layers    []*Diagram `json:"layers"`
-	Scenarios []*Diagram `json:"scenarios"`
-	Steps     []*Diagram `json:"steps"`
+	Layers    []*Diagram `json:"layers,omitempty"`
+	Scenarios []*Diagram `json:"scenarios,omitempty"`
+	Steps     []*Diagram `json:"steps,omitempty"`
 }
 
 func (diagram Diagram) HashID() (string, error) {

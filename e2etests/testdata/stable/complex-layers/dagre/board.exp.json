@@ -1,6 +1,5 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -131,7 +130,6 @@
   "layers": [
     {
       "name": "window",
-      "type": "layer",
       "fontFamily": "SourceSansPro",
       "shapes": [
         {
@@ -217,14 +215,10 @@
           "level": 1
         }
       ],
-      "connections": [],
-      "layers": null,
-      "scenarios": null,
-      "steps": null
+      "connections": []
     },
     {
       "name": "roof",
-      "type": "layer",
       "fontFamily": "SourceSansPro",
       "shapes": [
         {
@@ -351,14 +345,10 @@
           "level": 1
         }
       ],
-      "connections": [],
-      "layers": null,
-      "scenarios": null,
-      "steps": null
+      "connections": []
     },
     {
       "name": "garage",
-      "type": "layer",
       "fontFamily": "SourceSansPro",
       "shapes": [
         {
@@ -444,23 +434,16 @@
           "level": 1
         }
       ],
-      "connections": [],
-      "layers": null,
-      "scenarios": null,
-      "steps": null
+      "connections": []
     },
     {
       "name": "repair",
-      "type": "layer",
       "fontFamily": "SourceSansPro",
       "shapes": [],
       "connections": [],
-      "layers": null,
-      "scenarios": null,
       "steps": [
         {
           "name": "1",
-          "type": "step",
           "fontFamily": "SourceSansPro",
           "shapes": [
             {
@@ -587,14 +570,10 @@
               "level": 2
             }
           ],
-          "connections": [],
-          "layers": null,
-          "scenarios": null,
-          "steps": null
+          "connections": []
         },
         {
           "name": "2",
-          "type": "step",
           "fontFamily": "SourceSansPro",
           "shapes": [
             {
@@ -729,14 +708,10 @@
               "icon": null,
               "zIndex": 0
             }
-          ],
-          "layers": null,
-          "scenarios": null,
-          "steps": null
+          ]
         },
         {
           "name": "3",
-          "type": "step",
           "fontFamily": "SourceSansPro",
           "shapes": [
             {
@@ -871,14 +846,10 @@
               "icon": null,
               "zIndex": 0
             }
-          ],
-          "layers": null,
-          "scenarios": null,
-          "steps": null
+          ]
         },
         {
           "name": "4",
-          "type": "step",
           "fontFamily": "SourceSansPro",
           "shapes": [
             {
@@ -1013,10 +984,7 @@
               "icon": null,
               "zIndex": 0
             }
-          ],
-          "layers": null,
-          "scenarios": null,
-          "steps": null
+          ]
         }
       ]
     }
@@ -1024,7 +992,6 @@
   "scenarios": [
     {
       "name": "storm",
-      "type": "scenario",
       "fontFamily": "SourceSansPro",
       "shapes": [
         {
@@ -1274,11 +1241,7 @@
           "level": 1
         }
       ],
-      "connections": [],
-      "layers": null,
-      "scenarios": null,
-      "steps": null
+      "connections": []
     }
-  ],
-  "steps": null
+  ]
 }

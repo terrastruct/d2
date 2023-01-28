@@ -1,6 +1,5 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -130,11 +129,11 @@
       "id": "bottom",
       "type": "text",
       "pos": {
-        "x": 43,
+        "x": -402,
         "y": 384
       },
-      "width": 51,
-      "height": 24,
+      "width": 943,
+      "height": 131,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -153,7 +152,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "bottom",
+      "label": "# Cats, no less liquid than their shadows, offer no angles to the wind.\n\nIf we can't fix it, it ain't broke.\n\nDieters live life in the fasting lane.",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -161,8 +160,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 51,
-      "labelHeight": 24,
+      "labelWidth": 943,
+      "labelHeight": 131,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -171,7 +170,7 @@
       "id": "Joe",
       "type": "person",
       "pos": {
-        "x": -163,
+        "x": -553,
         "y": 125
       },
       "width": 131,
@@ -212,7 +211,7 @@
       "id": "Donald",
       "type": "person",
       "pos": {
-        "x": 170,
+        "x": 560,
         "y": 125
       },
       "width": 155,
@@ -253,7 +252,7 @@
       "id": "i am top left",
       "type": "text",
       "pos": {
-        "x": -112,
+        "x": -502,
         "y": -29
       },
       "width": 80,
@@ -294,7 +293,7 @@
       "id": "i am top right",
       "type": "text",
       "pos": {
-        "x": 170,
+        "x": 560,
         "y": -29
       },
       "width": 90,
@@ -335,7 +334,7 @@
       "id": "i am bottom left",
       "type": "text",
       "pos": {
-        "x": -139,
+        "x": -529,
         "y": 384
       },
       "width": 107,
@@ -376,7 +375,7 @@
       "id": "i am bottom right",
       "type": "text",
       "pos": {
-        "x": 170,
+        "x": 560,
         "y": 384
       },
       "width": 117,
@@ -454,8 +453,5 @@
       "icon": null,
       "zIndex": 0
     }
-  ],
-  "layers": null,
-  "scenarios": null,
-  "steps": null
+  ]
 }

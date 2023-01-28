@@ -1,6 +1,5 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -8,7 +7,7 @@
       "type": "queue",
       "pos": {
         "x": 12,
-        "y": 141
+        "y": 165
       },
       "width": 1146,
       "height": 276,
@@ -48,7 +47,7 @@
       "type": "rectangle",
       "pos": {
         "x": 87,
-        "y": 216
+        "y": 240
       },
       "width": 125,
       "height": 126,
@@ -89,7 +88,7 @@
       "type": "rectangle",
       "pos": {
         "x": 232,
-        "y": 216
+        "y": 240
       },
       "width": 125,
       "height": 126,
@@ -130,7 +129,7 @@
       "type": "rectangle",
       "pos": {
         "x": 377,
-        "y": 216
+        "y": 240
       },
       "width": 125,
       "height": 126,
@@ -171,7 +170,7 @@
       "type": "rectangle",
       "pos": {
         "x": 522,
-        "y": 216
+        "y": 240
       },
       "width": 125,
       "height": 126,
@@ -212,7 +211,7 @@
       "type": "rectangle",
       "pos": {
         "x": 667,
-        "y": 216
+        "y": 240
       },
       "width": 126,
       "height": 126,
@@ -253,7 +252,7 @@
       "type": "rectangle",
       "pos": {
         "x": 813,
-        "y": 216
+        "y": 240
       },
       "width": 125,
       "height": 126,
@@ -294,7 +293,7 @@
       "type": "rectangle",
       "pos": {
         "x": 958,
-        "y": 216
+        "y": 240
       },
       "width": 125,
       "height": 126,
@@ -334,10 +333,10 @@
       "id": "m0_desc",
       "type": "text",
       "pos": {
-        "x": 119,
-        "y": 12
+        "x": 96,
+        "y": 36
       },
-      "width": 61,
+      "width": 106,
       "height": 24,
       "opacity": 1,
       "strokeDash": 0,
@@ -357,7 +356,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "m0_desc",
+      "label": "Oldest message",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -365,7 +364,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 61,
+      "labelWidth": 106,
       "labelHeight": 24,
       "zIndex": 0,
       "level": 1
@@ -374,10 +373,10 @@
       "id": "m2_desc",
       "type": "text",
       "pos": {
-        "x": 409,
-        "y": 12
+        "x": 419,
+        "y": 36
       },
-      "width": 61,
+      "width": 41,
       "height": 24,
       "opacity": 1,
       "strokeDash": 0,
@@ -397,7 +396,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "m2_desc",
+      "label": "Offset",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -405,7 +404,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 61,
+      "labelWidth": 41,
       "labelHeight": 24,
       "zIndex": 0,
       "level": 1
@@ -414,10 +413,10 @@
       "id": "m5_desc",
       "type": "text",
       "pos": {
-        "x": 845,
-        "y": 12
+        "x": 830,
+        "y": 36
       },
-      "width": 61,
+      "width": 90,
       "height": 24,
       "opacity": 1,
       "strokeDash": 0,
@@ -437,7 +436,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "m5_desc",
+      "label": "Last message",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -445,7 +444,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 61,
+      "labelWidth": 90,
       "labelHeight": 24,
       "zIndex": 0,
       "level": 1
@@ -454,11 +453,11 @@
       "id": "m6_desc",
       "type": "text",
       "pos": {
-        "x": 990,
+        "x": 950,
         "y": 12
       },
-      "width": 61,
-      "height": 24,
+      "width": 140,
+      "height": 48,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -477,7 +476,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "m6_desc",
+      "label": "Next message will be\\\ninserted here",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -485,8 +484,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 61,
-      "labelHeight": 24,
+      "labelWidth": 140,
+      "labelHeight": 48,
       "zIndex": 0,
       "level": 1
     }
@@ -519,11 +518,11 @@
       "route": [
         {
           "x": 149.5,
-          "y": 36
+          "y": 60
         },
         {
           "x": 149.5,
-          "y": 216
+          "y": 240
         }
       ],
       "animated": false,
@@ -558,11 +557,11 @@
       "route": [
         {
           "x": 439.5,
-          "y": 36
+          "y": 60
         },
         {
           "x": 439.5,
-          "y": 216
+          "y": 240
         }
       ],
       "animated": false,
@@ -597,11 +596,11 @@
       "route": [
         {
           "x": 875.5,
-          "y": 36
+          "y": 60
         },
         {
           "x": 875.5,
-          "y": 216
+          "y": 240
         }
       ],
       "animated": false,
@@ -636,11 +635,11 @@
       "route": [
         {
           "x": 1020.5,
-          "y": 36
+          "y": 60
         },
         {
           "x": 1020.5,
-          "y": 216
+          "y": 240
         }
       ],
       "animated": false,
@@ -648,8 +647,5 @@
       "icon": null,
       "zIndex": 0
     }
-  ],
-  "layers": null,
-  "scenarios": null,
-  "steps": null
+  ]
 }

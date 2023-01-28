@@ -1,6 +1,5 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -10,8 +9,8 @@
         "x": 12,
         "y": 12
       },
-      "width": 173,
-      "height": 174,
+      "width": 609,
+      "height": 198,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -51,8 +50,8 @@
         "x": 87,
         "y": 87
       },
-      "width": 23,
-      "height": 24,
+      "width": 459,
+      "height": 48,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -71,7 +70,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "md",
+      "label": "Lorem ipsum dolor sit amet, consectetur adipiscing elit,  \nsed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -79,14 +78,11 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 23,
-      "labelHeight": 24,
+      "labelWidth": 459,
+      "labelHeight": 48,
       "zIndex": 0,
       "level": 2
     }
   ],
-  "connections": [],
-  "layers": null,
-  "scenarios": null,
-  "steps": null
+  "connections": []
 }

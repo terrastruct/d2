@@ -1,17 +1,16 @@
 {
   "name": "",
-  "type": "",
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
       "id": "md",
       "type": "text",
       "pos": {
-        "x": 57,
+        "x": 12,
         "y": 238
       },
-      "width": 23,
-      "height": 24,
+      "width": 266,
+      "height": 51,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -30,7 +29,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "md",
+      "label": "\n# Markdown: Syntax\n",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -38,8 +37,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 23,
-      "labelHeight": 24,
+      "labelWidth": 266,
+      "labelHeight": 51,
       "zIndex": 0,
       "level": 1
     },
@@ -47,7 +46,7 @@
       "id": "a",
       "type": "rectangle",
       "pos": {
-        "x": 12,
+        "x": 88,
         "y": 12
       },
       "width": 113,
@@ -88,8 +87,8 @@
       "id": "b",
       "type": "rectangle",
       "pos": {
-        "x": 12,
-        "y": 362
+        "x": 88,
+        "y": 389
       },
       "width": 113,
       "height": 126,
@@ -153,11 +152,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 68.5,
+          "x": 145,
           "y": 138
         },
         {
-          "x": 68.5,
+          "x": 145,
           "y": 238
         }
       ],
@@ -192,12 +191,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 68.5,
-          "y": 262
+          "x": 145,
+          "y": 289
         },
         {
-          "x": 68.5,
-          "y": 362
+          "x": 145,
+          "y": 389
         }
       ],
       "animated": false,
@@ -205,8 +204,5 @@
       "icon": null,
       "zIndex": 0
     }
-  ],
-  "layers": null,
-  "scenarios": null,
-  "steps": null
+  ]
 }
