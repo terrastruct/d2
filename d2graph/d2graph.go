@@ -997,13 +997,13 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 	}
 	e.initIndex()
 
-	addSQLTableColumnIndexes(e, srcID, dstID, obj, src, dst)
+	addSQLTableColumnIndices(e, srcID, dstID, obj, src, dst)
 
 	obj.Graph.Edges = append(obj.Graph.Edges, e)
 	return e, nil
 }
 
-func addSQLTableColumnIndexes(e *Edge, srcID, dstID []string, obj, src, dst *Object) {
+func addSQLTableColumnIndices(e *Edge, srcID, dstID []string, obj, src, dst *Object) {
 	if src.Attributes.Shape.Value == d2target.ShapeSQLTable {
 		if src == dst {
 			// Ignore edge to column inside table.
@@ -1311,6 +1311,9 @@ func Key(k *d2ast.KeyPath) []string {
 // All reserved keywords. See init below.
 var ReservedKeywords map[string]struct{}
 
+// All reserved keywords not including style keywords.
+var ReservedKeywords2 map[string]struct{}
+
 // Non Style/Holder keywords.
 var SimpleReservedKeywords = map[string]struct{}{
 	"label":      {},
@@ -1379,6 +1382,13 @@ var NearConstantsArray = []string{
 }
 var NearConstants map[string]struct{}
 
+// BoardKeywords contains the keywords that create new boards.
+var BoardKeywords = map[string]struct{}{
+	"layers":    {},
+	"scenarios": {},
+	"steps":     {},
+}
+
 func init() {
 	ReservedKeywords = make(map[string]struct{})
 	for k, v := range SimpleReservedKeywords {
@@ -1390,13 +1400,28 @@ func init() {
 	for k, v := range ReservedKeywordHolders {
 		ReservedKeywords[k] = v
 	}
+	for k, v := range BoardKeywords {
+		ReservedKeywords[k] = v
+	}
+
+	ReservedKeywords2 = make(map[string]struct{})
+	for k, v := range SimpleReservedKeywords {
+		ReservedKeywords2[k] = v
+	}
+	for k, v := range ReservedKeywordHolders {
+		ReservedKeywords2[k] = v
+	}
+	for k, v := range BoardKeywords {
+		ReservedKeywords2[k] = v
+	}
+
 	NearConstants = make(map[string]struct{}, len(NearConstantsArray))
 	for _, k := range NearConstantsArray {
 		NearConstants[k] = struct{}{}
 	}
 }
 
-func (g *Graph) GetLayer(name string) *Graph {
+func (g *Graph) GetBoard(name string) *Graph {
 	for _, l := range g.Layers {
 		if l.Name == name {
 			return l

@@ -11,6 +11,7 @@ import (
 
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2format"
+	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2parser"
 )
 
@@ -199,13 +200,6 @@ func (m *Map) CopyBase(newParent Node) *Map {
 	return m2
 }
 
-// CopyRoot copies the map such that it is now the root of a diagram.
-func (m *Map) CopyRoot() *Map {
-	m = m.CopyBase(nil)
-	m.initRoot()
-	return m
-}
-
 // Root reports whether the Map is the root of the D2 tree.
 func (m *Map) Root() bool {
 	// m.parent exists even on the root map as we store the root AST in
@@ -222,28 +216,28 @@ func (f *Field) Root() bool {
 	return f.parent == nil
 }
 
-type LayerKind string
+type BoardKind string
 
 const (
-	LayerLayer    LayerKind = "layer"
-	LayerScenario LayerKind = "scenario"
-	LayerStep     LayerKind = "step"
+	BoardLayer    BoardKind = "layer"
+	BoardScenario BoardKind = "scenario"
+	BoardStep     BoardKind = "step"
 )
 
-// NodeLayerKind reports whether n represents the root of a layer.
+// NodeBoardKind reports whether n represents the root of a board.
 // n should be *Field or *Map
-func NodeLayerKind(n Node) LayerKind {
+func NodeBoardKind(n Node) BoardKind {
 	var f *Field
 	switch n := n.(type) {
 	case *Field:
 		if n.Name == "" {
-			return LayerLayer
+			return BoardLayer
 		}
 		f = ParentField(n)
 	case *Map:
 		f = ParentField(n)
 		if f.Root() {
-			return LayerLayer
+			return BoardLayer
 		}
 		f = ParentField(f)
 	}
@@ -252,11 +246,11 @@ func NodeLayerKind(n Node) LayerKind {
 	}
 	switch f.Name {
 	case "layers":
-		return LayerLayer
+		return BoardLayer
 	case "scenarios":
-		return LayerScenario
+		return BoardScenario
 	case "steps":
-		return LayerStep
+		return BoardStep
 	default:
 		return ""
 	}
@@ -657,8 +651,8 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 		return nil, d2parser.Errorf(kp.Path[i].Unbox(), `parent "_" can only be used in the beginning of paths, e.g. "_.x"`)
 	}
 
-	if hasLayerKeywords(head) != -1 && NodeLayerKind(m) == "" {
-		return nil, d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a layer root", head)
+	if findBoardKeyword(head) != -1 && NodeBoardKind(m) == "" {
+		return nil, d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head)
 	}
 
 	for _, f := range m.Fields {
@@ -789,25 +783,34 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
 		return f.Map().CreateEdge(eid, refctx)
 	}
 
-	ij := hasLayerKeywords(eid.SrcPath...)
+	ij := findProhibitedEdgeKeyword(eid.SrcPath...)
 	if ij != -1 {
-		return nil, d2parser.Errorf(refctx.Edge.Src.Path[ij].Unbox(), "cannot create edges between layers, scenarios or steps")
+		return nil, d2parser.Errorf(refctx.Edge.Src.Path[ij].Unbox(), "reserved keywords are prohibited in edges")
+	}
+	ij = findBoardKeyword(eid.SrcPath...)
+	if ij == len(eid.SrcPath)-1 {
+		return nil, d2parser.Errorf(refctx.Edge.Src.Path[ij].Unbox(), "edge with board keyword alone doesn't make sense")
 	}
 	src := m.GetField(eid.SrcPath...)
-	if NodeLayerKind(src) != "" {
-		return nil, d2parser.Errorf(refctx.Edge.Src, "cannot create edges between layers, scenarios or steps")
-	}
-	ij = hasLayerKeywords(eid.DstPath...)
-	if ij != -1 {
-		return nil, d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "cannot create edges between layers, scenarios or steps")
-	}
-	dst := m.GetField(eid.DstPath...)
-	if NodeLayerKind(dst) != "" {
-		return nil, d2parser.Errorf(refctx.Edge.Dst, "cannot create edges between layers, scenarios or steps")
+	if NodeBoardKind(src) != "" {
+		return nil, d2parser.Errorf(refctx.Edge.Src, "cannot create edges between boards")
 	}
 
-	if ParentLayer(src) != ParentLayer(dst) {
-		return nil, d2parser.Errorf(refctx.Edge, "cannot create edges between layers, scenarios or steps")
+	ij = findProhibitedEdgeKeyword(eid.DstPath...)
+	if ij != -1 {
+		return nil, d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "reserved keywords are prohibited in edges")
+	}
+	ij = findBoardKeyword(eid.DstPath...)
+	if ij == len(eid.DstPath)-1 {
+		return nil, d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "edge with board keyword alone doesn't make sense")
+	}
+	dst := m.GetField(eid.DstPath...)
+	if NodeBoardKind(dst) != "" {
+		return nil, d2parser.Errorf(refctx.Edge.Dst, "cannot create edges between boards")
+	}
+
+	if ParentBoard(src) != ParentBoard(dst) {
+		return nil, d2parser.Errorf(refctx.Edge, "cannot create edges between boards")
 	}
 
 	eid.Index = nil
@@ -949,13 +952,13 @@ func ParentField(n Node) *Field {
 	}
 }
 
-func ParentLayer(n Node) Node {
+func ParentBoard(n Node) Node {
 	for {
 		n = n.Parent()
 		if n == nil {
 			return nil
 		}
-		if NodeLayerKind(n) != "" {
+		if NodeBoardKind(n) != "" {
 			return n
 		}
 	}
@@ -974,20 +977,29 @@ func ParentEdge(n Node) *Edge {
 }
 
 func countUnderscores(p []string) int {
-	var count int
-	for _, el := range p {
+	for i, el := range p {
 		if el != "_" {
-			break
+			return i
 		}
-		count++
 	}
-	return count
+	return 0
 }
 
-func hasLayerKeywords(ida ...string) int {
+func findBoardKeyword(ida ...string) int {
 	for i := range ida {
-		switch ida[i] {
-		case "layers", "scenarios", "steps":
+		if _, ok := d2graph.BoardKeywords[ida[i]]; ok {
+			return i
+		}
+	}
+	return -1
+}
+
+func findProhibitedEdgeKeyword(ida ...string) int {
+	for i := range ida {
+		if _, ok := d2graph.SimpleReservedKeywords[ida[i]]; ok {
+			return i
+		}
+		if _, ok := d2graph.ReservedKeywordHolders[ida[i]]; ok {
 			return i
 		}
 	}

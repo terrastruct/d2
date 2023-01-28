@@ -9,6 +9,10 @@
 - You can now use the reserved keywords `layers`/`scenarios`/`steps` to define diagrams
   with multiple levels of abstractions. [#714](https://github.com/terrastruct/d2/pull/714)
   Docs to come soon
+  - [#416](https://github.com/terrastruct/d2/issues/416) was also fixed so you can no
+    longer use keywords intended for use under `style` outside and vice versa. e.g.
+    `obj.style.shape` and `obj.double-border` are now illegal. The correct uses are
+    `obj.shape` and `obj.style.double-border`.
 
 #### Improvements 🧹
 

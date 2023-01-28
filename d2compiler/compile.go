@@ -26,8 +26,6 @@ func Compile(path string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph
 		opts = &CompileOptions{}
 	}
 
-	var pe d2parser.ParseError
-
 	ast, err := d2parser.Parse(path, r, &d2parser.ParseOptions{
 		UTF16: opts.UTF16,
 	})
@@ -40,43 +38,39 @@ func Compile(path string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph
 		return nil, err
 	}
 
-	g, err := compileIR(pe, ir)
+	g, err := compileIR(ast, ir)
 	if err != nil {
 		return nil, err
 	}
-	g.AST = ast
 	return g, err
 }
 
-func compileIR(pe d2parser.ParseError, m *d2ir.Map) (*d2graph.Graph, error) {
-	c := &compiler{
-		err: pe,
-	}
+func compileIR(ast *d2ast.Map, m *d2ir.Map) (*d2graph.Graph, error) {
+	c := &compiler{}
 
-	g := c.compileLayer(m)
+	g := d2graph.NewGraph()
+	g.AST = ast
+	c.compileBoard(g, m)
 	if len(c.err.Errors) > 0 {
 		return nil, c.err
 	}
 	return g, nil
 }
 
-func (c *compiler) compileLayer(ir *d2ir.Map) *d2graph.Graph {
-	g := d2graph.NewGraph()
-
-	m := ir.CopyRoot()
-	c.compileMap(g.Root, m)
+func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
+	c.compileMap(g.Root, ir)
 	if len(c.err.Errors) == 0 {
-		c.validateKeys(g.Root, m)
+		c.validateKeys(g.Root, ir)
 	}
 	c.validateNear(g)
 
-	c.compileLayersField(g, ir, "layers")
-	c.compileLayersField(g, ir, "scenarios")
-	c.compileLayersField(g, ir, "steps")
+	c.compileBoardsField(g, ir, "layers")
+	c.compileBoardsField(g, ir, "scenarios")
+	c.compileBoardsField(g, ir, "steps")
 	return g
 }
 
-func (c *compiler) compileLayersField(g *d2graph.Graph, ir *d2ir.Map, fieldName string) {
+func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName string) {
 	layers := ir.GetField(fieldName)
 	if layers.Map() == nil {
 		return
@@ -85,11 +79,13 @@ func (c *compiler) compileLayersField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 		if f.Map() == nil {
 			continue
 		}
-		if g.GetLayer(f.Name) != nil {
-			c.errorf(f.References[0].AST(), "layer name %v already used by another layer", f.Name)
+		if g.GetBoard(f.Name) != nil {
+			c.errorf(f.References[0].AST(), "board name %v already used by another board", f.Name)
 			continue
 		}
-		g2 := c.compileLayer(f.Map())
+		g2 := d2graph.NewGraph()
+		g2.AST = g.AST
+		c.compileBoard(g2, f.Map())
 		g2.Name = f.Name
 		switch fieldName {
 		case "layers":
@@ -117,6 +113,9 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 	}
 	for _, f := range m.Fields {
 		if f.Name == "shape" {
+			continue
+		}
+		if _, ok := d2graph.BoardKeywords[f.Name]; ok {
 			continue
 		}
 		c.compileField(obj, f)
@@ -538,6 +537,9 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 
 func (c *compiler) validateKeys(obj *d2graph.Object, m *d2ir.Map) {
 	for _, f := range m.Fields {
+		if _, ok := d2graph.BoardKeywords[f.Name]; ok {
+			continue
+		}
 		c.validateKey(obj, f)
 	}
 }

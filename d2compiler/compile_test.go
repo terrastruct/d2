@@ -1479,7 +1479,7 @@ d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:2:9: near key "
 			text: `x: {style.opacity: 0.4}
 y -> x.style
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/edge_to_style.d2:2:1: cannot connect to reserved keyword`,
+			expErr: `d2/testdata/d2compiler/TestCompile/edge_to_style.d2:2:8: reserved keywords are prohibited in edges`,
 		},
 		{
 			name: "escaped_id",
@@ -1946,10 +1946,10 @@ Chinchillas_Collectibles.chinchilla -> Chinchillas.id`,
 func TestCompile2(t *testing.T) {
 	t.Parallel()
 
-	t.Run("scenarios", testScenarios)
+	t.Run("boards", testBoards)
 }
 
-func testScenarios(t *testing.T) {
+func testBoards(t *testing.T) {
 	t.Parallel()
 
 	tca := []struct {
@@ -2004,7 +2004,7 @@ layers: {
 			},
 		},
 		{
-			name: "recursive",
+			name: "errs/duplicate_board",
 			run: func(t *testing.T) {
 				assertCompile(t, `base
 
@@ -2018,7 +2018,7 @@ steps: {
 		clause
 	}
 }
-`, `d2/testdata/d2compiler/TestCompile2/scenarios/recursive#01.d2:9:2: layer name one already used by another layer`)
+`, `d2/testdata/d2compiler/TestCompile2/boards/errs/duplicate_board.d2:9:2: board name one already used by another board`)
 			},
 		},
 	}

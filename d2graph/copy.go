@@ -27,6 +27,7 @@ func (s Style) Copy() Style {
 		Italic:       s.Italic.Copy(),
 		Underline:    s.Underline.Copy(),
 		Filled:       s.Filled.Copy(),
+		DoubleBorder: s.DoubleBorder.Copy(),
 	}
 }
 
@@ -48,7 +49,8 @@ func (attrs *Attributes) Copy() *Attributes {
 		Language: attrs.Language,
 		Shape:    attrs.Shape,
 
-		Direction: attrs.Shape,
+		Direction:  attrs.Direction,
+		Constraint: attrs.Constraint,
 	}
 }
 

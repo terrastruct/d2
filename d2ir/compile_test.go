@@ -313,24 +313,31 @@ layers: {
 		t.Parallel()
 		tca := []testCase{
 			{
-				name: "bad_edge/1",
+				name: "1/bad_edge",
 				run: func(t testing.TB) {
 					_, err := compile(t, `layers.x -> layers.y`)
-					assert.ErrorString(t, err, `TestCompile/layers/errs/bad_edge/1.d2:1:1: cannot create edges between layers, scenarios or steps`)
+					assert.ErrorString(t, err, `TestCompile/layers/errs/1/bad_edge.d2:1:1: cannot create edges between boards`)
 				},
 			},
 			{
-				name: "bad_edge/2",
+				name: "2/bad_edge",
 				run: func(t testing.TB) {
 					_, err := compile(t, `layers -> scenarios`)
-					assert.ErrorString(t, err, `TestCompile/layers/errs/bad_edge/2.d2:1:1: cannot create edges between layers, scenarios or steps`)
+					assert.ErrorString(t, err, `TestCompile/layers/errs/2/bad_edge.d2:1:1: edge with board keyword alone doesn't make sense`)
 				},
 			},
 			{
-				name: "bad_edge/3",
+				name: "3/bad_edge",
 				run: func(t testing.TB) {
 					_, err := compile(t, `layers.x.y -> steps.z.p`)
-					assert.ErrorString(t, err, `TestCompile/layers/errs/bad_edge/3.d2:1:1: cannot create edges between layers, scenarios or steps`)
+					assert.ErrorString(t, err, `TestCompile/layers/errs/3/bad_edge.d2:1:1: cannot create edges between boards`)
+				},
+			},
+			{
+				name: "4/good_edge",
+				run: func(t testing.TB) {
+					_, err := compile(t, `layers.x.y -> layers.x.y`)
+					assert.Success(t, err)
 				},
 			},
 		}
