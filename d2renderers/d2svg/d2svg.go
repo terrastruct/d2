@@ -1481,6 +1481,9 @@ func singleThemeRulesets(themeID int64) (rulesets string, err error) {
 		)
 	}
 
+	// Appendix
+	out += fmt.Sprintf("text.text{fill:%s}", theme.Colors.Neutrals.N1)
+
 	// Markdown specific rulesets
 	out += fmt.Sprintf(".md{--color-fg-default:%s;--color-fg-muted:%s;--color-fg-subtle:%s;--color-canvas-default:%s;--color-canvas-subtle:%s;--color-border-default:%s;--color-border-muted:%s;--color-neutral-muted:%s;--color-accent-fg:%s;--color-accent-emphasis:%s;--color-attention-subtle:%s;--color-danger-fg:%s;}",
 		theme.Colors.Neutrals.N1, theme.Colors.Neutrals.N2, theme.Colors.Neutrals.N3,
