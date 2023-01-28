@@ -1446,7 +1446,7 @@ func (g *Graph) SortEdgesByAST() {
 		if len(e1.References) == 0 || len(e2.References) == 0 {
 			return i < j
 		}
-		return e1.References[0].Edge.Range.Before(edges[j].References[0].Edge.Range)
+		return e1.References[0].Edge.Range.Before(e2.References[0].Edge.Range)
 	})
 	g.Edges = edges
 }
