@@ -78,6 +78,12 @@ var sourceSansProItalicBase64 string
 //go:embed encoded/SourceCodePro-Regular.txt
 var sourceCodeProRegularBase64 string
 
+//go:embed encoded/SourceCodePro-Bold.txt
+var sourceCodeProBoldBase64 string
+
+//go:embed encoded/SourceCodePro-Italic.txt
+var sourceCodeProItalicBase64 string
+
 //go:embed encoded/ArchitectsDaughter-Regular.txt
 var architectsDaughterRegularBase64 string
 
@@ -108,6 +114,14 @@ func init() {
 			Family: SourceCodePro,
 			Style:  FONT_STYLE_REGULAR,
 		}: sourceCodeProRegularBase64,
+		{
+			Family: SourceCodePro,
+			Style:  FONT_STYLE_BOLD,
+		}: sourceCodeProBoldBase64,
+		{
+			Family: SourceCodePro,
+			Style:  FONT_STYLE_ITALIC,
+		}: sourceCodeProItalicBase64,
 		{
 			Family: HandDrawn,
 			Style:  FONT_STYLE_REGULAR,
@@ -143,6 +157,22 @@ func init() {
 	FontFaces[Font{
 		Family: SourceCodePro,
 		Style:  FONT_STYLE_REGULAR,
+	}] = b
+	b, err = fontFacesFS.ReadFile("ttf/SourceCodePro-Bold.ttf")
+	if err != nil {
+		panic(err)
+	}
+	FontFaces[Font{
+		Family: SourceCodePro,
+		Style:  FONT_STYLE_BOLD,
+	}] = b
+	b, err = fontFacesFS.ReadFile("ttf/SourceCodePro-Italic.ttf")
+	if err != nil {
+		panic(err)
+	}
+	FontFaces[Font{
+		Family: SourceCodePro,
+		Style:  FONT_STYLE_ITALIC,
 	}] = b
 	b, err = fontFacesFS.ReadFile("ttf/SourceSansPro-Bold.ttf")
 	if err != nil {

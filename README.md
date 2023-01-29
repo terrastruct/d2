@@ -228,6 +228,7 @@ let us know and we'll be happy to include it here!
 - **Comparison site**: [https://github.com/terrastruct/text-to-diagram-site](https://github.com/terrastruct/text-to-diagram-site)
 - **Playground**: [https://github.com/terrastruct/d2-playground](https://github.com/terrastruct/d2-playground)
 - **Language docs**: [https://github.com/terrastruct/d2-docs](https://github.com/terrastruct/d2-docs)
+- **Hosted icons**: [https://icons.terrastruct.com](https://icons.terrastruct.com)
 
 ## FAQ
 
