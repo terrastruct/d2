@@ -8,6 +8,8 @@
 
 #### Improvements 🧹
 
+- Code snippets use bold and italic font styles as determined by highlighter [#710](https://github.com/terrastruct/d2/issues/710), [#741](https://github.com/terrastruct/d2/issues/741)
+
 #### Bugfixes ⛑️
 
 - Fixes groups overlapping in sequence diagrams when they end in a self loop. [#728](https://github.com/terrastruct/d2/pull/728)
