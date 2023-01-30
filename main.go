@@ -155,7 +155,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	if *darkThemeFlag != -1 {
 		match = d2themescatalog.Find(*darkThemeFlag)
 		if match == (d2themes.Theme{}) {
-			return xmain.UsageErrorf("--dark_theme could not be found. The available options are:\n%s\nYou provided: %d", d2themescatalog.CLIString(), *darkThemeFlag)
+			return xmain.UsageErrorf("--dark-theme could not be found. The available options are:\n%s\nYou provided: %d", d2themescatalog.CLIString(), *darkThemeFlag)
 		}
 		ms.Log.Debug.Printf("using dark theme %s (ID: %d)", match.Name, *darkThemeFlag)
 	}
@@ -186,7 +186,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	var pw png.Playwright
 	if filepath.Ext(outputPath) == ".png" {
 		if *darkThemeFlag != -1 {
-			ms.Log.Warn.Printf("--dark_theme cannot be used while exporting to another format other than .svg")
+			ms.Log.Warn.Printf("--dark-theme cannot be used while exporting to another format other than .svg")
 			*darkThemeFlag = -1
 		}
 		pw, err = png.InitPlaywright()
