@@ -39,21 +39,21 @@ var devMode = false
 var staticFS embed.FS
 
 type watcherOpts struct {
-	layoutPlugin       d2plugin.Plugin
-	themeID            int64
-	darkThemeID        *int64
-	pad                int64
-	sketch             bool
-	center             bool
-	host               string
-	port               string
-	inputPath          string
-	outputPath         string
-	pwd                string
-	bundle             bool
-	forceAppendix      bool
-	disableFitToScreen bool
-	pw                 png.Playwright
+	layoutPlugin  d2plugin.Plugin
+	themeID       int64
+	darkThemeID   *int64
+	pad           int64
+	sketch        bool
+	center        bool
+	host          string
+	port          string
+	inputPath     string
+	outputPath    string
+	pwd           string
+	bundle        bool
+	forceAppendix bool
+	fitToScreen   bool
+	pw            png.Playwright
 }
 
 type watcher struct {
@@ -361,7 +361,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.pw = newPW
 		}
 
-		svg, _, err := compile(ctx, w.ms, w.layoutPlugin, w.sketch, w.center, w.pad, w.themeID, w.darkThemeID, w.inputPath, w.outputPath, w.bundle, w.forceAppendix, w.disableFitToScreen, w.pw.Page)
+		svg, _, err := compile(ctx, w.ms, w.layoutPlugin, w.sketch, w.center, w.pad, w.themeID, w.darkThemeID, w.inputPath, w.outputPath, w.bundle, w.forceAppendix, w.fitToScreen, w.pw.Page)
 		errs := ""
 		if err != nil {
 			if len(svg) > 0 {
