@@ -8,7 +8,7 @@ import (
 )
 
 // ThemableElement is a helper class for creating new XML elements.
-// This should be preffered over formatting and must be used
+// This should be preferred over formatting and must be used
 // whenever Fill, Stroke, BackgroundColor or Color contains a color from a theme.
 // i.e. N[1-7] | B[1-6] | AA[245] | AB[45]
 type ThemableElement struct {

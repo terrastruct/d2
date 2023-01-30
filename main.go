@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"math"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -63,7 +62,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
-	darkThemeFlag, err := ms.Opts.Int64("D2_D_THEME", "dark_theme", "", math.MaxInt64, "the diagram dark theme ID. When left unset only the theme will be applied")
+	darkThemeFlag, err := ms.Opts.Int64("D2_D_THEME", "dark_theme", "", -1, "the diagram dark theme ID. When left unset only the theme will be applied")
 	if err != nil {
 		return err
 	}
@@ -153,7 +152,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	ms.Log.Debug.Printf("using theme %s (ID: %d)", match.Name, *themeFlag)
 
-	if *darkThemeFlag != math.MaxInt64 {
+	if *darkThemeFlag != -1 {
 		match = d2themescatalog.Find(*darkThemeFlag)
 		if match == (d2themes.Theme{}) {
 			return xmain.UsageErrorf("--dark_theme could not be found. The available options are:\n%s\nYou provided: %d", d2themescatalog.CLIString(), *darkThemeFlag)
@@ -186,8 +185,9 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 
 	var pw png.Playwright
 	if filepath.Ext(outputPath) == ".png" {
-		if *darkThemeFlag != math.MaxInt64 {
-			return xmain.UsageErrorf("--dark_theme cannot be used while exporting to another format other than .svg")
+		if *darkThemeFlag != -1 {
+			ms.Log.Warn.Printf("--dark_theme cannot be used while exporting to another format other than .svg")
+			*darkThemeFlag = -1
 		}
 		pw, err = png.InitPlaywright()
 		if err != nil {

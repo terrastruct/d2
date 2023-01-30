@@ -8,11 +8,11 @@ import (
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/svg"
-	svg_style "oss.terrastruct.com/d2/lib/svg/style"
+	svgstyle "oss.terrastruct.com/d2/lib/svg/style"
 )
 
 func classHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
-	rectEl := svg_style.NewThemableElement("rect")
+	rectEl := svgstyle.NewThemableElement("rect")
 	rectEl.X, rectEl.Y = box.TopLeft.X, box.TopLeft.Y
 	rectEl.Width, rectEl.Height = box.Width, box.Height
 	rectEl.Fill = shape.Fill
@@ -27,7 +27,7 @@ func classHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, tex
 			textHeight,
 		)
 
-		textEl := svg_style.NewThemableElement("text")
+		textEl := svgstyle.NewThemableElement("text")
 		textEl.X = tl.X + textWidth/2
 		textEl.Y = tl.Y + textHeight*3/4
 		textEl.Fill = shape.Stroke
@@ -57,7 +57,7 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 		fontSize,
 	)
 
-	textEl := svg_style.NewThemableElement("text")
+	textEl := svgstyle.NewThemableElement("text")
 	textEl.X = prefixTL.X
 	textEl.Y = prefixTL.Y + fontSize*3/4
 	textEl.Fill = shape.PrimaryAccentColor
@@ -82,12 +82,12 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 }
 
 func drawClass(writer io.Writer, targetShape d2target.Shape) {
-	el := svg_style.NewThemableElement("rect")
+	el := svgstyle.NewThemableElement("rect")
 	el.X = float64(targetShape.Pos.X)
 	el.Y = float64(targetShape.Pos.Y)
 	el.Width = float64(targetShape.Width)
 	el.Height = float64(targetShape.Height)
-	el.Fill, el.Stroke = svg_style.ShapeTheme(targetShape)
+	el.Fill, el.Stroke = svgstyle.ShapeTheme(targetShape)
 	el.Style = targetShape.CSSStyle()
 	fmt.Fprint(writer, el.Render())
 
@@ -112,7 +112,7 @@ func drawClass(writer io.Writer, targetShape d2target.Shape) {
 		rowBox.TopLeft.Y += rowHeight
 	}
 
-	lineEl := svg_style.NewThemableElement("line")
+	lineEl := svgstyle.NewThemableElement("line")
 	lineEl.X1, lineEl.Y1 = rowBox.TopLeft.X, rowBox.TopLeft.Y
 	lineEl.X2, lineEl.Y2 = rowBox.TopLeft.X+rowBox.Width, rowBox.TopLeft.Y
 	lineEl.Stroke = targetShape.Fill

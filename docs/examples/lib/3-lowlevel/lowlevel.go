@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"io/ioutil"
-	"math"
 	"path/filepath"
 	"strings"
 
@@ -25,7 +24,7 @@ func main() {
 	out, _ := d2svg.Render(diagram, &d2svg.RenderOpts{
 		Pad:         d2svg.DEFAULT_PADDING,
 		ThemeID:     d2themescatalog.NeutralDefault.ID,
-		DarkThemeID: math.MaxInt64, // Without dark theme
+		DarkThemeID: -1, // Without dark theme
 	})
 	_ = ioutil.WriteFile(filepath.Join("out.svg"), out, 0600)
 }

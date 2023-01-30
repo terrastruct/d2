@@ -30,6 +30,7 @@
         "Host": "icons.terrastruct.com",
         "Path": "/infra/019-network.svg",
         "RawPath": "",
+        "OmitHost": false,
         "ForceQuery": false,
         "RawQuery": "fuga=1&hoge",
         "Fragment": "",

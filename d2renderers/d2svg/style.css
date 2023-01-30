@@ -10,20 +10,3 @@
   mix-blend-mode: multiply;
   opacity: 0.5;
 }
-
-.sketch-overlay-bright {
-  fill: url(#streaks-bright);
-  mix-blend-mode: darken;
-}
-.sketch-overlay-normal {
-  fill: url(#streaks-normal);
-  mix-blend-mode: color-burn;
-}
-.sketch-overlay-dark {
-  fill: url(#streaks-dark);
-  mix-blend-mode: overlay;
-}
-.sketch-overlay-darker {
-  fill: url(#streaks-darker);
-  mix-blend-mode: lighten;
-}

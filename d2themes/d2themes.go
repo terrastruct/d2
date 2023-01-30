@@ -59,12 +59,12 @@ var WarmNeutral = Neutral{
 	N7: "#FFFFFF",
 }
 
-var CattpuccinMochaNeutral = Neutral{
-	N1: "#cdd6f4",
-	N2: "#bac2de",
-	N3: "#a6adc8",
-	N4: "#585b70",
-	N5: "#45475a",
+var DarkNeutral = Neutral{
+	N1: "#CDD6F4",
+	N2: "#BAC2DE",
+	N3: "#A6ADC8",
+	N4: "#585B70",
+	N5: "#45475A",
 	N6: "#313244",
-	N7: "#1e1e2e",
+	N7: "#1E1E2E",
 }

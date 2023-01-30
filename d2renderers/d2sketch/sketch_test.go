@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/xml"
 	"io/ioutil"
-	"math"
 	"os"
 	"path/filepath"
 	"strings"
@@ -422,7 +421,7 @@ func run(t *testing.T, tc testCase) {
 		Pad:         d2svg.DEFAULT_PADDING,
 		Sketch:      true,
 		ThemeID:     0,
-		DarkThemeID: math.MaxInt64,
+		DarkThemeID: -1,
 	})
 	assert.Success(t, err)
 	err = os.MkdirAll(dataPath, 0755)

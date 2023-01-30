@@ -8,12 +8,12 @@ import (
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/svg"
-	svg_style "oss.terrastruct.com/d2/lib/svg/style"
+	svgstyle "oss.terrastruct.com/d2/lib/svg/style"
 	"oss.terrastruct.com/util-go/go2"
 )
 
 func tableHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
-	rectEl := svg_style.NewThemableElement("rect")
+	rectEl := svgstyle.NewThemableElement("rect")
 	rectEl.X, rectEl.Y = box.TopLeft.X, box.TopLeft.Y
 	rectEl.Width, rectEl.Height = box.Width, box.Height
 	rectEl.Fill = shape.Fill
@@ -28,7 +28,7 @@ func tableHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, tex
 			textHeight,
 		)
 
-		textEl := svg_style.NewThemableElement("text")
+		textEl := svgstyle.NewThemableElement("text")
 		textEl.X = tl.X
 		textEl.Y = tl.Y + textHeight*3/4
 		textEl.Fill = shape.Stroke
@@ -58,7 +58,7 @@ func tableRow(shape d2target.Shape, box *geo.Box, nameText, typeText, constraint
 		fontSize,
 	)
 
-	textEl := svg_style.NewThemableElement("text")
+	textEl := svgstyle.NewThemableElement("text")
 	textEl.X = nameTL.X
 	textEl.Y = nameTL.Y + fontSize*3/4
 	textEl.Fill = shape.PrimaryAccentColor
@@ -83,12 +83,12 @@ func tableRow(shape d2target.Shape, box *geo.Box, nameText, typeText, constraint
 }
 
 func drawTable(writer io.Writer, targetShape d2target.Shape) {
-	rectEl := svg_style.NewThemableElement("rect")
+	rectEl := svgstyle.NewThemableElement("rect")
 	rectEl.X = float64(targetShape.Pos.X)
 	rectEl.Y = float64(targetShape.Pos.Y)
 	rectEl.Width = float64(targetShape.Width)
 	rectEl.Height = float64(targetShape.Height)
-	rectEl.Fill, rectEl.Stroke = svg_style.ShapeTheme(targetShape)
+	rectEl.Fill, rectEl.Stroke = svgstyle.ShapeTheme(targetShape)
 	rectEl.Class = "shape"
 	rectEl.Style = targetShape.CSSStyle()
 	fmt.Fprint(writer, rectEl.Render())
@@ -119,7 +119,7 @@ func drawTable(writer io.Writer, targetShape d2target.Shape) {
 		)
 		rowBox.TopLeft.Y += rowHeight
 
-		lineEl := svg_style.NewThemableElement("line")
+		lineEl := svgstyle.NewThemableElement("line")
 		lineEl.X1, lineEl.Y1 = rowBox.TopLeft.X, rowBox.TopLeft.Y
 		lineEl.X2, lineEl.Y2 = rowBox.TopLeft.X+rowBox.Width, rowBox.TopLeft.Y
 		lineEl.Stroke = targetShape.Fill

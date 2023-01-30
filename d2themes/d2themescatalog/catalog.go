@@ -22,7 +22,7 @@ var Catalog = []d2themes.Theme{
 	EarthTones,
 	EvergladeGreen,
 	ButteredToast,
-	CatppuccinMochaMauve,
+	DarkMauve,
 }
 
 func Find(id int64) d2themes.Theme {

@@ -102,6 +102,7 @@ func Luminance(colorString string) (float64, error) {
 		return 0, err
 	}
 
+	// https://stackoverflow.com/a/596243
 	l := float64(
 		float64(0.299)*float64(c.R) +
 			float64(0.587)*float64(c.G) +

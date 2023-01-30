@@ -33,7 +33,7 @@ import (
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/shape"
 	"oss.terrastruct.com/d2/lib/svg"
-	svg_style "oss.terrastruct.com/d2/lib/svg/style"
+	svgstyle "oss.terrastruct.com/d2/lib/svg/style"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
@@ -70,7 +70,16 @@ func dimensions(writer io.Writer, diagram *d2target.Diagram, pad int) (width, he
 	w := br.X - tl.X + pad*2
 	h := br.Y - tl.Y + pad*2
 
-	return w, h, tl, br
+	outTl := d2target.Point{
+		X: tl.X - pad,
+		Y: tl.Y - pad,
+	}
+	outBr := d2target.Point{
+		X: br.X - pad,
+		Y: br.Y - pad,
+	}
+
+	return w, h, outTl, outBr
 }
 
 func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
@@ -82,7 +91,7 @@ func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
 	}
 
 	return fmt.Sprintf("mk-%s", hash(fmt.Sprintf("%s,%t,%d,%s",
-		arrowhead, isTarget, connection.StrokeWidth, svg_style.ConnectionTheme(connection),
+		arrowhead, isTarget, connection.StrokeWidth, svgstyle.ConnectionTheme(connection),
 	)))
 }
 
@@ -128,8 +137,8 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 	var path string
 	switch arrowhead {
 	case d2target.ArrowArrowhead:
-		polygonEl := svg_style.NewThemableElement("polygon")
-		polygonEl.Fill = svg_style.ConnectionTheme(connection)
+		polygonEl := svgstyle.NewThemableElement("polygon")
+		polygonEl.Fill = svgstyle.ConnectionTheme(connection)
 		polygonEl.Class = "connection"
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
@@ -150,8 +159,8 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 		}
 		path = polygonEl.Render()
 	case d2target.TriangleArrowhead:
-		polygonEl := svg_style.NewThemableElement("polygon")
-		polygonEl.Fill = svg_style.ConnectionTheme(connection)
+		polygonEl := svgstyle.NewThemableElement("polygon")
+		polygonEl.Fill = svgstyle.ConnectionTheme(connection)
 		polygonEl.Class = "connection"
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
@@ -170,10 +179,10 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 		}
 		path = polygonEl.Render()
 	case d2target.LineArrowhead:
-		polylineEl := svg_style.NewThemableElement("polyline")
+		polylineEl := svgstyle.NewThemableElement("polyline")
 		polylineEl.Fill = color.None
 		polylineEl.Class = "connection"
-		polylineEl.Stroke = svg_style.ConnectionTheme(connection)
+		polylineEl.Stroke = svgstyle.ConnectionTheme(connection)
 		polylineEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
 		if isTarget {
@@ -191,9 +200,9 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 		}
 		path = polylineEl.Render()
 	case d2target.FilledDiamondArrowhead:
-		polygonEl := svg_style.NewThemableElement("polygon")
+		polygonEl := svgstyle.NewThemableElement("polygon")
 		polygonEl.Class = "connection"
-		polygonEl.Fill = svg_style.ConnectionTheme(connection)
+		polygonEl.Fill = svgstyle.ConnectionTheme(connection)
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
 		if isTarget {
@@ -213,10 +222,10 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 		}
 		path = polygonEl.Render()
 	case d2target.DiamondArrowhead:
-		polygonEl := svg_style.NewThemableElement("polygon")
+		polygonEl := svgstyle.NewThemableElement("polygon")
 		polygonEl.Class = "connection"
 		polygonEl.Fill = bgColor
-		polygonEl.Stroke = svg_style.ConnectionTheme(connection)
+		polygonEl.Stroke = svgstyle.ConnectionTheme(connection)
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
 		if isTarget {
@@ -238,9 +247,9 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 	case d2target.FilledCircleArrowhead:
 		radius := width / 2
 
-		circleEl := svg_style.NewThemableElement("circle")
+		circleEl := svgstyle.NewThemableElement("circle")
 		circleEl.Cy = radius
-		circleEl.R = radius - strokeWidth/2
+		circleEl.R = radius - strokeWidth/2 // @alixander says there maybe should be a plus sign instead
 		circleEl.Fill = connection.Stroke
 		circleEl.Class = "connection"
 		circleEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
@@ -255,7 +264,7 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 	case d2target.CircleArrowhead:
 		radius := width / 2
 
-		circleEl := svg_style.NewThemableElement("circle")
+		circleEl := svgstyle.NewThemableElement("circle")
 		circleEl.Cy = radius
 		circleEl.R = radius - strokeWidth
 		circleEl.Fill = bgColor
@@ -272,29 +281,29 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
 		offset := 4.0 + float64(connection.StrokeWidth*2)
 
-		var modifierEl *svg_style.ThemableElement
+		var modifierEl *svgstyle.ThemableElement
 		if arrowhead == d2target.CfOneRequired || arrowhead == d2target.CfManyRequired {
-			modifierEl = svg_style.NewThemableElement("path")
+			modifierEl = svgstyle.NewThemableElement("path")
 			modifierEl.D = fmt.Sprintf("M%f,%f %f,%f",
 				offset, 0.,
 				offset, height,
 			)
 			modifierEl.Fill = bgColor
-			modifierEl.Stroke = svg_style.ConnectionTheme(connection)
+			modifierEl.Stroke = svgstyle.ConnectionTheme(connection)
 			modifierEl.Class = "connection"
 			modifierEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 		} else {
-			modifierEl = svg_style.NewThemableElement("circle")
+			modifierEl = svgstyle.NewThemableElement("circle")
 			modifierEl.Cx = offset/2.0 + 1.0
 			modifierEl.Cy = height / 2.0
 			modifierEl.R = offset / 2.0
 			modifierEl.Fill = bgColor
-			modifierEl.Stroke = svg_style.ConnectionTheme(connection)
+			modifierEl.Stroke = svgstyle.ConnectionTheme(connection)
 			modifierEl.Class = "connection"
 			modifierEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 		}
 
-		childPathEl := svg_style.NewThemableElement("path")
+		childPathEl := svgstyle.NewThemableElement("path")
 		if arrowhead == d2target.CfMany || arrowhead == d2target.CfManyRequired {
 			childPathEl.D = fmt.Sprintf("M%f,%f %f,%f M%f,%f %f,%f M%f,%f %f,%f",
 				width-3.0, height/2.0,
@@ -313,12 +322,12 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 			)
 		}
 
-		gEl := svg_style.NewThemableElement("g")
+		gEl := svgstyle.NewThemableElement("g")
 		if !isTarget {
 			gEl.Transform = fmt.Sprintf("scale(-1) translate(-%f, -%f)", width, height)
 		}
 		gEl.Fill = bgColor
-		gEl.Stroke = svg_style.ConnectionTheme(connection)
+		gEl.Stroke = svgstyle.ConnectionTheme(connection)
 		gEl.Class = "connection"
 		gEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 		gEl.Content = fmt.Sprintf("%s%s",
@@ -540,10 +549,10 @@ func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskI
 			animatedClass = " animated-connection"
 		}
 
-		pathEl := svg_style.NewThemableElement("path")
+		pathEl := svgstyle.NewThemableElement("path")
 		pathEl.D = path
 		pathEl.Fill = color.None
-		pathEl.Stroke = svg_style.ConnectionTheme(connection)
+		pathEl.Stroke = svgstyle.ConnectionTheme(connection)
 		pathEl.Class = fmt.Sprintf("connection%s", animatedClass)
 		pathEl.Style = connection.CSSStyle()
 		pathEl.Attributes = fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
@@ -563,14 +572,14 @@ func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskI
 		}
 
 		if connection.Fill != color.Empty {
-			rectEl := svg_style.NewThemableElement("rect")
+			rectEl := svgstyle.NewThemableElement("rect")
 			rectEl.X, rectEl.Y = labelTL.X, labelTL.Y
 			rectEl.Width, rectEl.Height = float64(connection.LabelWidth), float64(connection.LabelHeight)
 			rectEl.Fill = connection.Fill
 			fmt.Fprint(writer, rectEl.Render())
 		}
 
-		textEl := svg_style.NewThemableElement("text")
+		textEl := svgstyle.NewThemableElement("text")
 		textEl.X = labelTL.X + float64(connection.LabelWidth)/2
 		textEl.Y = labelTL.Y + float64(connection.FontSize)
 		textEl.Fill = fontColor
@@ -606,7 +615,7 @@ func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskI
 func renderArrowheadLabel(fgColor string, connection d2target.Connection, text string, position, width, height float64) string {
 	labelTL := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, width, height)
 
-	textEl := svg_style.NewThemableElement("text")
+	textEl := svgstyle.NewThemableElement("text")
 	textEl.X = labelTL.X + width/2
 	textEl.Y = labelTL.Y + float64(connection.FontSize)
 	textEl.Fill = fgColor
@@ -617,7 +626,7 @@ func renderArrowheadLabel(fgColor string, connection d2target.Connection, text s
 }
 
 func renderOval(tl *geo.Point, width, height float64, fill, stroke, style string) string {
-	el := svg_style.NewThemableElement("ellipse")
+	el := svgstyle.NewThemableElement("ellipse")
 	el.Rx = width / 2
 	el.Ry = height / 2
 	el.Cx = tl.X + el.Rx
@@ -677,10 +686,10 @@ func render3dRect(targetShape d2target.Shape) string {
 	borderSegments = append(borderSegments,
 		lineTo(d2target.Point{X: targetShape.Width + d2target.THREE_DEE_OFFSET, Y: -d2target.THREE_DEE_OFFSET}),
 	)
-	border := svg_style.NewThemableElement("path")
+	border := svgstyle.NewThemableElement("path")
 	border.D = strings.Join(borderSegments, " ")
 	border.Fill = color.None
-	_, borderStroke := svg_style.ShapeTheme(targetShape)
+	_, borderStroke := svgstyle.ShapeTheme(targetShape)
 	border.Stroke = borderStroke
 	borderStyle := targetShape.CSSStyle()
 	border.Style = borderStyle
@@ -700,13 +709,13 @@ func render3dRect(targetShape d2target.Shape) string {
 	}, "\n")
 
 	// render the main rectangle without stroke and the border mask
-	mainShape := svg_style.NewThemableElement("rect")
+	mainShape := svgstyle.NewThemableElement("rect")
 	mainShape.X = float64(targetShape.Pos.X)
 	mainShape.Y = float64(targetShape.Pos.Y)
 	mainShape.Width = float64(targetShape.Width)
 	mainShape.Height = float64(targetShape.Height)
 	mainShape.Mask = fmt.Sprintf("url(#%s)", maskID)
-	mainShapeFill, _ := svg_style.ShapeTheme(targetShape)
+	mainShapeFill, _ := svgstyle.ShapeTheme(targetShape)
 	mainShape.Fill = mainShapeFill
 	mainShape.Stroke = color.None
 	mainShape.Style = targetShape.CSSStyle()
@@ -731,7 +740,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	if err != nil {
 		darkerColor = targetShape.Fill
 	}
-	sideShape := svg_style.NewThemableElement("polygon")
+	sideShape := svgstyle.NewThemableElement("polygon")
 	sideShape.Fill = darkerColor
 	sideShape.Points = strings.Join(sidePoints, " ")
 	sideShape.Mask = fmt.Sprintf("url(#%s)", maskID)
@@ -756,7 +765,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)
-	fill, stroke := svg_style.ShapeTheme(targetShape)
+	fill, stroke := svgstyle.ShapeTheme(targetShape)
 	style := targetShape.CSSStyle()
 	shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[targetShape.Type]
 
@@ -845,7 +854,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		}
 
 	case d2target.ShapeImage:
-		el := svg_style.NewThemableElement("image")
+		el := svgstyle.NewThemableElement("image")
 		el.X = float64(targetShape.Pos.X)
 		el.Y = float64(targetShape.Pos.Y)
 		el.Width = float64(targetShape.Width)
@@ -863,7 +872,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		} else {
 			if !targetShape.DoubleBorder {
 				if targetShape.Multiple {
-					el := svg_style.NewThemableElement("rect")
+					el := svgstyle.NewThemableElement("rect")
 					el.X = float64(targetShape.Pos.X + 10)
 					el.Y = float64(targetShape.Pos.Y - 10)
 					el.Width = float64(targetShape.Width)
@@ -880,7 +889,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					}
 					fmt.Fprint(writer, out)
 				} else {
-					el := svg_style.NewThemableElement("rect")
+					el := svgstyle.NewThemableElement("rect")
 					el.X = float64(targetShape.Pos.X)
 					el.Y = float64(targetShape.Pos.Y)
 					el.Width = float64(targetShape.Width)
@@ -892,7 +901,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				}
 			} else {
 				if targetShape.Multiple {
-					el := svg_style.NewThemableElement("rect")
+					el := svgstyle.NewThemableElement("rect")
 					el.X = float64(targetShape.Pos.X + 10)
 					el.Y = float64(targetShape.Pos.Y - 10)
 					el.Width = float64(targetShape.Width)
@@ -902,7 +911,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					el.Style = style
 					fmt.Fprint(writer, el.Render())
 
-					el = svg_style.NewThemableElement("rect")
+					el = svgstyle.NewThemableElement("rect")
 					el.X = float64(targetShape.Pos.X + 10 + d2target.INNER_BORDER_OFFSET)
 					el.Y = float64(targetShape.Pos.Y - 10 + d2target.INNER_BORDER_OFFSET)
 					el.Width = float64(targetShape.Width - 2*d2target.INNER_BORDER_OFFSET)
@@ -919,7 +928,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					}
 					fmt.Fprint(writer, out)
 				} else {
-					el := svg_style.NewThemableElement("rect")
+					el := svgstyle.NewThemableElement("rect")
 					el.X = float64(targetShape.Pos.X)
 					el.Y = float64(targetShape.Pos.Y)
 					el.Width = float64(targetShape.Width)
@@ -929,7 +938,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					el.Style = style
 					fmt.Fprint(writer, el.Render())
 
-					el = svg_style.NewThemableElement("rect")
+					el = svgstyle.NewThemableElement("rect")
 					el.X = float64(targetShape.Pos.X + d2target.INNER_BORDER_OFFSET)
 					el.Y = float64(targetShape.Pos.Y + d2target.INNER_BORDER_OFFSET)
 					el.Width = float64(targetShape.Width - 2*d2target.INNER_BORDER_OFFSET)
@@ -945,7 +954,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 	default:
 		if targetShape.Multiple {
 			multiplePathData := shape.NewShape(shapeType, geo.NewBox(multipleTL, width, height)).GetSVGPathData()
-			el := svg_style.NewThemableElement("path")
+			el := svgstyle.NewThemableElement("path")
 			el.Fill = fill
 			el.Stroke = stroke
 			el.Style = style
@@ -962,7 +971,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			}
 			fmt.Fprint(writer, out)
 		} else {
-			el := svg_style.NewThemableElement("path")
+			el := svgstyle.NewThemableElement("path")
 			el.Fill = fill
 			el.Stroke = stroke
 			el.Style = style
@@ -1037,7 +1046,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 
 			svgStyles := styleToSVG(style)
 			fmt.Fprintf(writer, `<g transform="translate(%f %f)">`, box.TopLeft.X, box.TopLeft.Y)
-			rectEl := svg_style.NewThemableElement("rect")
+			rectEl := svgstyle.NewThemableElement("rect")
 			rectEl.Width = float64(targetShape.Width)
 			rectEl.Height = float64(targetShape.Height)
 			rectEl.Stroke = targetShape.Stroke
@@ -1066,7 +1075,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			if err != nil {
 				return labelMask, err
 			}
-			gEl := svg_style.NewThemableElement("g")
+			gEl := svgstyle.NewThemableElement("g")
 			gEl.Transform = fmt.Sprintf("translate(%f %f)", box.TopLeft.X, box.TopLeft.Y)
 			gEl.Color = targetShape.Stroke
 			gEl.Content = render
@@ -1082,7 +1091,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			// we need the self closing form in this svg/xhtml context
 			render = strings.ReplaceAll(render, "<hr>", "<hr />")
 
-			mdEl := svg_style.NewThemableElement("div")
+			mdEl := svgstyle.NewThemableElement("div")
 			mdEl.Xmlns = "http://www.w3.org/1999/xhtml"
 			mdEl.Class = "md"
 			mdEl.Content = render
@@ -1093,7 +1102,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			if targetShape.Color != color.Empty {
 				fontColor = targetShape.Color
 			}
-			textEl := svg_style.NewThemableElement("text")
+			textEl := svgstyle.NewThemableElement("text")
 			textEl.X = labelTL.X + float64(targetShape.LabelWidth)/2
 			// text is vertically positioned at its baseline which is at labelTL+FontSize
 			textEl.Y = labelTL.Y + float64(targetShape.FontSize)
@@ -1291,6 +1300,66 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) string {
 		}
 	}
 
+	triggers = []string{
+		`sketch-overlay-bright`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			out += `
+.sketch-overlay-bright {
+	fill: url(#streaks-bright);
+	mix-blend-mode: darken;
+}`
+			break
+		}
+	}
+
+	triggers = []string{
+		`sketch-overlay-normal`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			out += `
+.sketch-overlay-normal {
+	fill: url(#streaks-normal);
+	mix-blend-mode: color-burn;
+}`
+			break
+		}
+	}
+
+	triggers = []string{
+		`sketch-overlay-dark`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			out += `
+.sketch-overlay-dark {
+	fill: url(#streaks-dark);
+	mix-blend-mode: overlay;
+}`
+			break
+		}
+	}
+
+	triggers = []string{
+		`sketch-overlay-darker`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			out += `
+.sketch-overlay-darker {
+	fill: url(#streaks-darker);
+	mix-blend-mode: lighten;
+}`
+			break
+		}
+	}
+
 	out += `]]></style>`
 	return out
 }
@@ -1303,7 +1372,7 @@ const (
 	FG_COLOR = color.N1
 
 	DEFAULT_THEME      int64 = 0
-	DEFAULT_DARK_THEME int64 = math.MaxInt64 // no theme selected
+	DEFAULT_DARK_THEME int64 = -1 // no theme selected
 )
 
 // TODO minify output at end
@@ -1394,9 +1463,9 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 
 	// TODO minify
 	// TODO background stuff. e.g. dotted, grid, colors
-	backgroundEl := svg_style.NewThemableElement("rect")
-	backgroundEl.X = float64(tl.X - pad)
-	backgroundEl.Y = float64(tl.Y - pad)
+	backgroundEl := svgstyle.NewThemableElement("rect")
+	backgroundEl.X = float64(tl.X)
+	backgroundEl.Y = float64(tl.Y)
 	backgroundEl.Width = float64(w)
 	backgroundEl.Height = float64(h)
 	backgroundEl.Fill = color.N7
@@ -1442,7 +1511,7 @@ func themeCSS(themeID, darkThemeID int64) (stylesheet string, err error) {
 		return "", err
 	}
 
-	if darkThemeID != math.MaxInt64 {
+	if darkThemeID != -1 {
 		darkOut, err := singleThemeRulesets(darkThemeID)
 		if err != nil {
 			return "", err
