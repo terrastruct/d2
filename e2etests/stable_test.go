@@ -1895,6 +1895,21 @@ d: --------
 e: ----------------
 f: --------------------------------
 g: ----------------------------------------------------------------
+
+1.shape: person
+2.shape: person
+3.shape: person
+4.shape: person
+5.shape: person
+
+1.width: 16
+2.width: 64
+3.width: 128
+4.width: 512
+
+# entering both width and height overrides aspect ratio limit
+5.height: 256
+5.width: 32
 `,
 		},
 	}

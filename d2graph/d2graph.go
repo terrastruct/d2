@@ -1187,6 +1187,10 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			sideLength := math.Max(obj.Width, obj.Height)
 			obj.Width = sideLength
 			obj.Height = sideLength
+		} else if desiredHeight == 0 || desiredWidth == 0 {
+			if s.GetType() == shape.PERSON_TYPE {
+				obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.PERSON_AR_LIMIT)
+			}
 		}
 	}
 	for _, edge := range g.Edges {

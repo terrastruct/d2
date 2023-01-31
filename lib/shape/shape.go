@@ -225,3 +225,12 @@ func boxPath(box *geo.Box) *svg.SvgPathContext {
 	pc.Z()
 	return pc
 }
+
+func LimitAR(width, height, aspectRatio float64) (float64, float64) {
+	if width > aspectRatio*height {
+		height = math.Round(width / aspectRatio)
+	} else if height > aspectRatio*width {
+		width = math.Round(height / aspectRatio)
+	}
+	return width, height
+}

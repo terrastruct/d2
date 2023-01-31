@@ -21,6 +21,8 @@ func NewPerson(box *geo.Box) Shape {
 }
 
 const (
+	PERSON_AR_LIMIT = 1.5
+
 	personShoulderWidthFactor = 20.2 / 68.3
 )
 
@@ -76,11 +78,7 @@ func (s shapePerson) GetDimensionsToFit(width, height, paddingX, paddingY float6
 	totalHeight := height + paddingY
 
 	// prevent the shape's aspect ratio from becoming too extreme
-	if totalWidth > 1.5*totalHeight {
-		totalHeight = totalWidth / 1.5
-	} else if totalHeight > 1.5*totalWidth {
-		totalWidth = totalHeight / 1.5
-	}
+	totalWidth, totalHeight = LimitAR(totalWidth, totalHeight, PERSON_AR_LIMIT)
 	return math.Ceil(totalWidth), math.Ceil(totalHeight)
 }
 
