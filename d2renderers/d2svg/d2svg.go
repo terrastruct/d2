@@ -79,7 +79,7 @@ type RenderOpts struct {
 	DarkThemeID *int64
 	// disables the fit to screen behavior and ensures the exported svg has the exact dimensions
 	SetDimensions bool
-	FitToScreen   bool
+	FitScreen     bool
 }
 
 func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height int) {
@@ -1839,21 +1839,21 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	if opts.Center {
 		alignment = "xMidYMid"
 	}
-	fitToScreenWrapper := fmt.Sprintf(`<svg %s d2Version="%s" preserveAspectRatio="%s meet" viewBox="0 0 %d %d"%s>`,
+	fitScreenWrapper := fmt.Sprintf(`<svg %s d2Version="%s" preserveAspectRatio="%s meet" viewBox="0 0 %d %d"%s>`,
 		`xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"`,
 		version.Version,
 		alignment,
 		w, h,
 		dimensions,
 	)
-	if !opts.FitToScreen {
-		fitToScreenWrapper = ""
+	if !opts.FitScreen {
+		fitScreenWrapper = ""
 	}
 
 	// TODO minify
 	docRendered := fmt.Sprintf(`%s%s<svg id="d2-svg" class="%s" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s%s</svg></svg>`,
 		`<?xml version="1.0" encoding="utf-8"?>`,
-		fitToScreenWrapper,
+		fitScreenWrapper,
 		diagramHash,
 		w, h, left, top, w, h,
 		doubleBorderElStr,
