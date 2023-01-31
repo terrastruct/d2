@@ -1877,6 +1877,26 @@ a.sp1 -> a.sp2: redirect
 a.sp2 -> b: bar
 `,
 		},
+		{
+			name: "people",
+			script: `
+a.shape: person
+b.shape: person
+c.shape: person
+d.shape: person
+e.shape: person
+f.shape: person
+g.shape: person
+
+a: -
+b: --
+c: ----
+d: --------
+e: ----------------
+f: --------------------------------
+g: ----------------------------------------------------------------
+`,
+		},
 	}
 
 	runa(t, tcs)
