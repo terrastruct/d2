@@ -451,6 +451,8 @@ func (sd *sequenceDiagram) placeSpans() {
 // routeMessages routes horizontal edges (messages) from Src to Dst lifeline (actor/span center)
 // in another step, routes are adjusted to spans borders when necessary
 func (sd *sequenceDiagram) routeMessages() error {
+	var prevIsLoop bool
+	var prevGroup *d2graph.Object
 	messageOffset := sd.maxActorHeight + sd.yStep
 	for _, message := range sd.messages {
 		message.ZIndex = MESSAGE_Z_INDEX
@@ -460,6 +462,14 @@ func (sd *sequenceDiagram) routeMessages() error {
 				noteOffset += note.Height + sd.yStep
 			}
 		}
+
+		// we need extra space if the previous message is a loop in a different group
+		group := message.GetGroup()
+		if prevIsLoop && prevGroup != group {
+			messageOffset += MIN_MESSAGE_DISTANCE
+		}
+		prevGroup = group
+
 		startY := messageOffset + noteOffset
 
 		var startX, endX float64
@@ -496,11 +506,13 @@ func (sd *sequenceDiagram) routeMessages() error {
 				geo.NewPoint(midX, endY),
 				geo.NewPoint(endX, endY),
 			}
+			prevIsLoop = true
 		} else {
 			message.Route = []*geo.Point{
 				geo.NewPoint(startX, startY),
 				geo.NewPoint(endX, startY),
 			}
+			prevIsLoop = false
 		}
 		messageOffset += sd.yStep
 
