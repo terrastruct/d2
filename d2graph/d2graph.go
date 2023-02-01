@@ -749,20 +749,14 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 			if fdims == nil {
 				return nil, fmt.Errorf("dimensions for class field %#v not found", f.Text())
 			}
-			lineWidth := fdims.Width
-			if lineWidth > maxWidth {
-				maxWidth = lineWidth
-			}
+			maxWidth = go2.Max(maxWidth, fdims.Width)
 		}
 		for _, m := range obj.Class.Methods {
 			mdims := GetTextDimensions(mtexts, ruler, m.Text(), go2.Pointer(d2fonts.SourceCodePro))
 			if mdims == nil {
 				return nil, fmt.Errorf("dimensions for class method %#v not found", m.Text())
 			}
-			lineWidth := mdims.Width
-			if lineWidth > maxWidth {
-				maxWidth = lineWidth
-			}
+			maxWidth = go2.Max(maxWidth, mdims.Width)
 		}
 		//    ┌─PrefixWidth ┌─CenterPadding
 		// ┌─┬─┬───────┬──────┬───┬──┐
@@ -802,9 +796,7 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 			}
 			c.Name.LabelWidth = nameDims.Width
 			c.Name.LabelHeight = nameDims.Height
-			if maxNameWidth < nameDims.Width {
-				maxNameWidth = nameDims.Width
-			}
+			maxNameWidth = go2.Max(maxNameWidth, nameDims.Width)
 
 			typeDims := GetTextDimensions(mtexts, ruler, ctexts[1], fontFamily)
 			if typeDims == nil {
@@ -815,6 +807,7 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 			if maxTypeWidth < typeDims.Width {
 				maxTypeWidth = typeDims.Width
 			}
+			maxTypeWidth = go2.Max(maxTypeWidth, typeDims.Width)
 
 			if c.Constraint != "" {
 				// covers UNQ constraint with padding
@@ -1103,7 +1096,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			if dslShape == d2target.ShapeCircle || dslShape == d2target.ShapeSquare {
 				sideLength := DEFAULT_SHAPE_SIZE
 				if desiredWidth != 0 || desiredHeight != 0 {
-					sideLength = math.Max(float64(desiredWidth), float64(desiredHeight))
+					sideLength = float64(go2.Max(desiredWidth, desiredHeight))
 				}
 				obj.Width = sideLength
 				obj.Height = sideLength
