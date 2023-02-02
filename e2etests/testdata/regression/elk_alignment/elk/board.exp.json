@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "build_workflow",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 12
@@ -45,7 +45,7 @@
     },
     {
       "id": "build_workflow.push",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 87,
         "y": 87
@@ -86,7 +86,7 @@
     },
     {
       "id": "build_workflow.GHA",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 117,
         "y": 450
@@ -127,7 +127,7 @@
     },
     {
       "id": "build_workflow.S3",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 186,
         "y": 813
@@ -168,7 +168,7 @@
     },
     {
       "id": "build_workflow.Terraform",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 143,
         "y": 1176
@@ -209,7 +209,7 @@
     },
     {
       "id": "build_workflow.AWS",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 174,
         "y": 1539
@@ -250,7 +250,7 @@
     },
     {
       "id": "deploy_workflow",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 512,
         "y": 335
@@ -291,7 +291,7 @@
     },
     {
       "id": "deploy_workflow.manual",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 587,
         "y": 410
@@ -332,7 +332,7 @@
     },
     {
       "id": "deploy_workflow.GHA",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 588,
         "y": 773
@@ -373,7 +373,7 @@
     },
     {
       "id": "deploy_workflow.AWS",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 645,
         "y": 1216
@@ -414,7 +414,7 @@
     },
     {
       "id": "apollo_workflow",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 953,
         "y": 375
@@ -455,7 +455,7 @@
     },
     {
       "id": "apollo_workflow.apollo",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1175,
         "y": 450
@@ -496,7 +496,7 @@
     },
     {
       "id": "apollo_workflow.GHA",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1160,
         "y": 813
@@ -537,7 +537,7 @@
     },
     {
       "id": "apollo_workflow.AWS",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1217,
         "y": 1176

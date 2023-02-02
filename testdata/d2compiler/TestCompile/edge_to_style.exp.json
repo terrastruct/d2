@@ -4,8 +4,8 @@
     "ioerr": null,
     "errs": [
       {
-        "range": "d2/testdata/d2compiler/TestCompile/edge_to_style.d2,1:0:24-1:12:36",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/edge_to_style.d2:2:1: cannot connect to reserved keyword"
+        "range": "d2/testdata/d2compiler/TestCompile/edge_to_style.d2,1:7:31-1:12:36",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/edge_to_style.d2:2:8: reserved keywords are prohibited in edges"
       }
     ]
   }

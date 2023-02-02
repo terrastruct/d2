@@ -45,7 +45,7 @@
     },
     {
       "id": "How this is rendered.CLI",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 36,
         "y": 122
@@ -86,7 +86,7 @@
     },
     {
       "id": "How this is rendered.d2ast",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 286,
         "y": 122
@@ -127,7 +127,7 @@
     },
     {
       "id": "How this is rendered.d2compiler",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 520,
         "y": 122
@@ -168,7 +168,7 @@
     },
     {
       "id": "How this is rendered.d2layout",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 779,
         "y": 122
@@ -209,7 +209,7 @@
     },
     {
       "id": "How this is rendered.d2exporter",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1021,
         "y": 122
@@ -250,7 +250,7 @@
     },
     {
       "id": "How this is rendered.d2themes",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1275,
         "y": 122
@@ -291,7 +291,7 @@
     },
     {
       "id": "How this is rendered.d2renderer",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1521,
         "y": 122
@@ -332,7 +332,7 @@
     },
     {
       "id": "How this is rendered.d2sequencelayout",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1752,
         "y": 122
@@ -373,7 +373,7 @@
     },
     {
       "id": "How this is rendered.d2dagrelayout",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 2031,
         "y": 122
@@ -454,47 +454,6 @@
       "level": 3
     },
     {
-      "id": "How this is rendered.only if root is not sequence",
-      "type": "",
-      "pos": {
-        "x": 817,
-        "y": 1374
-      },
-      "width": 1365,
-      "height": 80,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 0,
-      "borderRadius": 0,
-      "fill": "#DEE1EB",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": true,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "only if root is not sequence",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 185,
-      "labelHeight": 26,
-      "labelPosition": "INSIDE_TOP_LEFT",
-      "zIndex": 3,
-      "level": 2
-    },
-    {
       "id": "How this is rendered.d2layout.layout",
       "type": "rectangle",
       "pos": {
@@ -533,6 +492,47 @@
       "labelHeight": 26,
       "zIndex": 2,
       "level": 3
+    },
+    {
+      "id": "How this is rendered.only if root is not sequence",
+      "type": "rectangle",
+      "pos": {
+        "x": 817,
+        "y": 1374
+      },
+      "width": 1365,
+      "height": 80,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 0,
+      "borderRadius": 0,
+      "fill": "#DEE1EB",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": true,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "only if root is not sequence",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 185,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_TOP_LEFT",
+      "zIndex": 3,
+      "level": 2
     },
     {
       "id": "How this is rendered.d2exporter.export",

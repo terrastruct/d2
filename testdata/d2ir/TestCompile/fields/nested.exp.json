@@ -1,0 +1,197 @@
+{
+  "fields": [
+    {
+      "name": "x",
+      "composite": {
+        "fields": [
+          {
+            "name": "y",
+            "primary": {
+              "value": {
+                "range": "TestCompile/fields/nested.d2,0:5:5-0:8:8",
+                "value": [
+                  {
+                    "string": "yes",
+                    "raw_string": "yes"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/fields/nested.d2,0:2:2-0:3:3",
+                  "value": [
+                    {
+                      "string": "y",
+                      "raw_string": "y"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/fields/nested.d2,0:0:0-0:3:3",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/fields/nested.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/fields/nested.d2,0:2:2-0:3:3",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/fields/nested.d2,0:0:0-0:8:8",
+                    "key": {
+                      "range": "TestCompile/fields/nested.d2,0:0:0-0:3:3",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/fields/nested.d2,0:0:0-0:1:1",
+                            "value": [
+                              {
+                                "string": "x",
+                                "raw_string": "x"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/fields/nested.d2,0:2:2-0:3:3",
+                            "value": [
+                              {
+                                "string": "y",
+                                "raw_string": "y"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/fields/nested.d2,0:5:5-0:8:8",
+                        "value": [
+                          {
+                            "string": "yes",
+                            "raw_string": "yes"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/fields/nested.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/fields/nested.d2,0:0:0-0:3:3",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/fields/nested.d2,0:0:0-0:1:1",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/fields/nested.d2,0:2:2-0:3:3",
+                  "value": [
+                    {
+                      "string": "y",
+                      "raw_string": "y"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/fields/nested.d2,0:0:0-0:8:8",
+              "key": {
+                "range": "TestCompile/fields/nested.d2,0:0:0-0:3:3",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/fields/nested.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/fields/nested.d2,0:2:2-0:3:3",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/fields/nested.d2,0:5:5-0:8:8",
+                  "value": [
+                    {
+                      "string": "yes",
+                      "raw_string": "yes"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

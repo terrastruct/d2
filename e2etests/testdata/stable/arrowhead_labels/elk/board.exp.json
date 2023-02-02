@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 56,
         "y": 12
@@ -45,7 +45,7 @@
     },
     {
       "id": "b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 56,
         "y": 359
@@ -90,7 +90,7 @@
       "id": "(a -> b)[0]",
       "src": "a",
       "srcArrow": "none",
-      "srcLabel": "1",
+      "srcLabel": "",
       "dst": "b",
       "dstArrow": "diamond",
       "dstLabel": "*",

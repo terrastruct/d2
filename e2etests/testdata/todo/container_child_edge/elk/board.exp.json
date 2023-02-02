@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "container",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 12
@@ -45,7 +45,7 @@
     },
     {
       "id": "container.first",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 136,
         "y": 87
@@ -86,7 +86,7 @@
     },
     {
       "id": "container.second",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 100,
         "y": 434

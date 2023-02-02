@@ -1,5 +1,6 @@
 {
   "graph": {
+    "name": "",
     "ast": {
       "range": "d2/testdata/d2compiler/TestCompile/reserved_icon_near_style.d2,0:0:0-8:0:94",
       "nodes": [
@@ -280,11 +281,14 @@
         },
         "direction": {
           "value": ""
+        },
+        "constraint": {
+          "value": ""
         }
       },
       "zIndex": 0
     },
-    "edges": [],
+    "edges": null,
     "objects": [
       {
         "id": "x",
@@ -312,7 +316,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           },
           {
             "key": {
@@ -343,7 +347,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -374,7 +378,7 @@
             "RawFragment": ""
           },
           "near_key": {
-            "range": ",0:0:0-0:1:1",
+            "range": "d2/testdata/d2compiler/TestCompile/reserved_icon_near_style.d2,6:8:90-6:9:91",
             "path": [
               {
                 "unquoted_string": {
@@ -390,9 +394,12 @@
             ]
           },
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -424,7 +431,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -434,9 +441,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },

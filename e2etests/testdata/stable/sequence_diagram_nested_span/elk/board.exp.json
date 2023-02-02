@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "scorer",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 24,
         "y": 74
@@ -85,7 +85,7 @@
     },
     {
       "id": "itemResponse",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 249,
         "y": 74
@@ -166,7 +166,7 @@
     },
     {
       "id": "item",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 524,
         "y": 74
@@ -287,7 +287,7 @@
     },
     {
       "id": "essayRubric",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 756,
         "y": 74
@@ -448,7 +448,7 @@
     },
     {
       "id": "concept",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1019,
         "y": 74
@@ -649,7 +649,7 @@
     },
     {
       "id": "itemOutcome",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1251,
         "y": 74

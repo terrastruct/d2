@@ -1,5 +1,6 @@
 {
   "graph": {
+    "name": "",
     "ast": {
       "range": "d2/testdata/d2oracle/TestMove/underscore_edge_children.d2,0:0:0-4:0:20",
       "nodes": [
@@ -132,6 +133,9 @@
         },
         "direction": {
           "value": ""
+        },
+        "constraint": {
+          "value": ""
         }
       },
       "zIndex": 0
@@ -163,6 +167,9 @@
             "value": ""
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -196,7 +203,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -206,9 +213,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -222,26 +232,6 @@
           "height": 0
         },
         "references": [
-          {
-            "key": {
-              "range": "d2/testdata/d2oracle/TestMove/underscore_edge_children.d2,3:0:18-3:1:19",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestMove/underscore_edge_children.d2,3:0:18-3:1:19",
-                    "value": [
-                      {
-                        "string": "c",
-                        "raw_string": "c"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": 0
-          },
           {
             "key": {
               "range": "d2/testdata/d2oracle/TestMove/underscore_edge_children.d2,1:2:7-1:6:11",
@@ -272,6 +262,26 @@
             },
             "key_path_index": 1,
             "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/underscore_edge_children.d2,3:0:18-3:1:19",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/underscore_edge_children.d2,3:0:18-3:1:19",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -281,9 +291,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -325,9 +338,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },

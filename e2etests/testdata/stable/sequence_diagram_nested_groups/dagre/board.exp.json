@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 24,
         "y": 74
@@ -45,7 +45,7 @@
     },
     {
       "id": "b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 337,
         "y": 74
@@ -86,7 +86,7 @@
     },
     {
       "id": "c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 629,
         "y": 74
@@ -127,13 +127,13 @@
     },
     {
       "id": "this is a message group",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": -97,
         "y": 290
       },
       "width": 655,
-      "height": 952,
+      "height": 998,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -168,13 +168,13 @@
     },
     {
       "id": "this is a message group.and this is a nested message group",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": -73,
         "y": 420
       },
       "width": 607,
-      "height": 798,
+      "height": 844,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -209,13 +209,13 @@
     },
     {
       "id": "this is a message group.and this is a nested message group.what about more nesting",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": -49,
         "y": 550
       },
       "width": 559,
-      "height": 644,
+      "height": 690,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -250,13 +250,13 @@
     },
     {
       "id": "this is a message group.and this is a nested message group.what about more nesting.crazy town",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": -25,
-        "y": 680
+        "y": 936
       },
       "width": 511,
-      "height": 490,
+      "height": 280,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -294,7 +294,7 @@
       "type": "page",
       "pos": {
         "x": 25,
-        "y": 720
+        "y": 1040
       },
       "width": 148,
       "height": 126,
@@ -332,7 +332,7 @@
     },
     {
       "id": "this is a message group.and this is a nested message group.what about more nesting.crazy town.whoa",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 49,
         "y": 1066
@@ -373,7 +373,7 @@
     },
     {
       "id": "alt",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 338,
         "y": 1172
@@ -414,7 +414,7 @@
     },
     {
       "id": "alt.case 1",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 362,
         "y": 1196
@@ -455,7 +455,7 @@
     },
     {
       "id": "alt.case 2",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 362,
         "y": 1326
@@ -496,7 +496,7 @@
     },
     {
       "id": "alt.case 3",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 362,
         "y": 1456
@@ -537,7 +537,7 @@
     },
     {
       "id": "alt.case 4",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 362,
         "y": 1586
@@ -622,7 +622,7 @@
       "type": "page",
       "pos": {
         "x": 30,
-        "y": 1756
+        "y": 1500
       },
       "width": 137,
       "height": 190,
@@ -661,7 +661,7 @@
   ],
   "connections": [
     {
-      "id": "(a -> b)[0]",
+      "id": "(a -> b)[4]",
       "src": "a",
       "srcArrow": "none",
       "srcLabel": "",
@@ -700,7 +700,7 @@
       "zIndex": 4
     },
     {
-      "id": "(a -> b)[1]",
+      "id": "(a -> b)[3]",
       "src": "a",
       "srcArrow": "none",
       "srcLabel": "",
@@ -778,7 +778,7 @@
       "zIndex": 4
     },
     {
-      "id": "(a -> b)[3]",
+      "id": "(a -> b)[1]",
       "src": "a",
       "srcArrow": "none",
       "srcLabel": "",
@@ -817,7 +817,7 @@
       "zIndex": 4
     },
     {
-      "id": "(a -> b)[4]",
+      "id": "(a -> b)[0]",
       "src": "a",
       "srcArrow": "none",
       "srcLabel": "",
