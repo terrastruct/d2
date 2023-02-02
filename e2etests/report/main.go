@@ -39,6 +39,7 @@ func main() {
 	flag.BoolVar(&deltaFlag, "delta", false, "Generate the report only for cases that changed.")
 	flag.StringVar(&testSetFlag, "test-set", "", "Only run set of tests matching this string. e.g. regressions")
 	flag.StringVar(&testCaseFlag, "test-case", "", "Only run tests matching this string. e.g. all_shapes")
+	skipTests := flag.Bool("skip-tests", false, "Skip running tests first")
 	flag.BoolVar(&vFlag, "v", false, "verbose")
 	flag.Parse()
 
@@ -53,18 +54,20 @@ func main() {
 		testDir = "./e2etests"
 	}
 
-	ctx := log.Stderr(context.Background())
-	ctx, cancel := context.WithTimeout(ctx, 2*time.Minute)
-	defer cancel()
-	cmd := exec.CommandContext(ctx, "go", "test", testDir, "-run", testMatchString, vString)
-	cmd.Env = os.Environ()
-	cmd.Env = append(cmd.Env, "FORCE_COLOR=1")
-	cmd.Env = append(cmd.Env, "DEBUG=1")
-	cmd.Env = append(cmd.Env, "TEST_MODE=on")
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	log.Debug(ctx, cmd.String())
-	_ = cmd.Run()
+	if !*skipTests {
+		ctx := log.Stderr(context.Background())
+		ctx, cancel := context.WithTimeout(ctx, 2*time.Minute)
+		defer cancel()
+		cmd := exec.CommandContext(ctx, "go", "test", testDir, "-run", testMatchString, vString)
+		cmd.Env = os.Environ()
+		cmd.Env = append(cmd.Env, "FORCE_COLOR=1")
+		cmd.Env = append(cmd.Env, "DEBUG=1")
+		cmd.Env = append(cmd.Env, "TEST_MODE=on")
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		log.Debug(ctx, cmd.String())
+		_ = cmd.Run()
+	}
 
 	var tests []TestItem
 	err := filepath.Walk(filepath.Join(testDir, "testdata"), func(path string, info os.FileInfo, err error) error {
