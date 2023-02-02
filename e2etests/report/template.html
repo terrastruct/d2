@@ -1,16 +1,26 @@
 <html>
   <title>E2E report</title>
   <body>
+    <h1>Table of Contents</h1>
+    <ul>
+      {{range .Tests}}
+      <li><a href="#{{.Name}}">{{.Name}}</a></li>
+      {{end}}
+    </ul>
     <div class="cases">
       {{range .Tests}}
-      <div class="case">
+      <div class="case" id="{{.Name}}">
         <h1><a href="../../{{.GotSVG}}">{{.Name}}</a></h1>
         {{ if .ExpSVG }}
-        <h2>Expected</h2>
-        <img src="../../{{.ExpSVG}}" width="100%" />
-        <h2>Got</h2>
+        <h2 class="case-exp">Expected</h2>
         {{ end }}
-        <img src="../../{{.GotSVG}}" width="100%" />
+        <h2 class="case-got">Got</h2>
+        <div class="case-img-wrapper">
+          {{ if .ExpSVG }}
+          <img src="../../{{.ExpSVG}}" width="100%" />
+          {{ end }}
+          <img src="../../{{.GotSVG}}" width="100%" />
+        </div>
       </div>
       {{end}}
     </div>
@@ -20,17 +30,24 @@
         flex-wrap: wrap;
       }
       .case {
-        align-items: center;
-        justify-content: center;
+        position: relative;
         padding: 20px;
+        width: 100%;
       }
-      .case svg {
-        width: 400px;
-        height: 400px;
+      .case-img-wrapper {
+        display: flex;
+        align-items: center;
       }
-      .case pre {
-        font-size: 10pt;
-        width: 400px;
+      .case img {
+        width: 600px;
+      }
+      .case-got {
+        position: absolute;
+        left: 600px;
+      }
+      .case h2 {
+        margin: 0;
+        display: inline;
       }
     </style>
   </body>
