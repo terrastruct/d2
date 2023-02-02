@@ -1460,6 +1460,21 @@ func (g *Graph) GetBoard(name string) *Graph {
 	return nil
 }
 
+func (g *Graph) SortObjectsByAST() {
+	objects := append([]*Object(nil), g.Objects...)
+	sort.Slice(objects, func(i, j int) bool {
+		o1 := objects[i]
+		o2 := objects[j]
+		if len(o1.References) == 0 || len(o2.References) == 0 {
+			return i < j
+		}
+		r1 := o1.References[0]
+		r2 := o2.References[0]
+		return r1.Key.Path[r1.KeyPathIndex].Unbox().GetRange().Before(r2.Key.Path[r2.KeyPathIndex].Unbox().GetRange())
+	})
+	g.Objects = objects
+}
+
 func (g *Graph) SortEdgesByAST() {
 	edges := append([]*Edge(nil), g.Edges...)
 	sort.Slice(edges, func(i, j int) bool {
