@@ -1181,6 +1181,44 @@ func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) {
 		}
 	}
 
+	triggers = []string{
+		`class="text-mono-bold"`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			fmt.Fprintf(buf, `
+.text-mono-bold {
+	font-family: "font-mono-bold";
+}
+@font-face {
+	font-family: font-mono-bold;
+	src: url("%s");
+}`,
+				d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD)])
+			break
+		}
+	}
+
+	triggers = []string{
+		`class="text-mono-italic"`,
+	}
+
+	for _, t := range triggers {
+		if strings.Contains(content, t) {
+			fmt.Fprintf(buf, `
+.text-mono-italic {
+	font-family: "font-mono-italic";
+}
+@font-face {
+	font-family: font-mono-italic;
+	src: url("%s");
+}`,
+				d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC)])
+			break
+		}
+	}
+
 	buf.WriteString(`]]></style>`)
 }
 

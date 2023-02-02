@@ -1163,6 +1163,12 @@ func appendTextDedup(texts []*d2target.MText, t *d2target.MText) []*d2target.MTe
 }
 
 func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, fontFamily *d2fonts.FontFamily) error {
+	if ruler != nil && fontFamily != nil {
+		if ok := ruler.HasFontFamilyLoaded(fontFamily); !ok {
+			return fmt.Errorf("ruler does not have entire font family %s loaded, is a style missing?", *fontFamily)
+		}
+	}
+
 	for _, obj := range g.Objects {
 		obj.Box = &geo.Box{}
 

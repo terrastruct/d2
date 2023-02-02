@@ -47,7 +47,8 @@ func styleAttr(styles map[chroma.TokenType]string, tt chroma.TokenType) string {
 			}
 		}
 	}
-	return styles[tt]
+	out := strings.Replace(styles[tt], `font-weight="bold"`, `class="text-mono-bold"`, -1)
+	return strings.Replace(out, `font-style="italic"`, `class="text-mono-italic"`, -1)
 }
 
 // <<< END
