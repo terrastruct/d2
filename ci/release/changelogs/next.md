@@ -13,6 +13,7 @@
     longer use keywords intended for use under `style` outside and vice versa. e.g.
     `obj.style.shape` and `obj.double-border` are now illegal. The correct uses are
     `obj.shape` and `obj.style.double-border`.
+  - Many other minor compiler bugs were fixed.
 
 #### Improvements 🧹
 
