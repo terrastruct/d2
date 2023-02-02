@@ -33,7 +33,7 @@ func (obj *Object) IsSequenceDiagramGroup() bool {
 			return false
 		}
 	}
-	return obj.ContainsAnyObject(obj.Graph.Objects) || obj.ContainsAnyEdge(obj.Graph.Edges)
+	return len(obj.ChildrenArray) > 0 || obj.ContainsAnyEdge(obj.Graph.Edges)
 }
 
 // notes are descendant of actors with no edges and no children

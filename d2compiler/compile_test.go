@@ -1947,6 +1947,7 @@ func TestCompile2(t *testing.T) {
 	t.Parallel()
 
 	t.Run("boards", testBoards)
+	t.Run("seqdiagrams", testSeqDiagrams)
 }
 
 func testBoards(t *testing.T) {
@@ -2030,6 +2031,57 @@ steps: {
 			tc.run(t)
 		})
 	}
+}
+
+func testSeqDiagrams(t *testing.T) {
+	t.Parallel()
+
+	t.Run("errs", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "sequence_diagram_edge_between_edge_groups",
+				// New sequence diagram scoping implementation is disabled.
+				skip: true,
+				run: func(t *testing.T) {
+					assertCompile(t, `
+Office chatter: {
+  shape: sequence_diagram
+  alice: Alice
+  bob: Bobby
+  awkward small talk: {
+    alice -> bob: uhm, hi
+    bob -> alice: oh, hello
+    icebreaker attempt: {
+      alice -> bob: what did you have for lunch?
+    }
+    unfortunate outcome: {
+      bob -> alice: that's personal
+    }
+  }
+  awkward small talk.icebreaker attempt.alice -> awkward small talk.unfortunate outcome.bob
+}
+`, "d2/testdata/d2compiler/TestCompile2/seqdiagrams/errs/sequence_diagram_edge_between_edge_groups.d2:16:3: edges between edge groups are not allowed")
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
 }
 
 func assertCompile(t *testing.T, text string, expErr string) *d2graph.Graph {

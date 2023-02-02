@@ -645,15 +645,16 @@ func (obj *Object) FindEdges(mk *d2ast.Key) ([]*Edge, bool) {
 	return ea, true
 }
 
-func (obj *Object) ensureChildEdge(ids []string) *Object {
-	for i := range ids {
+func (obj *Object) ensureChildEdge(ida []string) *Object {
+	for i := range ida {
 		switch obj.Attributes.Shape.Value {
 		case d2target.ShapeClass, d2target.ShapeSQLTable:
 			// This will only be called for connecting edges where we want to truncate to the
 			// container.
 			return obj
+		default:
+			obj = obj.EnsureChild(ida[i : i+1])
 		}
-		obj = obj.EnsureChild(ids[i : i+1])
 	}
 	return obj
 }
@@ -665,11 +666,22 @@ func (obj *Object) EnsureChild(ida []string) *Object {
 	if seq != nil {
 		for _, c := range seq.ChildrenArray {
 			if c.ID == ida[0] {
+				if obj.ID == ida[0] {
+					// In cases of a.a where EnsureChild is called on the parent a, the second a should
+					// be created as a child of a and not as a child of the diagram. This is super
+					// unfortunate code but alas.
+					break
+				}
 				obj = seq
 				break
 			}
 		}
 	}
+
+	if len(ida) == 0 {
+		return obj
+	}
+
 	_, is := ReservedKeywordHolders[ida[0]]
 	if len(ida) == 1 && !is {
 		_, ok := ReservedKeywords[ida[0]]
@@ -680,6 +692,10 @@ func (obj *Object) EnsureChild(ida []string) *Object {
 
 	id := ida[0]
 	ida = ida[1:]
+
+	if id == "_" {
+		return obj.Parent.EnsureChild(ida)
+	}
 
 	child, ok := obj.Children[strings.ToLower(id)]
 	if !ok {

@@ -179,6 +179,9 @@ func (m *Map) Copy(newParent Node) Node {
 	for i := range m.Edges {
 		m.Edges[i] = m.Edges[i].Copy(m).(*Edge)
 	}
+	if m.parent == nil {
+		m.initRoot()
+	}
 	return m
 }
 

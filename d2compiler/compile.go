@@ -59,6 +59,8 @@ func compileIR(ast *d2ast.Map, m *d2ir.Map) (*d2graph.Graph, error) {
 }
 
 func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
+	ir = ir.Copy(nil).(*d2ir.Map)
+	// c.preprocessSeqDiagrams(ir)
 	c.compileMap(g.Root, ir)
 	if len(c.err.Errors) == 0 {
 		c.validateKeys(g.Root, ir)
@@ -100,7 +102,8 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 }
 
 type compiler struct {
-	err d2parser.ParseError
+	inEdgeGroup bool
+	err         d2parser.ParseError
 }
 
 func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
@@ -657,4 +660,128 @@ func d2graphIDA(irIDA []string) (ida []string) {
 		ida = append(ida, d2format.Format(n))
 	}
 	return ida
+}
+
+// Unused for now until shape: edge_group
+func (c *compiler) preprocessSeqDiagrams(m *d2ir.Map) {
+	for _, f := range m.Fields {
+		if f.Name == "shape" && f.Primary_.Value.ScalarString() == d2target.ShapeSequenceDiagram {
+			c.preprocessEdgeGroup(m, m)
+			return
+		}
+		if f.Map() != nil {
+			c.preprocessSeqDiagrams(f.Map())
+		}
+	}
+}
+
+func (c *compiler) preprocessEdgeGroup(seqDiagram, m *d2ir.Map) {
+	// Any child of a sequence diagram can be either an actor, edge group or a span.
+	// 1. Actors are shapes without edges inside them defined at the top level scope of a
+	//    sequence diagram.
+	// 2. Spans are the children of actors. For our purposes we can ignore them.
+	// 3. Edge groups are defined as having at least one connection within them and also not
+	//    being connected to anything. All direct children of an edge group are either edge
+	//    groups or top level actors.
+
+	// Go through all the fields and hoist actors from edge groups while also processing
+	// the edge groups recursively.
+	for _, f := range m.Fields {
+		if isEdgeGroup(f) {
+			if f.Map() != nil {
+				c.preprocessEdgeGroup(seqDiagram, f.Map())
+			}
+		} else {
+			if m == seqDiagram {
+				// Ignore for root.
+				continue
+			}
+			hoistActor(seqDiagram, f)
+		}
+	}
+
+	// We need to adjust all edges recursively to point to actual actors instead.
+	for _, e := range m.Edges {
+		if isCrossEdgeGroupEdge(m, e) {
+			c.errorf(e.References[0].AST(), "illegal edge between edge groups")
+			continue
+		}
+
+		if m == seqDiagram {
+			// Root edges between actors directly do not require hoisting.
+			continue
+		}
+
+		srcParent := seqDiagram
+		for i, el := range e.ID.SrcPath {
+			f := srcParent.GetField(el)
+			if !isEdgeGroup(f) {
+				for j := 0; j < i+1; j++ {
+					e.ID.SrcPath = append([]string{"_"}, e.ID.SrcPath...)
+					e.ID.DstPath = append([]string{"_"}, e.ID.DstPath...)
+				}
+				break
+			}
+			srcParent = f.Map()
+		}
+	}
+}
+
+func hoistActor(seqDiagram *d2ir.Map, f *d2ir.Field) {
+	f2 := seqDiagram.GetField(f.Name)
+	if f2 == nil {
+		seqDiagram.Fields = append(seqDiagram.Fields, f.Copy(seqDiagram).(*d2ir.Field))
+	} else {
+		d2ir.OverlayField(f2, f)
+		d2ir.ParentMap(f).DeleteField(f.Name)
+	}
+}
+
+func isCrossEdgeGroupEdge(m *d2ir.Map, e *d2ir.Edge) bool {
+	srcParent := m
+	for _, el := range e.ID.SrcPath {
+		f := srcParent.GetField(el)
+		if f == nil {
+			// Hoisted already.
+			break
+		}
+		if isEdgeGroup(f) {
+			return true
+		}
+		srcParent = f.Map()
+	}
+
+	dstParent := m
+	for _, el := range e.ID.DstPath {
+		f := dstParent.GetField(el)
+		if f == nil {
+			// Hoisted already.
+			break
+		}
+		if isEdgeGroup(f) {
+			return true
+		}
+		dstParent = f.Map()
+	}
+
+	return false
+}
+
+func isEdgeGroup(n d2ir.Node) bool {
+	return n.Map().EdgeCountRecursive() > 0
+}
+
+func parentSeqDiagram(n d2ir.Node) *d2ir.Map {
+	for {
+		m := d2ir.ParentMap(n)
+		if m == nil {
+			return nil
+		}
+		for _, f := range m.Fields {
+			if f.Name == "shape" && f.Primary_.Value.ScalarString() == d2target.ShapeSequenceDiagram {
+				return m
+			}
+		}
+		n = m
+	}
 }
