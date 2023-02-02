@@ -495,16 +495,16 @@
       "id": "choo",
       "type": "rectangle",
       "pos": {
-        "x": 1024,
-        "y": 74
+        "x": 717,
+        "y": 1846
       },
-      "width": 150,
-      "height": 126,
+      "width": 254,
+      "height": 216,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 2,
+      "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "#DEE1EB",
       "stroke": "#0D32B2",
       "shadow": false,
       "3d": false,
@@ -514,7 +514,7 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
-      "blend": false,
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
@@ -528,8 +528,8 @@
       "underline": false,
       "labelWidth": 38,
       "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
+      "labelPosition": "INSIDE_TOP_LEFT",
+      "zIndex": 3,
       "level": 1
     },
     {
@@ -1113,45 +1113,6 @@
         },
         {
           "x": 849,
-          "y": 2142
-        }
-      ],
-      "animated": false,
-      "tooltip": "",
-      "icon": null,
-      "zIndex": 1
-    },
-    {
-      "id": "(choo -- )[0]",
-      "src": "choo",
-      "srcArrow": "none",
-      "srcLabel": "",
-      "dst": "choo-lifeline-end-3474163975",
-      "dstArrow": "none",
-      "dstLabel": "",
-      "opacity": 1,
-      "strokeDash": 6,
-      "strokeWidth": 2,
-      "stroke": "#0D32B2",
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#676C7E",
-      "italic": true,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "",
-      "labelPercentage": 0,
-      "route": [
-        {
-          "x": 1099,
-          "y": 200
-        },
-        {
-          "x": 1099,
           "y": 2142
         }
       ],
