@@ -19,11 +19,21 @@ func NewOval(box *geo.Box) Shape {
 	}
 }
 
-func (s shapeOval) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
+func (s shapeOval) GetInnerBox() *geo.Box {
+	width := s.Box.Width
+	height := s.Box.Height
+	insideTL := s.GetInsidePlacement(width, height, 0)
+	tl := s.Box.TopLeft.Copy()
+	width -= 2 * (insideTL.X - tl.X)
+	height -= 2 * (insideTL.Y - tl.Y)
+	return geo.NewBox(&insideTL, width, height)
+}
+
+func (s shapeOval) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
 	theta := math.Atan2(height, width)
 	// add padding in direction of diagonal so there is padding distance between top left and border
-	paddedWidth := width + 2*padding*math.Cos(theta)
-	paddedHeight := height + 2*padding*math.Sin(theta)
+	paddedWidth := width + paddingX*math.Cos(theta)
+	paddedHeight := height + paddingY*math.Sin(theta)
 	// see https://stackoverflow.com/questions/433371/ellipse-bounding-a-rectangle
 	return math.Ceil(math.Sqrt2 * paddedWidth), math.Ceil(math.Sqrt2 * paddedHeight)
 }

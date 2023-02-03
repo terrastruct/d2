@@ -10,7 +10,7 @@
         "y": 74
       },
       "width": 150,
-      "height": 126,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 12,
-      "labelHeight": 26,
+      "labelWidth": 7,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -51,7 +51,7 @@
         "y": 74
       },
       "width": 150,
-      "height": 126,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,8 +78,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -88,11 +88,11 @@
       "id": "b.note",
       "type": "page",
       "pos": {
-        "x": 86,
-        "y": 780
+        "x": 116,
+        "y": 660
       },
-      "width": 525,
-      "height": 126,
+      "width": 465,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -119,8 +119,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 425,
-      "labelHeight": 26,
+      "labelWidth": 420,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 5,
       "level": 2
@@ -129,11 +129,11 @@
       "id": "a.note",
       "type": "page",
       "pos": {
-        "x": 30,
-        "y": 460
+        "x": 60,
+        "y": 400
       },
-      "width": 137,
-      "height": 190,
+      "width": 77,
+      "height": 130,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -160,8 +160,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 37,
-      "labelHeight": 90,
+      "labelWidth": 32,
+      "labelHeight": 85,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 5,
       "level": 2
@@ -195,11 +195,11 @@
       "route": [
         {
           "x": 99,
-          "y": 330
+          "y": 270
         },
         {
           "x": 349,
-          "y": 330
+          "y": 270
         }
       ],
       "animated": false,
@@ -234,11 +234,11 @@
       "route": [
         {
           "x": 99,
-          "y": 200
+          "y": 140
         },
         {
           "x": 99,
-          "y": 1036
+          "y": 856
         }
       ],
       "animated": false,
@@ -273,11 +273,11 @@
       "route": [
         {
           "x": 349,
-          "y": 200
+          "y": 140
         },
         {
           "x": 349,
-          "y": 1036
+          "y": 856
         }
       ],
       "animated": false,

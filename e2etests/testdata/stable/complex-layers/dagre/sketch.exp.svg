@@ -3,7 +3,7 @@
 id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="776" height="330" viewBox="-102 -102 776 330"><style type="text/css">
+width="596" height="270" viewBox="-102 -102 596 270"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -39,8 +39,8 @@ width="776" height="330" viewBox="-102 -102 776 330"><style type="text/css">
     svgEl.setAttribute("height", height * ratio - 16);
   }
 });
-]]></script><g id="window"><g class="shape" ><rect x="0" y="0" width="163" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /><rect x="5" y="5" width="153" height="116" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="81.500000" y="66.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">window</text></g><g id="roof"><g class="shape" ><rect x="223" y="0" width="135" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="290.500000" y="66.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">roof</text></g><g id="garage"><g class="shape" ><rect x="418" y="0" width="154" height="126" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="495.000000" y="66.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">garage</text></g><mask id="1916087740" maskUnits="userSpaceOnUse" x="-100" y="-100" width="776" height="330">
-<rect x="-100" y="-100" width="776" height="330" fill="white"></rect>
+]]></script><g id="window"><g class="shape" ><rect x="0" y="0" width="103" height="66" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /><rect x="5" y="5" width="93" height="56" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="51.500000" y="38.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">window</text></g><g id="roof"><g class="shape" ><rect x="163" y="0" width="75" height="66" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="200.500000" y="38.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">roof</text></g><g id="garage"><g class="shape" ><rect x="298" y="0" width="94" height="66" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="345.000000" y="38.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">garage</text></g><mask id="3186561612" maskUnits="userSpaceOnUse" x="-100" y="-100" width="596" height="270">
+<rect x="-100" y="-100" width="596" height="270" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text-bold {

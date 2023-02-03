@@ -6,11 +6,11 @@
       "id": "x",
       "type": "rectangle",
       "pos": {
-        "x": 105,
+        "x": 135,
         "y": 0
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 0.4,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -47,8 +47,8 @@
       "id": "y",
       "type": "text",
       "pos": {
-        "x": 278,
-        "y": 51
+        "x": 248,
+        "y": 21
       },
       "width": 304,
       "height": 24,
@@ -87,11 +87,11 @@
       "id": "a",
       "type": "rectangle",
       "pos": {
-        "x": 105,
-        "y": 263
+        "x": 135,
+        "y": 203
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -118,8 +118,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -153,19 +153,19 @@
       "route": [
         {
           "x": 161,
-          "y": 126
+          "y": 66
         },
         {
           "x": 161,
-          "y": 180.8
+          "y": 120.80000000000001
         },
         {
           "x": 161,
-          "y": 208.3
+          "y": 148.3
         },
         {
           "x": 161,
-          "y": 263.5
+          "y": 203.5
         }
       ],
       "isCurve": true,

@@ -105,6 +105,12 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 		sd.objectRank[actor] = rank
 
 		if actor.Width < MIN_ACTOR_WIDTH {
+			dslShape := strings.ToLower(actor.Attributes.Shape.Value)
+			switch dslShape {
+			case d2target.ShapePerson, d2target.ShapeSquare, d2target.ShapeCircle:
+				// scale shape up to min width uniformly
+				actor.Height *= MIN_ACTOR_WIDTH / actor.Width
+			}
 			actor.Width = MIN_ACTOR_WIDTH
 		}
 		sd.maxActorHeight = math.Max(sd.maxActorHeight, actor.Height)

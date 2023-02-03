@@ -19,3 +19,7 @@ func NewTable(box *geo.Box) Shape {
 		},
 	}
 }
+
+func (s shapeTable) GetDefaultPadding() (paddingX, paddingY float64) {
+	return 0, 0
+}

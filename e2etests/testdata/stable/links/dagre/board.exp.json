@@ -6,11 +6,11 @@
       "id": "x",
       "type": "rectangle",
       "pos": {
-        "x": 1,
+        "x": 17,
         "y": 0
       },
-      "width": 113,
-      "height": 126,
+      "width": 85,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -48,10 +48,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 226
+        "y": 166
       },
-      "width": 114,
-      "height": 126,
+      "width": 118,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,8 +78,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 14,
-      "labelHeight": 26,
+      "labelWidth": 9,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -112,20 +112,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 57,
+          "x": 59,
+          "y": 66
+        },
+        {
+          "x": 59,
+          "y": 106
+        },
+        {
+          "x": 59,
           "y": 126
         },
         {
-          "x": 57,
+          "x": 59,
           "y": 166
-        },
-        {
-          "x": 57,
-          "y": 186
-        },
-        {
-          "x": 57,
-          "y": 226
         }
       ],
       "isCurve": true,

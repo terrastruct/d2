@@ -9,8 +9,8 @@
         "x": 0,
         "y": 0
       },
-      "width": 163,
-      "height": 126,
+      "width": 103,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 63,
-      "labelHeight": 26,
+      "labelWidth": 58,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -47,11 +47,11 @@
       "id": "roof",
       "type": "rectangle",
       "pos": {
-        "x": 223,
+        "x": 163,
         "y": 0
       },
-      "width": 135,
-      "height": 126,
+      "width": 75,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,8 +78,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 35,
-      "labelHeight": 26,
+      "labelWidth": 30,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -88,11 +88,11 @@
       "id": "garage",
       "type": "rectangle",
       "pos": {
-        "x": 418,
+        "x": 298,
         "y": 0
       },
-      "width": 154,
-      "height": 126,
+      "width": 94,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -119,8 +119,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 54,
-      "labelHeight": 26,
+      "labelWidth": 49,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -139,8 +139,8 @@
             "x": 0,
             "y": 0
           },
-          "width": 148,
-          "height": 126,
+          "width": 88,
+          "height": 66,
           "opacity": 1,
           "strokeDash": 0,
           "strokeWidth": 2,
@@ -167,8 +167,8 @@
           "italic": false,
           "bold": true,
           "underline": false,
-          "labelWidth": 48,
-          "labelHeight": 26,
+          "labelWidth": 43,
+          "labelHeight": 21,
           "labelPosition": "INSIDE_MIDDLE_CENTER",
           "zIndex": 0,
           "level": 1
@@ -177,11 +177,11 @@
           "id": "glass",
           "type": "rectangle",
           "pos": {
-            "x": 208,
+            "x": 148,
             "y": 0
           },
-          "width": 141,
-          "height": 126,
+          "width": 81,
+          "height": 66,
           "opacity": 1,
           "strokeDash": 0,
           "strokeWidth": 2,
@@ -208,8 +208,8 @@
           "italic": false,
           "bold": true,
           "underline": false,
-          "labelWidth": 41,
-          "labelHeight": 26,
+          "labelWidth": 36,
+          "labelHeight": 21,
           "labelPosition": "INSIDE_MIDDLE_CENTER",
           "zIndex": 0,
           "level": 1
@@ -228,8 +228,8 @@
             "x": 0,
             "y": 0
           },
-          "width": 164,
-          "height": 126,
+          "width": 104,
+          "height": 66,
           "opacity": 1,
           "strokeDash": 0,
           "strokeWidth": 2,
@@ -256,8 +256,8 @@
           "italic": false,
           "bold": true,
           "underline": false,
-          "labelWidth": 64,
-          "labelHeight": 26,
+          "labelWidth": 59,
+          "labelHeight": 21,
           "labelPosition": "INSIDE_MIDDLE_CENTER",
           "zIndex": 0,
           "level": 1
@@ -266,11 +266,11 @@
           "id": "starlink",
           "type": "rectangle",
           "pos": {
-            "x": 224,
+            "x": 164,
             "y": 0
           },
-          "width": 161,
-          "height": 126,
+          "width": 101,
+          "height": 66,
           "opacity": 1,
           "strokeDash": 0,
           "strokeWidth": 2,
@@ -297,8 +297,8 @@
           "italic": false,
           "bold": true,
           "underline": false,
-          "labelWidth": 61,
-          "labelHeight": 26,
+          "labelWidth": 56,
+          "labelHeight": 21,
           "labelPosition": "INSIDE_MIDDLE_CENTER",
           "zIndex": 0,
           "level": 1
@@ -307,11 +307,11 @@
           "id": "utility hookup",
           "type": "rectangle",
           "pos": {
-            "x": 445,
+            "x": 325,
             "y": 0
           },
-          "width": 206,
-          "height": 126,
+          "width": 146,
+          "height": 66,
           "opacity": 1,
           "strokeDash": 0,
           "strokeWidth": 2,
@@ -338,8 +338,8 @@
           "italic": false,
           "bold": true,
           "underline": false,
-          "labelWidth": 106,
-          "labelHeight": 26,
+          "labelWidth": 101,
+          "labelHeight": 21,
           "labelPosition": "INSIDE_MIDDLE_CENTER",
           "zIndex": 0,
           "level": 1
@@ -358,8 +358,8 @@
             "x": 0,
             "y": 0
           },
-          "width": 141,
-          "height": 126,
+          "width": 81,
+          "height": 66,
           "opacity": 1,
           "strokeDash": 0,
           "strokeWidth": 2,
@@ -386,8 +386,8 @@
           "italic": false,
           "bold": true,
           "underline": false,
-          "labelWidth": 41,
-          "labelHeight": 26,
+          "labelWidth": 36,
+          "labelHeight": 21,
           "labelPosition": "INSIDE_MIDDLE_CENTER",
           "zIndex": 0,
           "level": 1
@@ -396,11 +396,11 @@
           "id": "vehicles",
           "type": "rectangle",
           "pos": {
-            "x": 201,
+            "x": 141,
             "y": 0
           },
-          "width": 163,
-          "height": 126,
+          "width": 103,
+          "height": 66,
           "opacity": 1,
           "strokeDash": 0,
           "strokeWidth": 2,
@@ -427,8 +427,8 @@
           "italic": false,
           "bold": true,
           "underline": false,
-          "labelWidth": 63,
-          "labelHeight": 26,
+          "labelWidth": 58,
+          "labelHeight": 21,
           "labelPosition": "INSIDE_MIDDLE_CENTER",
           "zIndex": 0,
           "level": 1
@@ -453,8 +453,8 @@
                 "x": 0,
                 "y": 0
               },
-              "width": 501,
-              "height": 226,
+              "width": 381,
+              "height": 166,
               "opacity": 1,
               "strokeDash": 0,
               "strokeWidth": 2,
@@ -481,8 +481,8 @@
               "italic": false,
               "bold": false,
               "underline": false,
-              "labelWidth": 192,
-              "labelHeight": 41,
+              "labelWidth": 187,
+              "labelHeight": 36,
               "labelPosition": "INSIDE_TOP_CENTER",
               "zIndex": 0,
               "level": 1
@@ -494,8 +494,8 @@
                 "x": 50,
                 "y": 50
               },
-              "width": 170,
-              "height": 126,
+              "width": 110,
+              "height": 66,
               "opacity": 1,
               "strokeDash": 0,
               "strokeWidth": 2,
@@ -522,8 +522,8 @@
               "italic": false,
               "bold": true,
               "underline": false,
-              "labelWidth": 70,
-              "labelHeight": 26,
+              "labelWidth": 65,
+              "labelHeight": 21,
               "labelPosition": "INSIDE_MIDDLE_CENTER",
               "zIndex": 0,
               "level": 2
@@ -532,11 +532,11 @@
               "id": "find contractors.facebook",
               "type": "rectangle",
               "pos": {
-                "x": 280,
+                "x": 220,
                 "y": 50
               },
-              "width": 171,
-              "height": 126,
+              "width": 111,
+              "height": 66,
               "opacity": 1,
               "strokeDash": 0,
               "strokeWidth": 2,
@@ -563,8 +563,8 @@
               "italic": false,
               "bold": true,
               "underline": false,
-              "labelWidth": 71,
-              "labelHeight": 26,
+              "labelWidth": 66,
+              "labelHeight": 21,
               "labelPosition": "INSIDE_MIDDLE_CENTER",
               "zIndex": 0,
               "level": 2
@@ -583,8 +583,8 @@
                 "x": 0,
                 "y": 0
               },
-              "width": 219,
-              "height": 126,
+              "width": 159,
+              "height": 66,
               "opacity": 1,
               "strokeDash": 0,
               "strokeWidth": 2,
@@ -611,8 +611,8 @@
               "italic": false,
               "bold": true,
               "underline": false,
-              "labelWidth": 119,
-              "labelHeight": 26,
+              "labelWidth": 114,
+              "labelHeight": 21,
               "labelPosition": "INSIDE_MIDDLE_CENTER",
               "zIndex": 0,
               "level": 1
@@ -622,10 +622,10 @@
               "type": "rectangle",
               "pos": {
                 "x": 10,
-                "y": 226
+                "y": 166
               },
-              "width": 200,
-              "height": 126,
+              "width": 140,
+              "height": 66,
               "opacity": 1,
               "strokeDash": 0,
               "strokeWidth": 2,
@@ -652,8 +652,8 @@
               "italic": false,
               "bold": true,
               "underline": false,
-              "labelWidth": 100,
-              "labelHeight": 26,
+              "labelWidth": 95,
+              "labelHeight": 21,
               "labelPosition": "INSIDE_MIDDLE_CENTER",
               "zIndex": 0,
               "level": 1
@@ -686,20 +686,20 @@
               "labelPercentage": 0,
               "route": [
                 {
-                  "x": 109.5,
+                  "x": 79.5,
+                  "y": 66
+                },
+                {
+                  "x": 79.5,
+                  "y": 106
+                },
+                {
+                  "x": 79.5,
                   "y": 126
                 },
                 {
-                  "x": 109.5,
+                  "x": 79.5,
                   "y": 166
-                },
-                {
-                  "x": 109.5,
-                  "y": 186
-                },
-                {
-                  "x": 109.5,
-                  "y": 226
                 }
               ],
               "isCurve": true,
@@ -721,8 +721,8 @@
                 "x": 0,
                 "y": 0
               },
-              "width": 203,
-              "height": 126,
+              "width": 143,
+              "height": 66,
               "opacity": 1,
               "strokeDash": 0,
               "strokeWidth": 2,
@@ -749,8 +749,8 @@
               "italic": false,
               "bold": true,
               "underline": false,
-              "labelWidth": 103,
-              "labelHeight": 26,
+              "labelWidth": 98,
+              "labelHeight": 21,
               "labelPosition": "INSIDE_MIDDLE_CENTER",
               "zIndex": 0,
               "level": 1
@@ -760,10 +760,10 @@
               "type": "rectangle",
               "pos": {
                 "x": 16,
-                "y": 226
+                "y": 166
               },
-              "width": 172,
-              "height": 126,
+              "width": 112,
+              "height": 66,
               "opacity": 1,
               "strokeDash": 0,
               "strokeWidth": 2,
@@ -790,8 +790,8 @@
               "italic": false,
               "bold": true,
               "underline": false,
-              "labelWidth": 72,
-              "labelHeight": 26,
+              "labelWidth": 67,
+              "labelHeight": 21,
               "labelPosition": "INSIDE_MIDDLE_CENTER",
               "zIndex": 0,
               "level": 1
@@ -824,20 +824,20 @@
               "labelPercentage": 0,
               "route": [
                 {
-                  "x": 101.5,
+                  "x": 71.5,
+                  "y": 66
+                },
+                {
+                  "x": 71.5,
+                  "y": 106
+                },
+                {
+                  "x": 71.5,
                   "y": 126
                 },
                 {
-                  "x": 101.5,
+                  "x": 71.5,
                   "y": 166
-                },
-                {
-                  "x": 101.5,
-                  "y": 186
-                },
-                {
-                  "x": 101.5,
-                  "y": 226
                 }
               ],
               "isCurve": true,
@@ -859,8 +859,8 @@
                 "x": 28,
                 "y": 0
               },
-              "width": 172,
-              "height": 126,
+              "width": 112,
+              "height": 66,
               "opacity": 1,
               "strokeDash": 0,
               "strokeWidth": 2,
@@ -887,8 +887,8 @@
               "italic": false,
               "bold": true,
               "underline": false,
-              "labelWidth": 72,
-              "labelHeight": 26,
+              "labelWidth": 67,
+              "labelHeight": 21,
               "labelPosition": "INSIDE_MIDDLE_CENTER",
               "zIndex": 0,
               "level": 1
@@ -898,10 +898,10 @@
               "type": "rectangle",
               "pos": {
                 "x": 0,
-                "y": 226
+                "y": 166
               },
-              "width": 227,
-              "height": 126,
+              "width": 167,
+              "height": 66,
               "opacity": 1,
               "strokeDash": 0,
               "strokeWidth": 2,
@@ -928,8 +928,8 @@
               "italic": false,
               "bold": true,
               "underline": false,
-              "labelWidth": 127,
-              "labelHeight": 26,
+              "labelWidth": 122,
+              "labelHeight": 21,
               "labelPosition": "INSIDE_MIDDLE_CENTER",
               "zIndex": 0,
               "level": 1
@@ -962,20 +962,20 @@
               "labelPercentage": 0,
               "route": [
                 {
-                  "x": 113.5,
+                  "x": 83.5,
+                  "y": 66
+                },
+                {
+                  "x": 83.5,
+                  "y": 106
+                },
+                {
+                  "x": 83.5,
                   "y": 126
                 },
                 {
-                  "x": 113.5,
+                  "x": 83.5,
                   "y": 166
-                },
-                {
-                  "x": 113.5,
-                  "y": 186
-                },
-                {
-                  "x": 113.5,
-                  "y": 226
                 }
               ],
               "isCurve": true,
@@ -1001,8 +1001,8 @@
             "x": 0,
             "y": 0
           },
-          "width": 163,
-          "height": 126,
+          "width": 103,
+          "height": 66,
           "opacity": 1,
           "strokeDash": 0,
           "strokeWidth": 2,
@@ -1029,8 +1029,8 @@
           "italic": false,
           "bold": true,
           "underline": false,
-          "labelWidth": 63,
-          "labelHeight": 26,
+          "labelWidth": 58,
+          "labelHeight": 21,
           "labelPosition": "INSIDE_MIDDLE_CENTER",
           "zIndex": 0,
           "level": 1
@@ -1039,11 +1039,11 @@
           "id": "roof",
           "type": "rectangle",
           "pos": {
-            "x": 223,
+            "x": 163,
             "y": 0
           },
-          "width": 135,
-          "height": 126,
+          "width": 75,
+          "height": 66,
           "opacity": 1,
           "strokeDash": 0,
           "strokeWidth": 2,
@@ -1070,8 +1070,8 @@
           "italic": false,
           "bold": true,
           "underline": false,
-          "labelWidth": 35,
-          "labelHeight": 26,
+          "labelWidth": 30,
+          "labelHeight": 21,
           "labelPosition": "INSIDE_MIDDLE_CENTER",
           "zIndex": 0,
           "level": 1
@@ -1080,11 +1080,11 @@
           "id": "garage",
           "type": "rectangle",
           "pos": {
-            "x": 418,
+            "x": 298,
             "y": 0
           },
-          "width": 154,
-          "height": 126,
+          "width": 94,
+          "height": 66,
           "opacity": 1,
           "strokeDash": 0,
           "strokeWidth": 2,
@@ -1111,8 +1111,8 @@
           "italic": false,
           "bold": true,
           "underline": false,
-          "labelWidth": 54,
-          "labelHeight": 26,
+          "labelWidth": 49,
+          "labelHeight": 21,
           "labelPosition": "INSIDE_MIDDLE_CENTER",
           "zIndex": 0,
           "level": 1
@@ -1121,11 +1121,11 @@
           "id": "water",
           "type": "rectangle",
           "pos": {
-            "x": 632,
+            "x": 452,
             "y": 0
           },
-          "width": 148,
-          "height": 126,
+          "width": 88,
+          "height": 66,
           "opacity": 1,
           "strokeDash": 0,
           "strokeWidth": 2,
@@ -1152,8 +1152,8 @@
           "italic": false,
           "bold": true,
           "underline": false,
-          "labelWidth": 48,
-          "labelHeight": 26,
+          "labelWidth": 43,
+          "labelHeight": 21,
           "labelPosition": "INSIDE_MIDDLE_CENTER",
           "zIndex": 0,
           "level": 1
@@ -1162,11 +1162,11 @@
           "id": "rain",
           "type": "rectangle",
           "pos": {
-            "x": 840,
+            "x": 600,
             "y": 0
           },
-          "width": 133,
-          "height": 126,
+          "width": 73,
+          "height": 66,
           "opacity": 1,
           "strokeDash": 0,
           "strokeWidth": 2,
@@ -1193,8 +1193,8 @@
           "italic": false,
           "bold": true,
           "underline": false,
-          "labelWidth": 33,
-          "labelHeight": 26,
+          "labelWidth": 28,
+          "labelHeight": 21,
           "labelPosition": "INSIDE_MIDDLE_CENTER",
           "zIndex": 0,
           "level": 1
@@ -1203,11 +1203,11 @@
           "id": "thunder",
           "type": "rectangle",
           "pos": {
-            "x": 1033,
+            "x": 733,
             "y": 0
           },
-          "width": 163,
-          "height": 126,
+          "width": 103,
+          "height": 66,
           "opacity": 1,
           "strokeDash": 0,
           "strokeWidth": 2,
@@ -1234,8 +1234,8 @@
           "italic": false,
           "bold": true,
           "underline": false,
-          "labelWidth": 63,
-          "labelHeight": 26,
+          "labelWidth": 58,
+          "labelHeight": 21,
           "labelPosition": "INSIDE_MIDDLE_CENTER",
           "zIndex": 0,
           "level": 1

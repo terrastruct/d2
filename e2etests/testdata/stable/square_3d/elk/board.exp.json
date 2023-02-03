@@ -9,8 +9,8 @@
         "x": 12,
         "y": 12
       },
-      "width": 171,
-      "height": 126,
+      "width": 111,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 71,
-      "labelHeight": 26,
+      "labelWidth": 66,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -48,10 +48,10 @@
       "type": "rectangle",
       "pos": {
         "x": 20,
-        "y": 238
+        "y": 178
       },
-      "width": 154,
-      "height": 154,
+      "width": 94,
+      "height": 94,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,8 +78,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 54,
-      "labelHeight": 26,
+      "labelWidth": 49,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -112,12 +112,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 97.5,
-          "y": 138
+          "x": 67.5,
+          "y": 78
         },
         {
-          "x": 97.5,
-          "y": 238
+          "x": 67.5,
+          "y": 178
         }
       ],
       "animated": false,

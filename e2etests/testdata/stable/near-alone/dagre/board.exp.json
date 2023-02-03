@@ -6,11 +6,11 @@
       "id": "x",
       "type": "rectangle",
       "pos": {
-        "x": -56,
-        "y": -146
+        "x": -26,
+        "y": -86
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -47,11 +47,11 @@
       "id": "y",
       "type": "rectangle",
       "pos": {
-        "x": -57,
+        "x": -27,
         "y": 20
       },
-      "width": 114,
-      "height": 126,
+      "width": 54,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,8 +78,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 14,
-      "labelHeight": 26,
+      "labelWidth": 9,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -88,11 +88,11 @@
       "id": "z",
       "type": "rectangle",
       "pos": {
-        "x": -189,
-        "y": -63
+        "x": -99,
+        "y": -33
       },
-      "width": 112,
-      "height": 126,
+      "width": 52,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -119,8 +119,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 12,
-      "labelHeight": 26,
+      "labelWidth": 7,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1

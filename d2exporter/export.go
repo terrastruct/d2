@@ -143,6 +143,7 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	}
 	shape.Label = text.Text
 	shape.LabelWidth = text.Dimensions.Width
+
 	shape.LabelHeight = text.Dimensions.Height
 	if obj.LabelPosition != nil {
 		shape.LabelPosition = *obj.LabelPosition

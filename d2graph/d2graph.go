@@ -19,11 +19,13 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/shape"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
 const INNER_LABEL_PADDING int = 5
-const DEFAULT_SHAPE_PADDING = 100.
+const DEFAULT_SHAPE_SIZE = 100.
+const MIN_SHAPE_SIZE = 5
 
 type Graph struct {
 	Name string     `json:"name"`
@@ -775,8 +777,13 @@ func (obj *Object) GetLabelSize(mtexts []*d2target.MText, ruler *textmeasure.Rul
 	return dims, nil
 }
 
-func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.Ruler, fontFamily *d2fonts.FontFamily, labelDims d2target.TextDimensions) (*d2target.TextDimensions, error) {
+func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.Ruler, fontFamily *d2fonts.FontFamily, labelDims d2target.TextDimensions, withLabelPadding bool) (*d2target.TextDimensions, error) {
 	dims := d2target.TextDimensions{}
+
+	if withLabelPadding {
+		labelDims.Width += INNER_LABEL_PADDING
+		labelDims.Height += INNER_LABEL_PADDING
+	}
 
 	switch strings.ToLower(obj.Attributes.Shape.Value) {
 	default:
@@ -793,22 +800,22 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 			if fdims == nil {
 				return nil, fmt.Errorf("dimensions for class field %#v not found", f.Text())
 			}
-			lineWidth := fdims.Width
-			if maxWidth < lineWidth {
-				maxWidth = lineWidth
-			}
+			maxWidth = go2.Max(maxWidth, fdims.Width)
 		}
 		for _, m := range obj.Class.Methods {
 			mdims := GetTextDimensions(mtexts, ruler, m.Text(), go2.Pointer(d2fonts.SourceCodePro))
 			if mdims == nil {
 				return nil, fmt.Errorf("dimensions for class method %#v not found", m.Text())
 			}
-			lineWidth := mdims.Width
-			if maxWidth < lineWidth {
-				maxWidth = lineWidth
-			}
+			maxWidth = go2.Max(maxWidth, mdims.Width)
 		}
-		dims.Width = maxWidth
+		//    ┌─PrefixWidth ┌─CenterPadding
+		// ┌─┬─┬───────┬──────┬───┬──┐
+		// │ + getJobs()      Job[]  │
+		// └─┴─┴───────┴──────┴───┴──┘
+		//  └─PrefixPadding        └──TypePadding
+		//     ├───────┤   +  ├───┤  = maxWidth
+		dims.Width = d2target.PrefixPadding + d2target.PrefixWidth + maxWidth + d2target.CenterPadding + d2target.TypePadding
 
 		// All rows should be the same height
 		var anyRowText *d2target.MText
@@ -818,8 +825,7 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 			anyRowText = obj.Class.Methods[0].Text()
 		}
 		if anyRowText != nil {
-			// 10px of padding top and bottom so text doesn't look squished
-			rowHeight := GetTextDimensions(mtexts, ruler, anyRowText, go2.Pointer(d2fonts.SourceCodePro)).Height + 20
+			rowHeight := GetTextDimensions(mtexts, ruler, anyRowText, go2.Pointer(d2fonts.SourceCodePro)).Height + d2target.VerticalPadding
 			dims.Height = rowHeight * (len(obj.Class.Fields) + len(obj.Class.Methods) + 2)
 		} else {
 			dims.Height = go2.Max(12, labelDims.Height)
@@ -841,9 +847,7 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 			}
 			c.Name.LabelWidth = nameDims.Width
 			c.Name.LabelHeight = nameDims.Height
-			if maxNameWidth < nameDims.Width {
-				maxNameWidth = nameDims.Width
-			}
+			maxNameWidth = go2.Max(maxNameWidth, nameDims.Width)
 
 			typeDims := GetTextDimensions(mtexts, ruler, ctexts[1], fontFamily)
 			if typeDims == nil {
@@ -854,6 +858,7 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 			if maxTypeWidth < typeDims.Width {
 				maxTypeWidth = typeDims.Width
 			}
+			maxTypeWidth = go2.Max(maxTypeWidth, typeDims.Width)
 
 			if c.Constraint != "" {
 				// covers UNQ constraint with padding
@@ -869,21 +874,6 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 	}
 
 	return &dims, nil
-}
-
-func (obj *Object) GetPadding() (x, y float64) {
-	switch strings.ToLower(obj.Attributes.Shape.Value) {
-	case d2target.ShapeImage,
-		d2target.ShapeSQLTable,
-		d2target.ShapeText,
-		d2target.ShapeCode:
-		return 0., 0.
-	case d2target.ShapeClass:
-		// TODO fix class row width measurements (see SQL table)
-		return 100., 0.
-	default:
-		return DEFAULT_SHAPE_PADDING, DEFAULT_SHAPE_PADDING
-	}
 }
 
 type Edge struct {
@@ -1181,29 +1171,41 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			desiredHeight, _ = strconv.Atoi(obj.Attributes.Height.Value)
 		}
 
+		dslShape := strings.ToLower(obj.Attributes.Shape.Value)
+
 		if obj.Attributes.Label.Value == "" &&
-			obj.Attributes.Shape.Value != d2target.ShapeImage &&
-			obj.Attributes.Shape.Value != d2target.ShapeSQLTable &&
-			obj.Attributes.Shape.Value != d2target.ShapeClass {
-			obj.Width = DEFAULT_SHAPE_PADDING
-			obj.Height = DEFAULT_SHAPE_PADDING
-			if desiredWidth != 0 {
-				obj.Width = float64(desiredWidth)
+			dslShape != d2target.ShapeImage &&
+			dslShape != d2target.ShapeSQLTable &&
+			dslShape != d2target.ShapeClass {
+
+			if dslShape == d2target.ShapeCircle || dslShape == d2target.ShapeSquare {
+				sideLength := DEFAULT_SHAPE_SIZE
+				if desiredWidth != 0 || desiredHeight != 0 {
+					sideLength = float64(go2.Max(desiredWidth, desiredHeight))
+				}
+				obj.Width = sideLength
+				obj.Height = sideLength
+			} else {
+				obj.Width = DEFAULT_SHAPE_SIZE
+				obj.Height = DEFAULT_SHAPE_SIZE
+				if desiredWidth != 0 {
+					obj.Width = float64(desiredWidth)
+				}
+				if desiredHeight != 0 {
+					obj.Height = float64(desiredHeight)
+				}
 			}
-			if desiredHeight != 0 {
-				obj.Height = float64(desiredHeight)
-			}
+
 			continue
 		}
-
-		shapeType := strings.ToLower(obj.Attributes.Shape.Value)
 
 		labelDims, err := obj.GetLabelSize(mtexts, ruler, fontFamily)
 		if err != nil {
 			return err
 		}
+		obj.LabelDimensions = *labelDims
 
-		switch shapeType {
+		switch dslShape {
 		case d2target.ShapeText, d2target.ShapeClass, d2target.ShapeSQLTable, d2target.ShapeCode:
 			// no labels
 		default:
@@ -1213,39 +1215,65 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 		}
 
-		if shapeType != d2target.ShapeText && obj.Attributes.Label.Value != "" {
-			labelDims.Width += INNER_LABEL_PADDING
-			labelDims.Height += INNER_LABEL_PADDING
-		}
-		obj.LabelDimensions = *labelDims
-
-		defaultDims, err := obj.GetDefaultSize(mtexts, ruler, fontFamily, *labelDims)
+		// if there is a desired width or height, fit to content box without inner label padding for smallest minimum size
+		withInnerLabelPadding := desiredWidth == 0 && desiredHeight == 0 &&
+			dslShape != d2target.ShapeText && obj.Attributes.Label.Value != ""
+		defaultDims, err := obj.GetDefaultSize(mtexts, ruler, fontFamily, *labelDims, withInnerLabelPadding)
 		if err != nil {
 			return err
 		}
 
-		obj.Width = float64(go2.Max(defaultDims.Width, desiredWidth))
-		obj.Height = float64(go2.Max(defaultDims.Height, desiredHeight))
-
-		paddingX, paddingY := obj.GetPadding()
-
-		switch shapeType {
-		case d2target.ShapeSquare, d2target.ShapeCircle:
-			if desiredWidth != 0 || desiredHeight != 0 {
-				paddingX = 0.
-				paddingY = 0.
-			}
-
-			sideLength := math.Max(obj.Width+paddingX, obj.Height+paddingY)
-			obj.Width = sideLength
-			obj.Height = sideLength
-
-		default:
+		if dslShape == d2target.ShapeImage {
 			if desiredWidth == 0 {
-				obj.Width += float64(paddingX)
+				desiredWidth = defaultDims.Width
 			}
 			if desiredHeight == 0 {
-				obj.Height += float64(paddingY)
+				desiredHeight = defaultDims.Height
+			}
+			obj.Width = float64(go2.Max(MIN_SHAPE_SIZE, desiredWidth))
+			obj.Height = float64(go2.Max(MIN_SHAPE_SIZE, desiredHeight))
+			// images don't need further processing
+			continue
+		}
+
+		contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(defaultDims.Width), float64(defaultDims.Height))
+		shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
+		s := shape.NewShape(shapeType, contentBox)
+
+		paddingX, paddingY := s.GetDefaultPadding()
+		if desiredWidth != 0 || desiredHeight != 0 {
+			paddingX = 0.
+			paddingY = 0.
+		} else {
+			// give shapes with icons extra padding to fit their label
+			if obj.Attributes.Icon != nil {
+				labelHeight := float64(labelDims.Height + INNER_LABEL_PADDING)
+				// Evenly pad enough to fit label above icon
+				paddingX += labelHeight
+				paddingY += labelHeight
+			}
+			switch shapeType {
+			case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE, shape.IMAGE_TYPE:
+			default:
+				if obj.Attributes.Link != "" {
+					paddingX += 32
+				}
+				if obj.Attributes.Tooltip != "" {
+					paddingX += 32
+				}
+			}
+		}
+
+		fitWidth, fitHeight := s.GetDimensionsToFit(contentBox.Width, contentBox.Height, paddingX, paddingY)
+		obj.Width = math.Max(float64(desiredWidth), fitWidth)
+		obj.Height = math.Max(float64(desiredHeight), fitHeight)
+		if s.AspectRatio1() {
+			sideLength := math.Max(obj.Width, obj.Height)
+			obj.Width = sideLength
+			obj.Height = sideLength
+		} else if desiredHeight == 0 || desiredWidth == 0 {
+			if s.GetType() == shape.PERSON_TYPE {
+				obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.PERSON_AR_LIMIT)
 			}
 		}
 	}

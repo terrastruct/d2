@@ -6,11 +6,11 @@
       "id": "a",
       "type": "rectangle",
       "pos": {
-        "x": 1,
+        "x": 0,
         "y": 0
       },
-      "width": 213,
-      "height": 226,
+      "width": 156,
+      "height": 166,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 17,
-      "labelHeight": 41,
+      "labelWidth": 12,
+      "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
@@ -47,11 +47,11 @@
       "id": "a.b",
       "type": "rectangle",
       "pos": {
-        "x": 51,
+        "x": 54,
         "y": 50
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,8 +78,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
@@ -89,10 +89,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 326
+        "y": 266
       },
-      "width": 214,
-      "height": 226,
+      "width": 157,
+      "height": 166,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -119,8 +119,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 17,
-      "labelHeight": 41,
+      "labelWidth": 12,
+      "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
@@ -129,11 +129,11 @@
       "id": "c.d",
       "type": "rectangle",
       "pos": {
-        "x": 50,
-        "y": 376
+        "x": 53,
+        "y": 316
       },
-      "width": 114,
-      "height": 126,
+      "width": 54,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -160,8 +160,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 14,
-      "labelHeight": 26,
+      "labelWidth": 9,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
@@ -194,32 +194,32 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 107,
+          "x": 80,
+          "y": 116
+        },
+        {
+          "x": 80,
+          "y": 156
+        },
+        {
+          "x": 80,
           "y": 176
         },
         {
-          "x": 107,
-          "y": 216
+          "x": 80,
+          "y": 191
         },
         {
-          "x": 107,
-          "y": 236
+          "x": 80,
+          "y": 206
         },
         {
-          "x": 107,
-          "y": 251
+          "x": 80,
+          "y": 276
         },
         {
-          "x": 107,
-          "y": 266
-        },
-        {
-          "x": 107,
-          "y": 336
-        },
-        {
-          "x": 107,
-          "y": 376
+          "x": 80,
+          "y": 316
         }
       ],
       "isCurve": true,

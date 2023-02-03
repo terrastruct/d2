@@ -9,8 +9,8 @@
         "x": 0,
         "y": 0
       },
-      "width": 1621,
-      "height": 226,
+      "width": 1276,
+      "height": 166,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 138,
-      "labelHeight": 41,
+      "labelWidth": 133,
+      "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
@@ -47,11 +47,11 @@
       "id": "k8s.m1",
       "type": "rectangle",
       "pos": {
-        "x": 116,
+        "x": 131,
         "y": 50
       },
-      "width": 192,
-      "height": 126,
+      "width": 132,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,8 +78,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 92,
-      "labelHeight": 26,
+      "labelWidth": 87,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
@@ -88,11 +88,11 @@
       "id": "k8s.m2",
       "type": "rectangle",
       "pos": {
-        "x": 368,
+        "x": 323,
         "y": 50
       },
-      "width": 192,
-      "height": 126,
+      "width": 132,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -119,8 +119,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 92,
-      "labelHeight": 26,
+      "labelWidth": 87,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
@@ -129,11 +129,11 @@
       "id": "k8s.m3",
       "type": "rectangle",
       "pos": {
-        "x": 620,
+        "x": 515,
         "y": 50
       },
-      "width": 192,
-      "height": 126,
+      "width": 132,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -160,8 +160,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 92,
-      "labelHeight": 26,
+      "labelWidth": 87,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
@@ -170,11 +170,11 @@
       "id": "k8s.w1",
       "type": "rectangle",
       "pos": {
-        "x": 872,
+        "x": 707,
         "y": 50
       },
-      "width": 193,
-      "height": 126,
+      "width": 133,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -201,8 +201,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 93,
-      "labelHeight": 26,
+      "labelWidth": 88,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
@@ -211,11 +211,11 @@
       "id": "k8s.w2",
       "type": "rectangle",
       "pos": {
-        "x": 1125,
+        "x": 900,
         "y": 50
       },
-      "width": 193,
-      "height": 126,
+      "width": 133,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -242,8 +242,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 93,
-      "labelHeight": 26,
+      "labelWidth": 88,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
@@ -252,11 +252,11 @@
       "id": "k8s.w3",
       "type": "rectangle",
       "pos": {
-        "x": 1378,
+        "x": 1093,
         "y": 50
       },
-      "width": 193,
-      "height": 126,
+      "width": 133,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -283,8 +283,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 93,
-      "labelHeight": 26,
+      "labelWidth": 88,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
@@ -294,10 +294,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 347
+        "y": 287
       },
-      "width": 555,
-      "height": 226,
+      "width": 495,
+      "height": 166,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -324,8 +324,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 102,
-      "labelHeight": 41,
+      "labelWidth": 97,
+      "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
@@ -334,11 +334,11 @@
       "id": "osvc.vm1",
       "type": "rectangle",
       "pos": {
-        "x": 171,
-        "y": 397
+        "x": 186,
+        "y": 337
       },
-      "width": 136,
-      "height": 126,
+      "width": 76,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -365,8 +365,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 36,
-      "labelHeight": 26,
+      "labelWidth": 31,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
@@ -376,10 +376,10 @@
       "type": "rectangle",
       "pos": {
         "x": 369,
-        "y": 397
+        "y": 337
       },
-      "width": 136,
-      "height": 126,
+      "width": 76,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -406,8 +406,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 36,
-      "labelHeight": 26,
+      "labelWidth": 31,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
@@ -440,20 +440,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
-          "y": 226
+          "x": 84,
+          "y": 166
         },
         {
-          "x": 99,
-          "y": 274.4
+          "x": 84,
+          "y": 214.4
         },
         {
-          "x": 99,
-          "y": 298.7
+          "x": 84,
+          "y": 238.7
         },
         {
-          "x": 99,
-          "y": 347.5
+          "x": 84,
+          "y": 287.5
         }
       ],
       "isCurve": true,
@@ -488,20 +488,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 201,
-          "y": 226
+          "x": 186,
+          "y": 166
         },
         {
-          "x": 201,
-          "y": 274.4
+          "x": 186,
+          "y": 214.4
         },
         {
-          "x": 201,
-          "y": 298.7
+          "x": 186,
+          "y": 238.7
         },
         {
-          "x": 201,
-          "y": 347.5
+          "x": 186,
+          "y": 287.5
         }
       ],
       "isCurve": true,
@@ -536,20 +536,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 297,
-          "y": 226
+          "x": 282,
+          "y": 166
         },
         {
-          "x": 297,
-          "y": 274.4
+          "x": 282,
+          "y": 214.4
         },
         {
-          "x": 297,
-          "y": 298.7
+          "x": 282,
+          "y": 238.7
         },
         {
-          "x": 297,
-          "y": 347.5
+          "x": 282,
+          "y": 287.5
         }
       ],
       "isCurve": true,
@@ -584,20 +584,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 378,
-          "y": 226
+          "x": 363,
+          "y": 166
         },
         {
-          "x": 378,
-          "y": 274.4
+          "x": 363,
+          "y": 214.4
         },
         {
-          "x": 378,
-          "y": 298.7
+          "x": 363,
+          "y": 238.7
         },
         {
-          "x": 378,
-          "y": 347.5
+          "x": 363,
+          "y": 287.5
         }
       ],
       "isCurve": true,

@@ -9,8 +9,8 @@
         "x": 1,
         "y": 0
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -48,10 +48,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 226
+        "y": 166
       },
-      "width": 114,
-      "height": 126,
+      "width": 54,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,8 +78,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 14,
-      "labelHeight": 26,
+      "labelWidth": 9,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -88,7 +88,7 @@
       "id": "The top of the mountain",
       "type": "text",
       "pos": {
-        "x": -24,
+        "x": -54,
         "y": -41
       },
       "width": 162,
@@ -129,8 +129,8 @@
       "id": "bottom",
       "type": "text",
       "pos": {
-        "x": -414,
-        "y": 372
+        "x": -444,
+        "y": 252
       },
       "width": 943,
       "height": 131,
@@ -171,10 +171,10 @@
       "type": "person",
       "pos": {
         "x": -565,
-        "y": 113
+        "y": 82
       },
-      "width": 131,
-      "height": 126,
+      "width": 101,
+      "height": 67,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -201,8 +201,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 31,
-      "labelHeight": 26,
+      "labelWidth": 26,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -211,11 +211,11 @@
       "id": "Donald",
       "type": "person",
       "pos": {
-        "x": 548,
-        "y": 113
+        "x": 518,
+        "y": 62
       },
-      "width": 155,
-      "height": 126,
+      "width": 160,
+      "height": 107,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -242,8 +242,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 55,
-      "labelHeight": 26,
+      "labelWidth": 50,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -252,7 +252,7 @@
       "id": "i am top left",
       "type": "text",
       "pos": {
-        "x": -514,
+        "x": -544,
         "y": -41
       },
       "width": 80,
@@ -293,7 +293,7 @@
       "id": "i am top right",
       "type": "text",
       "pos": {
-        "x": 548,
+        "x": 518,
         "y": -41
       },
       "width": 90,
@@ -334,8 +334,8 @@
       "id": "i am bottom left",
       "type": "text",
       "pos": {
-        "x": -541,
-        "y": 372
+        "x": -571,
+        "y": 252
       },
       "width": 107,
       "height": 21,
@@ -375,8 +375,8 @@
       "id": "i am bottom right",
       "type": "text",
       "pos": {
-        "x": 548,
-        "y": 372
+        "x": 518,
+        "y": 252
       },
       "width": 117,
       "height": 21,
@@ -440,20 +440,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 57,
+          "x": 27,
+          "y": 66
+        },
+        {
+          "x": 27,
+          "y": 106
+        },
+        {
+          "x": 27,
           "y": 126
         },
         {
-          "x": 57,
+          "x": 27,
           "y": 166
-        },
-        {
-          "x": 57,
-          "y": 186
-        },
-        {
-          "x": 57,
-          "y": 226
         }
       ],
       "isCurve": true,

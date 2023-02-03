@@ -9,8 +9,8 @@
         "x": 12,
         "y": 12
       },
-      "width": 112,
-      "height": 126,
+      "width": 52,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 12,
-      "labelHeight": 26,
+      "labelWidth": 7,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -48,10 +48,10 @@
       "type": "rectangle",
       "pos": {
         "x": 12,
-        "y": 238
+        "y": 178
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,8 +78,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -88,11 +88,11 @@
       "id": "foo baz",
       "type": "rectangle",
       "pos": {
-        "x": 144,
+        "x": 84,
         "y": 12
       },
-      "width": 159,
-      "height": 126,
+      "width": 99,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -119,8 +119,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 59,
-      "labelHeight": 26,
+      "labelWidth": 54,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -129,11 +129,11 @@
       "id": "hello",
       "type": "rectangle",
       "pos": {
-        "x": 154,
-        "y": 238
+        "x": 94,
+        "y": 178
       },
-      "width": 140,
-      "height": 126,
+      "width": 80,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -160,8 +160,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 40,
-      "labelHeight": 26,
+      "labelWidth": 35,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -194,12 +194,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 68.5,
-          "y": 138
+          "x": 38.5,
+          "y": 78
         },
         {
-          "x": 68.5,
-          "y": 238
+          "x": 38.5,
+          "y": 178
         }
       ],
       "animated": false,
@@ -233,12 +233,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 224,
-          "y": 138
+          "x": 134,
+          "y": 78
         },
         {
-          "x": 224,
-          "y": 238
+          "x": 134,
+          "y": 178
         }
       ],
       "animated": false,

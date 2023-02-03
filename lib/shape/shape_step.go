@@ -1,6 +1,8 @@
 package shape
 
 import (
+	"math"
+
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
 )
@@ -19,6 +21,14 @@ func NewStep(box *geo.Box) Shape {
 }
 
 const STEP_WEDGE_WIDTH = 35.0
+
+func (s shapeStep) GetInnerBox() *geo.Box {
+	width := s.Box.Width
+	tl := s.Box.TopLeft.Copy()
+	width -= 2 * STEP_WEDGE_WIDTH
+	tl.X += STEP_WEDGE_WIDTH
+	return geo.NewBox(tl, width, s.Box.Height)
+}
 
 func stepPath(box *geo.Box) *svg.SvgPathContext {
 	wedgeWidth := STEP_WEDGE_WIDTH
@@ -44,4 +54,13 @@ func (s shapeStep) GetSVGPathData() []string {
 	return []string{
 		stepPath(s.Box).PathData(),
 	}
+}
+
+func (s shapeStep) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	totalWidth := width + paddingX + 2*STEP_WEDGE_WIDTH
+	return math.Ceil(totalWidth), math.Ceil(height + paddingY)
+}
+
+func (s shapeStep) GetDefaultPadding() (paddingX, paddingY float64) {
+	return defaultPadding / 4, defaultPadding + STEP_WEDGE_WIDTH
 }

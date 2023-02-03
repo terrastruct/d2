@@ -10,7 +10,7 @@
         "y": 74
       },
       "width": 150,
-      "height": 126,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 12,
-      "labelHeight": 26,
+      "labelWidth": 7,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -51,7 +51,7 @@
         "y": 74
       },
       "width": 150,
-      "height": 126,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,8 +78,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -92,7 +92,7 @@
         "y": 74
       },
       "width": 150,
-      "height": 126,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -119,8 +119,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 12,
-      "labelHeight": 26,
+      "labelWidth": 7,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -133,7 +133,7 @@
         "y": 74
       },
       "width": 150,
-      "height": 126,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -160,8 +160,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -170,11 +170,11 @@
       "id": "a.explanation",
       "type": "page",
       "pos": {
-        "x": 7,
-        "y": 460
+        "x": 37,
+        "y": 400
       },
-      "width": 184,
-      "height": 126,
+      "width": 124,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -201,8 +201,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 84,
-      "labelHeight": 26,
+      "labelWidth": 79,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 5,
       "level": 2
@@ -211,11 +211,11 @@
       "id": "a.another explanation",
       "type": "page",
       "pos": {
-        "x": -21,
-        "y": 716
+        "x": 8,
+        "y": 596
       },
-      "width": 241,
-      "height": 126,
+      "width": 181,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -242,8 +242,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 141,
-      "labelHeight": 26,
+      "labelWidth": 136,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 5,
       "level": 2
@@ -252,11 +252,11 @@
       "id": "b.\"Some one who believes imaginary things\\n appear right before your i's.\"",
       "type": "page",
       "pos": {
-        "x": 160,
-        "y": 1102
+        "x": 190,
+        "y": 922
       },
-      "width": 378,
-      "height": 142,
+      "width": 318,
+      "height": 82,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -283,8 +283,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 278,
-      "labelHeight": 42,
+      "labelWidth": 273,
+      "labelHeight": 37,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 5,
       "level": 2
@@ -293,11 +293,11 @@
       "id": "d.The earth is like a tiny grain of sand, only much, much heavier",
       "type": "page",
       "pos": {
-        "x": 591,
-        "y": 1504
+        "x": 621,
+        "y": 1264
       },
-      "width": 516,
-      "height": 126,
+      "width": 456,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -324,8 +324,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 416,
-      "labelHeight": 26,
+      "labelWidth": 411,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 5,
       "level": 2
@@ -359,11 +359,11 @@
       "route": [
         {
           "x": 99,
-          "y": 330
+          "y": 270
         },
         {
           "x": 349,
-          "y": 330
+          "y": 270
         }
       ],
       "animated": false,
@@ -398,11 +398,11 @@
       "route": [
         {
           "x": 349,
-          "y": 972
+          "y": 792
         },
         {
           "x": 599,
-          "y": 972
+          "y": 792
         }
       ],
       "animated": false,
@@ -437,11 +437,11 @@
       "route": [
         {
           "x": 599,
-          "y": 1374
+          "y": 1134
         },
         {
           "x": 349,
-          "y": 1374
+          "y": 1134
         }
       ],
       "animated": false,
@@ -476,11 +476,11 @@
       "route": [
         {
           "x": 99,
-          "y": 200
+          "y": 140
         },
         {
           "x": 99,
-          "y": 1760
+          "y": 1460
         }
       ],
       "animated": false,
@@ -515,11 +515,11 @@
       "route": [
         {
           "x": 349,
-          "y": 200
+          "y": 140
         },
         {
           "x": 349,
-          "y": 1760
+          "y": 1460
         }
       ],
       "animated": false,
@@ -554,11 +554,11 @@
       "route": [
         {
           "x": 599,
-          "y": 200
+          "y": 140
         },
         {
           "x": 599,
-          "y": 1760
+          "y": 1460
         }
       ],
       "animated": false,
@@ -593,11 +593,11 @@
       "route": [
         {
           "x": 849,
-          "y": 200
+          "y": 140
         },
         {
           "x": 849,
-          "y": 1760
+          "y": 1460
         }
       ],
       "animated": false,

@@ -9,8 +9,8 @@
         "x": 25,
         "y": 12
       },
-      "width": 140,
-      "height": 126,
+      "width": 80,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 40,
-      "labelHeight": 26,
+      "labelWidth": 35,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -48,10 +48,10 @@
       "type": "sequence_diagram",
       "pos": {
         "x": 12,
-        "y": 238
+        "y": 178
       },
-      "width": 166,
-      "height": 126,
+      "width": 106,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -78,8 +78,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 66,
-      "labelHeight": 26,
+      "labelWidth": 61,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -112,12 +112,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 95,
-          "y": 138
+          "x": 65,
+          "y": 78
         },
         {
-          "x": 95,
-          "y": 238
+          "x": 65,
+          "y": 178
         }
       ],
       "animated": false,

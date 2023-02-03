@@ -6,11 +6,11 @@
       "id": "poll the people",
       "type": "rectangle",
       "pos": {
-        "x": 112,
+        "x": 82,
         "y": 0
       },
-      "width": 210,
-      "height": 126,
+      "width": 150,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 110,
-      "labelHeight": 26,
+      "labelWidth": 105,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -47,11 +47,11 @@
       "id": "results",
       "type": "rectangle",
       "pos": {
-        "x": 241,
-        "y": 226
+        "x": 181,
+        "y": 166
       },
-      "width": 153,
-      "height": 126,
+      "width": 93,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,8 +78,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 53,
-      "labelHeight": 26,
+      "labelWidth": 48,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -89,10 +89,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 452
+        "y": 332
       },
-      "width": 191,
-      "height": 126,
+      "width": 131,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -119,8 +119,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 91,
-      "labelHeight": 26,
+      "labelWidth": 86,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -129,11 +129,11 @@
       "id": "favorable",
       "type": "rectangle",
       "pos": {
-        "x": 251,
-        "y": 452
+        "x": 191,
+        "y": 332
       },
-      "width": 173,
-      "height": 126,
+      "width": 113,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -160,8 +160,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 73,
-      "labelHeight": 26,
+      "labelWidth": 68,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -170,11 +170,11 @@
       "id": "will of the people",
       "type": "rectangle",
       "pos": {
-        "x": 224,
-        "y": 678
+        "x": 164,
+        "y": 498
       },
-      "width": 227,
-      "height": 126,
+      "width": 167,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -201,8 +201,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 127,
-      "labelHeight": 26,
+      "labelWidth": 122,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -211,7 +211,7 @@
       "id": "title",
       "type": "text",
       "pos": {
-        "x": 92,
+        "x": 32,
         "y": -71
       },
       "width": 266,
@@ -276,20 +276,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 272.80973451327435,
+          "x": 184.7289156626506,
+          "y": 66
+        },
+        {
+          "x": 218.94578313253012,
+          "y": 106
+        },
+        {
+          "x": 227.5,
           "y": 126
         },
         {
-          "x": 308.5619469026549,
+          "x": 227.5,
           "y": 166
-        },
-        {
-          "x": 317.5,
-          "y": 186
-        },
-        {
-          "x": 317.5,
-          "y": 226
         }
       ],
       "isCurve": true,
@@ -324,20 +324,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 250.03982300884957,
-          "y": 352
+          "x": 191.31927710843374,
+          "y": 232
         },
         {
-          "x": 207.2079646017699,
-          "y": 392
+          "x": 147.46385542168673,
+          "y": 272
         },
         {
-          "x": 187.5,
-          "y": 412
+          "x": 127.9,
+          "y": 292
         },
         {
-          "x": 151.5,
-          "y": 452
+          "x": 93.5,
+          "y": 332
         }
       ],
       "isCurve": true,
@@ -372,32 +372,32 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 84.34955752212389,
-          "y": 452
+          "x": 57.54819277108434,
+          "y": 332
         },
         {
-          "x": 77.26991150442478,
-          "y": 412
+          "x": 47.90963855421687,
+          "y": 292
         },
         {
-          "x": 75.5,
-          "y": 379.4
+          "x": 45.5,
+          "y": 265.4
         },
         {
-          "x": 75.5,
-          "y": 345.5
+          "x": 45.5,
+          "y": 240.5
         },
         {
-          "x": 75.5,
-          "y": 311.6
+          "x": 45.5,
+          "y": 215.6
         },
         {
-          "x": 87.9,
-          "y": 166
+          "x": 58.9,
+          "y": 106
         },
         {
-          "x": 137.5,
-          "y": 126
+          "x": 112.5,
+          "y": 66
         }
       ],
       "isCurve": true,
@@ -432,20 +432,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 328.6504424778761,
-          "y": 352
+          "x": 235.45180722891567,
+          "y": 232
         },
         {
-          "x": 335.7300884955752,
-          "y": 392
+          "x": 245.09036144578315,
+          "y": 272
         },
         {
-          "x": 337.5,
-          "y": 412
+          "x": 247.5,
+          "y": 292
         },
         {
-          "x": 337.5,
-          "y": 452
+          "x": 247.5,
+          "y": 332
         }
       ],
       "isCurve": true,
@@ -480,20 +480,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 337.5,
-          "y": 578
+          "x": 247.5,
+          "y": 398
         },
         {
-          "x": 337.5,
-          "y": 618
+          "x": 247.5,
+          "y": 438
         },
         {
-          "x": 337.5,
-          "y": 638
+          "x": 247.5,
+          "y": 458
         },
         {
-          "x": 337.5,
-          "y": 678
+          "x": 247.5,
+          "y": 498
         }
       ],
       "isCurve": true,

@@ -6,11 +6,11 @@
       "id": "a",
       "type": "rectangle",
       "pos": {
-        "x": 48,
+        "x": 93,
         "y": 12
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 8,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -47,11 +47,11 @@
       "id": "b",
       "type": "rectangle",
       "pos": {
-        "x": 38,
-        "y": 714
+        "x": 88,
+        "y": 604
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 8,
@@ -78,8 +78,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -88,11 +88,11 @@
       "id": "c",
       "type": "document",
       "pos": {
-        "x": 57,
-        "y": 488
+        "x": 97,
+        "y": 428
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 76,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 7,
@@ -119,8 +119,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -130,7 +130,7 @@
       "type": "oval",
       "pos": {
         "x": 23,
-        "y": 288
+        "y": 228
       },
       "width": 100,
       "height": 100,
@@ -193,28 +193,28 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 76.5,
-          "y": 138
+          "x": 106.5,
+          "y": 78
         },
         {
-          "x": 76.5,
-          "y": 188
-        },
-        {
-          "x": 12,
-          "y": 188
+          "x": 106.5,
+          "y": 128
         },
         {
           "x": 12,
-          "y": 664
+          "y": 128
         },
         {
-          "x": 76.49999999999999,
-          "y": 664
+          "x": 12,
+          "y": 554
         },
         {
-          "x": 76.49999999999999,
-          "y": 714
+          "x": 106.5,
+          "y": 554
+        },
+        {
+          "x": 106.5,
+          "y": 604
         }
       ],
       "animated": false,
@@ -248,12 +248,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 114,
-          "y": 597
+          "x": 124,
+          "y": 493
         },
         {
-          "x": 114.16666666666666,
-          "y": 714
+          "x": 124.16666666666666,
+          "y": 604
         }
       ],
       "animated": false,
@@ -287,20 +287,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 104.75,
-          "y": 138
+          "x": 119.75,
+          "y": 78
         },
         {
-          "x": 104.75,
-          "y": 238
-        },
-        {
-          "x": 73,
-          "y": 238
+          "x": 119.75,
+          "y": 178
         },
         {
           "x": 73,
-          "y": 288
+          "y": 178
+        },
+        {
+          "x": 73,
+          "y": 228
         }
       ],
       "animated": false,
@@ -335,11 +335,11 @@
       "route": [
         {
           "x": 133,
-          "y": 488
+          "y": 428
         },
         {
           "x": 133,
-          "y": 138
+          "y": 78
         }
       ],
       "animated": false,
@@ -374,19 +374,19 @@
       "route": [
         {
           "x": 73,
-          "y": 388
+          "y": 328
         },
         {
           "x": 73,
-          "y": 438
+          "y": 378
         },
         {
-          "x": 95.33333333333333,
-          "y": 438
+          "x": 115.33333333333333,
+          "y": 378
         },
         {
-          "x": 96,
-          "y": 488
+          "x": 115,
+          "y": 428
         }
       ],
       "animated": false,

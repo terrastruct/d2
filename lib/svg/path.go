@@ -20,7 +20,8 @@ type SvgPathContext struct {
 
 // TODO probably use math.Big
 func chopPrecision(f float64) float64 {
-	return math.Round(f*10000) / 10000
+	// bring down to float32 precision before rounding for consistency across architectures
+	return math.Round(float64(float32(f*10000)) / 10000)
 }
 
 func NewSVGPathContext(tl *geo.Point, sx, sy float64) *SvgPathContext {
