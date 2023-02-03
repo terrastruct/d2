@@ -9,8 +9,8 @@
         "x": 12,
         "y": 12
       },
-      "width": 154,
-      "height": 154,
+      "width": 128,
+      "height": 128,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -59,10 +59,10 @@
       "type": "image",
       "pos": {
         "x": 12,
-        "y": 292
+        "y": 266
       },
-      "width": 154,
-      "height": 154,
+      "width": 128,
+      "height": 128,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -134,12 +134,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 89,
-          "y": 192
+          "x": 76,
+          "y": 166
         },
         {
-          "x": 89,
-          "y": 292
+          "x": 76,
+          "y": 266
         }
       ],
       "animated": false,
