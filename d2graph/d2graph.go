@@ -777,16 +777,15 @@ func (obj *Object) GetLabelSize(mtexts []*d2target.MText, ruler *textmeasure.Rul
 	return dims, nil
 }
 
-func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.Ruler, fontFamily *d2fonts.FontFamily, labelDims d2target.TextDimensions) (*d2target.TextDimensions, error) {
+func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.Ruler, fontFamily *d2fonts.FontFamily, labelDims d2target.TextDimensions, withLabelPadding bool) (*d2target.TextDimensions, error) {
 	dims := d2target.TextDimensions{}
 
-	dslShape := strings.ToLower(obj.Attributes.Shape.Value)
-	if dslShape != d2target.ShapeText && obj.Attributes.Label.Value != "" {
+	if withLabelPadding {
 		labelDims.Width += INNER_LABEL_PADDING
 		labelDims.Height += INNER_LABEL_PADDING
 	}
 
-	switch dslShape {
+	switch strings.ToLower(obj.Attributes.Shape.Value) {
 	default:
 		return d2target.NewTextDimensions(labelDims.Width, labelDims.Height), nil
 
@@ -1216,7 +1215,10 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 		}
 
-		defaultDims, err := obj.GetDefaultSize(mtexts, ruler, fontFamily, *labelDims)
+		// if there is a desired width or height, fit to content box without inner label padding for smallest minimum size
+		withInnerLabelPadding := desiredWidth == 0 && desiredHeight == 0 &&
+			dslShape != d2target.ShapeText && obj.Attributes.Label.Value != ""
+		defaultDims, err := obj.GetDefaultSize(mtexts, ruler, fontFamily, *labelDims, withInnerLabelPadding)
 		if err != nil {
 			return err
 		}
@@ -1232,14 +1234,6 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			obj.Height = float64(go2.Max(MIN_SHAPE_SIZE, desiredHeight))
 			// images don't need further processing
 			continue
-		}
-
-		if desiredWidth != 0 || desiredHeight != 0 {
-			// if there is a desired width or height, fit to content box without inner label padding for smallest minimum size
-			if dslShape != d2target.ShapeText && obj.Attributes.Label.Value != "" {
-				defaultDims.Width -= INNER_LABEL_PADDING
-				defaultDims.Height -= INNER_LABEL_PADDING
-			}
 		}
 
 		contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(defaultDims.Width), float64(defaultDims.Height))
