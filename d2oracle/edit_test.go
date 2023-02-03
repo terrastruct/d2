@@ -1373,12 +1373,12 @@ more.(ok.q.z -> p.k): "furbling, v.:"
 		{
 			name: "complex_edge_1",
 
-			text: `a.b.(x -> y).q.z
+			text: `a.b.(x -> y).style.animated
 `,
 			key:     "a.b",
 			newName: "ooo",
 
-			exp: `a.ooo.(x -> y).q.z
+			exp: `a.ooo.(x -> y).style.animated
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				if len(g.Objects) != 4 {
@@ -1392,12 +1392,12 @@ more.(ok.q.z -> p.k): "furbling, v.:"
 		{
 			name: "complex_edge_2",
 
-			text: `a.b.(x -> y).q.z
+			text: `a.b.(x -> y).style.animated
 `,
 			key:     "a.b.x",
 			newName: "papa",
 
-			exp: `a.b.(papa -> y).q.z
+			exp: `a.b.(papa -> y).style.animated
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				if len(g.Objects) != 4 {
@@ -1454,12 +1454,12 @@ more.(ok.q.z -> p.k): "furbling, v.:"
 		{
 			name: "arrows_complex",
 
-			text: `a.b.(x -- y).q.z
+			text: `a.b.(x -- y).style.animated
 `,
 			key:     "a.b.(x -- y)[0]",
 			newName: "(x <-> y)[0]",
 
-			exp: `a.b.(x <-> y).q.z
+			exp: `a.b.(x <-> y).style.animated
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				if len(g.Objects) != 4 {
@@ -3025,7 +3025,7 @@ d
 					if err == nil {
 						objectsAfter := len(g.Objects)
 						if objectsBefore != objectsAfter {
-							println(d2format.Format(g.AST))
+							t.Log(d2format.Format(g.AST))
 							return nil, fmt.Errorf("move cannot destroy or create objects: found %d objects before and %d objects after", objectsBefore, objectsAfter)
 						}
 					}

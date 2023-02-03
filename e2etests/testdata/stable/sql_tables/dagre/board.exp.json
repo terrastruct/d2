@@ -55,7 +55,7 @@
             "labelHeight": 26
           },
           "constraint": "",
-          "reference": "orders.user_id"
+          "reference": ""
         },
         {
           "name": {
@@ -239,7 +239,7 @@
             "labelHeight": 26
           },
           "constraint": "",
-          "reference": "orders.product_id"
+          "reference": ""
         },
         {
           "name": {
@@ -551,7 +551,7 @@
             "labelHeight": 26
           },
           "constraint": "",
-          "reference": "orders.id"
+          "reference": ""
         },
         {
           "name": {

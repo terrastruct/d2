@@ -79,23 +79,23 @@ callout -> stored_data -> person
 diamond -> oval -> circle
 hexagon -> cloud
 
-rectangle.multiple: true
-square.multiple: true
-page.multiple: true
-parallelogram.multiple: true
-document.multiple: true
-cylinder.multiple: true
-queue.multiple: true
-package.multiple: true
-step.multiple: true
-callout.multiple: true
-stored_data.multiple: true
-person.multiple: true
-diamond.multiple: true
-oval.multiple: true
-circle.multiple: true
-hexagon.multiple: true
-cloud.multiple: true
+rectangle.style.multiple: true
+square.style.multiple: true
+page.style.multiple: true
+parallelogram.style.multiple: true
+document.style.multiple: true
+cylinder.style.multiple: true
+queue.style.multiple: true
+package.style.multiple: true
+step.style.multiple: true
+callout.style.multiple: true
+stored_data.style.multiple: true
+person.style.multiple: true
+diamond.style.multiple: true
+oval.style.multiple: true
+circle.style.multiple: true
+hexagon.style.multiple: true
+cloud.style.multiple: true
 `,
 		},
 		{
@@ -126,23 +126,23 @@ callout -> stored_data -> person
 diamond -> oval -> circle
 hexagon -> cloud
 
-rectangle.shadow: true
-square.shadow: true
-page.shadow: true
-parallelogram.shadow: true
-document.shadow: true
-cylinder.shadow: true
-queue.shadow: true
-package.shadow: true
-step.shadow: true
-callout.shadow: true
-stored_data.shadow: true
-person.shadow: true
-diamond.shadow: true
-oval.shadow: true
-circle.shadow: true
-hexagon.shadow: true
-cloud.shadow: true
+rectangle.style.shadow: true
+square.style.shadow: true
+page.style.shadow: true
+parallelogram.style.shadow: true
+document.style.shadow: true
+cylinder.style.shadow: true
+queue.style.shadow: true
+package.style.shadow: true
+step.style.shadow: true
+callout.style.shadow: true
+stored_data.style.shadow: true
+person.style.shadow: true
+diamond.style.shadow: true
+oval.style.shadow: true
+circle.style.shadow: true
+hexagon.style.shadow: true
+cloud.style.shadow: true
 `,
 		},
 		{
@@ -153,8 +153,8 @@ square: {shape: "square"}
 
 rectangle -> square
 
-rectangle.3d: true
-square.3d: true
+rectangle.style.3d: true
+square.style.3d: true
 `,
 		},
 		{
@@ -1109,17 +1109,17 @@ scorer.t -> itemOutcome.t3: setFeedback(missingConcepts)`,
 			script: `shape: sequence_diagram
 
 scorer: {
-    stroke: red
-    stroke-width: 5
+    style.stroke: red
+    style.stroke-width: 5
 }
 
 scorer.abc: {
-    fill: yellow
-    stroke-width: 7
+    style.fill: yellow
+    style.stroke-width: 7
 }
 
 scorer -> itemResponse.a: {
-    stroke-width: 10
+    style.stroke-width: 10
 }
 itemResponse.a -> item.a.b
 item.a.b -> essayRubric.a.b.c
@@ -1911,6 +1911,62 @@ g: ----------------------------------------------------------------
 5.height: 256
 5.width: 32
 `,
+		},
+		{
+			name: "complex-layers",
+			script: `
+desc: Multi-layer diagram of a home.
+
+window: {
+  style.double-border: true
+}
+roof
+garage
+
+layers: {
+  window: {
+    blinds
+    glass
+  }
+  roof: {
+    shingles
+    starlink
+    utility hookup
+  }
+  garage: {
+    tools
+    vehicles
+  }
+  repair: {
+    desc: How to repair a home.
+
+    steps: {
+      1: {
+        find contractors: {
+          craigslist
+          facebook
+        }
+      }
+      2: {
+        find contractors -> solicit quotes
+      }
+      3: {
+        obtain quotes -> negotiate
+      }
+      4: {
+        negotiate -> book the best bid
+      }
+    }
+  }
+}
+
+scenarios: {
+  storm: {
+    water
+    rain
+    thunder
+  }
+}`,
 		},
 	}
 

@@ -4,7 +4,7 @@
     "ioerr": null,
     "errs": [
       {
-        "range": "d2/testdata/d2compiler/TestCompile/image_non_style.d2,3:2:115-3:9:122",
+        "range": "d2/testdata/d2compiler/TestCompile/image_non_style.d2,3:2:115-3:6:119",
         "errmsg": "d2/testdata/d2compiler/TestCompile/image_non_style.d2:4:3: image shapes cannot have children."
       }
     ]

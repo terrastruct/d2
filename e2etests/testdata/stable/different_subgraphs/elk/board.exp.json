@@ -3,51 +3,10 @@
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
-      "id": "finally",
-      "type": "",
-      "pos": {
-        "x": 361,
-        "y": 12
-      },
-      "width": 338,
-      "height": 714,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#E3E9FD",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "finally",
-      "fontSize": 28,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 77,
-      "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
-      "zIndex": 0,
-      "level": 1
-    },
-    {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 51,
+        "x": 319,
         "y": 660
       },
       "width": 53,
@@ -86,9 +45,9 @@
     },
     {
       "id": "tree",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 27,
+        "x": 106,
         "y": 876
       },
       "width": 74,
@@ -127,7 +86,7 @@
     },
     {
       "id": "and",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 223,
         "y": 876
@@ -168,7 +127,7 @@
     },
     {
       "id": "nodes",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 315,
         "y": 876
@@ -209,7 +168,7 @@
     },
     {
       "id": "some",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 218,
         "y": 1042
@@ -250,7 +209,7 @@
     },
     {
       "id": "more",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 1042
@@ -291,7 +250,7 @@
     },
     {
       "id": "many",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 113,
         "y": 1042
@@ -332,9 +291,9 @@
     },
     {
       "id": "then",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 837,
+        "x": 434,
         "y": 660
       },
       "width": 78,
@@ -373,9 +332,9 @@
     },
     {
       "id": "here",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 825,
+        "x": 422,
         "y": 876
       },
       "width": 76,
@@ -414,9 +373,9 @@
     },
     {
       "id": "you",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 827,
+        "x": 424,
         "y": 1042
       },
       "width": 72,
@@ -455,9 +414,9 @@
     },
     {
       "id": "have",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 958,
+        "x": 554,
         "y": 660
       },
       "width": 78,
@@ -496,9 +455,9 @@
     },
     {
       "id": "hierarchy",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 921,
+        "x": 518,
         "y": 876
       },
       "width": 113,
@@ -536,10 +495,51 @@
       "level": 1
     },
     {
-      "id": "another",
-      "type": "",
+      "id": "finally",
+      "type": "rectangle",
       "pos": {
-        "x": 422,
+        "x": 652,
+        "y": 12
+      },
+      "width": 338,
+      "height": 714,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#E3E9FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "finally",
+      "fontSize": 28,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 77,
+      "labelHeight": 41,
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "another",
+      "type": "rectangle",
+      "pos": {
+        "x": 714,
         "y": 876
       },
       "width": 103,
@@ -578,9 +578,9 @@
     },
     {
       "id": "of",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 444,
+        "x": 735,
         "y": 1042
       },
       "width": 60,
@@ -619,9 +619,9 @@
     },
     {
       "id": "nesting",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 719,
+        "x": 1011,
         "y": 660
       },
       "width": 98,
@@ -660,9 +660,9 @@
     },
     {
       "id": "trees",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 714,
+        "x": 1005,
         "y": 876
       },
       "width": 82,
@@ -701,9 +701,9 @@
     },
     {
       "id": "finally.a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 475,
+        "x": 766,
         "y": 253
       },
       "width": 53,
@@ -742,9 +742,9 @@
     },
     {
       "id": "finally.tree",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 455,
+        "x": 747,
         "y": 419
       },
       "width": 74,
@@ -783,9 +783,9 @@
     },
     {
       "id": "finally.inside",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 457,
+        "x": 749,
         "y": 87
       },
       "width": 88,
@@ -824,9 +824,9 @@
     },
     {
       "id": "finally.hierarchy",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 436,
+        "x": 727,
         "y": 585
       },
       "width": 113,
@@ -865,9 +865,9 @@
     },
     {
       "id": "finally.root",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 549,
+        "x": 841,
         "y": 419
       },
       "width": 75,
@@ -932,11 +932,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 64.83333333333334,
+          "x": 332.5,
           "y": 726
         },
         {
-          "x": 64.83333333333334,
+          "x": 332.5,
+          "y": 776
+        },
+        {
+          "x": 143.16666666666663,
+          "y": 776
+        },
+        {
+          "x": 143.16666666666663,
           "y": 876
         }
       ],
@@ -971,11 +979,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 78.08333333333334,
+          "x": 345.75,
           "y": 726
         },
         {
-          "x": 78.08333333333334,
+          "x": 345.75,
           "y": 826
         },
         {
@@ -1018,16 +1026,8 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 91.33333333333334,
-          "y": 726
-        },
-        {
-          "x": 91.33333333333334,
-          "y": 776
-        },
-        {
           "x": 359,
-          "y": 776
+          "y": 726
         },
         {
           "x": 359,
@@ -1104,8 +1104,16 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 52.5,
+          "x": 130.83333333333326,
           "y": 942
+        },
+        {
+          "x": 130.83333333333326,
+          "y": 992
+        },
+        {
+          "x": 52.5,
+          "y": 992
         },
         {
           "x": 52.5,
@@ -1143,16 +1151,8 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 77.16666666666666,
-          "y": 942
-        },
-        {
-          "x": 77.16666666666666,
-          "y": 992
-        },
-        {
           "x": 155.5,
-          "y": 992
+          "y": 942
         },
         {
           "x": 155.5,
@@ -1190,11 +1190,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 863.6666666666667,
+          "x": 460.5,
           "y": 726
         },
         {
-          "x": 863.6666666666667,
+          "x": 460.5,
           "y": 876
         }
       ],
@@ -1229,11 +1229,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 863.6666666666667,
+          "x": 460.5,
           "y": 942
         },
         {
-          "x": 863.6666666666667,
+          "x": 460.5,
           "y": 1042
         }
       ],
@@ -1268,11 +1268,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 997.0000000000001,
+          "x": 593.8333333333334,
           "y": 726
         },
         {
-          "x": 997.0000000000001,
+          "x": 593.8333333333334,
           "y": 876
         }
       ],
@@ -1307,19 +1307,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 889.6666666666667,
+          "x": 486.5,
           "y": 726
         },
         {
-          "x": 889.6666666666667,
+          "x": 486.5,
           "y": 776
         },
         {
-          "x": 959.3333333333334,
+          "x": 556.1666666666667,
           "y": 776
         },
         {
-          "x": 959.3333333333334,
+          "x": 556.1666666666667,
           "y": 876
         }
       ],
@@ -1354,11 +1354,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 474,
+          "x": 765.6666666666666,
           "y": 726
         },
         {
-          "x": 474,
+          "x": 765.6666666666666,
           "y": 876
         }
       ],
@@ -1393,11 +1393,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 474,
+          "x": 765.6666666666666,
           "y": 942
         },
         {
-          "x": 474,
+          "x": 765.6666666666666,
           "y": 1042
         }
       ],
@@ -1432,11 +1432,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 768.6666666666667,
+          "x": 1060.3333333333333,
           "y": 726
         },
         {
-          "x": 768.6666666666667,
+          "x": 1060.3333333333333,
           "y": 876
         }
       ],
@@ -1471,19 +1471,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 586.8333333333334,
+          "x": 878.5,
           "y": 726
         },
         {
-          "x": 586.8333333333334,
+          "x": 878.5,
           "y": 776
         },
         {
-          "x": 741.3333333333335,
+          "x": 1033,
           "y": 776
         },
         {
-          "x": 741.3333333333335,
+          "x": 1033,
           "y": 876
         }
       ],
@@ -1518,11 +1518,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 492.6666666666667,
+          "x": 784.3333333333333,
           "y": 319
         },
         {
-          "x": 492.6666666666667,
+          "x": 784.3333333333333,
           "y": 419
         }
       ],
@@ -1557,11 +1557,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 501.5,
+          "x": 793.1666666666665,
           "y": 153
         },
         {
-          "x": 501.5,
+          "x": 793.1666666666665,
           "y": 253
         }
       ],
@@ -1596,11 +1596,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 492.6666666666667,
+          "x": 784.3333333333333,
           "y": 485
         },
         {
-          "x": 492.6666666666667,
+          "x": 784.3333333333333,
           "y": 585
         }
       ],
@@ -1635,19 +1635,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 510.33333333333337,
+          "x": 801.9999999999999,
           "y": 319
         },
         {
-          "x": 510.33333333333337,
+          "x": 801.9999999999999,
           "y": 369
         },
         {
-          "x": 587.1666666666667,
+          "x": 878.8333333333333,
           "y": 369
         },
         {
-          "x": 587.1666666666667,
+          "x": 878.8333333333333,
           "y": 419
         }
       ],

@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "poll the people",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 82,
         "y": 0
@@ -45,7 +45,7 @@
     },
     {
       "id": "results",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 181,
         "y": 166
@@ -86,7 +86,7 @@
     },
     {
       "id": "unfavorable",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
         "y": 332
@@ -127,7 +127,7 @@
     },
     {
       "id": "favorable",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 191,
         "y": 332
@@ -168,7 +168,7 @@
     },
     {
       "id": "will of the people",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 164,
         "y": 498

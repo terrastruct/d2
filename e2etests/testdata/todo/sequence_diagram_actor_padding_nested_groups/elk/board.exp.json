@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 24,
         "y": 74
@@ -45,7 +45,7 @@
     },
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 274,
         "y": 74
@@ -86,7 +86,7 @@
     },
     {
       "id": "c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 524,
         "y": 74
@@ -127,7 +127,7 @@
     },
     {
       "id": "this is a message group",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": -47,
         "y": 360
@@ -168,7 +168,7 @@
     },
     {
       "id": "this is a message group.and this is a nested message group",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": -23,
         "y": 490
@@ -209,7 +209,7 @@
     },
     {
       "id": "this is a message group.and this is a nested message group.what about more nesting",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1,
         "y": 620
@@ -250,7 +250,7 @@
     },
     {
       "id": "this is a message group.and this is a nested message group.what about more nesting.yo",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 25,
         "y": 750
@@ -291,7 +291,7 @@
     },
     {
       "id": "this is a message group.and this is a nested message group.what about more nesting.yo.yo",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 49,
         "y": 880
@@ -372,7 +372,7 @@
       "zIndex": 4
     },
     {
-      "id": "(a -> b)[0]",
+      "id": "(a -> b)[4]",
       "src": "a",
       "srcArrow": "none",
       "srcLabel": "",
@@ -411,7 +411,7 @@
       "zIndex": 4
     },
     {
-      "id": "(a -> b)[1]",
+      "id": "(a -> b)[3]",
       "src": "a",
       "srcArrow": "none",
       "srcLabel": "",
@@ -489,7 +489,7 @@
       "zIndex": 4
     },
     {
-      "id": "(a -> b)[3]",
+      "id": "(a -> b)[1]",
       "src": "a",
       "srcArrow": "none",
       "srcLabel": "",
@@ -528,7 +528,7 @@
       "zIndex": 4
     },
     {
-      "id": "(a -> b)[4]",
+      "id": "(a -> b)[0]",
       "src": "a",
       "srcArrow": "none",
       "srcLabel": "",

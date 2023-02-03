@@ -45,7 +45,7 @@ func Parse(path string, r io.RuneReader, opts *ParseOptions) (*d2ast.Map, error)
 	}
 
 	m := p.parseMap(true)
-	if !p.err.empty() {
+	if !p.err.Empty() {
 		return m, p.err
 	}
 	return m, nil
@@ -57,7 +57,7 @@ func ParseKey(key string) (*d2ast.KeyPath, error) {
 	}
 
 	k := p.parseKey()
-	if !p.err.empty() {
+	if !p.err.Empty() {
 		return nil, fmt.Errorf("failed to parse key %q: %w", key, p.err)
 	}
 	if k == nil {
@@ -72,7 +72,7 @@ func ParseMapKey(mapKey string) (*d2ast.Key, error) {
 	}
 
 	mk := p.parseMapKey()
-	if !p.err.empty() {
+	if !p.err.Empty() {
 		return nil, fmt.Errorf("failed to parse map key %q: %w", mapKey, p.err)
 	}
 	if mk == nil {
@@ -87,7 +87,7 @@ func ParseValue(value string) (d2ast.Value, error) {
 	}
 
 	v := p.parseValue()
-	if !p.err.empty() {
+	if !p.err.Empty() {
 		return nil, fmt.Errorf("failed to parse value %q: %w", value, p.err)
 	}
 	if v.Unbox() == nil {
@@ -130,7 +130,16 @@ type ParseError struct {
 	Errors  []d2ast.Error `json:"errs"`
 }
 
-func (pe ParseError) empty() bool {
+func Errorf(n d2ast.Node, f string, v ...interface{}) error {
+	f = "%v: " + f
+	v = append([]interface{}{n.GetRange()}, v...)
+	return d2ast.Error{
+		Range:   n.GetRange(),
+		Message: fmt.Sprintf(f, v...),
+	}
+}
+
+func (pe ParseError) Empty() bool {
 	return pe.IOError == nil && len(pe.Errors) == 0
 }
 
@@ -138,11 +147,12 @@ func (pe ParseError) Error() string {
 	var sb strings.Builder
 	if pe.IOError != nil {
 		sb.WriteString(pe.IOError.Error())
-		sb.WriteByte('\n')
 	}
-	for _, err := range pe.Errors {
+	for i, err := range pe.Errors {
+		if pe.IOError != nil || i > 0 {
+			sb.WriteByte('\n')
+		}
 		sb.WriteString(err.Error())
-		sb.WriteByte('\n')
 	}
 	return sb.String()
 }

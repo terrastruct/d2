@@ -37,6 +37,10 @@ type Diagram struct {
 
 	Shapes      []Shape      `json:"shapes"`
 	Connections []Connection `json:"connections"`
+
+	Layers    []*Diagram `json:"layers,omitempty"`
+	Scenarios []*Diagram `json:"scenarios,omitempty"`
+	Steps     []*Diagram `json:"steps,omitempty"`
 }
 
 func (diagram Diagram) HashID() (string, error) {

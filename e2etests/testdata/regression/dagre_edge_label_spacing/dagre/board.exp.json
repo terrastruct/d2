@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "build_workflow",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
         "y": 0
@@ -45,7 +45,7 @@
     },
     {
       "id": "build_workflow.push",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 105,
         "y": 50
@@ -86,7 +86,7 @@
     },
     {
       "id": "build_workflow.GHA",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 638,
         "y": 50
@@ -127,7 +127,7 @@
     },
     {
       "id": "build_workflow.S3",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1194,
         "y": 50
@@ -168,7 +168,7 @@
     },
     {
       "id": "build_workflow.Terraform",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1593,
         "y": 50
@@ -209,7 +209,7 @@
     },
     {
       "id": "build_workflow.AWS",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 2129,
         "y": 50

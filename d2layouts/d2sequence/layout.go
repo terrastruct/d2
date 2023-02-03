@@ -5,11 +5,12 @@ import (
 	"sort"
 	"strings"
 
+	"oss.terrastruct.com/util-go/go2"
+
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/util-go/go2"
 )
 
 func WithoutSequenceDiagrams(ctx context.Context, g *d2graph.Graph) (map[string]*sequenceDiagram, map[string]int, map[string]int, error) {
@@ -113,6 +114,7 @@ func layoutSequenceDiagram(g *d2graph.Graph, obj *d2graph.Object) (*sequenceDiag
 func getLayoutEdges(g *d2graph.Graph, toRemove map[*d2graph.Edge]struct{}) ([]*d2graph.Edge, map[string]int) {
 	edgeOrder := make(map[string]int)
 	layoutEdges := make([]*d2graph.Edge, 0, len(g.Edges)-len(toRemove))
+
 	for i, edge := range g.Edges {
 		edgeOrder[edge.AbsID()] = i
 		if _, exists := toRemove[edge]; !exists {

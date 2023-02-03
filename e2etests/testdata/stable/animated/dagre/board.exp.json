@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "your love life will be",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 28,
         "y": 0
@@ -45,7 +45,7 @@
     },
     {
       "id": "happy",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
         "y": 187
@@ -86,7 +86,7 @@
     },
     {
       "id": "harmonious",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 149,
         "y": 187
@@ -127,7 +127,7 @@
     },
     {
       "id": "boredom",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 351,
         "y": 187
@@ -168,7 +168,7 @@
     },
     {
       "id": "immortality",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 340,
         "y": 0
@@ -209,7 +209,7 @@
     },
     {
       "id": "Friday",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 531,
         "y": 0
@@ -250,7 +250,7 @@
     },
     {
       "id": "Monday",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 525,
         "y": 187
@@ -291,7 +291,7 @@
     },
     {
       "id": "Insomnia",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 826,
         "y": 0
@@ -332,7 +332,7 @@
     },
     {
       "id": "Sleep",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 690,
         "y": 187
@@ -373,7 +373,7 @@
     },
     {
       "id": "Wake",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 835,
         "y": 187
@@ -414,7 +414,7 @@
     },
     {
       "id": "Dream",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 979,
         "y": 187
@@ -455,7 +455,7 @@
     },
     {
       "id": "Listen",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1132,
         "y": 0
@@ -496,7 +496,7 @@
     },
     {
       "id": "Talk",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1138,
         "y": 187

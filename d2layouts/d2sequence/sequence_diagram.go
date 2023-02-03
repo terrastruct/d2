@@ -231,7 +231,7 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 	for _, n := range sd.notes {
 		inGroup := false
 		for _, ref := range n.References {
-			curr := ref.UnresolvedScopeObj
+			curr := ref.ScopeObj
 			for curr != nil {
 				if curr == group {
 					inGroup = true
@@ -330,7 +330,7 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 		actorLifelineEnd := actor.Center()
 		actorLifelineEnd.Y = endY
 		sd.lifelines = append(sd.lifelines, &d2graph.Edge{
-			Attributes: d2graph.Attributes{
+			Attributes: &d2graph.Attributes{
 				Style: d2graph.Style{
 					StrokeDash:  &d2graph.Scalar{Value: fmt.Sprintf("%d", LIFELINE_STROKE_DASH)},
 					StrokeWidth: &d2graph.Scalar{Value: fmt.Sprintf("%d", LIFELINE_STROKE_WIDTH)},

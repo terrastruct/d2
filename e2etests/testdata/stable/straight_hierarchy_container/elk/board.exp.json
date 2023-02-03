@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 162,
         "y": 12
@@ -45,7 +45,7 @@
     },
     {
       "id": "c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 235,
         "y": 12
@@ -86,7 +86,7 @@
     },
     {
       "id": "b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 89,
         "y": 12
@@ -127,7 +127,7 @@
     },
     {
       "id": "l1",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 14,
         "y": 183
@@ -168,7 +168,7 @@
     },
     {
       "id": "l1.b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 89,
         "y": 258
@@ -209,7 +209,7 @@
     },
     {
       "id": "l1.a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 162,
         "y": 258
@@ -250,7 +250,7 @@
     },
     {
       "id": "l1.c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 235,
         "y": 258
@@ -291,7 +291,7 @@
     },
     {
       "id": "l2c1",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 87,
         "y": 659
@@ -332,7 +332,7 @@
     },
     {
       "id": "l2c1.a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 162,
         "y": 734
@@ -373,7 +373,7 @@
     },
     {
       "id": "l2c3",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 533,
         "y": 659
@@ -414,7 +414,7 @@
     },
     {
       "id": "l2c3.c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 608,
         "y": 734
@@ -455,7 +455,7 @@
     },
     {
       "id": "l2c2",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 310,
         "y": 659
@@ -496,7 +496,7 @@
     },
     {
       "id": "l2c2.b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 385,
         "y": 734
@@ -537,7 +537,7 @@
     },
     {
       "id": "l3c1",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 87,
         "y": 985
@@ -578,7 +578,7 @@
     },
     {
       "id": "l3c1.a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 162,
         "y": 1060
@@ -619,7 +619,7 @@
     },
     {
       "id": "l3c1.b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 235,
         "y": 1060
@@ -660,7 +660,7 @@
     },
     {
       "id": "l3c2",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 533,
         "y": 985
@@ -701,7 +701,7 @@
     },
     {
       "id": "l3c2.c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 608,
         "y": 1060
@@ -742,7 +742,7 @@
     },
     {
       "id": "l4",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 1311
@@ -783,7 +783,7 @@
     },
     {
       "id": "l4.c1",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 87,
         "y": 1391
@@ -824,7 +824,7 @@
     },
     {
       "id": "l4.c1.a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 162,
         "y": 1466
@@ -865,7 +865,7 @@
     },
     {
       "id": "l4.c2",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 310,
         "y": 1391
@@ -906,7 +906,7 @@
     },
     {
       "id": "l4.c2.b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 385,
         "y": 1466
@@ -947,7 +947,7 @@
     },
     {
       "id": "l4.c3",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 533,
         "y": 1391
@@ -988,7 +988,7 @@
     },
     {
       "id": "l4.c3.c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 608,
         "y": 1466

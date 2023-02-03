@@ -3,51 +3,10 @@
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
-      "id": "foo baz",
-      "type": "",
+      "id": "1",
+      "type": "rectangle",
       "pos": {
         "x": 12,
-        "y": 12
-      },
-      "width": 99,
-      "height": 66,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#F7F8FE",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "Foo Baz",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": true,
-      "underline": false,
-      "labelWidth": 59,
-      "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 1
-    },
-    {
-      "id": "1",
-      "type": "",
-      "pos": {
-        "x": 131,
         "y": 12
       },
       "width": 52,
@@ -86,9 +45,9 @@
     },
     {
       "id": "2",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 130,
+        "x": 12,
         "y": 178
       },
       "width": 53,
@@ -126,10 +85,51 @@
       "level": 1
     },
     {
-      "id": "hello",
-      "type": "",
+      "id": "foo baz",
+      "type": "rectangle",
       "pos": {
-        "x": 21,
+        "x": 84,
+        "y": 12
+      },
+      "width": 99,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#F7F8FE",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Foo Baz",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 59,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "hello",
+      "type": "rectangle",
+      "pos": {
+        "x": 94,
         "y": 178
       },
       "width": 80,
@@ -194,11 +194,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 157,
+          "x": 38.5,
           "y": 78
         },
         {
-          "x": 157,
+          "x": 38.5,
           "y": 178
         }
       ],
@@ -233,11 +233,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 61.5,
+          "x": 134,
           "y": 78
         },
         {
-          "x": 61.5,
+          "x": 134,
           "y": 178
         }
       ],

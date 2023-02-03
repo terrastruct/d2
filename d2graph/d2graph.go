@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"net/url"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -25,25 +26,26 @@ import (
 const INNER_LABEL_PADDING int = 5
 const DEFAULT_SHAPE_SIZE = 100.
 
-// TODO: Refactor with a light abstract layer on top of AST implementing scenarios,
-// variables, imports, substitutions and then a final set of structures representing
-// a final graph.
 type Graph struct {
-	AST *d2ast.Map `json:"ast"`
+	Name string     `json:"name"`
+	AST  *d2ast.Map `json:"ast"`
 
 	Root    *Object   `json:"root"`
 	Edges   []*Edge   `json:"edges"`
 	Objects []*Object `json:"objects"`
+
+	Layers    []*Graph `json:"layers,omitempty"`
+	Scenarios []*Graph `json:"scenarios,omitempty"`
+	Steps     []*Graph `json:"steps,omitempty"`
 }
 
-func NewGraph(ast *d2ast.Map) *Graph {
-	d := &Graph{
-		AST: ast,
-	}
+func NewGraph() *Graph {
+	d := &Graph{}
 	d.Root = &Object{
-		Graph:    d,
-		Parent:   nil,
-		Children: make(map[string]*Object),
+		Graph:      d,
+		Parent:     nil,
+		Children:   make(map[string]*Object),
+		Attributes: &Attributes{},
 	}
 	return d
 }
@@ -83,7 +85,7 @@ type Object struct {
 	Children      map[string]*Object `json:"-"`
 	ChildrenArray []*Object          `json:"-"`
 
-	Attributes Attributes `json:"attributes"`
+	Attributes *Attributes `json:"attributes,omitempty"`
 
 	ZIndex int `json:"zIndex"`
 }
@@ -106,7 +108,8 @@ type Attributes struct {
 	// TODO: default to ShapeRectangle instead of empty string
 	Shape Scalar `json:"shape"`
 
-	Direction Scalar `json:"direction"`
+	Direction  Scalar `json:"direction"`
+	Constraint Scalar `json:"constraint"`
 }
 
 // TODO references at the root scope should have their Scope set to root graph AST
@@ -117,9 +120,7 @@ type Reference struct {
 	MapKey          *d2ast.Key `json:"-"`
 	MapKeyEdgeIndex int        `json:"map_key_edge_index"`
 	Scope           *d2ast.Map `json:"-"`
-	// The ScopeObj and UnresolvedScopeObj are the same except when the key contains underscores
-	ScopeObj           *Object `json:"-"`
-	UnresolvedScopeObj *Object `json:"-"`
+	ScopeObj        *Object    `json:"-"`
 }
 
 func (r Reference) MapKeyEdgeDest() bool {
@@ -501,9 +502,12 @@ func (obj *Object) newObject(id string) *Object {
 	child := &Object{
 		ID:    id,
 		IDVal: idval,
-		Attributes: Attributes{
+		Attributes: &Attributes{
 			Label: Scalar{
 				Value: idval,
+			},
+			Shape: Scalar{
+				Value: d2target.ShapeRectangle,
 			},
 		},
 
@@ -524,6 +528,9 @@ func (obj *Object) newObject(id string) *Object {
 }
 
 func (obj *Object) HasChild(ids []string) (*Object, bool) {
+	if len(ids) == 0 {
+		return obj, true
+	}
 	if len(ids) == 1 && ids[0] != "style" {
 		_, ok := ReservedKeywords[ids[0]]
 		if ok {
@@ -558,6 +565,7 @@ func (obj *Object) HasEdge(mk *d2ast.Key) (*Edge, bool) {
 	return nil, false
 }
 
+// TODO: remove once not used anywhere
 func ResolveUnderscoreKey(ida []string, obj *Object) (resolvedObj *Object, resolvedIDA []string, _ error) {
 	if len(ida) > 0 && !obj.IsSequenceDiagram() {
 		objSD := obj.OuterSequenceDiagram()
@@ -638,34 +646,71 @@ func (obj *Object) FindEdges(mk *d2ast.Key) ([]*Edge, bool) {
 	return ea, true
 }
 
+func (obj *Object) ensureChildEdge(ida []string) *Object {
+	for i := range ida {
+		switch obj.Attributes.Shape.Value {
+		case d2target.ShapeClass, d2target.ShapeSQLTable:
+			// This will only be called for connecting edges where we want to truncate to the
+			// container.
+			return obj
+		default:
+			obj = obj.EnsureChild(ida[i : i+1])
+		}
+	}
+	return obj
+}
+
 // EnsureChild grabs the child by ids or creates it if it does not exist including all
 // intermediate nodes.
-func (obj *Object) EnsureChild(ids []string) *Object {
-	_, is := ReservedKeywordHolders[ids[0]]
-	if len(ids) == 1 && !is {
-		_, ok := ReservedKeywords[ids[0]]
+func (obj *Object) EnsureChild(ida []string) *Object {
+	seq := obj.OuterSequenceDiagram()
+	if seq != nil {
+		for _, c := range seq.ChildrenArray {
+			if c.ID == ida[0] {
+				if obj.ID == ida[0] {
+					// In cases of a.a where EnsureChild is called on the parent a, the second a should
+					// be created as a child of a and not as a child of the diagram. This is super
+					// unfortunate code but alas.
+					break
+				}
+				obj = seq
+				break
+			}
+		}
+	}
+
+	if len(ida) == 0 {
+		return obj
+	}
+
+	_, is := ReservedKeywordHolders[ida[0]]
+	if len(ida) == 1 && !is {
+		_, ok := ReservedKeywords[ida[0]]
 		if ok {
 			return obj
 		}
 	}
 
-	id := ids[0]
-	ids = ids[1:]
+	id := ida[0]
+	ida = ida[1:]
+
+	if id == "_" {
+		return obj.Parent.EnsureChild(ida)
+	}
 
 	child, ok := obj.Children[strings.ToLower(id)]
 	if !ok {
 		child = obj.newObject(id)
 	}
 
-	if len(ids) >= 1 {
-		return child.EnsureChild(ids)
+	if len(ida) >= 1 {
+		return child.EnsureChild(ida)
 	}
 	return child
 }
 
 func (obj *Object) AppendReferences(ida []string, ref Reference, unresolvedObj *Object) {
-	ref.ScopeObj = obj
-	ref.UnresolvedScopeObj = unresolvedObj
+	ref.ScopeObj = unresolvedObj
 	numUnderscores := 0
 	for i := range ida {
 		if ida[i] == "_" {
@@ -850,7 +895,7 @@ type Edge struct {
 	DstArrowhead *Attributes `json:"dstArrowhead,omitempty"`
 
 	References []EdgeReference `json:"references,omitempty"`
-	Attributes Attributes      `json:"attributes"`
+	Attributes *Attributes     `json:"attributes,omitempty"`
 
 	ZIndex int `json:"zIndex"`
 }
@@ -922,15 +967,6 @@ func (e *Edge) AbsID() string {
 }
 
 func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label string) (*Edge, error) {
-	srcObj, srcID, err := ResolveUnderscoreKey(srcID, obj)
-	if err != nil {
-		return nil, err
-	}
-	dstObj, dstID, err := ResolveUnderscoreKey(dstID, obj)
-	if err != nil {
-		return nil, err
-	}
-
 	for _, id := range [][]string{srcID, dstID} {
 		for _, p := range id {
 			if _, ok := ReservedKeywords[p]; ok {
@@ -939,15 +975,15 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 		}
 	}
 
-	src := srcObj.EnsureChild(srcID)
-	dst := dstObj.EnsureChild(dstID)
+	src := obj.ensureChildEdge(srcID)
+	dst := obj.ensureChildEdge(dstID)
 
 	if src.OuterSequenceDiagram() != dst.OuterSequenceDiagram() {
 		return nil, errors.New("connections within sequence diagrams can connect only to other objects within the same sequence diagram")
 	}
 
-	edge := &Edge{
-		Attributes: Attributes{
+	e := &Edge{
+		Attributes: &Attributes{
 			Label: Scalar{
 				Value: label,
 			},
@@ -957,10 +993,47 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 		Dst:      dst,
 		DstArrow: dstArrow,
 	}
-	edge.initIndex()
+	e.initIndex()
 
-	obj.Graph.Edges = append(obj.Graph.Edges, edge)
-	return edge, nil
+	addSQLTableColumnIndices(e, srcID, dstID, obj, src, dst)
+
+	obj.Graph.Edges = append(obj.Graph.Edges, e)
+	return e, nil
+}
+
+func addSQLTableColumnIndices(e *Edge, srcID, dstID []string, obj, src, dst *Object) {
+	if src.Attributes.Shape.Value == d2target.ShapeSQLTable {
+		if src == dst {
+			// Ignore edge to column inside table.
+			return
+		}
+		objAbsID := obj.AbsIDArray()
+		srcAbsID := src.AbsIDArray()
+		if len(objAbsID)+len(srcID) > len(srcAbsID) {
+			for i, d2col := range src.SQLTable.Columns {
+				if d2col.Name.Label == srcID[len(srcID)-1] {
+					d2col.Reference = dst.AbsID()
+					e.SrcTableColumnIndex = new(int)
+					*e.SrcTableColumnIndex = i
+					break
+				}
+			}
+		}
+	}
+	if dst.Attributes.Shape.Value == d2target.ShapeSQLTable {
+		objAbsID := obj.AbsIDArray()
+		dstAbsID := dst.AbsIDArray()
+		if len(objAbsID)+len(dstID) > len(dstAbsID) {
+			for i, d2col := range dst.SQLTable.Columns {
+				if d2col.Name.Label == dstID[len(dstID)-1] {
+					d2col.Reference = dst.AbsID()
+					e.DstTableColumnIndex = new(int)
+					*e.DstTableColumnIndex = i
+					break
+				}
+			}
+		}
+	}
 }
 
 // TODO: Treat undirectional/bidirectional edge here and in HasEdge flipped. Same with
@@ -1268,19 +1341,17 @@ func (g *Graph) Texts() []*d2target.MText {
 }
 
 func Key(k *d2ast.KeyPath) []string {
-	var ids []string
-	for _, s := range k.Path {
-		// We format each string of the key to ensure the resulting strings can be parsed
-		// correctly.
-		n := &d2ast.KeyPath{
-			Path: []*d2ast.StringBox{d2ast.MakeValueBox(d2ast.RawString(s.Unbox().ScalarString(), true)).StringBox()},
-		}
-		ids = append(ids, d2format.Format(n))
-	}
-	return ids
+	return d2format.KeyPath(k)
 }
 
-var ReservedKeywords = map[string]struct{}{
+// All reserved keywords. See init below.
+var ReservedKeywords map[string]struct{}
+
+// All reserved keywords not including style keywords.
+var ReservedKeywords2 map[string]struct{}
+
+// Non Style/Holder keywords.
+var SimpleReservedKeywords = map[string]struct{}{
 	"label":      {},
 	"desc":       {},
 	"shape":      {},
@@ -1347,15 +1418,88 @@ var NearConstantsArray = []string{
 }
 var NearConstants map[string]struct{}
 
+// BoardKeywords contains the keywords that create new boards.
+var BoardKeywords = map[string]struct{}{
+	"layers":    {},
+	"scenarios": {},
+	"steps":     {},
+}
+
 func init() {
+	ReservedKeywords = make(map[string]struct{})
+	for k, v := range SimpleReservedKeywords {
+		ReservedKeywords[k] = v
+	}
 	for k, v := range StyleKeywords {
 		ReservedKeywords[k] = v
 	}
 	for k, v := range ReservedKeywordHolders {
 		ReservedKeywords[k] = v
 	}
+	for k, v := range BoardKeywords {
+		ReservedKeywords[k] = v
+	}
+
+	ReservedKeywords2 = make(map[string]struct{})
+	for k, v := range SimpleReservedKeywords {
+		ReservedKeywords2[k] = v
+	}
+	for k, v := range ReservedKeywordHolders {
+		ReservedKeywords2[k] = v
+	}
+	for k, v := range BoardKeywords {
+		ReservedKeywords2[k] = v
+	}
+
 	NearConstants = make(map[string]struct{}, len(NearConstantsArray))
 	for _, k := range NearConstantsArray {
 		NearConstants[k] = struct{}{}
 	}
+}
+
+func (g *Graph) GetBoard(name string) *Graph {
+	for _, l := range g.Layers {
+		if l.Name == name {
+			return l
+		}
+	}
+	for _, l := range g.Scenarios {
+		if l.Name == name {
+			return l
+		}
+	}
+	for _, l := range g.Steps {
+		if l.Name == name {
+			return l
+		}
+	}
+	return nil
+}
+
+func (g *Graph) SortObjectsByAST() {
+	objects := append([]*Object(nil), g.Objects...)
+	sort.Slice(objects, func(i, j int) bool {
+		o1 := objects[i]
+		o2 := objects[j]
+		if len(o1.References) == 0 || len(o2.References) == 0 {
+			return i < j
+		}
+		r1 := o1.References[0]
+		r2 := o2.References[0]
+		return r1.Key.Path[r1.KeyPathIndex].Unbox().GetRange().Before(r2.Key.Path[r2.KeyPathIndex].Unbox().GetRange())
+	})
+	g.Objects = objects
+}
+
+func (g *Graph) SortEdgesByAST() {
+	edges := append([]*Edge(nil), g.Edges...)
+	sort.Slice(edges, func(i, j int) bool {
+		e1 := edges[i]
+		e2 := edges[j]
+		if len(e1.References) == 0 || len(e2.References) == 0 {
+			return i < j
+		}
+		return e1.References[0].Edge.Range.Before(e2.References[0].Edge.Range)
+	})
+	g.Edges = edges
 }

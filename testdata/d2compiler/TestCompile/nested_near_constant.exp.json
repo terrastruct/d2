@@ -4,8 +4,8 @@
     "ioerr": null,
     "errs": [
       {
-        "range": "d2/testdata/d2compiler/TestCompile/nested_near_constant.d2,0:0:0-0:10:10",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/nested_near_constant.d2:1:1: constant near keys can only be set on root level shapes"
+        "range": "d2/testdata/d2compiler/TestCompile/nested_near_constant.d2,0:10:10-0:20:20",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/nested_near_constant.d2:1:11: constant near keys can only be set on root level shapes"
       }
     ]
   }

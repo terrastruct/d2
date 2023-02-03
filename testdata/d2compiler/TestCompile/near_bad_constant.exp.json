@@ -4,8 +4,8 @@
     "ioerr": null,
     "errs": [
       {
-        "range": "d2/testdata/d2compiler/TestCompile/near_bad_constant.d2,0:0:0-0:11:11",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/near_bad_constant.d2:1:1: near key \"txop-center\" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right"
+        "range": "d2/testdata/d2compiler/TestCompile/near_bad_constant.d2,0:8:8-0:19:19",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/near_bad_constant.d2:1:9: near key \"txop-center\" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right"
       }
     ]
   }

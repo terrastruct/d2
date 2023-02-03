@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "containers",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 12
@@ -454,6 +454,81 @@
       "level": 1
     },
     {
+      "id": "class",
+      "type": "class",
+      "pos": {
+        "x": 1210,
+        "y": 740
+      },
+      "width": 800,
+      "height": 400,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#0A0F25",
+      "stroke": "#FFFFFF",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": [
+        {
+          "name": "num",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "timeout",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "pid",
+          "type": "",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getStatus()",
+          "return": "Enum",
+          "visibility": "public"
+        },
+        {
+          "name": "getJobs()",
+          "return": "Job[]",
+          "visibility": "public"
+        },
+        {
+          "name": "setTimeout(seconds int)",
+          "return": "void",
+          "visibility": "public"
+        }
+      ],
+      "columns": null,
+      "label": "class",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 75,
+      "labelHeight": 36,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "#0D32B2",
+      "secondaryAccentColor": "#4A6FF3",
+      "neutralAccentColor": "#676C7E"
+    },
+    {
       "id": "users",
       "type": "sql_table",
       "pos": {
@@ -638,89 +713,14 @@
       "neutralAccentColor": "#676C7E"
     },
     {
-      "id": "class",
-      "type": "class",
+      "id": "container",
+      "type": "rectangle",
       "pos": {
-        "x": 1210,
-        "y": 740
+        "x": 2173,
+        "y": 374
       },
-      "width": 800,
-      "height": 400,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#0A0F25",
-      "stroke": "#FFFFFF",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": [
-        {
-          "name": "num",
-          "type": "int",
-          "visibility": "private"
-        },
-        {
-          "name": "timeout",
-          "type": "int",
-          "visibility": "private"
-        },
-        {
-          "name": "pid",
-          "type": "",
-          "visibility": "private"
-        }
-      ],
-      "methods": [
-        {
-          "name": "getStatus()",
-          "return": "Enum",
-          "visibility": "public"
-        },
-        {
-          "name": "getJobs()",
-          "return": "Job[]",
-          "visibility": "public"
-        },
-        {
-          "name": "setTimeout(seconds int)",
-          "return": "void",
-          "visibility": "public"
-        }
-      ],
-      "columns": null,
-      "label": "class",
-      "fontSize": 20,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 75,
-      "labelHeight": 36,
-      "zIndex": 0,
-      "level": 1,
-      "primaryAccentColor": "#0D32B2",
-      "secondaryAccentColor": "#4A6FF3",
-      "neutralAccentColor": "#676C7E"
-    },
-    {
-      "id": "text",
-      "type": "",
-      "pos": {
-        "x": 2030,
-        "y": 540
-      },
-      "width": 400,
-      "height": 800,
+      "width": 114,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -739,7 +739,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "markdown text expanded to 800x400",
+      "label": "container",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -747,9 +747,49 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 266,
+      "labelWidth": 74,
       "labelHeight": 26,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "text",
+      "type": "text",
+      "pos": {
+        "x": 2030,
+        "y": 540
+      },
+      "width": 400,
+      "height": 800,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "transparent",
+      "stroke": "#0A0F25",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "markdown text expanded to 800x400",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "markdown",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 247,
+      "labelHeight": 24,
       "zIndex": 0,
       "level": 1
     },
@@ -830,47 +870,6 @@
       "underline": false,
       "labelWidth": 196,
       "labelHeight": 70,
-      "zIndex": 0,
-      "level": 1
-    },
-    {
-      "id": "container",
-      "type": "",
-      "pos": {
-        "x": 2173,
-        "y": 374
-      },
-      "width": 114,
-      "height": 66,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#F7F8FE",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "container",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": true,
-      "underline": false,
-      "labelWidth": 74,
-      "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     }

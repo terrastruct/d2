@@ -3,93 +3,11 @@
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
-      "id": "c",
-      "type": "document",
-      "pos": {
-        "x": 16,
-        "y": 12
-      },
-      "width": 53,
-      "height": 76,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 7,
-      "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#b2350d",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "c",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": true,
-      "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 1
-    },
-    {
-      "id": "b",
-      "type": "",
-      "pos": {
-        "x": 12,
-        "y": 404
-      },
-      "width": 53,
-      "height": 66,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 8,
-      "borderRadius": 0,
-      "fill": "#F7F8FE",
-      "stroke": "#0db254",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "b",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": true,
-      "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 1
-    },
-    {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 83,
-        "y": 238
+        "x": 93,
+        "y": 12
       },
       "width": 53,
       "height": 66,
@@ -126,11 +44,93 @@
       "level": 1
     },
     {
+      "id": "b",
+      "type": "rectangle",
+      "pos": {
+        "x": 88,
+        "y": 604
+      },
+      "width": 53,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 8,
+      "borderRadius": 0,
+      "fill": "#F7F8FE",
+      "stroke": "#0db254",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "b",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 13,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "c",
+      "type": "document",
+      "pos": {
+        "x": 97,
+        "y": 428
+      },
+      "width": 53,
+      "height": 76,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 7,
+      "borderRadius": 0,
+      "fill": "#EDF0FD",
+      "stroke": "#b2350d",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "c",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 13,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
       "id": "Oval",
       "type": "oval",
       "pos": {
-        "x": 85,
-        "y": 404
+        "x": 23,
+        "y": 228
       },
       "width": 100,
       "height": 100,
@@ -193,20 +193,28 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 100.66666666666667,
-          "y": 304
+          "x": 106.5,
+          "y": 78
         },
         {
-          "x": 100.66666666666667,
-          "y": 354
+          "x": 106.5,
+          "y": 128
         },
         {
-          "x": 47.333333333333336,
-          "y": 354
+          "x": 12,
+          "y": 128
         },
         {
-          "x": 47.333333333333336,
-          "y": 404
+          "x": 12,
+          "y": 554
+        },
+        {
+          "x": 106.5,
+          "y": 554
+        },
+        {
+          "x": 106.5,
+          "y": 604
         }
       ],
       "animated": false,
@@ -240,12 +248,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 30,
-          "y": 88
+          "x": 124,
+          "y": 493
         },
         {
-          "x": 29.666666666666668,
-          "y": 404
+          "x": 124.16666666666666,
+          "y": 604
         }
       ],
       "animated": false,
@@ -279,12 +287,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 118.33333333333334,
-          "y": 304
+          "x": 119.75,
+          "y": 78
         },
         {
-          "x": 118,
-          "y": 407
+          "x": 119.75,
+          "y": 178
+        },
+        {
+          "x": 73,
+          "y": 178
+        },
+        {
+          "x": 73,
+          "y": 228
         }
       ],
       "animated": false,
@@ -318,20 +334,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 43,
-          "y": 77
+          "x": 133,
+          "y": 428
         },
         {
-          "x": 42.91666666666667,
-          "y": 188
-        },
-        {
-          "x": 109.5,
-          "y": 188
-        },
-        {
-          "x": 109.5,
-          "y": 238
+          "x": 133,
+          "y": 78
         }
       ],
       "animated": false,
@@ -365,28 +373,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 152,
-          "y": 407
+          "x": 73,
+          "y": 328
         },
         {
-          "x": 151.66666666666666,
-          "y": 354
+          "x": 73,
+          "y": 378
         },
         {
-          "x": 146,
-          "y": 354
+          "x": 115.33333333333333,
+          "y": 378
         },
         {
-          "x": 146,
-          "y": 138
-        },
-        {
-          "x": 56.16666666666667,
-          "y": 138
-        },
-        {
-          "x": 56,
-          "y": 67
+          "x": 115,
+          "y": 428
         }
       ],
       "animated": false,

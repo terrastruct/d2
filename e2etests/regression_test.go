@@ -446,6 +446,27 @@ b -> c
 
 `,
 		},
+		{
+			name: "sequence_diagram_ambiguous_edge_group",
+			script: `
+Office chatter: {
+  shape: sequence_diagram
+  alice: Alice
+  bob: Bobby
+  awkward small talk: {
+    awkward small talk.ok
+    alice -> bob: uhm, hi
+    bob -> alice: oh, hello
+    icebreaker attempt: {
+      alice -> bob: what did you have for lunch?
+    }
+    unfortunate outcome: {
+      bob -> alice: that's personal
+    }
+  }
+}
+`,
+		},
 	}
 
 	runa(t, tcs)

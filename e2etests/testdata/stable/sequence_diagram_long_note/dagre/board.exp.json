@@ -3,10 +3,51 @@
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
-      "id": "b",
-      "type": "",
+      "id": "a",
+      "type": "rectangle",
       "pos": {
         "x": 24,
+        "y": 74
+      },
+      "width": 150,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#EDF0FD",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "a",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 12,
+      "labelHeight": 26,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "b",
+      "type": "rectangle",
+      "pos": {
+        "x": 274,
         "y": 74
       },
       "width": 150,
@@ -47,8 +88,8 @@
       "id": "b.note",
       "type": "page",
       "pos": {
-        "x": -133,
-        "y": 400
+        "x": 116,
+        "y": 660
       },
       "width": 465,
       "height": 66,
@@ -85,52 +126,11 @@
       "level": 2
     },
     {
-      "id": "a",
-      "type": "",
-      "pos": {
-        "x": 307,
-        "y": 74
-      },
-      "width": 150,
-      "height": 66,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "a",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 12,
-      "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 1
-    },
-    {
       "id": "a.note",
       "type": "page",
       "pos": {
-        "x": 343,
-        "y": 596
+        "x": 60,
+        "y": 400
       },
       "width": 77,
       "height": 130,
@@ -194,11 +194,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 382,
+          "x": 99,
           "y": 270
         },
         {
-          "x": 99,
+          "x": 349,
           "y": 270
         }
       ],
@@ -208,11 +208,11 @@
       "zIndex": 4
     },
     {
-      "id": "(b -- )[0]",
-      "src": "b",
+      "id": "(a -- )[0]",
+      "src": "a",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "b-lifeline-end-668380428",
+      "dst": "a-lifeline-end-2251863791",
       "dstArrow": "none",
       "dstLabel": "",
       "opacity": 1,
@@ -247,11 +247,11 @@
       "zIndex": 1
     },
     {
-      "id": "(a -- )[0]",
-      "src": "a",
+      "id": "(b -- )[0]",
+      "src": "b",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "a-lifeline-end-2251863791",
+      "dst": "b-lifeline-end-668380428",
       "dstArrow": "none",
       "dstLabel": "",
       "opacity": 1,
@@ -272,11 +272,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 382,
+          "x": 349,
           "y": 140
         },
         {
-          "x": 382,
+          "x": 349,
           "y": 856
         }
       ],

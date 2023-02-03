@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "your love life will be",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 61,
         "y": 12
@@ -45,7 +45,7 @@
     },
     {
       "id": "happy",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 178
@@ -86,7 +86,7 @@
     },
     {
       "id": "harmonious",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 121,
         "y": 178
@@ -127,7 +127,7 @@
     },
     {
       "id": "boredom",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 282,
         "y": 12
@@ -168,7 +168,7 @@
     },
     {
       "id": "immortality",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 271,
         "y": 178
@@ -209,7 +209,7 @@
     },
     {
       "id": "Friday",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 427,
         "y": 12
@@ -250,7 +250,7 @@
     },
     {
       "id": "Monday",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 422,
         "y": 178
@@ -291,7 +291,7 @@
     },
     {
       "id": "Insomnia",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 635,
         "y": 12
@@ -332,7 +332,7 @@
     },
     {
       "id": "Sleep",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 543,
         "y": 178
@@ -373,7 +373,7 @@
     },
     {
       "id": "Wake",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 648,
         "y": 178
@@ -414,7 +414,7 @@
     },
     {
       "id": "Dream",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 752,
         "y": 178
@@ -455,7 +455,7 @@
     },
     {
       "id": "Listen",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 835,
         "y": 12
@@ -496,7 +496,7 @@
     },
     {
       "id": "Talk",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 841,
         "y": 344

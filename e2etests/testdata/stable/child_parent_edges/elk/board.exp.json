@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 12
@@ -45,7 +45,7 @@
     },
     {
       "id": "a.b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 87,
         "y": 87
@@ -86,7 +86,7 @@
     },
     {
       "id": "a.b.c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 172,
         "y": 162
@@ -127,7 +127,7 @@
     },
     {
       "id": "a.b.c.d",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 247,
         "y": 237

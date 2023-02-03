@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "\"ninety\\nnine\"",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
         "y": 0
@@ -45,7 +45,7 @@
     },
     {
       "id": "eighty\reight",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 151,
         "y": 8
@@ -86,7 +86,7 @@
     },
     {
       "id": "\"seventy\r\\nseven\"",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 302,
         "y": 0
@@ -127,7 +127,7 @@
     },
     {
       "id": "\"a\\\\yode\"",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 464,
         "y": 8
@@ -168,7 +168,7 @@
     },
     {
       "id": "there",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 624,
         "y": 182
@@ -209,7 +209,7 @@
     },
     {
       "id": "'a\\\"ode'",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 618,
         "y": 8
@@ -250,7 +250,7 @@
     },
     {
       "id": "\"a\\\\node\"",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 772,
         "y": 8

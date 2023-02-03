@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 24,
         "y": 74
@@ -45,7 +45,7 @@
     },
     {
       "id": "b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 307,
         "y": 74
@@ -86,7 +86,7 @@
     },
     {
       "id": "c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 589,
         "y": 74
@@ -127,7 +127,7 @@
     },
     {
       "id": "this is a message group",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": -67,
         "y": 230
@@ -168,7 +168,7 @@
     },
     {
       "id": "this is a message group.and this is a nested message group",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": -43,
         "y": 360
@@ -209,7 +209,7 @@
     },
     {
       "id": "this is a message group.and this is a nested message group.what about more nesting",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": -19,
         "y": 490
@@ -250,13 +250,13 @@
     },
     {
       "id": "this is a message group.and this is a nested message group.what about more nesting.crazy town",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 5,
-        "y": 620
+        "y": 816
       },
       "width": 451,
-      "height": 430,
+      "height": 234,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -294,7 +294,7 @@
       "type": "page",
       "pos": {
         "x": 55,
-        "y": 660
+        "y": 920
       },
       "width": 88,
       "height": 66,
@@ -332,7 +332,7 @@
     },
     {
       "id": "this is a message group.and this is a nested message group.what about more nesting.crazy town.whoa",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 49,
         "y": 946
@@ -373,7 +373,7 @@
     },
     {
       "id": "alt",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 308,
         "y": 1052
@@ -414,7 +414,7 @@
     },
     {
       "id": "alt.case 1",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 332,
         "y": 1076
@@ -455,7 +455,7 @@
     },
     {
       "id": "alt.case 2",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 332,
         "y": 1206
@@ -496,7 +496,7 @@
     },
     {
       "id": "alt.case 3",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 332,
         "y": 1336
@@ -537,7 +537,7 @@
     },
     {
       "id": "alt.case 4",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 332,
         "y": 1466
@@ -622,7 +622,7 @@
       "type": "page",
       "pos": {
         "x": 60,
-        "y": 1636
+        "y": 1440
       },
       "width": 77,
       "height": 130,
@@ -661,7 +661,7 @@
   ],
   "connections": [
     {
-      "id": "(a -> b)[0]",
+      "id": "(a -> b)[4]",
       "src": "a",
       "srcArrow": "none",
       "srcLabel": "",
@@ -700,7 +700,7 @@
       "zIndex": 4
     },
     {
-      "id": "(a -> b)[1]",
+      "id": "(a -> b)[3]",
       "src": "a",
       "srcArrow": "none",
       "srcLabel": "",
@@ -778,7 +778,7 @@
       "zIndex": 4
     },
     {
-      "id": "(a -> b)[3]",
+      "id": "(a -> b)[1]",
       "src": "a",
       "srcArrow": "none",
       "srcLabel": "",
@@ -817,7 +817,7 @@
       "zIndex": 4
     },
     {
-      "id": "(a -> b)[4]",
+      "id": "(a -> b)[0]",
       "src": "a",
       "srcArrow": "none",
       "srcLabel": "",

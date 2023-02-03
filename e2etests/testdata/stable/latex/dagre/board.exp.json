@@ -124,7 +124,7 @@
     },
     {
       "id": "c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 398,
         "y": 352
@@ -165,7 +165,7 @@
     },
     {
       "id": "sugar",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 567,
         "y": 169
@@ -206,7 +206,7 @@
     },
     {
       "id": "solution",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 423,
         "y": 539

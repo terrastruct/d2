@@ -4,7 +4,7 @@
   "shapes": [
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 162,
         "y": 12
@@ -45,7 +45,7 @@
     },
     {
       "id": "g",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 87,
         "y": 233
@@ -86,7 +86,7 @@
     },
     {
       "id": "g.b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 162,
         "y": 308
@@ -127,7 +127,7 @@
     },
     {
       "id": "d",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 559
@@ -168,7 +168,7 @@
     },
     {
       "id": "d.h",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 87,
         "y": 639
@@ -209,7 +209,7 @@
     },
     {
       "id": "d.h.c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 162,
         "y": 714
@@ -250,7 +250,7 @@
     },
     {
       "id": "g.e",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 235,
         "y": 308
@@ -291,7 +291,7 @@
     },
     {
       "id": "f",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 385,
         "y": 559

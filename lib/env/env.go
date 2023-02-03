@@ -23,5 +23,5 @@ func DevOnly() bool {
 }
 
 func SkipGraphDiffTests() bool {
-	return os.Getenv("SKIP_GRAPH_DIFF_TESTS") == "on"
+	return os.Getenv("SKIP_GRAPH_DIFF_TESTS") != ""
 }
