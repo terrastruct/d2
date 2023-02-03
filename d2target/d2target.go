@@ -551,19 +551,19 @@ func (s *Shape) GetIconSize(box *geo.Box) int {
 	if iconPosition == label.InsideMiddleCenter {
 		size = halfMinDimension
 	} else {
-		size = go2.IntMin(
+		size = go2.Min(
 			minDimension,
-			go2.IntMax(DEFAULT_ICON_SIZE, halfMinDimension),
+			go2.Max(DEFAULT_ICON_SIZE, halfMinDimension),
 		)
 	}
 
-	size = go2.IntMin(size, MAX_ICON_SIZE)
+	size = go2.Min(size, MAX_ICON_SIZE)
 
 	if !iconPosition.IsOutside() {
-		size = go2.IntMin(size,
-			go2.IntMin(
-				go2.IntMax(int(box.Width)-2*label.PADDING, 0),
-				go2.IntMax(int(box.Height)-2*label.PADDING, 0),
+		size = go2.Min(size,
+			go2.Min(
+				go2.Max(int(box.Width)-2*label.PADDING, 0),
+				go2.Max(int(box.Height)-2*label.PADDING, 0),
 			),
 		)
 	}

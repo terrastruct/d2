@@ -25,6 +25,7 @@ import (
 
 const INNER_LABEL_PADDING int = 5
 const DEFAULT_SHAPE_SIZE = 100.
+const MIN_SHAPE_SIZE = 5
 
 type Graph struct {
 	Name string     `json:"name"`
@@ -779,7 +780,13 @@ func (obj *Object) GetLabelSize(mtexts []*d2target.MText, ruler *textmeasure.Rul
 func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.Ruler, fontFamily *d2fonts.FontFamily, labelDims d2target.TextDimensions) (*d2target.TextDimensions, error) {
 	dims := d2target.TextDimensions{}
 
-	switch strings.ToLower(obj.Attributes.Shape.Value) {
+	dslShape := strings.ToLower(obj.Attributes.Shape.Value)
+	if dslShape != d2target.ShapeText && obj.Attributes.Label.Value != "" {
+		labelDims.Width += INNER_LABEL_PADDING
+		labelDims.Height += INNER_LABEL_PADDING
+	}
+
+	switch dslShape {
 	default:
 		return d2target.NewTextDimensions(labelDims.Width, labelDims.Height), nil
 
@@ -1197,6 +1204,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		if err != nil {
 			return err
 		}
+		obj.LabelDimensions = *labelDims
 
 		switch dslShape {
 		case d2target.ShapeText, d2target.ShapeClass, d2target.ShapeSQLTable, d2target.ShapeCode:
@@ -1208,50 +1216,60 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 		}
 
-		obj.LabelDimensions = *labelDims
-		if dslShape != d2target.ShapeText && obj.Attributes.Label.Value != "" {
-			labelDims.Width += INNER_LABEL_PADDING
-			labelDims.Height += INNER_LABEL_PADDING
-		}
-
 		defaultDims, err := obj.GetDefaultSize(mtexts, ruler, fontFamily, *labelDims)
 		if err != nil {
 			return err
 		}
 
-		shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
+		if dslShape == d2target.ShapeImage {
+			if desiredWidth == 0 {
+				desiredWidth = defaultDims.Width
+			}
+			if desiredHeight == 0 {
+				desiredHeight = defaultDims.Height
+			}
+			obj.Width = float64(go2.Max(MIN_SHAPE_SIZE, desiredWidth))
+			obj.Height = float64(go2.Max(MIN_SHAPE_SIZE, desiredHeight))
+			// images don't need further processing
+			continue
+		}
+
+		if desiredWidth != 0 || desiredHeight != 0 {
+			// if there is a desired width or height, fit to content box without inner label padding for smallest minimum size
+			if dslShape != d2target.ShapeText && obj.Attributes.Label.Value != "" {
+				defaultDims.Width -= INNER_LABEL_PADDING
+				defaultDims.Height -= INNER_LABEL_PADDING
+			}
+		}
+
 		contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(defaultDims.Width), float64(defaultDims.Height))
+		shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
 		s := shape.NewShape(shapeType, contentBox)
 
 		paddingX, paddingY := s.GetDefaultPadding()
-		// give shapes with icons extra padding to fit their label
-		if obj.Attributes.Icon != nil {
-			labelHeight := float64(labelDims.Height)
-			// Evenly pad enough to fit label above icon
-			paddingX += labelHeight
-			paddingY += labelHeight
-		}
-		switch shapeType {
-		case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE, shape.IMAGE_TYPE:
-		default:
-			if obj.Attributes.Link != "" {
-				paddingX += 32
-			}
-			if obj.Attributes.Tooltip != "" {
-				paddingX += 32
-			}
-		}
-
-		// width and height will be set to desired values unless it is too small to fit the content with 0 padding
-		// in which case that minimum size will be used
 		if desiredWidth != 0 || desiredHeight != 0 {
 			paddingX = 0.
 			paddingY = 0.
-			if dslShape != d2target.ShapeText && obj.Attributes.Label.Value != "" {
-				contentBox.Width -= float64(INNER_LABEL_PADDING)
-				contentBox.Height -= float64(INNER_LABEL_PADDING)
+		} else {
+			// give shapes with icons extra padding to fit their label
+			if obj.Attributes.Icon != nil {
+				labelHeight := float64(labelDims.Height + INNER_LABEL_PADDING)
+				// Evenly pad enough to fit label above icon
+				paddingX += labelHeight
+				paddingY += labelHeight
+			}
+			switch shapeType {
+			case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE, shape.IMAGE_TYPE:
+			default:
+				if obj.Attributes.Link != "" {
+					paddingX += 32
+				}
+				if obj.Attributes.Tooltip != "" {
+					paddingX += 32
+				}
 			}
 		}
+
 		fitWidth, fitHeight := s.GetDimensionsToFit(contentBox.Width, contentBox.Height, paddingX, paddingY)
 		obj.Width = math.Max(float64(desiredWidth), fitWidth)
 		obj.Height = math.Max(float64(desiredHeight), fitHeight)
