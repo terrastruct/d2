@@ -18,6 +18,7 @@
 
 #### Improvements 🧹
 
+- Code snippets use bold and italic font styles as determined by highlighter [#710](https://github.com/terrastruct/d2/issues/710), [#741](https://github.com/terrastruct/d2/issues/741)
 - Reduces default padding of shapes. [#702](https://github.com/terrastruct/d2/pull/702)
 - Ensures labels fit inside shapes with shape-specific inner bounding boxes. [#702](https://github.com/terrastruct/d2/pull/702)
 - Improves package shape dimensions with short height. [#702](https://github.com/terrastruct/d2/pull/702)
@@ -30,4 +31,3 @@
 - Fixed dimensions of unlabeled squares or circles with only a set width or height. [#702](https://github.com/terrastruct/d2/pull/702)
 - Fixed scaling of actor shapes in sequence diagrams. [#702](https://github.com/terrastruct/d2/pull/702)
 - Images can now be set to sizes smaller than 128x128. [#702](https://github.com/terrastruct/d2/pull/702)
-- Code snippets use bold and italic font styles as determined by highlighter [#710](https://github.com/terrastruct/d2/issues/710), [#741](https://github.com/terrastruct/d2/issues/741)
