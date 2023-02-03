@@ -1208,11 +1208,11 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 		}
 
+		obj.LabelDimensions = *labelDims
 		if dslShape != d2target.ShapeText && obj.Attributes.Label.Value != "" {
 			labelDims.Width += INNER_LABEL_PADDING
 			labelDims.Height += INNER_LABEL_PADDING
 		}
-		obj.LabelDimensions = *labelDims
 
 		defaultDims, err := obj.GetDefaultSize(mtexts, ruler, fontFamily, *labelDims)
 		if err != nil {
@@ -1226,7 +1226,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		paddingX, paddingY := s.GetDefaultPadding()
 		// give shapes with icons extra padding to fit their label
 		if obj.Attributes.Icon != nil {
-			labelHeight := float64(obj.LabelDimensions.Height)
+			labelHeight := float64(labelDims.Height)
 			// Evenly pad enough to fit label above icon
 			paddingX += labelHeight
 			paddingY += labelHeight

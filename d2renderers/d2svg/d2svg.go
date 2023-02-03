@@ -897,8 +897,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		}
 		labelTL := labelPosition.GetPointOnBox(box, label.PADDING,
 			float64(targetShape.LabelWidth),
-			// TODO consider further
-			float64(targetShape.LabelHeight-d2graph.INNER_LABEL_PADDING),
+			float64(targetShape.LabelHeight),
 		)
 
 		fontClass := "text"
