@@ -28,6 +28,7 @@
 #### Bugfixes ⛑️
 
 - Fixes groups overlapping in sequence diagrams when they end in a self loop. [#728](https://github.com/terrastruct/d2/pull/728)
-- Fixed dimensions of unlabeled squares or circles with only a set width or height. [#702](https://github.com/terrastruct/d2/pull/702)
-- Fixed scaling of actor shapes in sequence diagrams. [#702](https://github.com/terrastruct/d2/pull/702)
+- Fixes dimensions of unlabeled squares or circles with only a set width or height. [#702](https://github.com/terrastruct/d2/pull/702)
+- Fixes scaling of actor shapes in sequence diagrams. [#702](https://github.com/terrastruct/d2/pull/702)
 - Images can now be set to sizes smaller than 128x128. [#702](https://github.com/terrastruct/d2/pull/702)
+- Fixes class height when there are no rows. [#756](https://github.com/terrastruct/d2/pull/756)
