@@ -828,7 +828,7 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 			rowHeight := GetTextDimensions(mtexts, ruler, anyRowText, go2.Pointer(d2fonts.SourceCodePro)).Height + d2target.VerticalPadding
 			dims.Height = rowHeight * (len(obj.Class.Fields) + len(obj.Class.Methods) + 2)
 		} else {
-			dims.Height = go2.Max(12, labelDims.Height)
+			dims.Height = 2*go2.Max(12, labelDims.Height) + d2target.VerticalPadding
 		}
 
 	case d2target.ShapeSQLTable:
