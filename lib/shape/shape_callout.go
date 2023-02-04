@@ -1,6 +1,8 @@
 package shape
 
 import (
+	"math"
+
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
 )
@@ -8,6 +10,11 @@ import (
 type shapeCallout struct {
 	*baseShape
 }
+
+const (
+	defaultTipWidth  = 30.
+	defaultTipHeight = 45.
+)
 
 func NewCallout(box *geo.Box) Shape {
 	return shapeCallout{
@@ -18,25 +25,31 @@ func NewCallout(box *geo.Box) Shape {
 	}
 }
 
-func (s shapeCallout) GetInnerBox() *geo.Box {
-	height := s.Box.Height
-	tipHeight := 45.0
-	if height < tipHeight*2 {
-		tipHeight = height / 2.0
+func getTipWidth(box *geo.Box) float64 {
+	tipWidth := defaultTipWidth
+	if box.Width < tipWidth*2 {
+		tipWidth = box.Width / 2.0
 	}
-	height -= tipHeight
+	return tipWidth
+}
+
+func getTipHeight(box *geo.Box) float64 {
+	tipHeight := defaultTipHeight
+	if box.Height < tipHeight*2 {
+		tipHeight = box.Height / 2.0
+	}
+	return tipHeight
+}
+
+func (s shapeCallout) GetInnerBox() *geo.Box {
+	tipHeight := getTipHeight(s.Box)
+	height := s.Box.Height - tipHeight
 	return geo.NewBox(s.Box.TopLeft.Copy(), s.Box.Width, height)
 }
 
 func calloutPath(box *geo.Box) *svg.SvgPathContext {
-	tipWidth := 30.0
-	if box.Width < tipWidth*2 {
-		tipWidth = box.Width / 2.0
-	}
-	tipHeight := 45.0
-	if box.Height < tipHeight*2 {
-		tipHeight = box.Height / 2.0
-	}
+	tipWidth := getTipWidth(box)
+	tipHeight := getTipHeight(box)
 	pc := svg.NewSVGPathContext(box.TopLeft, 1, 1)
 	pc.StartAt(pc.Absolute(0, 0))
 	pc.V(true, box.Height-tipHeight)
@@ -58,4 +71,20 @@ func (s shapeCallout) GetSVGPathData() []string {
 	return []string{
 		calloutPath(s.Box).PathData(),
 	}
+}
+
+func (s shapeCallout) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	// return the minimum shape dimensions needed to fit content (width x height)
+	// in the shape's innerBox with padding
+	baseHeight := height + paddingY
+	if baseHeight < defaultTipHeight {
+		baseHeight *= 2
+	} else {
+		baseHeight += defaultTipHeight
+	}
+	return math.Ceil(width + paddingX), math.Ceil(baseHeight)
+}
+
+func (s shapeCallout) GetDefaultPadding() (paddingX, paddingY float64) {
+	return defaultPadding, defaultPadding / 2
 }

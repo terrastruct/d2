@@ -3,55 +3,14 @@
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
-      "id": "foo baz",
-      "type": "",
-      "pos": {
-        "x": 173,
-        "y": 0
-      },
-      "width": 159,
-      "height": 126,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#F7F8FE",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "Foo Baz",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": true,
-      "underline": false,
-      "labelWidth": 59,
-      "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 1
-    },
-    {
       "id": "1",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1,
         "y": 0
       },
-      "width": 112,
-      "height": 126,
+      "width": 52,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,21 +37,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 12,
-      "labelHeight": 26,
+      "labelWidth": 7,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "2",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 226
+        "y": 166
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -119,21 +78,62 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "foo baz",
+      "type": "rectangle",
+      "pos": {
+        "x": 113,
+        "y": 0
+      },
+      "width": 99,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#F7F8FE",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Foo Baz",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 54,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "hello",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 182,
-        "y": 226
+        "x": 122,
+        "y": 166
       },
-      "width": 140,
-      "height": 126,
+      "width": 80,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -160,8 +160,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 40,
-      "labelHeight": 26,
+      "labelWidth": 35,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -194,20 +194,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 56.5,
+          "x": 26.5,
+          "y": 66
+        },
+        {
+          "x": 26.5,
+          "y": 106
+        },
+        {
+          "x": 26.5,
           "y": 126
         },
         {
-          "x": 56.5,
+          "x": 26.5,
           "y": 166
-        },
-        {
-          "x": 56.5,
-          "y": 186
-        },
-        {
-          "x": 56.5,
-          "y": 226
         }
       ],
       "isCurve": true,
@@ -242,20 +242,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 252,
+          "x": 162,
+          "y": 66
+        },
+        {
+          "x": 162,
+          "y": 106
+        },
+        {
+          "x": 162,
           "y": 126
         },
         {
-          "x": 252,
+          "x": 162,
           "y": 166
-        },
-        {
-          "x": 252,
-          "y": 186
-        },
-        {
-          "x": 252,
-          "y": 226
         }
       ],
       "isCurve": true,

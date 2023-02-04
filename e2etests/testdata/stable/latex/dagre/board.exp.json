@@ -7,7 +7,7 @@
       "type": "text",
       "pos": {
         "x": 0,
-        "y": 164
+        "y": 151
       },
       "width": 382,
       "height": 101,
@@ -47,7 +47,7 @@
       "type": "text",
       "pos": {
         "x": 442,
-        "y": 205
+        "y": 193
       },
       "width": 65,
       "height": 18,
@@ -124,13 +124,13 @@
     },
     {
       "id": "c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 368,
-        "y": 377
+        "x": 398,
+        "y": 352
       },
-      "width": 214,
-      "height": 126,
+      "width": 154,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -157,21 +157,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 114,
-      "labelHeight": 26,
+      "labelWidth": 109,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "sugar",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 567,
-        "y": 151
+        "y": 169
       },
-      "width": 146,
-      "height": 126,
+      "width": 86,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -198,21 +198,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 46,
-      "labelHeight": 26,
+      "labelWidth": 41,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "solution",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 393,
-        "y": 624
+        "x": 423,
+        "y": 539
       },
-      "width": 164,
-      "height": 126,
+      "width": 104,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -239,8 +239,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 64,
-      "labelHeight": 26,
+      "labelWidth": 59,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -282,11 +282,11 @@
         },
         {
           "x": 191,
-          "y": 113.5
+          "y": 111
         },
         {
           "x": 191,
-          "y": 163.5
+          "y": 151
         }
       ],
       "isCurve": true,
@@ -330,11 +330,11 @@
         },
         {
           "x": 474.5,
-          "y": 121.8
+          "y": 119.3
         },
         {
           "x": 474.5,
-          "y": 205
+          "y": 192.5
         }
       ],
       "isCurve": true,
@@ -370,19 +370,19 @@
       "route": [
         {
           "x": 191,
-          "y": 265.5
+          "y": 252
         },
         {
           "x": 191,
-          "y": 314.7
+          "y": 292
         },
         {
-          "x": 226.3,
-          "y": 341.0701940035273
+          "x": 232.3,
+          "y": 314.0913580246914
         },
         {
-          "x": 367.5,
-          "y": 397.35097001763666
+          "x": 397.5,
+          "y": 362.4567901234568
         }
       ],
       "isCurve": true,
@@ -418,19 +418,19 @@
       "route": [
         {
           "x": 474.5,
-          "y": 223
+          "y": 211.5
         },
         {
           "x": 474.5,
-          "y": 306.2
+          "y": 283.9
         },
         {
           "x": 474.5,
-          "y": 337
+          "y": 312
         },
         {
           "x": 474.5,
-          "y": 377
+          "y": 352
         }
       ],
       "isCurve": true,
@@ -465,20 +465,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 640,
-          "y": 277
+          "x": 610,
+          "y": 235.5
         },
         {
-          "x": 640,
-          "y": 317
+          "x": 610,
+          "y": 288.7
         },
         {
-          "x": 625.4,
-          "y": 337
+          "x": 593.6,
+          "y": 312
         },
         {
-          "x": 567,
-          "y": 377
+          "x": 528,
+          "y": 352
         }
       ],
       "isCurve": true,
@@ -514,19 +514,19 @@
       "route": [
         {
           "x": 474.5,
-          "y": 503
+          "y": 418
         },
         {
           "x": 474.5,
-          "y": 551.4
+          "y": 466.4
         },
         {
           "x": 474.5,
-          "y": 575.7
+          "y": 490.7
         },
         {
           "x": 474.5,
-          "y": 624.5
+          "y": 539.5
         }
       ],
       "isCurve": true,

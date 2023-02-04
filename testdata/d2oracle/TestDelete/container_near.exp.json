@@ -1,5 +1,6 @@
 {
   "graph": {
+    "name": "",
     "ast": {
       "range": "d2/testdata/d2oracle/TestDelete/container_near.d2,0:0:0-7:0:36",
       "nodes": [
@@ -170,6 +171,9 @@
         },
         "direction": {
           "value": ""
+        },
+        "constraint": {
+          "value": ""
         }
       },
       "zIndex": 0
@@ -202,7 +206,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -211,7 +215,7 @@
           },
           "style": {},
           "near_key": {
-            "range": ",0:0:0-0:1:1",
+            "range": "d2/testdata/d2oracle/TestDelete/container_near.d2,1:8:13-1:9:14",
             "path": [
               {
                 "unquoted_string": {
@@ -227,9 +231,12 @@
             ]
           },
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -261,7 +268,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -271,9 +278,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -305,7 +315,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -314,7 +324,7 @@
           },
           "style": {},
           "near_key": {
-            "range": ",0:0:0-0:1:1",
+            "range": "d2/testdata/d2oracle/TestDelete/container_near.d2,5:8:32-5:9:33",
             "path": [
               {
                 "unquoted_string": {
@@ -330,9 +340,12 @@
             ]
           },
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },

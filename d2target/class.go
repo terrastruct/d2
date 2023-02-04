@@ -9,6 +9,9 @@ import (
 const (
 	PrefixPadding = 10
 	PrefixWidth   = 20
+	CenterPadding = 50
+	// 10px of padding top and bottom so text doesn't look squished
+	VerticalPadding = 20
 )
 
 type Class struct {

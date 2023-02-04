@@ -48,15 +48,15 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 35,
-      "labelHeight": 26,
+      "labelWidth": 30,
+      "labelHeight": 21,
       "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "container",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 271
@@ -89,8 +89,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 117,
-      "labelHeight": 41,
+      "labelWidth": 112,
+      "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
@@ -141,15 +141,15 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 35,
-      "labelHeight": 26,
+      "labelWidth": 30,
+      "labelHeight": 21,
       "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "container.left",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 87,
         "y": 726
@@ -182,8 +182,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 38,
-      "labelHeight": 36,
+      "labelWidth": 33,
+      "labelHeight": 31,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 2
@@ -234,15 +234,15 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 35,
-      "labelHeight": 26,
+      "labelWidth": 30,
+      "labelHeight": 21,
       "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 3
     },
     {
       "id": "container.left.inner",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 162,
         "y": 1181
@@ -275,8 +275,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 49,
-      "labelHeight": 31,
+      "labelWidth": 44,
+      "labelHeight": 26,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 3
@@ -327,8 +327,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 29,
-      "labelHeight": 26,
+      "labelWidth": 24,
+      "labelHeight": 21,
       "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 4
@@ -379,15 +379,15 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 39,
-      "labelHeight": 26,
+      "labelWidth": 34,
+      "labelHeight": 21,
       "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 4
     },
     {
       "id": "container.right",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 683,
         "y": 726
@@ -420,8 +420,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 52,
-      "labelHeight": 36,
+      "labelWidth": 47,
+      "labelHeight": 31,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 2
@@ -472,15 +472,15 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 35,
-      "labelHeight": 26,
+      "labelWidth": 30,
+      "labelHeight": 21,
       "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 3
     },
     {
       "id": "container.right.inner",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 758,
         "y": 1181
@@ -513,8 +513,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 49,
-      "labelHeight": 31,
+      "labelWidth": 44,
+      "labelHeight": 26,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 3
@@ -565,8 +565,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 29,
-      "labelHeight": 26,
+      "labelWidth": 24,
+      "labelHeight": 21,
       "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 4
@@ -617,8 +617,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 39,
-      "labelHeight": 26,
+      "labelWidth": 34,
+      "labelHeight": 21,
       "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 4

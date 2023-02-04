@@ -4,13 +4,13 @@
   "shapes": [
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 44,
+        "x": 74,
         "y": 0
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,21 +37,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 44,
-        "y": 247
+        "x": 74,
+        "y": 187
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,8 +78,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -90,7 +90,7 @@
       "id": "(a -> b)[0]",
       "src": "a",
       "srcArrow": "none",
-      "srcLabel": "1",
+      "srcLabel": "",
       "dst": "b",
       "dstArrow": "diamond",
       "dstLabel": "*",
@@ -113,19 +113,19 @@
       "route": [
         {
           "x": 100.5,
-          "y": 126
+          "y": 66
         },
         {
           "x": 100.5,
-          "y": 174.4
+          "y": 114.4
         },
         {
           "x": 100.5,
-          "y": 198.7
+          "y": 138.7
         },
         {
           "x": 100.5,
-          "y": 247.5
+          "y": 187.5
         }
       ],
       "isCurve": true,

@@ -4,13 +4,13 @@
   "shapes": [
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 12
       },
-      "width": 263,
-      "height": 276,
+      "width": 203,
+      "height": 216,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,21 +37,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 17,
-      "labelHeight": 41,
+      "labelWidth": 12,
+      "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "a.b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 87,
         "y": 87
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,21 +78,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
-        "y": 398
+        "y": 338
       },
-      "width": 264,
-      "height": 276,
+      "width": 204,
+      "height": 216,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -119,21 +119,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 17,
-      "labelHeight": 41,
+      "labelWidth": 12,
+      "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "c.d",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 87,
-        "y": 473
+        "y": 413
       },
-      "width": 114,
-      "height": 126,
+      "width": 54,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -160,8 +160,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 14,
-      "labelHeight": 26,
+      "labelWidth": 9,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
@@ -194,12 +194,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 144,
-          "y": 213
+          "x": 114,
+          "y": 153
         },
         {
-          "x": 144,
-          "y": 473
+          "x": 114,
+          "y": 413
         }
       ],
       "animated": false,

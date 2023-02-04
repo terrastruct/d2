@@ -7,7 +7,7 @@
       "type": "text",
       "pos": {
         "x": 0,
-        "y": 226
+        "y": 166
       },
       "width": 379,
       "height": 100,
@@ -44,13 +44,13 @@
     },
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 133,
+        "x": 163,
         "y": 0
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -77,21 +77,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 133,
-        "y": 426
+        "x": 163,
+        "y": 366
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -118,8 +118,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -153,19 +153,19 @@
       "route": [
         {
           "x": 189.5,
+          "y": 66
+        },
+        {
+          "x": 189.5,
+          "y": 106
+        },
+        {
+          "x": 189.5,
           "y": 126
         },
         {
           "x": 189.5,
           "y": 166
-        },
-        {
-          "x": 189.5,
-          "y": 186
-        },
-        {
-          "x": 189.5,
-          "y": 226
         }
       ],
       "isCurve": true,
@@ -201,19 +201,19 @@
       "route": [
         {
           "x": 189.5,
+          "y": 266
+        },
+        {
+          "x": 189.5,
+          "y": 306
+        },
+        {
+          "x": 189.5,
           "y": 326
         },
         {
           "x": 189.5,
           "y": 366
-        },
-        {
-          "x": 189.5,
-          "y": 386
-        },
-        {
-          "x": 189.5,
-          "y": 426
         }
       ],
       "isCurve": true,

@@ -1,6 +1,8 @@
 package shape
 
 import (
+	"math"
+
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
 )
@@ -8,6 +10,8 @@ import (
 type shapeParallelogram struct {
 	*baseShape
 }
+
+const parallelWedgeWidth = 26.
 
 func NewParallelogram(box *geo.Box) Shape {
 	return shapeParallelogram{
@@ -18,8 +22,17 @@ func NewParallelogram(box *geo.Box) Shape {
 	}
 }
 
+func (s shapeParallelogram) GetInnerBox() *geo.Box {
+	tl := s.Box.TopLeft.Copy()
+	width := s.Box.Width - 2*parallelWedgeWidth
+	tl.X += parallelWedgeWidth
+	return geo.NewBox(tl, width, s.Box.Height)
+}
+
 func parallelogramPath(box *geo.Box) *svg.SvgPathContext {
-	wedgeWidth := 26.0
+	wedgeWidth := parallelWedgeWidth
+	// Note: box width should always be larger than parallelWedgeWidth
+	// this just handles after collapsing into a line
 	if box.Width <= wedgeWidth {
 		wedgeWidth = box.Width / 2.0
 	}
@@ -41,4 +54,9 @@ func (s shapeParallelogram) GetSVGPathData() []string {
 	return []string{
 		parallelogramPath(s.Box).PathData(),
 	}
+}
+
+func (s shapeParallelogram) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	totalWidth := width + paddingX + parallelWedgeWidth*2
+	return math.Ceil(totalWidth), math.Ceil(height + paddingY)
 }

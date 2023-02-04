@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -22,6 +23,7 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2renderers/d2svg/appendix"
+	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/imgbundler"
@@ -218,7 +220,6 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		}
 		return fmt.Errorf("failed to compile: %w", err)
 	}
-	ms.Log.Success.Printf("successfully compiled %v to %v", inputPath, outputPath)
 	return nil
 }
 
@@ -247,17 +248,53 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 		return nil, false, err
 	}
 
+	svg, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, page, ruler, diagram)
+	if err != nil {
+		return svg, false, err
+	}
+	return svg, true, nil
+}
+
+func render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, inputPath, outputPath string, bundle bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
+	outputPath = layerOutputPath(outputPath, diagram)
+	for _, dl := range diagram.Layers {
+		_, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, page, ruler, dl)
+		if err != nil {
+			return nil, err
+		}
+	}
+	for _, dl := range diagram.Scenarios {
+		_, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, page, ruler, dl)
+		if err != nil {
+			return nil, err
+		}
+	}
+	for _, dl := range diagram.Steps {
+		_, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, page, ruler, dl)
+		if err != nil {
+			return nil, err
+		}
+	}
+	svg, err := _render(ctx, ms, plugin, sketch, pad, outputPath, bundle, page, ruler, diagram)
+	if err != nil {
+		return svg, err
+	}
+	ms.Log.Success.Printf("successfully compiled %v to %v", inputPath, outputPath)
+	return svg, nil
+}
+
+func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, outputPath string, bundle bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
 		Pad:    int(pad),
 		Sketch: sketch,
 	})
 	if err != nil {
-		return nil, false, err
+		return nil, err
 	}
 
 	svg, err = plugin.PostProcess(ctx, svg)
 	if err != nil {
-		return svg, false, err
+		return svg, err
 	}
 
 	svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
@@ -279,7 +316,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 
 		out, err = png.ConvertSVG(ms, page, svg)
 		if err != nil {
-			return svg, false, err
+			return svg, err
 		}
 	} else {
 		if len(out) > 0 && out[len(out)-1] != '\n' {
@@ -287,12 +324,29 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 		}
 	}
 
+	err = os.MkdirAll(filepath.Dir(outputPath), 0755)
+	if err != nil {
+		return svg, err
+	}
 	err = ms.WritePath(outputPath, out)
 	if err != nil {
-		return svg, false, err
+		return svg, err
 	}
+	if bundleErr != nil {
+		return svg, bundleErr
+	}
+	return svg, nil
+}
 
-	return svg, true, bundleErr
+func layerOutputPath(outputPath string, d *d2target.Diagram) string {
+	if d.Name == "" {
+		return outputPath
+	}
+	ext := filepath.Ext(outputPath)
+	outputPath = strings.TrimSuffix(outputPath, ext)
+	outputPath += "/" + d.Name
+	outputPath += ext
+	return outputPath
 }
 
 // newExt must include leading .

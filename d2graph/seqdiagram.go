@@ -3,7 +3,7 @@ package d2graph
 import "oss.terrastruct.com/d2/d2target"
 
 func (obj *Object) IsSequenceDiagram() bool {
-	return obj != nil && obj.Attributes.Shape.Value == d2target.ShapeSequenceDiagram
+	return obj != nil && obj.Attributes != nil && obj.Attributes.Shape.Value == d2target.ShapeSequenceDiagram
 }
 
 func (obj *Object) OuterSequenceDiagram() *Object {
@@ -65,7 +65,7 @@ func (obj *Object) ContainsAnyObject(objects []*Object) bool {
 
 func (o *Object) ContainedBy(obj *Object) bool {
 	for _, ref := range o.References {
-		curr := ref.UnresolvedScopeObj
+		curr := ref.ScopeObj
 		for curr != nil {
 			if curr == obj {
 				return true

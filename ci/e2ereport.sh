@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-export REPORT_OUTPUT="out/e2e_report.html"
+export REPORT_OUTPUT="./e2etests/out/e2e_report.html"
 rm -f $REPORT_OUTPUT
 export E2E_REPORT=1
 

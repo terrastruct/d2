@@ -1,5 +1,6 @@
 {
   "graph": {
+    "name": "",
     "ast": {
       "range": "d2/testdata/d2oracle/TestMove/into_container_with_flat_keys.d2,0:0:0-7:0:95",
       "nodes": [
@@ -209,11 +210,14 @@
         },
         "direction": {
           "value": ""
+        },
+        "constraint": {
+          "value": ""
         }
       },
       "zIndex": 0
     },
-    "edges": [],
+    "edges": null,
     "objects": [
       {
         "id": "a",
@@ -241,7 +245,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -251,9 +255,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -285,7 +292,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -305,9 +312,12 @@
           },
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },

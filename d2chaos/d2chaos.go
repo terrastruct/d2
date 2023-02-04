@@ -18,10 +18,11 @@ import (
 func GenDSL(maxi int) (_ string, err error) {
 	gs := &dslGenState{
 		rand:          mathrand.New(mathrand.NewSource(time.Now().UnixNano())),
-		g:             d2graph.NewGraph(&d2ast.Map{}),
+		g:             d2graph.NewGraph(),
 		nodeShapes:    make(map[string]string),
 		nodeContainer: make(map[string]string),
 	}
+	gs.g.AST = &d2ast.Map{}
 	err = gs.gen(maxi)
 	if err != nil {
 		return "", err

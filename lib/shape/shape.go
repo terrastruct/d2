@@ -4,6 +4,7 @@ import (
 	"math"
 
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/svg"
 )
 
 const (
@@ -30,6 +31,8 @@ const (
 	TEXT_TYPE  = "Text"
 	CODE_TYPE  = "Code"
 	IMAGE_TYPE = "Image"
+
+	defaultPadding = 40.
 )
 
 type Shape interface {
@@ -45,7 +48,8 @@ type Shape interface {
 	// placing a rectangle of the given size and padding inside the shape, return the position relative to the shape's TopLeft
 	GetInsidePlacement(width, height, padding float64) geo.Point
 
-	GetDimensionsToFit(width, height, padding float64) (float64, float64)
+	GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64)
+	GetDefaultPadding() (paddingX, paddingY float64)
 
 	// Perimeter returns a slice of geo.Intersectables that together constitute the shape border
 	Perimeter() []geo.Intersectable
@@ -86,12 +90,14 @@ func (s baseShape) GetInsidePlacement(_, _, padding float64) geo.Point {
 	return *geo.NewPoint(s.Box.TopLeft.X+padding, s.Box.TopLeft.Y+padding)
 }
 
-func (s baseShape) GetInnerTopLeft(_, _, padding float64) geo.Point {
-	return *geo.NewPoint(s.Box.TopLeft.X+padding, s.Box.TopLeft.Y+padding)
+// return the minimum shape dimensions needed to fit content (width x height)
+// in the shape's innerBox with padding
+func (s baseShape) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	return math.Ceil(width + paddingX), math.Ceil(height + paddingY)
 }
 
-func (s baseShape) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
-	return width + padding*2, height + padding*2
+func (s baseShape) GetDefaultPadding() (paddingX, paddingY float64) {
+	return defaultPadding, defaultPadding
 }
 
 func (s baseShape) Perimeter() []geo.Intersectable {
@@ -208,4 +214,23 @@ func TraceToShapeBorder(shape Shape, rectBorderPoint, prevPoint *geo.Point) *geo
 	}
 
 	return geo.NewPoint(math.Round(closestPoint.X), math.Round(closestPoint.Y))
+}
+
+func boxPath(box *geo.Box) *svg.SvgPathContext {
+	pc := svg.NewSVGPathContext(box.TopLeft, 1, 1)
+	pc.StartAt(pc.Absolute(0, 0))
+	pc.L(false, box.Width, 0)
+	pc.L(false, box.Width, box.Height)
+	pc.L(false, 0, box.Height)
+	pc.Z()
+	return pc
+}
+
+func LimitAR(width, height, aspectRatio float64) (float64, float64) {
+	if width > aspectRatio*height {
+		height = math.Round(width / aspectRatio)
+	} else if height > aspectRatio*width {
+		width = math.Round(height / aspectRatio)
+	}
+	return width, height
 }

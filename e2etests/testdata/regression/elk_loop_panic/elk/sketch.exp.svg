@@ -3,7 +3,7 @@
 id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="650" height="480" viewBox="-90 -90 650 480"><style type="text/css">
+width="530" height="420" viewBox="-90 -90 530 420"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -39,8 +39,8 @@ width="650" height="480" viewBox="-90 -90 650 480"><style type="text/css">
     svgEl.setAttribute("height", height * ratio - 16);
   }
 });
-]]></script><g id="x"><g class="shape" ><rect x="12" y="12" width="446" height="276" style="fill:#E3E9FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text" x="235.000000" y="45.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">x</text></g><g id="x.a"><g class="shape" ><rect x="137" y="87" width="113" height="126" style="fill:#EDF0FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="193.500000" y="153.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">a</text></g><g id="x.b"><g class="shape" ><rect x="270" y="87" width="113" height="126" style="fill:#EDF0FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="326.500000" y="153.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">b</text></g><g id="x.(a -&gt; a)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 135.000000 129.000000 L 97.000000 129.000000 S 87.000000 129.000000 87.000000 139.000000 L 87.000000 161.000000 S 87.000000 171.000000 97.000000 171.000000 L 133.000000 171.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#108613724)"/></g><mask id="108613724" maskUnits="userSpaceOnUse" x="-100" y="-100" width="650" height="480">
-<rect x="-100" y="-100" width="650" height="480" fill="white"></rect>
+]]></script><g id="x"><g class="shape" ><rect x="12" y="12" width="326" height="216" style="fill:#E3E9FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text" x="175.000000" y="45.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">x</text></g><g id="x.a"><g class="shape" ><rect x="137" y="87" width="53" height="66" style="fill:#EDF0FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="163.500000" y="125.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">a</text></g><g id="x.b"><g class="shape" ><rect x="210" y="87" width="53" height="66" style="fill:#EDF0FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="236.500000" y="125.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">b</text></g><g id="x.(a -&gt; a)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 135.000000 109.000000 L 97.000000 109.000000 S 87.000000 109.000000 87.000000 119.000000 L 87.000000 121.000000 S 87.000000 131.000000 97.000000 131.000000 L 133.000000 131.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#672125111)"/></g><mask id="672125111" maskUnits="userSpaceOnUse" x="-100" y="-100" width="530" height="420">
+<rect x="-100" y="-100" width="530" height="420" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text {

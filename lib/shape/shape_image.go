@@ -20,3 +20,7 @@ func NewImage(box *geo.Box) Shape {
 func (s shapeImage) IsRectangular() bool {
 	return true
 }
+
+func (s shapeImage) GetDefaultPadding() (paddingX, paddingY float64) {
+	return 0, 0
+}

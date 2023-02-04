@@ -4,13 +4,13 @@
   "shapes": [
     {
       "id": "my network",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
         "y": 0
       },
-      "width": 190,
-      "height": 152,
+      "width": 156,
+      "height": 118,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -48,8 +48,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 90,
-      "labelHeight": 26,
+      "labelWidth": 85,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1

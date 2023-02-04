@@ -4,13 +4,13 @@
   "shapes": [
     {
       "id": "poll the people",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 81,
+        "x": 61,
         "y": 12
       },
-      "width": 210,
-      "height": 126,
+      "width": 150,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,21 +37,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 110,
-      "labelHeight": 26,
+      "labelWidth": 105,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "results",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 74,
-        "y": 238
+        "x": 64,
+        "y": 178
       },
-      "width": 153,
-      "height": 126,
+      "width": 93,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,21 +78,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 53,
-      "labelHeight": 26,
+      "labelWidth": 48,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "unfavorable",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 232,
-        "y": 464
+        "x": 172,
+        "y": 344
       },
-      "width": 191,
-      "height": 126,
+      "width": 131,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -119,21 +119,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 91,
-      "labelHeight": 26,
+      "labelWidth": 86,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "favorable",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 39,
-        "y": 464
+        "y": 344
       },
-      "width": 173,
-      "height": 126,
+      "width": 113,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -160,21 +160,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 73,
-      "labelHeight": 26,
+      "labelWidth": 68,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "will of the people",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
-        "y": 690
+        "y": 510
       },
-      "width": 227,
-      "height": 126,
+      "width": 167,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -201,8 +201,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 127,
-      "labelHeight": 26,
+      "labelWidth": 122,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -211,7 +211,7 @@
       "id": "title",
       "type": "text",
       "pos": {
-        "x": 84,
+        "x": 24,
         "y": -59
       },
       "width": 266,
@@ -276,12 +276,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 151,
-          "y": 138
+          "x": 111,
+          "y": 78
         },
         {
-          "x": 151,
-          "y": 238
+          "x": 111,
+          "y": 178
         }
       ],
       "animated": false,
@@ -315,20 +315,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 176.5,
-          "y": 364
+          "x": 126.5,
+          "y": 244
         },
         {
-          "x": 176.5,
-          "y": 414
+          "x": 126.5,
+          "y": 294
         },
         {
-          "x": 295.6666666666667,
-          "y": 414
+          "x": 215.66666666666666,
+          "y": 294
         },
         {
-          "x": 295.6666666666667,
-          "y": 464
+          "x": 215.66666666666666,
+          "y": 344
         }
       ],
       "animated": false,
@@ -362,20 +362,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 359.3333333333333,
-          "y": 464
+          "x": 259.3333333333333,
+          "y": 344
         },
         {
-          "x": 359.3333333333333,
-          "y": 188
+          "x": 259.3333333333333,
+          "y": 128
         },
         {
-          "x": 221,
-          "y": 188
+          "x": 161,
+          "y": 128
         },
         {
-          "x": 221,
-          "y": 138
+          "x": 161,
+          "y": 78
         }
       ],
       "animated": false,
@@ -409,12 +409,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 125.5,
-          "y": 364
+          "x": 95.5,
+          "y": 244
         },
         {
-          "x": 125.5,
-          "y": 464
+          "x": 95.5,
+          "y": 344
         }
       ],
       "animated": false,
@@ -448,12 +448,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 125.5,
-          "y": 590
+          "x": 95.5,
+          "y": 410
         },
         {
-          "x": 125.5,
-          "y": 690
+          "x": 95.5,
+          "y": 510
         }
       ],
       "animated": false,

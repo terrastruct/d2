@@ -1,5 +1,6 @@
 {
   "graph": {
+    "name": "",
     "ast": {
       "range": "d2/testdata/d2oracle/TestMove/underscore_edge_split.d2,0:0:0-6:0:34",
       "nodes": [
@@ -161,6 +162,9 @@
         },
         "direction": {
           "value": ""
+        },
+        "constraint": {
+          "value": ""
         }
       },
       "zIndex": 0
@@ -192,6 +196,9 @@
             "value": ""
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -225,7 +232,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -235,9 +242,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -269,7 +279,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -279,53 +289,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
             "value": ""
-          }
-        },
-        "zIndex": 0
-      },
-      {
-        "id": "c",
-        "id_val": "c",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
-        "references": [
-          {
-            "key": {
-              "range": "d2/testdata/d2oracle/TestMove/underscore_edge_split.d2,5:0:32-5:1:33",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestMove/underscore_edge_split.d2,5:0:32-5:1:33",
-                    "value": [
-                      {
-                        "string": "c",
-                        "raw_string": "c"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": 0
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": "c"
           },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": ""
-          },
-          "direction": {
+          "constraint": {
             "value": ""
           }
         },
@@ -378,9 +347,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -422,9 +394,59 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "c",
+        "id_val": "c",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/underscore_edge_split.d2,5:0:32-5:1:33",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/underscore_edge_split.d2,5:0:32-5:1:33",
+                    "value": [
+                      {
+                        "string": "c",
+                        "raw_string": "c"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "c"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },

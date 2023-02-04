@@ -1,5 +1,6 @@
 {
   "graph": {
+    "name": "",
     "ast": {
       "range": "d2/testdata/d2compiler/TestCompile/edge_arrowhead_fields.d2,0:0:0-9:0:168",
       "nodes": [
@@ -248,6 +249,9 @@
         },
         "direction": {
           "value": ""
+        },
+        "constraint": {
+          "value": ""
         }
       },
       "zIndex": 0
@@ -274,6 +278,9 @@
           },
           "direction": {
             "value": ""
+          },
+          "constraint": {
+            "value": ""
           }
         },
         "dst_arrow": true,
@@ -292,6 +299,9 @@
           },
           "direction": {
             "value": ""
+          },
+          "constraint": {
+            "value": ""
           }
         },
         "references": [
@@ -309,6 +319,9 @@
             "value": ""
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -352,9 +365,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -396,9 +412,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },

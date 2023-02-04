@@ -7,7 +7,9 @@ RUN apt-get update && apt-get install -y ca-certificates curl dumb-init sudo
 
 RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash -s - && \
   apt-get install -y nodejs
-RUN npx playwright install-deps
+# https://github.com/microsoft/playwright/issues/18319
+# Hopefully soon.
+RUN if [ "$TARGETARCH" = amd64 ]; then npx playwright install-deps; fi
 
 RUN adduser --gecos '' --disabled-password debian \
   && echo "debian ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd
@@ -26,7 +28,7 @@ RUN mkdir -p /usr/local/lib/d2 \
       && rm -Rf /tmp/d2-*-linux-"$TARGETARCH".tar.gz
 
 USER debian:debian
-RUN d2 init-playwright
+RUN if [ "$TARGETARCH" = amd64 ]; then d2 init-playwright; fi
 
 WORKDIR /home/debian/src
 EXPOSE 8080

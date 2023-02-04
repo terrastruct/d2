@@ -1,0 +1,899 @@
+{
+  "fields": [
+    {
+      "name": "x",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
+              "edges": [
+                {
+                  "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
+                  "src": {
+                    "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "x",
+                              "raw_string": "x"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "y",
+                              "raw_string": "y"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "y",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
+            "value": [
+              {
+                "string": "y",
+                "raw_string": "y"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
+                  "value": [
+                    {
+                      "string": "y",
+                      "raw_string": "y"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
+              "edges": [
+                {
+                  "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
+                  "src": {
+                    "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "x",
+                              "raw_string": "x"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "y",
+                              "raw_string": "y"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "layers",
+      "composite": {
+        "fields": [
+          {
+            "name": "bingo",
+            "composite": {
+              "fields": [
+                {
+                  "name": "p",
+                  "composite": {
+                    "fields": [
+                      {
+                        "name": "q",
+                        "composite": {
+                          "fields": [
+                            {
+                              "name": "z",
+                              "references": [
+                                {
+                                  "string": {
+                                    "range": "TestCompile/layers/root.d2,2:14:31-2:15:32",
+                                    "value": [
+                                      {
+                                        "string": "z",
+                                        "raw_string": "z"
+                                      }
+                                    ]
+                                  },
+                                  "key_path": {
+                                    "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/layers/root.d2,2:10:27-2:11:28",
+                                          "value": [
+                                            {
+                                              "string": "p",
+                                              "raw_string": "p"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/layers/root.d2,2:12:29-2:13:30",
+                                          "value": [
+                                            {
+                                              "string": "q",
+                                              "raw_string": "q"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/layers/root.d2,2:14:31-2:15:32",
+                                          "value": [
+                                            {
+                                              "string": "z",
+                                              "raw_string": "z"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "context": {
+                                    "edge": null,
+                                    "key": {
+                                      "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                                      "key": {
+                                        "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/layers/root.d2,2:10:27-2:11:28",
+                                              "value": [
+                                                {
+                                                  "string": "p",
+                                                  "raw_string": "p"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/layers/root.d2,2:12:29-2:13:30",
+                                              "value": [
+                                                {
+                                                  "string": "q",
+                                                  "raw_string": "q"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/layers/root.d2,2:14:31-2:15:32",
+                                              "value": [
+                                                {
+                                                  "string": "z",
+                                                  "raw_string": "z"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "primary": {},
+                                      "value": {}
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "edges": null
+                        },
+                        "references": [
+                          {
+                            "string": {
+                              "range": "TestCompile/layers/root.d2,2:12:29-2:13:30",
+                              "value": [
+                                {
+                                  "string": "q",
+                                  "raw_string": "q"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/layers/root.d2,2:10:27-2:11:28",
+                                    "value": [
+                                      {
+                                        "string": "p",
+                                        "raw_string": "p"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/layers/root.d2,2:12:29-2:13:30",
+                                    "value": [
+                                      {
+                                        "string": "q",
+                                        "raw_string": "q"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/layers/root.d2,2:14:31-2:15:32",
+                                    "value": [
+                                      {
+                                        "string": "z",
+                                        "raw_string": "z"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                                "key": {
+                                  "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/layers/root.d2,2:10:27-2:11:28",
+                                        "value": [
+                                          {
+                                            "string": "p",
+                                            "raw_string": "p"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/layers/root.d2,2:12:29-2:13:30",
+                                        "value": [
+                                          {
+                                            "string": "q",
+                                            "raw_string": "q"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/layers/root.d2,2:14:31-2:15:32",
+                                        "value": [
+                                          {
+                                            "string": "z",
+                                            "raw_string": "z"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {}
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "edges": null
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/layers/root.d2,2:10:27-2:11:28",
+                        "value": [
+                          {
+                            "string": "p",
+                            "raw_string": "p"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/layers/root.d2,2:10:27-2:11:28",
+                              "value": [
+                                {
+                                  "string": "p",
+                                  "raw_string": "p"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/layers/root.d2,2:12:29-2:13:30",
+                              "value": [
+                                {
+                                  "string": "q",
+                                  "raw_string": "q"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/layers/root.d2,2:14:31-2:15:32",
+                              "value": [
+                                {
+                                  "string": "z",
+                                  "raw_string": "z"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                          "key": {
+                            "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/layers/root.d2,2:10:27-2:11:28",
+                                  "value": [
+                                    {
+                                      "string": "p",
+                                      "raw_string": "p"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/layers/root.d2,2:12:29-2:13:30",
+                                  "value": [
+                                    {
+                                      "string": "q",
+                                      "raw_string": "q"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/layers/root.d2,2:14:31-2:15:32",
+                                  "value": [
+                                    {
+                                      "string": "z",
+                                      "raw_string": "z"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {}
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/layers/root.d2,2:1:18-2:6:23",
+                  "value": [
+                    {
+                      "string": "bingo",
+                      "raw_string": "bingo"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/layers/root.d2,2:1:18-2:6:23",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/layers/root.d2,2:1:18-2:6:23",
+                        "value": [
+                          {
+                            "string": "bingo",
+                            "raw_string": "bingo"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/layers/root.d2,2:1:18-2:17:34",
+                    "key": {
+                      "range": "TestCompile/layers/root.d2,2:1:18-2:6:23",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/layers/root.d2,2:1:18-2:6:23",
+                            "value": [
+                              {
+                                "string": "bingo",
+                                "raw_string": "bingo"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/layers/root.d2,2:8:25-2:16:33",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                              "key": {
+                                "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/layers/root.d2,2:10:27-2:11:28",
+                                      "value": [
+                                        {
+                                          "string": "p",
+                                          "raw_string": "p"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/layers/root.d2,2:12:29-2:13:30",
+                                      "value": [
+                                        {
+                                          "string": "q",
+                                          "raw_string": "q"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/layers/root.d2,2:14:31-2:15:32",
+                                      "value": [
+                                        {
+                                          "string": "z",
+                                          "raw_string": "z"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {}
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/layers/root.d2,1:0:7-1:6:13",
+            "value": [
+              {
+                "string": "layers",
+                "raw_string": "layers"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/layers/root.d2,1:0:7-1:6:13",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/layers/root.d2,1:0:7-1:6:13",
+                  "value": [
+                    {
+                      "string": "layers",
+                      "raw_string": "layers"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/layers/root.d2,1:0:7-3:1:36",
+              "key": {
+                "range": "TestCompile/layers/root.d2,1:0:7-1:6:13",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/layers/root.d2,1:0:7-1:6:13",
+                      "value": [
+                        {
+                          "string": "layers",
+                          "raw_string": "layers"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/layers/root.d2,1:8:15-3:0:35",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/layers/root.d2,2:1:18-2:17:34",
+                        "key": {
+                          "range": "TestCompile/layers/root.d2,2:1:18-2:6:23",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/layers/root.d2,2:1:18-2:6:23",
+                                "value": [
+                                  {
+                                    "string": "bingo",
+                                    "raw_string": "bingo"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "map": {
+                            "range": "TestCompile/layers/root.d2,2:8:25-2:16:33",
+                            "nodes": [
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                                  "key": {
+                                    "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/layers/root.d2,2:10:27-2:11:28",
+                                          "value": [
+                                            {
+                                              "string": "p",
+                                              "raw_string": "p"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/layers/root.d2,2:12:29-2:13:30",
+                                          "value": [
+                                            {
+                                              "string": "q",
+                                              "raw_string": "q"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/layers/root.d2,2:14:31-2:15:32",
+                                          "value": [
+                                            {
+                                              "string": "z",
+                                              "raw_string": "z"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {}
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": {
+        "src_path": [
+          "x"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "y"
+        ],
+        "dst_arrow": true,
+        "index": 0
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
+              "src": {
+                "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "y",
+                          "raw_string": "y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
+              "edges": [
+                {
+                  "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
+                  "src": {
+                    "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
+                          "value": [
+                            {
+                              "string": "x",
+                              "raw_string": "x"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "y",
+                              "raw_string": "y"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

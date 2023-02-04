@@ -19,3 +19,7 @@ func NewClass(box *geo.Box) Shape {
 		},
 	}
 }
+
+func (s shapeClass) GetDefaultPadding() (paddingX, paddingY float64) {
+	return 0, 0
+}

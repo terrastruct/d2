@@ -1,5 +1,6 @@
 {
   "graph": {
+    "name": "",
     "ast": {
       "range": "d2/testdata/d2oracle/TestMove/underscore_split_out.d2,0:0:0-10:0:60",
       "nodes": [
@@ -196,6 +197,9 @@
         },
         "direction": {
           "value": ""
+        },
+        "constraint": {
+          "value": ""
         }
       },
       "zIndex": 0
@@ -228,7 +232,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -238,9 +242,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -272,7 +279,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -282,9 +289,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -327,7 +337,7 @@
               ]
             },
             "key_path_index": 1,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           },
           {
             "key": {
@@ -347,7 +357,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -357,9 +367,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -391,7 +404,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -401,9 +414,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -435,7 +451,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -445,9 +461,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },

@@ -1,5 +1,6 @@
 {
   "graph": {
+    "name": "",
     "ast": {
       "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,0:0:0-5:0:54",
       "nodes": [
@@ -148,6 +149,9 @@
         },
         "direction": {
           "value": ""
+        },
+        "constraint": {
+          "value": ""
         }
       },
       "zIndex": 0
@@ -180,7 +184,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -199,6 +203,9 @@
             "value": "hexagon"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },

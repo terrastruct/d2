@@ -5,7 +5,7 @@
     "errs": [
       {
         "range": "d2/testdata/d2compiler/TestCompile/sql-panic.d2,2:26:54-2:64:92",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/sql-panic.d2:3:27: constraint value must be a string"
+        "errmsg": "d2/testdata/d2compiler/TestCompile/sql-panic.d2:3:27: reserved field constraint does not accept composite"
       }
     ]
   }
