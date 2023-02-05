@@ -473,6 +473,41 @@ class2: class without rows {
 				}
 			},
 		},
+		{
+			name: "sequence-panic",
+			script: `
+shape: sequence_diagram
+
+user.shape: person
+router: handlers (router)
+handler: handlers (handler function)
+db
+models
+
+HTTP request: {
+  user -> router: sends request
+
+  database transaction: {
+    handlers -> db: |md
+      fetches data from
+      (e.g. GET request)
+    |
+
+    router -> models: |md
+      calls business logic of
+      (e.g. url schema validation)
+    |
+
+    router -> db: |md
+      stores changed data in
+      (e.g. POST request)
+    |
+  }
+
+  router -> user: sends response
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
