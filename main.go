@@ -55,6 +55,10 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	forceAppendixFlag, err := ms.Opts.Bool("D2_FORCE_APPENDIX", "force-appendix", "", false, "an appendix for tooltips and links is added to PNG exports since they are not interactive. --force-appendix adds an appendix to SVG exports as well")
+	if err != nil {
+		return err
+	}
 	debugFlag, err := ms.Opts.Bool("DEBUG", "debug", "d", false, "print debug logs.")
 	if err != nil {
 		return err
@@ -196,16 +200,17 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		}
 		ms.Log.SetTS(true)
 		w, err := newWatcher(ctx, ms, watcherOpts{
-			layoutPlugin: plugin,
-			sketch:       *sketchFlag,
-			themeID:      *themeFlag,
-			pad:          *padFlag,
-			host:         *hostFlag,
-			port:         *portFlag,
-			inputPath:    inputPath,
-			outputPath:   outputPath,
-			bundle:       *bundleFlag,
-			pw:           pw,
+			layoutPlugin:  plugin,
+			sketch:        *sketchFlag,
+			themeID:       *themeFlag,
+			pad:           *padFlag,
+			host:          *hostFlag,
+			port:          *portFlag,
+			inputPath:     inputPath,
+			outputPath:    outputPath,
+			bundle:        *bundleFlag,
+			forceAppendix: *forceAppendixFlag,
+			pw:            pw,
 		})
 		if err != nil {
 			return err
@@ -216,7 +221,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	_, written, err := compile(ctx, ms, plugin, *sketchFlag, *padFlag, *themeFlag, inputPath, outputPath, *bundleFlag, pw.Page)
+	_, written, err := compile(ctx, ms, plugin, *sketchFlag, *padFlag, *themeFlag, inputPath, outputPath, *bundleFlag, *forceAppendixFlag, pw.Page)
 	if err != nil {
 		if written {
 			return fmt.Errorf("failed to fully compile (partial render written): %w", err)
@@ -226,7 +231,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad, themeID int64, inputPath, outputPath string, bundle bool, page playwright.Page) (_ []byte, written bool, _ error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad, themeID int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page) (_ []byte, written bool, _ error) {
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
 		return nil, false, err
@@ -251,34 +256,34 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 		return nil, false, err
 	}
 
-	svg, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, page, ruler, diagram)
+	svg, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
 	if err != nil {
 		return svg, false, err
 	}
 	return svg, true, nil
 }
 
-func render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, inputPath, outputPath string, bundle bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
+func render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
 	outputPath = layerOutputPath(outputPath, diagram)
 	for _, dl := range diagram.Layers {
-		_, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, page, ruler, dl)
+		_, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, page, ruler, dl)
+		_, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, page, ruler, dl)
+		_, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
 		if err != nil {
 			return nil, err
 		}
 	}
-	svg, err := _render(ctx, ms, plugin, sketch, pad, outputPath, bundle, page, ruler, diagram)
+	svg, err := _render(ctx, ms, plugin, sketch, pad, outputPath, bundle, forceAppendix, page, ruler, diagram)
 	if err != nil {
 		return svg, err
 	}
@@ -286,7 +291,7 @@ func render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch
 	return svg, nil
 }
 
-func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, outputPath string, bundle bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
+func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
 		Pad:    int(pad),
 		Sketch: sketch,
@@ -305,6 +310,9 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 		var bundleErr2 error
 		svg, bundleErr2 = imgbundler.BundleRemote(ctx, ms, svg)
 		bundleErr = multierr.Combine(bundleErr, bundleErr2)
+	}
+	if forceAppendix && filepath.Ext(outputPath) != ".png" {
+		svg = appendix.Append(diagram, ruler, svg)
 	}
 
 	out := svg
