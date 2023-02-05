@@ -35,7 +35,9 @@ Subcommands:
   %[1]s layout [name] - Display long help for a particular layout engine, including its configuration options
   %[1]s fmt file.d2 ... - Format passed files
 
-See more docs and the source code at https://oss.terrastruct.com/d2
+See more docs and the source code at https://oss.terrastruct.com/d2.
+Hosted icons at https://icons.terrastruct.com.
+Playground runner at https://play.d2lang.com.
 `, filepath.Base(ms.Name), ms.Opts.Defaults())
 }
 
