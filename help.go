@@ -85,7 +85,7 @@ Example:
 Subcommands:
   %s layout [layout name] - Display long help for a particular layout engine, including its configuration options
 
-See more docs at https://oss.terrastruct.com/d2
+See more docs at https://d2lang.com/tour/layouts
 `, strings.Join(pluginLines, "\n"), ms.Name)
 	return nil
 }

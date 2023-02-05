@@ -68,9 +68,9 @@ func (p dagrePlugin) Info(ctx context.Context) (*PluginInfo, error) {
 		Name:      "dagre",
 		ShortHelp: "The directed graph layout library Dagre",
 		LongHelp: fmt.Sprintf(`dagre is a directed graph layout library for JavaScript.
-See https://github.com/dagrejs/dagre
+See https://d2lang.com/tour/dagre for more.
 
-Flags correspond to ones found at https://github.com/dagrejs/dagre/wiki. See dagre's reference for more on each.
+Flags correspond to ones found at https://github.com/dagrejs/dagre/wiki.
 
 Flags:
 %s
