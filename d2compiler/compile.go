@@ -71,6 +71,9 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 	c.compileBoardsField(g, ir, "layers")
 	c.compileBoardsField(g, ir, "scenarios")
 	c.compileBoardsField(g, ir, "steps")
+
+	c.validateBoardLink(g, ir)
+
 	return g
 }
 
@@ -275,7 +278,9 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Height.Value = scalar.ScalarString()
 		attrs.Height.MapKey = f.LastPrimaryKey()
 	case "link":
-		attrs.Link = scalar.ScalarString()
+		attrs.Link.Value = scalar.ScalarString()
+		attrs.Link.MapKey = f.LastPrimaryKey()
+		attrs.Link.MapKey.Range = scalar.GetRange()
 	case "direction":
 		dirs := []string{"up", "down", "right", "left"}
 		if !go2.Contains(dirs, scalar.ScalarString()) {
@@ -642,6 +647,39 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 					continue
 				}
 			}
+		}
+	}
+}
+
+func (c *compiler) validateBoardLink(g *d2graph.Graph, ir *d2ir.Map) {
+	for _, obj := range g.Objects {
+		if obj.Attributes.Link.Value == "" {
+			continue
+		}
+
+		linkKey, err := d2parser.ParseKey(obj.Attributes.Link.Value)
+		// Links can be urls
+		if err != nil {
+			continue
+		}
+
+		// If the keyword is not another board, don't validate
+		// Might just be linking to a local folder
+		switch linkKey.Path[0].Unbox().ScalarString() {
+		case "layers", "scenarios", "steps":
+		default:
+			continue
+		}
+
+		b := ir.GetField(linkKey.IDA()...)
+		if b == nil {
+			c.errorf(obj.Attributes.Link.MapKey, "link key %#v to board not found", obj.Attributes.Link.Value)
+			continue
+		}
+		kind := d2ir.NodeBoardKind(b)
+		if kind == "" {
+			c.errorf(obj.Attributes.Link.MapKey, "internal link key %#v is not a top-level board", obj.Attributes.Link.Value)
+			continue
 		}
 	}
 }

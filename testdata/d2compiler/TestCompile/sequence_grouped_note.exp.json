@@ -160,6 +160,9 @@
           "value": ""
         },
         "style": {},
+        "link": {
+          "value": ""
+        },
         "near_key": null,
         "shape": {
           "value": "sequence_diagram"
@@ -209,6 +212,9 @@
             "value": "a"
           },
           "style": {},
+          "link": {
+            "value": ""
+          },
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -287,6 +293,9 @@
             "value": "d"
           },
           "style": {},
+          "link": {
+            "value": ""
+          },
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -334,6 +343,9 @@
             "value": "choo"
           },
           "style": {},
+          "link": {
+            "value": ""
+          },
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -392,6 +404,9 @@
             "value": "this note"
           },
           "style": {},
+          "link": {
+            "value": ""
+          },
           "near_key": null,
           "shape": {
             "value": "rectangle"

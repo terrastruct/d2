@@ -1351,8 +1351,8 @@ x -> y: {
 				if len(g.Objects) != 1 {
 					t.Fatal(g.Objects)
 				}
-				if g.Objects[0].Attributes.Link != "https://google.com" {
-					t.Fatal(g.Objects[0].Attributes.Link)
+				if g.Objects[0].Attributes.Link.Value != "https://google.com" {
+					t.Fatal(g.Objects[0].Attributes.Link.Value)
 				}
 			},
 		},
@@ -1367,8 +1367,8 @@ x -> y: {
 				if len(g.Objects) != 1 {
 					t.Fatal(g.Objects)
 				}
-				if g.Objects[0].Attributes.Link != "Overview.Untitled board 7.zzzzz" {
-					t.Fatal(g.Objects[0].Attributes.Link)
+				if g.Objects[0].Attributes.Link.Value != "Overview.Untitled board 7.zzzzz" {
+					t.Fatal(g.Objects[0].Attributes.Link.Value)
 				}
 			},
 		},
@@ -1898,6 +1898,41 @@ Chinchillas_Collectibles.chinchilla -> Chinchillas.id`,
 				tassert.Equal(t, 0, *g.Edges[0].DstTableColumnIndex)
 				tassert.Equal(t, 2, *g.Edges[0].SrcTableColumnIndex)
 			},
+		},
+		{
+			name: "link-board-ok",
+			text: `x.link: layers.x
+layers: {
+  x
+}`,
+		},
+		{
+			name: "link-board-not-found",
+			text: `x.link: layers.x
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/link-board-not-found.d2:1:9: link key "layers.x" to board not found`,
+		},
+		{
+			name: "link-board-not-board",
+			text: `zzz
+x.link: layers.x.y
+layers: {
+	x: {
+    y
+  }
+}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/link-board-not-board.d2:2:9: internal link key "layers.x.y" is not a top-level board`,
+		},
+		{
+			name: "link-board-nested",
+			text: `x.link: layers.x.layers.x
+layers: {
+	x: {
+    layers: {
+      x
+    }
+  }
+}`,
 		},
 	}
 

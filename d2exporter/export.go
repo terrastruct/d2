@@ -150,7 +150,7 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	}
 
 	shape.Tooltip = obj.Attributes.Tooltip
-	shape.Link = obj.Attributes.Link
+	shape.Link = obj.Attributes.Link.Value
 	shape.Icon = obj.Attributes.Icon
 	if obj.IconPosition != nil {
 		shape.IconPosition = *obj.IconPosition

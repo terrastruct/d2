@@ -301,6 +301,9 @@
           "value": ""
         },
         "style": {},
+        "link": {
+          "value": ""
+        },
         "near_key": null,
         "shape": {
           "value": ""
@@ -341,6 +344,9 @@
             "animated": {
               "value": "true"
             }
+          },
+          "link": {
+            "value": ""
           },
           "near_key": null,
           "shape": {
@@ -454,6 +460,9 @@
             "value": "x"
           },
           "style": {},
+          "link": {
+            "value": ""
+          },
           "near_key": null,
           "shape": {
             "value": "sql_table"
@@ -564,6 +573,9 @@
             "value": "a"
           },
           "style": {},
+          "link": {
+            "value": ""
+          },
           "near_key": null,
           "shape": {
             "value": "sql_table"
