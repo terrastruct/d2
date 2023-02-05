@@ -1,0 +1,788 @@
+{
+  "graph": {
+    "name": "",
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-11:1:137",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-0:30:30",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-0:8:8",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-0:8:8",
+                    "value": [
+                      {
+                        "string": "question",
+                        "raw_string": "question"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:10:10-0:30:30",
+                "value": [
+                  {
+                    "string": "How does the cat go?",
+                    "raw_string": "How does the cat go?"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:15:46-1:25:56",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:0:31-1:13:44",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:0:31-1:8:39",
+                    "value": [
+                      {
+                        "string": "question",
+                        "raw_string": "question"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:9:40-1:13:44",
+                    "value": [
+                      {
+                        "string": "link",
+                        "raw_string": "link"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:15:46-1:25:56",
+                "value": [
+                  {
+                    "string": "layers.cat",
+                    "raw_string": "layers.cat"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:0:58-7:1:113",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:0:58-3:6:64",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:0:58-3:6:64",
+                    "value": [
+                      {
+                        "string": "layers",
+                        "raw_string": "layers"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:8:66-7:0:112",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:2:70-6:3:111",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:2:70-4:5:73",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:2:70-4:5:73",
+                              "value": [
+                                {
+                                  "string": "cat",
+                                  "raw_string": "cat"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:7:75-6:2:110",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:30:107",
+                                "edges": [
+                                  {
+                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:24:101",
+                                    "src": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:12:89",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:11:88",
+                                            "value": [
+                                              {
+                                                "string": "the cat",
+                                                "raw_string": "the cat"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "src_arrow": "",
+                                    "dst": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:14:91-5:24:101",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:15:92-5:24:101",
+                                            "value": [
+                                              {
+                                                "string": "meeeowwww",
+                                                "raw_string": "meeeowwww"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "dst_arrow": ">"
+                                  }
+                                ],
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:26:103-5:30:107",
+                                    "value": [
+                                      {
+                                        "string": "goes",
+                                        "raw_string": "goes"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:0:115-11:1:137",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:0:115-9:9:124",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:0:115-9:9:124",
+                    "value": [
+                      {
+                        "string": "scenarios",
+                        "raw_string": "scenarios"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:11:126-11:0:136",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:2:130-10:7:135",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:2:130-10:7:135",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:2:130-10:7:135",
+                              "value": [
+                                {
+                                  "string": "green",
+                                  "raw_string": "green"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "link": {
+          "value": ""
+        },
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "question",
+        "id_val": "question",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-0:8:8",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-0:8:8",
+                    "value": [
+                      {
+                        "string": "question",
+                        "raw_string": "question"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:0:31-1:13:44",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:0:31-1:8:39",
+                    "value": [
+                      {
+                        "string": "question",
+                        "raw_string": "question"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:9:40-1:13:44",
+                    "value": [
+                      {
+                        "string": "link",
+                        "raw_string": "link"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "How does the cat go?"
+          },
+          "style": {},
+          "link": {
+            "value": "layers.cat"
+          },
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ],
+    "layers": [
+      {
+        "name": "cat",
+        "ast": {
+          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-11:1:137",
+          "nodes": [
+            {
+              "map_key": {
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-0:30:30",
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-0:8:8",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-0:8:8",
+                        "value": [
+                          {
+                            "string": "question",
+                            "raw_string": "question"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:10:10-0:30:30",
+                    "value": [
+                      {
+                        "string": "How does the cat go?",
+                        "raw_string": "How does the cat go?"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "map_key": {
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:15:46-1:25:56",
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:0:31-1:13:44",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:0:31-1:8:39",
+                        "value": [
+                          {
+                            "string": "question",
+                            "raw_string": "question"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:9:40-1:13:44",
+                        "value": [
+                          {
+                            "string": "link",
+                            "raw_string": "link"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:15:46-1:25:56",
+                    "value": [
+                      {
+                        "string": "layers.cat",
+                        "raw_string": "layers.cat"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "map_key": {
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:0:58-7:1:113",
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:0:58-3:6:64",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:0:58-3:6:64",
+                        "value": [
+                          {
+                            "string": "layers",
+                            "raw_string": "layers"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:8:66-7:0:112",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:2:70-6:3:111",
+                          "key": {
+                            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:2:70-4:5:73",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:2:70-4:5:73",
+                                  "value": [
+                                    {
+                                      "string": "cat",
+                                      "raw_string": "cat"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:7:75-6:2:110",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:30:107",
+                                    "edges": [
+                                      {
+                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:24:101",
+                                        "src": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:12:89",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:11:88",
+                                                "value": [
+                                                  {
+                                                    "string": "the cat",
+                                                    "raw_string": "the cat"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "src_arrow": "",
+                                        "dst": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:14:91-5:24:101",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:15:92-5:24:101",
+                                                "value": [
+                                                  {
+                                                    "string": "meeeowwww",
+                                                    "raw_string": "meeeowwww"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "dst_arrow": ">"
+                                      }
+                                    ],
+                                    "primary": {},
+                                    "value": {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:26:103-5:30:107",
+                                        "value": [
+                                          {
+                                            "string": "goes",
+                                            "raw_string": "goes"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "map_key": {
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:0:115-11:1:137",
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:0:115-9:9:124",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:0:115-9:9:124",
+                        "value": [
+                          {
+                            "string": "scenarios",
+                            "raw_string": "scenarios"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:11:126-11:0:136",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:2:130-10:7:135",
+                          "key": {
+                            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:2:130-10:7:135",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:2:130-10:7:135",
+                                  "value": [
+                                    {
+                                      "string": "green",
+                                      "raw_string": "green"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {}
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "label_dimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "style": {},
+            "link": {
+              "value": ""
+            },
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": {
+              "value": ""
+            }
+          },
+          "zIndex": 0
+        },
+        "edges": [
+          {
+            "index": 0,
+            "minWidth": 0,
+            "minHeight": 0,
+            "label_dimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "isCurve": false,
+            "src_arrow": false,
+            "dst_arrow": true,
+            "references": [
+              {
+                "map_key_edge_index": 0
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "goes"
+              },
+              "style": {},
+              "link": {
+                "value": ""
+              },
+              "near_key": null,
+              "shape": {
+                "value": ""
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": {
+                "value": ""
+              }
+            },
+            "zIndex": 0
+          }
+        ],
+        "objects": [
+          {
+            "id": "the cat",
+            "id_val": "the cat",
+            "label_dimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:12:89",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:11:88",
+                        "value": [
+                          {
+                            "string": "the cat",
+                            "raw_string": "the cat"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": 0
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "the cat"
+              },
+              "style": {},
+              "link": {
+                "value": ""
+              },
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": {
+                "value": ""
+              }
+            },
+            "zIndex": 0
+          },
+          {
+            "id": "meeeowwww",
+            "id_val": "meeeowwww",
+            "label_dimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:14:91-5:24:101",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:15:92-5:24:101",
+                        "value": [
+                          {
+                            "string": "meeeowwww",
+                            "raw_string": "meeeowwww"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": 0
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "meeeowwww"
+              },
+              "style": {},
+              "link": {
+                "value": ""
+              },
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": {
+                "value": ""
+              }
+            },
+            "zIndex": 0
+          }
+        ]
+      }
+    ]
+  },
+  "err": null
+}

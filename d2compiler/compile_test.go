@@ -1907,6 +1907,23 @@ layers: {
 }`,
 		},
 		{
+			name: "link-board-mixed",
+			text: `question: How does the cat go?
+question.link: layers.cat
+
+layers: {
+  cat: {
+    the cat -> meeeowwww: goes
+  }
+}
+
+scenarios: {
+  green: {
+		question.style.fill: green
+  }
+}`,
+		},
+		{
 			name: "link-board-not-found",
 			text: `x.link: layers.x
 `,
