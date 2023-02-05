@@ -294,10 +294,10 @@
       "type": "person",
       "pos": {
         "x": 2064,
-        "y": 291
+        "y": 271
       },
-      "width": 18,
-      "height": 21,
+      "width": 41,
+      "height": 61,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -334,11 +334,11 @@
       "id": "2",
       "type": "person",
       "pos": {
-        "x": 2102,
-        "y": 280
+        "x": 2125,
+        "y": 271
       },
       "width": 64,
-      "height": 43,
+      "height": 61,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -375,7 +375,7 @@
       "id": "3",
       "type": "person",
       "pos": {
-        "x": 2186,
+        "x": 2209,
         "y": 259
       },
       "width": 128,
@@ -416,7 +416,7 @@
       "id": "4",
       "type": "person",
       "pos": {
-        "x": 2334,
+        "x": 2357,
         "y": 131
       },
       "width": 512,
@@ -457,7 +457,7 @@
       "id": "5",
       "type": "person",
       "pos": {
-        "x": 2866,
+        "x": 2889,
         "y": 174
       },
       "width": 32,
