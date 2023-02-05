@@ -41,7 +41,7 @@
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2oracle/TestDelete/delete_icon.d2,1:2:9-1:26:33",
+                      "range": "d2/testdata/d2oracle/TestDelete/delete_icon.d2,1:8:15-1:26:33",
                       "key": {
                         "range": "d2/testdata/d2oracle/TestDelete/delete_icon.d2,1:2:9-1:6:13",
                         "path": [
@@ -91,6 +91,9 @@
           "value": ""
         },
         "style": {},
+        "link": {
+          "value": ""
+        },
         "near_key": null,
         "shape": {
           "value": ""
@@ -151,6 +154,9 @@
             "value": "y"
           },
           "style": {},
+          "link": {
+            "value": ""
+          },
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -209,7 +215,9 @@
             "value": "x"
           },
           "style": {},
-          "link": "https://google.com",
+          "link": {
+            "value": "https://google.com"
+          },
           "near_key": null,
           "shape": {
             "value": "rectangle"

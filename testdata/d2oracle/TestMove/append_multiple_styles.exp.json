@@ -225,6 +225,9 @@
           "value": ""
         },
         "style": {},
+        "link": {
+          "value": ""
+        },
         "near_key": null,
         "shape": {
           "value": ""
@@ -274,6 +277,9 @@
             "value": "d"
           },
           "style": {},
+          "link": {
+            "value": ""
+          },
           "near_key": null,
           "shape": {
             "value": "rectangle"
@@ -347,6 +353,9 @@
             "fill": {
               "value": "red"
             }
+          },
+          "link": {
+            "value": ""
           },
           "near_key": null,
           "shape": {
