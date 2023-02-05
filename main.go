@@ -60,7 +60,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		return err
 	}
 	layoutFlag := ms.Opts.String("D2_LAYOUT", "layout", "l", "dagre", `the layout engine used`)
-	themeFlag, err := ms.Opts.Int64("D2_THEME", "theme", "t", 0, "the diagram theme ID. For a list of available options, see https://oss.terrastruct.com/d2")
+	themeFlag, err := ms.Opts.Int64("D2_THEME", "theme", "t", 0, "the diagram theme ID")
 	if err != nil {
 		return err
 	}
@@ -102,6 +102,9 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 			return initPlaywright()
 		case "layout":
 			return layoutCmd(ctx, ms, ps)
+		case "themes":
+			themesCmd(ctx, ms)
+			return nil
 		case "fmt":
 			return fmtCmd(ctx, ms)
 		case "version":

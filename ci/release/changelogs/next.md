@@ -24,6 +24,7 @@
 - Improves package shape dimensions with short height. [#702](https://github.com/terrastruct/d2/pull/702)
 - Keeps person shape from becoming too distorted. [#702](https://github.com/terrastruct/d2/pull/702)
 - Ensures shapes with icons have enough padding for their labels. [#702](https://github.com/terrastruct/d2/pull/702)
+- `d2 themes` subcommand to list themes. [#760](https://github.com/terrastruct/d2/pull/760)
 
 #### Bugfixes ⛑️
 

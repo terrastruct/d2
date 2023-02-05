@@ -12,6 +12,7 @@ import (
 	"oss.terrastruct.com/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2plugin"
+	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 )
 
 func help(ms *xmain.State) {
@@ -33,9 +34,12 @@ Flags:
 Subcommands:
   %[1]s layout - Lists available layout engine options with short help
   %[1]s layout [name] - Display long help for a particular layout engine, including its configuration options
+  %[1]s themes - Lists available themes
   %[1]s fmt file.d2 ... - Format passed files
 
-See more docs and the source code at https://oss.terrastruct.com/d2
+See more docs and the source code at https://oss.terrastruct.com/d2.
+Hosted icons at https://icons.terrastruct.com.
+Playground runner at https://play.d2lang.com.
 `, filepath.Base(ms.Name), ms.Opts.Defaults())
 }
 
@@ -47,6 +51,10 @@ func layoutCmd(ctx context.Context, ms *xmain.State, ps []d2plugin.Plugin) error
 	} else {
 		return pluginSubcommand(ctx, ms, ps)
 	}
+}
+
+func themesCmd(ctx context.Context, ms *xmain.State) {
+	fmt.Fprintf(ms.Stdout, "Available themes:\n%s", d2themescatalog.CLIString())
 }
 
 func shortLayoutHelp(ctx context.Context, ms *xmain.State, ps []d2plugin.Plugin) error {
@@ -77,7 +85,7 @@ Example:
 Subcommands:
   %s layout [layout name] - Display long help for a particular layout engine, including its configuration options
 
-See more docs at https://oss.terrastruct.com/d2
+See more docs at https://d2lang.com/tour/layouts
 `, strings.Join(pluginLines, "\n"), ms.Name)
 	return nil
 }
