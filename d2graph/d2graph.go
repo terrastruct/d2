@@ -1241,17 +1241,25 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		s := shape.NewShape(shapeType, contentBox)
 
 		paddingX, paddingY := s.GetDefaultPadding()
-		if desiredWidth != 0 || desiredHeight != 0 {
+		if desiredWidth != 0 {
 			paddingX = 0.
+		}
+		if desiredHeight != 0 {
 			paddingY = 0.
-		} else {
-			// give shapes with icons extra padding to fit their label
-			if obj.Attributes.Icon != nil {
-				labelHeight := float64(labelDims.Height + INNER_LABEL_PADDING)
-				// Evenly pad enough to fit label above icon
+		}
+
+		// give shapes with icons extra padding to fit their label
+		if obj.Attributes.Icon != nil {
+			labelHeight := float64(labelDims.Height + INNER_LABEL_PADDING)
+			// Evenly pad enough to fit label above icon
+			if desiredWidth == 0 {
 				paddingX += labelHeight
+			}
+			if desiredHeight == 0 {
 				paddingY += labelHeight
 			}
+		}
+		if desiredWidth == 0 {
 			switch shapeType {
 			case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE, shape.IMAGE_TYPE:
 			default:
