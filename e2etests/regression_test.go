@@ -473,6 +473,14 @@ class2: class without rows {
 				}
 			},
 		},
+		{
+			name: "just-width",
+			script: `x: "teamwork: having someone to blame" {
+  width: 100
+}
+
+`,
+		},
 	}
 
 	runa(t, tcs)

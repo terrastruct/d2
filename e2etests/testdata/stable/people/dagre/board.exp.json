@@ -6,7 +6,7 @@
       "id": "a",
       "type": "person",
       "pos": {
-        "x": 1054,
+        "x": 1077,
         "y": 257
       },
       "width": 49,
@@ -47,7 +47,7 @@
       "id": "b",
       "type": "person",
       "pos": {
-        "x": 1163,
+        "x": 1186,
         "y": 257
       },
       "width": 64,
@@ -88,7 +88,7 @@
       "id": "c",
       "type": "person",
       "pos": {
-        "x": 1287,
+        "x": 1310,
         "y": 257
       },
       "width": 89,
@@ -129,7 +129,7 @@
       "id": "d",
       "type": "person",
       "pos": {
-        "x": 1436,
+        "x": 1459,
         "y": 243
       },
       "width": 142,
@@ -170,7 +170,7 @@
       "id": "e",
       "type": "person",
       "pos": {
-        "x": 1638,
+        "x": 1661,
         "y": 209
       },
       "width": 245,
@@ -211,7 +211,7 @@
       "id": "f",
       "type": "person",
       "pos": {
-        "x": 1943,
+        "x": 1966,
         "y": 139
       },
       "width": 453,
@@ -252,7 +252,7 @@
       "id": "g",
       "type": "person",
       "pos": {
-        "x": 2456,
+        "x": 2479,
         "y": 0
       },
       "width": 870,
@@ -294,10 +294,10 @@
       "type": "person",
       "pos": {
         "x": 0,
-        "y": 280
+        "y": 260
       },
-      "width": 18,
-      "height": 21,
+      "width": 41,
+      "height": 61,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -334,11 +334,11 @@
       "id": "2",
       "type": "person",
       "pos": {
-        "x": 78,
-        "y": 269
+        "x": 101,
+        "y": 260
       },
       "width": 64,
-      "height": 43,
+      "height": 61,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -375,7 +375,7 @@
       "id": "3",
       "type": "person",
       "pos": {
-        "x": 202,
+        "x": 225,
         "y": 248
       },
       "width": 128,
@@ -416,7 +416,7 @@
       "id": "4",
       "type": "person",
       "pos": {
-        "x": 390,
+        "x": 413,
         "y": 120
       },
       "width": 512,
@@ -457,7 +457,7 @@
       "id": "5",
       "type": "person",
       "pos": {
-        "x": 962,
+        "x": 985,
         "y": 162
       },
       "width": 32,
