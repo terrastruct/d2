@@ -467,7 +467,7 @@ func (obj *Object) Text() *d2target.MText {
 	fontSize := d2fonts.FONT_SIZE_M
 
 	if obj.Class != nil || obj.SQLTable != nil {
-		fontSize = d2fonts.FONT_SIZE_XL
+		fontSize = d2fonts.FONT_SIZE_L
 	}
 
 	if obj.OuterSequenceDiagram() == nil {

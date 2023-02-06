@@ -62,7 +62,7 @@
       ],
       "columns": null,
       "label": "",
-      "fontSize": 24,
+      "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
@@ -85,7 +85,7 @@
         "y": 468
       },
       "width": 512,
-      "height": 216,
+      "height": 186,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -246,15 +246,15 @@
         }
       ],
       "label": "",
-      "fontSize": 24,
+      "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 69,
-      "labelHeight": 36,
+      "labelWidth": 59,
+      "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -266,7 +266,7 @@
       "type": "code",
       "pos": {
         "x": 0,
-        "y": 784
+        "y": 754
       },
       "width": 512,
       "height": 65,
@@ -306,7 +306,7 @@
       "type": "package",
       "pos": {
         "x": 0,
-        "y": 949
+        "y": 919
       },
       "width": 512,
       "height": 100,
@@ -346,7 +346,7 @@
       "type": "rectangle",
       "pos": {
         "x": 206,
-        "y": 1149
+        "y": 1119
       },
       "width": 100,
       "height": 100,
@@ -458,19 +458,19 @@
       "route": [
         {
           "x": 256,
-          "y": 684
+          "y": 654
         },
         {
           "x": 256,
-          "y": 724
+          "y": 694
         },
         {
           "x": 256,
-          "y": 744
+          "y": 714
         },
         {
           "x": 256,
-          "y": 784
+          "y": 754
         }
       ],
       "isCurve": true,
@@ -506,19 +506,19 @@
       "route": [
         {
           "x": 256,
-          "y": 849
+          "y": 819
         },
         {
           "x": 256,
-          "y": 889
+          "y": 859
         },
         {
           "x": 256,
-          "y": 913
+          "y": 883
         },
         {
           "x": 256,
-          "y": 969
+          "y": 939
         }
       ],
       "isCurve": true,
@@ -554,19 +554,19 @@
       "route": [
         {
           "x": 256,
-          "y": 1049
+          "y": 1019
         },
         {
           "x": 256,
-          "y": 1089
+          "y": 1059
         },
         {
           "x": 256,
-          "y": 1109
+          "y": 1079
         },
         {
           "x": 256,
-          "y": 1149
+          "y": 1119
         }
       ],
       "isCurve": true,

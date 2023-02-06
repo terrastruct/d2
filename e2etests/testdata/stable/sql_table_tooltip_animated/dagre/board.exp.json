@@ -10,7 +10,7 @@
         "y": 0
       },
       "width": 60,
-      "height": 82,
+      "height": 72,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -59,15 +59,15 @@
         }
       ],
       "label": "x",
-      "fontSize": 24,
+      "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 14,
-      "labelHeight": 36,
+      "labelWidth": 12,
+      "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -79,10 +79,10 @@
       "type": "sql_table",
       "pos": {
         "x": 0,
-        "y": 182
+        "y": 172
       },
       "width": 60,
-      "height": 82,
+      "height": 72,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -131,15 +131,15 @@
         }
       ],
       "label": "a",
-      "fontSize": 24,
+      "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 36,
+      "labelWidth": 11,
+      "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -175,19 +175,19 @@
       "route": [
         {
           "x": 30,
-          "y": 82
+          "y": 72
         },
         {
           "x": 30,
-          "y": 122
+          "y": 112
         },
         {
           "x": 30,
-          "y": 142
+          "y": 132
         },
         {
           "x": 30,
-          "y": 182
+          "y": 172
         }
       ],
       "isCurve": true,

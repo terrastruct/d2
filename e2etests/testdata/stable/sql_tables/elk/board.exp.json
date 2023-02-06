@@ -10,7 +10,7 @@
         "y": 12
       },
       "width": 268,
-      "height": 246,
+      "height": 216,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -171,15 +171,15 @@
         }
       ],
       "label": "users",
-      "fontSize": 24,
+      "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 65,
-      "labelHeight": 36,
+      "labelWidth": 56,
+      "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -191,10 +191,10 @@
       "type": "sql_table",
       "pos": {
         "x": 300,
-        "y": 53
+        "y": 48
       },
       "width": 164,
-      "height": 205,
+      "height": 180,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -327,15 +327,15 @@
         }
       ],
       "label": "products",
-      "fontSize": 24,
+      "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 110,
-      "labelHeight": 36,
+      "labelWidth": 94,
+      "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -347,10 +347,10 @@
       "type": "sql_table",
       "pos": {
         "x": 300,
-        "y": 358
+        "y": 328
       },
       "width": 164,
-      "height": 164,
+      "height": 144,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -455,15 +455,15 @@
         }
       ],
       "label": "orders",
-      "fontSize": 24,
+      "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 80,
-      "labelHeight": 36,
+      "labelWidth": 69,
+      "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -475,10 +475,10 @@
       "type": "sql_table",
       "pos": {
         "x": 484,
-        "y": 53
+        "y": 48
       },
       "width": 244,
-      "height": 205,
+      "height": 180,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -611,15 +611,15 @@
         }
       ],
       "label": "shipments",
-      "fontSize": 24,
+      "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 130,
-      "labelHeight": 36,
+      "labelWidth": 111,
+      "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -655,19 +655,19 @@
       "route": [
         {
           "x": 146,
-          "y": 258
+          "y": 228
         },
         {
           "x": 146,
-          "y": 308
+          "y": 278
         },
         {
           "x": 341,
-          "y": 308
+          "y": 278
         },
         {
           "x": 341,
-          "y": 358
+          "y": 328
         }
       ],
       "animated": false,
@@ -702,11 +702,11 @@
       "route": [
         {
           "x": 382,
-          "y": 258
+          "y": 228
         },
         {
           "x": 382,
-          "y": 358
+          "y": 328
         }
       ],
       "animated": false,
@@ -741,19 +741,19 @@
       "route": [
         {
           "x": 606,
-          "y": 258
+          "y": 228
         },
         {
           "x": 606,
-          "y": 308
+          "y": 278
         },
         {
           "x": 423,
-          "y": 308
+          "y": 278
         },
         {
           "x": 423,
-          "y": 358
+          "y": 328
         }
       ],
       "animated": false,
