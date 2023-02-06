@@ -136,10 +136,10 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	case d2target.ShapeClass:
 		shape.Class = *obj.Class
 		// The label is the header for classes and tables, which is set in client to be 4 px larger than the object's set font size
-		shape.FontSize -= 4
+		shape.FontSize -= d2target.HeaderFontAdd
 	case d2target.ShapeSQLTable:
 		shape.SQLTable = *obj.SQLTable
-		shape.FontSize -= 4
+		shape.FontSize -= d2target.HeaderFontAdd
 	}
 	shape.Label = text.Text
 	shape.LabelWidth = text.Dimensions.Width

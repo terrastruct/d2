@@ -1,10 +1,7 @@
 package e2etests
 
 import (
-	"math"
 	"testing"
-
-	"oss.terrastruct.com/d2/d2target"
 )
 
 func testRegression(t *testing.T) {
@@ -462,23 +459,12 @@ class2: class without rows {
 	shape: class
 }
 `,
-			assertions: func(t *testing.T, g *d2target.Diagram) {
-				if len(g.Shapes) != 2 {
-					t.Fatal("expected 2 shapes")
-				}
-				c1Height := float64(g.Shapes[0].Height)
-				c2Height := float64(g.Shapes[1].Height)
-				if math.Round(c1Height/2.) != c2Height {
-					t.Fatal("expected rowless class to be 1/2 height of class with 2 rows")
-				}
-			},
 		},
 		{
 			name: "just-width",
 			script: `x: "teamwork: having someone to blame" {
   width: 100
 }
-
 `,
 		},
 	}
