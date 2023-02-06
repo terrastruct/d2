@@ -477,7 +477,7 @@ func (obj *Object) Text() *d2target.MText {
 	}
 	// Class and Table objects have Label set to header
 	if obj.Class != nil || obj.SQLTable != nil {
-		fontSize = d2fonts.FONT_SIZE_XL
+		fontSize += d2target.HeaderFontAdd
 	}
 	if obj.Class != nil {
 		isBold = false
@@ -836,10 +836,16 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 		maxTypeWidth := 0
 		constraintWidth := 0
 
+		colFontSize := d2fonts.FONT_SIZE_L
+		if obj.Attributes.Style.FontSize != nil {
+			colFontSize, _ = strconv.Atoi(obj.Attributes.Style.FontSize.Value)
+		}
+
 		for i := range obj.SQLTable.Columns {
 			// Note: we want to set dimensions of actual column not the for loop copy of the struct
 			c := &obj.SQLTable.Columns[i]
-			ctexts := c.Texts()
+
+			ctexts := c.Texts(colFontSize)
 
 			nameDims := GetTextDimensions(mtexts, ruler, ctexts[0], fontFamily)
 			if nameDims == nil {
@@ -1334,8 +1340,12 @@ func (g *Graph) Texts() []*d2target.MText {
 				texts = appendTextDedup(texts, method.Text())
 			}
 		} else if obj.SQLTable != nil {
+			colFontSize := d2fonts.FONT_SIZE_L
+			if obj.Attributes.Style.FontSize != nil {
+				colFontSize, _ = strconv.Atoi(obj.Attributes.Style.FontSize.Value)
+			}
 			for _, column := range obj.SQLTable.Columns {
-				for _, t := range column.Texts() {
+				for _, t := range column.Texts(colFontSize) {
 					texts = appendTextDedup(texts, t)
 				}
 			}

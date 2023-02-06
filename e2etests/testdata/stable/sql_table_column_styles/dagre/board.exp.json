@@ -1,0 +1,207 @@
+{
+  "name": "",
+  "fontFamily": "SourceSansPro",
+  "shapes": [
+    {
+      "id": "Humor in the Court",
+      "type": "sql_table",
+      "pos": {
+        "x": 0,
+        "y": 18
+      },
+      "width": 678,
+      "height": 108,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "red",
+      "stroke": "lightgray",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": [
+        {
+          "name": {
+            "label": "Could you see him from where you were standing?",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 418,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "I could see his head.",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 166,
+            "labelHeight": 26
+          },
+          "constraint": "",
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "And where was his head?",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 208,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "Just above his shoulders.",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 210,
+            "labelHeight": 26
+          },
+          "constraint": "",
+          "reference": ""
+        }
+      ],
+      "label": "Humor in the Court",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "orange",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 202,
+      "labelHeight": 31,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "#0D32B2",
+      "secondaryAccentColor": "#4A6FF3",
+      "neutralAccentColor": "#676C7E"
+    },
+    {
+      "id": "Humor in the Court2",
+      "type": "sql_table",
+      "pos": {
+        "x": 738,
+        "y": 0
+      },
+      "width": 992,
+      "height": 144,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "red",
+      "stroke": "lightgray",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": [
+        {
+          "name": {
+            "label": "Could you see him from where you were standing?",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 627,
+            "labelHeight": 38
+          },
+          "type": {
+            "label": "I could see his head.",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 248,
+            "labelHeight": 38
+          },
+          "constraint": "",
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "And where was his head?",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 312,
+            "labelHeight": 38
+          },
+          "type": {
+            "label": "Just above his shoulders.",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 315,
+            "labelHeight": 38
+          },
+          "constraint": "",
+          "reference": ""
+        }
+      ],
+      "label": "Humor in the Court2",
+      "fontSize": 30,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "orange",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 303,
+      "labelHeight": 43,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "#0D32B2",
+      "secondaryAccentColor": "#4A6FF3",
+      "neutralAccentColor": "#676C7E"
+    }
+  ],
+  "connections": []
+}

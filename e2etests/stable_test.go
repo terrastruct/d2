@@ -1841,6 +1841,29 @@ x.y -> a.b: {
 `,
 		},
 		{
+			name: "sql_table_column_styles",
+			script: `Humor in the Court: {
+  shape: sql_table
+	Could you see him from where you were standing?: "I could see his head."
+	And where was his head?: Just above his shoulders.
+  style.fill: red
+  style.stroke: lightgray
+  style.font-color: orange
+  style.font-size: 20
+}
+
+Humor in the Court2: {
+  shape: sql_table
+	Could you see him from where you were standing?: "I could see his head."
+	And where was his head?: Just above his shoulders.
+  style.fill: red
+  style.stroke: lightgray
+  style.font-color: orange
+  style.font-size: 30
+}
+`,
+		},
+		{
 			name: "near-alone",
 			script: `
 x: {
