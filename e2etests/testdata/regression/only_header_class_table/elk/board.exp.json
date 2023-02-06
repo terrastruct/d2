@@ -9,8 +9,8 @@
         "x": 12,
         "y": 12
       },
-      "width": 1082,
-      "height": 92,
+      "width": 918,
+      "height": 82,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 977,
-      "labelHeight": 31,
+      "labelWidth": 813,
+      "labelHeight": 26,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -49,11 +49,11 @@
       "id": "table",
       "type": "sql_table",
       "pos": {
-        "x": 352,
-        "y": 204
+        "x": 310,
+        "y": 194
       },
-      "width": 401,
-      "height": 36,
+      "width": 321,
+      "height": 31,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -80,8 +80,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 356,
-      "labelHeight": 31,
+      "labelWidth": 296,
+      "labelHeight": 26,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -92,11 +92,11 @@
       "id": "table with short col",
       "type": "sql_table",
       "pos": {
-        "x": 352,
-        "y": 340
+        "x": 310,
+        "y": 325
       },
-      "width": 401,
-      "height": 72,
+      "width": 321,
+      "height": 62,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -152,8 +152,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 356,
-      "labelHeight": 31,
+      "labelWidth": 296,
+      "labelHeight": 26,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -188,12 +188,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 553,
-          "y": 104
+          "x": 471,
+          "y": 94
         },
         {
-          "x": 553,
-          "y": 204
+          "x": 471,
+          "y": 194
         }
       ],
       "animated": false,
@@ -227,12 +227,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 553,
-          "y": 240
+          "x": 471,
+          "y": 225
         },
         {
-          "x": 553,
-          "y": 340
+          "x": 471,
+          "y": 325
         }
       ],
       "animated": false,

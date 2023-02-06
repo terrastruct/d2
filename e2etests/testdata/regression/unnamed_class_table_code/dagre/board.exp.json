@@ -85,7 +85,7 @@
         "y": 468
       },
       "width": 208,
-      "height": 186,
+      "height": 156,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -253,8 +253,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 59,
-      "labelHeight": 31,
+      "labelWidth": 49,
+      "labelHeight": 26,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -266,7 +266,7 @@
       "type": "code",
       "pos": {
         "x": 113,
-        "y": 754
+        "y": 724
       },
       "width": 196,
       "height": 70,
@@ -378,19 +378,19 @@
       "route": [
         {
           "x": 211,
-          "y": 654
+          "y": 624
         },
         {
           "x": 211,
-          "y": 694
+          "y": 664
         },
         {
           "x": 211,
-          "y": 714
+          "y": 684
         },
         {
           "x": 211,
-          "y": 754
+          "y": 724
         }
       ],
       "isCurve": true,

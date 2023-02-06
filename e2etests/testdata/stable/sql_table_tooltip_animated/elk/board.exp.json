@@ -10,7 +10,7 @@
         "y": 12
       },
       "width": 60,
-      "height": 72,
+      "height": 62,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -66,8 +66,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 12,
-      "labelHeight": 31,
+      "labelWidth": 10,
+      "labelHeight": 26,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -79,10 +79,10 @@
       "type": "sql_table",
       "pos": {
         "x": 12,
-        "y": 184
+        "y": 174
       },
       "width": 60,
-      "height": 72,
+      "height": 62,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -138,8 +138,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 11,
-      "labelHeight": 31,
+      "labelWidth": 10,
+      "labelHeight": 26,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -175,11 +175,11 @@
       "route": [
         {
           "x": 42,
-          "y": 84
+          "y": 74
         },
         {
           "x": 42,
-          "y": 184
+          "y": 174
         }
       ],
       "animated": true,

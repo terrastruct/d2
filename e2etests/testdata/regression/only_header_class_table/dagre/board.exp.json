@@ -9,8 +9,8 @@
         "x": 0,
         "y": 0
       },
-      "width": 1082,
-      "height": 92,
+      "width": 918,
+      "height": 82,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 977,
-      "labelHeight": 31,
+      "labelWidth": 813,
+      "labelHeight": 26,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -49,11 +49,11 @@
       "id": "table",
       "type": "sql_table",
       "pos": {
-        "x": 341,
-        "y": 192
+        "x": 299,
+        "y": 182
       },
-      "width": 401,
-      "height": 36,
+      "width": 321,
+      "height": 31,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -80,8 +80,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 356,
-      "labelHeight": 31,
+      "labelWidth": 296,
+      "labelHeight": 26,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -92,11 +92,11 @@
       "id": "table with short col",
       "type": "sql_table",
       "pos": {
-        "x": 341,
-        "y": 328
+        "x": 299,
+        "y": 313
       },
-      "width": 401,
-      "height": 72,
+      "width": 321,
+      "height": 62,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -152,8 +152,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 356,
-      "labelHeight": 31,
+      "labelWidth": 296,
+      "labelHeight": 26,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -188,20 +188,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 541,
-          "y": 92
+          "x": 459,
+          "y": 82
         },
         {
-          "x": 541,
-          "y": 132
+          "x": 459,
+          "y": 122
         },
         {
-          "x": 541,
-          "y": 152
+          "x": 459,
+          "y": 142
         },
         {
-          "x": 541,
-          "y": 192
+          "x": 459,
+          "y": 182
         }
       ],
       "isCurve": true,
@@ -236,20 +236,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 541,
-          "y": 228
+          "x": 459,
+          "y": 213
         },
         {
-          "x": 541,
-          "y": 268
+          "x": 459,
+          "y": 253
         },
         {
-          "x": 541,
-          "y": 288
+          "x": 459,
+          "y": 273
         },
         {
-          "x": 541,
-          "y": 328
+          "x": 459,
+          "y": 313
         }
       ],
       "isCurve": true,

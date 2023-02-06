@@ -10,7 +10,7 @@
         "y": 12
       },
       "width": 268,
-      "height": 216,
+      "height": 186,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -178,8 +178,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 56,
-      "labelHeight": 31,
+      "labelWidth": 47,
+      "labelHeight": 26,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -191,10 +191,10 @@
       "type": "sql_table",
       "pos": {
         "x": 300,
-        "y": 48
+        "y": 43
       },
       "width": 164,
-      "height": 180,
+      "height": 155,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -334,8 +334,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 94,
-      "labelHeight": 31,
+      "labelWidth": 79,
+      "labelHeight": 26,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -347,10 +347,10 @@
       "type": "sql_table",
       "pos": {
         "x": 300,
-        "y": 328
+        "y": 298
       },
       "width": 164,
-      "height": 144,
+      "height": 124,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -462,8 +462,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 69,
-      "labelHeight": 31,
+      "labelWidth": 58,
+      "labelHeight": 26,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -475,10 +475,10 @@
       "type": "sql_table",
       "pos": {
         "x": 484,
-        "y": 48
+        "y": 43
       },
       "width": 244,
-      "height": 180,
+      "height": 155,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -618,8 +618,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 111,
-      "labelHeight": 31,
+      "labelWidth": 93,
+      "labelHeight": 26,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -655,19 +655,19 @@
       "route": [
         {
           "x": 146,
-          "y": 228
+          "y": 198
         },
         {
           "x": 146,
-          "y": 278
+          "y": 248
         },
         {
           "x": 341,
-          "y": 278
+          "y": 248
         },
         {
           "x": 341,
-          "y": 328
+          "y": 298
         }
       ],
       "animated": false,
@@ -702,11 +702,11 @@
       "route": [
         {
           "x": 382,
-          "y": 228
+          "y": 198
         },
         {
           "x": 382,
-          "y": 328
+          "y": 298
         }
       ],
       "animated": false,
@@ -741,19 +741,19 @@
       "route": [
         {
           "x": 606,
-          "y": 228
+          "y": 198
         },
         {
           "x": 606,
-          "y": 278
+          "y": 248
         },
         {
           "x": 423,
-          "y": 278
+          "y": 248
         },
         {
           "x": 423,
-          "y": 328
+          "y": 298
         }
       ],
       "animated": false,

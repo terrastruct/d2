@@ -10,7 +10,7 @@
         "y": 0
       },
       "width": 60,
-      "height": 72,
+      "height": 62,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -66,8 +66,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 12,
-      "labelHeight": 31,
+      "labelWidth": 10,
+      "labelHeight": 26,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -79,10 +79,10 @@
       "type": "sql_table",
       "pos": {
         "x": 0,
-        "y": 172
+        "y": 162
       },
       "width": 60,
-      "height": 72,
+      "height": 62,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -138,8 +138,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 11,
-      "labelHeight": 31,
+      "labelWidth": 10,
+      "labelHeight": 26,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -175,19 +175,19 @@
       "route": [
         {
           "x": 30,
-          "y": 72
+          "y": 62
         },
         {
           "x": 30,
-          "y": 112
+          "y": 102
         },
         {
           "x": 30,
-          "y": 132
+          "y": 122
         },
         {
           "x": 30,
-          "y": 172
+          "y": 162
         }
       ],
       "isCurve": true,
