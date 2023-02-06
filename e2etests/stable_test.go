@@ -2000,9 +2000,9 @@ x -> y
 			name: "unnamed_only_width",
 			script: `
 
-class -> users -> code -> package -> no width
+class2 -> users -> code -> package -> no width
 
-class: "" {
+class2: "" {
 	shape: class
 	-num: int
 	-timeout: int
@@ -2032,7 +2032,7 @@ package: "" { shape: package }
 no width: ""
 
 
-class.width: 512
+class2.width: 512
 users.width: 512
 code.width: 512
 package.width: 512
@@ -2042,9 +2042,9 @@ package.width: 512
 			name: "unnamed_only_height",
 			script: `
 
-class -> users -> code -> package -> no height
+class2 -> users -> code -> package -> no height
 
-class: "" {
+class2: "" {
 	shape: class
 	-num: int
 	-timeout: int
@@ -2074,7 +2074,7 @@ package: "" { shape: package }
 no height: ""
 
 
-class.height: 512
+class2.height: 512
 users.height: 512
 code.height: 512
 package.height: 512
@@ -2369,6 +2369,29 @@ y: {
 z: {
 	near: center-left
 }
+`,
+		},
+		{
+			name: "classes",
+			script: `classes: {
+  dragon_ball: {
+    label: ""
+    shape: circle
+    style.fill: orange
+		style.stroke-width: 0
+		width: 50
+  }
+  path: {
+    label: "then"
+    style.stroke-width: 4
+  }
+}
+nostar: { class: dragon_ball }
+1star: { label: "*"; class: dragon_ball }
+2star: { label: "**"; class: dragon_ball }
+
+nostar -> 1star: { class: path }
+1star -> 2star: { class: path }
 `,
 		},
 		{

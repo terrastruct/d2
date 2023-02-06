@@ -22,10 +22,48 @@ func Compile(ast *d2ast.Map) (*Map, error) {
 	m.initRoot()
 	m.parent.(*Field).References[0].Context.Scope = ast
 	c.compileMap(m, ast)
+	c.compileClasses(m)
 	if !c.err.Empty() {
 		return nil, c.err
 	}
 	return m, nil
+}
+
+func (c *compiler) compileClasses(m *Map) {
+	classes := m.GetField("classes")
+	if classes == nil || classes.Map() == nil {
+		return
+	}
+
+	layersField := m.GetField("layers")
+	if layersField == nil {
+		return
+	}
+	layers := layersField.Map()
+	if layers == nil {
+		return
+	}
+
+	for _, lf := range layers.Fields {
+		if lf.Map() == nil || lf.Primary() != nil {
+			c.errorf(lf.References[0].Context.Key, "invalid layer")
+			continue
+		}
+		l := lf.Map()
+		lClasses := l.GetField("classes")
+
+		if lClasses == nil {
+			lClasses = classes.Copy(l).(*Field)
+			l.Fields = append(l.Fields, lClasses)
+		} else {
+			base := classes.Copy(l).(*Field)
+			OverlayMap(base.Map(), lClasses.Map())
+			l.DeleteField("classes")
+			l.Fields = append(l.Fields, base)
+		}
+
+		c.compileClasses(l)
+	}
 }
 
 func (c *compiler) overlay(base *Map, f *Field) {
@@ -103,6 +141,10 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 			}
 		}
 		c.compileMap(f.Map(), refctx.Key.Value.Map)
+		switch NodeBoardKind(f) {
+		case BoardScenario, BoardStep:
+			c.compileClasses(f.Map())
+		}
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 		// If the link is a board, we need to transform it into an absolute path.
 		if f.Name == "link" {

@@ -116,8 +116,7 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 }
 
 type compiler struct {
-	inEdgeGroup bool
-	err         d2parser.ParseError
+	err d2parser.ParseError
 }
 
 func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
@@ -125,6 +124,18 @@ func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 }
 
 func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
+	class := m.GetField("class")
+	if class != nil {
+		className := class.Primary()
+		if className == nil {
+			c.errorf(class.LastRef().AST(), "class missing value")
+		} else {
+			classMap := m.GetClassMap(className.String())
+			if classMap != nil {
+				c.compileMap(obj, classMap)
+			}
+		}
+	}
 	shape := m.GetField("shape")
 	if shape != nil {
 		c.compileField(obj, shape)
@@ -159,7 +170,27 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 		return
 	}
 	_, isReserved := d2graph.SimpleReservedKeywords[keyword]
-	if isReserved {
+	if f.Name == "classes" {
+		if f.Map() != nil {
+			if len(f.Map().Edges) > 0 {
+				c.errorf(f.Map().Edges[0].LastRef().AST(), "classes cannot contain an edge")
+			}
+			for _, classesField := range f.Map().Fields {
+				if classesField.Map() == nil {
+					continue
+				}
+				for _, cf := range classesField.Map().Fields {
+					if _, ok := d2graph.ReservedKeywords[cf.Name]; !ok {
+						c.errorf(cf.LastRef().AST(), "%s is an invalid class field, must be reserved keyword", cf.Name)
+					}
+					if cf.Name == "class" {
+						c.errorf(cf.LastRef().AST(), `"class" cannot appear within "classes"`)
+					}
+				}
+			}
+		}
+		return
+	} else if isReserved {
 		c.compileReserved(obj.Attributes, f)
 		return
 	} else if f.Name == "style" {
@@ -389,6 +420,9 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.GridColumns = &d2graph.Scalar{}
 		attrs.GridColumns.Value = scalar.ScalarString()
 		attrs.GridColumns.MapKey = f.LastPrimaryKey()
+	case "class":
+		attrs.Classes = append(attrs.Classes, scalar.ScalarString())
+	case "classes":
 	}
 
 	if attrs.Link != nil && attrs.Tooltip != nil {
@@ -480,14 +514,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 		c.compileLabel(edge.Attributes, e)
 	}
 	if e.Map() != nil {
-		for _, f := range e.Map().Fields {
-			_, ok := d2graph.ReservedKeywords[f.Name]
-			if !ok {
-				c.errorf(f.References[0].AST(), `edge map keys must be reserved keywords`)
-				continue
-			}
-			c.compileEdgeField(edge, f)
-		}
+		c.compileEdgeMap(edge, e.Map())
 	}
 
 	edge.Attributes.Label.MapKey = e.LastPrimaryKey()
@@ -501,6 +528,29 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 			Scope:           er.Context.Scope,
 			ScopeObj:        scopeObj,
 		})
+	}
+}
+
+func (c *compiler) compileEdgeMap(edge *d2graph.Edge, m *d2ir.Map) {
+	class := m.GetField("class")
+	if class != nil {
+		className := class.Primary()
+		if className == nil {
+			c.errorf(class.LastRef().AST(), "class missing value")
+		} else {
+			classMap := m.GetClassMap(className.String())
+			if classMap != nil {
+				c.compileEdgeMap(edge, classMap)
+			}
+		}
+	}
+	for _, f := range m.Fields {
+		_, ok := d2graph.ReservedKeywords[f.Name]
+		if !ok {
+			c.errorf(f.References[0].AST(), `edge map keys must be reserved keywords`)
+			continue
+		}
+		c.compileEdgeField(edge, f)
 	}
 }
 

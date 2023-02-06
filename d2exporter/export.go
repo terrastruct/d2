@@ -129,6 +129,7 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	shape := d2target.BaseShape()
 	shape.SetType(obj.Attributes.Shape.Value)
 	shape.ID = obj.AbsID()
+	shape.Classes = obj.Attributes.Classes
 	shape.ZIndex = obj.ZIndex
 	shape.Level = int(obj.Level())
 	shape.Pos = d2target.NewPoint(int(obj.TopLeft.X), int(obj.TopLeft.Y))
@@ -194,6 +195,7 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection {
 	connection := d2target.BaseConnection()
 	connection.ID = edge.AbsID()
+	connection.Classes = edge.Attributes.Classes
 	connection.ZIndex = edge.ZIndex
 	text := edge.Text()
 

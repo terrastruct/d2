@@ -1,0 +1,504 @@
+{
+  "fields": [
+    {
+      "name": "x",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/classes/basic.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/classes/basic.d2,0:0:0-0:1:1",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/classes/basic.d2,0:0:0-0:1:1",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/classes/basic.d2,0:0:0-0:1:1",
+              "key": {
+                "range": "TestCompile/classes/basic.d2,0:0:0-0:1:1",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/classes/basic.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "classes",
+      "composite": {
+        "fields": [
+          {
+            "name": "mango",
+            "composite": {
+              "fields": [
+                {
+                  "name": "style",
+                  "composite": {
+                    "fields": [
+                      {
+                        "name": "fill",
+                        "primary": {
+                          "value": {
+                            "range": "TestCompile/classes/basic.d2,3:16:40-3:22:46",
+                            "value": [
+                              {
+                                "string": "orange",
+                                "raw_string": "orange"
+                              }
+                            ]
+                          }
+                        },
+                        "references": [
+                          {
+                            "string": {
+                              "range": "TestCompile/classes/basic.d2,3:10:34-3:14:38",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/classes/basic.d2,3:4:28-3:14:38",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/basic.d2,3:4:28-3:9:33",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/basic.d2,3:10:34-3:14:38",
+                                    "value": [
+                                      {
+                                        "string": "fill",
+                                        "raw_string": "fill"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/classes/basic.d2,3:4:28-3:22:46",
+                                "key": {
+                                  "range": "TestCompile/classes/basic.d2,3:4:28-3:14:38",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/classes/basic.d2,3:4:28-3:9:33",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/classes/basic.d2,3:10:34-3:14:38",
+                                        "value": [
+                                          {
+                                            "string": "fill",
+                                            "raw_string": "fill"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/basic.d2,3:16:40-3:22:46",
+                                    "value": [
+                                      {
+                                        "string": "orange",
+                                        "raw_string": "orange"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "edges": null
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/classes/basic.d2,3:4:28-3:9:33",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/classes/basic.d2,3:4:28-3:14:38",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/classes/basic.d2,3:4:28-3:9:33",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/classes/basic.d2,3:10:34-3:14:38",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/classes/basic.d2,3:4:28-3:22:46",
+                          "key": {
+                            "range": "TestCompile/classes/basic.d2,3:4:28-3:14:38",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/basic.d2,3:4:28-3:9:33",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/basic.d2,3:10:34-3:14:38",
+                                  "value": [
+                                    {
+                                      "string": "fill",
+                                      "raw_string": "fill"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/classes/basic.d2,3:16:40-3:22:46",
+                              "value": [
+                                {
+                                  "string": "orange",
+                                  "raw_string": "orange"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/classes/basic.d2,2:2:15-2:7:20",
+                  "value": [
+                    {
+                      "string": "mango",
+                      "raw_string": "mango"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/classes/basic.d2,2:2:15-2:7:20",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/classes/basic.d2,2:2:15-2:7:20",
+                        "value": [
+                          {
+                            "string": "mango",
+                            "raw_string": "mango"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/classes/basic.d2,2:2:15-4:3:50",
+                    "key": {
+                      "range": "TestCompile/classes/basic.d2,2:2:15-2:7:20",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/classes/basic.d2,2:2:15-2:7:20",
+                            "value": [
+                              {
+                                "string": "mango",
+                                "raw_string": "mango"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/classes/basic.d2,2:9:22-4:2:49",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/classes/basic.d2,3:4:28-3:22:46",
+                              "key": {
+                                "range": "TestCompile/classes/basic.d2,3:4:28-3:14:38",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/basic.d2,3:4:28-3:9:33",
+                                      "value": [
+                                        {
+                                          "string": "style",
+                                          "raw_string": "style"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/basic.d2,3:10:34-3:14:38",
+                                      "value": [
+                                        {
+                                          "string": "fill",
+                                          "raw_string": "fill"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/basic.d2,3:16:40-3:22:46",
+                                  "value": [
+                                    {
+                                      "string": "orange",
+                                      "raw_string": "orange"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/classes/basic.d2,1:0:2-1:7:9",
+            "value": [
+              {
+                "string": "classes",
+                "raw_string": "classes"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/classes/basic.d2,1:0:2-1:7:9",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/classes/basic.d2,1:0:2-1:7:9",
+                  "value": [
+                    {
+                      "string": "classes",
+                      "raw_string": "classes"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/classes/basic.d2,1:0:2-5:1:52",
+              "key": {
+                "range": "TestCompile/classes/basic.d2,1:0:2-1:7:9",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/classes/basic.d2,1:0:2-1:7:9",
+                      "value": [
+                        {
+                          "string": "classes",
+                          "raw_string": "classes"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/classes/basic.d2,1:9:11-5:0:51",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/classes/basic.d2,2:2:15-4:3:50",
+                        "key": {
+                          "range": "TestCompile/classes/basic.d2,2:2:15-2:7:20",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/classes/basic.d2,2:2:15-2:7:20",
+                                "value": [
+                                  {
+                                    "string": "mango",
+                                    "raw_string": "mango"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "map": {
+                            "range": "TestCompile/classes/basic.d2,2:9:22-4:2:49",
+                            "nodes": [
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/classes/basic.d2,3:4:28-3:22:46",
+                                  "key": {
+                                    "range": "TestCompile/classes/basic.d2,3:4:28-3:14:38",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/basic.d2,3:4:28-3:9:33",
+                                          "value": [
+                                            {
+                                              "string": "style",
+                                              "raw_string": "style"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/basic.d2,3:10:34-3:14:38",
+                                          "value": [
+                                            {
+                                              "string": "fill",
+                                              "raw_string": "fill"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/basic.d2,3:16:40-3:22:46",
+                                      "value": [
+                                        {
+                                          "string": "orange",
+                                          "raw_string": "orange"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": null
+}
