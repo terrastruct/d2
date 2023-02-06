@@ -795,17 +795,22 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 	case d2target.ShapeClass:
 		maxWidth := go2.Max(12, labelDims.Width)
 
+		fontSize := d2fonts.FONT_SIZE_L
+		if obj.Attributes.Style.FontSize != nil {
+			fontSize, _ = strconv.Atoi(obj.Attributes.Style.FontSize.Value)
+		}
+
 		for _, f := range obj.Class.Fields {
-			fdims := GetTextDimensions(mtexts, ruler, f.Text(), go2.Pointer(d2fonts.SourceCodePro))
+			fdims := GetTextDimensions(mtexts, ruler, f.Text(fontSize), go2.Pointer(d2fonts.SourceCodePro))
 			if fdims == nil {
-				return nil, fmt.Errorf("dimensions for class field %#v not found", f.Text())
+				return nil, fmt.Errorf("dimensions for class field %#v not found", f.Text(fontSize))
 			}
 			maxWidth = go2.Max(maxWidth, fdims.Width)
 		}
 		for _, m := range obj.Class.Methods {
-			mdims := GetTextDimensions(mtexts, ruler, m.Text(), go2.Pointer(d2fonts.SourceCodePro))
+			mdims := GetTextDimensions(mtexts, ruler, m.Text(fontSize), go2.Pointer(d2fonts.SourceCodePro))
 			if mdims == nil {
-				return nil, fmt.Errorf("dimensions for class method %#v not found", m.Text())
+				return nil, fmt.Errorf("dimensions for class method %#v not found", m.Text(fontSize))
 			}
 			maxWidth = go2.Max(maxWidth, mdims.Width)
 		}
@@ -820,9 +825,9 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 		// All rows should be the same height
 		var anyRowText *d2target.MText
 		if len(obj.Class.Fields) > 0 {
-			anyRowText = obj.Class.Fields[0].Text()
+			anyRowText = obj.Class.Fields[0].Text(fontSize)
 		} else if len(obj.Class.Methods) > 0 {
-			anyRowText = obj.Class.Methods[0].Text()
+			anyRowText = obj.Class.Methods[0].Text(fontSize)
 		}
 		if anyRowText != nil {
 			rowHeight := GetTextDimensions(mtexts, ruler, anyRowText, go2.Pointer(d2fonts.SourceCodePro)).Height + d2target.VerticalPadding
@@ -1333,11 +1338,15 @@ func (g *Graph) Texts() []*d2target.MText {
 			texts = appendTextDedup(texts, obj.Text())
 		}
 		if obj.Class != nil {
+			fontSize := d2fonts.FONT_SIZE_L
+			if obj.Attributes.Style.FontSize != nil {
+				fontSize, _ = strconv.Atoi(obj.Attributes.Style.FontSize.Value)
+			}
 			for _, field := range obj.Class.Fields {
-				texts = appendTextDedup(texts, field.Text())
+				texts = appendTextDedup(texts, field.Text(fontSize))
 			}
 			for _, method := range obj.Class.Methods {
-				texts = appendTextDedup(texts, method.Text())
+				texts = appendTextDedup(texts, method.Text(fontSize))
 			}
 		} else if obj.SQLTable != nil {
 			colFontSize := d2fonts.FONT_SIZE_L

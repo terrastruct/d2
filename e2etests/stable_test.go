@@ -1861,6 +1861,32 @@ Humor in the Court2: {
   style.font-color: orange
   style.font-size: 30
 }
+
+manager: BatchManager {
+  shape: class
+	style.font-size: 20
+
+  -num: int
+  -timeout: int
+  -pid
+
+  +getStatus(): Enum
+  +getJobs(): "Job[]"
+  +setTimeout(seconds int)
+}
+
+manager2: BatchManager {
+  shape: class
+	style.font-size: 30
+
+  -num: int
+  -timeout: int
+  -pid
+
+  +getStatus(): Enum
+  +getJobs(): "Job[]"
+  +setTimeout(seconds int)
+}
 `,
 		},
 		{
