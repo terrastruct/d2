@@ -7,6 +7,8 @@
 
 - `d2 fmt` accepts multiple files to be formatted [#718](https://github.com/terrastruct/d2/issues/718)
 
+- `font-size` works for `sql_table` and `class` shapes [#769](https://github.com/terrastruct/d2/issues/769)
+
 - You can now use the reserved keywords `layers`/`scenarios`/`steps` to define diagrams
   with multiple levels of abstractions. [#714](https://github.com/terrastruct/d2/pull/714)
   Docs to come soon
