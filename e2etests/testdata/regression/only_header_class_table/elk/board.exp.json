@@ -9,8 +9,8 @@
         "x": 12,
         "y": 12
       },
-      "width": 918,
-      "height": 82,
+      "width": 1245,
+      "height": 102,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -30,15 +30,15 @@
       "methods": null,
       "columns": null,
       "label": "RefreshAuthorizationPolicyProtocolServerSideTranslatorProtocolBuffer",
-      "fontSize": 16,
+      "fontSize": 24,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 813,
-      "labelHeight": 26,
+      "labelWidth": 1140,
+      "labelHeight": 36,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -49,11 +49,11 @@
       "id": "table",
       "type": "sql_table",
       "pos": {
-        "x": 310,
-        "y": 194
+        "x": 415,
+        "y": 214
       },
-      "width": 321,
-      "height": 31,
+      "width": 439,
+      "height": 41,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -73,15 +73,15 @@
       "methods": null,
       "columns": null,
       "label": "RefreshAuthorizationPolicyCache",
-      "fontSize": 16,
+      "fontSize": 24,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 296,
-      "labelHeight": 26,
+      "labelWidth": 414,
+      "labelHeight": 36,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -92,11 +92,11 @@
       "id": "table with short col",
       "type": "sql_table",
       "pos": {
-        "x": 310,
-        "y": 325
+        "x": 415,
+        "y": 355
       },
-      "width": 321,
-      "height": 62,
+      "width": 439,
+      "height": 82,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -145,15 +145,15 @@
         }
       ],
       "label": "RefreshAuthorizationPolicyCache",
-      "fontSize": 16,
+      "fontSize": 24,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 296,
-      "labelHeight": 26,
+      "labelWidth": 414,
+      "labelHeight": 36,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -188,12 +188,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 471,
-          "y": 94
+          "x": 634.5,
+          "y": 114
         },
         {
-          "x": 471,
-          "y": 194
+          "x": 634.5,
+          "y": 214
         }
       ],
       "animated": false,
@@ -227,12 +227,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 471,
-          "y": 225
+          "x": 634.5,
+          "y": 255
         },
         {
-          "x": 471,
-          "y": 325
+          "x": 634.5,
+          "y": 355
         }
       ],
       "animated": false,

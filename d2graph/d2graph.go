@@ -465,6 +465,11 @@ func (obj *Object) Text() *d2target.MText {
 		isItalic = true
 	}
 	fontSize := d2fonts.FONT_SIZE_M
+
+	if obj.Class != nil || obj.SQLTable != nil {
+		fontSize = d2fonts.FONT_SIZE_XL
+	}
+
 	if obj.OuterSequenceDiagram() == nil {
 		if obj.IsContainer() {
 			fontSize = obj.Level().LabelSize()

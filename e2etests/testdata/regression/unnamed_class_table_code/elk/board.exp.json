@@ -62,7 +62,7 @@
       ],
       "columns": null,
       "label": "",
-      "fontSize": 16,
+      "fontSize": 24,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
@@ -85,7 +85,7 @@
         "y": 480
       },
       "width": 208,
-      "height": 156,
+      "height": 216,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -246,15 +246,15 @@
         }
       ],
       "label": "",
-      "fontSize": 16,
+      "fontSize": 24,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 49,
-      "labelHeight": 26,
+      "labelWidth": 69,
+      "labelHeight": 36,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -266,7 +266,7 @@
       "type": "code",
       "pos": {
         "x": 125,
-        "y": 736
+        "y": 796
       },
       "width": 196,
       "height": 70,
@@ -369,11 +369,11 @@
       "route": [
         {
           "x": 223,
-          "y": 636
+          "y": 696
         },
         {
           "x": 223,
-          "y": 736
+          "y": 796
         }
       ],
       "animated": false,

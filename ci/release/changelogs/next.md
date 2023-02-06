@@ -28,6 +28,7 @@
 - Ensures shapes with icons have enough padding for their labels. [#702](https://github.com/terrastruct/d2/pull/702)
 - `--force-appendix` flag adds an appendix to SVG outputs with tooltips or links. [#761](https://github.com/terrastruct/d2/pull/761)
 - `d2 themes` subcommand to list themes. [#760](https://github.com/terrastruct/d2/pull/760)
+- `sql_table` header left-aligned with column [#769](https://github.com/terrastruct/d2/pull/769)
 
 #### Bugfixes ⛑️
 

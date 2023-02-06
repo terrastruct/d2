@@ -62,7 +62,7 @@
       ],
       "columns": null,
       "label": "",
-      "fontSize": 16,
+      "fontSize": 24,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
@@ -85,7 +85,7 @@
         "y": 480
       },
       "width": 512,
-      "height": 156,
+      "height": 216,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -246,15 +246,15 @@
         }
       ],
       "label": "",
-      "fontSize": 16,
+      "fontSize": 24,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 49,
-      "labelHeight": 26,
+      "labelWidth": 69,
+      "labelHeight": 36,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "#0D32B2",
@@ -266,7 +266,7 @@
       "type": "code",
       "pos": {
         "x": 12,
-        "y": 736
+        "y": 796
       },
       "width": 512,
       "height": 65,
@@ -306,7 +306,7 @@
       "type": "package",
       "pos": {
         "x": 12,
-        "y": 901
+        "y": 961
       },
       "width": 512,
       "height": 100,
@@ -346,7 +346,7 @@
       "type": "rectangle",
       "pos": {
         "x": 218,
-        "y": 1101
+        "y": 1161
       },
       "width": 100,
       "height": 100,
@@ -449,11 +449,11 @@
       "route": [
         {
           "x": 268,
-          "y": 636
+          "y": 696
         },
         {
           "x": 268,
-          "y": 736
+          "y": 796
         }
       ],
       "animated": false,
@@ -488,11 +488,11 @@
       "route": [
         {
           "x": 268,
-          "y": 801
+          "y": 861
         },
         {
           "x": 268,
-          "y": 921
+          "y": 981
         }
       ],
       "animated": false,
@@ -527,11 +527,11 @@
       "route": [
         {
           "x": 268,
-          "y": 1001
+          "y": 1061
         },
         {
           "x": 268,
-          "y": 1101
+          "y": 1161
         }
       ],
       "animated": false,
