@@ -476,12 +476,12 @@ func (sd *sequenceDiagram) routeMessages() error {
 		if startCenter := getCenter(message.Src); startCenter != nil {
 			startX = startCenter.X
 		} else {
-			return fmt.Errorf("could not find center of %s", message.Src.AbsID())
+			return fmt.Errorf("could not find center of %s. Is it declared as an actor?", message.Src.ID)
 		}
 		if endCenter := getCenter(message.Dst); endCenter != nil {
 			endX = endCenter.X
 		} else {
-			return fmt.Errorf("could not find center of %s", message.Dst.AbsID())
+			return fmt.Errorf("could not find center of %s. Is it declared as an actor?", message.Dst.ID)
 		}
 		isToDescendant := strings.HasPrefix(message.Dst.AbsID(), message.Src.AbsID()+".")
 		isFromDescendant := strings.HasPrefix(message.Src.AbsID(), message.Dst.AbsID()+".")
@@ -526,7 +526,7 @@ func (sd *sequenceDiagram) routeMessages() error {
 func getCenter(obj *d2graph.Object) *geo.Point {
 	if obj == nil {
 		return nil
-	} else if obj.TopLeft != nil {
+	} else if obj.Box != nil && obj.Box.TopLeft != nil {
 		return obj.Center()
 	}
 	return getCenter(obj.Parent)

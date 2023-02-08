@@ -486,6 +486,7 @@ group: {
   }
 }
 `,
+			expErr: "could not find center of b. Is it declared as an actor?",
 		},
 	}
 
