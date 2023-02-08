@@ -467,6 +467,21 @@ class2: class without rows {
 }
 `,
 		},
+		{
+			name: "sequence-panic",
+			script: `
+shape: sequence_diagram
+
+a
+
+group: {
+  inner_group: {
+    a -> b
+  }
+}
+`,
+			expErr: "could not find center of b. Is it declared as an actor?",
+		},
 	}
 
 	runa(t, tcs)

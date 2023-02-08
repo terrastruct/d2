@@ -77,6 +77,7 @@ type testCase struct {
 	mtexts     []*d2target.MText
 	assertions func(t *testing.T, diagram *d2target.Diagram)
 	skip       bool
+	expErr     string
 }
 
 func runa(t *testing.T, tcs []testCase) {
@@ -148,7 +149,14 @@ func run(t *testing.T, tc testCase) {
 			ThemeID:       0,
 			Layout:        layout,
 		})
-		trequire.Nil(t, err)
+
+		if tc.expErr != "" {
+			assert.Error(t, err)
+			assert.ErrorString(t, err, tc.expErr)
+			return
+		} else {
+			assert.Success(t, err)
+		}
 
 		if tc.assertions != nil {
 			t.Run("assertions", func(t *testing.T) {
