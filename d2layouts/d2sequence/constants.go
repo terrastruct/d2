@@ -12,7 +12,7 @@ const SELF_MESSAGE_HORIZONTAL_TRAVEL = 74
 
 const GROUP_CONTAINER_PADDING = 24.
 
-const GROUP_LABEL_PADDING = 20
+const GROUP_LABEL_PADDING = 30
 
 // min vertical distance between messages
 const MIN_MESSAGE_DISTANCE = 40.
