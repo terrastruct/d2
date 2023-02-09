@@ -217,11 +217,55 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 	maxX := math.Inf(-1)
 	maxY := math.Inf(-1)
 
+	labelHeight := 0
+	if group.LabelHeight != nil {
+		labelHeight = *group.LabelHeight
+	}
+	padBelow := float64(labelHeight + GROUP_LABEL_PADDING)
+
+	// Make sure the label height fits
+	line := getObjEarliestLineNum(group)
+	for _, m := range sd.messages {
+		if getEdgeEarliestLineNum(m) > line {
+			for _, p := range m.Route {
+				p.Y += padBelow
+			}
+			for _, s := range sd.spans {
+				if getObjEarliestLineNum(s) >= line {
+					continue
+				}
+				if m.Src == s || m.Dst == s {
+					s.Height += padBelow
+					break
+				}
+			}
+		}
+	}
+	for _, n := range sd.notes {
+		if getObjEarliestLineNum(n) > line {
+			n.TopLeft.Y += padBelow
+		}
+	}
+	for _, s := range sd.spans {
+		if getObjEarliestLineNum(s) > line {
+			s.TopLeft.Y += padBelow
+		}
+	}
+
+	for _, g := range sd.groups {
+		if g.Box == nil || g.Box.TopLeft == nil {
+			continue
+		}
+		if getObjEarliestLineNum(g) > line {
+			g.TopLeft.Y += padBelow
+		}
+	}
+
 	for _, m := range sd.messages {
 		if m.ContainedBy(group) {
 			for _, p := range m.Route {
 				minX = math.Min(minX, p.X-HORIZONTAL_PAD)
-				minY = math.Min(minY, p.Y-MIN_MESSAGE_DISTANCE/2.)
+				minY = math.Min(minY, p.Y-math.Max(MIN_MESSAGE_DISTANCE/2., float64(labelHeight+GROUP_LABEL_PADDING)))
 				maxX = math.Max(maxX, p.X+HORIZONTAL_PAD)
 				maxY = math.Max(maxY, p.Y+MIN_MESSAGE_DISTANCE/2.)
 			}
@@ -245,9 +289,9 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 		}
 		if inGroup {
 			minX = math.Min(minX, n.TopLeft.X-HORIZONTAL_PAD)
-			minY = math.Min(minY, n.TopLeft.Y-MIN_MESSAGE_DISTANCE/2.)
-			maxY = math.Max(maxY, n.TopLeft.Y+n.Height+HORIZONTAL_PAD)
-			maxX = math.Max(maxX, n.TopLeft.X+n.Width+MIN_MESSAGE_DISTANCE/2.)
+			minY = math.Min(minY, n.TopLeft.Y-math.Max(MIN_MESSAGE_DISTANCE/2., float64(labelHeight+GROUP_LABEL_PADDING)))
+			maxX = math.Max(maxX, n.TopLeft.X+n.Width+HORIZONTAL_PAD)
+			maxY = math.Max(maxY, n.TopLeft.Y+n.Height+MIN_MESSAGE_DISTANCE/2.)
 		}
 	}
 
@@ -255,13 +299,24 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 		for _, g := range sd.groups {
 			if ch == g {
 				minX = math.Min(minX, ch.TopLeft.X-GROUP_CONTAINER_PADDING)
-				minY = math.Min(minY, ch.TopLeft.Y-GROUP_CONTAINER_PADDING)
+				minY = math.Min(minY, ch.TopLeft.Y-math.Max(GROUP_CONTAINER_PADDING, float64(labelHeight+GROUP_LABEL_PADDING)))
 				maxX = math.Max(maxX, ch.TopLeft.X+ch.Width+GROUP_CONTAINER_PADDING)
 				maxY = math.Max(maxY, ch.TopLeft.Y+ch.Height+GROUP_CONTAINER_PADDING)
 				break
 			}
 		}
 	}
+
+	// for _, g := range sd.groups {
+	//   if g.Box == nil || g.TopLeft == nil {
+	//     continue
+	//   }
+	//
+	//   if g.Parent != group.Parent {
+	//     continue
+	//   }
+	//   minY = math.Max(minY, g.TopLeft.Y+g.Height+GROUP_CONTAINER_PADDING)
+	// }
 
 	group.Box = geo.NewBox(
 		geo.NewPoint(

@@ -30,7 +30,10 @@ var setupJS string
 //go:embed dagre.js
 var dagreJS string
 
-const MIN_SEGMENT_LEN = 10
+const (
+	MIN_SEGMENT_LEN = 10
+	MIN_RANK_SEP    = 100
+)
 
 type ConfigurableOpts struct {
 	NodeSep int `json:"nodesep"`
@@ -112,7 +115,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 		maxLabelSize = go2.Max(maxLabelSize, size)
 	}
-	rootAttrs.ranksep = go2.Max(100, maxLabelSize+40)
+	rootAttrs.ranksep = go2.Max(MIN_RANK_SEP, maxLabelSize+40)
 
 	configJS := setGraphAttrs(rootAttrs)
 	if _, err := vm.RunString(configJS); err != nil {

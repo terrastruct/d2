@@ -132,7 +132,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	elkGraph := &ELKGraph{
 		ID: "root",
 		LayoutOptions: &elkOpts{
-			Thoroughness:                 20,
+			Thoroughness:                 8,
 			EdgeEdgeBetweenLayersSpacing: 50,
 			HierarchyHandling:            "INCLUDE_CHILDREN",
 			ConsiderModelOrder:           "NODES_AND_EDGES",
@@ -188,7 +188,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		if len(obj.ChildrenArray) > 0 {
 			n.LayoutOptions = &elkOpts{
 				ForceNodeModelOrder:          true,
-				Thoroughness:                 20,
+				Thoroughness:                 8,
 				EdgeEdgeBetweenLayersSpacing: 50,
 				HierarchyHandling:            "INCLUDE_CHILDREN",
 				ConsiderModelOrder:           "NODES_AND_EDGES",
