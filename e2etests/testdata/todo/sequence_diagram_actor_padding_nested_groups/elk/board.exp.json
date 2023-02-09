@@ -162,6 +162,7 @@
       "underline": false,
       "labelWidth": 155,
       "labelHeight": 21,
+      "labelFill": "#DEE1EB",
       "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 1
@@ -203,6 +204,7 @@
       "underline": false,
       "labelWidth": 233,
       "labelHeight": 21,
+      "labelFill": "#DEE1EB",
       "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 2
@@ -244,6 +246,7 @@
       "underline": false,
       "labelWidth": 168,
       "labelHeight": 21,
+      "labelFill": "#DEE1EB",
       "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 3
@@ -285,6 +288,7 @@
       "underline": false,
       "labelWidth": 16,
       "labelHeight": 21,
+      "labelFill": "#DEE1EB",
       "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 4
@@ -326,6 +330,7 @@
       "underline": false,
       "labelWidth": 16,
       "labelHeight": 21,
+      "labelFill": "#DEE1EB",
       "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 5
