@@ -162,6 +162,15 @@ small code: |go
 `,
 		},
 		{
+			skip: true,
+			name: "steps_panic",
+			script: `steps: {
+  shape: sql_table
+  id: {type: int, constraint: primary_key}
+}
+`,
+		},
+		{
 			// issue https://github.com/terrastruct/d2/issues/748
 			name: "sequence_diagram_edge_group_span_field",
 			script: `
