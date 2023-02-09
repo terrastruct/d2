@@ -29,6 +29,7 @@
 - `--force-appendix` flag adds an appendix to SVG outputs with tooltips or links. [#761](https://github.com/terrastruct/d2/pull/761)
 - `d2 themes` subcommand to list themes. [#760](https://github.com/terrastruct/d2/pull/760)
 - `sql_table` header left-aligned with column [#769](https://github.com/terrastruct/d2/pull/769)
+- Sequence diagram edge group labels are clearer [#782](https://github.com/terrastruct/d2/pull/782)
 
 #### Bugfixes ⛑️
 
