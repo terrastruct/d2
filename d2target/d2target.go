@@ -236,8 +236,9 @@ type Text struct {
 	Bold      bool `json:"bold"`
 	Underline bool `json:"underline"`
 
-	LabelWidth  int `json:"labelWidth"`
-	LabelHeight int `json:"labelHeight"`
+	LabelWidth  int    `json:"labelWidth"`
+	LabelHeight int    `json:"labelHeight"`
+	LabelFill   string `json:"labelFill,omitempty"`
 }
 
 func BaseShape() *Shape {
