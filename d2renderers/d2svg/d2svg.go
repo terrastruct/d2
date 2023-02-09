@@ -986,9 +986,20 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				fontColor = targetShape.Color
 			}
 			textStyle := fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "middle", targetShape.FontSize, fontColor)
+
 			x := labelTL.X + float64(targetShape.LabelWidth)/2.
 			// text is vertically positioned at its baseline which is at labelTL+FontSize
 			y := labelTL.Y + float64(targetShape.FontSize)
+
+			// background does not exist for <text>, so draw a rectangle behind it
+			if targetShape.LabelFill != "" {
+				fmt.Fprintf(writer, `<rect x="%f" y="%f" width="%d" height="%d" fill="%s"></rect>`,
+					labelTL.X, labelTL.Y,
+					targetShape.LabelWidth, targetShape.LabelHeight,
+					targetShape.LabelFill,
+				)
+			}
+
 			fmt.Fprintf(writer, `<text class="%s" x="%f" y="%f" style="%s">%s</text>`,
 				fontClass,
 				x, y,

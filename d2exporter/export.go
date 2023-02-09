@@ -129,6 +129,11 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	shape.Color = text.GetColor(theme, shape.Italic)
 	applyStyles(shape, obj)
 
+	if obj.IsSequenceDiagramGroup() {
+		shape.StrokeWidth = 0
+		shape.Blend = true
+	}
+
 	switch obj.Attributes.Shape.Value {
 	case d2target.ShapeCode, d2target.ShapeText:
 		shape.Language = obj.Attributes.Language
@@ -147,6 +152,9 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	shape.LabelHeight = text.Dimensions.Height
 	if obj.LabelPosition != nil {
 		shape.LabelPosition = *obj.LabelPosition
+		if obj.IsSequenceDiagramGroup() {
+			shape.LabelFill = shape.Fill
+		}
 	}
 
 	shape.Tooltip = obj.Attributes.Tooltip
@@ -163,7 +171,6 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 	connection := d2target.BaseConnection()
 	connection.ID = edge.AbsID()
 	connection.ZIndex = edge.ZIndex
-	// edge.Edge.ID = go2.StringToIntHash(connection.ID)
 	text := edge.Text()
 
 	if edge.SrcArrow {
