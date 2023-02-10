@@ -377,7 +377,6 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 			if isSrcDesc && isDstDesc {
 				stepSize := subtract
-				// loops
 				if e.Src != obj || e.Dst != obj {
 					stepSize /= 2.
 				}
