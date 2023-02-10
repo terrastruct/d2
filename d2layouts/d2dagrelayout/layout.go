@@ -372,10 +372,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 			if isSrcDesc && isDstDesc {
 				stepSize := float64(*obj.LabelHeight)
-				// Container self edges don't work right now, but when they do, this should be uncommented
-				// if e.Src != obj || e.Dst != obj {
-				//   stepSize /= 2.
-				// }
+				if e.Src != obj || e.Dst != obj {
+					stepSize /= 2.
+				}
 				movedEdges[e] = struct{}{}
 				for _, p := range e.Route {
 					p.Y += stepSize
