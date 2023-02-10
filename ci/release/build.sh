@@ -267,6 +267,7 @@ build_docker() {
   sh_c gitsync "$CI_D2_LINUX_AMD64" src/d2
   sh_c ssh "$CI_D2_LINUX_AMD64" \
     "D2_DOCKER_IMAGE=${D2_DOCKER_IMAGE-}" \
+    "RELEASE=${RELEASE-}" \
     ./src/d2/ci/release/docker/build.sh \
     --version="$VERSION" \
     ${PUSH_DOCKER:+--push} \
