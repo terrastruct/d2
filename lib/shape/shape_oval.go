@@ -4,6 +4,7 @@ import (
 	"math"
 
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapeOval struct {
@@ -11,12 +12,14 @@ type shapeOval struct {
 }
 
 func NewOval(box *geo.Box) Shape {
-	return shapeOval{
+	shape := shapeOval{
 		baseShape: &baseShape{
 			Type: OVAL_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 func (s shapeOval) GetInnerBox() *geo.Box {

@@ -4,6 +4,7 @@ import (
 	"math"
 
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapeCircle struct {
@@ -11,12 +12,14 @@ type shapeCircle struct {
 }
 
 func NewCircle(box *geo.Box) Shape {
-	return shapeCircle{
+	shape := shapeCircle{
 		baseShape: &baseShape{
 			Type: CIRCLE_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 func (s shapeCircle) GetInnerBox() *geo.Box {

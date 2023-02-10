@@ -5,6 +5,7 @@ import (
 
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapeStoredData struct {
@@ -14,12 +15,14 @@ type shapeStoredData struct {
 const storedDataWedgeWidth = 15.
 
 func NewStoredData(box *geo.Box) Shape {
-	return shapeStoredData{
+	shape := shapeStoredData{
 		baseShape: &baseShape{
 			Type: STORED_DATA_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 func (s shapeStoredData) GetInnerBox() *geo.Box {

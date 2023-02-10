@@ -5,6 +5,7 @@ import (
 
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapeCallout struct {
@@ -17,12 +18,14 @@ const (
 )
 
 func NewCallout(box *geo.Box) Shape {
-	return shapeCallout{
+	shape := shapeCallout{
 		baseShape: &baseShape{
 			Type: CALLOUT_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 func getTipWidth(box *geo.Box) float64 {

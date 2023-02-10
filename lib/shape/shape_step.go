@@ -5,6 +5,7 @@ import (
 
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapeStep struct {
@@ -12,12 +13,14 @@ type shapeStep struct {
 }
 
 func NewStep(box *geo.Box) Shape {
-	return shapeStep{
+	shape := shapeStep{
 		baseShape: &baseShape{
 			Type: STEP_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 const STEP_WEDGE_WIDTH = 35.0

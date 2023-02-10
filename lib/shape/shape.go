@@ -5,6 +5,7 @@ import (
 
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 const (
@@ -58,8 +59,9 @@ type Shape interface {
 }
 
 type baseShape struct {
-	Type string
-	Box  *geo.Box
+	Type      string
+	Box       *geo.Box
+	FullShape *Shape
 }
 
 func (s baseShape) Is(shapeType string) bool {
@@ -87,8 +89,8 @@ func (s baseShape) GetInnerBox() *geo.Box {
 }
 
 func (s baseShape) GetInsidePlacement(_, _, padding float64) geo.Point {
-	innerTL := s.GetInnerBox().TopLeft
-	return *geo.NewPoint(innerTL.X+padding, innerTL.Y+padding)
+	innerTL := (*s.FullShape).GetInnerBox().TopLeft
+	return *geo.NewPoint(innerTL.X+padding/2, innerTL.Y+padding/2)
 }
 
 // return the minimum shape dimensions needed to fit content (width x height)
@@ -157,12 +159,14 @@ func NewShape(shapeType string, box *geo.Box) Shape {
 		return NewText(box)
 
 	default:
-		return shapeSquare{
+		shape := shapeSquare{
 			baseShape: &baseShape{
 				Type: shapeType,
 				Box:  box,
 			},
 		}
+		shape.FullShape = go2.Pointer(Shape(shape))
+		return shape
 	}
 }
 

@@ -5,6 +5,7 @@ import (
 
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 // The percentage values of the cloud's wide inner box
@@ -32,12 +33,14 @@ type shapeCloud struct {
 }
 
 func NewCloud(box *geo.Box) Shape {
-	return shapeCloud{
+	shape := shapeCloud{
 		baseShape: &baseShape{
 			Type: CLOUD_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 func (s shapeCloud) GetInnerBox() *geo.Box {
