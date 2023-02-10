@@ -345,8 +345,10 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			continue
 		}
 
+		subtract := go2.Min(rootAttrs.ranksep/2, *obj.LabelHeight+label.PADDING)
+
 		// This was artifically added to make dagre consider label height
-		obj.Height -= (float64(*obj.LabelHeight) + label.PADDING)
+		obj.Height -= float64(subtract)
 
 		movedEdges := make(map[*d2graph.Edge]struct{})
 		for _, e := range g.Edges {
@@ -371,7 +373,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				currDst = currDst.Parent
 			}
 			if isSrcDesc && isDstDesc {
-				stepSize := float64(*obj.LabelHeight) + label.PADDING
+				stepSize := float64(subtract)
 				if e.Src != obj || e.Dst != obj {
 					stepSize /= 2.
 				}
@@ -388,7 +390,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			curr := q[0]
 			q = q[1:]
 
-			stepSize := float64(*obj.LabelHeight) + label.PADDING
+			stepSize := float64(subtract)
 			if curr != obj {
 				stepSize /= 2.
 			}
