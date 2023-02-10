@@ -206,6 +206,19 @@ Office chatter: {
 }
 `,
 		},
+		{
+			// https://github.com/terrastruct/d2/issues/791
+			name: "container_icon_label",
+			script: `a: Big font {
+  icon: https://icons.terrastruct.com/essentials/004-picture.svg
+	style.font-size: 30
+  a -> b -> c
+  a: {
+    a
+  }
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
