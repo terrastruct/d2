@@ -166,11 +166,7 @@ func main() {
 
 		// get the test path relative to the report
 		reportRelPath := func(testPath string) string {
-			absTestPath, err := filepath.Abs(testPath)
-			if err != nil {
-				stdlog.Fatal(err)
-			}
-			relTestPath, err := filepath.Rel(absReportDir, absTestPath)
+			relTestPath, err := filepath.Rel(absReportDir, testPath)
 			if err != nil {
 				stdlog.Fatal(err)
 			}
