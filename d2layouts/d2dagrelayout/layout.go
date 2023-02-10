@@ -394,6 +394,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			q = q[1:]
 
 			stepSize := subtract
+			// The object itself needs to move down the height it was just subtracted
+			// all descendents move half, to maintain vertical padding
 			if curr != obj {
 				stepSize /= 2.
 			}
