@@ -1727,9 +1727,8 @@ package.height: 512
 		{
 			name: "crow_foot_arrowhead",
 			script: `
-a <-> b: {
-	style.stroke-width: 3
-	style.stroke: "#20222a"
+a1 <-> b1: {
+	style.stroke-width: 1
 	source-arrowhead: {
 		shape: cf-many
 	}
@@ -1737,32 +1736,120 @@ a <-> b: {
 		shape: cf-many
 	}
 }
-c <--> d <-> f: {
+a2 <-> b2: {
+	style.stroke-width: 3
+	source-arrowhead: {
+		shape: cf-many
+	}
+	target-arrowhead: {
+		shape: cf-many
+	}
+}
+a3 <-> b3: {
+	style.stroke-width: 6
+	source-arrowhead: {
+		shape: cf-many
+	}
+	target-arrowhead: {
+		shape: cf-many
+	}
+}
+
+c1 <-> d1: {
+	style.stroke-width: 1
+	source-arrowhead: {
+		shape: cf-many-required
+	}
+	target-arrowhead: {
+		shape: cf-many-required
+	}
+}
+c2 <-> d2: {
+	style.stroke-width: 3
+	source-arrowhead: {
+		shape: cf-many-required
+	}
+	target-arrowhead: {
+		shape: cf-many-required
+	}
+}
+c3 <-> d3: {
+	style.stroke-width: 6
+	source-arrowhead: {
+		shape: cf-many-required
+	}
+	target-arrowhead: {
+		shape: cf-many-required
+	}
+}
+
+e1 <-> f1: {
+	style.stroke-width: 1
+	source-arrowhead: {
+		shape: cf-one
+	}
+	target-arrowhead: {
+		shape: cf-one
+	}
+}
+e2 <-> f2: {
+	style.stroke-width: 3
+	source-arrowhead: {
+		shape: cf-one
+	}
+	target-arrowhead: {
+		shape: cf-one
+	}
+}
+e3 <-> f3: {
+	style.stroke-width: 6
+	source-arrowhead: {
+		shape: cf-one
+	}
+	target-arrowhead: {
+		shape: cf-one
+	}
+}
+
+g1 <-> h1: {
+	style.stroke-width: 1
+	source-arrowhead: {
+		shape: cf-one-required
+	}
+	target-arrowhead: {
+		shape: cf-one-required
+	}
+}
+g2 <-> h2: {
+	style.stroke-width: 3
+	source-arrowhead: {
+		shape: cf-one-required
+	}
+	target-arrowhead: {
+		shape: cf-one-required
+	}
+}
+g3 <-> h3: {
+	style.stroke-width: 6
+	source-arrowhead: {
+		shape: cf-one-required
+	}
+	target-arrowhead: {
+		shape: cf-one-required
+	}
+}
+
+c <-> d <-> f: {
 	style.stroke-width: 1
 	style.stroke: "orange"
 	source-arrowhead: {
 		shape: cf-many-required
 	}
 	target-arrowhead: {
-		shape: cf-many-required
-	}
-}
-g <--> h: {
-	source-arrowhead: {
-		shape: cf-one
-	}
-	target-arrowhead: {
 		shape: cf-one
 	}
 }
-e <--> f: {
-	source-arrowhead: {
-		shape: cf-one-required
-	}
-	target-arrowhead: {
-		shape: cf-one-required
-	}
-}`,
+`,
 		},
 		{
 			name: "circle_arrowhead",
