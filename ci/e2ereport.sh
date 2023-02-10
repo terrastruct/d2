@@ -12,7 +12,7 @@ if [ -z "${NO_OPEN:-}" ]; then
     if command -v open >/dev/null; then
       open "$REPORT_OUTPUT"
     elif command -v xdg-open >/dev/null; then
-      xdg-open $REPORT_OUTPUT
+      xdg-open "$REPORT_OUTPUT"
     else
       echo "Please open $REPORT_OUTPUT"
     fi
