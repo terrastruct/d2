@@ -345,11 +345,14 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			continue
 		}
 
-		subtract := go2.Min(rootAttrs.ranksep/2, *obj.LabelHeight+label.PADDING)
+		// usually you don't want to take away here more than what was added, which is the label height
+		// however, if the label height is more than the ranksep/2, we'll have no padding around children anymore
+		// so cap the amount taken off at ranksep/2
+		subtract := float64(go2.Min(rootAttrs.ranksep/2, *obj.LabelHeight+label.PADDING))
 
-		// This was artifically added to make dagre consider label height
-		obj.Height -= float64(subtract)
+		obj.Height -= subtract
 
+		// If the edge is connected to two descendants that are about to be downshifted, their whole route gets downshifted
 		movedEdges := make(map[*d2graph.Edge]struct{})
 		for _, e := range g.Edges {
 			currSrc := e.Src
@@ -373,7 +376,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				currDst = currDst.Parent
 			}
 			if isSrcDesc && isDstDesc {
-				stepSize := float64(subtract)
+				stepSize := subtract
+				// loops
 				if e.Src != obj || e.Dst != obj {
 					stepSize /= 2.
 				}
@@ -384,13 +388,13 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
-		// Downshift descendents
+		// Downshift descendents and edges that have one endpoint connected to a descendant
 		q := []*d2graph.Object{obj}
 		for len(q) > 0 {
 			curr := q[0]
 			q = q[1:]
 
-			stepSize := float64(subtract)
+			stepSize := subtract
 			if curr != obj {
 				stepSize /= 2.
 			}
