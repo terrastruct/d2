@@ -7,10 +7,10 @@
       "type": "rectangle",
       "pos": {
         "x": 40,
-        "y": 0
+        "y": 36
       },
       "width": 156,
-      "height": 166,
+      "height": 130,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -39,7 +39,7 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -48,7 +48,7 @@
       "type": "rectangle",
       "pos": {
         "x": 94,
-        "y": 50
+        "y": 68
       },
       "width": 53,
       "height": 66,
@@ -89,10 +89,10 @@
       "type": "rectangle",
       "pos": {
         "x": 40,
-        "y": 266
+        "y": 302
       },
       "width": 157,
-      "height": 166,
+      "height": 130,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -121,7 +121,7 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -130,7 +130,7 @@
       "type": "rectangle",
       "pos": {
         "x": 93,
-        "y": 316
+        "y": 334
       },
       "width": 54,
       "height": 66,
@@ -171,10 +171,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 532
+        "y": 568
       },
       "width": 237,
-      "height": 266,
+      "height": 230,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -203,7 +203,7 @@
       "underline": false,
       "labelWidth": 9,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -212,10 +212,10 @@
       "type": "rectangle",
       "pos": {
         "x": 40,
-        "y": 582
+        "y": 631
       },
       "width": 157,
-      "height": 166,
+      "height": 135,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -244,7 +244,7 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 31,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -253,7 +253,7 @@
       "type": "rectangle",
       "pos": {
         "x": 93,
-        "y": 632
+        "y": 665
       },
       "width": 54,
       "height": 66,
@@ -318,7 +318,7 @@
       "route": [
         {
           "x": 120,
-          "y": 116
+          "y": 134
         },
         {
           "x": 120,
@@ -342,7 +342,7 @@
         },
         {
           "x": 120,
-          "y": 316
+          "y": 334
         }
       ],
       "isCurve": true,
@@ -378,7 +378,7 @@
       "route": [
         {
           "x": 120,
-          "y": 382
+          "y": 400
         },
         {
           "x": 120,
@@ -414,7 +414,7 @@
         },
         {
           "x": 120,
-          "y": 632
+          "y": 665.5
         }
       ],
       "isCurve": true,

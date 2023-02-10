@@ -615,6 +615,13 @@ a.b -> a.b.c
 a.b.c.d -> a.b`,
 		},
 		{
+			name: "container_label_loop",
+			script: `a: "If we were meant to fly, we wouldn't keep losing our luggage" {
+  b -> c
+}
+a -> a`,
+		},
+		{
 			name: "lone_h1",
 			script: mdTestScript(`
 # Markdown: Syntax

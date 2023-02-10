@@ -7,10 +7,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 0
+        "y": 125
       },
       "width": 404,
-      "height": 456,
+      "height": 431,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -39,7 +39,7 @@
       "underline": false,
       "labelWidth": 452,
       "labelHeight": 125,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -48,10 +48,10 @@
       "type": "rectangle",
       "pos": {
         "x": 40,
-        "y": 50
+        "y": 206
       },
       "width": 324,
-      "height": 356,
+      "height": 350,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -80,7 +80,7 @@
       "underline": false,
       "labelWidth": 246,
       "labelHeight": 81,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -89,10 +89,10 @@
       "type": "rectangle",
       "pos": {
         "x": 80,
-        "y": 100
+        "y": 269
       },
       "width": 244,
-      "height": 256,
+      "height": 265,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -121,7 +121,7 @@
       "underline": false,
       "labelWidth": 130,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 3
     },
@@ -130,10 +130,10 @@
       "type": "rectangle",
       "pos": {
         "x": 120,
-        "y": 150
+        "y": 332
       },
       "width": 164,
-      "height": 156,
+      "height": 160,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -162,7 +162,7 @@
       "underline": false,
       "labelWidth": 48,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 4
     },
@@ -171,7 +171,7 @@
       "type": "rectangle",
       "pos": {
         "x": 170,
-        "y": 200
+        "y": 384
       },
       "width": 64,
       "height": 56,

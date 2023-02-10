@@ -451,10 +451,10 @@
               "type": "rectangle",
               "pos": {
                 "x": 0,
-                "y": 0
+                "y": 36
               },
               "width": 381,
-              "height": 166,
+              "height": 130,
               "opacity": 1,
               "strokeDash": 0,
               "strokeWidth": 2,
@@ -483,7 +483,7 @@
               "underline": false,
               "labelWidth": 187,
               "labelHeight": 36,
-              "labelPosition": "INSIDE_TOP_CENTER",
+              "labelPosition": "OUTSIDE_TOP_CENTER",
               "zIndex": 0,
               "level": 1
             },
@@ -492,7 +492,7 @@
               "type": "rectangle",
               "pos": {
                 "x": 50,
-                "y": 50
+                "y": 68
               },
               "width": 110,
               "height": 66,
@@ -533,7 +533,7 @@
               "type": "rectangle",
               "pos": {
                 "x": 220,
-                "y": 50
+                "y": 68
               },
               "width": 111,
               "height": 66,

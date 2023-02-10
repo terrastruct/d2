@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"math"
 	"regexp"
+	"sort"
 	"strings"
 
 	"cdr.dev/slog"
@@ -104,6 +105,16 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		rootAttrs.rankdir = "TB"
 	}
 
+	maxContainerLabelHeight := 0
+	for _, obj := range g.Objects {
+		if len(obj.ChildrenArray) == 0 {
+			continue
+		}
+		if obj.LabelHeight != nil {
+			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, *obj.LabelHeight)
+		}
+	}
+
 	maxLabelSize := 0
 	for _, edge := range g.Edges {
 		size := edge.LabelDimensions.Width
@@ -112,7 +123,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 		maxLabelSize = go2.Max(maxLabelSize, size)
 	}
-	rootAttrs.ranksep = go2.Max(100, maxLabelSize+40)
+	rootAttrs.ranksep = go2.Max(go2.Max(100, maxLabelSize+40), maxContainerLabelHeight)
 
 	configJS := setGraphAttrs(rootAttrs)
 	if _, err := vm.RunString(configJS); err != nil {
@@ -129,6 +140,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
 				height += float64(*obj.LabelHeight) + label.PADDING
+			}
+			if len(obj.ChildrenArray) > 0 {
+				obj.Height += float64(*obj.LabelHeight)
 			}
 		}
 		loadScript += generateAddNodeLine(id, int(obj.Width), int(height))
@@ -191,7 +205,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if len(obj.ChildrenArray) > 0 {
-				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+				obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
 			} else if obj.Attributes.Shape.Value == d2target.ShapeImage {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
 				// remove the extra height we added to the node when passing to dagre
@@ -324,6 +338,85 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		// compile needs to assign edge label positions
 		if edge.Attributes.Label.Value != "" {
 			edge.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+		}
+	}
+
+	// TODO probably don't need
+	byLevels := make([]*d2graph.Object, len(g.Objects))
+	copy(byLevels, g.Objects)
+	sort.SliceStable(byLevels, func(i, j int) bool {
+		return byLevels[i].Level() > byLevels[j].Level()
+	})
+
+	for _, obj := range byLevels {
+		if obj.LabelHeight == nil || len(obj.ChildrenArray) <= 0 {
+			continue
+		}
+
+		// This was artifically added to make dagre consider label height
+		obj.Height -= float64(*obj.LabelHeight)
+
+		movedEdges := make(map[*d2graph.Edge]struct{})
+		for _, e := range g.Edges {
+			currSrc := e.Src
+			currDst := e.Dst
+
+			isSrcDesc := false
+			isDstDesc := false
+
+			for currSrc != nil {
+				if currSrc == obj {
+					isSrcDesc = true
+					break
+				}
+				currSrc = currSrc.Parent
+			}
+			for currDst != nil {
+				if currDst == obj {
+					isDstDesc = true
+					break
+				}
+				currDst = currDst.Parent
+			}
+			if isSrcDesc && isDstDesc {
+				stepSize := float64(*obj.LabelHeight)
+				if e.Src != obj || e.Dst != obj {
+					stepSize /= 2.
+				}
+				movedEdges[e] = struct{}{}
+				for _, p := range e.Route {
+					p.Y += stepSize
+				}
+			}
+		}
+
+		// Downshift descendents
+		q := []*d2graph.Object{obj}
+		for len(q) > 0 {
+			curr := q[0]
+			q = q[1:]
+
+			stepSize := float64(*obj.LabelHeight)
+			if curr != obj {
+				stepSize /= 2.
+			}
+			curr.TopLeft.Y += stepSize
+			if curr != obj {
+				for _, e := range g.Edges {
+					if _, ok := movedEdges[e]; ok {
+						continue
+					}
+					if e.Src == curr {
+						e.Route[0].Y += stepSize
+					}
+					if e.Dst == curr {
+						e.Route[len(e.Route)-1].Y += stepSize
+					}
+				}
+			}
+			for _, c := range curr.ChildrenArray {
+				q = append(q, c)
+			}
 		}
 	}
 
