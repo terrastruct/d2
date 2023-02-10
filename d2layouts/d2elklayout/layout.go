@@ -87,7 +87,7 @@ type ConfigurableOpts struct {
 
 var DefaultOpts = ConfigurableOpts{
 	Algorithm:       "layered",
-	NodeSpacing:     60.0,
+	NodeSpacing:     70.0,
 	Padding:         "[top=50,left=50,bottom=50,right=50]",
 	EdgeNodeSpacing: 40.0,
 	SelfLoopSpacing: 50.0,

@@ -9,7 +9,7 @@
         "x": 12,
         "y": 12
       },
-      "width": 1863,
+      "width": 1943,
       "height": 177,
       "opacity": 1,
       "strokeDash": 0,
@@ -88,7 +88,7 @@
       "id": "build_workflow.GHA",
       "type": "rectangle",
       "pos": {
-        "x": 506,
+        "x": 526,
         "y": 62
       },
       "width": 209,
@@ -129,7 +129,7 @@
       "id": "build_workflow.S3",
       "type": "rectangle",
       "pos": {
-        "x": 973,
+        "x": 1013,
         "y": 62
       },
       "width": 71,
@@ -170,7 +170,7 @@
       "id": "build_workflow.Terraform",
       "type": "rectangle",
       "pos": {
-        "x": 1283,
+        "x": 1343,
         "y": 62
       },
       "width": 158,
@@ -211,7 +211,7 @@
       "id": "build_workflow.AWS",
       "type": "rectangle",
       "pos": {
-        "x": 1730,
+        "x": 1810,
         "y": 62
       },
       "width": 95,
@@ -280,7 +280,7 @@
           "y": 100.5
         },
         {
-          "x": 506,
+          "x": 526,
           "y": 100.5
         }
       ],
@@ -315,11 +315,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 715,
+          "x": 735,
           "y": 100.5
         },
         {
-          "x": 973,
+          "x": 1013,
           "y": 100.5
         }
       ],
@@ -354,11 +354,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1044,
+          "x": 1084,
           "y": 100.5
         },
         {
-          "x": 1283,
+          "x": 1343,
           "y": 100.5
         }
       ],
@@ -393,11 +393,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1441,
+          "x": 1501,
           "y": 100.5
         },
         {
-          "x": 1730,
+          "x": 1810,
           "y": 100.5
         }
       ],
