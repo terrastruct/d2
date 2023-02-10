@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"math"
 	"regexp"
-	"sort"
 	"strings"
 
 	"cdr.dev/slog"
@@ -341,14 +340,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 	}
 
-	// TODO probably don't need
-	byLevels := make([]*d2graph.Object, len(g.Objects))
-	copy(byLevels, g.Objects)
-	sort.SliceStable(byLevels, func(i, j int) bool {
-		return byLevels[i].Level() > byLevels[j].Level()
-	})
-
-	for _, obj := range byLevels {
+	for _, obj := range g.Objects {
 		if obj.LabelHeight == nil || len(obj.ChildrenArray) <= 0 {
 			continue
 		}
