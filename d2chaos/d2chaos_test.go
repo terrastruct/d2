@@ -169,6 +169,10 @@ func testPinned(t *testing.T, outDir string) {
 			name: "orientation",
 			text: "a: {\n  b\n  c\n }\n  a <- a.c\n  a.b -> a\n",
 		},
+		{
+			name: "cannot create edge between boards",
+			text: `"" <-> ""`,
+		},
 	}
 
 	for _, tc := range testCases {

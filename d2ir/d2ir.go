@@ -233,7 +233,7 @@ func NodeBoardKind(n Node) BoardKind {
 	var f *Field
 	switch n := n.(type) {
 	case *Field:
-		if n.Name == "" {
+		if n.parent == nil {
 			return BoardLayer
 		}
 		f = ParentField(n)
