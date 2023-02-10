@@ -7,10 +7,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 36
+        "y": 41
       },
       "width": 156,
-      "height": 130,
+      "height": 125,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -48,7 +48,7 @@
       "type": "rectangle",
       "pos": {
         "x": 54,
-        "y": 68
+        "y": 70
       },
       "width": 53,
       "height": 66,
@@ -89,10 +89,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 302
+        "y": 307
       },
       "width": 157,
-      "height": 130,
+      "height": 125,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -130,7 +130,7 @@
       "type": "rectangle",
       "pos": {
         "x": 53,
-        "y": 334
+        "y": 336
       },
       "width": 54,
       "height": 66,
@@ -195,7 +195,7 @@
       "route": [
         {
           "x": 80,
-          "y": 134
+          "y": 136.5
         },
         {
           "x": 80,
@@ -219,7 +219,7 @@
         },
         {
           "x": 80,
-          "y": 334
+          "y": 336.5
         }
       ],
       "isCurve": true,

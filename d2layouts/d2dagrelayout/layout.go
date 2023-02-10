@@ -110,7 +110,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			continue
 		}
 		if obj.LabelHeight != nil {
-			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, *obj.LabelHeight)
+			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, *obj.LabelHeight+label.PADDING)
 		}
 	}
 
@@ -141,7 +141,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				height += float64(*obj.LabelHeight) + label.PADDING
 			}
 			if len(obj.ChildrenArray) > 0 {
-				obj.Height += float64(*obj.LabelHeight)
+				height += float64(*obj.LabelHeight) + label.PADDING
 			}
 		}
 		loadScript += generateAddNodeLine(id, int(obj.Width), int(height))
@@ -346,7 +346,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 
 		// This was artifically added to make dagre consider label height
-		obj.Height -= float64(*obj.LabelHeight)
+		obj.Height -= (float64(*obj.LabelHeight) + label.PADDING)
 
 		movedEdges := make(map[*d2graph.Edge]struct{})
 		for _, e := range g.Edges {
@@ -371,7 +371,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				currDst = currDst.Parent
 			}
 			if isSrcDesc && isDstDesc {
-				stepSize := float64(*obj.LabelHeight)
+				stepSize := float64(*obj.LabelHeight) + label.PADDING
 				if e.Src != obj || e.Dst != obj {
 					stepSize /= 2.
 				}
@@ -388,7 +388,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			curr := q[0]
 			q = q[1:]
 
-			stepSize := float64(*obj.LabelHeight)
+			stepSize := float64(*obj.LabelHeight) + label.PADDING
 			if curr != obj {
 				stepSize /= 2.
 			}
