@@ -453,8 +453,8 @@
                 "x": 12,
                 "y": 12
               },
-              "width": 341,
-              "height": 166,
+              "width": 391,
+              "height": 216,
               "opacity": 1,
               "strokeDash": 0,
               "strokeWidth": 2,
@@ -491,8 +491,8 @@
               "id": "find contractors.craigslist",
               "type": "rectangle",
               "pos": {
-                "x": 62,
-                "y": 62
+                "x": 87,
+                "y": 87
               },
               "width": 110,
               "height": 66,
@@ -532,8 +532,8 @@
               "id": "find contractors.facebook",
               "type": "rectangle",
               "pos": {
-                "x": 192,
-                "y": 62
+                "x": 217,
+                "y": 87
               },
               "width": 111,
               "height": 66,
@@ -622,7 +622,7 @@
               "type": "rectangle",
               "pos": {
                 "x": 21,
-                "y": 148
+                "y": 178
               },
               "width": 140,
               "height": 66,
@@ -691,7 +691,7 @@
                 },
                 {
                   "x": 91.5,
-                  "y": 148
+                  "y": 178
                 }
               ],
               "animated": false,
@@ -751,7 +751,7 @@
               "type": "rectangle",
               "pos": {
                 "x": 27,
-                "y": 148
+                "y": 178
               },
               "width": 112,
               "height": 66,
@@ -820,7 +820,7 @@
                 },
                 {
                   "x": 83.5,
-                  "y": 148
+                  "y": 178
                 }
               ],
               "animated": false,
@@ -880,7 +880,7 @@
               "type": "rectangle",
               "pos": {
                 "x": 12,
-                "y": 148
+                "y": 178
               },
               "width": 167,
               "height": 66,
@@ -949,7 +949,7 @@
                 },
                 {
                   "x": 95.5,
-                  "y": 148
+                  "y": 178
                 }
               ],
               "animated": false,

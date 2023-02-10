@@ -203,6 +203,7 @@
       "underline": false,
       "labelWidth": 25,
       "labelHeight": 21,
+      "labelFill": "#DEE1EB",
       "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 1
@@ -244,6 +245,7 @@
       "underline": false,
       "labelWidth": 52,
       "labelHeight": 21,
+      "labelFill": "#DEE1EB",
       "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 1
@@ -285,6 +287,7 @@
       "underline": false,
       "labelWidth": 73,
       "labelHeight": 21,
+      "labelFill": "#DEE1EB",
       "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 2
@@ -416,7 +419,7 @@
         "x": 299,
         "y": 1270
       },
-      "width": 448,
+      "width": 438,
       "height": 406,
       "opacity": 1,
       "strokeDash": 0,
@@ -446,6 +449,7 @@
       "underline": false,
       "labelWidth": 53,
       "labelHeight": 21,
+      "labelFill": "#DEE1EB",
       "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 1
@@ -498,8 +502,8 @@
         "x": 747,
         "y": 1726
       },
-      "width": 204,
-      "height": 146,
+      "width": 194,
+      "height": 156,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -528,6 +532,7 @@
       "underline": false,
       "labelWidth": 33,
       "labelHeight": 21,
+      "labelFill": "#DEE1EB",
       "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 1

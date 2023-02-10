@@ -41,7 +41,7 @@ type ConfigurableOpts struct {
 }
 
 var DefaultOpts = ConfigurableOpts{
-	NodeSep: 60,
+	NodeSep: 40,
 	EdgeSep: 20,
 }
 
@@ -194,7 +194,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if len(obj.ChildrenArray) > 0 {
-				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+				obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
 			} else if obj.Attributes.Shape.Value == d2target.ShapeImage {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
 				// remove the extra height we added to the node when passing to dagre

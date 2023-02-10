@@ -453,8 +453,8 @@
                 "x": 0,
                 "y": 0
               },
-              "width": 361,
-              "height": 146,
+              "width": 381,
+              "height": 166,
               "opacity": 1,
               "strokeDash": 0,
               "strokeWidth": 2,
@@ -491,8 +491,8 @@
               "id": "find contractors.craigslist",
               "type": "rectangle",
               "pos": {
-                "x": 40,
-                "y": 40
+                "x": 50,
+                "y": 50
               },
               "width": 110,
               "height": 66,
@@ -532,8 +532,8 @@
               "id": "find contractors.facebook",
               "type": "rectangle",
               "pos": {
-                "x": 210,
-                "y": 40
+                "x": 220,
+                "y": 50
               },
               "width": 111,
               "height": 66,
@@ -622,7 +622,7 @@
               "type": "rectangle",
               "pos": {
                 "x": 10,
-                "y": 146
+                "y": 166
               },
               "width": 140,
               "height": 66,
@@ -691,15 +691,15 @@
                 },
                 {
                   "x": 79.5,
-                  "y": 98
+                  "y": 106
                 },
                 {
                   "x": 79.5,
-                  "y": 114
+                  "y": 126
                 },
                 {
                   "x": 79.5,
-                  "y": 146
+                  "y": 166
                 }
               ],
               "isCurve": true,
@@ -760,7 +760,7 @@
               "type": "rectangle",
               "pos": {
                 "x": 16,
-                "y": 146
+                "y": 166
               },
               "width": 112,
               "height": 66,
@@ -829,15 +829,15 @@
                 },
                 {
                   "x": 71.5,
-                  "y": 98
+                  "y": 106
                 },
                 {
                   "x": 71.5,
-                  "y": 114
+                  "y": 126
                 },
                 {
                   "x": 71.5,
-                  "y": 146
+                  "y": 166
                 }
               ],
               "isCurve": true,
@@ -898,7 +898,7 @@
               "type": "rectangle",
               "pos": {
                 "x": 0,
-                "y": 146
+                "y": 166
               },
               "width": 167,
               "height": 66,
@@ -967,15 +967,15 @@
                 },
                 {
                   "x": 83.5,
-                  "y": 98
+                  "y": 106
                 },
                 {
                   "x": 83.5,
-                  "y": 114
+                  "y": 126
                 },
                 {
                   "x": 83.5,
-                  "y": 146
+                  "y": 166
                 }
               ],
               "isCurve": true,
