@@ -42,8 +42,12 @@ main() {
   D2_DOCKER_IMAGE=${D2_DOCKER_IMAGE:-terrastruct/d2}
 
   sh_c mkdir -p "./ci/release/build/$VERSION/docker"
-  sh_c cp "./ci/release/build/$VERSION/d2-$VERSION"-linux-*.tar.gz "./ci/release/build/$VERSION/docker/"
-  sh_c cp ./ci/release/docker/entrypoint.sh "./ci/release/build/$VERSION/docker/entrypoint.sh"
+  sh_c cp \
+    "./ci/release/build/$VERSION/d2-$VERSION"-linux-*.tar.gz \
+    "./ci/release/build/$VERSION/docker/"
+  sh_c cp \
+    ./ci/release/docker/entrypoint.sh \
+    "./ci/release/build/$VERSION/docker/entrypoint.sh"
 
   flags='--load'
   if [ -n "${PUSH-}" -o -n "${RELEASE-}" ]; then
