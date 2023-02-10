@@ -117,8 +117,8 @@ func arrowheadDimensions(arrowhead d2target.Arrowhead, strokeWidth float64) (wid
 		widthMultiplier = 12
 		heightMultiplier = 12
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
-		widthMultiplier = 14
-		heightMultiplier = 15
+		widthMultiplier = 11
+		heightMultiplier = 12
 	}
 
 	clippedStrokeWidth := go2.Max(MIN_ARROWHEAD_STROKE_WIDTH, strokeWidth)
@@ -298,8 +298,8 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 				attrs, modifier,
 				width-3.0, height/2.0,
 				width+offset, height/2.0,
-				offset*1.8, 0.,
-				offset*1.8, height,
+				offset*1.6, 0.,
+				offset*1.6, height,
 			)
 		}
 	default:
