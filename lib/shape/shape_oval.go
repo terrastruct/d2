@@ -56,8 +56,8 @@ func (s shapeOval) GetInsidePlacement(width, height, padding float64) geo.Point 
 	// r is the ellipse radius on the line between node.TopLeft and the ellipse center
 	// see https://math.stackexchange.com/questions/432902/how-to-get-the-radius-of-an-ellipse-at-a-specific-angle-by-knowing-its-semi-majo
 	r := rx * ry / math.Sqrt(math.Pow(rx*sin, 2)+math.Pow(ry*cos, 2))
-	// we want to offset r-padding away from the center
-	return *geo.NewPoint(s.Box.TopLeft.X+math.Ceil(rx-cos*(r-padding)), s.Box.TopLeft.Y+math.Ceil(ry-sin*(r-padding)))
+	// we want to offset r-padding/2 away from the center
+	return *geo.NewPoint(s.Box.TopLeft.X+math.Ceil(rx-cos*(r-padding/2)), s.Box.TopLeft.Y+math.Ceil(ry-sin*(r-padding/2)))
 }
 
 func (s shapeOval) Perimeter() []geo.Intersectable {

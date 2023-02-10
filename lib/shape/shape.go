@@ -87,7 +87,8 @@ func (s baseShape) GetInnerBox() *geo.Box {
 }
 
 func (s baseShape) GetInsidePlacement(_, _, padding float64) geo.Point {
-	return *geo.NewPoint(s.Box.TopLeft.X+padding, s.Box.TopLeft.Y+padding)
+	innerTL := s.GetInnerBox().TopLeft
+	return *geo.NewPoint(innerTL.X+padding, innerTL.Y+padding)
 }
 
 // return the minimum shape dimensions needed to fit content (width x height)
