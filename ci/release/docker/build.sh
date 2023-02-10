@@ -6,7 +6,7 @@ cd -- "$(dirname "$0")/../../.."
 
 help() {
       cat <<EOF
-usage: $0 [-p|--push] [--latest] [
+usage: $0 [-p|--push] [--latest] [--version=str]
 EOF
 }
 
@@ -24,6 +24,10 @@ main() {
       latest)
         flag_noarg && shift "$FLAGSHIFT"
         LATEST=1
+        ;;
+      version)
+        flag_reqarg && shift "$FLAGSHIFT"
+        VERSION=$FLAGARG
         ;;
       *)
         flag_errusage "unrecognized flag $FLAGRAW"
