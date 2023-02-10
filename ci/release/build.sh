@@ -255,6 +255,13 @@ ARCHIVE=$ARCHIVE \
 )}
 
 build_docker() {
+  if [ -n "${LOCAL-}" ]; then
+    sh_c ./ci/release/docker/build.sh \
+      ${PUSH_DOCKER:+--push} \
+      ${LATEST_DOCKER:+--latest}
+    return 0
+  fi
+
   sh_c lockfile_ssh "$CI_D2_LINUX_AMD64" .d2-build-lock
   sh_c gitsync "$CI_D2_LINUX_AMD64" src/d2
   sh_c ssh "$CI_D2_LINUX_AMD64" ./src/d2/ci/release/docker/build.sh \
