@@ -264,7 +264,8 @@ build_docker() {
 
   sh_c lockfile_ssh "$CI_D2_LINUX_AMD64" .d2-build-lock
   sh_c gitsync "$CI_D2_LINUX_AMD64" src/d2
-  sh_c ssh "$CI_D2_LINUX_AMD64" ./src/d2/ci/release/docker/build.sh \
+  sh_c ssh "$CI_D2_LINUX_AMD64" "D2_DOCKER_IMAGE=${D2_DOCKER_IMAGE-}" \
+    ./src/d2/ci/release/docker/build.sh \
     ${PUSH_DOCKER:+--push} \
     ${LATEST_DOCKER:+--latest}
 }
