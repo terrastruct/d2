@@ -47,7 +47,7 @@ type Shape interface {
 	GetInnerBox() *geo.Box
 
 	// placing a rectangle of the given size and padding inside the shape, return the position relative to the shape's TopLeft
-	GetInsidePlacement(width, height, padding float64) geo.Point
+	GetInsidePlacement(width, height, paddingX, paddingY float64) geo.Point
 
 	GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64)
 	GetDefaultPadding() (paddingX, paddingY float64)
@@ -88,9 +88,9 @@ func (s baseShape) GetInnerBox() *geo.Box {
 	return s.Box
 }
 
-func (s baseShape) GetInsidePlacement(_, _, padding float64) geo.Point {
+func (s baseShape) GetInsidePlacement(_, _, paddingX, paddingY float64) geo.Point {
 	innerTL := (*s.FullShape).GetInnerBox().TopLeft
-	return *geo.NewPoint(innerTL.X+padding/2, innerTL.Y+padding/2)
+	return *geo.NewPoint(innerTL.X+paddingX/2, innerTL.Y+paddingY/2)
 }
 
 // return the minimum shape dimensions needed to fit content (width x height)

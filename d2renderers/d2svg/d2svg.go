@@ -863,6 +863,11 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		}
 	}
 
+	// to examine GetInsidePlacement
+	// padX, padY := s.GetDefaultPadding()
+	// innerTL := s.GetInsidePlacement(s.GetInnerBox().Width, s.GetInnerBox().Height, padX, padY)
+	// fmt.Fprint(writer, renderOval(&innerTL, 5, 5, "fill:red;"))
+
 	// Closes the class=shape
 	fmt.Fprint(writer, `</g>`)
 

@@ -46,7 +46,7 @@ func NewCloud(box *geo.Box) Shape {
 func (s shapeCloud) GetInnerBox() *geo.Box {
 	width := s.Box.Width
 	height := s.Box.Height
-	insideTL := s.GetInsidePlacement(width, height, 0)
+	insideTL := s.GetInsidePlacement(width, height, 0, 0)
 	aspectRatio := width / height
 	if aspectRatio > CLOUD_WIDE_ASPECT_BOUNDARY {
 		width *= CLOUD_WIDE_INNER_WIDTH
@@ -75,17 +75,17 @@ func (s shapeCloud) GetDimensionsToFit(width, height, paddingX, paddingY float64
 	}
 }
 
-func (s shapeCloud) GetInsidePlacement(width, height, padding float64) geo.Point {
+func (s shapeCloud) GetInsidePlacement(width, height, paddingX, paddingY float64) geo.Point {
 	r := s.Box
-	width += padding
-	height += padding
+	width += paddingX
+	height += paddingY
 	aspectRatio := width / height
 	if aspectRatio > CLOUD_WIDE_ASPECT_BOUNDARY {
-		return *geo.NewPoint(r.TopLeft.X+math.Ceil(r.Width*CLOUD_WIDE_INNER_X+padding/2), r.TopLeft.Y+math.Ceil(r.Height*CLOUD_WIDE_INNER_Y+padding/2))
+		return *geo.NewPoint(r.TopLeft.X+math.Ceil(r.Width*CLOUD_WIDE_INNER_X+paddingX/2), r.TopLeft.Y+math.Ceil(r.Height*CLOUD_WIDE_INNER_Y+paddingY/2))
 	} else if aspectRatio < CLOUD_TALL_ASPECT_BOUNDARY {
-		return *geo.NewPoint(r.TopLeft.X+math.Ceil(r.Width*CLOUD_TALL_INNER_X+padding/2), r.TopLeft.Y+math.Ceil(r.Height*CLOUD_TALL_INNER_Y+padding/2))
+		return *geo.NewPoint(r.TopLeft.X+math.Ceil(r.Width*CLOUD_TALL_INNER_X+paddingX/2), r.TopLeft.Y+math.Ceil(r.Height*CLOUD_TALL_INNER_Y+paddingY/2))
 	} else {
-		return *geo.NewPoint(r.TopLeft.X+math.Ceil(r.Width*CLOUD_SQUARE_INNER_X+padding/2), r.TopLeft.Y+math.Ceil(r.Height*CLOUD_SQUARE_INNER_Y+padding/2))
+		return *geo.NewPoint(r.TopLeft.X+math.Ceil(r.Width*CLOUD_SQUARE_INNER_X+paddingX/2), r.TopLeft.Y+math.Ceil(r.Height*CLOUD_SQUARE_INNER_Y+paddingY/2))
 	}
 }
 

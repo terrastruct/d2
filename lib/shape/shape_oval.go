@@ -25,7 +25,7 @@ func NewOval(box *geo.Box) Shape {
 func (s shapeOval) GetInnerBox() *geo.Box {
 	width := s.Box.Width
 	height := s.Box.Height
-	insideTL := s.GetInsidePlacement(width, height, 0)
+	insideTL := s.GetInsidePlacement(width, height, 0, 0)
 	tl := s.Box.TopLeft.Copy()
 	width -= 2 * (insideTL.X - tl.X)
 	height -= 2 * (insideTL.Y - tl.Y)
@@ -41,7 +41,7 @@ func (s shapeOval) GetDimensionsToFit(width, height, paddingX, paddingY float64)
 	return math.Ceil(math.Sqrt2 * paddedWidth), math.Ceil(math.Sqrt2 * paddedHeight)
 }
 
-func (s shapeOval) GetInsidePlacement(width, height, padding float64) geo.Point {
+func (s shapeOval) GetInsidePlacement(width, height, paddingX, paddingY float64) geo.Point {
 	// showing the top left arc of the ellipse (drawn with '*')
 	// ┌──────────────────* ┬
 	// │         *        │ │ry
@@ -60,7 +60,7 @@ func (s shapeOval) GetInsidePlacement(width, height, padding float64) geo.Point 
 	// see https://math.stackexchange.com/questions/432902/how-to-get-the-radius-of-an-ellipse-at-a-specific-angle-by-knowing-its-semi-majo
 	r := rx * ry / math.Sqrt(math.Pow(rx*sin, 2)+math.Pow(ry*cos, 2))
 	// we want to offset r-padding/2 away from the center
-	return *geo.NewPoint(s.Box.TopLeft.X+math.Ceil(rx-cos*(r-padding/2)), s.Box.TopLeft.Y+math.Ceil(ry-sin*(r-padding/2)))
+	return *geo.NewPoint(s.Box.TopLeft.X+math.Ceil(rx-cos*(r-paddingX/2)), s.Box.TopLeft.Y+math.Ceil(ry-sin*(r-paddingY/2)))
 }
 
 func (s shapeOval) Perimeter() []geo.Intersectable {
