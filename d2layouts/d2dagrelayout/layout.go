@@ -261,7 +261,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				}
 			}
 		}
-		points = points[startIndex:endIndex]
+		points = points[startIndex : endIndex+1]
 		points[0] = start
 		points[len(points)-1] = end
 
@@ -328,11 +328,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				stepSize /= 2.
 			}
 			curr.TopLeft.Y += stepSize
-			// Edge should only move if it's not connected to the bottom side of the shrinking container
 			shouldMove := func(p *geo.Point) bool {
 				if curr != obj {
 					return true
 				}
+				// Edge should only move if it's not connected to the bottom side of the shrinking container
 				return p.Y != obj.TopLeft.Y+obj.Height
 			}
 			for _, e := range g.Edges {
