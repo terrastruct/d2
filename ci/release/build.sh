@@ -58,6 +58,9 @@ Flags:
   images into the daemon for push later. It's not slow though to use --push-docker after
   building the image as nearly all artifacts are cached.
   Automatically set if called from release.sh
+
+--latest-docker
+  Mark the built image with the latest tag. Automatically set if called from release.sh
 EOF
 }
 
@@ -113,6 +116,10 @@ main() {
         flag_noarg && shift "$FLAGSHIFT"
         PUSH_DOCKER=1
         ;;
+      latest-docker)
+        flag_noarg && shift "$FLAGSHIFT"
+        LATEST_DOCKER=1
+        ;;
       *)
         flag_errusage "unrecognized flag $FLAGRAW"
         ;;
@@ -149,7 +156,7 @@ main() {
   runjob windows/arm64 'OS=windows ARCH=arm64 build' &
   waitjobs
 
-  runjob linux/dockerimage 'OS=linux build_docker_image' &
+  runjob linux/docker build_docker &
   runjob windows/amd64/msi 'OS=windows ARCH=amd64 build_windows_msi' &
   waitjobs
 }
@@ -247,14 +254,20 @@ ARCHIVE=$ARCHIVE \
   sh_c rsync --archive --human-readable "$REMOTE_HOST:src/d2/$ARCHIVE" "$ARCHIVE"
 )}
 
-build_docker_image() {
-  D2_DOCKER_IMAGE=${D2_DOCKER_IMAGE:-terrastruct/d2}
-  flags='--load'
-  if [ -n "${PUSH_DOCKER-}" -o -n "${RELEASE-}" ]; then
-    flags='--push --platform linux/amd64,linux/arm64'
+build_docker() {
+  if [ -n "${LOCAL-}" ]; then
+    sh_c ./ci/release/docker/build.sh \
+      ${PUSH_DOCKER:+--push} \
+      ${LATEST_DOCKER:+--latest}
+    return 0
   fi
-  sh_c rsync --archive --human-readable ./ci/release/Dockerfile_entrypoint.sh "./ci/release/build/$VERSION"
-  sh_c docker buildx build $flags -t "$D2_DOCKER_IMAGE:$VERSION" -t "$D2_DOCKER_IMAGE:latest" --build-arg "VERSION=$VERSION" -f ./ci/release/Dockerfile "./ci/release/build/$VERSION"
+
+  sh_c lockfile_ssh "$CI_D2_LINUX_AMD64" .d2-build-lock
+  sh_c gitsync "$CI_D2_LINUX_AMD64" src/d2
+  sh_c ssh "$CI_D2_LINUX_AMD64" "D2_DOCKER_IMAGE=${D2_DOCKER_IMAGE-}" \
+    ./src/d2/ci/release/docker/build.sh \
+    ${PUSH_DOCKER:+--push} \
+    ${LATEST_DOCKER:+--latest}
 }
 
 build_windows_msi() {

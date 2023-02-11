@@ -21,7 +21,7 @@ RUN curl -fsSL "https://github.com/boxboat/fixuid/releases/download/v0.5/fixuid-
   && printf "user: debian\ngroup: debian\npaths: [/home/debian]\n" > /etc/fixuid/config.yml
 
 COPY ./d2-*-linux-$TARGETARCH.tar.gz /tmp
-ADD ./Dockerfile_entrypoint.sh /usr/local/bin/entrypoint.sh
+ADD ./entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN mkdir -p /usr/local/lib/d2 \
       && tar -C /usr/local/lib/d2 -xzf /tmp/d2-*-linux-"$TARGETARCH".tar.gz \
       && /usr/local/lib/d2/d2-*/scripts/install.sh \
