@@ -2,6 +2,7 @@ package shape
 
 import (
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 // Text is basically a rectangle
@@ -10,7 +11,7 @@ type shapeText struct {
 }
 
 func NewText(box *geo.Box) Shape {
-	return shapeText{
+	shape := shapeText{
 		shapeSquare: shapeSquare{
 			baseShape: &baseShape{
 				Type: TEXT_TYPE,
@@ -18,6 +19,8 @@ func NewText(box *geo.Box) Shape {
 			},
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 func (s shapeText) GetDefaultPadding() (paddingX, paddingY float64) {

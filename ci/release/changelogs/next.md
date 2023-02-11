@@ -23,6 +23,7 @@
 - Code snippets use bold and italic font styles as determined by highlighter [#710](https://github.com/terrastruct/d2/issues/710), [#741](https://github.com/terrastruct/d2/issues/741)
 - Reduces default padding of shapes. [#702](https://github.com/terrastruct/d2/pull/702)
 - Ensures labels fit inside shapes with shape-specific inner bounding boxes. [#702](https://github.com/terrastruct/d2/pull/702)
+- dagre container labels changed positions to outside the shape. Many previously obscured container labels are now legible. [#788](https://github.com/terrastruct/d2/pull/788)
 - Improves package shape dimensions with short height. [#702](https://github.com/terrastruct/d2/pull/702)
 - Keeps person shape from becoming too distorted. [#702](https://github.com/terrastruct/d2/pull/702)
 - Ensures shapes with icons have enough padding for their labels. [#702](https://github.com/terrastruct/d2/pull/702)

@@ -5,6 +5,7 @@ import (
 
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapePerson struct {
@@ -12,12 +13,14 @@ type shapePerson struct {
 }
 
 func NewPerson(box *geo.Box) Shape {
-	return shapePerson{
+	shape := shapePerson{
 		baseShape: &baseShape{
 			Type: PERSON_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 const (

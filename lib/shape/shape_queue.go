@@ -5,6 +5,7 @@ import (
 
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapeQueue struct {
@@ -12,12 +13,14 @@ type shapeQueue struct {
 }
 
 func NewQueue(box *geo.Box) Shape {
-	return shapeQueue{
+	shape := shapeQueue{
 		baseShape: &baseShape{
 			Type: QUEUE_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 func getArcWidth(box *geo.Box) float64 {

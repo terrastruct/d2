@@ -257,6 +257,7 @@ ARCHIVE=$ARCHIVE \
 build_docker() {
   if [ -n "${LOCAL-}" ]; then
     sh_c ./ci/release/docker/build.sh \
+      --version="$VERSION" \
       ${PUSH_DOCKER:+--push} \
       ${LATEST_DOCKER:+--latest}
     return 0
@@ -264,8 +265,14 @@ build_docker() {
 
   sh_c lockfile_ssh "$CI_D2_LINUX_AMD64" .d2-build-lock
   sh_c gitsync "$CI_D2_LINUX_AMD64" src/d2
-  sh_c ssh "$CI_D2_LINUX_AMD64" "D2_DOCKER_IMAGE=${D2_DOCKER_IMAGE-}" \
+  sh_c rsync --archive --human-readable \
+    "$BUILD_DIR/d2-$VERSION"-linux-*.tar.gz \
+    "$CI_D2_LINUX_AMD64:src/d2/$BUILD_DIR/"
+  sh_c ssh "$CI_D2_LINUX_AMD64" \
+    "D2_DOCKER_IMAGE=${D2_DOCKER_IMAGE-}" \
+    "RELEASE=${RELEASE-}" \
     ./src/d2/ci/release/docker/build.sh \
+    --version="$VERSION" \
     ${PUSH_DOCKER:+--push} \
     ${LATEST_DOCKER:+--latest}
 }

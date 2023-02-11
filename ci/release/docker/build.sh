@@ -6,7 +6,7 @@ cd -- "$(dirname "$0")/../../.."
 
 help() {
       cat <<EOF
-usage: $0 [-p|--push] [--latest] [
+usage: $0 [-p|--push] [--latest] [--version=str]
 EOF
 }
 
@@ -25,6 +25,10 @@ main() {
         flag_noarg && shift "$FLAGSHIFT"
         LATEST=1
         ;;
+      version)
+        flag_reqarg && shift "$FLAGSHIFT"
+        VERSION=$FLAGARG
+        ;;
       *)
         flag_errusage "unrecognized flag $FLAGRAW"
         ;;
@@ -38,8 +42,12 @@ main() {
   D2_DOCKER_IMAGE=${D2_DOCKER_IMAGE:-terrastruct/d2}
 
   sh_c mkdir -p "./ci/release/build/$VERSION/docker"
-  sh_c cp "./ci/release/build/$VERSION/d2-$VERSION"-linux-*.tar.gz "./ci/release/build/$VERSION/docker/"
-  sh_c cp ./ci/release/docker/entrypoint.sh "./ci/release/build/$VERSION/docker/entrypoint.sh"
+  sh_c cp \
+    "./ci/release/build/$VERSION/d2-$VERSION"-linux-*.tar.gz \
+    "./ci/release/build/$VERSION/docker/"
+  sh_c cp \
+    ./ci/release/docker/entrypoint.sh \
+    "./ci/release/build/$VERSION/docker/entrypoint.sh"
 
   flags='--load'
   if [ -n "${PUSH-}" -o -n "${RELEASE-}" ]; then

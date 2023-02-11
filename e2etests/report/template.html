@@ -10,16 +10,16 @@
     <div class="cases">
       {{range .Tests}}
       <div class="case" id="{{.Name}}">
-        <h1><a href="../../{{.GotSVG}}">{{.Name}}</a></h1>
+        <h1><a href="{{.GotSVG}}">{{.Name}}</a></h1>
         {{ if .ExpSVG }}
         <h2 class="case-exp">Expected</h2>
         {{ end }}
         <h2 class="case-got">Got</h2>
         <div class="case-img-wrapper">
           {{ if .ExpSVG }}
-          <img src="../../{{.ExpSVG}}" width="100%" />
+          <img src="{{.ExpSVG}}" width="100%" />
           {{ end }}
-          <img src="../../{{.GotSVG}}" width="100%" />
+          <img src="{{.GotSVG}}" width="100%" />
         </div>
       </div>
       {{end}}
@@ -41,7 +41,7 @@
       .case img {
         width: 600px;
       }
-      .case-got {
+      .case-exp + .case-got {
         position: absolute;
         left: 600px;
       }

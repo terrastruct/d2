@@ -609,10 +609,24 @@ x -> hey -> y
 `,
 		},
 		{
-			name: "child_parent_edges",
-			script: `a.b -> a
-a.b -> a.b.c
-a.b.c.d -> a.b`,
+			name: "font_sizes_containers_large",
+			script: `
+ninety nine: {
+	style.font-size: 99
+	sixty four: {
+		style.font-size: 64
+		thirty two:{
+			style.font-size: 32
+			sixteen: {
+				style.font-size: 16
+				eight: {
+					style.font-size: 8
+				}
+			}
+		}
+	}
+}
+`,
 		},
 		{
 			name: "lone_h1",

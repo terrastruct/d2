@@ -4,6 +4,7 @@ import (
 	"math"
 
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapeCircle struct {
@@ -11,18 +12,20 @@ type shapeCircle struct {
 }
 
 func NewCircle(box *geo.Box) Shape {
-	return shapeCircle{
+	shape := shapeCircle{
 		baseShape: &baseShape{
 			Type: CIRCLE_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 func (s shapeCircle) GetInnerBox() *geo.Box {
 	width := s.Box.Width
 	height := s.Box.Height
-	insideTL := s.GetInsidePlacement(width, height, 0)
+	insideTL := s.GetInsidePlacement(width, height, 0, 0)
 	tl := s.Box.TopLeft.Copy()
 	width -= 2 * (insideTL.X - tl.X)
 	height -= 2 * (insideTL.Y - tl.Y)
@@ -38,7 +41,7 @@ func (s shapeCircle) GetDimensionsToFit(width, height, paddingX, paddingY float6
 	return diameter, diameter
 }
 
-func (s shapeCircle) GetInsidePlacement(width, height, padding float64) geo.Point {
+func (s shapeCircle) GetInsidePlacement(width, height, paddingX, paddingY float64) geo.Point {
 	return *geo.NewPoint(s.Box.TopLeft.X+math.Ceil(s.Box.Width/2-width/2), s.Box.TopLeft.Y+math.Ceil(s.Box.Height/2-height/2))
 }
 

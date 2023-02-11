@@ -7,10 +7,18 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 0
+        "y": 41
       },
+<<<<<<< HEAD
       "width": 852,
       "height": 376,
+||||||| 749d236a
+      "width": 1112,
+      "height": 456,
+=======
+      "width": 1112,
+      "height": 415,
+>>>>>>> master
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -47,11 +55,27 @@
       "id": "containers.circle container",
       "type": "oval",
       "pos": {
+<<<<<<< HEAD
         "x": 20,
         "y": 30
+||||||| 749d236a
+        "x": 40,
+        "y": 50
+=======
+        "x": 40,
+        "y": 106
+>>>>>>> master
       },
+<<<<<<< HEAD
       "width": 188,
       "height": 316,
+||||||| 749d236a
+      "width": 228,
+      "height": 356,
+=======
+      "width": 228,
+      "height": 320,
+>>>>>>> master
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -88,8 +112,16 @@
       "id": "containers.circle container.diamond",
       "type": "diamond",
       "pos": {
+<<<<<<< HEAD
         "x": 50,
         "y": 156
+||||||| 749d236a
+        "x": 90,
+        "y": 196
+=======
+        "x": 90,
+        "y": 234
+>>>>>>> master
       },
       "width": 128,
       "height": 64,
@@ -129,11 +161,27 @@
       "id": "containers.diamond container",
       "type": "diamond",
       "pos": {
+<<<<<<< HEAD
         "x": 228,
         "y": 30
+||||||| 749d236a
+        "x": 308,
+        "y": 50
+=======
+        "x": 308,
+        "y": 106
+>>>>>>> master
       },
+<<<<<<< HEAD
       "width": 188,
       "height": 316,
+||||||| 749d236a
+      "width": 228,
+      "height": 356,
+=======
+      "width": 228,
+      "height": 320,
+>>>>>>> master
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -170,8 +218,16 @@
       "id": "containers.diamond container.circle",
       "type": "oval",
       "pos": {
+<<<<<<< HEAD
         "x": 258,
         "y": 124
+||||||| 749d236a
+        "x": 358,
+        "y": 164
+=======
+        "x": 358,
+        "y": 202
+>>>>>>> master
       },
       "width": 128,
       "height": 128,
@@ -211,11 +267,27 @@
       "id": "containers.oval container",
       "type": "oval",
       "pos": {
+<<<<<<< HEAD
         "x": 436,
         "y": 30
+||||||| 749d236a
+        "x": 576,
+        "y": 50
+=======
+        "x": 576,
+        "y": 106
+>>>>>>> master
       },
+<<<<<<< HEAD
       "width": 188,
       "height": 316,
+||||||| 749d236a
+      "width": 228,
+      "height": 356,
+=======
+      "width": 228,
+      "height": 320,
+>>>>>>> master
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -252,8 +324,16 @@
       "id": "containers.oval container.hexagon",
       "type": "hexagon",
       "pos": {
+<<<<<<< HEAD
         "x": 466,
         "y": 156
+||||||| 749d236a
+        "x": 626,
+        "y": 196
+=======
+        "x": 626,
+        "y": 234
+>>>>>>> master
       },
       "width": 128,
       "height": 64,
@@ -293,11 +373,27 @@
       "id": "containers.hexagon container",
       "type": "hexagon",
       "pos": {
+<<<<<<< HEAD
         "x": 644,
         "y": 30
+||||||| 749d236a
+        "x": 844,
+        "y": 50
+=======
+        "x": 844,
+        "y": 106
+>>>>>>> master
       },
+<<<<<<< HEAD
       "width": 188,
       "height": 316,
+||||||| 749d236a
+      "width": 228,
+      "height": 356,
+=======
+      "width": 228,
+      "height": 320,
+>>>>>>> master
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -334,8 +430,16 @@
       "id": "containers.hexagon container.oval",
       "type": "oval",
       "pos": {
+<<<<<<< HEAD
         "x": 674,
         "y": 156
+||||||| 749d236a
+        "x": 894,
+        "y": 196
+=======
+        "x": 894,
+        "y": 234
+>>>>>>> master
       },
       "width": 128,
       "height": 64,

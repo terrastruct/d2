@@ -331,6 +331,13 @@ sudo -E apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-
 sudo groupadd docker || true
 sudo usermod -aG docker \$USER
 
+printf %s '$CI_DOCKER_TOKEN' | docker login -u terrastruct --password-stdin
+# For building images cross platform.
+sudo -E apt-get install -y qemu qemu-user-static
+if docker buildx ls | grep -q 'default \*'; then
+  docker buildx create --use
+fi
+
 mkdir -p \$HOME/.local/bin
 mkdir -p \$HOME/.local/share/man
 EOF
@@ -387,7 +394,7 @@ init_remote_env() {
     sh_c ssh "$REMOTE_HOST" "sudo systemctl restart sshd"
     # ubuntu has $PATH hard coded in /etc/environment for some reason. It takes precedence
     # over ~/.ssh/environment.
-    sh_c ssh "$REMOTE_HOST" "sudo rm /etc/environment"
+    sh_c ssh "$REMOTE_HOST" "sudo rm -f /etc/environment"
   fi
 }
 

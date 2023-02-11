@@ -451,10 +451,18 @@
               "type": "rectangle",
               "pos": {
                 "x": 0,
-                "y": 0
+                "y": 41
               },
+<<<<<<< HEAD
               "width": 321,
               "height": 126,
+||||||| 749d236a
+              "width": 381,
+              "height": 166,
+=======
+              "width": 381,
+              "height": 125,
+>>>>>>> master
               "opacity": 1,
               "strokeDash": 0,
               "strokeWidth": 2,
@@ -491,8 +499,16 @@
               "id": "find contractors.craigslist",
               "type": "rectangle",
               "pos": {
+<<<<<<< HEAD
                 "x": 30,
                 "y": 30
+||||||| 749d236a
+                "x": 50,
+                "y": 50
+=======
+                "x": 50,
+                "y": 70
+>>>>>>> master
               },
               "width": 110,
               "height": 66,
@@ -532,8 +548,16 @@
               "id": "find contractors.facebook",
               "type": "rectangle",
               "pos": {
+<<<<<<< HEAD
                 "x": 180,
                 "y": 30
+||||||| 749d236a
+                "x": 220,
+                "y": 50
+=======
+                "x": 220,
+                "y": 70
+>>>>>>> master
               },
               "width": 111,
               "height": 66,

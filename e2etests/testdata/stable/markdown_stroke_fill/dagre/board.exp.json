@@ -7,10 +7,18 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 0
+        "y": 41
       },
+<<<<<<< HEAD
       "width": 272,
       "height": 318,
+||||||| 749d236a
+      "width": 312,
+      "height": 358,
+=======
+      "width": 312,
+      "height": 317,
+>>>>>>> master
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -47,8 +55,16 @@
       "id": "container.md",
       "type": "text",
       "pos": {
+<<<<<<< HEAD
         "x": 30,
         "y": 30
+||||||| 749d236a
+        "x": 50,
+        "y": 50
+=======
+        "x": 50,
+        "y": 70
+>>>>>>> master
       },
       "width": 212,
       "height": 258,

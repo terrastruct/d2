@@ -5,6 +5,7 @@ import (
 
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapePackage struct {
@@ -21,12 +22,14 @@ const (
 )
 
 func NewPackage(box *geo.Box) Shape {
-	return shapePackage{
+	shape := shapePackage{
 		baseShape: &baseShape{
 			Type: PACKAGE_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 func (s shapePackage) GetInnerBox() *geo.Box {

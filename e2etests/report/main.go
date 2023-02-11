@@ -100,7 +100,11 @@ func main() {
 				}
 
 				if matchTestSet && matchTestCase {
-					fullPath := filepath.Join(path, testFile.Name())
+					absPath, err := filepath.Abs(path)
+					if err != nil {
+						stdlog.Fatal(err)
+					}
+					fullPath := filepath.Join(absPath, testFile.Name())
 					hasGot := false
 					gotPath := strings.Replace(fullPath, "exp.svg", "got.svg", 1)
 					if _, err := os.Stat(gotPath); err == nil {
@@ -143,10 +147,6 @@ func main() {
 			panic(err)
 		}
 
-		tmplData := TemplateData{
-			Tests: tests,
-		}
-
 		path := os.Getenv("REPORT_OUTPUT")
 		if path == "" {
 			path = filepath.Join(testDir, "./out/e2e_report.html")
@@ -159,7 +159,30 @@ func main() {
 		if err != nil {
 			panic(fmt.Errorf("error creating file `%s`. %v", path, err))
 		}
-		if err := tmpl.Execute(f, tmplData); err != nil {
+		absReportDir, err := filepath.Abs(filepath.Dir(path))
+		if err != nil {
+			stdlog.Fatal(err)
+		}
+
+		// get the test path relative to the report
+		reportRelPath := func(testPath string) string {
+			relTestPath, err := filepath.Rel(absReportDir, testPath)
+			if err != nil {
+				stdlog.Fatal(err)
+			}
+			return relTestPath
+		}
+
+		// update test paths to be relative to report file
+		for i := range tests {
+			testItem := &tests[i]
+			testItem.GotSVG = reportRelPath(testItem.GotSVG)
+			if testItem.ExpSVG != nil {
+				*testItem.ExpSVG = reportRelPath(*testItem.ExpSVG)
+			}
+		}
+
+		if err := tmpl.Execute(f, TemplateData{Tests: tests}); err != nil {
 			panic(err)
 		}
 	}
