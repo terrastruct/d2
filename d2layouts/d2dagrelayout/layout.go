@@ -32,7 +32,7 @@ var dagreJS string
 
 const (
 	MIN_SEGMENT_LEN = 10
-	MIN_RANK_SEP    = 80
+	MIN_RANK_SEP    = 60
 )
 
 type ConfigurableOpts struct {

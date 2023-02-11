@@ -9,8 +9,8 @@
         "x": 0,
         "y": 0
       },
-      "width": 404,
-      "height": 456,
+      "width": 244,
+      "height": 296,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -39,7 +39,7 @@
       "underline": false,
       "labelWidth": 452,
       "labelHeight": 125,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -47,11 +47,11 @@
       "id": "ninety nine.sixty four",
       "type": "rectangle",
       "pos": {
-        "x": 40,
-        "y": 50
+        "x": 20,
+        "y": 30
       },
-      "width": 324,
-      "height": 356,
+      "width": 204,
+      "height": 236,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -80,7 +80,7 @@
       "underline": false,
       "labelWidth": 246,
       "labelHeight": 81,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -88,11 +88,11 @@
       "id": "ninety nine.sixty four.thirty two",
       "type": "rectangle",
       "pos": {
-        "x": 80,
-        "y": 100
+        "x": 40,
+        "y": 60
       },
-      "width": 244,
-      "height": 256,
+      "width": 164,
+      "height": 176,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -121,7 +121,7 @@
       "underline": false,
       "labelWidth": 130,
       "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 3
     },
@@ -129,11 +129,11 @@
       "id": "ninety nine.sixty four.thirty two.sixteen",
       "type": "rectangle",
       "pos": {
-        "x": 120,
-        "y": 150
+        "x": 60,
+        "y": 90
       },
-      "width": 164,
-      "height": 156,
+      "width": 124,
+      "height": 116,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -162,7 +162,7 @@
       "underline": false,
       "labelWidth": 48,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 4
     },
@@ -170,8 +170,8 @@
       "id": "ninety nine.sixty four.thirty two.sixteen.eight",
       "type": "rectangle",
       "pos": {
-        "x": 170,
-        "y": 200
+        "x": 90,
+        "y": 120
       },
       "width": 64,
       "height": 56,

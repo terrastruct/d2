@@ -6,11 +6,11 @@
       "id": "a",
       "type": "rectangle",
       "pos": {
-        "x": 0,
+        "x": 1,
         "y": 0
       },
-      "width": 156,
-      "height": 166,
+      "width": 113,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -39,7 +39,7 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -47,8 +47,8 @@
       "id": "a.b",
       "type": "rectangle",
       "pos": {
-        "x": 54,
-        "y": 50
+        "x": 31,
+        "y": 30
       },
       "width": 53,
       "height": 66,
@@ -89,10 +89,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 266
+        "y": 186
       },
-      "width": 157,
-      "height": 166,
+      "width": 114,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -121,7 +121,7 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -129,8 +129,8 @@
       "id": "c.d",
       "type": "rectangle",
       "pos": {
-        "x": 53,
-        "y": 316
+        "x": 30,
+        "y": 216
       },
       "width": 54,
       "height": 66,
@@ -194,32 +194,32 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 80,
-          "y": 116
+          "x": 57,
+          "y": 96
         },
         {
-          "x": 80,
-          "y": 156
+          "x": 57,
+          "y": 120
         },
         {
-          "x": 80,
-          "y": 176
+          "x": 57,
+          "y": 132
         },
         {
-          "x": 80,
-          "y": 191
+          "x": 57,
+          "y": 141
         },
         {
-          "x": 80,
-          "y": 206
+          "x": 57,
+          "y": 150
         },
         {
-          "x": 80,
-          "y": 276
+          "x": 57,
+          "y": 192
         },
         {
-          "x": 80,
-          "y": 316
+          "x": 57,
+          "y": 216
         }
       ],
       "isCurve": true,

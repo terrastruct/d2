@@ -9,8 +9,8 @@
         "x": 0,
         "y": 0
       },
-      "width": 220,
-      "height": 353,
+      "width": 160,
+      "height": 273,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -39,7 +39,7 @@
       "underline": false,
       "labelWidth": 112,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -47,8 +47,8 @@
       "id": "container.first",
       "type": "rectangle",
       "pos": {
-        "x": 73,
-        "y": 50
+        "x": 43,
+        "y": 30
       },
       "width": 75,
       "height": 66,
@@ -88,8 +88,8 @@
       "id": "container.second",
       "type": "rectangle",
       "pos": {
-        "x": 63,
-        "y": 237
+        "x": 33,
+        "y": 177
       },
       "width": 95,
       "height": 66,
@@ -153,20 +153,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 98.16176470588235,
-          "y": 116
+          "x": 69.36224489795919,
+          "y": 96
         },
         {
-          "x": 80.43235294117648,
-          "y": 164.4
+          "x": 58.672448979591834,
+          "y": 128.4
         },
         {
-          "x": 80.4,
-          "y": 188.7
+          "x": 58.6,
+          "y": 144.7
         },
         {
-          "x": 98,
-          "y": 237.5
+          "x": 69,
+          "y": 177.5
         }
       ],
       "isCurve": true,
@@ -201,20 +201,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 122.33823529411765,
-          "y": 116
+          "x": 91.13775510204081,
+          "y": 96
         },
         {
-          "x": 140.06764705882352,
-          "y": 164.4
+          "x": 101.82755102040817,
+          "y": 128.4
         },
         {
-          "x": 140.1,
-          "y": 188.7
+          "x": 101.9,
+          "y": 144.7
         },
         {
-          "x": 122.5,
-          "y": 237.5
+          "x": 91.5,
+          "y": 177.5
         }
       ],
       "isCurve": true,

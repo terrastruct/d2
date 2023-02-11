@@ -6,7 +6,7 @@
       "id": "a",
       "type": "rectangle",
       "pos": {
-        "x": 348,
+        "x": 221,
         "y": 0
       },
       "width": 53,
@@ -47,11 +47,11 @@
       "id": "g",
       "type": "rectangle",
       "pos": {
-        "x": 277,
-        "y": 166
+        "x": 173,
+        "y": 126
       },
-      "width": 196,
-      "height": 698,
+      "width": 133,
+      "height": 498,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -80,7 +80,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -88,8 +88,8 @@
       "id": "g.b",
       "type": "rectangle",
       "pos": {
-        "x": 348,
-        "y": 216
+        "x": 221,
+        "y": 156
       },
       "width": 53,
       "height": 66,
@@ -130,10 +130,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 382
+        "y": 282
       },
-      "width": 236,
-      "height": 266,
+      "width": 153,
+      "height": 186,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -162,7 +162,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -170,11 +170,11 @@
       "id": "d.h",
       "type": "rectangle",
       "pos": {
-        "x": 40,
-        "y": 432
+        "x": 20,
+        "y": 312
       },
-      "width": 156,
-      "height": 166,
+      "width": 113,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -203,7 +203,7 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 31,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 2
     },
@@ -211,8 +211,8 @@
       "id": "d.h.c",
       "type": "rectangle",
       "pos": {
-        "x": 94,
-        "y": 482
+        "x": 50,
+        "y": 342
       },
       "width": 53,
       "height": 66,
@@ -252,8 +252,8 @@
       "id": "g.e",
       "type": "rectangle",
       "pos": {
-        "x": 330,
-        "y": 748
+        "x": 203,
+        "y": 528
       },
       "width": 53,
       "height": 66,
@@ -293,8 +293,8 @@
       "id": "f",
       "type": "rectangle",
       "pos": {
-        "x": 353,
-        "y": 964
+        "x": 214,
+        "y": 684
       },
       "width": 51,
       "height": 66,
@@ -358,20 +358,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 374.75,
+          "x": 247.75,
           "y": 66
         },
         {
-          "x": 374.75,
-          "y": 106
+          "x": 247.75,
+          "y": 90
         },
         {
-          "x": 374.75,
-          "y": 176
+          "x": 247.75,
+          "y": 132
         },
         {
-          "x": 374.75,
-          "y": 216
+          "x": 247.75,
+          "y": 156
         }
       ],
       "isCurve": true,
@@ -406,32 +406,32 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 358.84638554216866,
-          "y": 282
+          "x": 228.63095238095238,
+          "y": 222
         },
         {
-          "x": 339.5692771084337,
-          "y": 322
+          "x": 214.72619047619048,
+          "y": 246
         },
         {
-          "x": 334.75,
-          "y": 342
+          "x": 211.25,
+          "y": 258
         },
         {
-          "x": 334.75,
-          "y": 357
+          "x": 211.25,
+          "y": 267
         },
         {
-          "x": 334.75,
-          "y": 372
+          "x": 211.25,
+          "y": 276
         },
         {
-          "x": 297.15,
-          "y": 446.6
+          "x": 189.65,
+          "y": 322.2
         },
         {
-          "x": 146.75,
-          "y": 505
+          "x": 103.25,
+          "y": 363
         }
       ],
       "isCurve": true,
@@ -466,20 +466,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 120,
-          "y": 648
+          "x": 76.5,
+          "y": 468
         },
         {
-          "x": 309.20000000000005,
-          "y": 688
+          "x": 198.9,
+          "y": 492
         },
         {
-          "x": 356.5,
-          "y": 708
+          "x": 229.5,
+          "y": 504
         },
         {
-          "x": 356.5,
-          "y": 748
+          "x": 229.5,
+          "y": 528
         }
       ],
       "isCurve": true,
@@ -514,20 +514,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 356.5,
-          "y": 814
+          "x": 229.5,
+          "y": 594
         },
         {
-          "x": 356.5,
-          "y": 854
+          "x": 229.5,
+          "y": 618
         },
         {
-          "x": 359.1,
-          "y": 924
+          "x": 230.5,
+          "y": 660
         },
         {
-          "x": 369.5,
-          "y": 964
+          "x": 234.5,
+          "y": 684
         }
       ],
       "isCurve": true,
@@ -562,20 +562,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 400.01807228915663,
-          "y": 964
+          "x": 263.85714285714283,
+          "y": 684
         },
         {
-          "x": 426.40361445783134,
-          "y": 924
+          "x": 281.57142857142856,
+          "y": 660
         },
         {
-          "x": 433,
-          "y": 904
+          "x": 286,
+          "y": 648
         },
         {
-          "x": 433,
-          "y": 864
+          "x": 286,
+          "y": 624
         }
       ],
       "isCurve": true,
@@ -610,12 +610,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 276.75,
-          "y": 464
+          "x": 172.5,
+          "y": 338
         },
         {
-          "x": 196.75,
-          "y": 490
+          "x": 132.5,
+          "y": 353
         }
       ],
       "animated": false,

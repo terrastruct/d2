@@ -9,8 +9,8 @@
         "x": 0,
         "y": 0
       },
-      "width": 1276,
-      "height": 166,
+      "width": 1106,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -39,7 +39,7 @@
       "underline": false,
       "labelWidth": 133,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -47,8 +47,8 @@
       "id": "k8s.m1",
       "type": "rectangle",
       "pos": {
-        "x": 131,
-        "y": 50
+        "x": 81,
+        "y": 30
       },
       "width": 132,
       "height": 66,
@@ -88,8 +88,8 @@
       "id": "k8s.m2",
       "type": "rectangle",
       "pos": {
-        "x": 323,
-        "y": 50
+        "x": 253,
+        "y": 30
       },
       "width": 132,
       "height": 66,
@@ -129,8 +129,8 @@
       "id": "k8s.m3",
       "type": "rectangle",
       "pos": {
-        "x": 515,
-        "y": 50
+        "x": 425,
+        "y": 30
       },
       "width": 132,
       "height": 66,
@@ -170,8 +170,8 @@
       "id": "k8s.w1",
       "type": "rectangle",
       "pos": {
-        "x": 707,
-        "y": 50
+        "x": 597,
+        "y": 30
       },
       "width": 133,
       "height": 66,
@@ -211,8 +211,8 @@
       "id": "k8s.w2",
       "type": "rectangle",
       "pos": {
-        "x": 900,
-        "y": 50
+        "x": 770,
+        "y": 30
       },
       "width": 133,
       "height": 66,
@@ -252,8 +252,8 @@
       "id": "k8s.w3",
       "type": "rectangle",
       "pos": {
-        "x": 1093,
-        "y": 50
+        "x": 943,
+        "y": 30
       },
       "width": 133,
       "height": 66,
@@ -294,10 +294,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 287
+        "y": 207
       },
-      "width": 495,
-      "height": 166,
+      "width": 375,
+      "height": 126,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -326,7 +326,7 @@
       "underline": false,
       "labelWidth": 97,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -334,8 +334,8 @@
       "id": "osvc.vm1",
       "type": "rectangle",
       "pos": {
-        "x": 186,
-        "y": 337
+        "x": 126,
+        "y": 237
       },
       "width": 76,
       "height": 66,
@@ -375,8 +375,8 @@
       "id": "osvc.vm2",
       "type": "rectangle",
       "pos": {
-        "x": 369,
-        "y": 337
+        "x": 269,
+        "y": 237
       },
       "width": 76,
       "height": 66,
@@ -440,20 +440,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 84,
-          "y": 166
+          "x": 54,
+          "y": 126
         },
         {
-          "x": 84,
-          "y": 214.4
+          "x": 54,
+          "y": 158.4
         },
         {
-          "x": 84,
-          "y": 238.7
+          "x": 54,
+          "y": 174.7
         },
         {
-          "x": 84,
-          "y": 287.5
+          "x": 54,
+          "y": 207.5
         }
       ],
       "isCurve": true,
@@ -488,20 +488,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 186,
-          "y": 166
+          "x": 136,
+          "y": 126
         },
         {
-          "x": 186,
-          "y": 214.4
+          "x": 136,
+          "y": 158.4
         },
         {
-          "x": 186,
-          "y": 238.7
+          "x": 136,
+          "y": 174.7
         },
         {
-          "x": 186,
-          "y": 287.5
+          "x": 136,
+          "y": 207.5
         }
       ],
       "isCurve": true,
@@ -536,20 +536,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 282,
-          "y": 166
+          "x": 212,
+          "y": 126
         },
         {
-          "x": 282,
-          "y": 214.4
+          "x": 212,
+          "y": 158.4
         },
         {
-          "x": 282,
-          "y": 238.7
+          "x": 212,
+          "y": 174.7
         },
         {
-          "x": 282,
-          "y": 287.5
+          "x": 212,
+          "y": 207.5
         }
       ],
       "isCurve": true,
@@ -584,20 +584,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 363,
-          "y": 166
+          "x": 273,
+          "y": 126
         },
         {
-          "x": 363,
-          "y": 214.4
+          "x": 273,
+          "y": 158.4
         },
         {
-          "x": 363,
-          "y": 238.7
+          "x": 273,
+          "y": 174.7
         },
         {
-          "x": 363,
-          "y": 287.5
+          "x": 273,
+          "y": 207.5
         }
       ],
       "isCurve": true,
