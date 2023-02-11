@@ -7,10 +7,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 0
+        "y": 41
       },
       "width": 156,
-      "height": 166,
+      "height": 125,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -39,7 +39,7 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -48,7 +48,7 @@
       "type": "rectangle",
       "pos": {
         "x": 54,
-        "y": 50
+        "y": 70
       },
       "width": 53,
       "height": 66,
@@ -89,10 +89,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 266
+        "y": 307
       },
       "width": 157,
-      "height": 166,
+      "height": 125,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -121,7 +121,7 @@
       "underline": false,
       "labelWidth": 12,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -130,7 +130,7 @@
       "type": "rectangle",
       "pos": {
         "x": 53,
-        "y": 316
+        "y": 336
       },
       "width": 54,
       "height": 66,
@@ -195,11 +195,11 @@
       "route": [
         {
           "x": 80,
-          "y": 116
+          "y": 136.5
         },
         {
           "x": 80,
-          "y": 156
+          "y": 160.1
         },
         {
           "x": 80,
@@ -215,11 +215,11 @@
         },
         {
           "x": 80,
-          "y": 276
+          "y": 280.1
         },
         {
           "x": 80,
-          "y": 316
+          "y": 336.5
         }
       ],
       "isCurve": true,

@@ -104,6 +104,16 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		rootAttrs.rankdir = "TB"
 	}
 
+	maxContainerLabelHeight := 0
+	for _, obj := range g.Objects {
+		if len(obj.ChildrenArray) == 0 {
+			continue
+		}
+		if obj.LabelHeight != nil {
+			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, *obj.LabelHeight+label.PADDING)
+		}
+	}
+
 	maxLabelSize := 0
 	for _, edge := range g.Edges {
 		size := edge.LabelDimensions.Width
@@ -112,7 +122,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 		maxLabelSize = go2.Max(maxLabelSize, size)
 	}
-	rootAttrs.ranksep = go2.Max(100, maxLabelSize+40)
+	rootAttrs.ranksep = go2.Max(go2.Max(100, maxLabelSize+40), maxContainerLabelHeight)
 
 	configJS := setGraphAttrs(rootAttrs)
 	if _, err := vm.RunString(configJS); err != nil {
@@ -128,6 +138,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		height := obj.Height
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
+				height += float64(*obj.LabelHeight) + label.PADDING
+			}
+			if len(obj.ChildrenArray) > 0 {
 				height += float64(*obj.LabelHeight) + label.PADDING
 			}
 		}
@@ -191,7 +204,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if len(obj.ChildrenArray) > 0 {
-				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+				obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
 			} else if obj.Attributes.Shape.Value == d2target.ShapeImage {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
 				// remove the extra height we added to the node when passing to dagre
@@ -248,6 +261,105 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				}
 			}
 		}
+		points = points[startIndex : endIndex+1]
+		points[0] = start
+		points[len(points)-1] = end
+
+		edge.Route = points
+	}
+
+	for _, obj := range g.Objects {
+		if obj.LabelHeight == nil || len(obj.ChildrenArray) <= 0 {
+			continue
+		}
+
+		// usually you don't want to take away here more than what was added, which is the label height
+		// however, if the label height is more than the ranksep/2, we'll have no padding around children anymore
+		// so cap the amount taken off at ranksep/2
+		subtract := float64(go2.Min(rootAttrs.ranksep/2, *obj.LabelHeight+label.PADDING))
+
+		obj.Height -= subtract
+
+		// If the edge is connected to two descendants that are about to be downshifted, their whole route gets downshifted
+		movedEdges := make(map[*d2graph.Edge]struct{})
+		for _, e := range g.Edges {
+			currSrc := e.Src
+			currDst := e.Dst
+
+			isSrcDesc := false
+			isDstDesc := false
+
+			for currSrc != nil {
+				if currSrc == obj {
+					isSrcDesc = true
+					break
+				}
+				currSrc = currSrc.Parent
+			}
+			for currDst != nil {
+				if currDst == obj {
+					isDstDesc = true
+					break
+				}
+				currDst = currDst.Parent
+			}
+			if isSrcDesc && isDstDesc {
+				stepSize := subtract
+				if e.Src != obj || e.Dst != obj {
+					stepSize /= 2.
+				}
+				movedEdges[e] = struct{}{}
+				for _, p := range e.Route {
+					p.Y += stepSize
+				}
+			}
+		}
+
+		// Downshift descendents and edges that have one endpoint connected to a descendant
+		q := []*d2graph.Object{obj}
+		for len(q) > 0 {
+			curr := q[0]
+			q = q[1:]
+
+			stepSize := subtract
+			// The object itself needs to move down the height it was just subtracted
+			// all descendents move half, to maintain vertical padding
+			if curr != obj {
+				stepSize /= 2.
+			}
+			curr.TopLeft.Y += stepSize
+			shouldMove := func(p *geo.Point) bool {
+				if curr != obj {
+					return true
+				}
+				// Edge should only move if it's not connected to the bottom side of the shrinking container
+				return p.Y != obj.TopLeft.Y+obj.Height
+			}
+			for _, e := range g.Edges {
+				if _, ok := movedEdges[e]; ok {
+					continue
+				}
+				if e.Src == curr {
+					if shouldMove(e.Route[0]) {
+						e.Route[0].Y += stepSize
+					}
+				}
+				if e.Dst == curr {
+					if shouldMove(e.Route[len(e.Route)-1]) {
+						e.Route[len(e.Route)-1].Y += stepSize
+					}
+				}
+			}
+			for _, c := range curr.ChildrenArray {
+				q = append(q, c)
+			}
+		}
+	}
+
+	for _, edge := range g.Edges {
+		points := edge.Route
+		startIndex, endIndex := 0, len(points)-1
+		start, end := points[startIndex], points[endIndex]
 
 		// arrowheads can appear broken if segments are very short from dagre routing a point just outside the shape
 		// to fix this, we try extending the previous segment into the shape instead of having a very short segment

@@ -7,10 +7,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 0
+        "y": 41
       },
       "width": 559,
-      "height": 148,
+      "height": 107,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -39,7 +39,7 @@
       "underline": false,
       "labelWidth": 124,
       "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -48,7 +48,7 @@
       "type": "text",
       "pos": {
         "x": 50,
-        "y": 50
+        "y": 70
       },
       "width": 459,
       "height": 48,
