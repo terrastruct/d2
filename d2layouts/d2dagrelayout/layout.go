@@ -30,7 +30,10 @@ var setupJS string
 //go:embed dagre.js
 var dagreJS string
 
-const MIN_SEGMENT_LEN = 10
+const (
+	MIN_SEGMENT_LEN = 10
+	MIN_RANK_SEP    = 60
+)
 
 type ConfigurableOpts struct {
 	NodeSep int `json:"nodesep"`
@@ -39,7 +42,7 @@ type ConfigurableOpts struct {
 
 var DefaultOpts = ConfigurableOpts{
 	NodeSep: 60,
-	EdgeSep: 40,
+	EdgeSep: 20,
 }
 
 type DagreNode struct {

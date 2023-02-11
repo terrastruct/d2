@@ -9,8 +9,8 @@
         "x": 12,
         "y": 12
       },
-      "width": 420,
-      "height": 1439,
+      "width": 370,
+      "height": 1149,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -47,8 +47,8 @@
       "id": "build_workflow.push",
       "type": "rectangle",
       "pos": {
-        "x": 87,
-        "y": 87
+        "x": 62,
+        "y": 62
       },
       "width": 270,
       "height": 77,
@@ -88,8 +88,8 @@
       "id": "build_workflow.GHA",
       "type": "rectangle",
       "pos": {
-        "x": 117,
-        "y": 390
+        "x": 92,
+        "y": 305
       },
       "width": 209,
       "height": 77,
@@ -129,8 +129,8 @@
       "id": "build_workflow.S3",
       "type": "rectangle",
       "pos": {
-        "x": 186,
-        "y": 693
+        "x": 161,
+        "y": 548
       },
       "width": 71,
       "height": 77,
@@ -170,8 +170,8 @@
       "id": "build_workflow.Terraform",
       "type": "rectangle",
       "pos": {
-        "x": 143,
-        "y": 996
+        "x": 118,
+        "y": 791
       },
       "width": 158,
       "height": 77,
@@ -211,8 +211,8 @@
       "id": "build_workflow.AWS",
       "type": "rectangle",
       "pos": {
-        "x": 174,
-        "y": 1299
+        "x": 149,
+        "y": 1034
       },
       "width": 95,
       "height": 77,
@@ -252,11 +252,11 @@
       "id": "deploy_workflow",
       "type": "rectangle",
       "pos": {
-        "x": 452,
-        "y": 275
+        "x": 402,
+        "y": 215
       },
-      "width": 361,
-      "height": 913,
+      "width": 311,
+      "height": 743,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -293,8 +293,8 @@
       "id": "deploy_workflow.manual",
       "type": "rectangle",
       "pos": {
-        "x": 527,
-        "y": 350
+        "x": 452,
+        "y": 265
       },
       "width": 211,
       "height": 77,
@@ -334,8 +334,8 @@
       "id": "deploy_workflow.GHA",
       "type": "rectangle",
       "pos": {
-        "x": 528,
-        "y": 653
+        "x": 453,
+        "y": 508
       },
       "width": 209,
       "height": 77,
@@ -375,8 +375,8 @@
       "id": "deploy_workflow.AWS",
       "type": "rectangle",
       "pos": {
-        "x": 585,
-        "y": 1036
+        "x": 510,
+        "y": 831
       },
       "width": 95,
       "height": 77,
@@ -416,11 +416,11 @@
       "id": "apollo_workflow",
       "type": "rectangle",
       "pos": {
-        "x": 833,
-        "y": 315
+        "x": 733,
+        "y": 255
       },
-      "width": 684,
-      "height": 833,
+      "width": 634,
+      "height": 663,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -457,8 +457,8 @@
       "id": "apollo_workflow.apollo",
       "type": "rectangle",
       "pos": {
-        "x": 1085,
-        "y": 390
+        "x": 960,
+        "y": 305
       },
       "width": 178,
       "height": 77,
@@ -498,8 +498,8 @@
       "id": "apollo_workflow.GHA",
       "type": "rectangle",
       "pos": {
-        "x": 1070,
-        "y": 693
+        "x": 945,
+        "y": 548
       },
       "width": 209,
       "height": 77,
@@ -539,8 +539,8 @@
       "id": "apollo_workflow.AWS",
       "type": "rectangle",
       "pos": {
-        "x": 1127,
-        "y": 996
+        "x": 1002,
+        "y": 791
       },
       "width": 95,
       "height": 77,
@@ -604,12 +604,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 222,
-          "y": 164
+          "x": 197,
+          "y": 139
         },
         {
-          "x": 222,
-          "y": 390
+          "x": 197,
+          "y": 305
         }
       ],
       "animated": false,
@@ -643,12 +643,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 222,
-          "y": 467
+          "x": 197,
+          "y": 382
         },
         {
-          "x": 222,
-          "y": 693
+          "x": 197,
+          "y": 548
         }
       ],
       "animated": false,
@@ -682,12 +682,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 222,
-          "y": 770
+          "x": 197,
+          "y": 625
         },
         {
-          "x": 222,
-          "y": 996
+          "x": 197,
+          "y": 791
         }
       ],
       "animated": false,
@@ -721,12 +721,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 222,
-          "y": 1073
+          "x": 197,
+          "y": 868
         },
         {
-          "x": 222,
-          "y": 1299
+          "x": 197,
+          "y": 1034
         }
       ],
       "animated": false,
@@ -760,12 +760,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 632.5,
-          "y": 427
+          "x": 557.5,
+          "y": 342
         },
         {
-          "x": 632.5,
-          "y": 653
+          "x": 557.5,
+          "y": 508
         }
       ],
       "animated": false,
@@ -799,12 +799,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 632.5,
-          "y": 730
+          "x": 557.5,
+          "y": 585
         },
         {
-          "x": 632.5,
-          "y": 1036
+          "x": 557.5,
+          "y": 831
         }
       ],
       "animated": false,
@@ -838,12 +838,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1174.5,
-          "y": 467
+          "x": 1049.5,
+          "y": 382
         },
         {
-          "x": 1174.5,
-          "y": 693
+          "x": 1049.5,
+          "y": 548
         }
       ],
       "animated": false,
@@ -877,12 +877,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1174.5,
-          "y": 770
+          "x": 1049.5,
+          "y": 625
         },
         {
-          "x": 1174.5,
-          "y": 996
+          "x": 1049.5,
+          "y": 791
         }
       ],
       "animated": false,

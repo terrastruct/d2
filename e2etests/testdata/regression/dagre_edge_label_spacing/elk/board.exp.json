@@ -9,8 +9,8 @@
         "x": 12,
         "y": 12
       },
-      "width": 2233,
-      "height": 227,
+      "width": 1943,
+      "height": 177,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -47,8 +47,8 @@
       "id": "build_workflow.push",
       "type": "rectangle",
       "pos": {
-        "x": 87,
-        "y": 87
+        "x": 62,
+        "y": 62
       },
       "width": 270,
       "height": 77,
@@ -88,8 +88,8 @@
       "id": "build_workflow.GHA",
       "type": "rectangle",
       "pos": {
-        "x": 611,
-        "y": 87
+        "x": 526,
+        "y": 62
       },
       "width": 209,
       "height": 77,
@@ -129,8 +129,8 @@
       "id": "build_workflow.S3",
       "type": "rectangle",
       "pos": {
-        "x": 1158,
-        "y": 87
+        "x": 1013,
+        "y": 62
       },
       "width": 71,
       "height": 77,
@@ -170,8 +170,8 @@
       "id": "build_workflow.Terraform",
       "type": "rectangle",
       "pos": {
-        "x": 1548,
-        "y": 87
+        "x": 1343,
+        "y": 62
       },
       "width": 158,
       "height": 77,
@@ -211,8 +211,8 @@
       "id": "build_workflow.AWS",
       "type": "rectangle",
       "pos": {
-        "x": 2075,
-        "y": 87
+        "x": 1810,
+        "y": 62
       },
       "width": 95,
       "height": 77,
@@ -276,12 +276,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 357,
-          "y": 125.5
+          "x": 332,
+          "y": 100.5
         },
         {
-          "x": 611,
-          "y": 125.5
+          "x": 526,
+          "y": 100.5
         }
       ],
       "animated": false,
@@ -315,12 +315,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 820,
-          "y": 125.5
+          "x": 735,
+          "y": 100.5
         },
         {
-          "x": 1158,
-          "y": 125.5
+          "x": 1013,
+          "y": 100.5
         }
       ],
       "animated": false,
@@ -354,12 +354,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1229,
-          "y": 125.5
+          "x": 1084,
+          "y": 100.5
         },
         {
-          "x": 1548,
-          "y": 125.5
+          "x": 1343,
+          "y": 100.5
         }
       ],
       "animated": false,
@@ -393,12 +393,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1706,
-          "y": 125.5
+          "x": 1501,
+          "y": 100.5
         },
         {
-          "x": 2075,
-          "y": 125.5
+          "x": 1810,
+          "y": 100.5
         }
       ],
       "animated": false,

@@ -9,7 +9,7 @@
         "x": 0,
         "y": 41
       },
-      "width": 370,
+      "width": 350,
       "height": 1331,
       "opacity": 1,
       "strokeDash": 0,
@@ -47,7 +47,7 @@
       "id": "build_workflow.push",
       "type": "rectangle",
       "pos": {
-        "x": 50,
+        "x": 40,
         "y": 93
       },
       "width": 270,
@@ -88,7 +88,7 @@
       "id": "build_workflow.GHA",
       "type": "rectangle",
       "pos": {
-        "x": 81,
+        "x": 71,
         "y": 342
       },
       "width": 209,
@@ -129,7 +129,7 @@
       "id": "build_workflow.S3",
       "type": "rectangle",
       "pos": {
-        "x": 150,
+        "x": 140,
         "y": 671
       },
       "width": 71,
@@ -170,7 +170,7 @@
       "id": "build_workflow.Terraform",
       "type": "rectangle",
       "pos": {
-        "x": 106,
+        "x": 96,
         "y": 993
       },
       "width": 158,
@@ -211,7 +211,7 @@
       "id": "build_workflow.AWS",
       "type": "rectangle",
       "pos": {
-        "x": 138,
+        "x": 128,
         "y": 1242
       },
       "width": 95,
@@ -252,10 +252,10 @@
       "id": "deploy_workflow",
       "type": "rectangle",
       "pos": {
-        "x": 410,
+        "x": 370,
         "y": 41
       },
-      "width": 311,
+      "width": 291,
       "height": 760,
       "opacity": 1,
       "strokeDash": 0,
@@ -293,7 +293,7 @@
       "id": "deploy_workflow.manual",
       "type": "rectangle",
       "pos": {
-        "x": 460,
+        "x": 410,
         "y": 93
       },
       "width": 211,
@@ -334,7 +334,7 @@
       "id": "deploy_workflow.GHA",
       "type": "rectangle",
       "pos": {
-        "x": 461,
+        "x": 411,
         "y": 342
       },
       "width": 209,
@@ -375,7 +375,7 @@
       "id": "deploy_workflow.AWS",
       "type": "rectangle",
       "pos": {
-        "x": 518,
+        "x": 468,
         "y": 671
       },
       "width": 95,
@@ -416,10 +416,10 @@
       "id": "apollo_workflow",
       "type": "rectangle",
       "pos": {
-        "x": 761,
+        "x": 681,
         "y": 41
       },
-      "width": 613,
+      "width": 573,
       "height": 760,
       "opacity": 1,
       "strokeDash": 0,
@@ -457,7 +457,7 @@
       "id": "apollo_workflow.apollo",
       "type": "rectangle",
       "pos": {
-        "x": 979,
+        "x": 879,
         "y": 93
       },
       "width": 178,
@@ -498,7 +498,7 @@
       "id": "apollo_workflow.GHA",
       "type": "rectangle",
       "pos": {
-        "x": 963,
+        "x": 863,
         "y": 342
       },
       "width": 209,
@@ -539,7 +539,7 @@
       "id": "apollo_workflow.AWS",
       "type": "rectangle",
       "pos": {
-        "x": 1020,
+        "x": 920,
         "y": 671
       },
       "width": 95,
@@ -604,19 +604,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 185,
+          "x": 175,
           "y": 170.5
         },
         {
-          "x": 185,
+          "x": 175,
           "y": 239.3
         },
         {
-          "x": 185,
+          "x": 175,
           "y": 273.7
         },
         {
-          "x": 185,
+          "x": 175,
           "y": 342.5
         }
       ],
@@ -652,19 +652,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 185,
+          "x": 175,
           "y": 419.5
         },
         {
-          "x": 185,
+          "x": 175,
           "y": 520.3
         },
         {
-          "x": 185,
+          "x": 175,
           "y": 570.7
         },
         {
-          "x": 185,
+          "x": 175,
           "y": 671.5
         }
       ],
@@ -700,19 +700,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 185,
+          "x": 175,
           "y": 748.5
         },
         {
-          "x": 185,
+          "x": 175,
           "y": 806.9
         },
         {
-          "x": 185,
+          "x": 175,
           "y": 924.7
         },
         {
-          "x": 185,
+          "x": 175,
           "y": 993.5
         }
       ],
@@ -748,19 +748,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 185,
+          "x": 175,
           "y": 1070.5
         },
         {
-          "x": 185,
+          "x": 175,
           "y": 1139.3
         },
         {
-          "x": 185,
+          "x": 175,
           "y": 1173.7
         },
         {
-          "x": 185,
+          "x": 175,
           "y": 1242.5
         }
       ],
@@ -796,19 +796,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 565.5,
+          "x": 515.5,
           "y": 170.5
         },
         {
-          "x": 565.5,
+          "x": 515.5,
           "y": 239.3
         },
         {
-          "x": 565.5,
+          "x": 515.5,
           "y": 273.7
         },
         {
-          "x": 565.5,
+          "x": 515.5,
           "y": 342.5
         }
       ],
@@ -844,19 +844,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 565.5,
+          "x": 515.5,
           "y": 419.5
         },
         {
-          "x": 565.5,
+          "x": 515.5,
           "y": 520.3
         },
         {
-          "x": 565.5,
+          "x": 515.5,
           "y": 570.7
         },
         {
-          "x": 565.5,
+          "x": 515.5,
           "y": 671.5
         }
       ],
@@ -892,19 +892,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1067.5,
+          "x": 967.5,
           "y": 170.5
         },
         {
-          "x": 1067.5,
+          "x": 967.5,
           "y": 239.3
         },
         {
-          "x": 1067.5,
+          "x": 967.5,
           "y": 273.7
         },
         {
-          "x": 1067.5,
+          "x": 967.5,
           "y": 342.5
         }
       ],
@@ -940,19 +940,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1067.5,
+          "x": 967.5,
           "y": 419.5
         },
         {
-          "x": 1067.5,
+          "x": 967.5,
           "y": 520.3
         },
         {
-          "x": 1067.5,
+          "x": 967.5,
           "y": 570.7
         },
         {
-          "x": 1067.5,
+          "x": 967.5,
           "y": 671.5
         }
       ],

@@ -87,9 +87,9 @@ type ConfigurableOpts struct {
 
 var DefaultOpts = ConfigurableOpts{
 	Algorithm:       "layered",
-	NodeSpacing:     100.0,
-	Padding:         "[top=75,left=75,bottom=75,right=75]",
-	EdgeNodeSpacing: 50.0,
+	NodeSpacing:     70.0,
+	Padding:         "[top=50,left=50,bottom=50,right=50]",
+	EdgeNodeSpacing: 40.0,
 	SelfLoopSpacing: 50.0,
 }
 
@@ -132,7 +132,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	elkGraph := &ELKGraph{
 		ID: "root",
 		LayoutOptions: &elkOpts{
-			Thoroughness:                 20,
+			Thoroughness:                 8,
 			EdgeEdgeBetweenLayersSpacing: 50,
 			HierarchyHandling:            "INCLUDE_CHILDREN",
 			ConsiderModelOrder:           "NODES_AND_EDGES",
@@ -188,7 +188,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		if len(obj.ChildrenArray) > 0 {
 			n.LayoutOptions = &elkOpts{
 				ForceNodeModelOrder:          true,
-				Thoroughness:                 20,
+				Thoroughness:                 8,
 				EdgeEdgeBetweenLayersSpacing: 50,
 				HierarchyHandling:            "INCLUDE_CHILDREN",
 				ConsiderModelOrder:           "NODES_AND_EDGES",

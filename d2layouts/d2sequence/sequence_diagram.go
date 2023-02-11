@@ -246,8 +246,8 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 		if inGroup {
 			minX = math.Min(minX, n.TopLeft.X-HORIZONTAL_PAD)
 			minY = math.Min(minY, n.TopLeft.Y-MIN_MESSAGE_DISTANCE/2.)
-			maxY = math.Max(maxY, n.TopLeft.Y+n.Height+HORIZONTAL_PAD)
-			maxX = math.Max(maxX, n.TopLeft.X+n.Width+MIN_MESSAGE_DISTANCE/2.)
+			maxX = math.Max(maxX, n.TopLeft.X+n.Width+HORIZONTAL_PAD)
+			maxY = math.Max(maxY, n.TopLeft.Y+n.Height+MIN_MESSAGE_DISTANCE/2.)
 		}
 	}
 
