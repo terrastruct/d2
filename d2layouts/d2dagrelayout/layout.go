@@ -41,7 +41,7 @@ type ConfigurableOpts struct {
 }
 
 var DefaultOpts = ConfigurableOpts{
-	NodeSep: 40,
+	NodeSep: 60,
 	EdgeSep: 20,
 }
 

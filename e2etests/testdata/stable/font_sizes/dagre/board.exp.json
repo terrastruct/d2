@@ -6,7 +6,7 @@
       "id": "size XS",
       "type": "rectangle",
       "pos": {
-        "x": 893,
+        "x": 993,
         "y": 280
       },
       "width": 85,
@@ -129,7 +129,7 @@
       "id": "size L",
       "type": "rectangle",
       "pos": {
-        "x": 124,
+        "x": 144,
         "y": 8
       },
       "width": 93,
@@ -170,7 +170,7 @@
       "id": "size XL",
       "type": "rectangle",
       "pos": {
-        "x": 257,
+        "x": 297,
         "y": 5
       },
       "width": 117,
@@ -211,7 +211,7 @@
       "id": "size XXL",
       "type": "rectangle",
       "pos": {
-        "x": 414,
+        "x": 474,
         "y": 3
       },
       "width": 144,
@@ -252,7 +252,7 @@
       "id": "size XXXL",
       "type": "rectangle",
       "pos": {
-        "x": 598,
+        "x": 678,
         "y": 0
       },
       "width": 177,
@@ -293,7 +293,7 @@
       "id": "custom 8",
       "type": "rectangle",
       "pos": {
-        "x": 897,
+        "x": 997,
         "y": 15
       },
       "width": 77,
@@ -334,7 +334,7 @@
       "id": "custom 12",
       "type": "rectangle",
       "pos": {
-        "x": 1014,
+        "x": 1134,
         "y": 13
       },
       "width": 100,
@@ -375,7 +375,7 @@
       "id": "custom 18",
       "type": "rectangle",
       "pos": {
-        "x": 1154,
+        "x": 1294,
         "y": 9
       },
       "width": 126,
@@ -416,7 +416,7 @@
       "id": "custom 21",
       "type": "rectangle",
       "pos": {
-        "x": 1320,
+        "x": 1480,
         "y": 7
       },
       "width": 140,
@@ -457,7 +457,7 @@
       "id": "custom 64",
       "type": "rectangle",
       "pos": {
-        "x": 520,
+        "x": 600,
         "y": 248
       },
       "width": 333,
@@ -522,19 +522,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 935,
+          "x": 1035,
           "y": 71
         },
         {
-          "x": 935,
+          "x": 1035,
           "y": 147.8
         },
         {
-          "x": 935,
+          "x": 1035,
           "y": 189.6
         },
         {
-          "x": 935,
+          "x": 1035,
           "y": 280
         }
       ],
@@ -619,19 +619,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 686,
+          "x": 766,
           "y": 86
         },
         {
-          "x": 686,
+          "x": 766,
           "y": 150.8
         },
         {
-          "x": 686,
+          "x": 766,
           "y": 183.2
         },
         {
-          "x": 686,
+          "x": 766,
           "y": 248
         }
       ],

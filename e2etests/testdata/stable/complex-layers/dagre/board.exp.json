@@ -47,7 +47,7 @@
       "id": "roof",
       "type": "rectangle",
       "pos": {
-        "x": 143,
+        "x": 163,
         "y": 0
       },
       "width": 75,
@@ -88,7 +88,7 @@
       "id": "garage",
       "type": "rectangle",
       "pos": {
-        "x": 258,
+        "x": 298,
         "y": 0
       },
       "width": 94,
@@ -177,7 +177,7 @@
           "id": "glass",
           "type": "rectangle",
           "pos": {
-            "x": 128,
+            "x": 148,
             "y": 0
           },
           "width": 81,
@@ -266,7 +266,7 @@
           "id": "starlink",
           "type": "rectangle",
           "pos": {
-            "x": 144,
+            "x": 164,
             "y": 0
           },
           "width": 101,
@@ -307,7 +307,7 @@
           "id": "utility hookup",
           "type": "rectangle",
           "pos": {
-            "x": 285,
+            "x": 325,
             "y": 0
           },
           "width": 146,
@@ -396,7 +396,7 @@
           "id": "vehicles",
           "type": "rectangle",
           "pos": {
-            "x": 121,
+            "x": 141,
             "y": 0
           },
           "width": 103,
@@ -453,7 +453,7 @@
                 "x": 0,
                 "y": 41
               },
-              "width": 321,
+              "width": 361,
               "height": 125,
               "opacity": 1,
               "strokeDash": 0,
@@ -491,7 +491,7 @@
               "id": "find contractors.craigslist",
               "type": "rectangle",
               "pos": {
-                "x": 30,
+                "x": 40,
                 "y": 70
               },
               "width": 110,
@@ -532,7 +532,7 @@
               "id": "find contractors.facebook",
               "type": "rectangle",
               "pos": {
-                "x": 180,
+                "x": 210,
                 "y": 70
               },
               "width": 111,
@@ -1039,7 +1039,7 @@
           "id": "roof",
           "type": "rectangle",
           "pos": {
-            "x": 143,
+            "x": 163,
             "y": 0
           },
           "width": 75,
@@ -1080,7 +1080,7 @@
           "id": "garage",
           "type": "rectangle",
           "pos": {
-            "x": 258,
+            "x": 298,
             "y": 0
           },
           "width": 94,
@@ -1121,7 +1121,7 @@
           "id": "water",
           "type": "rectangle",
           "pos": {
-            "x": 392,
+            "x": 452,
             "y": 0
           },
           "width": 88,
@@ -1162,7 +1162,7 @@
           "id": "rain",
           "type": "rectangle",
           "pos": {
-            "x": 520,
+            "x": 600,
             "y": 0
           },
           "width": 73,
@@ -1203,7 +1203,7 @@
           "id": "thunder",
           "type": "rectangle",
           "pos": {
-            "x": 633,
+            "x": 733,
             "y": 0
           },
           "width": 103,
