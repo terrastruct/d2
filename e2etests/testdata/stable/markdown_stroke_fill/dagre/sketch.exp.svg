@@ -3,13 +3,7 @@
 id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-<<<<<<< HEAD
-width="476" height="645" viewBox="-102 -141 476 645"><style type="text/css">
-||||||| 749d236a
-width="516" height="686" viewBox="-102 -102 516 686"><style type="text/css">
-=======
-width="516" height="684" viewBox="-102 -100 516 684"><style type="text/css">
->>>>>>> master
+width="476" height="684" viewBox="-102 -100 476 684"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -802,16 +796,8 @@ width="516" height="684" viewBox="-102 -100 516 684"><style type="text/css">
 .md .contains-task-list:dir(rtl) .task-list-item-checkbox {
   margin: 0 -1.6em 0.25em 0.2em;
 }
-<<<<<<< HEAD
-</style><g id="container"><g class="shape" ><rect x="0" y="0" width="272" height="318" style="fill:#E3E9FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text" x="136.000000" y="-13.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">container</text></g><g id="no container"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="77.000000" y="378.000000" width="118" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:#CEEDEE;color:red;"><p>they did it in style</p>
-</div></foreignObject></g></g><g id="container.md"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="30.000000" y="30.000000" width="212" height="258"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:transparent;color:darkorange;"><h1>a header</h1>
-||||||| 749d236a
-</style><g id="container"><g class="shape" ><rect x="0" y="0" width="312" height="358" style="fill:#E3E9FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text" x="156.000000" y="33.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">container</text></g><g id="no container"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="97.000000" y="458.000000" width="118" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:#CEEDEE;color:red;"><p>they did it in style</p>
-</div></foreignObject></g></g><g id="container.md"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="50.000000" y="50.000000" width="212" height="258"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:transparent;color:darkorange;"><h1>a header</h1>
-=======
-</style><g id="container"><g class="shape" ><rect x="0" y="41" width="312" height="317" style="fill:#E3E9FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text" x="156.000000" y="28.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">container</text></g><g id="no container"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="97.000000" y="458.000000" width="118" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:#CEEDEE;color:red;"><p>they did it in style</p>
-</div></foreignObject></g></g><g id="container.md"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="50.000000" y="70.000000" width="212" height="258"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:transparent;color:darkorange;"><h1>a header</h1>
->>>>>>> master
+</style><g id="container"><g class="shape" ><rect x="0" y="41" width="272" height="317" style="fill:#E3E9FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text" x="136.000000" y="28.000000" style="text-anchor:middle;font-size:28px;fill:#0A0F25">container</text></g><g id="no container"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="77.000000" y="458.000000" width="118" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:#CEEDEE;color:red;"><p>they did it in style</p>
+</div></foreignObject></g></g><g id="container.md"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="30.000000" y="70.000000" width="212" height="258"><div xmlns="http://www.w3.org/1999/xhtml" class="md" style="background-color:transparent;color:darkorange;"><h1>a header</h1>
 <p>a line of text and an</p>
 <pre><code>{
 	indented: &quot;block&quot;,
@@ -819,16 +805,8 @@ width="516" height="684" viewBox="-102 -100 516 684"><style type="text/css">
 }
 </code></pre>
 <p>walk into a bar.</p>
-<<<<<<< HEAD
-</div></foreignObject></g></g><g id="(container -&gt; no container)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 136.000000 320.000000 C 136.000000 342.000000 136.000000 354.000000 136.000000 374.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#1624494153)"/></g><mask id="1624494153" maskUnits="userSpaceOnUse" x="-100" y="-100" width="476" height="645">
-<rect x="-100" y="-100" width="476" height="645" fill="white"></rect>
-||||||| 749d236a
-</div></foreignObject></g></g><g id="(container -&gt; no container)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 156.000000 360.000000 C 156.000000 398.000000 156.000000 418.000000 156.000000 454.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2362058415)"/></g><mask id="2362058415" maskUnits="userSpaceOnUse" x="-100" y="-100" width="516" height="686">
-<rect x="-100" y="-100" width="516" height="686" fill="white"></rect>
-=======
-</div></foreignObject></g></g><g id="(container -&gt; no container)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 156.000000 360.000000 C 156.000000 398.000000 156.000000 418.000000 156.000000 454.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2424495084)"/></g><mask id="2424495084" maskUnits="userSpaceOnUse" x="-100" y="-100" width="516" height="684">
-<rect x="-100" y="-100" width="516" height="684" fill="white"></rect>
->>>>>>> master
+</div></foreignObject></g></g><g id="(container -&gt; no container)[0]"><marker id="mk-3990223579" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#0D32B2" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 136.000000 360.000000 C 136.000000 398.000000 136.000000 418.000000 136.000000 454.000000" class="connection" style="fill:none;stroke:#0D32B2;stroke-width:2;" marker-end="url(#mk-3990223579)" mask="url(#2056439789)"/></g><mask id="2056439789" maskUnits="userSpaceOnUse" x="-100" y="-100" width="476" height="684">
+<rect x="-100" y="-100" width="476" height="684" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text {
