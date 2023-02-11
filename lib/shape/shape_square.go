@@ -2,6 +2,7 @@ package shape
 
 import (
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapeSquare struct {
@@ -9,12 +10,14 @@ type shapeSquare struct {
 }
 
 func NewSquare(box *geo.Box) Shape {
-	return shapeSquare{
+	shape := shapeSquare{
 		baseShape: &baseShape{
 			Type: SQUARE_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 func (s shapeSquare) IsRectangular() bool {

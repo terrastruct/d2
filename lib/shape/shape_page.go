@@ -5,6 +5,7 @@ import (
 
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapePage struct {
@@ -18,12 +19,14 @@ const (
 )
 
 func NewPage(box *geo.Box) Shape {
-	return shapePage{
+	shape := shapePage{
 		baseShape: &baseShape{
 			Type: PAGE_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 func (s shapePage) GetInnerBox() *geo.Box {

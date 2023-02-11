@@ -5,6 +5,7 @@ import (
 
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapeDiamond struct {
@@ -12,12 +13,14 @@ type shapeDiamond struct {
 }
 
 func NewDiamond(box *geo.Box) Shape {
-	return shapeDiamond{
+	shape := shapeDiamond{
 		baseShape: &baseShape{
 			Type: DIAMOND_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 func (s shapeDiamond) GetInnerBox() *geo.Box {
