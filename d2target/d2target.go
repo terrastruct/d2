@@ -199,9 +199,6 @@ func (s Shape) CSSStyle() string {
 		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(s.StrokeWidth), s.StrokeDash)
 		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
 	}
-	if s.BorderRadius != 0 {
-		out += fmt.Sprintf(`rx:%d;`, s.BorderRadius)
-	}
 
 	return out
 }

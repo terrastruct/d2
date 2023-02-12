@@ -802,13 +802,17 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 
 	// TODO should standardize "" to rectangle
 	case d2target.ShapeRectangle, d2target.ShapeSequenceDiagram, "":
+		rx := ""
+		if targetShape.BorderRadius != 0 {
+			rx = fmt.Sprintf(` rx="%d"`, targetShape.BorderRadius)
+		}
 		if targetShape.ThreeDee {
 			fmt.Fprint(writer, render3dRect(targetShape))
 		} else {
 			if !targetShape.DoubleBorder {
 				if targetShape.Multiple {
-					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-						targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style)
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s"%s />`,
+						targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style, rx)
 				}
 				if sketchRunner != nil {
 					out, err := d2sketch.Rect(sketchRunner, targetShape)
@@ -817,19 +821,15 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					}
 					fmt.Fprint(writer, out)
 				} else {
-					rx := ""
-					if targetShape.BorderRadius != 0 {
-						rx = fmt.Sprintf(` rx="%d"`, targetShape.BorderRadius)
-					}
 					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s"%s />`,
 						targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style, rx)
 				}
 			} else {
 				if targetShape.Multiple {
-					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-						targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style)
-					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-						targetShape.Pos.X+10+d2target.INNER_BORDER_OFFSET, targetShape.Pos.Y-10+d2target.INNER_BORDER_OFFSET, targetShape.Width-2*d2target.INNER_BORDER_OFFSET, targetShape.Height-2*d2target.INNER_BORDER_OFFSET, style)
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s"%s />`,
+						targetShape.Pos.X+10, targetShape.Pos.Y-10, targetShape.Width, targetShape.Height, style, rx)
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s"%s />`,
+						targetShape.Pos.X+10+d2target.INNER_BORDER_OFFSET, targetShape.Pos.Y-10+d2target.INNER_BORDER_OFFSET, targetShape.Width-2*d2target.INNER_BORDER_OFFSET, targetShape.Height-2*d2target.INNER_BORDER_OFFSET, style, rx)
 				}
 				if sketchRunner != nil {
 					out, err := d2sketch.DoubleRect(sketchRunner, targetShape)
@@ -838,10 +838,10 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					}
 					fmt.Fprint(writer, out)
 				} else {
-					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-						targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
-					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-						targetShape.Pos.X+d2target.INNER_BORDER_OFFSET, targetShape.Pos.Y+d2target.INNER_BORDER_OFFSET, targetShape.Width-2*d2target.INNER_BORDER_OFFSET, targetShape.Height-2*d2target.INNER_BORDER_OFFSET, style)
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s"%s />`,
+						targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style, rx)
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s"%s />`,
+						targetShape.Pos.X+d2target.INNER_BORDER_OFFSET, targetShape.Pos.Y+d2target.INNER_BORDER_OFFSET, targetShape.Width-2*d2target.INNER_BORDER_OFFSET, targetShape.Height-2*d2target.INNER_BORDER_OFFSET, style, rx)
 				}
 			}
 		}
