@@ -1,0 +1,222 @@
+{
+  "graph": {
+    "name": "",
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,0:0:0-4:1:52",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,0:0:0-4:1:52",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,0:0:0-0:4:4",
+              "path": [
+                {
+                  "double_quoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,0:0:0-0:4:4",
+                    "value": [
+                      {
+                        "string": "3d",
+                        "raw_string": "3d"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,0:6:6-4:0:51",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,1:1:9-1:15:23",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,1:1:9-1:8:16",
+                        "path": [
+                          {
+                            "double_quoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,1:1:9-1:8:16",
+                              "value": [
+                                {
+                                  "string": "width",
+                                  "raw_string": "width"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,1:10:18-1:15:23",
+                          "value": [
+                            {
+                              "string": "hello",
+                              "raw_string": "hello"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,2:1:25-2:11:35",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,2:1:25-2:11:35",
+                        "path": [
+                          {
+                            "single_quoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,2:1:25-2:11:35",
+                              "raw": "",
+                              "value": "multiple"
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,3:1:37-3:14:50",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,3:1:37-3:9:45",
+                        "path": [
+                          {
+                            "single_quoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,3:1:37-3:9:45",
+                              "raw": "",
+                              "value": "layers"
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,3:11:47-3:14:50",
+                          "value": [
+                            {
+                              "string": "yes",
+                              "raw_string": "yes"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "references": [
+        {
+          "key": {
+            "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,1:1:9-1:8:16",
+            "path": [
+              {
+                "double_quoted_string": {
+                  "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,1:1:9-1:8:16",
+                  "value": [
+                    {
+                      "string": "width",
+                      "raw_string": "width"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "key_path_index": 0,
+          "map_key_edge_index": -1
+        },
+        {
+          "key": {
+            "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,2:1:25-2:11:35",
+            "path": [
+              {
+                "single_quoted_string": {
+                  "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,2:1:25-2:11:35",
+                  "raw": "",
+                  "value": "multiple"
+                }
+              }
+            ]
+          },
+          "key_path_index": 0,
+          "map_key_edge_index": -1
+        },
+        {
+          "key": {
+            "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,3:1:37-3:9:45",
+            "path": [
+              {
+                "single_quoted_string": {
+                  "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,3:1:37-3:9:45",
+                  "raw": "",
+                  "value": "layers"
+                }
+              }
+            ]
+          },
+          "key_path_index": 0,
+          "map_key_edge_index": -1
+        },
+        {
+          "key": {
+            "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,0:0:0-0:4:4",
+            "path": [
+              {
+                "double_quoted_string": {
+                  "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,0:0:0-0:4:4",
+                  "value": [
+                    {
+                      "string": "3d",
+                      "raw_string": "3d"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "key_path_index": 0,
+          "map_key_edge_index": -1
+        }
+      ],
+      "attributes": {
+        "label": {
+          "value": "yes"
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": null
+  },
+  "err": null
+}

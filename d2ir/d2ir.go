@@ -263,7 +263,8 @@ type Field struct {
 	// *Map.
 	parent Node
 
-	Name string `json:"name"`
+	Name       string `json:"name"`
+	IsUnquoted bool   `json:"-"`
 
 	// Primary_ to avoid clashing with Primary(). We need to keep it exported for
 	// encoding/json to marshal it so cannot prefix _ instead.
@@ -648,18 +649,20 @@ func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext) (*Field, error)
 }
 
 func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field, error) {
-	head := kp.Path[i].Unbox().ScalarString()
+	head := kp.Path[i].Unbox()
+	headString := head.ScalarString()
+	_, headUnquoted := head.(*d2ast.UnquotedString)
 
-	if head == "_" {
+	if headString == "_" {
 		return nil, d2parser.Errorf(kp.Path[i].Unbox(), `parent "_" can only be used in the beginning of paths, e.g. "_.x"`)
 	}
 
-	if findBoardKeyword(head) != -1 && NodeBoardKind(m) == "" {
+	if findBoardKeyword(headString) != -1 && NodeBoardKind(m) == "" && headUnquoted {
 		return nil, d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head)
 	}
 
 	for _, f := range m.Fields {
-		if !strings.EqualFold(f.Name, head) {
+		if !strings.EqualFold(f.Name, headString) {
 			continue
 		}
 
@@ -687,8 +690,9 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 	}
 
 	f := &Field{
-		parent: m,
-		Name:   head,
+		parent:     m,
+		Name:       headString,
+		IsUnquoted: headUnquoted,
 	}
 	// Don't add references for fake common KeyPath from trimCommon in CreateEdge.
 	if refctx != nil {
@@ -788,6 +792,7 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
 
 	ij := findProhibitedEdgeKeyword(eid.SrcPath...)
 	if ij != -1 {
+		// TODO check quoting
 		return nil, d2parser.Errorf(refctx.Edge.Src.Path[ij].Unbox(), "reserved keywords are prohibited in edges")
 	}
 	ij = findBoardKeyword(eid.SrcPath...)

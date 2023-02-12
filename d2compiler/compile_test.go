@@ -1899,6 +1899,16 @@ Chinchillas_Collectibles.chinchilla -> Chinchillas.id`,
 				tassert.Equal(t, 2, *g.Edges[0].SrcTableColumnIndex)
 			},
 		},
+		{
+			name: "quoted-reserved",
+			text: `"3d": {
+	"width": hello
+	'multiple'
+	'layers': yes
+}
+"3d"."width" -> me
+`,
+		},
 	}
 
 	for _, tc := range testCases {

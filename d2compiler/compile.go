@@ -120,7 +120,7 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 		if f.Name == "shape" {
 			continue
 		}
-		if _, ok := d2graph.BoardKeywords[f.Name]; ok {
+		if _, ok := d2graph.BoardKeywords[f.Name]; ok && f.IsUnquoted {
 			continue
 		}
 		c.compileField(obj, f)
@@ -139,25 +139,27 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 }
 
 func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
-	keyword := strings.ToLower(f.Name)
-	_, isStyleReserved := d2graph.StyleKeywords[keyword]
-	if isStyleReserved {
-		c.errorf(f.LastRef().AST(), "%v must be style.%v", f.Name, f.Name)
-		return
-	}
-	_, isReserved := d2graph.SimpleReservedKeywords[keyword]
-	if isReserved {
-		c.compileReserved(obj.Attributes, f)
-		return
-	} else if f.Name == "style" {
-		if f.Map() == nil {
+	if f.IsUnquoted {
+		keyword := strings.ToLower(f.Name)
+		_, isStyleReserved := d2graph.StyleKeywords[keyword]
+		if isStyleReserved {
+			c.errorf(f.LastRef().AST(), "%v must be style.%v", f.Name, f.Name)
 			return
 		}
-		c.compileStyle(obj.Attributes, f.Map())
-		if obj.Attributes.Style.Animated != nil {
-			c.errorf(obj.Attributes.Style.Animated.MapKey, `key "animated" can only be applied to edges`)
+		_, isReserved := d2graph.SimpleReservedKeywords[keyword]
+		if isReserved {
+			c.compileReserved(obj.Attributes, f)
+			return
+		} else if f.Name == "style" {
+			if f.Map() == nil {
+				return
+			}
+			c.compileStyle(obj.Attributes, f.Map())
+			if obj.Attributes.Style.Animated != nil {
+				c.errorf(obj.Attributes.Style.Animated.MapKey, `key "animated" can only be applied to edges`)
+			}
+			return
 		}
-		return
 	}
 
 	obj = obj.EnsureChild(d2graphIDA([]string{f.Name}))
@@ -548,7 +550,7 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 
 func (c *compiler) validateKeys(obj *d2graph.Object, m *d2ir.Map) {
 	for _, f := range m.Fields {
-		if _, ok := d2graph.BoardKeywords[f.Name]; ok {
+		if _, ok := d2graph.BoardKeywords[f.Name]; ok && f.IsUnquoted {
 			continue
 		}
 		c.validateKey(obj, f)
@@ -556,49 +558,51 @@ func (c *compiler) validateKeys(obj *d2graph.Object, m *d2ir.Map) {
 }
 
 func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
-	keyword := strings.ToLower(f.Name)
-	_, isReserved := d2graph.ReservedKeywords[keyword]
-	if isReserved {
-		switch obj.Attributes.Shape.Value {
-		case d2target.ShapeSQLTable, d2target.ShapeClass:
-		default:
-			if len(obj.Children) > 0 && (f.Name == "width" || f.Name == "height") {
-				c.errorf(f.LastPrimaryKey(), fmt.Sprintf("%s cannot be used on container: %s", f.Name, obj.AbsID()))
-			}
-		}
-
-		switch obj.Attributes.Shape.Value {
-		case d2target.ShapeCircle, d2target.ShapeSquare:
-			checkEqual := (keyword == "width" && obj.Attributes.Height != nil) || (keyword == "height" && obj.Attributes.Width != nil)
-			if checkEqual && obj.Attributes.Width.Value != obj.Attributes.Height.Value {
-				c.errorf(f.LastPrimaryKey(), "width and height must be equal for %s shapes", obj.Attributes.Shape.Value)
-			}
-		}
-
-		switch f.Name {
-		case "style":
-			if obj.Attributes.Style.ThreeDee != nil {
-				if !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeRectangle) {
-					c.errorf(obj.Attributes.Style.ThreeDee.MapKey, `key "3d" can only be applied to squares and rectangles`)
+	if f.IsUnquoted {
+		keyword := strings.ToLower(f.Name)
+		_, isReserved := d2graph.ReservedKeywords[keyword]
+		if isReserved {
+			switch obj.Attributes.Shape.Value {
+			case d2target.ShapeSQLTable, d2target.ShapeClass:
+			default:
+				if len(obj.Children) > 0 && (f.Name == "width" || f.Name == "height") {
+					c.errorf(f.LastPrimaryKey(), fmt.Sprintf("%s cannot be used on container: %s", f.Name, obj.AbsID()))
 				}
 			}
-			if obj.Attributes.Style.DoubleBorder != nil {
-				if obj.Attributes.Shape.Value != "" && obj.Attributes.Shape.Value != d2target.ShapeSquare && obj.Attributes.Shape.Value != d2target.ShapeRectangle && obj.Attributes.Shape.Value != d2target.ShapeCircle && obj.Attributes.Shape.Value != d2target.ShapeOval {
-					c.errorf(obj.Attributes.Style.DoubleBorder.MapKey, `key "double-border" can only be applied to squares, rectangles, circles, ovals`)
+
+			switch obj.Attributes.Shape.Value {
+			case d2target.ShapeCircle, d2target.ShapeSquare:
+				checkEqual := (keyword == "width" && obj.Attributes.Height != nil) || (keyword == "height" && obj.Attributes.Width != nil)
+				if checkEqual && obj.Attributes.Width.Value != obj.Attributes.Height.Value {
+					c.errorf(f.LastPrimaryKey(), "width and height must be equal for %s shapes", obj.Attributes.Shape.Value)
 				}
 			}
-		case "shape":
-			if obj.Attributes.Shape.Value == d2target.ShapeImage && obj.Attributes.Icon == nil {
-				c.errorf(f.LastPrimaryKey(), `image shape must include an "icon" field`)
-			}
 
-			in := d2target.IsShape(obj.Attributes.Shape.Value)
-			_, arrowheadIn := d2target.Arrowheads[obj.Attributes.Shape.Value]
-			if !in && arrowheadIn {
-				c.errorf(f.LastPrimaryKey(), fmt.Sprintf(`invalid shape, can only set "%s" for arrowheads`, obj.Attributes.Shape.Value))
+			switch f.Name {
+			case "style":
+				if obj.Attributes.Style.ThreeDee != nil {
+					if !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeRectangle) {
+						c.errorf(obj.Attributes.Style.ThreeDee.MapKey, `key "3d" can only be applied to squares and rectangles`)
+					}
+				}
+				if obj.Attributes.Style.DoubleBorder != nil {
+					if obj.Attributes.Shape.Value != "" && obj.Attributes.Shape.Value != d2target.ShapeSquare && obj.Attributes.Shape.Value != d2target.ShapeRectangle && obj.Attributes.Shape.Value != d2target.ShapeCircle && obj.Attributes.Shape.Value != d2target.ShapeOval {
+						c.errorf(obj.Attributes.Style.DoubleBorder.MapKey, `key "double-border" can only be applied to squares, rectangles, circles, ovals`)
+					}
+				}
+			case "shape":
+				if obj.Attributes.Shape.Value == d2target.ShapeImage && obj.Attributes.Icon == nil {
+					c.errorf(f.LastPrimaryKey(), `image shape must include an "icon" field`)
+				}
+
+				in := d2target.IsShape(obj.Attributes.Shape.Value)
+				_, arrowheadIn := d2target.Arrowheads[obj.Attributes.Shape.Value]
+				if !in && arrowheadIn {
+					c.errorf(f.LastPrimaryKey(), fmt.Sprintf(`invalid shape, can only set "%s" for arrowheads`, obj.Attributes.Shape.Value))
+				}
 			}
+			return
 		}
-		return
 	}
 
 	if obj.Attributes.Shape.Value == d2target.ShapeImage {
