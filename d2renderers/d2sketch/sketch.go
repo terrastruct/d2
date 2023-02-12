@@ -315,7 +315,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 
 	var longestNameWidth int
 	for _, f := range shape.Columns {
-		longestNameWidth = go2.Max(longestNameWidth, f.Name.LabelWidth)
+		longestNameWidth = go2.Max(longestNameWidth, f.Label.LabelWidth)
 	}
 
 	rowBox := geo.NewBox(box.TopLeft.Copy(), box.Width, rowHeight)
@@ -339,7 +339,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 				nameTL.X,
 				nameTL.Y+float64(shape.FontSize)*3/4,
 				fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", float64(shape.FontSize), shape.PrimaryAccentColor),
-				svg.EscapeText(f.Name.Label),
+				svg.EscapeText(f.Label.Label),
 			),
 			fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
 				nameTL.X+float64(longestNameWidth)+2*d2target.NamePadding,

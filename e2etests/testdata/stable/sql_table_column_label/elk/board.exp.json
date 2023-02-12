@@ -1,0 +1,80 @@
+{
+  "name": "",
+  "fontFamily": "SourceSansPro",
+  "shapes": [
+    {
+      "id": "x",
+      "type": "sql_table",
+      "pos": {
+        "x": 12,
+        "y": 12
+      },
+      "width": 146,
+      "height": 72,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#0A0F25",
+      "stroke": "#FFFFFF",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": [
+        {
+          "name": "w",
+          "type": {
+            "label": "width",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 48,
+            "labelHeight": 26
+          },
+          "label": {
+            "label": "width",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 48,
+            "labelHeight": 26
+          },
+          "constraint": "",
+          "reference": ""
+        }
+      ],
+      "label": "x",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 12,
+      "labelHeight": 31,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "#0D32B2",
+      "secondaryAccentColor": "#4A6FF3",
+      "neutralAccentColor": "#676C7E"
+    }
+  ],
+  "connections": []
+}

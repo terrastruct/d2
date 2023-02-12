@@ -1942,6 +1942,14 @@ x.y -> a.b: {
 `,
 		},
 		{
+			name: "sql_table_column_label",
+			script: `x: {
+  shape: sql_table
+	w: int { label: width }
+}
+`,
+		},
+		{
 			name: "sql_table_column_styles",
 			script: `Humor in the Court: {
   shape: sql_table

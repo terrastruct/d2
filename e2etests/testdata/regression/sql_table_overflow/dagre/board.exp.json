@@ -30,8 +30,9 @@
       "methods": null,
       "columns": [
         {
-          "name": {
-            "label": "short",
+          "name": "short",
+          "type": {
+            "label": "loooooooooooooooooooong",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -39,10 +40,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 45,
+            "labelWidth": 242,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "loooooooooooooooooooong",
             "fontSize": 0,
             "fontFamily": "",
@@ -58,8 +59,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "loooooooooooooooooooong",
+          "name": "loooooooooooooooooooong",
+          "type": {
+            "label": "short",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -67,10 +69,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 242,
+            "labelWidth": 45,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "short",
             "fontSize": 0,
             "fontFamily": "",
@@ -130,8 +132,9 @@
       "methods": null,
       "columns": [
         {
-          "name": {
-            "label": "short",
+          "name": "short",
+          "type": {
+            "label": "loooooooooooooooooooong",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -139,10 +142,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 45,
+            "labelWidth": 242,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "loooooooooooooooooooong",
             "fontSize": 0,
             "fontFamily": "",
@@ -158,8 +161,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "loooooooooooooooooooong",
+          "name": "loooooooooooooooooooong",
+          "type": {
+            "label": "short",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -167,10 +171,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 242,
+            "labelWidth": 45,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "short",
             "fontSize": 0,
             "fontFamily": "",

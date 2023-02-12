@@ -227,6 +227,18 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
+              "label": {
+                "label": "",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
               "constraint": "",
               "reference": ""
             },
@@ -245,6 +257,18 @@
               },
               "type": {
                 "label": "bool",
+                "fontSize": 0,
+                "fontFamily": "",
+                "language": "",
+                "color": "",
+                "italic": false,
+                "bold": false,
+                "underline": false,
+                "labelWidth": 0,
+                "labelHeight": 0
+              },
+              "label": {
+                "label": "",
                 "fontSize": 0,
                 "fontFamily": "",
                 "language": "",

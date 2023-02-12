@@ -1595,6 +1595,18 @@ x.y -> a.b: {
 			},
 		},
 		{
+			name: "table_column_label",
+
+			text: `x: {
+  shape: sql_table
+	w: int { label: width }
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "width", g.Objects[0].SQLTable.Columns[0].Label.Label)
+			},
+		},
+		{
 			name: "class_paren",
 
 			text: `_shape_: "shape" {

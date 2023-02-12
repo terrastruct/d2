@@ -2,21 +2,21 @@
   "graph": {
     "name": "",
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,0:0:0-5:0:81",
+      "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,0:0:0-4:0:51",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,0:0:0-4:1:80",
+            "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,0:0:0-3:1:50",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,0:0:0-0:15:15",
+              "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,0:0:0-0:1:1",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,0:0:0-0:15:15",
+                    "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,0:0:0-0:1:1",
                     "value": [
                       {
-                        "string": "IUserProperties",
-                        "raw_string": "IUserProperties"
+                        "string": "x",
+                        "raw_string": "x"
                       }
                     ]
                   }
@@ -26,17 +26,17 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,0:17:17-4:0:79",
+                "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,0:3:3-3:0:49",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,1:2:21-1:18:37",
+                      "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,1:2:7-1:18:23",
                       "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,1:2:21-1:7:26",
+                        "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,1:2:7-1:7:12",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,1:2:21-1:7:26",
+                              "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,1:2:7-1:7:12",
                               "value": [
                                 {
                                   "string": "shape",
@@ -50,7 +50,7 @@
                       "primary": {},
                       "value": {
                         "unquoted_string": {
-                          "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,1:9:28-1:18:37",
+                          "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,1:9:14-1:18:23",
                           "value": [
                             {
                               "string": "sql_table",
@@ -63,73 +63,72 @@
                   },
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,2:2:40-2:19:57",
+                      "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,2:1:25-2:24:48",
                       "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,2:2:40-2:11:49",
+                        "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,2:1:25-2:2:26",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,2:2:40-2:11:49",
+                              "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,2:1:25-2:2:26",
                               "value": [
                                 {
-                                  "string": "GetType()",
-                                  "raw_string": "GetType()"
+                                  "string": "w",
+                                  "raw_string": "w"
                                 }
                               ]
                             }
                           }
                         ]
                       },
-                      "primary": {},
-                      "value": {
+                      "primary": {
                         "unquoted_string": {
-                          "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,2:13:51-2:19:57",
+                          "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,2:4:28-2:7:31",
                           "value": [
                             {
-                              "string": "string",
-                              "raw_string": "string"
+                              "string": "int",
+                              "raw_string": "int"
                             }
                           ]
                         }
-                      }
-                    }
-                  },
-                  {
-                    "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,3:2:60-3:20:78",
-                      "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,3:2:60-3:15:73",
-                        "path": [
-                          {
-                            "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,3:2:60-3:7:65",
-                              "value": [
-                                {
-                                  "string": "style",
-                                  "raw_string": "style"
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,3:8:66-3:15:73",
-                              "value": [
-                                {
-                                  "string": "opacity",
-                                  "raw_string": "opacity"
-                                }
-                              ]
-                            }
-                          }
-                        ]
                       },
-                      "primary": {},
                       "value": {
-                        "number": {
-                          "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,3:17:75-3:20:78",
-                          "raw": "0.4",
-                          "value": "2/5"
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,2:8:32-2:23:47",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,2:10:34-2:23:47",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,2:10:34-2:15:39",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,2:10:34-2:15:39",
+                                        "value": [
+                                          {
+                                            "string": "label",
+                                            "raw_string": "label"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,2:17:41-2:22:46",
+                                    "value": [
+                                      {
+                                        "string": "width",
+                                        "raw_string": "width"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
                         }
                       }
                     }
@@ -169,8 +168,8 @@
     "edges": null,
     "objects": [
       {
-        "id": "IUserProperties",
-        "id_val": "IUserProperties",
+        "id": "x",
+        "id_val": "x",
         "label_dimensions": {
           "width": 0,
           "height": 0
@@ -178,15 +177,15 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,0:0:0-0:15:15",
+              "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,0:0:0-0:1:1",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/table_style.d2,0:0:0-0:15:15",
+                    "range": "d2/testdata/d2compiler/TestCompile/table_column_label.d2,0:0:0-0:1:1",
                     "value": [
                       {
-                        "string": "IUserProperties",
-                        "raw_string": "IUserProperties"
+                        "string": "x",
+                        "raw_string": "x"
                       }
                     ]
                   }
@@ -201,7 +200,7 @@
           "columns": [
             {
               "name": {
-                "label": "GetType()",
+                "label": "w",
                 "fontSize": 0,
                 "fontFamily": "",
                 "language": "",
@@ -213,7 +212,7 @@
                 "labelHeight": 0
               },
               "type": {
-                "label": "string",
+                "label": "width",
                 "fontSize": 0,
                 "fontFamily": "",
                 "language": "",
@@ -225,7 +224,7 @@
                 "labelHeight": 0
               },
               "label": {
-                "label": "",
+                "label": "width",
                 "fontSize": 0,
                 "fontFamily": "",
                 "language": "",
@@ -243,13 +242,9 @@
         },
         "attributes": {
           "label": {
-            "value": "IUserProperties"
+            "value": "x"
           },
-          "style": {
-            "opacity": {
-              "value": "0.4"
-            }
-          },
+          "style": {},
           "near_key": null,
           "shape": {
             "value": "sql_table"

@@ -98,14 +98,14 @@ func drawTable(writer io.Writer, targetShape d2target.Shape) {
 
 	var longestNameWidth int
 	for _, f := range targetShape.Columns {
-		longestNameWidth = go2.Max(longestNameWidth, f.Name.LabelWidth)
+		longestNameWidth = go2.Max(longestNameWidth, f.Label.LabelWidth)
 	}
 
 	rowBox := geo.NewBox(box.TopLeft.Copy(), box.Width, rowHeight)
 	rowBox.TopLeft.Y += headerBox.Height
 	for _, f := range targetShape.Columns {
 		fmt.Fprint(writer,
-			tableRow(targetShape, rowBox, f.Name.Label, f.Type.Label, f.ConstraintAbbr(), float64(targetShape.FontSize), float64(longestNameWidth)),
+			tableRow(targetShape, rowBox, f.Label.Label, f.Type.Label, f.ConstraintAbbr(), float64(targetShape.FontSize), float64(longestNameWidth)),
 		)
 		rowBox.TopLeft.Y += rowHeight
 		fmt.Fprintf(writer, `<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke-width:2;stroke:%s" />`,

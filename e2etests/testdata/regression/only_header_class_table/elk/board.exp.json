@@ -116,18 +116,7 @@
       "methods": null,
       "columns": [
         {
-          "name": {
-            "label": "ok",
-            "fontSize": 0,
-            "fontFamily": "",
-            "language": "",
-            "color": "",
-            "italic": false,
-            "bold": false,
-            "underline": false,
-            "labelWidth": 21,
-            "labelHeight": 26
-          },
+          "name": "ok",
           "type": {
             "label": "",
             "fontSize": 0,
@@ -139,6 +128,18 @@
             "underline": false,
             "labelWidth": 0,
             "labelHeight": 0
+          },
+          "label": {
+            "label": "ok",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 21,
+            "labelHeight": 26
           },
           "constraint": "",
           "reference": ""

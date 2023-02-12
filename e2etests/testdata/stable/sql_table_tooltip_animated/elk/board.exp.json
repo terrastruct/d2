@@ -30,18 +30,7 @@
       "methods": null,
       "columns": [
         {
-          "name": {
-            "label": "y",
-            "fontSize": 0,
-            "fontFamily": "",
-            "language": "",
-            "color": "",
-            "italic": false,
-            "bold": false,
-            "underline": false,
-            "labelWidth": 10,
-            "labelHeight": 26
-          },
+          "name": "y",
           "type": {
             "label": "",
             "fontSize": 0,
@@ -53,6 +42,18 @@
             "underline": false,
             "labelWidth": 0,
             "labelHeight": 0
+          },
+          "label": {
+            "label": "y",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 10,
+            "labelHeight": 26
           },
           "constraint": "",
           "reference": ""
@@ -102,18 +103,7 @@
       "methods": null,
       "columns": [
         {
-          "name": {
-            "label": "b",
-            "fontSize": 0,
-            "fontFamily": "",
-            "language": "",
-            "color": "",
-            "italic": false,
-            "bold": false,
-            "underline": false,
-            "labelWidth": 10,
-            "labelHeight": 26
-          },
+          "name": "b",
           "type": {
             "label": "",
             "fontSize": 0,
@@ -125,6 +115,18 @@
             "underline": false,
             "labelWidth": 0,
             "labelHeight": 0
+          },
+          "label": {
+            "label": "b",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 10,
+            "labelHeight": 26
           },
           "constraint": "",
           "reference": ""

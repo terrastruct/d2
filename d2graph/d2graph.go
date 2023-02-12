@@ -861,8 +861,8 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 			if nameDims == nil {
 				return nil, fmt.Errorf("dimensions for sql_table name %#v not found", ctexts[0].Text)
 			}
-			c.Name.LabelWidth = nameDims.Width
-			c.Name.LabelHeight = nameDims.Height
+			c.Label.LabelWidth = nameDims.Width
+			c.Label.LabelHeight = nameDims.Height
 			maxNameWidth = go2.Max(maxNameWidth, nameDims.Width)
 
 			typeDims := GetTextDimensions(mtexts, ruler, ctexts[1], fontFamily)
@@ -1033,7 +1033,7 @@ func addSQLTableColumnIndices(e *Edge, srcID, dstID []string, obj, src, dst *Obj
 		srcAbsID := src.AbsIDArray()
 		if len(objAbsID)+len(srcID) > len(srcAbsID) {
 			for i, d2col := range src.SQLTable.Columns {
-				if d2col.Name.Label == srcID[len(srcID)-1] {
+				if d2col.Name == srcID[len(srcID)-1] {
 					d2col.Reference = dst.AbsID()
 					e.SrcTableColumnIndex = new(int)
 					*e.SrcTableColumnIndex = i
@@ -1047,7 +1047,7 @@ func addSQLTableColumnIndices(e *Edge, srcID, dstID []string, obj, src, dst *Obj
 		dstAbsID := dst.AbsIDArray()
 		if len(objAbsID)+len(dstID) > len(dstAbsID) {
 			for i, d2col := range dst.SQLTable.Columns {
-				if d2col.Name.Label == dstID[len(dstID)-1] {
+				if d2col.Name == dstID[len(dstID)-1] {
 					d2col.Reference = dst.AbsID()
 					e.DstTableColumnIndex = new(int)
 					*e.DstTableColumnIndex = i

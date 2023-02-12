@@ -9,7 +9,7 @@
         "x": 0,
         "y": 178
       },
-      "width": 678,
+      "width": 470,
       "height": 108,
       "opacity": 1,
       "strokeDash": 0,
@@ -30,8 +30,9 @@
       "methods": null,
       "columns": [
         {
-          "name": {
-            "label": "Could you see him from where you were standing?",
+          "name": "Could you see him from where you were standing?",
+          "type": {
+            "label": "I could see his head.",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -39,10 +40,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 418,
+            "labelWidth": 166,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "I could see his head.",
             "fontSize": 0,
             "fontFamily": "",
@@ -58,8 +59,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "And where was his head?",
+          "name": "And where was his head?",
+          "type": {
+            "label": "Just above his shoulders.",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -67,10 +69,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 208,
+            "labelWidth": 210,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "Just above his shoulders.",
             "fontSize": 0,
             "fontFamily": "",
@@ -106,10 +108,10 @@
       "id": "Humor in the Court2",
       "type": "sql_table",
       "pos": {
-        "x": 738,
+        "x": 530,
         "y": 160
       },
-      "width": 992,
+      "width": 680,
       "height": 144,
       "opacity": 1,
       "strokeDash": 0,
@@ -130,8 +132,9 @@
       "methods": null,
       "columns": [
         {
-          "name": {
-            "label": "Could you see him from where you were standing?",
+          "name": "Could you see him from where you were standing?",
+          "type": {
+            "label": "I could see his head.",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -139,10 +142,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 627,
+            "labelWidth": 248,
             "labelHeight": 38
           },
-          "type": {
+          "label": {
             "label": "I could see his head.",
             "fontSize": 0,
             "fontFamily": "",
@@ -158,8 +161,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "And where was his head?",
+          "name": "And where was his head?",
+          "type": {
+            "label": "Just above his shoulders.",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -167,10 +171,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 312,
+            "labelWidth": 315,
             "labelHeight": 38
           },
-          "type": {
+          "label": {
             "label": "Just above his shoulders.",
             "fontSize": 0,
             "fontFamily": "",
@@ -206,7 +210,7 @@
       "id": "manager",
       "type": "class",
       "pos": {
-        "x": 1790,
+        "x": 1270,
         "y": 48
       },
       "width": 422,
@@ -281,7 +285,7 @@
       "id": "manager2",
       "type": "class",
       "pos": {
-        "x": 2272,
+        "x": 1752,
         "y": 0
       },
       "width": 582,

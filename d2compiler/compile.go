@@ -525,11 +525,16 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 			typ = ""
 		}
 		d2Col := d2target.SQLColumn{
-			Name: d2target.Text{Label: col.IDVal},
+			Name: col.IDVal,
 			Type: d2target.Text{Label: typ},
 		}
 		if col.Attributes.Constraint.Value != "" {
 			d2Col.Constraint = col.Attributes.Constraint.Value
+		}
+		if col.Attributes.Label.Value != "" {
+			d2Col.Label = d2target.Text{Label: col.Attributes.Label.Value}
+		} else {
+			d2Col.Label = d2target.Text{Label: col.IDVal}
 		}
 		obj.SQLTable.Columns = append(obj.SQLTable.Columns, d2Col)
 	}

@@ -813,7 +813,7 @@
         "x": 3476,
         "y": 128
       },
-      "width": 161,
+      "width": 178,
       "height": 108,
       "opacity": 1,
       "strokeDash": 0,
@@ -834,8 +834,9 @@
       "methods": null,
       "columns": [
         {
-          "name": {
-            "label": "id",
+          "name": "id",
+          "type": {
+            "label": "int",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -843,10 +844,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 23,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "int",
             "fontSize": 0,
             "fontFamily": "",
@@ -862,8 +863,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "name",
+          "name": "name",
+          "type": {
+            "label": "varchar",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -871,10 +873,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 47,
+            "labelWidth": 64,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "varchar",
             "fontSize": 0,
             "fontFamily": "",
@@ -1641,7 +1643,7 @@
           "y": 1566
         },
         {
-          "x": 3556.5,
+          "x": 3565,
           "y": 1566
         }
       ],
@@ -2417,11 +2419,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 3556.5,
+          "x": 3565,
           "y": 236
         },
         {
-          "x": 3556.5,
+          "x": 3565,
           "y": 1636
         }
       ],

@@ -105,8 +105,9 @@
       "methods": null,
       "columns": [
         {
-          "name": {
-            "label": "id",
+          "name": "id",
+          "type": {
+            "label": "int",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -114,10 +115,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 23,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "int",
             "fontSize": 0,
             "fontFamily": "",
@@ -133,8 +134,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "name",
+          "name": "name",
+          "type": {
+            "label": "string",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -142,10 +144,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 47,
+            "labelWidth": 48,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "string",
             "fontSize": 0,
             "fontFamily": "",
@@ -161,8 +163,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "email",
+          "name": "email",
+          "type": {
+            "label": "string",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -170,10 +173,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 47,
+            "labelWidth": 48,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "string",
             "fontSize": 0,
             "fontFamily": "",
@@ -189,8 +192,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "password",
+          "name": "password",
+          "type": {
+            "label": "string",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -198,10 +202,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 80,
+            "labelWidth": 48,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "string",
             "fontSize": 0,
             "fontFamily": "",
@@ -217,8 +221,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "last_login",
+          "name": "last_login",
+          "type": {
+            "label": "datetime",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -226,10 +231,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 81,
+            "labelWidth": 77,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "datetime",
             "fontSize": 0,
             "fontFamily": "",

@@ -9,7 +9,7 @@
         "x": 12,
         "y": 12
       },
-      "width": 268,
+      "width": 264,
       "height": 216,
       "opacity": 1,
       "strokeDash": 0,
@@ -30,8 +30,9 @@
       "methods": null,
       "columns": [
         {
-          "name": {
-            "label": "id",
+          "name": "id",
+          "type": {
+            "label": "int",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -39,10 +40,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 23,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "int",
             "fontSize": 0,
             "fontFamily": "",
@@ -58,8 +59,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "name",
+          "name": "name",
+          "type": {
+            "label": "string",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -67,10 +69,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 47,
+            "labelWidth": 48,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "string",
             "fontSize": 0,
             "fontFamily": "",
@@ -86,8 +88,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "email",
+          "name": "email",
+          "type": {
+            "label": "string",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -95,10 +98,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 47,
+            "labelWidth": 48,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "string",
             "fontSize": 0,
             "fontFamily": "",
@@ -114,8 +117,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "password",
+          "name": "password",
+          "type": {
+            "label": "string",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -123,10 +127,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 80,
+            "labelWidth": 48,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "string",
             "fontSize": 0,
             "fontFamily": "",
@@ -142,8 +146,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "last_login",
+          "name": "last_login",
+          "type": {
+            "label": "datetime",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -151,10 +156,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 81,
+            "labelWidth": 77,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "datetime",
             "fontSize": 0,
             "fontFamily": "",
@@ -190,10 +195,10 @@
       "id": "products",
       "type": "sql_table",
       "pos": {
-        "x": 300,
+        "x": 296,
         "y": 48
       },
-      "width": 164,
+      "width": 184,
       "height": 180,
       "opacity": 1,
       "strokeDash": 0,
@@ -214,8 +219,9 @@
       "methods": null,
       "columns": [
         {
-          "name": {
-            "label": "id",
+          "name": "id",
+          "type": {
+            "label": "int",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -223,10 +229,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 23,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "int",
             "fontSize": 0,
             "fontFamily": "",
@@ -242,8 +248,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "price",
+          "name": "price",
+          "type": {
+            "label": "decimal",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -251,10 +258,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 42,
+            "labelWidth": 67,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "decimal",
             "fontSize": 0,
             "fontFamily": "",
@@ -270,8 +277,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "sku",
+          "name": "sku",
+          "type": {
+            "label": "string",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -279,10 +287,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 29,
+            "labelWidth": 48,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "string",
             "fontSize": 0,
             "fontFamily": "",
@@ -298,8 +306,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "name",
+          "name": "name",
+          "type": {
+            "label": "string",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -307,10 +316,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 47,
+            "labelWidth": 48,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "string",
             "fontSize": 0,
             "fontFamily": "",
@@ -346,10 +355,10 @@
       "id": "orders",
       "type": "sql_table",
       "pos": {
-        "x": 300,
+        "x": 340,
         "y": 308
       },
-      "width": 164,
+      "width": 96,
       "height": 144,
       "opacity": 1,
       "strokeDash": 0,
@@ -370,8 +379,9 @@
       "methods": null,
       "columns": [
         {
-          "name": {
-            "label": "id",
+          "name": "id",
+          "type": {
+            "label": "int",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -379,10 +389,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 23,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "int",
             "fontSize": 0,
             "fontFamily": "",
@@ -398,8 +408,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "user_id",
+          "name": "user_id",
+          "type": {
+            "label": "int",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -407,10 +418,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 61,
+            "labelWidth": 23,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "int",
             "fontSize": 0,
             "fontFamily": "",
@@ -426,8 +437,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "product_id",
+          "name": "product_id",
+          "type": {
+            "label": "int",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -435,10 +447,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 91,
+            "labelWidth": 23,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "int",
             "fontSize": 0,
             "fontFamily": "",
@@ -474,10 +486,10 @@
       "id": "shipments",
       "type": "sql_table",
       "pos": {
-        "x": 484,
+        "x": 500,
         "y": 48
       },
-      "width": 244,
+      "width": 146,
       "height": 180,
       "opacity": 1,
       "strokeDash": 0,
@@ -498,8 +510,9 @@
       "methods": null,
       "columns": [
         {
-          "name": {
-            "label": "id",
+          "name": "id",
+          "type": {
+            "label": "int",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -507,10 +520,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 15,
+            "labelWidth": 23,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "int",
             "fontSize": 0,
             "fontFamily": "",
@@ -526,8 +539,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "order_id",
+          "name": "order_id",
+          "type": {
+            "label": "int",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -535,10 +549,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 71,
+            "labelWidth": 23,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "int",
             "fontSize": 0,
             "fontFamily": "",
@@ -554,8 +568,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "tracking_number",
+          "name": "tracking_number",
+          "type": {
+            "label": "string",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -563,10 +578,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 146,
+            "labelWidth": 48,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "string",
             "fontSize": 0,
             "fontFamily": "",
@@ -582,8 +597,9 @@
           "reference": ""
         },
         {
-          "name": {
-            "label": "status",
+          "name": "status",
+          "type": {
+            "label": "string",
             "fontSize": 0,
             "fontFamily": "",
             "language": "",
@@ -591,10 +607,10 @@
             "italic": false,
             "bold": false,
             "underline": false,
-            "labelWidth": 51,
+            "labelWidth": 48,
             "labelHeight": 26
           },
-          "type": {
+          "label": {
             "label": "string",
             "fontSize": 0,
             "fontFamily": "",
@@ -654,19 +670,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 146,
+          "x": 144,
           "y": 228
         },
         {
-          "x": 146,
+          "x": 144,
           "y": 268
         },
         {
-          "x": 341,
+          "x": 364,
           "y": 268
         },
         {
-          "x": 341,
+          "x": 364,
           "y": 308
         }
       ],
@@ -701,11 +717,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 382,
+          "x": 388,
           "y": 228
         },
         {
-          "x": 382,
+          "x": 388,
           "y": 308
         }
       ],
@@ -740,19 +756,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 606,
+          "x": 573,
           "y": 228
         },
         {
-          "x": 606,
+          "x": 573,
           "y": 268
         },
         {
-          "x": 423,
+          "x": 412,
           "y": 268
         },
         {
-          "x": 423,
+          "x": 412,
           "y": 308
         }
       ],

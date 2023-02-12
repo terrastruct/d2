@@ -15,8 +15,9 @@ type SQLTable struct {
 }
 
 type SQLColumn struct {
-	Name       Text   `json:"name"`
+	Name       string `json:"name"`
 	Type       Text   `json:"type"`
+	Label      Text   `json:"label"`
 	Constraint string `json:"constraint"`
 	Reference  string `json:"reference"`
 }
@@ -24,7 +25,7 @@ type SQLColumn struct {
 func (c SQLColumn) Texts(fontSize int) []*MText {
 	return []*MText{
 		{
-			Text:     c.Name.Label,
+			Text:     c.Label.Label,
 			FontSize: fontSize,
 			IsBold:   false,
 			IsItalic: false,
