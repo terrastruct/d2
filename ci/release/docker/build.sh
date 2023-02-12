@@ -58,7 +58,6 @@ main() {
   fi
   sh_c docker buildx build $flags \
     -t "$D2_DOCKER_IMAGE:$VERSION" \
-    --build-arg "VERSION=$VERSION" \
     -f ./ci/release/docker/Dockerfile "./ci/release/build/$VERSION/docker"
 }
 
