@@ -288,10 +288,6 @@ func (sd *sequenceDiagram) adjustGroupLabel(group *d2graph.Object) {
 
 	group.Height += float64(heightAdd)
 
-	// Spans are special
-	// If a span starts above the group, then extend it
-	// Otherwise, move it down
-
 	// Extend stuff within this group
 	for _, g := range sd.groups {
 		if g.TopLeft.Y < group.TopLeft.Y && g.TopLeft.Y+g.Height > group.TopLeft.Y {
