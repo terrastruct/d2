@@ -2013,6 +2013,18 @@ x: {
 y: {
 	style.border-radius: 10
 }
+multiple2: {
+	style.border-radius: 6
+	style.multiple: true
+}
+double: {
+	style.border-radius: 6
+	style.double-border: true
+}
+three-dee: {
+	style.border-radius: 6
+	style.3d: true
+}
 `,
 		},
 		{

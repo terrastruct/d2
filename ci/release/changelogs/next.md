@@ -41,3 +41,4 @@
 - Sequence diagram note ordering was sometimes wrong. [#796](https://github.com/terrastruct/d2/pull/796)
 - Images can now be set to sizes smaller than 128x128. [#702](https://github.com/terrastruct/d2/pull/702)
 - Fixes class height when there are no rows. [#756](https://github.com/terrastruct/d2/pull/756)
+- Border radius was not firefox-compatible. [#799](https://github.com/terrastruct/d2/pull/799)
