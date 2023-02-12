@@ -817,8 +817,12 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					}
 					fmt.Fprint(writer, out)
 				} else {
-					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s" />`,
-						targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style)
+					rx := ""
+					if targetShape.BorderRadius != 0 {
+						rx = fmt.Sprintf(` rx="%d"`, targetShape.BorderRadius)
+					}
+					fmt.Fprintf(writer, `<rect x="%d" y="%d" width="%d" height="%d" style="%s"%s />`,
+						targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, style, rx)
 				}
 			} else {
 				if targetShape.Multiple {
