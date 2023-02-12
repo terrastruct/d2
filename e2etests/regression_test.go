@@ -482,6 +482,15 @@ group: {
 `,
 			expErr: "could not find center of b. Is it declared as an actor?",
 		},
+		{
+			name: "ampersand-escape",
+			script: `h&y: &∈ {
+  tooltip: beans & rice
+}
+&foo
+&&bar
+`,
+		},
 	}
 
 	runa(t, tcs)
