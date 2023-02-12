@@ -6,10 +6,10 @@
       "id": "a",
       "type": "rectangle",
       "pos": {
-        "x": 24,
-        "y": 74
+        "x": 12,
+        "y": 52
       },
-      "width": 150,
+      "width": 100,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -47,10 +47,10 @@
       "id": "b",
       "type": "rectangle",
       "pos": {
-        "x": 274,
-        "y": 74
+        "x": 211,
+        "y": 52
       },
-      "width": 150,
+      "width": 100,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -88,10 +88,10 @@
       "id": "c",
       "type": "rectangle",
       "pos": {
-        "x": 524,
-        "y": 74
+        "x": 410,
+        "y": 52
       },
-      "width": 150,
+      "width": 100,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -129,10 +129,10 @@
       "id": "d",
       "type": "rectangle",
       "pos": {
-        "x": 774,
-        "y": 74
+        "x": 560,
+        "y": 52
       },
-      "width": 150,
+      "width": 100,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -170,8 +170,8 @@
       "id": "a.explanation",
       "type": "page",
       "pos": {
-        "x": 37,
-        "y": 400
+        "x": 0,
+        "y": 258
       },
       "width": 124,
       "height": 66,
@@ -211,8 +211,8 @@
       "id": "a.another explanation",
       "type": "page",
       "pos": {
-        "x": 8,
-        "y": 596
+        "x": -28,
+        "y": 394
       },
       "width": 181,
       "height": 66,
@@ -252,8 +252,8 @@
       "id": "b.\"Some one who believes imaginary things\\n appear right before your i's.\"",
       "type": "page",
       "pos": {
-        "x": 190,
-        "y": 922
+        "x": 102,
+        "y": 600
       },
       "width": 318,
       "height": 82,
@@ -293,8 +293,8 @@
       "id": "d.The earth is like a tiny grain of sand, only much, much heavier",
       "type": "page",
       "pos": {
-        "x": 621,
-        "y": 1264
+        "x": 382,
+        "y": 822
       },
       "width": 456,
       "height": 66,
@@ -358,12 +358,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
-          "y": 270
+          "x": 62,
+          "y": 188
         },
         {
-          "x": 349,
-          "y": 270
+          "x": 261,
+          "y": 188
         }
       ],
       "animated": false,
@@ -397,12 +397,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 349,
-          "y": 792
+          "x": 261,
+          "y": 530
         },
         {
-          "x": 599,
-          "y": 792
+          "x": 460,
+          "y": 530
         }
       ],
       "animated": false,
@@ -436,12 +436,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 599,
-          "y": 1134
+          "x": 460,
+          "y": 752
         },
         {
-          "x": 349,
-          "y": 1134
+          "x": 261,
+          "y": 752
         }
       ],
       "animated": false,
@@ -475,12 +475,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
-          "y": 140
+          "x": 62,
+          "y": 118
         },
         {
-          "x": 99,
-          "y": 1460
+          "x": 62,
+          "y": 958
         }
       ],
       "animated": false,
@@ -514,12 +514,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 349,
-          "y": 140
+          "x": 261,
+          "y": 118
         },
         {
-          "x": 349,
-          "y": 1460
+          "x": 261,
+          "y": 958
         }
       ],
       "animated": false,
@@ -553,12 +553,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 599,
-          "y": 140
+          "x": 460,
+          "y": 118
         },
         {
-          "x": 599,
-          "y": 1460
+          "x": 460,
+          "y": 958
         }
       ],
       "animated": false,
@@ -592,12 +592,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 849,
-          "y": 140
+          "x": 610,
+          "y": 118
         },
         {
-          "x": 849,
-          "y": 1460
+          "x": 610,
+          "y": 958
         }
       ],
       "animated": false,

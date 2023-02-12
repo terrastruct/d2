@@ -6,8 +6,8 @@
       "id": "alice",
       "type": "person",
       "pos": {
-        "x": 24,
-        "y": 88
+        "x": 12,
+        "y": 66
       },
       "width": 167,
       "height": 111,
@@ -47,11 +47,11 @@
       "id": "bob",
       "type": "person",
       "pos": {
-        "x": 302,
-        "y": 130
+        "x": 303,
+        "y": 140
       },
-      "width": 150,
-      "height": 100,
+      "width": 103,
+      "height": 69,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 5,
@@ -88,10 +88,10 @@
       "id": "db",
       "type": "cylinder",
       "pos": {
-        "x": 619,
-        "y": 134
+        "x": 612,
+        "y": 112
       },
-      "width": 150,
+      "width": 100,
       "height": 118,
       "opacity": 1,
       "strokeDash": 0,
@@ -129,10 +129,10 @@
       "id": "queue",
       "type": "queue",
       "pos": {
-        "x": 936,
-        "y": 186
+        "x": 899,
+        "y": 164
       },
-      "width": 150,
+      "width": 140,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -170,10 +170,10 @@
       "id": "service",
       "type": "rectangle",
       "pos": {
-        "x": 1253,
-        "y": 74
+        "x": 1207,
+        "y": 52
       },
-      "width": 150,
+      "width": 137,
       "height": 178,
       "opacity": 1,
       "strokeDash": 0,
@@ -235,12 +235,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 107.5,
-          "y": 382
+          "x": 95.5,
+          "y": 300
         },
         {
-          "x": 377,
-          "y": 382
+          "x": 354.5,
+          "y": 300
         }
       ],
       "animated": false,
@@ -274,12 +274,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 377,
-          "y": 512
+          "x": 354.5,
+          "y": 370
         },
         {
-          "x": 1328,
-          "y": 512
+          "x": 1275.5,
+          "y": 370
         }
       ],
       "animated": false,
@@ -313,12 +313,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1328,
-          "y": 642
+          "x": 1275.5,
+          "y": 440
         },
         {
-          "x": 694,
-          "y": 642
+          "x": 662,
+          "y": 440
         }
       ],
       "animated": false,
@@ -352,12 +352,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 694,
-          "y": 772
+          "x": 662,
+          "y": 510
         },
         {
-          "x": 1328,
-          "y": 772
+          "x": 1275.5,
+          "y": 510
         }
       ],
       "animated": false,
@@ -391,12 +391,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1328,
-          "y": 902
+          "x": 1275.5,
+          "y": 580
         },
         {
-          "x": 377,
-          "y": 902
+          "x": 354.5,
+          "y": 580
         }
       ],
       "animated": false,
@@ -430,12 +430,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 377,
-          "y": 1032
+          "x": 354.5,
+          "y": 650
         },
         {
-          "x": 107.5,
-          "y": 1032
+          "x": 95.5,
+          "y": 650
         }
       ],
       "animated": false,
@@ -469,12 +469,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 107.5,
-          "y": 1162
+          "x": 95.5,
+          "y": 720
         },
         {
-          "x": 377,
-          "y": 1162
+          "x": 354.5,
+          "y": 720
         }
       ],
       "animated": false,
@@ -508,12 +508,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 377,
-          "y": 1292
+          "x": 354.5,
+          "y": 790
         },
         {
-          "x": 1011,
-          "y": 1292
+          "x": 969,
+          "y": 790
         }
       ],
       "animated": false,
@@ -547,12 +547,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1011,
-          "y": 1422
+          "x": 969,
+          "y": 860
         },
         {
-          "x": 377,
-          "y": 1422
+          "x": 354.5,
+          "y": 860
         }
       ],
       "animated": false,
@@ -586,12 +586,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 377,
-          "y": 1552
+          "x": 354.5,
+          "y": 930
         },
         {
-          "x": 107.5,
-          "y": 1552
+          "x": 95.5,
+          "y": 930
         }
       ],
       "animated": false,
@@ -625,12 +625,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 107.5,
-          "y": 257
+          "x": 95.5,
+          "y": 235
         },
         {
-          "x": 107.5,
-          "y": 1682
+          "x": 95.5,
+          "y": 1000
         }
       ],
       "animated": false,
@@ -664,12 +664,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 377,
-          "y": 257
+          "x": 354.5,
+          "y": 235
         },
         {
-          "x": 377,
-          "y": 1682
+          "x": 354.5,
+          "y": 1000
         }
       ],
       "animated": false,
@@ -703,12 +703,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 694,
-          "y": 252
+          "x": 662,
+          "y": 230
         },
         {
-          "x": 694,
-          "y": 1682
+          "x": 662,
+          "y": 1000
         }
       ],
       "animated": false,
@@ -742,12 +742,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1011,
-          "y": 252
+          "x": 969,
+          "y": 230
         },
         {
-          "x": 1011,
-          "y": 1682
+          "x": 969,
+          "y": 1000
         }
       ],
       "animated": false,
@@ -781,12 +781,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1328,
-          "y": 252
+          "x": 1275.5,
+          "y": 230
         },
         {
-          "x": 1328,
-          "y": 1682
+          "x": 1275.5,
+          "y": 1000
         }
       ],
       "animated": false,

@@ -6,10 +6,10 @@
       "id": "b",
       "type": "rectangle",
       "pos": {
-        "x": 24,
-        "y": 74
+        "x": 12,
+        "y": 52
       },
-      "width": 150,
+      "width": 100,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -47,10 +47,10 @@
       "id": "a",
       "type": "rectangle",
       "pos": {
-        "x": 274,
-        "y": 74
+        "x": 162,
+        "y": 52
       },
-      "width": 150,
+      "width": 100,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -88,10 +88,10 @@
       "id": "c",
       "type": "rectangle",
       "pos": {
-        "x": 524,
-        "y": 74
+        "x": 312,
+        "y": 52
       },
-      "width": 150,
+      "width": 100,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -129,11 +129,11 @@
       "id": "this is a message group",
       "type": "rectangle",
       "pos": {
-        "x": -47,
-        "y": 360
+        "x": -26,
+        "y": 243
       },
-      "width": 542,
-      "height": 696,
+      "width": 326,
+      "height": 503,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -171,11 +171,11 @@
       "id": "this is a message group.and this is a nested message group",
       "type": "rectangle",
       "pos": {
-        "x": -23,
-        "y": 490
+        "x": -14,
+        "y": 342
       },
-      "width": 494,
-      "height": 542,
+      "width": 302,
+      "height": 392,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -213,11 +213,11 @@
       "id": "this is a message group.and this is a nested message group.what about more nesting",
       "type": "rectangle",
       "pos": {
-        "x": 1,
-        "y": 620
+        "x": -2,
+        "y": 441
       },
-      "width": 446,
-      "height": 388,
+      "width": 278,
+      "height": 281,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -255,11 +255,11 @@
       "id": "this is a message group.and this is a nested message group.what about more nesting.yo",
       "type": "rectangle",
       "pos": {
-        "x": 25,
-        "y": 750
+        "x": 10,
+        "y": 540
       },
-      "width": 398,
-      "height": 234,
+      "width": 254,
+      "height": 170,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -297,11 +297,11 @@
       "id": "this is a message group.and this is a nested message group.what about more nesting.yo.yo",
       "type": "rectangle",
       "pos": {
-        "x": 49,
-        "y": 880
+        "x": 22,
+        "y": 639
       },
-      "width": 350,
-      "height": 80,
+      "width": 230,
+      "height": 59,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -363,12 +363,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
-          "y": 270
+          "x": 62,
+          "y": 188
         },
         {
-          "x": 599,
-          "y": 270
+          "x": 362,
+          "y": 188
         }
       ],
       "animated": false,
@@ -402,12 +402,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 349,
-          "y": 400
+          "x": 212,
+          "y": 287
         },
         {
-          "x": 99,
-          "y": 400
+          "x": 62,
+          "y": 287
         }
       ],
       "animated": false,
@@ -441,12 +441,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 349,
-          "y": 530
+          "x": 212,
+          "y": 386
         },
         {
-          "x": 99,
-          "y": 530
+          "x": 62,
+          "y": 386
         }
       ],
       "animated": false,
@@ -480,12 +480,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 349,
-          "y": 660
+          "x": 212,
+          "y": 485
         },
         {
-          "x": 99,
-          "y": 660
+          "x": 62,
+          "y": 485
         }
       ],
       "animated": false,
@@ -519,12 +519,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 349,
-          "y": 790
+          "x": 212,
+          "y": 584
         },
         {
-          "x": 99,
-          "y": 790
+          "x": 62,
+          "y": 584
         }
       ],
       "animated": false,
@@ -558,12 +558,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 349,
-          "y": 920
+          "x": 212,
+          "y": 683
         },
         {
-          "x": 99,
-          "y": 920
+          "x": 62,
+          "y": 683
         }
       ],
       "animated": false,
@@ -597,12 +597,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
-          "y": 140
+          "x": 62,
+          "y": 118
         },
         {
-          "x": 99,
-          "y": 1050
+          "x": 62,
+          "y": 753
         }
       ],
       "animated": false,
@@ -636,12 +636,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 349,
-          "y": 140
+          "x": 212,
+          "y": 118
         },
         {
-          "x": 349,
-          "y": 1050
+          "x": 212,
+          "y": 753
         }
       ],
       "animated": false,
@@ -675,12 +675,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 599,
-          "y": 140
+          "x": 362,
+          "y": 118
         },
         {
-          "x": 599,
-          "y": 1050
+          "x": 362,
+          "y": 753
         }
       ],
       "animated": false,
