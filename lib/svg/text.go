@@ -1,12 +1,9 @@
 package svg
 
 import (
-	"bytes"
-	"encoding/xml"
+	"html"
 )
 
 func EscapeText(text string) string {
-	buf := new(bytes.Buffer)
-	_ = xml.EscapeText(buf, []byte(text))
-	return buf.String()
+	return html.EscapeString(text)
 }

@@ -1031,7 +1031,7 @@ func addAppendixItems(writer io.Writer, shape d2target.Shape) {
 			shape.Pos.Y-appendixIconRadius,
 			TooltipIcon,
 		)
-		fmt.Fprintf(writer, `<title>%s</title>`, shape.Tooltip)
+		fmt.Fprintf(writer, `<title>%s</title>`, svg.EscapeText(shape.Tooltip))
 	}
 
 	if shape.Link != "" {
