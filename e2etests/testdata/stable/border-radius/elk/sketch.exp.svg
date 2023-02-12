@@ -3,7 +3,7 @@
 id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="331" height="270" viewBox="-90 -90 331 270"><style type="text/css">
+width="726" height="285" viewBox="-90 -105 726 285"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -39,8 +39,10 @@ width="331" height="270" viewBox="-90 -90 331 270"><style type="text/css">
     svgEl.setAttribute("height", height * ratio - 16);
   }
 });
-]]></script><g id="x"><g class="shape" ><rect x="12" y="12" width="53" height="66" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;rx:4;" /></g><text class="text-bold" x="38.500000" y="50.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">x</text></g><g id="y"><g class="shape" ><rect x="85" y="12" width="54" height="66" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;rx:10;" /></g><text class="text-bold" x="112.000000" y="50.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">y</text></g><mask id="1638488526" maskUnits="userSpaceOnUse" x="-100" y="-100" width="331" height="270">
-<rect x="-100" y="-100" width="331" height="270" fill="white"></rect>
+]]></script><g id="x"><g class="shape" ><rect x="12" y="12" width="53" height="66" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" rx="4" /></g><text class="text-bold" x="38.500000" y="50.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">x</text></g><g id="y"><g class="shape" ><rect x="85" y="12" width="54" height="66" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" rx="10" /></g><text class="text-bold" x="112.000000" y="50.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">y</text></g><g id="multiple2"><g class="shape" ><rect x="169" y="2" width="112" height="66" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" rx="6" /><rect x="159" y="12" width="112" height="66" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" rx="6" /></g><text class="text-bold" x="215.000000" y="50.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">multiple2</text></g><g id="double"><g class="shape" ><rect x="291" y="12" width="94" height="66" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" rx="6" /><rect x="296" y="17" width="84" height="56" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" rx="6" /></g><text class="text-bold" x="338.000000" y="50.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">double</text></g><g id="three-dee"><g class="shape" ><defs><mask id="border-mask-three-dee" maskUnits="userSpaceOnUse" x="405" y="-3" width="129" height="81">
+<rect x="405" y="-3" width="129" height="81" fill="white"></rect>
+<path d="M405,12L420,-3L534,-3L534,63L519,78L405,78L405,12L519,12L519,78M519,12L534,-3" style="fill:none;stroke:#0D32B2;stroke-width:2;;stroke:#000;fill:none;opacity:1;"/></mask></defs><rect x="405" y="12" width="114" height="66" style="fill:#F7F8FE;stroke:none;stroke-width:2;" mask="url(#border-mask-three-dee)"/><polygon points="405,12 420,-3 534,-3 534,63 519,78 519,12" style="fill:#cad0f8;stroke:none;stroke-width:2;" mask="url(#border-mask-three-dee)"/><path d="M405,12 L420,-3 L534,-3 L534,63 L519,78 L405,78 L405,12 L519,12 L519,78 M519,12 L534,-3" style="fill:none;stroke:#0D32B2;stroke-width:2;"/></g><text class="text-bold" x="462.000000" y="50.500000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">three-dee</text></g><mask id="2028340539" maskUnits="userSpaceOnUse" x="-100" y="-100" width="726" height="285">
+<rect x="-100" y="-100" width="726" height="285" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text-bold {

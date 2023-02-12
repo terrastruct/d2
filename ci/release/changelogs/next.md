@@ -42,3 +42,4 @@
 - Images can now be set to sizes smaller than 128x128. [#702](https://github.com/terrastruct/d2/pull/702)
 - Tooltips with ampersand would result in invalid SVGs. [#798](https://github.com/terrastruct/d2/pull/798)
 - Fixes class height when there are no rows. [#756](https://github.com/terrastruct/d2/pull/756)
+- Border radius was not firefox-compatible. [#799](https://github.com/terrastruct/d2/pull/799)
