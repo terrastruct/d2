@@ -3,7 +3,7 @@
 id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="668" height="776" viewBox="-90 -90 668 776"><style type="text/css">
+width="599" height="538" viewBox="-90 -90 599 538"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -39,8 +39,8 @@ width="668" height="776" viewBox="-90 -90 668 776"><style type="text/css">
     svgEl.setAttribute("height", height * ratio - 16);
   }
 });
-]]></script><g id="ninety nine"><g class="shape" ><rect x="12" y="12" width="464" height="572" style="fill:#E3E9FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text" x="244.000000" y="116.000000" style="text-anchor:middle;font-size:99px;fill:#0A0F25">ninety nine</text></g><g id="ninety nine.sixty four"><g class="shape" ><rect x="62" y="142" width="364" height="392" style="fill:#EDF0FD;stroke:#0D32B2;stroke-width:2;" /></g><text class="text" x="244.000000" y="211.000000" style="text-anchor:middle;font-size:64px;fill:#0A0F25">sixty four</text></g><g id="ninety nine.sixty four.thirty two"><g class="shape" ><rect x="112" y="228" width="264" height="256" style="fill:#F7F8FE;stroke:#0D32B2;stroke-width:2;" /></g><text class="text" x="244.000000" y="265.000000" style="text-anchor:middle;font-size:32px;fill:#0A0F25">thirty two</text></g><g id="ninety nine.sixty four.thirty two.sixteen"><g class="shape" ><rect x="162" y="278" width="164" height="156" style="fill:#FFFFFF;stroke:#0D32B2;stroke-width:2;" /></g><text class="text" x="244.000000" y="299.000000" style="text-anchor:middle;font-size:16px;fill:#0A0F25">sixteen</text></g><g id="ninety nine.sixty four.thirty two.sixteen.eight"><g class="shape" ><rect x="212" y="328" width="64" height="56" style="fill:#FFFFFF;stroke:#0D32B2;stroke-width:2;" /></g><text class="text-bold" x="244.000000" y="358.500000" style="text-anchor:middle;font-size:8px;fill:#0A0F25">eight</text></g><mask id="3952077561" maskUnits="userSpaceOnUse" x="-100" y="-100" width="668" height="776">
-<rect x="-100" y="-100" width="668" height="776" fill="white"></rect>
+]]></script><g id="vpc"><g class="shape" ><rect x="12" y="12" width="395" height="334" style="fill:#E3E9FD;stroke:green;stroke-width:2;" /></g><image href="https://icons.terrastruct.com/aws%2FNetworking%20&amp;%20Content%20Delivery%2FAmazon-VPC.svg" x="17.000000" y="17.000000" width="64" height="64" /><text class="text" x="209.500000" y="45.000000" style="text-anchor:middle;font-size:28px;fill:green">VPC 1 10.1.0.0./16</text></g><g id="vpc.az"><g class="shape" ><rect x="62" y="78" width="295" height="218" style="fill:#EDF0FD;stroke:blue;stroke-width:2;stroke-dasharray:6.000000,5.919384;" /></g><text class="text" x="209.500000" y="107.000000" style="text-anchor:middle;font-size:24px;fill:blue">Availability Zone A</text></g><g id="vpc.az.firewall"><g class="shape" ><rect x="112" y="128" width="195" height="118" style="fill:#F7F8FE;stroke:purple;stroke-width:2;" /></g><image href="https://icons.terrastruct.com/aws%2FNetworking%20&amp;%20Content%20Delivery%2FAmazon-Route-53_Hosted-Zone_light-bg.svg" x="180.000000" y="157.500000" width="59" height="59" /><text class="text-bold" x="209.500000" y="149.000000" style="text-anchor:middle;font-size:16px;fill:purple">Firewall Subnet A</text></g><mask id="3701608006" maskUnits="userSpaceOnUse" x="-100" y="-100" width="599" height="538">
+<rect x="-100" y="-100" width="599" height="538" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text {

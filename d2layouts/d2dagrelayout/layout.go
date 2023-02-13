@@ -115,6 +115,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		if obj.LabelHeight != nil {
 			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, *obj.LabelHeight+label.PADDING)
 		}
+
+		if obj.Attributes.Icon != nil {
+			iconSize := d2target.GetIconSize(obj.Box, string(label.InsideTopLeft))
+			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, iconSize+label.PADDING)
+		}
 	}
 
 	maxLabelSize := 0
@@ -219,7 +224,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 		if obj.Attributes.Icon != nil {
-			obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			if len(obj.ChildrenArray) > 0 {
+				obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
+			} else {
+				obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
 		}
 	}
 

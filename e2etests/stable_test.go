@@ -898,6 +898,31 @@ a -> b
 `,
 		},
 		{
+			name: "icon-containers",
+			script: `vpc: VPC 1 10.1.0.0./16 {
+  icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-VPC.svg
+	style: {
+	  stroke: green
+		font-color: green
+	}
+  az: Availability Zone A {
+		style: {
+			stroke: blue
+			font-color: blue
+			stroke-dash: 3
+		}
+		firewall: Firewall Subnet A {
+			icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-Route-53_Hosted-Zone_light-bg.svg
+			style: {
+				stroke: purple
+				font-color: purple
+			}
+		}
+  }
+}
+`,
+		},
+		{
 			name: "arrowhead_labels",
 			script: `
 a -> b: To err is human, to moo bovine {

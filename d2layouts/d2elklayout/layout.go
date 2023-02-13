@@ -186,6 +186,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 
 		if len(obj.ChildrenArray) > 0 {
+
 			n.LayoutOptions = &elkOpts{
 				ForceNodeModelOrder:          true,
 				Thoroughness:                 8,
@@ -198,6 +199,21 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					SelfLoopSpacing: opts.SelfLoopSpacing,
 					Padding:         opts.Padding,
 				},
+			}
+
+			if n.LayoutOptions.Padding == DefaultOpts.Padding {
+				// Default
+				paddingTop := 50
+				if obj.LabelHeight != nil {
+					paddingTop = go2.Max(paddingTop, *obj.LabelHeight+label.PADDING)
+				}
+				if obj.Attributes.Icon != nil {
+					iconSize := d2target.GetIconSize(obj.Box, string(label.InsideTopLeft))
+					paddingTop = go2.Max(paddingTop, iconSize+label.PADDING)
+				}
+				n.LayoutOptions.Padding = fmt.Sprintf("[top=%d,left=50,bottom=50,right=50]",
+					paddingTop,
+				)
 			}
 		}
 
@@ -310,7 +326,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 		if obj.Attributes.Icon != nil {
-			obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			if len(obj.ChildrenArray) > 0 {
+				obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
+			} else {
+				obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
 		}
 
 		byID[obj.AbsID()] = obj
