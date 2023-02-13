@@ -7,6 +7,8 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 )
 
+const OVAL_AR_LIMIT = 3.
+
 type shapeOval struct {
 	*baseShape
 }
@@ -38,7 +40,11 @@ func (s shapeOval) GetDimensionsToFit(width, height, paddingX, paddingY float64)
 	paddedWidth := width + paddingX*math.Cos(theta)
 	paddedHeight := height + paddingY*math.Sin(theta)
 	// see https://stackoverflow.com/questions/433371/ellipse-bounding-a-rectangle
-	return math.Ceil(math.Sqrt2 * paddedWidth), math.Ceil(math.Sqrt2 * paddedHeight)
+	totalWidth, totalHeight := math.Ceil(math.Sqrt2*paddedWidth), math.Ceil(math.Sqrt2*paddedHeight)
+
+	// prevent oval from becoming too flat
+	totalWidth, totalHeight = LimitAR(totalWidth, totalHeight, OVAL_AR_LIMIT)
+	return totalWidth, totalHeight
 }
 
 func (s shapeOval) GetInsidePlacement(width, height, paddingX, paddingY float64) geo.Point {
