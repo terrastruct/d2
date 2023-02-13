@@ -7,6 +7,10 @@ Much more legible, especially in larger diagrams! This upgrade trims a lot of th
 
 <img width="509" alt="aws icons" src="https://user-images.githubusercontent.com/3120367/218557539-0e9ef284-363c-43d6-bc8d-157768a57aca.png">
 
+We've also put up a hosted icon site for you to conveniently find common software architecture icons to include in your D2 diagrams. [https://icons.terrastruct.com](https://icons.terrastruct.com)
+
+<img width="1380" alt="icons" src="https://user-images.githubusercontent.com/3120367/218560291-a9123142-5840-4fbe-95f7-78b1b539cc23.png">
+
 There's also been a major compiler rewrite. It's fixed many minor compiler bugs, but most importantly, it implements multi-board diagrams. Stay tuned for more as we write docs and make this accessible in the next release!
 
 
