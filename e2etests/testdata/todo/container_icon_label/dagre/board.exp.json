@@ -35,7 +35,7 @@
         "Fragment": "",
         "RawFragment": ""
       },
-      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "iconPosition": "OUTSIDE_TOP_LEFT",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -50,7 +50,7 @@
       "underline": false,
       "labelWidth": 96,
       "labelHeight": 38,
-      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_RIGHT",
       "zIndex": 0,
       "level": 1
     },

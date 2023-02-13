@@ -538,8 +538,8 @@ func init() {
 	}
 }
 
-func (s *Shape) GetIconSize(box *geo.Box) int {
-	iconPosition := label.Position(s.IconPosition)
+func GetIconSize(box *geo.Box, position string) int {
+	iconPosition := label.Position(position)
 
 	minDimension := int(math.Min(box.Width, box.Height))
 	halfMinDimension := int(math.Ceil(0.5 * float64(minDimension)))
