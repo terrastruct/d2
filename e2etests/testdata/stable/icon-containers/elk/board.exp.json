@@ -10,12 +10,12 @@
         "y": 12
       },
       "width": 395,
-      "height": 334,
+      "height": 339,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#E3E9FD",
+      "fill": "white",
       "stroke": "green",
       "shadow": false,
       "3d": false,
@@ -28,8 +28,8 @@
         "Opaque": "",
         "User": null,
         "Host": "icons.terrastruct.com",
-        "Path": "/aws/Networking & Content Delivery/Amazon-VPC.svg",
-        "RawPath": "/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-VPC.svg",
+        "Path": "/aws/_Group Icons/Virtual-private-cloud-VPC_light-bg.svg",
+        "RawPath": "/aws%2F_Group%20Icons%2FVirtual-private-cloud-VPC_light-bg.svg",
         "ForceQuery": false,
         "RawQuery": "",
         "Fragment": "",
@@ -59,7 +59,7 @@
       "type": "rectangle",
       "pos": {
         "x": 62,
-        "y": 78
+        "y": 83
       },
       "width": 295,
       "height": 218,
@@ -67,7 +67,7 @@
       "strokeDash": 3,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
+      "fill": "white",
       "stroke": "blue",
       "shadow": false,
       "3d": false,
@@ -100,7 +100,7 @@
       "type": "rectangle",
       "pos": {
         "x": 112,
-        "y": 128
+        "y": 133
       },
       "width": 195,
       "height": 118,
@@ -108,7 +108,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
+      "fill": "#e1d5e7",
       "stroke": "purple",
       "shadow": false,
       "3d": false,

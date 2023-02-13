@@ -118,7 +118,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		if obj.Attributes.Icon != nil {
 			iconSize := d2target.GetIconSize(obj.Box, string(label.InsideTopLeft))
-			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, iconSize+label.PADDING)
+			// Since dagre container labels are pushed up, we don't want a child container to collide
+			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, (iconSize+label.PADDING*2)*3)
 		}
 	}
 

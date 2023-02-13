@@ -900,22 +900,25 @@ a -> b
 		{
 			name: "icon-containers",
 			script: `vpc: VPC 1 10.1.0.0./16 {
-  icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-VPC.svg
+  icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FVirtual-private-cloud-VPC_light-bg.svg
 	style: {
 	  stroke: green
 		font-color: green
+		fill: white
 	}
   az: Availability Zone A {
 		style: {
 			stroke: blue
 			font-color: blue
 			stroke-dash: 3
+			fill: white
 		}
 		firewall: Firewall Subnet A {
 			icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-Route-53_Hosted-Zone_light-bg.svg
 			style: {
 				stroke: purple
 				font-color: purple
+				fill: "#e1d5e7"
 			}
 		}
   }

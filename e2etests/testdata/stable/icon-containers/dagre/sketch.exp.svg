@@ -3,7 +3,7 @@
 id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="519" height="520" viewBox="-102 -100 519 520"><style type="text/css">
+width="519" height="746" viewBox="-102 -100 519 746"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -39,8 +39,8 @@ width="519" height="520" viewBox="-102 -100 519 520"><style type="text/css">
     svgEl.setAttribute("height", height * ratio - 16);
   }
 });
-]]></script><g id="vpc"><g class="shape" ><rect x="0" y="41" width="315" height="277" style="fill:#E3E9FD;stroke:green;stroke-width:2;" /></g><image href="https://icons.terrastruct.com/aws%2FNetworking%20&amp;%20Content%20Delivery%2FAmazon-VPC.svg" x="5.000000" y="46.000000" width="64" height="64" /><text class="text" x="157.500000" y="28.000000" style="text-anchor:middle;font-size:28px;fill:green">VPC 1 10.1.0.0./16</text></g><g id="vpc.az"><g class="shape" ><rect x="20" y="106" width="275" height="182" style="fill:#EDF0FD;stroke:blue;stroke-width:2;stroke-dasharray:6.000000,5.919384;" /></g><text class="text" x="157.500000" y="94.000000" style="text-anchor:middle;font-size:24px;fill:blue">Availability Zone A</text></g><g id="vpc.az.firewall"><g class="shape" ><rect x="60" y="138" width="195" height="118" style="fill:#F7F8FE;stroke:purple;stroke-width:2;" /></g><image href="https://icons.terrastruct.com/aws%2FNetworking%20&amp;%20Content%20Delivery%2FAmazon-Route-53_Hosted-Zone_light-bg.svg" x="128.000000" y="167.500000" width="59" height="59" /><text class="text-bold" x="157.500000" y="159.000000" style="text-anchor:middle;font-size:16px;fill:purple">Firewall Subnet A</text></g><mask id="4143810402" maskUnits="userSpaceOnUse" x="-100" y="-100" width="519" height="520">
-<rect x="-100" y="-100" width="519" height="520" fill="white"></rect>
+]]></script><g id="vpc"><g class="shape" ><rect x="0" y="41" width="315" height="503" style="fill:white;stroke:green;stroke-width:2;" /></g><image href="https://icons.terrastruct.com/aws%2F_Group%20Icons%2FVirtual-private-cloud-VPC_light-bg.svg" x="5.000000" y="46.000000" width="64" height="64" /><text class="text" x="157.500000" y="28.000000" style="text-anchor:middle;font-size:28px;fill:green">VPC 1 10.1.0.0./16</text></g><g id="vpc.az"><g class="shape" ><rect x="20" y="163" width="275" height="295" style="fill:white;stroke:blue;stroke-width:2;stroke-dasharray:6.000000,5.919384;" /></g><text class="text" x="157.500000" y="151.000000" style="text-anchor:middle;font-size:24px;fill:blue">Availability Zone A</text></g><g id="vpc.az.firewall"><g class="shape" ><rect x="60" y="251" width="195" height="118" style="fill:#e1d5e7;stroke:purple;stroke-width:2;" /></g><image href="https://icons.terrastruct.com/aws%2FNetworking%20&amp;%20Content%20Delivery%2FAmazon-Route-53_Hosted-Zone_light-bg.svg" x="128.000000" y="280.500000" width="59" height="59" /><text class="text-bold" x="157.500000" y="272.000000" style="text-anchor:middle;font-size:16px;fill:purple">Firewall Subnet A</text></g><mask id="2058375010" maskUnits="userSpaceOnUse" x="-100" y="-100" width="519" height="746">
+<rect x="-100" y="-100" width="519" height="746" fill="white"></rect>
 
 </mask><style type="text/css"><![CDATA[
 .text {

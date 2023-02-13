@@ -209,7 +209,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				}
 				if obj.Attributes.Icon != nil {
 					iconSize := d2target.GetIconSize(obj.Box, string(label.InsideTopLeft))
-					paddingTop = go2.Max(paddingTop, iconSize+label.PADDING)
+					paddingTop = go2.Max(paddingTop, iconSize+label.PADDING*2)
 				}
 				n.LayoutOptions.Padding = fmt.Sprintf("[top=%d,left=50,bottom=50,right=50]",
 					paddingTop,
