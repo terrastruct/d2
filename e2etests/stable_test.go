@@ -2075,6 +2075,41 @@ g: ----------------------------------------------------------------
 `,
 		},
 		{
+			name: "ovals",
+			script: `
+a.shape: oval
+b.shape: oval
+c.shape: oval
+d.shape: oval
+e.shape: oval
+f.shape: oval
+g.shape: oval
+
+a: -
+b: --
+c: ----
+d: --------
+e: ----------------
+f: --------------------------------
+g: ----------------------------------------------------------------
+
+1.shape: oval
+2.shape: oval
+3.shape: oval
+4.shape: oval
+5.shape: oval
+
+1.width: 16
+2.width: 64
+3.width: 128
+4.width: 512
+
+# entering both width and height overrides aspect ratio limit
+5.height: 256
+5.width: 32
+`,
+		},
+		{
 			name: "complex-layers",
 			script: `
 desc: Multi-layer diagram of a home.
