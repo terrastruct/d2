@@ -109,17 +109,20 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 	maxContainerLabelHeight := 0
 	for _, obj := range g.Objects {
-		if len(obj.ChildrenArray) == 0 {
+		if len(obj.ChildrenArray) == 0 || obj.Parent == g.Root {
 			continue
 		}
 		if obj.LabelHeight != nil {
 			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, *obj.LabelHeight+label.PADDING)
 		}
 
-		if obj.Attributes.Icon != nil {
-			iconSize := d2target.GetIconSize(obj.Box, string(label.InsideTopLeft))
+		if obj.Attributes.Icon != nil && obj.Attributes.Shape.Value != d2target.ShapeImage {
+			contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(obj.Width), float64(obj.Height))
+			shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[obj.Attributes.Shape.Value]
+			s := shape.NewShape(shapeType, contentBox)
+			iconSize := d2target.GetIconSize(s.GetInnerBox(), string(label.InsideTopLeft))
 			// Since dagre container labels are pushed up, we don't want a child container to collide
-			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, (iconSize+label.PADDING*2)*3)
+			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, (iconSize+label.PADDING*2)*2)
 		}
 	}
 
@@ -226,7 +229,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 		if obj.Attributes.Icon != nil {
 			if len(obj.ChildrenArray) > 0 {
-				obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
+				obj.IconPosition = go2.Pointer(string(label.OutsideTopLeft))
+				obj.LabelPosition = go2.Pointer(string(label.OutsideTopRight))
 			} else {
 				obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			}

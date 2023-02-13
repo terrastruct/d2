@@ -920,6 +920,9 @@ a -> b
 				font-color: purple
 				fill: "#e1d5e7"
 			}
+			ec2: EC2 Instance {
+				icon: https://icons.terrastruct.com/aws%2FCompute%2F_Instance%2FAmazon-EC2_C4-Instance_light-bg.svg
+			}
 		}
   }
 }

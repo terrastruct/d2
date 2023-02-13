@@ -10,7 +10,7 @@
         "y": 43
       },
       "width": 173,
-      "height": 1031,
+      "height": 555,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -35,7 +35,7 @@
         "Fragment": "",
         "RawFragment": ""
       },
-      "iconPosition": "INSIDE_TOP_LEFT",
+      "iconPosition": "OUTSIDE_TOP_LEFT",
       "blend": false,
       "fields": null,
       "methods": null,
@@ -50,7 +50,7 @@
       "underline": false,
       "labelWidth": 96,
       "labelHeight": 38,
-      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "labelPosition": "OUTSIDE_TOP_RIGHT",
       "zIndex": 0,
       "level": 1
     },
@@ -59,10 +59,10 @@
       "type": "rectangle",
       "pos": {
         "x": 20,
-        "y": 167
+        "y": 107
       },
       "width": 133,
-      "height": 249,
+      "height": 130,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -100,7 +100,7 @@
       "type": "rectangle",
       "pos": {
         "x": 60,
-        "y": 635
+        "y": 337
       },
       "width": 53,
       "height": 66,
@@ -141,7 +141,7 @@
       "type": "rectangle",
       "pos": {
         "x": 60,
-        "y": 920
+        "y": 503
       },
       "width": 53,
       "height": 66,
@@ -182,7 +182,7 @@
       "type": "rectangle",
       "pos": {
         "x": 60,
-        "y": 258
+        "y": 139
       },
       "width": 53,
       "height": 66,
@@ -247,19 +247,19 @@
       "route": [
         {
           "x": 86.5,
-          "y": 453
+          "y": 237.5
         },
         {
           "x": 86.5,
-          "y": 511
+          "y": 277.5
         },
         {
           "x": 86.5,
-          "y": 547.4
+          "y": 297.5
         },
         {
           "x": 86.5,
-          "y": 635
+          "y": 337.5
         }
       ],
       "isCurve": true,
@@ -295,19 +295,19 @@
       "route": [
         {
           "x": 86.5,
-          "y": 702
+          "y": 403.5
         },
         {
           "x": 86.5,
-          "y": 788.8
+          "y": 443.5
         },
         {
           "x": 86.5,
-          "y": 832.4
+          "y": 463.5
         },
         {
           "x": 86.5,
-          "y": 920
+          "y": 503.5
         }
       ],
       "isCurve": true,

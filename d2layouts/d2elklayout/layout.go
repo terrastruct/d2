@@ -186,7 +186,6 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 
 		if len(obj.ChildrenArray) > 0 {
-
 			n.LayoutOptions = &elkOpts{
 				ForceNodeModelOrder:          true,
 				Thoroughness:                 8,
@@ -207,8 +206,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				if obj.LabelHeight != nil {
 					paddingTop = go2.Max(paddingTop, *obj.LabelHeight+label.PADDING)
 				}
-				if obj.Attributes.Icon != nil {
-					iconSize := d2target.GetIconSize(obj.Box, string(label.InsideTopLeft))
+				if obj.Attributes.Icon != nil && obj.Attributes.Shape.Value != d2target.ShapeImage {
+					contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(n.Width), float64(n.Height))
+					shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[obj.Attributes.Shape.Value]
+					s := shape.NewShape(shapeType, contentBox)
+					iconSize := d2target.GetIconSize(s.GetInnerBox(), string(label.InsideTopLeft))
 					paddingTop = go2.Max(paddingTop, iconSize+label.PADDING*2)
 				}
 				n.LayoutOptions.Padding = fmt.Sprintf("[top=%d,left=50,bottom=50,right=50]",
@@ -328,6 +330,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		if obj.Attributes.Icon != nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
+				obj.LabelPosition = go2.Pointer(string(label.InsideTopRight))
 			} else {
 				obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			}
