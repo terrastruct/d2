@@ -1,8 +1,14 @@
-Here's what a D2 diagram looks like in 0.2 vs 0.1:
+Here's what a D2 diagram looks like in 0.1 (left) vs 0.2 (right):
 
-Much more legible right? This upgrade trims a lot of the excess whitespace present before and makes diagrams more compact. We've also combed through each shape to improve their label positions, paddings, and aspect ratios at different sizes.
+![before-after](https://user-images.githubusercontent.com/3120367/218556631-829047e5-e2f7-43e5-b98e-e81b4f76bdb2.jpg)
+
+
+Much more legible, especially in larger diagrams! This upgrade trims a lot of the excess whitespace present before and makes diagrams more compact. We've also combed through each shape to improve their label and icon positions, paddings, and aspect ratios at different sizes. Example of icons and labels avoiding collisions:
+
+<img width="509" alt="aws icons" src="https://user-images.githubusercontent.com/3120367/218557539-0e9ef284-363c-43d6-bc8d-157768a57aca.png">
 
 There's also been a major compiler rewrite. It's fixed many minor compiler bugs, but most importantly, it implements multi-board diagrams. Stay tuned for more as we write docs and make this accessible in the next release!
+
 
 #### Features 🚀
 
