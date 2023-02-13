@@ -1,21 +1,17 @@
+Diagrams are now much more legible.
+
+Here's what a D2 diagram looks like in 0.2 vs 0.1:
+
 #### Features 🚀
 
 - `double-border` keyword implemented. [#565](https://github.com/terrastruct/d2/pull/565)
 - The [Dockerfile](./docs/INSTALL.md#docker) now supports rendering PNGs [#594](https://github.com/terrastruct/d2/issues/594)
-
   - There was a minor breaking change as part of this where the default working directory of the Dockerfile is now `/home/debian/src` instead of `/root/src` to allow UID remapping with [`fixuid`](https://github.com/boxboat/fixuid).
-
 - `d2 fmt` accepts multiple files to be formatted [#718](https://github.com/terrastruct/d2/issues/718)
-
 - `font-size` works for `sql_table` and `class` shapes [#769](https://github.com/terrastruct/d2/issues/769)
-
 - You can now use the reserved keywords `layers`/`scenarios`/`steps` to define diagrams
   with multiple levels of abstractions. [#714](https://github.com/terrastruct/d2/pull/714)
   Docs to come soon
-  - [#416](https://github.com/terrastruct/d2/issues/416) was also fixed so you can no
-    longer use keywords intended for use under `style` outside and vice versa. e.g.
-    `obj.style.shape` and `obj.double-border` are now illegal. The correct uses are
-    `obj.shape` and `obj.style.double-border`.
   - Many other minor compiler bugs were fixed.
 
 #### Improvements 🧹
@@ -43,3 +39,7 @@
 - Tooltips with ampersand would result in invalid SVGs. [#798](https://github.com/terrastruct/d2/pull/798)
 - Fixes class height when there are no rows. [#756](https://github.com/terrastruct/d2/pull/756)
 - Border radius was not firefox-compatible. [#799](https://github.com/terrastruct/d2/pull/799)
+
+#### Breaking changes
+
+- You can no longer use keywords intended for use under `style` outside and vice versa. e.g. `obj.style.shape` and `obj.double-border` are now illegal. The correct usages have always been `obj.shape` and `obj.style.double-border`; it just wasn't enforced until now.
