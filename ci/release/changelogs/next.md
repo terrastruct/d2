@@ -18,6 +18,7 @@ There's also been a major compiler rewrite. It's fixed many minor compiler bugs,
 - Reduces default padding of shapes. [#702](https://github.com/terrastruct/d2/pull/702)
 - Ensures labels fit inside shapes with shape-specific inner bounding boxes. [#702](https://github.com/terrastruct/d2/pull/702)
 - dagre container labels changed positions to outside the shape. Many previously obscured container labels are now legible. [#788](https://github.com/terrastruct/d2/pull/788)
+- Container icons are placed top-left instead of center, to ensure no collisions with children. [#806](https://github.com/terrastruct/d2/pull/806)
 - Code snippets use bold and italic font styles as determined by highlighter [#710](https://github.com/terrastruct/d2/issues/710), [#741](https://github.com/terrastruct/d2/issues/741)
 - Improves package shape dimensions with short height. [#702](https://github.com/terrastruct/d2/pull/702)
 - Sequence diagrams are rendered more compacted, both vertically and horizontally. [#796](https://github.com/terrastruct/d2/pull/796)
