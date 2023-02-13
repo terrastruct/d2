@@ -22,6 +22,7 @@ There's also been a major compiler rewrite. It's fixed many minor compiler bugs,
 - Improves package shape dimensions with short height. [#702](https://github.com/terrastruct/d2/pull/702)
 - Sequence diagrams are rendered more compacted, both vertically and horizontally. [#796](https://github.com/terrastruct/d2/pull/796)
 - Keeps person shape from becoming too distorted. [#702](https://github.com/terrastruct/d2/pull/702)
+- Keeps oval shape from becoming too thin. [#807](https://github.com/terrastruct/d2/pull/807)
 - Ensures shapes with icons have enough padding for their labels. [#702](https://github.com/terrastruct/d2/pull/702)
 - `--force-appendix` flag adds an appendix to SVG outputs with tooltips or links. [#761](https://github.com/terrastruct/d2/pull/761)
 - `d2 themes` subcommand to list themes. [#760](https://github.com/terrastruct/d2/pull/760)
