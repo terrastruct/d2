@@ -89,31 +89,36 @@ a -> c
 b: ສະບາຍດີ (sabaai dii) - Lao
 c: ជំរាបសួរ (jomreab suor) - Khmer
 
-สวัสดี (sà-wàt-dii) - Thai
+d: สวัสดี (sà-wàt-dii) - Thai
 
-ສະບາຍດີ (sabaidee) - Lao
+e: ສະບາຍດີ (sabaidee) - Lao
 
-ဟယ်လို (helaou) - Burmese
+f: ဟယ်လို (helaou) - Burmese
 
-mari (まり) - Ainu
+g: mari (まり) - Ainu
 
-cào (草) - Zhuang
+h: cào (草) - Zhuang
 
-күнтізбе (kúntízbe) - Kazakh
+i: күнтізбе (kúntízbe) - Kazakh
 
-բարև (barev) - Armenian
+j: բարև (barev) - Armenian
 
-монгол (mongol) - Mongolian
+k: монгол (mongol) - Mongolian
 
-mila (میلا) - Uyghur
+l: mila (میلا) - Uyghur
 
-નમસ્તે (namaste) - Gujarati
+m: નમસ્તે (namaste) - Gujarati
 
-漢字 (kanji) - Japanese
+n: 漢字 (kanji) - Japanese
 
-위 (wi) - Korean
+o: 위 (wi) - Korean
 
-吾哥 (ngǔgāi) - Cantonese
+p: 吾哥 (ngǔgāi) - Cantonese
+
+a -> b -> c -> d
+e -> f -> g -> h
+i -> j -> k -> l
+m -> n -> o -> p
 
 မင်္ဂလာပါ (mingalaba) - Burmese
 
