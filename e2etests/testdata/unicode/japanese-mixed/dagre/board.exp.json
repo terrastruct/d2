@@ -3,14 +3,55 @@
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
-      "id": "\"ninety\\nnine\"",
+      "id": "a",
+      "type": "rectangle",
+      "pos": {
+        "x": 1646,
+        "y": 0
+      },
+      "width": 668,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "#F7F8FE",
+      "stroke": "#0D32B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "トマトが赤くなったのはなぜですか？Because it saw the salad dressing!👩‍👩‍👧‍👶👩‍👩‍👧‍👶",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#0A0F25",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 623,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "b",
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 0
+        "y": 166
       },
-      "width": 91,
-      "height": 82,
+      "width": 3959,
+      "height": 171,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -29,28 +70,28 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "ninety\nnine",
-      "fontSize": 16,
+      "label": "トマトが赤くなったのはなぜですか？Because it saw the salad dressing!👩‍👩‍👧‍👶👩‍👩‍👧‍👶",
+      "fontSize": 100,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 46,
-      "labelHeight": 37,
+      "labelWidth": 3914,
+      "labelHeight": 126,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
-      "id": "eighty\reight",
+      "id": "c",
       "type": "rectangle",
       "pos": {
-        "x": 151,
-        "y": 8
+        "x": 1817,
+        "y": 437
       },
-      "width": 91,
+      "width": 326,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -70,7 +111,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "eighty\reight",
+      "label": "今日はTokyoでsushiを食べました",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -78,21 +119,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 46,
+      "labelWidth": 281,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
-      "id": "\"seventy\r\\nseven\"",
+      "id": "d",
       "type": "rectangle",
       "pos": {
-        "x": 302,
-        "y": 0
+        "x": 888,
+        "y": 603
       },
-      "width": 97,
-      "height": 82,
+      "width": 2184,
+      "height": 100,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -111,28 +152,28 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "seventy\r\nseven",
-      "fontSize": 16,
+      "label": "先日、Shibuyaで友達とshoppingを楽😊しんだ後、ramen屋でdelicious😊なラーメンを食べた。",
+      "fontSize": 43,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "#0A0F25",
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 52,
-      "labelHeight": 37,
+      "labelWidth": 2139,
+      "labelHeight": 55,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
-      "id": "\"a\\\\yode\"",
+      "id": "e",
       "type": "rectangle",
       "pos": {
-        "x": 459,
-        "y": 8
+        "x": 1877,
+        "y": 803
       },
-      "width": 94,
+      "width": 206,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -152,7 +193,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "a\\yode",
+      "label": "English English English",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -160,20 +201,20 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 49,
+      "labelWidth": 161,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
-      "id": "there",
+      "id": "f",
       "type": "rectangle",
       "pos": {
-        "x": 619,
-        "y": 182
+        "x": 1897,
+        "y": 969
       },
-      "width": 83,
+      "width": 165,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -193,7 +234,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "there",
+      "label": "先日先日先日",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -201,89 +242,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 38,
-      "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 1
-    },
-    {
-      "id": "'a\\\"ode'",
-      "type": "rectangle",
-      "pos": {
-        "x": 613,
-        "y": 8
-      },
-      "width": 94,
-      "height": 66,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#F7F8FE",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "a\\\"ode",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": true,
-      "underline": false,
-      "labelWidth": 49,
-      "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 1
-    },
-    {
-      "id": "\"a\\\\node\"",
-      "type": "rectangle",
-      "pos": {
-        "x": 767,
-        "y": 8
-      },
-      "width": 95,
-      "height": 66,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "#F7F8FE",
-      "stroke": "#0D32B2",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "a\\node",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "#0A0F25",
-      "italic": false,
-      "bold": true,
-      "underline": false,
-      "labelWidth": 50,
+      "labelWidth": 120,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -292,11 +251,11 @@
   ],
   "connections": [
     {
-      "id": "(\"a\\\\yode\" -> there)[0]",
-      "src": "\"a\\\\yode\"",
+      "id": "(a -> b)[0]",
+      "src": "a",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "there",
+      "dst": "b",
       "dstArrow": "triangle",
       "dstLabel": "",
       "opacity": 1,
@@ -317,20 +276,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 506,
-          "y": 74
+          "x": 1979.5,
+          "y": 66
         },
         {
-          "x": 506,
-          "y": 120.4
+          "x": 1979.5,
+          "y": 106
         },
         {
-          "x": 528.5,
-          "y": 144.12662337662337
+          "x": 1979.5,
+          "y": 126
         },
         {
-          "x": 618.5,
-          "y": 192.63311688311688
+          "x": 1979.5,
+          "y": 166
         }
       ],
       "isCurve": true,
@@ -340,11 +299,11 @@
       "zIndex": 0
     },
     {
-      "id": "('a\\\"ode' -> there)[0]",
-      "src": "'a\\\"ode'",
+      "id": "(b -> c)[0]",
+      "src": "b",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "there",
+      "dst": "c",
       "dstArrow": "triangle",
       "dstLabel": "",
       "opacity": 1,
@@ -365,20 +324,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 660,
-          "y": 74
+          "x": 1979.5,
+          "y": 337
         },
         {
-          "x": 660,
-          "y": 120.4
+          "x": 1979.5,
+          "y": 377
         },
         {
-          "x": 660,
-          "y": 142
+          "x": 1979.5,
+          "y": 397
         },
         {
-          "x": 660,
-          "y": 182
+          "x": 1979.5,
+          "y": 437
         }
       ],
       "isCurve": true,
@@ -388,11 +347,11 @@
       "zIndex": 0
     },
     {
-      "id": "(\"a\\\\node\" -> there)[0]",
-      "src": "\"a\\\\node\"",
+      "id": "(c -> d)[0]",
+      "src": "c",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "there",
+      "dst": "d",
       "dstArrow": "triangle",
       "dstLabel": "",
       "opacity": 1,
@@ -413,20 +372,116 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 814.5,
-          "y": 74
+          "x": 1979.5,
+          "y": 503
         },
         {
-          "x": 814.5,
-          "y": 120.4
+          "x": 1979.5,
+          "y": 543
         },
         {
-          "x": 791.9,
-          "y": 144
+          "x": 1979.5,
+          "y": 563
         },
         {
-          "x": 701.5,
-          "y": 192
+          "x": 1979.5,
+          "y": 603
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(d -> e)[0]",
+      "src": "d",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "e",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1979.5,
+          "y": 703
+        },
+        {
+          "x": 1979.5,
+          "y": 743
+        },
+        {
+          "x": 1979.5,
+          "y": 763
+        },
+        {
+          "x": 1979.5,
+          "y": 803
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(e -> f)[0]",
+      "src": "e",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "f",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "#0D32B2",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "#676C7E",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1979.5,
+          "y": 869
+        },
+        {
+          "x": 1979.5,
+          "y": 909
+        },
+        {
+          "x": 1979.5,
+          "y": 929
+        },
+        {
+          "x": 1979.5,
+          "y": 969
         }
       ],
       "isCurve": true,

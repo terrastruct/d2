@@ -38,6 +38,7 @@ func TestE2E(t *testing.T) {
 	t.Run("regression", testRegression)
 	t.Run("todo", testTodo)
 	t.Run("measured", testMeasured)
+	t.Run("unicode", testUnicode)
 }
 
 func testSanity(t *testing.T) {

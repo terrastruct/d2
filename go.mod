@@ -10,8 +10,10 @@ require (
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 	github.com/lucasb-eyer/go-colorful v1.2.0
+	github.com/mattn/go-runewidth v0.0.14
 	github.com/mazznoer/csscolorparser v0.1.3
 	github.com/playwright-community/playwright-go v0.2000.1
+	github.com/rivo/uniseg v0.4.3
 	github.com/spf13/pflag v1.0.5
 	github.com/stretchr/testify v1.8.1
 	github.com/yuin/goldmark v1.5.3
