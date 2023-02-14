@@ -5,10 +5,12 @@ package textmeasure
 
 import (
 	"math"
+	"strings"
 	"unicode"
 	"unicode/utf8"
 
 	"github.com/golang/freetype/truetype"
+	"github.com/rivo/uniseg"
 
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/lib/geo"
@@ -164,8 +166,52 @@ func (r *Ruler) addFontSize(font d2fonts.Font) {
 	r.tabWidths[font] = atlas.glyph(' ').advance * TAB_SIZE
 }
 
+func (t *Ruler) scaleUnicode(w float64, font d2fonts.Font, s string) float64 {
+	// Weird unicode stuff is going on when this is true
+	// See https://github.com/rivo/uniseg#grapheme-clusters
+	// This method is a good-enough approximation. It overshoots, but not by much.
+	// I suspect we need to import a font with the right glyphs to get the precise measurements
+	// but Hans fonts are heavy.
+	if uniseg.GraphemeClusterCount(s) != len(s) {
+		for _, line := range strings.Split(s, "\n") {
+			lineW, _ := t.MeasurePrecise(font, line)
+			gr := uniseg.NewGraphemes(line)
+
+			mono := d2fonts.SourceCodePro.Font(font.Size, font.Style)
+			for gr.Next() {
+				if gr.Width() == 1 {
+					continue
+				}
+				// For each grapheme which doesn't have width=1, the ruler measured wrongly.
+				// So, replace the measured width with a scaled measurement of a monospace version
+				var prevRune rune
+				dot := t.Orig.Copy()
+				b := newRect()
+				for _, r := range gr.Runes() {
+					var control bool
+					dot, control = t.controlRune(r, dot, font)
+					if control {
+						continue
+					}
+
+					var bounds *rect
+					_, _, bounds, dot = t.atlases[font].DrawRune(prevRune, r, dot)
+					b = b.union(bounds)
+
+					prevRune = r
+				}
+				lineW -= b.w()
+				lineW += t.spaceWidth(mono) * float64(gr.Width())
+			}
+			w = math.Max(w, lineW)
+		}
+	}
+	return w
+}
+
 func (t *Ruler) Measure(font d2fonts.Font, s string) (width, height int) {
 	w, h := t.MeasurePrecise(font, s)
+	w = t.scaleUnicode(w, font, s)
 	return int(math.Ceil(w)), int(math.Ceil(h))
 }
 
