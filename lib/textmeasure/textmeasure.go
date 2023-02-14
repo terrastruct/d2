@@ -166,8 +166,7 @@ func (r *Ruler) addFontSize(font d2fonts.Font) {
 	r.tabWidths[font] = atlas.glyph(' ').advance * TAB_SIZE
 }
 
-func (t *Ruler) Measure(font d2fonts.Font, s string) (width, height int) {
-	w, h := t.MeasurePrecise(font, s)
+func (t *Ruler) scaleUnicode(w float64, font d2fonts.Font, s string) float64 {
 	// Weird unicode stuff is going on when this is true
 	// See https://github.com/rivo/uniseg#grapheme-clusters
 	// This method is a good-enough approximation. It overshoots, but not by much.
@@ -198,6 +197,7 @@ func (t *Ruler) Measure(font d2fonts.Font, s string) (width, height int) {
 					var bounds *rect
 					_, _, bounds, dot = t.atlases[font].DrawRune(prevRune, r, dot)
 					b = b.union(bounds)
+
 					prevRune = r
 				}
 				lineW -= b.w()
@@ -206,6 +206,12 @@ func (t *Ruler) Measure(font d2fonts.Font, s string) (width, height int) {
 			w = math.Max(w, lineW)
 		}
 	}
+	return w
+}
+
+func (t *Ruler) Measure(font d2fonts.Font, s string) (width, height int) {
+	w, h := t.MeasurePrecise(font, s)
+	w = t.scaleUnicode(w, font, s)
 	return int(math.Ceil(w)), int(math.Ceil(h))
 }
 

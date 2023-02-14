@@ -50,6 +50,84 @@ a -> b -> c -> d -> e -> f
 
 `,
 		},
+		{
+			name: "chinese",
+			script: `poem: |md
+  床前明月光，
+
+	疑是地上霜。
+
+	举头望明月，
+
+	低头思故乡。
+|
+a: 所以，即使夏天很热
+poem -> a
+`,
+		},
+		{
+			name: "korean",
+			script: `a: 고생끝에낙이온다
+`,
+		},
+		{
+			name: "mixed-language",
+			script: `a: 有一个叫做夏天的季节。\n ある季節、夏という名前がついています。\n한 계절, 여름이란 이름이 있습니다.
+b: 夏天的时候，天气非常热，人们总是流着汗。
+c: |md
+  夏になると、とても暑くて、人々は汗を流しています。
+
+  여름에는 매우 더워서 사람들은 땀을 흘립니다.
+|
+a -> b
+a -> c
+`,
+		},
+		{
+			name: "mixed-language-2",
+			script: `a: 我 (wǒ) - Mandarin Chinese
+b: ສະບາຍດີ (sabaai dii) - Lao
+c: ជំរាបសួរ (jomreab suor) - Khmer
+
+สวัสดี (sà-wàt-dii) - Thai
+
+ສະບາຍດີ (sabaidee) - Lao
+
+ဟယ်လို (helaou) - Burmese
+
+mari (まり) - Ainu
+
+cào (草) - Zhuang
+
+күнтізбе (kúntízbe) - Kazakh
+
+բարև (barev) - Armenian
+
+монгол (mongol) - Mongolian
+
+mila (میلا) - Uyghur
+
+નમસ્તે (namaste) - Gujarati
+
+漢字 (kanji) - Japanese
+
+위 (wi) - Korean
+
+吾哥 (ngǔgāi) - Cantonese
+
+မင်္ဂလာပါ (mingalaba) - Burmese
+
+сайн уу (sain uu) - Mongolian
+
+ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ (sat sri akal) - Punjabi
+
+你吃了吗 (ní chī le ma) - Mandarin Chinese
+
+饭 (fan) - Zhuang
+
+مەن سىزنى ياخشى ئۈمىد ق
+`,
+		},
 	}
 
 	runa(t, tcs)
