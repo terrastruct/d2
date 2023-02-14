@@ -651,13 +651,17 @@ func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext) (*Field, error)
 func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field, error) {
 	head := kp.Path[i].Unbox()
 	headString := head.ScalarString()
-	_, headUnquoted := head.(*d2ast.UnquotedString)
+	unquotedString, headUnquoted := head.(*d2ast.UnquotedString)
+	if headUnquoted {
+		// Do not consider it unquoted if it has any escapes
+		headUnquoted = len(headString) == len(unquotedString.ScalarString())
+	}
 
 	if headString == "_" {
 		return nil, d2parser.Errorf(kp.Path[i].Unbox(), `parent "_" can only be used in the beginning of paths, e.g. "_.x"`)
 	}
 
-	if findBoardKeyword(headString) != -1 && NodeBoardKind(m) == "" && headUnquoted {
+	if len(findBoardKeywords(headString)) > 0 && NodeBoardKind(m) == "" && headUnquoted {
 		return nil, d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head)
 	}
 
@@ -790,27 +794,33 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
 		return f.Map().CreateEdge(eid, refctx)
 	}
 
-	ij := findProhibitedEdgeKeyword(eid.SrcPath...)
-	if ij != -1 {
-		// TODO check quoting
-		return nil, d2parser.Errorf(refctx.Edge.Src.Path[ij].Unbox(), "reserved keywords are prohibited in edges")
+	ijs := findProhibitedEdgeKeywords(eid.SrcPath...)
+	for _, ij := range ijs {
+		if refctx.Edge.Src.Path[ij].UnquotedString != nil {
+			return nil, d2parser.Errorf(refctx.Edge.Src.Path[ij].Unbox(), "reserved keywords are prohibited in edges")
+		}
 	}
-	ij = findBoardKeyword(eid.SrcPath...)
-	if ij == len(eid.SrcPath)-1 {
-		return nil, d2parser.Errorf(refctx.Edge.Src.Path[ij].Unbox(), "edge with board keyword alone doesn't make sense")
+	ijs = findBoardKeywords(eid.SrcPath...)
+	for _, ij := range ijs {
+		if refctx.Edge.Src.Path[ij].UnquotedString != nil {
+			return nil, d2parser.Errorf(refctx.Edge.Src.Path[ij].Unbox(), "edge with board keyword alone doesn't make sense")
+		}
 	}
 	src := m.GetField(eid.SrcPath...)
 	if NodeBoardKind(src) != "" {
 		return nil, d2parser.Errorf(refctx.Edge.Src, "cannot create edges between boards")
 	}
-
-	ij = findProhibitedEdgeKeyword(eid.DstPath...)
-	if ij != -1 {
-		return nil, d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "reserved keywords are prohibited in edges")
+	ijs = findProhibitedEdgeKeywords(eid.DstPath...)
+	for _, ij := range ijs {
+		if refctx.Edge.Dst.Path[ij].UnquotedString != nil {
+			return nil, d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "reserved keywords are prohibited in edges")
+		}
 	}
-	ij = findBoardKeyword(eid.DstPath...)
-	if ij == len(eid.DstPath)-1 {
-		return nil, d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "edge with board keyword alone doesn't make sense")
+	ijs = findBoardKeywords(eid.DstPath...)
+	for _, ij := range ijs {
+		if refctx.Edge.Dst.Path[ij].UnquotedString != nil {
+			return nil, d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "edge with board keyword alone doesn't make sense")
+		}
 	}
 	dst := m.GetField(eid.DstPath...)
 	if NodeBoardKind(dst) != "" {
@@ -993,25 +1003,24 @@ func countUnderscores(p []string) int {
 	return 0
 }
 
-func findBoardKeyword(ida ...string) int {
+func findBoardKeywords(ida ...string) (out []int) {
 	for i := range ida {
 		if _, ok := d2graph.BoardKeywords[ida[i]]; ok {
-			return i
+			out = append(out, i)
 		}
 	}
-	return -1
+	return
 }
 
-func findProhibitedEdgeKeyword(ida ...string) int {
+func findProhibitedEdgeKeywords(ida ...string) (out []int) {
 	for i := range ida {
 		if _, ok := d2graph.SimpleReservedKeywords[ida[i]]; ok {
-			return i
-		}
-		if _, ok := d2graph.ReservedKeywordHolders[ida[i]]; ok {
-			return i
+			out = append(out, i)
+		} else if _, ok := d2graph.ReservedKeywordHolders[ida[i]]; ok {
+			out = append(out, i)
 		}
 	}
-	return -1
+	return
 }
 
 func parentRef(n Node) Reference {

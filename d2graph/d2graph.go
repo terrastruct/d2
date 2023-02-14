@@ -1021,14 +1021,6 @@ func (e *Edge) AbsID() string {
 }
 
 func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label string) (*Edge, error) {
-	for _, id := range [][]string{srcID, dstID} {
-		for _, p := range id {
-			if _, ok := ReservedKeywords[p]; ok {
-				return nil, errors.New("cannot connect to reserved keyword")
-			}
-		}
-	}
-
 	src := obj.ensureChildEdge(srcID)
 	dst := obj.ensureChildEdge(dstID)
 

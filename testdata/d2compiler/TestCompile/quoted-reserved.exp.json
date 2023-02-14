@@ -2,7 +2,7 @@
   "graph": {
     "name": "",
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,0:0:0-4:1:52",
+      "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,0:0:0-6:0:72",
       "nodes": [
         {
           "map_key": {
@@ -113,6 +113,63 @@
               }
             }
           }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,5:0:53-5:18:71",
+            "edges": [
+              {
+                "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,5:0:53-5:18:71",
+                "src": {
+                  "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,5:0:53-5:12:65",
+                  "path": [
+                    {
+                      "double_quoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,5:0:53-5:4:57",
+                        "value": [
+                          {
+                            "string": "3d",
+                            "raw_string": "3d"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "double_quoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,5:5:58-5:12:65",
+                        "value": [
+                          {
+                            "string": "width",
+                            "raw_string": "width"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,5:15:68-5:18:71",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,5:16:69-5:18:71",
+                        "value": [
+                          {
+                            "string": "me",
+                            "raw_string": "me"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "primary": {},
+            "value": {}
+          }
         }
       ]
     },
@@ -143,6 +200,37 @@
           },
           "key_path_index": 0,
           "map_key_edge_index": -1
+        },
+        {
+          "key": {
+            "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,5:0:53-5:12:65",
+            "path": [
+              {
+                "double_quoted_string": {
+                  "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,5:0:53-5:4:57",
+                  "value": [
+                    {
+                      "string": "3d",
+                      "raw_string": "3d"
+                    }
+                  ]
+                }
+              },
+              {
+                "double_quoted_string": {
+                  "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,5:5:58-5:12:65",
+                  "value": [
+                    {
+                      "string": "width",
+                      "raw_string": "width"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "key_path_index": 1,
+          "map_key_edge_index": 0
         },
         {
           "key": {
@@ -195,6 +283,37 @@
           },
           "key_path_index": 0,
           "map_key_edge_index": -1
+        },
+        {
+          "key": {
+            "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,5:0:53-5:12:65",
+            "path": [
+              {
+                "double_quoted_string": {
+                  "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,5:0:53-5:4:57",
+                  "value": [
+                    {
+                      "string": "3d",
+                      "raw_string": "3d"
+                    }
+                  ]
+                }
+              },
+              {
+                "double_quoted_string": {
+                  "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,5:5:58-5:12:65",
+                  "value": [
+                    {
+                      "string": "width",
+                      "raw_string": "width"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "key_path_index": 0,
+          "map_key_edge_index": 0
         }
       ],
       "attributes": {
@@ -215,8 +334,91 @@
       },
       "zIndex": 0
     },
-    "edges": null,
-    "objects": null
+    "edges": [
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ],
+    "objects": [
+      {
+        "id": "me",
+        "id_val": "me",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,5:15:68-5:18:71",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/quoted-reserved.d2,5:16:69-5:18:71",
+                    "value": [
+                      {
+                        "string": "me",
+                        "raw_string": "me"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "me"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ]
   },
   "err": null
 }
