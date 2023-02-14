@@ -323,7 +323,7 @@ layers: {
 				name: "2/bad_edge",
 				run: func(t testing.TB) {
 					_, err := compile(t, `layers -> scenarios`)
-					assert.ErrorString(t, err, `TestCompile/layers/errs/2/bad_edge.d2:1:1: edge with board keyword alone doesn't make sense`)
+					assert.ErrorString(t, err, `TestCompile/layers/errs/2/bad_edge.d2:1:1: cannot create edges between boards`)
 				},
 			},
 			{

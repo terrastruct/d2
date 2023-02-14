@@ -803,7 +803,7 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
 	ijs = findBoardKeywords(eid.SrcPath...)
 	for _, ij := range ijs {
 		if refctx.Edge.Src.Path[ij].UnquotedString != nil {
-			return nil, d2parser.Errorf(refctx.Edge.Src.Path[ij].Unbox(), "edge with board keyword alone doesn't make sense")
+			return nil, d2parser.Errorf(refctx.Edge.Src.Path[ij].Unbox(), "cannot create edges between boards")
 		}
 	}
 	src := m.GetField(eid.SrcPath...)
@@ -819,7 +819,7 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
 	ijs = findBoardKeywords(eid.DstPath...)
 	for _, ij := range ijs {
 		if refctx.Edge.Dst.Path[ij].UnquotedString != nil {
-			return nil, d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "edge with board keyword alone doesn't make sense")
+			return nil, d2parser.Errorf(refctx.Edge.Dst.Path[ij].Unbox(), "cannot create edges between boards")
 		}
 	}
 	dst := m.GetField(eid.DstPath...)
