@@ -883,7 +883,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		} else {
 			box = s.GetInnerBox()
 		}
-		iconSize := targetShape.GetIconSize(box)
+		iconSize := d2target.GetIconSize(box, targetShape.IconPosition)
 
 		tl := iconPosition.GetPointOnBox(box, label.PADDING, float64(iconSize), float64(iconSize))
 

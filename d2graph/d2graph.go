@@ -558,6 +558,38 @@ func (obj *Object) HasChild(ids []string) (*Object, bool) {
 	return child, true
 }
 
+// Keep in sync with HasChild.
+func (obj *Object) HasChildIDVal(ids []string) (*Object, bool) {
+	if len(ids) == 0 {
+		return obj, true
+	}
+	if len(ids) == 1 && ids[0] != "style" {
+		_, ok := ReservedKeywords[ids[0]]
+		if ok {
+			return obj, true
+		}
+	}
+
+	id := ids[0]
+	ids = ids[1:]
+
+	var child *Object
+	for _, ch2 := range obj.ChildrenArray {
+		if ch2.IDVal == id {
+			child = ch2
+			break
+		}
+	}
+	if child == nil {
+		return nil, false
+	}
+
+	if len(ids) >= 1 {
+		return child.HasChildIDVal(ids)
+	}
+	return child, true
+}
+
 func (obj *Object) HasEdge(mk *d2ast.Key) (*Edge, bool) {
 	ea, ok := obj.FindEdges(mk)
 	if !ok {
@@ -1296,8 +1328,11 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			obj.Width = sideLength
 			obj.Height = sideLength
 		} else if desiredHeight == 0 || desiredWidth == 0 {
-			if s.GetType() == shape.PERSON_TYPE {
+			switch s.GetType() {
+			case shape.PERSON_TYPE:
 				obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.PERSON_AR_LIMIT)
+			case shape.OVAL_TYPE:
+				obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.OVAL_AR_LIMIT)
 			}
 		}
 	}

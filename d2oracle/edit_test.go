@@ -1756,6 +1756,20 @@ b
 			},
 		},
 		{
+			name: "out_of_newline_container",
+
+			text: `"a\n": {
+  b
+}
+`,
+			key:    `"a\n".b`,
+			newKey: `b`,
+
+			exp: `"a\n"
+b
+`,
+		},
+		{
 			name: "partial_slice",
 
 			text: `a: {
