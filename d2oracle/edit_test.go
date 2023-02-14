@@ -2002,6 +2002,32 @@ c: {
 			},
 		},
 		{
+			name: "underscore-connection",
+
+			text: `a: {
+  b
+
+  _.c.d -> b
+}
+
+c: {
+  d
+}
+`,
+			key:    `a.b`,
+			newKey: `c.b`,
+
+			exp: `a: {
+  _.c.d -> _.c.b
+}
+
+c: {
+  d
+  b
+}
+`,
+		},
+		{
 			name: "flat_middle_container",
 
 			text: `a.b.c
