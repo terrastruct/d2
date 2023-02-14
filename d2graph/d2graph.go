@@ -721,6 +721,7 @@ func (obj *Object) EnsureChild(ida []string) *Object {
 		return obj
 	}
 
+	// TODO IDA has to change from []string to []StringBox or something that retains data on quoting mechanism
 	_, is := ReservedKeywordHolders[ida[0]]
 	if len(ida) == 1 && !is {
 		_, ok := ReservedKeywords[ida[0]]

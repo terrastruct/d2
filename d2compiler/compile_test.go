@@ -1907,7 +1907,11 @@ Chinchillas_Collectibles.chinchilla -> Chinchillas.id`,
 	'layers': yes
 }
 "3d"."width" -> me
+a."style"
 `,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 7, len(g.Objects))
+			},
 		},
 	}
 
