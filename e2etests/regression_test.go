@@ -491,6 +491,32 @@ group: {
 &&bar
 `,
 		},
+		{
+			name: "dagre-disconnect",
+			script: `a: {
+  k.t -> f.i
+  f.g -> _.s.n
+}
+k
+k.s <-> u.o
+h.m.s -> a.f.g
+
+a.f.j -> u.s.j
+u: {
+  c -> _.s.z.c
+}
+
+s: {
+  n: {
+    style.stroke: red
+    f
+  }
+}
+
+s.n -> y.r: {style.stroke-width: 2; style.stroke: red}
+y.r -> a.g.i: 1\n2\n3\n4
+`,
+		},
 	}
 
 	runa(t, tcs)
