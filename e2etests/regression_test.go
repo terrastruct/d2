@@ -513,7 +513,7 @@ s: {
   }
 }
 
-s.n -> y.r: {style.stroke-width: 2; style.stroke: red}
+s.n -> y.r: {style.stroke-width: 8; style.stroke: red}
 y.r -> a.g.i: 1\n2\n3\n4
 `,
 		},
