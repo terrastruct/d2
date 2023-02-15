@@ -61,7 +61,7 @@ func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string) error {
 	// Draw header
 	g.pdf.SetFillColor(255, 255, 255)
 	g.pdf.Rect(0, 0, pageWidth, pageHeight, "F")
-	g.pdf.SetTextColor(10, 15, 37) // steel-900
+	g.pdf.SetTextColor(0, 0, 0)
 	g.pdf.SetFont("source", "", 14)
 
 	// Draw board path prefix
@@ -87,7 +87,7 @@ func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string) error {
 	// Draw header/img seperator
 	g.pdf.SetXY(headerMargin, headerHeight)
 	g.pdf.SetLineWidth(0.01)
-	g.pdf.SetDrawColor(10, 15, 37) // steel-900
+	g.pdf.SetDrawColor(0, 0, 0)
 	g.pdf.CellFormat(pageWidth-(headerMargin*2), 0.01, "", "T", 0, "", false, 0, "")
 
 	return nil
