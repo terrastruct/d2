@@ -2027,6 +2027,24 @@ c: {
 }
 `,
 		},
+
+		{
+			name: "nested-underscore-move-out",
+			text: `guitar: {
+	books: {
+		_._.pipe
+  }
+}
+`,
+			key:    `pipe`,
+			newKey: `guitar.pipe`,
+
+			exp: `guitar: {
+  books
+  pipe
+}
+`,
+		},
 		{
 			name: "flat_middle_container",
 
@@ -3189,6 +3207,41 @@ c -> d
 			exp: `books: {
   _.pipe
 }
+`,
+		},
+		{
+			name: "only-underscore",
+
+			text: `guitar: {
+	books: {
+    _._.pipe
+  }
+}
+`,
+			key: `pipe`,
+
+			exp: `guitar: {
+  books
+}
+`,
+		},
+		{
+			name: "only-underscore-nested",
+
+			text: `guitar: {
+	books: {
+		_._.pipe: {
+      a
+    }
+  }
+}
+`,
+			key: `pipe`,
+
+			exp: `guitar: {
+  books
+}
+a
 `,
 		},
 		{
@@ -4741,6 +4794,23 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
 
 			exp: `{
   "x.x": "x"
+}`,
+		},
+
+		{
+			name: "only-reserved",
+			text: `guitar: {
+	books: {
+		_._.pipe: {
+      a
+    }
+  }
+}
+`,
+			key: `pipe`,
+
+			exp: `{
+  "pipe.a": "a"
 }`,
 		},
 		{

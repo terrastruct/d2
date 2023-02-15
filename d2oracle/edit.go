@@ -773,13 +773,14 @@ func deleteObject(g *d2graph.Graph, key *d2ast.KeyPath, obj *d2graph.Object) (*d
 		if len(ref.MapKey.Edges) == 0 {
 			isSuffix := ref.KeyPathIndex == len(ref.Key.Path)-1
 			ref.Key.Path = append(ref.Key.Path[:ref.KeyPathIndex], ref.Key.Path[ref.KeyPathIndex+1:]...)
-			withoutReserved := go2.Filter(ref.Key.Path, func(x *d2ast.StringBox) bool {
-				_, ok := d2graph.ReservedKeywords[x.Unbox().ScalarString()]
-				return !ok
+			withoutSpecial := go2.Filter(ref.Key.Path, func(x *d2ast.StringBox) bool {
+				_, isReserved := d2graph.ReservedKeywords[x.Unbox().ScalarString()]
+				isSpecial := isReserved || x.Unbox().ScalarString() == "_"
+				return !isSpecial
 			})
 			if obj.Attributes.Shape.Value == d2target.ShapeSQLTable || obj.Attributes.Shape.Value == d2target.ShapeClass {
 				ref.MapKey.Value.Map = nil
-			} else if len(withoutReserved) == 0 {
+			} else if len(withoutSpecial) == 0 {
 				hoistRefChildren(g, key, ref)
 				deleteFromMap(ref.Scope, ref.MapKey)
 			} else if ref.MapKey.Value.Unbox() == nil &&
@@ -1167,7 +1168,7 @@ func move(g *d2graph.Graph, key, newKey string) (*d2graph.Graph, error) {
 		}
 
 		ida := d2graph.Key(ref.Key)
-		resolvedObj, resolvedIDA, err := d2graph.ResolveUnderscoreKey(ida, obj)
+		resolvedObj, resolvedIDA, err := d2graph.ResolveUnderscoreKey(ida, ref.ScopeObj)
 		if err != nil {
 			return nil, err
 		}
@@ -2086,11 +2087,11 @@ func getMostNestedRefs(obj *d2graph.Object) []d2graph.Reference {
 		if err != nil {
 			mostKey = &d2ast.KeyPath{}
 		}
-		_, resolvedScopeKey, err := d2graph.ResolveUnderscoreKey(d2graph.Key(scopeKey), obj)
+		_, resolvedScopeKey, err := d2graph.ResolveUnderscoreKey(d2graph.Key(scopeKey), ref.ScopeObj)
 		if err != nil {
 			continue
 		}
-		_, resolvedMostKey, err := d2graph.ResolveUnderscoreKey(d2graph.Key(mostKey), obj)
+		_, resolvedMostKey, err := d2graph.ResolveUnderscoreKey(d2graph.Key(mostKey), ref.ScopeObj)
 		if err != nil {
 			continue
 		}

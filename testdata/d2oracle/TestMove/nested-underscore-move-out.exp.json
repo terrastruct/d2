@@ -1,0 +1,255 @@
+{
+  "graph": {
+    "name": "",
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestMove/nested-underscore-move-out.d2,0:0:0-4:0:27",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestMove/nested-underscore-move-out.d2,0:0:0-3:1:26",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/nested-underscore-move-out.d2,0:0:0-0:6:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/nested-underscore-move-out.d2,0:0:0-0:6:6",
+                    "value": [
+                      {
+                        "string": "guitar",
+                        "raw_string": "guitar"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestMove/nested-underscore-move-out.d2,0:8:8-3:0:25",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestMove/nested-underscore-move-out.d2,1:2:12-1:7:17",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestMove/nested-underscore-move-out.d2,1:2:12-1:7:17",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestMove/nested-underscore-move-out.d2,1:2:12-1:7:17",
+                              "value": [
+                                {
+                                  "string": "books",
+                                  "raw_string": "books"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestMove/nested-underscore-move-out.d2,2:2:20-2:6:24",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestMove/nested-underscore-move-out.d2,2:2:20-2:6:24",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestMove/nested-underscore-move-out.d2,2:2:20-2:6:24",
+                              "value": [
+                                {
+                                  "string": "pipe",
+                                  "raw_string": "pipe"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "guitar",
+        "id_val": "guitar",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/nested-underscore-move-out.d2,0:0:0-0:6:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/nested-underscore-move-out.d2,0:0:0-0:6:6",
+                    "value": [
+                      {
+                        "string": "guitar",
+                        "raw_string": "guitar"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "guitar"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "books",
+        "id_val": "books",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/nested-underscore-move-out.d2,1:2:12-1:7:17",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/nested-underscore-move-out.d2,1:2:12-1:7:17",
+                    "value": [
+                      {
+                        "string": "books",
+                        "raw_string": "books"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "books"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "pipe",
+        "id_val": "pipe",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/nested-underscore-move-out.d2,2:2:20-2:6:24",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/nested-underscore-move-out.d2,2:2:20-2:6:24",
+                    "value": [
+                      {
+                        "string": "pipe",
+                        "raw_string": "pipe"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "pipe"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": "<nil>"
+}
