@@ -338,6 +338,13 @@ x: {
 			},
 		},
 		{
+			name: "underscore_connection",
+			text: `a: {
+  _.c.d -> _.c.b
+}
+`,
+		},
+		{
 			name: "underscore_parent_not_root",
 
 			text: `

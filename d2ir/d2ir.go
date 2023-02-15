@@ -770,7 +770,8 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
 	if len(common) > 0 {
 		tmp := *refctx.Edge.Src
 		kp := &tmp
-		kp.Path = kp.Path[:len(common)]
+		underscores := countUnderscores(kp.IDA())
+		kp.Path = kp.Path[underscores : len(common)+underscores]
 		f, err := m.EnsureField(kp, nil)
 		if err != nil {
 			return nil, err
