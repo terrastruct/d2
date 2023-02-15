@@ -1168,7 +1168,7 @@ func move(g *d2graph.Graph, key, newKey string) (*d2graph.Graph, error) {
 		}
 
 		ida := d2graph.Key(ref.Key)
-		resolvedObj, resolvedIDA, err := d2graph.ResolveUnderscoreKey(ida, obj)
+		resolvedObj, resolvedIDA, err := d2graph.ResolveUnderscoreKey(ida, ref.ScopeObj)
 		if err != nil {
 			return nil, err
 		}
@@ -2087,11 +2087,11 @@ func getMostNestedRefs(obj *d2graph.Object) []d2graph.Reference {
 		if err != nil {
 			mostKey = &d2ast.KeyPath{}
 		}
-		_, resolvedScopeKey, err := d2graph.ResolveUnderscoreKey(d2graph.Key(scopeKey), obj)
+		_, resolvedScopeKey, err := d2graph.ResolveUnderscoreKey(d2graph.Key(scopeKey), ref.ScopeObj)
 		if err != nil {
 			continue
 		}
-		_, resolvedMostKey, err := d2graph.ResolveUnderscoreKey(d2graph.Key(mostKey), obj)
+		_, resolvedMostKey, err := d2graph.ResolveUnderscoreKey(d2graph.Key(mostKey), ref.ScopeObj)
 		if err != nil {
 			continue
 		}

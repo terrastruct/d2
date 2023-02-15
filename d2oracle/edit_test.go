@@ -2027,6 +2027,24 @@ c: {
 }
 `,
 		},
+
+		{
+			name: "nested-underscore-move-out",
+			text: `guitar: {
+	books: {
+		_._.pipe
+  }
+}
+`,
+			key:    `pipe`,
+			newKey: `guitar.pipe`,
+
+			exp: `guitar: {
+  books
+  pipe
+}
+`,
+		},
 		{
 			name: "flat_middle_container",
 
