@@ -344,7 +344,7 @@ x: {
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				tassert.Equal(t, 3, len(g.Objects))
+				tassert.Equal(t, 4, len(g.Objects))
 				tassert.Equal(t, 1, len(g.Edges))
 			},
 		},
