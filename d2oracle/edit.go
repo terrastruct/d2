@@ -2066,7 +2066,13 @@ func hasSpace(tag string) bool {
 }
 
 func getMostNestedRefs(obj *d2graph.Object) []d2graph.Reference {
-	most := obj.References[0]
+	var most d2graph.Reference
+	for _, ref := range obj.References {
+		if len(ref.MapKey.Edges) == 0 {
+			most = ref
+			break
+		}
+	}
 	for _, ref := range obj.References {
 		if len(ref.MapKey.Edges) != 0 {
 			continue
