@@ -773,13 +773,14 @@ func deleteObject(g *d2graph.Graph, key *d2ast.KeyPath, obj *d2graph.Object) (*d
 		if len(ref.MapKey.Edges) == 0 {
 			isSuffix := ref.KeyPathIndex == len(ref.Key.Path)-1
 			ref.Key.Path = append(ref.Key.Path[:ref.KeyPathIndex], ref.Key.Path[ref.KeyPathIndex+1:]...)
-			withoutReserved := go2.Filter(ref.Key.Path, func(x *d2ast.StringBox) bool {
-				_, ok := d2graph.ReservedKeywords[x.Unbox().ScalarString()]
-				return !ok
+			withoutSpecial := go2.Filter(ref.Key.Path, func(x *d2ast.StringBox) bool {
+				_, isReserved := d2graph.ReservedKeywords[x.Unbox().ScalarString()]
+				isSpecial := isReserved || x.Unbox().ScalarString() == "_"
+				return !isSpecial
 			})
 			if obj.Attributes.Shape.Value == d2target.ShapeSQLTable || obj.Attributes.Shape.Value == d2target.ShapeClass {
 				ref.MapKey.Value.Map = nil
-			} else if len(withoutReserved) == 0 {
+			} else if len(withoutSpecial) == 0 {
 				hoistRefChildren(g, key, ref)
 				deleteFromMap(ref.Scope, ref.MapKey)
 			} else if ref.MapKey.Value.Unbox() == nil &&

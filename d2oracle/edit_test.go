@@ -3192,6 +3192,41 @@ c -> d
 `,
 		},
 		{
+			name: "only-underscore",
+
+			text: `guitar: {
+	books: {
+    _._.pipe
+  }
+}
+`,
+			key: `pipe`,
+
+			exp: `guitar: {
+  books
+}
+`,
+		},
+		{
+			name: "only-underscore-nested",
+
+			text: `guitar: {
+	books: {
+		_._.pipe: {
+      a
+    }
+  }
+}
+`,
+			key: `pipe`,
+
+			exp: `guitar: {
+  books
+}
+a
+`,
+		},
+		{
 			name: "node_in_edge",
 
 			text: `x -> y -> z -> q -> p
