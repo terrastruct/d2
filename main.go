@@ -28,6 +28,7 @@ import (
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/imgbundler"
 	ctxlog "oss.terrastruct.com/d2/lib/log"
+	pdflib "oss.terrastruct.com/d2/lib/pdf"
 	"oss.terrastruct.com/d2/lib/png"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 	"oss.terrastruct.com/d2/lib/version"
@@ -181,7 +182,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	ms.Log.Debug.Printf("using layout plugin %s (%s)", *layoutFlag, plocation)
 
 	var pw png.Playwright
-	if filepath.Ext(outputPath) == ".png" {
+	if filepath.Ext(outputPath) == ".png" || filepath.Ext(outputPath) == ".pdf" {
 		pw, err = png.InitPlaywright()
 		if err != nil {
 			return err
@@ -256,10 +257,17 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 		return nil, false, err
 	}
 
-	svg, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
+	var svg []byte
+	if filepath.Ext(outputPath) == ".pdf" {
+		svg, err = renderPDF(ctx, ms, plugin, sketch, pad, outputPath, page, ruler, diagram, nil, nil, false)
+	} else {
+		svg, err = render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
+	}
 	if err != nil {
 		return svg, false, err
 	}
+
+	ms.Log.Success.Printf("successfully compiled %v to %v", inputPath, outputPath)
 	return svg, true, nil
 }
 
@@ -287,7 +295,6 @@ func render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch
 	if err != nil {
 		return svg, err
 	}
-	ms.Log.Success.Printf("successfully compiled %v to %v", inputPath, outputPath)
 	return svg, nil
 }
 
@@ -346,6 +353,89 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	if bundleErr != nil {
 		return svg, bundleErr
 	}
+	return svg, nil
+}
+
+func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdf *pdflib.GoFPDF, boardPath []string, isScenario bool) ([]byte, error) {
+	var isRoot bool
+	if pdf == nil {
+		pdf = pdflib.Init()
+		isRoot = true
+	}
+
+	var currBoardPath []string
+	// is root board
+	if diagram.Name == "" {
+		ext := filepath.Ext(outputPath)
+		trimmedPath := strings.TrimSuffix(outputPath, ext)
+		splitPath := strings.Split(trimmedPath, "/")
+		rootName := splitPath[len(splitPath)-1]
+		currBoardPath = append(boardPath, rootName)
+	} else {
+		currBoardPath = append(boardPath, diagram.Name)
+	}
+
+	var svg []byte
+	if !isScenario {
+		svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
+			Pad:    int(pad),
+			Sketch: sketch,
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		svg, err = plugin.PostProcess(ctx, svg)
+		if err != nil {
+			return svg, err
+		}
+
+		svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
+		svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
+		bundleErr = multierr.Combine(bundleErr, bundleErr2)
+		if bundleErr != nil {
+			return svg, bundleErr
+		}
+		svg = appendix.Append(diagram, ruler, svg)
+
+		pngImg, err := png.ConvertSVG(ms, page, svg)
+		if err != nil {
+			return svg, err
+		}
+
+		err = pdf.AddPDFPage(pngImg, currBoardPath)
+		if err != nil {
+			return svg, err
+		}
+
+	}
+
+	for _, dl := range diagram.Layers {
+		_, err := renderPDF(ctx, ms, plugin, sketch, pad, "", page, ruler, dl, pdf, currBoardPath, false)
+		if err != nil {
+			return nil, err
+		}
+	}
+	for _, dl := range diagram.Scenarios {
+		_, err := renderPDF(ctx, ms, plugin, sketch, pad, "", page, ruler, dl, pdf, currBoardPath, true)
+		if err != nil {
+			return nil, err
+		}
+	}
+	for _, dl := range diagram.Steps {
+		_, err := renderPDF(ctx, ms, plugin, sketch, pad, "", page, ruler, dl, pdf, currBoardPath, false)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if isRoot {
+		err := pdf.Export(outputPath)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	return svg, nil
 }
 
