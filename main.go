@@ -259,7 +259,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 
 	var svg []byte
 	if filepath.Ext(outputPath) == ".pdf" {
-		svg, err = renderPDF(ctx, ms, plugin, sketch, pad, outputPath, page, ruler, diagram, nil, nil, false)
+		svg, err = renderPDF(ctx, ms, plugin, sketch, pad, outputPath, page, ruler, diagram, nil, nil)
 	} else {
 		svg, err = render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
 	}
@@ -356,7 +356,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	return svg, nil
 }
 
-func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdf *pdflib.GoFPDF, boardPath []string, isScenario bool) (svg []byte, err error) {
+func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdf *pdflib.GoFPDF, boardPath []string) (svg []byte, err error) {
 	var isRoot bool
 	if pdf == nil {
 		pdf = pdflib.Init()
@@ -375,53 +375,51 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 		currBoardPath = append(boardPath, diagram.Name)
 	}
 
-	if !isScenario {
-		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
-			Pad:    int(pad),
-			Sketch: sketch,
-		})
-		if err != nil {
-			return nil, err
-		}
+	svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
+		Pad:    int(pad),
+		Sketch: sketch,
+	})
+	if err != nil {
+		return nil, err
+	}
 
-		svg, err = plugin.PostProcess(ctx, svg)
-		if err != nil {
-			return svg, err
-		}
+	svg, err = plugin.PostProcess(ctx, svg)
+	if err != nil {
+		return svg, err
+	}
 
-		svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
-		svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
-		bundleErr = multierr.Combine(bundleErr, bundleErr2)
-		if bundleErr != nil {
-			return svg, bundleErr
-		}
-		svg = appendix.Append(diagram, ruler, svg)
+	svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
+	svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
+	bundleErr = multierr.Combine(bundleErr, bundleErr2)
+	if bundleErr != nil {
+		return svg, bundleErr
+	}
+	svg = appendix.Append(diagram, ruler, svg)
 
-		pngImg, err := png.ConvertSVG(ms, page, svg)
-		if err != nil {
-			return svg, err
-		}
+	pngImg, err := png.ConvertSVG(ms, page, svg)
+	if err != nil {
+		return svg, err
+	}
 
-		err = pdf.AddPDFPage(pngImg, currBoardPath)
-		if err != nil {
-			return svg, err
-		}
+	err = pdf.AddPDFPage(pngImg, currBoardPath)
+	if err != nil {
+		return svg, err
 	}
 
 	for _, dl := range diagram.Layers {
-		_, err := renderPDF(ctx, ms, plugin, sketch, pad, "", page, ruler, dl, pdf, currBoardPath, false)
+		_, err := renderPDF(ctx, ms, plugin, sketch, pad, "", page, ruler, dl, pdf, currBoardPath)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := renderPDF(ctx, ms, plugin, sketch, pad, "", page, ruler, dl, pdf, currBoardPath, true)
+		_, err := renderPDF(ctx, ms, plugin, sketch, pad, "", page, ruler, dl, pdf, currBoardPath)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := renderPDF(ctx, ms, plugin, sketch, pad, "", page, ruler, dl, pdf, currBoardPath, false)
+		_, err := renderPDF(ctx, ms, plugin, sketch, pad, "", page, ruler, dl, pdf, currBoardPath)
 		if err != nil {
 			return nil, err
 		}
