@@ -343,6 +343,10 @@ x: {
   _.c.d -> _.c.b
 }
 `,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 3, len(g.Objects))
+				tassert.Equal(t, 1, len(g.Edges))
+			},
 		},
 		{
 			name: "underscore_parent_not_root",
