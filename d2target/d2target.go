@@ -20,7 +20,7 @@ import (
 
 const (
 	DEFAULT_ICON_SIZE = 32
-	MAX_ICON_SIZE     = 64
+	MAX_ICON_SIZE     = 52
 
 	THREE_DEE_OFFSET = 15
 	MULTIPLE_OFFSET  = 10
