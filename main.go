@@ -356,7 +356,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	return svg, nil
 }
 
-func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdf *pdflib.GoFPDF, boardPath []string, isScenario bool) ([]byte, error) {
+func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdf *pdflib.GoFPDF, boardPath []string, isScenario bool) (svg []byte, err error) {
 	var isRoot bool
 	if pdf == nil {
 		pdf = pdflib.Init()
@@ -375,9 +375,8 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 		currBoardPath = append(boardPath, diagram.Name)
 	}
 
-	var svg []byte
 	if !isScenario {
-		svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
+		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
 			Pad:    int(pad),
 			Sketch: sketch,
 		})
@@ -407,7 +406,6 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 		if err != nil {
 			return svg, err
 		}
-
 	}
 
 	for _, dl := range diagram.Layers {
