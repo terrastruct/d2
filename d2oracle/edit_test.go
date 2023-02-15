@@ -4778,6 +4778,23 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
   "x.x": "x"
 }`,
 		},
+
+		{
+			name: "only-reserved",
+			text: `guitar: {
+	books: {
+		_._.pipe: {
+      a
+    }
+  }
+}
+`,
+			key: `pipe`,
+
+			exp: `{
+  "pipe.a": "a"
+}`,
+		},
 		{
 			name: "delete_container_with_conflicts",
 
