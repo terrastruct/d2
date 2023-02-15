@@ -364,7 +364,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 	}
 
 	var currBoardPath []string
-	// is root board
+	// Root board doesn't have a name, so we use the output filename
 	if diagram.Name == "" {
 		ext := filepath.Ext(outputPath)
 		trimmedPath := strings.TrimSuffix(outputPath, ext)
