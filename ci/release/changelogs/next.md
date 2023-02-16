@@ -1,8 +1,11 @@
 #### Features 🚀
 
 - Many non-Latin languages (e.g. Chinese, Japanese, Korean) are usable now that multi-byte characters are measured correctly. [#817](https://github.com/terrastruct/d2/pull/817)
+- Fix duplicate success logs in watch mode. [830](https://github.com/terrastruct/d2/pull/830)
 
 #### Improvements 🧹
+
+- Cleaner watch mode logs without timestamps. [830](https://github.com/terrastruct/d2/pull/830)
 
 #### Bugfixes ⛑️
 
