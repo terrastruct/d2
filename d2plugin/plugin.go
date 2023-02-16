@@ -71,7 +71,8 @@ type PluginInfo struct {
 	ShortHelp string `json:"shortHelp"`
 	LongHelp  string `json:"longHelp"`
 
-	// These two are set by ListPlugins and not the plugin itself.
+	// Set to bundled when returning from the plugin.
+	// execPlugin will set to binary when used.
 	// bundled | binary
 	Type string `json:"type"`
 	// If Type == binary then this contains the absolute path to the binary.
@@ -121,12 +122,6 @@ func ListPluginInfos(ctx context.Context, ps []Plugin) ([]*PluginInfo, error) {
 		info, err := p.Info(ctx)
 		if err != nil {
 			return nil, err
-		}
-		if ep, ok := p.(*execPlugin); ok {
-			info.Type = "binary"
-			info.Path = ep.path
-		} else {
-			info.Type = "bundled"
 		}
 		infoSlice = append(infoSlice, info)
 	}
