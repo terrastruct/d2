@@ -17,19 +17,19 @@ func TestSerialization(t *testing.T) {
 	assert.Nil(t, err)
 
 	asserts := func(g *d2graph.Graph) {
+		a := g.Root.ChildrenArray[0]
+		a_a := a.ChildrenArray[0]
+
 		assert.Equal(t, 4, len(g.Objects))
 		assert.Equal(t, 1, len(g.Root.ChildrenArray))
-		assert.Equal(t, 1, len(g.Root.ChildrenArray[0].ChildrenArray))
-		assert.Equal(t, 2, len(g.Root.ChildrenArray[0].ChildrenArray[0].ChildrenArray))
-		assert.Equal(t,
-			g.Root.ChildrenArray[0],
-			g.Root.ChildrenArray[0].ChildrenArray[0].Parent,
-		)
+		assert.Equal(t, 1, len(a.ChildrenArray))
+		assert.Equal(t, 2, len(a_a.ChildrenArray))
+		assert.Equal(t, a, a_a.Parent)
+		assert.Equal(t, g.Root, a.Parent)
 
-		assert.Equal(t,
-			g.Root,
-			g.Root.ChildrenArray[0].Parent,
-		)
+		assert.Contains(t, a.Children, "a")
+		assert.Contains(t, a_a.Children, "b")
+		assert.Contains(t, a_a.Children, "c")
 
 		assert.Equal(t, 1, len(g.Edges))
 		assert.Equal(t, "b", g.Edges[0].Src.ID)

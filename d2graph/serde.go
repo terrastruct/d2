@@ -49,7 +49,7 @@ func DeserializeGraph(bytes []byte, g *Graph) error {
 			for _, id := range so["ChildrenArray"].([]interface{}) {
 				o := idToObj[id.(string)]
 				childrenArray = append(childrenArray, o)
-				children[strings.ToLower(id.(string))] = o
+				children[strings.ToLower(o.ID)] = o
 
 				o.Parent = idToObj[so["AbsID"].(string)]
 			}
