@@ -1,0 +1,12 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/no-nested-columns-class.d2,2:4:24-2:5:25",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/no-nested-columns-class.d2:3:5: class fields cannot have children"
+      }
+    ]
+  }
+}

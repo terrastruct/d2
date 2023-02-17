@@ -160,6 +160,17 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 		return
 	}
 
+	if obj.Parent != nil {
+		if obj.Parent.Attributes.Shape.Value == d2target.ShapeSQLTable {
+			c.errorf(f.LastRef().AST(), "sql_table columns cannot have children")
+			return
+		}
+		if obj.Parent.Attributes.Shape.Value == d2target.ShapeClass {
+			c.errorf(f.LastRef().AST(), "class fields cannot have children")
+			return
+		}
+	}
+
 	obj = obj.EnsureChild(d2graphIDA([]string{f.Name}))
 	if f.Primary() != nil {
 		c.compileLabel(obj.Attributes, f)

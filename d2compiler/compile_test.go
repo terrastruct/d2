@@ -1483,6 +1483,36 @@ d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:2:9: near key "
   shape: sql_table
   x: {p -> q}
 }`,
+			expErr: `d2/testdata/d2compiler/TestCompile/edge_in_column.d2:3:7: sql_table columns cannot have children
+d2/testdata/d2compiler/TestCompile/edge_in_column.d2:3:12: sql_table columns cannot have children`,
+		},
+		{
+			name: "no-nested-columns-sql",
+
+			text: `x: {
+  shape: sql_table
+  a -- b.b
+}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no-nested-columns-sql.d2:3:10: sql_table columns cannot have children`,
+		},
+		{
+			name: "no-nested-columns-sql-2",
+
+			text: `x: {
+  shape: sql_table
+  a
+}
+x.a.b`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no-nested-columns-sql-2.d2:5:5: sql_table columns cannot have children`,
+		},
+		{
+			name: "no-nested-columns-class",
+
+			text: `x: {
+  shape: class
+  a.a
+}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no-nested-columns-class.d2:3:5: class fields cannot have children`,
 		},
 		{
 			name: "edge_to_style",
