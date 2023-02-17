@@ -13,3 +13,4 @@
 - Fixes rare compiler bug when using underscores in edges to create objects across containers. [#824](https://github.com/terrastruct/d2/pull/824)
 - Fixes rare possibility of rendered connections being hidden or cut off. [#828](https://github.com/terrastruct/d2/pull/828)
 - Creating nested children within `sql_table` and `class` shapes are now prevented (caused confusion when accidentally done). [#834](https://github.com/terrastruct/d2/pull/834)
+- Fixes graph deserialization. [#837](https://github.com/terrastruct/d2/pull/837)
