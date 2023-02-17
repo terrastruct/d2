@@ -31,6 +31,12 @@ func TestSerialization(t *testing.T) {
 			g.Root.ChildrenArray[0].Parent,
 		)
 
+		a := g.Root.ChildrenArray[0]
+		aa := a.ChildrenArray[0]
+		assert.Contains(t, a.Children, "a")
+		assert.Contains(t, aa.Children, "b")
+		assert.Contains(t, aa.Children, "c")
+
 		assert.Equal(t, 1, len(g.Edges))
 		assert.Equal(t, "b", g.Edges[0].Src.ID)
 		assert.Equal(t, "c", g.Edges[0].Dst.ID)

@@ -2,7 +2,6 @@ package d2graph
 
 import (
 	"encoding/json"
-	"strings"
 
 	"oss.terrastruct.com/util-go/go2"
 )
@@ -49,7 +48,7 @@ func DeserializeGraph(bytes []byte, g *Graph) error {
 			for _, id := range so["ChildrenArray"].([]interface{}) {
 				o := idToObj[id.(string)]
 				childrenArray = append(childrenArray, o)
-				children[strings.ToLower(id.(string))] = o
+				children[o.IDVal] = o
 
 				o.Parent = idToObj[so["AbsID"].(string)]
 			}
