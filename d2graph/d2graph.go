@@ -1593,13 +1593,13 @@ func (g *Graph) Compare(other *Graph) error {
 	}
 
 	if err := g.Root.Compare(other.Root); err != nil {
-		return fmt.Errorf("root differs: %w", err)
+		return fmt.Errorf("root differs: %v", err)
 	}
 
 	for i := 0; i < len(g.Objects); i++ {
 		if err := g.Objects[i].Compare(other.Objects[i]); err != nil {
 			return fmt.Errorf(
-				"objects differ at %d [g=%s, other=%s]: %w",
+				"objects differ at %d [g=%s, other=%s]: %v",
 				i,
 				g.Objects[i].ID,
 				other.Objects[i].ID,
@@ -1611,7 +1611,7 @@ func (g *Graph) Compare(other *Graph) error {
 	for i := 0; i < len(g.Edges); i++ {
 		if err := g.Edges[i].Compare(other.Edges[i]); err != nil {
 			return fmt.Errorf(
-				"edges differ at %d [g=%s, other=%s]: %w",
+				"edges differ at %d [g=%s, other=%s]: %v",
 				i,
 				g.Edges[i].AbsID(),
 				other.Edges[i].AbsID(),
@@ -1670,7 +1670,7 @@ func (obj *Object) Compare(other *Object) error {
 	for childID, objChild := range obj.Children {
 		if otherChild, exists := other.Children[childID]; exists {
 			if err := objChild.Compare(otherChild); err != nil {
-				return fmt.Errorf("children differ at key %s: %w", childID, err)
+				return fmt.Errorf("children differ at key %s: %v", childID, err)
 			}
 		} else {
 			return fmt.Errorf("child %s does not exist in other", childID)
@@ -1683,7 +1683,7 @@ func (obj *Object) Compare(other *Object) error {
 
 	for i := 0; i < len(obj.ChildrenArray); i++ {
 		if err := obj.ChildrenArray[i].Compare(other.ChildrenArray[i]); err != nil {
-			return fmt.Errorf("childrenArray differs at %d: %w", i, err)
+			return fmt.Errorf("childrenArray differs at %d: %v", i, err)
 		}
 	}
 
