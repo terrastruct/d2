@@ -115,6 +115,7 @@ func serde(t *testing.T, tc testCase, ruler *textmeasure.Ruler) {
 	var newG d2graph.Graph
 	err = d2graph.DeserializeGraph(b, &newG)
 	trequire.Nil(t, err)
+	trequire.Nil(t, d2graph.CompareSerializedGraph(g, &newG))
 }
 
 func run(t *testing.T, tc testCase) {
