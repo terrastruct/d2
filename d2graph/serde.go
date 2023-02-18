@@ -24,10 +24,10 @@ func DeserializeGraph(bytes []byte, g *Graph) error {
 		return err
 	}
 
-	g.Root = &Object{
-		Graph:    g,
-		Children: make(map[string]*Object),
-	}
+	var root Object
+	convert(sg.Root, &root)
+	g.Root = &root
+	root.Graph = g
 
 	idToObj := make(map[string]*Object)
 	idToObj[""] = g.Root
