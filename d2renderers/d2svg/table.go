@@ -17,7 +17,7 @@ func tableHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, tex
 	rectEl.X, rectEl.Y = box.TopLeft.X, box.TopLeft.Y
 	rectEl.Width, rectEl.Height = box.Width, box.Height
 	rectEl.Fill = shape.Fill
-	rectEl.Class = "class_header"
+	rectEl.ClassName = "class_header"
 	str := rectEl.Render()
 
 	if text != "" {
@@ -32,7 +32,7 @@ func tableHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, tex
 		textEl.X = tl.X
 		textEl.Y = tl.Y + textHeight*3/4
 		textEl.Fill = shape.Stroke
-		textEl.Class = "text"
+		textEl.ClassName = "text"
 		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx",
 			"start", 4+fontSize,
 		)
@@ -62,7 +62,7 @@ func tableRow(shape d2target.Shape, box *geo.Box, nameText, typeText, constraint
 	textEl.X = nameTL.X
 	textEl.Y = nameTL.Y + fontSize*3/4
 	textEl.Fill = shape.PrimaryAccentColor
-	textEl.Class = "text"
+	textEl.ClassName = "text"
 	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "start", fontSize)
 	textEl.Content = svg.EscapeText(nameText)
 	out := textEl.Render()
@@ -89,7 +89,7 @@ func drawTable(writer io.Writer, targetShape d2target.Shape) {
 	rectEl.Width = float64(targetShape.Width)
 	rectEl.Height = float64(targetShape.Height)
 	rectEl.Fill, rectEl.Stroke = d2themes.ShapeTheme(targetShape)
-	rectEl.Class = "shape"
+	rectEl.ClassName = "shape"
 	rectEl.Style = targetShape.CSSStyle()
 	fmt.Fprint(writer, rectEl.Render())
 

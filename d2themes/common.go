@@ -17,7 +17,3 @@ func ShapeTheme(shape d2target.Shape) (fill, stroke string) {
 	}
 	return fill, stroke
 }
-
-func ConnectionTheme(connection d2target.Connection) (stroke string) {
-	return connection.Stroke
-}

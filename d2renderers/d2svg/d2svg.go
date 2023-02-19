@@ -84,7 +84,7 @@ func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
 	}
 
 	return fmt.Sprintf("mk-%s", hash(fmt.Sprintf("%s,%t,%d,%s",
-		arrowhead, isTarget, connection.StrokeWidth, d2themes.ConnectionTheme(connection),
+		arrowhead, isTarget, connection.StrokeWidth, connection.Stroke,
 	)))
 }
 
@@ -131,8 +131,8 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 	switch arrowhead {
 	case d2target.ArrowArrowhead:
 		polygonEl := d2themes.NewThemableElement("polygon")
-		polygonEl.Fill = d2themes.ConnectionTheme(connection)
-		polygonEl.Class = "connection"
+		polygonEl.Fill = connection.Stroke
+		polygonEl.ClassName = "connection"
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
 		if isTarget {
@@ -153,8 +153,8 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 		path = polygonEl.Render()
 	case d2target.TriangleArrowhead:
 		polygonEl := d2themes.NewThemableElement("polygon")
-		polygonEl.Fill = d2themes.ConnectionTheme(connection)
-		polygonEl.Class = "connection"
+		polygonEl.Fill = connection.Stroke
+		polygonEl.ClassName = "connection"
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
 		if isTarget {
@@ -174,8 +174,8 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 	case d2target.LineArrowhead:
 		polylineEl := d2themes.NewThemableElement("polyline")
 		polylineEl.Fill = color.None
-		polylineEl.Class = "connection"
-		polylineEl.Stroke = d2themes.ConnectionTheme(connection)
+		polylineEl.ClassName = "connection"
+		polylineEl.Stroke = connection.Stroke
 		polylineEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
 		if isTarget {
@@ -194,8 +194,8 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 		path = polylineEl.Render()
 	case d2target.FilledDiamondArrowhead:
 		polygonEl := d2themes.NewThemableElement("polygon")
-		polygonEl.Class = "connection"
-		polygonEl.Fill = d2themes.ConnectionTheme(connection)
+		polygonEl.ClassName = "connection"
+		polygonEl.Fill = connection.Stroke
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
 		if isTarget {
@@ -216,9 +216,9 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 		path = polygonEl.Render()
 	case d2target.DiamondArrowhead:
 		polygonEl := d2themes.NewThemableElement("polygon")
-		polygonEl.Class = "connection"
+		polygonEl.ClassName = "connection"
 		polygonEl.Fill = bgColor
-		polygonEl.Stroke = d2themes.ConnectionTheme(connection)
+		polygonEl.Stroke = connection.Stroke
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
 		if isTarget {
@@ -244,7 +244,7 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 		circleEl.Cy = radius
 		circleEl.R = radius - strokeWidth/2 // @alixander says there maybe should be a plus sign instead
 		circleEl.Fill = connection.Stroke
-		circleEl.Class = "connection"
+		circleEl.ClassName = "connection"
 		circleEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
 		if isTarget {
@@ -282,8 +282,8 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 				offset, height,
 			)
 			modifierEl.Fill = bgColor
-			modifierEl.Stroke = d2themes.ConnectionTheme(connection)
-			modifierEl.Class = "connection"
+			modifierEl.Stroke = connection.Stroke
+			modifierEl.ClassName = "connection"
 			modifierEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 		} else {
 			modifierEl = d2themes.NewThemableElement("circle")
@@ -291,8 +291,8 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 			modifierEl.Cy = height / 2.0
 			modifierEl.R = offset / 2.0
 			modifierEl.Fill = bgColor
-			modifierEl.Stroke = d2themes.ConnectionTheme(connection)
-			modifierEl.Class = "connection"
+			modifierEl.Stroke = connection.Stroke
+			modifierEl.ClassName = "connection"
 			modifierEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 		}
 
@@ -320,8 +320,8 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 			gEl.Transform = fmt.Sprintf("scale(-1) translate(-%f, -%f)", width, height)
 		}
 		gEl.Fill = bgColor
-		gEl.Stroke = d2themes.ConnectionTheme(connection)
-		gEl.Class = "connection"
+		gEl.Stroke = connection.Stroke
+		gEl.ClassName = "connection"
 		gEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 		gEl.Content = fmt.Sprintf("%s%s",
 			modifierEl.Render(), childPathEl.Render(),
@@ -545,8 +545,8 @@ func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskI
 		pathEl := d2themes.NewThemableElement("path")
 		pathEl.D = path
 		pathEl.Fill = color.None
-		pathEl.Stroke = d2themes.ConnectionTheme(connection)
-		pathEl.Class = fmt.Sprintf("connection%s", animatedClass)
+		pathEl.Stroke = connection.Stroke
+		pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
 		pathEl.Style = connection.CSSStyle()
 		pathEl.Attributes = fmt.Sprintf("%s%s%s", markerStart, markerEnd, mask)
 		fmt.Fprint(writer, pathEl.Render())
@@ -576,7 +576,7 @@ func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskI
 		textEl.X = labelTL.X + float64(connection.LabelWidth)/2
 		textEl.Y = labelTL.Y + float64(connection.FontSize)
 		textEl.Fill = fontColor
-		textEl.Class = fontClass
+		textEl.ClassName = fontClass
 		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", connection.FontSize)
 		textEl.Content = RenderText(connection.Label, textEl.X, float64(connection.LabelHeight))
 		fmt.Fprint(writer, textEl.Render())
@@ -612,7 +612,7 @@ func renderArrowheadLabel(fgColor string, connection d2target.Connection, text s
 	textEl.X = labelTL.X + width/2
 	textEl.Y = labelTL.Y + float64(connection.FontSize)
 	textEl.Fill = fgColor
-	textEl.Class = "text-italic"
+	textEl.ClassName = "text-italic"
 	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", connection.FontSize)
 	textEl.Content = RenderText(text, textEl.X, height)
 	return textEl.Render()
@@ -625,7 +625,7 @@ func renderOval(tl *geo.Point, width, height float64, fill, stroke, style string
 	el.Cx = tl.X + el.Rx
 	el.Cy = tl.Y + el.Ry
 	el.Fill, el.Stroke = fill, stroke
-	el.Class = "shape"
+	el.ClassName = "shape"
 	el.Style = style
 	return el.Render()
 }
@@ -707,7 +707,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	mainShape.Y = float64(targetShape.Pos.Y)
 	mainShape.Width = float64(targetShape.Width)
 	mainShape.Height = float64(targetShape.Height)
-	mainShape.Mask = fmt.Sprintf("url(#%s)", maskID)
+	mainShape.SetMaskUrl(maskID)
 	mainShapeFill, _ := d2themes.ShapeTheme(targetShape)
 	mainShape.Fill = mainShapeFill
 	mainShape.Stroke = color.None
@@ -736,7 +736,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	sideShape := d2themes.NewThemableElement("polygon")
 	sideShape.Fill = darkerColor
 	sideShape.Points = strings.Join(sidePoints, " ")
-	sideShape.Mask = fmt.Sprintf("url(#%s)", maskID)
+	sideShape.SetMaskUrl(maskID)
 	sideShape.Style = targetShape.CSSStyle()
 	renderedSides := sideShape.Render()
 
@@ -1062,7 +1062,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			rectEl.Width = float64(targetShape.Width)
 			rectEl.Height = float64(targetShape.Height)
 			rectEl.Stroke = targetShape.Stroke
-			rectEl.Class = "shape"
+			rectEl.ClassName = "shape"
 			rectEl.Style = fmt.Sprintf(`fill:%s`, style.Get(chroma.Background).Background.String())
 			fmt.Fprint(writer, rectEl.Render())
 			// Padding
@@ -1105,7 +1105,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 
 			mdEl := d2themes.NewThemableElement("div")
 			mdEl.Xmlns = "http://www.w3.org/1999/xhtml"
-			mdEl.Class = "md"
+			mdEl.ClassName = "md"
 			mdEl.Content = render
 			fmt.Fprint(writer, mdEl.Render())
 			fmt.Fprint(writer, `</foreignObject></g>`)
@@ -1128,7 +1128,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			// text is vertically positioned at its baseline which is at labelTL+FontSize
 			textEl.Y = labelTL.Y + float64(targetShape.FontSize)
 			textEl.Fill = fontColor
-			textEl.Class = fontClass
+			textEl.ClassName = fontClass
 			textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", targetShape.FontSize)
 			textEl.Content = RenderText(targetShape.Label, textEl.X, float64(targetShape.LabelHeight))
 			fmt.Fprint(writer, textEl.Render())
@@ -1186,279 +1186,264 @@ func RenderText(text string, x, height float64) string {
 	return strings.Join(rendered, "")
 }
 
-func embedFonts(buf *bytes.Buffer, fontFamily *d2fonts.FontFamily) string {
-	content := buf.String()
-	out := `<style type="text/css"><![CDATA[`
+func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily) {
+	fmt.Fprint(buf, `<style type="text/css"><![CDATA[`)
 
-	triggers := []string{
-		`class="text"`,
-		`class="text `,
-		`class="md"`,
-	}
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`class="text"`,
+			`class="text `,
+			`class="md"`,
+		},
+		fmt.Sprintf(`
+			.text {
+				font-family: "font-regular";
+			}
+			@font-face {
+				font-family: font-regular;
+				src: url("%s");
+			}`,
+			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR)],
+		),
+	)
 
-	for _, t := range triggers {
-		if strings.Contains(content, t) {
-			out += fmt.Sprintf(`
-.text {
-	font-family: "font-regular";
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`text-underline`,
+		},
+		`
+		.text-underline {
+			text-decoration: underline;
+		}`,
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`animated-connection`,
+		},
+		`
+		@keyframes dashdraw {
+			from {
+				stroke-dashoffset: 0;
+			}
+		}
+		`,
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`appendix-icon`,
+		},
+		`
+		.appendix-icon {
+			filter: drop-shadow(0px 0px 32px rgba(31, 36, 58, 0.1));
+		}`,
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`class="text-bold`,
+			`<b>`,
+			`<strong>`,
+		},
+		fmt.Sprintf(`
+			.text-bold {
+				font-family: "font-bold";
+			}
+			@font-face {
+				font-family: font-bold;
+				src: url("%s");
+			}`,
+			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_BOLD)],
+		),
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`class="text-italic`,
+			`<em>`,
+			`<dfn>`,
+		},
+		fmt.Sprintf(`
+			.text-italic {
+				font-family: "font-italic";
+			}
+			@font-face {
+				font-family: font-italic;
+				src: url("%s");
+			}`,
+			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_ITALIC)],
+		),
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`class="text-mono`,
+			`<pre>`,
+			`<code>`,
+			`<kbd>`,
+			`<samp>`,
+		},
+		fmt.Sprintf(`
+			.text-mono {
+				font-family: "font-mono";
+			}
+			@font-face {
+				font-family: font-mono;
+				src: url("%s");
+			}`,
+			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_REGULAR)],
+		),
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`class="text-mono-bold"`,
+		},
+		fmt.Sprintf(`
+			.text-mono-bold {
+				font-family: "font-mono-bold";
+			}
+			@font-face {
+				font-family: font-mono-bold;
+				src: url("%s");
+			}`,
+			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD)],
+		),
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`class="text-mono-italic"`,
+		},
+		fmt.Sprintf(`
+			.text-mono-italic {
+				font-family: "font-mono-italic";
+			}
+			@font-face {
+				font-family: font-mono-italic;
+				src: url("%s");
+			}`,
+			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC)],
+		),
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`class="text-mono-bold"`,
+		},
+		fmt.Sprintf(`
+			.text-mono-bold {
+				font-family: "font-mono-bold";
+			}
+			@font-face {
+				font-family: font-mono-bold;
+				src: url("%s");
+			}`,
+			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD)],
+		),
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`class="text-mono-italic"`,
+		},
+		fmt.Sprintf(`
+			.text-mono-italic {
+				font-family: "font-mono-italic";
+			}
+			@font-face {
+				font-family: font-mono-italic;
+				src: url("%s");
+			}`,
+			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC)],
+		),
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`sketch-overlay-bright`,
+		},
+		`
+		.sketch-overlay-bright {
+			fill: url(#streaks-bright);
+			mix-blend-mode: darken;
+		}`,
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`sketch-overlay-normal`,
+		},
+		`
+		.sketch-overlay-normal {
+			fill: url(#streaks-normal);
+			mix-blend-mode: color-burn;
+		}`,
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`sketch-overlay-dark`,
+		},
+		`
+		.sketch-overlay-dark {
+			fill: url(#streaks-dark);
+			mix-blend-mode: overlay;
+		}`,
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{
+			`sketch-overlay-darker`,
+		},
+		`
+		.sketch-overlay-darker {
+			fill: url(#streaks-darker);
+			mix-blend-mode: lighten;
+		}`,
+	)
+
+	fmt.Fprint(buf, `]]></style>`)
 }
-@font-face {
-	font-family: font-regular;
-	src: url("%s");
-}`,
-				d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR)])
+
+func appendOnTrigger(buf *bytes.Buffer, source string, triggers []string, newContent string) {
+	for _, trigger := range triggers {
+		if strings.Contains(source, trigger) {
+			fmt.Fprint(buf, newContent)
 			break
 		}
 	}
-
-	triggers = []string{
-		`text-underline`,
-	}
-
-	for _, t := range triggers {
-		if strings.Contains(content, t) {
-			out += `
-.text-underline {
-  text-decoration: underline;
-}`
-			break
-		}
-	}
-
-	triggers = []string{
-		`animated-connection`,
-	}
-
-	for _, t := range triggers {
-		if strings.Contains(content, t) {
-			out += `
-@keyframes dashdraw {
-  from {
-    stroke-dashoffset: 0;
-  }
-}
-`
-			break
-		}
-	}
-
-	triggers = []string{
-		`appendix-icon`,
-	}
-
-	for _, t := range triggers {
-		if strings.Contains(content, t) {
-			out += `
-.appendix-icon {
-	filter: drop-shadow(0px 0px 32px rgba(31, 36, 58, 0.1));
-}`
-			break
-		}
-	}
-
-	triggers = []string{
-		`class="text-bold`,
-		`<b>`,
-		`<strong>`,
-	}
-
-	for _, t := range triggers {
-		if strings.Contains(content, t) {
-			out += fmt.Sprintf(`
-.text-bold {
-	font-family: "font-bold";
-}
-@font-face {
-	font-family: font-bold;
-	src: url("%s");
-}`,
-				d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_BOLD)])
-			break
-		}
-	}
-
-	triggers = []string{
-		`class="text-italic`,
-		`<em>`,
-		`<dfn>`,
-	}
-
-	for _, t := range triggers {
-		if strings.Contains(content, t) {
-			out += fmt.Sprintf(`
-.text-italic {
-	font-family: "font-italic";
-}
-@font-face {
-	font-family: font-italic;
-	src: url("%s");
-}`,
-				d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_ITALIC)])
-			break
-		}
-	}
-
-	triggers = []string{
-		`class="text-mono`,
-		`<pre>`,
-		`<code>`,
-		`<kbd>`,
-		`<samp>`,
-	}
-
-	for _, t := range triggers {
-		if strings.Contains(content, t) {
-			out += fmt.Sprintf(`
-.text-mono {
-	font-family: "font-mono";
-}
-@font-face {
-	font-family: font-mono;
-	src: url("%s");
-}`,
-				d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_REGULAR)])
-			break
-		}
-	}
-
-	triggers = []string{
-		`class="text-mono-bold"`,
-	}
-
-	for _, t := range triggers {
-		if strings.Contains(content, t) {
-			fmt.Fprintf(buf, `
-.text-mono-bold {
-	font-family: "font-mono-bold";
-}
-@font-face {
-	font-family: font-mono-bold;
-	src: url("%s");
-}`,
-				d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD)])
-			break
-		}
-	}
-
-	triggers = []string{
-		`class="text-mono-italic"`,
-	}
-
-	for _, t := range triggers {
-		if strings.Contains(content, t) {
-			fmt.Fprintf(buf, `
-.text-mono-italic {
-	font-family: "font-mono-italic";
-}
-@font-face {
-	font-family: font-mono-italic;
-	src: url("%s");
-}`,
-				d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC)])
-			break
-		}
-	}
-
-	triggers = []string{
-		`class="text-mono-bold"`,
-	}
-
-	for _, t := range triggers {
-		if strings.Contains(content, t) {
-			fmt.Fprintf(buf, `
-.text-mono-bold {
-	font-family: "font-mono-bold";
-}
-@font-face {
-	font-family: font-mono-bold;
-	src: url("%s");
-}`,
-				d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD)])
-			break
-		}
-	}
-
-	triggers = []string{
-		`class="text-mono-italic"`,
-	}
-
-	for _, t := range triggers {
-		if strings.Contains(content, t) {
-			fmt.Fprintf(buf, `
-.text-mono-italic {
-	font-family: "font-mono-italic";
-}
-@font-face {
-	font-family: font-mono-italic;
-	src: url("%s");
-}`,
-				d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC)])
-			break
-		}
-	}
-
-	triggers = []string{
-		`sketch-overlay-bright`,
-	}
-
-	for _, t := range triggers {
-		if strings.Contains(content, t) {
-			out += `
-.sketch-overlay-bright {
-	fill: url(#streaks-bright);
-	mix-blend-mode: darken;
-}`
-			break
-		}
-	}
-
-	triggers = []string{
-		`sketch-overlay-normal`,
-	}
-
-	for _, t := range triggers {
-		if strings.Contains(content, t) {
-			out += `
-.sketch-overlay-normal {
-	fill: url(#streaks-normal);
-	mix-blend-mode: color-burn;
-}`
-			break
-		}
-	}
-
-	triggers = []string{
-		`sketch-overlay-dark`,
-	}
-
-	for _, t := range triggers {
-		if strings.Contains(content, t) {
-			out += `
-.sketch-overlay-dark {
-	fill: url(#streaks-dark);
-	mix-blend-mode: overlay;
-}`
-			break
-		}
-	}
-
-	triggers = []string{
-		`sketch-overlay-darker`,
-	}
-
-	for _, t := range triggers {
-		if strings.Contains(content, t) {
-			out += `
-.sketch-overlay-darker {
-	fill: url(#streaks-darker);
-	mix-blend-mode: lighten;
-}`
-			break
-		}
-	}
-
-	out += `]]></style>`
-	return out
 }
 
 //go:embed fitToScreen.js
@@ -1568,14 +1553,15 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	backgroundEl.Fill = color.N7
 
 	// generate elements that will be appended to the SVG tag
+	upperBuf := &bytes.Buffer{}
 	themeStylesheet, err := themeCSS(themeID, darkThemeID)
 	if err != nil {
 		return nil, err
 	}
-	svgOut := fmt.Sprintf(`<style type="text/css"><![CDATA[%s%s]]></style>`, baseStylesheet, themeStylesheet)
+	fmt.Fprintf(upperBuf, `<style type="text/css"><![CDATA[%s%s]]></style>`, baseStylesheet, themeStylesheet)
 	// this script won't run in --watch mode because script tags are ignored when added via el.innerHTML = element
 	// https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML
-	svgOut += fmt.Sprintf(`<script type="application/javascript"><![CDATA[%s]]></script>`, fitToScreenScript)
+	fmt.Fprintf(upperBuf, `<script type="application/javascript"><![CDATA[%s]]></script>`, fitToScreenScript)
 	hasMarkdown := false
 	for _, s := range diagram.Shapes {
 		if s.Label != "" && s.Type == d2target.ShapeText {
@@ -1584,17 +1570,16 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 	}
 	if hasMarkdown {
-		svgOut += fmt.Sprintf(`<style type="text/css">%s</style>`, mdCSS)
+		fmt.Fprintf(upperBuf, `<style type="text/css">%s</style>`, mdCSS)
 	}
+	embedFonts(upperBuf, buf.String(), diagram.FontFamily) // embedFonts *must* run before d2sketch.DefineFillPatterns
 	if sketchRunner != nil {
-		svgOut += d2sketch.DefineFillPatterns()
+		d2sketch.DefineFillPatterns(upperBuf)
 	}
-	svgOut += embedFonts(buf, diagram.FontFamily)
 
-	// render the document
 	docRendered := fmt.Sprintf(`<?xml version="1.0" encoding="utf-8"?><svg id="d2-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s</svg>`,
 		w, h, left, top, w, h,
-		svgOut,
+		upperBuf.String(),
 		backgroundEl.Render(),
 		buf.String(),
 	)

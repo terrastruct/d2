@@ -16,7 +16,7 @@ func classHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, tex
 	rectEl.X, rectEl.Y = box.TopLeft.X, box.TopLeft.Y
 	rectEl.Width, rectEl.Height = box.Width, box.Height
 	rectEl.Fill = shape.Fill
-	rectEl.Class = "class_header"
+	rectEl.ClassName = "class_header"
 	str := rectEl.Render()
 
 	if text != "" {
@@ -31,7 +31,7 @@ func classHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, tex
 		textEl.X = tl.X + textWidth/2
 		textEl.Y = tl.Y + textHeight*3/4
 		textEl.Fill = shape.Stroke
-		textEl.Class = "text-mono"
+		textEl.ClassName = "text-mono"
 		textEl.Style = fmt.Sprintf(`text-anchor:%s;font-size:%vpx;`,
 			"middle", 4+fontSize,
 		)
@@ -61,7 +61,7 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 	textEl.X = prefixTL.X
 	textEl.Y = prefixTL.Y + fontSize*3/4
 	textEl.Fill = shape.PrimaryAccentColor
-	textEl.Class = "text-mono"
+	textEl.ClassName = "text-mono"
 	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "start", fontSize)
 	textEl.Content = prefix
 	out := textEl.Render()

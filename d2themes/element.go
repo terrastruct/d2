@@ -40,7 +40,7 @@ type ThemableElement struct {
 	BackgroundColor string
 	Color           string
 
-	Class      string
+	ClassName  string
 	Style      string
 	Attributes string
 
@@ -82,6 +82,10 @@ func NewThemableElement(tag string) *ThemableElement {
 
 func (el *ThemableElement) SetTranslate(x, y float64) {
 	el.Transform = fmt.Sprintf("translate(%f %f)", x, y)
+}
+
+func (el *ThemableElement) SetMaskUrl(url string) {
+	el.Mask = fmt.Sprintf("url(#%s)", url)
 }
 
 func (el *ThemableElement) Render() string {
@@ -146,7 +150,7 @@ func (el *ThemableElement) Render() string {
 		out += fmt.Sprintf(` xmlns="%s"`, el.Xmlns)
 	}
 
-	class := el.Class
+	class := el.ClassName
 	style := el.Style
 
 	// Add class {property}-{theme color} if the color is from a theme, set the property otherwise
