@@ -2220,7 +2220,7 @@ a.b.c: {
 `,
 		},
 		{
-			name: "near",
+			name: "invalid-near",
 
 			text: `x: {
   near: y
@@ -2232,6 +2232,33 @@ y
 
 			exp: `x: {
   near: x.y
+  y
+}
+`,
+			expErr: `failed to move: "y" to "x.y": failed to recompile:
+x: {
+  near: x.y
+  y
+}
+
+d2/testdata/d2oracle/TestMove/invalid-near.d2:2:9: near keys cannot be set to an descendant`,
+		},
+		{
+			name: "near",
+
+			text: `x: {
+  near: y
+}
+a
+y
+`,
+			key:    `y`,
+			newKey: `a.y`,
+
+			exp: `x: {
+  near: a.y
+}
+a: {
   y
 }
 `,
