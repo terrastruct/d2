@@ -192,7 +192,7 @@ func Oval(r *Runner, shape d2target.Shape) (string, error) {
 	}
 
 	soElement := d2themes.NewThemableElement("ellipse")
-	soElement.SetTranslate(float64(shape.Pos.X+shape.Width)/2, float64(shape.Pos.Y+shape.Height)/2)
+	soElement.SetTranslate(float64(shape.Pos.X+shape.Width/2), float64(shape.Pos.Y+shape.Height/2))
 	soElement.Rx = float64(shape.Width / 2)
 	soElement.Ry = float64(shape.Height / 2)
 	renderedSO, err := d2themes.NewThemableSketchOverlay(
