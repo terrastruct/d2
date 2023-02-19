@@ -6,6 +6,7 @@
 #### Improvements 🧹
 
 - Cleaner watch mode logs without timestamps. [830](https://github.com/terrastruct/d2/pull/830)
+- `near` key set to direct parent or ancestor throws an appropriate error message. [#851](https://github.com/terrastruct/d2/pull/851)
 
 #### Bugfixes ⛑️
 
