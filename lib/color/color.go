@@ -112,13 +112,13 @@ func Luminance(colorString string) (float64, error) {
 }
 
 const (
-	N1 = "N1"
+	N1 = "N1" // foreground color
 	N2 = "N2"
 	N3 = "N3"
 	N4 = "N4"
 	N5 = "N5"
 	N6 = "N6"
-	N7 = "N7"
+	N7 = "N7" // background color
 
 	// Base Colors: used for containers
 	B1 = "B1"

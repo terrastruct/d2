@@ -42,6 +42,9 @@ const (
 	MIN_ARROWHEAD_STROKE_WIDTH = 2
 
 	appendixIconRadius = 16
+
+	BG_COLOR = color.N7
+	FG_COLOR = color.N1
 )
 
 var multipleOffset = geo.NewVector(d2target.MULTIPLE_OFFSET, -d2target.MULTIPLE_OFFSET)
@@ -119,7 +122,7 @@ func arrowheadDimensions(arrowhead d2target.Arrowhead, strokeWidth float64) (wid
 	return clippedStrokeWidth * widthMultiplier, clippedStrokeWidth * heightMultiplier
 }
 
-func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2target.Connection) string {
+func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) string {
 	arrowhead := connection.DstArrow
 	if !isTarget {
 		arrowhead = connection.SrcArrow
@@ -217,7 +220,7 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 	case d2target.DiamondArrowhead:
 		polygonEl := d2themes.NewThemableElement("polygon")
 		polygonEl.ClassName = "connection"
-		polygonEl.Fill = bgColor
+		polygonEl.Fill = BG_COLOR
 		polygonEl.Stroke = connection.Stroke
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
@@ -260,7 +263,7 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 		circleEl := d2themes.NewThemableElement("circle")
 		circleEl.Cy = radius
 		circleEl.R = radius - strokeWidth
-		circleEl.Fill = bgColor
+		circleEl.Fill = BG_COLOR
 		circleEl.Stroke = connection.Stroke
 		circleEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
@@ -281,7 +284,7 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 				offset, 0.,
 				offset, height,
 			)
-			modifierEl.Fill = bgColor
+			modifierEl.Fill = BG_COLOR
 			modifierEl.Stroke = connection.Stroke
 			modifierEl.ClassName = "connection"
 			modifierEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
@@ -290,7 +293,7 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 			modifierEl.Cx = offset/2.0 + 2.0
 			modifierEl.Cy = height / 2.0
 			modifierEl.R = offset / 2.0
-			modifierEl.Fill = bgColor
+			modifierEl.Fill = BG_COLOR
 			modifierEl.Stroke = connection.Stroke
 			modifierEl.ClassName = "connection"
 			modifierEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
@@ -319,7 +322,7 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 		if !isTarget {
 			gEl.Transform = fmt.Sprintf("scale(-1) translate(-%f, -%f)", width, height)
 		}
-		gEl.Fill = bgColor
+		gEl.Fill = BG_COLOR
 		gEl.Stroke = connection.Stroke
 		gEl.ClassName = "connection"
 		gEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
@@ -475,7 +478,7 @@ func makeLabelMask(labelTL *geo.Point, width, height int) string {
 	)
 }
 
-func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, _ error) {
+func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Connection, markers map[string]struct{}, idToShape map[string]d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, _ error) {
 	opacityStyle := ""
 	if connection.Opacity != 1.0 {
 		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
@@ -485,7 +488,7 @@ func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskI
 	if connection.SrcArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(false, connection)
 		if _, in := markers[id]; !in {
-			marker := arrowheadMarker(false, id, bgColor, connection)
+			marker := arrowheadMarker(false, id, connection)
 			if marker == "" {
 				panic(fmt.Sprintf("received empty arrow head marker for: %#v", connection))
 			}
@@ -499,7 +502,7 @@ func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskI
 	if connection.DstArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(true, connection)
 		if _, in := markers[id]; !in {
-			marker := arrowheadMarker(true, id, bgColor, connection)
+			marker := arrowheadMarker(true, id, connection)
 			if marker == "" {
 				panic(fmt.Sprintf("received empty arrow head marker for: %#v", connection))
 			}
@@ -531,7 +534,7 @@ func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskI
 		fmt.Fprint(writer, out)
 
 		// render sketch arrowheads separately
-		arrowPaths, err := d2sketch.Arrowheads(sketchRunner, bgColor, connection, srcAdj, dstAdj)
+		arrowPaths, err := d2sketch.Arrowheads(sketchRunner, connection, srcAdj, dstAdj)
 		if err != nil {
 			return "", err
 		}
@@ -590,7 +593,7 @@ func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskI
 		if length > 0 {
 			position = size / length
 		}
-		fmt.Fprint(writer, renderArrowheadLabel(fgColor, connection, connection.SrcLabel, position, size, size))
+		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.SrcLabel, position, size, size))
 	}
 	if connection.DstLabel != "" {
 		// TODO use arrowhead label dimensions https://github.com/terrastruct/d2/issues/183
@@ -599,19 +602,19 @@ func drawConnection(writer io.Writer, bgColor string, fgColor string, labelMaskI
 		if length > 0 {
 			position -= size / length
 		}
-		fmt.Fprint(writer, renderArrowheadLabel(fgColor, connection, connection.DstLabel, position, size, size))
+		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.DstLabel, position, size, size))
 	}
 	fmt.Fprintf(writer, `</g>`)
 	return
 }
 
-func renderArrowheadLabel(fgColor string, connection d2target.Connection, text string, position, width, height float64) string {
+func renderArrowheadLabel(connection d2target.Connection, text string, position, width, height float64) string {
 	labelTL := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, width, height)
 
 	textEl := d2themes.NewThemableElement("text")
 	textEl.X = labelTL.X + width/2
 	textEl.Y = labelTL.Y + float64(connection.FontSize)
-	textEl.Fill = fgColor
+	textEl.Fill = FG_COLOR
 	textEl.ClassName = "text-italic"
 	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", connection.FontSize)
 	textEl.Content = RenderText(text, textEl.X, height)
@@ -1449,12 +1452,7 @@ func appendOnTrigger(buf *bytes.Buffer, source string, triggers []string, newCon
 //go:embed fitToScreen.js
 var fitToScreenScript string
 
-const (
-	BG_COLOR = color.N7
-	FG_COLOR = color.N1
-
-	DEFAULT_THEME int64 = 0
-)
+const DEFAULT_THEME int64 = 0
 
 var DEFAULT_DARK_THEME *int64 = nil // no theme selected
 
@@ -1512,7 +1510,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	markers := map[string]struct{}{}
 	for _, obj := range allObjects {
 		if c, is := obj.(d2target.Connection); is {
-			labelMask, err := drawConnection(buf, BG_COLOR, FG_COLOR, labelMaskID, c, markers, idToShape, sketchRunner)
+			labelMask, err := drawConnection(buf, labelMaskID, c, markers, idToShape, sketchRunner)
 			if err != nil {
 				return nil, err
 			}
@@ -1551,7 +1549,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	backgroundEl.Y = float64(top)
 	backgroundEl.Width = float64(w)
 	backgroundEl.Height = float64(h)
-	backgroundEl.Fill = color.N7
+	backgroundEl.Fill = BG_COLOR
 
 	// generate elements that will be appended to the SVG tag
 	upperBuf := &bytes.Buffer{}
