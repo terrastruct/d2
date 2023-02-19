@@ -22,9 +22,8 @@ func main() {
 	_ = d2dagrelayout.Layout(context.Background(), graph, nil)
 	diagram, _ := d2exporter.Export(context.Background(), graph, nil)
 	out, _ := d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad:         d2svg.DEFAULT_PADDING,
-		ThemeID:     d2themescatalog.NeutralDefault.ID,
-		DarkThemeID: -1, // Without dark theme
+		Pad:     d2svg.DEFAULT_PADDING,
+		ThemeID: d2themescatalog.NeutralDefault.ID,
 	})
 	_ = ioutil.WriteFile(filepath.Join("out.svg"), out, 0600)
 }

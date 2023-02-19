@@ -41,7 +41,7 @@ var staticFS embed.FS
 type watcherOpts struct {
 	layoutPlugin  d2plugin.Plugin
 	themeID       int64
-	darkThemeID   int64
+	darkThemeID   *int64
 	pad           int64
 	sketch        bool
 	host          string

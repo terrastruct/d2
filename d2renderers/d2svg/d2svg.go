@@ -62,7 +62,7 @@ type RenderOpts struct {
 	Pad         int
 	Sketch      bool
 	ThemeID     int64
-	DarkThemeID int64
+	DarkThemeID *int64
 }
 
 func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height int) {
@@ -1453,9 +1453,10 @@ const (
 	BG_COLOR = color.N7
 	FG_COLOR = color.N1
 
-	DEFAULT_THEME      int64 = 0
-	DEFAULT_DARK_THEME int64 = -1 // no theme selected
+	DEFAULT_THEME int64 = 0
 )
+
+var DEFAULT_DARK_THEME *int64 = nil // no theme selected
 
 // TODO minify output at end
 func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
@@ -1587,14 +1588,14 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 }
 
 // TODO include only colors that are being used to reduce size
-func themeCSS(themeID, darkThemeID int64) (stylesheet string, err error) {
+func themeCSS(themeID int64, darkThemeID *int64) (stylesheet string, err error) {
 	out, err := singleThemeRulesets(themeID)
 	if err != nil {
 		return "", err
 	}
 
-	if darkThemeID != -1 {
-		darkOut, err := singleThemeRulesets(darkThemeID)
+	if darkThemeID != nil {
+		darkOut, err := singleThemeRulesets(*darkThemeID)
 		if err != nil {
 			return "", err
 		}

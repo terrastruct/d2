@@ -422,9 +422,8 @@ func run(t *testing.T, tc testCase) {
 	pathGotSVG := filepath.Join(dataPath, "dark_theme.got.svg")
 
 	svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad:         d2svg.DEFAULT_PADDING,
-		ThemeID:     200,
-		DarkThemeID: -1,
+		Pad:     d2svg.DEFAULT_PADDING,
+		ThemeID: 200,
 	})
 	assert.Success(t, err)
 	err = os.MkdirAll(dataPath, 0755)

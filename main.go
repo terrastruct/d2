@@ -161,7 +161,10 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	ms.Log.Debug.Printf("using theme %s (ID: %d)", match.Name, *themeFlag)
 
-	if *darkThemeFlag != -1 {
+	if *darkThemeFlag == -1 {
+		darkThemeFlag = nil // TODO this is a temporary solution: https://github.com/terrastruct/util-go/issues/7
+	}
+	if darkThemeFlag != nil {
 		match = d2themescatalog.Find(*darkThemeFlag)
 		if match == (d2themes.Theme{}) {
 			return xmain.UsageErrorf("--dark-theme could not be found. The available options are:\n%s\nYou provided: %d", d2themescatalog.CLIString(), *darkThemeFlag)
@@ -194,9 +197,9 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 
 	var pw png.Playwright
 	if filepath.Ext(outputPath) == ".png" {
-		if *darkThemeFlag != -1 {
+		if darkThemeFlag != nil {
 			ms.Log.Warn.Printf("--dark-theme cannot be used while exporting to another format other than .svg")
-			*darkThemeFlag = -1
+			darkThemeFlag = nil
 		}
 		pw, err = png.InitPlaywright()
 		if err != nil {
@@ -218,7 +221,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 			layoutPlugin:  plugin,
 			sketch:        *sketchFlag,
 			themeID:       *themeFlag,
-			darkThemeID:   *darkThemeFlag,
+			darkThemeID:   darkThemeFlag,
 			pad:           *padFlag,
 			host:          *hostFlag,
 			port:          *portFlag,
@@ -237,7 +240,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	_, written, err := compile(ctx, ms, plugin, *sketchFlag, *padFlag, *themeFlag, *darkThemeFlag, inputPath, outputPath, *bundleFlag, *forceAppendixFlag, pw.Page)
+	_, written, err := compile(ctx, ms, plugin, *sketchFlag, *padFlag, *themeFlag, darkThemeFlag, inputPath, outputPath, *bundleFlag, *forceAppendixFlag, pw.Page)
 	if err != nil {
 		if written {
 			return fmt.Errorf("failed to fully compile (partial render written): %w", err)
@@ -247,7 +250,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad, themeID, darkThemeID int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page) (_ []byte, written bool, _ error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad, themeID int64, darkThemeID *int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page) (_ []byte, written bool, _ error) {
 	start := time.Now()
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
@@ -280,7 +283,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	return svg, true, nil
 }
 
-func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, sketch bool, pad int64, themeID, darkThemeID int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
+func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, sketch bool, pad int64, themeID int64, darkThemeID *int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
 	outputPath = layerOutputPath(outputPath, diagram)
 	for _, dl := range diagram.Layers {
 		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
@@ -310,7 +313,7 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 	return svg, nil
 }
 
-func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, themeID, darkThemeID int64, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
+func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, themeID int64, darkThemeID *int64, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
 		Pad:         int(pad),
 		Sketch:      sketch,

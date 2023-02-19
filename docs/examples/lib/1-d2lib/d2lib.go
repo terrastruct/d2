@@ -24,9 +24,8 @@ func main() {
 		Ruler:  ruler,
 	})
 	out, _ := d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad:         d2svg.DEFAULT_PADDING,
-		ThemeID:     d2themescatalog.GrapeSoda.ID,
-		DarkThemeID: -1,
+		Pad:     d2svg.DEFAULT_PADDING,
+		ThemeID: d2themescatalog.GrapeSoda.ID,
 	})
 	_ = ioutil.WriteFile(filepath.Join("out.svg"), out, 0600)
 }
