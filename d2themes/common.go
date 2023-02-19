@@ -1,4 +1,4 @@
-package style
+package d2themes
 
 import (
 	"oss.terrastruct.com/d2/d2target"

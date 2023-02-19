@@ -1,4 +1,4 @@
-package style
+package d2themes
 
 import (
 	"fmt"
@@ -78,6 +78,10 @@ func NewThemableElement(tag string) *ThemableElement {
 		"",
 		"",
 	}
+}
+
+func (el *ThemableElement) SetTranslate(x, y float64) {
+	el.Transform = fmt.Sprintf("translate(%f %f)", x, y)
 }
 
 func (el *ThemableElement) Render() string {

@@ -11,11 +11,11 @@ import (
 	"github.com/dop251/goja"
 
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/svg"
-	svgstyle "oss.terrastruct.com/d2/lib/svg/style"
 	"oss.terrastruct.com/util-go/go2"
 )
 
@@ -83,9 +83,9 @@ func Rect(r *Runner, shape d2target.Shape) (string, error) {
 		return "", err
 	}
 	output := ""
-	pathEl := svgstyle.NewThemableElement("path")
-	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
-	pathEl.Fill, pathEl.Stroke = svgstyle.ShapeTheme(shape)
+	pathEl := d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.Class = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range paths {
@@ -93,11 +93,11 @@ func Rect(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	sketchOEl := svgstyle.NewThemableElement("rect")
-	sketchOEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
+	sketchOEl := d2themes.NewThemableElement("rect")
+	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	sketchOEl.Width = float64(shape.Width)
 	sketchOEl.Height = float64(shape.Height)
-	renderedSO, err := svgstyle.NewThemableSketchOverlay(sketchOEl, pathEl.Fill).Render()
+	renderedSO, err := d2themes.NewThemableSketchOverlay(sketchOEl, pathEl.Fill).Render()
 	if err != nil {
 		return "", err
 	}
@@ -130,9 +130,9 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 
 	output := ""
 
-	pathEl := svgstyle.NewThemableElement("path")
-	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
-	pathEl.Fill, pathEl.Stroke = svgstyle.ShapeTheme(shape)
+	pathEl := d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.Class = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range pathsBigRect {
@@ -140,9 +140,9 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	pathEl = svgstyle.NewThemableElement("path")
-	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X+d2target.INNER_BORDER_OFFSET, shape.Pos.Y+d2target.INNER_BORDER_OFFSET)
-	pathEl.Fill, pathEl.Stroke = svgstyle.ShapeTheme(shape)
+	pathEl = d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X+d2target.INNER_BORDER_OFFSET), float64(shape.Pos.Y+d2target.INNER_BORDER_OFFSET))
+	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.Class = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range pathsSmallRect {
@@ -169,9 +169,9 @@ func Oval(r *Runner, shape d2target.Shape) (string, error) {
 		return "", err
 	}
 	output := ""
-	pathEl := svgstyle.NewThemableElement("path")
-	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
-	pathEl.Fill, pathEl.Stroke = svgstyle.ShapeTheme(shape)
+	pathEl := d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.Class = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range paths {
@@ -179,11 +179,11 @@ func Oval(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	soElement := svgstyle.NewThemableElement("ellipse")
-	soElement.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X+shape.Width/2, shape.Pos.Y+shape.Height/2)
+	soElement := d2themes.NewThemableElement("ellipse")
+	soElement.SetTranslate(float64(shape.Pos.X+shape.Width)/2, float64(shape.Pos.Y+shape.Height)/2)
 	soElement.Rx = float64(shape.Width / 2)
 	soElement.Ry = float64(shape.Height / 2)
-	renderedSO, err := svgstyle.NewThemableSketchOverlay(
+	renderedSO, err := d2themes.NewThemableSketchOverlay(
 		soElement,
 		pathEl.Fill,
 	).Render()
@@ -219,9 +219,9 @@ func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
 
 	output := ""
 
-	pathEl := svgstyle.NewThemableElement("path")
-	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
-	pathEl.Fill, pathEl.Stroke = svgstyle.ShapeTheme(shape)
+	pathEl := d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.Class = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range pathsBigCircle {
@@ -229,9 +229,9 @@ func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	pathEl = svgstyle.NewThemableElement("path")
-	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
-	pathEl.Fill, pathEl.Stroke = svgstyle.ShapeTheme(shape)
+	pathEl = d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.Class = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range pathsSmallCircle {
@@ -260,8 +260,8 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		pathEl := svgstyle.NewThemableElement("path")
-		pathEl.Fill, pathEl.Stroke = svgstyle.ShapeTheme(shape)
+		pathEl := d2themes.NewThemableElement("path")
+		pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 		pathEl.Class = "shape"
 		pathEl.Style = shape.CSSStyle()
 		for _, p := range sketchPaths {
@@ -269,10 +269,10 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 			output += pathEl.Render()
 		}
 
-		soElement := svgstyle.NewThemableElement("path")
+		soElement := d2themes.NewThemableElement("path")
 		for _, p := range sketchPaths {
 			soElement.D = p
-			renderedSO, err := svgstyle.NewThemableSketchOverlay(
+			renderedSO, err := d2themes.NewThemableSketchOverlay(
 				soElement,
 				pathEl.Fill,
 			).Render()
@@ -298,9 +298,9 @@ func Connection(r *Runner, connection d2target.Connection, path, attrs string) (
 		animatedClass = " animated-connection"
 	}
 
-	pathEl := svgstyle.NewThemableElement("path")
+	pathEl := d2themes.NewThemableElement("path")
 	pathEl.Fill = color.None
-	pathEl.Stroke = svgstyle.ConnectionTheme(connection)
+	pathEl.Stroke = d2themes.ConnectionTheme(connection)
 	pathEl.Class = fmt.Sprintf("connection%s", animatedClass)
 	pathEl.Style = connection.CSSStyle()
 	pathEl.Attributes = attrs
@@ -324,9 +324,9 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	pathEl := svgstyle.NewThemableElement("path")
-	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
-	pathEl.Fill, pathEl.Stroke = svgstyle.ShapeTheme(shape)
+	pathEl := d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.Class = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range paths {
@@ -350,8 +350,8 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	pathEl = svgstyle.NewThemableElement("path")
-	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
+	pathEl = d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill = shape.Fill
 	pathEl.Class = "class_header"
 	for _, p := range paths {
@@ -367,7 +367,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.LabelHeight),
 		)
 
-		textEl := svgstyle.NewThemableElement("text")
+		textEl := d2themes.NewThemableElement("text")
 		textEl.X = tl.X
 		textEl.Y = tl.Y + float64(shape.LabelHeight)*3/4
 		textEl.Fill = shape.Stroke
@@ -400,7 +400,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.FontSize),
 		)
 
-		textEl := svgstyle.NewThemableElement("text")
+		textEl := d2themes.NewThemableElement("text")
 		textEl.X = nameTL.X
 		textEl.Y = nameTL.Y + float64(shape.FontSize)*3/4
 		textEl.Fill = shape.PrimaryAccentColor
@@ -430,7 +430,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		pathEl := svgstyle.NewThemableElement("path")
+		pathEl := d2themes.NewThemableElement("path")
 		pathEl.Fill = shape.Fill
 		for _, p := range paths {
 			pathEl.D = p
@@ -438,11 +438,11 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 		}
 	}
 
-	sketchOEl := svgstyle.NewThemableElement("rect")
-	sketchOEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
+	sketchOEl := d2themes.NewThemableElement("rect")
+	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	sketchOEl.Width = float64(shape.Width)
 	sketchOEl.Height = float64(shape.Height)
-	renderedSO, err := svgstyle.NewThemableSketchOverlay(sketchOEl, pathEl.Fill).Render()
+	renderedSO, err := d2themes.NewThemableSketchOverlay(sketchOEl, pathEl.Fill).Render()
 	if err != nil {
 		return "", err
 	}
@@ -463,9 +463,9 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	pathEl := svgstyle.NewThemableElement("path")
-	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
-	pathEl.Fill, pathEl.Stroke = svgstyle.ShapeTheme(shape)
+	pathEl := d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
 	pathEl.Class = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range paths {
@@ -490,8 +490,8 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	pathEl = svgstyle.NewThemableElement("path")
-	pathEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
+	pathEl = d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill = shape.Fill
 	pathEl.Class = "class_header"
 	for _, p := range paths {
@@ -499,11 +499,11 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	sketchOEl := svgstyle.NewThemableElement("rect")
-	sketchOEl.Transform = fmt.Sprintf("translate(%d %d)", shape.Pos.X, shape.Pos.Y)
+	sketchOEl := d2themes.NewThemableElement("rect")
+	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	sketchOEl.Width = float64(shape.Width)
 	sketchOEl.Height = headerBox.Height
-	renderedSO, err := svgstyle.NewThemableSketchOverlay(sketchOEl, pathEl.Fill).Render()
+	renderedSO, err := d2themes.NewThemableSketchOverlay(sketchOEl, pathEl.Fill).Render()
 	if err != nil {
 		return "", err
 	}
@@ -517,7 +517,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.LabelHeight),
 		)
 
-		textEl := svgstyle.NewThemableElement("text")
+		textEl := d2themes.NewThemableElement("text")
 		textEl.X = tl.X + float64(shape.LabelWidth)/2
 		textEl.Y = tl.Y + float64(shape.LabelHeight)*3/4
 		textEl.Fill = shape.Stroke
@@ -544,7 +544,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	pathEl = svgstyle.NewThemableElement("path")
+	pathEl = d2themes.NewThemableElement("path")
 	pathEl.Fill = shape.Fill
 	pathEl.Class = "class_header"
 	for _, p := range paths {
@@ -575,7 +575,7 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 		fontSize,
 	)
 
-	textEl := svgstyle.NewThemableElement("text")
+	textEl := d2themes.NewThemableElement("text")
 	textEl.X = prefixTL.X
 	textEl.Y = prefixTL.Y + fontSize*3/4
 	textEl.Fill = shape.PrimaryAccentColor
@@ -786,7 +786,7 @@ func Arrowheads(r *Runner, bgColor string, connection d2target.Connection, srcAd
 			roughPaths = append(roughPaths, extraPaths...)
 		}
 
-		pathEl := svgstyle.NewThemableElement("path")
+		pathEl := d2themes.NewThemableElement("path")
 		pathEl.Class = "connection"
 		pathEl.Attributes = transform
 		for _, rp := range roughPaths {
@@ -825,7 +825,7 @@ func Arrowheads(r *Runner, bgColor string, connection d2target.Connection, srcAd
 			roughPaths = append(roughPaths, extraPaths...)
 		}
 
-		pathEl := svgstyle.NewThemableElement("path")
+		pathEl := d2themes.NewThemableElement("path")
 		pathEl.Class = "connection"
 		pathEl.Attributes = transform
 		for _, rp := range roughPaths {

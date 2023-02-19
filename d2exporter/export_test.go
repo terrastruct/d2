@@ -18,16 +18,14 @@ import (
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
 type testCase struct {
-	name    string
-	dsl     string
-	themeID int64
+	name string
+	dsl  string
 
 	assertions func(t *testing.T, d *d2target.Diagram)
 }
@@ -132,8 +130,7 @@ func testConnection(t *testing.T) {
 		{
 			// This is a regression test where a connection with stroke-dash of 0 on terrastruct flagship theme would have a diff color
 			// than a connection without stroke dash
-			themeID: d2themescatalog.FlagshipTerrastruct.ID,
-			name:    "theme_stroke-dash",
+			name: "theme_stroke-dash",
 			dsl: `x -> y: { style.stroke-dash: 0 }
 x -> y
 `,
@@ -168,16 +165,14 @@ func testLabel(t *testing.T) {
 func testTheme(t *testing.T) {
 	tcs := []testCase{
 		{
-			name:    "shape_without_bold",
-			themeID: d2themescatalog.FlagshipTerrastruct.ID,
+			name: "shape_without_bold",
 			dsl: `x: {
 	style.bold: false
 }
 `,
 		},
 		{
-			name:    "shape_with_italic",
-			themeID: d2themescatalog.FlagshipTerrastruct.ID,
+			name: "shape_with_italic",
 			dsl: `x: {
 	style.italic: true
 }
@@ -187,7 +182,6 @@ func testTheme(t *testing.T) {
 			name: "connection_without_italic",
 			dsl: `x -> y: asdf { style.italic: false }
 `,
-			themeID: d2themescatalog.FlagshipTerrastruct.ID,
 		},
 		{
 			name: "connection_with_italic",
@@ -195,7 +189,6 @@ func testTheme(t *testing.T) {
   style.italic: true
 }
 `,
-			themeID: d2themescatalog.FlagshipTerrastruct.ID,
 		},
 		{
 			name: "connection_with_bold",
@@ -203,7 +196,6 @@ func testTheme(t *testing.T) {
   style.bold: true
 }
 `,
-			themeID: d2themescatalog.FlagshipTerrastruct.ID,
 		},
 	}
 
