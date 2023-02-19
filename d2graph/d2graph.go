@@ -1433,19 +1433,19 @@ var ReservedKeywords2 map[string]struct{}
 
 // Non Style/Holder keywords.
 var SimpleReservedKeywords = map[string]struct{}{
-	"label":      {},
-	"desc":       {},
-	"shape":      {},
-	"icon":       {},
-	"constraint": {},
-	"tooltip":    {},
-	"link":       {},
-	"near":       {},
-	"width":      {},
-	"height":     {},
-	"direction":  {},
-	"top":        {},
-	"left":       {},
+	"label":         {},
+	"desc":          {},
+	"shape":         {},
+	"icon":          {},
+	"constraint":    {},
+	"tooltip":       {},
+	"link":          {},
+	"near":          {},
+	"width":         {},
+	"height":        {},
+	"direction":     {},
+	"position-top":  {},
+	"position-left": {},
 }
 
 // ReservedKeywordHolders are reserved keywords that are meaningless on its own and exist solely to hold a set of reserved keywords
