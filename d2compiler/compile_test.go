@@ -116,8 +116,8 @@ x: {
 		{
 			name: "positions",
 			text: `hey: {
-	pos-top: 200
-	pos-left: 230
+	top: 200
+	left: 230
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
