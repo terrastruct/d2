@@ -1107,7 +1107,6 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			render = strings.ReplaceAll(render, "<hr>", "<hr />")
 
 			mdEl := d2themes.NewThemableElement("div")
-			mdEl.Xmlns = "http://www.w3.org/1999/xhtml"
 			mdEl.ClassName = "md"
 			mdEl.Content = render
 			fmt.Fprint(writer, mdEl.Render())
@@ -1456,7 +1455,6 @@ const DEFAULT_THEME int64 = 0
 
 var DEFAULT_DARK_THEME *int64 = nil // no theme selected
 
-// TODO minify output at end
 func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	var sketchRunner *d2sketch.Runner
 	pad := DEFAULT_PADDING
@@ -1542,17 +1540,9 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		`</mask>`,
 	}, "\n"))
 
-	// TODO minify
-	// TODO background stuff. e.g. dotted, grid, colors
-	backgroundEl := d2themes.NewThemableElement("rect")
-	backgroundEl.X = float64(left)
-	backgroundEl.Y = float64(top)
-	backgroundEl.Width = float64(w)
-	backgroundEl.Height = float64(h)
-	backgroundEl.Fill = BG_COLOR
-
-	// generate elements that will be appended to the SVG tag
+	// generate style elements that will be appended to the SVG tag
 	upperBuf := &bytes.Buffer{}
+	embedFonts(upperBuf, buf.String(), diagram.FontFamily) // embedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
 	themeStylesheet, err := themeCSS(themeID, darkThemeID)
 	if err != nil {
 		return nil, err
@@ -1571,11 +1561,19 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	if hasMarkdown {
 		fmt.Fprintf(upperBuf, `<style type="text/css">%s</style>`, mdCSS)
 	}
-	embedFonts(upperBuf, buf.String(), diagram.FontFamily) // embedFonts *must* run before d2sketch.DefineFillPatterns
 	if sketchRunner != nil {
 		d2sketch.DefineFillPatterns(upperBuf)
 	}
 
+	// TODO background stuff. e.g. dotted, grid, colors
+	backgroundEl := d2themes.NewThemableElement("rect")
+	backgroundEl.X = float64(left)
+	backgroundEl.Y = float64(top)
+	backgroundEl.Width = float64(w)
+	backgroundEl.Height = float64(h)
+	backgroundEl.Fill = BG_COLOR
+
+	// TODO minify
 	docRendered := fmt.Sprintf(`<?xml version="1.0" encoding="utf-8"?><svg id="d2-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s</svg>`,
 		w, h, left, top, w, h,
 		upperBuf.String(),

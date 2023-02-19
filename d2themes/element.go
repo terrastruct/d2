@@ -48,6 +48,11 @@ type ThemableElement struct {
 }
 
 func NewThemableElement(tag string) *ThemableElement {
+	xmlns := ""
+	if tag == "div" {
+		xmlns = "http://www.w3.org/1999/xhtml"
+	}
+
 	return &ThemableElement{
 		tag,
 		math.MaxFloat64,
@@ -68,7 +73,7 @@ func NewThemableElement(tag string) *ThemableElement {
 		"",
 		"",
 		"",
-		"",
+		xmlns,
 		color.Empty,
 		color.Empty,
 		color.Empty,
