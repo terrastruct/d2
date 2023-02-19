@@ -1,11 +1,13 @@
 #### Features 🚀
 
 - Many non-Latin languages (e.g. Chinese, Japanese, Korean) are usable now that multi-byte characters are measured correctly. [#817](https://github.com/terrastruct/d2/pull/817)
-- Fix duplicate success logs in watch mode. [830](https://github.com/terrastruct/d2/pull/830)
+- Dimensions can be set on containers (layout engine dependent). [#845](https://github.com/terrastruct/d2/pull/845)
 
 #### Improvements 🧹
 
-- Cleaner watch mode logs without timestamps. [830](https://github.com/terrastruct/d2/pull/830)
+- Cleaner watch mode logs without timestamps. [#830](https://github.com/terrastruct/d2/pull/830)
+- Remove duplicate success logs in watch mode. [#830](https://github.com/terrastruct/d2/pull/830)
+- CLI reports when a feature is incompatible with layout engine, instead of silently ignoring. [#845](https://github.com/terrastruct/d2/pull/845)
 
 #### Bugfixes ⛑️
 
