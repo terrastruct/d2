@@ -285,19 +285,19 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Height = &d2graph.Scalar{}
 		attrs.Height.Value = scalar.ScalarString()
 		attrs.Height.MapKey = f.LastPrimaryKey()
-	case "position-top":
+	case "pos-top":
 		_, err := strconv.Atoi(scalar.ScalarString())
 		if err != nil {
-			c.errorf(scalar, "non-integer position-top %#v: %s", scalar.ScalarString(), err)
+			c.errorf(scalar, "non-integer pos-top %#v: %s", scalar.ScalarString(), err)
 			return
 		}
 		attrs.Top = &d2graph.Scalar{}
 		attrs.Top.Value = scalar.ScalarString()
 		attrs.Top.MapKey = f.LastPrimaryKey()
-	case "position-left":
+	case "pos-left":
 		_, err := strconv.Atoi(scalar.ScalarString())
 		if err != nil {
-			c.errorf(scalar, "non-integer position-left %#v: %s", scalar.ScalarString(), err)
+			c.errorf(scalar, "non-integer pos-left %#v: %s", scalar.ScalarString(), err)
 			return
 		}
 		attrs.Left = &d2graph.Scalar{}
