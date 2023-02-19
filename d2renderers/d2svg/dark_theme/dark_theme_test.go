@@ -63,8 +63,8 @@ func TestDarkTheme(t *testing.T) {
 }
 People discovery: "People discovery \nservice"
 admixer: Ad mixer {
-  fill: "#cba6f7"
-  font-color: "#000000"
+  style.fill: "#cba6f7"
+  style.font-color: "#000000"
 }
 
 onboarding service: "Onboarding \nservice"
@@ -108,8 +108,8 @@ Android: {
 
 web -> twitter fe
 timeline scorer: "Timeline\nScorer" {
-  fill: "#fab387"
-  font-color: "#000000"
+  style.fill: "#fab387"
+  style.font-color: "#000000"
 }
 home ranker: Home Ranker
 
@@ -121,7 +121,7 @@ timeline mixer -> home ranker: {
 }
 timeline mixer -> timeline service
 home mixer: Home mixer {
-  # fill: "#c1a2f3"
+  # style.fill: "#c1a2f3"
 }
 container0.graphql -> home mixer: {
   style.stroke-dash: 4
@@ -148,8 +148,8 @@ prediction service2: Prediction Service {
   icon: https://cdn-icons-png.flaticon.com/512/6461/6461819.png
 }
 home scorer: Home Scorer {
-  fill: "#eba0ac"
-  font-color: "#000000"
+  style.fill: "#eba0ac"
+  style.font-color: "#000000"
 }
 manhattan: Manhattan
 memcache: Memcache {
@@ -157,15 +157,15 @@ memcache: Memcache {
 }
 
 fetch: Fetch {
-  multiple: true
+  style.multiple: true
   shape: step
 }
 feature: Feature {
-  multiple: true
+  style.multiple: true
   shape: step
 }
 scoring: Scoring {
-  multiple: true
+  style.multiple: true
   shape: step
 }
 fetch -> feature

@@ -7,7 +7,7 @@
       "type": "text",
       "pos": {
         "x": 12,
-        "y": 175
+        "y": 143
       },
       "width": 382,
       "height": 101,
@@ -47,7 +47,7 @@
       "type": "text",
       "pos": {
         "x": 414,
-        "y": 217
+        "y": 184
       },
       "width": 65,
       "height": 18,
@@ -124,13 +124,13 @@
     },
     {
       "id": "c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 339,
-        "y": 389
+        "x": 369,
+        "y": 324
       },
-      "width": 214,
-      "height": 126,
+      "width": 154,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -157,21 +157,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 114,
-      "labelHeight": 26,
+      "labelWidth": 109,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "sugar",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 499,
-        "y": 163
+        "y": 178
       },
-      "width": 146,
-      "height": 126,
+      "width": 86,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -198,21 +198,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 46,
-      "labelHeight": 26,
+      "labelWidth": 41,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "solution",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 364,
-        "y": 736
+        "x": 394,
+        "y": 551
       },
-      "width": 164,
-      "height": 126,
+      "width": 104,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -239,8 +239,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 64,
-      "labelHeight": 26,
+      "labelWidth": 59,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -278,7 +278,7 @@
         },
         {
           "x": 203,
-          "y": 175.5
+          "y": 143
         }
       ],
       "animated": false,
@@ -317,15 +317,15 @@
         },
         {
           "x": 262.6666666666667,
-          "y": 113
+          "y": 103
         },
         {
           "x": 446.5,
-          "y": 113
+          "y": 103
         },
         {
           "x": 446.5,
-          "y": 217
+          "y": 184.5
         }
       ],
       "animated": false,
@@ -360,19 +360,19 @@
       "route": [
         {
           "x": 203,
-          "y": 276.5
+          "y": 244
         },
         {
           "x": 203,
-          "y": 339
+          "y": 284
         },
         {
-          "x": 393,
-          "y": 339
+          "x": 408,
+          "y": 284
         },
         {
-          "x": 393,
-          "y": 389
+          "x": 408,
+          "y": 324
         }
       ],
       "animated": false,
@@ -407,11 +407,11 @@
       "route": [
         {
           "x": 446.5,
-          "y": 235
+          "y": 202.5
         },
         {
           "x": 446.5,
-          "y": 389
+          "y": 324
         }
       ],
       "animated": false,
@@ -445,20 +445,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 572,
-          "y": 289
+          "x": 542,
+          "y": 244
         },
         {
-          "x": 572,
-          "y": 339
+          "x": 542,
+          "y": 284
         },
         {
-          "x": 500,
-          "y": 339
+          "x": 485,
+          "y": 284
         },
         {
-          "x": 500,
-          "y": 389
+          "x": 485,
+          "y": 324
         }
       ],
       "animated": false,
@@ -493,11 +493,11 @@
       "route": [
         {
           "x": 446.5,
-          "y": 515
+          "y": 390
         },
         {
           "x": 446.5,
-          "y": 736
+          "y": 551
         }
       ],
       "animated": false,

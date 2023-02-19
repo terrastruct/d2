@@ -37,6 +37,10 @@ type Diagram struct {
 
 	Shapes      []Shape      `json:"shapes"`
 	Connections []Connection `json:"connections"`
+
+	Layers    []*Diagram `json:"layers,omitempty"`
+	Scenarios []*Diagram `json:"scenarios,omitempty"`
+	Steps     []*Diagram `json:"steps,omitempty"`
 }
 
 func (diagram Diagram) HashID() (string, error) {
@@ -185,9 +189,6 @@ func (s Shape) CSSStyle() string {
 		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(s.StrokeWidth), s.StrokeDash)
 		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
 	}
-	if s.BorderRadius != 0 {
-		out += fmt.Sprintf(`rx:%d;`, s.BorderRadius)
-	}
 
 	return out
 }
@@ -222,8 +223,9 @@ type Text struct {
 	Bold      bool `json:"bold"`
 	Underline bool `json:"underline"`
 
-	LabelWidth  int `json:"labelWidth"`
-	LabelHeight int `json:"labelHeight"`
+	LabelWidth  int    `json:"labelWidth"`
+	LabelHeight int    `json:"labelHeight"`
+	LabelFill   string `json:"labelFill,omitempty"`
 }
 
 func BaseShape() *Shape {
@@ -525,8 +527,8 @@ func init() {
 	}
 }
 
-func (s *Shape) GetIconSize(box *geo.Box) int {
-	iconPosition := label.Position(s.IconPosition)
+func GetIconSize(box *geo.Box, position string) int {
+	iconPosition := label.Position(position)
 
 	minDimension := int(math.Min(box.Width, box.Height))
 	halfMinDimension := int(math.Ceil(0.5 * float64(minDimension)))
@@ -536,19 +538,19 @@ func (s *Shape) GetIconSize(box *geo.Box) int {
 	if iconPosition == label.InsideMiddleCenter {
 		size = halfMinDimension
 	} else {
-		size = go2.IntMin(
+		size = go2.Min(
 			minDimension,
-			go2.IntMax(DEFAULT_ICON_SIZE, halfMinDimension),
+			go2.Max(DEFAULT_ICON_SIZE, halfMinDimension),
 		)
 	}
 
-	size = go2.IntMin(size, MAX_ICON_SIZE)
+	size = go2.Min(size, MAX_ICON_SIZE)
 
 	if !iconPosition.IsOutside() {
-		size = go2.IntMin(size,
-			go2.IntMin(
-				go2.IntMax(int(box.Width)-2*label.PADDING, 0),
-				go2.IntMax(int(box.Height)-2*label.PADDING, 0),
+		size = go2.Min(size,
+			go2.Min(
+				go2.Max(int(box.Width)-2*label.PADDING, 0),
+				go2.Max(int(box.Height)-2*label.PADDING, 0),
 			),
 		)
 	}

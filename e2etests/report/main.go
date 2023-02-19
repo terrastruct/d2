@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+	stdlog "log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -38,6 +39,7 @@ func main() {
 	flag.BoolVar(&deltaFlag, "delta", false, "Generate the report only for cases that changed.")
 	flag.StringVar(&testSetFlag, "test-set", "", "Only run set of tests matching this string. e.g. regressions")
 	flag.StringVar(&testCaseFlag, "test-case", "", "Only run tests matching this string. e.g. all_shapes")
+	skipTests := flag.Bool("skip-tests", false, "Skip running tests first")
 	flag.BoolVar(&vFlag, "v", false, "verbose")
 	flag.Parse()
 
@@ -52,18 +54,20 @@ func main() {
 		testDir = "./e2etests"
 	}
 
-	ctx := log.Stderr(context.Background())
-	ctx, cancel := context.WithTimeout(ctx, 2*time.Minute)
-	defer cancel()
-	cmd := exec.CommandContext(ctx, "go", "test", testDir, "-run", testMatchString, vString)
-	cmd.Env = os.Environ()
-	cmd.Env = append(cmd.Env, "FORCE_COLOR=1")
-	cmd.Env = append(cmd.Env, "DEBUG=1")
-	cmd.Env = append(cmd.Env, "TEST_MODE=on")
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	log.Debug(ctx, cmd.String())
-	_ = cmd.Run()
+	if !*skipTests {
+		ctx := log.Stderr(context.Background())
+		ctx, cancel := context.WithTimeout(ctx, 2*time.Minute)
+		defer cancel()
+		cmd := exec.CommandContext(ctx, "go", "test", testDir, "-run", testMatchString, vString)
+		cmd.Env = os.Environ()
+		cmd.Env = append(cmd.Env, "FORCE_COLOR=1")
+		cmd.Env = append(cmd.Env, "DEBUG=1")
+		cmd.Env = append(cmd.Env, "TEST_MODE=on")
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		log.Debug(ctx, cmd.String())
+		_ = cmd.Run()
+	}
 
 	var tests []TestItem
 	err := filepath.Walk(filepath.Join(testDir, "testdata"), func(path string, info os.FileInfo, err error) error {
@@ -96,7 +100,11 @@ func main() {
 				}
 
 				if matchTestSet && matchTestCase {
-					fullPath := filepath.Join(path, testFile.Name())
+					absPath, err := filepath.Abs(path)
+					if err != nil {
+						stdlog.Fatal(err)
+					}
+					fullPath := filepath.Join(absPath, testFile.Name())
 					hasGot := false
 					gotPath := strings.Replace(fullPath, "exp.svg", "got.svg", 1)
 					if _, err := os.Stat(gotPath); err == nil {
@@ -139,16 +147,42 @@ func main() {
 			panic(err)
 		}
 
-		tmplData := TemplateData{
-			Tests: tests,
-		}
-
 		path := os.Getenv("REPORT_OUTPUT")
+		if path == "" {
+			path = filepath.Join(testDir, "./out/e2e_report.html")
+		}
+		err = os.MkdirAll(filepath.Dir(path), 0755)
+		if err != nil {
+			stdlog.Fatal(err)
+		}
 		f, err := os.Create(path)
 		if err != nil {
 			panic(fmt.Errorf("error creating file `%s`. %v", path, err))
 		}
-		if err := tmpl.Execute(f, tmplData); err != nil {
+		absReportDir, err := filepath.Abs(filepath.Dir(path))
+		if err != nil {
+			stdlog.Fatal(err)
+		}
+
+		// get the test path relative to the report
+		reportRelPath := func(testPath string) string {
+			relTestPath, err := filepath.Rel(absReportDir, testPath)
+			if err != nil {
+				stdlog.Fatal(err)
+			}
+			return relTestPath
+		}
+
+		// update test paths to be relative to report file
+		for i := range tests {
+			testItem := &tests[i]
+			testItem.GotSVG = reportRelPath(testItem.GotSVG)
+			if testItem.ExpSVG != nil {
+				*testItem.ExpSVG = reportRelPath(*testItem.ExpSVG)
+			}
+		}
+
+		if err := tmpl.Execute(f, TemplateData{Tests: tests}); err != nil {
 			panic(err)
 		}
 	}

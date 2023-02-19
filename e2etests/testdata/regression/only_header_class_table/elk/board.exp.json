@@ -10,7 +10,7 @@
         "y": 12
       },
       "width": 1082,
-      "height": 36,
+      "height": 92,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 982,
-      "labelHeight": 36,
+      "labelWidth": 977,
+      "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "B2",
@@ -49,10 +49,10 @@
       "id": "table",
       "type": "sql_table",
       "pos": {
-        "x": 352,
-        "y": 148
+        "x": 362,
+        "y": 174
       },
-      "width": 401,
+      "width": 381,
       "height": 36,
       "opacity": 1,
       "strokeDash": 0,
@@ -80,8 +80,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 361,
-      "labelHeight": 36,
+      "labelWidth": 356,
+      "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "B2",
@@ -92,10 +92,10 @@
       "id": "table with short col",
       "type": "sql_table",
       "pos": {
-        "x": 352,
-        "y": 284
+        "x": 362,
+        "y": 280
       },
-      "width": 401,
+      "width": 381,
       "height": 72,
       "opacity": 1,
       "strokeDash": 0,
@@ -152,8 +152,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 361,
-      "labelHeight": 36,
+      "labelWidth": 356,
+      "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "B2",
@@ -189,11 +189,11 @@
       "route": [
         {
           "x": 553,
-          "y": 48
+          "y": 104
         },
         {
           "x": 553,
-          "y": 148
+          "y": 174
         }
       ],
       "animated": false,
@@ -228,11 +228,11 @@
       "route": [
         {
           "x": 553,
-          "y": 184
+          "y": 210
         },
         {
           "x": 553,
-          "y": 284
+          "y": 280
         }
       ],
       "animated": false,

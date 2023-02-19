@@ -1,5 +1,6 @@
 {
   "graph": {
+    "name": "",
     "ast": {
       "range": "d2/testdata/d2oracle/TestMove/edge_across_containers.d2,0:0:0-4:0:22",
       "nodes": [
@@ -143,6 +144,9 @@
         },
         "direction": {
           "value": ""
+        },
+        "constraint": {
+          "value": ""
         }
       },
       "zIndex": 0
@@ -174,6 +178,9 @@
             "value": ""
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -207,7 +214,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -217,9 +224,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -233,26 +243,6 @@
           "height": 0
         },
         "references": [
-          {
-            "key": {
-              "range": "d2/testdata/d2oracle/TestMove/edge_across_containers.d2,3:0:20-3:1:21",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestMove/edge_across_containers.d2,3:0:20-3:1:21",
-                    "value": [
-                      {
-                        "string": "d",
-                        "raw_string": "d"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": 0
-          },
           {
             "key": {
               "range": "d2/testdata/d2oracle/TestMove/edge_across_containers.d2,1:2:7-1:8:13",
@@ -294,6 +284,26 @@
             },
             "key_path_index": 1,
             "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/edge_across_containers.d2,3:0:20-3:1:21",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/edge_across_containers.d2,3:0:20-3:1:21",
+                    "value": [
+                      {
+                        "string": "d",
+                        "raw_string": "d"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -303,9 +313,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -369,9 +382,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -413,9 +429,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },

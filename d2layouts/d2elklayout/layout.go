@@ -87,9 +87,9 @@ type ConfigurableOpts struct {
 
 var DefaultOpts = ConfigurableOpts{
 	Algorithm:       "layered",
-	NodeSpacing:     100.0,
-	Padding:         "[top=75,left=75,bottom=75,right=75]",
-	EdgeNodeSpacing: 50.0,
+	NodeSpacing:     70.0,
+	Padding:         "[top=50,left=50,bottom=50,right=50]",
+	EdgeNodeSpacing: 40.0,
 	SelfLoopSpacing: 50.0,
 }
 
@@ -132,7 +132,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	elkGraph := &ELKGraph{
 		ID: "root",
 		LayoutOptions: &elkOpts{
-			Thoroughness:                 20,
+			Thoroughness:                 8,
 			EdgeEdgeBetweenLayersSpacing: 50,
 			HierarchyHandling:            "INCLUDE_CHILDREN",
 			ConsiderModelOrder:           "NODES_AND_EDGES",
@@ -188,7 +188,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		if len(obj.ChildrenArray) > 0 {
 			n.LayoutOptions = &elkOpts{
 				ForceNodeModelOrder:          true,
-				Thoroughness:                 20,
+				Thoroughness:                 8,
 				EdgeEdgeBetweenLayersSpacing: 50,
 				HierarchyHandling:            "INCLUDE_CHILDREN",
 				ConsiderModelOrder:           "NODES_AND_EDGES",
@@ -198,6 +198,24 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					SelfLoopSpacing: opts.SelfLoopSpacing,
 					Padding:         opts.Padding,
 				},
+			}
+
+			if n.LayoutOptions.Padding == DefaultOpts.Padding {
+				// Default
+				paddingTop := 50
+				if obj.LabelHeight != nil {
+					paddingTop = go2.Max(paddingTop, *obj.LabelHeight+label.PADDING)
+				}
+				if obj.Attributes.Icon != nil && obj.Attributes.Shape.Value != d2target.ShapeImage {
+					contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(n.Width), float64(n.Height))
+					shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[obj.Attributes.Shape.Value]
+					s := shape.NewShape(shapeType, contentBox)
+					iconSize := d2target.GetIconSize(s.GetInnerBox(), string(label.InsideTopLeft))
+					paddingTop = go2.Max(paddingTop, iconSize+label.PADDING*2)
+				}
+				n.LayoutOptions.Padding = fmt.Sprintf("[top=%d,left=50,bottom=50,right=50]",
+					paddingTop,
+				)
 			}
 		}
 
@@ -310,7 +328,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 		if obj.Attributes.Icon != nil {
-			obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			if len(obj.ChildrenArray) > 0 {
+				obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
+				obj.LabelPosition = go2.Pointer(string(label.InsideTopRight))
+			} else {
+				obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
 		}
 
 		byID[obj.AbsID()] = obj

@@ -1,11 +1,12 @@
 {
   "graph": {
+    "name": "",
     "ast": {
-      "range": "d2/testdata/d2oracle/TestRename/complex_edge_2.d2,0:0:0-1:0:20",
+      "range": "d2/testdata/d2oracle/TestRename/complex_edge_2.d2,0:0:0-1:0:31",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2oracle/TestRename/complex_edge_2.d2,0:0:0-0:19:19",
+            "range": "d2/testdata/d2oracle/TestRename/complex_edge_2.d2,0:0:0-0:30:30",
             "key": {
               "range": "d2/testdata/d2oracle/TestRename/complex_edge_2.d2,0:0:0-0:4:4",
               "path": [
@@ -73,26 +74,26 @@
               }
             ],
             "edge_key": {
-              "range": "d2/testdata/d2oracle/TestRename/complex_edge_2.d2,0:16:16-0:19:19",
+              "range": "d2/testdata/d2oracle/TestRename/complex_edge_2.d2,0:16:16-0:30:30",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestRename/complex_edge_2.d2,0:16:16-0:17:17",
+                    "range": "d2/testdata/d2oracle/TestRename/complex_edge_2.d2,0:16:16-0:21:21",
                     "value": [
                       {
-                        "string": "q",
-                        "raw_string": "q"
+                        "string": "style",
+                        "raw_string": "style"
                       }
                     ]
                   }
                 },
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestRename/complex_edge_2.d2,0:18:18-0:19:19",
+                    "range": "d2/testdata/d2oracle/TestRename/complex_edge_2.d2,0:22:22-0:30:30",
                     "value": [
                       {
-                        "string": "z",
-                        "raw_string": "z"
+                        "string": "animated",
+                        "raw_string": "animated"
                       }
                     ]
                   }
@@ -122,6 +123,9 @@
           "value": ""
         },
         "direction": {
+          "value": ""
+        },
+        "constraint": {
           "value": ""
         }
       },
@@ -154,6 +158,9 @@
             "value": ""
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -198,7 +205,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -208,9 +215,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -253,7 +263,7 @@
               ]
             },
             "key_path_index": 1,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
@@ -263,9 +273,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -307,9 +320,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -351,9 +367,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },

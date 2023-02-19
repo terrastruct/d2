@@ -4,13 +4,13 @@
   "shapes": [
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 12
       },
-      "width": 490,
-      "height": 878,
+      "width": 290,
+      "height": 551,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,103 +37,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 17,
-      "labelHeight": 41,
+      "labelWidth": 12,
+      "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
-      "id": "a.c",
-      "type": "",
-      "pos": {
-        "x": 106,
-        "y": 539
-      },
-      "width": 264,
-      "height": 276,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "B5",
-      "stroke": "white",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "c",
-      "fontSize": 24,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "N1",
-      "italic": false,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 15,
-      "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER",
-      "zIndex": 0,
-      "level": 2
-    },
-    {
-      "id": "a.c.d",
-      "type": "",
-      "pos": {
-        "x": 181,
-        "y": 614
-      },
-      "width": 114,
-      "height": 126,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "B6",
-      "stroke": "B1",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "d",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "N1",
-      "italic": false,
-      "bold": true,
-      "underline": false,
-      "labelWidth": 14,
-      "labelHeight": 26,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 3
-    },
-    {
       "id": "a.b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 87,
-        "y": 87
+        "x": 62,
+        "y": 62
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -160,21 +78,62 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
-      "id": "a.1",
-      "type": "",
+      "id": "a.c",
+      "type": "rectangle",
       "pos": {
-        "x": 182,
-        "y": 313
+        "x": 76,
+        "y": 347
       },
-      "width": 112,
-      "height": 126,
+      "width": 154,
+      "height": 166,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B5",
+      "stroke": "white",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "c",
+      "fontSize": 24,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 10,
+      "labelHeight": 31,
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "a.1",
+      "type": "rectangle",
+      "pos": {
+        "x": 127,
+        "y": 201
+      },
+      "width": 52,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -201,21 +160,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 12,
-      "labelHeight": 26,
+      "labelWidth": 7,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "a.2",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 314,
-        "y": 313
+        "x": 199,
+        "y": 201
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -242,11 +201,52 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
+    },
+    {
+      "id": "a.c.d",
+      "type": "rectangle",
+      "pos": {
+        "x": 126,
+        "y": 397
+      },
+      "width": 54,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B6",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "d",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 9,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 3
     }
   ],
   "connections": [
@@ -276,20 +276,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 143.5,
-          "y": 213
+          "x": 88.5,
+          "y": 128
         },
         {
-          "x": 143.5,
-          "y": 489
+          "x": 88.5,
+          "y": 307
         },
         {
-          "x": 172.5,
-          "y": 489
+          "x": 115,
+          "y": 307
         },
         {
-          "x": 172.5,
-          "y": 539
+          "x": 115,
+          "y": 347
         }
       ],
       "animated": false,
@@ -323,12 +323,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 238.5,
-          "y": 439
+          "x": 153.5,
+          "y": 267
         },
         {
-          "x": 238.5,
-          "y": 539
+          "x": 153.5,
+          "y": 347
         }
       ],
       "animated": false,
@@ -362,20 +362,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 371,
-          "y": 439
+          "x": 226,
+          "y": 267
         },
         {
-          "x": 371,
-          "y": 489
+          "x": 226,
+          "y": 307
         },
         {
-          "x": 304.5,
-          "y": 489
+          "x": 192,
+          "y": 307
         },
         {
-          "x": 304.5,
-          "y": 539
+          "x": 192,
+          "y": 347
         }
       ],
       "animated": false,

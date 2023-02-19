@@ -4,13 +4,13 @@
   "shapes": [
     {
       "id": "a",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 1,
-        "y": 0
+        "y": 41
       },
-      "width": 213,
-      "height": 226,
+      "width": 133,
+      "height": 125,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,21 +37,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 17,
-      "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelWidth": 12,
+      "labelHeight": 36,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "a.b",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 51,
-        "y": 50
+        "x": 41,
+        "y": 70
       },
-      "width": 113,
-      "height": 126,
+      "width": 53,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,21 +78,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "c",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 326
+        "y": 307
       },
-      "width": 214,
-      "height": 226,
+      "width": 134,
+      "height": 125,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -119,21 +119,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 17,
-      "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelWidth": 12,
+      "labelHeight": 36,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "c.d",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 50,
-        "y": 376
+        "x": 40,
+        "y": 336
       },
-      "width": 114,
-      "height": 126,
+      "width": 54,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -160,8 +160,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 14,
-      "labelHeight": 26,
+      "labelWidth": 9,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
@@ -194,32 +194,32 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 107,
+          "x": 67,
+          "y": 136.5
+        },
+        {
+          "x": 67,
+          "y": 160.1
+        },
+        {
+          "x": 67,
           "y": 176
         },
         {
-          "x": 107,
-          "y": 216
+          "x": 67,
+          "y": 191
         },
         {
-          "x": 107,
-          "y": 236
+          "x": 67,
+          "y": 206
         },
         {
-          "x": 107,
-          "y": 251
+          "x": 67,
+          "y": 280.1
         },
         {
-          "x": 107,
-          "y": 266
-        },
-        {
-          "x": 107,
-          "y": 336
-        },
-        {
-          "x": 107,
-          "y": 376
+          "x": 67,
+          "y": 336.5
         }
       ],
       "isCurve": true,

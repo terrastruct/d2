@@ -4,8 +4,8 @@
     "ioerr": null,
     "errs": [
       {
-        "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_middle_path.d2,2:2:8-2:7:13",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/underscore_parent_middle_path.d2:3:3: parent \"_\" can only be used in the beginning of paths, e.g. \"_.x\""
+        "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_middle_path.d2,2:4:10-2:5:11",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/underscore_parent_middle_path.d2:3:5: parent \"_\" can only be used in the beginning of paths, e.g. \"_.x\""
       }
     ]
   }

@@ -1,8 +1,11 @@
 package shape
 
 import (
+	"math"
+
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapeDiamond struct {
@@ -10,12 +13,25 @@ type shapeDiamond struct {
 }
 
 func NewDiamond(box *geo.Box) Shape {
-	return shapeDiamond{
+	shape := shapeDiamond{
 		baseShape: &baseShape{
 			Type: DIAMOND_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
+}
+
+func (s shapeDiamond) GetInnerBox() *geo.Box {
+	width := s.Box.Width
+	height := s.Box.Height
+	tl := s.Box.TopLeft.Copy()
+	tl.X += width / 4.
+	tl.Y += height / 4.
+	width /= 2.
+	height /= 2.
+	return geo.NewBox(tl, width, height)
 }
 
 func diamondPath(box *geo.Box) *svg.SvgPathContext {
@@ -42,4 +58,14 @@ func (s shapeDiamond) GetSVGPathData() []string {
 	return []string{
 		diamondPath(s.Box).PathData(),
 	}
+}
+
+func (s shapeDiamond) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	totalWidth := 2 * (width + paddingX)
+	totalHeight := 2 * (height + paddingY)
+	return math.Ceil(totalWidth), math.Ceil(totalHeight)
+}
+
+func (s shapeDiamond) GetDefaultPadding() (paddingX, paddingY float64) {
+	return defaultPadding / 4, defaultPadding / 2
 }

@@ -41,6 +41,15 @@ render anyway to enable iteration on a broken diagram.
 .Pp
 See more docs, the source code and license at
 .Lk https://oss.terrastruct.com/d2
+.Ns .
+.Pp
+Hosted icons at
+.Lk https://icons.terrastruct.com
+.Ns .
+.Pp
+Playground runner at
+.Lk https://play.d2lang.com
+.Ns .
 .Sh OPTIONS
 .Bl -tag -width Fl
 .It Fl w , -watch Ar false
@@ -55,8 +64,7 @@ Port listening address when used with
 .Ar watch
 .Ns .
 .It Fl t , -theme Ar 0
-Set the diagram theme to the passed integer. For a list of available options, see
-.Lk https://oss.terrastruct.com/d2
+Set the diagram theme ID
 .Ns .
 .It Fl s , -sketch Ar false
 Renders the diagram to look like it was sketched by hand
@@ -70,6 +78,9 @@ Set the diagram layout engine to the passed string. For a list of available opti
 .Ns .
 .It Fl b , -bundle Ar true
 Bundle all assets and layers into the output svg.
+.It Fl -force-appendix Ar false
+An appendix for tooltips and links is added to PNG exports since they are not interactive. Setting this to true adds an appendix to SVG exports as well
+.Ns .
 .It Fl d , -debug
 Print debug logs.
 .It Fl h , -help
@@ -83,6 +94,8 @@ Print version information and exit.
 Lists available layout engine options with short help.
 .It Ar layout Op Ar name
 Display long help for a particular layout engine, including its configuration options.
+.It Ar themes
+Lists available themes.
 .It Ar fmt Ar file.d2 ...
 Format all passed files.
 .El

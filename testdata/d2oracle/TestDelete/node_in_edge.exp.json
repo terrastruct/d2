@@ -1,5 +1,6 @@
 {
   "graph": {
+    "name": "",
     "ast": {
       "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:0:0-5:0:34",
       "nodes": [
@@ -167,6 +168,9 @@
         },
         "direction": {
           "value": ""
+        },
+        "constraint": {
+          "value": ""
         }
       },
       "zIndex": 0
@@ -199,6 +203,9 @@
           },
           "direction": {
             "value": ""
+          },
+          "constraint": {
+            "value": ""
           }
         },
         "zIndex": 0
@@ -230,100 +237,15 @@
           },
           "direction": {
             "value": ""
+          },
+          "constraint": {
+            "value": ""
           }
         },
         "zIndex": 0
       }
     ],
     "objects": [
-      {
-        "id": "ok",
-        "id_val": "ok",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
-        "references": [
-          {
-            "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,2:0:14-2:2:16",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,2:0:14-2:2:16",
-                    "value": [
-                      {
-                        "string": "ok",
-                        "raw_string": "ok"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": 0
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": "ok"
-          },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": ""
-          },
-          "direction": {
-            "value": ""
-          }
-        },
-        "zIndex": 0
-      },
-      {
-        "id": "\"what's up\"",
-        "id_val": "what's up",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
-        "references": [
-          {
-            "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,3:2:22-3:11:31",
-              "path": [
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,3:2:22-3:11:31",
-                    "value": [
-                      {
-                        "string": "what's up",
-                        "raw_string": "what's up"
-                      }
-                    ]
-                  }
-                }
-              ]
-            },
-            "key_path_index": 0,
-            "map_key_edge_index": 0
-          }
-        ],
-        "attributes": {
-          "label": {
-            "value": "what's up"
-          },
-          "style": {},
-          "near_key": null,
-          "shape": {
-            "value": ""
-          },
-          "direction": {
-            "value": ""
-          }
-        },
-        "zIndex": 0
-      },
       {
         "id": "x",
         "id_val": "x",
@@ -360,9 +282,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -404,9 +329,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -448,9 +376,12 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },
@@ -492,9 +423,106 @@
           "style": {},
           "near_key": null,
           "shape": {
-            "value": ""
+            "value": "rectangle"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "ok",
+        "id_val": "ok",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,2:0:14-2:2:16",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,2:0:14-2:2:16",
+                    "value": [
+                      {
+                        "string": "ok",
+                        "raw_string": "ok"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "ok"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "\"what's up\"",
+        "id_val": "what's up",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,3:2:22-3:11:31",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,3:2:22-3:11:31",
+                    "value": [
+                      {
+                        "string": "what's up",
+                        "raw_string": "what's up"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "what's up"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },

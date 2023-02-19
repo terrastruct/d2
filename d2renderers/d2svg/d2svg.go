@@ -44,7 +44,7 @@ const (
 	appendixIconRadius = 16
 )
 
-var multipleOffset = geo.NewVector(10, -10)
+var multipleOffset = geo.NewVector(d2target.MULTIPLE_OFFSET, -d2target.MULTIPLE_OFFSET)
 
 //go:embed tooltip.svg
 var TooltipIcon string
@@ -65,21 +65,14 @@ type RenderOpts struct {
 	DarkThemeID int64
 }
 
-func dimensions(writer io.Writer, diagram *d2target.Diagram, pad int) (width, height int, topLeft, bottomRight d2target.Point) {
+func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height int) {
 	tl, br := diagram.BoundingBox()
-	w := br.X - tl.X + pad*2
-	h := br.Y - tl.Y + pad*2
+	left = tl.X - pad
+	top = tl.Y - pad
+	width = br.X - tl.X + pad*2
+	height = br.Y - tl.Y + pad*2
 
-	outTl := d2target.Point{
-		X: tl.X - pad,
-		Y: tl.Y - pad,
-	}
-	outBr := d2target.Point{
-		X: br.X - pad,
-		Y: br.Y - pad,
-	}
-
-	return w, h, outTl, outBr
+	return left, top, width, height
 }
 
 func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
@@ -118,8 +111,8 @@ func arrowheadDimensions(arrowhead d2target.Arrowhead, strokeWidth float64) (wid
 		widthMultiplier = 12
 		heightMultiplier = 12
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
-		widthMultiplier = 14
-		heightMultiplier = 15
+		widthMultiplier = 9
+		heightMultiplier = 9
 	}
 
 	clippedStrokeWidth := go2.Max(MIN_ARROWHEAD_STROKE_WIDTH, strokeWidth)
@@ -279,7 +272,7 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 
 		path = circleEl.Render()
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
-		offset := 4.0 + float64(connection.StrokeWidth*2)
+		offset := 3.0 + float64(connection.StrokeWidth)*1.8
 
 		var modifierEl *svgstyle.ThemableElement
 		if arrowhead == d2target.CfOneRequired || arrowhead == d2target.CfManyRequired {
@@ -294,7 +287,7 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 			modifierEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 		} else {
 			modifierEl = svgstyle.NewThemableElement("circle")
-			modifierEl.Cx = offset/2.0 + 1.0
+			modifierEl.Cx = offset/2.0 + 2.0
 			modifierEl.Cy = height / 2.0
 			modifierEl.R = offset / 2.0
 			modifierEl.Fill = bgColor
@@ -308,17 +301,17 @@ func arrowheadMarker(isTarget bool, id string, bgColor string, connection d2targ
 			childPathEl.D = fmt.Sprintf("M%f,%f %f,%f M%f,%f %f,%f M%f,%f %f,%f",
 				width-3.0, height/2.0,
 				width+offset, height/2.0,
-				offset+2.0, height/2.0,
+				offset+3.0, height/2.0,
 				width+offset, 0.,
-				offset+2.0, height/2.0,
+				offset+3.0, height/2.0,
 				width+offset, height,
 			)
 		} else {
 			childPathEl.D = fmt.Sprintf("M%f,%f %f,%f M%f,%f %f,%f",
 				width-3.0, height/2.0,
 				width+offset, height/2.0,
-				offset*1.8, 0.,
-				offset*1.8, height,
+				offset*2.0, 0.,
+				offset*2.0, height,
 			)
 		}
 
@@ -792,7 +785,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 
 	var multipleTL *geo.Point
 	if targetShape.Multiple {
-		multipleTL = tl.AddVector(geo.NewVector(d2target.MULTIPLE_OFFSET, -d2target.MULTIPLE_OFFSET))
+		multipleTL = tl.AddVector(multipleOffset)
 	}
 
 	switch targetShape.Type {
@@ -807,7 +800,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			drawClass(writer, targetShape)
 		}
 		addAppendixItems(writer, targetShape)
-		fmt.Fprintf(writer, `</g>`)
+		fmt.Fprint(writer, `</g>`)
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeSQLTable:
@@ -821,7 +814,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			drawTable(writer, targetShape)
 		}
 		addAppendixItems(writer, targetShape)
-		fmt.Fprintf(writer, `</g>`)
+		fmt.Fprint(writer, `</g>`)
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
 	case d2target.ShapeOval:
@@ -834,7 +827,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				if err != nil {
 					return "", err
 				}
-				fmt.Fprintf(writer, out)
+				fmt.Fprint(writer, out)
 			} else {
 				fmt.Fprint(writer, renderDoubleOval(tl, width, height, fill, stroke, style))
 			}
@@ -847,7 +840,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				if err != nil {
 					return "", err
 				}
-				fmt.Fprintf(writer, out)
+				fmt.Fprint(writer, out)
 			} else {
 				fmt.Fprint(writer, renderOval(tl, width, height, fill, stroke, style))
 			}
@@ -867,6 +860,11 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 
 	// TODO should standardize "" to rectangle
 	case d2target.ShapeRectangle, d2target.ShapeSequenceDiagram, "":
+		// TODO use Rx property of NewThemableElement instead
+		rx := ""
+		if targetShape.BorderRadius != 0 {
+			rx = fmt.Sprintf(` rx="%d"`, targetShape.BorderRadius)
+		}
 		if targetShape.ThreeDee {
 			fmt.Fprint(writer, render3dRect(targetShape))
 		} else {
@@ -880,6 +878,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					el.Fill = fill
 					el.Stroke = stroke
 					el.Style = style
+					el.Attributes = rx
 					fmt.Fprint(writer, el.Render())
 				}
 				if sketchRunner != nil {
@@ -897,6 +896,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					el.Fill = fill
 					el.Stroke = stroke
 					el.Style = style
+					el.Attributes = rx
 					fmt.Fprint(writer, el.Render())
 				}
 			} else {
@@ -909,6 +909,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					el.Fill = fill
 					el.Stroke = stroke
 					el.Style = style
+					el.Attributes = rx
 					fmt.Fprint(writer, el.Render())
 
 					el = svgstyle.NewThemableElement("rect")
@@ -919,6 +920,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					el.Fill = fill
 					el.Stroke = stroke
 					el.Style = style
+					el.Attributes = rx
 					fmt.Fprint(writer, el.Render())
 				}
 				if sketchRunner != nil {
@@ -936,6 +938,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					el.Fill = fill
 					el.Stroke = stroke
 					el.Style = style
+					el.Attributes = rx
 					fmt.Fprint(writer, el.Render())
 
 					el = svgstyle.NewThemableElement("rect")
@@ -946,6 +949,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					el.Fill = fill
 					el.Stroke = stroke
 					el.Style = style
+					el.Attributes = rx
 					fmt.Fprint(writer, el.Render())
 				}
 			}
@@ -982,8 +986,13 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		}
 	}
 
+	// to examine GetInsidePlacement
+	// padX, padY := s.GetDefaultPadding()
+	// innerTL := s.GetInsidePlacement(s.GetInnerBox().Width, s.GetInnerBox().Height, padX, padY)
+	// fmt.Fprint(writer, renderOval(&innerTL, 5, 5, "fill:red;"))
+
 	// Closes the class=shape
-	fmt.Fprintf(writer, `</g>`)
+	fmt.Fprint(writer, `</g>`)
 
 	if targetShape.Icon != nil && targetShape.Type != d2target.ShapeImage {
 		iconPosition := label.Position(targetShape.IconPosition)
@@ -993,7 +1002,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		} else {
 			box = s.GetInnerBox()
 		}
-		iconSize := targetShape.GetIconSize(box)
+		iconSize := d2target.GetIconSize(box, targetShape.IconPosition)
 
 		tl := iconPosition.GetPointOnBox(box, label.PADDING, float64(iconSize), float64(iconSize))
 
@@ -1014,7 +1023,10 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		} else {
 			box = s.GetInnerBox()
 		}
-		labelTL := labelPosition.GetPointOnBox(box, label.PADDING, float64(targetShape.LabelWidth), float64(targetShape.LabelHeight))
+		labelTL := labelPosition.GetPointOnBox(box, label.PADDING,
+			float64(targetShape.LabelWidth),
+			float64(targetShape.LabelHeight),
+		)
 
 		fontClass := "text"
 		if targetShape.Bold {
@@ -1054,7 +1066,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			rectEl.Style = fmt.Sprintf(`fill:%s`, style.Get(chroma.Background).Background.String())
 			fmt.Fprint(writer, rectEl.Render())
 			// Padding
-			fmt.Fprintf(writer, `<g transform="translate(6 6)">`)
+			fmt.Fprint(writer, `<g transform="translate(6 6)">`)
 
 			for index, tokens := range chroma.SplitTokensIntoLines(iterator.Tokens()) {
 				// TODO mono font looks better with 1.2 em (use px equivalent), but textmeasure needs to account for it. Not obvious how that should be done
@@ -1069,7 +1081,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 				}
 				fmt.Fprint(writer, "</text>")
 			}
-			fmt.Fprintf(writer, "</g></g>")
+			fmt.Fprint(writer, "</g></g>")
 		} else if targetShape.Type == d2target.ShapeText && targetShape.Language == "latex" {
 			render, err := d2latex.Render(targetShape.Label)
 			if err != nil {
@@ -1102,6 +1114,15 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			if targetShape.Color != color.Empty {
 				fontColor = targetShape.Color
 			}
+			if targetShape.LabelFill != "" {
+				rectEl := svgstyle.NewThemableElement("rect")
+				rectEl.X = labelTL.X
+				rectEl.Y = labelTL.Y
+				rectEl.Width = float64(targetShape.LabelWidth)
+				rectEl.Height = float64(targetShape.LabelHeight)
+				rectEl.Fill = targetShape.LabelFill
+				fmt.Fprint(writer, rectEl.Render())
+			}
 			textEl := svgstyle.NewThemableElement("text")
 			textEl.X = labelTL.X + float64(targetShape.LabelWidth)/2
 			// text is vertically positioned at its baseline which is at labelTL+FontSize
@@ -1132,7 +1153,7 @@ func addAppendixItems(writer io.Writer, shape d2target.Shape) {
 			shape.Pos.Y-appendixIconRadius,
 			TooltipIcon,
 		)
-		fmt.Fprintf(writer, `<title>%s</title>`, shape.Tooltip)
+		fmt.Fprintf(writer, `<title>%s</title>`, svg.EscapeText(shape.Tooltip))
 	}
 
 	if shape.Link != "" {
@@ -1525,13 +1546,13 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 
 	// Note: we always want this since we reference it on connections even if there end up being no masked labels
-	w, h, tl, _ := dimensions(buf, diagram, pad)
+	left, top, w, h := dimensions(diagram, pad)
 	fmt.Fprint(buf, strings.Join([]string{
 		fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
-			labelMaskID, -pad, -pad, w, h,
+			labelMaskID, left, top, w, h,
 		),
 		fmt.Sprintf(`<rect x="%d" y="%d" width="%d" height="%d" fill="white"></rect>`,
-			-pad, -pad, w, h,
+			left, top, w, h,
 		),
 		strings.Join(labelMasks, "\n"),
 		`</mask>`,
@@ -1540,8 +1561,8 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	// TODO minify
 	// TODO background stuff. e.g. dotted, grid, colors
 	backgroundEl := svgstyle.NewThemableElement("rect")
-	backgroundEl.X = float64(tl.X)
-	backgroundEl.Y = float64(tl.Y)
+	backgroundEl.X = float64(left)
+	backgroundEl.Y = float64(top)
 	backgroundEl.Width = float64(w)
 	backgroundEl.Height = float64(h)
 	backgroundEl.Fill = color.N7
@@ -1572,7 +1593,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 
 	// render the document
 	docRendered := fmt.Sprintf(`<?xml version="1.0" encoding="utf-8"?><svg id="d2-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s</svg>`,
-		w, h, tl.X-pad, tl.Y-pad, w, h,
+		w, h, left, top, w, h,
 		svgOut,
 		backgroundEl.Render(),
 		buf.String(),

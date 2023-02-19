@@ -1,15 +1,16 @@
 #### Features 🚀
 
-- `double-border` keyword implemented. [#565](https://github.com/terrastruct/d2/pull/565)
-- The [Dockerfile](./docs/INSTALL.md#docker) now supports rendering PNGs [#594](https://github.com/terrastruct/d2/issues/594)
-  - There was a minor breaking change as part of this where the default working directory of the Dockerfile is now `/home/debian/src` instead of `/root/src` to allow UID remapping with [`fixuid`](https://github.com/boxboat/fixuid).
-
-- `d2 fmt` accepts multiple files to be formatted [#718](https://github.com/terrastruct/d2/issues/718)
+- Many non-Latin languages (e.g. Chinese, Japanese, Korean) are usable now that multi-byte characters are measured correctly. [#817](https://github.com/terrastruct/d2/pull/817)
+- Fix duplicate success logs in watch mode. [830](https://github.com/terrastruct/d2/pull/830)
 
 #### Improvements 🧹
 
-- Code snippets use bold and italic font styles as determined by highlighter [#710](https://github.com/terrastruct/d2/issues/710), [#741](https://github.com/terrastruct/d2/issues/741)
+- Cleaner watch mode logs without timestamps. [830](https://github.com/terrastruct/d2/pull/830)
 
 #### Bugfixes ⛑️
 
-- Fixes groups overlapping in sequence diagrams when they end in a self loop. [#728](https://github.com/terrastruct/d2/pull/728)
+- Fixes edge case where layouts with dagre show a connection from the bottom side of shapes being slightly disconnected from the shape. [#820](https://github.com/terrastruct/d2/pull/820)
+- Fixes rare compiler bug when using underscores in edges to create objects across containers. [#824](https://github.com/terrastruct/d2/pull/824)
+- Fixes rare possibility of rendered connections being hidden or cut off. [#828](https://github.com/terrastruct/d2/pull/828)
+- Creating nested children within `sql_table` and `class` shapes are now prevented (caused confusion when accidentally done). [#834](https://github.com/terrastruct/d2/pull/834)
+- Fixes graph deserialization bug. [#837](https://github.com/terrastruct/d2/pull/837)

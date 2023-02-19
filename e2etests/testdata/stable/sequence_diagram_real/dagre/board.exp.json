@@ -9,8 +9,8 @@
         "x": 0,
         "y": 0
       },
-      "width": 2247,
-      "height": 2336,
+      "width": 1528,
+      "height": 1311,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -37,21 +37,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 242,
-      "labelHeight": 41,
+      "labelWidth": 237,
+      "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "How this is rendered.CLI",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 24,
-        "y": 110
+        "x": 12,
+        "y": 88
       },
-      "width": 150,
-      "height": 126,
+      "width": 100,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,21 +78,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 25,
-      "labelHeight": 26,
+      "labelWidth": 20,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "How this is rendered.d2ast",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 274,
-        "y": 110
+        "x": 219,
+        "y": 88
       },
-      "width": 150,
-      "height": 126,
+      "width": 100,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -119,21 +119,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 43,
-      "labelHeight": 26,
+      "labelWidth": 38,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "How this is rendered.d2compiler",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 508,
-        "y": 110
+        "x": 372,
+        "y": 88
       },
-      "width": 182,
-      "height": 126,
+      "width": 122,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -160,21 +160,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 82,
-      "labelHeight": 26,
+      "labelWidth": 77,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "How this is rendered.d2layout",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 767,
-        "y": 110
+        "x": 544,
+        "y": 88
       },
-      "width": 165,
-      "height": 126,
+      "width": 105,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -201,21 +201,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 65,
-      "labelHeight": 26,
+      "labelWidth": 60,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "How this is rendered.d2exporter",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 1009,
-        "y": 110
+        "x": 689,
+        "y": 88
       },
-      "width": 180,
-      "height": 126,
+      "width": 120,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -242,21 +242,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 80,
-      "labelHeight": 26,
+      "labelWidth": 75,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "How this is rendered.d2themes",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 1263,
-        "y": 110
+        "x": 849,
+        "y": 88
       },
-      "width": 173,
-      "height": 126,
+      "width": 113,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -283,21 +283,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 73,
-      "labelHeight": 26,
+      "labelWidth": 68,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "How this is rendered.d2renderer",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 1509,
-        "y": 110
+        "x": 1002,
+        "y": 88
       },
-      "width": 181,
-      "height": 126,
+      "width": 121,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -324,21 +324,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 81,
-      "labelHeight": 26,
+      "labelWidth": 76,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "How this is rendered.d2sequencelayout",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 1740,
-        "y": 110
+        "x": 1163,
+        "y": 88
       },
-      "width": 229,
-      "height": 126,
+      "width": 169,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -365,21 +365,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 129,
-      "labelHeight": 26,
+      "labelWidth": 124,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "How this is rendered.d2dagrelayout",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 2019,
-        "y": 110
+        "x": 1372,
+        "y": 88
       },
-      "width": 204,
-      "height": 126,
+      "width": 144,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -406,8 +406,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 104,
-      "labelHeight": 26,
+      "labelWidth": 99,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
@@ -416,11 +416,11 @@
       "id": "How this is rendered.d2compiler.measurements also take place",
       "type": "page",
       "pos": {
-        "x": 445,
-        "y": 756
+        "x": 309,
+        "y": 434
       },
-      "width": 307,
-      "height": 126,
+      "width": 247,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -447,21 +447,61 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 207,
-      "labelHeight": 26,
+      "labelWidth": 202,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 5,
       "level": 3
     },
     {
-      "id": "How this is rendered.only if root is not sequence",
-      "type": "",
+      "id": "How this is rendered.d2layout.layout",
+      "type": "rectangle",
       "pos": {
-        "x": 805,
-        "y": 1362
+        "x": 590,
+        "y": 630
       },
-      "width": 1365,
-      "height": 80,
+      "width": 12,
+      "height": 259,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B4",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 42,
+      "labelHeight": 21,
+      "zIndex": 2,
+      "level": 3
+    },
+    {
+      "id": "How this is rendered.only if root is not sequence",
+      "type": "rectangle",
+      "pos": {
+        "x": 562,
+        "y": 765
+      },
+      "width": 921,
+      "height": 59,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
@@ -488,61 +528,22 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 185,
-      "labelHeight": 26,
+      "labelWidth": 180,
+      "labelHeight": 21,
+      "labelFill": "N5",
       "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 2
     },
     {
-      "id": "How this is rendered.d2layout.layout",
-      "type": "rectangle",
-      "pos": {
-        "x": 843,
-        "y": 1126
-      },
-      "width": 12,
-      "height": 422,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "B4",
-      "stroke": "B1",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "N1",
-      "italic": false,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 47,
-      "labelHeight": 26,
-      "zIndex": 2,
-      "level": 3
-    },
-    {
       "id": "How this is rendered.d2exporter.export",
       "type": "rectangle",
       "pos": {
-        "x": 1093,
-        "y": 1906
+        "x": 743,
+        "y": 1079
       },
       "width": 12,
-      "height": 292,
+      "height": 160,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -569,8 +570,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 50,
-      "labelHeight": 26,
+      "labelWidth": 45,
+      "labelHeight": 21,
       "zIndex": 2,
       "level": 3
     }
@@ -602,12 +603,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
-          "y": 366
+          "x": 62,
+          "y": 224
         },
         {
-          "x": 349,
-          "y": 366
+          "x": 269,
+          "y": 224
         }
       ],
       "animated": false,
@@ -641,12 +642,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 349,
-          "y": 496
+          "x": 269,
+          "y": 294
         },
         {
-          "x": 99,
-          "y": 496
+          "x": 62,
+          "y": 294
         }
       ],
       "animated": false,
@@ -680,12 +681,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
-          "y": 626
+          "x": 62,
+          "y": 364
         },
         {
-          "x": 599,
-          "y": 626
+          "x": 433,
+          "y": 364
         }
       ],
       "animated": false,
@@ -719,12 +720,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 599,
-          "y": 1012
+          "x": 433,
+          "y": 570
         },
         {
-          "x": 99,
-          "y": 1012
+          "x": 62,
+          "y": 570
         }
       ],
       "animated": false,
@@ -758,12 +759,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
-          "y": 1142
+          "x": 62,
+          "y": 640
         },
         {
-          "x": 843.5,
-          "y": 1142
+          "x": 590.5,
+          "y": 640
         }
       ],
       "animated": false,
@@ -797,12 +798,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 855.5,
-          "y": 1272
+          "x": 602.5,
+          "y": 710
         },
         {
-          "x": 1854.5,
-          "y": 1272
+          "x": 1247.5,
+          "y": 710
         }
       ],
       "animated": false,
@@ -836,12 +837,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 855.5,
-          "y": 1402
+          "x": 602.5,
+          "y": 809
         },
         {
-          "x": 2121,
-          "y": 1402
+          "x": 1444,
+          "y": 809
         }
       ],
       "animated": false,
@@ -875,12 +876,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 855.5,
-          "y": 1532
+          "x": 602.5,
+          "y": 879
         },
         {
-          "x": 1854.5,
-          "y": 1532
+          "x": 1247.5,
+          "y": 879
         }
       ],
       "animated": false,
@@ -914,12 +915,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 849.5,
-          "y": 1662
+          "x": 596.5,
+          "y": 949
         },
         {
-          "x": 99,
-          "y": 1662
+          "x": 62,
+          "y": 949
         }
       ],
       "animated": false,
@@ -953,12 +954,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
-          "y": 1792
+          "x": 62,
+          "y": 1019
         },
         {
-          "x": 1099,
-          "y": 1792
+          "x": 749,
+          "y": 1019
         }
       ],
       "animated": false,
@@ -992,12 +993,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1105,
-          "y": 1922
+          "x": 755,
+          "y": 1089
         },
         {
-          "x": 1349.5,
-          "y": 1922
+          "x": 905.5,
+          "y": 1089
         }
       ],
       "animated": false,
@@ -1031,12 +1032,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1105,
-          "y": 2052
+          "x": 755,
+          "y": 1159
         },
         {
-          "x": 1599.5,
-          "y": 2052
+          "x": 1062.5,
+          "y": 1159
         }
       ],
       "animated": false,
@@ -1070,12 +1071,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1093,
-          "y": 2182
+          "x": 743,
+          "y": 1229
         },
         {
-          "x": 99,
-          "y": 2182
+          "x": 62,
+          "y": 1229
         }
       ],
       "animated": false,
@@ -1109,12 +1110,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
-          "y": 236
+          "x": 62,
+          "y": 154
         },
         {
-          "x": 99,
-          "y": 2312
+          "x": 62,
+          "y": 1299
         }
       ],
       "animated": false,
@@ -1148,12 +1149,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 349,
-          "y": 236
+          "x": 269,
+          "y": 154
         },
         {
-          "x": 349,
-          "y": 2312
+          "x": 269,
+          "y": 1299
         }
       ],
       "animated": false,
@@ -1187,12 +1188,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 599,
-          "y": 236
+          "x": 433,
+          "y": 154
         },
         {
-          "x": 599,
-          "y": 2312
+          "x": 433,
+          "y": 1299
         }
       ],
       "animated": false,
@@ -1226,12 +1227,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 849.5,
-          "y": 236
+          "x": 596.5,
+          "y": 154
         },
         {
-          "x": 849.5,
-          "y": 2312
+          "x": 596.5,
+          "y": 1299
         }
       ],
       "animated": false,
@@ -1265,12 +1266,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1099,
-          "y": 236
+          "x": 749,
+          "y": 154
         },
         {
-          "x": 1099,
-          "y": 2312
+          "x": 749,
+          "y": 1299
         }
       ],
       "animated": false,
@@ -1304,12 +1305,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1349.5,
-          "y": 236
+          "x": 905.5,
+          "y": 154
         },
         {
-          "x": 1349.5,
-          "y": 2312
+          "x": 905.5,
+          "y": 1299
         }
       ],
       "animated": false,
@@ -1343,12 +1344,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1599.5,
-          "y": 236
+          "x": 1062.5,
+          "y": 154
         },
         {
-          "x": 1599.5,
-          "y": 2312
+          "x": 1062.5,
+          "y": 1299
         }
       ],
       "animated": false,
@@ -1382,12 +1383,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1854.5,
-          "y": 236
+          "x": 1247.5,
+          "y": 154
         },
         {
-          "x": 1854.5,
-          "y": 2312
+          "x": 1247.5,
+          "y": 1299
         }
       ],
       "animated": false,
@@ -1421,12 +1422,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2121,
-          "y": 236
+          "x": 1444,
+          "y": 154
         },
         {
-          "x": 2121,
-          "y": 2312
+          "x": 1444,
+          "y": 1299
         }
       ],
       "animated": false,

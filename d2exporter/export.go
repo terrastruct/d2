@@ -4,15 +4,17 @@ import (
 	"context"
 	"strconv"
 
+	"oss.terrastruct.com/util-go/go2"
+
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/color"
-	"oss.terrastruct.com/util-go/go2"
 )
 
 func Export(ctx context.Context, g *d2graph.Graph, fontFamily *d2fonts.FontFamily) (*d2target.Diagram, error) {
 	diagram := d2target.NewDiagram()
+	diagram.Name = g.Name
 	if fontFamily == nil {
 		fontFamily = go2.Pointer(d2fonts.SourceSansPro)
 	}
@@ -131,16 +133,20 @@ func toShape(obj *d2graph.Object) d2target.Shape {
 	case d2target.ShapeClass:
 		shape.Class = *obj.Class
 		// The label is the header for classes and tables, which is set in client to be 4 px larger than the object's set font size
-		shape.FontSize -= 4
+		shape.FontSize -= d2target.HeaderFontAdd
 	case d2target.ShapeSQLTable:
 		shape.SQLTable = *obj.SQLTable
-		shape.FontSize -= 4
+		shape.FontSize -= d2target.HeaderFontAdd
 	}
 	shape.Label = text.Text
 	shape.LabelWidth = text.Dimensions.Width
+
 	shape.LabelHeight = text.Dimensions.Height
 	if obj.LabelPosition != nil {
 		shape.LabelPosition = *obj.LabelPosition
+		if obj.IsSequenceDiagramGroup() {
+			shape.LabelFill = shape.Fill
+		}
 	}
 
 	shape.Tooltip = obj.Attributes.Tooltip
@@ -157,7 +163,6 @@ func toConnection(edge *d2graph.Edge) d2target.Connection {
 	connection := d2target.BaseConnection()
 	connection.ID = edge.AbsID()
 	connection.ZIndex = edge.ZIndex
-	// edge.Edge.ID = go2.StringToIntHash(connection.ID)
 	text := edge.Text()
 
 	if edge.SrcArrow {

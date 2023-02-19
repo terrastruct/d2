@@ -119,6 +119,9 @@ func (p *execPlugin) Info(ctx context.Context) (_ *PluginInfo, err error) {
 		return nil, fmt.Errorf("failed to unmarshal json: %w", err)
 	}
 
+	info.Type = "binary"
+	info.Path = p.path
+
 	p.info = &info
 	return &info, nil
 }

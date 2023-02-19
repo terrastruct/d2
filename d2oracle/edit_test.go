@@ -1373,12 +1373,12 @@ more.(ok.q.z -> p.k): "furbling, v.:"
 		{
 			name: "complex_edge_1",
 
-			text: `a.b.(x -> y).q.z
+			text: `a.b.(x -> y).style.animated
 `,
 			key:     "a.b",
 			newName: "ooo",
 
-			exp: `a.ooo.(x -> y).q.z
+			exp: `a.ooo.(x -> y).style.animated
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				if len(g.Objects) != 4 {
@@ -1392,12 +1392,12 @@ more.(ok.q.z -> p.k): "furbling, v.:"
 		{
 			name: "complex_edge_2",
 
-			text: `a.b.(x -> y).q.z
+			text: `a.b.(x -> y).style.animated
 `,
 			key:     "a.b.x",
 			newName: "papa",
 
-			exp: `a.b.(papa -> y).q.z
+			exp: `a.b.(papa -> y).style.animated
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				if len(g.Objects) != 4 {
@@ -1454,12 +1454,12 @@ more.(ok.q.z -> p.k): "furbling, v.:"
 		{
 			name: "arrows_complex",
 
-			text: `a.b.(x -- y).q.z
+			text: `a.b.(x -- y).style.animated
 `,
 			key:     "a.b.(x -- y)[0]",
 			newName: "(x <-> y)[0]",
 
-			exp: `a.b.(x <-> y).q.z
+			exp: `a.b.(x <-> y).style.animated
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				if len(g.Objects) != 4 {
@@ -1756,6 +1756,20 @@ b
 			},
 		},
 		{
+			name: "out_of_newline_container",
+
+			text: `"a\n": {
+  b
+}
+`,
+			key:    `"a\n".b`,
+			newKey: `b`,
+
+			exp: `"a\n"
+b
+`,
+		},
+		{
 			name: "partial_slice",
 
 			text: `a: {
@@ -1986,6 +2000,50 @@ c: {
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				assert.JSON(t, len(g.Objects), 3)
 			},
+		},
+		{
+			name: "underscore-connection",
+
+			text: `a: {
+  b
+
+  _.c.d -> b
+}
+
+c: {
+  d
+}
+`,
+			key:    `a.b`,
+			newKey: `c.b`,
+
+			exp: `a: {
+  _.c.d -> _.c.b
+}
+
+c: {
+  d
+  b
+}
+`,
+		},
+
+		{
+			name: "nested-underscore-move-out",
+			text: `guitar: {
+	books: {
+		_._.pipe
+  }
+}
+`,
+			key:    `pipe`,
+			newKey: `guitar.pipe`,
+
+			exp: `guitar: {
+  books
+  pipe
+}
+`,
 		},
 		{
 			name: "flat_middle_container",
@@ -3025,7 +3083,7 @@ d
 					if err == nil {
 						objectsAfter := len(g.Objects)
 						if objectsBefore != objectsAfter {
-							println(d2format.Format(g.AST))
+							t.Log(d2format.Format(g.AST))
 							return nil, fmt.Errorf("move cannot destroy or create objects: found %d objects before and %d objects after", objectsBefore, objectsAfter)
 						}
 					}
@@ -3149,6 +3207,41 @@ c -> d
 			exp: `books: {
   _.pipe
 }
+`,
+		},
+		{
+			name: "only-underscore",
+
+			text: `guitar: {
+	books: {
+    _._.pipe
+  }
+}
+`,
+			key: `pipe`,
+
+			exp: `guitar: {
+  books
+}
+`,
+		},
+		{
+			name: "only-underscore-nested",
+
+			text: `guitar: {
+	books: {
+		_._.pipe: {
+      a
+    }
+  }
+}
+`,
+			key: `pipe`,
+
+			exp: `guitar: {
+  books
+}
+a
 `,
 		},
 		{
@@ -4701,6 +4794,23 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
 
 			exp: `{
   "x.x": "x"
+}`,
+		},
+
+		{
+			name: "only-reserved",
+			text: `guitar: {
+	books: {
+		_._.pipe: {
+      a
+    }
+  }
+}
+`,
+			key: `pipe`,
+
+			exp: `{
+  "pipe.a": "a"
 }`,
 		},
 		{

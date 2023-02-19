@@ -5,7 +5,7 @@
     "errs": [
       {
         "range": "d2/testdata/d2compiler/TestCompile/blank_underscore.d2,2:2:11-2:3:12",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/blank_underscore.d2:3:3: invalid use of parent \"_\""
+        "errmsg": "d2/testdata/d2compiler/TestCompile/blank_underscore.d2:3:3: field key must contain more than underscores"
       }
     ]
   }

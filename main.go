@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
@@ -22,6 +23,7 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2renderers/d2svg/appendix"
+	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/imgbundler"
@@ -53,12 +55,16 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	forceAppendixFlag, err := ms.Opts.Bool("D2_FORCE_APPENDIX", "force-appendix", "", false, "an appendix for tooltips and links is added to PNG exports since they are not interactive. --force-appendix adds an appendix to SVG exports as well")
+	if err != nil {
+		return err
+	}
 	debugFlag, err := ms.Opts.Bool("DEBUG", "debug", "d", false, "print debug logs.")
 	if err != nil {
 		return err
 	}
 	layoutFlag := ms.Opts.String("D2_LAYOUT", "layout", "l", "dagre", `the layout engine used`)
-	themeFlag, err := ms.Opts.Int64("D2_THEME", "theme", "t", 0, "the diagram theme ID. For a list of available options, see https://oss.terrastruct.com/d2")
+	themeFlag, err := ms.Opts.Int64("D2_THEME", "theme", "t", 0, "the diagram theme ID")
 	if err != nil {
 		return err
 	}
@@ -104,6 +110,9 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 			return initPlaywright()
 		case "layout":
 			return layoutCmd(ctx, ms, ps)
+		case "themes":
+			themesCmd(ctx, ms)
+			return nil
 		case "fmt":
 			return fmtCmd(ctx, ms)
 		case "version":
@@ -205,19 +214,19 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		if inputPath == "-" {
 			return xmain.UsageErrorf("-w[atch] cannot be combined with reading input from stdin")
 		}
-		ms.Log.SetTS(true)
 		w, err := newWatcher(ctx, ms, watcherOpts{
-			layoutPlugin: plugin,
-			sketch:       *sketchFlag,
-			themeID:      *themeFlag,
-			darkThemeID:  *darkThemeFlag,
-			pad:          *padFlag,
-			host:         *hostFlag,
-			port:         *portFlag,
-			inputPath:    inputPath,
-			outputPath:   outputPath,
-			bundle:       *bundleFlag,
-			pw:           pw,
+			layoutPlugin:  plugin,
+			sketch:        *sketchFlag,
+			themeID:       *themeFlag,
+			darkThemeID:   *darkThemeFlag,
+			pad:           *padFlag,
+			host:          *hostFlag,
+			port:          *portFlag,
+			inputPath:     inputPath,
+			outputPath:    outputPath,
+			bundle:        *bundleFlag,
+			forceAppendix: *forceAppendixFlag,
+			pw:            pw,
 		})
 		if err != nil {
 			return err
@@ -228,18 +237,18 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	_, written, err := compile(ctx, ms, plugin, *sketchFlag, *padFlag, *themeFlag, *darkThemeFlag, inputPath, outputPath, *bundleFlag, pw.Page)
+	_, written, err := compile(ctx, ms, plugin, *sketchFlag, *padFlag, *themeFlag, *darkThemeFlag, inputPath, outputPath, *bundleFlag, *forceAppendixFlag, pw.Page)
 	if err != nil {
 		if written {
 			return fmt.Errorf("failed to fully compile (partial render written): %w", err)
 		}
 		return fmt.Errorf("failed to compile: %w", err)
 	}
-	ms.Log.Success.Printf("successfully compiled %v to %v", inputPath, outputPath)
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad, themeID, darkThemeID int64, inputPath, outputPath string, bundle bool, page playwright.Page) (_ []byte, written bool, _ error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad, themeID, darkThemeID int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page) (_ []byte, written bool, _ error) {
+	start := time.Now()
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
 		return nil, false, err
@@ -263,6 +272,45 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 		return nil, false, err
 	}
 
+	compileDir := time.Since(start)
+	svg, err := render(ctx, ms, compileDir, plugin, sketch, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
+	if err != nil {
+		return svg, false, err
+	}
+	return svg, true, nil
+}
+
+func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, sketch bool, pad int64, themeID, darkThemeID int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
+	outputPath = layerOutputPath(outputPath, diagram)
+	for _, dl := range diagram.Layers {
+		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
+		if err != nil {
+			return nil, err
+		}
+	}
+	for _, dl := range diagram.Scenarios {
+		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
+		if err != nil {
+			return nil, err
+		}
+	}
+	for _, dl := range diagram.Steps {
+		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
+		if err != nil {
+			return nil, err
+		}
+	}
+	start := time.Now()
+	svg, err := _render(ctx, ms, plugin, sketch, pad, themeID, darkThemeID, outputPath, bundle, forceAppendix, page, ruler, diagram)
+	if err != nil {
+		return svg, err
+	}
+	dur := compileDur + time.Since(start)
+	ms.Log.Success.Printf("successfully compiled %s to %s in %s", inputPath, outputPath, dur)
+	return svg, nil
+}
+
+func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, themeID, darkThemeID int64, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
 		Pad:         int(pad),
 		Sketch:      sketch,
@@ -270,12 +318,12 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 		DarkThemeID: darkThemeID,
 	})
 	if err != nil {
-		return nil, false, err
+		return nil, err
 	}
 
 	svg, err = plugin.PostProcess(ctx, svg)
 	if err != nil {
-		return svg, false, err
+		return svg, err
 	}
 
 	svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
@@ -283,6 +331,9 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 		var bundleErr2 error
 		svg, bundleErr2 = imgbundler.BundleRemote(ctx, ms, svg)
 		bundleErr = multierr.Combine(bundleErr, bundleErr2)
+	}
+	if forceAppendix && filepath.Ext(outputPath) != ".png" {
+		svg = appendix.Append(diagram, ruler, svg)
 	}
 
 	out := svg
@@ -297,7 +348,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 
 		out, err = png.ConvertSVG(ms, page, svg)
 		if err != nil {
-			return svg, false, err
+			return svg, err
 		}
 	} else {
 		if len(out) > 0 && out[len(out)-1] != '\n' {
@@ -305,12 +356,29 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 		}
 	}
 
+	err = os.MkdirAll(filepath.Dir(outputPath), 0755)
+	if err != nil {
+		return svg, err
+	}
 	err = ms.WritePath(outputPath, out)
 	if err != nil {
-		return svg, false, err
+		return svg, err
 	}
+	if bundleErr != nil {
+		return svg, bundleErr
+	}
+	return svg, nil
+}
 
-	return svg, true, bundleErr
+func layerOutputPath(outputPath string, d *d2target.Diagram) string {
+	if d.Name == "" {
+		return outputPath
+	}
+	ext := filepath.Ext(outputPath)
+	outputPath = strings.TrimSuffix(outputPath, ext)
+	outputPath += "/" + d.Name
+	outputPath += ext
+	return outputPath
 }
 
 // newExt must include leading .

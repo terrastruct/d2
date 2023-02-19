@@ -4,13 +4,13 @@
   "shapes": [
     {
       "id": "alice",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 24,
-        "y": 74
+        "x": 12,
+        "y": 52
       },
-      "width": 150,
-      "height": 126,
+      "width": 100,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,21 +37,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 37,
-      "labelHeight": 26,
+      "labelWidth": 32,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "bob",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 426,
-        "y": 74
+        "x": 404,
+        "y": 52
       },
-      "width": 150,
-      "height": 126,
+      "width": 100,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,8 +78,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 31,
-      "labelHeight": 26,
+      "labelWidth": 26,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
@@ -112,12 +112,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
-          "y": 330
+          "x": 62,
+          "y": 188
         },
         {
-          "x": 501,
-          "y": 330
+          "x": 454,
+          "y": 188
         }
       ],
       "animated": false,
@@ -151,12 +151,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 501,
-          "y": 460
+          "x": 454,
+          "y": 258
         },
         {
-          "x": 99,
-          "y": 460
+          "x": 62,
+          "y": 258
         }
       ],
       "animated": false,
@@ -190,12 +190,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
-          "y": 200
+          "x": 62,
+          "y": 118
         },
         {
-          "x": 99,
-          "y": 590
+          "x": 62,
+          "y": 328
         }
       ],
       "animated": false,
@@ -229,12 +229,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 501,
-          "y": 200
+          "x": 454,
+          "y": 118
         },
         {
-          "x": 501,
-          "y": 590
+          "x": 454,
+          "y": 328
         }
       ],
       "animated": false,

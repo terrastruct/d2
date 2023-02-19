@@ -48,8 +48,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
@@ -59,7 +59,7 @@
       "type": "image",
       "pos": {
         "x": 12,
-        "y": 266
+        "y": 236
       },
       "width": 128,
       "height": 128,
@@ -100,8 +100,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 13,
-      "labelHeight": 26,
+      "labelWidth": 8,
+      "labelHeight": 21,
       "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
@@ -139,7 +139,7 @@
         },
         {
           "x": 76,
-          "y": 266
+          "y": 236
         }
       ],
       "animated": false,

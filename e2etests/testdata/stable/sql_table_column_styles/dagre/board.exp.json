@@ -1,0 +1,357 @@
+{
+  "name": "",
+  "fontFamily": "SourceSansPro",
+  "shapes": [
+    {
+      "id": "Humor in the Court",
+      "type": "sql_table",
+      "pos": {
+        "x": 0,
+        "y": 178
+      },
+      "width": 678,
+      "height": 108,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "red",
+      "stroke": "lightgray",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": [
+        {
+          "name": {
+            "label": "Could you see him from where you were standing?",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 418,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "I could see his head.",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 166,
+            "labelHeight": 26
+          },
+          "constraint": "",
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "And where was his head?",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 208,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "Just above his shoulders.",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 210,
+            "labelHeight": 26
+          },
+          "constraint": "",
+          "reference": ""
+        }
+      ],
+      "label": "Humor in the Court",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "orange",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 202,
+      "labelHeight": 31,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
+    },
+    {
+      "id": "Humor in the Court2",
+      "type": "sql_table",
+      "pos": {
+        "x": 738,
+        "y": 160
+      },
+      "width": 992,
+      "height": 144,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "red",
+      "stroke": "lightgray",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": [
+        {
+          "name": {
+            "label": "Could you see him from where you were standing?",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 627,
+            "labelHeight": 38
+          },
+          "type": {
+            "label": "I could see his head.",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 248,
+            "labelHeight": 38
+          },
+          "constraint": "",
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "And where was his head?",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 312,
+            "labelHeight": 38
+          },
+          "type": {
+            "label": "Just above his shoulders.",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 315,
+            "labelHeight": 38
+          },
+          "constraint": "",
+          "reference": ""
+        }
+      ],
+      "label": "Humor in the Court2",
+      "fontSize": 30,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "orange",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 303,
+      "labelHeight": 43,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
+    },
+    {
+      "id": "manager",
+      "type": "class",
+      "pos": {
+        "x": 1790,
+        "y": 48
+      },
+      "width": 422,
+      "height": 368,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N1",
+      "stroke": "N7",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": [
+        {
+          "name": "num",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "timeout",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "pid",
+          "type": "",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getStatus()",
+          "return": "Enum",
+          "visibility": "public"
+        },
+        {
+          "name": "getJobs()",
+          "return": "Job[]",
+          "visibility": "public"
+        },
+        {
+          "name": "setTimeout(seconds int)",
+          "return": "void",
+          "visibility": "public"
+        }
+      ],
+      "columns": null,
+      "label": "BatchManager",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 170,
+      "labelHeight": 31,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
+    },
+    {
+      "id": "manager2",
+      "type": "class",
+      "pos": {
+        "x": 2272,
+        "y": 0
+      },
+      "width": 582,
+      "height": 464,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N1",
+      "stroke": "N7",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": [
+        {
+          "name": "num",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "timeout",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "pid",
+          "type": "",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getStatus()",
+          "return": "Enum",
+          "visibility": "public"
+        },
+        {
+          "name": "getJobs()",
+          "return": "Job[]",
+          "visibility": "public"
+        },
+        {
+          "name": "setTimeout(seconds int)",
+          "return": "void",
+          "visibility": "public"
+        }
+      ],
+      "columns": null,
+      "label": "BatchManager",
+      "fontSize": 30,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 241,
+      "labelHeight": 43,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
+    }
+  ],
+  "connections": []
+}

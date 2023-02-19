@@ -252,10 +252,10 @@ install_post_standalone() {
 Extend your \$PATH to use d2:
   export PATH=$PREFIX/bin:\$PATH
 Then run:
-  ${TALA+D2_LAYOUT=tala }d2 --help
+  ${TALA:+D2_LAYOUT=tala }d2 --help
 EOF
   else
-    log "Run ${TALA+D2_LAYOUT=tala }d2 --help for usage."
+    log "Run ${TALA:+D2_LAYOUT=tala }d2 --help for usage."
   fi
   if ! manpath 2>/dev/null | grep -qF "$PREFIX/share/man"; then
     logcat >&2 <<EOF
@@ -282,7 +282,7 @@ install_post_brew() {
   fi
   log "Rerun this install script with --uninstall to uninstall."
   log
-  log "Run ${TALA+D2_LAYOUT=tala }d2 --help for usage."
+  log "Run ${TALA:+D2_LAYOUT=tala }d2 --help for usage."
   log "Run man d2 for detailed docs."
   if [ -n "${TALA-}" ]; then
     log "Run man d2plugin-tala for detailed TALA docs."
@@ -485,7 +485,7 @@ fetch_release_info() {
 }
 
 curl_gh() {
-  sh_c curl -fL ${GITHUB_TOKEN+"-H \"Authorization: Bearer \$GITHUB_TOKEN\""} "$@"
+  sh_c curl -fL ${GITHUB_TOKEN:+"-H \"Authorization: Bearer \$GITHUB_TOKEN\""} "$@"
 }
 
 fetch_gh() {

@@ -4,13 +4,13 @@
   "shapes": [
     {
       "id": "markdown",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 12,
         "y": 12
       },
-      "width": 609,
-      "height": 198,
+      "width": 559,
+      "height": 148,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,8 +37,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 129,
-      "labelHeight": 41,
+      "labelWidth": 124,
+      "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
@@ -47,8 +47,8 @@
       "id": "markdown.md",
       "type": "text",
       "pos": {
-        "x": 87,
-        "y": 87
+        "x": 62,
+        "y": 62
       },
       "width": 459,
       "height": 48,

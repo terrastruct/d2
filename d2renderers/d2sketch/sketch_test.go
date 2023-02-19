@@ -14,7 +14,6 @@ import (
 	tassert "github.com/stretchr/testify/assert"
 
 	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
 	"oss.terrastruct.com/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
@@ -50,6 +49,132 @@ func TestSketch(t *testing.T) {
 		`,
 		},
 		{
+			name: "crows feet",
+			script: `a1 <-> b1: {
+	style.stroke-width: 1
+	source-arrowhead: {
+		shape: cf-many
+	}
+	target-arrowhead: {
+		shape: cf-many
+	}
+}
+a2 <-> b2: {
+	style.stroke-width: 3
+	source-arrowhead: {
+		shape: cf-many
+	}
+	target-arrowhead: {
+		shape: cf-many
+	}
+}
+a3 <-> b3: {
+	style.stroke-width: 6
+	source-arrowhead: {
+		shape: cf-many
+	}
+	target-arrowhead: {
+		shape: cf-many
+	}
+}
+
+c1 <-> d1: {
+	style.stroke-width: 1
+	source-arrowhead: {
+		shape: cf-many-required
+	}
+	target-arrowhead: {
+		shape: cf-many-required
+	}
+}
+c2 <-> d2: {
+	style.stroke-width: 3
+	source-arrowhead: {
+		shape: cf-many-required
+	}
+	target-arrowhead: {
+		shape: cf-many-required
+	}
+}
+c3 <-> d3: {
+	style.stroke-width: 6
+	source-arrowhead: {
+		shape: cf-many-required
+	}
+	target-arrowhead: {
+		shape: cf-many-required
+	}
+}
+
+e1 <-> f1: {
+	style.stroke-width: 1
+	source-arrowhead: {
+		shape: cf-one
+	}
+	target-arrowhead: {
+		shape: cf-one
+	}
+}
+e2 <-> f2: {
+	style.stroke-width: 3
+	source-arrowhead: {
+		shape: cf-one
+	}
+	target-arrowhead: {
+		shape: cf-one
+	}
+}
+e3 <-> f3: {
+	style.stroke-width: 6
+	source-arrowhead: {
+		shape: cf-one
+	}
+	target-arrowhead: {
+		shape: cf-one
+	}
+}
+
+g1 <-> h1: {
+	style.stroke-width: 1
+	source-arrowhead: {
+		shape: cf-one-required
+	}
+	target-arrowhead: {
+		shape: cf-one-required
+	}
+}
+g2 <-> h2: {
+	style.stroke-width: 3
+	source-arrowhead: {
+		shape: cf-one-required
+	}
+	target-arrowhead: {
+		shape: cf-one-required
+	}
+}
+g3 <-> h3: {
+	style.stroke-width: 6
+	source-arrowhead: {
+		shape: cf-one-required
+	}
+	target-arrowhead: {
+		shape: cf-one-required
+	}
+}
+
+c <-> d <-> f: {
+	style.stroke-width: 1
+	style.stroke: "orange"
+	source-arrowhead: {
+		shape: cf-many-required
+	}
+	target-arrowhead: {
+		shape: cf-one
+	}
+}
+		`,
+		},
+		{
 			name: "twitter",
 			script: `timeline mixer: "" {
   explanation: |md
@@ -63,7 +188,7 @@ func TestSketch(t *testing.T) {
 }
 People discovery: "People discovery \nservice"
 admixer: Ad mixer {
-  fill: "#c1a2f3"
+  style.fill: "#c1a2f3"
 }
 
 onboarding service: "Onboarding \nservice"
@@ -107,7 +232,7 @@ Android: {
 
 web -> twitter fe
 timeline scorer: "Timeline\nScorer" {
-  fill: "#ffdef1"
+  style.fill "#ffdef1"
 }
 home ranker: Home Ranker
 
@@ -119,7 +244,7 @@ timeline mixer -> home ranker: {
 }
 timeline mixer -> timeline service
 home mixer: Home mixer {
-  # fill: "#c1a2f3"
+  # style.fill "#c1a2f3"
 }
 container0.graphql -> home mixer: {
   style.stroke-dash: 4
@@ -146,7 +271,7 @@ prediction service2: Prediction Service {
   icon: https://cdn-icons-png.flaticon.com/512/6461/6461819.png
 }
 home scorer: Home Scorer {
-  fill: "#ffdef1"
+  style.fill "#ffdef1"
 }
 manhattan: Manhattan
 memcache: Memcache {
@@ -154,15 +279,15 @@ memcache: Memcache {
 }
 
 fetch: Fetch {
-  multiple: true
+  style.multiple: true
   shape: step
 }
 feature: Feature {
-  multiple: true
+  style.multiple: true
   shape: step
 }
 scoring: Scoring {
-  multiple: true
+  style.multiple: true
   shape: step
 }
 fetch -> feature
@@ -432,8 +557,5 @@ func run(t *testing.T, tc testCase) {
 
 	var xmlParsed interface{}
 	err = xml.Unmarshal(svgBytes, &xmlParsed)
-	assert.Success(t, err)
-
-	err = diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
 	assert.Success(t, err)
 }

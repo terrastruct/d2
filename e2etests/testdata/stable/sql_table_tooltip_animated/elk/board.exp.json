@@ -55,7 +55,7 @@
             "labelHeight": 0
           },
           "constraint": "",
-          "reference": "a.b"
+          "reference": ""
         }
       ],
       "label": "x",
@@ -66,8 +66,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 17,
-      "labelHeight": 36,
+      "labelWidth": 12,
+      "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "B2",
@@ -79,7 +79,7 @@
       "type": "sql_table",
       "pos": {
         "x": 12,
-        "y": 184
+        "y": 154
       },
       "width": 60,
       "height": 72,
@@ -138,8 +138,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 16,
-      "labelHeight": 36,
+      "labelWidth": 11,
+      "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
       "primaryAccentColor": "B2",
@@ -179,7 +179,7 @@
         },
         {
           "x": 42,
-          "y": 184
+          "y": 154
         }
       ],
       "animated": true,

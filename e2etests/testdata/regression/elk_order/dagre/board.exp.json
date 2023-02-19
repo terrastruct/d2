@@ -9,8 +9,8 @@
         "x": 0,
         "y": 148
       },
-      "width": 1336,
-      "height": 226,
+      "width": 946,
+      "height": 166,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -44,13 +44,13 @@
     },
     {
       "id": "queue.M0",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 50,
+        "x": 40,
         "y": 198
       },
-      "width": 125,
-      "height": 126,
+      "width": 65,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -77,21 +77,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 25,
-      "labelHeight": 26,
+      "labelWidth": 20,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "queue.M1",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 235,
+        "x": 165,
         "y": 198
       },
-      "width": 125,
-      "height": 126,
+      "width": 65,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -118,21 +118,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 25,
-      "labelHeight": 26,
+      "labelWidth": 20,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "queue.M2",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 420,
+        "x": 290,
         "y": 198
       },
-      "width": 125,
-      "height": 126,
+      "width": 65,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -159,21 +159,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 25,
-      "labelHeight": 26,
+      "labelWidth": 20,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "queue.M3",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 605,
+        "x": 415,
         "y": 198
       },
-      "width": 125,
-      "height": 126,
+      "width": 65,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -200,21 +200,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 25,
-      "labelHeight": 26,
+      "labelWidth": 20,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "queue.M4",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 790,
+        "x": 540,
         "y": 198
       },
-      "width": 126,
-      "height": 126,
+      "width": 66,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -241,21 +241,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 26,
-      "labelHeight": 26,
+      "labelWidth": 21,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "queue.M5",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 976,
+        "x": 666,
         "y": 198
       },
-      "width": 125,
-      "height": 126,
+      "width": 65,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -282,21 +282,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 25,
-      "labelHeight": 26,
+      "labelWidth": 20,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "queue.M6",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 1161,
+        "x": 841,
         "y": 198
       },
-      "width": 125,
-      "height": 126,
+      "width": 65,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -323,8 +323,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 25,
-      "labelHeight": 26,
+      "labelWidth": 20,
+      "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
@@ -333,7 +333,7 @@
       "id": "m0_desc",
       "type": "text",
       "pos": {
-        "x": 60,
+        "x": 20,
         "y": 12
       },
       "width": 106,
@@ -373,7 +373,7 @@
       "id": "m2_desc",
       "type": "text",
       "pos": {
-        "x": 462,
+        "x": 302,
         "y": 12
       },
       "width": 41,
@@ -413,7 +413,7 @@
       "id": "m5_desc",
       "type": "text",
       "pos": {
-        "x": 994,
+        "x": 654,
         "y": 12
       },
       "width": 90,
@@ -453,7 +453,7 @@
       "id": "m6_desc",
       "type": "text",
       "pos": {
-        "x": 1154,
+        "x": 804,
         "y": 0
       },
       "width": 140,
@@ -517,19 +517,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 112.5,
+          "x": 72.5,
           "y": 36
         },
         {
-          "x": 112.5,
+          "x": 72.5,
           "y": 85.6
         },
         {
-          "x": 112.5,
+          "x": 72.5,
           "y": 158
         },
         {
-          "x": 112.5,
+          "x": 72.5,
           "y": 198
         }
       ],
@@ -565,19 +565,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 482.5,
+          "x": 322.5,
           "y": 36
         },
         {
-          "x": 482.5,
+          "x": 322.5,
           "y": 85.6
         },
         {
-          "x": 482.5,
+          "x": 322.5,
           "y": 158
         },
         {
-          "x": 482.5,
+          "x": 322.5,
           "y": 198
         }
       ],
@@ -613,19 +613,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1038.5,
+          "x": 698.5,
           "y": 36
         },
         {
-          "x": 1038.5,
+          "x": 698.5,
           "y": 85.6
         },
         {
-          "x": 1038.5,
+          "x": 698.5,
           "y": 158
         },
         {
-          "x": 1038.5,
+          "x": 698.5,
           "y": 198
         }
       ],
@@ -661,19 +661,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1223.5,
+          "x": 873.5,
           "y": 48
         },
         {
-          "x": 1223.5,
+          "x": 873.5,
           "y": 88
         },
         {
-          "x": 1223.5,
+          "x": 873.5,
           "y": 158
         },
         {
-          "x": 1223.5,
+          "x": 873.5,
           "y": 198
         }
       ],

@@ -98,7 +98,7 @@ func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (nears []*d2gra
 			nears = append(nears, obj)
 			g.Objects = append(g.Objects[:i], g.Objects[i+1:]...)
 			i--
-			delete(obj.Parent.Children, obj.ID)
+			delete(obj.Parent.Children, strings.ToLower(obj.ID))
 			for i := 0; i < len(obj.Parent.ChildrenArray); i++ {
 				if obj.Parent.ChildrenArray[i] == obj {
 					obj.Parent.ChildrenArray = append(obj.Parent.ChildrenArray[:i], obj.Parent.ChildrenArray[i+1:]...)

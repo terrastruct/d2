@@ -2,13 +2,14 @@ package d2target
 
 import (
 	"fmt"
-
-	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 )
 
 const (
 	PrefixPadding = 10
 	PrefixWidth   = 20
+	CenterPadding = 50
+	// 10px of padding top and bottom so text doesn't look squished
+	VerticalPadding = 20
 )
 
 type Class struct {
@@ -22,10 +23,10 @@ type ClassField struct {
 	Visibility string `json:"visibility"`
 }
 
-func (cf ClassField) Text() *MText {
+func (cf ClassField) Text(fontSize int) *MText {
 	return &MText{
 		Text:     fmt.Sprintf("%s%s", cf.Name, cf.Type),
-		FontSize: d2fonts.FONT_SIZE_L,
+		FontSize: fontSize,
 		IsBold:   false,
 		IsItalic: false,
 		Shape:    "class",
@@ -49,10 +50,10 @@ type ClassMethod struct {
 	Visibility string `json:"visibility"`
 }
 
-func (cm ClassMethod) Text() *MText {
+func (cm ClassMethod) Text(fontSize int) *MText {
 	return &MText{
 		Text:     fmt.Sprintf("%s%s", cm.Name, cm.Return),
-		FontSize: d2fonts.FONT_SIZE_L,
+		FontSize: fontSize,
 		IsBold:   false,
 		IsItalic: false,
 		Shape:    "class",

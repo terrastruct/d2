@@ -15,13 +15,16 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 )
 
+const complexIDs = false
+
 func GenDSL(maxi int) (_ string, err error) {
 	gs := &dslGenState{
 		rand:          mathrand.New(mathrand.NewSource(time.Now().UnixNano())),
-		g:             d2graph.NewGraph(&d2ast.Map{}),
+		g:             d2graph.NewGraph(),
 		nodeShapes:    make(map[string]string),
 		nodeContainer: make(map[string]string),
 	}
+	gs.g.AST = &d2ast.Map{}
 	err = gs.gen(maxi)
 	if err != nil {
 		return "", err
@@ -61,7 +64,11 @@ func (gs *dslGenState) gen(maxi int) error {
 }
 
 func (gs *dslGenState) genNode(containerID string) (string, error) {
-	nodeID := gs.randStr(32, true)
+	maxLen := 8
+	if complexIDs {
+		maxLen = 32
+	}
+	nodeID := gs.randStr(maxLen, true)
 	if containerID != "" {
 		nodeID = containerID + "." + nodeID
 	}
@@ -94,7 +101,11 @@ func (gs *dslGenState) node() error {
 
 	if gs.roll(25, 75) == 0 {
 		// 25% chance of adding a label.
-		gs.g, err = d2oracle.Set(gs.g, nodeID, nil, go2.Pointer(gs.randStr(256, false)))
+		maxLen := 8
+		if complexIDs {
+			maxLen = 256
+		}
+		gs.g, err = d2oracle.Set(gs.g, nodeID, nil, go2.Pointer(gs.randStr(maxLen, false)))
 		if err != nil {
 			return err
 		}
@@ -153,7 +164,11 @@ func (gs *dslGenState) edge() error {
 		return err
 	}
 	if gs.randBool() {
-		gs.g, err = d2oracle.Set(gs.g, key, nil, go2.Pointer(gs.randStr(128, false)))
+		maxLen := 8
+		if complexIDs {
+			maxLen = 128
+		}
+		gs.g, err = d2oracle.Set(gs.g, key, nil, go2.Pointer(gs.randStr(maxLen, false)))
 		if err != nil {
 			return err
 		}
@@ -190,11 +205,15 @@ func (gs *dslGenState) randBool() bool {
 // TODO go back to using xrand.String, currently some incompatibility with
 // stuffing these strings into a script for dagre
 func randRune() rune {
-	if mathrand.Int31n(100) == 0 {
-		// Generate newline 1% of the time.
-		return '\n'
+	if complexIDs {
+		if mathrand.Int31n(100) == 0 {
+			// Generate newline 1% of the time.
+			return '\n'
+		}
+		return mathrand.Int31n(128) + 1
+	} else {
+		return mathrand.Int31n(26) + 97
 	}
-	return mathrand.Int31n(128) + 1
 }
 
 func (gs *dslGenState) findOuterSequenceDiagram(nodeID string) string {

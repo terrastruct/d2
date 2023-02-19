@@ -377,7 +377,7 @@ container -> c: edge 1
 }
 
 func TestSelfEdges(t *testing.T) {
-	g := d2graph.NewGraph(nil)
+	g := d2graph.NewGraph()
 	g.Root.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
 	n1 := g.Root.EnsureChild([]string{"n1"})
 	n1.Box = geo.NewBox(nil, 100, 100)
@@ -387,7 +387,7 @@ func TestSelfEdges(t *testing.T) {
 			Src:   n1,
 			Dst:   n1,
 			Index: 0,
-			Attributes: d2graph.Attributes{
+			Attributes: &d2graph.Attributes{
 				Label: d2graph.Scalar{Value: "left to right"},
 			},
 		},
@@ -407,17 +407,17 @@ func TestSelfEdges(t *testing.T) {
 		t.Fatalf("route does not end at the same actor, start at %.5f, end at %.5f", route[0].X, route[3].X)
 	}
 
-	if route[3].Y-route[0].Y != d2sequence.MIN_MESSAGE_DISTANCE {
-		t.Fatalf("expected route height to be %.f5, got %.5f", d2sequence.MIN_MESSAGE_DISTANCE, route[3].Y-route[0].Y)
+	if route[3].Y-route[0].Y != d2sequence.MIN_MESSAGE_DISTANCE*1.5 {
+		t.Fatalf("expected route height to be %.5f, got %.5f", d2sequence.MIN_MESSAGE_DISTANCE*1.5, route[3].Y-route[0].Y)
 	}
 }
 
 func TestSequenceToDescendant(t *testing.T) {
-	g := d2graph.NewGraph(nil)
+	g := d2graph.NewGraph()
 	g.Root.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
 	a := g.Root.EnsureChild([]string{"a"})
 	a.Box = geo.NewBox(nil, 100, 100)
-	a.Attributes = d2graph.Attributes{
+	a.Attributes = &d2graph.Attributes{
 		Shape: d2graph.Scalar{Value: shape.PERSON_TYPE},
 	}
 	a_t1 := a.EnsureChild([]string{"t1"})
@@ -425,13 +425,15 @@ func TestSequenceToDescendant(t *testing.T) {
 
 	g.Edges = []*d2graph.Edge{
 		{
-			Src:   a,
-			Dst:   a_t1,
-			Index: 0,
+			Src:        a,
+			Dst:        a_t1,
+			Index:      0,
+			Attributes: &d2graph.Attributes{},
 		}, {
-			Src:   a_t1,
-			Dst:   a,
-			Index: 0,
+			Src:        a_t1,
+			Dst:        a,
+			Index:      0,
+			Attributes: &d2graph.Attributes{},
 		},
 	}
 

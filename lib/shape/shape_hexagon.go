@@ -1,8 +1,11 @@
 package shape
 
 import (
+	"math"
+
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapeHexagon struct {
@@ -10,12 +13,25 @@ type shapeHexagon struct {
 }
 
 func NewHexagon(box *geo.Box) Shape {
-	return shapeHexagon{
+	shape := shapeHexagon{
 		baseShape: &baseShape{
 			Type: HEXAGON_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
+}
+
+func (s shapeHexagon) GetInnerBox() *geo.Box {
+	width := s.Box.Width
+	height := s.Box.Height
+	tl := s.Box.TopLeft.Copy()
+	tl.X += width / 6.
+	width /= 1.5
+	tl.Y += height / 6.
+	height /= 1.5
+	return geo.NewBox(tl, width, height)
 }
 
 func hexagonPath(box *geo.Box) *svg.SvgPathContext {
@@ -39,4 +55,14 @@ func (s shapeHexagon) GetSVGPathData() []string {
 	return []string{
 		hexagonPath(s.Box).PathData(),
 	}
+}
+
+func (s shapeHexagon) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	totalWidth := 1.5 * (width + paddingX)
+	totalHeight := 1.5 * (height + paddingY)
+	return math.Ceil(totalWidth), math.Ceil(totalHeight)
+}
+
+func (s shapeHexagon) GetDefaultPadding() (paddingX, paddingY float64) {
+	return defaultPadding / 2, defaultPadding / 2
 }

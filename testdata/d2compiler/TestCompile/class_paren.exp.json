@@ -1,5 +1,6 @@
 {
   "graph": {
+    "name": "",
     "ast": {
       "range": "d2/testdata/d2compiler/TestCompile/class_paren.d2,0:0:0-6:1:81",
       "nodes": [
@@ -184,11 +185,14 @@
         },
         "direction": {
           "value": ""
+        },
+        "constraint": {
+          "value": ""
         }
       },
       "zIndex": 0
     },
-    "edges": [],
+    "edges": null,
     "objects": [
       {
         "id": "_shape_",
@@ -216,7 +220,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "class": {
@@ -250,6 +254,9 @@
             "value": "class"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },

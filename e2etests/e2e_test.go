@@ -12,7 +12,7 @@ import (
 
 	"cdr.dev/slog"
 
-	tassert "github.com/stretchr/testify/assert"
+	trequire "github.com/stretchr/testify/require"
 
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
@@ -38,6 +38,7 @@ func TestE2E(t *testing.T) {
 	t.Run("regression", testRegression)
 	t.Run("todo", testTodo)
 	t.Run("measured", testMeasured)
+	t.Run("unicode", testUnicode)
 }
 
 func testSanity(t *testing.T) {
@@ -77,6 +78,7 @@ type testCase struct {
 	mtexts     []*d2target.MText
 	assertions func(t *testing.T, diagram *d2target.Diagram)
 	skip       bool
+	expErr     string
 }
 
 func runa(t *testing.T, tcs []testCase) {
@@ -101,18 +103,19 @@ func serde(t *testing.T, tc testCase, ruler *textmeasure.Ruler) {
 	g, err := d2compiler.Compile("", strings.NewReader(tc.script), &d2compiler.CompileOptions{
 		UTF16: false,
 	})
-	tassert.Nil(t, err)
+	trequire.Nil(t, err)
 	if len(g.Objects) > 0 {
 		err = g.SetDimensions(nil, ruler, nil)
-		tassert.Nil(t, err)
+		trequire.Nil(t, err)
 		d2near.WithoutConstantNears(ctx, g)
 		d2sequence.WithoutSequenceDiagrams(ctx, g)
 	}
 	b, err := d2graph.SerializeGraph(g)
-	tassert.Nil(t, err)
+	trequire.Nil(t, err)
 	var newG d2graph.Graph
 	err = d2graph.DeserializeGraph(b, &newG)
-	tassert.Nil(t, err)
+	trequire.Nil(t, err)
+	trequire.Nil(t, d2graph.CompareSerializedGraph(g, &newG))
 }
 
 func run(t *testing.T, tc testCase) {
@@ -124,9 +127,7 @@ func run(t *testing.T, tc testCase) {
 	var err error
 	if tc.mtexts == nil {
 		ruler, err = textmeasure.NewRuler()
-		if !tassert.Nil(t, err) {
-			return
-		}
+		trequire.Nil(t, err)
 
 		serde(t, tc, ruler)
 	}
@@ -149,8 +150,13 @@ func run(t *testing.T, tc testCase) {
 			MeasuredTexts: tc.mtexts,
 			Layout:        layout,
 		})
-		if !tassert.Nil(t, err) {
+
+		if tc.expErr != "" {
+			assert.Error(t, err)
+			assert.ErrorString(t, err, tc.expErr)
 			return
+		} else {
+			assert.Success(t, err)
 		}
 
 		if tc.assertions != nil {
@@ -172,26 +178,19 @@ func run(t *testing.T, tc testCase) {
 		assert.Success(t, err)
 		err = ioutil.WriteFile(pathGotSVG, svgBytes, 0600)
 		assert.Success(t, err)
-		// if running from e2ereport.sh, we want to keep .got.svg on a failure
-		forReport := os.Getenv("E2E_REPORT") != ""
-		if !forReport {
-			defer os.Remove(pathGotSVG)
-		}
 
 		// Check that it's valid SVG
 		var xmlParsed interface{}
 		err = xml.Unmarshal(svgBytes, &xmlParsed)
 		assert.Success(t, err)
 
+		var err2 error
 		err = diff.TestdataJSON(filepath.Join(dataPath, "board"), diagram)
-		assert.Success(t, err)
 		if os.Getenv("SKIP_SVG_CHECK") == "" {
-			err = diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
-			assert.Success(t, err)
+			err2 = diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
 		}
-		if forReport {
-			os.Remove(pathGotSVG)
-		}
+		assert.Success(t, err)
+		assert.Success(t, err2)
 	}
 }
 

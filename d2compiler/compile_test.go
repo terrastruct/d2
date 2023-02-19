@@ -8,12 +8,13 @@ import (
 
 	tassert "github.com/stretchr/testify/assert"
 
+	"oss.terrastruct.com/util-go/assert"
+	"oss.terrastruct.com/util-go/diff"
+
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/util-go/assert"
-	"oss.terrastruct.com/util-go/diff"
 )
 
 func TestCompile(t *testing.T) {
@@ -85,7 +86,6 @@ x: {
 				}
 			},
 		},
-
 		{
 			name: "dimensions_on_nonimage",
 
@@ -114,6 +114,17 @@ x: {
 			},
 		},
 		{
+			name: "positions",
+			text: `hey: {
+	top: 200
+	left: 230
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "200", g.Objects[0].Attributes.Top.Value)
+			},
+		},
+		{
 			name: "equal_dimensions_on_circle",
 
 			text: `hey: "" {
@@ -123,8 +134,7 @@ x: {
 }
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2:3:2: width and height must be equal for circle shapes
-d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2:4:2: width and height must be equal for circle shapes
-`,
+d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2:4:2: width and height must be equal for circle shapes`,
 		},
 		{
 			name: "single_dimension_on_circle",
@@ -207,8 +217,7 @@ d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:16:3: height c
 d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:25:3: width cannot be used on container: containers.oval container
 d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:26:3: height cannot be used on container: containers.oval container
 d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:36:3: width cannot be used on container: containers.hexagon container
-d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height cannot be used on container: containers.hexagon container
-`,
+d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height cannot be used on container: containers.hexagon container`,
 		},
 		{
 			name: "dimension_with_style",
@@ -241,8 +250,7 @@ d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height c
   }
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/shape_unquoted_hex.d2:3:10: missing value after colon
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/shape_unquoted_hex.d2:3:10: missing value after colon`,
 		},
 		{
 			name: "edge_unquoted_hex",
@@ -253,8 +261,7 @@ d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height c
   }
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/edge_unquoted_hex.d2:3:10: missing value after colon
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/edge_unquoted_hex.d2:3:10: missing value after colon`,
 		},
 		{
 			name: "blank_underscore",
@@ -264,8 +271,7 @@ d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height c
   _
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/blank_underscore.d2:3:3: invalid use of parent "_"
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/blank_underscore.d2:3:3: field key must contain more than underscores`,
 		},
 		{
 			name: "image_non_style",
@@ -276,8 +282,7 @@ d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height c
   name: y
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/image_non_style.d2:4:3: image shapes cannot have children.
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/image_non_style.d2:4:3: image shapes cannot have children.`,
 		},
 		{
 			name: "stroke-width",
@@ -302,8 +307,7 @@ d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height c
   style.stroke-width: -1
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/illegal-stroke-width.d2:2:23: expected "stroke-width" to be a number between 0 and 15
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/illegal-stroke-width.d2:2:23: expected "stroke-width" to be a number between 0 and 15`,
 		},
 		{
 			name: "underscore_parent_create",
@@ -340,8 +344,18 @@ x: {
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				tassert.Equal(t, "y", g.Objects[1].ID)
-				tassert.Equal(t, g.Root.AbsID(), g.Objects[1].References[0].ScopeObj.AbsID())
-				tassert.Equal(t, g.Objects[0].AbsID(), g.Objects[1].References[0].UnresolvedScopeObj.AbsID())
+				tassert.Equal(t, g.Objects[0].AbsID(), g.Objects[1].References[0].ScopeObj.AbsID())
+			},
+		},
+		{
+			name: "underscore_connection",
+			text: `a: {
+  _.c.d -> _.c.b
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 4, len(g.Objects))
+				tassert.Equal(t, 1, len(g.Edges))
 			},
 		},
 		{
@@ -456,8 +470,7 @@ x: {
 			text: `
 _.x
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_root.d2:2:1: parent "_" cannot be used in the root scope
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_root.d2:2:1: invalid underscore: no parent`,
 		},
 		{
 			name: "underscore_parent_middle_path",
@@ -467,8 +480,7 @@ x: {
   y._.z
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_middle_path.d2:3:3: parent "_" can only be used in the beginning of paths, e.g. "_.x"
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_middle_path.d2:3:5: parent "_" can only be used in the beginning of paths, e.g. "_.x"`,
 		},
 		{
 			name: "underscore_parent_sandwich_path",
@@ -478,8 +490,7 @@ x: {
   _.z._
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_sandwich_path.d2:3:3: parent "_" can only be used in the beginning of paths, e.g. "_.x"
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/underscore_parent_sandwich_path.d2:3:7: parent "_" can only be used in the beginning of paths, e.g. "_.x"`,
 		},
 		{
 			name: "underscore_edge",
@@ -996,8 +1007,7 @@ x -> y: {
 
 			text: `x: {shape: triangle}
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/object_arrowhead_shape.d2:1:5: invalid shape, can only set "triangle" for arrowheads
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/object_arrowhead_shape.d2:1:5: invalid shape, can only set "triangle" for arrowheads`,
 		},
 		{
 			name: "edge_flat_label_arrowhead",
@@ -1083,8 +1093,7 @@ x -> y: {
   space -> stars
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/nested_edge.d2:1:1: edges cannot be nested within another edge
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/nested_edge.d2:2:3: cannot create edge inside edge`,
 		},
 		{
 			name: "shape_edge_style",
@@ -1094,8 +1103,7 @@ x: {
 	style.animated: true
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/shape_edge_style.d2:3:2: key "animated" can only be applied to edges
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/shape_edge_style.d2:3:2: key "animated" can only be applied to edges`,
 		},
 		{
 			name: "edge_chain_map",
@@ -1351,8 +1359,7 @@ x -> y: {
   z
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/edge_map_non_reserved.d2:2:1: edge map keys must be reserved keywords
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/edge_map_non_reserved.d2:3:3: edge map keys must be reserved keywords`,
 		},
 		{
 			name: "url_link",
@@ -1397,8 +1404,7 @@ x -> y: {
 
 			text: `x.near: txop-center
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_constant.d2:1:1: near key "txop-center" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_constant.d2:1:9: near key "txop-center" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right`,
 		},
 		{
 			name: "near_bad_container",
@@ -1408,8 +1414,7 @@ x -> y: {
   y
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_container.d2:1:1: constant near keys cannot be set on shapes with children
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_container.d2:2:9: constant near keys cannot be set on shapes with children`,
 		},
 		{
 			name: "near_bad_connected",
@@ -1419,16 +1424,14 @@ x -> y: {
 }
 x -> y
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_connected.d2:1:1: constant near keys cannot be set on connected shapes
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_connected.d2:2:9: constant near keys cannot be set on connected shapes`,
 		},
 		{
 			name: "nested_near_constant",
 
 			text: `x.y.near: top-center
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/nested_near_constant.d2:1:1: constant near keys can only be set on root level shapes
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/nested_near_constant.d2:1:11: constant near keys can only be set on root level shapes`,
 		},
 		{
 			name: "reserved_icon_near_style",
@@ -1474,17 +1477,14 @@ y
 }
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:3:9: bad icon url "::????:::%%orange": parse "::????:::%%orange": missing protocol scheme
-d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:4:18: expected "opacity" to be a number between 0.0 and 1.0
 d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:5:18: expected "opacity" to be a number between 0.0 and 1.0
-d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:1:1: near key "y" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right
-`,
+d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:2:9: near key "y" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right`,
 		},
 		{
 			name: "errors/missing_shape_icon",
 
-			text: `x.shape: image`,
-			expErr: `d2/testdata/d2compiler/TestCompile/errors/missing_shape_icon.d2:1:1: image shape must include an "icon" field
-`,
+			text:   `x.shape: image`,
+			expErr: `d2/testdata/d2compiler/TestCompile/errors/missing_shape_icon.d2:1:1: image shape must include an "icon" field`,
 		},
 		{
 			name: "edge_in_column",
@@ -1493,6 +1493,36 @@ d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:1:1: near key "
   shape: sql_table
   x: {p -> q}
 }`,
+			expErr: `d2/testdata/d2compiler/TestCompile/edge_in_column.d2:3:7: sql_table columns cannot have children
+d2/testdata/d2compiler/TestCompile/edge_in_column.d2:3:12: sql_table columns cannot have children`,
+		},
+		{
+			name: "no-nested-columns-sql",
+
+			text: `x: {
+  shape: sql_table
+  a -- b.b
+}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no-nested-columns-sql.d2:3:10: sql_table columns cannot have children`,
+		},
+		{
+			name: "no-nested-columns-sql-2",
+
+			text: `x: {
+  shape: sql_table
+  a
+}
+x.a.b`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no-nested-columns-sql-2.d2:5:5: sql_table columns cannot have children`,
+		},
+		{
+			name: "no-nested-columns-class",
+
+			text: `x: {
+  shape: class
+  a.a
+}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no-nested-columns-class.d2:3:5: class fields cannot have children`,
 		},
 		{
 			name: "edge_to_style",
@@ -1500,8 +1530,7 @@ d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:1:1: near key "
 			text: `x: {style.opacity: 0.4}
 y -> x.style
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/edge_to_style.d2:2:1: cannot connect to reserved keyword
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/edge_to_style.d2:2:8: reserved keywords are prohibited in edges`,
 		},
 		{
 			name: "escaped_id",
@@ -1581,7 +1610,7 @@ b`, g.Objects[0].Attributes.Label.Value)
   GetType(): string
   style: {
     opacity: 0.4
-    color: blue
+    font-color: blue
   }
 }
 `,
@@ -1680,10 +1709,9 @@ x.y -> a.b: {
 		{
 			name: "3d_oval",
 
-			text: `SVP1.style.shape: oval
+			text: `SVP1.shape: oval
 SVP1.style.3d: true`,
-			expErr: `d2/testdata/d2compiler/TestCompile/3d_oval.d2:2:1: key "3d" can only be applied to squares and rectangles
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/3d_oval.d2:2:1: key "3d" can only be applied to squares and rectangles`,
 		}, {
 			name: "edge_column_index",
 			text: `src: {
@@ -1740,8 +1768,7 @@ dst.id <-> src.dst_id
 }
 b -> x.a
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/leaky_sequence.d2:5:1: connections within sequence diagrams can connect only to other objects within the same sequence diagram
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/leaky_sequence.d2:5:1: connections within sequence diagrams can connect only to other objects within the same sequence diagram`,
 		},
 		{
 			name: "sequence_scoping",
@@ -1773,6 +1800,35 @@ choo: {
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				tassert.Equal(t, 4, len(g.Objects))
 				tassert.Equal(t, 3, len(g.Root.ChildrenArray))
+			},
+		},
+		{
+			name: "sequence_container",
+
+			text: `shape: sequence_diagram
+x.y.q -> j.y.p
+ok: {
+	x.y.q -> j.y.p
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 7, len(g.Objects))
+				tassert.Equal(t, 3, len(g.Root.ChildrenArray))
+			},
+		},
+		{
+			name: "sequence_container_2",
+
+			text: `shape: sequence_diagram
+x.y.q
+ok: {
+	x.y.q -> j.y.p
+	meow
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 8, len(g.Objects))
+				tassert.Equal(t, 2, len(g.Root.ChildrenArray))
 			},
 		},
 		{
@@ -1818,8 +1874,7 @@ choo: {
 			text: `x: {
   direction: diagonal
 }`,
-			expErr: `d2/testdata/d2compiler/TestCompile/invalid_direction.d2:2:14: direction must be one of up, down, right, left, got "diagonal"
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/invalid_direction.d2:2:14: direction must be one of up, down, right, left, got "diagonal"`,
 		},
 		{
 			name: "self-referencing",
@@ -1868,8 +1923,7 @@ choo: {
     test_id: varchar(64) {constraint: [primary_key, foreign_key]}
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/sql-panic.d2:3:27: constraint value must be a string
-`,
+			expErr: `d2/testdata/d2compiler/TestCompile/sql-panic.d2:3:27: reserved field constraint does not accept composite`,
 		},
 		{
 			name: "wrong_column_index",
@@ -1938,4 +1992,168 @@ Chinchillas_Collectibles.chinchilla -> Chinchillas.id`,
 			assert.Success(t, err)
 		})
 	}
+}
+
+func TestCompile2(t *testing.T) {
+	t.Parallel()
+
+	t.Run("boards", testBoards)
+	t.Run("seqdiagrams", testSeqDiagrams)
+}
+
+func testBoards(t *testing.T) {
+	t.Parallel()
+
+	tca := []struct {
+		name string
+		run  func(t *testing.T)
+	}{
+		{
+			name: "root",
+			run: func(t *testing.T) {
+				g := assertCompile(t, `base
+
+layers: {
+  one: {
+    santa
+  }
+  two: {
+    clause
+  }
+}
+`, "")
+				assert.JSON(t, 2, len(g.Layers))
+				assert.JSON(t, "one", g.Layers[0].Name)
+				assert.JSON(t, "two", g.Layers[1].Name)
+			},
+		},
+		{
+			name: "recursive",
+			run: func(t *testing.T) {
+				g := assertCompile(t, `base
+
+layers: {
+  one: {
+    santa
+  }
+  two: {
+    clause
+		steps: {
+			seinfeld: {
+				reindeer
+			}
+			missoula: {
+				montana
+			}
+		}
+  }
+}
+`, "")
+				assert.Equal(t, 2, len(g.Layers))
+				assert.Equal(t, "one", g.Layers[0].Name)
+				assert.Equal(t, "two", g.Layers[1].Name)
+				assert.Equal(t, 2, len(g.Layers[1].Steps))
+			},
+		},
+		{
+			name: "errs/duplicate_board",
+			run: func(t *testing.T) {
+				assertCompile(t, `base
+
+layers: {
+  one: {
+    santa
+  }
+}
+steps: {
+	one: {
+		clause
+	}
+}
+`, `d2/testdata/d2compiler/TestCompile2/boards/errs/duplicate_board.d2:9:2: board name one already used by another board`)
+			},
+		},
+	}
+
+	for _, tc := range tca {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			tc.run(t)
+		})
+	}
+}
+
+func testSeqDiagrams(t *testing.T) {
+	t.Parallel()
+
+	t.Run("errs", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "sequence_diagram_edge_between_edge_groups",
+				// New sequence diagram scoping implementation is disabled.
+				skip: true,
+				run: func(t *testing.T) {
+					assertCompile(t, `
+Office chatter: {
+  shape: sequence_diagram
+  alice: Alice
+  bob: Bobby
+  awkward small talk: {
+    alice -> bob: uhm, hi
+    bob -> alice: oh, hello
+    icebreaker attempt: {
+      alice -> bob: what did you have for lunch?
+    }
+    unfortunate outcome: {
+      bob -> alice: that's personal
+    }
+  }
+  awkward small talk.icebreaker attempt.alice -> awkward small talk.unfortunate outcome.bob
+}
+`, "d2/testdata/d2compiler/TestCompile2/seqdiagrams/errs/sequence_diagram_edge_between_edge_groups.d2:16:3: edges between edge groups are not allowed")
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
+}
+
+func assertCompile(t *testing.T, text string, expErr string) *d2graph.Graph {
+	d2Path := fmt.Sprintf("d2/testdata/d2compiler/%v.d2", t.Name())
+	g, err := d2compiler.Compile(d2Path, strings.NewReader(text), nil)
+	if expErr != "" {
+		assert.Error(t, err)
+		assert.ErrorString(t, err, expErr)
+	} else {
+		assert.Success(t, err)
+	}
+
+	got := struct {
+		Graph *d2graph.Graph `json:"graph"`
+		Err   error          `json:"err"`
+	}{
+		Graph: g,
+		Err:   err,
+	}
+
+	err = diff.TestdataJSON(filepath.Join("..", "testdata", "d2compiler", t.Name()), got)
+	assert.Success(t, err)
+	return g
 }

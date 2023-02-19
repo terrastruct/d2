@@ -1,3 +1,5 @@
+// TODO: Remove boxes and cleanup like d2ir
+//
 // d2ast implements the d2 language's abstract syntax tree.
 //
 // Special characters to think about in parser:
@@ -149,6 +151,10 @@ func (r *Range) UnmarshalText(b []byte) (err error) {
 	return r.End.UnmarshalText(end)
 }
 
+func (r Range) Before(r2 Range) bool {
+	return r.Start.Before(r2.Start)
+}
+
 // Position represents a line:column and byte position in a file.
 //
 // note: Line and Column are zero indexed.
@@ -255,6 +261,10 @@ func (p Position) SubtractString(s string, byUTF16 bool) Position {
 		p = p.Subtract(r, byUTF16)
 	}
 	return p
+}
+
+func (p Position) Before(p2 Position) bool {
+	return p.Byte < p2.Byte
 }
 
 // MapNode is implemented by nodes that may be children of Maps.
@@ -402,7 +412,7 @@ func (s *SingleQuotedString) scalar() {}
 func (s *BlockString) scalar()        {}
 
 // TODO: mistake, move into parse.go
-func (n *Null) ScalarString() string    { return n.Type() }
+func (n *Null) ScalarString() string    { return "" }
 func (b *Boolean) ScalarString() string { return strconv.FormatBool(b.Value) }
 func (n *Number) ScalarString() string  { return n.Raw }
 func (s *UnquotedString) ScalarString() string {
@@ -648,6 +658,21 @@ type KeyPath struct {
 	Path  []*StringBox `json:"path"`
 }
 
+func MakeKeyPath(a []string) *KeyPath {
+	kp := &KeyPath{}
+	for _, el := range a {
+		kp.Path = append(kp.Path, MakeValueBox(RawString(el, true)).StringBox())
+	}
+	return kp
+}
+
+func (kp *KeyPath) IDA() (ida []string) {
+	for _, el := range kp.Path {
+		ida = append(ida, el.Unbox().ScalarString())
+	}
+	return ida
+}
+
 type Edge struct {
 	Range Range `json:"range"`
 
@@ -727,6 +752,37 @@ type ArrayNodeBox struct {
 	BlockString        *BlockString        `json:"block_string,omitempty"`
 	Array              *Array              `json:"array,omitempty"`
 	Map                *Map                `json:"map,omitempty"`
+}
+
+func MakeArrayNodeBox(an ArrayNode) ArrayNodeBox {
+	var ab ArrayNodeBox
+	switch an := an.(type) {
+	case *Comment:
+		ab.Comment = an
+	case *BlockComment:
+		ab.BlockComment = an
+	case *Substitution:
+		ab.Substitution = an
+	case *Null:
+		ab.Null = an
+	case *Boolean:
+		ab.Boolean = an
+	case *Number:
+		ab.Number = an
+	case *UnquotedString:
+		ab.UnquotedString = an
+	case *DoubleQuotedString:
+		ab.DoubleQuotedString = an
+	case *SingleQuotedString:
+		ab.SingleQuotedString = an
+	case *BlockString:
+		ab.BlockString = an
+	case *Array:
+		ab.Array = an
+	case *Map:
+		ab.Map = an
+	}
+	return ab
 }
 
 func (ab ArrayNodeBox) Unbox() ArrayNode {

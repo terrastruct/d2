@@ -4,13 +4,13 @@
   "shapes": [
     {
       "id": "build_workflow",
-      "type": "",
+      "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 0
+        "y": 41
       },
-      "width": 430,
-      "height": 1672,
+      "width": 350,
+      "height": 1331,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -37,21 +37,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 226,
-      "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelWidth": 221,
+      "labelHeight": 36,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "build_workflow.push",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 50,
-        "y": 73
+        "x": 40,
+        "y": 93
       },
-      "width": 330,
-      "height": 137,
+      "width": 270,
+      "height": 77,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -78,21 +78,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 230,
-      "labelHeight": 37,
+      "labelWidth": 225,
+      "labelHeight": 32,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "build_workflow.GHA",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 81,
-        "y": 382
+        "x": 71,
+        "y": 342
       },
-      "width": 269,
-      "height": 137,
+      "width": 209,
+      "height": 77,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -119,21 +119,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 169,
-      "labelHeight": 37,
+      "labelWidth": 164,
+      "labelHeight": 32,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "build_workflow.S3",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 150,
-        "y": 771
+        "x": 140,
+        "y": 671
       },
-      "width": 131,
-      "height": 137,
+      "width": 71,
+      "height": 77,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -160,21 +160,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 31,
-      "labelHeight": 37,
+      "labelWidth": 26,
+      "labelHeight": 32,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "build_workflow.Terraform",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 106,
-        "y": 1153
+        "x": 96,
+        "y": 993
       },
-      "width": 218,
-      "height": 137,
+      "width": 158,
+      "height": 77,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -201,21 +201,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 118,
-      "labelHeight": 37,
+      "labelWidth": 113,
+      "labelHeight": 32,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "build_workflow.AWS",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 138,
-        "y": 1462
+        "x": 128,
+        "y": 1242
       },
-      "width": 155,
-      "height": 137,
+      "width": 95,
+      "height": 77,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -242,21 +242,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 55,
-      "labelHeight": 37,
+      "labelWidth": 50,
+      "labelHeight": 32,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "deploy_workflow",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 470,
-        "y": 0
+        "x": 370,
+        "y": 41
       },
-      "width": 371,
-      "height": 981,
+      "width": 291,
+      "height": 760,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -283,21 +283,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 247,
-      "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelWidth": 242,
+      "labelHeight": 36,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "deploy_workflow.manual",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 520,
-        "y": 73
+        "x": 410,
+        "y": 93
       },
-      "width": 271,
-      "height": 137,
+      "width": 211,
+      "height": 77,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -324,21 +324,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 171,
-      "labelHeight": 37,
+      "labelWidth": 166,
+      "labelHeight": 32,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "deploy_workflow.GHA",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 521,
-        "y": 382
+        "x": 411,
+        "y": 342
       },
-      "width": 269,
-      "height": 137,
+      "width": 209,
+      "height": 77,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -365,21 +365,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 169,
-      "labelHeight": 37,
+      "labelWidth": 164,
+      "labelHeight": 32,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "deploy_workflow.AWS",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 578,
-        "y": 771
+        "x": 468,
+        "y": 671
       },
-      "width": 155,
-      "height": 137,
+      "width": 95,
+      "height": 77,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -406,21 +406,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 55,
-      "labelHeight": 37,
+      "labelWidth": 50,
+      "labelHeight": 32,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "apollo_workflow",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 881,
-        "y": 0
+        "x": 681,
+        "y": 41
       },
-      "width": 613,
-      "height": 981,
+      "width": 573,
+      "height": 760,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -447,21 +447,21 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 232,
-      "labelHeight": 41,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelWidth": 227,
+      "labelHeight": 36,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
       "id": "apollo_workflow.apollo",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 1069,
-        "y": 73
+        "x": 879,
+        "y": 93
       },
-      "width": 238,
-      "height": 137,
+      "width": 178,
+      "height": 77,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -488,21 +488,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 138,
-      "labelHeight": 37,
+      "labelWidth": 133,
+      "labelHeight": 32,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "apollo_workflow.GHA",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 1053,
-        "y": 382
+        "x": 863,
+        "y": 342
       },
-      "width": 269,
-      "height": 137,
+      "width": 209,
+      "height": 77,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -529,21 +529,21 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 169,
-      "labelHeight": 37,
+      "labelWidth": 164,
+      "labelHeight": 32,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
       "id": "apollo_workflow.AWS",
-      "type": "",
+      "type": "rectangle",
       "pos": {
-        "x": 1110,
-        "y": 771
+        "x": 920,
+        "y": 671
       },
-      "width": 155,
-      "height": 137,
+      "width": 95,
+      "height": 77,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -570,8 +570,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 55,
-      "labelHeight": 37,
+      "labelWidth": 50,
+      "labelHeight": 32,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 2
@@ -604,20 +604,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 215,
-          "y": 210
+          "x": 175,
+          "y": 170.5
         },
         {
-          "x": 215,
-          "y": 278.8
+          "x": 175,
+          "y": 239.3
         },
         {
-          "x": 215,
-          "y": 313.2
+          "x": 175,
+          "y": 273.7
         },
         {
-          "x": 215,
-          "y": 382
+          "x": 175,
+          "y": 342.5
         }
       ],
       "isCurve": true,
@@ -652,20 +652,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 215,
-          "y": 519
+          "x": 175,
+          "y": 419.5
         },
         {
-          "x": 215,
-          "y": 619.8
+          "x": 175,
+          "y": 520.3
         },
         {
-          "x": 215,
-          "y": 670.2
+          "x": 175,
+          "y": 570.7
         },
         {
-          "x": 215,
-          "y": 771
+          "x": 175,
+          "y": 671.5
         }
       ],
       "isCurve": true,
@@ -700,20 +700,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 215,
-          "y": 908
+          "x": 175,
+          "y": 748.5
         },
         {
-          "x": 215,
-          "y": 966.4
+          "x": 175,
+          "y": 806.9
         },
         {
-          "x": 215,
-          "y": 1084.2
+          "x": 175,
+          "y": 924.7
         },
         {
-          "x": 215,
-          "y": 1153
+          "x": 175,
+          "y": 993.5
         }
       ],
       "isCurve": true,
@@ -748,20 +748,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 215,
-          "y": 1290
+          "x": 175,
+          "y": 1070.5
         },
         {
-          "x": 215,
-          "y": 1358.8
+          "x": 175,
+          "y": 1139.3
         },
         {
-          "x": 215,
-          "y": 1393.2
+          "x": 175,
+          "y": 1173.7
         },
         {
-          "x": 215,
-          "y": 1462
+          "x": 175,
+          "y": 1242.5
         }
       ],
       "isCurve": true,
@@ -796,20 +796,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 655.5,
-          "y": 210
+          "x": 515.5,
+          "y": 170.5
         },
         {
-          "x": 655.5,
-          "y": 278.8
+          "x": 515.5,
+          "y": 239.3
         },
         {
-          "x": 655.5,
-          "y": 313.2
+          "x": 515.5,
+          "y": 273.7
         },
         {
-          "x": 655.5,
-          "y": 382
+          "x": 515.5,
+          "y": 342.5
         }
       ],
       "isCurve": true,
@@ -844,20 +844,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 655.5,
-          "y": 519
+          "x": 515.5,
+          "y": 419.5
         },
         {
-          "x": 655.5,
-          "y": 619.8
+          "x": 515.5,
+          "y": 520.3
         },
         {
-          "x": 655.5,
-          "y": 670.2
+          "x": 515.5,
+          "y": 570.7
         },
         {
-          "x": 655.5,
-          "y": 771
+          "x": 515.5,
+          "y": 671.5
         }
       ],
       "isCurve": true,
@@ -892,20 +892,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1187.5,
-          "y": 210
+          "x": 967.5,
+          "y": 170.5
         },
         {
-          "x": 1187.5,
-          "y": 278.8
+          "x": 967.5,
+          "y": 239.3
         },
         {
-          "x": 1187.5,
-          "y": 313.2
+          "x": 967.5,
+          "y": 273.7
         },
         {
-          "x": 1187.5,
-          "y": 382
+          "x": 967.5,
+          "y": 342.5
         }
       ],
       "isCurve": true,
@@ -940,20 +940,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1187.5,
-          "y": 519
+          "x": 967.5,
+          "y": 419.5
         },
         {
-          "x": 1187.5,
-          "y": 619.8
+          "x": 967.5,
+          "y": 520.3
         },
         {
-          "x": 1187.5,
-          "y": 670.2
+          "x": 967.5,
+          "y": 570.7
         },
         {
-          "x": 1187.5,
-          "y": 771
+          "x": 967.5,
+          "y": 671.5
         }
       ],
       "isCurve": true,

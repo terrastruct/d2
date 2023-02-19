@@ -1,25 +1,40 @@
 package shape
 
 import (
+	"math"
+
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapeStoredData struct {
 	*baseShape
 }
 
+const storedDataWedgeWidth = 15.
+
 func NewStoredData(box *geo.Box) Shape {
-	return shapeStoredData{
+	shape := shapeStoredData{
 		baseShape: &baseShape{
 			Type: STORED_DATA_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
+}
+
+func (s shapeStoredData) GetInnerBox() *geo.Box {
+	width := s.Box.Width
+	tl := s.Box.TopLeft.Copy()
+	width -= 2 * storedDataWedgeWidth
+	tl.X += storedDataWedgeWidth
+	return geo.NewBox(tl, width, s.Box.Height)
 }
 
 func storedDataPath(box *geo.Box) *svg.SvgPathContext {
-	wedgeWidth := 15.0
+	wedgeWidth := storedDataWedgeWidth
 	multiplier := 0.27
 	if box.Width < wedgeWidth*2 {
 		wedgeWidth = box.Width / 2.0
@@ -44,4 +59,13 @@ func (s shapeStoredData) GetSVGPathData() []string {
 	return []string{
 		storedDataPath(s.Box).PathData(),
 	}
+}
+
+func (s shapeStoredData) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	totalWidth := width + paddingX + 2*storedDataWedgeWidth
+	return math.Ceil(totalWidth), math.Ceil(height + paddingY)
+}
+
+func (s shapeStoredData) GetDefaultPadding() (paddingX, paddingY float64) {
+	return defaultPadding - 10, defaultPadding
 }

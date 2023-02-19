@@ -446,6 +446,77 @@ b -> c
 
 `,
 		},
+		{
+			name: "empty_class_height",
+			script: `
+class1: class with rows {
+	shape: class
+	-num: int
+	-timeout: int
+}
+
+class2: class without rows {
+	shape: class
+}
+`,
+		},
+		{
+			name: "just-width",
+			script: `x: "teamwork: having someone to blame" {
+  width: 100
+}
+`,
+		},
+		{
+			name: "sequence-panic",
+			script: `
+shape: sequence_diagram
+
+a
+
+group: {
+  inner_group: {
+    a -> b
+  }
+}
+`,
+			expErr: "could not find center of b. Is it declared as an actor?",
+		},
+		{
+			name: "ampersand-escape",
+			script: `h&y: &∈ {
+  tooltip: beans & rice
+}
+&foo
+&&bar
+`,
+		},
+		{
+			name: "dagre-disconnect",
+			script: `a: {
+  k.t -> f.i
+  f.g -> _.s.n
+}
+k
+k.s <-> u.o
+h.m.s -> a.f.g
+
+a.f.j -> u.s.j
+u: {
+  c -> _.s.z.c
+}
+
+s: {
+  n: {
+    style.stroke: red
+    f
+  }
+}
+
+s.n -> y.r: {style.stroke-width: 8; style.stroke: red}
+y.r -> a.g.i: 1\n2\n3\n4
+`,
+		},
 	}
 
 	runa(t, tcs)

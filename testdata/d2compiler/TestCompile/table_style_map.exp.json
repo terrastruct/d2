@@ -1,11 +1,12 @@
 {
   "graph": {
+    "name": "",
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,0:0:0-8:0:108",
+      "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,0:0:0-8:0:113",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,0:0:0-7:1:107",
+            "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,0:0:0-7:1:112",
             "key": {
               "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,0:0:0-0:15:15",
               "path": [
@@ -25,7 +26,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,0:17:17-7:0:106",
+                "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,0:17:17-7:0:111",
                 "nodes": [
                   {
                     "map_key": {
@@ -95,7 +96,7 @@
                   },
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,3:2:60-6:3:105",
+                      "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,3:2:60-6:3:110",
                       "key": {
                         "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,3:2:60-3:7:65",
                         "path": [
@@ -115,7 +116,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,3:9:67-6:2:104",
+                          "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,3:9:67-6:2:109",
                           "nodes": [
                             {
                               "map_key": {
@@ -148,17 +149,17 @@
                             },
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,5:4:90-5:15:101",
+                                "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,5:4:90-5:20:106",
                                 "key": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,5:4:90-5:9:95",
+                                  "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,5:4:90-5:14:100",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,5:4:90-5:9:95",
+                                        "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,5:4:90-5:14:100",
                                         "value": [
                                           {
-                                            "string": "color",
-                                            "raw_string": "color"
+                                            "string": "font-color",
+                                            "raw_string": "font-color"
                                           }
                                         ]
                                       }
@@ -168,7 +169,7 @@
                                 "primary": {},
                                 "value": {
                                   "unquoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,5:11:97-5:15:101",
+                                    "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,5:16:102-5:20:106",
                                     "value": [
                                       {
                                         "string": "blue",
@@ -209,11 +210,14 @@
         },
         "direction": {
           "value": ""
+        },
+        "constraint": {
+          "value": ""
         }
       },
       "zIndex": 0
     },
-    "edges": [],
+    "edges": null,
     "objects": [
       {
         "id": "IUserProperties",
@@ -241,7 +245,7 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "sql_table": {
@@ -283,6 +287,9 @@
           "style": {
             "opacity": {
               "value": "0.4"
+            },
+            "fontColor": {
+              "value": "blue"
             }
           },
           "near_key": null,
@@ -290,6 +297,9 @@
             "value": "sql_table"
           },
           "direction": {
+            "value": ""
+          },
+          "constraint": {
             "value": ""
           }
         },

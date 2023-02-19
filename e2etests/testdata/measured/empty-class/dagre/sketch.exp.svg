@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><svg id="d2-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="316" height="216" viewBox="-202 -202 316 216"><style type="text/css"><![CDATA[.shape {
+<?xml version="1.0" encoding="utf-8"?><svg id="d2-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="316" height="248" viewBox="-102 -102 316 248"><style type="text/css"><![CDATA[.shape {
   shape-rendering: geometricPrecision;
   stroke-linejoin: round;
 }
@@ -30,7 +30,7 @@
     svgEl.setAttribute("height", height * ratio - 16);
   }
 });
-]]></script><style type="text/css"><![CDATA[]]></style><rect x="-102.000000" y="-102.000000" width="316.000000" height="216.000000" class=" fill-N7" /><g id="a"><g class="shape" ><rect x="0.000000" y="0.000000" width="112.000000" height="12.000000" class=" stroke-N1 fill-N7" style="stroke-width:2;" /><rect x="0.000000" y="0.000000" width="112.000000" height="12.000000" class="class_header fill-N1" /><line x1="0.000000" x2="112.000000" y1="12.000000" y2="12.000000" class=" stroke-N1" style="stroke-width:1" /></g></g><mask id="735671140" maskUnits="userSpaceOnUse" x="-100" y="-100" width="316" height="216">
-<rect x="-100" y="-100" width="316" height="216" fill="white"></rect>
+]]></script><style type="text/css"><![CDATA[]]></style><rect x="-102.000000" y="-102.000000" width="316.000000" height="248.000000" class=" fill-N7" /><g id="a"><g class="shape" ><rect x="0.000000" y="0.000000" width="112.000000" height="44.000000" class=" stroke-N1 fill-N7" style="stroke-width:2;" /><rect x="0.000000" y="0.000000" width="112.000000" height="44.000000" class="class_header fill-N1" /><line x1="0.000000" x2="112.000000" y1="44.000000" y2="44.000000" class=" stroke-N1" style="stroke-width:1" /></g></g><mask id="148127623" maskUnits="userSpaceOnUse" x="-102" y="-102" width="316" height="248">
+<rect x="-102" y="-102" width="316" height="248" fill="white"></rect>
 
 </mask></svg>

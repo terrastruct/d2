@@ -4,6 +4,7 @@ import (
 	"math"
 
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapeCircle struct {
@@ -11,27 +12,43 @@ type shapeCircle struct {
 }
 
 func NewCircle(box *geo.Box) Shape {
-	return shapeCircle{
+	shape := shapeCircle{
 		baseShape: &baseShape{
 			Type: CIRCLE_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
+}
+
+func (s shapeCircle) GetInnerBox() *geo.Box {
+	width := s.Box.Width
+	height := s.Box.Height
+	insideTL := s.GetInsidePlacement(width, height, 0, 0)
+	tl := s.Box.TopLeft.Copy()
+	width -= 2 * (insideTL.X - tl.X)
+	height -= 2 * (insideTL.Y - tl.Y)
+	return geo.NewBox(&insideTL, width, height)
 }
 
 func (s shapeCircle) AspectRatio1() bool {
 	return true
 }
 
-func (s shapeCircle) GetDimensionsToFit(width, height, padding float64) (float64, float64) {
-	radius := math.Ceil(math.Sqrt(math.Pow(width/2, 2)+math.Pow(height/2, 2))) + padding
-	return radius * 2, radius * 2
+func (s shapeCircle) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	diameter := math.Ceil(math.Sqrt(math.Pow(width+paddingX, 2) + math.Pow(height+paddingY, 2)))
+	return diameter, diameter
 }
 
-func (s shapeCircle) GetInsidePlacement(width, height, padding float64) geo.Point {
+func (s shapeCircle) GetInsidePlacement(width, height, paddingX, paddingY float64) geo.Point {
 	return *geo.NewPoint(s.Box.TopLeft.X+math.Ceil(s.Box.Width/2-width/2), s.Box.TopLeft.Y+math.Ceil(s.Box.Height/2-height/2))
 }
 
 func (s shapeCircle) Perimeter() []geo.Intersectable {
 	return []geo.Intersectable{geo.NewEllipse(s.Box.Center(), s.Box.Width/2, s.Box.Height/2)}
+}
+
+func (s shapeCircle) GetDefaultPadding() (paddingX, paddingY float64) {
+	return defaultPadding / math.Sqrt2, defaultPadding / math.Sqrt2
 }

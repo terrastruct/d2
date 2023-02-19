@@ -1,8 +1,11 @@
 package shape
 
 import (
+	"math"
+
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapePerson struct {
@@ -10,12 +13,29 @@ type shapePerson struct {
 }
 
 func NewPerson(box *geo.Box) Shape {
-	return shapePerson{
+	shape := shapePerson{
 		baseShape: &baseShape{
 			Type: PERSON_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
+}
+
+const (
+	PERSON_AR_LIMIT = 1.5
+
+	personShoulderWidthFactor = 20.2 / 68.3
+)
+
+func (s shapePerson) GetInnerBox() *geo.Box {
+	width := s.Box.Width
+	tl := s.Box.TopLeft.Copy()
+	shoulderWidth := personShoulderWidthFactor * width
+	tl.X += shoulderWidth
+	width -= shoulderWidth * 2
+	return geo.NewBox(tl, width, s.Box.Height)
 }
 
 func personPath(box *geo.Box) *svg.SvgPathContext {
@@ -51,4 +71,20 @@ func (s shapePerson) GetSVGPathData() []string {
 	return []string{
 		personPath(s.Box).PathData(),
 	}
+}
+
+func (s shapePerson) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
+	totalWidth := width + paddingX
+	// see shapePackage
+	shoulderWidth := totalWidth * personShoulderWidthFactor / (1 - 2*personShoulderWidthFactor)
+	totalWidth += 2 * shoulderWidth
+	totalHeight := height + paddingY
+
+	// prevent the shape's aspect ratio from becoming too extreme
+	totalWidth, totalHeight = LimitAR(totalWidth, totalHeight, PERSON_AR_LIMIT)
+	return math.Ceil(totalWidth), math.Ceil(totalHeight)
+}
+
+func (s shapePerson) GetDefaultPadding() (paddingX, paddingY float64) {
+	return 10, defaultPadding
 }
