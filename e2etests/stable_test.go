@@ -1770,6 +1770,30 @@ package.height: 512
 `,
 		},
 		{
+			name: "container_dimensions",
+			script: `a: {
+  width: 500
+  b -> c
+	b.width: 400
+	c.width: 600
+}
+
+b: {
+  width: 700
+  b -> c
+	e: {
+		height: 300
+	}
+}
+
+c: {
+  width: 200
+  height: 300
+  a
+}
+`,
+		},
+		{
 			name: "crow_foot_arrowhead",
 			script: `
 a1 <-> b1: {

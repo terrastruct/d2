@@ -593,14 +593,6 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 	_, isReserved := d2graph.ReservedKeywords[keyword]
 	if isReserved {
 		switch obj.Attributes.Shape.Value {
-		case d2target.ShapeSQLTable, d2target.ShapeClass:
-		default:
-			if len(obj.Children) > 0 && (f.Name == "width" || f.Name == "height") {
-				c.errorf(f.LastPrimaryKey(), fmt.Sprintf("%s cannot be used on container: %s", f.Name, obj.AbsID()))
-			}
-		}
-
-		switch obj.Attributes.Shape.Value {
 		case d2target.ShapeCircle, d2target.ShapeSquare:
 			checkEqual := (keyword == "width" && obj.Attributes.Height != nil) || (keyword == "height" && obj.Attributes.Width != nil)
 			if checkEqual && obj.Attributes.Width.Value != obj.Attributes.Height.Value {

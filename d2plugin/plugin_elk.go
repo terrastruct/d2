@@ -85,8 +85,11 @@ func (p elkPlugin) Info(ctx context.Context) (*PluginInfo, error) {
 		f.AddToOpts(opts)
 	}
 	return &PluginInfo{
-		Name:      "elk",
-		Type:      "bundled",
+		Name: "elk",
+		Type: "bundled",
+		Features: map[PluginFeature]struct{}{
+			CONTAINER_DIMENSIONS: {},
+		},
 		ShortHelp: "Eclipse Layout Kernel (ELK) with the Layered algorithm.",
 		LongHelp: fmt.Sprintf(`ELK is a layout engine offered by Eclipse.
 Originally written in Java, it has been ported to Javascript and cross-compiled into D2.

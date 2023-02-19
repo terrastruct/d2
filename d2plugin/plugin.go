@@ -77,6 +77,8 @@ type PluginInfo struct {
 	Type string `json:"type"`
 	// If Type == binary then this contains the absolute path to the binary.
 	Path string `json:"path"`
+
+	Features map[PluginFeature]struct{} `json:"features"`
 }
 
 const binaryPrefix = "d2plugin-"
