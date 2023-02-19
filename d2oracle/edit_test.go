@@ -696,6 +696,54 @@ square.style.opacity: 0.2
 			},
 		},
 		{
+			name: "set_position",
+			text: `square
+`,
+			key:   `square.top`,
+			value: go2.Pointer(`200`),
+			exp: `square: {top: 200}
+`,
+		},
+		{
+			name: "replace_position",
+			text: `square: {
+  width: 100
+  top: 32
+	left: 44
+}
+`,
+			key:   `square.top`,
+			value: go2.Pointer(`200`),
+			exp: `square: {
+  width: 100
+  top: 200
+  left: 44
+}
+`,
+		},
+		{
+			name: "set_dimensions",
+			text: `square
+`,
+			key:   `square.width`,
+			value: go2.Pointer(`200`),
+			exp: `square: {width: 200}
+`,
+		},
+		{
+			name: "replace_dimensions",
+			text: `square: {
+  width: 100
+}
+`,
+			key:   `square.width`,
+			value: go2.Pointer(`200`),
+			exp: `square: {
+  width: 200
+}
+`,
+		},
+		{
 			name: "label_unset",
 			text: `square: "Always try to do things in chronological order; it's less confusing that way."
 `,
