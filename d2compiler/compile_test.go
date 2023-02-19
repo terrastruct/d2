@@ -86,7 +86,6 @@ x: {
 				}
 			},
 		},
-
 		{
 			name: "dimensions_on_nonimage",
 
@@ -112,6 +111,17 @@ x: {
 				if g.Objects[0].Attributes.Height.Value != "230" {
 					t.Fatalf("expected g.Objects[0].Attributes.Height.Value to be 230: %#v", g.Objects[0].Attributes.Height.Value)
 				}
+			},
+		},
+		{
+			name: "positions",
+			text: `hey: {
+	top: 200
+	left: 230
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "200", g.Objects[0].Attributes.Top.Value)
 			},
 		},
 		{

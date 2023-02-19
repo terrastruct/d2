@@ -98,9 +98,11 @@ type Attributes struct {
 	Tooltip string   `json:"tooltip,omitempty"`
 	Link    string   `json:"link,omitempty"`
 
-	// Only applicable for images right now
 	Width  *Scalar `json:"width,omitempty"`
 	Height *Scalar `json:"height,omitempty"`
+
+	Top  *Scalar `json:"top,omitempty"`
+	Left *Scalar `json:"left,omitempty"`
 
 	// TODO consider separate Attributes struct for shape-specific and edge-specific
 	// Shapes only
@@ -1442,6 +1444,8 @@ var SimpleReservedKeywords = map[string]struct{}{
 	"width":      {},
 	"height":     {},
 	"direction":  {},
+	"top":        {},
+	"left":       {},
 }
 
 // ReservedKeywordHolders are reserved keywords that are meaningless on its own and exist solely to hold a set of reserved keywords

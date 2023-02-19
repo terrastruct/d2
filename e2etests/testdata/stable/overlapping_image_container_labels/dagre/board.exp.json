@@ -148,7 +148,7 @@
       "level": 2
     },
     {
-      "id": "container.left",
+      "id": "container.left2",
       "type": "rectangle",
       "pos": {
         "x": 20,
@@ -174,7 +174,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "left",
+      "label": "left2",
       "fontSize": 24,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -182,14 +182,14 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 33,
+      "labelWidth": 44,
       "labelHeight": 31,
       "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 2
     },
     {
-      "id": "container.left.root",
+      "id": "container.left2.root",
       "type": "image",
       "pos": {
         "x": 174,
@@ -241,7 +241,7 @@
       "level": 3
     },
     {
-      "id": "container.left.inner",
+      "id": "container.left2.inner",
       "type": "rectangle",
       "pos": {
         "x": 40,
@@ -282,7 +282,7 @@
       "level": 3
     },
     {
-      "id": "container.left.inner.left",
+      "id": "container.left2.inner.left2",
       "type": "image",
       "pos": {
         "x": 80,
@@ -319,7 +319,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "left",
+      "label": "left2",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -327,14 +327,14 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 24,
+      "labelWidth": 32,
       "labelHeight": 21,
       "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 4
     },
     {
-      "id": "container.left.inner.right",
+      "id": "container.left2.inner.right",
       "type": "image",
       "pos": {
         "x": 268,
@@ -520,7 +520,7 @@
       "level": 3
     },
     {
-      "id": "container.right.inner.left",
+      "id": "container.right.inner.left2",
       "type": "image",
       "pos": {
         "x": 536,
@@ -557,7 +557,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "left",
+      "label": "left2",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -565,7 +565,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 24,
+      "labelWidth": 32,
       "labelHeight": 21,
       "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
@@ -674,18 +674,18 @@
       "zIndex": 0
     },
     {
-      "id": "container.left.(root -> inner.left)[0]",
-      "src": "container.left.root",
+      "id": "container.left2.(root -> inner.left2)[0]",
+      "src": "container.left2.root",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "container.left.inner.left",
+      "dst": "container.left2.inner.left2",
       "dstArrow": "triangle",
       "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "#0D32B2",
-      "label": "to inner left",
+      "label": "to inner left2",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -693,7 +693,7 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 76,
+      "labelWidth": 84,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
@@ -722,11 +722,11 @@
       "zIndex": 0
     },
     {
-      "id": "container.left.(root -> inner.right)[0]",
-      "src": "container.left.root",
+      "id": "container.left2.(root -> inner.right)[0]",
+      "src": "container.left2.root",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "container.left.inner.right",
+      "dst": "container.left2.inner.right",
       "dstArrow": "triangle",
       "dstLabel": "",
       "opacity": 1,
@@ -770,18 +770,18 @@
       "zIndex": 0
     },
     {
-      "id": "container.right.(root -> inner.left)[0]",
+      "id": "container.right.(root -> inner.left2)[0]",
       "src": "container.right.root",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "container.right.inner.left",
+      "dst": "container.right.inner.left2",
       "dstArrow": "triangle",
       "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "#0D32B2",
-      "label": "to inner left",
+      "label": "to inner left2",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -789,7 +789,7 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 76,
+      "labelWidth": 84,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
@@ -866,18 +866,18 @@
       "zIndex": 0
     },
     {
-      "id": "container.(root -> left.root)[0]",
+      "id": "container.(root -> left2.root)[0]",
       "src": "container.root",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "container.left.root",
+      "dst": "container.left2.root",
       "dstArrow": "triangle",
       "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "#0D32B2",
-      "label": "to left container root",
+      "label": "to left2 container root",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -885,7 +885,7 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 136,
+      "labelWidth": 143,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
