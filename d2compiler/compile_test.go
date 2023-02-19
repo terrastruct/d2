@@ -1400,6 +1400,29 @@ x -> y: {
 `,
 		},
 		{
+			name: "near-invalid",
+
+			text: `mongodb: MongoDB {
+  perspective: perspective (View) {
+    password
+  }
+
+  explanation: |md
+    perspective.model.js
+  | {
+    near: mongodb
+  }
+}
+
+a: {
+  near: a.b
+  b
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near-invalid.d2:9:11: near keys cannot be set to an ancestor
+d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set to an descendant`,
+		},
+		{
 			name: "near_bad_constant",
 
 			text: `x.near: txop-center

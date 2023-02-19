@@ -1,0 +1,16 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/near-invalid.d2,8:10:133-8:17:140",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/near-invalid.d2:9:11: near keys cannot be set to an ancestor"
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/near-invalid.d2,13:8:161-13:11:164",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set to an descendant"
+      }
+    ]
+  }
+}

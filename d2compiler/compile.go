@@ -648,21 +648,33 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 func (c *compiler) validateNear(g *d2graph.Graph) {
 	for _, obj := range g.Objects {
 		if obj.Attributes.NearKey != nil {
-			_, isKey := g.Root.HasChild(d2graph.Key(obj.Attributes.NearKey))
+			nearObj, isKey := g.Root.HasChild(d2graph.Key(obj.Attributes.NearKey))
 			_, isConst := d2graph.NearConstants[d2graph.Key(obj.Attributes.NearKey)[0]]
-			if !isKey && !isConst {
-				c.errorf(obj.Attributes.NearKey, "near key %#v must be the absolute path to a shape or one of the following constants: %s", d2format.Format(obj.Attributes.NearKey), strings.Join(d2graph.NearConstantsArray, ", "))
-				continue
-			}
-			if !isKey && isConst && obj.Parent != g.Root {
-				c.errorf(obj.Attributes.NearKey, "constant near keys can only be set on root level shapes")
-				continue
-			}
-			if !isKey && isConst && len(obj.ChildrenArray) > 0 {
-				c.errorf(obj.Attributes.NearKey, "constant near keys cannot be set on shapes with children")
-				continue
-			}
-			if !isKey && isConst {
+			if isKey {
+				// Doesn't make sense to set near to an ancestor or descendant
+				nearIsAncestor := false
+				for curr := obj; curr != nil; curr = curr.Parent {
+					if curr == nearObj {
+						nearIsAncestor = true
+						break
+					}
+				}
+				if nearIsAncestor {
+					c.errorf(obj.Attributes.NearKey, "near keys cannot be set to an ancestor")
+					continue
+				}
+				nearIsDescendant := false
+				for curr := nearObj; curr != nil; curr = curr.Parent {
+					if curr == obj {
+						nearIsDescendant = true
+						break
+					}
+				}
+				if nearIsDescendant {
+					c.errorf(obj.Attributes.NearKey, "near keys cannot be set to an descendant")
+					continue
+				}
+			} else if isConst {
 				is := false
 				for _, e := range g.Edges {
 					if e.Src == obj || e.Dst == obj {
@@ -674,6 +686,17 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 					c.errorf(obj.Attributes.NearKey, "constant near keys cannot be set on connected shapes")
 					continue
 				}
+				if obj.Parent != g.Root {
+					c.errorf(obj.Attributes.NearKey, "constant near keys can only be set on root level shapes")
+					continue
+				}
+				if len(obj.ChildrenArray) > 0 {
+					c.errorf(obj.Attributes.NearKey, "constant near keys cannot be set on shapes with children")
+					continue
+				}
+			} else {
+				c.errorf(obj.Attributes.NearKey, "near key %#v must be the absolute path to a shape or one of the following constants: %s", d2format.Format(obj.Attributes.NearKey), strings.Join(d2graph.NearConstantsArray, ", "))
+				continue
 			}
 		}
 	}
