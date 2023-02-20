@@ -4895,7 +4895,18 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
   "x.x": "x"
 }`,
 		},
+		{
+			name: "nested-height",
 
+			text: `x: {
+  a -> b
+  height: 200
+}
+`,
+			key: `x.height`,
+
+			exp: `null`,
+		},
 		{
 			name: "only-reserved",
 			text: `guitar: {
