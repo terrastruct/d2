@@ -4509,6 +4509,30 @@ B
 A -> B
 `,
 		},
+		{
+			name: "width",
+
+			text: `x: {
+  width: 200
+}
+`,
+			key: `x.width`,
+
+			exp: `x
+`,
+		},
+		{
+			name: "left",
+
+			text: `x: {
+  left: 200
+}
+`,
+			key: `x.left`,
+
+			exp: `x
+`,
+		},
 	}
 
 	for _, tc := range testCases {
