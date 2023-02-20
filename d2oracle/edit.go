@@ -687,6 +687,10 @@ func deleteReserved(g *d2graph.Graph, mk *d2ast.Key) (*d2graph.Graph, error) {
 			if id == "near" ||
 				id == "tooltip" ||
 				id == "icon" ||
+				id == "width" ||
+				id == "height" ||
+				id == "left" ||
+				id == "top" ||
 				id == "link" {
 				err := deleteObjField(g, obj, id)
 				if err != nil {
