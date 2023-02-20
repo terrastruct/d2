@@ -84,14 +84,23 @@ payment processor behind the scenes: {
 x -> y
 `,
 		},
+		{
+			name:    "links dark",
+			themeID: 200,
+			script: `x: { link: https://d2lang.com }
+			y: { link: https://fosny.eu; tooltip: Gee, I feel kind of LIGHT in the head now,\nknowing I can't make my satellite dish PAYMENTS! }
+x -> y
+`,
+		},
 	}
 	runa(t, tcs)
 }
 
 type testCase struct {
-	name   string
-	script string
-	skip   bool
+	name    string
+	themeID int64
+	script  string
+	skip    bool
 }
 
 func runa(t *testing.T, tcs []testCase) {
@@ -131,7 +140,7 @@ func run(t *testing.T, tc testCase) {
 
 	svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
 		Pad:     d2svg.DEFAULT_PADDING,
-		ThemeID: 0,
+		ThemeID: tc.themeID,
 	})
 	assert.Success(t, err)
 	svgBytes = appendix.Append(diagram, ruler, svgBytes)

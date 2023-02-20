@@ -158,7 +158,7 @@ func generateAppendix(diagram *d2target.Diagram, ruler *textmeasure.Ruler, svg s
 	}
 	totalHeight += SPACER
 
-	return fmt.Sprintf(`<g x="%d" y="%d" width="%d" height="100%%">%s</g>
+	return fmt.Sprintf(`<g class="appendix" x="%d" y="%d" width="%d" height="100%%">%s</g>
 `, tl.X, br.Y, (br.X - tl.X), strings.Join(lines, "\n")), maxWidth, totalHeight
 }
 
