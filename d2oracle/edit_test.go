@@ -696,6 +696,54 @@ square.style.opacity: 0.2
 			},
 		},
 		{
+			name: "set_position",
+			text: `square
+`,
+			key:   `square.top`,
+			value: go2.Pointer(`200`),
+			exp: `square: {top: 200}
+`,
+		},
+		{
+			name: "replace_position",
+			text: `square: {
+  width: 100
+  top: 32
+	left: 44
+}
+`,
+			key:   `square.top`,
+			value: go2.Pointer(`200`),
+			exp: `square: {
+  width: 100
+  top: 200
+  left: 44
+}
+`,
+		},
+		{
+			name: "set_dimensions",
+			text: `square
+`,
+			key:   `square.width`,
+			value: go2.Pointer(`200`),
+			exp: `square: {width: 200}
+`,
+		},
+		{
+			name: "replace_dimensions",
+			text: `square: {
+  width: 100
+}
+`,
+			key:   `square.width`,
+			value: go2.Pointer(`200`),
+			exp: `square: {
+  width: 200
+}
+`,
+		},
+		{
 			name: "label_unset",
 			text: `square: "Always try to do things in chronological order; it's less confusing that way."
 `,
@@ -2220,7 +2268,7 @@ a.b.c: {
 `,
 		},
 		{
-			name: "near",
+			name: "invalid-near",
 
 			text: `x: {
   near: y
@@ -2232,6 +2280,33 @@ y
 
 			exp: `x: {
   near: x.y
+  y
+}
+`,
+			expErr: `failed to move: "y" to "x.y": failed to recompile:
+x: {
+  near: x.y
+  y
+}
+
+d2/testdata/d2oracle/TestMove/invalid-near.d2:2:9: near keys cannot be set to an descendant`,
+		},
+		{
+			name: "near",
+
+			text: `x: {
+  near: y
+}
+a
+y
+`,
+			key:    `y`,
+			newKey: `a.y`,
+
+			exp: `x: {
+  near: a.y
+}
+a: {
   y
 }
 `,
@@ -4432,6 +4507,30 @@ A -> B: {style.stroke: "#2b50c2"}
 			exp: `A: {style.stroke: "#000e3d"}
 B
 A -> B
+`,
+		},
+		{
+			name: "width",
+
+			text: `x: {
+  width: 200
+}
+`,
+			key: `x.width`,
+
+			exp: `x
+`,
+		},
+		{
+			name: "left",
+
+			text: `x: {
+  left: 200
+}
+`,
+			key: `x.left`,
+
+			exp: `x
 `,
 		},
 	}

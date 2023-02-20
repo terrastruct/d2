@@ -8,6 +8,8 @@
 - Cleaner watch mode logs without timestamps. [#830](https://github.com/terrastruct/d2/pull/830)
 - Remove duplicate success logs in watch mode. [#830](https://github.com/terrastruct/d2/pull/830)
 - CLI reports when a feature is incompatible with layout engine, instead of silently ignoring. [#845](https://github.com/terrastruct/d2/pull/845)
+- `near` key set to direct parent or ancestor throws an appropriate error message. [#851](https://github.com/terrastruct/d2/pull/851)
+- Dimensions and positions are able to be set from API. [#853](https://github.com/terrastruct/d2/pull/853)
 
 #### Bugfixes ⛑️
 
