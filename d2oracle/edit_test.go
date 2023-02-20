@@ -744,6 +744,15 @@ square.style.opacity: 0.2
 `,
 		},
 		{
+			name: "set_tooltip",
+			text: `square
+`,
+			key:   `square.tooltip`,
+			value: go2.Pointer(`y`),
+			exp: `square: {tooltip: y}
+`,
+		},
+		{
 			name: "replace_tooltip",
 			text: `square: {
   tooltip: x

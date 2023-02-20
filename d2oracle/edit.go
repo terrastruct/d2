@@ -249,12 +249,12 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 					return nil
 				}
 			case "link":
-				if attrs.Link.MapKey != nil {
+				if attrs.Link != nil && attrs.Link.MapKey != nil {
 					attrs.Link.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
 			case "tooltip":
-				if attrs.Tooltip.MapKey != nil {
+				if attrs.Tooltip != nil && attrs.Tooltip.MapKey != nil {
 					attrs.Tooltip.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
