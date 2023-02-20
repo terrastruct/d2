@@ -104,6 +104,8 @@ fixing multi-byte character labels):
 
 ![screencapture-file-Users-alexanderwang-dev-alixander-d2-e2etests-out-e2e-report-html-2023-02-14-10_15_07](https://user-images.githubusercontent.com/3120367/218822836-bcc517f2-ae3e-4e0d-83f6-2cbaa2fd9275.png)
 
+Run `./ci/e2ereport.sh -help` for flags, including how to get deltas for a single test.
+
 If you're testing labels and strings, it's encouraged to use 1-letter strings (`x`) in small
 functional tests to minimally pinpoint issues. If you are testing something that exercises
 variations in strings, or want to mimic more realistic diagram text, it's encouraged you
