@@ -24,14 +24,19 @@ func FeatureSupportCheck(info *PluginInfo, g *d2graph.Graph) error {
 		return nil
 	}
 
+	featureMap := make(map[PluginFeature]struct{}, len(info.Features))
+	for _, f := range info.Features {
+		featureMap[f] = struct{}{}
+	}
+
 	for _, obj := range g.Objects {
 		if obj.Attributes.Top != nil || obj.Attributes.Left != nil {
-			if _, ok := info.Features[TOP_LEFT]; !ok {
+			if _, ok := featureMap[TOP_LEFT]; !ok {
 				return fmt.Errorf(`Object "%s" has attribute "top" and/or "left" set, but layout engine "%s" does not support locked positions.`, obj.AbsID(), info.Name)
 			}
 		}
 		if (obj.Attributes.Width != nil || obj.Attributes.Height != nil) && len(obj.ChildrenArray) > 0 {
-			if _, ok := info.Features[CONTAINER_DIMENSIONS]; !ok {
+			if _, ok := featureMap[CONTAINER_DIMENSIONS]; !ok {
 				return fmt.Errorf(`Object "%s" has attribute "width" and/or "height" set, but layout engine "%s" does not support dimensions set on containers.`, obj.AbsID(), info.Name)
 			}
 		}
@@ -39,7 +44,7 @@ func FeatureSupportCheck(info *PluginInfo, g *d2graph.Graph) error {
 		if obj.Attributes.NearKey != nil {
 			_, isKey := g.Root.HasChild(d2graph.Key(obj.Attributes.NearKey))
 			if isKey {
-				if _, ok := info.Features[NEAR_OBJECT]; !ok {
+				if _, ok := featureMap[NEAR_OBJECT]; !ok {
 					return fmt.Errorf(`Object "%s" has "near" set to another object, but layout engine "%s" only supports constant values for "near".`, obj.AbsID(), info.Name)
 				}
 			}

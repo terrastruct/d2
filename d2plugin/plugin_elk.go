@@ -87,8 +87,8 @@ func (p elkPlugin) Info(ctx context.Context) (*PluginInfo, error) {
 	return &PluginInfo{
 		Name: "elk",
 		Type: "bundled",
-		Features: map[PluginFeature]struct{}{
-			CONTAINER_DIMENSIONS: {},
+		Features: []PluginFeature{
+			CONTAINER_DIMENSIONS,
 		},
 		ShortHelp: "Eclipse Layout Kernel (ELK) with the Layered algorithm.",
 		LongHelp: fmt.Sprintf(`ELK is a layout engine offered by Eclipse.
