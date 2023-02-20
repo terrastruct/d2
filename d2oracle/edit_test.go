@@ -4895,7 +4895,30 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
   "x.x": "x"
 }`,
 		},
+		{
+			name: "nested-height",
 
+			text: `x: {
+  a -> b
+  height: 200
+}
+`,
+			key: `x.height`,
+
+			exp: `null`,
+		},
+		{
+			name: "edge-style",
+
+			text: `x <-> y: {
+  target-arrowhead: circle
+  source-arrowhead: diamond
+}
+`,
+			key: `(x <-> y)[0].target-arrowhead`,
+
+			exp: `null`,
+		},
 		{
 			name: "only-reserved",
 			text: `guitar: {

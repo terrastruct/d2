@@ -1864,6 +1864,12 @@ func DeleteIDDeltas(g *d2graph.Graph, key string) (deltas map[string]string, err
 	conflictNewIDs := make(map[*d2graph.Object]string)
 	conflictOldIDs := make(map[*d2graph.Object]string)
 	if mk.Key != nil {
+		ida := d2graph.Key(mk.Key)
+		// Deleting a reserved field cannot possibly have any deltas
+		if _, ok := d2graph.ReservedKeywords[ida[len(ida)-1]]; ok {
+			return nil, nil
+		}
+
 		var ok bool
 		obj, ok = g.Root.HasChild(d2graph.Key(mk.Key))
 		if !ok {
