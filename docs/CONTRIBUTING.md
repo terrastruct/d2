@@ -16,29 +16,32 @@ D2's [long-term mission](https://d2lang.com/tour/future/) is to significantly re
 amount of time and effort it takes to create and maintain high-quality diagrams for every
 software team. We started this because we love the idea of creating diagrams with text --
 but it was clear the existing solutions were inadequete in their state and speed of
-execution for this idea to be mainstream.
+execution for this idea to be widely usable.
 
 We've tried our best to avoid the mistakes of the past and take inspiration from the most
-successful modern programming and configuration languages.
-
-D2 has built up each step of the text-to-diagram pipeline from scratch, rethinking each
-one from first principles, from the dead simple syntax, to the readable compiler, our own
-SVG renderer, etc.
+successful modern programming and configuration languages. D2 has built up each step of
+the text-to-diagram pipeline from scratch, rethinking each one from first principles, from
+the dead simple syntax, to the readable compiler, our own SVG renderer, etc.
 
 D2 is committed to making something people want to use. That means contributions don't
 only have to be in the form of pull requests. Your bug reports, plugins, examples,
 discussions of new ideas, help a great deal.
 
-If you'd like to get involved, we're also committed to helping you merge that first
-pull request. You should be able to freely pick up Issues tagged as "good first issue". If
-you need help getting started, please don't hesitate to pop into Discord -- if you want to
-help, I'm sure we'll find the perfect task (complexity matches your appetite and
+If you'd like to get involved, we're also committed to helping you merge that first pull
+request. You should be able to freely pick up Issues tagged as "good first issue". If you
+need help getting started, please don't hesitate to pop into Discord -- as long as you
+want to help, we'll find the perfect task (complexity matches your appetite and
 programming experience, in an area you're interested in, etc).
 
 ## CI
 
 Most of D2's CI is open sourced in its own
-[repository](https://github.com/terrastruct/ci).
+[repository](https://github.com/terrastruct/ci), included as a submodule. After you clone
+D2, make sure you initialize the submodules:
+
+```sh
+git submodule update --init --recursive
+```
 
 `./make.sh` runs everything. Subcommands to run individual parts of the CI:
 
@@ -51,18 +54,10 @@ Most of D2's CI is open sourced in its own
 
 Please make sure CI is passing for any PRs submitted for review.
 
-Most of the CI scripts rely on a submodule shared between many D2 repositories:
-[https://github.com/terrastruct/ci](https://github.com/terrastruct/ci). You should fetch
-the submodule whenever it differs:
+Be sure to update the submodule whenever there are changes:
 
 ```sh
 git submodule update --recursive
-```
-
-If running for the first time for a repo (e.g. new clone), add `--init`:
-
-```sh
-git submodule update --init --recursive
 ```
 
 ## Logistics
@@ -100,7 +95,8 @@ running:
 ./ci/e2ereport.sh -delta
 ```
 
-This gives me a nice HMTL output of what the test expected vs what it got:
+This gives me a nice HMTL output of what the test expected vs what it got (this was a PR
+fixing multi-byte character labels):
 
 ![screencapture-file-Users-alexanderwang-dev-alixander-d2-e2etests-out-e2e-report-html-2023-02-14-10_15_07](https://user-images.githubusercontent.com/3120367/218822836-bcc517f2-ae3e-4e0d-83f6-2cbaa2fd9275.png)
 
