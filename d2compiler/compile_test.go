@@ -1364,8 +1364,8 @@ x -> y: {
 				if len(g.Objects) != 1 {
 					t.Fatal(g.Objects)
 				}
-				if g.Objects[0].Attributes.Link != "https://google.com" {
-					t.Fatal(g.Objects[0].Attributes.Link)
+				if g.Objects[0].Attributes.Link.Value != "https://google.com" {
+					t.Fatal(g.Objects[0].Attributes.Link.Value)
 				}
 			},
 		},
@@ -1380,8 +1380,8 @@ x -> y: {
 				if len(g.Objects) != 1 {
 					t.Fatal(g.Objects)
 				}
-				if g.Objects[0].Attributes.Link != "Overview.Untitled board 7.zzzzz" {
-					t.Fatal(g.Objects[0].Attributes.Link)
+				if g.Objects[0].Attributes.Link.Value != "Overview.Untitled board 7.zzzzz" {
+					t.Fatal(g.Objects[0].Attributes.Link.Value)
 				}
 			},
 		},
