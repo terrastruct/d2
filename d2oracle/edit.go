@@ -37,7 +37,6 @@ func Create(g *d2graph.Graph, key string) (_ *d2graph.Graph, newKey string, err 
 	if err != nil {
 		return nil, "", err
 	}
-
 	g, err = recompile(g)
 	if err != nil {
 		return nil, "", err

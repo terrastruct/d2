@@ -3544,6 +3544,35 @@ x
 `,
 		},
 		{
+			name: "arrowhead_label",
+
+			text: `x -> y: {
+  target-arrowhead.shape: diamond
+  target-arrowhead.label: 1
+}
+`,
+			key: `(x -> y)[0].target-arrowhead.label`,
+
+			exp: `x -> y: {
+  target-arrowhead.shape: diamond
+}
+`,
+		},
+		{
+			name: "arrowhead_map",
+
+			text: `x -> y: {
+	target-arrowhead: {
+    shape: diamond
+  }
+}
+`,
+			key: `(x -> y)[0].target-arrowhead.shape`,
+
+			exp: `x -> y
+`,
+		},
+		{
 			name: "edge-only-style",
 
 			text: `x -> y: {
