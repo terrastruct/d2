@@ -51,6 +51,10 @@ git submodule update --init --recursive
 - `./make.sh race`
 - `./make.sh build`
 
+Here's what a successful run should look like:
+
+<img width="1582" alt="Screen Shot 2023-02-19 at 7 46 34 PM" src="https://user-images.githubusercontent.com/3120367/220004975-7a218b82-c5c1-4a71-b2bb-8695bbfd600c.png">
+
 
 Please make sure CI is passing for any PRs submitted for review.
 
