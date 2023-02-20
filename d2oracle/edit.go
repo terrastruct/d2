@@ -234,6 +234,26 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 					attrs.Shape.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
+			case "width":
+				if attrs.Width != nil && attrs.Width.MapKey != nil {
+					attrs.Width.MapKey.SetScalar(mk.Value.ScalarBox())
+					return nil
+				}
+			case "height":
+				if attrs.Height != nil && attrs.Height.MapKey != nil {
+					attrs.Height.MapKey.SetScalar(mk.Value.ScalarBox())
+					return nil
+				}
+			case "top":
+				if attrs.Top != nil && attrs.Top.MapKey != nil {
+					attrs.Top.MapKey.SetScalar(mk.Value.ScalarBox())
+					return nil
+				}
+			case "left":
+				if attrs.Left != nil && attrs.Left.MapKey != nil {
+					attrs.Left.MapKey.SetScalar(mk.Value.ScalarBox())
+					return nil
+				}
 			case "style":
 				if len(mk.Key.Path[reservedIndex:]) != 2 {
 					return errors.New("malformed style setting, expected 2 part path")
@@ -667,6 +687,10 @@ func deleteReserved(g *d2graph.Graph, mk *d2ast.Key) (*d2graph.Graph, error) {
 			if id == "near" ||
 				id == "tooltip" ||
 				id == "icon" ||
+				id == "width" ||
+				id == "height" ||
+				id == "left" ||
+				id == "top" ||
 				id == "link" {
 				err := deleteObjField(g, obj, id)
 				if err != nil {
