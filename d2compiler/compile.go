@@ -266,7 +266,9 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		nearKey.Range = scalar.GetRange()
 		attrs.NearKey = nearKey
 	case "tooltip":
-		attrs.Tooltip = scalar.ScalarString()
+		attrs.Tooltip = &d2graph.Scalar{}
+		attrs.Tooltip.Value = scalar.ScalarString()
+		attrs.Tooltip.MapKey = f.LastPrimaryKey()
 	case "width":
 		_, err := strconv.Atoi(scalar.ScalarString())
 		if err != nil {
@@ -304,7 +306,9 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Left.Value = scalar.ScalarString()
 		attrs.Left.MapKey = f.LastPrimaryKey()
 	case "link":
-		attrs.Link = scalar.ScalarString()
+		attrs.Link = &d2graph.Scalar{}
+		attrs.Link.Value = scalar.ScalarString()
+		attrs.Link.MapKey = f.LastPrimaryKey()
 	case "direction":
 		dirs := []string{"up", "down", "right", "left"}
 		if !go2.Contains(dirs, scalar.ScalarString()) {

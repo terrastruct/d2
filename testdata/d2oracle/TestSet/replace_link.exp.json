@@ -2,21 +2,21 @@
   "graph": {
     "name": "",
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,0:0:0-3:0:47",
+      "range": "d2/testdata/d2oracle/TestSet/replace_link.d2,0:0:0-3:0:38",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,0:0:0-2:1:46",
+            "range": "d2/testdata/d2oracle/TestSet/replace_link.d2,0:0:0-2:1:37",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,0:0:0-0:1:1",
+              "range": "d2/testdata/d2oracle/TestSet/replace_link.d2,0:0:0-0:6:6",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,0:0:0-0:1:1",
+                    "range": "d2/testdata/d2oracle/TestSet/replace_link.d2,0:0:0-0:6:6",
                     "value": [
                       {
-                        "string": "x",
-                        "raw_string": "x"
+                        "string": "square",
+                        "raw_string": "square"
                       }
                     ]
                   }
@@ -26,17 +26,17 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,0:3:3-2:0:45",
+                "range": "d2/testdata/d2oracle/TestSet/replace_link.d2,0:8:8-2:0:36",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,1:2:7-1:39:44",
+                      "range": "d2/testdata/d2oracle/TestSet/replace_link.d2,1:2:12-1:25:35",
                       "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,1:2:7-1:6:11",
+                        "range": "d2/testdata/d2oracle/TestSet/replace_link.d2,1:2:12-1:6:16",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,1:2:7-1:6:11",
+                              "range": "d2/testdata/d2oracle/TestSet/replace_link.d2,1:2:12-1:6:16",
                               "value": [
                                 {
                                   "string": "link",
@@ -50,11 +50,11 @@
                       "primary": {},
                       "value": {
                         "unquoted_string": {
-                          "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,1:8:13-1:39:44",
+                          "range": "d2/testdata/d2oracle/TestSet/replace_link.d2,1:8:18-1:25:35",
                           "value": [
                             {
-                              "string": "Overview.Untitled board 7.zzzzz",
-                              "raw_string": "Overview.Untitled board 7.zzzzz"
+                              "string": "https://apple.com",
+                              "raw_string": "https://apple.com"
                             }
                           ]
                         }
@@ -96,8 +96,8 @@
     "edges": null,
     "objects": [
       {
-        "id": "x",
-        "id_val": "x",
+        "id": "square",
+        "id_val": "square",
         "label_dimensions": {
           "width": 0,
           "height": 0
@@ -105,15 +105,15 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,0:0:0-0:1:1",
+              "range": "d2/testdata/d2oracle/TestSet/replace_link.d2,0:0:0-0:6:6",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,0:0:0-0:1:1",
+                    "range": "d2/testdata/d2oracle/TestSet/replace_link.d2,0:0:0-0:6:6",
                     "value": [
                       {
-                        "string": "x",
-                        "raw_string": "x"
+                        "string": "square",
+                        "raw_string": "square"
                       }
                     ]
                   }
@@ -126,11 +126,11 @@
         ],
         "attributes": {
           "label": {
-            "value": "x"
+            "value": "square"
           },
           "style": {},
           "link": {
-            "value": "Overview.Untitled board 7.zzzzz"
+            "value": "https://apple.com"
           },
           "near_key": null,
           "shape": {
@@ -147,5 +147,5 @@
       }
     ]
   },
-  "err": null
+  "err": "<nil>"
 }

@@ -129,7 +129,9 @@
             "value": "x"
           },
           "style": {},
-          "link": "https://google.com",
+          "link": {
+            "value": "https://google.com"
+          },
           "near_key": null,
           "shape": {
             "value": "rectangle"

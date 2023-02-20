@@ -95,8 +95,8 @@ type Attributes struct {
 	Label   Scalar   `json:"label"`
 	Style   Style    `json:"style"`
 	Icon    *url.URL `json:"icon,omitempty"`
-	Tooltip string   `json:"tooltip,omitempty"`
-	Link    string   `json:"link,omitempty"`
+	Tooltip *Scalar  `json:"tooltip,omitempty"`
+	Link    *Scalar  `json:"link,omitempty"`
 
 	Width  *Scalar `json:"width,omitempty"`
 	Height *Scalar `json:"height,omitempty"`
@@ -1313,10 +1313,10 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			switch shapeType {
 			case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE, shape.IMAGE_TYPE:
 			default:
-				if obj.Attributes.Link != "" {
+				if obj.Attributes.Link != nil {
 					paddingX += 32
 				}
-				if obj.Attributes.Tooltip != "" {
+				if obj.Attributes.Tooltip != nil {
 					paddingX += 32
 				}
 			}
