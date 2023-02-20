@@ -163,8 +163,7 @@ d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2:4:2: width and 
 			},
 		},
 		{
-			name: "no_dimensions_on_containers",
-
+			name: "dimensions_on_containers",
 			text: `
 containers: {
 	circle container: {
@@ -211,13 +210,6 @@ containers: {
 	}
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:5:3: width cannot be used on container: containers.circle container
-d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:15:3: width cannot be used on container: containers.diamond container
-d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:16:3: height cannot be used on container: containers.diamond container
-d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:25:3: width cannot be used on container: containers.oval container
-d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:26:3: height cannot be used on container: containers.oval container
-d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:36:3: width cannot be used on container: containers.hexagon container
-d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height cannot be used on container: containers.hexagon container`,
 		},
 		{
 			name: "dimension_with_style",

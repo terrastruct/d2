@@ -9,6 +9,7 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"math"
 	"strings"
 
 	"github.com/dop251/goja"
@@ -102,6 +103,9 @@ type elkOpts struct {
 	ForceNodeModelOrder          bool   `json:"elk.layered.crossingMinimization.forceNodeModelOrder,omitempty"`
 	ConsiderModelOrder           string `json:"elk.layered.considerModelOrder.strategy,omitempty"`
 
+	NodeSizeConstraints string `json:"elk.nodeSize.constraints,omitempty"`
+	NodeSizeMinimum     string `json:"elk.nodeSize.minimum,omitempty"`
+
 	ConfigurableOpts
 }
 
@@ -173,15 +177,17 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 	walk(g.Root, nil, func(obj, parent *d2graph.Object) {
 		height := obj.Height
+		width := obj.Width
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
 				height += float64(*obj.LabelHeight) + label.PADDING
 			}
+			width = go2.Max(width, float64(*obj.LabelWidth))
 		}
 
 		n := &ELKNode{
 			ID:     obj.AbsID(),
-			Width:  obj.Width,
+			Width:  width,
 			Height: height,
 		}
 
@@ -192,12 +198,20 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				EdgeEdgeBetweenLayersSpacing: 50,
 				HierarchyHandling:            "INCLUDE_CHILDREN",
 				ConsiderModelOrder:           "NODES_AND_EDGES",
+				// Why is it (height, width)? I have no clue, but it works.
+				NodeSizeMinimum: fmt.Sprintf("(%d, %d)", int(math.Ceil(height)), int(math.Ceil(width))),
 				ConfigurableOpts: ConfigurableOpts{
 					NodeSpacing:     opts.NodeSpacing,
 					EdgeNodeSpacing: opts.EdgeNodeSpacing,
 					SelfLoopSpacing: opts.SelfLoopSpacing,
 					Padding:         opts.Padding,
 				},
+			}
+			// Only set if specified.
+			// There's a bug where if it's the node label dimensions that set the NodeSizeMinimum,
+			// then suddenly it's reversed back to (width, height). I must be missing something
+			if obj.Attributes.Width != nil || obj.Attributes.Height != nil {
+				n.LayoutOptions.NodeSizeConstraints = "MINIMUM_SIZE"
 			}
 
 			if n.LayoutOptions.Padding == DefaultOpts.Padding {

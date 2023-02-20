@@ -251,7 +251,17 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	if sketch {
 		opts.FontFamily = go2.Pointer(d2fonts.HandDrawn)
 	}
-	diagram, _, err := d2lib.Compile(ctx, string(input), opts)
+	diagram, g, err := d2lib.Compile(ctx, string(input), opts)
+	if err != nil {
+		return nil, false, err
+	}
+
+	pluginInfo, err := plugin.Info(ctx)
+	if err != nil {
+		return nil, false, err
+	}
+
+	err = d2plugin.FeatureSupportCheck(pluginInfo, g)
 	if err != nil {
 		return nil, false, err
 	}
