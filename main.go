@@ -68,7 +68,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
-	darkThemeFlag, err := ms.Opts.Int64("D2_D_THEME", "dark_theme", "", -1, "the diagram dark theme ID. When left unset only the theme will be applied")
+	darkThemeFlag, err := ms.Opts.Int64("D2_D_THEME", "dark-theme", "", -1, "the diagram dark theme ID. When left unset only the theme will be applied")
 	if err != nil {
 		return err
 	}
