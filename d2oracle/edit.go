@@ -37,6 +37,7 @@ func Create(g *d2graph.Graph, key string) (_ *d2graph.Graph, newKey string, err 
 	if err != nil {
 		return nil, "", err
 	}
+
 	g, err = recompile(g)
 	if err != nil {
 		return nil, "", err
@@ -195,6 +196,20 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 			reserved = true
 
 			toSkip = 1
+			if len(mk.EdgeKey.Path) > 1 {
+				switch mk.EdgeKey.Path[len(mk.EdgeKey.Path)-2].Unbox().ScalarString() {
+				case "source-arrowhead":
+					if edge.SrcArrowhead != nil {
+						toSkip++
+						attrs = edge.SrcArrowhead
+					}
+				case "target-arrowhead":
+					if edge.DstArrowhead != nil {
+						toSkip++
+						attrs = edge.DstArrowhead
+					}
+				}
+			}
 			mk = &d2ast.Key{
 				Key:   cloneKey(mk.EdgeKey),
 				Value: mk.Value,
@@ -232,6 +247,16 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 			case "shape":
 				if attrs.Shape.MapKey != nil {
 					attrs.Shape.MapKey.SetScalar(mk.Value.ScalarBox())
+					return nil
+				}
+			case "link":
+				if attrs.Link.MapKey != nil {
+					attrs.Link.MapKey.SetScalar(mk.Value.ScalarBox())
+					return nil
+				}
+			case "tooltip":
+				if attrs.Tooltip.MapKey != nil {
+					attrs.Tooltip.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
 			case "width":
@@ -714,7 +739,9 @@ func deleteMapField(m *d2ast.Map, field string) {
 		if n.MapKey != nil && n.MapKey.Key != nil {
 			if n.MapKey.Key.Path[0].Unbox().ScalarString() == field {
 				deleteFromMap(m, n.MapKey)
-			} else if n.MapKey.Key.Path[0].Unbox().ScalarString() == "style" {
+			} else if n.MapKey.Key.Path[0].Unbox().ScalarString() == "style" ||
+				n.MapKey.Key.Path[0].Unbox().ScalarString() == "source-arrowhead" ||
+				n.MapKey.Key.Path[0].Unbox().ScalarString() == "target-arrowhead" {
 				if n.MapKey.Value.Map != nil {
 					deleteMapField(n.MapKey.Value.Map, field)
 					if len(n.MapKey.Value.Map.Nodes) == 0 {
