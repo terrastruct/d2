@@ -200,7 +200,17 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 			// (y -> z)[0].style.animated: true
 			if len(ref.MapKey.Edges) == 1 && ref.MapKey.EdgeIndex == nil {
 				onlyInChain = false
-				break
+			}
+			// If a ref has an exact match on this key, just change the value
+			tmp1 := *ref.MapKey
+			tmp2 := *mk
+			noVal1 := &tmp1
+			noVal2 := &tmp2
+			noVal1.Value = d2ast.ValueBox{}
+			noVal2.Value = d2ast.ValueBox{}
+			if noVal1.Equals(noVal2) {
+				ref.MapKey.Value = mk.Value
+				return nil
 			}
 		}
 		if onlyInChain {
