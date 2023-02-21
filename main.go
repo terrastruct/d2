@@ -199,7 +199,6 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 		if inputPath == "-" {
 			return xmain.UsageErrorf("-w[atch] cannot be combined with reading input from stdin")
 		}
-		ms.Log.SetTS(true)
 		w, err := newWatcher(ctx, ms, watcherOpts{
 			layoutPlugin:  plugin,
 			sketch:        *sketchFlag,
@@ -233,6 +232,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 }
 
 func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad, themeID int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page) (_ []byte, written bool, _ error) {
+	start := time.Now()
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
 		return nil, false, err
@@ -252,16 +252,27 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	if sketch {
 		opts.FontFamily = go2.Pointer(d2fonts.HandDrawn)
 	}
-	diagram, _, err := d2lib.Compile(ctx, string(input), opts)
+	diagram, g, err := d2lib.Compile(ctx, string(input), opts)
 	if err != nil {
 		return nil, false, err
 	}
 
+	pluginInfo, err := plugin.Info(ctx)
+	if err != nil {
+		return nil, false, err
+	}
+
+	err = d2plugin.FeatureSupportCheck(pluginInfo, g)
+	if err != nil {
+		return nil, false, err
+	}
+
+	compileDir := time.Since(start)
 	var svg []byte
 	if filepath.Ext(outputPath) == ".pdf" {
 		svg, err = renderPDF(ctx, ms, plugin, sketch, pad, outputPath, page, ruler, diagram, nil, nil)
 	} else {
-		svg, err = render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
+		svg, err = render(ctx, ms, compileDir, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
 	}
 	if err != nil {
 		return svg, false, err
@@ -271,30 +282,33 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	return svg, true, nil
 }
 
-func render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
+func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, sketch bool, pad int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
 	outputPath = layerOutputPath(outputPath, diagram)
 	for _, dl := range diagram.Layers {
-		_, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
+		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
+		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
+		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
 		if err != nil {
 			return nil, err
 		}
 	}
+	start := time.Now()
 	svg, err := _render(ctx, ms, plugin, sketch, pad, outputPath, bundle, forceAppendix, page, ruler, diagram)
 	if err != nil {
 		return svg, err
 	}
+	dur := compileDur + time.Since(start)
+	ms.Log.Success.Printf("successfully compiled %s to %s in %s", inputPath, outputPath, dur)
 	return svg, nil
 }
 

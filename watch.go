@@ -367,8 +367,6 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			}
 			errs = err.Error()
 			w.ms.Log.Error.Print(errs)
-		} else {
-			w.ms.Log.Success.Printf("successfully %scompiled %v to %v", recompiledPrefix, w.inputPath, w.outputPath)
 		}
 		w.broadcast(&compileResult{
 			SVG: string(svg),

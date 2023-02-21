@@ -95,12 +95,14 @@ type Attributes struct {
 	Label   Scalar   `json:"label"`
 	Style   Style    `json:"style"`
 	Icon    *url.URL `json:"icon,omitempty"`
-	Tooltip string   `json:"tooltip,omitempty"`
-	Link    string   `json:"link,omitempty"`
+	Tooltip *Scalar  `json:"tooltip,omitempty"`
+	Link    *Scalar  `json:"link,omitempty"`
 
-	// Only applicable for images right now
 	Width  *Scalar `json:"width,omitempty"`
 	Height *Scalar `json:"height,omitempty"`
+
+	Top  *Scalar `json:"top,omitempty"`
+	Left *Scalar `json:"left,omitempty"`
 
 	// TODO consider separate Attributes struct for shape-specific and edge-specific
 	// Shapes only
@@ -554,6 +556,38 @@ func (obj *Object) HasChild(ids []string) (*Object, bool) {
 
 	if len(ids) >= 1 {
 		return child.HasChild(ids)
+	}
+	return child, true
+}
+
+// Keep in sync with HasChild.
+func (obj *Object) HasChildIDVal(ids []string) (*Object, bool) {
+	if len(ids) == 0 {
+		return obj, true
+	}
+	if len(ids) == 1 && ids[0] != "style" {
+		_, ok := ReservedKeywords[ids[0]]
+		if ok {
+			return obj, true
+		}
+	}
+
+	id := ids[0]
+	ids = ids[1:]
+
+	var child *Object
+	for _, ch2 := range obj.ChildrenArray {
+		if ch2.IDVal == id {
+			child = ch2
+			break
+		}
+	}
+	if child == nil {
+		return nil, false
+	}
+
+	if len(ids) >= 1 {
+		return child.HasChildIDVal(ids)
 	}
 	return child, true
 }
@@ -1279,10 +1313,10 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			switch shapeType {
 			case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE, shape.IMAGE_TYPE:
 			default:
-				if obj.Attributes.Link != "" {
+				if obj.Attributes.Link != nil {
 					paddingX += 32
 				}
-				if obj.Attributes.Tooltip != "" {
+				if obj.Attributes.Tooltip != nil {
 					paddingX += 32
 				}
 			}
@@ -1410,6 +1444,8 @@ var SimpleReservedKeywords = map[string]struct{}{
 	"width":      {},
 	"height":     {},
 	"direction":  {},
+	"top":        {},
+	"left":       {},
 }
 
 // ReservedKeywordHolders are reserved keywords that are meaningless on its own and exist solely to hold a set of reserved keywords

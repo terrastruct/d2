@@ -86,7 +86,6 @@ x: {
 				}
 			},
 		},
-
 		{
 			name: "dimensions_on_nonimage",
 
@@ -112,6 +111,17 @@ x: {
 				if g.Objects[0].Attributes.Height.Value != "230" {
 					t.Fatalf("expected g.Objects[0].Attributes.Height.Value to be 230: %#v", g.Objects[0].Attributes.Height.Value)
 				}
+			},
+		},
+		{
+			name: "positions",
+			text: `hey: {
+	top: 200
+	left: 230
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "200", g.Objects[0].Attributes.Top.Value)
 			},
 		},
 		{
@@ -153,8 +163,7 @@ d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2:4:2: width and 
 			},
 		},
 		{
-			name: "no_dimensions_on_containers",
-
+			name: "dimensions_on_containers",
 			text: `
 containers: {
 	circle container: {
@@ -201,13 +210,6 @@ containers: {
 	}
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:5:3: width cannot be used on container: containers.circle container
-d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:15:3: width cannot be used on container: containers.diamond container
-d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:16:3: height cannot be used on container: containers.diamond container
-d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:25:3: width cannot be used on container: containers.oval container
-d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:26:3: height cannot be used on container: containers.oval container
-d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:36:3: width cannot be used on container: containers.hexagon container
-d2/testdata/d2compiler/TestCompile/no_dimensions_on_containers.d2:37:3: height cannot be used on container: containers.hexagon container`,
 		},
 		{
 			name: "dimension_with_style",
@@ -335,6 +337,17 @@ x: {
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				tassert.Equal(t, "y", g.Objects[1].ID)
 				tassert.Equal(t, g.Objects[0].AbsID(), g.Objects[1].References[0].ScopeObj.AbsID())
+			},
+		},
+		{
+			name: "underscore_connection",
+			text: `a: {
+  _.c.d -> _.c.b
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 4, len(g.Objects))
+				tassert.Equal(t, 1, len(g.Edges))
 			},
 		},
 		{
@@ -1351,8 +1364,8 @@ x -> y: {
 				if len(g.Objects) != 1 {
 					t.Fatal(g.Objects)
 				}
-				if g.Objects[0].Attributes.Link != "https://google.com" {
-					t.Fatal(g.Objects[0].Attributes.Link)
+				if g.Objects[0].Attributes.Link.Value != "https://google.com" {
+					t.Fatal(g.Objects[0].Attributes.Link.Value)
 				}
 			},
 		},
@@ -1367,8 +1380,8 @@ x -> y: {
 				if len(g.Objects) != 1 {
 					t.Fatal(g.Objects)
 				}
-				if g.Objects[0].Attributes.Link != "Overview.Untitled board 7.zzzzz" {
-					t.Fatal(g.Objects[0].Attributes.Link)
+				if g.Objects[0].Attributes.Link.Value != "Overview.Untitled board 7.zzzzz" {
+					t.Fatal(g.Objects[0].Attributes.Link.Value)
 				}
 			},
 		},
@@ -1377,6 +1390,29 @@ x -> y: {
 
 			text: `x.near: top-center
 `,
+		},
+		{
+			name: "near-invalid",
+
+			text: `mongodb: MongoDB {
+  perspective: perspective (View) {
+    password
+  }
+
+  explanation: |md
+    perspective.model.js
+  | {
+    near: mongodb
+  }
+}
+
+a: {
+  near: a.b
+  b
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near-invalid.d2:9:11: near keys cannot be set to an ancestor
+d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set to an descendant`,
 		},
 		{
 			name: "near_bad_constant",
@@ -1472,6 +1508,36 @@ d2/testdata/d2compiler/TestCompile/errors/reserved_icon_style.d2:2:9: near key "
   shape: sql_table
   x: {p -> q}
 }`,
+			expErr: `d2/testdata/d2compiler/TestCompile/edge_in_column.d2:3:7: sql_table columns cannot have children
+d2/testdata/d2compiler/TestCompile/edge_in_column.d2:3:12: sql_table columns cannot have children`,
+		},
+		{
+			name: "no-nested-columns-sql",
+
+			text: `x: {
+  shape: sql_table
+  a -- b.b
+}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no-nested-columns-sql.d2:3:10: sql_table columns cannot have children`,
+		},
+		{
+			name: "no-nested-columns-sql-2",
+
+			text: `x: {
+  shape: sql_table
+  a
+}
+x.a.b`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no-nested-columns-sql-2.d2:5:5: sql_table columns cannot have children`,
+		},
+		{
+			name: "no-nested-columns-class",
+
+			text: `x: {
+  shape: class
+  a.a
+}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no-nested-columns-class.d2:3:5: class fields cannot have children`,
 		},
 		{
 			name: "edge_to_style",

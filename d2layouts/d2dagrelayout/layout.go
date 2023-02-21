@@ -350,7 +350,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					return true
 				}
 				// Edge should only move if it's not connected to the bottom side of the shrinking container
-				return p.Y != obj.TopLeft.Y+obj.Height
+				// Give some margin for error
+				return !(obj.TopLeft.Y+obj.Height-1 <= p.Y && obj.TopLeft.Y+obj.Height+1 >= p.Y && p.X != obj.TopLeft.X && p.X != (obj.TopLeft.X+obj.Width))
 			}
 			for _, e := range g.Edges {
 				if _, ok := movedEdges[e]; ok {

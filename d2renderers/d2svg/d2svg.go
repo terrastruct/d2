@@ -64,10 +64,12 @@ type RenderOpts struct {
 	Sketch bool
 }
 
-func setViewbox(writer io.Writer, diagram *d2target.Diagram, pad int) (width int, height int) {
+func setViewbox(writer io.Writer, diagram *d2target.Diagram, pad int) (left, top, width, height int) {
 	tl, br := diagram.BoundingBox()
-	w := br.X - tl.X + pad*2
-	h := br.Y - tl.Y + pad*2
+	left = tl.X - pad
+	top = tl.Y - pad
+	width = br.X - tl.X + pad*2
+	height = br.Y - tl.Y + pad*2
 	// TODO minify
 
 	// TODO background stuff. e.g. dotted, grid, colors
@@ -76,9 +78,9 @@ func setViewbox(writer io.Writer, diagram *d2target.Diagram, pad int) (width int
 id="d2-svg"
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="%d" height="%d" viewBox="%d %d %d %d">`, w, h, tl.X-pad, tl.Y-pad, w, h)
+width="%d" height="%d" viewBox="%d %d %d %d">`, width, height, left, top, width, height)
 
-	return w, h
+	return left, top, width, height
 }
 
 func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
@@ -1263,7 +1265,8 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 
 	buf := &bytes.Buffer{}
-	w, h := setViewbox(buf, diagram, pad)
+
+	left, top, w, h := setViewbox(buf, diagram, pad)
 
 	styleCSS2 := ""
 	if sketchRunner != nil {
@@ -1348,10 +1351,10 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	// Note: we always want this since we reference it on connections even if there end up being no masked labels
 	fmt.Fprint(buf, strings.Join([]string{
 		fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
-			labelMaskID, -pad, -pad, w, h,
+			labelMaskID, left, top, w, h,
 		),
 		fmt.Sprintf(`<rect x="%d" y="%d" width="%d" height="%d" fill="white"></rect>`,
-			-pad, -pad, w, h,
+			left, top, w, h,
 		),
 		strings.Join(labelMasks, "\n"),
 		`</mask>`,

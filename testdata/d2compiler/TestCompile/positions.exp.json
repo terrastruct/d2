@@ -1,0 +1,179 @@
+{
+  "graph": {
+    "name": "",
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/positions.d2,0:0:0-4:0:30",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/positions.d2,0:0:0-3:1:29",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/positions.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/positions.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "hey",
+                        "raw_string": "hey"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/positions.d2,0:5:5-3:0:28",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/positions.d2,1:1:8-1:9:16",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/positions.d2,1:1:8-1:4:11",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/positions.d2,1:1:8-1:4:11",
+                              "value": [
+                                {
+                                  "string": "top",
+                                  "raw_string": "top"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "number": {
+                          "range": "d2/testdata/d2compiler/TestCompile/positions.d2,1:6:13-1:9:16",
+                          "raw": "200",
+                          "value": "200"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/positions.d2,2:1:18-2:10:27",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/positions.d2,2:1:18-2:5:22",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/positions.d2,2:1:18-2:5:22",
+                              "value": [
+                                {
+                                  "string": "left",
+                                  "raw_string": "left"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "number": {
+                          "range": "d2/testdata/d2compiler/TestCompile/positions.d2,2:7:24-2:10:27",
+                          "raw": "230",
+                          "value": "230"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "hey",
+        "id_val": "hey",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/positions.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/positions.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "hey",
+                        "raw_string": "hey"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "hey"
+          },
+          "style": {},
+          "top": {
+            "value": "200"
+          },
+          "left": {
+            "value": "230"
+          },
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

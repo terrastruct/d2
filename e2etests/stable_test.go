@@ -165,9 +165,9 @@ d -> g.e -> f -> g -> d.h
 		},
 		{
 			name: "one_three_one_container",
-			script: `top.start -> a
-top.start -> b
-top.start -> c
+			script: `top2.start -> a
+top2.start -> b
+top2.start -> c
 a -> bottom.end
 b -> bottom.end
 c -> bottom.end
@@ -1576,13 +1576,13 @@ container: {
 		icon: https://icons.terrastruct.com/essentials/004-picture.svg
 	}
 
-	left: {
+	left2: {
 		root: {
 			shape: image
 			icon: https://icons.terrastruct.com/essentials/004-picture.svg
 		}
 		inner: {
-			left: {
+			left2: {
 				shape: image
 				icon: https://icons.terrastruct.com/essentials/004-picture.svg
 			}
@@ -1591,8 +1591,8 @@ container: {
 				icon: https://icons.terrastruct.com/essentials/004-picture.svg
 			}
 		}
-		root -> inner.left: {
-			label: to inner left
+		root -> inner.left2: {
+			label: to inner left2
 		}
 		root -> inner.right: {
 			label: to inner right
@@ -1605,7 +1605,7 @@ container: {
 			icon: https://icons.terrastruct.com/essentials/004-picture.svg
 		}
 		inner: {
-			left: {
+			left2: {
 				shape: image
 				icon: https://icons.terrastruct.com/essentials/004-picture.svg
 			}
@@ -1614,16 +1614,16 @@ container: {
 				icon: https://icons.terrastruct.com/essentials/004-picture.svg
 			}
 		}
-		root -> inner.left: {
-			label: to inner left
+		root -> inner.left2: {
+			label: to inner left2
 		}
 		root -> inner.right: {
 			label: to inner right
 		}
 	}
 
-	root -> left.root: {
-		label: to left container root
+	root -> left2.root: {
+		label: to left2 container root
 	}
 
 	root -> right.root: {
@@ -1767,6 +1767,30 @@ class.height: 512
 users.height: 512
 code.height: 512
 package.height: 512
+`,
+		},
+		{
+			name: "container_dimensions",
+			script: `a: {
+  width: 500
+  b -> c
+	b.width: 400
+	c.width: 600
+}
+
+b: {
+  width: 700
+  b -> c
+	e: {
+		height: 300
+	}
+}
+
+c: {
+  width: 200
+  height: 300
+  a
+}
 `,
 		},
 		{

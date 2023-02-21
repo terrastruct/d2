@@ -379,7 +379,9 @@ func (eid *EdgeID) Match(eid2 *EdgeID) bool {
 	return true
 }
 
-func (eid *EdgeID) resolveUnderscores(m *Map) (*EdgeID, *Map, error) {
+// resolve resolves both underscores and commons in eid.
+// It returns the new eid, containing map adjusted for underscores and common ida.
+func (eid *EdgeID) resolve(m *Map) (_ *EdgeID, _ *Map, common []string, _ error) {
 	eid = eid.Copy()
 	maxUnderscores := go2.Max(countUnderscores(eid.SrcPath), countUnderscores(eid.DstPath))
 	for i := 0; i < maxUnderscores; i++ {
@@ -397,23 +399,20 @@ func (eid *EdgeID) resolveUnderscores(m *Map) (*EdgeID, *Map, error) {
 		}
 		m = ParentMap(m)
 		if m == nil {
-			return nil, nil, errors.New("invalid underscore")
+			return nil, nil, nil, errors.New("invalid underscore")
 		}
 	}
-	return eid, m, nil
-}
 
-func (eid *EdgeID) trimCommon() (common []string, _ *EdgeID) {
-	eid = eid.Copy()
 	for len(eid.SrcPath) > 1 && len(eid.DstPath) > 1 {
 		if !strings.EqualFold(eid.SrcPath[0], eid.DstPath[0]) {
-			return common, eid
+			return eid, m, common, nil
 		}
 		common = append(common, eid.SrcPath[0])
 		eid.SrcPath = eid.SrcPath[1:]
 		eid.DstPath = eid.DstPath[1:]
 	}
-	return common, eid
+
+	return eid, m, common, nil
 }
 
 type Edge struct {
@@ -732,11 +731,10 @@ func (m *Map) DeleteField(ida ...string) *Field {
 }
 
 func (m *Map) GetEdges(eid *EdgeID) []*Edge {
-	eid, m, err := eid.resolveUnderscores(m)
+	eid, m, common, err := eid.resolve(m)
 	if err != nil {
 		return nil
 	}
-	common, eid := eid.trimCommon()
 	if len(common) > 0 {
 		f := m.GetField(common...)
 		if f == nil {
@@ -762,16 +760,12 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
 		return nil, d2parser.Errorf(refctx.Edge, "cannot create edge inside edge")
 	}
 
-	eid, m, err := eid.resolveUnderscores(m)
+	eid, m, common, err := eid.resolve(m)
 	if err != nil {
 		return nil, d2parser.Errorf(refctx.Edge, err.Error())
 	}
-	common, eid := eid.trimCommon()
 	if len(common) > 0 {
-		tmp := *refctx.Edge.Src
-		kp := &tmp
-		kp.Path = kp.Path[:len(common)]
-		f, err := m.EnsureField(kp, nil)
+		f, err := m.EnsureField(d2ast.MakeKeyPath(common), nil)
 		if err != nil {
 			return nil, err
 		}

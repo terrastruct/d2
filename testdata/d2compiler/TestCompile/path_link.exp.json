@@ -129,7 +129,9 @@
             "value": "x"
           },
           "style": {},
-          "link": "Overview.Untitled board 7.zzzzz",
+          "link": {
+            "value": "Overview.Untitled board 7.zzzzz"
+          },
           "near_key": null,
           "shape": {
             "value": "rectangle"

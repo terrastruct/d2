@@ -3,7 +3,7 @@
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
-      "id": "top",
+      "id": "top2",
       "type": "rectangle",
       "pos": {
         "x": 0,
@@ -29,7 +29,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "top",
+      "label": "top2",
       "fontSize": 28,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -37,14 +37,14 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 40,
+      "labelWidth": 54,
       "labelHeight": 36,
       "labelPosition": "OUTSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
-      "id": "top.start",
+      "id": "top2.start",
       "type": "rectangle",
       "pos": {
         "x": 123,
@@ -292,8 +292,8 @@
   ],
   "connections": [
     {
-      "id": "(top.start -> a)[0]",
-      "src": "top.start",
+      "id": "(top2.start -> a)[0]",
+      "src": "top2.start",
       "srcArrow": "none",
       "srcLabel": "",
       "dst": "a",
@@ -340,8 +340,8 @@
       "zIndex": 0
     },
     {
-      "id": "(top.start -> b)[0]",
-      "src": "top.start",
+      "id": "(top2.start -> b)[0]",
+      "src": "top2.start",
       "srcArrow": "none",
       "srcLabel": "",
       "dst": "b",
@@ -388,8 +388,8 @@
       "zIndex": 0
     },
     {
-      "id": "(top.start -> c)[0]",
-      "src": "top.start",
+      "id": "(top2.start -> c)[0]",
+      "src": "top2.start",
       "srcArrow": "none",
       "srcLabel": "",
       "dst": "c",

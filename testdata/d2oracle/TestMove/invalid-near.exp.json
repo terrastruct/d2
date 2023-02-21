@@ -1,0 +1,4 @@
+{
+  "graph": null,
+  "err": "failed to move: \"y\" to \"x.y\": failed to recompile:\nx: {\n  near: x.y\n  y\n}\n\nd2/testdata/d2oracle/TestMove/invalid-near.d2:2:9: near keys cannot be set to an descendant"
+}
