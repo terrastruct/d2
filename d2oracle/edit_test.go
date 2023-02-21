@@ -1242,6 +1242,30 @@ a.b -> a.c: {style.animated: true}
 `,
 		},
 		{
+			name: "edge_flat_merge_arrowhead",
+			text: `x -> y -> z
+(x -> y)[0].target-arrowhead.shape: diamond
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`circle`),
+
+			exp: `x -> y -> z
+(x -> y)[0].target-arrowhead.shape: circle
+`,
+		},
+		{
+			name: "edge_index_merge_style",
+			text: `x -> y -> z
+(x -> y)[0].style.opacity: 0.4
+`,
+			key:   `(x -> y)[0].style.opacity`,
+			value: go2.Pointer(`0.5`),
+
+			exp: `x -> y -> z
+(x -> y)[0].style.opacity: 0.5
+`,
+		},
+		{
 			name: "edge_chain_nested_set",
 			text: `oreo: {
   q -> z -> p: wsup
