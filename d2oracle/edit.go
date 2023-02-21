@@ -111,6 +111,23 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 	toSkip := 1
 
 	reserved := false
+
+	// If you're setting `(x -> y)[0].style.opacity`
+	// There's 3 cases you need to handle:
+	// 1. The edge has no map.
+	// 2. The edge has a style map with opacity not existing
+	// 3. The edge has a style map with opacity existing
+	//
+	// How each case is handled:
+	// 1. Append that mapkey to edge.
+	// 2. Append opacity to the style map
+	// 3. Set opacity
+	//
+	// There's certainly cleaner code to achieve this, but currently, there's a lot of logic to correctly scope, merge, append.
+	// The tests should be comprehensive enough for a safe refactor someday
+	//
+	// reservedKey = "style"
+	// reservedTargetKey = "opacity"
 	reservedKey := ""
 	reservedTargetKey := ""
 	if mk.Key != nil {
@@ -295,6 +312,9 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 				}
 				if attrs != nil {
 					if reservedTargetKey == "" {
+						if len(mk.Key.Path[reservedIndex:]) != 2 {
+							return errors.New("malformed style setting, expected 2 part path")
+						}
 						reservedTargetKey = mk.Key.Path[reservedIndex+1].Unbox().ScalarString()
 					}
 					switch reservedTargetKey {
@@ -312,6 +332,9 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 				}
 			case "style":
 				if reservedTargetKey == "" {
+					if len(mk.Key.Path[reservedIndex:]) != 2 {
+						return errors.New("malformed style setting, expected 2 part path")
+					}
 					reservedTargetKey = mk.Key.Path[reservedIndex+1].Unbox().ScalarString()
 				}
 				switch reservedTargetKey {
@@ -415,9 +438,6 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 	appendMapKey(scope, mk)
 	return nil
 }
-
-// func setStyleAttr(attr *d2graph.Attributes, k string, v *d2ast.Key) {
-// }
 
 func appendUniqueMapKey(m *d2ast.Map, mk *d2ast.Key) {
 	for _, n := range m.Nodes {
