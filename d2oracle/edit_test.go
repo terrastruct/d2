@@ -809,6 +809,38 @@ square.style.opacity: 0.2
 `,
 		},
 		{
+			name: "replace_edge_style_map",
+			text: `x -> y: {
+  style: {
+    stroke-dash: 3
+  }
+}
+`,
+			key:   `(x -> y)[0].style.stroke-dash`,
+			value: go2.Pointer(`4`),
+			exp: `x -> y: {
+  style: {
+    stroke-dash: 4
+  }
+}
+`,
+		},
+		{
+			name: "replace_edge_style",
+			text: `x -> y: {
+  style.stroke-width: 1
+  style.stroke-dash: 4
+}
+`,
+			key:   `(x -> y)[0].style.stroke-dash`,
+			value: go2.Pointer(`3`),
+			exp: `x -> y: {
+  style.stroke-width: 1
+  style.stroke-dash: 3
+}
+`,
+		},
+		{
 			name: "label_unset",
 			text: `square: "Always try to do things in chronological order; it's less confusing that way."
 `,
@@ -1169,6 +1201,25 @@ a.b -> a.c: {style.animated: true}
 
 			exp: `x -> y
 (x -> y)[0].target-arrowhead.shape: diamond
+`,
+		},
+		{
+			name: "edge_merge_arrowhead",
+			text: `x -> y: {
+	target-arrowhead: {
+		label: 1
+  }
+}
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`diamond`),
+
+			exp: `x -> y: {
+  target-arrowhead: {
+    label: 1
+    shape: diamond
+  }
+}
 `,
 		},
 		{
