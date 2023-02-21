@@ -1200,13 +1200,13 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`class="md"`,
 		},
 		fmt.Sprintf(`
-			.text {
-				font-family: "font-regular";
-			}
-			@font-face {
-				font-family: font-regular;
-				src: url("%s");
-			}`,
+.text {
+	font-family: "font-regular";
+}
+@font-face {
+	font-family: font-regular;
+	src: url("%s");
+}`,
 			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR)],
 		),
 	)
@@ -1218,9 +1218,9 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`text-underline`,
 		},
 		`
-		.text-underline {
-			text-decoration: underline;
-		}`,
+.text-underline {
+	text-decoration: underline;
+}`,
 	)
 
 	appendOnTrigger(
@@ -1230,12 +1230,12 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`animated-connection`,
 		},
 		`
-		@keyframes dashdraw {
-			from {
-				stroke-dashoffset: 0;
-			}
-		}
-		`,
+@keyframes dashdraw {
+	from {
+		stroke-dashoffset: 0;
+	}
+}
+`,
 	)
 
 	appendOnTrigger(
@@ -1245,9 +1245,9 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`appendix-icon`,
 		},
 		`
-		.appendix-icon {
-			filter: drop-shadow(0px 0px 32px rgba(31, 36, 58, 0.1));
-		}`,
+.appendix-icon {
+	filter: drop-shadow(0px 0px 32px rgba(31, 36, 58, 0.1));
+}`,
 	)
 
 	appendOnTrigger(
@@ -1259,13 +1259,13 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`<strong>`,
 		},
 		fmt.Sprintf(`
-			.text-bold {
-				font-family: "font-bold";
-			}
-			@font-face {
-				font-family: font-bold;
-				src: url("%s");
-			}`,
+.text-bold {
+	font-family: "font-bold";
+}
+@font-face {
+	font-family: font-bold;
+	src: url("%s");
+}`,
 			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_BOLD)],
 		),
 	)
@@ -1279,13 +1279,13 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`<dfn>`,
 		},
 		fmt.Sprintf(`
-			.text-italic {
-				font-family: "font-italic";
-			}
-			@font-face {
-				font-family: font-italic;
-				src: url("%s");
-			}`,
+.text-italic {
+	font-family: "font-italic";
+}
+@font-face {
+	font-family: font-italic;
+	src: url("%s");
+}`,
 			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_ITALIC)],
 		),
 	)
@@ -1301,13 +1301,13 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`<samp>`,
 		},
 		fmt.Sprintf(`
-			.text-mono {
-				font-family: "font-mono";
-			}
-			@font-face {
-				font-family: font-mono;
-				src: url("%s");
-			}`,
+.text-mono {
+	font-family: "font-mono";
+}
+@font-face {
+	font-family: font-mono;
+	src: url("%s");
+}`,
 			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_REGULAR)],
 		),
 	)
@@ -1319,13 +1319,13 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`class="text-mono-bold"`,
 		},
 		fmt.Sprintf(`
-			.text-mono-bold {
-				font-family: "font-mono-bold";
-			}
-			@font-face {
-				font-family: font-mono-bold;
-				src: url("%s");
-			}`,
+.text-mono-bold {
+	font-family: "font-mono-bold";
+}
+@font-face {
+	font-family: font-mono-bold;
+	src: url("%s");
+}`,
 			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD)],
 		),
 	)
@@ -1337,13 +1337,13 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`class="text-mono-italic"`,
 		},
 		fmt.Sprintf(`
-			.text-mono-italic {
-				font-family: "font-mono-italic";
-			}
-			@font-face {
-				font-family: font-mono-italic;
-				src: url("%s");
-			}`,
+.text-mono-italic {
+	font-family: "font-mono-italic";
+}
+@font-face {
+	font-family: font-mono-italic;
+	src: url("%s");
+}`,
 			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC)],
 		),
 	)
@@ -1355,13 +1355,13 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`class="text-mono-bold"`,
 		},
 		fmt.Sprintf(`
-			.text-mono-bold {
-				font-family: "font-mono-bold";
-			}
-			@font-face {
-				font-family: font-mono-bold;
-				src: url("%s");
-			}`,
+.text-mono-bold {
+	font-family: "font-mono-bold";
+}
+@font-face {
+	font-family: font-mono-bold;
+	src: url("%s");
+}`,
 			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD)],
 		),
 	)
@@ -1373,13 +1373,13 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`class="text-mono-italic"`,
 		},
 		fmt.Sprintf(`
-			.text-mono-italic {
-				font-family: "font-mono-italic";
-			}
-			@font-face {
-				font-family: font-mono-italic;
-				src: url("%s");
-			}`,
+.text-mono-italic {
+	font-family: "font-mono-italic";
+}
+@font-face {
+	font-family: font-mono-italic;
+	src: url("%s");
+}`,
 			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC)],
 		),
 	)
@@ -1391,10 +1391,10 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`sketch-overlay-bright`,
 		},
 		`
-		.sketch-overlay-bright {
-			fill: url(#streaks-bright);
-			mix-blend-mode: darken;
-		}`,
+.sketch-overlay-bright {
+	fill: url(#streaks-bright);
+	mix-blend-mode: darken;
+}`,
 	)
 
 	appendOnTrigger(
@@ -1404,10 +1404,10 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`sketch-overlay-normal`,
 		},
 		`
-		.sketch-overlay-normal {
-			fill: url(#streaks-normal);
-			mix-blend-mode: color-burn;
-		}`,
+.sketch-overlay-normal {
+	fill: url(#streaks-normal);
+	mix-blend-mode: color-burn;
+}`,
 	)
 
 	appendOnTrigger(
@@ -1417,10 +1417,10 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`sketch-overlay-dark`,
 		},
 		`
-		.sketch-overlay-dark {
-			fill: url(#streaks-dark);
-			mix-blend-mode: overlay;
-		}`,
+.sketch-overlay-dark {
+	fill: url(#streaks-dark);
+	mix-blend-mode: overlay;
+}`,
 	)
 
 	appendOnTrigger(
@@ -1430,10 +1430,10 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`sketch-overlay-darker`,
 		},
 		`
-		.sketch-overlay-darker {
-			fill: url(#streaks-darker);
-			mix-blend-mode: lighten;
-		}`,
+.sketch-overlay-darker {
+	fill: url(#streaks-darker);
+	mix-blend-mode: lighten;
+}`,
 	)
 
 	fmt.Fprint(buf, `]]></style>`)
