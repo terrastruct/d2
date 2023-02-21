@@ -194,17 +194,14 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 			}
 			reserved = true
 
-			toSkip = 1
 			if len(mk.EdgeKey.Path) > 1 {
 				switch mk.EdgeKey.Path[len(mk.EdgeKey.Path)-2].Unbox().ScalarString() {
 				case "source-arrowhead":
 					if edge.SrcArrowhead != nil {
-						toSkip++
 						attrs = edge.SrcArrowhead
 					}
 				case "target-arrowhead":
 					if edge.DstArrowhead != nil {
-						toSkip++
 						attrs = edge.DstArrowhead
 					}
 				}
@@ -236,6 +233,7 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 				attrs.Label.MapKey.Value = d2ast.MakeValueBox(edgeMap)
 				scope = edgeMap
 			}
+			toSkip = len(mk.Key.Path)
 		}
 	}
 

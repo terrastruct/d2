@@ -779,6 +779,36 @@ square.style.opacity: 0.2
 `,
 		},
 		{
+			name: "replace_arrowhead",
+			text: `x -> y: {
+  target-arrowhead.shape: diamond
+}
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`circle`),
+			exp: `x -> y: {
+  target-arrowhead.shape: circle
+}
+`,
+		},
+		{
+			name: "replace_arrowhead_map",
+			text: `x -> y: {
+  target-arrowhead: {
+    shape: diamond
+  }
+}
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`circle`),
+			exp: `x -> y: {
+  target-arrowhead: {
+    shape: circle
+  }
+}
+`,
+		},
+		{
 			name: "label_unset",
 			text: `square: "Always try to do things in chronological order; it's less confusing that way."
 `,
