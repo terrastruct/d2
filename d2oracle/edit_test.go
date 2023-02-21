@@ -744,6 +744,103 @@ square.style.opacity: 0.2
 `,
 		},
 		{
+			name: "set_tooltip",
+			text: `square
+`,
+			key:   `square.tooltip`,
+			value: go2.Pointer(`y`),
+			exp: `square: {tooltip: y}
+`,
+		},
+		{
+			name: "replace_tooltip",
+			text: `square: {
+  tooltip: x
+}
+`,
+			key:   `square.tooltip`,
+			value: go2.Pointer(`y`),
+			exp: `square: {
+  tooltip: y
+}
+`,
+		},
+		{
+			name: "replace_link",
+			text: `square: {
+  link: https://google.com
+}
+`,
+			key:   `square.link`,
+			value: go2.Pointer(`https://apple.com`),
+			exp: `square: {
+  link: https://apple.com
+}
+`,
+		},
+		{
+			name: "replace_arrowhead",
+			text: `x -> y: {
+  target-arrowhead.shape: diamond
+}
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`circle`),
+			exp: `x -> y: {
+  target-arrowhead.shape: circle
+}
+`,
+		},
+		{
+			name: "replace_arrowhead_map",
+			text: `x -> y: {
+  target-arrowhead: {
+    shape: diamond
+  }
+}
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`circle`),
+			exp: `x -> y: {
+  target-arrowhead: {
+    shape: circle
+  }
+}
+`,
+		},
+		{
+			name: "replace_edge_style_map",
+			text: `x -> y: {
+  style: {
+    stroke-dash: 3
+  }
+}
+`,
+			key:   `(x -> y)[0].style.stroke-dash`,
+			value: go2.Pointer(`4`),
+			exp: `x -> y: {
+  style: {
+    stroke-dash: 4
+  }
+}
+`,
+		},
+		{
+			name: "replace_edge_style",
+			text: `x -> y: {
+  style.stroke-width: 1
+  style.stroke-dash: 4
+}
+`,
+			key:   `(x -> y)[0].style.stroke-dash`,
+			value: go2.Pointer(`3`),
+			exp: `x -> y: {
+  style.stroke-width: 1
+  style.stroke-dash: 3
+}
+`,
+		},
+		{
 			name: "label_unset",
 			text: `square: "Always try to do things in chronological order; it's less confusing that way."
 `,
@@ -1075,6 +1172,57 @@ a.b -> a.c: {style.animated: true}
 `,
 		},
 		{
+			name: "edge_set_arrowhead",
+			text: `x -> y
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`diamond`),
+
+			exp: `x -> y: {target-arrowhead.shape: diamond}
+`,
+		},
+		{
+			name: "edge_replace_arrowhead",
+			text: `x -> y: {target-arrowhead.shape: circle}
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`diamond`),
+
+			exp: `x -> y: {target-arrowhead.shape: diamond}
+`,
+		},
+		{
+			name: "edge_replace_arrowhead_indexed",
+			text: `x -> y
+(x -> y)[0].target-arrowhead.shape: circle
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`diamond`),
+
+			exp: `x -> y
+(x -> y)[0].target-arrowhead.shape: diamond
+`,
+		},
+		{
+			name: "edge_merge_arrowhead",
+			text: `x -> y: {
+	target-arrowhead: {
+		label: 1
+  }
+}
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`diamond`),
+
+			exp: `x -> y: {
+  target-arrowhead: {
+    label: 1
+    shape: diamond
+  }
+}
+`,
+		},
+		{
 			name: "edge_merge_style",
 			text: `x -> y: {
 	style: {
@@ -1091,6 +1239,30 @@ a.b -> a.c: {style.animated: true}
     animated: true
   }
 }
+`,
+		},
+		{
+			name: "edge_flat_merge_arrowhead",
+			text: `x -> y -> z
+(x -> y)[0].target-arrowhead.shape: diamond
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`circle`),
+
+			exp: `x -> y -> z
+(x -> y)[0].target-arrowhead.shape: circle
+`,
+		},
+		{
+			name: "edge_index_merge_style",
+			text: `x -> y -> z
+(x -> y)[0].style.opacity: 0.4
+`,
+			key:   `(x -> y)[0].style.opacity`,
+			value: go2.Pointer(`0.5`),
+
+			exp: `x -> y -> z
+(x -> y)[0].style.opacity: 0.5
 `,
 		},
 		{
@@ -3459,6 +3631,71 @@ x
 			key: `x`,
 
 			exp: `y
+`,
+		},
+		{
+			name: "arrowhead",
+
+			text: `x -> y: {
+  target-arrowhead.shape: diamond
+}
+`,
+			key: `(x -> y)[0].target-arrowhead`,
+
+			exp: `x -> y
+`,
+		},
+		{
+			name: "arrowhead_shape",
+
+			text: `x -> y: {
+  target-arrowhead.shape: diamond
+}
+`,
+			key: `(x -> y)[0].target-arrowhead.shape`,
+
+			exp: `x -> y
+`,
+		},
+		{
+			name: "arrowhead_label",
+
+			text: `x -> y: {
+  target-arrowhead.shape: diamond
+  target-arrowhead.label: 1
+}
+`,
+			key: `(x -> y)[0].target-arrowhead.label`,
+
+			exp: `x -> y: {
+  target-arrowhead.shape: diamond
+}
+`,
+		},
+		{
+			name: "arrowhead_map",
+
+			text: `x -> y: {
+	target-arrowhead: {
+    shape: diamond
+  }
+}
+`,
+			key: `(x -> y)[0].target-arrowhead.shape`,
+
+			exp: `x -> y
+`,
+		},
+		{
+			name: "edge-only-style",
+
+			text: `x -> y: {
+  style.stroke: red
+}
+`,
+			key: `(x -> y)[0].style.stroke`,
+
+			exp: `x -> y
 `,
 		},
 		{

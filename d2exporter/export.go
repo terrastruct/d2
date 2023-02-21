@@ -149,8 +149,12 @@ func toShape(obj *d2graph.Object) d2target.Shape {
 		}
 	}
 
-	shape.Tooltip = obj.Attributes.Tooltip
-	shape.Link = obj.Attributes.Link
+	if obj.Attributes.Tooltip != nil {
+		shape.Tooltip = obj.Attributes.Tooltip.Value
+	}
+	if obj.Attributes.Link != nil {
+		shape.Link = obj.Attributes.Link.Value
+	}
 	shape.Icon = obj.Attributes.Icon
 	if obj.IconPosition != nil {
 		shape.IconPosition = *obj.IconPosition
@@ -229,7 +233,9 @@ func toConnection(edge *d2graph.Edge) d2target.Connection {
 		connection.Animated, _ = strconv.ParseBool(edge.Attributes.Style.Animated.Value)
 	}
 
-	connection.Tooltip = edge.Attributes.Tooltip
+	if edge.Attributes.Tooltip != nil {
+		connection.Tooltip = edge.Attributes.Tooltip.Value
+	}
 	connection.Icon = edge.Attributes.Icon
 
 	if edge.Attributes.Style.Italic != nil {

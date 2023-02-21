@@ -111,6 +111,25 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 	toSkip := 1
 
 	reserved := false
+
+	// If you're setting `(x -> y)[0].style.opacity`
+	// There's 3 cases you need to handle:
+	// 1. The edge has no map.
+	// 2. The edge has a style map with opacity not existing
+	// 3. The edge has a style map with opacity existing
+	//
+	// How each case is handled:
+	// 1. Append that mapkey to edge.
+	// 2. Append opacity to the style map
+	// 3. Set opacity
+	//
+	// There's certainly cleaner code to achieve this, but currently, there's a lot of logic to correctly scope, merge, append.
+	// The tests should be comprehensive enough for a safe refactor someday
+	//
+	// reservedKey = "style"
+	// reservedTargetKey = "opacity"
+	reservedKey := ""
+	reservedTargetKey := ""
 	if mk.Key != nil {
 		found := true
 		for _, idel := range d2graph.Key(mk.Key) {
@@ -162,12 +181,14 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 	}
 
 	attrs := obj.Attributes
+	var edge *d2graph.Edge
 	if len(mk.Edges) == 1 {
 		if mk.EdgeIndex == nil {
 			appendMapKey(scope, mk)
 			return nil
 		}
-		edge, ok := obj.HasEdge(mk)
+		var ok bool
+		edge, ok = obj.HasEdge(mk)
 		if !ok {
 			return errors.New("edge not found")
 		}
@@ -179,7 +200,17 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 			// (y -> z)[0].style.animated: true
 			if len(ref.MapKey.Edges) == 1 && ref.MapKey.EdgeIndex == nil {
 				onlyInChain = false
-				break
+			}
+			// If a ref has an exact match on this key, just change the value
+			tmp1 := *ref.MapKey
+			tmp2 := *mk
+			noVal1 := &tmp1
+			noVal2 := &tmp2
+			noVal1.Value = d2ast.ValueBox{}
+			noVal2.Value = d2ast.ValueBox{}
+			if noVal1.Equals(noVal2) {
+				ref.MapKey.Value = mk.Value
+				return nil
 			}
 		}
 		if onlyInChain {
@@ -206,10 +237,26 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 				if ref.MapKey.Value.Map != nil {
 					foundMap = true
 					scope = ref.MapKey.Value.Map
-					// TODO when edges can have more fields, search for style
-					if len(scope.Nodes) == 1 && scope.Nodes[0].MapKey.Value.Map != nil {
-						scope = scope.Nodes[0].MapKey.Value.Map
-						mk.Key.Path = mk.Key.Path[1:]
+					for _, n := range scope.Nodes {
+						if n.MapKey.Value.Map == nil {
+							continue
+						}
+						if n.MapKey.Key == nil || len(n.MapKey.Key.Path) != 1 {
+							continue
+						}
+						if n.MapKey.Key.Path[0].Unbox().ScalarString() == mk.Key.Path[toSkip-1].Unbox().ScalarString() {
+							scope = n.MapKey.Value.Map
+							if mk.Key.Path[0].Unbox().ScalarString() == "source-arrowhead" && edge.SrcArrowhead != nil {
+								attrs = edge.SrcArrowhead
+							}
+							if mk.Key.Path[0].Unbox().ScalarString() == "target-arrowhead" && edge.DstArrowhead != nil {
+								attrs = edge.DstArrowhead
+							}
+							reservedKey = mk.Key.Path[0].Unbox().ScalarString()
+							mk.Key.Path = mk.Key.Path[1:]
+							reservedTargetKey = mk.Key.Path[0].Unbox().ScalarString()
+							break
+						}
 					}
 					break
 				}
@@ -228,10 +275,23 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 	if reserved {
 		reservedIndex := toSkip - 1
 		if mk.Key != nil && len(mk.Key.Path) > 0 {
-			switch mk.Key.Path[reservedIndex].Unbox().ScalarString() {
+			if reservedKey == "" {
+				reservedKey = mk.Key.Path[reservedIndex].Unbox().ScalarString()
+			}
+			switch reservedKey {
 			case "shape":
 				if attrs.Shape.MapKey != nil {
 					attrs.Shape.MapKey.SetScalar(mk.Value.ScalarBox())
+					return nil
+				}
+			case "link":
+				if attrs.Link != nil && attrs.Link.MapKey != nil {
+					attrs.Link.MapKey.SetScalar(mk.Value.ScalarBox())
+					return nil
+				}
+			case "tooltip":
+				if attrs.Tooltip != nil && attrs.Tooltip.MapKey != nil {
+					attrs.Tooltip.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
 			case "width":
@@ -254,11 +314,40 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 					attrs.Left.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
-			case "style":
-				if len(mk.Key.Path[reservedIndex:]) != 2 {
-					return errors.New("malformed style setting, expected 2 part path")
+			case "source-arrowhead", "target-arrowhead":
+				if reservedKey == "source-arrowhead" {
+					attrs = edge.SrcArrowhead
+				} else {
+					attrs = edge.DstArrowhead
 				}
-				switch mk.Key.Path[reservedIndex+1].Unbox().ScalarString() {
+				if attrs != nil {
+					if reservedTargetKey == "" {
+						if len(mk.Key.Path[reservedIndex:]) != 2 {
+							return errors.New("malformed style setting, expected 2 part path")
+						}
+						reservedTargetKey = mk.Key.Path[reservedIndex+1].Unbox().ScalarString()
+					}
+					switch reservedTargetKey {
+					case "shape":
+						if attrs.Shape.MapKey != nil {
+							attrs.Shape.MapKey.SetScalar(mk.Value.ScalarBox())
+							return nil
+						}
+					case "label":
+						if attrs.Label.MapKey != nil {
+							attrs.Label.MapKey.SetScalar(mk.Value.ScalarBox())
+							return nil
+						}
+					}
+				}
+			case "style":
+				if reservedTargetKey == "" {
+					if len(mk.Key.Path[reservedIndex:]) != 2 {
+						return errors.New("malformed style setting, expected 2 part path")
+					}
+					reservedTargetKey = mk.Key.Path[reservedIndex+1].Unbox().ScalarString()
+				}
+				switch reservedTargetKey {
 				case "opacity":
 					if attrs.Style.Opacity != nil {
 						attrs.Style.Opacity.MapKey.SetScalar(mk.Value.ScalarBox())
@@ -714,7 +803,9 @@ func deleteMapField(m *d2ast.Map, field string) {
 		if n.MapKey != nil && n.MapKey.Key != nil {
 			if n.MapKey.Key.Path[0].Unbox().ScalarString() == field {
 				deleteFromMap(m, n.MapKey)
-			} else if n.MapKey.Key.Path[0].Unbox().ScalarString() == "style" {
+			} else if n.MapKey.Key.Path[0].Unbox().ScalarString() == "style" ||
+				n.MapKey.Key.Path[0].Unbox().ScalarString() == "source-arrowhead" ||
+				n.MapKey.Key.Path[0].Unbox().ScalarString() == "target-arrowhead" {
 				if n.MapKey.Value.Map != nil {
 					deleteMapField(n.MapKey.Value.Map, field)
 					if len(n.MapKey.Value.Map.Nodes) == 0 {
