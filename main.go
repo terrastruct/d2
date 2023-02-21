@@ -271,41 +271,48 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	if filepath.Ext(outputPath) == ".pdf" {
 		svg, err = renderPDF(ctx, ms, plugin, sketch, pad, outputPath, page, ruler, diagram, nil, nil)
 	} else {
-		svg, err = render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
+		compileDur := time.Since(start)
+		svg, err = render(ctx, ms, compileDur, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
 	}
 	if err != nil {
 		return svg, false, err
 	}
 
-	dur := time.Since(start)
-	ms.Log.Success.Printf("successfully compiled %s to %s in %s", inputPath, outputPath, dur)
+	if filepath.Ext(outputPath) == ".pdf" {
+		dur := time.Since(start)
+		ms.Log.Success.Printf("successfully compiled %s to %s in %s", inputPath, outputPath, dur)
+	}
+
 	return svg, true, nil
 }
 
-func render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
+func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, sketch bool, pad int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
 	outputPath = layerOutputPath(outputPath, diagram)
 	for _, dl := range diagram.Layers {
-		_, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
+		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
+		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := render(ctx, ms, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
+		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
 		if err != nil {
 			return nil, err
 		}
 	}
+	start := time.Now()
 	svg, err := _render(ctx, ms, plugin, sketch, pad, outputPath, bundle, forceAppendix, page, ruler, diagram)
 	if err != nil {
 		return svg, err
 	}
+	dur := compileDur + time.Since(start)
+	ms.Log.Success.Printf("successfully compiled %s to %s in %s", inputPath, outputPath, dur)
 	return svg, nil
 }
 
