@@ -1586,3 +1586,13 @@ func (g *Graph) SortEdgesByAST() {
 	})
 	g.Edges = edges
 }
+
+func (obj *Object) IsDescendantOf(ancestor *Object) bool {
+	if obj == ancestor {
+		return true
+	}
+	if obj.Parent == nil {
+		return false
+	}
+	return obj.Parent.IsDescendantOf(ancestor)
+}

@@ -18,6 +18,9 @@ const CONTAINER_DIMENSIONS PluginFeature = "container_dimensions"
 // When this is true, objects can specify their `top` and `left` keywords
 const TOP_LEFT PluginFeature = "top_left"
 
+// When this is true, containers can have connections to descendants
+const DESCENDANT_EDGES PluginFeature = "descendant_edges"
+
 func FeatureSupportCheck(info *PluginInfo, g *d2graph.Graph) error {
 	// Older version of plugin. Skip checking.
 	if info.Features == nil {
@@ -47,6 +50,13 @@ func FeatureSupportCheck(info *PluginInfo, g *d2graph.Graph) error {
 				if _, ok := featureMap[NEAR_OBJECT]; !ok {
 					return fmt.Errorf(`Object "%s" has "near" set to another object, but layout engine "%s" only supports constant values for "near".`, obj.AbsID(), info.Name)
 				}
+			}
+		}
+	}
+	if _, ok := featureMap[DESCENDANT_EDGES]; !ok {
+		for _, e := range g.Edges {
+			if e.Src.IsDescendantOf(e.Dst) || e.Dst.IsDescendantOf(e.Src) {
+				return fmt.Errorf(`Connection "%s" goes from a container to a descendant, but layout engine "%s" does not support this.`, e.AbsID(), info.Name)
 			}
 		}
 	}
