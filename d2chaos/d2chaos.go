@@ -121,6 +121,15 @@ func (gs *dslGenState) node() error {
 		gs.nodeShapes[nodeID] = randShape
 	}
 
+	if gs.roll(25, 75) == 0 {
+		// 25% chance of adding a style
+		randStyle, randVal := gs.randStyle()
+		gs.g, err = d2oracle.Set(gs.g, nodeID+".style."+randStyle, nil, go2.Pointer(randVal))
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -260,6 +269,44 @@ func (gs *dslGenState) randStr(n int, inKey bool) string {
 	})
 	as := d2ast.RawString(s, inKey)
 	return d2format.Format(as)
+}
+
+var universalStyles = []string{
+	"opacity",
+	"stroke",
+	"fill",
+	"stroke-width",
+	"stroke-dash",
+	"border-radius",
+}
+
+var floatStyles = map[string]struct{}{
+	"opacity": {},
+}
+
+var intStyles = map[string]struct{}{
+	"stroke-width":  {},
+	"stroke-dash":   {},
+	"border-radius": {},
+}
+
+var colorStyles = map[string]struct{}{
+	"stroke": {},
+	"fill":   {},
+}
+
+func (gs *dslGenState) randStyle() (string, string) {
+	style := universalStyles[gs.rand.Intn(len(universalStyles))]
+	if _, ok := floatStyles[style]; ok {
+		return style, fmt.Sprint(gs.rand.Float64())
+	}
+	if _, ok := intStyles[style]; ok {
+		return style, fmt.Sprint(gs.rand.Intn(6))
+	}
+	if _, ok := colorStyles[style]; ok {
+		return style, "blue"
+	}
+	return "", ""
 }
 
 func (gs *dslGenState) randShape() string {
