@@ -155,13 +155,21 @@ func (gs *dslGenState) edge() error {
 		}
 	}
 
+	srcArrowhead := ""
 	srcArrow := "-"
 	if gs.randBool() {
 		srcArrow = "<"
+		if gs.roll(25, 75) == 0 {
+			srcArrowhead = gs.randArrowhead()
+		}
 	}
 	dstArrow := "-"
+	dstArrowhead := ""
 	if gs.randBool() {
 		dstArrow = ">"
+		if gs.roll(25, 75) == 0 {
+			dstArrowhead = gs.randArrowhead()
+		}
 		if srcArrow == "<" {
 			dstArrow = "->"
 		}
@@ -171,6 +179,30 @@ func (gs *dslGenState) edge() error {
 	gs.g, key, err = d2oracle.Create(gs.g, key)
 	if err != nil {
 		return err
+	}
+	if srcArrowhead != "" {
+		gs.g, err = d2oracle.Set(gs.g, key+".source-arrowhead.shape", nil, go2.Pointer(srcArrowhead))
+		if err != nil {
+			return err
+		}
+		if gs.randBool() {
+			gs.g, err = d2oracle.Set(gs.g, key+".source-arrowhead.label", nil, go2.Pointer("1"))
+			if err != nil {
+				return err
+			}
+		}
+	}
+	if dstArrowhead != "" {
+		gs.g, err = d2oracle.Set(gs.g, key+".target-arrowhead.shape", nil, go2.Pointer(dstArrowhead))
+		if err != nil {
+			return err
+		}
+		if gs.randBool() {
+			gs.g, err = d2oracle.Set(gs.g, key+".target-arrowhead.label", nil, go2.Pointer("1"))
+			if err != nil {
+				return err
+			}
+		}
 	}
 	if gs.randBool() {
 		maxLen := 8
@@ -307,6 +339,21 @@ func (gs *dslGenState) randStyle() (string, string) {
 		return style, "blue"
 	}
 	return "", ""
+}
+
+var arrowheads = []string{
+	"arrow",
+	"diamond",
+	"circle",
+	"triangle",
+	"cf-one",
+	"cf-many",
+	"cf-one-required",
+	"cf-many-required",
+}
+
+func (gs *dslGenState) randArrowhead() string {
+	return arrowheads[gs.rand.Intn(len(arrowheads))]
 }
 
 func (gs *dslGenState) randShape() string {
