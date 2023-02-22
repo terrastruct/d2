@@ -18,3 +18,4 @@
 - Fixes rare possibility of rendered connections being hidden or cut off. [#828](https://github.com/terrastruct/d2/pull/828)
 - Creating nested children within `sql_table` and `class` shapes are now prevented (caused confusion when accidentally done). [#834](https://github.com/terrastruct/d2/pull/834)
 - Fixes graph deserialization bug. [#837](https://github.com/terrastruct/d2/pull/837)
+- `steps` with non-map fields could cause panics. [#783](https://github.com/terrastruct/d2/pull/783)
