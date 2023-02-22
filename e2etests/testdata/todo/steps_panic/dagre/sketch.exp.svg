@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg
+id="d2-svg"
+style="background: white;"
+xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+width="200" height="200" viewBox="-100 -100 200 200"><style type="text/css">
+<![CDATA[
+.shape {
+  shape-rendering: geometricPrecision;
+  stroke-linejoin: round;
+}
+.connection {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.blend {
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+
+]]>
+</style><script type="application/javascript"><![CDATA[window.addEventListener("DOMContentLoaded", () => {
+  if (document.documentElement.getAttribute("id") !== "d2-svg") {
+    return;
+  }
+  const svgEl = document.documentElement;
+  let width = parseInt(svgEl.getAttribute("width"), 10);
+  let height = parseInt(svgEl.getAttribute("height"), 10);
+  let ratio;
+  if (width > height) {
+    if (width > window.innerWidth) {
+      ratio = window.innerWidth / width;
+    }
+  } else if (height > window.innerHeight) {
+    ratio = window.innerHeight / height;
+  }
+  if (ratio) {
+    svgEl.setAttribute("width", width * ratio - 16);
+    svgEl.setAttribute("height", height * ratio - 16);
+  }
+});
+]]></script><mask id="121760133" maskUnits="userSpaceOnUse" x="-100" y="-100" width="200" height="200">
+<rect x="-100" y="-100" width="200" height="200" fill="white"></rect>
+
+</mask><style type="text/css"><![CDATA[]]></style></svg>

@@ -162,11 +162,14 @@ small code: |go
 `,
 		},
 		{
-			skip: true,
 			name: "steps_panic",
 			script: `steps: {
   shape: sql_table
-  id: {type: int, constraint: primary_key}
+  id: int {constraint: primary_key}
+}
+scenarios: {
+  shape: sql_table
+  hey: int {constraint: primary_key}
 }
 `,
 		},

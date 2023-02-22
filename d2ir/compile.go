@@ -66,6 +66,9 @@ func (c *compiler) compileSteps(m *Map) {
 		if i == 0 {
 			base = m.CopyBase(sf)
 		} else {
+			if steps.Fields[i-1].Map() == nil {
+				continue
+			}
 			base = steps.Fields[i-1].Map().CopyBase(sf)
 		}
 		OverlayMap(base, sf.Map())
