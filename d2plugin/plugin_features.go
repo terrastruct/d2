@@ -55,6 +55,16 @@ func FeatureSupportCheck(info *PluginInfo, g *d2graph.Graph) error {
 	}
 	if _, ok := featureMap[DESCENDANT_EDGES]; !ok {
 		for _, e := range g.Edges {
+			// descendant edges are ok in sequence diagrams
+			if e.Src.OuterSequenceDiagram() != nil || e.Dst.OuterSequenceDiagram() != nil {
+				continue
+			}
+			if !e.Src.IsContainer() && !e.Dst.IsContainer() {
+				continue
+			}
+			if e.Src == e.Dst {
+				return fmt.Errorf(`Connection "%s" is a self loop on a container, but layout engine "%s" does not support this.`, e.AbsID(), info.Name)
+			}
 			if e.Src.IsDescendantOf(e.Dst) || e.Dst.IsDescendantOf(e.Src) {
 				return fmt.Errorf(`Connection "%s" goes from a container to a descendant, but layout engine "%s" does not support this.`, e.AbsID(), info.Name)
 			}
