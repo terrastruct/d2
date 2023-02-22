@@ -245,7 +245,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 
 		circleEl := d2themes.NewThemableElement("circle")
 		circleEl.Cy = radius
-		circleEl.R = radius - strokeWidth/2 // @alixander says there maybe should be a plus sign instead
+		circleEl.R = radius - strokeWidth/2
 		circleEl.Fill = connection.Stroke
 		circleEl.ClassName = "connection"
 		circleEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
@@ -253,7 +253,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 		if isTarget {
 			circleEl.Cx = radius + strokeWidth/2
 		} else {
-			circleEl.Cy = radius - strokeWidth/2
+			circleEl.Cx = radius - strokeWidth/2
 		}
 
 		path = circleEl.Render()
