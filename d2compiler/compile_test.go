@@ -125,6 +125,23 @@ x: {
 			},
 		},
 		{
+			name: "positions_disjoint",
+			text: `hey: {
+	top: 200
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/positions_disjoint.d2:2:2: keyword "top" currently cannot be set without also setting "left"`,
+		},
+		{
+			name: "positions_negative",
+			text: `hey: {
+	top: 200
+	left: -200
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/positions_negative.d2:3:8: left must be a non-negative integer: "-200"`,
+		},
+		{
 			name: "equal_dimensions_on_circle",
 
 			text: `hey: "" {
