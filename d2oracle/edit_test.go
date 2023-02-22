@@ -3827,6 +3827,37 @@ y
 `,
 		},
 		{
+			name: "delete_container_of_near",
+
+			text: `direction: down
+first input -> start game -> game loop
+
+game loop: {
+  direction: down
+  input -> increase bird top velocity
+
+  move bird -> move pipes -> render
+
+  render -> no collision -> wait 16 milliseconds -> move bird
+  render -> collision detected -> game over
+  no collision.near: game loop.collision detected
+}
+`,
+			key: `game loop`,
+
+			exp: `direction: down
+first input -> start game
+
+input -> increase bird top velocity
+
+move bird -> move pipes -> render
+
+render -> no collision -> wait 16 milliseconds -> move bird
+render -> collision detected -> game over
+no collision.near: collision detected
+`,
+		},
+		{
 			name: "delete_tooltip",
 
 			text: `x: {

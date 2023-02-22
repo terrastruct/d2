@@ -1538,7 +1538,7 @@ func updateNear(prevG, g *d2graph.Graph, from, to *string) error {
 			if len(n.MapKey.Key.Path) == 0 {
 				continue
 			}
-			if n.MapKey.Key.Path[0].Unbox().ScalarString() == "near" {
+			if n.MapKey.Key.Path[len(n.MapKey.Key.Path)-1].Unbox().ScalarString() == "near" {
 				k := n.MapKey.Value.ScalarBox().Unbox().ScalarString()
 				if strings.EqualFold(k, *from) && to == nil {
 					deleteFromMap(obj.Map, n.MapKey)
