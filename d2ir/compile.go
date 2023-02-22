@@ -38,7 +38,8 @@ func (c *compiler) compileScenarios(m *Map) {
 	}
 
 	for _, sf := range scenarios.Fields {
-		if sf.Map() == nil {
+		if sf.Map() == nil || sf.Primary() != nil {
+			c.errorf(sf.References[0].Context.Key, "invalid scenario")
 			continue
 		}
 		base := m.CopyBase(sf)
@@ -59,14 +60,16 @@ func (c *compiler) compileSteps(m *Map) {
 		return
 	}
 	for i, sf := range steps.Fields {
-		if sf.Map() == nil {
+		if sf.Map() == nil || sf.Primary() != nil {
+			c.errorf(sf.References[0].Context.Key, "invalid step")
 			continue
 		}
 		var base *Map
 		if i == 0 {
 			base = m.CopyBase(sf)
 		} else {
-			if steps.Fields[i-1].Map() == nil {
+			if steps.Fields[i-1].Map() == nil || steps.Fields[i-1].Primary() != nil {
+				c.errorf(steps.Fields[i-1].References[0].Context.Key, "invalid step")
 				continue
 			}
 			base = steps.Fields[i-1].Map().CopyBase(sf)
