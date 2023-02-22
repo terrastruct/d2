@@ -612,13 +612,6 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 			}
 		}
 
-		if keyword == "top" && obj.Attributes.Left == nil {
-			c.errorf(f.LastPrimaryKey(), `keyword "top" currently cannot be set without also setting "left"`)
-		}
-		if keyword == "left" && obj.Attributes.Top == nil {
-			c.errorf(f.LastPrimaryKey(), `keyword "left" currently cannot be set without also setting "top"`)
-		}
-
 		switch f.Name {
 		case "style":
 			if obj.Attributes.Style.ThreeDee != nil {

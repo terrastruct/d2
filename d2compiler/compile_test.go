@@ -125,14 +125,6 @@ x: {
 			},
 		},
 		{
-			name: "positions_disjoint",
-			text: `hey: {
-	top: 200
-}
-`,
-			expErr: `d2/testdata/d2compiler/TestCompile/positions_disjoint.d2:2:2: keyword "top" currently cannot be set without also setting "left"`,
-		},
-		{
 			name: "positions_negative",
 			text: `hey: {
 	top: 200
