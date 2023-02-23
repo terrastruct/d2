@@ -3311,6 +3311,23 @@ d
 }
 `,
 		},
+		{
+			name: "container_multiple_refs_with_underscore",
+
+			text: `a
+b: {
+  _.a
+}
+`,
+			key:    `a`,
+			newKey: `b.a`,
+
+			exp: `b.a
+b: {
+  a
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {

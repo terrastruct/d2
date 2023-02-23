@@ -1379,6 +1379,21 @@ x -> y: {
 			},
 		},
 		{
+			name: "nil_scope_obj_regression",
+
+			text: `a
+b: {
+  _.a
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "a", g.Objects[0].ID)
+				for _, ref := range g.Objects[0].References {
+					tassert.NotNil(t, ref.ScopeObj)
+				}
+			},
+		},
+		{
 			name: "path_link",
 
 			text: `x: {
