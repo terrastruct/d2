@@ -16,6 +16,7 @@ import (
 	"oss.terrastruct.com/d2/d2chaos"
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2exporter"
+	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2oracle"
 	"oss.terrastruct.com/d2/lib/log"
@@ -136,17 +137,19 @@ func test(t *testing.T, textPath, text string) {
 	})
 	t.Run("d2oracle.Delete", func(t *testing.T) {
 		key := ""
+		before := ""
 		defer func() {
 			r := recover()
 			if r != nil {
-				t.Errorf("recovered d2oracle panic deleting %s: %#v\n%s\n%s", key, r, debug.Stack(), text)
+				t.Errorf("recovered d2oracle panic deleting %s: %#v\n%s\n%s", key, r, debug.Stack(), before)
 			}
 		}()
 		for _, obj := range g.Objects {
 			key = obj.AbsID()
-			_, err := d2oracle.Delete(g, key)
+			before = d2format.Format(g.AST)
+			g, err = d2oracle.Delete(g, key)
 			if err != nil {
-				t.Fatal(err)
+				t.Fatal(fmt.Errorf("Failed to delete %s in\n%s\n: %v", key, before, err))
 			}
 		}
 	})
