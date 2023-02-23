@@ -212,6 +212,10 @@ func test(t *testing.T, textPath, text string) {
 		}()
 	OUTER:
 		for i := 1; i < len(g.Objects); i++ {
+			g, err := d2compiler.Compile("", strings.NewReader(text), nil)
+			if err != nil {
+				t.Fatal(err)
+			}
 			rand.Shuffle(len(g.Objects), func(i, j int) {
 				g.Objects[i], g.Objects[j] = g.Objects[j], g.Objects[i]
 			})
@@ -229,7 +233,7 @@ func test(t *testing.T, textPath, text string) {
 			key = obj.AbsID()
 			containerKey = container.AbsID()
 			lastAST = g.AST
-			g, err = d2oracle.Move(g, key, containerKey+"."+obj.ID)
+			_, err = d2oracle.Move(g, key, containerKey+"."+obj.ID)
 			if err != nil {
 				t.Fatal(fmt.Errorf("Failed to move %s into %s in\n%s\n: %v", key, containerKey, d2format.Format(lastAST), err))
 			}
