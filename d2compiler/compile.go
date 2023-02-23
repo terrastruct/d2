@@ -63,7 +63,6 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 	ir = ir.Copy(nil).(*d2ir.Map)
 	// c.preprocessSeqDiagrams(ir)
 	c.compileMap(g.Root, ir)
-	// c.resolveUnderscoreRefs(g.Root, ir)
 	if len(c.err.Errors) == 0 {
 		c.validateKeys(g.Root, ir)
 	}
@@ -111,18 +110,6 @@ type compiler struct {
 func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 	c.err.Errors = append(c.err.Errors, d2parser.Errorf(n, f, v...).(d2ast.Error))
 }
-
-// func (c *compiler) resolveUnderscoreRefs(obj *d2graph.Object, m *d2ir.Map) {
-//   for _, f := range m.Fields {
-//   }
-//
-//   for _, obj := range g.Objects {
-//     for _, ref := range obj.References {
-//       if ref.ScopeObj == nil {
-//       }
-//     }
-//   }
-// }
 
 func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 	shape := m.GetField("shape")
@@ -202,13 +189,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			}
 		}
 		scopeObjIDA := d2ir.IDA(fr.Context.ScopeMap)
-		// spew.Dump("==========")
-		// println("\033[1;31m--- DEBUG:", "=======================", "\033[m")
-		// for _, o := range obj.Graph.Root.ChildrenArray {
-		//   println("\033[1;31m--- DEBUG:", o.AbsID(), "\033[m")
-		// }
 		scopeObj := obj.Graph.Root.EnsureChildIDVal(scopeObjIDA)
-		// spew.Dump(obj.AbsID(), scopeObjIDA, scopeObj == nil)
 		obj.References = append(obj.References, d2graph.Reference{
 			Key:          fr.KeyPath,
 			KeyPathIndex: fr.KeyPathIndex(),
