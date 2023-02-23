@@ -91,10 +91,16 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(targetShape.Width), float64(targetShape.Height))
 			s := shape.NewShape(targetShape.Type, contentBox)
 			size := GetIconSize(s.GetInnerBox(), targetShape.IconPosition)
-			y1 = go2.Min(y1, targetShape.Pos.Y-label.PADDING-size)
-			x1 = go2.Min(x1, targetShape.Pos.X-label.PADDING-size)
-			y2 = go2.Max(y2, targetShape.Pos.Y+label.PADDING+size)
-			x2 = go2.Max(x2, targetShape.Pos.X+label.PADDING+size)
+
+			if strings.HasPrefix(targetShape.IconPosition, "OUTSIDE_TOP") {
+				y1 = go2.Min(y1, targetShape.Pos.Y-label.PADDING-size)
+			} else if strings.HasPrefix(targetShape.IconPosition, "OUTSIDE_BOTTOM") {
+				y2 = go2.Max(y2, targetShape.Pos.Y+label.PADDING+size)
+			} else if strings.HasPrefix(targetShape.IconPosition, "OUTSIDE_LEFT") {
+				x1 = go2.Min(x1, targetShape.Pos.X-label.PADDING-size)
+			} else if strings.HasPrefix(targetShape.IconPosition, "OUTSIDE_RIGHT") {
+				x2 = go2.Max(x2, targetShape.Pos.X+label.PADDING+size)
+			}
 		}
 
 		if targetShape.Label != "" {
