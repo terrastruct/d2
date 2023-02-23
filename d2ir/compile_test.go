@@ -433,8 +433,7 @@ scenarios: {
 }`)
 				assert.ErrorString(t, err, `TestCompile/steps/steps_panic.d2:6:3: invalid scenario
 TestCompile/steps/steps_panic.d2:7:3: invalid scenario
-TestCompile/steps/steps_panic.d2:2:3: invalid step
-TestCompile/steps/steps_panic.d2:3:3: invalid step`)
+TestCompile/steps/steps_panic.d2:2:3: invalid step`)
 			},
 		},
 		{

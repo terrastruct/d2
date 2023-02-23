@@ -62,16 +62,12 @@ func (c *compiler) compileSteps(m *Map) {
 	for i, sf := range steps.Fields {
 		if sf.Map() == nil || sf.Primary() != nil {
 			c.errorf(sf.References[0].Context.Key, "invalid step")
-			continue
+			break
 		}
 		var base *Map
 		if i == 0 {
 			base = m.CopyBase(sf)
 		} else {
-			if steps.Fields[i-1].Map() == nil || steps.Fields[i-1].Primary() != nil {
-				c.errorf(steps.Fields[i-1].References[0].Context.Key, "invalid step")
-				continue
-			}
 			base = steps.Fields[i-1].Map().CopyBase(sf)
 		}
 		OverlayMap(base, sf.Map())
