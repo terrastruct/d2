@@ -204,6 +204,13 @@ func (gs *dslGenState) edge() error {
 			}
 		}
 	}
+	if gs.roll(25, 75) == 0 {
+		// 25% chance of adding a style
+		gs.g, err = d2oracle.Set(gs.g, key+".style.stroke", nil, go2.Pointer("blue"))
+		if err != nil {
+			return err
+		}
+	}
 	if gs.randBool() {
 		maxLen := 8
 		if complexIDs {
