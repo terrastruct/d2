@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/jung-kurt/gofpdf"
+
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 )
 
