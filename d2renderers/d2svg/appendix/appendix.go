@@ -14,6 +14,8 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/d2themes"
+	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 	"oss.terrastruct.com/util-go/go2"
 )
@@ -48,8 +50,8 @@ const (
 )
 
 var viewboxRegex = regexp.MustCompile(`viewBox=\"([0-9\- ]+)\"`)
-var widthRegex = regexp.MustCompile(`width=\"([0-9]+)\"`)
-var heightRegex = regexp.MustCompile(`height=\"([0-9]+)\"`)
+var widthRegex = regexp.MustCompile(`width=\"([.0-9]+)\"`)
+var heightRegex = regexp.MustCompile(`height=\"([.0-9]+)\"`)
 
 func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []byte {
 	svg := string(in)
@@ -68,9 +70,13 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 	viewboxHeight, _ := strconv.Atoi(viewboxSlice[3])
 
 	tl, br := diagram.BoundingBox()
-	seperator := fmt.Sprintf(`<line x1="%d" y1="%d" x2="%d" y2="%d" stroke="#0A0F25" />`,
-		tl.X-PAD_SIDES, br.Y+PAD_TOP, go2.IntMax(w, br.X)+PAD_SIDES, br.Y+PAD_TOP)
-	appendix = seperator + appendix
+	separatorEl := d2themes.NewThemableElement("line")
+	separatorEl.X1 = float64(tl.X - PAD_SIDES)
+	separatorEl.Y1 = float64(br.Y + PAD_TOP)
+	separatorEl.X2 = float64(go2.IntMax(w, br.X) + PAD_SIDES)
+	separatorEl.Y2 = float64(br.Y + PAD_TOP)
+	separatorEl.Stroke = color.B2 // same as --color-border-muted in markdown
+	appendix = separatorEl.Render() + appendix
 
 	w -= viewboxPadLeft
 	w += PAD_SIDES * 2
@@ -82,14 +88,16 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 
 	newViewbox := fmt.Sprintf(`viewBox="%s %s %s %s"`, viewboxSlice[0], viewboxSlice[1], strconv.Itoa(viewboxWidth), strconv.Itoa(viewboxHeight))
 
-	widthMatch := widthRegex.FindStringSubmatch(svg)
-	heightMatch := heightRegex.FindStringSubmatch(svg)
+	widthMatches := widthRegex.FindAllStringSubmatch(svg, 2)
+	heightMatches := heightRegex.FindAllStringSubmatch(svg, 2)
 	newWidth := fmt.Sprintf(`width="%s"`, strconv.Itoa(viewboxWidth))
 	newHeight := fmt.Sprintf(`height="%s"`, strconv.Itoa(viewboxHeight))
 
 	svg = strings.Replace(svg, viewboxMatch[0], newViewbox, 1)
-	svg = strings.Replace(svg, widthMatch[0], newWidth, 1)
-	svg = strings.Replace(svg, heightMatch[0], newHeight, 1)
+	for i := 0; i < 2; i++ {
+		svg = strings.Replace(svg, widthMatches[i][0], newWidth, 1)
+		svg = strings.Replace(svg, heightMatches[i][0], newHeight, 1)
+	}
 
 	if !strings.Contains(svg, `font-family: "font-regular"`) {
 		appendix += fmt.Sprintf(`<style type="text/css"><![CDATA[
@@ -158,7 +166,7 @@ func generateAppendix(diagram *d2target.Diagram, ruler *textmeasure.Ruler, svg s
 	}
 	totalHeight += SPACER
 
-	return fmt.Sprintf(`<g x="%d" y="%d" width="%d" height="100%%">%s</g>
+	return fmt.Sprintf(`<g class="appendix" x="%d" y="%d" width="%d" height="100%%">%s</g>
 `, tl.X, br.Y, (br.X - tl.X), strings.Join(lines, "\n")), maxWidth, totalHeight
 }
 

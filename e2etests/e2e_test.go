@@ -155,7 +155,6 @@ func run(t *testing.T, tc testCase) {
 		diagram, g, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
 			Ruler:         ruler,
 			MeasuredTexts: tc.mtexts,
-			ThemeID:       0,
 			Layout:        layout,
 		})
 
@@ -197,7 +196,8 @@ func run(t *testing.T, tc testCase) {
 		pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
 
 		svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-			Pad: d2svg.DEFAULT_PADDING,
+			Pad:     d2svg.DEFAULT_PADDING,
+			ThemeID: 0,
 		})
 		assert.Success(t, err)
 		err = os.MkdirAll(dataPath, 0755)
