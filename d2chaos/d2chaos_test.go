@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"runtime/debug"
@@ -13,6 +14,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
+	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2chaos"
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2exporter"
@@ -137,19 +139,23 @@ func test(t *testing.T, textPath, text string) {
 	})
 	t.Run("d2oracle.Delete", func(t *testing.T) {
 		key := ""
-		before := ""
+		var lastAST *d2ast.Map
 		defer func() {
 			r := recover()
 			if r != nil {
-				t.Errorf("recovered d2oracle panic deleting %s: %#v\n%s\n%s", key, r, debug.Stack(), before)
+				t.Errorf("recovered d2oracle panic deleting %s: %#v\n%s\n%s", key, r, debug.Stack(), d2format.Format(lastAST))
 			}
 		}()
+		// In a random order, delete every object one by one
+		rand.Shuffle(len(g.Objects), func(i, j int) {
+			g.Objects[i], g.Objects[j] = g.Objects[j], g.Objects[i]
+		})
 		for _, obj := range g.Objects {
 			key = obj.AbsID()
-			before = d2format.Format(g.AST)
+			lastAST = g.AST
 			g, err = d2oracle.Delete(g, key)
 			if err != nil {
-				t.Fatal(fmt.Errorf("Failed to delete %s in\n%s\n: %v", key, before, err))
+				t.Fatal(fmt.Errorf("Failed to delete %s in\n%s\n: %v", key, d2format.Format(lastAST), err))
 			}
 		}
 	})
