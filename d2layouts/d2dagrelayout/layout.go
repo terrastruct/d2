@@ -437,10 +437,19 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 			endingSegment := geo.Segment{Start: points[endIndex-1], End: points[endIndex]}
 			labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
+			// add left/right padding to box
+			labelBox.TopLeft.X -= label.PADDING
+			labelBox.Width += 2 * label.PADDING
 			if intersections := labelBox.Intersections(endingSegment); len(intersections) > 0 {
 				overlapsContainerLabel = true
 				// move ending segment to label intersection point
 				points[endIndex] = intersections[0]
+				endingSegment.End = intersections[0]
+				// if the segment becomes too short, just merge it with the previous segment
+				if endIndex-1 > 0 && endingSegment.Length() < MIN_SEGMENT_LEN {
+					points[endIndex-1] = points[endIndex]
+					endIndex--
+				}
 			}
 		}
 		if !overlapsContainerLabel {
