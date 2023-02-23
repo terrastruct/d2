@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/jung-kurt/gofpdf"
+	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 )
 
 type GoFPDF struct {
@@ -14,12 +15,11 @@ type GoFPDF struct {
 
 func Init() *GoFPDF {
 	newGofPDF := gofpdf.NewCustom(&gofpdf.InitType{
-		UnitStr:    "in",
-		FontDirStr: "./d2renderers/d2fonts/ttf",
+		UnitStr: "in",
 	})
 
-	newGofPDF.AddUTF8Font("source", "", "SourceSansPro-Regular.ttf")
-	newGofPDF.AddUTF8Font("source", "B", "SourceSansPro-Bold.ttf")
+	newGofPDF.AddUTF8FontFromBytes("source", "", d2fonts.FontFaces[d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_REGULAR)])
+	newGofPDF.AddUTF8FontFromBytes("source", "B", d2fonts.FontFaces[d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_BOLD)])
 	newGofPDF.SetAutoPageBreak(false, 0)
 	newGofPDF.SetLineWidth(0.05)
 	newGofPDF.SetMargins(0, 0, 0)
