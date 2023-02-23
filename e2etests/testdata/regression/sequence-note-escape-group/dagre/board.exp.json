@@ -7,15 +7,15 @@
       "type": "rectangle",
       "pos": {
         "x": 12,
-        "y": 12
+        "y": 52
       },
-      "width": 364,
-      "height": 451,
+      "width": 100,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "B4",
+      "fill": "B5",
       "stroke": "B1",
       "shadow": false,
       "3d": false,
@@ -30,28 +30,28 @@
       "methods": null,
       "columns": null,
       "label": "a",
-      "fontSize": 28,
+      "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 12,
-      "labelHeight": 36,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelWidth": 7,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
-      "id": "a.b",
+      "id": "b",
       "type": "rectangle",
       "pos": {
-        "x": 62,
-        "y": 62
+        "x": 197,
+        "y": 52
       },
-      "width": 264,
-      "height": 351,
+      "width": 100,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -71,33 +71,33 @@
       "methods": null,
       "columns": null,
       "label": "b",
-      "fontSize": 24,
+      "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 12,
-      "labelHeight": 31,
-      "labelPosition": "INSIDE_TOP_CENTER",
+      "labelWidth": 8,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
-      "level": 2
+      "level": 1
     },
     {
-      "id": "a.b.c",
+      "id": "\"04:20,11:20\"",
       "type": "rectangle",
       "pos": {
-        "x": 122,
-        "y": 112
+        "x": -134,
+        "y": 161
       },
-      "width": 154,
-      "height": 166,
+      "width": 433,
+      "height": 248,
       "opacity": 1,
       "strokeDash": 0,
-      "strokeWidth": 2,
+      "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "B6",
+      "fill": "N5",
       "stroke": "B1",
       "shadow": false,
       "3d": false,
@@ -107,32 +107,75 @@
       "link": "",
       "icon": null,
       "iconPosition": "",
-      "blend": false,
+      "blend": true,
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "c",
-      "fontSize": 20,
+      "label": "04:20,11:20",
+      "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 9,
-      "labelHeight": 26,
-      "labelPosition": "INSIDE_TOP_CENTER",
-      "zIndex": 0,
-      "level": 3
+      "labelWidth": 76,
+      "labelHeight": 21,
+      "labelFill": "N5",
+      "labelPosition": "INSIDE_TOP_LEFT",
+      "zIndex": 3,
+      "level": 1
     },
     {
-      "id": "a.b.c.d",
+      "id": "\"04:20,11:20\".loop through each table",
       "type": "rectangle",
       "pos": {
-        "x": 172,
-        "y": 162
+        "x": -122,
+        "y": 202
       },
-      "width": 54,
+      "width": 409,
+      "height": 195,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 0,
+      "borderRadius": 0,
+      "fill": "N5",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": true,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "loop through each table",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 160,
+      "labelHeight": 21,
+      "labelFill": "N5",
+      "labelPosition": "INSIDE_TOP_LEFT",
+      "zIndex": 3,
+      "level": 2
+    },
+    {
+      "id": "a.\"start_time = datetime.datetime.now\"",
+      "type": "page",
+      "pos": {
+        "x": -82,
+        "y": 246
+      },
+      "width": 289,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -152,28 +195,28 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "d",
+      "label": "start_time = datetime.datetime.now",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
       "color": "N1",
       "italic": false,
-      "bold": true,
+      "bold": false,
       "underline": false,
-      "labelWidth": 9,
+      "labelWidth": 244,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 4
+      "zIndex": 5,
+      "level": 2
     }
   ],
   "connections": [
     {
-      "id": "(a.b -> a)[0]",
-      "src": "a.b",
+      "id": "(a -> b)[0]",
+      "src": "a",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "a",
+      "dst": "b",
       "dstArrow": "triangle",
       "dstLabel": "",
       "opacity": 1,
@@ -194,31 +237,31 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 112,
-          "y": 413
+          "x": 62,
+          "y": 382
         },
         {
-          "x": 112,
-          "y": 463
+          "x": 247,
+          "y": 382
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 4
     },
     {
-      "id": "a.(b -> b.c)[0]",
-      "src": "a.b",
+      "id": "(a -- )[0]",
+      "src": "a",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "a.b.c",
-      "dstArrow": "triangle",
+      "dst": "a-lifeline-end-2251863791",
+      "dstArrow": "none",
       "dstLabel": "",
       "opacity": 1,
-      "strokeDash": 0,
+      "strokeDash": 6,
       "strokeWidth": 2,
-      "stroke": "B1",
+      "stroke": "B2",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -233,31 +276,31 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 172,
-          "y": 62
+          "x": 62,
+          "y": 118
         },
         {
-          "x": 172,
-          "y": 112
+          "x": 62,
+          "y": 452
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 1
     },
     {
-      "id": "a.(b.c.d -> b)[0]",
-      "src": "a.b.c.d",
+      "id": "(b -- )[0]",
+      "src": "b",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "a.b",
-      "dstArrow": "triangle",
+      "dst": "b-lifeline-end-668380428",
+      "dstArrow": "none",
       "dstLabel": "",
       "opacity": 1,
-      "strokeDash": 0,
+      "strokeDash": 6,
       "strokeWidth": 2,
-      "stroke": "B1",
+      "stroke": "B2",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -272,26 +315,18 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 199,
-          "y": 228
+          "x": 247,
+          "y": 118
         },
         {
-          "x": 199,
-          "y": 323
-        },
-        {
-          "x": 112,
-          "y": 323
-        },
-        {
-          "x": 112,
-          "y": 62
+          "x": 247,
+          "y": 452
         }
       ],
       "animated": false,
       "tooltip": "",
       "icon": null,
-      "zIndex": 0
+      "zIndex": 1
     }
   ]
 }

@@ -1775,6 +1775,33 @@ dst.id <-> src.dst_id
 			},
 		},
 		{
+			name: "sequence-timestamp",
+
+			text: `shape: sequence_diagram
+a
+b
+
+"04:20,11:20": {
+  "loop through each table": {
+    a."start_time = datetime.datetime.now"
+    a -> b
+  }
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 1, len(g.Edges))
+				tassert.Equal(t, 5, len(g.Objects))
+				tassert.Equal(t, "a", g.Objects[0].ID)
+				tassert.Equal(t, "b", g.Objects[1].ID)
+				tassert.Equal(t, `"04:20,11:20"`, g.Objects[2].ID)
+				tassert.Equal(t, `loop through each table`, g.Objects[3].ID)
+				tassert.Equal(t, 1, len(g.Objects[0].ChildrenArray))
+				tassert.Equal(t, 0, len(g.Objects[1].ChildrenArray))
+				tassert.Equal(t, 1, len(g.Objects[2].ChildrenArray))
+				tassert.True(t, g.Edges[0].ContainedBy(g.Objects[3]))
+			},
+		},
+		{
 			name: "root_sequence",
 
 			text: `shape: sequence_diagram
