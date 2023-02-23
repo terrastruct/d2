@@ -240,6 +240,19 @@ g -> b: {style.stroke-width: 8; target-arrowhead.shape: diamond; target-arrowhea
 b: a container label
 `,
 		},
+		{
+			name: "container_label_edge_adjustment2",
+			script: `
+x -> y: {
+	target-arrowhead: foo {
+		shape: diamond
+		style.filled: true
+	}
+}
+
+y: bar {z}
+`,
+		},
 	}
 
 	runa(t, tcs)
