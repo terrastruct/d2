@@ -19,7 +19,6 @@ import (
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2exporter"
 	"oss.terrastruct.com/d2/d2format"
-	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
 	"oss.terrastruct.com/d2/d2oracle"
 	"oss.terrastruct.com/d2/lib/log"
@@ -191,8 +190,7 @@ func test(t *testing.T, textPath, text string) {
 			}
 		}
 	})
-	// In a random order, choose one container (if any), and move all objects into that
-	// TODO this doesn't work and I don't know why. Keeps trying to move a FROM that doesn't exist
+	// In a random order, move an object into another object
 	t.Run("d2oracle.MoveIn", func(t *testing.T) {
 		g, err := d2compiler.Compile("", strings.NewReader(text), nil)
 		if err != nil {
@@ -203,22 +201,22 @@ func test(t *testing.T, textPath, text string) {
 				return
 			}
 		}
-		var container *d2graph.Object
+		containerKey := ""
 		key := ""
 		var lastAST *d2ast.Map
 		defer func() {
 			r := recover()
 			if r != nil {
-				t.Errorf("recovered d2oracle panic moving %s into %s: %#v\n%s\n%s", key, container.AbsID(), r, debug.Stack(), d2format.Format(lastAST))
+				t.Errorf("recovered d2oracle panic moving %s into %s: %#v\n%s\n%s", key, containerKey, r, debug.Stack(), d2format.Format(lastAST))
 			}
 		}()
-		rand.Shuffle(len(g.Objects), func(i, j int) {
-			g.Objects[i], g.Objects[j] = g.Objects[j], g.Objects[i]
-		})
 	OUTER:
 		for i := 1; i < len(g.Objects); i++ {
-			obj := g.Objects[i]
-			container = g.Objects[i-1]
+			rand.Shuffle(len(g.Objects), func(i, j int) {
+				g.Objects[i], g.Objects[j] = g.Objects[j], g.Objects[i]
+			})
+			obj := g.Objects[1]
+			container := g.Objects[0]
 			if obj == container || obj.Parent == container {
 				continue
 			}
@@ -229,10 +227,11 @@ func test(t *testing.T, textPath, text string) {
 				}
 			}
 			key = obj.AbsID()
+			containerKey = container.AbsID()
 			lastAST = g.AST
-			g, err = d2oracle.Move(g, key, container.AbsID()+"."+obj.ID)
+			g, err = d2oracle.Move(g, key, containerKey+"."+obj.ID)
 			if err != nil {
-				t.Fatal(fmt.Errorf("Failed to move %s into %s in\n%s\n: %v", key, container.AbsID(), d2format.Format(lastAST), err))
+				t.Fatal(fmt.Errorf("Failed to move %s into %s in\n%s\n: %v", key, containerKey, d2format.Format(lastAST), err))
 			}
 		}
 	})
