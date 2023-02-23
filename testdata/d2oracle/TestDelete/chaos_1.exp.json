@@ -1,0 +1,474 @@
+{
+  "graph": {
+    "name": "",
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,0:0:0-7:0:95",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,0:0:0-5:1:81",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,0:0:0-0:4:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,0:0:0-0:4:4",
+                    "value": [
+                      {
+                        "string": "isfp",
+                        "raw_string": "isfp"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,0:6:6-5:0:80",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,1:2:10-4:3:79",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,1:2:10-1:7:15",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,1:2:10-1:7:15",
+                              "value": [
+                                {
+                                  "string": "sxmqb",
+                                  "raw_string": "sxmqb"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,1:9:17-1:14:22",
+                          "value": [
+                            {
+                              "string": "nqnej",
+                              "raw_string": "nqnej"
+                            }
+                          ]
+                        }
+                      },
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,1:15:23-4:2:78",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,2:4:29-2:15:40",
+                                "key": {
+                                  "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,2:4:29-2:9:34",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,2:4:29-2:9:34",
+                                        "value": [
+                                          {
+                                            "string": "shape",
+                                            "raw_string": "shape"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,2:11:36-2:15:40",
+                                    "value": [
+                                      {
+                                        "string": "step",
+                                        "raw_string": "step"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,3:4:45-3:34:75",
+                                "key": {
+                                  "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,3:4:45-3:8:49",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,3:4:45-3:8:49",
+                                        "value": [
+                                          {
+                                            "string": "dvdq",
+                                            "raw_string": "dvdq"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,3:10:51-3:17:58",
+                                    "value": [
+                                      {
+                                        "string": "sxyjsyk",
+                                        "raw_string": "sxyjsyk"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "value": {
+                                  "map": {
+                                    "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,3:18:59-3:33:74",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,3:19:60-3:33:74",
+                                          "key": {
+                                            "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,3:19:60-3:24:65",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,3:19:60-3:24:65",
+                                                  "value": [
+                                                    {
+                                                      "string": "shape",
+                                                      "raw_string": "shape"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "unquoted_string": {
+                                              "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,3:26:67-3:33:74",
+                                              "value": [
+                                                {
+                                                  "string": "hexagon",
+                                                  "raw_string": "hexagon"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,6:0:82-6:12:94",
+            "edges": [
+              {
+                "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,6:0:82-6:12:94",
+                "src": {
+                  "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,6:0:82-6:5:87",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,6:0:82-6:4:86",
+                        "value": [
+                          {
+                            "string": "isfp",
+                            "raw_string": "isfp"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,6:7:89-6:12:94",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,6:8:90-6:12:94",
+                        "value": [
+                          {
+                            "string": "isfp",
+                            "raw_string": "isfp"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ""
+              }
+            ],
+            "primary": {},
+            "value": {}
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": [
+      {
+        "index": 0,
+        "minWidth": 0,
+        "minHeight": 0,
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": false,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ],
+    "objects": [
+      {
+        "id": "isfp",
+        "id_val": "isfp",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,0:0:0-0:4:4",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,0:0:0-0:4:4",
+                    "value": [
+                      {
+                        "string": "isfp",
+                        "raw_string": "isfp"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,6:0:82-6:5:87",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,6:0:82-6:4:86",
+                    "value": [
+                      {
+                        "string": "isfp",
+                        "raw_string": "isfp"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,6:7:89-6:12:94",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,6:8:90-6:12:94",
+                    "value": [
+                      {
+                        "string": "isfp",
+                        "raw_string": "isfp"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "isfp"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "sxmqb",
+        "id_val": "sxmqb",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,1:2:10-1:7:15",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,1:2:10-1:7:15",
+                    "value": [
+                      {
+                        "string": "sxmqb",
+                        "raw_string": "sxmqb"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "nqnej"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "step"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "dvdq",
+        "id_val": "dvdq",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,3:4:45-3:8:49",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,3:4:45-3:8:49",
+                    "value": [
+                      {
+                        "string": "dvdq",
+                        "raw_string": "dvdq"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "sxyjsyk"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "hexagon"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": "<nil>"
+}

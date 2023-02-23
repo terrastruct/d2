@@ -4801,6 +4801,30 @@ A -> B
 			exp: `x
 `,
 		},
+		{
+			name: "chaos_1",
+
+			text: `isfp: {
+  zmzbsx: {
+    sxmqb: nqnej {
+      shape: step
+      dvdq: sxyjsyk {shape: hexagon}
+    }
+  }
+}
+isfp -- isfp
+`,
+			key: `isfp.zmzbsx`,
+
+			exp: `isfp: {
+  sxmqb: nqnej {
+    shape: step
+    dvdq: sxyjsyk {shape: hexagon}
+  }
+}
+isfp -- isfp
+`,
+		},
 	}
 
 	for _, tc := range testCases {
