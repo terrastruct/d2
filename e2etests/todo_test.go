@@ -222,6 +222,12 @@ Office chatter: {
 }
 `,
 		},
+		{
+			name: "container_label_edge_adjustment",
+			script: `
+a -> b.c -> d
+`,
+		},
 	}
 
 	runa(t, tcs)
