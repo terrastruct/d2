@@ -14,12 +14,14 @@ func testTodo(t *testing.T) {
 container.first -> container.second: 1->2
 container -> container.second: c->2
 `,
+			dagreFeatureError: `Connection "(container -> container.second)[0]" goes from a container to a descendant, but layout engine "dagre" does not support this.`,
 		},
 		{
 			name: "child_parent_edges",
 			script: `a.b -> a
 a.b -> a.b.c
 a.b.c.d -> a.b`,
+			dagreFeatureError: `Connection "(a.b -> a)[0]" goes from a container to a descendant, but layout engine "dagre" does not support this.`,
 		},
 		{
 			name: "container_label_loop",
@@ -27,6 +29,7 @@ a.b.c.d -> a.b`,
   b -> c
 }
 a -> a`,
+			dagreFeatureError: `Connection "(a -> a)[0]" is a self loop on a container, but layout engine "dagre" does not support this.`,
 		},
 		{
 			// as nesting gets deeper, the groups advance towards `c` and may overlap its lifeline

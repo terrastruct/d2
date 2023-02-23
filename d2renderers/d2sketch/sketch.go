@@ -1,6 +1,7 @@
 package d2sketch
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"regexp"
@@ -11,20 +12,22 @@ import (
 	"github.com/dop251/goja"
 
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/d2themes"
+	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/svg"
 	"oss.terrastruct.com/util-go/go2"
 )
 
-//go:embed fillpattern.svg
-var fillPattern string
-
 //go:embed rough.js
 var roughJS string
 
 //go:embed setup.js
 var setupJS string
+
+//go:embed streaks.txt
+var streaks string
 
 type Runner goja.Runtime
 
@@ -35,6 +38,11 @@ bowing: 2,
 seed: 1,`
 
 var floatRE = regexp.MustCompile(`(\d+)\.(\d+)`)
+
+const (
+	BG_COLOR = color.N7
+	FG_COLOR = color.N1
+)
 
 func (r *Runner) run(js string) (goja.Value, error) {
 	vm := (*goja.Runtime)(r)
@@ -53,78 +61,107 @@ func InitSketchVM() (*Runner, error) {
 	return &r, nil
 }
 
-// DefineFillPattern adds a reusable pattern that is overlayed on shapes with
+// DefineFillPatterns adds reusable patterns that are overlayed on shapes with
 // fill. This gives it a subtle streaky effect that subtly looks hand-drawn but
 // not distractingly so.
-func DefineFillPattern() string {
-	return fmt.Sprintf(`<defs>
-  <pattern id="streaks"
-           x="0" y="0" width="100" height="100"
-           patternUnits="userSpaceOnUse" >
-      %s
-  </pattern>
-</defs>`, fillPattern)
+func DefineFillPatterns(buf *bytes.Buffer) {
+	source := buf.String()
+	fmt.Fprint(buf, "<defs>")
+
+	defineFillPattern(buf, source, "bright", "rgba(0, 0, 0, 0.1)")
+	defineFillPattern(buf, source, "normal", "rgba(0, 0, 0, 0.16)")
+	defineFillPattern(buf, source, "dark", "rgba(0, 0, 0, 0.32)")
+	defineFillPattern(buf, source, "darker", "rgba(255, 255, 255, 0.24)")
+
+	fmt.Fprint(buf, "</defs>")
+}
+
+func defineFillPattern(buf *bytes.Buffer, source string, luminanceCategory, fill string) {
+	trigger := fmt.Sprintf(`url(#streaks-%s)`, luminanceCategory)
+	if strings.Contains(source, trigger) {
+		fmt.Fprintf(buf, streaks, luminanceCategory, fill)
+	}
 }
 
 func Rect(r *Runner, shape d2target.Shape) (string, error) {
 	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
-		fill: "%s",
-		stroke: "%s",
+		fill: "#000",
+		stroke: "#000",
 		strokeWidth: %d,
 		%s
-	});`, shape.Width, shape.Height, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	});`, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
 	paths, err := computeRoughPathData(r, js)
 	if err != nil {
 		return "", err
 	}
 	output := ""
+	pathEl := d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.ClassName = "shape"
+	pathEl.Style = shape.CSSStyle()
 	for _, p := range paths {
-		output += fmt.Sprintf(
-			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
-	output += fmt.Sprintf(
-		`<rect class="sketch-overlay" transform="translate(%d %d)" width="%d" height="%d" />`,
-		shape.Pos.X, shape.Pos.Y, shape.Width, shape.Height,
-	)
+
+	sketchOEl := d2themes.NewThemableElement("rect")
+	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	sketchOEl.Width = float64(shape.Width)
+	sketchOEl.Height = float64(shape.Height)
+	renderedSO, err := d2themes.NewThemableSketchOverlay(sketchOEl, pathEl.Fill).Render()
+	if err != nil {
+		return "", err
+	}
+	output += renderedSO
+
 	return output, nil
 }
 
 func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 	jsBigRect := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
-		fill: "%s",
-		stroke: "%s",
+		fill: "#000",
+		stroke: "#000",
 		strokeWidth: %d,
 		%s
-	});`, shape.Width, shape.Height, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	});`, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
 	pathsBigRect, err := computeRoughPathData(r, jsBigRect)
 	if err != nil {
 		return "", err
 	}
 	jsSmallRect := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
-		fill: "%s",
-		stroke: "%s",
+		fill: "#000",
+		stroke: "#000",
 		strokeWidth: %d,
 		%s
-	});`, shape.Width-d2target.INNER_BORDER_OFFSET*2, shape.Height-d2target.INNER_BORDER_OFFSET*2, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	});`, shape.Width-d2target.INNER_BORDER_OFFSET*2, shape.Height-d2target.INNER_BORDER_OFFSET*2, shape.StrokeWidth, baseRoughProps)
 	pathsSmallRect, err := computeRoughPathData(r, jsSmallRect)
 	if err != nil {
 		return "", err
 	}
+
 	output := ""
+
+	pathEl := d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.ClassName = "shape"
+	pathEl.Style = shape.CSSStyle()
 	for _, p := range pathsBigRect {
-		output += fmt.Sprintf(
-			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
+
+	pathEl = d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X+d2target.INNER_BORDER_OFFSET), float64(shape.Pos.Y+d2target.INNER_BORDER_OFFSET))
+	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.ClassName = "shape"
+	pathEl.Style = shape.CSSStyle()
 	for _, p := range pathsSmallRect {
-		output += fmt.Sprintf(
-			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X+d2target.INNER_BORDER_OFFSET, shape.Pos.Y+d2target.INNER_BORDER_OFFSET, p, shape.CSSStyle(),
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
+
 	output += fmt.Sprintf(
 		`<rect class="sketch-overlay" transform="translate(%d %d)" width="%d" height="%d" />`,
 		shape.Pos.X, shape.Pos.Y, shape.Width, shape.Height,
@@ -134,42 +171,55 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 
 func Oval(r *Runner, shape d2target.Shape) (string, error) {
 	js := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
-		fill: "%s",
-		stroke: "%s",
+		fill: "#000",
+		stroke: "#000",
 		strokeWidth: %d,
 		%s
-	});`, shape.Width/2, shape.Height/2, shape.Width, shape.Height, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	});`, shape.Width/2, shape.Height/2, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
 	paths, err := computeRoughPathData(r, js)
 	if err != nil {
 		return "", err
 	}
 	output := ""
+	pathEl := d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.ClassName = "shape"
+	pathEl.Style = shape.CSSStyle()
 	for _, p := range paths {
-		output += fmt.Sprintf(
-			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
-	output += fmt.Sprintf(
-		`<ellipse class="sketch-overlay" transform="translate(%d %d)" rx="%d" ry="%d" />`,
-		shape.Pos.X+shape.Width/2, shape.Pos.Y+shape.Height/2, shape.Width/2, shape.Height/2,
-	)
+
+	soElement := d2themes.NewThemableElement("ellipse")
+	soElement.SetTranslate(float64(shape.Pos.X+shape.Width/2), float64(shape.Pos.Y+shape.Height/2))
+	soElement.Rx = float64(shape.Width / 2)
+	soElement.Ry = float64(shape.Height / 2)
+	renderedSO, err := d2themes.NewThemableSketchOverlay(
+		soElement,
+		pathEl.Fill,
+	).Render()
+	if err != nil {
+		return "", err
+	}
+	output += renderedSO
+
 	return output, nil
 }
 
 func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
 	jsBigCircle := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
-		fill: "%s",
-		stroke: "%s",
+		fill: "#000",
+		stroke: "#000",
 		strokeWidth: %d,
 		%s
-	});`, shape.Width/2, shape.Height/2, shape.Width, shape.Height, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	});`, shape.Width/2, shape.Height/2, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
 	jsSmallCircle := fmt.Sprintf(`node = rc.ellipse(%d, %d, %d, %d, {
-		fill: "%s",
-		stroke: "%s",
+		fill: "#000",
+		stroke: "#000",
 		strokeWidth: %d,
 		%s
-	});`, shape.Width/2, shape.Height/2, shape.Width-d2target.INNER_BORDER_OFFSET*2, shape.Height-d2target.INNER_BORDER_OFFSET*2, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	});`, shape.Width/2, shape.Height/2, shape.Width-d2target.INNER_BORDER_OFFSET*2, shape.Height-d2target.INNER_BORDER_OFFSET*2, shape.StrokeWidth, baseRoughProps)
 	pathsBigCircle, err := computeRoughPathData(r, jsBigCircle)
 	if err != nil {
 		return "", err
@@ -178,19 +228,29 @@ func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	output := ""
+
+	pathEl := d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.ClassName = "shape"
+	pathEl.Style = shape.CSSStyle()
 	for _, p := range pathsBigCircle {
-		output += fmt.Sprintf(
-			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
+
+	pathEl = d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.ClassName = "shape"
+	pathEl.Style = shape.CSSStyle()
 	for _, p := range pathsSmallCircle {
-		output += fmt.Sprintf(
-			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
+
 	output += fmt.Sprintf(
 		`<ellipse class="sketch-overlay" transform="translate(%d %d)" rx="%d" ry="%d" />`,
 		shape.Pos.X+shape.Width/2, shape.Pos.Y+shape.Height/2, shape.Width/2, shape.Height/2,
@@ -203,26 +263,35 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 	output := ""
 	for _, path := range paths {
 		js := fmt.Sprintf(`node = rc.path("%s", {
-		fill: "%s",
-		stroke: "%s",
+		fill: "#000",
+		stroke: "#000",
 		strokeWidth: %d,
 		%s
-	});`, path, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	});`, path, shape.StrokeWidth, baseRoughProps)
 		sketchPaths, err := computeRoughPathData(r, js)
 		if err != nil {
 			return "", err
 		}
+		pathEl := d2themes.NewThemableElement("path")
+		pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+		pathEl.ClassName = "shape"
+		pathEl.Style = shape.CSSStyle()
 		for _, p := range sketchPaths {
-			output += fmt.Sprintf(
-				`<path class="shape" d="%s" style="%s" />`,
-				p, shape.CSSStyle(),
-			)
+			pathEl.D = p
+			output += pathEl.Render()
 		}
+
+		soElement := d2themes.NewThemableElement("path")
 		for _, p := range sketchPaths {
-			output += fmt.Sprintf(
-				`<path class="sketch-overlay" d="%s" />`,
-				p,
-			)
+			soElement.D = p
+			renderedSO, err := d2themes.NewThemableSketchOverlay(
+				soElement,
+				pathEl.Fill,
+			).Render()
+			if err != nil {
+				return "", err
+			}
+			output += renderedSO
 		}
 	}
 	return output, nil
@@ -240,11 +309,16 @@ func Connection(r *Runner, connection d2target.Connection, path, attrs string) (
 	if connection.Animated {
 		animatedClass = " animated-connection"
 	}
+
+	pathEl := d2themes.NewThemableElement("path")
+	pathEl.Fill = color.None
+	pathEl.Stroke = connection.Stroke
+	pathEl.ClassName = fmt.Sprintf("connection%s", animatedClass)
+	pathEl.Style = connection.CSSStyle()
+	pathEl.Attributes = attrs
 	for _, p := range paths {
-		output += fmt.Sprintf(
-			`<path class="connection%s" fill="none" d="%s" style="%s" %s/>`,
-			animatedClass, p, connection.CSSStyle(), attrs,
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
 	return output, nil
 }
@@ -253,20 +327,23 @@ func Connection(r *Runner, connection d2target.Connection, path, attrs string) (
 func Table(r *Runner, shape d2target.Shape) (string, error) {
 	output := ""
 	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
-		fill: "%s",
-		stroke: "%s",
+		fill: "#000",
+		stroke: "#000",
 		strokeWidth: %d,
 		%s
-	});`, shape.Width, shape.Height, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	});`, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
 	paths, err := computeRoughPathData(r, js)
 	if err != nil {
 		return "", err
 	}
+	pathEl := d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.ClassName = "shape"
+	pathEl.Style = shape.CSSStyle()
 	for _, p := range paths {
-		output += fmt.Sprintf(
-			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
 
 	box := geo.NewBox(
@@ -278,18 +355,20 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 	headerBox := geo.NewBox(box.TopLeft, box.Width, rowHeight)
 
 	js = fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %f, {
-		fill: "%s",
+		fill: "#000",
 		%s
-	});`, shape.Width, rowHeight, shape.Fill, baseRoughProps)
+	});`, shape.Width, rowHeight, baseRoughProps)
 	paths, err = computeRoughPathData(r, js)
 	if err != nil {
 		return "", err
 	}
+	pathEl = d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	pathEl.Fill = shape.Fill
+	pathEl.ClassName = "class_header"
 	for _, p := range paths {
-		output += fmt.Sprintf(
-			`<path class="class_header" transform="translate(%d %d)" d="%s" style="fill:%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shape.Fill,
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
 
 	if shape.Label != "" {
@@ -300,17 +379,16 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.LabelHeight),
 		)
 
-		output += fmt.Sprintf(`<text class="%s" x="%f" y="%f" style="%s">%s</text>`,
-			"text",
-			tl.X,
-			tl.Y+float64(shape.LabelHeight)*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s",
-				"start",
-				4+shape.FontSize,
-				shape.Stroke,
-			),
-			svg.EscapeText(shape.Label),
+		textEl := d2themes.NewThemableElement("text")
+		textEl.X = tl.X
+		textEl.Y = tl.Y + float64(shape.LabelHeight)*3/4
+		textEl.Fill = shape.Stroke
+		textEl.ClassName = "text"
+		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx",
+			"start", 4+shape.FontSize,
 		)
+		textEl.Content = svg.EscapeText(shape.Label)
+		output += textEl.Render()
 	}
 
 	var longestNameWidth int
@@ -334,26 +412,26 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.FontSize),
 		)
 
-		output += strings.Join([]string{
-			fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
-				nameTL.X,
-				nameTL.Y+float64(shape.FontSize)*3/4,
-				fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", float64(shape.FontSize), shape.PrimaryAccentColor),
-				svg.EscapeText(f.Name.Label),
-			),
-			fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
-				nameTL.X+float64(longestNameWidth)+2*d2target.NamePadding,
-				nameTL.Y+float64(shape.FontSize)*3/4,
-				fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", float64(shape.FontSize), shape.NeutralAccentColor),
-				svg.EscapeText(f.Type.Label),
-			),
-			fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
-				constraintTR.X,
-				constraintTR.Y+float64(shape.FontSize)*3/4,
-				fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s;letter-spacing:2px;", "end", float64(shape.FontSize), shape.SecondaryAccentColor),
-				f.ConstraintAbbr(),
-			),
-		}, "\n")
+		textEl := d2themes.NewThemableElement("text")
+		textEl.X = nameTL.X
+		textEl.Y = nameTL.Y + float64(shape.FontSize)*3/4
+		textEl.Fill = shape.PrimaryAccentColor
+		textEl.ClassName = "text"
+		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "start", float64(shape.FontSize))
+		textEl.Content = svg.EscapeText(f.Name.Label)
+		output += textEl.Render()
+
+		textEl.X = nameTL.X + float64(longestNameWidth) + 2*d2target.NamePadding
+		textEl.Fill = shape.NeutralAccentColor
+		textEl.Content = svg.EscapeText(f.Type.Label)
+		output += textEl.Render()
+
+		textEl.X = constraintTR.X
+		textEl.Y = constraintTR.Y + float64(shape.FontSize)*3/4
+		textEl.Fill = shape.SecondaryAccentColor
+		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx;letter-spacing:2px", "end", float64(shape.FontSize))
+		textEl.Content = f.ConstraintAbbr()
+		output += textEl.Render()
 
 		rowBox.TopLeft.Y += rowHeight
 
@@ -364,37 +442,47 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 		if err != nil {
 			return "", err
 		}
+		pathEl := d2themes.NewThemableElement("path")
+		pathEl.Fill = shape.Fill
 		for _, p := range paths {
-			output += fmt.Sprintf(
-				`<path d="%s" style="fill:%s" />`,
-				p, shape.Fill,
-			)
+			pathEl.D = p
+			output += pathEl.Render()
 		}
 	}
-	output += fmt.Sprintf(
-		`<rect class="sketch-overlay" transform="translate(%d %d)" width="%d" height="%d" />`,
-		shape.Pos.X, shape.Pos.Y, shape.Width, shape.Height,
-	)
+
+	sketchOEl := d2themes.NewThemableElement("rect")
+	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	sketchOEl.Width = float64(shape.Width)
+	sketchOEl.Height = float64(shape.Height)
+	renderedSO, err := d2themes.NewThemableSketchOverlay(sketchOEl, pathEl.Fill).Render()
+	if err != nil {
+		return "", err
+	}
+	output += renderedSO
+
 	return output, nil
 }
 
 func Class(r *Runner, shape d2target.Shape) (string, error) {
 	output := ""
 	js := fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %d, {
-		fill: "%s",
-		stroke: "%s",
+		fill: "#000",
+		stroke: "#000",
 		strokeWidth: %d,
 		%s
-	});`, shape.Width, shape.Height, shape.Fill, shape.Stroke, shape.StrokeWidth, baseRoughProps)
+	});`, shape.Width, shape.Height, shape.StrokeWidth, baseRoughProps)
 	paths, err := computeRoughPathData(r, js)
 	if err != nil {
 		return "", err
 	}
+	pathEl := d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.ClassName = "shape"
+	pathEl.Style = shape.CSSStyle()
 	for _, p := range paths {
-		output += fmt.Sprintf(
-			`<path class="shape" transform="translate(%d %d)" d="%s" style="%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shape.CSSStyle(),
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
 
 	box := geo.NewBox(
@@ -407,24 +495,31 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	headerBox := geo.NewBox(box.TopLeft, box.Width, 2*rowHeight)
 
 	js = fmt.Sprintf(`node = rc.rectangle(0, 0, %d, %f, {
-		fill: "%s",
+		fill: "#000",
 		%s
-	});`, shape.Width, headerBox.Height, shape.Fill, baseRoughProps)
+	});`, shape.Width, headerBox.Height, baseRoughProps)
 	paths, err = computeRoughPathData(r, js)
 	if err != nil {
 		return "", err
 	}
+	pathEl = d2themes.NewThemableElement("path")
+	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	pathEl.Fill = shape.Fill
+	pathEl.ClassName = "class_header"
 	for _, p := range paths {
-		output += fmt.Sprintf(
-			`<path class="class_header" transform="translate(%d %d)" d="%s" style="fill:%s" />`,
-			shape.Pos.X, shape.Pos.Y, p, shape.Fill,
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
 
-	output += fmt.Sprintf(
-		`<rect class="sketch-overlay" transform="translate(%d %d)" width="%d" height="%f" />`,
-		shape.Pos.X, shape.Pos.Y, shape.Width, headerBox.Height,
-	)
+	sketchOEl := d2themes.NewThemableElement("rect")
+	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	sketchOEl.Width = float64(shape.Width)
+	sketchOEl.Height = headerBox.Height
+	renderedSO, err := d2themes.NewThemableSketchOverlay(sketchOEl, pathEl.Fill).Render()
+	if err != nil {
+		return "", err
+	}
+	output += renderedSO
 
 	if shape.Label != "" {
 		tl := label.InsideMiddleCenter.GetPointOnBox(
@@ -434,17 +529,17 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 			float64(shape.LabelHeight),
 		)
 
-		output += fmt.Sprintf(`<text class="%s" x="%f" y="%f" style="%s">%s</text>`,
-			"text-mono",
-			tl.X+float64(shape.LabelWidth)/2,
-			tl.Y+float64(shape.LabelHeight)*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s",
-				"middle",
-				4+shape.FontSize,
-				shape.Stroke,
-			),
-			svg.EscapeText(shape.Label),
+		textEl := d2themes.NewThemableElement("text")
+		textEl.X = tl.X + float64(shape.LabelWidth)/2
+		textEl.Y = tl.Y + float64(shape.LabelHeight)*3/4
+		textEl.Fill = shape.Stroke
+		textEl.ClassName = "text-mono"
+		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx",
+			"middle",
+			4+shape.FontSize,
 		)
+		textEl.Content = svg.EscapeText(shape.Label)
+		output += textEl.Render()
 	}
 
 	rowBox := geo.NewBox(box.TopLeft.Copy(), box.Width, rowHeight)
@@ -461,11 +556,12 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	pathEl = d2themes.NewThemableElement("path")
+	pathEl.Fill = shape.Fill
+	pathEl.ClassName = "class_header"
 	for _, p := range paths {
-		output += fmt.Sprintf(
-			`<path class="class_header" d="%s" style="fill:%s" />`,
-			p, shape.Fill,
-		)
+		pathEl.D = p
+		output += pathEl.Render()
 	}
 
 	for _, m := range shape.Methods {
@@ -491,28 +587,27 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 		fontSize,
 	)
 
-	output += strings.Join([]string{
-		fmt.Sprintf(`<text class="text-mono" x="%f" y="%f" style="%s">%s</text>`,
-			prefixTL.X,
-			prefixTL.Y+fontSize*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, shape.PrimaryAccentColor),
-			prefix,
-		),
+	textEl := d2themes.NewThemableElement("text")
+	textEl.X = prefixTL.X
+	textEl.Y = prefixTL.Y + fontSize*3/4
+	textEl.Fill = shape.PrimaryAccentColor
+	textEl.ClassName = "text-mono"
+	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "start", fontSize)
+	textEl.Content = prefix
+	output += textEl.Render()
 
-		fmt.Sprintf(`<text class="text-mono" x="%f" y="%f" style="%s">%s</text>`,
-			prefixTL.X+d2target.PrefixWidth,
-			prefixTL.Y+fontSize*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, shape.Fill),
-			svg.EscapeText(nameText),
-		),
+	textEl.X = prefixTL.X + d2target.PrefixWidth
+	textEl.Fill = shape.Fill
+	textEl.Content = svg.EscapeText(nameText)
+	output += textEl.Render()
 
-		fmt.Sprintf(`<text class="text-mono" x="%f" y="%f" style="%s">%s</text>`,
-			typeTR.X,
-			typeTR.Y+fontSize*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s;", "end", fontSize, shape.SecondaryAccentColor),
-			svg.EscapeText(typeText),
-		),
-	}, "\n")
+	textEl.X = typeTR.X
+	textEl.Y = typeTR.Y + fontSize*3/4
+	textEl.Fill = shape.SecondaryAccentColor
+	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "end", fontSize)
+	textEl.Content = svg.EscapeText(typeText)
+	output += textEl.Render()
+
 	return output
 }
 
@@ -551,12 +646,6 @@ type roughPath struct {
 
 func (rp roughPath) StyleCSS() string {
 	style := ""
-	if rp.Style.Fill != "" {
-		style += fmt.Sprintf("fill:%s;", rp.Style.Fill)
-	}
-	if rp.Style.Stroke != "" {
-		style += fmt.Sprintf("stroke:%s;", rp.Style.Stroke)
-	}
 	if rp.Style.StrokeWidth != "" {
 		style += fmt.Sprintf("stroke-width:%s;", rp.Style.StrokeWidth)
 	}
@@ -617,10 +706,11 @@ func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeW
 		)
 	case d2target.DiamondArrowhead:
 		arrowJS = fmt.Sprintf(
-			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "white", fillStyle: "solid", seed: 1 })`,
+			`node = rc.polygon(%s, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", seed: 1 })`,
 			`[[-20, 0], [-10, 5], [0, 0], [-10, -5], [-20, 0]]`,
 			strokeWidth,
 			stroke,
+			BG_COLOR,
 		)
 	case d2target.FilledDiamondArrowhead:
 		arrowJS = fmt.Sprintf(
@@ -648,9 +738,10 @@ func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeW
 			stroke,
 		)
 		extraJS = fmt.Sprintf(
-			`node = rc.circle(-20, 0, 8, { strokeWidth: %d, stroke: "%s", fill: "white", fillStyle: "solid", fillWeight: 1, seed: 4 })`,
+			`node = rc.circle(-20, 0, 8, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 1, seed: 4 })`,
 			strokeWidth,
 			stroke,
+			BG_COLOR,
 		)
 	case d2target.CfOneRequired:
 		arrowJS = fmt.Sprintf(
@@ -669,9 +760,10 @@ func ArrowheadJS(r *Runner, arrowhead d2target.Arrowhead, stroke string, strokeW
 			stroke,
 		)
 		extraJS = fmt.Sprintf(
-			`node = rc.circle(-20, 0, 8, { strokeWidth: %d, stroke: "%s", fill: "white", fillStyle: "solid", fillWeight: 1, seed: 5 })`,
+			`node = rc.circle(-20, 0, 8, { strokeWidth: %d, stroke: "%s", fill: "%s", fillStyle: "solid", fillWeight: 1, seed: 5 })`,
 			strokeWidth,
 			stroke,
+			BG_COLOR,
 		)
 	}
 	return
@@ -706,13 +798,15 @@ func Arrowheads(r *Runner, connection d2target.Connection, srcAdj, dstAdj *geo.P
 			roughPaths = append(roughPaths, extraPaths...)
 		}
 
+		pathEl := d2themes.NewThemableElement("path")
+		pathEl.ClassName = "connection"
+		pathEl.Attributes = transform
 		for _, rp := range roughPaths {
-			pathStr := fmt.Sprintf(`<path class="connection" d="%s" style="%s" %s/>`,
-				rp.Attrs.D,
-				rp.StyleCSS(),
-				transform,
-			)
-			arrowPaths = append(arrowPaths, pathStr)
+			pathEl.D = rp.Attrs.D
+			pathEl.Fill = rp.Style.Fill
+			pathEl.Stroke = rp.Style.Stroke
+			pathEl.Style = rp.StyleCSS()
+			arrowPaths = append(arrowPaths, pathEl.Render())
 		}
 	}
 
@@ -743,13 +837,15 @@ func Arrowheads(r *Runner, connection d2target.Connection, srcAdj, dstAdj *geo.P
 			roughPaths = append(roughPaths, extraPaths...)
 		}
 
+		pathEl := d2themes.NewThemableElement("path")
+		pathEl.ClassName = "connection"
+		pathEl.Attributes = transform
 		for _, rp := range roughPaths {
-			pathStr := fmt.Sprintf(`<path class="connection" d="%s" style="%s" %s/>`,
-				rp.Attrs.D,
-				rp.StyleCSS(),
-				transform,
-			)
-			arrowPaths = append(arrowPaths, pathStr)
+			pathEl.D = rp.Attrs.D
+			pathEl.Fill = rp.Style.Fill
+			pathEl.Stroke = rp.Style.Stroke
+			pathEl.Style = rp.StyleCSS()
+			arrowPaths = append(arrowPaths, pathEl.Render())
 		}
 	}
 

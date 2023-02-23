@@ -288,18 +288,26 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Height.Value = scalar.ScalarString()
 		attrs.Height.MapKey = f.LastPrimaryKey()
 	case "top":
-		_, err := strconv.Atoi(scalar.ScalarString())
+		v, err := strconv.Atoi(scalar.ScalarString())
 		if err != nil {
 			c.errorf(scalar, "non-integer top %#v: %s", scalar.ScalarString(), err)
+			return
+		}
+		if v < 0 {
+			c.errorf(scalar, "top must be a non-negative integer: %#v", scalar.ScalarString())
 			return
 		}
 		attrs.Top = &d2graph.Scalar{}
 		attrs.Top.Value = scalar.ScalarString()
 		attrs.Top.MapKey = f.LastPrimaryKey()
 	case "left":
-		_, err := strconv.Atoi(scalar.ScalarString())
+		v, err := strconv.Atoi(scalar.ScalarString())
 		if err != nil {
 			c.errorf(scalar, "non-integer left %#v: %s", scalar.ScalarString(), err)
+			return
+		}
+		if v < 0 {
+			c.errorf(scalar, "left must be a non-negative integer: %#v", scalar.ScalarString())
 			return
 		}
 		attrs.Left = &d2graph.Scalar{}
@@ -419,7 +427,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 	edge.Attributes.Label.MapKey = e.LastPrimaryKey()
 	for _, er := range e.References {
 		scopeObjIDA := d2ir.IDA(er.Context.ScopeMap)
-		scopeObj, _ := edge.Src.Graph.Root.HasChildIDVal(d2graphIDA(scopeObjIDA))
+		scopeObj, _ := edge.Src.Graph.Root.HasChildIDVal(scopeObjIDA)
 		edge.References = append(edge.References, d2graph.EdgeReference{
 			Edge:            er.Context.Edge,
 			MapKey:          er.Context.Key,

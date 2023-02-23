@@ -895,6 +895,7 @@ func deleteObject(g *d2graph.Graph, key *d2ast.KeyPath, obj *d2graph.Object) (*d
 			})
 			if obj.Attributes.Shape.Value == d2target.ShapeSQLTable || obj.Attributes.Shape.Value == d2target.ShapeClass {
 				ref.MapKey.Value.Map = nil
+				ref.MapKey.Primary = ref.MapKey.Value.ScalarBox()
 			} else if len(withoutSpecial) == 0 {
 				hoistRefChildren(g, key, ref)
 				deleteFromMap(ref.Scope, ref.MapKey)
@@ -1538,7 +1539,7 @@ func updateNear(prevG, g *d2graph.Graph, from, to *string) error {
 			if len(n.MapKey.Key.Path) == 0 {
 				continue
 			}
-			if n.MapKey.Key.Path[0].Unbox().ScalarString() == "near" {
+			if n.MapKey.Key.Path[len(n.MapKey.Key.Path)-1].Unbox().ScalarString() == "near" {
 				k := n.MapKey.Value.ScalarBox().Unbox().ScalarString()
 				if strings.EqualFold(k, *from) && to == nil {
 					deleteFromMap(obj.Map, n.MapKey)

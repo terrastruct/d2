@@ -17,7 +17,7 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2latex"
 	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/d2themes"
+	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/shape"
 	"oss.terrastruct.com/d2/lib/textmeasure"
@@ -336,14 +336,14 @@ func (l ContainerLevel) LabelSize() int {
 	return d2fonts.FONT_SIZE_M
 }
 
-func (obj *Object) GetFill(theme *d2themes.Theme) string {
+func (obj *Object) GetFill() string {
 	level := int(obj.Level())
 	if obj.IsSequenceDiagramNote() {
-		return theme.Colors.Neutrals.N7
+		return color.N7
 	} else if obj.IsSequenceDiagramGroup() {
-		return theme.Colors.Neutrals.N5
+		return color.N5
 	} else if obj.Parent.IsSequenceDiagram() {
-		return theme.Colors.B5
+		return color.B5
 	}
 
 	// fill for spans
@@ -351,19 +351,19 @@ func (obj *Object) GetFill(theme *d2themes.Theme) string {
 	if sd != nil {
 		level -= int(sd.Level())
 		if level == 1 {
-			return theme.Colors.B3
+			return color.B3
 		} else if level == 2 {
-			return theme.Colors.B4
+			return color.B4
 		} else if level == 3 {
-			return theme.Colors.B5
+			return color.B5
 		} else if level == 4 {
-			return theme.Colors.Neutrals.N6
+			return color.N6
 		}
-		return theme.Colors.Neutrals.N7
+		return color.N7
 	}
 
 	if obj.IsSequenceDiagram() {
-		return theme.Colors.Neutrals.N7
+		return color.N7
 	}
 
 	shape := obj.Attributes.Shape.Value
@@ -371,65 +371,65 @@ func (obj *Object) GetFill(theme *d2themes.Theme) string {
 	if shape == "" || strings.EqualFold(shape, d2target.ShapeSquare) || strings.EqualFold(shape, d2target.ShapeCircle) || strings.EqualFold(shape, d2target.ShapeOval) || strings.EqualFold(shape, d2target.ShapeRectangle) {
 		if level == 1 {
 			if !obj.IsContainer() {
-				return theme.Colors.B6
+				return color.B6
 			}
-			return theme.Colors.B4
+			return color.B4
 		} else if level == 2 {
-			return theme.Colors.B5
+			return color.B5
 		} else if level == 3 {
-			return theme.Colors.B6
+			return color.B6
 		}
-		return theme.Colors.Neutrals.N7
+		return color.N7
 	}
 
 	if strings.EqualFold(shape, d2target.ShapeCylinder) || strings.EqualFold(shape, d2target.ShapeStoredData) || strings.EqualFold(shape, d2target.ShapePackage) {
 		if level == 1 {
-			return theme.Colors.AA4
+			return color.AA4
 		}
-		return theme.Colors.AA5
+		return color.AA5
 	}
 
 	if strings.EqualFold(shape, d2target.ShapeStep) || strings.EqualFold(shape, d2target.ShapePage) || strings.EqualFold(shape, d2target.ShapeDocument) {
 		if level == 1 {
-			return theme.Colors.AB4
+			return color.AB4
 		}
-		return theme.Colors.AB5
+		return color.AB5
 	}
 
 	if strings.EqualFold(shape, d2target.ShapePerson) {
-		return theme.Colors.B3
+		return color.B3
 	}
 	if strings.EqualFold(shape, d2target.ShapeDiamond) {
-		return theme.Colors.Neutrals.N4
+		return color.N4
 	}
 	if strings.EqualFold(shape, d2target.ShapeCloud) || strings.EqualFold(shape, d2target.ShapeCallout) {
-		return theme.Colors.Neutrals.N7
+		return color.N7
 	}
 	if strings.EqualFold(shape, d2target.ShapeQueue) || strings.EqualFold(shape, d2target.ShapeParallelogram) || strings.EqualFold(shape, d2target.ShapeHexagon) {
-		return theme.Colors.Neutrals.N5
+		return color.N5
 	}
 
 	if strings.EqualFold(shape, d2target.ShapeSQLTable) || strings.EqualFold(shape, d2target.ShapeClass) {
-		return theme.Colors.Neutrals.N1
+		return color.N1
 	}
 
-	return theme.Colors.Neutrals.N7
+	return color.N7
 }
 
-func (obj *Object) GetStroke(theme *d2themes.Theme, dashGapSize interface{}) string {
+func (obj *Object) GetStroke(dashGapSize interface{}) string {
 	shape := obj.Attributes.Shape.Value
 	if strings.EqualFold(shape, d2target.ShapeCode) ||
 		strings.EqualFold(shape, d2target.ShapeText) {
-		return theme.Colors.Neutrals.N1
+		return color.N1
 	}
 	if strings.EqualFold(shape, d2target.ShapeClass) ||
 		strings.EqualFold(shape, d2target.ShapeSQLTable) {
-		return theme.Colors.Neutrals.N7
+		return color.N7
 	}
 	if dashGapSize != 0.0 {
-		return theme.Colors.B2
+		return color.B2
 	}
-	return theme.Colors.B1
+	return color.B1
 }
 
 func (obj *Object) Level() ContainerLevel {
@@ -965,11 +965,11 @@ type EdgeReference struct {
 	ScopeObj        *Object    `json:"-"`
 }
 
-func (e *Edge) GetStroke(theme *d2themes.Theme, dashGapSize interface{}) string {
+func (e *Edge) GetStroke(dashGapSize interface{}) string {
 	if dashGapSize != 0.0 {
-		return theme.Colors.B2
+		return color.B2
 	}
-	return theme.Colors.B1
+	return color.B1
 }
 
 func (e *Edge) ArrowString() string {
@@ -1585,4 +1585,14 @@ func (g *Graph) SortEdgesByAST() {
 		return e1.References[0].Edge.Range.Before(e2.References[0].Edge.Range)
 	})
 	g.Edges = edges
+}
+
+func (obj *Object) IsDescendantOf(ancestor *Object) bool {
+	if obj == ancestor {
+		return true
+	}
+	if obj.Parent == nil {
+		return false
+	}
+	return obj.Parent.IsDescendantOf(ancestor)
 }
