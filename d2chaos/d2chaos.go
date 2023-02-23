@@ -305,6 +305,9 @@ func (gs *dslGenState) randStr(n int, inKey bool) string {
 		rune('}'),
 		rune('{'),
 		rune('\\'),
+		rune('\''),
+		rune('"'),
+		rune(' '),
 	})
 	as := d2ast.RawString(s, inKey)
 	return d2format.Format(as)
