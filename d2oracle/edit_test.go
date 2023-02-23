@@ -4801,6 +4801,40 @@ A -> B
 			exp: `x
 `,
 		},
+		{
+			name: "chaos_1",
+
+			text: `cm: {shape: cylinder}
+cm <-> cm: {source-arrowhead.shape: cf-one-required}
+mt: z
+cdpdxz
+
+bymdyk: hdzuj {shape: class}
+
+bymdyk <-> bymdyk
+cm
+
+cm <-> bymdyk: {
+  source-arrowhead.shape: cf-many-required
+  target-arrowhead.shape: arrow
+}
+bymdyk <-> cdpdxz
+
+bymdyk -> cm: nk {
+  target-arrowhead.shape: diamond
+  target-arrowhead.label: 1
+}
+`,
+			key: `bymdyk`,
+
+			exp: `cm: {shape: cylinder}
+cm <-> cm: {source-arrowhead.shape: cf-one-required}
+mt: z
+cdpdxz
+
+cm
+`,
+		},
 	}
 
 	for _, tc := range testCases {

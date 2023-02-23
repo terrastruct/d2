@@ -895,6 +895,7 @@ func deleteObject(g *d2graph.Graph, key *d2ast.KeyPath, obj *d2graph.Object) (*d
 			})
 			if obj.Attributes.Shape.Value == d2target.ShapeSQLTable || obj.Attributes.Shape.Value == d2target.ShapeClass {
 				ref.MapKey.Value.Map = nil
+				ref.MapKey.Primary = ref.MapKey.Value.ScalarBox()
 			} else if len(withoutSpecial) == 0 {
 				hoistRefChildren(g, key, ref)
 				deleteFromMap(ref.Scope, ref.MapKey)
