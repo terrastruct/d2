@@ -3827,6 +3827,37 @@ y
 `,
 		},
 		{
+			name: "delete_container_of_near",
+
+			text: `direction: down
+first input -> start game -> game loop
+
+game loop: {
+  direction: down
+  input -> increase bird top velocity
+
+  move bird -> move pipes -> render
+
+  render -> no collision -> wait 16 milliseconds -> move bird
+  render -> collision detected -> game over
+  no collision.near: game loop.collision detected
+}
+`,
+			key: `game loop`,
+
+			exp: `direction: down
+first input -> start game
+
+input -> increase bird top velocity
+
+move bird -> move pipes -> render
+
+render -> no collision -> wait 16 milliseconds -> move bird
+render -> collision detected -> game over
+no collision.near: collision detected
+`,
+		},
+		{
 			name: "delete_tooltip",
 
 			text: `x: {
@@ -4768,6 +4799,40 @@ A -> B
 			key: `x.left`,
 
 			exp: `x
+`,
+		},
+		{
+			name: "chaos_1",
+
+			text: `cm: {shape: cylinder}
+cm <-> cm: {source-arrowhead.shape: cf-one-required}
+mt: z
+cdpdxz
+
+bymdyk: hdzuj {shape: class}
+
+bymdyk <-> bymdyk
+cm
+
+cm <-> bymdyk: {
+  source-arrowhead.shape: cf-many-required
+  target-arrowhead.shape: arrow
+}
+bymdyk <-> cdpdxz
+
+bymdyk -> cm: nk {
+  target-arrowhead.shape: diamond
+  target-arrowhead.label: 1
+}
+`,
+			key: `bymdyk`,
+
+			exp: `cm: {shape: cylinder}
+cm <-> cm: {source-arrowhead.shape: cf-one-required}
+mt: z
+cdpdxz
+
+cm
 `,
 		},
 	}

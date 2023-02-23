@@ -517,6 +517,20 @@ s.n -> y.r: {style.stroke-width: 8; style.stroke: red}
 y.r -> a.g.i: 1\n2\n3\n4
 `,
 		},
+		{
+			name: "sequence-note-escape-group",
+			script: `shape: sequence_diagram
+a
+b
+
+"04:20,11:20": {
+  "loop through each table": {
+    a."start_time = datetime.datetime.now"
+    a -> b
+  }
+}
+`,
+		},
 	}
 
 	runa(t, tcs)

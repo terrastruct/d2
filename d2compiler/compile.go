@@ -427,7 +427,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 	edge.Attributes.Label.MapKey = e.LastPrimaryKey()
 	for _, er := range e.References {
 		scopeObjIDA := d2ir.IDA(er.Context.ScopeMap)
-		scopeObj, _ := edge.Src.Graph.Root.HasChildIDVal(d2graphIDA(scopeObjIDA))
+		scopeObj, _ := edge.Src.Graph.Root.HasChildIDVal(scopeObjIDA)
 		edge.References = append(edge.References, d2graph.EdgeReference{
 			Edge:            er.Context.Edge,
 			MapKey:          er.Context.Key,
