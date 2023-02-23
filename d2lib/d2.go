@@ -29,7 +29,6 @@ type CompileOptions struct {
 	// - pre-measured (web setting)
 	// TODO maybe some will want to configure code font too, but that's much lower priority
 	FontFamily *d2fonts.FontFamily
-	ThemeID    int64
 }
 
 func Compile(ctx context.Context, input string, opts *CompileOptions) (*d2target.Diagram, *d2graph.Graph, error) {
@@ -76,7 +75,7 @@ func compile(ctx context.Context, g *d2graph.Graph, opts *CompileOptions) (*d2ta
 		}
 	}
 
-	d, err := d2exporter.Export(ctx, g, opts.ThemeID, opts.FontFamily)
+	d, err := d2exporter.Export(ctx, g, opts.FontFamily)
 	if err != nil {
 		return nil, err
 	}

@@ -20,29 +20,14 @@
   tab-size: 4;
 }
 
-/* based on https://github.com/sindresorhus/github-markdown-css */
-.md {
-  color-scheme: light;
-  --color-fg-default: #24292f;
-  --color-fg-muted: #57606a;
-  --color-fg-subtle: #6e7781;
-  --color-canvas-default: #ffffff;
-  --color-canvas-subtle: #f6f8fa;
-  --color-border-default: #d0d7de;
-  --color-border-muted: hsla(210, 18%, 87%, 1);
-  --color-neutral-muted: rgba(175, 184, 193, 0.2);
-  --color-accent-fg: #0969da;
-  --color-accent-emphasis: #0969da;
-  --color-attention-subtle: #fff8c5;
-  --color-danger-fg: #cf222e;
-}
+/* variables are provided in d2renderers/d2svg/d2svg.go */
 
 .md {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   margin: 0;
   color: var(--color-fg-default);
-  background-color: var(--color-canvas-default);
+  background-color: transparent; /* we don't want to define the background color */
   font-family: "font-regular";
   font-size: 16px;
   line-height: 1.5;

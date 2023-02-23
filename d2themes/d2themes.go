@@ -58,3 +58,13 @@ var WarmNeutral = Neutral{
 	N6: "#ECEBEB",
 	N7: "#FFFFFF",
 }
+
+var DarkNeutral = Neutral{
+	N1: "#CDD6F4",
+	N2: "#BAC2DE",
+	N3: "#A6ADC8",
+	N4: "#585B70",
+	N5: "#45475A",
+	N6: "#313244",
+	N7: "#1E1E2E",
+}

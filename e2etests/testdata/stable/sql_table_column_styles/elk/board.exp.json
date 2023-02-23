@@ -98,9 +98,9 @@
       "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
-      "primaryAccentColor": "#0D32B2",
-      "secondaryAccentColor": "#4A6FF3",
-      "neutralAccentColor": "#676C7E"
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
     },
     {
       "id": "Humor in the Court2",
@@ -198,9 +198,9 @@
       "labelHeight": 43,
       "zIndex": 0,
       "level": 1,
-      "primaryAccentColor": "#0D32B2",
-      "secondaryAccentColor": "#4A6FF3",
-      "neutralAccentColor": "#676C7E"
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
     },
     {
       "id": "manager",
@@ -215,8 +215,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#0A0F25",
-      "stroke": "#FFFFFF",
+      "fill": "N1",
+      "stroke": "N7",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -265,7 +265,7 @@
       "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -273,9 +273,9 @@
       "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
-      "primaryAccentColor": "#0D32B2",
-      "secondaryAccentColor": "#4A6FF3",
-      "neutralAccentColor": "#676C7E"
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
     },
     {
       "id": "manager2",
@@ -290,8 +290,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#0A0F25",
-      "stroke": "#FFFFFF",
+      "fill": "N1",
+      "stroke": "N7",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -340,7 +340,7 @@
       "fontSize": 30,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -348,9 +348,9 @@
       "labelHeight": 43,
       "zIndex": 0,
       "level": 1,
-      "primaryAccentColor": "#0D32B2",
-      "secondaryAccentColor": "#4A6FF3",
-      "neutralAccentColor": "#676C7E"
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
     }
   ],
   "connections": []

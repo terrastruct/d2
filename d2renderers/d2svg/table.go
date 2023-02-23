@@ -3,9 +3,9 @@ package d2svg
 import (
 	"fmt"
 	"io"
-	"strings"
 
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/svg"
@@ -13,8 +13,12 @@ import (
 )
 
 func tableHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
-	str := fmt.Sprintf(`<rect class="class_header" x="%f" y="%f" width="%f" height="%f" fill="%s" />`,
-		box.TopLeft.X, box.TopLeft.Y, box.Width, box.Height, shape.Fill)
+	rectEl := d2themes.NewThemableElement("rect")
+	rectEl.X, rectEl.Y = box.TopLeft.X, box.TopLeft.Y
+	rectEl.Width, rectEl.Height = box.Width, box.Height
+	rectEl.Fill = shape.Fill
+	rectEl.ClassName = "class_header"
+	str := rectEl.Render()
 
 	if text != "" {
 		tl := label.InsideMiddleLeft.GetPointOnBox(
@@ -24,17 +28,16 @@ func tableHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, tex
 			textHeight,
 		)
 
-		str += fmt.Sprintf(`<text class="%s" x="%f" y="%f" style="%s">%s</text>`,
-			"text",
-			tl.X,
-			tl.Y+textHeight*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s",
-				"start",
-				4+fontSize,
-				shape.Stroke,
-			),
-			svg.EscapeText(text),
+		textEl := d2themes.NewThemableElement("text")
+		textEl.X = tl.X
+		textEl.Y = tl.Y + textHeight*3/4
+		textEl.Fill = shape.Stroke
+		textEl.ClassName = "text"
+		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx",
+			"start", 4+fontSize,
 		)
+		textEl.Content = svg.EscapeText(text)
+		str += textEl.Render()
 	}
 	return str
 }
@@ -55,33 +58,40 @@ func tableRow(shape d2target.Shape, box *geo.Box, nameText, typeText, constraint
 		fontSize,
 	)
 
-	return strings.Join([]string{
-		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
-			nameTL.X,
-			nameTL.Y+fontSize*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, shape.PrimaryAccentColor),
-			svg.EscapeText(nameText),
-		),
+	textEl := d2themes.NewThemableElement("text")
+	textEl.X = nameTL.X
+	textEl.Y = nameTL.Y + fontSize*3/4
+	textEl.Fill = shape.PrimaryAccentColor
+	textEl.ClassName = "text"
+	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "start", fontSize)
+	textEl.Content = svg.EscapeText(nameText)
+	out := textEl.Render()
 
-		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
-			nameTL.X+longestNameWidth+2*d2target.NamePadding,
-			nameTL.Y+fontSize*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s", "start", fontSize, shape.NeutralAccentColor),
-			svg.EscapeText(typeText),
-		),
+	textEl.X = nameTL.X + longestNameWidth + 2*d2target.NamePadding
+	textEl.Fill = shape.NeutralAccentColor
+	textEl.Content = svg.EscapeText(typeText)
+	out += textEl.Render()
 
-		fmt.Sprintf(`<text class="text" x="%f" y="%f" style="%s">%s</text>`,
-			constraintTR.X,
-			constraintTR.Y+fontSize*3/4,
-			fmt.Sprintf("text-anchor:%s;font-size:%vpx;fill:%s;letter-spacing:2px;", "end", fontSize, shape.SecondaryAccentColor),
-			constraintText,
-		),
-	}, "\n")
+	textEl.X = constraintTR.X
+	textEl.Y = constraintTR.Y + fontSize*3/4
+	textEl.Fill = shape.SecondaryAccentColor
+	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx;letter-spacing:2px", "end", fontSize)
+	textEl.Content = constraintText
+	out += textEl.Render()
+
+	return out
 }
 
 func drawTable(writer io.Writer, targetShape d2target.Shape) {
-	fmt.Fprintf(writer, `<rect class="shape" x="%d" y="%d" width="%d" height="%d" style="%s"/>`,
-		targetShape.Pos.X, targetShape.Pos.Y, targetShape.Width, targetShape.Height, targetShape.CSSStyle())
+	rectEl := d2themes.NewThemableElement("rect")
+	rectEl.X = float64(targetShape.Pos.X)
+	rectEl.Y = float64(targetShape.Pos.Y)
+	rectEl.Width = float64(targetShape.Width)
+	rectEl.Height = float64(targetShape.Height)
+	rectEl.Fill, rectEl.Stroke = d2themes.ShapeTheme(targetShape)
+	rectEl.ClassName = "shape"
+	rectEl.Style = targetShape.CSSStyle()
+	fmt.Fprint(writer, rectEl.Render())
 
 	box := geo.NewBox(
 		geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y)),
@@ -108,10 +118,12 @@ func drawTable(writer io.Writer, targetShape d2target.Shape) {
 			tableRow(targetShape, rowBox, f.Name.Label, f.Type.Label, f.ConstraintAbbr(), float64(targetShape.FontSize), float64(longestNameWidth)),
 		)
 		rowBox.TopLeft.Y += rowHeight
-		fmt.Fprintf(writer, `<line x1="%f" y1="%f" x2="%f" y2="%f" style="stroke-width:2;stroke:%s" />`,
-			rowBox.TopLeft.X, rowBox.TopLeft.Y,
-			rowBox.TopLeft.X+rowBox.Width, rowBox.TopLeft.Y,
-			targetShape.Fill,
-		)
+
+		lineEl := d2themes.NewThemableElement("line")
+		lineEl.X1, lineEl.Y1 = rowBox.TopLeft.X, rowBox.TopLeft.Y
+		lineEl.X2, lineEl.Y2 = rowBox.TopLeft.X+rowBox.Width, rowBox.TopLeft.Y
+		lineEl.Stroke = targetShape.Fill
+		lineEl.Style = "stroke-width:2"
+		fmt.Fprint(writer, lineEl.Render())
 	}
 }

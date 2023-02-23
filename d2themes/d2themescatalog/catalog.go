@@ -7,7 +7,7 @@ import (
 	"oss.terrastruct.com/d2/d2themes"
 )
 
-var Catalog = []d2themes.Theme{
+var LightCatalog = []d2themes.Theme{
 	NeutralDefault,
 	NeutralGrey,
 	FlagshipTerrastruct,
@@ -24,8 +24,18 @@ var Catalog = []d2themes.Theme{
 	ButteredToast,
 }
 
+var DarkCatalog = []d2themes.Theme{
+	DarkMauve,
+}
+
 func Find(id int64) d2themes.Theme {
-	for _, theme := range Catalog {
+	for _, theme := range LightCatalog {
+		if theme.ID == id {
+			return theme
+		}
+	}
+
+	for _, theme := range DarkCatalog {
 		if theme.ID == id {
 			return theme
 		}
@@ -36,8 +46,16 @@ func Find(id int64) d2themes.Theme {
 
 func CLIString() string {
 	var s strings.Builder
-	for _, t := range Catalog {
+
+	s.WriteString("Light:\n")
+	for _, t := range LightCatalog {
 		s.WriteString(fmt.Sprintf("- %s: %d\n", t.Name, t.ID))
 	}
+
+	s.WriteString("Dark:\n")
+	for _, t := range DarkCatalog {
+		s.WriteString(fmt.Sprintf("- %s: %d\n", t.Name, t.ID))
+	}
+
 	return s.String()
 }
