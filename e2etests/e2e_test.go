@@ -24,6 +24,7 @@ import (
 	"oss.terrastruct.com/d2/d2layouts/d2near"
 	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2lib"
+	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/log"
@@ -73,12 +74,14 @@ a -> c
 }
 
 type testCase struct {
-	name       string
-	script     string
-	mtexts     []*d2target.MText
-	assertions func(t *testing.T, diagram *d2target.Diagram)
-	skip       bool
-	expErr     string
+	name              string
+	script            string
+	mtexts            []*d2target.MText
+	assertions        func(t *testing.T, diagram *d2target.Diagram)
+	skip              bool
+	dagreFeatureError string
+	elkFeatureError   string
+	expErr            string
 }
 
 func runa(t *testing.T, tcs []testCase) {
@@ -136,16 +139,20 @@ func run(t *testing.T, tc testCase) {
 
 	for _, layoutName := range layoutsTested {
 		var layout func(context.Context, *d2graph.Graph) error
+		var plugin d2plugin.Plugin
 		if layoutName == "dagre" {
 			layout = d2dagrelayout.DefaultLayout
+			plugin = &d2plugin.DagrePlugin
 		} else if layoutName == "elk" {
 			// If measured texts exists, we are specifically exercising text measurements, no need to run on both layouts
 			if tc.mtexts != nil {
 				continue
 			}
 			layout = d2elklayout.DefaultLayout
+			plugin = &d2plugin.ELKPlugin
 		}
-		diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
+
+		diagram, g, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
 			Ruler:         ruler,
 			MeasuredTexts: tc.mtexts,
 			ThemeID:       0,
@@ -159,6 +166,26 @@ func run(t *testing.T, tc testCase) {
 		} else {
 			assert.Success(t, err)
 		}
+
+		pluginInfo, err := plugin.Info(ctx)
+		assert.Success(t, err)
+
+		err = d2plugin.FeatureSupportCheck(pluginInfo, g)
+		switch layoutName {
+		case "dagre":
+			if tc.dagreFeatureError != "" {
+				assert.Error(t, err)
+				assert.ErrorString(t, err, tc.dagreFeatureError)
+				return
+			}
+		case "elk":
+			if tc.elkFeatureError != "" {
+				assert.Error(t, err)
+				assert.ErrorString(t, err, tc.elkFeatureError)
+				return
+			}
+		}
+		assert.Success(t, err)
 
 		if tc.assertions != nil {
 			t.Run("assertions", func(t *testing.T) {
