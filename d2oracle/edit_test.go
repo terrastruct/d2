@@ -3322,8 +3322,7 @@ b: {
 			key:    `a`,
 			newKey: `b.a`,
 
-			exp: `b.a
-b: {
+			exp: `b: {
   a
 }
 `,
