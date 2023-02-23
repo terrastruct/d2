@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><svg id="d2-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="454" height="338" viewBox="-90 -50 454 338"><rect x="-90.000000" y="-50.000000" width="454.000000" height="338.000000" class=" fill-N7" /><style type="text/css"><![CDATA[
+<?xml version="1.0" encoding="utf-8"?><svg id="d2-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="254" height="138" viewBox="10 50 254 138"><rect x="10.000000" y="50.000000" width="254.000000" height="138.000000" class=" fill-N7" /><style type="text/css"><![CDATA[
 .text {
 	font-family: "font-regular";
 }
@@ -37,7 +37,7 @@
     svgEl.setAttribute("height", height * ratio - 16);
   }
 });
-]]></script><g id="a"><g class="shape" ><rect x="12.000000" y="52.000000" width="100.000000" height="66.000000" class=" stroke-B1 fill-N7" style="stroke-width:2;" /></g><text x="62.000000" y="90.500000" class="text fill-N1" style="text-anchor:middle;font-size:16px">A</text></g><g id="b"><g class="shape" ><rect x="162.000000" y="52.000000" width="100.000000" height="66.000000" class=" stroke-B1 fill-N7" style="stroke-width:2;" /></g><text x="212.000000" y="90.500000" class="text fill-N1" style="text-anchor:middle;font-size:16px">B</text></g><g id="(a -- )[0]"><path d="M 62.000000 120.000000 L 62.000000 187.000000" fill="none" class="connection stroke-B2" style="stroke-width:2;stroke-dasharray:12.000000,11.838767;" mask="url(#2677123374)" /></g><g id="(b -- )[0]"><path d="M 212.000000 120.000000 L 212.000000 187.000000" fill="none" class="connection stroke-B2" style="stroke-width:2;stroke-dasharray:12.000000,11.838767;" mask="url(#2677123374)" /></g><mask id="2677123374" maskUnits="userSpaceOnUse" x="-90" y="-50" width="454" height="338">
-<rect x="-90" y="-50" width="454" height="338" fill="white"></rect>
+]]></script><g id="a"><g class="shape" ><rect x="12.000000" y="52.000000" width="100.000000" height="66.000000" class=" stroke-B1 fill-N7" style="stroke-width:2;" /></g><text x="62.000000" y="90.500000" class="text fill-N1" style="text-anchor:middle;font-size:16px">A</text></g><g id="b"><g class="shape" ><rect x="162.000000" y="52.000000" width="100.000000" height="66.000000" class=" stroke-B1 fill-N7" style="stroke-width:2;" /></g><text x="212.000000" y="90.500000" class="text fill-N1" style="text-anchor:middle;font-size:16px">B</text></g><g id="(a -- )[0]"><path d="M 62.000000 120.000000 L 62.000000 187.000000" fill="none" class="connection stroke-B2" style="stroke-width:2;stroke-dasharray:12.000000,11.838767;" mask="url(#2677123374)" /></g><g id="(b -- )[0]"><path d="M 212.000000 120.000000 L 212.000000 187.000000" fill="none" class="connection stroke-B2" style="stroke-width:2;stroke-dasharray:12.000000,11.838767;" mask="url(#2677123374)" /></g><mask id="2677123374" maskUnits="userSpaceOnUse" x="10" y="50" width="254" height="138">
+<rect x="10" y="50" width="254" height="138" fill="white"></rect>
 
 </mask></svg>

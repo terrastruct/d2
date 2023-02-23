@@ -196,7 +196,7 @@ func run(t *testing.T, tc testCase) {
 		pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
 
 		svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-			Pad:     d2svg.DEFAULT_PADDING,
+			Pad:     0,
 			ThemeID: 0,
 		})
 		assert.Success(t, err)
