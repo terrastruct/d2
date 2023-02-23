@@ -196,9 +196,9 @@ func test(t *testing.T, textPath, text string) {
 				t.Errorf("recovered d2oracle panic moving %s into %s: %#v\n%s\n%s", key, container.AbsID(), r, debug.Stack(), d2format.Format(lastAST))
 			}
 		}()
-		rand.Shuffle(len(g.Objects), func(i, j int) {
-			g.Objects[i], g.Objects[j] = g.Objects[j], g.Objects[i]
-		})
+		// rand.Shuffle(len(g.Objects), func(i, j int) {
+		//   g.Objects[i], g.Objects[j] = g.Objects[j], g.Objects[i]
+		// })
 		for _, obj := range g.Objects {
 			if len(obj.ChildrenArray) > 0 {
 				container = obj
