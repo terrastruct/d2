@@ -1,3 +1,7 @@
+Sketch mode's subtle hand-drawn texture adapts to background colors.
+<img width="399" alt="sketch" src="https://user-images.githubusercontent.com/3120367/221042548-aee58a6c-e0c0-4e58-8d79-d0b609a9d750.png">
+
+
 #### Features 🚀
 
 - Dark theme support! See [https://d2lang.com/tour/themes](https://d2lang.com/tour/themes).[#613](https://github.com/terrastruct/d2/pull/613)
@@ -6,6 +10,7 @@
 
 #### Improvements 🧹
 
+- Sketch mode's subtle hand-drawn texture adapts to background colors. [#613](https://github.com/terrastruct/d2/pull/613)
 - Cleaner watch mode logs without timestamps. [#830](https://github.com/terrastruct/d2/pull/830)
 - Remove duplicate success logs in watch mode. [#830](https://github.com/terrastruct/d2/pull/830)
 - CLI reports when a feature is incompatible with layout engine, instead of silently ignoring. [#845](https://github.com/terrastruct/d2/pull/845)
