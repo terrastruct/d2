@@ -11,6 +11,7 @@
 - CLI reports when a feature is incompatible with layout engine, instead of silently ignoring. [#845](https://github.com/terrastruct/d2/pull/845)
 - `near` key set to direct parent or ancestor throws an appropriate error message. [#851](https://github.com/terrastruct/d2/pull/851)
 - Dimensions and positions are able to be set from API. [#853](https://github.com/terrastruct/d2/pull/853)
+- Improves label legibility for dagre containers by stopping container edges early if they would run into the label. [#880](https://github.com/terrastruct/d2/pull/880)
 
 #### Bugfixes ⛑️
 
