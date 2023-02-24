@@ -290,8 +290,8 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	if filepath.Ext(outputPath) == ".pdf" {
 		svg, err = renderPDF(ctx, ms, plugin, sketch, pad, outputPath, page, ruler, diagram, nil, nil)
 	} else {
-		compileDir := time.Since(start)
-		svg, err = render(ctx, ms, compileDir, plugin, sketch, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
+		compileDur := time.Since(start)
+		svg, err = render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
 	}
 	if err != nil {
 		return svg, false, err
