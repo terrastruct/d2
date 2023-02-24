@@ -16,7 +16,7 @@ This release also fixes a number of non-trivial layout bugs made in v0.2.0, and 
 
 #### Features 🚀
 
-- Dark theme support! See [https://d2lang.com/tour/themes](https://d2lang.com/tour/themes). [#613](https://github.com/terrastruct/d2/pull/613)
+- Dark theme support! See [docs](https://d2lang.com/tour/themes#dark-theme). [#613](https://github.com/terrastruct/d2/pull/613)
 - Many non-Latin languages (e.g. Chinese, Japanese, Korean) are usable now that multi-byte characters are measured correctly. [#817](https://github.com/terrastruct/d2/pull/817)
 - Dimensions can be set on containers (layout engine dependent). [#845](https://github.com/terrastruct/d2/pull/845)
 
