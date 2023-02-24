@@ -4,7 +4,6 @@
     A modern diagram scripting language that turns text to diagrams.
   </h2>
 
-
 [Docs](https://d2lang.com) | [Cheat sheet](./docs/assets/cheat_sheet.pdf) | [Comparisons](https://text-to-diagram.com) | [Playground](https://play.d2lang.com)
 
 [![ci](https://github.com/terrastruct/d2/actions/workflows/ci.yml/badge.svg)](https://github.com/terrastruct/d2/actions/workflows/ci.yml)
@@ -148,7 +147,7 @@ one, please see [./d2renderers/d2fonts](./d2renderers/d2fonts).
 
 ## Export file types
 
-D2 currently supports SVG and PNG exports. More coming soon.
+D2 currently supports SVG, PNG and PDF exports. More coming soon.
 
 ## Language tooling
 

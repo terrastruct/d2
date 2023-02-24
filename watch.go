@@ -345,7 +345,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			recompiledPrefix = "re"
 		}
 
-		if filepath.Ext(w.outputPath) == ".png" && !w.pw.Browser.IsConnected() {
+		if (filepath.Ext(w.outputPath) == ".png" || filepath.Ext(w.outputPath) == ".pdf") && !w.pw.Browser.IsConnected() {
 			newPW, err := w.pw.RestartBrowser()
 			if err != nil {
 				broadcastErr := fmt.Errorf("issue encountered with PNG exporter: %w", err)

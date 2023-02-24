@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- PDF exports are now supported. [#120](https://github.com/terrastruct/d2/issues/120)
+
 #### Improvements 🧹
 
 #### Bugfixes ⛑️
