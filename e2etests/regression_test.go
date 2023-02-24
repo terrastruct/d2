@@ -29,7 +29,29 @@ B: goodbye {
 }
 
 A->B`,
-		}, {
+		},
+		{
+			name: "nested_steps",
+			script: `a: {
+  a: {
+    shape: step
+  }
+  b: {
+    shape: step
+  }
+  a -> b
+}
+
+c: {
+  shape: step
+}
+d: {
+  shape: step
+}
+c -> d
+`,
+		},
+		{
 			name: "sequence_diagram_span_cover",
 			script: `shape: sequence_diagram
 b.1 -> b.1
