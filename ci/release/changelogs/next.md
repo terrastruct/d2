@@ -12,7 +12,7 @@ Sketch mode's subtle hand-drawn texture adapts to background colors. Previously 
 
 <img width="399" alt="sketch" src="https://user-images.githubusercontent.com/3120367/221042548-aee58a6c-e0c0-4e58-8d79-d0b609a9d750.png">
 
-This release also fixes a number of non-trivial layout bugs made in v0.2.0, and has better error messages. 
+This release also fixes a number of non-trivial layout bugs made in v0.2.0, and has better error messages.
 
 #### Features 🚀
 
