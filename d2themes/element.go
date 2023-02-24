@@ -96,6 +96,7 @@ func (el *ThemableElement) SetMaskUrl(url string) {
 func (el *ThemableElement) Render() string {
 	out := "<" + el.tag
 
+	// href has to be at the top for the img bundler to detect <image> tags correctly
 	if len(el.Href) > 0 {
 		out += fmt.Sprintf(` href="%s"`, el.Href)
 	}
