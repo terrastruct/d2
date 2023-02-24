@@ -24,7 +24,6 @@ https://user-images.githubusercontent.com/3120367/206125010-bd1fea8e-248a-43e7-8
 # Table of Contents
 
 <!-- toc -->
-
 - <a href="#what-does-d2-look-like" id="toc-what-does-d2-look-like">What does D2 look like?</a>
 - <a href="#quickstart" id="toc-quickstart">Quickstart</a>
 - <a href="#install" id="toc-install">Install</a>
