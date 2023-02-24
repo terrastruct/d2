@@ -106,8 +106,11 @@ func layoutSequenceDiagram(g *d2graph.Graph, obj *d2graph.Object) (*sequenceDiag
 		}
 	}
 
-	sd := newSequenceDiagram(obj.ChildrenArray, edges)
-	err := sd.layout()
+	sd, err := newSequenceDiagram(obj.ChildrenArray, edges)
+	if err != nil {
+		return nil, err
+	}
+	err = sd.layout()
 	return sd, err
 }
 

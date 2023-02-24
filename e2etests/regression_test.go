@@ -37,6 +37,7 @@ group.nested: {
   a -> b
 }
 `,
+			expErr: "no actors declared in sequence diagram",
 		},
 		{
 			name: "nested_steps",

@@ -1,6 +1,7 @@
 package d2sequence
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"sort"
@@ -64,7 +65,7 @@ func getEdgeEarliestLineNum(e *d2graph.Edge) int {
 	return min
 }
 
-func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *sequenceDiagram {
+func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*sequenceDiagram, error) {
 	var actors []*d2graph.Object
 	var groups []*d2graph.Object
 
@@ -82,6 +83,10 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 		} else {
 			actors = append(actors, obj)
 		}
+	}
+
+	if len(actors) == 0 {
+		return nil, errors.New("no actors declared in sequence diagram")
 	}
 
 	sd := &sequenceDiagram{
@@ -185,7 +190,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 		sd.maxActorHeight += float64(*sd.root.LabelHeight)
 	}
 
-	return sd
+	return sd, nil
 }
 
 func (sd *sequenceDiagram) layout() error {
