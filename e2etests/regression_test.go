@@ -31,6 +31,15 @@ B: goodbye {
 A->B`,
 		},
 		{
+			name: "undeclared_nested_sequence",
+			script: `shape: sequence_diagram
+group.nested: {
+  a -> b
+}
+`,
+			expErr: "no actors declared in sequence diagram",
+		},
+		{
 			name: "nested_steps",
 			script: `a: {
   a: {
