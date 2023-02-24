@@ -29,7 +29,38 @@ B: goodbye {
 }
 
 A->B`,
-		}, {
+		},
+		{
+			name: "undeclared_nested_sequence",
+			script: `shape: sequence_diagram
+group.nested: {
+  a -> b
+}
+`,
+			expErr: "no actors declared in sequence diagram",
+		},
+		{
+			name: "nested_steps",
+			script: `a: {
+  a: {
+    shape: step
+  }
+  b: {
+    shape: step
+  }
+  a -> b
+}
+
+c: {
+  shape: step
+}
+d: {
+  shape: step
+}
+c -> d
+`,
+		},
+		{
 			name: "sequence_diagram_span_cover",
 			script: `shape: sequence_diagram
 b.1 -> b.1

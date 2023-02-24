@@ -41,8 +41,10 @@ func Darken(colorString string) (string, error) {
 
 		case colorString[0:2] == "AB":
 			switch colorString[2] {
-			case '4', '5':
+			case '4':
 				return AB4, nil
+			case '5':
+				return AB5, nil
 			}
 
 		case colorString[0] == 'N':
@@ -135,7 +137,7 @@ const (
 
 	// Alternative colors B
 	AB4 = "AB4"
-	AB5 = "AB4"
+	AB5 = "AB5"
 
 	// Special
 	Empty = ""

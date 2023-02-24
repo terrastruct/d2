@@ -425,7 +425,36 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		// trace the edge to the specific shape's border
 		points[startIndex] = shape.TraceToShapeBorder(srcShape, start, points[startIndex+1])
-		points[endIndex] = shape.TraceToShapeBorder(dstShape, end, points[endIndex-1])
+
+		// if an edge to a container runs into its label, stop the edge at the label instead
+		overlapsContainerLabel := false
+		if edge.Dst.IsContainer() && edge.Dst.Attributes.Label.Value != "" {
+			// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
+			labelWidth := float64(*edge.Dst.LabelWidth)
+			labelHeight := float64(*edge.Dst.LabelHeight)
+			labelTL := label.Position(*edge.Dst.LabelPosition).
+				GetPointOnBox(edge.Dst.Box, label.PADDING, labelWidth, labelHeight)
+
+			endingSegment := geo.Segment{Start: points[endIndex-1], End: points[endIndex]}
+			labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
+			// add left/right padding to box
+			labelBox.TopLeft.X -= label.PADDING
+			labelBox.Width += 2 * label.PADDING
+			if intersections := labelBox.Intersections(endingSegment); len(intersections) > 0 {
+				overlapsContainerLabel = true
+				// move ending segment to label intersection point
+				points[endIndex] = intersections[0]
+				endingSegment.End = intersections[0]
+				// if the segment becomes too short, just merge it with the previous segment
+				if endIndex-1 > 0 && endingSegment.Length() < MIN_SEGMENT_LEN {
+					points[endIndex-1] = points[endIndex]
+					endIndex--
+				}
+			}
+		}
+		if !overlapsContainerLabel {
+			points[endIndex] = shape.TraceToShapeBorder(dstShape, end, points[endIndex-1])
+		}
 		points = points[startIndex : endIndex+1]
 
 		// build a curved path from the dagre route
