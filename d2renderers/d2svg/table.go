@@ -31,7 +31,7 @@ func tableHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, tex
 		textEl := d2themes.NewThemableElement("text")
 		textEl.X = tl.X
 		textEl.Y = tl.Y + textHeight*3/4
-		textEl.Fill = shape.Stroke
+		textEl.Fill = shape.GetFontColor()
 		textEl.ClassName = "text"
 		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx",
 			"start", 4+fontSize,

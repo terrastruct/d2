@@ -30,7 +30,7 @@ func classHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, tex
 		textEl := d2themes.NewThemableElement("text")
 		textEl.X = tl.X + textWidth/2
 		textEl.Y = tl.Y + textHeight*3/4
-		textEl.Fill = shape.Stroke
+		textEl.Fill = shape.GetFontColor()
 		textEl.ClassName = "text-mono"
 		textEl.Style = fmt.Sprintf(`text-anchor:%s;font-size:%vpx;`,
 			"middle", 4+fontSize,

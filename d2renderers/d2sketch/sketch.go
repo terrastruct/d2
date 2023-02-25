@@ -382,7 +382,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 		textEl := d2themes.NewThemableElement("text")
 		textEl.X = tl.X
 		textEl.Y = tl.Y + float64(shape.LabelHeight)*3/4
-		textEl.Fill = shape.Stroke
+		textEl.Fill = shape.GetFontColor()
 		textEl.ClassName = "text"
 		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx",
 			"start", 4+shape.FontSize,
@@ -532,7 +532,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 		textEl := d2themes.NewThemableElement("text")
 		textEl.X = tl.X + float64(shape.LabelWidth)/2
 		textEl.Y = tl.Y + float64(shape.LabelHeight)*3/4
-		textEl.Fill = shape.Stroke
+		textEl.Fill = shape.GetFontColor()
 		textEl.ClassName = "text-mono"
 		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx",
 			"middle",
