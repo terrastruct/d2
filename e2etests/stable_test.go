@@ -158,6 +158,37 @@ square.style.3d: true
 `,
 		},
 		{
+			name: "hexagon_3d",
+			script: `
+hexagon: {shape: "hexagon"}
+hexagon.style.3d: true
+`,
+		},
+		{
+			name: "3d_fill_and_stroke",
+			script: `
+hexagon: {
+  shape: hexagon
+  style.3d: true
+  style.fill: honeydew
+}
+
+
+rect: {
+  shape: rectangle
+  style.3d: true
+  style.fill: honeydew
+}
+
+square: {
+  shape: square
+  style.3d: true
+  style.fill: honeydew
+}
+hexagon -> square -> rect
+`,
+		},
+		{
 			name: "container_edges",
 			script: `a -> g.b -> d.h.c
 d -> g.e -> f -> g -> d.h

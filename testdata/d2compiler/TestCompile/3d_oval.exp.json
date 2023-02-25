@@ -5,7 +5,7 @@
     "errs": [
       {
         "range": "d2/testdata/d2compiler/TestCompile/3d_oval.d2,1:0:17-1:19:36",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/3d_oval.d2:2:1: key \"3d\" can only be applied to squares and rectangles"
+        "errmsg": "d2/testdata/d2compiler/TestCompile/3d_oval.d2:2:1: key \"3d\" can only be applied to squares, rectangles, and hexagons"
       }
     ]
   }
