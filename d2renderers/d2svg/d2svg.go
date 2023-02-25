@@ -1439,9 +1439,6 @@ func appendOnTrigger(buf *bytes.Buffer, source string, triggers []string, newCon
 	}
 }
 
-//go:embed fitToScreen.js
-var fitToScreenScript string
-
 const DEFAULT_THEME int64 = 0
 
 var DEFAULT_DARK_THEME *int64 = nil // no theme selected
@@ -1539,9 +1536,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		return nil, err
 	}
 	fmt.Fprintf(upperBuf, `<style type="text/css"><![CDATA[%s%s]]></style>`, baseStylesheet, themeStylesheet)
-	// this script won't run in --watch mode because script tags are ignored when added via el.innerHTML = element
-	// https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML
-	fmt.Fprintf(upperBuf, `<script type="application/javascript"><![CDATA[%s]]></script>`, fitToScreenScript)
+
 	hasMarkdown := false
 	for _, s := range diagram.Shapes {
 		if s.Label != "" && s.Type == d2target.ShapeText {
@@ -1564,8 +1559,15 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	backgroundEl.Height = float64(h)
 	backgroundEl.Fill = BG_COLOR
 
+	fitToScreenWrapper := fmt.Sprintf(`<svg %s preserveAspectRatio="xMidYMid meet" viewBox="0 0 %d %d">`,
+		`xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"`,
+		w, h,
+	)
+
 	// TODO minify
-	docRendered := fmt.Sprintf(`<?xml version="1.0" encoding="utf-8"?><svg id="d2-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s</svg>`,
+	docRendered := fmt.Sprintf(`%s%s<svg id="d2-svg" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s</svg></svg>`,
+		`<?xml version="1.0" encoding="utf-8"?>`,
+		fitToScreenWrapper,
 		w, h, left, top, w, h,
 		backgroundEl.Render(), // must be first
 		upperBuf.String(),

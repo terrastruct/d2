@@ -62,7 +62,9 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 		return in
 	}
 
-	viewboxMatch := viewboxRegex.FindStringSubmatch(svg)
+	// match 1st two viewboxes, 1st is outer fit-to-screen viewbox="0 0 innerWidth innerHeight"
+	viewboxMatches := viewboxRegex.FindAllStringSubmatch(svg, 2)
+	viewboxMatch := viewboxMatches[1]
 	viewboxRaw := viewboxMatch[1]
 	viewboxSlice := strings.Split(viewboxRaw, " ")
 	viewboxPadLeft, _ := strconv.Atoi(viewboxSlice[0])
@@ -86,6 +88,7 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 
 	viewboxHeight += h + PAD_TOP
 
+	newOuterViewbox := fmt.Sprintf(`viewBox="0 0 %d %d"`, viewboxWidth, viewboxHeight)
 	newViewbox := fmt.Sprintf(`viewBox="%s %s %s %s"`, viewboxSlice[0], viewboxSlice[1], strconv.Itoa(viewboxWidth), strconv.Itoa(viewboxHeight))
 
 	widthMatches := widthRegex.FindAllStringSubmatch(svg, 2)
@@ -93,6 +96,7 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 	newWidth := fmt.Sprintf(`width="%s"`, strconv.Itoa(viewboxWidth))
 	newHeight := fmt.Sprintf(`height="%s"`, strconv.Itoa(viewboxHeight))
 
+	svg = strings.Replace(svg, viewboxMatches[0][0], newOuterViewbox, 1)
 	svg = strings.Replace(svg, viewboxMatch[0], newViewbox, 1)
 	for i := 0; i < 2; i++ {
 		svg = strings.Replace(svg, widthMatches[i][0], newWidth, 1)
@@ -122,7 +126,7 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 ]]></style>`, d2fonts.FontEncodings[d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_BOLD)])
 	}
 
-	closingIndex := strings.LastIndex(svg, "</svg>")
+	closingIndex := strings.LastIndex(svg, "</svg></svg>")
 	svg = svg[:closingIndex] + appendix + svg[closingIndex:]
 
 	i := 1
