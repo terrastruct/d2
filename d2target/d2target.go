@@ -197,6 +197,19 @@ type Shape struct {
 	NeutralAccentColor   string `json:"neutralAccentColor,omitempty"`
 }
 
+func (s Shape) GetFontColor() string {
+	if s.Type == ShapeClass || s.Type == ShapeSQLTable {
+		if !color.IsThemeColor(s.Color) {
+			return s.Color
+		}
+		return s.Stroke
+	}
+	if s.Color != color.Empty {
+		return s.Color
+	}
+	return color.N1
+}
+
 func (s Shape) CSSStyle() string {
 	out := ""
 
@@ -300,6 +313,13 @@ func BaseConnection() *Connection {
 			FontFamily: "DEFAULT",
 		},
 	}
+}
+
+func (c Connection) GetFontColor() string {
+	if c.Color != color.Empty {
+		return c.Color
+	}
+	return color.N1
 }
 
 func (c Connection) CSSStyle() string {

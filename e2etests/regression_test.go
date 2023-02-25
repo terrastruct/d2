@@ -40,6 +40,17 @@ group.nested: {
 			expErr: "no actors declared in sequence diagram",
 		},
 		{
+			name: "class_font_style_sequence",
+			script: `shape: sequence_diagram
+a: {
+  shape: class
+  style: {
+    font-color: red
+  }
+}
+`,
+		},
+		{
 			name: "nested_steps",
 			script: `a: {
   a: {

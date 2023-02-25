@@ -562,11 +562,6 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		} else if connection.Italic {
 			fontClass += "-italic"
 		}
-		fontColor := color.N1
-		if connection.Color != color.Empty {
-			fontColor = connection.Color
-		}
-
 		if connection.Fill != color.Empty {
 			rectEl := d2themes.NewThemableElement("rect")
 			rectEl.X, rectEl.Y = labelTL.X, labelTL.Y
@@ -578,7 +573,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		textEl := d2themes.NewThemableElement("text")
 		textEl.X = labelTL.X + float64(connection.LabelWidth)/2
 		textEl.Y = labelTL.Y + float64(connection.FontSize)
-		textEl.Fill = fontColor
+		textEl.Fill = connection.GetFontColor()
 		textEl.ClassName = fontClass
 		textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", connection.FontSize)
 		textEl.Content = RenderText(connection.Label, textEl.X, float64(connection.LabelHeight))
@@ -1112,10 +1107,6 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			fmt.Fprint(writer, mdEl.Render())
 			fmt.Fprint(writer, `</foreignObject></g>`)
 		} else {
-			fontColor := color.N1
-			if targetShape.Color != color.Empty {
-				fontColor = targetShape.Color
-			}
 			if targetShape.LabelFill != "" {
 				rectEl := d2themes.NewThemableElement("rect")
 				rectEl.X = labelTL.X
@@ -1129,7 +1120,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			textEl.X = labelTL.X + float64(targetShape.LabelWidth)/2
 			// text is vertically positioned at its baseline which is at labelTL+FontSize
 			textEl.Y = labelTL.Y + float64(targetShape.FontSize)
-			textEl.Fill = fontColor
+			textEl.Fill = targetShape.GetFontColor()
 			textEl.ClassName = fontClass
 			textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", targetShape.FontSize)
 			textEl.Content = RenderText(targetShape.Label, textEl.X, float64(targetShape.LabelHeight))
