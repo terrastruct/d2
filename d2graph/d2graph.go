@@ -338,6 +338,12 @@ func (l ContainerLevel) LabelSize() int {
 
 func (obj *Object) GetFill() string {
 	level := int(obj.Level())
+	shape := obj.Attributes.Shape.Value
+
+	if strings.EqualFold(shape, d2target.ShapeSQLTable) || strings.EqualFold(shape, d2target.ShapeClass) {
+		return color.N1
+	}
+
 	if obj.IsSequenceDiagramNote() {
 		return color.N7
 	} else if obj.IsSequenceDiagramGroup() {
@@ -365,8 +371,6 @@ func (obj *Object) GetFill() string {
 	if obj.IsSequenceDiagram() {
 		return color.N7
 	}
-
-	shape := obj.Attributes.Shape.Value
 
 	if shape == "" || strings.EqualFold(shape, d2target.ShapeSquare) || strings.EqualFold(shape, d2target.ShapeCircle) || strings.EqualFold(shape, d2target.ShapeOval) || strings.EqualFold(shape, d2target.ShapeRectangle) {
 		if level == 1 {
@@ -407,10 +411,6 @@ func (obj *Object) GetFill() string {
 	}
 	if strings.EqualFold(shape, d2target.ShapeQueue) || strings.EqualFold(shape, d2target.ShapeParallelogram) || strings.EqualFold(shape, d2target.ShapeHexagon) {
 		return color.N5
-	}
-
-	if strings.EqualFold(shape, d2target.ShapeSQLTable) || strings.EqualFold(shape, d2target.ShapeClass) {
-		return color.N1
 	}
 
 	return color.N7
