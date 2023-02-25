@@ -4,7 +4,11 @@
 
 #### Improvements 🧹
 
+- `near` key set to sequence diagram children get an appropriate error message. [#899](https://github.com/terrastruct/d2/issues/899)
+- `class` and `sql_table` shape respect `font-color` styling as header font color. [#899](https://github.com/terrastruct/d2/issues/899)
+
 #### Bugfixes ⛑️
 
 - Error reported when no actors are declared in sequence diagram. [#886](https://github.com/terrastruct/d2/pull/886)
 - Fixed img bundling on image shapes. [#889](https://github.com/terrastruct/d2/issues/889)
+- `class` shape as sequence diagram actors had wrong colors. [#899](https://github.com/terrastruct/d2/issues/899)
