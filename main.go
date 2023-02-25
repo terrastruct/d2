@@ -69,7 +69,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
-	darkThemeFlag, err := ms.Opts.Int64("D2_DARK_THEME", "dark-theme", "", -1, "the diagram dark theme ID. When left unset only the theme will be applied")
+	darkThemeFlag, err := ms.Opts.Int64("D2_DARK_THEME", "dark-theme", "", 200, "the diagram dark theme ID. Set to -1 to have no dark theme.")
 	if err != nil {
 		return err
 	}
@@ -163,7 +163,7 @@ func run(ctx context.Context, ms *xmain.State) (err error) {
 	ms.Log.Debug.Printf("using theme %s (ID: %d)", match.Name, *themeFlag)
 
 	if *darkThemeFlag == -1 {
-		darkThemeFlag = nil // TODO this is a temporary solution: https://github.com/terrastruct/util-go/issues/7
+		darkThemeFlag = nil
 	}
 	if darkThemeFlag != nil {
 		match = d2themescatalog.Find(*darkThemeFlag)
