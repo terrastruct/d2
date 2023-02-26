@@ -1,6 +1,7 @@
 #### Features 🚀
 
 - PDF exports are now supported. [#120](https://github.com/terrastruct/d2/issues/120)
+- Diagram background can be styled. [#910](https://github.com/terrastruct/d2/issues/910)
 
 #### Improvements 🧹
 

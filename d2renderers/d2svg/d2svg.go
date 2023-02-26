@@ -42,9 +42,6 @@ const (
 	MIN_ARROWHEAD_STROKE_WIDTH = 2
 
 	appendixIconRadius = 16
-
-	BG_COLOR = color.N7
-	FG_COLOR = color.N1
 )
 
 var multipleOffset = geo.NewVector(d2target.MULTIPLE_OFFSET, -d2target.MULTIPLE_OFFSET)
@@ -220,7 +217,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 	case d2target.DiamondArrowhead:
 		polygonEl := d2themes.NewThemableElement("polygon")
 		polygonEl.ClassName = "connection"
-		polygonEl.Fill = BG_COLOR
+		polygonEl.Fill = d2target.BG_COLOR
 		polygonEl.Stroke = connection.Stroke
 		polygonEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
@@ -263,7 +260,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 		circleEl := d2themes.NewThemableElement("circle")
 		circleEl.Cy = radius
 		circleEl.R = radius - strokeWidth
-		circleEl.Fill = BG_COLOR
+		circleEl.Fill = d2target.BG_COLOR
 		circleEl.Stroke = connection.Stroke
 		circleEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
 
@@ -284,7 +281,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 				offset, 0.,
 				offset, height,
 			)
-			modifierEl.Fill = BG_COLOR
+			modifierEl.Fill = d2target.BG_COLOR
 			modifierEl.Stroke = connection.Stroke
 			modifierEl.ClassName = "connection"
 			modifierEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
@@ -293,7 +290,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 			modifierEl.Cx = offset/2.0 + 2.0
 			modifierEl.Cy = height / 2.0
 			modifierEl.R = offset / 2.0
-			modifierEl.Fill = BG_COLOR
+			modifierEl.Fill = d2target.BG_COLOR
 			modifierEl.Stroke = connection.Stroke
 			modifierEl.ClassName = "connection"
 			modifierEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
@@ -322,7 +319,7 @@ func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) s
 		if !isTarget {
 			gEl.Transform = fmt.Sprintf("scale(-1) translate(-%f, -%f)", width, height)
 		}
-		gEl.Fill = BG_COLOR
+		gEl.Fill = d2target.BG_COLOR
 		gEl.Stroke = connection.Stroke
 		gEl.ClassName = "connection"
 		gEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, connection.StrokeWidth)
@@ -609,7 +606,7 @@ func renderArrowheadLabel(connection d2target.Connection, text string, position,
 	textEl := d2themes.NewThemableElement("text")
 	textEl.X = labelTL.X + width/2
 	textEl.Y = labelTL.Y + float64(connection.FontSize)
-	textEl.Fill = FG_COLOR
+	textEl.Fill = d2target.FG_COLOR
 	textEl.ClassName = "text-italic"
 	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", connection.FontSize)
 	textEl.Content = RenderText(text, textEl.X, height)
@@ -859,6 +856,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 	// TODO should standardize "" to rectangle
 	case d2target.ShapeRectangle, d2target.ShapeSequenceDiagram, "":
 		// TODO use Rx property of NewThemableElement instead
+		// DO
 		rx := ""
 		if targetShape.BorderRadius != 0 {
 			rx = fmt.Sprintf(` rx="%d"`, targetShape.BorderRadius)
@@ -1531,6 +1529,10 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	// generate style elements that will be appended to the SVG tag
 	upperBuf := &bytes.Buffer{}
 	embedFonts(upperBuf, buf.String(), diagram.FontFamily) // embedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
+	if sketchRunner != nil {
+		d2sketch.DefineFillPatterns(upperBuf)
+	}
+
 	themeStylesheet, err := themeCSS(themeID, darkThemeID)
 	if err != nil {
 		return nil, err
@@ -1547,17 +1549,57 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	if hasMarkdown {
 		fmt.Fprintf(upperBuf, `<style type="text/css">%s</style>`, mdCSS)
 	}
-	if sketchRunner != nil {
-		d2sketch.DefineFillPatterns(upperBuf)
-	}
 
-	// TODO background stuff. e.g. dotted, grid, colors
+	// This shift is for background el to envelop the diagram
+	left -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
+	top -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
+	w += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
+	h += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
 	backgroundEl := d2themes.NewThemableElement("rect")
+	// We don't want to change the document viewbox, only the background el
 	backgroundEl.X = float64(left)
 	backgroundEl.Y = float64(top)
 	backgroundEl.Width = float64(w)
 	backgroundEl.Height = float64(h)
-	backgroundEl.Fill = BG_COLOR
+	backgroundEl.Fill = diagram.Root.Fill
+	backgroundEl.Stroke = diagram.Root.Stroke
+	backgroundEl.Rx = float64(diagram.Root.BorderRadius)
+	if diagram.Root.StrokeDash != 0 {
+		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(diagram.Root.StrokeWidth), diagram.Root.StrokeDash)
+		backgroundEl.StrokeDashArray = fmt.Sprintf("%f, %f", dashSize, gapSize)
+	}
+	backgroundEl.Attributes = fmt.Sprintf(`stroke-width="%d"`, diagram.Root.StrokeWidth)
+
+	// This shift is for viewbox to envelop the background el
+	left -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
+	top -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
+	w += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
+	h += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
+
+	doubleBorderElStr := ""
+	if diagram.Root.DoubleBorder {
+		offset := d2target.INNER_BORDER_OFFSET
+
+		left -= int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.)) + offset
+		top -= int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.)) + offset
+		w += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.)*2.) + 2*offset
+		h += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.)*2.) + 2*offset
+
+		backgroundEl2 := backgroundEl.Copy()
+		// No need to double-paint
+		backgroundEl.Fill = "transparent"
+
+		backgroundEl2.X = float64(left)
+		backgroundEl2.Y = float64(top)
+		backgroundEl2.Width = float64(w)
+		backgroundEl2.Height = float64(h)
+		doubleBorderElStr = backgroundEl2.Render()
+
+		left -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
+		top -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
+		w += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
+		h += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
+	}
 
 	fitToScreenWrapper := fmt.Sprintf(`<svg %s preserveAspectRatio="xMidYMid meet" viewBox="0 0 %d %d">`,
 		`xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"`,
@@ -1565,11 +1607,12 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	)
 
 	// TODO minify
-	docRendered := fmt.Sprintf(`%s%s<svg id="d2-svg" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s</svg></svg>`,
+	docRendered := fmt.Sprintf(`%s%s<svg id="d2-svg" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s%s</svg></svg>`,
 		`<?xml version="1.0" encoding="utf-8"?>`,
 		fitToScreenWrapper,
 		w, h, left, top, w, h,
-		backgroundEl.Render(), // must be first
+		doubleBorderElStr,
+		backgroundEl.Render(),
 		upperBuf.String(),
 		buf.String(),
 	)
