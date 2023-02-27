@@ -575,16 +575,6 @@ func (obj *Object) EnsureChildIDVal(ids []string) *Object {
 	id := ids[0]
 	ids = ids[1:]
 
-	// Any IDA with layers.layer or whatever is an IR IDA.
-	// Such IDA's are resolved from our board root.
-	// See https://github.com/terrastruct/d2/pull/876
-	if _, ok := BoardKeywords[id]; ok {
-		if len(ids) == 0 {
-			return nil
-		}
-		return obj.EnsureChildIDVal(ids[1:])
-	}
-
 	var child *Object
 	for _, ch2 := range obj.ChildrenArray {
 		if ch2.IDVal == id {
