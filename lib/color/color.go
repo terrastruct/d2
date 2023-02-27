@@ -8,9 +8,10 @@ import (
 	"github.com/mazznoer/csscolorparser"
 )
 
-var themeColorRegex = regexp.MustCompile(`^N[1-7]|B[1-6]|AA[245]|AB[45]$`)
+var themeColorRegex = regexp.MustCompile(`^(N[1-7]|B[1-6]|AA[245]|AB[45])$`)
 
 func IsThemeColor(colorString string) bool {
+	println("\033[1;31m--- DEBUG:", themeColorRegex.Match([]byte(colorString)), colorString, "\033[m")
 	return themeColorRegex.Match([]byte(colorString))
 }
 
