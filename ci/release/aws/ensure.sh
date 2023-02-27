@@ -332,10 +332,25 @@ sudo groupadd docker || true
 sudo usermod -aG docker \$USER
 
 printf %s '$CI_DOCKER_TOKEN' | docker login -u terrastruct --password-stdin
-# For building images cross platform.
-sudo -E apt-get install -y qemu qemu-user-static
-if docker buildx ls | grep -q 'default \*'; then
-  docker buildx create --use
+
+# For building images cross platform from the arm64 instance.
+# We could use QEMU with:
+#  sudo -E apt-get install -y qemu qemu-user-static
+# But we don't as playwright dependencies do not install on QEMU on either arm64 or amd64.
+if [ "\$(uname -m)" = aarch64 ]; then
+  if [ "\$(stat -c '%a' ~/.ssh/id_ed25519 2>/dev/null)" != 600 ]; then
+    echo '$CI_TSTRUCT_ID_ED25519' >~/.ssh/id_ed25519
+    chmod 600 ~/.ssh/id_ed25519
+  fi
+  if ! docker context ls | grep -qF ci-d2-linux-amd64; then
+    docker context create ci-d2-linux-amd64 --docker "host=ssh://$CI_D2_LINUX_AMD64"
+  fi
+  if ! docker buildx ls | grep -qF 'd2 *'; then
+    docker buildx create --use --name d2 default
+  fi
+  if ! docker buildx inspect d2 | grep -qF ci-d2-linux-amd64; then
+    docker buildx create --append --name d2 ci-d2-linux-amd64
+  fi
 fi
 
 mkdir -p \$HOME/.local/bin
