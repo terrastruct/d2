@@ -29,11 +29,11 @@ const MIN_SHAPE_SIZE = 5
 
 type Graph struct {
 	Name string `json:"name"`
-	// IsContainerOnly indicates a board or scenario itself makes no modifications from its
-	// base. Container only boards do not have a render and are used purely for organizing
+	// IsFolderOnly indicates a board or scenario itself makes no modifications from its
+	// base. Folder only boards do not have a render and are used purely for organizing
 	// the board tree.
-	IsContainerOnly bool       `json:"isContainerOnly"`
-	AST             *d2ast.Map `json:"ast"`
+	IsFolderOnly bool       `json:"isFolderOnly"`
+	AST          *d2ast.Map `json:"ast"`
 
 	Root    *Object   `json:"root"`
 	Edges   []*Edge   `json:"edges"`

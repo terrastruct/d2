@@ -1,7 +1,7 @@
 {
   "graph": {
     "name": "",
-    "isContainerOnly": false,
+    "isFolderOnly": false,
     "ast": {
       "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,0:0:0-17:53:406",
       "nodes": [

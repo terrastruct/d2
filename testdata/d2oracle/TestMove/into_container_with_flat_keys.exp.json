@@ -1,7 +1,7 @@
 {
   "graph": {
     "name": "",
-    "isContainerOnly": false,
+    "isFolderOnly": false,
     "ast": {
       "range": "d2/testdata/d2oracle/TestMove/into_container_with_flat_keys.d2,0:0:0-7:0:95",
       "nodes": [

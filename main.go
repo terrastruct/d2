@@ -364,7 +364,7 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 		}
 	}
 
-	if !diagram.IsContainerOnly {
+	if !diagram.IsFolderOnly {
 		start := time.Now()
 		svg, err := _render(ctx, ms, plugin, sketch, pad, themeID, darkThemeID, boardOutputPath, bundle, forceAppendix, page, ruler, diagram)
 		if err != nil {
@@ -457,7 +457,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 		currBoardPath = append(boardPath, diagram.Name)
 	}
 
-	if !diagram.IsContainerOnly {
+	if !diagram.IsFolderOnly {
 		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
 			Pad:    int(pad),
 			Sketch: sketch,

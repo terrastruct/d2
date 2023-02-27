@@ -1,7 +1,7 @@
 {
   "graph": {
     "name": "",
-    "isContainerOnly": false,
+    "isFolderOnly": false,
     "ast": {
       "range": "d2/testdata/d2oracle/TestMove/unique_name_with_references.d2,0:0:0-6:0:30",
       "nodes": [

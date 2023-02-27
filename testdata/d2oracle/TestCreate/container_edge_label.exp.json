@@ -1,7 +1,7 @@
 {
   "graph": {
     "name": "",
-    "isContainerOnly": false,
+    "isFolderOnly": false,
     "ast": {
       "range": "d2/testdata/d2oracle/TestCreate/container_edge_label.d2,0:0:0-3:0:21",
       "nodes": [
