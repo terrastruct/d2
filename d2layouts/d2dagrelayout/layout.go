@@ -332,32 +332,43 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
-		// Downshift descendents and edges that have one endpoint connected to a descendant
 		q := []*d2graph.Object{obj}
+		// Downshift descendants and edges that have one endpoint connected to a descendant
 		for len(q) > 0 {
 			curr := q[0]
 			q = q[1:]
 
 			stepSize := subtract
 			// The object itself needs to move down the height it was just subtracted
-			// all descendents move half, to maintain vertical padding
+			// all descendants move half, to maintain vertical padding
 			if curr != obj {
 				stepSize /= 2.
 			}
 			curr.TopLeft.Y += stepSize
+			almostEqual := func(a, b float64) bool {
+				return b-1 <= a && a <= b+1
+			}
 			shouldMove := func(p *geo.Point) bool {
 				if curr != obj {
 					return true
 				}
-				// Edge should only move if it's not connected to the bottom side of the shrinking container
-				// Give some margin for error
-				return !(obj.TopLeft.Y+obj.Height-1 <= p.Y && obj.TopLeft.Y+obj.Height+1 >= p.Y && p.X != obj.TopLeft.X && p.X != (obj.TopLeft.X+obj.Width))
+				if isHorizontal {
+					// Only move horizontal edges if they are connected to the top side of the shrinking container
+					return almostEqual(p.Y, obj.TopLeft.Y-stepSize)
+				} else {
+					// Edge should only move if it's not connected to the bottom side of the shrinking container
+					return !almostEqual(p.Y, obj.TopLeft.Y+obj.Height)
+				}
 			}
 			for _, e := range g.Edges {
 				if _, ok := movedEdges[e]; ok {
 					continue
 				}
 				if e.Src == curr {
+					// Don't move src points on side of container
+					if almostEqual(e.Route[0].X, obj.TopLeft.X) || almostEqual(e.Route[0].X, obj.TopLeft.X+obj.Width) {
+						continue
+					}
 					if shouldMove(e.Route[0]) {
 						e.Route[0].Y += stepSize
 					}
@@ -368,9 +379,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					}
 				}
 			}
-			for _, c := range curr.ChildrenArray {
-				q = append(q, c)
-			}
+			q = append(q, curr.ChildrenArray...)
 		}
 	}
 
