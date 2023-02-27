@@ -16,6 +16,7 @@ func Export(ctx context.Context, g *d2graph.Graph, fontFamily *d2fonts.FontFamil
 	diagram := d2target.NewDiagram()
 	applyStyles(&diagram.Root, g.Root)
 	diagram.Name = g.Name
+	diagram.IsFolderOnly = g.IsFolderOnly
 	if fontFamily == nil {
 		fontFamily = go2.Pointer(d2fonts.SourceSansPro)
 	}

@@ -1,6 +1,7 @@
 {
   "graph": {
     "name": "",
+    "isFolderOnly": false,
     "ast": {
       "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,0:0:0-45:0:505",
       "nodes": [

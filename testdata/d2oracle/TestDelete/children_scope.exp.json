@@ -1,6 +1,7 @@
 {
   "graph": {
     "name": "",
+    "isFolderOnly": false,
     "ast": {
       "range": "d2/testdata/d2oracle/TestDelete/children_scope.d2,0:0:0-4:0:30",
       "nodes": [

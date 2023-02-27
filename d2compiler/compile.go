@@ -71,6 +71,11 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 	c.compileBoardsField(g, ir, "layers")
 	c.compileBoardsField(g, ir, "scenarios")
 	c.compileBoardsField(g, ir, "steps")
+	if d2ir.ParentMap(ir).CopyBase(nil).Equal(ir.CopyBase(nil)) {
+		if len(g.Layers) > 0 || len(g.Scenarios) > 0 || len(g.Steps) > 0 {
+			g.IsFolderOnly = true
+		}
+	}
 	return g
 }
 

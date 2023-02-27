@@ -1,6 +1,7 @@
 {
   "graph": {
     "name": "",
+    "isFolderOnly": false,
     "ast": {
       "range": "d2/testdata/d2oracle/TestDelete/order_8.d2,0:0:0-7:0:22",
       "nodes": [
