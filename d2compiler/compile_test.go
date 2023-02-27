@@ -2133,7 +2133,7 @@ layers: {
 			},
 		},
 		{
-			name: "boardContainer",
+			name: "isContainerOnly",
 			run: func(t *testing.T) {
 				g := assertCompile(t, `
 layers: {
@@ -2154,13 +2154,13 @@ layers: {
   }
 }
 `, "")
-				assert.True(t, g.BoardContainer)
+				assert.True(t, g.IsContainerOnly)
 				assert.Equal(t, 2, len(g.Layers))
 				assert.Equal(t, "one", g.Layers[0].Name)
 				assert.Equal(t, "two", g.Layers[1].Name)
 				assert.Equal(t, 2, len(g.Layers[1].Scenarios))
-				assert.False(t, g.Layers[1].Scenarios[0].BoardContainer)
-				assert.False(t, g.Layers[1].Scenarios[1].BoardContainer)
+				assert.False(t, g.Layers[1].Scenarios[0].IsContainerOnly)
+				assert.False(t, g.Layers[1].Scenarios[1].IsContainerOnly)
 			},
 		},
 		{

@@ -1,7 +1,7 @@
 {
   "graph": {
     "name": "",
-    "boardContainer": false,
+    "isContainerOnly": false,
     "ast": {
       "range": "d2/testdata/d2oracle/TestDelete/shape_class.d2,0:0:0-2:0:39",
       "nodes": [

@@ -1,7 +1,7 @@
 {
   "graph": {
     "name": "",
-    "boardContainer": false,
+    "isContainerOnly": false,
     "ast": {
       "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,0:0:0-8:0:113",
       "nodes": [

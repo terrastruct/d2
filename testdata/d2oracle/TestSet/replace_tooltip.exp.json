@@ -1,7 +1,7 @@
 {
   "graph": {
     "name": "",
-    "boardContainer": false,
+    "isContainerOnly": false,
     "ast": {
       "range": "d2/testdata/d2oracle/TestSet/replace_tooltip.d2,0:0:0-3:0:25",
       "nodes": [

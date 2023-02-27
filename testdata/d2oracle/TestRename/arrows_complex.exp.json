@@ -1,7 +1,7 @@
 {
   "graph": {
     "name": "",
-    "boardContainer": false,
+    "isContainerOnly": false,
     "ast": {
       "range": "d2/testdata/d2oracle/TestRename/arrows_complex.d2,0:0:0-1:0:29",
       "nodes": [

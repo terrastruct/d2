@@ -1,7 +1,7 @@
 {
   "graph": {
     "name": "",
-    "boardContainer": false,
+    "isContainerOnly": false,
     "ast": {
       "range": "d2/testdata/d2oracle/TestCreate/make_scope_multiline_spacing_2.d2,0:0:0-8:0:50",
       "nodes": [

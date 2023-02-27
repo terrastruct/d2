@@ -1,7 +1,7 @@
 {
   "graph": {
     "name": "",
-    "boardContainer": false,
+    "isContainerOnly": false,
     "ast": {
       "range": "d2/testdata/d2oracle/TestDelete/children_nested_conflicts.d2,0:0:0-5:0:16",
       "nodes": [
