@@ -263,12 +263,12 @@ build_docker() {
     return 0
   fi
 
-  sh_c lockfile_ssh "$CI_D2_LINUX_AMD64" .d2-build-lock
-  sh_c gitsync "$CI_D2_LINUX_AMD64" src/d2
+  sh_c lockfile_ssh "$CI_D2_LINUX_ARM64" .d2-build-lock
+  sh_c gitsync "$CI_D2_LINUX_ARM64" src/d2
   sh_c rsync --archive --human-readable \
     "$BUILD_DIR/d2-$VERSION"-linux-*.tar.gz \
-    "$CI_D2_LINUX_AMD64:src/d2/$BUILD_DIR/"
-  sh_c ssh "$CI_D2_LINUX_AMD64" \
+    "$CI_D2_LINUX_ARM64:src/d2/$BUILD_DIR/"
+  sh_c ssh "$CI_D2_LINUX_ARM64" \
     "D2_DOCKER_IMAGE=${D2_DOCKER_IMAGE-}" \
     "RELEASE=${RELEASE-}" \
     ./src/d2/ci/release/docker/build.sh \
