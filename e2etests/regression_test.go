@@ -582,6 +582,66 @@ b
 `,
 		},
 		loadFromFile(t, "unconnected"),
+		{
+			name: "straight_hierarchy_container_direction_right",
+			script: `
+direction: right
+a
+c
+b
+
+l1: {
+	b
+	a
+	c
+}
+
+b -> l1.b
+a -> l1.a
+c -> l1.c
+
+l2c1: {
+	a
+}
+l1.a -> l2c1.a
+
+l2c3: {
+	c
+}
+l1.c -> l2c3.c
+
+l2c2: {
+	b
+}
+l1.b -> l2c2.b
+
+l3c1: {
+	a
+	b
+}
+l2c1.a -> l3c1.a
+l2c2.b -> l3c1.b
+
+l3c2: {
+	c
+}
+l2c3.c -> l3c2.c
+
+l4: {
+	c1: {
+		a
+	}
+	c2: {
+		b
+	}
+	c3: {
+		c
+	}
+}
+l3c1.a -> l4.c1.a
+l3c1.b -> l4.c2.b
+l3c2.c -> l4.c3.c`,
+		},
 	}
 
 	runa(t, tcs)
