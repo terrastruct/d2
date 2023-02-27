@@ -189,7 +189,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			}
 		}
 		scopeObjIDA := d2ir.IDA(fr.Context.ScopeMap)
-		scopeObj, _ := obj.Graph.Root.HasChildIDVal(scopeObjIDA)
+		scopeObj := obj.Graph.Root.EnsureChildIDVal(scopeObjIDA)
 		obj.References = append(obj.References, d2graph.Reference{
 			Key:          fr.KeyPath,
 			KeyPathIndex: fr.KeyPathIndex(),
@@ -427,7 +427,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 	edge.Attributes.Label.MapKey = e.LastPrimaryKey()
 	for _, er := range e.References {
 		scopeObjIDA := d2ir.IDA(er.Context.ScopeMap)
-		scopeObj, _ := edge.Src.Graph.Root.HasChildIDVal(scopeObjIDA)
+		scopeObj := edge.Src.Graph.Root.EnsureChildIDVal(scopeObjIDA)
 		edge.References = append(edge.References, d2graph.EdgeReference{
 			Edge:            er.Context.Edge,
 			MapKey:          er.Context.Key,

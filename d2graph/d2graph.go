@@ -560,15 +560,15 @@ func (obj *Object) HasChild(ids []string) (*Object, bool) {
 	return child, true
 }
 
-// Keep in sync with HasChild.
-func (obj *Object) HasChildIDVal(ids []string) (*Object, bool) {
+// Keep in sync with EnsureChild.
+func (obj *Object) EnsureChildIDVal(ids []string) *Object {
 	if len(ids) == 0 {
-		return obj, true
+		return obj
 	}
 	if len(ids) == 1 && ids[0] != "style" {
 		_, ok := ReservedKeywords[ids[0]]
 		if ok {
-			return obj, true
+			return obj
 		}
 	}
 
@@ -583,13 +583,13 @@ func (obj *Object) HasChildIDVal(ids []string) (*Object, bool) {
 		}
 	}
 	if child == nil {
-		return nil, false
+		child = obj.newObject(id)
 	}
 
 	if len(ids) >= 1 {
-		return child.HasChildIDVal(ids)
+		return child.EnsureChildIDVal(ids)
 	}
-	return child, true
+	return child
 }
 
 func (obj *Object) HasEdge(mk *d2ast.Key) (*Edge, bool) {

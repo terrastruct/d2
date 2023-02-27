@@ -1027,11 +1027,12 @@ func parentPrimaryKey(n Node) *d2ast.Key {
 	return nil
 }
 
+// IDA returns the absolute path to n from the nearest board root.
 func IDA(n Node) (ida []string) {
 	for {
 		f, ok := n.(*Field)
 		if ok {
-			if f.Root() {
+			if f.Root() || NodeBoardKind(f) != "" {
 				reverseIDA(ida)
 				return ida
 			}

@@ -17,3 +17,4 @@
 - Error reported when no actors are declared in sequence diagram. [#886](https://github.com/terrastruct/d2/pull/886)
 - Fixed img bundling on image shapes. [#889](https://github.com/terrastruct/d2/issues/889)
 - `class` shape as sequence diagram actors had wrong colors. [#899](https://github.com/terrastruct/d2/issues/899)
+- Fix regression in last release where some hex codes were not working. [#922](https://github.com/terrastruct/d2/pull/922)
