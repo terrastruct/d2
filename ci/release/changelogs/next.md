@@ -11,6 +11,7 @@
 - `class` and `sql_table` shape respect `font-color` styling as header font color. [#899](https://github.com/terrastruct/d2/issues/899)
 - SVG fits to screen by default in both watch mode and as a standalone SVG (this time with just CSS, no JS). [#725](https://github.com/terrastruct/d2/issues/725)
 - Only chromium is installed when rendering png diagrams instead of also installing webkit and firefox. [#835](https://github.com/terrastruct/d2/issues/835)
+- Multiboard output is now self-contained and less confusing. See [#923](https://github.com/terrastruct/d2/pull/923)
 
 #### Bugfixes ⛑️
 
