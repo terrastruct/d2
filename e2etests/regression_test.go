@@ -7,6 +7,14 @@ import (
 func testRegression(t *testing.T) {
 	tcs := []testCase{
 		{
+			// https://github.com/terrastruct/d2/issues/919
+			name: "hex-fill",
+			script: `x: {
+  style.fill: "#0D32B2"
+}
+`,
+		},
+		{
 			name: "dagre_special_ids",
 			script: `
 ninety\nnine
