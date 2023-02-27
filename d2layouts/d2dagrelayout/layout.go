@@ -367,7 +367,10 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				if e.Src == curr {
 					// Don't move src points on side of container
 					if almostEqual(e.Route[0].X, obj.TopLeft.X) || almostEqual(e.Route[0].X, obj.TopLeft.X+obj.Width) {
-						continue
+						// Unless the dst is also on a container
+						if e.Dst.LabelHeight == nil || len(e.Dst.ChildrenArray) <= 0 {
+							continue
+						}
 					}
 					if shouldMove(e.Route[0]) {
 						e.Route[0].Y += stepSize
