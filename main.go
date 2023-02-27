@@ -440,7 +440,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 		return svg, err
 	}
 
-	err = pdf.AddPDFPage(pngImg, currBoardPath)
+	err = pdf.AddPDFPage(pngImg, currBoardPath, diagram.Root.Fill)
 	if err != nil {
 		return svg, err
 	}
