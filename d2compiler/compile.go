@@ -678,6 +678,10 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 					c.errorf(obj.Attributes.NearKey, "near keys cannot be set to an descendant")
 					continue
 				}
+				if nearObj.OuterSequenceDiagram() != nil {
+					c.errorf(obj.Attributes.NearKey, "near keys cannot be set to an object within sequence diagrams")
+					continue
+				}
 			} else if isConst {
 				is := false
 				for _, e := range g.Edges {

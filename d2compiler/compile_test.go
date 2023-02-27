@@ -1775,6 +1775,17 @@ dst.id <-> src.dst_id
 			},
 		},
 		{
+			name: "near_sequence",
+
+			text: `x: {
+  shape: sequence_diagram
+  a
+}
+b.near: x.a
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_sequence.d2:5:9: near keys cannot be set to an object within sequence diagrams`,
+		},
+		{
 			name: "sequence-timestamp",
 
 			text: `shape: sequence_diagram

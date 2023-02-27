@@ -92,6 +92,14 @@ x -> y
 x -> y
 `,
 		},
+		{
+			name: "tooltip_fill",
+			script: `x: { tooltip: Total abstinence is easier than perfect moderation }
+y: { tooltip: Gee, I feel kind of LIGHT in the head now,\nknowing I can't make my satellite dish PAYMENTS! }
+x -> y
+style.fill: PaleVioletRed
+`,
+		},
 	}
 	runa(t, tcs)
 }

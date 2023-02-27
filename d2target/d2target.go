@@ -26,6 +26,9 @@ const (
 	MULTIPLE_OFFSET  = 10
 
 	INNER_BORDER_OFFSET = 5
+
+	BG_COLOR = color.N7
+	FG_COLOR = color.N1
 )
 
 var BorderOffset = geo.NewVector(5, 5)
@@ -37,6 +40,9 @@ type Diagram struct {
 
 	Shapes      []Shape      `json:"shapes"`
 	Connections []Connection `json:"connections"`
+
+	Root Shape `json:"root"`
+	// Maybe Icon can be used as a watermark in the root shape
 
 	Layers    []*Diagram `json:"layers,omitempty"`
 	Scenarios []*Diagram `json:"scenarios,omitempty"`
@@ -67,10 +73,10 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 	y2 := int(math.MinInt32)
 
 	for _, targetShape := range diagram.Shapes {
-		x1 = go2.Min(x1, targetShape.Pos.X-targetShape.StrokeWidth)
-		y1 = go2.Min(y1, targetShape.Pos.Y-targetShape.StrokeWidth)
-		x2 = go2.Max(x2, targetShape.Pos.X+targetShape.Width+targetShape.StrokeWidth)
-		y2 = go2.Max(y2, targetShape.Pos.Y+targetShape.Height+targetShape.StrokeWidth)
+		x1 = go2.Min(x1, targetShape.Pos.X-int(math.Ceil(float64(targetShape.StrokeWidth)/2.)))
+		y1 = go2.Min(y1, targetShape.Pos.Y-int(math.Ceil(float64(targetShape.StrokeWidth)/2.)))
+		x2 = go2.Max(x2, targetShape.Pos.X+targetShape.Width+int(math.Ceil(float64(targetShape.StrokeWidth)/2.)))
+		y2 = go2.Max(y2, targetShape.Pos.Y+targetShape.Height+int(math.Ceil(float64(targetShape.StrokeWidth)/2.)))
 
 		if targetShape.Tooltip != "" || targetShape.Link != "" {
 			// 16 is the icon radius
@@ -128,10 +134,10 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 
 	for _, connection := range diagram.Connections {
 		for _, point := range connection.Route {
-			x1 = go2.Min(x1, int(math.Floor(point.X)))
-			y1 = go2.Min(y1, int(math.Floor(point.Y)))
-			x2 = go2.Max(x2, int(math.Ceil(point.X)))
-			y2 = go2.Max(y2, int(math.Ceil(point.Y)))
+			x1 = go2.Min(x1, int(math.Floor(point.X))-int(math.Ceil(float64(connection.StrokeWidth)/2.)))
+			y1 = go2.Min(y1, int(math.Floor(point.Y))-int(math.Ceil(float64(connection.StrokeWidth)/2.)))
+			x2 = go2.Max(x2, int(math.Ceil(point.X))+int(math.Ceil(float64(connection.StrokeWidth)/2.)))
+			y2 = go2.Max(y2, int(math.Ceil(point.Y))+int(math.Ceil(float64(connection.StrokeWidth)/2.)))
 		}
 
 		if connection.Label != "" {
@@ -147,7 +153,11 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 }
 
 func NewDiagram() *Diagram {
-	return &Diagram{}
+	return &Diagram{
+		Root: Shape{
+			Fill: BG_COLOR,
+		},
+	}
 }
 
 type Shape struct {
@@ -197,6 +207,20 @@ type Shape struct {
 	NeutralAccentColor   string `json:"neutralAccentColor,omitempty"`
 }
 
+func (s Shape) GetFontColor() string {
+	if s.Type == ShapeClass || s.Type == ShapeSQLTable {
+		if !color.IsThemeColor(s.Color) {
+			return s.Color
+		}
+		return s.Stroke
+	}
+	if s.Color != color.Empty {
+		return s.Color
+	}
+	return color.N1
+}
+
+// TODO remove this function, just set fields on themeable
 func (s Shape) CSSStyle() string {
 	out := ""
 
@@ -300,6 +324,13 @@ func BaseConnection() *Connection {
 			FontFamily: "DEFAULT",
 		},
 	}
+}
+
+func (c Connection) GetFontColor() string {
+	if c.Color != color.Empty {
+		return c.Color
+	}
+	return color.N1
 }
 
 func (c Connection) CSSStyle() string {

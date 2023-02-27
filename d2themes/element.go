@@ -37,6 +37,7 @@ type ThemableElement struct {
 
 	Fill            string
 	Stroke          string
+	StrokeDashArray string
 	BackgroundColor string
 	Color           string
 
@@ -82,7 +83,13 @@ func NewThemableElement(tag string) *ThemableElement {
 		"",
 		"",
 		"",
+		"",
 	}
+}
+
+func (el *ThemableElement) Copy() *ThemableElement {
+	tmp := *el
+	return &tmp
 }
 
 func (el *ThemableElement) SetTranslate(x, y float64) {
@@ -138,6 +145,9 @@ func (el *ThemableElement) Render() string {
 	}
 	if el.Cy != math.MaxFloat64 {
 		out += fmt.Sprintf(` cy="%f"`, el.Cy)
+	}
+	if el.StrokeDashArray != "" {
+		out += fmt.Sprintf(` stroke-dasharray="%s"`, el.StrokeDashArray)
 	}
 
 	if len(el.D) > 0 {
