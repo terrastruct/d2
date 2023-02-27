@@ -560,20 +560,30 @@ func (obj *Object) HasChild(ids []string) (*Object, bool) {
 	return child, true
 }
 
-// Keep in sync with HasChild.
-func (obj *Object) HasChildIDVal(ids []string) (*Object, bool) {
+// Keep in sync with EnsureChild.
+func (obj *Object) EnsureChildIDVal(ids []string) *Object {
 	if len(ids) == 0 {
-		return obj, true
+		return obj
 	}
 	if len(ids) == 1 && ids[0] != "style" {
 		_, ok := ReservedKeywords[ids[0]]
 		if ok {
-			return obj, true
+			return obj
 		}
 	}
 
 	id := ids[0]
 	ids = ids[1:]
+
+	// Any IDA with layers.layer or whatever is an IR IDA.
+	// Such IDA's are resolved from our board root.
+	// See https://github.com/terrastruct/d2/pull/876
+	if _, ok := BoardKeywords[id]; ok {
+		if len(ids) == 0 {
+			return nil
+		}
+		return obj.EnsureChildIDVal(ids[1:])
+	}
 
 	var child *Object
 	for _, ch2 := range obj.ChildrenArray {
@@ -583,13 +593,13 @@ func (obj *Object) HasChildIDVal(ids []string) (*Object, bool) {
 		}
 	}
 	if child == nil {
-		return nil, false
+		child = obj.newObject(id)
 	}
 
 	if len(ids) >= 1 {
-		return child.HasChildIDVal(ids)
+		return child.EnsureChildIDVal(ids)
 	}
-	return child, true
+	return child
 }
 
 func (obj *Object) HasEdge(mk *d2ast.Key) (*Edge, bool) {
