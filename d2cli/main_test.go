@@ -1,4 +1,4 @@
-package main_test
+package d2cli_test
 
 import "testing"
 
