@@ -1735,7 +1735,7 @@ x.y -> a.b: {
 
 			text: `SVP1.shape: oval
 SVP1.style.3d: true`,
-			expErr: `d2/testdata/d2compiler/TestCompile/3d_oval.d2:2:1: key "3d" can only be applied to squares and rectangles`,
+			expErr: `d2/testdata/d2compiler/TestCompile/3d_oval.d2:2:1: key "3d" can only be applied to squares, rectangles, and hexagons`,
 		}, {
 			name: "edge_column_index",
 			text: `src: {

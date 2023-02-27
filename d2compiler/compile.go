@@ -615,8 +615,8 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 		switch f.Name {
 		case "style":
 			if obj.Attributes.Style.ThreeDee != nil {
-				if !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeRectangle) {
-					c.errorf(obj.Attributes.Style.ThreeDee.MapKey, `key "3d" can only be applied to squares and rectangles`)
+				if !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeRectangle) && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeHexagon) {
+					c.errorf(obj.Attributes.Style.ThreeDee.MapKey, `key "3d" can only be applied to squares, rectangles, and hexagons`)
 				}
 			}
 			if obj.Attributes.Style.DoubleBorder != nil {

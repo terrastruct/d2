@@ -723,6 +723,129 @@ func render3dRect(targetShape d2target.Shape) string {
 			fmt.Sprintf("%d,%d", v.X+targetShape.Pos.X, v.Y+targetShape.Pos.Y),
 		)
 	}
+	darkerColor, err := color.Darken(targetShape.Fill)
+	if err != nil {
+		darkerColor = targetShape.Fill
+	}
+	sideShape := d2themes.NewThemableElement("polygon")
+	sideShape.Fill = darkerColor
+	sideShape.Points = strings.Join(sidePoints, " ")
+	sideShape.SetMaskUrl(maskID)
+	sideShape.Style = targetShape.CSSStyle()
+	renderedSides := sideShape.Render()
+
+	return borderMask + mainShapeRendered + renderedSides + renderedBorder
+}
+
+func render3dHexagon(targetShape d2target.Shape) string {
+	moveTo := func(p d2target.Point) string {
+		return fmt.Sprintf("M%d,%d", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
+	}
+	lineTo := func(p d2target.Point) string {
+		return fmt.Sprintf("L%d,%d", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
+	}
+	scale := func(n int, f float64) int {
+		return int(float64(n) * f)
+	}
+	halfYFactor := 43.6 / 87.3
+
+	// draw border all in one path to prevent overlapping sections
+	var borderSegments []string
+	// start from the top-left
+	borderSegments = append(borderSegments,
+		moveTo(d2target.Point{X: scale(targetShape.Width, 0.25), Y: 0}),
+	)
+	Y_OFFSET := d2target.THREE_DEE_OFFSET / 2
+	// The following iterates through the sidepoints in clockwise order from top-left, then the main points in clockwise order from bottom-right
+	for _, v := range []d2target.Point{
+		{X: scale(targetShape.Width, 0.25) + d2target.THREE_DEE_OFFSET, Y: -Y_OFFSET},
+		{X: scale(targetShape.Width, 0.75) + d2target.THREE_DEE_OFFSET, Y: -Y_OFFSET},
+		{X: targetShape.Width + d2target.THREE_DEE_OFFSET, Y: scale(targetShape.Height, halfYFactor) - Y_OFFSET},
+		{X: scale(targetShape.Width, 0.75) + d2target.THREE_DEE_OFFSET, Y: targetShape.Height - Y_OFFSET},
+		{X: scale(targetShape.Width, 0.75), Y: targetShape.Height},
+		{X: scale(targetShape.Width, 0.25), Y: targetShape.Height},
+		{X: 0, Y: scale(targetShape.Height, halfYFactor)},
+		{X: scale(targetShape.Width, 0.25), Y: 0},
+		{X: scale(targetShape.Width, 0.75), Y: 0},
+		{X: targetShape.Width, Y: scale(targetShape.Height, halfYFactor)},
+		{X: scale(targetShape.Width, 0.75), Y: targetShape.Height},
+	} {
+		borderSegments = append(borderSegments, lineTo(v))
+	}
+	for _, v := range []d2target.Point{
+		{X: scale(targetShape.Width, 0.75), Y: 0},
+		{X: targetShape.Width, Y: scale(targetShape.Height, halfYFactor)},
+		{X: scale(targetShape.Width, 0.75), Y: targetShape.Height},
+	} {
+		borderSegments = append(borderSegments, moveTo(v))
+		borderSegments = append(borderSegments, lineTo(
+			d2target.Point{X: v.X + d2target.THREE_DEE_OFFSET, Y: v.Y - Y_OFFSET},
+		))
+	}
+	border := d2themes.NewThemableElement("path")
+	border.D = strings.Join(borderSegments, " ")
+	border.Fill = color.None
+	_, borderStroke := d2themes.ShapeTheme(targetShape)
+	border.Stroke = borderStroke
+	borderStyle := targetShape.CSSStyle()
+	border.Style = borderStyle
+	renderedBorder := border.Render()
+
+	var mainPoints []string
+	for _, v := range []d2target.Point{
+		{X: scale(targetShape.Width, 0.25), Y: 0},
+		{X: scale(targetShape.Width, 0.75), Y: 0},
+		{X: targetShape.Width, Y: scale(targetShape.Height, halfYFactor)},
+		{X: scale(targetShape.Width, 0.75), Y: targetShape.Height},
+		{X: scale(targetShape.Width, 0.25), Y: targetShape.Height},
+		{X: 0, Y: scale(targetShape.Height, halfYFactor)},
+	} {
+		mainPoints = append(mainPoints,
+			fmt.Sprintf("%d,%d", v.X+targetShape.Pos.X, v.Y+targetShape.Pos.Y),
+		)
+	}
+
+	mainPointsPoly := strings.Join(mainPoints, " ")
+	// create mask from border stroke, to cut away from the shape fills
+	maskID := fmt.Sprintf("border-mask-%v", svg.EscapeText(targetShape.ID))
+	borderMask := strings.Join([]string{
+		fmt.Sprintf(`<defs><mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
+			maskID, targetShape.Pos.X, targetShape.Pos.Y-d2target.THREE_DEE_OFFSET, targetShape.Width+d2target.THREE_DEE_OFFSET, targetShape.Height+d2target.THREE_DEE_OFFSET,
+		),
+		fmt.Sprintf(`<rect x="%d" y="%d" width="%d" height="%d" fill="white"></rect>`,
+			targetShape.Pos.X, targetShape.Pos.Y-d2target.THREE_DEE_OFFSET, targetShape.Width+d2target.THREE_DEE_OFFSET, targetShape.Height+d2target.THREE_DEE_OFFSET,
+		),
+		fmt.Sprintf(`<path d="%s" style="%s;stroke:#000;fill:none;opacity:1;"/></mask></defs>`,
+			strings.Join(borderSegments, ""), borderStyle),
+	}, "\n")
+	// render the main hexagon without stroke and the border mask
+	mainShape := d2themes.NewThemableElement("polygon")
+	mainShape.X = float64(targetShape.Pos.X)
+	mainShape.Y = float64(targetShape.Pos.Y)
+	mainShape.Points = mainPointsPoly
+	mainShape.SetMaskUrl(maskID)
+	mainShapeFill, _ := d2themes.ShapeTheme(targetShape)
+	mainShape.Fill = mainShapeFill
+	mainShape.Stroke = color.None
+	mainShape.Style = targetShape.CSSStyle()
+	mainShapeRendered := mainShape.Render()
+
+	// render the side shapes in the darkened color without stroke and the border mask
+	var sidePoints []string
+	for _, v := range []d2target.Point{
+		{X: scale(targetShape.Width, 0.25) + d2target.THREE_DEE_OFFSET, Y: -Y_OFFSET},
+		{X: scale(targetShape.Width, 0.75) + d2target.THREE_DEE_OFFSET, Y: -Y_OFFSET},
+		{X: targetShape.Width + d2target.THREE_DEE_OFFSET, Y: scale(targetShape.Height, halfYFactor) - Y_OFFSET},
+		{X: scale(targetShape.Width, 0.75) + d2target.THREE_DEE_OFFSET, Y: targetShape.Height - Y_OFFSET},
+		{X: scale(targetShape.Width, 0.75), Y: targetShape.Height},
+		{X: targetShape.Width, Y: scale(targetShape.Height, halfYFactor)},
+		{X: scale(targetShape.Width, 0.75), Y: 0},
+		{X: scale(targetShape.Width, 0.25), Y: 0},
+	} {
+		sidePoints = append(sidePoints,
+			fmt.Sprintf("%d,%d", v.X+targetShape.Pos.X, v.Y+targetShape.Pos.Y),
+		)
+	}
 	// TODO make darker color part of the theme? or just keep this bypass
 	darkerColor, err := color.Darken(targetShape.Fill)
 	if err != nil {
@@ -946,6 +1069,39 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 					el.Stroke = stroke
 					el.Style = style
 					el.Attributes = rx
+					fmt.Fprint(writer, el.Render())
+				}
+			}
+		}
+	case d2target.ShapeHexagon:
+		if targetShape.ThreeDee {
+			fmt.Fprint(writer, render3dHexagon(targetShape))
+		} else {
+			if targetShape.Multiple {
+				multiplePathData := shape.NewShape(shapeType, geo.NewBox(multipleTL, width, height)).GetSVGPathData()
+				el := d2themes.NewThemableElement("path")
+				el.Fill = fill
+				el.Stroke = stroke
+				el.Style = style
+				for _, pathData := range multiplePathData {
+					el.D = pathData
+					fmt.Fprint(writer, el.Render())
+				}
+			}
+
+			if sketchRunner != nil {
+				out, err := d2sketch.Paths(sketchRunner, targetShape, s.GetSVGPathData())
+				if err != nil {
+					return "", err
+				}
+				fmt.Fprint(writer, out)
+			} else {
+				el := d2themes.NewThemableElement("path")
+				el.Fill = fill
+				el.Stroke = stroke
+				el.Style = style
+				for _, pathData := range s.GetSVGPathData() {
+					el.D = pathData
 					fmt.Fprint(writer, el.Render())
 				}
 			}
