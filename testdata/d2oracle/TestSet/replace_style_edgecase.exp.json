@@ -1,6 +1,7 @@
 {
   "graph": {
     "name": "",
+    "isFolderOnly": false,
     "ast": {
       "range": "d2/testdata/d2oracle/TestSet/replace_style_edgecase.d2,0:0:0-2:0:52",
       "nodes": [

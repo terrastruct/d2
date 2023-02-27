@@ -306,33 +306,76 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 }
 
 func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, sketch bool, pad int64, themeID int64, darkThemeID *int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
-	outputPath = layerOutputPath(outputPath, diagram)
+	if diagram.Name != "" {
+		ext := filepath.Ext(outputPath)
+		outputPath = strings.TrimSuffix(outputPath, ext)
+		outputPath = filepath.Join(outputPath, diagram.Name)
+		outputPath += ext
+	}
+
+	boardOutputPath := outputPath
+	if len(diagram.Layers) > 0 || len(diagram.Scenarios) > 0 || len(diagram.Steps) > 0 {
+		// Boards with subboards must be self-contained folders.
+		ext := filepath.Ext(boardOutputPath)
+		boardOutputPath = strings.TrimSuffix(boardOutputPath, ext)
+		os.RemoveAll(boardOutputPath)
+		boardOutputPath = filepath.Join(boardOutputPath, "index")
+		boardOutputPath += ext
+	}
+
+	layersOutputPath := outputPath
+	if len(diagram.Scenarios) > 0 || len(diagram.Steps) > 0 {
+		ext := filepath.Ext(layersOutputPath)
+		layersOutputPath = strings.TrimSuffix(layersOutputPath, ext)
+		layersOutputPath = filepath.Join(layersOutputPath, "layers")
+		layersOutputPath += ext
+	}
+	scenariosOutputPath := outputPath
+	if len(diagram.Layers) > 0 || len(diagram.Steps) > 0 {
+		ext := filepath.Ext(scenariosOutputPath)
+		scenariosOutputPath = strings.TrimSuffix(scenariosOutputPath, ext)
+		scenariosOutputPath = filepath.Join(scenariosOutputPath, "scenarios")
+		scenariosOutputPath += ext
+	}
+	stepsOutputPath := outputPath
+	if len(diagram.Layers) > 0 || len(diagram.Scenarios) > 0 {
+		ext := filepath.Ext(stepsOutputPath)
+		stepsOutputPath = strings.TrimSuffix(stepsOutputPath, ext)
+		stepsOutputPath = filepath.Join(stepsOutputPath, "steps")
+		stepsOutputPath += ext
+	}
+
 	for _, dl := range diagram.Layers {
-		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
+		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, layersOutputPath, bundle, forceAppendix, page, ruler, dl)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
+		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, scenariosOutputPath, bundle, forceAppendix, page, ruler, dl)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, page, ruler, dl)
+		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, stepsOutputPath, bundle, forceAppendix, page, ruler, dl)
 		if err != nil {
 			return nil, err
 		}
 	}
-	start := time.Now()
-	svg, err := _render(ctx, ms, plugin, sketch, pad, themeID, darkThemeID, outputPath, bundle, forceAppendix, page, ruler, diagram)
-	if err != nil {
-		return svg, err
+
+	if !diagram.IsFolderOnly {
+		start := time.Now()
+		svg, err := _render(ctx, ms, plugin, sketch, pad, themeID, darkThemeID, boardOutputPath, bundle, forceAppendix, page, ruler, diagram)
+		if err != nil {
+			return svg, err
+		}
+		dur := compileDur + time.Since(start)
+		ms.Log.Success.Printf("successfully compiled %s to %s in %s", inputPath, boardOutputPath, dur)
+		return svg, nil
 	}
-	dur := compileDur + time.Since(start)
-	ms.Log.Success.Printf("successfully compiled %s to %s in %s", inputPath, outputPath, dur)
-	return svg, nil
+
+	return nil, nil
 }
 
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, themeID int64, darkThemeID *int64, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
@@ -414,35 +457,37 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 		currBoardPath = append(boardPath, diagram.Name)
 	}
 
-	svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad:    int(pad),
-		Sketch: sketch,
-	})
-	if err != nil {
-		return nil, err
-	}
+	if !diagram.IsFolderOnly {
+		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
+			Pad:    int(pad),
+			Sketch: sketch,
+		})
+		if err != nil {
+			return nil, err
+		}
 
-	svg, err = plugin.PostProcess(ctx, svg)
-	if err != nil {
-		return svg, err
-	}
+		svg, err = plugin.PostProcess(ctx, svg)
+		if err != nil {
+			return svg, err
+		}
 
-	svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
-	svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
-	bundleErr = multierr.Combine(bundleErr, bundleErr2)
-	if bundleErr != nil {
-		return svg, bundleErr
-	}
-	svg = appendix.Append(diagram, ruler, svg)
+		svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
+		svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
+		bundleErr = multierr.Combine(bundleErr, bundleErr2)
+		if bundleErr != nil {
+			return svg, bundleErr
+		}
+		svg = appendix.Append(diagram, ruler, svg)
 
-	pngImg, err := png.ConvertSVG(ms, page, svg)
-	if err != nil {
-		return svg, err
-	}
+		pngImg, err := png.ConvertSVG(ms, page, svg)
+		if err != nil {
+			return svg, err
+		}
 
-	err = pdf.AddPDFPage(pngImg, currBoardPath, diagram.Root.Fill)
-	if err != nil {
-		return svg, err
+		err = pdf.AddPDFPage(pngImg, currBoardPath, diagram.Root.Fill)
+		if err != nil {
+			return svg, err
+		}
 	}
 
 	for _, dl := range diagram.Layers {
@@ -472,17 +517,6 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 	}
 
 	return svg, nil
-}
-
-func layerOutputPath(outputPath string, d *d2target.Diagram) string {
-	if d.Name == "" {
-		return outputPath
-	}
-	ext := filepath.Ext(outputPath)
-	outputPath = strings.TrimSuffix(outputPath, ext)
-	outputPath += "/" + d.Name
-	outputPath += ext
-	return outputPath
 }
 
 // newExt must include leading .
