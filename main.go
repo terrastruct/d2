@@ -457,35 +457,37 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 		currBoardPath = append(boardPath, diagram.Name)
 	}
 
-	svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad:    int(pad),
-		Sketch: sketch,
-	})
-	if err != nil {
-		return nil, err
-	}
+	if !diagram.BoardContainer {
+		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
+			Pad:    int(pad),
+			Sketch: sketch,
+		})
+		if err != nil {
+			return nil, err
+		}
 
-	svg, err = plugin.PostProcess(ctx, svg)
-	if err != nil {
-		return svg, err
-	}
+		svg, err = plugin.PostProcess(ctx, svg)
+		if err != nil {
+			return svg, err
+		}
 
-	svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
-	svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
-	bundleErr = multierr.Combine(bundleErr, bundleErr2)
-	if bundleErr != nil {
-		return svg, bundleErr
-	}
-	svg = appendix.Append(diagram, ruler, svg)
+		svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
+		svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
+		bundleErr = multierr.Combine(bundleErr, bundleErr2)
+		if bundleErr != nil {
+			return svg, bundleErr
+		}
+		svg = appendix.Append(diagram, ruler, svg)
 
-	pngImg, err := png.ConvertSVG(ms, page, svg)
-	if err != nil {
-		return svg, err
-	}
+		pngImg, err := png.ConvertSVG(ms, page, svg)
+		if err != nil {
+			return svg, err
+		}
 
-	err = pdf.AddPDFPage(pngImg, currBoardPath)
-	if err != nil {
-		return svg, err
+		err = pdf.AddPDFPage(pngImg, currBoardPath)
+		if err != nil {
+			return svg, err
+		}
 	}
 
 	for _, dl := range diagram.Layers {
