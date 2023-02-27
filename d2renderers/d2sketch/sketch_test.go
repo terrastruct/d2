@@ -14,6 +14,7 @@ import (
 	tassert "github.com/stretchr/testify/assert"
 
 	"oss.terrastruct.com/util-go/assert"
+	"oss.terrastruct.com/util-go/diff"
 	"oss.terrastruct.com/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
@@ -951,6 +952,42 @@ users: {
 }
 `,
 		},
+		{
+			name: "root-fill",
+			script: `style.fill: honeydew
+style.stroke: LightSteelBlue
+style.double-border: true
+
+title: Flow-I (Warehousing, Installation) {
+  near: top-center
+  shape: text
+  style: {
+    font-size: 24
+    bold: false
+    underline: false
+  }
+}
+OEM Factory
+OEM Factory -> OEM Warehouse
+OEM Factory -> Distributor Warehouse
+OEM Factory -> company Warehouse
+
+company Warehouse.Master -> company Warehouse.Regional-1
+company Warehouse.Master -> company Warehouse.Regional-2
+company Warehouse.Master -> company Warehouse.Regional-N
+company Warehouse.Regional-1 -> company Warehouse.Regional-2
+company Warehouse.Regional-2 -> company Warehouse.Regional-N
+company Warehouse.Regional-N -> company Warehouse.Regional-1
+
+company Warehouse.explanation: |md
+  ### company Warehouse
+  - Asset Tagging
+  - Inventory
+  - Staging
+  - Dispatch to Site
+|
+`,
+		},
 	}
 	runa(t, tcs)
 }
@@ -1013,4 +1050,7 @@ func run(t *testing.T, tc testCase) {
 	var xmlParsed interface{}
 	err = xml.Unmarshal(svgBytes, &xmlParsed)
 	assert.Success(t, err)
+
+	// We want the visual diffs to compare, but there's floating point precision differences between CI and user machines, so don't compare raw strings
+	diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
 }
