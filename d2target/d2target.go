@@ -34,9 +34,11 @@ const (
 var BorderOffset = geo.NewVector(5, 5)
 
 type Diagram struct {
-	Name        string              `json:"name"`
-	Description string              `json:"description,omitempty"`
-	FontFamily  *d2fonts.FontFamily `json:"fontFamily,omitempty"`
+	Name string `json:"name"`
+	// See docs on the same field in d2graph to understand what it means.
+	BoardContainer bool                `json:"boardContainer"`
+	Description    string              `json:"description,omitempty"`
+	FontFamily     *d2fonts.FontFamily `json:"fontFamily,omitempty"`
 
 	Shapes      []Shape      `json:"shapes"`
 	Connections []Connection `json:"connections"`

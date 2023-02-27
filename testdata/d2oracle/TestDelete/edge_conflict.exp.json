@@ -1,6 +1,7 @@
 {
   "graph": {
     "name": "",
+    "boardContainer": false,
     "ast": {
       "range": "d2/testdata/d2oracle/TestDelete/edge_conflict.d2,0:0:0-2:0:17",
       "nodes": [

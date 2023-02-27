@@ -23,6 +23,7 @@ type Node interface {
 	Parent() Node
 	Primary() *Scalar
 	Map() *Map
+	Equal(n2 Node) bool
 
 	ast() d2ast.Node
 	fmt.Stringer
@@ -139,7 +140,8 @@ func (s *Scalar) Copy(newParent Node) Node {
 	return s
 }
 
-func (s *Scalar) Equal(s2 *Scalar) bool {
+func (s *Scalar) Equal(n2 Node) bool {
+	s2 := n2.(*Scalar)
 	if _, ok := s.Value.(d2ast.String); ok {
 		if _, ok = s2.Value.(d2ast.String); ok {
 			return s.Value.ScalarString() == s2.Value.ScalarString()
@@ -187,6 +189,10 @@ func (m *Map) Copy(newParent Node) Node {
 
 // CopyBase copies the map m without layers/scenarios/steps.
 func (m *Map) CopyBase(newParent Node) *Map {
+	if m == nil {
+		return (&Map{}).Copy(newParent).(*Map)
+	}
+
 	layers := m.DeleteField("layers")
 	scenarios := m.DeleteField("scenarios")
 	steps := m.DeleteField("steps")
@@ -1053,4 +1059,74 @@ func reverseIDA(ida []string) {
 		ida[i] = ida[len(ida)-i-1]
 		ida[len(ida)-i-1] = tmp
 	}
+}
+
+func (f *Field) Equal(n2 Node) bool {
+	f2 := n2.(*Field)
+
+	if f.Name != f2.Name {
+		return false
+	}
+	if !f.Primary_.Equal(f2.Primary_) {
+		return false
+	}
+	if !f.Composite.Equal(f2.Composite) {
+		return false
+	}
+	return true
+}
+
+func (e *Edge) Equal(n2 Node) bool {
+	e2 := n2.(*Edge)
+
+	if !e.ID.Match(e2.ID) {
+		return false
+	}
+	if !e.Primary_.Equal(e2.Primary_) {
+		return false
+	}
+	if !e.Map_.Equal(e2.Map_) {
+		return false
+	}
+	return true
+}
+
+func (a *Array) Equal(n2 Node) bool {
+	a2 := n2.(*Array)
+
+	if len(a.Values) != len(a2.Values) {
+		return false
+	}
+
+	for i := range a.Values {
+		if !a.Values[i].Equal(a2.Values[i]) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func (m *Map) Equal(n2 Node) bool {
+	m2 := n2.(*Map)
+
+	if len(m.Fields) != len(m2.Fields) {
+		return false
+	}
+	if len(m.Edges) != len(m2.Edges) {
+		return false
+	}
+
+	for i := range m.Fields {
+		if !m.Fields[i].Equal(m2.Fields[i]) {
+			return false
+		}
+	}
+	for i := range m.Edges {
+		if !m.Edges[i].Equal(m2.Edges[i]) {
+			return false
+		}
+	}
+
+	return true
 }

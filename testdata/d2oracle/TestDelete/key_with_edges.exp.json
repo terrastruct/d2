@@ -1,6 +1,7 @@
 {
   "graph": {
     "name": "",
+    "boardContainer": false,
     "ast": {
       "range": "d2/testdata/d2oracle/TestDelete/key_with_edges.d2,0:0:0-2:0:22",
       "nodes": [

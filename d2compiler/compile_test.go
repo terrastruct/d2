@@ -2099,9 +2099,9 @@ layers: {
   }
 }
 `, "")
-				assert.JSON(t, 2, len(g.Layers))
-				assert.JSON(t, "one", g.Layers[0].Name)
-				assert.JSON(t, "two", g.Layers[1].Name)
+				assert.Equal(t, 2, len(g.Layers))
+				assert.Equal(t, "one", g.Layers[0].Name)
+				assert.Equal(t, "two", g.Layers[1].Name)
 			},
 		},
 		{
@@ -2130,6 +2130,37 @@ layers: {
 				assert.Equal(t, "one", g.Layers[0].Name)
 				assert.Equal(t, "two", g.Layers[1].Name)
 				assert.Equal(t, 2, len(g.Layers[1].Steps))
+			},
+		},
+		{
+			name: "boardContainer",
+			run: func(t *testing.T) {
+				g := assertCompile(t, `
+layers: {
+  one: {
+    santa
+  }
+  two: {
+    clause
+		scenarios: {
+			seinfeld: {
+			}
+			missoula: {
+				steps: {
+					missus: one two three
+				}
+			}
+		}
+  }
+}
+`, "")
+				assert.True(t, g.BoardContainer)
+				assert.Equal(t, 2, len(g.Layers))
+				assert.Equal(t, "one", g.Layers[0].Name)
+				assert.Equal(t, "two", g.Layers[1].Name)
+				assert.Equal(t, 2, len(g.Layers[1].Scenarios))
+				assert.False(t, g.Layers[1].Scenarios[0].BoardContainer)
+				assert.False(t, g.Layers[1].Scenarios[1].BoardContainer)
 			},
 		},
 		{

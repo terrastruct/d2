@@ -28,8 +28,13 @@ const DEFAULT_SHAPE_SIZE = 100.
 const MIN_SHAPE_SIZE = 5
 
 type Graph struct {
-	Name string     `json:"name"`
-	AST  *d2ast.Map `json:"ast"`
+	Name string `json:"name"`
+	// A BoardContainer is a board or scenario itself contains nothing
+	// but its base and more boards, scenarios or steps.
+	// boardContainers do not have a render and are used purely for organizing the board
+	// tree.
+	BoardContainer bool       `json:"boardContainer"`
+	AST            *d2ast.Map `json:"ast"`
 
 	Root    *Object   `json:"root"`
 	Edges   []*Edge   `json:"edges"`

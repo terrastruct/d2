@@ -1,5 +1,6 @@
 {
   "name": "",
+  "boardContainer": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -170,6 +171,7 @@
   "layers": [
     {
       "name": "window",
+      "boardContainer": false,
       "fontFamily": "SourceSansPro",
       "shapes": [
         {
@@ -299,6 +301,7 @@
     },
     {
       "name": "roof",
+      "boardContainer": false,
       "fontFamily": "SourceSansPro",
       "shapes": [
         {
@@ -469,6 +472,7 @@
     },
     {
       "name": "garage",
+      "boardContainer": false,
       "fontFamily": "SourceSansPro",
       "shapes": [
         {
@@ -598,6 +602,7 @@
     },
     {
       "name": "repair",
+      "boardContainer": false,
       "fontFamily": "SourceSansPro",
       "shapes": [],
       "connections": [],
@@ -644,6 +649,7 @@
       "steps": [
         {
           "name": "1",
+          "boardContainer": false,
           "fontFamily": "SourceSansPro",
           "shapes": [
             {
@@ -814,6 +820,7 @@
         },
         {
           "name": "2",
+          "boardContainer": false,
           "fontFamily": "SourceSansPro",
           "shapes": [
             {
@@ -983,6 +990,7 @@
         },
         {
           "name": "3",
+          "boardContainer": false,
           "fontFamily": "SourceSansPro",
           "shapes": [
             {
@@ -1152,6 +1160,7 @@
         },
         {
           "name": "4",
+          "boardContainer": false,
           "fontFamily": "SourceSansPro",
           "shapes": [
             {
@@ -1325,6 +1334,7 @@
   "scenarios": [
     {
       "name": "storm",
+      "boardContainer": false,
       "fontFamily": "SourceSansPro",
       "shapes": [
         {

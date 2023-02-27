@@ -1,6 +1,7 @@
 {
   "graph": {
     "name": "",
+    "boardContainer": false,
     "ast": {
       "range": "d2/testdata/d2oracle/TestMove/nhooyr_one.d2,0:0:0-6:0:22",
       "nodes": [
