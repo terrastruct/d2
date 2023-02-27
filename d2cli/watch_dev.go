@@ -1,7 +1,7 @@
 //go:build dev
 // +build dev
 
-package main
+package d2cli
 
 func init() {
 	devMode = true
