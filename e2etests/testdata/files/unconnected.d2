@@ -1,0 +1,35 @@
+title: Workflow-I (Warehousing, Installation) {
+  near: top-center
+  shape: text
+  style: {
+    font-size: 40
+    bold: false
+    underline: false
+  }
+}
+OEM Factory
+OEM Factory -> OEM Warehouse
+OEM Factory -> Distributor Warehouse
+OEM Factory -> Gos Warehouse
+direction: right
+Gos Warehouse.Master -> Gos Warehouse.Regional-1
+Gos Warehouse.Master -> Gos Warehouse.Regional-2
+Gos Warehouse.Master -> Gos Warehouse.Regional-N
+Gos Warehouse.Regional-1 -> Gos Warehouse.Regional-2
+Gos Warehouse.Regional-2 -> Gos Warehouse.Regional-N
+Gos Warehouse.Regional-N -> Gos Warehouse.Regional-1
+
+Gos Warehouse.explaination: |`md
+  - Asset Tagging
+  - Inventory
+  - Staging
+  - Dispatch to Site
+`|
+
+OEM Warehouse -> Gos Warehouse
+Distributor Warehouse -> Gos Warehouse
+
+Customer Site: {
+  Installation
+  Support
+}

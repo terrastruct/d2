@@ -573,6 +573,7 @@ b
 }
 `,
 		},
+		loadFromFile(t, "unconnected"),
 	}
 
 	runa(t, tcs)

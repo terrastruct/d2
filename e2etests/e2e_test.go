@@ -239,3 +239,16 @@ md: |md
 a -> md -> b
 `, md)
 }
+
+func loadFromFile(t *testing.T, name string) testCase {
+	fn := filepath.Join("testdata", "files", fmt.Sprintf("%s.d2", name))
+	d2Text, err := ioutil.ReadFile(fn)
+	if err != nil {
+		t.Fatalf("failed to load test from file:%s. %s", name, err.Error())
+	}
+
+	return testCase{
+		name:   name,
+		script: string(d2Text),
+	}
+}
