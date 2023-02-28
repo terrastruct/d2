@@ -186,7 +186,8 @@ func Hex2RGB(hex string) (RGB, error) {
 	return rgb, nil
 }
 
-// https://www.w3schools.com/cssref/css_colors.php
+// https://www.w3.org/TR/css-color-3/#svg-color
+// https://github.com/gookit/color/blob/master/convert.go#LL808C27-L808C27
 var namedRgbMap = map[string][]uint8{
 	"aliceblue":            {240, 248, 255}, // #F0F8FF
 	"antiquewhite":         {250, 235, 215}, // #FAEBD7
