@@ -308,7 +308,7 @@ var namedRgbMap = map[string][]uint8{
 	"powderblue":           {176, 224, 230}, // #B0E0E6
 	"purple":               {128, 0, 128},   // #800080
 	"red":                  {255, 0, 0},     // #FF0000
-	"rebeccapurple":        {102, 51, 153},  //#663399
+	"rebeccapurple":        {102, 51, 153},  // #663399
 	"rosybrown":            {188, 143, 143}, // #BC8F8F
 	"royalblue":            {65, 105, 225},  // #4169E1
 	"saddlebrown":          {139, 69, 19},   // #8B4513
