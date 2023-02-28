@@ -300,26 +300,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		// If the edge is connected to two descendants that are about to be downshifted, their whole route gets downshifted
 		movedEdges := make(map[*d2graph.Edge]struct{})
 		for _, e := range g.Edges {
-			currSrc := e.Src
-			currDst := e.Dst
+			isSrcDesc := e.Src.IsDescendantOf(obj)
+			isDstDesc := e.Dst.IsDescendantOf(obj)
 
-			isSrcDesc := false
-			isDstDesc := false
-
-			for currSrc != nil {
-				if currSrc == obj {
-					isSrcDesc = true
-					break
-				}
-				currSrc = currSrc.Parent
-			}
-			for currDst != nil {
-				if currDst == obj {
-					isDstDesc = true
-					break
-				}
-				currDst = currDst.Parent
-			}
 			if isSrcDesc && isDstDesc {
 				stepSize := subtract
 				if e.Src != obj || e.Dst != obj {
@@ -364,6 +347,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				if _, ok := movedEdges[e]; ok {
 					continue
 				}
+				moveWholeEdge := false
 				if e.Src == curr {
 					// Don't move src points on side of container
 					if almostEqual(e.Route[0].X, obj.TopLeft.X) || almostEqual(e.Route[0].X, obj.TopLeft.X+obj.Width) {
@@ -373,14 +357,30 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 						}
 					}
 					if shouldMove(e.Route[0]) {
-						e.Route[0].Y += stepSize
+						if isHorizontal && e.Src.Parent != g.Root && e.Dst.Parent != g.Root {
+							moveWholeEdge = true
+						} else {
+							e.Route[0].Y += stepSize
+						}
 					}
 				}
-				if e.Dst == curr {
+				if !moveWholeEdge && e.Dst == curr {
 					if shouldMove(e.Route[len(e.Route)-1]) {
-						e.Route[len(e.Route)-1].Y += stepSize
+						if isHorizontal && e.Dst.Parent != g.Root && e.Src.Parent != g.Root {
+							moveWholeEdge = true
+						} else {
+							e.Route[len(e.Route)-1].Y += stepSize
+						}
 					}
 				}
+
+				if moveWholeEdge {
+					for _, p := range e.Route {
+						p.Y += stepSize / 2.
+					}
+					movedEdges[e] = struct{}{}
+				}
+
 			}
 			q = append(q, curr.ChildrenArray...)
 		}
