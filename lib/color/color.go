@@ -186,7 +186,7 @@ func Hex2RGB(hex string) (RGB, error) {
 	return rgb, nil
 }
 
-// https://developer.mozilla.org/en-US/docs/Web/CSS/named-color
+// https://www.w3.org/TR/css-color-4/#svg-color
 var namedRgbMap = map[string][]uint8{
 	"aliceblue":            {240, 248, 255}, // #F0F8FF
 	"antiquewhite":         {250, 235, 215}, // #FAEBD7
