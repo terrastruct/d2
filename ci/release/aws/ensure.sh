@@ -346,10 +346,10 @@ if [ "\$(uname -m)" = aarch64 ]; then
     docker context create ci-d2-linux-amd64 --docker "host=ssh://$CI_D2_LINUX_AMD64"
   fi
   if ! docker buildx ls | grep -qF 'd2 *'; then
-    docker buildx create --use --name d2 default
+    docker buildx create --use --name d2 --platform linux/arm64 default
   fi
   if ! docker buildx inspect d2 | grep -qF ci-d2-linux-amd64; then
-    docker buildx create --append --name d2 ci-d2-linux-amd64
+    docker buildx create --append --name d2 --platform linux/amd64 ci-d2-linux-amd64
   fi
 fi
 

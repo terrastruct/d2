@@ -463,8 +463,9 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 		// diagram.Root.Fill = "transparent"
 
 		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
-			Pad:    int(pad),
-			Sketch: sketch,
+			Pad:           int(pad),
+			Sketch:        sketch,
+			SetDimensions: true,
 		})
 		if err != nil {
 			return nil, err

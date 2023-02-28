@@ -3,21 +3,21 @@
 You may install `d2` through any of the following methods.
 
 <!-- toc -->
-- <a href="#installsh" id="toc-installsh">install.sh</a>
-  - <a href="#security" id="toc-security">Security</a>
-- <a href="#macos-homebrew" id="toc-macos-homebrew">macOS (Homebrew)</a>
-- <a href="#linux" id="toc-linux">Linux</a>
-  - <a href="#void-linux" id="toc-void-linux">Void Linux</a>
-- <a href="#standalone" id="toc-standalone">Standalone</a>
-  - <a href="#manual" id="toc-manual">Manual</a>
-  - <a href="#prefix" id="toc-prefix">PREFIX</a>
-- <a href="#from-source" id="toc-from-source">From source</a>
-  - <a href="#source-release" id="toc-source-release">Source Release</a>
-- <a href="#windows" id="toc-windows">Windows</a>
-  - <a href="#release-archives" id="toc-release-archives">Release archives</a>
-  - <a href="#wsl" id="toc-wsl">WSL</a>
-- <a href="#docker" id="toc-docker">Docker</a>
-- <a href="#coming-soon" id="toc-coming-soon">Coming soon</a>
+- [install.sh](#installsh)
+  - [Security](#security)
+- [macOS (Homebrew)](#macos-homebrew)
+- [Linux](#linux)
+  - [Void Linux](#void-linux)
+- [Standalone](#standalone)
+  - [Manual](#manual)
+  - [PREFIX](#prefix)
+- [From source](#from-source)
+  - [Source Release](#source-release)
+- [Windows](#windows)
+  - [Release archives](#release-archives)
+  - [WSL](#wsl)
+- [Docker](#docker)
+- [Coming soon](#coming-soon)
 
 ## install.sh
 
