@@ -24,24 +24,24 @@ https://user-images.githubusercontent.com/3120367/206125010-bd1fea8e-248a-43e7-8
 # Table of Contents
 
 <!-- toc -->
-- <a href="#what-does-d2-look-like" id="toc-what-does-d2-look-like">What does D2 look like?</a>
-- <a href="#quickstart" id="toc-quickstart">Quickstart</a>
-- <a href="#install" id="toc-install">Install</a>
-- <a href="#d2-as-a-library" id="toc-d2-as-a-library">D2 as a library</a>
-- <a href="#themes" id="toc-themes">Themes</a>
-- <a href="#fonts" id="toc-fonts">Fonts</a>
-- <a href="#export-file-types" id="toc-export-file-types">Export file types</a>
-- <a href="#language-tooling" id="toc-language-tooling">Language tooling</a>
-- <a href="#plugins" id="toc-plugins">Plugins</a>
-- <a href="#comparison" id="toc-comparison">Comparison</a>
-- <a href="#contributing" id="toc-contributing">Contributing</a>
-- <a href="#license" id="toc-license">License</a>
-- <a href="#related" id="toc-related">Related</a>
-  - <a href="#official-plugins" id="toc-official-plugins">Official plugins</a>
-  - <a href="#community-plugins" id="toc-community-plugins">Community plugins</a>
-  - <a href="#misc" id="toc-misc">Misc</a>
-- <a href="#faq" id="toc-faq">FAQ</a>
-- <a href="#open-source-projects-documenting-with-d2" id="toc-open-source-projects-documenting-with-d2">Open-source projects documenting with D2</a>
+- [What does D2 look like?](#what-does-d2-look-like)
+- [Quickstart](#quickstart)
+- [Install](#install)
+- [D2 as a library](#d2-as-a-library)
+- [Themes](#themes)
+- [Fonts](#fonts)
+- [Export file types](#export-file-types)
+- [Language tooling](#language-tooling)
+- [Plugins](#plugins)
+- [Comparison](#comparison)
+- [Contributing](#contributing)
+- [License](#license)
+- [Related](#related)
+  - [Official plugins](#official-plugins)
+  - [Community plugins](#community-plugins)
+  - [Misc](#misc)
+- [FAQ](#faq)
+- [Open-source projects documenting with D2](#open-source-projects-documenting-with-d2)
 
 ## What does D2 look like?
 

@@ -1,14 +1,14 @@
 # Contributing
 
 <!-- toc -->
-- <a href="#welcome" id="toc-welcome">Welcome</a>
-- <a href="#ci" id="toc-ci">CI</a>
-- <a href="#logistics" id="toc-logistics">Logistics</a>
-- <a href="#dev" id="toc-dev">Dev</a>
-  - <a href="#content" id="toc-content">Content</a>
-  - <a href="#tests" id="toc-tests">Tests</a>
-  - <a href="#documentation" id="toc-documentation">Documentation</a>
-  - <a href="#questions" id="toc-questions">Questions</a>
+- [Welcome](#welcome)
+- [CI](#ci)
+- [Logistics](#logistics)
+- [Dev](#dev)
+  - [Content](#content)
+  - [Tests](#tests)
+  - [Documentation](#documentation)
+  - [Questions](#questions)
 
 ## Welcome
 
