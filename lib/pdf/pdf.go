@@ -3,7 +3,6 @@ package pdf
 import (
 	"bytes"
 	"math"
-	"strconv"
 	"strings"
 
 	"github.com/jung-kurt/gofpdf"
@@ -59,7 +58,7 @@ func (g *GoFPDF) GetFillRGB(themeID int64, fill string) (color.RGB, error) {
 	return color.Hex2RGB(fill)
 }
 
-func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill string, shapes []d2target.Shape, pad int64, viewboxSlice []string) error {
+func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill string, shapes []d2target.Shape, pad int64, viewboxX, viewboxY float64) error {
 	var opt gofpdf.ImageOptions
 	opt.ImageType = "png"
 	imageInfo := g.pdf.RegisterImageOptionsReader(strings.Join(boardPath, "/"), opt, bytes.NewReader(png))
@@ -126,14 +125,6 @@ func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill 
 	// Draw external links
 	for _, shape := range shapes {
 		if shape.Link != "" {
-			viewboxX, err := strconv.ParseFloat(viewboxSlice[0], 64)
-			if err != nil {
-				return err
-			}
-			viewboxY, err := strconv.ParseFloat(viewboxSlice[1], 64)
-			if err != nil {
-				return err
-			}
 			linkX := imageX + float64(shape.Pos.X) - viewboxX - float64(shape.StrokeWidth)
 			linkY := imageY + float64(shape.Pos.Y) - viewboxY - float64(shape.StrokeWidth)
 			linkWidth := float64(shape.Width) + float64(shape.StrokeWidth*2)

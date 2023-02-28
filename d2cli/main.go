@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 
@@ -489,7 +490,15 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 		}
 
 		viewboxSlice := appendix.FindViewboxSlice(svg)
-		err = pdf.AddPDFPage(pngImg, currBoardPath, themeID, rootFill, diagram.Shapes, pad, viewboxSlice)
+		viewboxX, err := strconv.ParseFloat(viewboxSlice[0], 64)
+		if err != nil {
+			return svg, err
+		}
+		viewboxY, err := strconv.ParseFloat(viewboxSlice[1], 64)
+		if err != nil {
+			return svg, err
+		}
+		err = pdf.AddPDFPage(pngImg, currBoardPath, themeID, rootFill, diagram.Shapes, pad, viewboxX, viewboxY)
 		if err != nil {
 			return svg, err
 		}
