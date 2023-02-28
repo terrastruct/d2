@@ -1,11 +1,13 @@
 package d2target
 
-import "oss.terrastruct.com/d2/d2renderers/d2fonts"
-
 const (
 	NamePadding   = 10
 	TypePadding   = 20
-	HeaderPadding = 20
+	HeaderPadding = 10
+
+	// Setting table font size sets it for columns
+	// The header needs to be a little larger for visual hierarchy
+	HeaderFontAdd = 4
 )
 
 type SQLTable struct {
@@ -19,18 +21,18 @@ type SQLColumn struct {
 	Reference  string `json:"reference"`
 }
 
-func (c SQLColumn) Texts() []*MText {
+func (c SQLColumn) Texts(fontSize int) []*MText {
 	return []*MText{
 		{
 			Text:     c.Name.Label,
-			FontSize: d2fonts.FONT_SIZE_L,
+			FontSize: fontSize,
 			IsBold:   false,
 			IsItalic: false,
 			Shape:    "sql_table",
 		},
 		{
 			Text:     c.Type.Label,
-			FontSize: d2fonts.FONT_SIZE_L,
+			FontSize: fontSize,
 			IsBold:   false,
 			IsItalic: false,
 			Shape:    "sql_table",

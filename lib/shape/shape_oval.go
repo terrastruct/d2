@@ -4,25 +4,30 @@ import (
 	"math"
 
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/util-go/go2"
 )
+
+const OVAL_AR_LIMIT = 3.
 
 type shapeOval struct {
 	*baseShape
 }
 
 func NewOval(box *geo.Box) Shape {
-	return shapeOval{
+	shape := shapeOval{
 		baseShape: &baseShape{
 			Type: OVAL_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 func (s shapeOval) GetInnerBox() *geo.Box {
 	width := s.Box.Width
 	height := s.Box.Height
-	insideTL := s.GetInsidePlacement(width, height, 0)
+	insideTL := s.GetInsidePlacement(width, height, 0, 0)
 	tl := s.Box.TopLeft.Copy()
 	width -= 2 * (insideTL.X - tl.X)
 	height -= 2 * (insideTL.Y - tl.Y)
@@ -35,10 +40,14 @@ func (s shapeOval) GetDimensionsToFit(width, height, paddingX, paddingY float64)
 	paddedWidth := width + paddingX*math.Cos(theta)
 	paddedHeight := height + paddingY*math.Sin(theta)
 	// see https://stackoverflow.com/questions/433371/ellipse-bounding-a-rectangle
-	return math.Ceil(math.Sqrt2 * paddedWidth), math.Ceil(math.Sqrt2 * paddedHeight)
+	totalWidth, totalHeight := math.Ceil(math.Sqrt2*paddedWidth), math.Ceil(math.Sqrt2*paddedHeight)
+
+	// prevent oval from becoming too flat
+	totalWidth, totalHeight = LimitAR(totalWidth, totalHeight, OVAL_AR_LIMIT)
+	return totalWidth, totalHeight
 }
 
-func (s shapeOval) GetInsidePlacement(width, height, padding float64) geo.Point {
+func (s shapeOval) GetInsidePlacement(width, height, paddingX, paddingY float64) geo.Point {
 	// showing the top left arc of the ellipse (drawn with '*')
 	// ┌──────────────────* ┬
 	// │         *        │ │ry
@@ -56,8 +65,8 @@ func (s shapeOval) GetInsidePlacement(width, height, padding float64) geo.Point 
 	// r is the ellipse radius on the line between node.TopLeft and the ellipse center
 	// see https://math.stackexchange.com/questions/432902/how-to-get-the-radius-of-an-ellipse-at-a-specific-angle-by-knowing-its-semi-majo
 	r := rx * ry / math.Sqrt(math.Pow(rx*sin, 2)+math.Pow(ry*cos, 2))
-	// we want to offset r-padding away from the center
-	return *geo.NewPoint(s.Box.TopLeft.X+math.Ceil(rx-cos*(r-padding)), s.Box.TopLeft.Y+math.Ceil(ry-sin*(r-padding)))
+	// we want to offset r-padding/2 away from the center
+	return *geo.NewPoint(s.Box.TopLeft.X+math.Ceil(rx-cos*(r-paddingX/2)), s.Box.TopLeft.Y+math.Ceil(ry-sin*(r-paddingY/2)))
 }
 
 func (s shapeOval) Perimeter() []geo.Intersectable {

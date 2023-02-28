@@ -1,5 +1,6 @@
 {
   "name": "",
+  "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -15,8 +16,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#0A0F25",
-      "stroke": "#FFFFFF",
+      "fill": "N1",
+      "stroke": "N7",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -65,7 +66,7 @@
       "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -73,16 +74,16 @@
       "labelHeight": 0,
       "zIndex": 0,
       "level": 1,
-      "primaryAccentColor": "#0D32B2",
-      "secondaryAccentColor": "#4A6FF3",
-      "neutralAccentColor": "#676C7E"
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
     },
     {
       "id": "users",
       "type": "sql_table",
       "pos": {
         "x": 12,
-        "y": 480
+        "y": 450
       },
       "width": 512,
       "height": 186,
@@ -90,8 +91,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#0A0F25",
-      "stroke": "#FFFFFF",
+      "fill": "N1",
+      "stroke": "N7",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -249,7 +250,7 @@
       "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": true,
       "underline": false,
@@ -257,16 +258,16 @@
       "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
-      "primaryAccentColor": "#0D32B2",
-      "secondaryAccentColor": "#4A6FF3",
-      "neutralAccentColor": "#676C7E"
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
     },
     {
       "id": "code",
       "type": "code",
       "pos": {
         "x": 12,
-        "y": 766
+        "y": 706
       },
       "width": 512,
       "height": 65,
@@ -274,8 +275,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
-      "stroke": "#0A0F25",
+      "fill": "N7",
+      "stroke": "N1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -292,7 +293,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "golang",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": true,
       "underline": false,
@@ -306,7 +307,7 @@
       "type": "package",
       "pos": {
         "x": 12,
-        "y": 931
+        "y": 841
       },
       "width": 512,
       "height": 100,
@@ -314,8 +315,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
+      "fill": "AA4",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -332,7 +333,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": true,
       "underline": false,
@@ -346,7 +347,7 @@
       "type": "rectangle",
       "pos": {
         "x": 218,
-        "y": 1131
+        "y": 1011
       },
       "width": 100,
       "height": 100,
@@ -354,8 +355,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
-      "stroke": "#0D32B2",
+      "fill": "B6",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -372,7 +373,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": true,
       "underline": false,
@@ -394,12 +395,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -414,7 +415,7 @@
         },
         {
           "x": 268,
-          "y": 480
+          "y": 450
         }
       ],
       "animated": false,
@@ -433,12 +434,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -449,11 +450,11 @@
       "route": [
         {
           "x": 268,
-          "y": 666
+          "y": 636
         },
         {
           "x": 268,
-          "y": 766
+          "y": 706
         }
       ],
       "animated": false,
@@ -472,12 +473,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -488,11 +489,11 @@
       "route": [
         {
           "x": 268,
-          "y": 831
+          "y": 771
         },
         {
           "x": 268,
-          "y": 951
+          "y": 861
         }
       ],
       "animated": false,
@@ -511,12 +512,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -527,11 +528,11 @@
       "route": [
         {
           "x": 268,
-          "y": 1031
+          "y": 941
         },
         {
           "x": 268,
-          "y": 1131
+          "y": 1011
         }
       ],
       "animated": false,
@@ -539,5 +540,45 @@
       "icon": null,
       "zIndex": 0
     }
-  ]
+  ],
+  "root": {
+    "id": "",
+    "type": "",
+    "pos": {
+      "x": 0,
+      "y": 0
+    },
+    "width": 0,
+    "height": 0,
+    "opacity": 0,
+    "strokeDash": 0,
+    "strokeWidth": 0,
+    "borderRadius": 0,
+    "fill": "N7",
+    "stroke": "",
+    "shadow": false,
+    "3d": false,
+    "multiple": false,
+    "double-border": false,
+    "tooltip": "",
+    "link": "",
+    "icon": null,
+    "iconPosition": "",
+    "blend": false,
+    "fields": null,
+    "methods": null,
+    "columns": null,
+    "label": "",
+    "fontSize": 0,
+    "fontFamily": "",
+    "language": "",
+    "color": "",
+    "italic": false,
+    "bold": false,
+    "underline": false,
+    "labelWidth": 0,
+    "labelHeight": 0,
+    "zIndex": 0,
+    "level": 0
+  }
 }

@@ -158,6 +158,37 @@ square.style.3d: true
 `,
 		},
 		{
+			name: "hexagon_3d",
+			script: `
+hexagon: {shape: "hexagon"}
+hexagon.style.3d: true
+`,
+		},
+		{
+			name: "3d_fill_and_stroke",
+			script: `
+hexagon: {
+  shape: hexagon
+  style.3d: true
+  style.fill: honeydew
+}
+
+
+rect: {
+  shape: rectangle
+  style.3d: true
+  style.fill: honeydew
+}
+
+square: {
+  shape: square
+  style.3d: true
+  style.fill: honeydew
+}
+hexagon -> square -> rect
+`,
+		},
+		{
 			name: "container_edges",
 			script: `a -> g.b -> d.h.c
 d -> g.e -> f -> g -> d.h
@@ -165,9 +196,9 @@ d -> g.e -> f -> g -> d.h
 		},
 		{
 			name: "one_three_one_container",
-			script: `top.start -> a
-top.start -> b
-top.start -> c
+			script: `top2.start -> a
+top2.start -> b
+top2.start -> c
 a -> bottom.end
 b -> bottom.end
 c -> bottom.end
@@ -448,6 +479,7 @@ eee.shape: document
 eee <- aaa.ccc
 (eee <- aaa.ccc)[0]: '222'
 `,
+			dagreFeatureError: `Connection "(aaa.ccc -- aaa)[0]" goes from a container to a descendant, but layout engine "dagre" does not support this.`,
 		},
 		{
 			name: "chaos2",
@@ -609,10 +641,24 @@ x -> hey -> y
 `,
 		},
 		{
-			name: "child_parent_edges",
-			script: `a.b -> a
-a.b -> a.b.c
-a.b.c.d -> a.b`,
+			name: "font_sizes_containers_large",
+			script: `
+ninety nine: {
+	style.font-size: 99
+	sixty four: {
+		style.font-size: 64
+		thirty two:{
+			style.font-size: 32
+			sixteen: {
+				style.font-size: 16
+				eight: {
+					style.font-size: 8
+				}
+			}
+		}
+	}
+}
+`,
 		},
 		{
 			name: "lone_h1",
@@ -881,6 +927,37 @@ b: {
   icon: https://icons.terrastruct.com/essentials/004-picture.svg
 }
 a -> b
+`,
+		},
+		{
+			name: "icon-containers",
+			script: `vpc: VPC 1 10.1.0.0./16 {
+  icon: https://icons.terrastruct.com/aws%2F_Group%20Icons%2FVirtual-private-cloud-VPC_light-bg.svg
+	style: {
+	  stroke: green
+		font-color: green
+		fill: white
+	}
+  az: Availability Zone A {
+		style: {
+			stroke: blue
+			font-color: blue
+			stroke-dash: 3
+			fill: white
+		}
+		firewall: Firewall Subnet A {
+			icon: https://icons.terrastruct.com/aws%2FNetworking%20&%20Content%20Delivery%2FAmazon-Route-53_Hosted-Zone_light-bg.svg
+			style: {
+				stroke: purple
+				font-color: purple
+				fill: "#e1d5e7"
+			}
+			ec2: EC2 Instance {
+				icon: https://icons.terrastruct.com/aws%2FCompute%2F_Instance%2FAmazon-EC2_C4-Instance_light-bg.svg
+			}
+		}
+  }
+}
 `,
 		},
 		{
@@ -1531,13 +1608,13 @@ container: {
 		icon: https://icons.terrastruct.com/essentials/004-picture.svg
 	}
 
-	left: {
+	left2: {
 		root: {
 			shape: image
 			icon: https://icons.terrastruct.com/essentials/004-picture.svg
 		}
 		inner: {
-			left: {
+			left2: {
 				shape: image
 				icon: https://icons.terrastruct.com/essentials/004-picture.svg
 			}
@@ -1546,8 +1623,8 @@ container: {
 				icon: https://icons.terrastruct.com/essentials/004-picture.svg
 			}
 		}
-		root -> inner.left: {
-			label: to inner left
+		root -> inner.left2: {
+			label: to inner left2
 		}
 		root -> inner.right: {
 			label: to inner right
@@ -1560,7 +1637,7 @@ container: {
 			icon: https://icons.terrastruct.com/essentials/004-picture.svg
 		}
 		inner: {
-			left: {
+			left2: {
 				shape: image
 				icon: https://icons.terrastruct.com/essentials/004-picture.svg
 			}
@@ -1569,16 +1646,16 @@ container: {
 				icon: https://icons.terrastruct.com/essentials/004-picture.svg
 			}
 		}
-		root -> inner.left: {
-			label: to inner left
+		root -> inner.left2: {
+			label: to inner left2
 		}
 		root -> inner.right: {
 			label: to inner right
 		}
 	}
 
-	root -> left.root: {
-		label: to left container root
+	root -> left2.root: {
+		label: to left2 container root
 	}
 
 	root -> right.root: {
@@ -1725,11 +1802,35 @@ package.height: 512
 `,
 		},
 		{
+			name: "container_dimensions",
+			script: `a: {
+  width: 500
+  b -> c
+	b.width: 400
+	c.width: 600
+}
+
+b: {
+  width: 700
+  b -> c
+	e: {
+		height: 300
+	}
+}
+
+c: {
+  width: 200
+  height: 300
+  a
+}
+`,
+			dagreFeatureError: `Object "a" has attribute "width" and/or "height" set, but layout engine "dagre" does not support dimensions set on containers.`,
+		},
+		{
 			name: "crow_foot_arrowhead",
 			script: `
-a <-> b: {
-	style.stroke-width: 3
-	style.stroke: "#20222a"
+a1 <-> b1: {
+	style.stroke-width: 1
 	source-arrowhead: {
 		shape: cf-many
 	}
@@ -1737,32 +1838,120 @@ a <-> b: {
 		shape: cf-many
 	}
 }
-c <--> d <-> f: {
+a2 <-> b2: {
+	style.stroke-width: 3
+	source-arrowhead: {
+		shape: cf-many
+	}
+	target-arrowhead: {
+		shape: cf-many
+	}
+}
+a3 <-> b3: {
+	style.stroke-width: 6
+	source-arrowhead: {
+		shape: cf-many
+	}
+	target-arrowhead: {
+		shape: cf-many
+	}
+}
+
+c1 <-> d1: {
+	style.stroke-width: 1
+	source-arrowhead: {
+		shape: cf-many-required
+	}
+	target-arrowhead: {
+		shape: cf-many-required
+	}
+}
+c2 <-> d2: {
+	style.stroke-width: 3
+	source-arrowhead: {
+		shape: cf-many-required
+	}
+	target-arrowhead: {
+		shape: cf-many-required
+	}
+}
+c3 <-> d3: {
+	style.stroke-width: 6
+	source-arrowhead: {
+		shape: cf-many-required
+	}
+	target-arrowhead: {
+		shape: cf-many-required
+	}
+}
+
+e1 <-> f1: {
+	style.stroke-width: 1
+	source-arrowhead: {
+		shape: cf-one
+	}
+	target-arrowhead: {
+		shape: cf-one
+	}
+}
+e2 <-> f2: {
+	style.stroke-width: 3
+	source-arrowhead: {
+		shape: cf-one
+	}
+	target-arrowhead: {
+		shape: cf-one
+	}
+}
+e3 <-> f3: {
+	style.stroke-width: 6
+	source-arrowhead: {
+		shape: cf-one
+	}
+	target-arrowhead: {
+		shape: cf-one
+	}
+}
+
+g1 <-> h1: {
+	style.stroke-width: 1
+	source-arrowhead: {
+		shape: cf-one-required
+	}
+	target-arrowhead: {
+		shape: cf-one-required
+	}
+}
+g2 <-> h2: {
+	style.stroke-width: 3
+	source-arrowhead: {
+		shape: cf-one-required
+	}
+	target-arrowhead: {
+		shape: cf-one-required
+	}
+}
+g3 <-> h3: {
+	style.stroke-width: 6
+	source-arrowhead: {
+		shape: cf-one-required
+	}
+	target-arrowhead: {
+		shape: cf-one-required
+	}
+}
+
+c <-> d <-> f: {
 	style.stroke-width: 1
 	style.stroke: "orange"
 	source-arrowhead: {
 		shape: cf-many-required
 	}
 	target-arrowhead: {
-		shape: cf-many-required
-	}
-}
-g <--> h: {
-	source-arrowhead: {
-		shape: cf-one
-	}
-	target-arrowhead: {
 		shape: cf-one
 	}
 }
-e <--> f: {
-	source-arrowhead: {
-		shape: cf-one-required
-	}
-	target-arrowhead: {
-		shape: cf-one-required
-	}
-}`,
+`,
 		},
 		{
 			name: "circle_arrowhead",
@@ -1841,6 +2030,55 @@ x.y -> a.b: {
 `,
 		},
 		{
+			name: "sql_table_column_styles",
+			script: `Humor in the Court: {
+  shape: sql_table
+	Could you see him from where you were standing?: "I could see his head."
+	And where was his head?: Just above his shoulders.
+  style.fill: red
+  style.stroke: lightgray
+  style.font-color: orange
+  style.font-size: 20
+}
+
+Humor in the Court2: {
+  shape: sql_table
+	Could you see him from where you were standing?: "I could see his head."
+	And where was his head?: Just above his shoulders.
+  style.fill: red
+  style.stroke: lightgray
+  style.font-color: orange
+  style.font-size: 30
+}
+
+manager: BatchManager {
+  shape: class
+	style.font-size: 20
+
+  -num: int
+  -timeout: int
+  -pid
+
+  +getStatus(): Enum
+  +getJobs(): "Job[]"
+  +setTimeout(seconds int)
+}
+
+manager2: BatchManager {
+  shape: class
+	style.font-size: 30
+
+  -num: int
+  -timeout: int
+  -pid
+
+  +getStatus(): Enum
+  +getJobs(): "Job[]"
+  +setTimeout(seconds int)
+}
+`,
+		},
+		{
 			name: "near-alone",
 			script: `
 x: {
@@ -1862,6 +2100,18 @@ x: {
 }
 y: {
 	style.border-radius: 10
+}
+multiple2: {
+	style.border-radius: 6
+	style.multiple: true
+}
+double: {
+	style.border-radius: 6
+	style.double-border: true
+}
+three-dee: {
+	style.border-radius: 6
+	style.3d: true
 }
 `,
 		},
@@ -1901,6 +2151,41 @@ g: ----------------------------------------------------------------
 3.shape: person
 4.shape: person
 5.shape: person
+
+1.width: 16
+2.width: 64
+3.width: 128
+4.width: 512
+
+# entering both width and height overrides aspect ratio limit
+5.height: 256
+5.width: 32
+`,
+		},
+		{
+			name: "ovals",
+			script: `
+a.shape: oval
+b.shape: oval
+c.shape: oval
+d.shape: oval
+e.shape: oval
+f.shape: oval
+g.shape: oval
+
+a: -
+b: --
+c: ----
+d: --------
+e: ----------------
+f: --------------------------------
+g: ----------------------------------------------------------------
+
+1.shape: oval
+2.shape: oval
+3.shape: oval
+4.shape: oval
+5.shape: oval
 
 1.width: 16
 2.width: 64

@@ -5,6 +5,7 @@ import (
 
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapeHexagon struct {
@@ -12,12 +13,14 @@ type shapeHexagon struct {
 }
 
 func NewHexagon(box *geo.Box) Shape {
-	return shapeHexagon{
+	shape := shapeHexagon{
 		baseShape: &baseShape{
 			Type: HEXAGON_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 func (s shapeHexagon) GetInnerBox() *geo.Box {

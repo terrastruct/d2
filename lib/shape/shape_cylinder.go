@@ -5,6 +5,7 @@ import (
 
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapeCylinder struct {
@@ -16,12 +17,14 @@ const (
 )
 
 func NewCylinder(box *geo.Box) Shape {
-	return shapeCylinder{
+	shape := shapeCylinder{
 		baseShape: &baseShape{
 			Type: CYLINDER_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 func getArcHeight(box *geo.Box) float64 {

@@ -1,5 +1,6 @@
 {
   "name": "",
+  "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -9,14 +10,14 @@
         "x": 0,
         "y": 0
       },
-      "width": 448,
-      "height": 850,
+      "width": 351,
+      "height": 603,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
-      "stroke": "#0D32B2",
+      "fill": "N7",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -33,7 +34,7 @@
       "fontSize": 28,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -47,17 +48,17 @@
       "id": "Office chatter.alice",
       "type": "rectangle",
       "pos": {
-        "x": 24,
-        "y": 110
+        "x": 12,
+        "y": 88
       },
-      "width": 150,
+      "width": 100,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
+      "fill": "B5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -74,7 +75,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -88,17 +89,17 @@
       "id": "Office chatter.bob",
       "type": "rectangle",
       "pos": {
-        "x": 274,
-        "y": 110
+        "x": 239,
+        "y": 88
       },
-      "width": 150,
+      "width": 100,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
+      "fill": "B5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -115,7 +116,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -129,17 +130,17 @@
       "id": "Office chatter.alice.a",
       "type": "rectangle",
       "pos": {
-        "x": 93,
-        "y": 680
+        "x": 56,
+        "y": 511
       },
       "width": 12,
-      "height": 80,
+      "height": 30,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#E3E9FD",
-      "stroke": "#0D32B2",
+      "fill": "B4",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -156,7 +157,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -169,17 +170,17 @@
       "id": "Office chatter.awkward small talk",
       "type": "rectangle",
       "pos": {
-        "x": 25,
-        "y": 266
+        "x": 10,
+        "y": 209
       },
-      "width": 398,
-      "height": 494,
+      "width": 331,
+      "height": 339,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#DEE1EB",
-      "stroke": "#0D32B2",
+      "fill": "N5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -196,12 +197,13 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
       "labelWidth": 130,
       "labelHeight": 21,
+      "labelFill": "N5",
       "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 2
@@ -210,17 +212,17 @@
       "id": "Office chatter.awkward small talk.icebreaker attempt",
       "type": "rectangle",
       "pos": {
-        "x": 49,
-        "y": 526
+        "x": 22,
+        "y": 378
       },
-      "width": 350,
-      "height": 80,
+      "width": 307,
+      "height": 59,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#DEE1EB",
-      "stroke": "#0D32B2",
+      "fill": "N5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -237,12 +239,13 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
       "labelWidth": 129,
       "labelHeight": 21,
+      "labelFill": "N5",
       "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 3
@@ -251,17 +254,17 @@
       "id": "Office chatter.awkward small talk.unfortunate outcome",
       "type": "rectangle",
       "pos": {
-        "x": 55,
-        "y": 656
+        "x": 28,
+        "y": 477
       },
-      "width": 338,
-      "height": 80,
+      "width": 295,
+      "height": 59,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#DEE1EB",
-      "stroke": "#0D32B2",
+      "fill": "N5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -278,12 +281,13 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
       "labelWidth": 143,
       "labelHeight": 21,
+      "labelFill": "N5",
       "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 3
@@ -292,17 +296,17 @@
       "id": "Office chatter.bob.a",
       "type": "rectangle",
       "pos": {
-        "x": 343,
-        "y": 680
+        "x": 283,
+        "y": 511
       },
       "width": 12,
-      "height": 80,
+      "height": 30,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#E3E9FD",
-      "stroke": "#0D32B2",
+      "fill": "B4",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -319,7 +323,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -341,12 +345,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "uhm, hi",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -356,12 +360,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
-          "y": 306
+          "x": 62,
+          "y": 253
         },
         {
-          "x": 349,
-          "y": 306
+          "x": 289,
+          "y": 253
         }
       ],
       "animated": false,
@@ -380,12 +384,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "oh, hello",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -395,12 +399,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 349,
-          "y": 436
+          "x": 289,
+          "y": 323
         },
         {
-          "x": 99,
-          "y": 436
+          "x": 62,
+          "y": 323
         }
       ],
       "animated": false,
@@ -419,12 +423,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "what did you have for lunch?",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -434,12 +438,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
-          "y": 566
+          "x": 62,
+          "y": 422
         },
         {
-          "x": 349,
-          "y": 566
+          "x": 289,
+          "y": 422
         }
       ],
       "animated": false,
@@ -458,12 +462,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "that's personal",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -473,12 +477,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 343,
-          "y": 696
+          "x": 283,
+          "y": 521
         },
         {
-          "x": 105,
-          "y": 696
+          "x": 68,
+          "y": 521
         }
       ],
       "animated": false,
@@ -497,12 +501,12 @@
       "opacity": 1,
       "strokeDash": 6,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B2",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -512,12 +516,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 99,
-          "y": 176
+          "x": 62,
+          "y": 154
         },
         {
-          "x": 99,
-          "y": 826
+          "x": 62,
+          "y": 591
         }
       ],
       "animated": false,
@@ -536,12 +540,12 @@
       "opacity": 1,
       "strokeDash": 6,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B2",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -551,12 +555,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 349,
-          "y": 176
+          "x": 289,
+          "y": 154
         },
         {
-          "x": 349,
-          "y": 826
+          "x": 289,
+          "y": 591
         }
       ],
       "animated": false,
@@ -564,5 +568,45 @@
       "icon": null,
       "zIndex": 1
     }
-  ]
+  ],
+  "root": {
+    "id": "",
+    "type": "",
+    "pos": {
+      "x": 0,
+      "y": 0
+    },
+    "width": 0,
+    "height": 0,
+    "opacity": 0,
+    "strokeDash": 0,
+    "strokeWidth": 0,
+    "borderRadius": 0,
+    "fill": "N7",
+    "stroke": "",
+    "shadow": false,
+    "3d": false,
+    "multiple": false,
+    "double-border": false,
+    "tooltip": "",
+    "link": "",
+    "icon": null,
+    "iconPosition": "",
+    "blend": false,
+    "fields": null,
+    "methods": null,
+    "columns": null,
+    "label": "",
+    "fontSize": 0,
+    "fontFamily": "",
+    "language": "",
+    "color": "",
+    "italic": false,
+    "bold": false,
+    "underline": false,
+    "labelWidth": 0,
+    "labelHeight": 0,
+    "zIndex": 0,
+    "level": 0
+  }
 }

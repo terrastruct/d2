@@ -1,5 +1,6 @@
 {
   "name": "",
+  "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -15,8 +16,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
-      "stroke": "#0D32B2",
+      "fill": "B6",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -33,7 +34,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": true,
       "underline": false,
@@ -48,7 +49,7 @@
       "type": "rectangle",
       "pos": {
         "x": 12,
-        "y": 299
+        "y": 239
       },
       "width": 53,
       "height": 66,
@@ -56,8 +57,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
-      "stroke": "#0D32B2",
+      "fill": "B6",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -74,7 +75,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": true,
       "underline": false,
@@ -97,8 +98,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
-      "stroke": "#0D32B2",
+      "fill": "B6",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -115,7 +116,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": true,
       "underline": false,
@@ -130,7 +131,7 @@
       "type": "rectangle",
       "pos": {
         "x": 85,
-        "y": 299
+        "y": 239
       },
       "width": 54,
       "height": 66,
@@ -138,8 +139,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#F7F8FE",
-      "stroke": "#0D32B2",
+      "fill": "B6",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -156,7 +157,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": true,
       "underline": false,
@@ -179,12 +180,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "circle",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -199,7 +200,7 @@
         },
         {
           "x": 38.5,
-          "y": 299
+          "y": 239
         }
       ],
       "animated": false,
@@ -218,12 +219,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "filled-circle",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -238,7 +239,7 @@
         },
         {
           "x": 112,
-          "y": 299
+          "y": 239
         }
       ],
       "animated": false,
@@ -246,5 +247,45 @@
       "icon": null,
       "zIndex": 0
     }
-  ]
+  ],
+  "root": {
+    "id": "",
+    "type": "",
+    "pos": {
+      "x": 0,
+      "y": 0
+    },
+    "width": 0,
+    "height": 0,
+    "opacity": 0,
+    "strokeDash": 0,
+    "strokeWidth": 0,
+    "borderRadius": 0,
+    "fill": "N7",
+    "stroke": "",
+    "shadow": false,
+    "3d": false,
+    "multiple": false,
+    "double-border": false,
+    "tooltip": "",
+    "link": "",
+    "icon": null,
+    "iconPosition": "",
+    "blend": false,
+    "fields": null,
+    "methods": null,
+    "columns": null,
+    "label": "",
+    "fontSize": 0,
+    "fontFamily": "",
+    "language": "",
+    "color": "",
+    "italic": false,
+    "bold": false,
+    "underline": false,
+    "labelWidth": 0,
+    "labelHeight": 0,
+    "zIndex": 0,
+    "level": 0
+  }
 }

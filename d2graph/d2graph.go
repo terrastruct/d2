@@ -17,7 +17,7 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2latex"
 	"oss.terrastruct.com/d2/d2target"
-	"oss.terrastruct.com/d2/d2themes"
+	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/shape"
 	"oss.terrastruct.com/d2/lib/textmeasure"
@@ -28,8 +28,12 @@ const DEFAULT_SHAPE_SIZE = 100.
 const MIN_SHAPE_SIZE = 5
 
 type Graph struct {
-	Name string     `json:"name"`
-	AST  *d2ast.Map `json:"ast"`
+	Name string `json:"name"`
+	// IsFolderOnly indicates a board or scenario itself makes no modifications from its
+	// base. Folder only boards do not have a render and are used purely for organizing
+	// the board tree.
+	IsFolderOnly bool       `json:"isFolderOnly"`
+	AST          *d2ast.Map `json:"ast"`
 
 	Root    *Object   `json:"root"`
 	Edges   []*Edge   `json:"edges"`
@@ -95,12 +99,14 @@ type Attributes struct {
 	Label   Scalar   `json:"label"`
 	Style   Style    `json:"style"`
 	Icon    *url.URL `json:"icon,omitempty"`
-	Tooltip string   `json:"tooltip,omitempty"`
-	Link    Scalar   `json:"link"`
+	Tooltip *Scalar  `json:"tooltip,omitempty"`
+	Link    *Scalar  `json:"link,omitempty"`
 
-	// Only applicable for images right now
 	Width  *Scalar `json:"width,omitempty"`
 	Height *Scalar `json:"height,omitempty"`
+
+	Top  *Scalar `json:"top,omitempty"`
+	Left *Scalar `json:"left,omitempty"`
 
 	// TODO consider separate Attributes struct for shape-specific and edge-specific
 	// Shapes only
@@ -334,14 +340,20 @@ func (l ContainerLevel) LabelSize() int {
 	return d2fonts.FONT_SIZE_M
 }
 
-func (obj *Object) GetFill(theme *d2themes.Theme) string {
+func (obj *Object) GetFill() string {
 	level := int(obj.Level())
+	shape := obj.Attributes.Shape.Value
+
+	if strings.EqualFold(shape, d2target.ShapeSQLTable) || strings.EqualFold(shape, d2target.ShapeClass) {
+		return color.N1
+	}
+
 	if obj.IsSequenceDiagramNote() {
-		return theme.Colors.Neutrals.N7
+		return color.N7
 	} else if obj.IsSequenceDiagramGroup() {
-		return theme.Colors.Neutrals.N5
+		return color.N5
 	} else if obj.Parent.IsSequenceDiagram() {
-		return theme.Colors.B5
+		return color.B5
 	}
 
 	// fill for spans
@@ -349,85 +361,79 @@ func (obj *Object) GetFill(theme *d2themes.Theme) string {
 	if sd != nil {
 		level -= int(sd.Level())
 		if level == 1 {
-			return theme.Colors.B3
+			return color.B3
 		} else if level == 2 {
-			return theme.Colors.B4
+			return color.B4
 		} else if level == 3 {
-			return theme.Colors.B5
+			return color.B5
 		} else if level == 4 {
-			return theme.Colors.Neutrals.N6
+			return color.N6
 		}
-		return theme.Colors.Neutrals.N7
+		return color.N7
 	}
 
 	if obj.IsSequenceDiagram() {
-		return theme.Colors.Neutrals.N7
+		return color.N7
 	}
-
-	shape := obj.Attributes.Shape.Value
 
 	if shape == "" || strings.EqualFold(shape, d2target.ShapeSquare) || strings.EqualFold(shape, d2target.ShapeCircle) || strings.EqualFold(shape, d2target.ShapeOval) || strings.EqualFold(shape, d2target.ShapeRectangle) {
 		if level == 1 {
 			if !obj.IsContainer() {
-				return theme.Colors.B6
+				return color.B6
 			}
-			return theme.Colors.B4
+			return color.B4
 		} else if level == 2 {
-			return theme.Colors.B5
+			return color.B5
 		} else if level == 3 {
-			return theme.Colors.B6
+			return color.B6
 		}
-		return theme.Colors.Neutrals.N7
+		return color.N7
 	}
 
 	if strings.EqualFold(shape, d2target.ShapeCylinder) || strings.EqualFold(shape, d2target.ShapeStoredData) || strings.EqualFold(shape, d2target.ShapePackage) {
 		if level == 1 {
-			return theme.Colors.AA4
+			return color.AA4
 		}
-		return theme.Colors.AA5
+		return color.AA5
 	}
 
 	if strings.EqualFold(shape, d2target.ShapeStep) || strings.EqualFold(shape, d2target.ShapePage) || strings.EqualFold(shape, d2target.ShapeDocument) {
 		if level == 1 {
-			return theme.Colors.AB4
+			return color.AB4
 		}
-		return theme.Colors.AB5
+		return color.AB5
 	}
 
 	if strings.EqualFold(shape, d2target.ShapePerson) {
-		return theme.Colors.B3
+		return color.B3
 	}
 	if strings.EqualFold(shape, d2target.ShapeDiamond) {
-		return theme.Colors.Neutrals.N4
+		return color.N4
 	}
 	if strings.EqualFold(shape, d2target.ShapeCloud) || strings.EqualFold(shape, d2target.ShapeCallout) {
-		return theme.Colors.Neutrals.N7
+		return color.N7
 	}
 	if strings.EqualFold(shape, d2target.ShapeQueue) || strings.EqualFold(shape, d2target.ShapeParallelogram) || strings.EqualFold(shape, d2target.ShapeHexagon) {
-		return theme.Colors.Neutrals.N5
+		return color.N5
 	}
 
-	if strings.EqualFold(shape, d2target.ShapeSQLTable) || strings.EqualFold(shape, d2target.ShapeClass) {
-		return theme.Colors.Neutrals.N1
-	}
-
-	return theme.Colors.Neutrals.N7
+	return color.N7
 }
 
-func (obj *Object) GetStroke(theme *d2themes.Theme, dashGapSize interface{}) string {
+func (obj *Object) GetStroke(dashGapSize interface{}) string {
 	shape := obj.Attributes.Shape.Value
 	if strings.EqualFold(shape, d2target.ShapeCode) ||
 		strings.EqualFold(shape, d2target.ShapeText) {
-		return theme.Colors.Neutrals.N1
+		return color.N1
 	}
 	if strings.EqualFold(shape, d2target.ShapeClass) ||
 		strings.EqualFold(shape, d2target.ShapeSQLTable) {
-		return theme.Colors.Neutrals.N7
+		return color.N7
 	}
 	if dashGapSize != 0.0 {
-		return theme.Colors.B2
+		return color.B2
 	}
-	return theme.Colors.B1
+	return color.B1
 }
 
 func (obj *Object) Level() ContainerLevel {
@@ -465,6 +471,11 @@ func (obj *Object) Text() *d2target.MText {
 		isItalic = true
 	}
 	fontSize := d2fonts.FONT_SIZE_M
+
+	if obj.Class != nil || obj.SQLTable != nil {
+		fontSize = d2fonts.FONT_SIZE_L
+	}
+
 	if obj.OuterSequenceDiagram() == nil {
 		if obj.IsContainer() {
 			fontSize = obj.Level().LabelSize()
@@ -477,7 +488,7 @@ func (obj *Object) Text() *d2target.MText {
 	}
 	// Class and Table objects have Label set to header
 	if obj.Class != nil || obj.SQLTable != nil {
-		fontSize = d2fonts.FONT_SIZE_XL
+		fontSize += d2target.HeaderFontAdd
 	}
 	if obj.Class != nil {
 		isBold = false
@@ -551,6 +562,38 @@ func (obj *Object) HasChild(ids []string) (*Object, bool) {
 		return child.HasChild(ids)
 	}
 	return child, true
+}
+
+// Keep in sync with EnsureChild.
+func (obj *Object) EnsureChildIDVal(ids []string) *Object {
+	if len(ids) == 0 {
+		return obj
+	}
+	if len(ids) == 1 && ids[0] != "style" {
+		_, ok := ReservedKeywords[ids[0]]
+		if ok {
+			return obj
+		}
+	}
+
+	id := ids[0]
+	ids = ids[1:]
+
+	var child *Object
+	for _, ch2 := range obj.ChildrenArray {
+		if ch2.IDVal == id {
+			child = ch2
+			break
+		}
+	}
+	if child == nil {
+		child = obj.newObject(id)
+	}
+
+	if len(ids) >= 1 {
+		return child.EnsureChildIDVal(ids)
+	}
+	return child
 }
 
 func (obj *Object) HasEdge(mk *d2ast.Key) (*Edge, bool) {
@@ -795,17 +838,22 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 	case d2target.ShapeClass:
 		maxWidth := go2.Max(12, labelDims.Width)
 
+		fontSize := d2fonts.FONT_SIZE_L
+		if obj.Attributes.Style.FontSize != nil {
+			fontSize, _ = strconv.Atoi(obj.Attributes.Style.FontSize.Value)
+		}
+
 		for _, f := range obj.Class.Fields {
-			fdims := GetTextDimensions(mtexts, ruler, f.Text(), go2.Pointer(d2fonts.SourceCodePro))
+			fdims := GetTextDimensions(mtexts, ruler, f.Text(fontSize), go2.Pointer(d2fonts.SourceCodePro))
 			if fdims == nil {
-				return nil, fmt.Errorf("dimensions for class field %#v not found", f.Text())
+				return nil, fmt.Errorf("dimensions for class field %#v not found", f.Text(fontSize))
 			}
 			maxWidth = go2.Max(maxWidth, fdims.Width)
 		}
 		for _, m := range obj.Class.Methods {
-			mdims := GetTextDimensions(mtexts, ruler, m.Text(), go2.Pointer(d2fonts.SourceCodePro))
+			mdims := GetTextDimensions(mtexts, ruler, m.Text(fontSize), go2.Pointer(d2fonts.SourceCodePro))
 			if mdims == nil {
-				return nil, fmt.Errorf("dimensions for class method %#v not found", m.Text())
+				return nil, fmt.Errorf("dimensions for class method %#v not found", m.Text(fontSize))
 			}
 			maxWidth = go2.Max(maxWidth, mdims.Width)
 		}
@@ -820,9 +868,9 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 		// All rows should be the same height
 		var anyRowText *d2target.MText
 		if len(obj.Class.Fields) > 0 {
-			anyRowText = obj.Class.Fields[0].Text()
+			anyRowText = obj.Class.Fields[0].Text(fontSize)
 		} else if len(obj.Class.Methods) > 0 {
-			anyRowText = obj.Class.Methods[0].Text()
+			anyRowText = obj.Class.Methods[0].Text(fontSize)
 		}
 		if anyRowText != nil {
 			rowHeight := GetTextDimensions(mtexts, ruler, anyRowText, go2.Pointer(d2fonts.SourceCodePro)).Height + d2target.VerticalPadding
@@ -836,10 +884,16 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 		maxTypeWidth := 0
 		constraintWidth := 0
 
+		colFontSize := d2fonts.FONT_SIZE_L
+		if obj.Attributes.Style.FontSize != nil {
+			colFontSize, _ = strconv.Atoi(obj.Attributes.Style.FontSize.Value)
+		}
+
 		for i := range obj.SQLTable.Columns {
 			// Note: we want to set dimensions of actual column not the for loop copy of the struct
 			c := &obj.SQLTable.Columns[i]
-			ctexts := c.Texts()
+
+			ctexts := c.Texts(colFontSize)
 
 			nameDims := GetTextDimensions(mtexts, ruler, ctexts[0], fontFamily)
 			if nameDims == nil {
@@ -915,11 +969,11 @@ type EdgeReference struct {
 	ScopeObj        *Object    `json:"-"`
 }
 
-func (e *Edge) GetStroke(theme *d2themes.Theme, dashGapSize interface{}) string {
+func (e *Edge) GetStroke(dashGapSize interface{}) string {
 	if dashGapSize != 0.0 {
-		return theme.Colors.B2
+		return color.B2
 	}
-	return theme.Colors.B1
+	return color.B1
 }
 
 func (e *Edge) ArrowString() string {
@@ -1263,10 +1317,10 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			switch shapeType {
 			case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE, shape.IMAGE_TYPE:
 			default:
-				if obj.Attributes.Link.Value != "" {
+				if obj.Attributes.Link != nil {
 					paddingX += 32
 				}
-				if obj.Attributes.Tooltip != "" {
+				if obj.Attributes.Tooltip != nil {
 					paddingX += 32
 				}
 			}
@@ -1280,8 +1334,11 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			obj.Width = sideLength
 			obj.Height = sideLength
 		} else if desiredHeight == 0 || desiredWidth == 0 {
-			if s.GetType() == shape.PERSON_TYPE {
+			switch s.GetType() {
+			case shape.PERSON_TYPE:
 				obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.PERSON_AR_LIMIT)
+			case shape.OVAL_TYPE:
+				obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.OVAL_AR_LIMIT)
 			}
 		}
 	}
@@ -1327,15 +1384,23 @@ func (g *Graph) Texts() []*d2target.MText {
 			texts = appendTextDedup(texts, obj.Text())
 		}
 		if obj.Class != nil {
+			fontSize := d2fonts.FONT_SIZE_L
+			if obj.Attributes.Style.FontSize != nil {
+				fontSize, _ = strconv.Atoi(obj.Attributes.Style.FontSize.Value)
+			}
 			for _, field := range obj.Class.Fields {
-				texts = appendTextDedup(texts, field.Text())
+				texts = appendTextDedup(texts, field.Text(fontSize))
 			}
 			for _, method := range obj.Class.Methods {
-				texts = appendTextDedup(texts, method.Text())
+				texts = appendTextDedup(texts, method.Text(fontSize))
 			}
 		} else if obj.SQLTable != nil {
+			colFontSize := d2fonts.FONT_SIZE_L
+			if obj.Attributes.Style.FontSize != nil {
+				colFontSize, _ = strconv.Atoi(obj.Attributes.Style.FontSize.Value)
+			}
 			for _, column := range obj.SQLTable.Columns {
-				for _, t := range column.Texts() {
+				for _, t := range column.Texts(colFontSize) {
 					texts = appendTextDedup(texts, t)
 				}
 			}
@@ -1383,6 +1448,8 @@ var SimpleReservedKeywords = map[string]struct{}{
 	"width":      {},
 	"height":     {},
 	"direction":  {},
+	"top":        {},
+	"left":       {},
 }
 
 // ReservedKeywordHolders are reserved keywords that are meaningless on its own and exist solely to hold a set of reserved keywords
@@ -1522,4 +1589,14 @@ func (g *Graph) SortEdgesByAST() {
 		return e1.References[0].Edge.Range.Before(e2.References[0].Edge.Range)
 	})
 	g.Edges = edges
+}
+
+func (obj *Object) IsDescendantOf(ancestor *Object) bool {
+	if obj == ancestor {
+		return true
+	}
+	if obj.Parent == nil {
+		return false
+	}
+	return obj.Parent.IsDescendantOf(ancestor)
 }

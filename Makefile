@@ -7,17 +7,17 @@ all: fmt gen lint build test
 fmt:
 	prefix "$@" ./ci/sub/bin/fmt.sh
 .PHONY: gen
-gen:
+gen: fmt
 	prefix "$@" ./ci/gen.sh
 .PHONY: lint
-lint:
+lint: fmt
 	prefix "$@" go vet --composites=false ./...
 .PHONY: build
-build:
+build: fmt
 	prefix "$@" go build ./...
 .PHONY: test
-test:
+test: fmt
 	prefix "$@" ./ci/test.sh
 .PHONY: race
-race:
+race: fmt
 	prefix "$@" ./ci/test.sh --race ./...

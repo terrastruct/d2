@@ -2,6 +2,8 @@
 // Color codes: darkest (N1) -> lightest (N7)
 package d2themes
 
+import "oss.terrastruct.com/d2/lib/color"
+
 type Theme struct {
 	ID     int64        `json:"id"`
 	Name   string       `json:"name"`
@@ -57,4 +59,60 @@ var WarmNeutral = Neutral{
 	N5: "#DFDCDC",
 	N6: "#ECEBEB",
 	N7: "#FFFFFF",
+}
+
+var DarkNeutral = Neutral{
+	N1: "#CDD6F4",
+	N2: "#BAC2DE",
+	N3: "#A6ADC8",
+	N4: "#585B70",
+	N5: "#45475A",
+	N6: "#313244",
+	N7: "#1E1E2E",
+}
+
+func ResolveThemeColor(theme Theme, code string) string {
+	if !color.IsThemeColor(code) {
+		return code
+	}
+	switch code {
+	case "N1":
+		return theme.Colors.Neutrals.N1
+	case "N2":
+		return theme.Colors.Neutrals.N2
+	case "N3":
+		return theme.Colors.Neutrals.N3
+	case "N4":
+		return theme.Colors.Neutrals.N4
+	case "N5":
+		return theme.Colors.Neutrals.N5
+	case "N6":
+		return theme.Colors.Neutrals.N6
+	case "N7":
+		return theme.Colors.Neutrals.N7
+	case "B1":
+		return theme.Colors.B1
+	case "B2":
+		return theme.Colors.B2
+	case "B3":
+		return theme.Colors.B3
+	case "B4":
+		return theme.Colors.B4
+	case "B5":
+		return theme.Colors.B5
+	case "B6":
+		return theme.Colors.B6
+	case "AA2":
+		return theme.Colors.AA2
+	case "AA4":
+		return theme.Colors.AA4
+	case "AA5":
+		return theme.Colors.AA5
+	case "AB4":
+		return theme.Colors.AB4
+	case "AB5":
+		return theme.Colors.AB5
+	default:
+		return ""
+	}
 }

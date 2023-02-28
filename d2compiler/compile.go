@@ -72,8 +72,12 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 	c.compileBoardsField(g, ir, "scenarios")
 	c.compileBoardsField(g, ir, "steps")
 
+	if d2ir.ParentMap(ir).CopyBase(nil).Equal(ir.CopyBase(nil)) {
+		if len(g.Layers) > 0 || len(g.Scenarios) > 0 || len(g.Steps) > 0 {
+			g.IsFolderOnly = true
+		}
+	}
 	c.validateBoardLink(g, ir)
-
 	return g
 }
 
@@ -163,6 +167,17 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 		return
 	}
 
+	if obj.Parent != nil {
+		if obj.Parent.Attributes.Shape.Value == d2target.ShapeSQLTable {
+			c.errorf(f.LastRef().AST(), "sql_table columns cannot have children")
+			return
+		}
+		if obj.Parent.Attributes.Shape.Value == d2target.ShapeClass {
+			c.errorf(f.LastRef().AST(), "class fields cannot have children")
+			return
+		}
+	}
+
 	obj = obj.EnsureChild(d2graphIDA([]string{f.Name}))
 	if f.Primary() != nil {
 		c.compileLabel(obj.Attributes, f)
@@ -181,7 +196,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			}
 		}
 		scopeObjIDA := d2ir.IDA(fr.Context.ScopeMap)
-		scopeObj, _ := obj.Graph.Root.HasChild(scopeObjIDA)
+		scopeObj := obj.Graph.Root.EnsureChildIDVal(scopeObjIDA)
 		obj.References = append(obj.References, d2graph.Reference{
 			Key:          fr.KeyPath,
 			KeyPathIndex: fr.KeyPathIndex(),
@@ -258,7 +273,9 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		nearKey.Range = scalar.GetRange()
 		attrs.NearKey = nearKey
 	case "tooltip":
-		attrs.Tooltip = scalar.ScalarString()
+		attrs.Tooltip = &d2graph.Scalar{}
+		attrs.Tooltip.Value = scalar.ScalarString()
+		attrs.Tooltip.MapKey = f.LastPrimaryKey()
 	case "width":
 		_, err := strconv.Atoi(scalar.ScalarString())
 		if err != nil {
@@ -277,10 +294,36 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Height = &d2graph.Scalar{}
 		attrs.Height.Value = scalar.ScalarString()
 		attrs.Height.MapKey = f.LastPrimaryKey()
+	case "top":
+		v, err := strconv.Atoi(scalar.ScalarString())
+		if err != nil {
+			c.errorf(scalar, "non-integer top %#v: %s", scalar.ScalarString(), err)
+			return
+		}
+		if v < 0 {
+			c.errorf(scalar, "top must be a non-negative integer: %#v", scalar.ScalarString())
+			return
+		}
+		attrs.Top = &d2graph.Scalar{}
+		attrs.Top.Value = scalar.ScalarString()
+		attrs.Top.MapKey = f.LastPrimaryKey()
+	case "left":
+		v, err := strconv.Atoi(scalar.ScalarString())
+		if err != nil {
+			c.errorf(scalar, "non-integer left %#v: %s", scalar.ScalarString(), err)
+			return
+		}
+		if v < 0 {
+			c.errorf(scalar, "left must be a non-negative integer: %#v", scalar.ScalarString())
+			return
+		}
+		attrs.Left = &d2graph.Scalar{}
+		attrs.Left.Value = scalar.ScalarString()
+		attrs.Left.MapKey = f.LastPrimaryKey()
 	case "link":
+		attrs.Link = &d2graph.Scalar{}
 		attrs.Link.Value = scalar.ScalarString()
 		attrs.Link.MapKey = f.LastPrimaryKey()
-		attrs.Link.MapKey.Range = scalar.GetRange()
 	case "direction":
 		dirs := []string{"up", "down", "right", "left"}
 		if !go2.Contains(dirs, scalar.ScalarString()) {
@@ -358,6 +401,10 @@ func compileStyleFieldInit(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Width = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "height":
 		attrs.Height = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+	case "top":
+		attrs.Top = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+	case "left":
+		attrs.Left = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "double-border":
 		attrs.Style.DoubleBorder = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	}
@@ -387,7 +434,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 	edge.Attributes.Label.MapKey = e.LastPrimaryKey()
 	for _, er := range e.References {
 		scopeObjIDA := d2ir.IDA(er.Context.ScopeMap)
-		scopeObj, _ := edge.Src.Graph.Root.HasChild(d2graphIDA(scopeObjIDA))
+		scopeObj := edge.Src.Graph.Root.EnsureChildIDVal(scopeObjIDA)
 		edge.References = append(edge.References, d2graph.EdgeReference{
 			Edge:            er.Context.Edge,
 			MapKey:          er.Context.Key,
@@ -565,14 +612,6 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 	_, isReserved := d2graph.ReservedKeywords[keyword]
 	if isReserved {
 		switch obj.Attributes.Shape.Value {
-		case d2target.ShapeSQLTable, d2target.ShapeClass:
-		default:
-			if len(obj.Children) > 0 && (f.Name == "width" || f.Name == "height") {
-				c.errorf(f.LastPrimaryKey(), fmt.Sprintf("%s cannot be used on container: %s", f.Name, obj.AbsID()))
-			}
-		}
-
-		switch obj.Attributes.Shape.Value {
 		case d2target.ShapeCircle, d2target.ShapeSquare:
 			checkEqual := (keyword == "width" && obj.Attributes.Height != nil) || (keyword == "height" && obj.Attributes.Width != nil)
 			if checkEqual && obj.Attributes.Width.Value != obj.Attributes.Height.Value {
@@ -583,8 +622,8 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 		switch f.Name {
 		case "style":
 			if obj.Attributes.Style.ThreeDee != nil {
-				if !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeRectangle) {
-					c.errorf(obj.Attributes.Style.ThreeDee.MapKey, `key "3d" can only be applied to squares and rectangles`)
+				if !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeSquare) && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeRectangle) && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeHexagon) {
+					c.errorf(obj.Attributes.Style.ThreeDee.MapKey, `key "3d" can only be applied to squares, rectangles, and hexagons`)
 				}
 			}
 			if obj.Attributes.Style.DoubleBorder != nil {
@@ -620,21 +659,37 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 func (c *compiler) validateNear(g *d2graph.Graph) {
 	for _, obj := range g.Objects {
 		if obj.Attributes.NearKey != nil {
-			_, isKey := g.Root.HasChild(d2graph.Key(obj.Attributes.NearKey))
+			nearObj, isKey := g.Root.HasChild(d2graph.Key(obj.Attributes.NearKey))
 			_, isConst := d2graph.NearConstants[d2graph.Key(obj.Attributes.NearKey)[0]]
-			if !isKey && !isConst {
-				c.errorf(obj.Attributes.NearKey, "near key %#v must be the absolute path to a shape or one of the following constants: %s", d2format.Format(obj.Attributes.NearKey), strings.Join(d2graph.NearConstantsArray, ", "))
-				continue
-			}
-			if !isKey && isConst && obj.Parent != g.Root {
-				c.errorf(obj.Attributes.NearKey, "constant near keys can only be set on root level shapes")
-				continue
-			}
-			if !isKey && isConst && len(obj.ChildrenArray) > 0 {
-				c.errorf(obj.Attributes.NearKey, "constant near keys cannot be set on shapes with children")
-				continue
-			}
-			if !isKey && isConst {
+			if isKey {
+				// Doesn't make sense to set near to an ancestor or descendant
+				nearIsAncestor := false
+				for curr := obj; curr != nil; curr = curr.Parent {
+					if curr == nearObj {
+						nearIsAncestor = true
+						break
+					}
+				}
+				if nearIsAncestor {
+					c.errorf(obj.Attributes.NearKey, "near keys cannot be set to an ancestor")
+					continue
+				}
+				nearIsDescendant := false
+				for curr := nearObj; curr != nil; curr = curr.Parent {
+					if curr == obj {
+						nearIsDescendant = true
+						break
+					}
+				}
+				if nearIsDescendant {
+					c.errorf(obj.Attributes.NearKey, "near keys cannot be set to an descendant")
+					continue
+				}
+				if nearObj.OuterSequenceDiagram() != nil {
+					c.errorf(obj.Attributes.NearKey, "near keys cannot be set to an object within sequence diagrams")
+					continue
+				}
+			} else if isConst {
 				is := false
 				for _, e := range g.Edges {
 					if e.Src == obj || e.Dst == obj {
@@ -646,6 +701,17 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 					c.errorf(obj.Attributes.NearKey, "constant near keys cannot be set on connected shapes")
 					continue
 				}
+				if obj.Parent != g.Root {
+					c.errorf(obj.Attributes.NearKey, "constant near keys can only be set on root level shapes")
+					continue
+				}
+				if len(obj.ChildrenArray) > 0 {
+					c.errorf(obj.Attributes.NearKey, "constant near keys cannot be set on shapes with children")
+					continue
+				}
+			} else {
+				c.errorf(obj.Attributes.NearKey, "near key %#v must be the absolute path to a shape or one of the following constants: %s", d2format.Format(obj.Attributes.NearKey), strings.Join(d2graph.NearConstantsArray, ", "))
+				continue
 			}
 		}
 	}

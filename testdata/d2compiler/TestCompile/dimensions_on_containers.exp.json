@@ -1,0 +1,1436 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,0:0:0-45:0:505",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,1:0:1-44:1:504",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,1:0:1-1:10:11",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,1:0:1-1:10:11",
+                    "value": [
+                      {
+                        "string": "containers",
+                        "raw_string": "containers"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,1:12:13-44:0:503",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,2:1:16-11:2:131",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,2:1:16-2:17:32",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,2:1:16-2:17:32",
+                              "value": [
+                                {
+                                  "string": "circle container",
+                                  "raw_string": "circle container"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,2:19:34-11:1:130",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,3:2:38-3:15:51",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,3:2:38-3:7:43",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,3:2:38-3:7:43",
+                                        "value": [
+                                          {
+                                            "string": "shape",
+                                            "raw_string": "shape"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,3:9:45-3:15:51",
+                                    "value": [
+                                      {
+                                        "string": "circle",
+                                        "raw_string": "circle"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,4:2:54-4:12:64",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,4:2:54-4:7:59",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,4:2:54-4:7:59",
+                                        "value": [
+                                          {
+                                            "string": "width",
+                                            "raw_string": "width"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,4:9:61-4:12:64",
+                                    "raw": "512",
+                                    "value": "512"
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,6:2:68-10:3:128",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,6:2:68-6:9:75",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,6:2:68-6:9:75",
+                                        "value": [
+                                          {
+                                            "string": "diamond",
+                                            "raw_string": "diamond"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "map": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,6:11:77-10:2:127",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,7:3:82-7:17:96",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,7:3:82-7:8:87",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,7:3:82-7:8:87",
+                                                  "value": [
+                                                    {
+                                                      "string": "shape",
+                                                      "raw_string": "shape"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "unquoted_string": {
+                                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,7:10:89-7:17:96",
+                                              "value": [
+                                                {
+                                                  "string": "diamond",
+                                                  "raw_string": "diamond"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,8:3:100-8:13:110",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,8:3:100-8:8:105",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,8:3:100-8:8:105",
+                                                  "value": [
+                                                    {
+                                                      "string": "width",
+                                                      "raw_string": "width"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "number": {
+                                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,8:10:107-8:13:110",
+                                              "raw": "128",
+                                              "value": "128"
+                                            }
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,9:3:114-9:13:124",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,9:3:114-9:9:120",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,9:3:114-9:9:120",
+                                                  "value": [
+                                                    {
+                                                      "string": "height",
+                                                      "raw_string": "height"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "number": {
+                                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,9:11:122-9:13:124",
+                                              "raw": "64",
+                                              "value": "64"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,12:1:133-21:2:248",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,12:1:133-12:18:150",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,12:1:133-12:18:150",
+                              "value": [
+                                {
+                                  "string": "diamond container",
+                                  "raw_string": "diamond container"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,12:20:152-21:1:247",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,13:2:156-13:16:170",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,13:2:156-13:7:161",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,13:2:156-13:7:161",
+                                        "value": [
+                                          {
+                                            "string": "shape",
+                                            "raw_string": "shape"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,13:9:163-13:16:170",
+                                    "value": [
+                                      {
+                                        "string": "diamond",
+                                        "raw_string": "diamond"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,14:2:173-14:12:183",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,14:2:173-14:7:178",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,14:2:173-14:7:178",
+                                        "value": [
+                                          {
+                                            "string": "width",
+                                            "raw_string": "width"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,14:9:180-14:12:183",
+                                    "raw": "512",
+                                    "value": "512"
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,15:2:186-15:13:197",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,15:2:186-15:8:192",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,15:2:186-15:8:192",
+                                        "value": [
+                                          {
+                                            "string": "height",
+                                            "raw_string": "height"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,15:10:194-15:13:197",
+                                    "raw": "256",
+                                    "value": "256"
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,17:2:201-20:3:245",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,17:2:201-17:8:207",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,17:2:201-17:8:207",
+                                        "value": [
+                                          {
+                                            "string": "circle",
+                                            "raw_string": "circle"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "map": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,17:10:209-20:2:244",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,18:3:214-18:16:227",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,18:3:214-18:8:219",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,18:3:214-18:8:219",
+                                                  "value": [
+                                                    {
+                                                      "string": "shape",
+                                                      "raw_string": "shape"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "unquoted_string": {
+                                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,18:10:221-18:16:227",
+                                              "value": [
+                                                {
+                                                  "string": "circle",
+                                                  "raw_string": "circle"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,19:3:231-19:13:241",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,19:3:231-19:8:236",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,19:3:231-19:8:236",
+                                                  "value": [
+                                                    {
+                                                      "string": "width",
+                                                      "raw_string": "width"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "number": {
+                                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,19:10:238-19:13:241",
+                                              "raw": "128",
+                                              "value": "128"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,22:1:250-32:2:375",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,22:1:250-22:15:264",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,22:1:250-22:15:264",
+                              "value": [
+                                {
+                                  "string": "oval container",
+                                  "raw_string": "oval container"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,22:17:266-32:1:374",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,23:2:270-23:13:281",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,23:2:270-23:7:275",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,23:2:270-23:7:275",
+                                        "value": [
+                                          {
+                                            "string": "shape",
+                                            "raw_string": "shape"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,23:9:277-23:13:281",
+                                    "value": [
+                                      {
+                                        "string": "oval",
+                                        "raw_string": "oval"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,24:2:284-24:12:294",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,24:2:284-24:7:289",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,24:2:284-24:7:289",
+                                        "value": [
+                                          {
+                                            "string": "width",
+                                            "raw_string": "width"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,24:9:291-24:12:294",
+                                    "raw": "512",
+                                    "value": "512"
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,25:2:297-25:13:308",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,25:2:297-25:8:303",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,25:2:297-25:8:303",
+                                        "value": [
+                                          {
+                                            "string": "height",
+                                            "raw_string": "height"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,25:10:305-25:13:308",
+                                    "raw": "256",
+                                    "value": "256"
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,27:2:312-31:3:372",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,27:2:312-27:9:319",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,27:2:312-27:9:319",
+                                        "value": [
+                                          {
+                                            "string": "hexagon",
+                                            "raw_string": "hexagon"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "map": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,27:11:321-31:2:371",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,28:3:326-28:17:340",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,28:3:326-28:8:331",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,28:3:326-28:8:331",
+                                                  "value": [
+                                                    {
+                                                      "string": "shape",
+                                                      "raw_string": "shape"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "unquoted_string": {
+                                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,28:10:333-28:17:340",
+                                              "value": [
+                                                {
+                                                  "string": "hexagon",
+                                                  "raw_string": "hexagon"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,29:3:344-29:13:354",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,29:3:344-29:8:349",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,29:3:344-29:8:349",
+                                                  "value": [
+                                                    {
+                                                      "string": "width",
+                                                      "raw_string": "width"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "number": {
+                                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,29:10:351-29:13:354",
+                                              "raw": "128",
+                                              "value": "128"
+                                            }
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,30:3:358-30:13:368",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,30:3:358-30:9:364",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,30:3:358-30:9:364",
+                                                  "value": [
+                                                    {
+                                                      "string": "height",
+                                                      "raw_string": "height"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "number": {
+                                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,30:11:366-30:13:368",
+                                              "raw": "64",
+                                              "value": "64"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,33:1:377-43:2:502",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,33:1:377-33:18:394",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,33:1:377-33:18:394",
+                              "value": [
+                                {
+                                  "string": "hexagon container",
+                                  "raw_string": "hexagon container"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,33:20:396-43:1:501",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,34:2:400-34:16:414",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,34:2:400-34:7:405",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,34:2:400-34:7:405",
+                                        "value": [
+                                          {
+                                            "string": "shape",
+                                            "raw_string": "shape"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,34:9:407-34:16:414",
+                                    "value": [
+                                      {
+                                        "string": "hexagon",
+                                        "raw_string": "hexagon"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,35:2:417-35:12:427",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,35:2:417-35:7:422",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,35:2:417-35:7:422",
+                                        "value": [
+                                          {
+                                            "string": "width",
+                                            "raw_string": "width"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,35:9:424-35:12:427",
+                                    "raw": "512",
+                                    "value": "512"
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,36:2:430-36:13:441",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,36:2:430-36:8:436",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,36:2:430-36:8:436",
+                                        "value": [
+                                          {
+                                            "string": "height",
+                                            "raw_string": "height"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,36:10:438-36:13:441",
+                                    "raw": "256",
+                                    "value": "256"
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,38:2:445-42:3:499",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,38:2:445-38:6:449",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,38:2:445-38:6:449",
+                                        "value": [
+                                          {
+                                            "string": "oval",
+                                            "raw_string": "oval"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "map": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,38:8:451-42:2:498",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,39:3:456-39:14:467",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,39:3:456-39:8:461",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,39:3:456-39:8:461",
+                                                  "value": [
+                                                    {
+                                                      "string": "shape",
+                                                      "raw_string": "shape"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "unquoted_string": {
+                                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,39:10:463-39:14:467",
+                                              "value": [
+                                                {
+                                                  "string": "oval",
+                                                  "raw_string": "oval"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,40:3:471-40:13:481",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,40:3:471-40:8:476",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,40:3:471-40:8:476",
+                                                  "value": [
+                                                    {
+                                                      "string": "width",
+                                                      "raw_string": "width"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "number": {
+                                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,40:10:478-40:13:481",
+                                              "raw": "128",
+                                              "value": "128"
+                                            }
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,41:3:485-41:13:495",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,41:3:485-41:9:491",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,41:3:485-41:9:491",
+                                                  "value": [
+                                                    {
+                                                      "string": "height",
+                                                      "raw_string": "height"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "number": {
+                                              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,41:11:493-41:13:495",
+                                              "raw": "64",
+                                              "value": "64"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "containers",
+        "id_val": "containers",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,1:0:1-1:10:11",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,1:0:1-1:10:11",
+                    "value": [
+                      {
+                        "string": "containers",
+                        "raw_string": "containers"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "containers"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "circle container",
+        "id_val": "circle container",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,2:1:16-2:17:32",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,2:1:16-2:17:32",
+                    "value": [
+                      {
+                        "string": "circle container",
+                        "raw_string": "circle container"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "circle container"
+          },
+          "style": {},
+          "width": {
+            "value": "512"
+          },
+          "near_key": null,
+          "shape": {
+            "value": "circle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "diamond",
+        "id_val": "diamond",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,6:2:68-6:9:75",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,6:2:68-6:9:75",
+                    "value": [
+                      {
+                        "string": "diamond",
+                        "raw_string": "diamond"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "diamond"
+          },
+          "style": {},
+          "width": {
+            "value": "128"
+          },
+          "height": {
+            "value": "64"
+          },
+          "near_key": null,
+          "shape": {
+            "value": "diamond"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "diamond container",
+        "id_val": "diamond container",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,12:1:133-12:18:150",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,12:1:133-12:18:150",
+                    "value": [
+                      {
+                        "string": "diamond container",
+                        "raw_string": "diamond container"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "diamond container"
+          },
+          "style": {},
+          "width": {
+            "value": "512"
+          },
+          "height": {
+            "value": "256"
+          },
+          "near_key": null,
+          "shape": {
+            "value": "diamond"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "circle",
+        "id_val": "circle",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,17:2:201-17:8:207",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,17:2:201-17:8:207",
+                    "value": [
+                      {
+                        "string": "circle",
+                        "raw_string": "circle"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "circle"
+          },
+          "style": {},
+          "width": {
+            "value": "128"
+          },
+          "near_key": null,
+          "shape": {
+            "value": "circle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "oval container",
+        "id_val": "oval container",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,22:1:250-22:15:264",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,22:1:250-22:15:264",
+                    "value": [
+                      {
+                        "string": "oval container",
+                        "raw_string": "oval container"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "oval container"
+          },
+          "style": {},
+          "width": {
+            "value": "512"
+          },
+          "height": {
+            "value": "256"
+          },
+          "near_key": null,
+          "shape": {
+            "value": "oval"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "hexagon",
+        "id_val": "hexagon",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,27:2:312-27:9:319",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,27:2:312-27:9:319",
+                    "value": [
+                      {
+                        "string": "hexagon",
+                        "raw_string": "hexagon"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "hexagon"
+          },
+          "style": {},
+          "width": {
+            "value": "128"
+          },
+          "height": {
+            "value": "64"
+          },
+          "near_key": null,
+          "shape": {
+            "value": "hexagon"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "hexagon container",
+        "id_val": "hexagon container",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,33:1:377-33:18:394",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,33:1:377-33:18:394",
+                    "value": [
+                      {
+                        "string": "hexagon container",
+                        "raw_string": "hexagon container"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "hexagon container"
+          },
+          "style": {},
+          "width": {
+            "value": "512"
+          },
+          "height": {
+            "value": "256"
+          },
+          "near_key": null,
+          "shape": {
+            "value": "hexagon"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "oval",
+        "id_val": "oval",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,38:2:445-38:6:449",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,38:2:445-38:6:449",
+                    "value": [
+                      {
+                        "string": "oval",
+                        "raw_string": "oval"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "oval"
+          },
+          "style": {},
+          "width": {
+            "value": "128"
+          },
+          "height": {
+            "value": "64"
+          },
+          "near_key": null,
+          "shape": {
+            "value": "oval"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

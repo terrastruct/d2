@@ -1,6 +1,7 @@
 package d2sequence
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"sort"
@@ -64,7 +65,7 @@ func getEdgeEarliestLineNum(e *d2graph.Edge) int {
 	return min
 }
 
-func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *sequenceDiagram {
+func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*sequenceDiagram, error) {
 	var actors []*d2graph.Object
 	var groups []*d2graph.Object
 
@@ -82,6 +83,10 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 		} else {
 			actors = append(actors, obj)
 		}
+	}
+
+	if len(actors) == 0 {
+		return nil, errors.New("no actors declared in sequence diagram")
 	}
 
 	sd := &sequenceDiagram{
@@ -107,7 +112,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 		if actor.Width < MIN_ACTOR_WIDTH {
 			dslShape := strings.ToLower(actor.Attributes.Shape.Value)
 			switch dslShape {
-			case d2target.ShapePerson, d2target.ShapeSquare, d2target.ShapeCircle:
+			case d2target.ShapePerson, d2target.ShapeOval, d2target.ShapeSquare, d2target.ShapeCircle:
 				// scale shape up to min width uniformly
 				actor.Height *= MIN_ACTOR_WIDTH / actor.Width
 			}
@@ -156,6 +161,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 
 	for _, message := range sd.messages {
 		sd.verticalIndices[message.AbsID()] = getEdgeEarliestLineNum(message)
+		// TODO this should not be global yStep, only affect the neighbors
 		sd.yStep = math.Max(sd.yStep, float64(message.LabelDimensions.Height))
 
 		// ensures that long labels, spanning over multiple actors, don't make for large gaps between actors
@@ -176,7 +182,6 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 		if _, exists := sd.firstMessage[message.Dst]; !exists {
 			sd.firstMessage[message.Dst] = message
 		}
-
 	}
 
 	sd.yStep += VERTICAL_PAD
@@ -185,7 +190,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) *se
 		sd.maxActorHeight += float64(*sd.root.LabelHeight)
 	}
 
-	return sd
+	return sd, nil
 }
 
 func (sd *sequenceDiagram) layout() error {
@@ -208,6 +213,9 @@ func (sd *sequenceDiagram) placeGroups() {
 	for _, group := range sd.groups {
 		group.ZIndex = GROUP_Z_INDEX
 		sd.placeGroup(group)
+	}
+	for _, group := range sd.groups {
+		sd.adjustGroupLabel(group)
 	}
 }
 
@@ -246,8 +254,8 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 		if inGroup {
 			minX = math.Min(minX, n.TopLeft.X-HORIZONTAL_PAD)
 			minY = math.Min(minY, n.TopLeft.Y-MIN_MESSAGE_DISTANCE/2.)
-			maxY = math.Max(maxY, n.TopLeft.Y+n.Height+HORIZONTAL_PAD)
-			maxX = math.Max(maxX, n.TopLeft.X+n.Width+MIN_MESSAGE_DISTANCE/2.)
+			maxX = math.Max(maxX, n.TopLeft.X+n.Width+HORIZONTAL_PAD)
+			maxY = math.Max(maxY, n.TopLeft.Y+n.Height+MIN_MESSAGE_DISTANCE/2.)
 		}
 	}
 
@@ -271,6 +279,56 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 		maxX-minX,
 		maxY-minY,
 	)
+}
+
+func (sd *sequenceDiagram) adjustGroupLabel(group *d2graph.Object) {
+	if group.LabelHeight == nil {
+		return
+	}
+
+	heightAdd := (*group.LabelHeight + EDGE_GROUP_LABEL_PADDING) - GROUP_CONTAINER_PADDING
+	if heightAdd < 0 {
+		return
+	}
+
+	group.Height += float64(heightAdd)
+
+	// Extend stuff within this group
+	for _, g := range sd.groups {
+		if g.TopLeft.Y < group.TopLeft.Y && g.TopLeft.Y+g.Height > group.TopLeft.Y {
+			g.Height += float64(heightAdd)
+		}
+	}
+	for _, s := range sd.spans {
+		if s.TopLeft.Y < group.TopLeft.Y && s.TopLeft.Y+s.Height > group.TopLeft.Y {
+			s.Height += float64(heightAdd)
+		}
+	}
+
+	// Move stuff down
+	for _, m := range sd.messages {
+		if go2.Min(m.Route[0].Y, m.Route[len(m.Route)-1].Y) > group.TopLeft.Y {
+			for _, p := range m.Route {
+				p.Y += float64(heightAdd)
+			}
+		}
+	}
+	for _, s := range sd.spans {
+		if s.TopLeft.Y > group.TopLeft.Y {
+			s.TopLeft.Y += float64(heightAdd)
+		}
+	}
+	for _, g := range sd.groups {
+		if g.TopLeft.Y > group.TopLeft.Y {
+			g.TopLeft.Y += float64(heightAdd)
+		}
+	}
+	for _, n := range sd.notes {
+		if n.TopLeft.Y > group.TopLeft.Y {
+			n.TopLeft.Y += float64(heightAdd)
+		}
+	}
+
 }
 
 // placeActors places actors bottom aligned, side by side with centers spaced by sd.actorXStep
@@ -354,7 +412,7 @@ func (sd *sequenceDiagram) placeNotes() {
 		rankToX[sd.objectRank[actor]] = actor.Center().X
 	}
 
-	for i, note := range sd.notes {
+	for _, note := range sd.notes {
 		verticalIndex := sd.verticalIndices[note.AbsID()]
 		y := sd.maxActorHeight + sd.yStep
 
@@ -363,8 +421,10 @@ func (sd *sequenceDiagram) placeNotes() {
 				y += sd.yStep
 			}
 		}
-		for _, otherNote := range sd.notes[:i] {
-			y += otherNote.Height + sd.yStep
+		for _, otherNote := range sd.notes {
+			if sd.verticalIndices[otherNote.AbsID()] < verticalIndex {
+				y += otherNote.Height + sd.yStep
+			}
 		}
 
 		x := rankToX[sd.objectRank[note]] - (note.Width / 2.)
@@ -476,12 +536,12 @@ func (sd *sequenceDiagram) routeMessages() error {
 		if startCenter := getCenter(message.Src); startCenter != nil {
 			startX = startCenter.X
 		} else {
-			return fmt.Errorf("could not find center of %s", message.Src.AbsID())
+			return fmt.Errorf("could not find center of %s. Is it declared as an actor?", message.Src.ID)
 		}
 		if endCenter := getCenter(message.Dst); endCenter != nil {
 			endX = endCenter.X
 		} else {
-			return fmt.Errorf("could not find center of %s", message.Dst.AbsID())
+			return fmt.Errorf("could not find center of %s. Is it declared as an actor?", message.Dst.ID)
 		}
 		isToDescendant := strings.HasPrefix(message.Dst.AbsID(), message.Src.AbsID()+".")
 		isFromDescendant := strings.HasPrefix(message.Src.AbsID(), message.Dst.AbsID()+".")
@@ -499,7 +559,7 @@ func (sd *sequenceDiagram) routeMessages() error {
 
 		if isSelfMessage || isToDescendant || isFromDescendant || isToSibling {
 			midX := startX + SELF_MESSAGE_HORIZONTAL_TRAVEL
-			endY := startY + MIN_MESSAGE_DISTANCE
+			endY := startY + MIN_MESSAGE_DISTANCE*1.5
 			message.Route = []*geo.Point{
 				geo.NewPoint(startX, startY),
 				geo.NewPoint(midX, startY),
@@ -526,7 +586,7 @@ func (sd *sequenceDiagram) routeMessages() error {
 func getCenter(obj *d2graph.Object) *geo.Point {
 	if obj == nil {
 		return nil
-	} else if obj.TopLeft != nil {
+	} else if obj.Box != nil && obj.Box.TopLeft != nil {
 		return obj.Center()
 	}
 	return getCenter(obj.Parent)

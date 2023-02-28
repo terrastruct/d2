@@ -1,14 +1,19 @@
 package e2etests
 
 import (
-	"math"
 	"testing"
-
-	"oss.terrastruct.com/d2/d2target"
 )
 
 func testRegression(t *testing.T) {
 	tcs := []testCase{
+		{
+			// https://github.com/terrastruct/d2/issues/919
+			name: "hex-fill",
+			script: `x: {
+  style.fill: "#0D32B2"
+}
+`,
+		},
 		{
 			name: "dagre_special_ids",
 			script: `
@@ -32,7 +37,49 @@ B: goodbye {
 }
 
 A->B`,
-		}, {
+		},
+		{
+			name: "undeclared_nested_sequence",
+			script: `shape: sequence_diagram
+group.nested: {
+  a -> b
+}
+`,
+			expErr: "no actors declared in sequence diagram",
+		},
+		{
+			name: "class_font_style_sequence",
+			script: `shape: sequence_diagram
+a: {
+  shape: class
+  style: {
+    font-color: red
+  }
+}
+`,
+		},
+		{
+			name: "nested_steps",
+			script: `a: {
+  a: {
+    shape: step
+  }
+  b: {
+    shape: step
+  }
+  a -> b
+}
+
+c: {
+  shape: step
+}
+d: {
+  shape: step
+}
+c -> d
+`,
+		},
+		{
 			name: "sequence_diagram_span_cover",
 			script: `shape: sequence_diagram
 b.1 -> b.1
@@ -462,24 +509,138 @@ class2: class without rows {
 	shape: class
 }
 `,
-			assertions: func(t *testing.T, g *d2target.Diagram) {
-				if len(g.Shapes) != 2 {
-					t.Fatal("expected 2 shapes")
-				}
-				c1Height := float64(g.Shapes[0].Height)
-				c2Height := float64(g.Shapes[1].Height)
-				if math.Round(c1Height/2.) != c2Height {
-					t.Fatal("expected rowless class to be 1/2 height of class with 2 rows")
-				}
-			},
 		},
 		{
 			name: "just-width",
 			script: `x: "teamwork: having someone to blame" {
   width: 100
 }
-
 `,
+		},
+		{
+			name: "sequence-panic",
+			script: `
+shape: sequence_diagram
+
+a
+
+group: {
+  inner_group: {
+    a -> b
+  }
+}
+`,
+			expErr: "could not find center of b. Is it declared as an actor?",
+		},
+		{
+			name: "ampersand-escape",
+			script: `h&y: &∈ {
+  tooltip: beans & rice
+}
+&foo
+&&bar
+`,
+		},
+		{
+			name: "dagre-disconnect",
+			script: `a: {
+  k.t -> f.i
+  f.g -> _.s.n
+}
+k
+k.s <-> u.o
+h.m.s -> a.f.g
+
+a.f.j -> u.s.j
+u: {
+  c -> _.s.z.c
+}
+
+s: {
+  n: {
+    style.stroke: red
+    f
+  }
+}
+
+s.n -> y.r: {style.stroke-width: 8; style.stroke: red}
+y.r -> a.g.i: 1\n2\n3\n4
+`,
+		},
+		{
+			name: "sequence-note-escape-group",
+			script: `shape: sequence_diagram
+a
+b
+
+"04:20,11:20": {
+  "loop through each table": {
+    a."start_time = datetime.datetime.now"
+    a -> b
+  }
+}
+`,
+		},
+		loadFromFile(t, "unconnected"),
+		{
+			name: "straight_hierarchy_container_direction_right",
+			script: `
+direction: right
+a
+c
+b
+
+l1: {
+	b
+	a
+	c
+}
+
+b -> l1.b
+a -> l1.a
+c -> l1.c
+
+l2c1: {
+	a
+}
+l1.a -> l2c1.a
+
+l2c3: {
+	c
+}
+l1.c -> l2c3.c
+
+l2c2: {
+	b
+}
+l1.b -> l2c2.b
+
+l3c1: {
+	a
+	b
+}
+l2c1.a -> l3c1.a
+l2c2.b -> l3c1.b
+
+l3c2: {
+	c
+}
+l2c3.c -> l3c2.c
+
+l4: {
+	c1: {
+		a
+	}
+	c2: {
+		b
+	}
+	c3: {
+		c
+	}
+}
+l3c1.a -> l4.c1.a
+l3c1.b -> l4.c2.b
+l3c2.c -> l4.c3.c`,
 		},
 	}
 

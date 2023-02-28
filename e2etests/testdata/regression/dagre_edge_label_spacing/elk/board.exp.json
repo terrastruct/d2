@@ -1,5 +1,6 @@
 {
   "name": "",
+  "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -9,14 +10,14 @@
         "x": 12,
         "y": 12
       },
-      "width": 2233,
-      "height": 227,
+      "width": 1943,
+      "height": 177,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#E3E9FD",
-      "stroke": "#0D32B2",
+      "fill": "B4",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -33,7 +34,7 @@
       "fontSize": 28,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -47,8 +48,8 @@
       "id": "build_workflow.push",
       "type": "rectangle",
       "pos": {
-        "x": 87,
-        "y": 87
+        "x": 62,
+        "y": 62
       },
       "width": 270,
       "height": 77,
@@ -56,8 +57,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
+      "fill": "B5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -74,7 +75,7 @@
       "fontSize": 25,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": true,
       "underline": false,
@@ -88,8 +89,8 @@
       "id": "build_workflow.GHA",
       "type": "rectangle",
       "pos": {
-        "x": 611,
-        "y": 87
+        "x": 526,
+        "y": 62
       },
       "width": 209,
       "height": 77,
@@ -97,8 +98,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
+      "fill": "B5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -115,7 +116,7 @@
       "fontSize": 25,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": true,
       "underline": false,
@@ -129,8 +130,8 @@
       "id": "build_workflow.S3",
       "type": "rectangle",
       "pos": {
-        "x": 1158,
-        "y": 87
+        "x": 1013,
+        "y": 62
       },
       "width": 71,
       "height": 77,
@@ -138,8 +139,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
+      "fill": "B5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -156,7 +157,7 @@
       "fontSize": 25,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": true,
       "underline": false,
@@ -170,8 +171,8 @@
       "id": "build_workflow.Terraform",
       "type": "rectangle",
       "pos": {
-        "x": 1548,
-        "y": 87
+        "x": 1343,
+        "y": 62
       },
       "width": 158,
       "height": 77,
@@ -179,8 +180,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
+      "fill": "B5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -197,7 +198,7 @@
       "fontSize": 25,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": true,
       "underline": false,
@@ -211,8 +212,8 @@
       "id": "build_workflow.AWS",
       "type": "rectangle",
       "pos": {
-        "x": 2075,
-        "y": 87
+        "x": 1810,
+        "y": 62
       },
       "width": 95,
       "height": 77,
@@ -220,8 +221,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
+      "fill": "B5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -238,7 +239,7 @@
       "fontSize": 25,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": true,
       "underline": false,
@@ -261,12 +262,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "Triggers",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -276,12 +277,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 357,
-          "y": 125.5
+          "x": 332,
+          "y": 100.5
         },
         {
-          "x": 611,
-          "y": 125.5
+          "x": 526,
+          "y": 100.5
         }
       ],
       "animated": false,
@@ -300,12 +301,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "Builds zip & pushes it",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -315,12 +316,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 820,
-          "y": 125.5
+          "x": 735,
+          "y": 100.5
         },
         {
-          "x": 1158,
-          "y": 125.5
+          "x": 1013,
+          "y": 100.5
         }
       ],
       "animated": false,
@@ -339,12 +340,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "Pulls zip to deploy",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -354,12 +355,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1229,
-          "y": 125.5
+          "x": 1084,
+          "y": 100.5
         },
         {
-          "x": 1548,
-          "y": 125.5
+          "x": 1343,
+          "y": 100.5
         }
       ],
       "animated": false,
@@ -378,12 +379,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "Changes the live lambdas",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -393,12 +394,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1706,
-          "y": 125.5
+          "x": 1501,
+          "y": 100.5
         },
         {
-          "x": 2075,
-          "y": 125.5
+          "x": 1810,
+          "y": 100.5
         }
       ],
       "animated": false,
@@ -406,5 +407,45 @@
       "icon": null,
       "zIndex": 0
     }
-  ]
+  ],
+  "root": {
+    "id": "",
+    "type": "",
+    "pos": {
+      "x": 0,
+      "y": 0
+    },
+    "width": 0,
+    "height": 0,
+    "opacity": 0,
+    "strokeDash": 0,
+    "strokeWidth": 0,
+    "borderRadius": 0,
+    "fill": "N7",
+    "stroke": "",
+    "shadow": false,
+    "3d": false,
+    "multiple": false,
+    "double-border": false,
+    "tooltip": "",
+    "link": "",
+    "icon": null,
+    "iconPosition": "",
+    "blend": false,
+    "fields": null,
+    "methods": null,
+    "columns": null,
+    "label": "",
+    "fontSize": 0,
+    "fontFamily": "",
+    "language": "",
+    "color": "",
+    "italic": false,
+    "bold": false,
+    "underline": false,
+    "labelWidth": 0,
+    "labelHeight": 0,
+    "zIndex": 0,
+    "level": 0
+  }
 }

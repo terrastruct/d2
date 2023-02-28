@@ -1,5 +1,6 @@
 {
   "name": "",
+  "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -9,14 +10,14 @@
         "x": 12,
         "y": 12
       },
-      "width": 2198,
-      "height": 2216,
+      "width": 1528,
+      "height": 1311,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
-      "stroke": "#0D32B2",
+      "fill": "N7",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -33,7 +34,7 @@
       "fontSize": 28,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -47,17 +48,17 @@
       "id": "How this is rendered.CLI",
       "type": "rectangle",
       "pos": {
-        "x": 36,
-        "y": 122
+        "x": 24,
+        "y": 100
       },
-      "width": 150,
+      "width": 100,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
+      "fill": "B5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -74,7 +75,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -88,17 +89,17 @@
       "id": "How this is rendered.d2ast",
       "type": "rectangle",
       "pos": {
-        "x": 286,
-        "y": 122
+        "x": 231,
+        "y": 100
       },
-      "width": 150,
+      "width": 100,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
+      "fill": "B5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -115,7 +116,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -129,17 +130,17 @@
       "id": "How this is rendered.d2compiler",
       "type": "rectangle",
       "pos": {
-        "x": 536,
-        "y": 122
+        "x": 384,
+        "y": 100
       },
-      "width": 150,
+      "width": 122,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
+      "fill": "B5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -156,7 +157,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -170,17 +171,17 @@
       "id": "How this is rendered.d2layout",
       "type": "rectangle",
       "pos": {
-        "x": 786,
-        "y": 122
+        "x": 556,
+        "y": 100
       },
-      "width": 150,
+      "width": 105,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
+      "fill": "B5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -197,7 +198,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -211,17 +212,17 @@
       "id": "How this is rendered.d2exporter",
       "type": "rectangle",
       "pos": {
-        "x": 1036,
-        "y": 122
+        "x": 701,
+        "y": 100
       },
-      "width": 150,
+      "width": 120,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
+      "fill": "B5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -238,7 +239,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -252,17 +253,17 @@
       "id": "How this is rendered.d2themes",
       "type": "rectangle",
       "pos": {
-        "x": 1286,
-        "y": 122
+        "x": 861,
+        "y": 100
       },
-      "width": 150,
+      "width": 113,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
+      "fill": "B5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -279,7 +280,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -293,17 +294,17 @@
       "id": "How this is rendered.d2renderer",
       "type": "rectangle",
       "pos": {
-        "x": 1536,
-        "y": 122
+        "x": 1014,
+        "y": 100
       },
-      "width": 150,
+      "width": 121,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
+      "fill": "B5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -320,7 +321,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -334,8 +335,8 @@
       "id": "How this is rendered.d2sequencelayout",
       "type": "rectangle",
       "pos": {
-        "x": 1777,
-        "y": 122
+        "x": 1175,
+        "y": 100
       },
       "width": 169,
       "height": 66,
@@ -343,8 +344,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
+      "fill": "B5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -361,7 +362,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -375,17 +376,17 @@
       "id": "How this is rendered.d2dagrelayout",
       "type": "rectangle",
       "pos": {
-        "x": 2036,
-        "y": 122
+        "x": 1384,
+        "y": 100
       },
-      "width": 150,
+      "width": 144,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#EDF0FD",
-      "stroke": "#0D32B2",
+      "fill": "B5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -402,7 +403,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -416,8 +417,8 @@
       "id": "How this is rendered.d2compiler.measurements also take place",
       "type": "page",
       "pos": {
-        "x": 487,
-        "y": 708
+        "x": 321,
+        "y": 446
       },
       "width": 247,
       "height": 66,
@@ -425,8 +426,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#FFFFFF",
-      "stroke": "#0D32B2",
+      "fill": "N7",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -443,7 +444,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -457,17 +458,17 @@
       "id": "How this is rendered.d2layout.layout",
       "type": "rectangle",
       "pos": {
-        "x": 855,
-        "y": 1018
+        "x": 602,
+        "y": 642
       },
       "width": 12,
-      "height": 422,
+      "height": 259,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#E3E9FD",
-      "stroke": "#0D32B2",
+      "fill": "B4",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -484,7 +485,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -497,17 +498,17 @@
       "id": "How this is rendered.only if root is not sequence",
       "type": "rectangle",
       "pos": {
-        "x": 817,
-        "y": 1254
+        "x": 574,
+        "y": 777
       },
-      "width": 1344,
-      "height": 80,
+      "width": 921,
+      "height": 59,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 0,
       "borderRadius": 0,
-      "fill": "#DEE1EB",
-      "stroke": "#0D32B2",
+      "fill": "N5",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -524,12 +525,13 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
       "labelWidth": 180,
       "labelHeight": 21,
+      "labelFill": "N5",
       "labelPosition": "INSIDE_TOP_LEFT",
       "zIndex": 3,
       "level": 2
@@ -538,17 +540,17 @@
       "id": "How this is rendered.d2exporter.export",
       "type": "rectangle",
       "pos": {
-        "x": 1105,
-        "y": 1798
+        "x": 755,
+        "y": 1091
       },
       "width": 12,
-      "height": 292,
+      "height": 160,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#E3E9FD",
-      "stroke": "#0D32B2",
+      "fill": "B4",
+      "stroke": "B1",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -565,7 +567,7 @@
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -587,12 +589,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "'How this is rendered: {...}'",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -602,12 +604,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 111,
-          "y": 318
+          "x": 74,
+          "y": 236
         },
         {
-          "x": 361,
-          "y": 318
+          "x": 281,
+          "y": 236
         }
       ],
       "animated": false,
@@ -626,12 +628,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "tokenized AST",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -641,12 +643,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 361,
-          "y": 448
+          "x": 281,
+          "y": 306
         },
         {
-          "x": 111,
-          "y": 448
+          "x": 74,
+          "y": 306
         }
       ],
       "animated": false,
@@ -665,12 +667,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "compile AST",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -680,12 +682,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 111,
-          "y": 578
+          "x": 74,
+          "y": 376
         },
         {
-          "x": 611,
-          "y": 578
+          "x": 445,
+          "y": 376
         }
       ],
       "animated": false,
@@ -704,12 +706,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "objects and edges",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -719,12 +721,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 611,
-          "y": 904
+          "x": 445,
+          "y": 582
         },
         {
-          "x": 111,
-          "y": 904
+          "x": 74,
+          "y": 582
         }
       ],
       "animated": false,
@@ -743,12 +745,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "run layout engines",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -758,12 +760,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 111,
-          "y": 1034
+          "x": 74,
+          "y": 652
         },
         {
-          "x": 855,
-          "y": 1034
+          "x": 602.5,
+          "y": 652
         }
       ],
       "animated": false,
@@ -782,12 +784,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "run engine on shape: sequence_diagram, temporarily remove",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -797,12 +799,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 867,
-          "y": 1164
+          "x": 614.5,
+          "y": 722
         },
         {
-          "x": 1861.5,
-          "y": 1164
+          "x": 1259.5,
+          "y": 722
         }
       ],
       "animated": false,
@@ -821,12 +823,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "run core engine on rest",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -836,12 +838,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 867,
-          "y": 1294
+          "x": 614.5,
+          "y": 821
         },
         {
-          "x": 2111,
-          "y": 1294
+          "x": 1456,
+          "y": 821
         }
       ],
       "animated": false,
@@ -860,12 +862,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "add back in sequence diagrams",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -875,12 +877,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 867,
-          "y": 1424
+          "x": 614.5,
+          "y": 891
         },
         {
-          "x": 1861.5,
-          "y": 1424
+          "x": 1259.5,
+          "y": 891
         }
       ],
       "animated": false,
@@ -899,12 +901,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "diagram with correct positions and dimensions",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -914,12 +916,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 861,
-          "y": 1554
+          "x": 608.5,
+          "y": 961
         },
         {
-          "x": 111,
-          "y": 1554
+          "x": 74,
+          "y": 961
         }
       ],
       "animated": false,
@@ -938,12 +940,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "export diagram with chosen theme and renderer",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -953,12 +955,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 111,
-          "y": 1684
+          "x": 74,
+          "y": 1031
         },
         {
-          "x": 1111,
-          "y": 1684
+          "x": 761,
+          "y": 1031
         }
       ],
       "animated": false,
@@ -977,12 +979,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "get theme styles",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -992,12 +994,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1117,
-          "y": 1814
+          "x": 767,
+          "y": 1101
         },
         {
-          "x": 1361,
-          "y": 1814
+          "x": 917.5,
+          "y": 1101
         }
       ],
       "animated": false,
@@ -1016,12 +1018,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "render to SVG",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -1031,12 +1033,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1117,
-          "y": 1944
+          "x": 767,
+          "y": 1171
         },
         {
-          "x": 1611,
-          "y": 1944
+          "x": 1074.5,
+          "y": 1171
         }
       ],
       "animated": false,
@@ -1055,12 +1057,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "resulting SVG",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -1070,12 +1072,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1105,
-          "y": 2074
+          "x": 755,
+          "y": 1241
         },
         {
-          "x": 111,
-          "y": 2074
+          "x": 74,
+          "y": 1241
         }
       ],
       "animated": false,
@@ -1094,12 +1096,12 @@
       "opacity": 1,
       "strokeDash": 6,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B2",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -1109,12 +1111,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 111,
-          "y": 188
+          "x": 74,
+          "y": 166
         },
         {
-          "x": 111,
-          "y": 2204
+          "x": 74,
+          "y": 1311
         }
       ],
       "animated": false,
@@ -1133,12 +1135,12 @@
       "opacity": 1,
       "strokeDash": 6,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B2",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -1148,12 +1150,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 361,
-          "y": 188
+          "x": 281,
+          "y": 166
         },
         {
-          "x": 361,
-          "y": 2204
+          "x": 281,
+          "y": 1311
         }
       ],
       "animated": false,
@@ -1172,12 +1174,12 @@
       "opacity": 1,
       "strokeDash": 6,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B2",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -1187,12 +1189,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 611,
-          "y": 188
+          "x": 445,
+          "y": 166
         },
         {
-          "x": 611,
-          "y": 2204
+          "x": 445,
+          "y": 1311
         }
       ],
       "animated": false,
@@ -1211,12 +1213,12 @@
       "opacity": 1,
       "strokeDash": 6,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B2",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -1226,12 +1228,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 861,
-          "y": 188
+          "x": 608.5,
+          "y": 166
         },
         {
-          "x": 861,
-          "y": 2204
+          "x": 608.5,
+          "y": 1311
         }
       ],
       "animated": false,
@@ -1250,12 +1252,12 @@
       "opacity": 1,
       "strokeDash": 6,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B2",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -1265,12 +1267,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1111,
-          "y": 188
+          "x": 761,
+          "y": 166
         },
         {
-          "x": 1111,
-          "y": 2204
+          "x": 761,
+          "y": 1311
         }
       ],
       "animated": false,
@@ -1289,12 +1291,12 @@
       "opacity": 1,
       "strokeDash": 6,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B2",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -1304,12 +1306,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1361,
-          "y": 188
+          "x": 917.5,
+          "y": 166
         },
         {
-          "x": 1361,
-          "y": 2204
+          "x": 917.5,
+          "y": 1311
         }
       ],
       "animated": false,
@@ -1328,12 +1330,12 @@
       "opacity": 1,
       "strokeDash": 6,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B2",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -1343,12 +1345,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1611,
-          "y": 188
+          "x": 1074.5,
+          "y": 166
         },
         {
-          "x": 1611,
-          "y": 2204
+          "x": 1074.5,
+          "y": 1311
         }
       ],
       "animated": false,
@@ -1367,12 +1369,12 @@
       "opacity": 1,
       "strokeDash": 6,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B2",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -1382,12 +1384,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1861.5,
-          "y": 188
+          "x": 1259.5,
+          "y": 166
         },
         {
-          "x": 1861.5,
-          "y": 2204
+          "x": 1259.5,
+          "y": 1311
         }
       ],
       "animated": false,
@@ -1406,12 +1408,12 @@
       "opacity": 1,
       "strokeDash": 6,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B2",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -1421,12 +1423,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 2111,
-          "y": 188
+          "x": 1456,
+          "y": 166
         },
         {
-          "x": 2111,
-          "y": 2204
+          "x": 1456,
+          "y": 1311
         }
       ],
       "animated": false,
@@ -1434,5 +1436,45 @@
       "icon": null,
       "zIndex": 1
     }
-  ]
+  ],
+  "root": {
+    "id": "",
+    "type": "",
+    "pos": {
+      "x": 0,
+      "y": 0
+    },
+    "width": 0,
+    "height": 0,
+    "opacity": 0,
+    "strokeDash": 0,
+    "strokeWidth": 0,
+    "borderRadius": 0,
+    "fill": "N7",
+    "stroke": "",
+    "shadow": false,
+    "3d": false,
+    "multiple": false,
+    "double-border": false,
+    "tooltip": "",
+    "link": "",
+    "icon": null,
+    "iconPosition": "",
+    "blend": false,
+    "fields": null,
+    "methods": null,
+    "columns": null,
+    "label": "",
+    "fontSize": 0,
+    "fontFamily": "",
+    "language": "",
+    "color": "",
+    "italic": false,
+    "bold": false,
+    "underline": false,
+    "labelWidth": 0,
+    "labelHeight": 0,
+    "zIndex": 0,
+    "level": 0
+  }
 }

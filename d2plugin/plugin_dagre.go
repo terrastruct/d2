@@ -66,6 +66,8 @@ func (p dagrePlugin) Info(ctx context.Context) (*PluginInfo, error) {
 
 	return &PluginInfo{
 		Name:      "dagre",
+		Type:      "bundled",
+		Features:  []PluginFeature{},
 		ShortHelp: "The directed graph layout library Dagre",
 		LongHelp: fmt.Sprintf(`dagre is a directed graph layout library for JavaScript.
 See https://d2lang.com/tour/dagre for more.

@@ -128,7 +128,7 @@ func test(t *testing.T, textPath, text string) {
 			t.Fatal(err)
 		}
 
-		_, err = d2exporter.Export(ctx, g, 0, nil)
+		_, err = d2exporter.Export(ctx, g, nil)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -168,6 +168,10 @@ func testPinned(t *testing.T, outDir string) {
 		{
 			name: "orientation",
 			text: "a: {\n  b\n  c\n }\n  a <- a.c\n  a.b -> a\n",
+		},
+		{
+			name: "cannot create edge between boards",
+			text: `"" <-> ""`,
 		},
 	}
 

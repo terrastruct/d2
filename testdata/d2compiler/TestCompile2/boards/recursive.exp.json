@@ -1,6 +1,7 @@
 {
   "graph": {
     "name": "",
+    "isFolderOnly": false,
     "ast": {
       "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-18:0:145",
       "nodes": [
@@ -379,6 +380,7 @@
     "layers": [
       {
         "name": "one",
+        "isFolderOnly": false,
         "ast": {
           "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-18:0:145",
           "nodes": [
@@ -757,6 +759,7 @@
       },
       {
         "name": "two",
+        "isFolderOnly": false,
         "ast": {
           "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-18:0:145",
           "nodes": [
@@ -1135,6 +1138,7 @@
         "steps": [
           {
             "name": "seinfeld",
+            "isFolderOnly": false,
             "ast": {
               "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-18:0:145",
               "nodes": [
@@ -1513,6 +1517,7 @@
           },
           {
             "name": "missoula",
+            "isFolderOnly": false,
             "ast": {
               "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-18:0:145",
               "nodes": [

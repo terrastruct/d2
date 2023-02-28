@@ -1,6 +1,7 @@
 {
   "graph": {
     "name": "",
+    "isFolderOnly": false,
     "ast": {
       "range": "d2/testdata/d2oracle/TestMove/full_edge_slice.d2,0:0:0-6:0:33",
       "nodes": [

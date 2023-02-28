@@ -1,6 +1,7 @@
 {
   "graph": {
     "name": "",
+    "isFolderOnly": false,
     "ast": {
       "range": "d2/testdata/d2compiler/TestCompile/edge_chain.d2,0:0:0-2:0:57",
       "nodes": [

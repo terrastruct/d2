@@ -30,7 +30,10 @@ var setupJS string
 //go:embed dagre.js
 var dagreJS string
 
-const MIN_SEGMENT_LEN = 10
+const (
+	MIN_SEGMENT_LEN = 10
+	MIN_RANK_SEP    = 60
+)
 
 type ConfigurableOpts struct {
 	NodeSep int `json:"nodesep"`
@@ -39,7 +42,7 @@ type ConfigurableOpts struct {
 
 var DefaultOpts = ConfigurableOpts{
 	NodeSep: 60,
-	EdgeSep: 40,
+	EdgeSep: 20,
 }
 
 type DagreNode struct {
@@ -104,6 +107,25 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		rootAttrs.rankdir = "TB"
 	}
 
+	maxContainerLabelHeight := 0
+	for _, obj := range g.Objects {
+		if len(obj.ChildrenArray) == 0 || obj.Parent == g.Root {
+			continue
+		}
+		if obj.LabelHeight != nil {
+			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, *obj.LabelHeight+label.PADDING)
+		}
+
+		if obj.Attributes.Icon != nil && obj.Attributes.Shape.Value != d2target.ShapeImage {
+			contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(obj.Width), float64(obj.Height))
+			shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[obj.Attributes.Shape.Value]
+			s := shape.NewShape(shapeType, contentBox)
+			iconSize := d2target.GetIconSize(s.GetInnerBox(), string(label.InsideTopLeft))
+			// Since dagre container labels are pushed up, we don't want a child container to collide
+			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, (iconSize+label.PADDING*2)*2)
+		}
+	}
+
 	maxLabelSize := 0
 	for _, edge := range g.Edges {
 		size := edge.LabelDimensions.Width
@@ -112,7 +134,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 		maxLabelSize = go2.Max(maxLabelSize, size)
 	}
-	rootAttrs.ranksep = go2.Max(100, maxLabelSize+40)
+	rootAttrs.ranksep = go2.Max(go2.Max(100, maxLabelSize+40), maxContainerLabelHeight)
 
 	configJS := setGraphAttrs(rootAttrs)
 	if _, err := vm.RunString(configJS); err != nil {
@@ -128,6 +150,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		height := obj.Height
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
+				height += float64(*obj.LabelHeight) + label.PADDING
+			}
+			if len(obj.ChildrenArray) > 0 {
 				height += float64(*obj.LabelHeight) + label.PADDING
 			}
 		}
@@ -191,7 +216,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if len(obj.ChildrenArray) > 0 {
-				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+				obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
 			} else if obj.Attributes.Shape.Value == d2target.ShapeImage {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
 				// remove the extra height we added to the node when passing to dagre
@@ -203,7 +228,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 		if obj.Attributes.Icon != nil {
-			obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			if len(obj.ChildrenArray) > 0 {
+				obj.IconPosition = go2.Pointer(string(label.OutsideTopLeft))
+				obj.LabelPosition = go2.Pointer(string(label.OutsideTopRight))
+			} else {
+				obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
 		}
 	}
 
@@ -248,6 +278,118 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				}
 			}
 		}
+		points = points[startIndex : endIndex+1]
+		points[0] = start
+		points[len(points)-1] = end
+
+		edge.Route = points
+	}
+
+	for _, obj := range g.Objects {
+		if obj.LabelHeight == nil || len(obj.ChildrenArray) <= 0 {
+			continue
+		}
+
+		// usually you don't want to take away here more than what was added, which is the label height
+		// however, if the label height is more than the ranksep/2, we'll have no padding around children anymore
+		// so cap the amount taken off at ranksep/2
+		subtract := float64(go2.Min(rootAttrs.ranksep/2, *obj.LabelHeight+label.PADDING))
+
+		obj.Height -= subtract
+
+		// If the edge is connected to two descendants that are about to be downshifted, their whole route gets downshifted
+		movedEdges := make(map[*d2graph.Edge]struct{})
+		for _, e := range g.Edges {
+			isSrcDesc := e.Src.IsDescendantOf(obj)
+			isDstDesc := e.Dst.IsDescendantOf(obj)
+
+			if isSrcDesc && isDstDesc {
+				stepSize := subtract
+				if e.Src != obj || e.Dst != obj {
+					stepSize /= 2.
+				}
+				movedEdges[e] = struct{}{}
+				for _, p := range e.Route {
+					p.Y += stepSize
+				}
+			}
+		}
+
+		q := []*d2graph.Object{obj}
+		// Downshift descendants and edges that have one endpoint connected to a descendant
+		for len(q) > 0 {
+			curr := q[0]
+			q = q[1:]
+
+			stepSize := subtract
+			// The object itself needs to move down the height it was just subtracted
+			// all descendants move half, to maintain vertical padding
+			if curr != obj {
+				stepSize /= 2.
+			}
+			curr.TopLeft.Y += stepSize
+			almostEqual := func(a, b float64) bool {
+				return b-1 <= a && a <= b+1
+			}
+			shouldMove := func(p *geo.Point) bool {
+				if curr != obj {
+					return true
+				}
+				if isHorizontal {
+					// Only move horizontal edges if they are connected to the top side of the shrinking container
+					return almostEqual(p.Y, obj.TopLeft.Y-stepSize)
+				} else {
+					// Edge should only move if it's not connected to the bottom side of the shrinking container
+					return !almostEqual(p.Y, obj.TopLeft.Y+obj.Height)
+				}
+			}
+			for _, e := range g.Edges {
+				if _, ok := movedEdges[e]; ok {
+					continue
+				}
+				moveWholeEdge := false
+				if e.Src == curr {
+					// Don't move src points on side of container
+					if almostEqual(e.Route[0].X, obj.TopLeft.X) || almostEqual(e.Route[0].X, obj.TopLeft.X+obj.Width) {
+						// Unless the dst is also on a container
+						if e.Dst.LabelHeight == nil || len(e.Dst.ChildrenArray) <= 0 {
+							continue
+						}
+					}
+					if shouldMove(e.Route[0]) {
+						if isHorizontal && e.Src.Parent != g.Root && e.Dst.Parent != g.Root {
+							moveWholeEdge = true
+						} else {
+							e.Route[0].Y += stepSize
+						}
+					}
+				}
+				if !moveWholeEdge && e.Dst == curr {
+					if shouldMove(e.Route[len(e.Route)-1]) {
+						if isHorizontal && e.Dst.Parent != g.Root && e.Src.Parent != g.Root {
+							moveWholeEdge = true
+						} else {
+							e.Route[len(e.Route)-1].Y += stepSize
+						}
+					}
+				}
+
+				if moveWholeEdge {
+					for _, p := range e.Route {
+						p.Y += stepSize / 2.
+					}
+					movedEdges[e] = struct{}{}
+				}
+
+			}
+			q = append(q, curr.ChildrenArray...)
+		}
+	}
+
+	for _, edge := range g.Edges {
+		points := edge.Route
+		startIndex, endIndex := 0, len(points)-1
+		start, end := points[startIndex], points[endIndex]
 
 		// arrowheads can appear broken if segments are very short from dagre routing a point just outside the shape
 		// to fix this, we try extending the previous segment into the shape instead of having a very short segment
@@ -295,7 +437,36 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		// trace the edge to the specific shape's border
 		points[startIndex] = shape.TraceToShapeBorder(srcShape, start, points[startIndex+1])
-		points[endIndex] = shape.TraceToShapeBorder(dstShape, end, points[endIndex-1])
+
+		// if an edge to a container runs into its label, stop the edge at the label instead
+		overlapsContainerLabel := false
+		if edge.Dst.IsContainer() && edge.Dst.Attributes.Label.Value != "" {
+			// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
+			labelWidth := float64(*edge.Dst.LabelWidth)
+			labelHeight := float64(*edge.Dst.LabelHeight)
+			labelTL := label.Position(*edge.Dst.LabelPosition).
+				GetPointOnBox(edge.Dst.Box, label.PADDING, labelWidth, labelHeight)
+
+			endingSegment := geo.Segment{Start: points[endIndex-1], End: points[endIndex]}
+			labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
+			// add left/right padding to box
+			labelBox.TopLeft.X -= label.PADDING
+			labelBox.Width += 2 * label.PADDING
+			if intersections := labelBox.Intersections(endingSegment); len(intersections) > 0 {
+				overlapsContainerLabel = true
+				// move ending segment to label intersection point
+				points[endIndex] = intersections[0]
+				endingSegment.End = intersections[0]
+				// if the segment becomes too short, just merge it with the previous segment
+				if endIndex-1 > 0 && endingSegment.Length() < MIN_SEGMENT_LEN {
+					points[endIndex-1] = points[endIndex]
+					endIndex--
+				}
+			}
+		}
+		if !overlapsContainerLabel {
+			points[endIndex] = shape.TraceToShapeBorder(dstShape, end, points[endIndex-1])
+		}
 		points = points[startIndex : endIndex+1]
 
 		// build a curved path from the dagre route

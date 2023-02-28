@@ -5,6 +5,7 @@ import (
 
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/svg"
+	"oss.terrastruct.com/util-go/go2"
 )
 
 type shapeParallelogram struct {
@@ -14,12 +15,14 @@ type shapeParallelogram struct {
 const parallelWedgeWidth = 26.
 
 func NewParallelogram(box *geo.Box) Shape {
-	return shapeParallelogram{
+	shape := shapeParallelogram{
 		baseShape: &baseShape{
 			Type: PARALLELOGRAM_TYPE,
 			Box:  box,
 		},
 	}
+	shape.FullShape = go2.Pointer(Shape(shape))
+	return shape
 }
 
 func (s shapeParallelogram) GetInnerBox() *geo.Box {

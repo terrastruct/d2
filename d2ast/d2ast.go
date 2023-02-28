@@ -593,8 +593,11 @@ type Key struct {
 	Value   ValueBox  `json:"value"`
 }
 
-// TODO there's more stuff to compare
+// TODO maybe need to compare Primary
 func (mk1 *Key) Equals(mk2 *Key) bool {
+	if mk1.Ampersand != mk2.Ampersand {
+		return false
+	}
 	if (mk1.Key == nil) != (mk2.Key == nil) {
 		return false
 	}
@@ -620,6 +623,16 @@ func (mk1 *Key) Equals(mk2 *Key) bool {
 		}
 		for i, id := range mk1.Key.Path {
 			if id.Unbox().ScalarString() != mk2.Key.Path[i].Unbox().ScalarString() {
+				return false
+			}
+		}
+	}
+	if mk1.EdgeKey != nil {
+		if len(mk1.EdgeKey.Path) != len(mk2.EdgeKey.Path) {
+			return false
+		}
+		for i, id := range mk1.EdgeKey.Path {
+			if id.Unbox().ScalarString() != mk2.EdgeKey.Path[i].Unbox().ScalarString() {
 				return false
 			}
 		}

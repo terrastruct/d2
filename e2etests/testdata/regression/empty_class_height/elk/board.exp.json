@@ -1,5 +1,6 @@
 {
   "name": "",
+  "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -15,8 +16,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#0A0F25",
-      "stroke": "#FFFFFF",
+      "fill": "N1",
+      "stroke": "N7",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -44,7 +45,7 @@
       "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -52,9 +53,9 @@
       "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
-      "primaryAccentColor": "#0D32B2",
-      "secondaryAccentColor": "#4A6FF3",
-      "neutralAccentColor": "#676C7E"
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
     },
     {
       "id": "class2",
@@ -69,8 +70,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#0A0F25",
-      "stroke": "#FFFFFF",
+      "fill": "N1",
+      "stroke": "N7",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -87,7 +88,7 @@
       "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": false,
       "underline": false,
@@ -95,10 +96,50 @@
       "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
-      "primaryAccentColor": "#0D32B2",
-      "secondaryAccentColor": "#4A6FF3",
-      "neutralAccentColor": "#676C7E"
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
     }
   ],
-  "connections": []
+  "connections": [],
+  "root": {
+    "id": "",
+    "type": "",
+    "pos": {
+      "x": 0,
+      "y": 0
+    },
+    "width": 0,
+    "height": 0,
+    "opacity": 0,
+    "strokeDash": 0,
+    "strokeWidth": 0,
+    "borderRadius": 0,
+    "fill": "N7",
+    "stroke": "",
+    "shadow": false,
+    "3d": false,
+    "multiple": false,
+    "double-border": false,
+    "tooltip": "",
+    "link": "",
+    "icon": null,
+    "iconPosition": "",
+    "blend": false,
+    "fields": null,
+    "methods": null,
+    "columns": null,
+    "label": "",
+    "fontSize": 0,
+    "fontFamily": "",
+    "language": "",
+    "color": "",
+    "italic": false,
+    "bold": false,
+    "underline": false,
+    "labelWidth": 0,
+    "labelHeight": 0,
+    "zIndex": 0,
+    "level": 0
+  }
 }

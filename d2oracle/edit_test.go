@@ -696,6 +696,151 @@ square.style.opacity: 0.2
 			},
 		},
 		{
+			name: "set_position",
+			text: `square
+`,
+			key:   `square.top`,
+			value: go2.Pointer(`200`),
+			exp: `square: {top: 200}
+`,
+		},
+		{
+			name: "replace_position",
+			text: `square: {
+  width: 100
+  top: 32
+	left: 44
+}
+`,
+			key:   `square.top`,
+			value: go2.Pointer(`200`),
+			exp: `square: {
+  width: 100
+  top: 200
+  left: 44
+}
+`,
+		},
+		{
+			name: "set_dimensions",
+			text: `square
+`,
+			key:   `square.width`,
+			value: go2.Pointer(`200`),
+			exp: `square: {width: 200}
+`,
+		},
+		{
+			name: "replace_dimensions",
+			text: `square: {
+  width: 100
+}
+`,
+			key:   `square.width`,
+			value: go2.Pointer(`200`),
+			exp: `square: {
+  width: 200
+}
+`,
+		},
+		{
+			name: "set_tooltip",
+			text: `square
+`,
+			key:   `square.tooltip`,
+			value: go2.Pointer(`y`),
+			exp: `square: {tooltip: y}
+`,
+		},
+		{
+			name: "replace_tooltip",
+			text: `square: {
+  tooltip: x
+}
+`,
+			key:   `square.tooltip`,
+			value: go2.Pointer(`y`),
+			exp: `square: {
+  tooltip: y
+}
+`,
+		},
+		{
+			name: "replace_link",
+			text: `square: {
+  link: https://google.com
+}
+`,
+			key:   `square.link`,
+			value: go2.Pointer(`https://apple.com`),
+			exp: `square: {
+  link: https://apple.com
+}
+`,
+		},
+		{
+			name: "replace_arrowhead",
+			text: `x -> y: {
+  target-arrowhead.shape: diamond
+}
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`circle`),
+			exp: `x -> y: {
+  target-arrowhead.shape: circle
+}
+`,
+		},
+		{
+			name: "replace_arrowhead_map",
+			text: `x -> y: {
+  target-arrowhead: {
+    shape: diamond
+  }
+}
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`circle`),
+			exp: `x -> y: {
+  target-arrowhead: {
+    shape: circle
+  }
+}
+`,
+		},
+		{
+			name: "replace_edge_style_map",
+			text: `x -> y: {
+  style: {
+    stroke-dash: 3
+  }
+}
+`,
+			key:   `(x -> y)[0].style.stroke-dash`,
+			value: go2.Pointer(`4`),
+			exp: `x -> y: {
+  style: {
+    stroke-dash: 4
+  }
+}
+`,
+		},
+		{
+			name: "replace_edge_style",
+			text: `x -> y: {
+  style.stroke-width: 1
+  style.stroke-dash: 4
+}
+`,
+			key:   `(x -> y)[0].style.stroke-dash`,
+			value: go2.Pointer(`3`),
+			exp: `x -> y: {
+  style.stroke-width: 1
+  style.stroke-dash: 3
+}
+`,
+		},
+		{
 			name: "label_unset",
 			text: `square: "Always try to do things in chronological order; it's less confusing that way."
 `,
@@ -1027,6 +1172,57 @@ a.b -> a.c: {style.animated: true}
 `,
 		},
 		{
+			name: "edge_set_arrowhead",
+			text: `x -> y
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`diamond`),
+
+			exp: `x -> y: {target-arrowhead.shape: diamond}
+`,
+		},
+		{
+			name: "edge_replace_arrowhead",
+			text: `x -> y: {target-arrowhead.shape: circle}
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`diamond`),
+
+			exp: `x -> y: {target-arrowhead.shape: diamond}
+`,
+		},
+		{
+			name: "edge_replace_arrowhead_indexed",
+			text: `x -> y
+(x -> y)[0].target-arrowhead.shape: circle
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`diamond`),
+
+			exp: `x -> y
+(x -> y)[0].target-arrowhead.shape: diamond
+`,
+		},
+		{
+			name: "edge_merge_arrowhead",
+			text: `x -> y: {
+	target-arrowhead: {
+		label: 1
+  }
+}
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`diamond`),
+
+			exp: `x -> y: {
+  target-arrowhead: {
+    label: 1
+    shape: diamond
+  }
+}
+`,
+		},
+		{
 			name: "edge_merge_style",
 			text: `x -> y: {
 	style: {
@@ -1043,6 +1239,30 @@ a.b -> a.c: {style.animated: true}
     animated: true
   }
 }
+`,
+		},
+		{
+			name: "edge_flat_merge_arrowhead",
+			text: `x -> y -> z
+(x -> y)[0].target-arrowhead.shape: diamond
+`,
+			key:   `(x -> y)[0].target-arrowhead.shape`,
+			value: go2.Pointer(`circle`),
+
+			exp: `x -> y -> z
+(x -> y)[0].target-arrowhead.shape: circle
+`,
+		},
+		{
+			name: "edge_index_merge_style",
+			text: `x -> y -> z
+(x -> y)[0].style.opacity: 0.4
+`,
+			key:   `(x -> y)[0].style.opacity`,
+			value: go2.Pointer(`0.5`),
+
+			exp: `x -> y -> z
+(x -> y)[0].style.opacity: 0.5
 `,
 		},
 		{
@@ -1756,6 +1976,20 @@ b
 			},
 		},
 		{
+			name: "out_of_newline_container",
+
+			text: `"a\n": {
+  b
+}
+`,
+			key:    `"a\n".b`,
+			newKey: `b`,
+
+			exp: `"a\n"
+b
+`,
+		},
+		{
 			name: "partial_slice",
 
 			text: `a: {
@@ -1988,6 +2222,50 @@ c: {
 			},
 		},
 		{
+			name: "underscore-connection",
+
+			text: `a: {
+  b
+
+  _.c.d -> b
+}
+
+c: {
+  d
+}
+`,
+			key:    `a.b`,
+			newKey: `c.b`,
+
+			exp: `a: {
+  _.c.d -> _.c.b
+}
+
+c: {
+  d
+  b
+}
+`,
+		},
+
+		{
+			name: "nested-underscore-move-out",
+			text: `guitar: {
+	books: {
+		_._.pipe
+  }
+}
+`,
+			key:    `pipe`,
+			newKey: `guitar.pipe`,
+
+			exp: `guitar: {
+  books
+  pipe
+}
+`,
+		},
+		{
 			name: "flat_middle_container",
 
 			text: `a.b.c
@@ -2162,7 +2440,7 @@ a.b.c: {
 `,
 		},
 		{
-			name: "near",
+			name: "invalid-near",
 
 			text: `x: {
   near: y
@@ -2174,6 +2452,33 @@ y
 
 			exp: `x: {
   near: x.y
+  y
+}
+`,
+			expErr: `failed to move: "y" to "x.y": failed to recompile:
+x: {
+  near: x.y
+  y
+}
+
+d2/testdata/d2oracle/TestMove/invalid-near.d2:2:9: near keys cannot be set to an descendant`,
+		},
+		{
+			name: "near",
+
+			text: `x: {
+  near: y
+}
+a
+y
+`,
+			key:    `y`,
+			newKey: `a.y`,
+
+			exp: `x: {
+  near: a.y
+}
+a: {
   y
 }
 `,
@@ -3006,6 +3311,22 @@ d
 }
 `,
 		},
+		{
+			name: "container_multiple_refs_with_underscore",
+
+			text: `a
+b: {
+  _.a
+}
+`,
+			key:    `a`,
+			newKey: `b.a`,
+
+			exp: `b: {
+  a
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -3152,6 +3473,41 @@ c -> d
 `,
 		},
 		{
+			name: "only-underscore",
+
+			text: `guitar: {
+	books: {
+    _._.pipe
+  }
+}
+`,
+			key: `pipe`,
+
+			exp: `guitar: {
+  books
+}
+`,
+		},
+		{
+			name: "only-underscore-nested",
+
+			text: `guitar: {
+	books: {
+		_._.pipe: {
+      a
+    }
+  }
+}
+`,
+			key: `pipe`,
+
+			exp: `guitar: {
+  books
+}
+a
+`,
+		},
+		{
 			name: "node_in_edge",
 
 			text: `x -> y -> z -> q -> p
@@ -3294,6 +3650,71 @@ x
 `,
 		},
 		{
+			name: "arrowhead",
+
+			text: `x -> y: {
+  target-arrowhead.shape: diamond
+}
+`,
+			key: `(x -> y)[0].target-arrowhead`,
+
+			exp: `x -> y
+`,
+		},
+		{
+			name: "arrowhead_shape",
+
+			text: `x -> y: {
+  target-arrowhead.shape: diamond
+}
+`,
+			key: `(x -> y)[0].target-arrowhead.shape`,
+
+			exp: `x -> y
+`,
+		},
+		{
+			name: "arrowhead_label",
+
+			text: `x -> y: {
+  target-arrowhead.shape: diamond
+  target-arrowhead.label: 1
+}
+`,
+			key: `(x -> y)[0].target-arrowhead.label`,
+
+			exp: `x -> y: {
+  target-arrowhead.shape: diamond
+}
+`,
+		},
+		{
+			name: "arrowhead_map",
+
+			text: `x -> y: {
+	target-arrowhead: {
+    shape: diamond
+  }
+}
+`,
+			key: `(x -> y)[0].target-arrowhead.shape`,
+
+			exp: `x -> y
+`,
+		},
+		{
+			name: "edge-only-style",
+
+			text: `x -> y: {
+  style.stroke: red
+}
+`,
+			key: `(x -> y)[0].style.stroke`,
+
+			exp: `x -> y
+`,
+		},
+		{
 			name: "edge_key_style",
 
 			text: `x -> y
@@ -3419,6 +3840,37 @@ y
 
 			exp: `x
 y
+`,
+		},
+		{
+			name: "delete_container_of_near",
+
+			text: `direction: down
+first input -> start game -> game loop
+
+game loop: {
+  direction: down
+  input -> increase bird top velocity
+
+  move bird -> move pipes -> render
+
+  render -> no collision -> wait 16 milliseconds -> move bird
+  render -> collision detected -> game over
+  no collision.near: game loop.collision detected
+}
+`,
+			key: `game loop`,
+
+			exp: `direction: down
+first input -> start game
+
+input -> increase bird top velocity
+
+move bird -> move pipes -> render
+
+render -> no collision -> wait 16 milliseconds -> move bird
+render -> collision detected -> game over
+no collision.near: collision detected
 `,
 		},
 		{
@@ -4341,6 +4793,64 @@ B
 A -> B
 `,
 		},
+		{
+			name: "width",
+
+			text: `x: {
+  width: 200
+}
+`,
+			key: `x.width`,
+
+			exp: `x
+`,
+		},
+		{
+			name: "left",
+
+			text: `x: {
+  left: 200
+}
+`,
+			key: `x.left`,
+
+			exp: `x
+`,
+		},
+		{
+			name: "chaos_1",
+
+			text: `cm: {shape: cylinder}
+cm <-> cm: {source-arrowhead.shape: cf-one-required}
+mt: z
+cdpdxz
+
+bymdyk: hdzuj {shape: class}
+
+bymdyk <-> bymdyk
+cm
+
+cm <-> bymdyk: {
+  source-arrowhead.shape: cf-many-required
+  target-arrowhead.shape: arrow
+}
+bymdyk <-> cdpdxz
+
+bymdyk -> cm: nk {
+  target-arrowhead.shape: diamond
+  target-arrowhead.label: 1
+}
+`,
+			key: `bymdyk`,
+
+			exp: `cm: {shape: cylinder}
+cm <-> cm: {source-arrowhead.shape: cf-one-required}
+mt: z
+cdpdxz
+
+cm
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -4701,6 +5211,46 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
 
 			exp: `{
   "x.x": "x"
+}`,
+		},
+		{
+			name: "nested-height",
+
+			text: `x: {
+  a -> b
+  height: 200
+}
+`,
+			key: `x.height`,
+
+			exp: `null`,
+		},
+		{
+			name: "edge-style",
+
+			text: `x <-> y: {
+  target-arrowhead: circle
+  source-arrowhead: diamond
+}
+`,
+			key: `(x <-> y)[0].target-arrowhead`,
+
+			exp: `null`,
+		},
+		{
+			name: "only-reserved",
+			text: `guitar: {
+	books: {
+		_._.pipe: {
+      a
+    }
+  }
+}
+`,
+			key: `pipe`,
+
+			exp: `{
+  "pipe.a": "a"
 }`,
 		},
 		{

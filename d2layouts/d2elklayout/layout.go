@@ -9,6 +9,7 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"math"
 	"strings"
 
 	"github.com/dop251/goja"
@@ -87,9 +88,9 @@ type ConfigurableOpts struct {
 
 var DefaultOpts = ConfigurableOpts{
 	Algorithm:       "layered",
-	NodeSpacing:     100.0,
-	Padding:         "[top=75,left=75,bottom=75,right=75]",
-	EdgeNodeSpacing: 50.0,
+	NodeSpacing:     70.0,
+	Padding:         "[top=50,left=50,bottom=50,right=50]",
+	EdgeNodeSpacing: 40.0,
 	SelfLoopSpacing: 50.0,
 }
 
@@ -101,6 +102,9 @@ type elkOpts struct {
 	InlineEdgeLabels             bool   `json:"elk.edgeLabels.inline,omitempty"`
 	ForceNodeModelOrder          bool   `json:"elk.layered.crossingMinimization.forceNodeModelOrder,omitempty"`
 	ConsiderModelOrder           string `json:"elk.layered.considerModelOrder.strategy,omitempty"`
+
+	NodeSizeConstraints string `json:"elk.nodeSize.constraints,omitempty"`
+	NodeSizeMinimum     string `json:"elk.nodeSize.minimum,omitempty"`
 
 	ConfigurableOpts
 }
@@ -132,7 +136,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	elkGraph := &ELKGraph{
 		ID: "root",
 		LayoutOptions: &elkOpts{
-			Thoroughness:                 20,
+			Thoroughness:                 8,
 			EdgeEdgeBetweenLayersSpacing: 50,
 			HierarchyHandling:            "INCLUDE_CHILDREN",
 			ConsiderModelOrder:           "NODES_AND_EDGES",
@@ -173,31 +177,59 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 	walk(g.Root, nil, func(obj, parent *d2graph.Object) {
 		height := obj.Height
+		width := obj.Width
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
 				height += float64(*obj.LabelHeight) + label.PADDING
 			}
+			width = go2.Max(width, float64(*obj.LabelWidth))
 		}
 
 		n := &ELKNode{
 			ID:     obj.AbsID(),
-			Width:  obj.Width,
+			Width:  width,
 			Height: height,
 		}
 
 		if len(obj.ChildrenArray) > 0 {
 			n.LayoutOptions = &elkOpts{
 				ForceNodeModelOrder:          true,
-				Thoroughness:                 20,
+				Thoroughness:                 8,
 				EdgeEdgeBetweenLayersSpacing: 50,
 				HierarchyHandling:            "INCLUDE_CHILDREN",
 				ConsiderModelOrder:           "NODES_AND_EDGES",
+				// Why is it (height, width)? I have no clue, but it works.
+				NodeSizeMinimum: fmt.Sprintf("(%d, %d)", int(math.Ceil(height)), int(math.Ceil(width))),
 				ConfigurableOpts: ConfigurableOpts{
 					NodeSpacing:     opts.NodeSpacing,
 					EdgeNodeSpacing: opts.EdgeNodeSpacing,
 					SelfLoopSpacing: opts.SelfLoopSpacing,
 					Padding:         opts.Padding,
 				},
+			}
+			// Only set if specified.
+			// There's a bug where if it's the node label dimensions that set the NodeSizeMinimum,
+			// then suddenly it's reversed back to (width, height). I must be missing something
+			if obj.Attributes.Width != nil || obj.Attributes.Height != nil {
+				n.LayoutOptions.NodeSizeConstraints = "MINIMUM_SIZE"
+			}
+
+			if n.LayoutOptions.Padding == DefaultOpts.Padding {
+				// Default
+				paddingTop := 50
+				if obj.LabelHeight != nil {
+					paddingTop = go2.Max(paddingTop, *obj.LabelHeight+label.PADDING)
+				}
+				if obj.Attributes.Icon != nil && obj.Attributes.Shape.Value != d2target.ShapeImage {
+					contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(n.Width), float64(n.Height))
+					shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[obj.Attributes.Shape.Value]
+					s := shape.NewShape(shapeType, contentBox)
+					iconSize := d2target.GetIconSize(s.GetInnerBox(), string(label.InsideTopLeft))
+					paddingTop = go2.Max(paddingTop, iconSize+label.PADDING*2)
+				}
+				n.LayoutOptions.Padding = fmt.Sprintf("[top=%d,left=50,bottom=50,right=50]",
+					paddingTop,
+				)
 			}
 		}
 
@@ -310,7 +342,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 		if obj.Attributes.Icon != nil {
-			obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			if len(obj.ChildrenArray) > 0 {
+				obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
+				obj.LabelPosition = go2.Pointer(string(label.InsideTopRight))
+			} else {
+				obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
 		}
 
 		byID[obj.AbsID()] = obj

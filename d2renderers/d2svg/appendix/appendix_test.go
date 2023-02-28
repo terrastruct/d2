@@ -84,14 +84,31 @@ payment processor behind the scenes: {
 x -> y
 `,
 		},
+		{
+			name:    "links dark",
+			themeID: 200,
+			script: `x: { link: https://d2lang.com }
+			y: { link: https://fosny.eu; tooltip: Gee, I feel kind of LIGHT in the head now,\nknowing I can't make my satellite dish PAYMENTS! }
+x -> y
+`,
+		},
+		{
+			name: "tooltip_fill",
+			script: `x: { tooltip: Total abstinence is easier than perfect moderation }
+y: { tooltip: Gee, I feel kind of LIGHT in the head now,\nknowing I can't make my satellite dish PAYMENTS! }
+x -> y
+style.fill: PaleVioletRed
+`,
+		},
 	}
 	runa(t, tcs)
 }
 
 type testCase struct {
-	name   string
-	script string
-	skip   bool
+	name    string
+	themeID int64
+	script  string
+	skip    bool
 }
 
 func runa(t *testing.T, tcs []testCase) {
@@ -119,9 +136,8 @@ func run(t *testing.T, tc testCase) {
 	}
 
 	diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
-		Ruler:   ruler,
-		ThemeID: 0,
-		Layout:  d2dagrelayout.DefaultLayout,
+		Ruler:  ruler,
+		Layout: d2dagrelayout.DefaultLayout,
 	})
 	if !tassert.Nil(t, err) {
 		return
@@ -131,7 +147,8 @@ func run(t *testing.T, tc testCase) {
 	pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
 
 	svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad: d2svg.DEFAULT_PADDING,
+		Pad:     d2svg.DEFAULT_PADDING,
+		ThemeID: tc.themeID,
 	})
 	assert.Success(t, err)
 	svgBytes = appendix.Append(diagram, ruler, svgBytes)

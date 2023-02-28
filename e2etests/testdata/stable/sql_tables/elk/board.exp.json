@@ -1,5 +1,6 @@
 {
   "name": "",
+  "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -15,8 +16,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#0A0F25",
-      "stroke": "#FFFFFF",
+      "fill": "N1",
+      "stroke": "N7",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -174,7 +175,7 @@
       "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": true,
       "underline": false,
@@ -182,9 +183,9 @@
       "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
-      "primaryAccentColor": "#0D32B2",
-      "secondaryAccentColor": "#4A6FF3",
-      "neutralAccentColor": "#676C7E"
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
     },
     {
       "id": "products",
@@ -199,8 +200,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#0A0F25",
-      "stroke": "#FFFFFF",
+      "fill": "N1",
+      "stroke": "N7",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -330,7 +331,7 @@
       "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": true,
       "underline": false,
@@ -338,16 +339,16 @@
       "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
-      "primaryAccentColor": "#0D32B2",
-      "secondaryAccentColor": "#4A6FF3",
-      "neutralAccentColor": "#676C7E"
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
     },
     {
       "id": "orders",
       "type": "sql_table",
       "pos": {
         "x": 300,
-        "y": 328
+        "y": 308
       },
       "width": 164,
       "height": 144,
@@ -355,8 +356,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#0A0F25",
-      "stroke": "#FFFFFF",
+      "fill": "N1",
+      "stroke": "N7",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -458,7 +459,7 @@
       "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": true,
       "underline": false,
@@ -466,9 +467,9 @@
       "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
-      "primaryAccentColor": "#0D32B2",
-      "secondaryAccentColor": "#4A6FF3",
-      "neutralAccentColor": "#676C7E"
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
     },
     {
       "id": "shipments",
@@ -483,8 +484,8 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "borderRadius": 0,
-      "fill": "#0A0F25",
-      "stroke": "#FFFFFF",
+      "fill": "N1",
+      "stroke": "N7",
       "shadow": false,
       "3d": false,
       "multiple": false,
@@ -614,7 +615,7 @@
       "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#0A0F25",
+      "color": "N1",
       "italic": false,
       "bold": true,
       "underline": false,
@@ -622,9 +623,9 @@
       "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
-      "primaryAccentColor": "#0D32B2",
-      "secondaryAccentColor": "#4A6FF3",
-      "neutralAccentColor": "#676C7E"
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
     }
   ],
   "connections": [
@@ -639,12 +640,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -659,15 +660,15 @@
         },
         {
           "x": 146,
-          "y": 278
+          "y": 268
         },
         {
           "x": 341,
-          "y": 278
+          "y": 268
         },
         {
           "x": 341,
-          "y": 328
+          "y": 308
         }
       ],
       "animated": false,
@@ -686,12 +687,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -706,7 +707,7 @@
         },
         {
           "x": 382,
-          "y": 328
+          "y": 308
         }
       ],
       "animated": false,
@@ -725,12 +726,12 @@
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
-      "stroke": "#0D32B2",
+      "stroke": "B1",
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
-      "color": "#676C7E",
+      "color": "N2",
       "italic": true,
       "bold": false,
       "underline": false,
@@ -745,15 +746,15 @@
         },
         {
           "x": 606,
-          "y": 278
+          "y": 268
         },
         {
           "x": 423,
-          "y": 278
+          "y": 268
         },
         {
           "x": 423,
-          "y": 328
+          "y": 308
         }
       ],
       "animated": false,
@@ -761,5 +762,45 @@
       "icon": null,
       "zIndex": 0
     }
-  ]
+  ],
+  "root": {
+    "id": "",
+    "type": "",
+    "pos": {
+      "x": 0,
+      "y": 0
+    },
+    "width": 0,
+    "height": 0,
+    "opacity": 0,
+    "strokeDash": 0,
+    "strokeWidth": 0,
+    "borderRadius": 0,
+    "fill": "N7",
+    "stroke": "",
+    "shadow": false,
+    "3d": false,
+    "multiple": false,
+    "double-border": false,
+    "tooltip": "",
+    "link": "",
+    "icon": null,
+    "iconPosition": "",
+    "blend": false,
+    "fields": null,
+    "methods": null,
+    "columns": null,
+    "label": "",
+    "fontSize": 0,
+    "fontFamily": "",
+    "language": "",
+    "color": "",
+    "italic": false,
+    "bold": false,
+    "underline": false,
+    "labelWidth": 0,
+    "labelHeight": 0,
+    "zIndex": 0,
+    "level": 0
+  }
 }

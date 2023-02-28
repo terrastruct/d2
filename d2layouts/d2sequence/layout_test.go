@@ -407,8 +407,8 @@ func TestSelfEdges(t *testing.T) {
 		t.Fatalf("route does not end at the same actor, start at %.5f, end at %.5f", route[0].X, route[3].X)
 	}
 
-	if route[3].Y-route[0].Y != d2sequence.MIN_MESSAGE_DISTANCE {
-		t.Fatalf("expected route height to be %.f5, got %.5f", d2sequence.MIN_MESSAGE_DISTANCE, route[3].Y-route[0].Y)
+	if route[3].Y-route[0].Y != d2sequence.MIN_MESSAGE_DISTANCE*1.5 {
+		t.Fatalf("expected route height to be %.5f, got %.5f", d2sequence.MIN_MESSAGE_DISTANCE*1.5, route[3].Y-route[0].Y)
 	}
 }
 

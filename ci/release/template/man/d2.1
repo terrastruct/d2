@@ -66,6 +66,14 @@ Port listening address when used with
 .It Fl t , -theme Ar 0
 Set the diagram theme ID
 .Ns .
+.It Fl -dark-theme Ar -1
+The theme to use when the viewer's browser is in dark mode. When left unset
+.Fl -theme
+is used for both light and dark mode. Be aware that explicit styles set in D2 code will
+still be applied and this may produce unexpected results. We plan on resolving this by
+making style maps in D2 light/dark mode specific. See
+.Lk https://github.com/terrastruct/d2/issues/831
+.Ns .
 .It Fl s , -sketch Ar false
 Renders the diagram to look like it was sketched by hand
 .Ns .

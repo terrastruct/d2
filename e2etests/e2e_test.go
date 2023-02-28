@@ -24,6 +24,7 @@ import (
 	"oss.terrastruct.com/d2/d2layouts/d2near"
 	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2lib"
+	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/log"
@@ -38,6 +39,8 @@ func TestE2E(t *testing.T) {
 	t.Run("regression", testRegression)
 	t.Run("todo", testTodo)
 	t.Run("measured", testMeasured)
+	t.Run("unicode", testUnicode)
+	t.Run("root", testRoot)
 }
 
 func testSanity(t *testing.T) {
@@ -72,11 +75,14 @@ a -> c
 }
 
 type testCase struct {
-	name       string
-	script     string
-	mtexts     []*d2target.MText
-	assertions func(t *testing.T, diagram *d2target.Diagram)
-	skip       bool
+	name              string
+	script            string
+	mtexts            []*d2target.MText
+	assertions        func(t *testing.T, diagram *d2target.Diagram)
+	skip              bool
+	dagreFeatureError string
+	elkFeatureError   string
+	expErr            string
 }
 
 func runa(t *testing.T, tcs []testCase) {
@@ -113,6 +119,7 @@ func serde(t *testing.T, tc testCase, ruler *textmeasure.Ruler) {
 	var newG d2graph.Graph
 	err = d2graph.DeserializeGraph(b, &newG)
 	trequire.Nil(t, err)
+	trequire.Nil(t, d2graph.CompareSerializedGraph(g, &newG))
 }
 
 func run(t *testing.T, tc testCase) {
@@ -133,22 +140,52 @@ func run(t *testing.T, tc testCase) {
 
 	for _, layoutName := range layoutsTested {
 		var layout func(context.Context, *d2graph.Graph) error
+		var plugin d2plugin.Plugin
 		if layoutName == "dagre" {
 			layout = d2dagrelayout.DefaultLayout
+			plugin = &d2plugin.DagrePlugin
 		} else if layoutName == "elk" {
 			// If measured texts exists, we are specifically exercising text measurements, no need to run on both layouts
 			if tc.mtexts != nil {
 				continue
 			}
 			layout = d2elklayout.DefaultLayout
+			plugin = &d2plugin.ELKPlugin
 		}
-		diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
+
+		diagram, g, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
 			Ruler:         ruler,
 			MeasuredTexts: tc.mtexts,
-			ThemeID:       0,
 			Layout:        layout,
 		})
-		trequire.Nil(t, err)
+
+		if tc.expErr != "" {
+			assert.Error(t, err)
+			assert.ErrorString(t, err, tc.expErr)
+			return
+		} else {
+			assert.Success(t, err)
+		}
+
+		pluginInfo, err := plugin.Info(ctx)
+		assert.Success(t, err)
+
+		err = d2plugin.FeatureSupportCheck(pluginInfo, g)
+		switch layoutName {
+		case "dagre":
+			if tc.dagreFeatureError != "" {
+				assert.Error(t, err)
+				assert.ErrorString(t, err, tc.dagreFeatureError)
+				return
+			}
+		case "elk":
+			if tc.elkFeatureError != "" {
+				assert.Error(t, err)
+				assert.ErrorString(t, err, tc.elkFeatureError)
+				return
+			}
+		}
+		assert.Success(t, err)
 
 		if tc.assertions != nil {
 			t.Run("assertions", func(t *testing.T) {
@@ -160,7 +197,8 @@ func run(t *testing.T, tc testCase) {
 		pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
 
 		svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-			Pad: d2svg.DEFAULT_PADDING,
+			Pad:     0,
+			ThemeID: 0,
 		})
 		assert.Success(t, err)
 		err = os.MkdirAll(dataPath, 0755)
@@ -200,4 +238,17 @@ md: |md
 |
 a -> md -> b
 `, md)
+}
+
+func loadFromFile(t *testing.T, name string) testCase {
+	fn := filepath.Join("testdata", "files", fmt.Sprintf("%s.d2", name))
+	d2Text, err := ioutil.ReadFile(fn)
+	if err != nil {
+		t.Fatalf("failed to load test from file:%s. %s", name, err.Error())
+	}
+
+	return testCase{
+		name:   name,
+		script: string(d2Text),
+	}
 }

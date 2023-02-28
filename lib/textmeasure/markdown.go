@@ -257,6 +257,8 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 		if isCode {
 			w *= FontSize_pre_code_em
 			h *= FontSize_pre_code_em
+		} else {
+			w = ruler.scaleUnicode(w, font, str)
 		}
 		if debugMeasure {
 			fmt.Printf("%stext(%v,%v)\n", depthStr, w, h)

@@ -23,6 +23,7 @@ type Node interface {
 	Parent() Node
 	Primary() *Scalar
 	Map() *Map
+	Equal(n2 Node) bool
 
 	ast() d2ast.Node
 	fmt.Stringer
@@ -139,7 +140,8 @@ func (s *Scalar) Copy(newParent Node) Node {
 	return s
 }
 
-func (s *Scalar) Equal(s2 *Scalar) bool {
+func (s *Scalar) Equal(n2 Node) bool {
+	s2 := n2.(*Scalar)
 	if _, ok := s.Value.(d2ast.String); ok {
 		if _, ok = s2.Value.(d2ast.String); ok {
 			return s.Value.ScalarString() == s2.Value.ScalarString()
@@ -187,6 +189,10 @@ func (m *Map) Copy(newParent Node) Node {
 
 // CopyBase copies the map m without layers/scenarios/steps.
 func (m *Map) CopyBase(newParent Node) *Map {
+	if m == nil {
+		return (&Map{}).Copy(newParent).(*Map)
+	}
+
 	layers := m.DeleteField("layers")
 	scenarios := m.DeleteField("scenarios")
 	steps := m.DeleteField("steps")
@@ -233,7 +239,7 @@ func NodeBoardKind(n Node) BoardKind {
 	var f *Field
 	switch n := n.(type) {
 	case *Field:
-		if n.Name == "" {
+		if n.parent == nil {
 			return BoardLayer
 		}
 		f = ParentField(n)
@@ -379,7 +385,9 @@ func (eid *EdgeID) Match(eid2 *EdgeID) bool {
 	return true
 }
 
-func (eid *EdgeID) resolveUnderscores(m *Map) (*EdgeID, *Map, error) {
+// resolve resolves both underscores and commons in eid.
+// It returns the new eid, containing map adjusted for underscores and common ida.
+func (eid *EdgeID) resolve(m *Map) (_ *EdgeID, _ *Map, common []string, _ error) {
 	eid = eid.Copy()
 	maxUnderscores := go2.Max(countUnderscores(eid.SrcPath), countUnderscores(eid.DstPath))
 	for i := 0; i < maxUnderscores; i++ {
@@ -397,23 +405,20 @@ func (eid *EdgeID) resolveUnderscores(m *Map) (*EdgeID, *Map, error) {
 		}
 		m = ParentMap(m)
 		if m == nil {
-			return nil, nil, errors.New("invalid underscore")
+			return nil, nil, nil, errors.New("invalid underscore")
 		}
 	}
-	return eid, m, nil
-}
 
-func (eid *EdgeID) trimCommon() (common []string, _ *EdgeID) {
-	eid = eid.Copy()
 	for len(eid.SrcPath) > 1 && len(eid.DstPath) > 1 {
 		if !strings.EqualFold(eid.SrcPath[0], eid.DstPath[0]) {
-			return common, eid
+			return eid, m, common, nil
 		}
 		common = append(common, eid.SrcPath[0])
 		eid.SrcPath = eid.SrcPath[1:]
 		eid.DstPath = eid.DstPath[1:]
 	}
-	return common, eid
+
+	return eid, m, common, nil
 }
 
 type Edge struct {
@@ -732,11 +737,10 @@ func (m *Map) DeleteField(ida ...string) *Field {
 }
 
 func (m *Map) GetEdges(eid *EdgeID) []*Edge {
-	eid, m, err := eid.resolveUnderscores(m)
+	eid, m, common, err := eid.resolve(m)
 	if err != nil {
 		return nil
 	}
-	common, eid := eid.trimCommon()
 	if len(common) > 0 {
 		f := m.GetField(common...)
 		if f == nil {
@@ -762,16 +766,12 @@ func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
 		return nil, d2parser.Errorf(refctx.Edge, "cannot create edge inside edge")
 	}
 
-	eid, m, err := eid.resolveUnderscores(m)
+	eid, m, common, err := eid.resolve(m)
 	if err != nil {
 		return nil, d2parser.Errorf(refctx.Edge, err.Error())
 	}
-	common, eid := eid.trimCommon()
 	if len(common) > 0 {
-		tmp := *refctx.Edge.Src
-		kp := &tmp
-		kp.Path = kp.Path[:len(common)]
-		f, err := m.EnsureField(kp, nil)
+		f, err := m.EnsureField(d2ast.MakeKeyPath(common), nil)
 		if err != nil {
 			return nil, err
 		}
@@ -1033,11 +1033,12 @@ func parentPrimaryKey(n Node) *d2ast.Key {
 	return nil
 }
 
+// IDA returns the absolute path to n from the nearest board root.
 func IDA(n Node) (ida []string) {
 	for {
 		f, ok := n.(*Field)
 		if ok {
-			if f.Root() {
+			if f.Root() || NodeBoardKind(f) != "" {
 				reverseIDA(ida)
 				return ida
 			}
@@ -1058,4 +1059,74 @@ func reverseIDA(ida []string) {
 		ida[i] = ida[len(ida)-i-1]
 		ida[len(ida)-i-1] = tmp
 	}
+}
+
+func (f *Field) Equal(n2 Node) bool {
+	f2 := n2.(*Field)
+
+	if f.Name != f2.Name {
+		return false
+	}
+	if !f.Primary_.Equal(f2.Primary_) {
+		return false
+	}
+	if !f.Composite.Equal(f2.Composite) {
+		return false
+	}
+	return true
+}
+
+func (e *Edge) Equal(n2 Node) bool {
+	e2 := n2.(*Edge)
+
+	if !e.ID.Match(e2.ID) {
+		return false
+	}
+	if !e.Primary_.Equal(e2.Primary_) {
+		return false
+	}
+	if !e.Map_.Equal(e2.Map_) {
+		return false
+	}
+	return true
+}
+
+func (a *Array) Equal(n2 Node) bool {
+	a2 := n2.(*Array)
+
+	if len(a.Values) != len(a2.Values) {
+		return false
+	}
+
+	for i := range a.Values {
+		if !a.Values[i].Equal(a2.Values[i]) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func (m *Map) Equal(n2 Node) bool {
+	m2 := n2.(*Map)
+
+	if len(m.Fields) != len(m2.Fields) {
+		return false
+	}
+	if len(m.Edges) != len(m2.Edges) {
+		return false
+	}
+
+	for i := range m.Fields {
+		if !m.Fields[i].Equal(m2.Fields[i]) {
+			return false
+		}
+	}
+	for i := range m.Edges {
+		if !m.Edges[i].Equal(m2.Edges[i]) {
+			return false
+		}
+	}
+
+	return true
 }

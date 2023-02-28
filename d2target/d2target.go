@@ -11,7 +11,7 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/d2themes"
+	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/shape"
@@ -26,17 +26,25 @@ const (
 	MULTIPLE_OFFSET  = 10
 
 	INNER_BORDER_OFFSET = 5
+
+	BG_COLOR = color.N7
+	FG_COLOR = color.N1
 )
 
 var BorderOffset = geo.NewVector(5, 5)
 
 type Diagram struct {
-	Name        string              `json:"name"`
-	Description string              `json:"description,omitempty"`
-	FontFamily  *d2fonts.FontFamily `json:"fontFamily,omitempty"`
+	Name string `json:"name"`
+	// See docs on the same field in d2graph to understand what it means.
+	IsFolderOnly bool                `json:"isFolderOnly"`
+	Description  string              `json:"description,omitempty"`
+	FontFamily   *d2fonts.FontFamily `json:"fontFamily,omitempty"`
 
 	Shapes      []Shape      `json:"shapes"`
 	Connections []Connection `json:"connections"`
+
+	Root Shape `json:"root"`
+	// Maybe Icon can be used as a watermark in the root shape
 
 	Layers    []*Diagram `json:"layers,omitempty"`
 	Scenarios []*Diagram `json:"scenarios,omitempty"`
@@ -67,10 +75,10 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 	y2 := int(math.MinInt32)
 
 	for _, targetShape := range diagram.Shapes {
-		x1 = go2.Min(x1, targetShape.Pos.X-targetShape.StrokeWidth)
-		y1 = go2.Min(y1, targetShape.Pos.Y-targetShape.StrokeWidth)
-		x2 = go2.Max(x2, targetShape.Pos.X+targetShape.Width+targetShape.StrokeWidth)
-		y2 = go2.Max(y2, targetShape.Pos.Y+targetShape.Height+targetShape.StrokeWidth)
+		x1 = go2.Min(x1, targetShape.Pos.X-int(math.Ceil(float64(targetShape.StrokeWidth)/2.)))
+		y1 = go2.Min(y1, targetShape.Pos.Y-int(math.Ceil(float64(targetShape.StrokeWidth)/2.)))
+		x2 = go2.Max(x2, targetShape.Pos.X+targetShape.Width+int(math.Ceil(float64(targetShape.StrokeWidth)/2.)))
+		y2 = go2.Max(y2, targetShape.Pos.Y+targetShape.Height+int(math.Ceil(float64(targetShape.StrokeWidth)/2.)))
 
 		if targetShape.Tooltip != "" || targetShape.Link != "" {
 			// 16 is the icon radius
@@ -85,6 +93,22 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 		if targetShape.Multiple {
 			y1 = go2.Min(y1, targetShape.Pos.Y-MULTIPLE_OFFSET-targetShape.StrokeWidth)
 			x2 = go2.Max(x2, targetShape.Pos.X+MULTIPLE_OFFSET+targetShape.Width+targetShape.StrokeWidth)
+		}
+
+		if targetShape.Icon != nil && label.Position(targetShape.IconPosition).IsOutside() {
+			contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(targetShape.Width), float64(targetShape.Height))
+			s := shape.NewShape(targetShape.Type, contentBox)
+			size := GetIconSize(s.GetInnerBox(), targetShape.IconPosition)
+
+			if strings.HasPrefix(targetShape.IconPosition, "OUTSIDE_TOP") {
+				y1 = go2.Min(y1, targetShape.Pos.Y-label.PADDING-size)
+			} else if strings.HasPrefix(targetShape.IconPosition, "OUTSIDE_BOTTOM") {
+				y2 = go2.Max(y2, targetShape.Pos.Y+label.PADDING+size)
+			} else if strings.HasPrefix(targetShape.IconPosition, "OUTSIDE_LEFT") {
+				x1 = go2.Min(x1, targetShape.Pos.X-label.PADDING-size)
+			} else if strings.HasPrefix(targetShape.IconPosition, "OUTSIDE_RIGHT") {
+				x2 = go2.Max(x2, targetShape.Pos.X+label.PADDING+size)
+			}
 		}
 
 		if targetShape.Label != "" {
@@ -112,10 +136,10 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 
 	for _, connection := range diagram.Connections {
 		for _, point := range connection.Route {
-			x1 = go2.Min(x1, int(math.Floor(point.X)))
-			y1 = go2.Min(y1, int(math.Floor(point.Y)))
-			x2 = go2.Max(x2, int(math.Ceil(point.X)))
-			y2 = go2.Max(y2, int(math.Ceil(point.Y)))
+			x1 = go2.Min(x1, int(math.Floor(point.X))-int(math.Ceil(float64(connection.StrokeWidth)/2.)))
+			y1 = go2.Min(y1, int(math.Floor(point.Y))-int(math.Ceil(float64(connection.StrokeWidth)/2.)))
+			x2 = go2.Max(x2, int(math.Ceil(point.X))+int(math.Ceil(float64(connection.StrokeWidth)/2.)))
+			y2 = go2.Max(y2, int(math.Ceil(point.Y))+int(math.Ceil(float64(connection.StrokeWidth)/2.)))
 		}
 
 		if connection.Label != "" {
@@ -131,7 +155,11 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 }
 
 func NewDiagram() *Diagram {
-	return &Diagram{}
+	return &Diagram{
+		Root: Shape{
+			Fill: BG_COLOR,
+		},
+	}
 }
 
 type Shape struct {
@@ -181,26 +209,27 @@ type Shape struct {
 	NeutralAccentColor   string `json:"neutralAccentColor,omitempty"`
 }
 
+func (s Shape) GetFontColor() string {
+	if s.Type == ShapeClass || s.Type == ShapeSQLTable {
+		if !color.IsThemeColor(s.Color) {
+			return s.Color
+		}
+		return s.Stroke
+	}
+	if s.Color != color.Empty {
+		return s.Color
+	}
+	return color.N1
+}
+
+// TODO remove this function, just set fields on themeable
 func (s Shape) CSSStyle() string {
 	out := ""
 
-	if s.Type == ShapeSQLTable || s.Type == ShapeClass {
-		// Fill is used for header fill in these types
-		// This fill property is just background of rows
-		out += fmt.Sprintf(`fill:%s;`, s.Stroke)
-		// Stroke (border) of these shapes should match the header fill
-		out += fmt.Sprintf(`stroke:%s;`, s.Fill)
-	} else {
-		out += fmt.Sprintf(`fill:%s;`, s.Fill)
-		out += fmt.Sprintf(`stroke:%s;`, s.Stroke)
-	}
 	out += fmt.Sprintf(`stroke-width:%d;`, s.StrokeWidth)
 	if s.StrokeDash != 0 {
 		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(s.StrokeWidth), s.StrokeDash)
 		out += fmt.Sprintf(`stroke-dasharray:%f,%f;`, dashSize, gapSize)
-	}
-	if s.BorderRadius != 0 {
-		out += fmt.Sprintf(`rx:%d;`, s.BorderRadius)
 	}
 
 	return out
@@ -236,8 +265,9 @@ type Text struct {
 	Bold      bool `json:"bold"`
 	Underline bool `json:"underline"`
 
-	LabelWidth  int `json:"labelWidth"`
-	LabelHeight int `json:"labelHeight"`
+	LabelWidth  int    `json:"labelWidth"`
+	LabelHeight int    `json:"labelHeight"`
+	LabelFill   string `json:"labelFill,omitempty"`
 }
 
 func BaseShape() *Shape {
@@ -298,10 +328,16 @@ func BaseConnection() *Connection {
 	}
 }
 
+func (c Connection) GetFontColor() string {
+	if c.Color != color.Empty {
+		return c.Color
+	}
+	return color.N1
+}
+
 func (c Connection) CSSStyle() string {
 	out := ""
 
-	out += fmt.Sprintf(`stroke:%s;`, c.Stroke)
 	out += fmt.Sprintf(`stroke-width:%d;`, c.StrokeWidth)
 	strokeDash := c.StrokeDash
 	if strokeDash == 0 && c.Animated {
@@ -497,11 +533,11 @@ func NewTextDimensions(w, h int) *TextDimensions {
 	return &TextDimensions{Width: w, Height: h}
 }
 
-func (text MText) GetColor(theme *d2themes.Theme, isItalic bool) string {
+func (text MText) GetColor(isItalic bool) string {
 	if isItalic {
-		return theme.Colors.Neutrals.N2
+		return color.N2
 	}
-	return theme.Colors.Neutrals.N1
+	return color.N1
 }
 
 var DSL_SHAPE_TO_SHAPE_TYPE = map[string]string{
@@ -540,8 +576,8 @@ func init() {
 	}
 }
 
-func (s *Shape) GetIconSize(box *geo.Box) int {
-	iconPosition := label.Position(s.IconPosition)
+func GetIconSize(box *geo.Box, position string) int {
+	iconPosition := label.Position(position)
 
 	minDimension := int(math.Min(box.Width, box.Height))
 	halfMinDimension := int(math.Ceil(0.5 * float64(minDimension)))
