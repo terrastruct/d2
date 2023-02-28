@@ -155,6 +155,8 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 	pathEl = d2themes.NewThemableElement("path")
 	pathEl.SetTranslate(float64(shape.Pos.X+d2target.INNER_BORDER_OFFSET), float64(shape.Pos.Y+d2target.INNER_BORDER_OFFSET))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	// No need for inner to double paint
+	pathEl.Fill = "transparent"
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range pathsSmallRect {
@@ -162,10 +164,16 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 		output += pathEl.Render()
 	}
 
-	output += fmt.Sprintf(
-		`<rect class="sketch-overlay" transform="translate(%d %d)" width="%d" height="%d" />`,
-		shape.Pos.X, shape.Pos.Y, shape.Width, shape.Height,
-	)
+	sketchOEl := d2themes.NewThemableElement("rect")
+	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
+	sketchOEl.Width = float64(shape.Width)
+	sketchOEl.Height = float64(shape.Height)
+	renderedSO, err := d2themes.NewThemableSketchOverlay(sketchOEl, pathEl.Fill).Render()
+	if err != nil {
+		return "", err
+	}
+	output += renderedSO
+
 	return output, nil
 }
 
