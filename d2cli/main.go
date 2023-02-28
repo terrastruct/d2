@@ -284,7 +284,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 
 	var svg []byte
 	if filepath.Ext(outputPath) == ".pdf" {
-		svg, err = renderPDF(ctx, ms, plugin, sketch, pad, outputPath, page, ruler, diagram, nil, nil)
+		svg, err = renderPDF(ctx, ms, plugin, sketch, pad, themeID, outputPath, page, ruler, diagram, nil, nil)
 	} else {
 		compileDur := time.Since(start)
 		svg, err = render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
@@ -436,7 +436,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	return svg, nil
 }
 
-func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdf *pdflib.GoFPDF, boardPath []string) (svg []byte, err error) {
+func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad, themeID int64, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdf *pdflib.GoFPDF, boardPath []string) (svg []byte, err error) {
 	var isRoot bool
 	if pdf == nil {
 		pdf = pdflib.Init()
@@ -487,26 +487,26 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 			return svg, err
 		}
 
-		err = pdf.AddPDFPage(pngImg, currBoardPath, rootFill)
+		err = pdf.AddPDFPage(pngImg, currBoardPath, themeID, rootFill)
 		if err != nil {
 			return svg, err
 		}
 	}
 
 	for _, dl := range diagram.Layers {
-		_, err := renderPDF(ctx, ms, plugin, sketch, pad, "", page, ruler, dl, pdf, currBoardPath)
+		_, err := renderPDF(ctx, ms, plugin, sketch, pad, themeID, "", page, ruler, dl, pdf, currBoardPath)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := renderPDF(ctx, ms, plugin, sketch, pad, "", page, ruler, dl, pdf, currBoardPath)
+		_, err := renderPDF(ctx, ms, plugin, sketch, pad, themeID, "", page, ruler, dl, pdf, currBoardPath)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := renderPDF(ctx, ms, plugin, sketch, pad, "", page, ruler, dl, pdf, currBoardPath)
+		_, err := renderPDF(ctx, ms, plugin, sketch, pad, themeID, "", page, ruler, dl, pdf, currBoardPath)
 		if err != nil {
 			return nil, err
 		}

@@ -8,6 +8,8 @@ import (
 	"github.com/jung-kurt/gofpdf"
 
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
+	"oss.terrastruct.com/d2/d2themes"
+	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/color"
 )
 
@@ -33,7 +35,7 @@ func Init() *GoFPDF {
 	return &fpdf
 }
 
-func (g *GoFPDF) GetFillRGB(fill string) (color.RGB, error) {
+func (g *GoFPDF) GetFillRGB(themeID int64, fill string) (color.RGB, error) {
 	if fill == "" || strings.ToLower(fill) == "transparent" {
 		return color.RGB{
 			Red:   255,
@@ -42,15 +44,20 @@ func (g *GoFPDF) GetFillRGB(fill string) (color.RGB, error) {
 		}, nil
 	}
 
-	rgb := color.Name2RGB(fill)
-	if (rgb != color.RGB{}) {
-		return rgb, nil
+	if color.IsThemeColor(fill) {
+		theme := d2themescatalog.Find(themeID)
+		fill = d2themes.ResolveThemeColor(theme, fill)
+	} else {
+		rgb := color.Name2RGB(fill)
+		if (rgb != color.RGB{}) {
+			return rgb, nil
+		}
 	}
 
 	return color.Hex2RGB(fill)
 }
 
-func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, fill string) error {
+func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill string) error {
 	var opt gofpdf.ImageOptions
 	opt.ImageType = "png"
 	imageInfo := g.pdf.RegisterImageOptionsReader(strings.Join(boardPath, "/"), opt, bytes.NewReader(png))
@@ -73,7 +80,7 @@ func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, fill string) error {
 	pageWidth = math.Max(math.Max(minPageDimension, imageWidth), headerWidth)
 	pageHeight = math.Max(minPageDimension, imageHeight)
 
-	fillRGB, err := g.GetFillRGB(fill)
+	fillRGB, err := g.GetFillRGB(themeID, fill)
 	if err != nil {
 		return err
 	}
