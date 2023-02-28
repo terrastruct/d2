@@ -168,7 +168,7 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 	sketchOEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	sketchOEl.Width = float64(shape.Width)
 	sketchOEl.Height = float64(shape.Height)
-	renderedSO, err := d2themes.NewThemableSketchOverlay(sketchOEl, pathEl.Fill).Render()
+	renderedSO, err := d2themes.NewThemableSketchOverlay(sketchOEl, shape.Fill).Render()
 	if err != nil {
 		return "", err
 	}
@@ -252,17 +252,27 @@ func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
 	pathEl = d2themes.NewThemableElement("path")
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	// No need for inner to double paint
+	pathEl.Fill = "transparent"
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range pathsSmallCircle {
 		pathEl.D = p
 		output += pathEl.Render()
 	}
+	soElement := d2themes.NewThemableElement("ellipse")
+	soElement.SetTranslate(float64(shape.Pos.X+shape.Width/2), float64(shape.Pos.Y+shape.Height/2))
+	soElement.Rx = float64(shape.Width / 2)
+	soElement.Ry = float64(shape.Height / 2)
+	renderedSO, err := d2themes.NewThemableSketchOverlay(
+		soElement,
+		shape.Fill,
+	).Render()
+	if err != nil {
+		return "", err
+	}
+	output += renderedSO
 
-	output += fmt.Sprintf(
-		`<ellipse class="sketch-overlay" transform="translate(%d %d)" rx="%d" ry="%d" />`,
-		shape.Pos.X+shape.Width/2, shape.Pos.Y+shape.Height/2, shape.Width/2, shape.Height/2,
-	)
 	return output, nil
 }
 
