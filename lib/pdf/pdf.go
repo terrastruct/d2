@@ -34,7 +34,7 @@ func Init() *GoFPDF {
 }
 
 func (g *GoFPDF) GetFillRGB(fill string) (color.RGB, error) {
-	if fill == "" {
+	if fill == "" || strings.ToLower(fill) == "transparent" {
 		return color.RGB{
 			Red:   255,
 			Green: 255,

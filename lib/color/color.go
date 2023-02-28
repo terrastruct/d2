@@ -6,7 +6,6 @@ import (
 	"regexp"
 	"strconv"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/lucasb-eyer/go-colorful"
 	"github.com/mazznoer/csscolorparser"
 )
@@ -161,7 +160,6 @@ func (c *RGB) IsLight() bool {
 
 	hsp := math.Sqrt(0.299*math.Pow(r, 2) + 0.587*math.Pow(g, 2) + 0.114*math.Pow(b, 2))
 
-	spew.Dump(hsp)
 	return hsp > 130
 }
 
@@ -170,9 +168,10 @@ func Hex2RGB(hex string) (RGB, error) {
 	var rgb RGB
 	if hex[0:1] == "#" {
 		hex = hex[1:]
+	} else {
+		return RGB{}, nil
 	}
 	values, err := strconv.ParseUint(hex, 16, 32)
-
 	if err != nil {
 		return RGB{}, err
 	}
