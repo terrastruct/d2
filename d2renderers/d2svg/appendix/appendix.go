@@ -91,14 +91,15 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 	newOuterViewbox := fmt.Sprintf(`viewBox="0 0 %d %d"`, viewboxWidth, viewboxHeight)
 	newViewbox := fmt.Sprintf(`viewBox="%s %s %s %s"`, viewboxSlice[0], viewboxSlice[1], strconv.Itoa(viewboxWidth), strconv.Itoa(viewboxHeight))
 
-	widthMatches := widthRegex.FindAllStringSubmatch(svg, 2)
-	heightMatches := heightRegex.FindAllStringSubmatch(svg, 2)
+	// update 1st 3 matches of width and height 1st is outer svg, 2nd inner svg, 3rd is background color rect
+	widthMatches := widthRegex.FindAllStringSubmatch(svg, 3)
+	heightMatches := heightRegex.FindAllStringSubmatch(svg, 3)
 	newWidth := fmt.Sprintf(`width="%s"`, strconv.Itoa(viewboxWidth))
 	newHeight := fmt.Sprintf(`height="%s"`, strconv.Itoa(viewboxHeight))
 
 	svg = strings.Replace(svg, viewboxMatches[0][0], newOuterViewbox, 1)
 	svg = strings.Replace(svg, viewboxMatch[0], newViewbox, 1)
-	for i := 0; i < 2; i++ {
+	for i := 0; i < 3; i++ {
 		svg = strings.Replace(svg, widthMatches[i][0], newWidth, 1)
 		svg = strings.Replace(svg, heightMatches[i][0], newHeight, 1)
 	}
