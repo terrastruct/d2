@@ -78,8 +78,7 @@ func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill 
 	headerMargin := 28.0
 	headerWidth := g.pdf.GetStringWidth(pathString) + 2*headerMargin
 
-	// minPageDimension := 576.0
-	minPageDimension := 0.0
+	minPageDimension := 576.0
 	pageWidth = math.Max(math.Max(minPageDimension, imageWidth), headerWidth)
 	pageHeight = math.Max(minPageDimension, imageHeight)
 

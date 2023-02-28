@@ -377,12 +377,11 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, themeID int64, darkThemeID *int64, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
 	toPNG := filepath.Ext(outputPath) == ".png"
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad:         int(pad),
-		Sketch:      sketch,
-		ThemeID:     themeID,
-		DarkThemeID: darkThemeID,
-		// SetDimensions: toPNG,
-		SetDimensions: true,
+		Pad:           int(pad),
+		Sketch:        sketch,
+		ThemeID:       themeID,
+		DarkThemeID:   darkThemeID,
+		SetDimensions: toPNG,
 	})
 	if err != nil {
 		return nil, err
@@ -460,7 +459,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 		rootFill := diagram.Root.Fill
 		// gofpdf will print the png img with a slight filter
 		// make the bg fill within the png transparent so that the pdf bg fill is the only bg color present
-		// diagram.Root.Fill = "transparent"
+		diagram.Root.Fill = "transparent"
 
 		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
 			Pad:           int(pad),
