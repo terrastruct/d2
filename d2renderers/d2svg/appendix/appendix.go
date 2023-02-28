@@ -93,9 +93,8 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 	newViewbox := fmt.Sprintf(`viewBox="%s %s %s %s"`, viewboxSlice[0], viewboxSlice[1], strconv.Itoa(viewboxWidth), strconv.Itoa(viewboxHeight))
 
 	// check if outer svg has dimensions set
-	svgMatches := svgRegex.FindAllStringSubmatch(svg, 2)
 	dimensionsToUpdate := 2
-	if widthRegex.FindString(svgMatches[0][0]) != "" {
+	if widthRegex.FindString(svgRegex.FindString(svg)) != "" {
 		dimensionsToUpdate++
 	}
 
