@@ -169,7 +169,7 @@ func Hex2RGB(hex string) (RGB, error) {
 	if hex[0:1] == "#" {
 		hex = hex[1:]
 	} else {
-		return RGB{}, nil
+		return RGB{}, fmt.Errorf("cannot parse hex color %v", hex)
 	}
 	values, err := strconv.ParseUint(hex, 16, 32)
 	if err != nil {
