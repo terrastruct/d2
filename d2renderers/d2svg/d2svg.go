@@ -1689,10 +1689,6 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	// generate style elements that will be appended to the SVG tag
 	upperBuf := &bytes.Buffer{}
 	embedFonts(upperBuf, buf.String(), diagram.FontFamily) // embedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
-	if sketchRunner != nil {
-		d2sketch.DefineFillPatterns(upperBuf)
-	}
-
 	themeStylesheet, err := themeCSS(themeID, darkThemeID)
 	if err != nil {
 		return nil, err
@@ -1708,6 +1704,9 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 	if hasMarkdown {
 		fmt.Fprintf(upperBuf, `<style type="text/css">%s</style>`, mdCSS)
+	}
+	if sketchRunner != nil {
+		d2sketch.DefineFillPatterns(upperBuf)
 	}
 
 	// This shift is for background el to envelop the diagram

@@ -988,6 +988,23 @@ company Warehouse.explanation: |md
 |
 `,
 		},
+		{
+			name: "double-border",
+			script: `a: {
+  style.double-border: true
+  b
+}
+c: {
+  shape: oval
+  style.double-border: true
+  d
+}
+normal: {
+  nested normal
+}
+something
+`,
+		},
 	}
 	runa(t, tcs)
 }
