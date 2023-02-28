@@ -44,14 +44,14 @@ func (g *GoFPDF) GetFillRGB(themeID int64, fill string) (color.RGB, error) {
 		}, nil
 	}
 
-	rgb := color.Name2RGB(fill)
-	if (rgb != color.RGB{}) {
-		return rgb, nil
-	}
-
 	if color.IsThemeColor(fill) {
 		theme := d2themescatalog.Find(themeID)
 		fill = d2themes.ResolveThemeColor(theme, fill)
+	} else {
+		rgb := color.Name2RGB(fill)
+		if (rgb != color.RGB{}) {
+			return rgb, nil
+		}
 	}
 
 	return color.Hex2RGB(fill)
