@@ -120,13 +120,6 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 	}
 
 	if !strings.Contains(svg, `font-family: "font-regular"`) {
-
-		// if fillRGB.IsLight() {
-		// 	g.pdf.SetTextColor(10, 15, 37) // steel-900
-		// } else {
-		// 	g.pdf.SetTextColor(255, 255, 255)
-		// }
-
 		appendix += fmt.Sprintf(`<style type="text/css"><![CDATA[
 .text {
 	font-family: "font-regular";
