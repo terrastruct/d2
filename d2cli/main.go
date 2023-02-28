@@ -456,7 +456,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 	if !diagram.IsFolderOnly {
 		rootFill := diagram.Root.Fill
 		// gofpdf will print the png img with a slight filter
-		// strip out the background fill within the png so that the background is uniform in the exported pdf
+		// make the bg fill within the png transparent so that the pdf bg fill is the only bg color present
 		diagram.Root.Fill = "transparent"
 
 		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
