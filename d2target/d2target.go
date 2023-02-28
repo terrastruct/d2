@@ -293,11 +293,12 @@ type Connection struct {
 	DstArrow Arrowhead `json:"dstArrow"`
 	DstLabel string    `json:"dstLabel"`
 
-	Opacity     float64 `json:"opacity"`
-	StrokeDash  float64 `json:"strokeDash"`
-	StrokeWidth int     `json:"strokeWidth"`
-	Stroke      string  `json:"stroke"`
-	Fill        string  `json:"fill,omitempty"`
+	Opacity      float64 `json:"opacity"`
+	StrokeDash   float64 `json:"strokeDash"`
+	StrokeWidth  int     `json:"strokeWidth"`
+	Stroke       string  `json:"stroke"`
+	Fill         string  `json:"fill,omitempty"`
+	BorderRadius float64 `json:"borderRadius,omitempty"`
 
 	Text
 	LabelPosition   string  `json:"labelPosition"`
