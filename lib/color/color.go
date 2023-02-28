@@ -167,7 +167,7 @@ func (c *RGB) IsLight() bool {
 // https://gist.github.com/CraigChilds94/6514edbc6a2db5e434a245487c525c75
 func Hex2RGB(hex string) (RGB, error) {
 	var rgb RGB
-	if hex[0:1] == "#" {
+	if len(hex) > 3 && hex[0] == '#' {
 		hex = hex[1:]
 	} else {
 		return RGB{}, fmt.Errorf("cannot parse hex color %v", hex)
