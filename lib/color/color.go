@@ -337,7 +337,6 @@ var namedRgbMap = map[string][]uint8{
 }
 
 func Name2RGB(name string) RGB {
-	// use color name in the {namedRgbMap}
 	if rgb, ok := namedRgbMap[name]; ok {
 		return RGB{
 			Red:   rgb[0],
