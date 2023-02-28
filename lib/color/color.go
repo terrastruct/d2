@@ -5,6 +5,7 @@ import (
 	"math"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/lucasb-eyer/go-colorful"
 	"github.com/mazznoer/csscolorparser"
@@ -337,7 +338,7 @@ var namedRgbMap = map[string][]uint8{
 }
 
 func Name2RGB(name string) RGB {
-	if rgb, ok := namedRgbMap[name]; ok {
+	if rgb, ok := namedRgbMap[strings.ToLower(name)]; ok {
 		return RGB{
 			Red:   rgb[0],
 			Green: rgb[1],
