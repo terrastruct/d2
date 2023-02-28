@@ -8,6 +8,7 @@ import (
 	"github.com/jung-kurt/gofpdf"
 
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
+	"oss.terrastruct.com/d2/lib/color"
 )
 
 type GoFPDF struct {
@@ -32,7 +33,24 @@ func Init() *GoFPDF {
 	return &fpdf
 }
 
-func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string) error {
+func (g *GoFPDF) GetFillRGB(fill string) (color.RGB, error) {
+	if fill == "" || strings.ToLower(fill) == "transparent" {
+		return color.RGB{
+			Red:   255,
+			Green: 255,
+			Blue:  255,
+		}, nil
+	}
+
+	rgb := color.Name2RGB(fill)
+	if (rgb != color.RGB{}) {
+		return rgb, nil
+	}
+
+	return color.Hex2RGB(fill)
+}
+
+func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, fill string) error {
 	var opt gofpdf.ImageOptions
 	opt.ImageType = "png"
 	imageInfo := g.pdf.RegisterImageOptionsReader(strings.Join(boardPath, "/"), opt, bytes.NewReader(png))
@@ -55,14 +73,23 @@ func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string) error {
 	pageWidth = math.Max(math.Max(minPageDimension, imageWidth), headerWidth)
 	pageHeight = math.Max(minPageDimension, imageHeight)
 
+	fillRGB, err := g.GetFillRGB(fill)
+	if err != nil {
+		return err
+	}
+
 	// Add page
 	headerHeight := 0.75
 	g.pdf.AddPageFormat("", gofpdf.SizeType{Wd: pageWidth, Ht: pageHeight + headerHeight})
 
 	// Draw header
-	g.pdf.SetFillColor(255, 255, 255)
-	g.pdf.Rect(0, 0, pageWidth, pageHeight, "F")
-	g.pdf.SetTextColor(0, 0, 0)
+	g.pdf.SetFillColor(int(fillRGB.Red), int(fillRGB.Green), int(fillRGB.Blue))
+	g.pdf.Rect(0, 0, pageWidth, pageHeight+headerHeight, "F")
+	if fillRGB.IsLight() {
+		g.pdf.SetTextColor(10, 15, 37) // steel-900
+	} else {
+		g.pdf.SetTextColor(255, 255, 255)
+	}
 	g.pdf.SetFont("source", "", 14)
 
 	// Draw board path prefix
@@ -88,7 +115,11 @@ func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string) error {
 	// Draw header/img seperator
 	g.pdf.SetXY(headerMargin, headerHeight)
 	g.pdf.SetLineWidth(0.01)
-	g.pdf.SetDrawColor(0, 0, 0)
+	if fillRGB.IsLight() {
+		g.pdf.SetDrawColor(10, 15, 37) // steel-900
+	} else {
+		g.pdf.SetDrawColor(255, 255, 255)
+	}
 	g.pdf.CellFormat(pageWidth-(headerMargin*2), 0.01, "", "T", 0, "", false, 0, "")
 
 	return nil
