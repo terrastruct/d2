@@ -284,8 +284,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 
 	var svg []byte
 	if filepath.Ext(outputPath) == ".pdf" {
-		// svg, err = renderPDF(ctx, ms, plugin, sketch, pad, themeID, outputPath, page, ruler, diagram, nil, nil)
-		svg, err = renderPDF(ctx, ms, plugin, sketch, 0, themeID, outputPath, page, ruler, diagram, nil, nil)
+		svg, err = renderPDF(ctx, ms, plugin, sketch, pad, themeID, outputPath, page, ruler, diagram, nil, nil)
 	} else {
 		compileDur := time.Since(start)
 		svg, err = render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
@@ -378,11 +377,12 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, themeID int64, darkThemeID *int64, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
 	toPNG := filepath.Ext(outputPath) == ".png"
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad:           int(pad),
-		Sketch:        sketch,
-		ThemeID:       themeID,
-		DarkThemeID:   darkThemeID,
-		SetDimensions: toPNG,
+		Pad:         int(pad),
+		Sketch:      sketch,
+		ThemeID:     themeID,
+		DarkThemeID: darkThemeID,
+		// SetDimensions: toPNG,
+		SetDimensions: true,
 	})
 	if err != nil {
 		return nil, err
@@ -489,7 +489,8 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 			return svg, err
 		}
 
-		err = pdf.AddPDFPage(pngImg, currBoardPath, themeID, rootFill, diagram.Shapes, pad)
+		viewboxSlice := appendix.FindViewboxSlice(svg)
+		err = pdf.AddPDFPage(pngImg, currBoardPath, themeID, rootFill, diagram.Shapes, pad, viewboxSlice)
 		if err != nil {
 			return svg, err
 		}

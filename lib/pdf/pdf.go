@@ -3,13 +3,12 @@ package pdf
 import (
 	"bytes"
 	"math"
+	"strconv"
 	"strings"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/jung-kurt/gofpdf"
 
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
-	"oss.terrastruct.com/d2/d2renderers/d2svg/appendix"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
@@ -60,7 +59,7 @@ func (g *GoFPDF) GetFillRGB(themeID int64, fill string) (color.RGB, error) {
 	return color.Hex2RGB(fill)
 }
 
-func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill string, shapes []d2target.Shape, pad int64) error {
+func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill string, shapes []d2target.Shape, pad int64, viewboxSlice []string) error {
 	var opt gofpdf.ImageOptions
 	opt.ImageType = "png"
 	imageInfo := g.pdf.RegisterImageOptionsReader(strings.Join(boardPath, "/"), opt, bytes.NewReader(png))
@@ -79,7 +78,8 @@ func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill 
 	headerMargin := 28.0
 	headerWidth := g.pdf.GetStringWidth(pathString) + 2*headerMargin
 
-	minPageDimension := 576.0
+	// minPageDimension := 576.0
+	minPageDimension := 0.0
 	pageWidth = math.Max(math.Max(minPageDimension, imageWidth), headerWidth)
 	pageHeight = math.Max(minPageDimension, imageHeight)
 
@@ -120,31 +120,38 @@ func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill 
 	g.pdf.CellFormat(pageWidth-prefixWidth-headerMargin, headerHeight, boardName, "", 0, "", false, 0, "")
 
 	// Draw image
-	g.pdf.ImageOptions(strings.Join(boardPath, "/"), (pageWidth-imageWidth)/2, headerHeight+(pageHeight-imageHeight)/2, imageWidth, imageHeight, false, opt, 0, "")
+	imageX := (pageWidth - imageWidth) / 2
+	imageY := headerHeight + (pageHeight-imageHeight)/2
+	g.pdf.ImageOptions(strings.Join(boardPath, "/"), imageX, imageY, imageWidth, imageHeight, false, opt, 0, "")
 
 	// Draw external links
 	for _, shape := range shapes {
 		if shape.Link != "" {
-			linkX := (pageWidth-imageWidth)/2 + float64(pad/2) + float64(shape.Pos.X)
-			linkY := (pageHeight-imageHeight)/2 + float64(pad/2) + float64(shape.Pos.Y) + appendix.ICON_RADIUS/2 + headerHeight
-			linkWidth := float64(shape.Width)
-			linkHeight := float64(shape.Height)
-			spew.Dump("X", linkX, "Y", linkY)
-			spew.Dump("w", linkWidth, "h", linkHeight)
-			spew.Dump("pw", pageWidth, "pwh", pageHeight)
+			viewboxX, err := strconv.ParseFloat(viewboxSlice[0], 64)
+			if err != nil {
+				return err
+			}
+			viewboxY, err := strconv.ParseFloat(viewboxSlice[1], 64)
+			if err != nil {
+				return err
+			}
+			linkX := imageX + float64(shape.Pos.X) - viewboxX - float64(shape.StrokeWidth)
+			linkY := imageY + float64(shape.Pos.Y) - viewboxY - float64(shape.StrokeWidth)
+			linkWidth := float64(shape.Width) + float64(shape.StrokeWidth*2)
+			linkHeight := float64(shape.Height) + float64(shape.StrokeWidth*2)
 			g.pdf.LinkString(linkX, linkY, linkWidth, linkHeight, shape.Link)
 		}
 	}
 
 	// Draw header/img seperator
 	g.pdf.SetXY(headerMargin, headerHeight)
-	g.pdf.SetLineWidth(0.01)
+	g.pdf.SetLineWidth(1)
 	if fillRGB.IsLight() {
 		g.pdf.SetDrawColor(10, 15, 37) // steel-900
 	} else {
 		g.pdf.SetDrawColor(255, 255, 255)
 	}
-	g.pdf.CellFormat(pageWidth-(headerMargin*2), 0.01, "", "T", 0, "", false, 0, "")
+	g.pdf.CellFormat(pageWidth-(headerMargin*2), 1, "", "T", 0, "", false, 0, "")
 
 	return nil
 }
