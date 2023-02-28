@@ -52,6 +52,7 @@ const (
 var viewboxRegex = regexp.MustCompile(`viewBox=\"([0-9\- ]+)\"`)
 var widthRegex = regexp.MustCompile(`width=\"([.0-9]+)\"`)
 var heightRegex = regexp.MustCompile(`height=\"([.0-9]+)\"`)
+var svgRegex = regexp.MustCompile(`<svg(.*?)>`)
 
 func FindViewboxSlice(svg []byte) []string {
 	viewboxMatches := viewboxRegex.FindAllStringSubmatch(string(svg), 2)
@@ -98,14 +99,22 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 	newOuterViewbox := fmt.Sprintf(`viewBox="0 0 %d %d"`, viewboxWidth, viewboxHeight)
 	newViewbox := fmt.Sprintf(`viewBox="%s %s %s %s"`, viewboxSlice[0], viewboxSlice[1], strconv.Itoa(viewboxWidth), strconv.Itoa(viewboxHeight))
 
-	widthMatches := widthRegex.FindAllStringSubmatch(svg, 2)
-	heightMatches := heightRegex.FindAllStringSubmatch(svg, 2)
+	dimensionsToUpdate := 2
+	outerSVG := svgRegex.FindString(svg)
+	// if outer svg has dimensions set we also need to update it
+	if widthRegex.FindString(outerSVG) != "" {
+		dimensionsToUpdate++
+	}
+
+	// update 1st 3 matches of width and height 1st is outer svg (if dimensions are set), 2nd inner svg, 3rd is background color rect
+	widthMatches := widthRegex.FindAllStringSubmatch(svg, dimensionsToUpdate)
+	heightMatches := heightRegex.FindAllStringSubmatch(svg, dimensionsToUpdate)
 	newWidth := fmt.Sprintf(`width="%s"`, strconv.Itoa(viewboxWidth))
 	newHeight := fmt.Sprintf(`height="%s"`, strconv.Itoa(viewboxHeight))
 
 	svg = strings.Replace(svg, viewboxMatches[0][0], newOuterViewbox, 1)
 	svg = strings.Replace(svg, viewboxMatch[0], newViewbox, 1)
-	for i := 0; i < 2; i++ {
+	for i := 0; i < dimensionsToUpdate; i++ {
 		svg = strings.Replace(svg, widthMatches[i][0], newWidth, 1)
 		svg = strings.Replace(svg, heightMatches[i][0], newHeight, 1)
 	}
