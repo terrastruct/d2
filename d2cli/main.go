@@ -284,7 +284,8 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 
 	var svg []byte
 	if filepath.Ext(outputPath) == ".pdf" {
-		svg, err = renderPDF(ctx, ms, plugin, sketch, pad, themeID, outputPath, page, ruler, diagram, nil, nil)
+		// svg, err = renderPDF(ctx, ms, plugin, sketch, pad, themeID, outputPath, page, ruler, diagram, nil, nil)
+		svg, err = renderPDF(ctx, ms, plugin, sketch, 0, themeID, outputPath, page, ruler, diagram, nil, nil)
 	} else {
 		compileDur := time.Since(start)
 		svg, err = render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
@@ -459,7 +460,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 		rootFill := diagram.Root.Fill
 		// gofpdf will print the png img with a slight filter
 		// make the bg fill within the png transparent so that the pdf bg fill is the only bg color present
-		diagram.Root.Fill = "transparent"
+		// diagram.Root.Fill = "transparent"
 
 		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
 			Pad:    int(pad),
@@ -487,7 +488,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 			return svg, err
 		}
 
-		err = pdf.AddPDFPage(pngImg, currBoardPath, themeID, rootFill)
+		err = pdf.AddPDFPage(pngImg, currBoardPath, themeID, rootFill, diagram.Shapes, pad)
 		if err != nil {
 			return svg, err
 		}
