@@ -8,6 +8,7 @@ import (
 	"github.com/jung-kurt/gofpdf"
 
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
+	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/color"
@@ -19,13 +20,13 @@ type GoFPDF struct {
 
 func Init() *GoFPDF {
 	newGofPDF := gofpdf.NewCustom(&gofpdf.InitType{
-		UnitStr: "in",
+		UnitStr: "pt",
 	})
 
 	newGofPDF.AddUTF8FontFromBytes("source", "", d2fonts.FontFaces[d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_REGULAR)])
 	newGofPDF.AddUTF8FontFromBytes("source", "B", d2fonts.FontFaces[d2fonts.SourceSansPro.Font(0, d2fonts.FONT_STYLE_BOLD)])
 	newGofPDF.SetAutoPageBreak(false, 0)
-	newGofPDF.SetLineWidth(0.05)
+	newGofPDF.SetLineWidth(2)
 	newGofPDF.SetMargins(0, 0, 0)
 
 	fpdf := GoFPDF{
@@ -57,7 +58,7 @@ func (g *GoFPDF) GetFillRGB(themeID int64, fill string) (color.RGB, error) {
 	return color.Hex2RGB(fill)
 }
 
-func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill string) error {
+func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill string, shapes []d2target.Shape, pad int64, viewboxX, viewboxY float64) error {
 	var opt gofpdf.ImageOptions
 	opt.ImageType = "png"
 	imageInfo := g.pdf.RegisterImageOptionsReader(strings.Join(boardPath, "/"), opt, bytes.NewReader(png))
@@ -73,10 +74,10 @@ func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill 
 
 	g.pdf.SetFont("source", "B", 14)
 	pathString := strings.Join(boardPath, "  /  ")
-	headerMargin := 0.3
+	headerMargin := 28.0
 	headerWidth := g.pdf.GetStringWidth(pathString) + 2*headerMargin
 
-	minPageDimension := 6.0
+	minPageDimension := 576.0
 	pageWidth = math.Max(math.Max(minPageDimension, imageWidth), headerWidth)
 	pageHeight = math.Max(minPageDimension, imageHeight)
 
@@ -86,7 +87,7 @@ func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill 
 	}
 
 	// Add page
-	headerHeight := 0.75
+	headerHeight := 72.0
 	g.pdf.AddPageFormat("", gofpdf.SizeType{Wd: pageWidth, Ht: pageHeight + headerHeight})
 
 	// Draw header
@@ -117,17 +118,30 @@ func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill 
 	g.pdf.CellFormat(pageWidth-prefixWidth-headerMargin, headerHeight, boardName, "", 0, "", false, 0, "")
 
 	// Draw image
-	g.pdf.ImageOptions(strings.Join(boardPath, "/"), (pageWidth-imageWidth)/2, headerHeight+(pageHeight-imageHeight)/2, imageWidth, imageHeight, false, opt, 0, "")
+	imageX := (pageWidth - imageWidth) / 2
+	imageY := headerHeight + (pageHeight-imageHeight)/2
+	g.pdf.ImageOptions(strings.Join(boardPath, "/"), imageX, imageY, imageWidth, imageHeight, false, opt, 0, "")
+
+	// Draw external links
+	for _, shape := range shapes {
+		if shape.Link != "" {
+			linkX := imageX + float64(shape.Pos.X) - viewboxX - float64(shape.StrokeWidth)
+			linkY := imageY + float64(shape.Pos.Y) - viewboxY - float64(shape.StrokeWidth)
+			linkWidth := float64(shape.Width) + float64(shape.StrokeWidth*2)
+			linkHeight := float64(shape.Height) + float64(shape.StrokeWidth*2)
+			g.pdf.LinkString(linkX, linkY, linkWidth, linkHeight, shape.Link)
+		}
+	}
 
 	// Draw header/img seperator
 	g.pdf.SetXY(headerMargin, headerHeight)
-	g.pdf.SetLineWidth(0.01)
+	g.pdf.SetLineWidth(1)
 	if fillRGB.IsLight() {
 		g.pdf.SetDrawColor(10, 15, 37) // steel-900
 	} else {
 		g.pdf.SetDrawColor(255, 255, 255)
 	}
-	g.pdf.CellFormat(pageWidth-(headerMargin*2), 0.01, "", "T", 0, "", false, 0, "")
+	g.pdf.CellFormat(pageWidth-(headerMargin*2), 1, "", "T", 0, "", false, 0, "")
 
 	return nil
 }

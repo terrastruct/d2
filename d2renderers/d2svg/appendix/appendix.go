@@ -54,6 +54,13 @@ var widthRegex = regexp.MustCompile(`width=\"([.0-9]+)\"`)
 var heightRegex = regexp.MustCompile(`height=\"([.0-9]+)\"`)
 var svgRegex = regexp.MustCompile(`<svg(.*?)>`)
 
+func FindViewboxSlice(svg []byte) []string {
+	viewboxMatches := viewboxRegex.FindAllStringSubmatch(string(svg), 2)
+	viewboxMatch := viewboxMatches[1]
+	viewboxRaw := viewboxMatch[1]
+	return strings.Split(viewboxRaw, " ")
+}
+
 func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []byte {
 	svg := string(in)
 
