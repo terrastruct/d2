@@ -375,11 +375,13 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 }
 
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, themeID int64, darkThemeID *int64, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
+	toPNG := filepath.Ext(outputPath) == ".png"
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad:         int(pad),
-		Sketch:      sketch,
-		ThemeID:     themeID,
-		DarkThemeID: darkThemeID,
+		Pad:           int(pad),
+		Sketch:        sketch,
+		ThemeID:       themeID,
+		DarkThemeID:   darkThemeID,
+		SetDimensions: toPNG,
 	})
 	if err != nil {
 		return nil, err
@@ -396,12 +398,12 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 		svg, bundleErr2 = imgbundler.BundleRemote(ctx, ms, svg)
 		bundleErr = multierr.Combine(bundleErr, bundleErr2)
 	}
-	if forceAppendix && filepath.Ext(outputPath) != ".png" {
+	if forceAppendix && !toPNG {
 		svg = appendix.Append(diagram, ruler, svg)
 	}
 
 	out := svg
-	if filepath.Ext(outputPath) == ".png" {
+	if toPNG {
 		svg := appendix.Append(diagram, ruler, svg)
 
 		if !bundle {

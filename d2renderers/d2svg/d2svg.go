@@ -63,6 +63,8 @@ type RenderOpts struct {
 	Sketch      bool
 	ThemeID     int64
 	DarkThemeID *int64
+	// disables the fit to screen behavior and ensures the exported svg has the exact dimensions
+	SetDimensions bool
 }
 
 func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height int) {
@@ -1602,6 +1604,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	pad := DEFAULT_PADDING
 	themeID := DEFAULT_THEME
 	darkThemeID := DEFAULT_DARK_THEME
+	setDimensions := false
 	if opts != nil {
 		pad = opts.Pad
 		if opts.Sketch {
@@ -1613,6 +1616,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 		themeID = opts.ThemeID
 		darkThemeID = opts.DarkThemeID
+		setDimensions = opts.SetDimensions
 	}
 
 	buf := &bytes.Buffer{}
@@ -1757,9 +1761,15 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		h += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
 	}
 
-	fitToScreenWrapper := fmt.Sprintf(`<svg %s preserveAspectRatio="xMidYMid meet" viewBox="0 0 %d %d">`,
+	var dimensions string
+	if setDimensions {
+		dimensions = fmt.Sprintf(` width="%d" height="%d"`, w, h)
+	}
+
+	fitToScreenWrapper := fmt.Sprintf(`<svg %s preserveAspectRatio="xMidYMid meet" viewBox="0 0 %d %d"%s>`,
 		`xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"`,
 		w, h,
+		dimensions,
 	)
 
 	// TODO minify
