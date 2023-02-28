@@ -13,6 +13,32 @@ var testMarkdown string
 func testStable(t *testing.T) {
 	tcs := []testCase{
 		{
+			name: "elk_border_radius",
+			script: `
+				a -> b
+				a -> c {
+					style: {
+						border-radius: 0
+					}
+				}
+				a -> e {
+					style: {
+						border-radius: 5
+					}
+				}
+				a -> f {
+					style: {
+						border-radius: 10
+					}
+				}
+				a -> g {
+					style: {
+						border-radius: 20
+					}
+				}
+			`,
+		},
+		{
 			name: "connected_container",
 			script: `a.b -> c.d -> f.h.g
 `,
