@@ -327,7 +327,7 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Link = &d2graph.Scalar{}
 		attrs.Link.Value = scalar.ScalarString()
 		attrs.Link.MapKey = f.LastPrimaryKey()
-		// TODO I think these all need the rank actually
+		// TODO I think all the attributes need the range actually
 		attrs.Link.MapKey.Range = scalar.GetRange()
 	case "direction":
 		dirs := []string{"up", "down", "right", "left"}
