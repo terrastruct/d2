@@ -107,8 +107,6 @@ type Object struct {
 	LabelHeight   *int    `json:"labelHeight,omitempty"`
 	IconPosition  *string `json:"iconPosition,omitempty"`
 
-	LinkedBoard *Graph `json:"-"`
-
 	Class    *d2target.Class    `json:"class,omitempty"`
 	SQLTable *d2target.SQLTable `json:"sql_table,omitempty"`
 

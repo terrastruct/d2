@@ -31,7 +31,7 @@
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/url_link.d2,1:8:13-1:26:31",
+                      "range": ",0:0:0-0:0:0",
                       "key": {
                         "range": "d2/testdata/d2compiler/TestCompile/url_link.d2,1:2:7-1:6:11",
                         "path": [
@@ -50,12 +50,11 @@
                       },
                       "primary": {},
                       "value": {
-                        "unquoted_string": {
-                          "range": "d2/testdata/d2compiler/TestCompile/url_link.d2,1:8:13-1:26:31",
+                        "double_quoted_string": {
+                          "range": ",0:0:0-0:0:0",
                           "value": [
                             {
-                              "string": "https://google.com",
-                              "raw_string": "https://google.com"
+                              "string": "root.x.https"
                             }
                           ]
                         }
@@ -131,7 +130,7 @@
           },
           "style": {},
           "link": {
-            "value": "https://google.com"
+            "value": "root.x.https"
           },
           "near_key": null,
           "shape": {

@@ -31,7 +31,7 @@
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,1:8:13-1:39:44",
+                      "range": ",0:0:0-0:0:0",
                       "key": {
                         "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,1:2:7-1:6:11",
                         "path": [
@@ -50,12 +50,11 @@
                       },
                       "primary": {},
                       "value": {
-                        "unquoted_string": {
-                          "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,1:8:13-1:39:44",
+                        "double_quoted_string": {
+                          "range": ",0:0:0-0:0:0",
                           "value": [
                             {
-                              "string": "Overview.Untitled board 7.zzzzz",
-                              "raw_string": "Overview.Untitled board 7.zzzzz"
+                              "string": "root.x.Overview.Untitled board 7.zzzzz"
                             }
                           ]
                         }
@@ -131,7 +130,7 @@
           },
           "style": {},
           "link": {
-            "value": "Overview.Untitled board 7.zzzzz"
+            "value": "root.x.Overview.Untitled board 7.zzzzz"
           },
           "near_key": null,
           "shape": {

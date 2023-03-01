@@ -1,6 +1,8 @@
 package d2ir
 
 import (
+	"strings"
+
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2parser"
 )
@@ -127,6 +129,34 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		}
 		c.compileMap(f.Map(), refctx.Key.Value.Map)
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
+		// If these are boards, we transform into absolute paths
+		if f.Name == "link" {
+			link, err := d2parser.ParseKey(refctx.Key.Value.ScalarBox().Unbox().ScalarString())
+			if err == nil {
+				scopeID, _ := d2parser.ParseKey(refctx.ScopeMap.AbsID())
+				scopeIDA := scopeID.IDA()
+				for i := len(scopeIDA) - 1; i > 0; i-- {
+					if scopeIDA[i-1] == "layers" || scopeIDA[i-1] == "scenarios" || scopeIDA[i-1] == "steps" || scopeIDA[i-1] == "root" {
+						scopeIDA = scopeIDA[:i+1]
+						break
+					}
+				}
+				linkIDA := link.IDA()
+				if len(linkIDA) > 0 {
+					for len(linkIDA) > 0 && linkIDA[0] == "_" {
+						if len(scopeIDA) <= 2 {
+							c.errorf(refctx.Key.Key, "board referenced by link not found")
+							return
+						}
+						// pop 2 off path per one underscore
+						scopeIDA = scopeIDA[:len(scopeIDA)-2]
+						linkIDA = linkIDA[1:]
+					}
+					scopeIDA = append(scopeIDA, linkIDA...)
+					refctx.Key.Value = d2ast.MakeValueBox(d2ast.RawString(strings.Join(scopeIDA, "."), true))
+				}
+			}
+		}
 		f.Primary_ = &Scalar{
 			parent: f,
 			Value:  refctx.Key.Value.ScalarBox().Unbox(),

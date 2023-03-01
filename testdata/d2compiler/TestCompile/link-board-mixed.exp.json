@@ -40,7 +40,7 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:15:46-1:25:56",
+            "range": ",0:0:0-0:0:0",
             "key": {
               "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:0:31-1:13:44",
               "path": [
@@ -70,12 +70,11 @@
             },
             "primary": {},
             "value": {
-              "unquoted_string": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:15:46-1:25:56",
+              "double_quoted_string": {
+                "range": ",0:0:0-0:0:0",
                 "value": [
                   {
-                    "string": "layers.cat",
-                    "raw_string": "layers.cat"
+                    "string": "root.layers.cat"
                   }
                 ]
               }
@@ -404,7 +403,7 @@
           },
           "style": {},
           "link": {
-            "value": "layers.cat"
+            "value": "root.layers.cat"
           },
           "near_key": null,
           "shape": {
@@ -462,7 +461,7 @@
             },
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:15:46-1:25:56",
+                "range": ",0:0:0-0:0:0",
                 "key": {
                   "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:0:31-1:13:44",
                   "path": [
@@ -492,12 +491,11 @@
                 },
                 "primary": {},
                 "value": {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:15:46-1:25:56",
+                  "double_quoted_string": {
+                    "range": ",0:0:0-0:0:0",
                     "value": [
                       {
-                        "string": "layers.cat",
-                        "raw_string": "layers.cat"
+                        "string": "root.layers.cat"
                       }
                     ]
                   }
@@ -934,7 +932,7 @@
             },
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:15:46-1:25:56",
+                "range": ",0:0:0-0:0:0",
                 "key": {
                   "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:0:31-1:13:44",
                   "path": [
@@ -964,12 +962,11 @@
                 },
                 "primary": {},
                 "value": {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:15:46-1:25:56",
+                  "double_quoted_string": {
+                    "range": ",0:0:0-0:0:0",
                     "value": [
                       {
-                        "string": "layers.cat",
-                        "raw_string": "layers.cat"
+                        "string": "root.layers.cat"
                       }
                     ]
                   }
@@ -1344,7 +1341,7 @@
                 }
               },
               "link": {
-                "value": "layers.cat"
+                "value": "root.layers.cat"
               },
               "near_key": null,
               "shape": {

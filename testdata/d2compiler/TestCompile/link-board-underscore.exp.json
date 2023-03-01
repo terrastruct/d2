@@ -149,7 +149,7 @@
                                               "nodes": [
                                                 {
                                                   "map_key": {
-                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:16:62-6:28:74",
+                                                    "range": ",0:0:0-0:0:0",
                                                     "key": {
                                                       "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:14:60",
                                                       "path": [
@@ -179,12 +179,11 @@
                                                     },
                                                     "primary": {},
                                                     "value": {
-                                                      "unquoted_string": {
-                                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:16:62-6:28:74",
+                                                      "double_quoted_string": {
+                                                        "range": ",0:0:0-0:0:0",
                                                         "value": [
                                                           {
-                                                            "string": "_._.layers.x",
-                                                            "raw_string": "_._.layers.x"
+                                                            "string": "root.layers.x"
                                                           }
                                                         ]
                                                       }
@@ -193,7 +192,7 @@
                                                 },
                                                 {
                                                   "map_key": {
-                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:14:89-7:15:90",
+                                                    "range": ",0:0:0-0:0:0",
                                                     "key": {
                                                       "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:12:87",
                                                       "path": [
@@ -223,12 +222,11 @@
                                                     },
                                                     "primary": {},
                                                     "value": {
-                                                      "unquoted_string": {
-                                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:14:89-7:15:90",
+                                                      "double_quoted_string": {
+                                                        "range": ",0:0:0-0:0:0",
                                                         "value": [
                                                           {
-                                                            "string": "_",
-                                                            "raw_string": "_"
+                                                            "string": "root.layers.x"
                                                           }
                                                         ]
                                                       }
@@ -483,7 +481,7 @@
                                                   "nodes": [
                                                     {
                                                       "map_key": {
-                                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:16:62-6:28:74",
+                                                        "range": ",0:0:0-0:0:0",
                                                         "key": {
                                                           "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:14:60",
                                                           "path": [
@@ -513,12 +511,11 @@
                                                         },
                                                         "primary": {},
                                                         "value": {
-                                                          "unquoted_string": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:16:62-6:28:74",
+                                                          "double_quoted_string": {
+                                                            "range": ",0:0:0-0:0:0",
                                                             "value": [
                                                               {
-                                                                "string": "_._.layers.x",
-                                                                "raw_string": "_._.layers.x"
+                                                                "string": "root.layers.x"
                                                               }
                                                             ]
                                                           }
@@ -527,7 +524,7 @@
                                                     },
                                                     {
                                                       "map_key": {
-                                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:14:89-7:15:90",
+                                                        "range": ",0:0:0-0:0:0",
                                                         "key": {
                                                           "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:12:87",
                                                           "path": [
@@ -557,12 +554,11 @@
                                                         },
                                                         "primary": {},
                                                         "value": {
-                                                          "unquoted_string": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:14:89-7:15:90",
+                                                          "double_quoted_string": {
+                                                            "range": ",0:0:0-0:0:0",
                                                             "value": [
                                                               {
-                                                                "string": "_",
-                                                                "raw_string": "_"
+                                                                "string": "root.layers.x"
                                                               }
                                                             ]
                                                           }
@@ -817,7 +813,7 @@
                                                       "nodes": [
                                                         {
                                                           "map_key": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:16:62-6:28:74",
+                                                            "range": ",0:0:0-0:0:0",
                                                             "key": {
                                                               "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:14:60",
                                                               "path": [
@@ -847,12 +843,11 @@
                                                             },
                                                             "primary": {},
                                                             "value": {
-                                                              "unquoted_string": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:16:62-6:28:74",
+                                                              "double_quoted_string": {
+                                                                "range": ",0:0:0-0:0:0",
                                                                 "value": [
                                                                   {
-                                                                    "string": "_._.layers.x",
-                                                                    "raw_string": "_._.layers.x"
+                                                                    "string": "root.layers.x"
                                                                   }
                                                                 ]
                                                               }
@@ -861,7 +856,7 @@
                                                         },
                                                         {
                                                           "map_key": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:14:89-7:15:90",
+                                                            "range": ",0:0:0-0:0:0",
                                                             "key": {
                                                               "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:12:87",
                                                               "path": [
@@ -891,12 +886,11 @@
                                                             },
                                                             "primary": {},
                                                             "value": {
-                                                              "unquoted_string": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:14:89-7:15:90",
+                                                              "double_quoted_string": {
+                                                                "range": ",0:0:0-0:0:0",
                                                                 "value": [
                                                                   {
-                                                                    "string": "_",
-                                                                    "raw_string": "_"
+                                                                    "string": "root.layers.x"
                                                                   }
                                                                 ]
                                                               }
@@ -998,7 +992,7 @@
                   },
                   "style": {},
                   "link": {
-                    "value": "_._.layers.x"
+                    "value": "root.layers.x"
                   },
                   "near_key": null,
                   "shape": {
@@ -1059,7 +1053,7 @@
                   },
                   "style": {},
                   "link": {
-                    "value": "_"
+                    "value": "root.layers.x"
                   },
                   "near_key": null,
                   "shape": {

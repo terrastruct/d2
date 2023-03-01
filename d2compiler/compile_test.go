@@ -2036,7 +2036,7 @@ layers: {
 	}
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				tassert.Equal(t, ".layers.x", g.Objects[0].LinkedBoard.AbsID())
+				tassert.Equal(t, "root.layers.x", g.Objects[0].Attributes.Link.Value)
 			},
 		},
 		{
@@ -2056,7 +2056,7 @@ scenarios: {
   }
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				tassert.Equal(t, ".layers.cat", g.Objects[0].LinkedBoard.AbsID())
+				tassert.Equal(t, "root.layers.cat", g.Objects[0].Attributes.Link.Value)
 			},
 		},
 		{
@@ -2089,7 +2089,21 @@ layers: {
   }
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				tassert.Equal(t, ".layers.x.layers.x", g.Objects[0].LinkedBoard.AbsID())
+				tassert.Equal(t, "root.layers.x.layers.x", g.Objects[0].Attributes.Link.Value)
+			},
+		},
+		{
+			name: "link-board-key-nested",
+			text: `x: {
+  y.link: layers.x
+}
+layers: {
+	x: {
+    yo
+  }
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.x", g.Objects[1].Attributes.Link.Value)
 			},
 		},
 		{
@@ -2107,9 +2121,9 @@ layers: {
   }
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				tassert.NotNil(t, g.Layers[0].Layers[0].Objects[0].LinkedBoard)
-				tassert.Equal(t, ".layers.x", g.Layers[0].Layers[0].Objects[0].LinkedBoard.AbsID())
-				tassert.Equal(t, ".layers.x", g.Layers[0].Layers[0].Objects[1].LinkedBoard.AbsID())
+				tassert.NotNil(t, g.Layers[0].Layers[0].Objects[0].Attributes.Link.Value)
+				tassert.Equal(t, "root.layers.x", g.Layers[0].Layers[0].Objects[0].Attributes.Link.Value)
+				tassert.Equal(t, "root.layers.x", g.Layers[0].Layers[0].Objects[1].Attributes.Link.Value)
 			},
 		},
 		{
@@ -2125,7 +2139,7 @@ layers: {
     }
   }
 }`,
-			expErr: `d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:17: link key "_._._" to board not found`,
+			expErr: `d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:5: board referenced by link not found`,
 		},
 	}
 

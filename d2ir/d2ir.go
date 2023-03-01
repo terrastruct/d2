@@ -158,7 +158,7 @@ type Map struct {
 
 func (m *Map) initRoot() {
 	m.parent = &Field{
-		Name: "",
+		Name: "root",
 		References: []*FieldReference{{
 			Context: &RefContext{
 				ScopeMap: m,
@@ -219,6 +219,17 @@ func (m *Map) Root() bool {
 		return false
 	}
 	return f.Root()
+}
+
+func (m *Map) AbsID() string {
+	f, ok := m.parent.(*Field)
+	if !ok {
+		return ""
+	}
+	if f.parent == nil {
+		return f.Name
+	}
+	return f.parent.(*Map).AbsID() + "." + f.Name
 }
 
 func (f *Field) Root() bool {
