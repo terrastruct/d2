@@ -316,12 +316,13 @@ type Connection struct {
 
 func BaseConnection() *Connection {
 	return &Connection{
-		SrcArrow:    NoArrowhead,
-		DstArrow:    NoArrowhead,
-		Route:       make([]*geo.Point, 0),
-		Opacity:     1,
-		StrokeDash:  0,
-		StrokeWidth: 2,
+		SrcArrow:     NoArrowhead,
+		DstArrow:     NoArrowhead,
+		Route:        make([]*geo.Point, 0),
+		Opacity:      1,
+		StrokeDash:   0,
+		StrokeWidth:  2,
+		BorderRadius: 10,
 		Text: Text{
 			Italic:     true,
 			FontFamily: "DEFAULT",

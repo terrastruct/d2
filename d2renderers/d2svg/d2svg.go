@@ -421,9 +421,6 @@ func pathData(connection d2target.Connection, srcAdj, dstAdj *geo.Point) string 
 			dist := geo.EuclideanDistance(prevTarget.X, prevTarget.Y, currTarget.X, currTarget.Y)
 
 			connectionBorderRadius := connection.BorderRadius
-			if connectionBorderRadius < 0 {
-				connectionBorderRadius = 10
-			}
 			units := math.Min(connectionBorderRadius, dist/2)
 
 			prevTranslations := prevVector.Unit().Multiply(units).ToPoint()
