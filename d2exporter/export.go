@@ -206,6 +206,10 @@ func toConnection(edge *d2graph.Edge) d2target.Connection {
 		}
 	}
 
+	if edge.Attributes.Style.BorderRadius != nil {
+		connection.BorderRadius, _ = strconv.ParseFloat(edge.Attributes.Style.BorderRadius.Value, 64)
+	}
+
 	if edge.Attributes.Style.Opacity != nil {
 		connection.Opacity, _ = strconv.ParseFloat(edge.Attributes.Style.Opacity.Value, 64)
 	}
