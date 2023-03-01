@@ -1,5 +1,6 @@
 {
   "name": "",
+  "isFolderOnly": false,
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
@@ -262,7 +263,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
-      "borderRadius": -1,
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
