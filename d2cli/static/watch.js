@@ -11,6 +11,8 @@ function init(reconnectDelay) {
   const ws = new WebSocket(
     `ws://${window.location.host}${window.location.pathname}watch`
   );
+  let isInit = true;
+  let ratio;
   ws.onopen = () => {
     reconnectDelay = 1000;
     console.info("watch websocket opened");
@@ -31,6 +33,29 @@ function init(reconnectDelay) {
       // setting innerHTML to only the actual svg innards. However then you also need to parse
       // out the width, height and viewbox out of the top level SVG tag and update those manually.
       d2SVG.innerHTML = msg.svg;
+
+      const svgEl = d2SVG.querySelector("#d2-svg");
+      // just use inner SVG in watch mode
+      svgEl.parentElement.replaceWith(svgEl);
+      let width = parseInt(svgEl.getAttribute("width"), 10);
+      let height = parseInt(svgEl.getAttribute("height"), 10);
+      if (isInit) {
+        if (width > height) {
+          if (width > window.innerWidth) {
+            ratio = window.innerWidth / width;
+          }
+        } else if (height > window.innerHeight) {
+          ratio = window.innerHeight / height;
+        }
+        // Scale svg fit to zoom
+        isInit = false;
+      }
+      if (ratio) {
+        // body padding is 8px
+        svgEl.setAttribute("width", width * ratio - 16);
+        svgEl.setAttribute("height", height * ratio - 16);
+      }
+
       d2ErrDiv.style.display = "none";
     }
     if (msg.err) {
