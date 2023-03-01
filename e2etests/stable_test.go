@@ -16,22 +16,22 @@ func testStable(t *testing.T) {
 			name: "elk_border_radius",
 			script: `
 				a -> b
-				a -> c {
+				a -> c: {
 					style: {
 						border-radius: 0
 					}
 				}
-				a -> e {
+				a -> e: {
 					style: {
 						border-radius: 5
 					}
 				}
-				a -> f {
+				a -> f: {
 					style: {
 						border-radius: 10
 					}
 				}
-				a -> g {
+				a -> g: {
 					style: {
 						border-radius: 20
 					}
