@@ -327,8 +327,6 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Link = &d2graph.Scalar{}
 		attrs.Link.Value = scalar.ScalarString()
 		attrs.Link.MapKey = f.LastPrimaryKey()
-		// TODO I think all the attributes need the range actually
-		attrs.Link.MapKey.Range = scalar.GetRange()
 	case "direction":
 		dirs := []string{"up", "down", "right", "left"}
 		if !go2.Contains(dirs, scalar.ScalarString()) {
@@ -729,7 +727,6 @@ func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
 		}
 
 		linkKey, err := d2parser.ParseKey(obj.Attributes.Link.Value)
-		// Links can be urls
 		if err != nil {
 			continue
 		}
@@ -743,7 +740,7 @@ func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
 			root = root.Parent
 		}
 		if !hasBoard(root, linkKey.IDA()) {
-			c.errorf(obj.Attributes.Link.MapKey, "link key to board not found")
+			c.errorf(obj.Attributes.Link.MapKey, "linked board not found")
 			continue
 		}
 	}
@@ -756,6 +753,7 @@ func hasBoard(root *d2graph.Graph, ida []string) bool {
 	for i := 0; i < len(ida); i += 2 {
 		id := ida[i]
 		if id == "root" {
+			i--
 			continue
 		}
 		if i == len(ida)-1 {
@@ -765,19 +763,19 @@ func hasBoard(root *d2graph.Graph, ida []string) bool {
 		if id == "layers" {
 			for _, b := range root.Layers {
 				if b.Name == nextID {
-					return hasBoard(b, ida[i:])
+					return hasBoard(b, ida[i+1:])
 				}
 			}
 		} else if id == "scenarios" {
 			for _, b := range root.Scenarios {
 				if b.Name == nextID {
-					return hasBoard(b, ida[i:])
+					return hasBoard(b, ida[i+1:])
 				}
 			}
 		} else if id == "steps" {
 			for _, b := range root.Steps {
 				if b.Name == nextID {
-					return hasBoard(b, ida[i:])
+					return hasBoard(b, ida[i+1:])
 				}
 			}
 		}

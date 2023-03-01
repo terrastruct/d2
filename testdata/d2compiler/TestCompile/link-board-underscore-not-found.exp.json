@@ -5,7 +5,7 @@
     "errs": [
       {
         "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2,6:4:50-6:14:60",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:5: board referenced by link not found"
+        "errmsg": "d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:5: linked board not found"
       }
     ]
   }

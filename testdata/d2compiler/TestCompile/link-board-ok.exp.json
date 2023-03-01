@@ -7,7 +7,7 @@
       "nodes": [
         {
           "map_key": {
-            "range": ",0:0:0-0:0:0",
+            "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,0:0:0-0:16:16",
             "key": {
               "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,0:0:0-0:6:6",
               "path": [
@@ -229,7 +229,7 @@
           "nodes": [
             {
               "map_key": {
-                "range": ",0:0:0-0:0:0",
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,0:0:0-0:16:16",
                 "key": {
                   "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,0:0:0-0:6:6",
                   "path": [

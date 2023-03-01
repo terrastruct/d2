@@ -131,37 +131,68 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 		// If these are boards, we transform into absolute paths
 		if f.Name == "link" {
-			link, err := d2parser.ParseKey(refctx.Key.Value.ScalarBox().Unbox().ScalarString())
-			if err == nil {
-				scopeID, _ := d2parser.ParseKey(refctx.ScopeMap.AbsID())
-				scopeIDA := scopeID.IDA()
-				for i := len(scopeIDA) - 1; i > 0; i-- {
-					if scopeIDA[i-1] == "layers" || scopeIDA[i-1] == "scenarios" || scopeIDA[i-1] == "steps" || scopeIDA[i-1] == "root" {
-						scopeIDA = scopeIDA[:i+1]
-						break
-					}
-				}
-				linkIDA := link.IDA()
-				if len(linkIDA) > 0 {
-					for len(linkIDA) > 0 && linkIDA[0] == "_" {
-						if len(scopeIDA) <= 2 {
-							c.errorf(refctx.Key.Key, "board referenced by link not found")
-							return
-						}
-						// pop 2 off path per one underscore
-						scopeIDA = scopeIDA[:len(scopeIDA)-2]
-						linkIDA = linkIDA[1:]
-					}
-					scopeIDA = append(scopeIDA, linkIDA...)
-					refctx.Key.Value = d2ast.MakeValueBox(d2ast.RawString(strings.Join(scopeIDA, "."), true))
-				}
-			}
+			c.compileLink(refctx)
 		}
 		f.Primary_ = &Scalar{
 			parent: f,
 			Value:  refctx.Key.Value.ScalarBox().Unbox(),
 		}
 	}
+}
+
+func (c *compiler) compileLink(refctx *RefContext) {
+	val := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
+	link, err := d2parser.ParseKey(val)
+	if err != nil {
+		return
+	}
+
+	scopeID, _ := d2parser.ParseKey(refctx.ScopeMap.AbsID())
+	scopeIDA := scopeID.IDA()
+
+	if len(scopeIDA) == 0 {
+		return
+	}
+
+	linkIDA := link.IDA()
+	if len(linkIDA) == 0 {
+		return
+	}
+
+	// If it doesn't start with one of these reserved words, the link may be a URL or local path or something
+	if linkIDA[0] != "layers" && linkIDA[0] != "scenarios" && linkIDA[0] != "steps" && linkIDA[0] != "_" {
+		return
+	}
+
+	// Chop off the non-board portion of the scope, like if this is being defined on a nested object (e.g. `x.y.z`)
+	for i := len(scopeIDA) - 1; i > 0; i-- {
+		if scopeIDA[i-1] == "layers" || scopeIDA[i-1] == "scenarios" || scopeIDA[i-1] == "steps" {
+			scopeIDA = scopeIDA[:i+1]
+			break
+		}
+		if scopeIDA[i-1] == "root" {
+			scopeIDA = scopeIDA[:i]
+			break
+		}
+	}
+
+	// Resolve underscores
+	for len(linkIDA) > 0 && linkIDA[0] == "_" {
+		if len(scopeIDA) < 2 {
+			c.errorf(refctx.Key.Key, "linked board not found")
+			return
+		}
+		// pop 2 off path per one underscore
+		scopeIDA = scopeIDA[:len(scopeIDA)-2]
+		linkIDA = linkIDA[1:]
+	}
+	if len(scopeIDA) == 0 {
+		scopeIDA = []string{"root"}
+	}
+
+	// Create the absolute path by appending scope path with value specified
+	scopeIDA = append(scopeIDA, linkIDA...)
+	refctx.Key.Value = d2ast.MakeValueBox(d2ast.RawString(strings.Join(scopeIDA, "."), true))
 }
 
 func (c *compiler) compileEdges(refctx *RefContext) {

@@ -2063,7 +2063,7 @@ scenarios: {
 			name: "link-board-not-found",
 			text: `x.link: layers.x
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/link-board-not-found.d2:1:9: link key "layers.x" to board not found`,
+			expErr: `d2/testdata/d2compiler/TestCompile/link-board-not-found.d2:1:1: linked board not found`,
 		},
 		{
 			name: "link-board-not-board",
@@ -2074,7 +2074,7 @@ layers: {
     y
   }
 }`,
-			expErr: `d2/testdata/d2compiler/TestCompile/link-board-not-board.d2:2:9: link key "layers.x.y" to board not found`,
+			expErr: `d2/testdata/d2compiler/TestCompile/link-board-not-board.d2:2:1: linked board not found`,
 		},
 		{
 			name: "link-board-nested",
@@ -2139,7 +2139,7 @@ layers: {
     }
   }
 }`,
-			expErr: `d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:5: board referenced by link not found`,
+			expErr: `d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:5: linked board not found`,
 		},
 	}
 

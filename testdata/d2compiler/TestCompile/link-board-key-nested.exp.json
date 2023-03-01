@@ -31,7 +31,7 @@
                 "nodes": [
                   {
                     "map_key": {
-                      "range": ",0:0:0-0:0:0",
+                      "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,1:2:7-1:18:23",
                       "key": {
                         "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,1:2:7-1:8:13",
                         "path": [
@@ -65,7 +65,7 @@
                           "range": ",0:0:0-0:0:0",
                           "value": [
                             {
-                              "string": "root.x.layers.x"
+                              "string": "root.layers.x"
                             }
                           ]
                         }
@@ -280,7 +280,7 @@
           },
           "style": {},
           "link": {
-            "value": "root.x.layers.x"
+            "value": "root.layers.x"
           },
           "near_key": null,
           "shape": {
@@ -329,7 +329,7 @@
                     "nodes": [
                       {
                         "map_key": {
-                          "range": ",0:0:0-0:0:0",
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,1:2:7-1:18:23",
                           "key": {
                             "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,1:2:7-1:8:13",
                             "path": [
@@ -363,7 +363,7 @@
                               "range": ",0:0:0-0:0:0",
                               "value": [
                                 {
-                                  "string": "root.x.layers.x"
+                                  "string": "root.layers.x"
                                 }
                               ]
                             }

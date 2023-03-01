@@ -4,8 +4,8 @@
     "ioerr": null,
     "errs": [
       {
-        "range": "d2/testdata/d2compiler/TestCompile/link-board-not-board.d2,1:8:12-1:18:22",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/link-board-not-board.d2:2:9: link key \"layers.x.y\" to board not found"
+        "range": "d2/testdata/d2compiler/TestCompile/link-board-not-board.d2,1:0:4-1:18:22",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/link-board-not-board.d2:2:1: linked board not found"
       }
     ]
   }

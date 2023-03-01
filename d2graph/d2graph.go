@@ -56,28 +56,6 @@ func NewGraph() *Graph {
 	return d
 }
 
-func (g *Graph) AbsID() string {
-	if g.Parent == nil {
-		return g.Name
-	}
-	for _, l := range g.Parent.Layers {
-		if l.Name == g.Name {
-			return g.Parent.AbsID() + ".layers." + g.Name
-		}
-	}
-	for _, s := range g.Parent.Scenarios {
-		if s.Name == g.Name {
-			return g.Parent.AbsID() + ".scenarios." + g.Name
-		}
-	}
-	for _, s := range g.Parent.Steps {
-		if s.Name == g.Name {
-			return g.Parent.AbsID() + ".steps." + g.Name
-		}
-	}
-	return ""
-}
-
 // TODO consider having different Scalar types
 // Right now we'll hold any types in Value and just convert, e.g. floats
 type Scalar struct {
