@@ -2057,6 +2057,7 @@ scenarios: {
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				tassert.Equal(t, "root.layers.cat", g.Objects[0].Attributes.Link.Value)
+				tassert.Equal(t, "root.layers.cat", g.Scenarios[0].Objects[0].Attributes.Link.Value)
 			},
 		},
 		{
