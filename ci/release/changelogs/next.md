@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- `border-radius` is now supported on connections (ELK and TALA only, since Dagre uses curves). [#913](https://github.com/terrastruct/d2/pull/913)
+
 #### Improvements 🧹
 
 - PDF exports now support external links on shapes [#891](https://github.com/terrastruct/d2/issues/891)
