@@ -2036,7 +2036,7 @@ layers: {
 	}
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				tassert.Equal(t, g.Layers[0].Name, g.Objects[0].LinkedBoard.Name)
+				tassert.Equal(t, ".layers.x", g.Objects[0].LinkedBoard.AbsID())
 			},
 		},
 		{
@@ -2056,7 +2056,7 @@ scenarios: {
   }
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				tassert.Equal(t, g.Layers[0].Name, g.Objects[0].LinkedBoard.Name)
+				tassert.Equal(t, ".layers.cat", g.Objects[0].LinkedBoard.AbsID())
 			},
 		},
 		{
@@ -2089,7 +2089,7 @@ layers: {
   }
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				tassert.Equal(t, g.Layers[0].Layers[0], g.Objects[0].LinkedBoard)
+				tassert.Equal(t, ".layers.x.layers.x", g.Objects[0].LinkedBoard.AbsID())
 			},
 		},
 	}
