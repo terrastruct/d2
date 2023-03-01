@@ -2031,8 +2031,13 @@ Chinchillas_Collectibles.chinchilla -> Chinchillas.id`,
 			name: "link-board-ok",
 			text: `x.link: layers.x
 layers: {
-  x
+	x: {
+	  y
+	}
 }`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, g.Layers[0].Name, g.Objects[0].LinkedBoard.Name)
+			},
 		},
 		{
 			name: "link-board-mixed",
@@ -2050,6 +2055,9 @@ scenarios: {
 		question.style.fill: green
   }
 }`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, g.Layers[0].Name, g.Objects[0].LinkedBoard.Name)
+			},
 		},
 		{
 			name: "link-board-not-found",
@@ -2066,7 +2074,7 @@ layers: {
     y
   }
 }`,
-			expErr: `d2/testdata/d2compiler/TestCompile/link-board-not-board.d2:2:9: internal link key "layers.x.y" is not a top-level board`,
+			expErr: `d2/testdata/d2compiler/TestCompile/link-board-not-board.d2:2:9: link key "layers.x.y" to board not found`,
 		},
 		{
 			name: "link-board-nested",
@@ -2074,10 +2082,15 @@ layers: {
 layers: {
 	x: {
     layers: {
-      x
+			x: {
+        hello
+			}
     }
   }
 }`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, g.Layers[0].Layers[0], g.Objects[0].LinkedBoard)
+			},
 		},
 	}
 

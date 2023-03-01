@@ -31,7 +31,7 @@
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,1:2:7-1:39:44",
+                      "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,1:8:13-1:39:44",
                       "key": {
                         "range": "d2/testdata/d2compiler/TestCompile/path_link.d2,1:2:7-1:6:11",
                         "path": [

@@ -56,6 +56,10 @@ func compileIR(ast *d2ast.Map, m *d2ir.Map) (*d2graph.Graph, error) {
 	if len(c.err.Errors) > 0 {
 		return nil, c.err
 	}
+	c.compileBoardLink(g, m)
+	if len(c.err.Errors) > 0 {
+		return nil, c.err
+	}
 	return g, nil
 }
 
@@ -76,7 +80,6 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 			g.IsFolderOnly = true
 		}
 	}
-	c.validateBoardLink(g, ir)
 	return g
 }
 
@@ -323,6 +326,8 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Link = &d2graph.Scalar{}
 		attrs.Link.Value = scalar.ScalarString()
 		attrs.Link.MapKey = f.LastPrimaryKey()
+		// TODO I think these all need the rank actually
+		attrs.Link.MapKey.Range = scalar.GetRange()
 	case "direction":
 		dirs := []string{"up", "down", "right", "left"}
 		if !go2.Contains(dirs, scalar.ScalarString()) {
@@ -716,7 +721,7 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 	}
 }
 
-func (c *compiler) validateBoardLink(g *d2graph.Graph, ir *d2ir.Map) {
+func (c *compiler) compileBoardLink(g *d2graph.Graph, ir *d2ir.Map) {
 	for _, obj := range g.Objects {
 		if obj.Attributes.Link == nil {
 			continue
@@ -728,25 +733,59 @@ func (c *compiler) validateBoardLink(g *d2graph.Graph, ir *d2ir.Map) {
 			continue
 		}
 
-		// If the keyword is not another board, don't validate
-		// Might just be linking to a local folder
 		switch linkKey.Path[0].Unbox().ScalarString() {
+		// TODO underscore
 		case "layers", "scenarios", "steps":
 		default:
 			continue
 		}
 
-		b := ir.GetField(linkKey.IDA()...)
-		if b == nil {
+		obj.LinkedBoard = c.findBoard(g, ir, linkKey.IDA())
+
+		if obj.LinkedBoard == nil {
 			c.errorf(obj.Attributes.Link.MapKey, "link key %#v to board not found", obj.Attributes.Link.Value)
 			continue
 		}
-		kind := d2ir.NodeBoardKind(b)
-		if kind == "" {
-			c.errorf(obj.Attributes.Link.MapKey, "internal link key %#v is not a top-level board", obj.Attributes.Link.Value)
+	}
+}
+
+func (c *compiler) findBoard(g *d2graph.Graph, ir *d2ir.Map, ida []string) *d2graph.Graph {
+	var currType string
+	for _, p := range ida {
+		switch p {
+		case "layers", "scenarios", "steps":
+			currType = p
 			continue
 		}
+		var boards []*d2graph.Graph
+		switch currType {
+		case "layers":
+			boards = g.Layers
+		case "scenarios":
+			boards = g.Scenarios
+		case "steps":
+			boards = g.Steps
+		default:
+			return nil
+		}
+		currType = ""
+
+		var board *d2graph.Graph
+		for i, b := range boards {
+			if b.Name == p {
+				board = boards[i]
+				break
+			}
+		}
+
+		if board == nil {
+			return nil
+		}
+
+		g = board
 	}
+
+	return g
 }
 
 func init() {
