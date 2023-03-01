@@ -2092,6 +2092,41 @@ layers: {
 				tassert.Equal(t, ".layers.x.layers.x", g.Objects[0].LinkedBoard.AbsID())
 			},
 		},
+		{
+			name: "link-board-underscore",
+			text: `x
+layers: {
+	x: {
+	  yo
+    layers: {
+			x: {
+				hello.link: _._.layers.x
+				hey.link: _
+			}
+    }
+  }
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.NotNil(t, g.Layers[0].Layers[0].Objects[0].LinkedBoard)
+				tassert.Equal(t, ".layers.x", g.Layers[0].Layers[0].Objects[0].LinkedBoard.AbsID())
+				tassert.Equal(t, ".layers.x", g.Layers[0].Layers[0].Objects[1].LinkedBoard.AbsID())
+			},
+		},
+		{
+			name: "link-board-underscore-not-found",
+			text: `x
+layers: {
+	x: {
+	  yo
+    layers: {
+			x: {
+				hello.link: _._._
+			}
+    }
+  }
+}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:17: link key "_._._" to board not found`,
+		},
 	}
 
 	for _, tc := range testCases {

@@ -56,7 +56,7 @@ func compileIR(ast *d2ast.Map, m *d2ir.Map) (*d2graph.Graph, error) {
 	if len(c.err.Errors) > 0 {
 		return nil, c.err
 	}
-	c.compileBoardLink(g, m)
+	c.compileBoardLink(g)
 	if len(c.err.Errors) > 0 {
 		return nil, c.err
 	}
@@ -722,7 +722,7 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 	}
 }
 
-func (c *compiler) compileBoardLink(g *d2graph.Graph, ir *d2ir.Map) {
+func (c *compiler) compileBoardLink(g *d2graph.Graph) {
 	for _, obj := range g.Objects {
 		if obj.Attributes.Link == nil {
 			continue
@@ -735,24 +735,34 @@ func (c *compiler) compileBoardLink(g *d2graph.Graph, ir *d2ir.Map) {
 		}
 
 		switch linkKey.Path[0].Unbox().ScalarString() {
-		// TODO underscore
-		case "layers", "scenarios", "steps":
+		// Starting a link with one of the following means it is targeting a board
+		case "layers", "scenarios", "steps", "_":
 		default:
 			continue
 		}
 
-		obj.LinkedBoard = c.findBoard(g, ir, linkKey.IDA())
+		obj.LinkedBoard = c.findBoard(g, linkKey.IDA())
 
 		if obj.LinkedBoard == nil {
 			c.errorf(obj.Attributes.Link.MapKey, "link key %#v to board not found", obj.Attributes.Link.Value)
 			continue
 		}
 	}
+	for _, b := range append(append(g.Layers, g.Scenarios...), g.Steps...) {
+		c.compileBoardLink(b)
+	}
 }
 
-func (c *compiler) findBoard(g *d2graph.Graph, ir *d2ir.Map, ida []string) *d2graph.Graph {
+func (c *compiler) findBoard(g *d2graph.Graph, ida []string) *d2graph.Graph {
 	var currType string
 	for _, p := range ida {
+		if g == nil {
+			return nil
+		}
+		if p == "_" {
+			g = g.Parent
+			continue
+		}
 		switch p {
 		case "layers", "scenarios", "steps":
 			currType = p
@@ -777,10 +787,6 @@ func (c *compiler) findBoard(g *d2graph.Graph, ir *d2ir.Map, ida []string) *d2gr
 				board = boards[i]
 				break
 			}
-		}
-
-		if board == nil {
-			return nil
 		}
 
 		g = board

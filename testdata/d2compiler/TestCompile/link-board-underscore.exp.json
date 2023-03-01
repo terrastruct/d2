@@ -1,0 +1,1084 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-11:1:107",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-0:1:1",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-11:1:107",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-1:6:8",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-1:6:8",
+                    "value": [
+                      {
+                        "string": "layers",
+                        "raw_string": "layers"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:8:10-11:0:106",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-10:3:105",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-2:2:14",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-2:2:14",
+                              "value": [
+                                {
+                                  "string": "x",
+                                  "raw_string": "x"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:4:16-10:2:104",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,3:3:21-3:5:23",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,3:3:21-3:5:23",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,3:3:21-3:5:23",
+                                        "value": [
+                                          {
+                                            "string": "yo",
+                                            "raw_string": "yo"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {}
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-9:5:101",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-4:10:34",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-4:10:34",
+                                        "value": [
+                                          {
+                                            "string": "layers",
+                                            "raw_string": "layers"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "map": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:12:36-9:4:100",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-8:4:95",
+                                          "key": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-5:4:42",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-5:4:42",
+                                                  "value": [
+                                                    {
+                                                      "string": "x",
+                                                      "raw_string": "x"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "map": {
+                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-8:3:94",
+                                              "nodes": [
+                                                {
+                                                  "map_key": {
+                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:16:62-6:28:74",
+                                                    "key": {
+                                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:14:60",
+                                                      "path": [
+                                                        {
+                                                          "unquoted_string": {
+                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:9:55",
+                                                            "value": [
+                                                              {
+                                                                "string": "hello",
+                                                                "raw_string": "hello"
+                                                              }
+                                                            ]
+                                                          }
+                                                        },
+                                                        {
+                                                          "unquoted_string": {
+                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:10:56-6:14:60",
+                                                            "value": [
+                                                              {
+                                                                "string": "link",
+                                                                "raw_string": "link"
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    "primary": {},
+                                                    "value": {
+                                                      "unquoted_string": {
+                                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:16:62-6:28:74",
+                                                        "value": [
+                                                          {
+                                                            "string": "_._.layers.x",
+                                                            "raw_string": "_._.layers.x"
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "map_key": {
+                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:14:89-7:15:90",
+                                                    "key": {
+                                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:12:87",
+                                                      "path": [
+                                                        {
+                                                          "unquoted_string": {
+                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:7:82",
+                                                            "value": [
+                                                              {
+                                                                "string": "hey",
+                                                                "raw_string": "hey"
+                                                              }
+                                                            ]
+                                                          }
+                                                        },
+                                                        {
+                                                          "unquoted_string": {
+                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:83-7:12:87",
+                                                            "value": [
+                                                              {
+                                                                "string": "link",
+                                                                "raw_string": "link"
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    "primary": {},
+                                                    "value": {
+                                                      "unquoted_string": {
+                                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:14:89-7:15:90",
+                                                        "value": [
+                                                          {
+                                                            "string": "_",
+                                                            "raw_string": "_"
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ],
+    "layers": [
+      {
+        "name": "x",
+        "isFolderOnly": false,
+        "ast": {
+          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-11:1:107",
+          "nodes": [
+            {
+              "map_key": {
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-0:1:1",
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-0:1:1",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {}
+              }
+            },
+            {
+              "map_key": {
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-11:1:107",
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-1:6:8",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-1:6:8",
+                        "value": [
+                          {
+                            "string": "layers",
+                            "raw_string": "layers"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {
+                  "map": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:8:10-11:0:106",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-10:3:105",
+                          "key": {
+                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-2:2:14",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-2:2:14",
+                                  "value": [
+                                    {
+                                      "string": "x",
+                                      "raw_string": "x"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:4:16-10:2:104",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,3:3:21-3:5:23",
+                                    "key": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,3:3:21-3:5:23",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,3:3:21-3:5:23",
+                                            "value": [
+                                              {
+                                                "string": "yo",
+                                                "raw_string": "yo"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {}
+                                  }
+                                },
+                                {
+                                  "map_key": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-9:5:101",
+                                    "key": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-4:10:34",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-4:10:34",
+                                            "value": [
+                                              {
+                                                "string": "layers",
+                                                "raw_string": "layers"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {
+                                      "map": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:12:36-9:4:100",
+                                        "nodes": [
+                                          {
+                                            "map_key": {
+                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-8:4:95",
+                                              "key": {
+                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-5:4:42",
+                                                "path": [
+                                                  {
+                                                    "unquoted_string": {
+                                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-5:4:42",
+                                                      "value": [
+                                                        {
+                                                          "string": "x",
+                                                          "raw_string": "x"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              },
+                                              "primary": {},
+                                              "value": {
+                                                "map": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-8:3:94",
+                                                  "nodes": [
+                                                    {
+                                                      "map_key": {
+                                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:16:62-6:28:74",
+                                                        "key": {
+                                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:14:60",
+                                                          "path": [
+                                                            {
+                                                              "unquoted_string": {
+                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:9:55",
+                                                                "value": [
+                                                                  {
+                                                                    "string": "hello",
+                                                                    "raw_string": "hello"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            },
+                                                            {
+                                                              "unquoted_string": {
+                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:10:56-6:14:60",
+                                                                "value": [
+                                                                  {
+                                                                    "string": "link",
+                                                                    "raw_string": "link"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          ]
+                                                        },
+                                                        "primary": {},
+                                                        "value": {
+                                                          "unquoted_string": {
+                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:16:62-6:28:74",
+                                                            "value": [
+                                                              {
+                                                                "string": "_._.layers.x",
+                                                                "raw_string": "_._.layers.x"
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    },
+                                                    {
+                                                      "map_key": {
+                                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:14:89-7:15:90",
+                                                        "key": {
+                                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:12:87",
+                                                          "path": [
+                                                            {
+                                                              "unquoted_string": {
+                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:7:82",
+                                                                "value": [
+                                                                  {
+                                                                    "string": "hey",
+                                                                    "raw_string": "hey"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            },
+                                                            {
+                                                              "unquoted_string": {
+                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:83-7:12:87",
+                                                                "value": [
+                                                                  {
+                                                                    "string": "link",
+                                                                    "raw_string": "link"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          ]
+                                                        },
+                                                        "primary": {},
+                                                        "value": {
+                                                          "unquoted_string": {
+                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:14:89-7:15:90",
+                                                            "value": [
+                                                              {
+                                                                "string": "_",
+                                                                "raw_string": "_"
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "label_dimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "style": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": {
+              "value": ""
+            }
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "yo",
+            "id_val": "yo",
+            "label_dimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,3:3:21-3:5:23",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,3:3:21-3:5:23",
+                        "value": [
+                          {
+                            "string": "yo",
+                            "raw_string": "yo"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "yo"
+              },
+              "style": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": {
+                "value": ""
+              }
+            },
+            "zIndex": 0
+          }
+        ],
+        "layers": [
+          {
+            "name": "x",
+            "isFolderOnly": false,
+            "ast": {
+              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-11:1:107",
+              "nodes": [
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-0:1:1",
+                    "key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-0:1:1",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-0:1:1",
+                            "value": [
+                              {
+                                "string": "x",
+                                "raw_string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {}
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-11:1:107",
+                    "key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-1:6:8",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-1:6:8",
+                            "value": [
+                              {
+                                "string": "layers",
+                                "raw_string": "layers"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:8:10-11:0:106",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-10:3:105",
+                              "key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-2:2:14",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-2:2:14",
+                                      "value": [
+                                        {
+                                          "string": "x",
+                                          "raw_string": "x"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "map": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:4:16-10:2:104",
+                                  "nodes": [
+                                    {
+                                      "map_key": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,3:3:21-3:5:23",
+                                        "key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,3:3:21-3:5:23",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,3:3:21-3:5:23",
+                                                "value": [
+                                                  {
+                                                    "string": "yo",
+                                                    "raw_string": "yo"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {},
+                                        "value": {}
+                                      }
+                                    },
+                                    {
+                                      "map_key": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-9:5:101",
+                                        "key": {
+                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-4:10:34",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-4:10:34",
+                                                "value": [
+                                                  {
+                                                    "string": "layers",
+                                                    "raw_string": "layers"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {},
+                                        "value": {
+                                          "map": {
+                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:12:36-9:4:100",
+                                            "nodes": [
+                                              {
+                                                "map_key": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-8:4:95",
+                                                  "key": {
+                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-5:4:42",
+                                                    "path": [
+                                                      {
+                                                        "unquoted_string": {
+                                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-5:4:42",
+                                                          "value": [
+                                                            {
+                                                              "string": "x",
+                                                              "raw_string": "x"
+                                                            }
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "primary": {},
+                                                  "value": {
+                                                    "map": {
+                                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-8:3:94",
+                                                      "nodes": [
+                                                        {
+                                                          "map_key": {
+                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:16:62-6:28:74",
+                                                            "key": {
+                                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:14:60",
+                                                              "path": [
+                                                                {
+                                                                  "unquoted_string": {
+                                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:9:55",
+                                                                    "value": [
+                                                                      {
+                                                                        "string": "hello",
+                                                                        "raw_string": "hello"
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "unquoted_string": {
+                                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:10:56-6:14:60",
+                                                                    "value": [
+                                                                      {
+                                                                        "string": "link",
+                                                                        "raw_string": "link"
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                }
+                                                              ]
+                                                            },
+                                                            "primary": {},
+                                                            "value": {
+                                                              "unquoted_string": {
+                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:16:62-6:28:74",
+                                                                "value": [
+                                                                  {
+                                                                    "string": "_._.layers.x",
+                                                                    "raw_string": "_._.layers.x"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          }
+                                                        },
+                                                        {
+                                                          "map_key": {
+                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:14:89-7:15:90",
+                                                            "key": {
+                                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:12:87",
+                                                              "path": [
+                                                                {
+                                                                  "unquoted_string": {
+                                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:7:82",
+                                                                    "value": [
+                                                                      {
+                                                                        "string": "hey",
+                                                                        "raw_string": "hey"
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                },
+                                                                {
+                                                                  "unquoted_string": {
+                                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:83-7:12:87",
+                                                                    "value": [
+                                                                      {
+                                                                        "string": "link",
+                                                                        "raw_string": "link"
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                }
+                                                              ]
+                                                            },
+                                                            "primary": {},
+                                                            "value": {
+                                                              "unquoted_string": {
+                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:14:89-7:15:90",
+                                                                "value": [
+                                                                  {
+                                                                    "string": "_",
+                                                                    "raw_string": "_"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "root": {
+              "id": "",
+              "id_val": "",
+              "label_dimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "attributes": {
+                "label": {
+                  "value": ""
+                },
+                "style": {},
+                "near_key": null,
+                "shape": {
+                  "value": ""
+                },
+                "direction": {
+                  "value": ""
+                },
+                "constraint": {
+                  "value": ""
+                }
+              },
+              "zIndex": 0
+            },
+            "edges": null,
+            "objects": [
+              {
+                "id": "hello",
+                "id_val": "hello",
+                "label_dimensions": {
+                  "width": 0,
+                  "height": 0
+                },
+                "references": [
+                  {
+                    "key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:14:60",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:9:55",
+                            "value": [
+                              {
+                                "string": "hello",
+                                "raw_string": "hello"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:10:56-6:14:60",
+                            "value": [
+                              {
+                                "string": "link",
+                                "raw_string": "link"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "key_path_index": 0,
+                    "map_key_edge_index": -1
+                  }
+                ],
+                "attributes": {
+                  "label": {
+                    "value": "hello"
+                  },
+                  "style": {},
+                  "link": {
+                    "value": "_._.layers.x"
+                  },
+                  "near_key": null,
+                  "shape": {
+                    "value": "rectangle"
+                  },
+                  "direction": {
+                    "value": ""
+                  },
+                  "constraint": {
+                    "value": ""
+                  }
+                },
+                "zIndex": 0
+              },
+              {
+                "id": "hey",
+                "id_val": "hey",
+                "label_dimensions": {
+                  "width": 0,
+                  "height": 0
+                },
+                "references": [
+                  {
+                    "key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:12:87",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:7:82",
+                            "value": [
+                              {
+                                "string": "hey",
+                                "raw_string": "hey"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:83-7:12:87",
+                            "value": [
+                              {
+                                "string": "link",
+                                "raw_string": "link"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "key_path_index": 0,
+                    "map_key_edge_index": -1
+                  }
+                ],
+                "attributes": {
+                  "label": {
+                    "value": "hey"
+                  },
+                  "style": {},
+                  "link": {
+                    "value": "_"
+                  },
+                  "near_key": null,
+                  "shape": {
+                    "value": "rectangle"
+                  },
+                  "direction": {
+                    "value": ""
+                  },
+                  "constraint": {
+                    "value": ""
+                  }
+                },
+                "zIndex": 0
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "err": null
+}
