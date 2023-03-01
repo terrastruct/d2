@@ -179,6 +179,8 @@ func (c *compiler) compileLink(refctx *RefContext) {
 	// Resolve underscores
 	for len(linkIDA) > 0 && linkIDA[0] == "_" {
 		if len(scopeIDA) < 2 {
+			// IR compiler only validates bad underscore usage
+			// The compiler will validate if the target board actually exists
 			c.errorf(refctx.Key.Key, "linked board not found")
 			return
 		}
