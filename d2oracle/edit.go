@@ -7,7 +7,6 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/davecgh/go-spew/spew"
 	"oss.terrastruct.com/util-go/xdefer"
 
 	"oss.terrastruct.com/util-go/xrand"
@@ -1725,7 +1724,6 @@ func generateUniqueKey(g *d2graph.Graph, prefix string, ignored *d2graph.Object,
 
 	k2 := cloneKey(mk.Key)
 	i := 0
-	spew.Dump(included)
 	for {
 		conflictsWithIncluded := false
 		for _, s := range included {
