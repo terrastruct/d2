@@ -6,6 +6,7 @@
 
 - PDF exports now support external links on shapes [#891](https://github.com/terrastruct/d2/issues/891)
 - SVGs are fit to top left by default to avoid issues with zooming. [#954](https://github.com/terrastruct/d2/pull/954)
+- Person shapes now have labels below them and don't need to expand as much. [#960](https://github.com/terrastruct/d2/pull/960)
 
 #### Bugfixes ⛑️
 
