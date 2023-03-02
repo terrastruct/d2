@@ -24,7 +24,7 @@ import (
 func Create(g *d2graph.Graph, key string) (_ *d2graph.Graph, newKey string, err error) {
 	defer xdefer.Errorf(&err, "failed to create %#v", key)
 
-	newKey, edge, err := generateUniqueKey(g, key, nil)
+	newKey, edge, err := generateUniqueKey(g, key, nil, nil)
 	if err != nil {
 		return nil, "", err
 	}
@@ -700,7 +700,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 			hoistedAbsKey.Path = append(hoistedAbsKey.Path, ref.Key.Path[:ref.KeyPathIndex]...)
 			hoistedAbsKey.Path = append(hoistedAbsKey.Path, absKey.Path[len(absKey.Path)-1])
 
-			uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(hoistedAbsKey), "."), nil)
+			uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(hoistedAbsKey), "."), nil, nil)
 			if err != nil {
 				return nil, err
 			}
@@ -1094,7 +1094,7 @@ func move(g *d2graph.Graph, key, newKey string) (*d2graph.Graph, error) {
 	if key == newKey {
 		return g, nil
 	}
-	newKey, _, err := generateUniqueKey(g, newKey, nil)
+	newKey, _, err := generateUniqueKey(g, newKey, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1667,7 +1667,10 @@ func ReconnectEdgeIDDelta(g *d2graph.Graph, edgeID, srcID, dstID string) (string
 // generateUniqueKey generates a unique key by appending a number after `prefix` such that it doesn't conflict with any IDs in `g`
 // If `ignored` is not nil, a conflict with the ignored object is allowed. An example use case is to generate a unique ID for a child being
 // hoisted out of its container, and you know the container is going to be deleted.
-func generateUniqueKey(g *d2graph.Graph, prefix string, ignored *d2graph.Object) (key string, edge bool, _ error) {
+//
+// If `included` is not nil, the generated key must also not conflict with a key in `included`, on top of not conflicting with any IDs in `g`.
+// This is for when an operation needs to generate multiple unique keys in one go, like deleting a container and giving new IDs to all children
+func generateUniqueKey(g *d2graph.Graph, prefix string, ignored *d2graph.Object, included []string) (key string, edge bool, _ error) {
 	mk, err := d2parser.ParseMapKey(prefix)
 	if err != nil {
 		return "", false, err
@@ -1722,9 +1725,18 @@ func generateUniqueKey(g *d2graph.Graph, prefix string, ignored *d2graph.Object)
 	k2 := cloneKey(mk.Key)
 	i := 0
 	for {
-		obj, ok := g.Root.HasChild(d2graph.Key(k2))
-		if !ok || obj == ignored {
-			return d2format.Format(k2), false, nil
+		conflictsWithIncluded := false
+		for _, s := range included {
+			if d2format.Format(k2) == s {
+				conflictsWithIncluded = true
+				break
+			}
+		}
+		if !conflictsWithIncluded {
+			obj, ok := g.Root.HasChild(d2graph.Key(k2))
+			if !ok || obj == ignored {
+				return d2format.Format(k2), false, nil
+			}
 		}
 
 		rr := fmt.Sprintf("%s %d", mk.Key.Path[len(mk.Key.Path)-1].Unbox().ScalarString(), i+2)
@@ -1787,7 +1799,7 @@ func MoveIDDeltas(g *d2graph.Graph, key, newKey string) (deltas map[string]strin
 		return nil, err
 	}
 
-	newKey, _, err = generateUniqueKey(g, newKey, nil)
+	newKey, _, err = generateUniqueKey(g, newKey, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1807,6 +1819,7 @@ func MoveIDDeltas(g *d2graph.Graph, key, newKey string) (deltas map[string]strin
 	// Conflict IDs are when a container is moved and the children conflict with something in parent
 	conflictNewIDs := make(map[*d2graph.Object]string)
 	conflictOldIDs := make(map[*d2graph.Object]string)
+	var newIDs []string
 	if mk.Key != nil {
 		var ok bool
 		obj, ok = g.Root.HasChild(d2graph.Key(mk.Key))
@@ -1832,8 +1845,17 @@ func MoveIDDeltas(g *d2graph.Graph, key, newKey string) (deltas map[string]strin
 			if err != nil {
 				return nil, err
 			}
-			if _, ok := g.Root.HasChild(d2graph.Key(hoistedMK.Key)); ok {
-				newKey, _, err := generateUniqueKey(g, hoistedAbsID, nil)
+
+			conflictsWithNewID := false
+			for _, id := range newIDs {
+				if id == d2format.Format(hoistedMK.Key) {
+					conflictsWithNewID = true
+					break
+				}
+			}
+
+			if _, ok := g.Root.HasChild(d2graph.Key(hoistedMK.Key)); ok || conflictsWithNewID {
+				newKey, _, err := generateUniqueKey(g, hoistedAbsID, nil, newIDs)
 				if err != nil {
 					return nil, err
 				}
@@ -1844,6 +1866,9 @@ func MoveIDDeltas(g *d2graph.Graph, key, newKey string) (deltas map[string]strin
 				newAK := d2graph.Key(newMK.Key)
 				conflictOldIDs[ch] = ch.ID
 				conflictNewIDs[ch] = newAK[len(newAK)-1]
+				newIDs = append(newIDs, d2format.Format(newMK.Key))
+			} else {
+				newIDs = append(newIDs, d2format.Format(hoistedMK.Key))
 			}
 		}
 	}
@@ -1958,6 +1983,7 @@ func DeleteIDDeltas(g *d2graph.Graph, key string) (deltas map[string]string, err
 	obj := g.Root
 	conflictNewIDs := make(map[*d2graph.Object]string)
 	conflictOldIDs := make(map[*d2graph.Object]string)
+	var newIDs []string
 	if mk.Key != nil {
 		ida := d2graph.Key(mk.Key)
 		// Deleting a reserved field cannot possibly have any deltas
@@ -1987,8 +2013,17 @@ func DeleteIDDeltas(g *d2graph.Graph, key string) (deltas map[string]string, err
 			if err != nil {
 				return nil, err
 			}
-			if conflictingObj, ok := g.Root.HasChild(d2graph.Key(hoistedMK.Key)); ok && conflictingObj != obj {
-				newKey, _, err := generateUniqueKey(g, hoistedAbsID, obj)
+
+			conflictsWithNewID := false
+			for _, id := range newIDs {
+				if id == d2format.Format(hoistedMK.Key) {
+					conflictsWithNewID = true
+					break
+				}
+			}
+
+			if conflictingObj, ok := g.Root.HasChild(d2graph.Key(hoistedMK.Key)); (ok && conflictingObj != obj) || conflictsWithNewID {
+				newKey, _, err := generateUniqueKey(g, hoistedAbsID, obj, newIDs)
 				if err != nil {
 					return nil, err
 				}
@@ -1999,6 +2034,9 @@ func DeleteIDDeltas(g *d2graph.Graph, key string) (deltas map[string]string, err
 				newAK := d2graph.Key(newMK.Key)
 				conflictOldIDs[ch] = ch.ID
 				conflictNewIDs[ch] = newAK[len(newAK)-1]
+				newIDs = append(newIDs, d2format.Format(newMK.Key))
+			} else {
+				newIDs = append(newIDs, d2format.Format(hoistedMK.Key))
 			}
 		}
 	}
@@ -2137,7 +2175,7 @@ func RenameIDDeltas(g *d2graph.Graph, key, newName string) (deltas map[string]st
 	}
 
 	mk.Key.Path[len(mk.Key.Path)-1].Unbox().SetString(newName)
-	uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(mk.Key), "."), nil)
+	uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(mk.Key), "."), nil, nil)
 	if err != nil {
 		return nil, err
 	}

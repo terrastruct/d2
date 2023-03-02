@@ -5362,6 +5362,25 @@ Text
   "Text 2.Text 3": "Text 3"
 }`,
 		},
+		{
+			name: "delete_generated_id_conflicts_2",
+
+			text: `Text 4
+Square: {
+  Text 4: {
+    Text 2
+  }
+  Text
+}
+`,
+			key: "Square",
+
+			exp: `{
+  "Square.Text": "Text 2",
+  "Square.Text 4": "Text",
+  "Square.Text 4.Text 2": "Text.Text 2"
+}`,
+		},
 	}
 
 	for _, tc := range testCases {
