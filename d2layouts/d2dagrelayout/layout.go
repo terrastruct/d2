@@ -149,7 +149,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		height := obj.Height
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
-			if obj.Attributes.Shape.Value == d2target.ShapeImage || obj.Attributes.Icon != nil {
+			if obj.HasOutsideBottomLabel() || obj.Attributes.Icon != nil {
 				height += float64(*obj.LabelHeight) + label.PADDING
 			}
 			if len(obj.ChildrenArray) > 0 {
@@ -217,7 +217,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
-			} else if obj.Attributes.Shape.Value == d2target.ShapeImage {
+			} else if obj.HasOutsideBottomLabel() {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
 				// remove the extra height we added to the node when passing to dagre
 				obj.Height -= float64(*obj.LabelHeight) + label.PADDING

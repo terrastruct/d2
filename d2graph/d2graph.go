@@ -447,6 +447,18 @@ func (obj *Object) IsContainer() bool {
 	return len(obj.Children) > 0
 }
 
+func (obj *Object) HasOutsideBottomLabel() bool {
+	if obj == nil || obj.Attributes == nil {
+		return false
+	}
+	switch obj.Attributes.Shape.Value {
+	case d2target.ShapeImage, d2target.ShapePerson:
+		return true
+	default:
+		return false
+	}
+}
+
 func (obj *Object) AbsID() string {
 	if obj.Parent != nil && obj.Parent.ID != "" {
 		return obj.Parent.AbsID() + "." + obj.ID
@@ -1326,7 +1338,13 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 		}
 
-		fitWidth, fitHeight := s.GetDimensionsToFit(contentBox.Width, contentBox.Height, paddingX, paddingY)
+		var fitWidth, fitHeight float64
+		if shapeType == shape.PERSON_TYPE {
+			fitWidth = contentBox.Width + paddingX
+			fitHeight = contentBox.Height + paddingY
+		} else {
+			fitWidth, fitHeight = s.GetDimensionsToFit(contentBox.Width, contentBox.Height, paddingX, paddingY)
+		}
 		obj.Width = math.Max(float64(desiredWidth), fitWidth)
 		obj.Height = math.Max(float64(desiredHeight), fitHeight)
 		if s.AspectRatio1() {
