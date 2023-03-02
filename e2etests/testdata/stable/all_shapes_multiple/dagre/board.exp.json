@@ -376,7 +376,7 @@
       "id": "callout",
       "type": "callout",
       "pos": {
-        "x": 646,
+        "x": 637,
         "y": 1
       },
       "width": 95,
@@ -417,7 +417,7 @@
       "id": "stored_data",
       "type": "stored_data",
       "pos": {
-        "x": 618,
+        "x": 609,
         "y": 206
       },
       "width": 151,
@@ -458,11 +458,11 @@
       "id": "person",
       "type": "person",
       "pos": {
-        "x": 616,
-        "y": 394
+        "x": 653,
+        "y": 399
       },
-      "width": 155,
-      "height": 103,
+      "width": 63,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -491,7 +491,7 @@
       "underline": false,
       "labelWidth": 48,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -499,7 +499,7 @@
       "id": "diamond",
       "type": "diamond",
       "pos": {
-        "x": 801,
+        "x": 792,
         "y": 0
       },
       "width": 156,
@@ -540,7 +540,7 @@
       "id": "oval",
       "type": "oval",
       "pos": {
-        "x": 830,
+        "x": 822,
         "y": 204
       },
       "width": 97,
@@ -581,7 +581,7 @@
       "id": "circle",
       "type": "oval",
       "pos": {
-        "x": 833,
+        "x": 825,
         "y": 400
       },
       "width": 91,
@@ -622,7 +622,7 @@
       "id": "hexagon",
       "type": "hexagon",
       "pos": {
-        "x": 1017,
+        "x": 1008,
         "y": 12
       },
       "width": 128,
@@ -663,7 +663,7 @@
       "id": "cloud",
       "type": "cloud",
       "pos": {
-        "x": 1029,
+        "x": 1020,
         "y": 197
       },
       "width": 104,
@@ -1023,19 +1023,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 693,
+          "x": 685,
           "y": 47
         },
         {
-          "x": 693,
+          "x": 684.6,
           "y": 123
         },
         {
-          "x": 693,
+          "x": 684.6,
           "y": 154.8
         },
         {
-          "x": 693,
+          "x": 685,
           "y": 206
         }
       ],
@@ -1072,20 +1072,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 693,
+          "x": 684,
           "y": 272
         },
         {
-          "x": 693,
+          "x": 684.4,
           "y": 323.2
         },
         {
-          "x": 693,
-          "y": 347.6
+          "x": 684.6,
+          "y": 348.6
         },
         {
-          "x": 693,
-          "y": 394
+          "x": 685,
+          "y": 399
         }
       ],
       "isCurve": true,
@@ -1121,19 +1121,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 879,
+          "x": 870,
           "y": 92
         },
         {
-          "x": 878.6,
+          "x": 870,
           "y": 132
         },
         {
-          "x": 878.6,
+          "x": 870,
           "y": 154.4
         },
         {
-          "x": 879,
+          "x": 870,
           "y": 204
         }
       ],
@@ -1170,19 +1170,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 879,
+          "x": 870,
           "y": 274
         },
         {
-          "x": 878.6,
+          "x": 870,
           "y": 323.6
         },
         {
-          "x": 878.6,
+          "x": 870,
           "y": 348.8
         },
         {
-          "x": 879,
+          "x": 870,
           "y": 400
         }
       ],
@@ -1219,20 +1219,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1081,
+          "x": 1072,
           "y": 81
         },
         {
-          "x": 1080.6,
+          "x": 1072,
           "y": 129.8
         },
         {
-          "x": 1080.6,
-          "y": 153.4
+          "x": 1072,
+          "y": 153.2
         },
         {
-          "x": 1081,
-          "y": 199
+          "x": 1072,
+          "y": 198
         }
       ],
       "isCurve": true,
