@@ -24,7 +24,7 @@ import (
 func Create(g *d2graph.Graph, key string) (_ *d2graph.Graph, newKey string, err error) {
 	defer xdefer.Errorf(&err, "failed to create %#v", key)
 
-	newKey, edge, err := generateUniqueKey(g, key)
+	newKey, edge, err := generateUniqueKey(g, key, nil)
 	if err != nil {
 		return nil, "", err
 	}
@@ -700,7 +700,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 			hoistedAbsKey.Path = append(hoistedAbsKey.Path, ref.Key.Path[:ref.KeyPathIndex]...)
 			hoistedAbsKey.Path = append(hoistedAbsKey.Path, absKey.Path[len(absKey.Path)-1])
 
-			uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(hoistedAbsKey), "."))
+			uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(hoistedAbsKey), "."), nil)
 			if err != nil {
 				return nil, err
 			}
@@ -1094,7 +1094,7 @@ func move(g *d2graph.Graph, key, newKey string) (*d2graph.Graph, error) {
 	if key == newKey {
 		return g, nil
 	}
-	newKey, _, err := generateUniqueKey(g, newKey)
+	newKey, _, err := generateUniqueKey(g, newKey, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1664,7 +1664,10 @@ func ReconnectEdgeIDDelta(g *d2graph.Graph, edgeID, srcID, dstID string) (string
 	return newID, nil
 }
 
-func generateUniqueKey(g *d2graph.Graph, prefix string) (key string, edge bool, _ error) {
+// generateUniqueKey generates a unique key by appending a number after `prefix` such that it doesn't conflict with any IDs in `g`
+// If `ignored` is not nil, a conflict with the ignored object is allowed. An example use case is to generate a unique ID for a child being
+// hoisted out of its container, and you know the container is going to be deleted.
+func generateUniqueKey(g *d2graph.Graph, prefix string, ignored *d2graph.Object) (key string, edge bool, _ error) {
 	mk, err := d2parser.ParseMapKey(prefix)
 	if err != nil {
 		return "", false, err
@@ -1704,7 +1707,7 @@ func generateUniqueKey(g *d2graph.Graph, prefix string) (key string, edge bool, 
 		mk.Key = &d2ast.KeyPath{
 			Path: []*d2ast.StringBox{d2ast.MakeValueBox(d2ast.RawString(xrand.Base64(16), true)).StringBox()},
 		}
-	} else if _, ok := g.Root.HasChild(d2graph.Key(mk.Key)); ok {
+	} else if obj, ok := g.Root.HasChild(d2graph.Key(mk.Key)); ok && obj != ignored {
 		// The key may already have an index, e.g. "x 2"
 		spaced := strings.Split(prefix, " ")
 		if _, err := strconv.Atoi(spaced[len(spaced)-1]); err == nil {
@@ -1719,8 +1722,8 @@ func generateUniqueKey(g *d2graph.Graph, prefix string) (key string, edge bool, 
 	k2 := cloneKey(mk.Key)
 	i := 0
 	for {
-		_, ok := g.Root.HasChild(d2graph.Key(k2))
-		if !ok {
+		obj, ok := g.Root.HasChild(d2graph.Key(k2))
+		if !ok || obj == ignored {
 			return d2format.Format(k2), false, nil
 		}
 
@@ -1784,7 +1787,7 @@ func MoveIDDeltas(g *d2graph.Graph, key, newKey string) (deltas map[string]strin
 		return nil, err
 	}
 
-	newKey, _, err = generateUniqueKey(g, newKey)
+	newKey, _, err = generateUniqueKey(g, newKey, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1830,7 +1833,7 @@ func MoveIDDeltas(g *d2graph.Graph, key, newKey string) (deltas map[string]strin
 				return nil, err
 			}
 			if _, ok := g.Root.HasChild(d2graph.Key(hoistedMK.Key)); ok {
-				newKey, _, err := generateUniqueKey(g, hoistedAbsID)
+				newKey, _, err := generateUniqueKey(g, hoistedAbsID, nil)
 				if err != nil {
 					return nil, err
 				}
@@ -1984,8 +1987,8 @@ func DeleteIDDeltas(g *d2graph.Graph, key string) (deltas map[string]string, err
 			if err != nil {
 				return nil, err
 			}
-			if _, ok := g.Root.HasChild(d2graph.Key(hoistedMK.Key)); ok {
-				newKey, _, err := generateUniqueKey(g, hoistedAbsID)
+			if conflictingObj, ok := g.Root.HasChild(d2graph.Key(hoistedMK.Key)); ok && conflictingObj != obj {
+				newKey, _, err := generateUniqueKey(g, hoistedAbsID, obj)
 				if err != nil {
 					return nil, err
 				}
@@ -2134,7 +2137,7 @@ func RenameIDDeltas(g *d2graph.Graph, key, newName string) (deltas map[string]st
 	}
 
 	mk.Key.Path[len(mk.Key.Path)-1].Unbox().SetString(newName)
-	uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(mk.Key), "."))
+	uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(mk.Key), "."), nil)
 	if err != nil {
 		return nil, err
 	}
