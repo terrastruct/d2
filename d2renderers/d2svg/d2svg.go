@@ -1767,7 +1767,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		dimensions = fmt.Sprintf(` width="%d" height="%d"`, w, h)
 	}
 
-	fitToScreenWrapper := fmt.Sprintf(`<svg %s preserveAspectRatio="xMidYMid meet" viewBox="0 0 %d %d"%s>`,
+	fitToScreenWrapper := fmt.Sprintf(`<svg %s preserveAspectRatio="xMinYMin meet" viewBox="0 0 %d %d"%s>`,
 		`xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"`,
 		w, h,
 		dimensions,
