@@ -335,9 +335,8 @@ func (sd *sequenceDiagram) adjustGroupLabel(group *d2graph.Object) {
 func (sd *sequenceDiagram) placeActors() {
 	centerX := sd.actors[0].Width / 2.
 	for rank, actor := range sd.actors {
-		shape := actor.Attributes.Shape.Value
 		var yOffset float64
-		if shape == d2target.ShapeImage || shape == d2target.ShapePerson {
+		if actor.HasOutsideBottomLabel() {
 			actor.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
 			yOffset = sd.maxActorHeight - actor.Height
 			if actor.LabelHeight != nil {

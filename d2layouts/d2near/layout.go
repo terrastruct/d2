@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/util-go/go2"
@@ -43,7 +42,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNears []*d2graph.Obje
 
 	// These shapes skipped core layout, which means they also skipped label placements
 	for _, obj := range constantNears {
-		if obj.Attributes.Shape.Value == d2target.ShapeImage {
+		if obj.HasOutsideBottomLabel() {
 			obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
 		} else if obj.Attributes.Icon != nil {
 			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))

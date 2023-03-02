@@ -8,9 +8,9 @@
       "type": "person",
       "pos": {
         "x": 12,
-        "y": 269
+        "y": 149
       },
-      "width": 49,
+      "width": 44,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -40,7 +40,7 @@
       "underline": false,
       "labelWidth": 5,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -48,10 +48,10 @@
       "id": "b",
       "type": "person",
       "pos": {
-        "x": 81,
-        "y": 269
+        "x": 76,
+        "y": 149
       },
-      "width": 64,
+      "width": 44,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -81,7 +81,7 @@
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -89,10 +89,10 @@
       "id": "c",
       "type": "person",
       "pos": {
-        "x": 165,
-        "y": 269
+        "x": 140,
+        "y": 149
       },
-      "width": 89,
+      "width": 44,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -122,7 +122,7 @@
       "underline": false,
       "labelWidth": 21,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -130,11 +130,11 @@
       "id": "d",
       "type": "person",
       "pos": {
-        "x": 274,
-        "y": 254
+        "x": 204,
+        "y": 149
       },
-      "width": 142,
-      "height": 95,
+      "width": 58,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -163,7 +163,7 @@
       "underline": false,
       "labelWidth": 43,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -171,11 +171,11 @@
       "id": "e",
       "type": "person",
       "pos": {
-        "x": 436,
-        "y": 220
+        "x": 282,
+        "y": 149
       },
-      "width": 245,
-      "height": 163,
+      "width": 100,
+      "height": 67,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -204,7 +204,7 @@
       "underline": false,
       "labelWidth": 85,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -212,11 +212,11 @@
       "id": "f",
       "type": "person",
       "pos": {
-        "x": 701,
-        "y": 151
+        "x": 402,
+        "y": 121
       },
-      "width": 453,
-      "height": 302,
+      "width": 185,
+      "height": 123,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -245,7 +245,7 @@
       "underline": false,
       "labelWidth": 170,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -253,11 +253,11 @@
       "id": "g",
       "type": "person",
       "pos": {
-        "x": 1174,
-        "y": 12
+        "x": 607,
+        "y": 64
       },
-      "width": 870,
-      "height": 580,
+      "width": 355,
+      "height": 237,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -286,7 +286,7 @@
       "underline": false,
       "labelWidth": 340,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -294,8 +294,8 @@
       "id": "1",
       "type": "person",
       "pos": {
-        "x": 2064,
-        "y": 271
+        "x": 982,
+        "y": 152
       },
       "width": 41,
       "height": 61,
@@ -327,7 +327,7 @@
       "underline": false,
       "labelWidth": 7,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -335,8 +335,8 @@
       "id": "2",
       "type": "person",
       "pos": {
-        "x": 2125,
-        "y": 271
+        "x": 1043,
+        "y": 152
       },
       "width": 64,
       "height": 61,
@@ -368,7 +368,7 @@
       "underline": false,
       "labelWidth": 8,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -376,8 +376,8 @@
       "id": "3",
       "type": "person",
       "pos": {
-        "x": 2209,
-        "y": 259
+        "x": 1127,
+        "y": 140
       },
       "width": 128,
       "height": 85,
@@ -409,7 +409,7 @@
       "underline": false,
       "labelWidth": 8,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -417,8 +417,8 @@
       "id": "4",
       "type": "person",
       "pos": {
-        "x": 2357,
-        "y": 131
+        "x": 1275,
+        "y": 12
       },
       "width": 512,
       "height": 341,
@@ -450,7 +450,7 @@
       "underline": false,
       "labelWidth": 9,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -458,8 +458,8 @@
       "id": "5",
       "type": "person",
       "pos": {
-        "x": 2889,
-        "y": 174
+        "x": 1807,
+        "y": 54
       },
       "width": 32,
       "height": 256,
@@ -491,7 +491,7 @@
       "underline": false,
       "labelWidth": 8,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     }
