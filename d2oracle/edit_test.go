@@ -5141,6 +5141,10 @@ x.a -> x.b
 				t.Fatal(err)
 			}
 
+			if hasRepeatedValue(deltas) {
+				t.Fatalf("deltas set more than one value equal to another: %s", string(xjson.Marshal(deltas)))
+			}
+
 			ds, err := diff.Strings(tc.exp, string(xjson.Marshal(deltas)))
 			if err != nil {
 				t.Fatal(err)
@@ -5342,6 +5346,22 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
   "x.y.z.(w.e.p.l -> 1.2.3.4)[6]": "x.y.z.(w.e.p.l -> 1.2.3.4)[5]"
 }`,
 		},
+		{
+			name: "delete_generated_id_conflicts",
+
+			text: `Text 2: {
+	Text
+	Text 3
+}
+Text
+`,
+			key: "Text 2",
+
+			exp: `{
+  "Text 2.Text": "Text 2",
+  "Text 2.Text 3": "Text 3"
+}`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -5371,6 +5391,10 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
 				t.Fatal(err)
 			}
 
+			if hasRepeatedValue(deltas) {
+				t.Fatalf("deltas set more than one value equal to another: %s", string(xjson.Marshal(deltas)))
+			}
+
 			ds, err := diff.Strings(tc.exp, string(xjson.Marshal(deltas)))
 			if err != nil {
 				t.Fatal(err)
@@ -5380,6 +5404,17 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
 			}
 		})
 	}
+}
+
+func hasRepeatedValue(m map[string]string) bool {
+	seen := make(map[string]struct{}, len(m))
+	for _, v := range m {
+		if _, ok := seen[v]; ok {
+			return true
+		}
+		seen[v] = struct{}{}
+	}
+	return false
 }
 
 func TestRenameIDDeltas(t *testing.T) {
@@ -5521,6 +5556,10 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
 				}
 			} else if err != nil {
 				t.Fatal(err)
+			}
+
+			if hasRepeatedValue(deltas) {
+				t.Fatalf("deltas set more than one value equal to another: %s", string(xjson.Marshal(deltas)))
 			}
 
 			ds, err := diff.Strings(tc.exp, string(xjson.Marshal(deltas)))
