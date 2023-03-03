@@ -157,6 +157,11 @@ func (c *compiler) compileLink(refctx *RefContext) {
 		return
 	}
 
+	if linkIDA[0] == "root" {
+		c.errorf(refctx.Key.Key, "cannot refer to root in link")
+		return
+	}
+
 	// If it doesn't start with one of these reserved words, the link is definitely not a board link.
 	if linkIDA[0] != "layers" && linkIDA[0] != "scenarios" && linkIDA[0] != "steps" && linkIDA[0] != "_" {
 		return
