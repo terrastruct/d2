@@ -681,6 +681,8 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 			absKeys = append(absKeys, absKey)
 		}
 
+		var newIDs []string
+		renames := make(map[string]string)
 		for _, absKey := range absKeys {
 			ida := d2graph.Key(absKey)
 			absKeyStr := strings.Join(ida, ".")
@@ -700,10 +702,11 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 			hoistedAbsKey.Path = append(hoistedAbsKey.Path, ref.Key.Path[:ref.KeyPathIndex]...)
 			hoistedAbsKey.Path = append(hoistedAbsKey.Path, absKey.Path[len(absKey.Path)-1])
 
-			uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(hoistedAbsKey), "."), nil, nil)
+			uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(hoistedAbsKey), "."), nil, newIDs)
 			if err != nil {
 				return nil, err
 			}
+			newIDs = append(newIDs, uniqueKeyStr)
 			uniqueKey, err := d2parser.ParseKey(uniqueKeyStr)
 			if err != nil {
 				return nil, err
@@ -714,10 +717,29 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 
 			renamedKeyStr := strings.Join(d2graph.Key(renamedKey), ".")
 			if absKeyStr != renamedKeyStr {
-				g, err = move(g, absKeyStr, renamedKeyStr)
-				if err != nil {
-					return nil, err
-				}
+				renames[absKeyStr] = renamedKeyStr
+			}
+		}
+		// We need to rename in a conflict-free order
+		// E.g. imagine you have children `Text 4` and `Text`.
+		// `Text 4` would get renamed to `Text` and `Text` gets renamed to `Text 2`
+		// But if we follow that order, then both would get named to `Text 2`
+		// So order such that the ones that have a conflict are done last, after the no-conflict ones are done
+		// A cycle would never occur, as the uniqueness constraint is guaranteed
+		var renameOrder []string
+		for k, v := range renames {
+			// conflict
+			if _, ok := renames[v]; ok {
+				renameOrder = append(renameOrder, k)
+			} else {
+				renameOrder = append([]string{k}, renameOrder...)
+			}
+		}
+		for _, k := range renameOrder {
+			var err error
+			g, err = move(g, k, renames[k])
+			if err != nil {
+				return nil, err
 			}
 		}
 	}

@@ -4818,6 +4818,26 @@ A -> B
 `,
 		},
 		{
+			name: "conflicts_generated",
+			text: `Text 4
+Square: {
+  Text 4: {
+    Text 2
+  }
+  Text
+}
+`,
+			key: `Square`,
+
+			exp: `Text 4
+
+Text: {
+  Text 2
+}
+Text 2
+`,
+		},
+		{
 			name: "chaos_1",
 
 			text: `cm: {shape: cylinder}
