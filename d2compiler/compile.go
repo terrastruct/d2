@@ -752,37 +752,36 @@ func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
 }
 
 func hasBoard(root *d2graph.Graph, ida []string) bool {
-	for i := 0; i < len(ida); i += 2 {
-		id := ida[i]
-		if i == 0 && id == "root" {
-			i--
-			continue
-		}
-		if i == len(ida)-1 {
-			return root.Name == id
-		}
-		nextID := ida[i+1]
-		switch id {
-		case "layers":
-			for _, b := range root.Layers {
-				if b.Name == nextID {
-					return hasBoard(b, ida[i+1:])
-				}
-			}
-		case "scenarios":
-			for _, b := range root.Scenarios {
-				if b.Name == nextID {
-					return hasBoard(b, ida[i+1:])
-				}
-			}
-		case "steps":
-			for _, b := range root.Steps {
-				if b.Name == nextID {
-					return hasBoard(b, ida[i+1:])
-				}
+	if len(ida) == 0 {
+		return true
+	}
+	if ida[0] == "root" {
+		return hasBoard(root, ida[1:])
+	}
+	id := ida[0]
+	if len(ida) == 1 {
+		return root.Name == id
+	}
+	nextID := ida[1]
+	switch id {
+	case "layers":
+		for _, b := range root.Layers {
+			if b.Name == nextID {
+				return hasBoard(b, ida[2:])
 			}
 		}
-		break
+	case "scenarios":
+		for _, b := range root.Scenarios {
+			if b.Name == nextID {
+				return hasBoard(b, ida[2:])
+			}
+		}
+	case "steps":
+		for _, b := range root.Steps {
+			if b.Name == nextID {
+				return hasBoard(b, ida[2:])
+			}
+		}
 	}
 	return false
 }
