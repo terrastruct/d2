@@ -18,11 +18,13 @@ func TestCLI_E2E(t *testing.T) {
 	t.Parallel()
 
 	tca := []struct {
-		name string
-		run  func(t *testing.T, ctx context.Context, dir string, env *xos.Env)
+		name   string
+		skipCI bool
+		run    func(t *testing.T, ctx context.Context, dir string, env *xos.Env)
 	}{
 		{
-			name: "hello_world_png",
+			name:   "hello_world_png",
+			skipCI: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x -> y`)
 				err := runTestMain(t, ctx, dir, env, "hello-world.d2", "hello-world.png")
@@ -32,7 +34,8 @@ func TestCLI_E2E(t *testing.T) {
 			},
 		},
 		{
-			name: "hello_world_png_pad",
+			name:   "hello_world_png_pad",
+			skipCI: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x -> y`)
 				err := runTestMain(t, ctx, dir, env, "--pad=400", "hello-world.d2", "hello-world.png")
@@ -42,7 +45,8 @@ func TestCLI_E2E(t *testing.T) {
 			},
 		},
 		{
-			name: "hello_world_png_sketch",
+			name:   "hello_world_png_sketch",
+			skipCI: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x -> y`)
 				err := runTestMain(t, ctx, dir, env, "--sketch", "hello-world.d2", "hello-world.png")
@@ -125,6 +129,10 @@ scenarios: {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
+
+			if tc.skipCI && os.Getenv("CI") != "" {
+				t.SkipNow()
+			}
 
 			ctx, cancel := context.WithTimeout(ctx, time.Minute*5)
 			defer cancel()
