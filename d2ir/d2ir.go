@@ -1053,7 +1053,7 @@ func BoardIDA(n Node) (ida []string) {
 	}
 }
 
-// IDA returns the absolute path to n from the nearest board root.
+// IDA returns the absolute path to n.
 func IDA(n Node) (ida []string) {
 	for {
 		f, ok := n.(*Field)

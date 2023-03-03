@@ -781,9 +781,8 @@ func hasBoard(root *d2graph.Graph, ida []string) bool {
 					return hasBoard(b, ida[i+1:])
 				}
 			}
-		default:
-			break
 		}
+		break
 	}
 	return false
 }

@@ -197,7 +197,7 @@ func (c *compiler) compileLink(refctx *RefContext) {
 
 	// Create the absolute path by appending scope path with value specified
 	scopeIDA = append(scopeIDA, linkIDA...)
-	kp := d2format.IDA(scopeIDA)
+	kp := d2ast.MakeKeyPath(scopeIDA)
 	refctx.Key.Value = d2ast.MakeValueBox(d2ast.RawString(d2format.Format(kp), true))
 }
 
