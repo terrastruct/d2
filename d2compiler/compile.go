@@ -56,6 +56,10 @@ func compileIR(ast *d2ast.Map, m *d2ir.Map) (*d2graph.Graph, error) {
 	if len(c.err.Errors) > 0 {
 		return nil, c.err
 	}
+	c.validateBoardLinks(g)
+	if len(c.err.Errors) > 0 {
+		return nil, c.err
+	}
 	return g, nil
 }
 
@@ -93,6 +97,7 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 			continue
 		}
 		g2 := d2graph.NewGraph()
+		g2.Parent = g
 		g2.AST = g.AST
 		c.compileBoard(g2, f.Map())
 		g2.Name = f.Name
@@ -193,7 +198,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 				obj.Map = fr.Context.Key.Value.Map
 			}
 		}
-		scopeObjIDA := d2ir.IDA(fr.Context.ScopeMap)
+		scopeObjIDA := d2ir.BoardIDA(fr.Context.ScopeMap)
 		scopeObj := obj.Graph.Root.EnsureChildIDVal(scopeObjIDA)
 		obj.References = append(obj.References, d2graph.Reference{
 			Key:          fr.KeyPath,
@@ -431,7 +436,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 
 	edge.Attributes.Label.MapKey = e.LastPrimaryKey()
 	for _, er := range e.References {
-		scopeObjIDA := d2ir.IDA(er.Context.ScopeMap)
+		scopeObjIDA := d2ir.BoardIDA(er.Context.ScopeMap)
 		scopeObj := edge.Src.Graph.Root.EnsureChildIDVal(scopeObjIDA)
 		edge.References = append(edge.References, d2graph.EdgeReference{
 			Edge:            er.Context.Edge,
@@ -713,6 +718,72 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 			}
 		}
 	}
+}
+
+func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
+	for _, obj := range g.Objects {
+		if obj.Attributes.Link == nil {
+			continue
+		}
+
+		linkKey, err := d2parser.ParseKey(obj.Attributes.Link.Value)
+		if err != nil {
+			continue
+		}
+
+		if linkKey.Path[0].Unbox().ScalarString() != "root" {
+			continue
+		}
+
+		if !hasBoard(g.RootBoard(), linkKey.IDA()) {
+			c.errorf(obj.Attributes.Link.MapKey, "linked board not found")
+			continue
+		}
+	}
+	for _, b := range g.Layers {
+		c.validateBoardLinks(b)
+	}
+	for _, b := range g.Scenarios {
+		c.validateBoardLinks(b)
+	}
+	for _, b := range g.Steps {
+		c.validateBoardLinks(b)
+	}
+}
+
+func hasBoard(root *d2graph.Graph, ida []string) bool {
+	if len(ida) == 0 {
+		return true
+	}
+	if ida[0] == "root" {
+		return hasBoard(root, ida[1:])
+	}
+	id := ida[0]
+	if len(ida) == 1 {
+		return root.Name == id
+	}
+	nextID := ida[1]
+	switch id {
+	case "layers":
+		for _, b := range root.Layers {
+			if b.Name == nextID {
+				return hasBoard(b, ida[2:])
+			}
+		}
+	case "scenarios":
+		for _, b := range root.Scenarios {
+			if b.Name == nextID {
+				return hasBoard(b, ida[2:])
+			}
+		}
+	case "steps":
+		for _, b := range root.Steps {
+			if b.Name == nextID {
+				return hasBoard(b, ida[2:])
+			}
+		}
+	}
+	return false
 }
 
 func init() {

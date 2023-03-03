@@ -2,6 +2,7 @@ package d2ir
 
 import (
 	"oss.terrastruct.com/d2/d2ast"
+	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
 )
 
@@ -127,11 +128,77 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		}
 		c.compileMap(f.Map(), refctx.Key.Value.Map)
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
+		// If the link is a board, we need to transform it into an absolute path.
+		if f.Name == "link" {
+			c.compileLink(refctx)
+		}
 		f.Primary_ = &Scalar{
 			parent: f,
 			Value:  refctx.Key.Value.ScalarBox().Unbox(),
 		}
 	}
+}
+
+func (c *compiler) compileLink(refctx *RefContext) {
+	val := refctx.Key.Value.ScalarBox().Unbox().ScalarString()
+	link, err := d2parser.ParseKey(val)
+	if err != nil {
+		return
+	}
+
+	scopeIDA := IDA(refctx.ScopeMap)
+
+	if len(scopeIDA) == 0 {
+		return
+	}
+
+	linkIDA := link.IDA()
+	if len(linkIDA) == 0 {
+		return
+	}
+
+	if linkIDA[0] == "root" {
+		c.errorf(refctx.Key.Key, "cannot refer to root in link")
+		return
+	}
+
+	// If it doesn't start with one of these reserved words, the link is definitely not a board link.
+	if linkIDA[0] != "layers" && linkIDA[0] != "scenarios" && linkIDA[0] != "steps" && linkIDA[0] != "_" {
+		return
+	}
+
+	// Chop off the non-board portion of the scope, like if this is being defined on a nested object (e.g. `x.y.z`)
+	for i := len(scopeIDA) - 1; i > 0; i-- {
+		if scopeIDA[i-1] == "layers" || scopeIDA[i-1] == "scenarios" || scopeIDA[i-1] == "steps" {
+			scopeIDA = scopeIDA[:i+1]
+			break
+		}
+		if scopeIDA[i-1] == "root" {
+			scopeIDA = scopeIDA[:i]
+			break
+		}
+	}
+
+	// Resolve underscores
+	for len(linkIDA) > 0 && linkIDA[0] == "_" {
+		if len(scopeIDA) < 2 {
+			// IR compiler only validates bad underscore usage
+			// The compiler will validate if the target board actually exists
+			c.errorf(refctx.Key.Key, "invalid underscore usage")
+			return
+		}
+		// pop 2 off path per one underscore
+		scopeIDA = scopeIDA[:len(scopeIDA)-2]
+		linkIDA = linkIDA[1:]
+	}
+	if len(scopeIDA) == 0 {
+		scopeIDA = []string{"root"}
+	}
+
+	// Create the absolute path by appending scope path with value specified
+	scopeIDA = append(scopeIDA, linkIDA...)
+	kp := d2ast.MakeKeyPath(scopeIDA)
+	refctx.Key.Value = d2ast.MakeValueBox(d2ast.RawString(d2format.Format(kp), true))
 }
 
 func (c *compiler) compileEdges(refctx *RefContext) {

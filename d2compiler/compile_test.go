@@ -2027,6 +2027,121 @@ Chinchillas_Collectibles.chinchilla -> Chinchillas.id`,
 				tassert.Equal(t, 2, *g.Edges[0].SrcTableColumnIndex)
 			},
 		},
+		{
+			name: "link-board-ok",
+			text: `x.link: layers.x
+layers: {
+	x: {
+	  y
+	}
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.x", g.Objects[0].Attributes.Link.Value)
+			},
+		},
+		{
+			name: "link-board-mixed",
+			text: `question: How does the cat go?
+question.link: layers.cat
+
+layers: {
+  cat: {
+    the cat -> meeeowwww: goes
+  }
+}
+
+scenarios: {
+  green: {
+    question.style.fill: green
+  }
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.cat", g.Objects[0].Attributes.Link.Value)
+				tassert.Equal(t, "root.layers.cat", g.Scenarios[0].Objects[0].Attributes.Link.Value)
+			},
+		},
+		{
+			name: "link-board-not-found",
+			text: `x.link: layers.x
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/link-board-not-found.d2:1:1: linked board not found`,
+		},
+		{
+			name: "link-board-not-board",
+			text: `zzz
+x.link: layers.x.y
+layers: {
+  x: {
+    y
+  }
+}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/link-board-not-board.d2:2:1: linked board not found`,
+		},
+		{
+			name: "link-board-nested",
+			text: `x.link: layers.x.layers.x
+layers: {
+  x: {
+    layers: {
+      x: {
+        hello
+      }
+    }
+  }
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.x.layers.x", g.Objects[0].Attributes.Link.Value)
+			},
+		},
+		{
+			name: "link-board-key-nested",
+			text: `x: {
+  y.link: layers.x
+}
+layers: {
+  x: {
+    yo
+  }
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "root.layers.x", g.Objects[1].Attributes.Link.Value)
+			},
+		},
+		{
+			name: "link-board-underscore",
+			text: `x
+layers: {
+	x: {
+	  yo
+    layers: {
+      x: {
+        hello.link: _._.layers.x
+        hey.link: _
+      }
+    }
+  }
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.NotNil(t, g.Layers[0].Layers[0].Objects[0].Attributes.Link.Value)
+				tassert.Equal(t, "root.layers.x", g.Layers[0].Layers[0].Objects[0].Attributes.Link.Value)
+				tassert.Equal(t, "root.layers.x", g.Layers[0].Layers[0].Objects[1].Attributes.Link.Value)
+			},
+		},
+		{
+			name: "link-board-underscore-not-found",
+			text: `x
+layers: {
+  x: {
+    yo
+    layers: {
+      x: {
+        hello.link: _._._
+      }
+    }
+  }
+}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:9: invalid underscore usage`,
+		},
 	}
 
 	for _, tc := range testCases {

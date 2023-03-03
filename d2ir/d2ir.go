@@ -158,7 +158,7 @@ type Map struct {
 
 func (m *Map) initRoot() {
 	m.parent = &Field{
-		Name: "",
+		Name: "root",
 		References: []*FieldReference{{
 			Context: &RefContext{
 				ScopeMap: m,
@@ -1033,8 +1033,8 @@ func parentPrimaryKey(n Node) *d2ast.Key {
 	return nil
 }
 
-// IDA returns the absolute path to n from the nearest board root.
-func IDA(n Node) (ida []string) {
+// BoardIDA returns the absolute path to n from the nearest board root.
+func BoardIDA(n Node) (ida []string) {
 	for {
 		f, ok := n.(*Field)
 		if ok {
@@ -1043,6 +1043,26 @@ func IDA(n Node) (ida []string) {
 				return ida
 			}
 			ida = append(ida, f.Name)
+		}
+		f = ParentField(n)
+		if f == nil {
+			reverseIDA(ida)
+			return ida
+		}
+		n = f
+	}
+}
+
+// IDA returns the absolute path to n.
+func IDA(n Node) (ida []string) {
+	for {
+		f, ok := n.(*Field)
+		if ok {
+			ida = append(ida, f.Name)
+			if f.Root() {
+				reverseIDA(ida)
+				return ida
+			}
 		}
 		f = ParentField(n)
 		if f == nil {

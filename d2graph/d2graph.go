@@ -28,7 +28,8 @@ const DEFAULT_SHAPE_SIZE = 100.
 const MIN_SHAPE_SIZE = 5
 
 type Graph struct {
-	Name string `json:"name"`
+	Parent *Graph `json:"-"`
+	Name   string `json:"name"`
 	// IsFolderOnly indicates a board or scenario itself makes no modifications from its
 	// base. Folder only boards do not have a render and are used purely for organizing
 	// the board tree.
@@ -53,6 +54,13 @@ func NewGraph() *Graph {
 		Attributes: &Attributes{},
 	}
 	return d
+}
+
+func (g *Graph) RootBoard() *Graph {
+	for g.Parent != nil {
+		g = g.Parent
+	}
+	return g
 }
 
 // TODO consider having different Scalar types
