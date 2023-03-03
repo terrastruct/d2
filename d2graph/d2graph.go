@@ -56,6 +56,13 @@ func NewGraph() *Graph {
 	return d
 }
 
+func (g *Graph) RootBoard() *Graph {
+	for g.Parent != nil {
+		g = g.Parent
+	}
+	return g
+}
+
 // TODO consider having different Scalar types
 // Right now we'll hold any types in Value and just convert, e.g. floats
 type Scalar struct {

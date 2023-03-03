@@ -3,7 +3,7 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,0:0:0-7:1:54",
+      "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,0:0:0-7:1:55",
       "nodes": [
         {
           "map_key": {
@@ -79,7 +79,7 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,3:0:26-7:1:54",
+            "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,3:0:26-7:1:55",
             "key": {
               "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,3:0:26-3:6:32",
               "path": [
@@ -99,17 +99,17 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,3:8:34-7:0:53",
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,3:8:34-7:0:54",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,4:1:37-6:3:52",
+                      "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,4:2:38-6:3:53",
                       "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,4:1:37-4:2:38",
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,4:2:38-4:3:39",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,4:1:37-4:2:38",
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,4:2:38-4:3:39",
                               "value": [
                                 {
                                   "string": "x",
@@ -123,17 +123,17 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,4:4:40-6:2:51",
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,4:5:41-6:2:52",
                           "nodes": [
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,5:4:46-5:6:48",
+                                "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,5:4:47-5:6:49",
                                 "key": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,5:4:46-5:6:48",
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,5:4:47-5:6:49",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,5:4:46-5:6:48",
+                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,5:4:47-5:6:49",
                                         "value": [
                                           {
                                             "string": "yo",
@@ -301,7 +301,7 @@
         "name": "x",
         "isFolderOnly": false,
         "ast": {
-          "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,0:0:0-7:1:54",
+          "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,0:0:0-7:1:55",
           "nodes": [
             {
               "map_key": {
@@ -377,7 +377,7 @@
             },
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,3:0:26-7:1:54",
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,3:0:26-7:1:55",
                 "key": {
                   "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,3:0:26-3:6:32",
                   "path": [
@@ -397,17 +397,17 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,3:8:34-7:0:53",
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,3:8:34-7:0:54",
                     "nodes": [
                       {
                         "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,4:1:37-6:3:52",
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,4:2:38-6:3:53",
                           "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,4:1:37-4:2:38",
+                            "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,4:2:38-4:3:39",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,4:1:37-4:2:38",
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,4:2:38-4:3:39",
                                   "value": [
                                     {
                                       "string": "x",
@@ -421,17 +421,17 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,4:4:40-6:2:51",
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,4:5:41-6:2:52",
                               "nodes": [
                                 {
                                   "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,5:4:46-5:6:48",
+                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,5:4:47-5:6:49",
                                     "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,5:4:46-5:6:48",
+                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,5:4:47-5:6:49",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,5:4:46-5:6:48",
+                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,5:4:47-5:6:49",
                                             "value": [
                                               {
                                                 "string": "yo",
@@ -495,11 +495,11 @@
             "references": [
               {
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,5:4:46-5:6:48",
+                  "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,5:4:47-5:6:49",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,5:4:46-5:6:48",
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-key-nested.d2,5:4:47-5:6:49",
                         "value": [
                           {
                             "string": "yo",

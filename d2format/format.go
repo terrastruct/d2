@@ -409,3 +409,11 @@ func KeyPath(kp *d2ast.KeyPath) (ida []string) {
 	}
 	return ida
 }
+
+func IDA(ida []string) *d2ast.KeyPath {
+	kp := &d2ast.KeyPath{}
+	for _, s := range ida {
+		kp.Path = append(kp.Path, d2ast.MakeValueBox(d2ast.RawString(s, true)).StringBox())
+	}
+	return kp
+}

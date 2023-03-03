@@ -3,7 +3,7 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-11:1:107",
+      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-11:1:121",
       "nodes": [
         {
           "map_key": {
@@ -30,7 +30,7 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-11:1:107",
+            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-11:1:121",
             "key": {
               "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-1:6:8",
               "path": [
@@ -50,11 +50,11 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:8:10-11:0:106",
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:8:10-11:0:120",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-10:3:105",
+                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-10:3:119",
                       "key": {
                         "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-2:2:14",
                         "path": [
@@ -74,7 +74,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:4:16-10:2:104",
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:4:16-10:2:118",
                           "nodes": [
                             {
                               "map_key": {
@@ -101,7 +101,7 @@
                             },
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-9:5:101",
+                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-9:5:115",
                                 "key": {
                                   "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-4:10:34",
                                   "path": [
@@ -121,17 +121,17 @@
                                 "primary": {},
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:12:36-9:4:100",
+                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:12:36-9:4:114",
                                     "nodes": [
                                       {
                                         "map_key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-8:4:95",
+                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-8:7:109",
                                           "key": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-5:4:42",
+                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-5:7:45",
                                             "path": [
                                               {
                                                 "unquoted_string": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-5:4:42",
+                                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-5:7:45",
                                                   "value": [
                                                     {
                                                       "string": "x",
@@ -145,17 +145,17 @@
                                           "primary": {},
                                           "value": {
                                             "map": {
-                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-8:3:94",
+                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:9:47-8:6:108",
                                               "nodes": [
                                                 {
                                                   "map_key": {
-                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:28:74",
+                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:8:57-6:32:81",
                                                     "key": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:14:60",
+                                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:8:57-6:18:67",
                                                       "path": [
                                                         {
                                                           "unquoted_string": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:9:55",
+                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:8:57-6:13:62",
                                                             "value": [
                                                               {
                                                                 "string": "hello",
@@ -166,7 +166,7 @@
                                                         },
                                                         {
                                                           "unquoted_string": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:10:56-6:14:60",
+                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:14:63-6:18:67",
                                                             "value": [
                                                               {
                                                                 "string": "link",
@@ -192,13 +192,13 @@
                                                 },
                                                 {
                                                   "map_key": {
-                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:15:90",
+                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:90-7:19:101",
                                                     "key": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:12:87",
+                                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:90-7:16:98",
                                                       "path": [
                                                         {
                                                           "unquoted_string": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:7:82",
+                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:90-7:11:93",
                                                             "value": [
                                                               {
                                                                 "string": "hey",
@@ -209,7 +209,7 @@
                                                         },
                                                         {
                                                           "unquoted_string": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:83-7:12:87",
+                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:12:94-7:16:98",
                                                             "value": [
                                                               {
                                                                 "string": "link",
@@ -335,7 +335,7 @@
         "name": "x",
         "isFolderOnly": false,
         "ast": {
-          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-11:1:107",
+          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-11:1:121",
           "nodes": [
             {
               "map_key": {
@@ -362,7 +362,7 @@
             },
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-11:1:107",
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-11:1:121",
                 "key": {
                   "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-1:6:8",
                   "path": [
@@ -382,11 +382,11 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:8:10-11:0:106",
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:8:10-11:0:120",
                     "nodes": [
                       {
                         "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-10:3:105",
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-10:3:119",
                           "key": {
                             "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-2:2:14",
                             "path": [
@@ -406,7 +406,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:4:16-10:2:104",
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:4:16-10:2:118",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -433,7 +433,7 @@
                                 },
                                 {
                                   "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-9:5:101",
+                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-9:5:115",
                                     "key": {
                                       "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-4:10:34",
                                       "path": [
@@ -453,17 +453,17 @@
                                     "primary": {},
                                     "value": {
                                       "map": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:12:36-9:4:100",
+                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:12:36-9:4:114",
                                         "nodes": [
                                           {
                                             "map_key": {
-                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-8:4:95",
+                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-8:7:109",
                                               "key": {
-                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-5:4:42",
+                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-5:7:45",
                                                 "path": [
                                                   {
                                                     "unquoted_string": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-5:4:42",
+                                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-5:7:45",
                                                       "value": [
                                                         {
                                                           "string": "x",
@@ -477,17 +477,17 @@
                                               "primary": {},
                                               "value": {
                                                 "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-8:3:94",
+                                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:9:47-8:6:108",
                                                   "nodes": [
                                                     {
                                                       "map_key": {
-                                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:28:74",
+                                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:8:57-6:32:81",
                                                         "key": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:14:60",
+                                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:8:57-6:18:67",
                                                           "path": [
                                                             {
                                                               "unquoted_string": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:9:55",
+                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:8:57-6:13:62",
                                                                 "value": [
                                                                   {
                                                                     "string": "hello",
@@ -498,7 +498,7 @@
                                                             },
                                                             {
                                                               "unquoted_string": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:10:56-6:14:60",
+                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:14:63-6:18:67",
                                                                 "value": [
                                                                   {
                                                                     "string": "link",
@@ -524,13 +524,13 @@
                                                     },
                                                     {
                                                       "map_key": {
-                                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:15:90",
+                                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:90-7:19:101",
                                                         "key": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:12:87",
+                                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:90-7:16:98",
                                                           "path": [
                                                             {
                                                               "unquoted_string": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:7:82",
+                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:90-7:11:93",
                                                                 "value": [
                                                                   {
                                                                     "string": "hey",
@@ -541,7 +541,7 @@
                                                             },
                                                             {
                                                               "unquoted_string": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:83-7:12:87",
+                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:12:94-7:16:98",
                                                                 "value": [
                                                                   {
                                                                     "string": "link",
@@ -667,7 +667,7 @@
             "name": "x",
             "isFolderOnly": false,
             "ast": {
-              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-11:1:107",
+              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-11:1:121",
               "nodes": [
                 {
                   "map_key": {
@@ -694,7 +694,7 @@
                 },
                 {
                   "map_key": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-11:1:107",
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-11:1:121",
                     "key": {
                       "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-1:6:8",
                       "path": [
@@ -714,11 +714,11 @@
                     "primary": {},
                     "value": {
                       "map": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:8:10-11:0:106",
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:8:10-11:0:120",
                         "nodes": [
                           {
                             "map_key": {
-                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-10:3:105",
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-10:3:119",
                               "key": {
                                 "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-2:2:14",
                                 "path": [
@@ -738,7 +738,7 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:4:16-10:2:104",
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:4:16-10:2:118",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -765,7 +765,7 @@
                                     },
                                     {
                                       "map_key": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-9:5:101",
+                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-9:5:115",
                                         "key": {
                                           "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-4:10:34",
                                           "path": [
@@ -785,17 +785,17 @@
                                         "primary": {},
                                         "value": {
                                           "map": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:12:36-9:4:100",
+                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:12:36-9:4:114",
                                             "nodes": [
                                               {
                                                 "map_key": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-8:4:95",
+                                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-8:7:109",
                                                   "key": {
-                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-5:4:42",
+                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-5:7:45",
                                                     "path": [
                                                       {
                                                         "unquoted_string": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:3:41-5:4:42",
+                                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-5:7:45",
                                                           "value": [
                                                             {
                                                               "string": "x",
@@ -809,17 +809,17 @@
                                                   "primary": {},
                                                   "value": {
                                                     "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-8:3:94",
+                                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:9:47-8:6:108",
                                                       "nodes": [
                                                         {
                                                           "map_key": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:28:74",
+                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:8:57-6:32:81",
                                                             "key": {
-                                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:14:60",
+                                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:8:57-6:18:67",
                                                               "path": [
                                                                 {
                                                                   "unquoted_string": {
-                                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:9:55",
+                                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:8:57-6:13:62",
                                                                     "value": [
                                                                       {
                                                                         "string": "hello",
@@ -830,7 +830,7 @@
                                                                 },
                                                                 {
                                                                   "unquoted_string": {
-                                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:10:56-6:14:60",
+                                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:14:63-6:18:67",
                                                                     "value": [
                                                                       {
                                                                         "string": "link",
@@ -856,13 +856,13 @@
                                                         },
                                                         {
                                                           "map_key": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:15:90",
+                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:90-7:19:101",
                                                             "key": {
-                                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:12:87",
+                                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:90-7:16:98",
                                                               "path": [
                                                                 {
                                                                   "unquoted_string": {
-                                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:7:82",
+                                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:90-7:11:93",
                                                                     "value": [
                                                                       {
                                                                         "string": "hey",
@@ -873,7 +873,7 @@
                                                                 },
                                                                 {
                                                                   "unquoted_string": {
-                                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:83-7:12:87",
+                                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:12:94-7:16:98",
                                                                     "value": [
                                                                       {
                                                                         "string": "link",
@@ -956,11 +956,11 @@
                 "references": [
                   {
                     "key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:14:60",
+                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:8:57-6:18:67",
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:4:50-6:9:55",
+                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:8:57-6:13:62",
                             "value": [
                               {
                                 "string": "hello",
@@ -971,7 +971,7 @@
                         },
                         {
                           "unquoted_string": {
-                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:10:56-6:14:60",
+                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:14:63-6:18:67",
                             "value": [
                               {
                                 "string": "link",
@@ -1017,11 +1017,11 @@
                 "references": [
                   {
                     "key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:12:87",
+                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:90-7:16:98",
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:4:79-7:7:82",
+                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:90-7:11:93",
                             "value": [
                               {
                                 "string": "hey",
@@ -1032,7 +1032,7 @@
                         },
                         {
                           "unquoted_string": {
-                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:83-7:12:87",
+                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:12:94-7:16:98",
                             "value": [
                               {
                                 "string": "link",

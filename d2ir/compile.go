@@ -1,9 +1,8 @@
 package d2ir
 
 import (
-	"strings"
-
 	"oss.terrastruct.com/d2/d2ast"
+	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
 )
 
@@ -129,7 +128,7 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		}
 		c.compileMap(f.Map(), refctx.Key.Value.Map)
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
-		// If these are boards, we transform into absolute paths
+		// If the link is a board, we need to transform it into an absolute path.
 		if f.Name == "link" {
 			c.compileLink(refctx)
 		}
@@ -147,8 +146,7 @@ func (c *compiler) compileLink(refctx *RefContext) {
 		return
 	}
 
-	scopeID, _ := d2parser.ParseKey(refctx.ScopeMap.AbsID())
-	scopeIDA := scopeID.IDA()
+	scopeIDA := IDA(refctx.ScopeMap)
 
 	if len(scopeIDA) == 0 {
 		return
@@ -159,7 +157,7 @@ func (c *compiler) compileLink(refctx *RefContext) {
 		return
 	}
 
-	// If it doesn't start with one of these reserved words, the link may be a URL or local path or something
+	// If it doesn't start with one of these reserved words, the link is definitely not a board link.
 	if linkIDA[0] != "layers" && linkIDA[0] != "scenarios" && linkIDA[0] != "steps" && linkIDA[0] != "_" {
 		return
 	}
@@ -181,7 +179,7 @@ func (c *compiler) compileLink(refctx *RefContext) {
 		if len(scopeIDA) < 2 {
 			// IR compiler only validates bad underscore usage
 			// The compiler will validate if the target board actually exists
-			c.errorf(refctx.Key.Key, "linked board not found")
+			c.errorf(refctx.Key.Key, "invalid underscore usage")
 			return
 		}
 		// pop 2 off path per one underscore
@@ -194,7 +192,8 @@ func (c *compiler) compileLink(refctx *RefContext) {
 
 	// Create the absolute path by appending scope path with value specified
 	scopeIDA = append(scopeIDA, linkIDA...)
-	refctx.Key.Value = d2ast.MakeValueBox(d2ast.RawString(strings.Join(scopeIDA, "."), true))
+	kp := d2format.IDA(scopeIDA)
+	refctx.Key.Value = d2ast.MakeValueBox(d2ast.RawString(d2format.Format(kp), true))
 }
 
 func (c *compiler) compileEdges(refctx *RefContext) {

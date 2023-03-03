@@ -198,7 +198,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 				obj.Map = fr.Context.Key.Value.Map
 			}
 		}
-		scopeObjIDA := d2ir.IDA(fr.Context.ScopeMap)
+		scopeObjIDA := d2ir.BoardIDA(fr.Context.ScopeMap)
 		scopeObj := obj.Graph.Root.EnsureChildIDVal(scopeObjIDA)
 		obj.References = append(obj.References, d2graph.Reference{
 			Key:          fr.KeyPath,
@@ -436,7 +436,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 
 	edge.Attributes.Label.MapKey = e.LastPrimaryKey()
 	for _, er := range e.References {
-		scopeObjIDA := d2ir.IDA(er.Context.ScopeMap)
+		scopeObjIDA := d2ir.BoardIDA(er.Context.ScopeMap)
 		scopeObj := edge.Src.Graph.Root.EnsureChildIDVal(scopeObjIDA)
 		edge.References = append(edge.References, d2graph.EdgeReference{
 			Edge:            er.Context.Edge,
@@ -735,16 +735,18 @@ func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
 			continue
 		}
 
-		root := g
-		for root.Parent != nil {
-			root = root.Parent
-		}
-		if !hasBoard(root, linkKey.IDA()) {
+		if !hasBoard(g.RootBoard(), linkKey.IDA()) {
 			c.errorf(obj.Attributes.Link.MapKey, "linked board not found")
 			continue
 		}
 	}
-	for _, b := range append(append(g.Layers, g.Scenarios...), g.Steps...) {
+	for _, b := range g.Layers {
+		c.validateBoardLinks(b)
+	}
+	for _, b := range g.Scenarios {
+		c.validateBoardLinks(b)
+	}
+	for _, b := range g.Steps {
 		c.validateBoardLinks(b)
 	}
 }
@@ -752,7 +754,7 @@ func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
 func hasBoard(root *d2graph.Graph, ida []string) bool {
 	for i := 0; i < len(ida); i += 2 {
 		id := ida[i]
-		if id == "root" {
+		if i == 0 && id == "root" {
 			i--
 			continue
 		}
@@ -760,24 +762,27 @@ func hasBoard(root *d2graph.Graph, ida []string) bool {
 			return root.Name == id
 		}
 		nextID := ida[i+1]
-		if id == "layers" {
+		switch id {
+		case "layers":
 			for _, b := range root.Layers {
 				if b.Name == nextID {
 					return hasBoard(b, ida[i+1:])
 				}
 			}
-		} else if id == "scenarios" {
+		case "scenarios":
 			for _, b := range root.Scenarios {
 				if b.Name == nextID {
 					return hasBoard(b, ida[i+1:])
 				}
 			}
-		} else if id == "steps" {
+		case "steps":
 			for _, b := range root.Steps {
 				if b.Name == nextID {
 					return hasBoard(b, ida[i+1:])
 				}
 			}
+		default:
+			break
 		}
 	}
 	return false

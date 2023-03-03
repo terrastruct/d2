@@ -2052,7 +2052,7 @@ layers: {
 
 scenarios: {
   green: {
-		question.style.fill: green
+    question.style.fill: green
   }
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
@@ -2071,7 +2071,7 @@ scenarios: {
 			text: `zzz
 x.link: layers.x.y
 layers: {
-	x: {
+  x: {
     y
   }
 }`,
@@ -2081,11 +2081,11 @@ layers: {
 			name: "link-board-nested",
 			text: `x.link: layers.x.layers.x
 layers: {
-	x: {
+  x: {
     layers: {
-			x: {
+      x: {
         hello
-			}
+      }
     }
   }
 }`,
@@ -2099,7 +2099,7 @@ layers: {
   y.link: layers.x
 }
 layers: {
-	x: {
+  x: {
     yo
   }
 }`,
@@ -2114,10 +2114,10 @@ layers: {
 	x: {
 	  yo
     layers: {
-			x: {
-				hello.link: _._.layers.x
-				hey.link: _
-			}
+      x: {
+        hello.link: _._.layers.x
+        hey.link: _
+      }
     }
   }
 }`,
@@ -2131,16 +2131,16 @@ layers: {
 			name: "link-board-underscore-not-found",
 			text: `x
 layers: {
-	x: {
-	  yo
+  x: {
+    yo
     layers: {
-			x: {
-				hello.link: _._._
-			}
+      x: {
+        hello.link: _._._
+      }
     }
   }
 }`,
-			expErr: `d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:5: linked board not found`,
+			expErr: `d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:9: invalid underscore usage`,
 		},
 	}
 

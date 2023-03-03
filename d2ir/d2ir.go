@@ -221,17 +221,6 @@ func (m *Map) Root() bool {
 	return f.Root()
 }
 
-func (m *Map) AbsID() string {
-	f, ok := m.parent.(*Field)
-	if !ok {
-		return ""
-	}
-	if f.parent == nil {
-		return f.Name
-	}
-	return f.parent.(*Map).AbsID() + "." + f.Name
-}
-
 func (f *Field) Root() bool {
 	return f.parent == nil
 }
@@ -1044,8 +1033,8 @@ func parentPrimaryKey(n Node) *d2ast.Key {
 	return nil
 }
 
-// IDA returns the absolute path to n from the nearest board root.
-func IDA(n Node) (ida []string) {
+// BoardIDA returns the absolute path to n from the nearest board root.
+func BoardIDA(n Node) (ida []string) {
 	for {
 		f, ok := n.(*Field)
 		if ok {
@@ -1054,6 +1043,26 @@ func IDA(n Node) (ida []string) {
 				return ida
 			}
 			ida = append(ida, f.Name)
+		}
+		f = ParentField(n)
+		if f == nil {
+			reverseIDA(ida)
+			return ida
+		}
+		n = f
+	}
+}
+
+// IDA returns the absolute path to n from the nearest board root.
+func IDA(n Node) (ida []string) {
+	for {
+		f, ok := n.(*Field)
+		if ok {
+			ida = append(ida, f.Name)
+			if f.Root() {
+				reverseIDA(ida)
+				return ida
+			}
 		}
 		f = ParentField(n)
 		if f == nil {
