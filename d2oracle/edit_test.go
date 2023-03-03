@@ -4838,6 +4838,24 @@ Text 2
 `,
 		},
 		{
+			name: "conflicts_generated_continued",
+			text: `Text 4
+
+Text: {
+  Text 2
+}
+Text 2
+`,
+			key: `Text`,
+
+			exp: `Text 4
+
+Text
+
+Text 2
+`,
+		},
+		{
 			name: "chaos_1",
 
 			text: `cm: {shape: cylinder}
@@ -5399,6 +5417,22 @@ Square: {
   "Square.Text": "Text 2",
   "Square.Text 4": "Text",
   "Square.Text 4.Text 2": "Text.Text 2"
+}`,
+		},
+		{
+			name: "delete_generated_id_conflicts_2_continued",
+
+			text: `Text 4
+
+Text: {
+  Text 2
+}
+Text 2
+`,
+			key: "Text",
+
+			exp: `{
+  "Text.Text 2": "Text"
 }`,
 		},
 	}
