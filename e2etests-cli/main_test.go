@@ -9,6 +9,7 @@ import (
 
 	"oss.terrastruct.com/d2/d2cli"
 	"oss.terrastruct.com/util-go/assert"
+	"oss.terrastruct.com/util-go/diff"
 	"oss.terrastruct.com/util-go/xmain"
 	"oss.terrastruct.com/util-go/xos"
 )
@@ -18,7 +19,6 @@ func TestCLI_E2E(t *testing.T) {
 
 	tca := []struct {
 		name string
-		skip bool
 		run  func(t *testing.T, ctx context.Context, dir string, env *xos.Env)
 	}{
 		{
@@ -28,7 +28,7 @@ func TestCLI_E2E(t *testing.T) {
 				err := runTestMain(t, ctx, dir, env, "hello-world.d2", "hello-world.png")
 				assert.Success(t, err)
 				png := readFile(t, dir, "hello-world.png")
-				assert.Testdata(t, ".png", png)
+				testdataIgnoreDiff(t, ".png", png)
 			},
 		},
 		{
@@ -38,19 +38,18 @@ func TestCLI_E2E(t *testing.T) {
 				err := runTestMain(t, ctx, dir, env, "--pad=400", "hello-world.d2", "hello-world.png")
 				assert.Success(t, err)
 				png := readFile(t, dir, "hello-world.png")
-				assert.Testdata(t, ".png", png)
+				testdataIgnoreDiff(t, ".png", png)
 			},
 		},
 		{
 			name: "hello_world_png_sketch",
-			// https://github.com/terrastruct/d2/pull/963#pullrequestreview-1323089392
-			skip: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x -> y`)
 				err := runTestMain(t, ctx, dir, env, "--sketch", "hello-world.d2", "hello-world.png")
 				assert.Success(t, err)
 				png := readFile(t, dir, "hello-world.png")
-				assert.Testdata(t, ".png", png)
+				// https://github.com/terrastruct/d2/pull/963#pullrequestreview-1323089392
+				testdataIgnoreDiff(t, ".png", png)
 			},
 		},
 		{
@@ -127,10 +126,6 @@ scenarios: {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			if tc.skip {
-				t.SkipNow()
-			}
-
 			ctx, cancel := context.WithTimeout(ctx, time.Minute*5)
 			defer cancel()
 
@@ -193,4 +188,8 @@ func removeD2Files(tb testing.TB, dir string) {
 			assert.Remove(tb, filepath.Join(dir, e.Name()))
 		}
 	}
+}
+
+func testdataIgnoreDiff(tb testing.TB, ext string, got []byte) {
+	_ = diff.Testdata(filepath.Join("testdata", tb.Name()), ext, got)
 }
