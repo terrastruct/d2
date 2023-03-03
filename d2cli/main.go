@@ -29,6 +29,7 @@ import (
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/imgbundler"
 	ctxlog "oss.terrastruct.com/d2/lib/log"
+	"oss.terrastruct.com/d2/lib/pdf"
 	pdflib "oss.terrastruct.com/d2/lib/pdf"
 	"oss.terrastruct.com/d2/lib/png"
 	"oss.terrastruct.com/d2/lib/textmeasure"
@@ -291,7 +292,8 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 
 	var svg []byte
 	if filepath.Ext(outputPath) == ".pdf" {
-		svg, err = renderPDF(ctx, ms, plugin, sketch, pad, themeID, outputPath, page, ruler, diagram, nil, nil)
+		pageMap := pdf.BuildPDFPageMap(diagram, nil, nil)
+		svg, err = renderPDF(ctx, ms, plugin, sketch, pad, themeID, outputPath, page, ruler, diagram, nil, nil, pageMap)
 	} else {
 		compileDur := time.Since(start)
 		svg, err = render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
@@ -443,7 +445,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	return svg, nil
 }
 
-func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad, themeID int64, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdf *pdflib.GoFPDF, boardPath []string) (svg []byte, err error) {
+func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad, themeID int64, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdf *pdflib.GoFPDF, boardPath []string, pageMap map[string]int) (svg []byte, err error) {
 	var isRoot bool
 	if pdf == nil {
 		pdf = pdflib.Init()
@@ -504,26 +506,26 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 		if err != nil {
 			return svg, err
 		}
-		err = pdf.AddPDFPage(pngImg, currBoardPath, themeID, rootFill, diagram.Shapes, pad, viewboxX, viewboxY)
+		err = pdf.AddPDFPage(pngImg, currBoardPath, themeID, rootFill, diagram.Shapes, pad, viewboxX, viewboxY, pageMap)
 		if err != nil {
 			return svg, err
 		}
 	}
 
 	for _, dl := range diagram.Layers {
-		_, err := renderPDF(ctx, ms, plugin, sketch, pad, themeID, "", page, ruler, dl, pdf, currBoardPath)
+		_, err := renderPDF(ctx, ms, plugin, sketch, pad, themeID, "", page, ruler, dl, pdf, currBoardPath, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := renderPDF(ctx, ms, plugin, sketch, pad, themeID, "", page, ruler, dl, pdf, currBoardPath)
+		_, err := renderPDF(ctx, ms, plugin, sketch, pad, themeID, "", page, ruler, dl, pdf, currBoardPath, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := renderPDF(ctx, ms, plugin, sketch, pad, themeID, "", page, ruler, dl, pdf, currBoardPath)
+		_, err := renderPDF(ctx, ms, plugin, sketch, pad, themeID, "", page, ruler, dl, pdf, currBoardPath, pageMap)
 		if err != nil {
 			return nil, err
 		}
