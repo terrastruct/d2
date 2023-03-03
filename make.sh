@@ -9,4 +9,9 @@ fi
 PATH="$(cd -- "$(dirname "$0")" && pwd)/ci/sub/bin:$PATH"
 cd -- "$(dirname "$0")"
 
+if ! go version | grep -qF '1.18'; then
+  echoerr "You need go 1.18 to build d2."
+  exit 1
+fi
+
 _make "$@"
