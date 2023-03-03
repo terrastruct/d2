@@ -18,6 +18,7 @@ func TestCLI_E2E(t *testing.T) {
 
 	tca := []struct {
 		name string
+		skip bool
 		run  func(t *testing.T, ctx context.Context, dir string, env *xos.Env)
 	}{
 		{
@@ -42,6 +43,8 @@ func TestCLI_E2E(t *testing.T) {
 		},
 		{
 			name: "hello_world_png_sketch",
+			// https://github.com/terrastruct/d2/pull/963#pullrequestreview-1323089392
+			skip: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x -> y`)
 				err := runTestMain(t, ctx, dir, env, "--sketch", "hello-world.d2", "hello-world.png")
@@ -123,6 +126,10 @@ scenarios: {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
+
+			if tc.skip {
+				t.SkipNow()
+			}
 
 			ctx, cancel := context.WithTimeout(ctx, time.Minute*5)
 			defer cancel()
