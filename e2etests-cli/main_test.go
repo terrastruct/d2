@@ -20,12 +20,22 @@ func TestCLI_E2E(t *testing.T) {
 		run  func(t *testing.T, ctx context.Context, dir string, env *xos.Env)
 	}{
 		{
-			name: "hello_world",
+			name: "hello_world_png",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
-				assert.WriteFile(t, filepath.Join(dir, "hello-world.d2"), []byte(`x -> y`), 0644)
-				err := runTestMain(t, ctx, dir, env, "hello-world.d2",  "hello-world.png")
+				writeFile(t, dir, "hello-world.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "hello-world.d2", "hello-world.png")
 				assert.Success(t, err)
-				png := assert.ReadFile(t, filepath.Join(dir, "hello-world.png"))
+				png := readFile(t, dir, "hello-world.png")
+				assert.Testdata(t, ".png", png)
+			},
+		},
+		{
+			name: "hello_world_png_pad",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "-pad 4000", "hello-world.d2", "hello-world.png")
+				assert.Success(t, err)
+				png := readFile(t, dir, "hello-world.png")
 				assert.Testdata(t, ".png", png)
 			},
 		},
@@ -66,4 +76,14 @@ func runTestMain(tb testing.TB, ctx context.Context, dir string, env *xos.Env, a
 	tms.Start(tb, ctx)
 	defer tms.Cleanup(tb)
 	return tms.Wait(ctx)
+}
+
+func writeFile(tb testing.TB, dir, fp, data string) {
+	tb.Helper()
+	assert.WriteFile(tb, filepath.Join(dir, fp), []byte(data), 0644)
+}
+
+func readFile(tb testing.TB, dir, fp string) []byte {
+	tb.Helper()
+	return assert.ReadFile(tb, filepath.Join(dir, fp))
 }
