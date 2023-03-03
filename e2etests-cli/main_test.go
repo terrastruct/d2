@@ -33,7 +33,17 @@ func TestCLI_E2E(t *testing.T) {
 			name: "hello_world_png_pad",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "hello-world.d2", `x -> y`)
-				err := runTestMain(t, ctx, dir, env, "-pad 4000", "hello-world.d2", "hello-world.png")
+				err := runTestMain(t, ctx, dir, env, "--pad=400", "hello-world.d2", "hello-world.png")
+				assert.Success(t, err)
+				png := readFile(t, dir, "hello-world.png")
+				assert.Testdata(t, ".png", png)
+			},
+		},
+		{
+			name: "hello_world_png_sketch",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "--sketch", "hello-world.d2", "hello-world.png")
 				assert.Success(t, err)
 				png := readFile(t, dir, "hello-world.png")
 				assert.Testdata(t, ".png", png)
