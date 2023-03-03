@@ -152,6 +152,12 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			outputPath = renameExt(inputPath, ".svg")
 		}
 	}
+	inputPath = filepath.Join(ms.PWD, inputPath)
+	d, err := os.Stat(inputPath)
+	if err == nil && d.IsDir() {
+		inputPath = filepath.Join(inputPath, "index.d2")
+	}
+	outputPath = filepath.Join(ms.PWD, outputPath)
 
 	match := d2themescatalog.Find(*themeFlag)
 	if match == (d2themes.Theme{}) {
