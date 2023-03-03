@@ -2,6 +2,7 @@ package e2etests_cli
 
 import (
 	"context"
+	"os"
 	"path/filepath"
 	"testing"
 	"time"
@@ -49,6 +50,39 @@ func TestCLI_E2E(t *testing.T) {
 				assert.Testdata(t, ".png", png)
 			},
 		},
+		{
+			name: "multiboard/life",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "life/index.d2", `x -> y
+layers: {
+  core: {
+    belief
+    food
+    diet
+  }
+  broker: {
+    mortgage
+    realtor
+  }
+  stocks: {
+    TSX
+    NYSE
+    NASDAQ
+  }
+}
+
+scenarios: {
+  why: {
+    y -> x
+  }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "life")
+				assert.Success(t, err)
+
+				assert.TestdataDir(t, filepath.Join(dir, "life"))
+			},
+		},
 	}
 
 	ctx := context.Background()
@@ -85,15 +119,38 @@ func runTestMain(tb testing.TB, ctx context.Context, dir string, env *xos.Env, a
 	tms := testMain(dir, env, args...)
 	tms.Start(tb, ctx)
 	defer tms.Cleanup(tb)
-	return tms.Wait(ctx)
+	err := tms.Wait(ctx)
+	if err != nil {
+		return err
+	}
+	removeD2Files(tb, dir)
+	return nil
 }
 
 func writeFile(tb testing.TB, dir, fp, data string) {
 	tb.Helper()
+	err := os.MkdirAll(filepath.Dir(filepath.Join(dir, fp)), 0755)
+	assert.Success(tb, err)
 	assert.WriteFile(tb, filepath.Join(dir, fp), []byte(data), 0644)
 }
 
 func readFile(tb testing.TB, dir, fp string) []byte {
 	tb.Helper()
 	return assert.ReadFile(tb, filepath.Join(dir, fp))
+}
+
+func removeD2Files(tb testing.TB, dir string) {
+	ea, err := os.ReadDir(dir)
+	assert.Success(tb, err)
+
+	for _, e := range ea {
+		if e.IsDir() {
+			removeD2Files(tb, filepath.Join(dir, e.Name()))
+			continue
+		}
+		ext := filepath.Ext(e.Name())
+		if ext == ".d2" {
+			assert.Remove(tb, filepath.Join(dir, e.Name()))
+		}
+	}
 }
