@@ -8,10 +8,10 @@
       "type": "person",
       "pos": {
         "x": 12,
-        "y": 66
+        "y": 32
       },
-      "width": 167,
-      "height": 111,
+      "width": 100,
+      "height": 144,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -48,11 +48,11 @@
       "id": "bob",
       "type": "person",
       "pos": {
-        "x": 303,
-        "y": 140
+        "x": 271,
+        "y": 59
       },
-      "width": 103,
-      "height": 69,
+      "width": 100,
+      "height": 150,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 5,
@@ -89,7 +89,7 @@
       "id": "db",
       "type": "cylinder",
       "pos": {
-        "x": 612,
+        "x": 578,
         "y": 112
       },
       "width": 100,
@@ -130,7 +130,7 @@
       "id": "queue",
       "type": "queue",
       "pos": {
-        "x": 899,
+        "x": 865,
         "y": 164
       },
       "width": 140,
@@ -171,7 +171,7 @@
       "id": "service",
       "type": "rectangle",
       "pos": {
-        "x": 1207,
+        "x": 1174,
         "y": 52
       },
       "width": 137,
@@ -222,6 +222,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "Authentication Request",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -236,11 +237,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 95.5,
+          "x": 62,
           "y": 300
         },
         {
-          "x": 354.5,
+          "x": 321,
           "y": 300
         }
       ],
@@ -261,6 +262,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "make request for something that is quite far away and requires a really long label to take all the space between the objects",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -275,11 +277,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 354.5,
+          "x": 321,
           "y": 370
         },
         {
-          "x": 1275.5,
+          "x": 1242.5,
           "y": 370
         }
       ],
@@ -300,6 +302,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "validate credentials",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -314,11 +317,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1275.5,
+          "x": 1242.5,
           "y": 440
         },
         {
-          "x": 662,
+          "x": 628,
           "y": 440
         }
       ],
@@ -339,6 +342,7 @@
       "strokeDash": 4,
       "strokeWidth": 2,
       "stroke": "B2",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -353,11 +357,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 662,
+          "x": 628,
           "y": 510
         },
         {
-          "x": 1275.5,
+          "x": 1242.5,
           "y": 510
         }
       ],
@@ -378,6 +382,7 @@
       "strokeDash": 4,
       "strokeWidth": 2,
       "stroke": "B2",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -392,11 +397,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1275.5,
+          "x": 1242.5,
           "y": 580
         },
         {
-          "x": 354.5,
+          "x": 321,
           "y": 580
         }
       ],
@@ -417,6 +422,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "Authentication Response",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -431,11 +437,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 354.5,
+          "x": 321,
           "y": 650
         },
         {
-          "x": 95.5,
+          "x": 62,
           "y": 650
         }
       ],
@@ -456,6 +462,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "Another authentication Request",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -470,11 +477,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 95.5,
+          "x": 62,
           "y": 720
         },
         {
-          "x": 354.5,
+          "x": 321,
           "y": 720
         }
       ],
@@ -495,6 +502,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "do it later",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -509,11 +517,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 354.5,
+          "x": 321,
           "y": 790
         },
         {
-          "x": 969,
+          "x": 935,
           "y": 790
         }
       ],
@@ -534,6 +542,7 @@
       "strokeDash": 3,
       "strokeWidth": 5,
       "stroke": "green",
+      "borderRadius": 10,
       "label": "stored",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -548,11 +557,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 969,
+          "x": 935,
           "y": 860
         },
         {
-          "x": 354.5,
+          "x": 321,
           "y": 860
         }
       ],
@@ -573,6 +582,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "Another authentication Response",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -587,11 +597,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 354.5,
+          "x": 321,
           "y": 930
         },
         {
-          "x": 95.5,
+          "x": 62,
           "y": 930
         }
       ],
@@ -612,6 +622,7 @@
       "strokeDash": 6,
       "strokeWidth": 2,
       "stroke": "B2",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -626,11 +637,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 95.5,
+          "x": 62,
           "y": 235
         },
         {
-          "x": 95.5,
+          "x": 62,
           "y": 1000
         }
       ],
@@ -651,6 +662,7 @@
       "strokeDash": 6,
       "strokeWidth": 2,
       "stroke": "B2",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -665,11 +677,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 354.5,
+          "x": 321,
           "y": 235
         },
         {
-          "x": 354.5,
+          "x": 321,
           "y": 1000
         }
       ],
@@ -690,6 +702,7 @@
       "strokeDash": 6,
       "strokeWidth": 2,
       "stroke": "B2",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -704,11 +717,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 662,
+          "x": 628,
           "y": 230
         },
         {
-          "x": 662,
+          "x": 628,
           "y": 1000
         }
       ],
@@ -729,6 +742,7 @@
       "strokeDash": 6,
       "strokeWidth": 2,
       "stroke": "B2",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -743,11 +757,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 969,
+          "x": 935,
           "y": 230
         },
         {
-          "x": 969,
+          "x": 935,
           "y": 1000
         }
       ],
@@ -768,6 +782,7 @@
       "strokeDash": 6,
       "strokeWidth": 2,
       "stroke": "B2",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -782,11 +797,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1275.5,
+          "x": 1242.5,
           "y": 230
         },
         {
-          "x": 1275.5,
+          "x": 1242.5,
           "y": 1000
         }
       ],

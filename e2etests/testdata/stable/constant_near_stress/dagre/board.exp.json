@@ -171,11 +171,11 @@
       "id": "Joe",
       "type": "person",
       "pos": {
-        "x": -565,
-        "y": 82
+        "x": -508,
+        "y": 83
       },
-      "width": 101,
-      "height": 67,
+      "width": 44,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -204,7 +204,7 @@
       "underline": false,
       "labelWidth": 26,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -213,10 +213,10 @@
       "type": "person",
       "pos": {
         "x": 518,
-        "y": 62
+        "y": 83
       },
-      "width": 160,
-      "height": 107,
+      "width": 65,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -245,7 +245,7 @@
       "underline": false,
       "labelWidth": 50,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -427,6 +427,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",

@@ -419,7 +419,9 @@ func pathData(connection d2target.Connection, srcAdj, dstAdj *geo.Point) string 
 			currVector := prevTarget.VectorTo(currTarget)
 
 			dist := geo.EuclideanDistance(prevTarget.X, prevTarget.Y, currTarget.X, currTarget.Y)
-			units := math.Min(10, dist/2)
+
+			connectionBorderRadius := connection.BorderRadius
+			units := math.Min(connectionBorderRadius, dist/2)
 
 			prevTranslations := prevVector.Unit().Multiply(units).ToPoint()
 			currTranslations := currVector.Unit().Multiply(units).ToPoint()
@@ -430,7 +432,7 @@ func pathData(connection d2target.Connection, srcAdj, dstAdj *geo.Point) string 
 			))
 
 			// If the segment length is too small, instead of drawing 2 arcs, just skip this segment and bezier curve to the next one
-			if units < 10 && i < len(route)-2 {
+			if units < connectionBorderRadius && i < len(route)-2 {
 				nextTarget := route[i+2]
 				nextVector := geo.NewVector(nextTarget.X-currTarget.X, nextTarget.Y-currTarget.Y)
 				i++
@@ -1765,7 +1767,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		dimensions = fmt.Sprintf(` width="%d" height="%d"`, w, h)
 	}
 
-	fitToScreenWrapper := fmt.Sprintf(`<svg %s preserveAspectRatio="xMidYMid meet" viewBox="0 0 %d %d"%s>`,
+	fitToScreenWrapper := fmt.Sprintf(`<svg %s preserveAspectRatio="xMinYMin meet" viewBox="0 0 %d %d"%s>`,
 		`xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"`,
 		w, h,
 		dimensions,

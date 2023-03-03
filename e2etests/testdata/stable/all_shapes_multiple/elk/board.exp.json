@@ -376,7 +376,7 @@
       "id": "callout",
       "type": "callout",
       "pos": {
-        "x": 537,
+        "x": 529,
         "y": 13
       },
       "width": 95,
@@ -417,7 +417,7 @@
       "id": "stored_data",
       "type": "stored_data",
       "pos": {
-        "x": 509,
+        "x": 501,
         "y": 188
       },
       "width": 151,
@@ -458,11 +458,11 @@
       "id": "person",
       "type": "person",
       "pos": {
-        "x": 507,
+        "x": 545,
         "y": 338
       },
-      "width": 155,
-      "height": 103,
+      "width": 63,
+      "height": 66,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -491,7 +491,7 @@
       "underline": false,
       "labelWidth": 48,
       "labelHeight": 21,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -499,7 +499,7 @@
       "id": "diamond",
       "type": "diamond",
       "pos": {
-        "x": 652,
+        "x": 644,
         "y": 12
       },
       "width": 156,
@@ -540,7 +540,7 @@
       "id": "oval",
       "type": "oval",
       "pos": {
-        "x": 682,
+        "x": 673,
         "y": 186
       },
       "width": 97,
@@ -581,7 +581,7 @@
       "id": "circle",
       "type": "oval",
       "pos": {
-        "x": 685,
+        "x": 676,
         "y": 338
       },
       "width": 91,
@@ -622,7 +622,7 @@
       "id": "hexagon",
       "type": "hexagon",
       "pos": {
-        "x": 828,
+        "x": 820,
         "y": 35
       },
       "width": 128,
@@ -663,7 +663,7 @@
       "id": "cloud",
       "type": "cloud",
       "pos": {
-        "x": 840,
+        "x": 832,
         "y": 174
       },
       "width": 104,
@@ -714,6 +714,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -753,6 +754,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -792,6 +794,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -831,6 +834,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -870,6 +874,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -909,6 +914,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -948,6 +954,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -962,11 +969,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 585,
+          "x": 577,
           "y": 59
         },
         {
-          "x": 585,
+          "x": 577,
           "y": 188
         }
       ],
@@ -987,6 +994,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -1001,11 +1009,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 585,
+          "x": 576,
           "y": 254
         },
         {
-          "x": 585,
+          "x": 577,
           "y": 338
         }
       ],
@@ -1026,6 +1034,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -1040,11 +1049,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 731,
+          "x": 722,
           "y": 104
         },
         {
-          "x": 731,
+          "x": 722,
           "y": 186
         }
       ],
@@ -1065,6 +1074,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -1079,11 +1089,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 731,
+          "x": 722,
           "y": 256
         },
         {
-          "x": 731,
+          "x": 722,
           "y": 338
         }
       ],
@@ -1104,6 +1114,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
+      "borderRadius": 10,
       "label": "",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
@@ -1118,12 +1129,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 893,
+          "x": 884,
           "y": 104
         },
         {
-          "x": 892,
-          "y": 176
+          "x": 884,
+          "y": 175
         }
       ],
       "animated": false,
