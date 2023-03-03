@@ -1,6 +1,7 @@
 package e2etests_cli
 
 import (
+	"bytes"
 	"context"
 	"os"
 	"path/filepath"
@@ -142,6 +143,22 @@ layers: {
 
 				pdf := readFile(t, dir, "out.pdf")
 				testdataIgnoreDiff(t, ".pdf", pdf)
+			},
+		},
+		{
+			name: "stdin",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				stdin := bytes.NewBufferString(`x -> y`)
+				stdout := &bytes.Buffer{}
+				tms := testMain(dir, env, "-")
+				tms.Stdin = stdin
+				tms.Stdout = stdout
+				tms.Start(t, ctx)
+				defer tms.Cleanup(t)
+				err := tms.Wait(ctx)
+				assert.Success(t, err)
+
+				assert.Testdata(t, ".svg", stdout.Bytes())
 			},
 		},
 	}

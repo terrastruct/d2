@@ -153,12 +153,16 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			outputPath = renameExt(inputPath, ".svg")
 		}
 	}
-	inputPath = filepath.Join(ms.PWD, inputPath)
-	d, err := os.Stat(inputPath)
-	if err == nil && d.IsDir() {
-		inputPath = filepath.Join(inputPath, "index.d2")
+	if inputPath != "-" {
+		inputPath = filepath.Join(ms.PWD, inputPath)
+		d, err := os.Stat(inputPath)
+		if err == nil && d.IsDir() {
+			inputPath = filepath.Join(inputPath, "index.d2")
+		}
 	}
-	outputPath = filepath.Join(ms.PWD, outputPath)
+	if outputPath != "-" {
+		outputPath = filepath.Join(ms.PWD, outputPath)
+	}
 
 	match := d2themescatalog.Find(*themeFlag)
 	if match == (d2themes.Theme{}) {
@@ -320,6 +324,9 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 
 	boardOutputPath := outputPath
 	if len(diagram.Layers) > 0 || len(diagram.Scenarios) > 0 || len(diagram.Steps) > 0 {
+		if outputPath == "-" {
+			return nil, fmt.Errorf("multiboard output cannot be written to stdout")
+		}
 		// Boards with subboards must be self-contained folders.
 		ext := filepath.Ext(boardOutputPath)
 		boardOutputPath = strings.TrimSuffix(boardOutputPath, ext)
