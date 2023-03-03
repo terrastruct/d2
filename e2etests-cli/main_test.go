@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/davecgh/go-spew/spew"
 	"oss.terrastruct.com/d2/d2cli"
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
@@ -142,6 +143,15 @@ layers: {
 
 				pdf := readFile(t, dir, "out.pdf")
 				testdataIgnoreDiff(t, ".pdf", pdf)
+			},
+		},
+		{
+			name: "compile_err",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `x.fill: red`)
+				err := runTestMain(t, ctx, dir, env, "in.d2")
+				spew.Dump(err)
+				assert.Error(t, err)
 			},
 		},
 	}
