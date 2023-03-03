@@ -53,6 +53,39 @@ func TestCLI_E2E(t *testing.T) {
 		{
 			name: "multiboard/life",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "life.d2", `x -> y
+layers: {
+  core: {
+    belief
+    food
+    diet
+  }
+  broker: {
+    mortgage
+    realtor
+  }
+  stocks: {
+    TSX
+    NYSE
+    NASDAQ
+  }
+}
+
+scenarios: {
+  why: {
+    y -> x
+  }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "life.d2")
+				assert.Success(t, err)
+
+				assert.TestdataDir(t, filepath.Join(dir, "life"))
+			},
+		},
+		{
+			name: "multiboard/life_index_d2",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "life/index.d2", `x -> y
 layers: {
   core: {
