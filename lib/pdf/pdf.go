@@ -7,6 +7,7 @@ import (
 
 	"github.com/jung-kurt/gofpdf"
 
+	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
@@ -58,7 +59,7 @@ func (g *GoFPDF) GetFillRGB(themeID int64, fill string) (color.RGB, error) {
 	return color.Hex2RGB(fill)
 }
 
-func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill string, shapes []d2target.Shape, pad int64, viewboxX, viewboxY float64) error {
+func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill string, shapes []d2target.Shape, pad int64, viewboxX, viewboxY float64, pageMap map[string]int) error {
 	var opt gofpdf.ImageOptions
 	opt.ImageType = "png"
 	imageInfo := g.pdf.RegisterImageOptionsReader(strings.Join(boardPath, "/"), opt, bytes.NewReader(png))
@@ -122,14 +123,28 @@ func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill 
 	imageY := headerHeight + (pageHeight-imageHeight)/2
 	g.pdf.ImageOptions(strings.Join(boardPath, "/"), imageX, imageY, imageWidth, imageHeight, false, opt, 0, "")
 
-	// Draw external links
+	// Draw links
 	for _, shape := range shapes {
-		if shape.Link != "" {
-			linkX := imageX + float64(shape.Pos.X) - viewboxX - float64(shape.StrokeWidth)
-			linkY := imageY + float64(shape.Pos.Y) - viewboxY - float64(shape.StrokeWidth)
-			linkWidth := float64(shape.Width) + float64(shape.StrokeWidth*2)
-			linkHeight := float64(shape.Height) + float64(shape.StrokeWidth*2)
+		if shape.Link == "" {
+			continue
+		}
+
+		linkX := imageX + float64(shape.Pos.X) - viewboxX - float64(shape.StrokeWidth)
+		linkY := imageY + float64(shape.Pos.Y) - viewboxY - float64(shape.StrokeWidth)
+		linkWidth := float64(shape.Width) + float64(shape.StrokeWidth*2)
+		linkHeight := float64(shape.Height) + float64(shape.StrokeWidth*2)
+
+		key, err := d2parser.ParseKey(shape.Link)
+		if err != nil || key.Path[0].Unbox().ScalarString() != "root" {
+			// External link
 			g.pdf.LinkString(linkX, linkY, linkWidth, linkHeight, shape.Link)
+		} else {
+			// Internal link
+			if pageNum, ok := pageMap[shape.Link]; ok {
+				linkID := g.pdf.AddLink()
+				g.pdf.SetLink(linkID, 0, pageNum+1)
+				g.pdf.Link(linkX, linkY, linkWidth, linkHeight, linkID)
+			}
 		}
 	}
 
@@ -148,4 +163,29 @@ func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill 
 
 func (g *GoFPDF) Export(outputPath string) error {
 	return g.pdf.OutputFileAndClose(outputPath)
+}
+
+// BuildPDFPageMap returns a map from board path to page int
+// To map correctly, it must follow the same traversal of PDF building
+func BuildPDFPageMap(diagram *d2target.Diagram, dictionary map[string]int, path []string) map[string]int {
+	newPath := append(path, diagram.Name)
+	if dictionary == nil {
+		dictionary = map[string]int{}
+		newPath[0] = "root"
+	}
+
+	key := strings.Join(newPath, ".")
+	dictionary[key] = len(dictionary)
+
+	for _, dl := range diagram.Layers {
+		BuildPDFPageMap(dl, dictionary, append(newPath, "layers"))
+	}
+	for _, dl := range diagram.Scenarios {
+		BuildPDFPageMap(dl, dictionary, append(newPath, "scenarios"))
+	}
+	for _, dl := range diagram.Steps {
+		BuildPDFPageMap(dl, dictionary, append(newPath, "steps"))
+	}
+
+	return dictionary
 }

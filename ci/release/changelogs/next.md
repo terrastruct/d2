@@ -1,10 +1,11 @@
 #### Features 🚀
 
+- PDF exports support external links [#891](https://github.com/terrastruct/d2/issues/891)
+- PDF exports support internal links [#891](https://github.com/terrastruct/d2/issues/966)
 - `border-radius` is now supported on connections (ELK and TALA only, since Dagre uses curves). [#913](https://github.com/terrastruct/d2/pull/913)
 
 #### Improvements 🧹
 
-- PDF exports now support external links on shapes [#891](https://github.com/terrastruct/d2/issues/891)
 - SVGs are fit to top left by default to avoid issues with zooming. [#954](https://github.com/terrastruct/d2/pull/954)
 - Person shapes now have labels below them and don't need to expand as much. [#960](https://github.com/terrastruct/d2/pull/960)
 

@@ -122,6 +122,28 @@ scenarios: {
 				assert.TestdataDir(t, filepath.Join(dir, "life"))
 			},
 		},
+		{
+			name: "internal_linked_pdf",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `cat: how does the cat go? {
+  link: layers.cat
+}
+layers: {
+  cat: {
+    home: {
+      link: _
+    }
+    the cat -> meow: goes
+  }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "in.d2", "out.pdf")
+				assert.Success(t, err)
+
+				pdf := readFile(t, dir, "out.pdf")
+				testdataIgnoreDiff(t, ".pdf", pdf)
+			},
+		},
 	}
 
 	ctx := context.Background()
