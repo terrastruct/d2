@@ -909,6 +909,9 @@ func deleteObject(g *d2graph.Graph, key *d2ast.KeyPath, obj *d2graph.Object) (*d
 
 		if len(ref.MapKey.Edges) == 0 {
 			isSuffix := ref.KeyPathIndex == len(ref.Key.Path)-1
+			if isSuffix && ref.MapKey != nil {
+				ref.MapKey.Primary = d2ast.ScalarBox{}
+			}
 			ref.Key.Path = append(ref.Key.Path[:ref.KeyPathIndex], ref.Key.Path[ref.KeyPathIndex+1:]...)
 			withoutSpecial := go2.Filter(ref.Key.Path, func(x *d2ast.StringBox) bool {
 				_, isReserved := d2graph.ReservedKeywords[x.Unbox().ScalarString()]

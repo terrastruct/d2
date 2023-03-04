@@ -4865,6 +4865,17 @@ Text 2
 `,
 		},
 		{
+			name: "drop_value_with_primary",
+			text: `a.b: hello {
+  shape: circle
+}
+`,
+			key: `a.b`,
+
+			exp: `a
+`,
+		},
+		{
 			name: "save_map",
 			text: `a.b: {
   shape: circle
@@ -4873,6 +4884,19 @@ Text 2
 			key: `a`,
 
 			exp: `b: {
+  shape: circle
+}
+`,
+		},
+		{
+			name: "save_map_with_primary",
+			text: `a.b: hello {
+  shape: circle
+}
+`,
+			key: `a`,
+
+			exp: `b: hello {
   shape: circle
 }
 `,
