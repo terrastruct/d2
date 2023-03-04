@@ -10,6 +10,10 @@ type Theme struct {
 	Colors ColorPalette `json:"colors"`
 }
 
+func (t *Theme) IsDark() bool {
+	return t.ID >= 200 && t.ID < 300
+}
+
 type Neutral struct {
 	N1 string `json:"n1"`
 	N2 string `json:"n2"`

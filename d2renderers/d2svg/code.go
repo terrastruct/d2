@@ -22,13 +22,14 @@ var svgEscaper = strings.NewReplacer(
 
 func styleToSVG(style *chroma.Style) map[chroma.TokenType]string {
 	converted := map[chroma.TokenType]string{}
-	bg := style.Get(chroma.Background)
-	// Convert the style.
+	// NOTE this is in the original source code, but it just makes unhighlightable code turn into the bg color
+	// Which I don't understand, and I get the results I want when I remove it.
+	// bg := style.Get(chroma.Background)
 	for t := range chroma.StandardTypes {
 		entry := style.Get(t)
-		if t != chroma.Background {
-			entry = entry.Sub(bg)
-		}
+		// if t != chroma.Background {
+		//   entry = entry.Sub(bg)
+		// }
 		if entry.IsZero() {
 			continue
 		}
@@ -47,6 +48,7 @@ func styleAttr(styles map[chroma.TokenType]string, tt chroma.TokenType) string {
 			}
 		}
 	}
+	// Custom code
 	out := strings.Replace(styles[tt], `font-weight="bold"`, `class="text-mono-bold"`, -1)
 	return strings.Replace(out, `font-style="italic"`, `class="text-mono-italic"`, -1)
 }

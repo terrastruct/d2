@@ -1197,47 +1197,57 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		if targetShape.Type == d2target.ShapeCode {
 			lexer := lexers.Get(targetShape.Language)
 			if lexer == nil {
-				lexer = lexers.Fallback
+				lexer = lexers.Plaintext
 			}
-			style := styles.Get("github")
-			if style == nil {
-				return labelMask, errors.New(`code snippet style "github" not found`)
-			}
-			formatter := formatters.Get("svg")
-			if formatter == nil {
-				return labelMask, errors.New(`code snippet formatter "svg" not found`)
-			}
-			iterator, err := lexer.Tokenise(nil, targetShape.Label)
-			if err != nil {
-				return labelMask, err
-			}
-
-			svgStyles := styleToSVG(style)
-			fmt.Fprintf(writer, `<g transform="translate(%f %f)">`, box.TopLeft.X, box.TopLeft.Y)
-			rectEl := d2themes.NewThemableElement("rect")
-			rectEl.Width = float64(targetShape.Width)
-			rectEl.Height = float64(targetShape.Height)
-			rectEl.Stroke = targetShape.Stroke
-			rectEl.ClassName = "shape"
-			rectEl.Style = fmt.Sprintf(`fill:%s`, style.Get(chroma.Background).Background.String())
-			fmt.Fprint(writer, rectEl.Render())
-			// Padding
-			fmt.Fprint(writer, `<g transform="translate(6 6)">`)
-
-			for index, tokens := range chroma.SplitTokensIntoLines(iterator.Tokens()) {
-				// TODO mono font looks better with 1.2 em (use px equivalent), but textmeasure needs to account for it. Not obvious how that should be done
-				fmt.Fprintf(writer, "<text class=\"text-mono\" x=\"0\" y=\"%fem\" xml:space=\"preserve\">", 1*float64(index+1))
-				for _, token := range tokens {
-					text := svgEscaper.Replace(token.String())
-					attr := styleAttr(svgStyles, token.Type)
-					if attr != "" {
-						text = fmt.Sprintf("<tspan %s>%s</tspan>", attr, text)
-					}
-					fmt.Fprint(writer, text)
+			for _, isLight := range []bool{true, false} {
+				theme := "github"
+				if !isLight {
+					theme = "catppuccin-mocha"
 				}
-				fmt.Fprint(writer, "</text>")
+				style := styles.Get(theme)
+				if style == nil {
+					return labelMask, errors.New(`code snippet style "github" not found`)
+				}
+				formatter := formatters.Get("svg")
+				if formatter == nil {
+					return labelMask, errors.New(`code snippet formatter "svg" not found`)
+				}
+				iterator, err := lexer.Tokenise(nil, targetShape.Label)
+				if err != nil {
+					return labelMask, err
+				}
+
+				svgStyles := styleToSVG(style)
+				class := "light-code"
+				if !isLight {
+					class = "dark-code"
+				}
+				fmt.Fprintf(writer, `<g transform="translate(%f %f)" class="%s">`, box.TopLeft.X, box.TopLeft.Y, class)
+				rectEl := d2themes.NewThemableElement("rect")
+				rectEl.Width = float64(targetShape.Width)
+				rectEl.Height = float64(targetShape.Height)
+				rectEl.Stroke = targetShape.Stroke
+				rectEl.ClassName = "shape"
+				rectEl.Style = fmt.Sprintf(`fill:%s`, style.Get(chroma.Background).Background.String())
+				fmt.Fprint(writer, rectEl.Render())
+				// Padding
+				fmt.Fprint(writer, `<g transform="translate(6 6)">`)
+
+				for index, tokens := range chroma.SplitTokensIntoLines(iterator.Tokens()) {
+					// TODO mono font looks better with 1.2 em (use px equivalent), but textmeasure needs to account for it. Not obvious how that should be done
+					fmt.Fprintf(writer, "<text class=\"text-mono\" x=\"0\" y=\"%fem\" xml:space=\"preserve\">", 1*float64(index+1))
+					for _, token := range tokens {
+						text := svgEscaper.Replace(token.String())
+						attr := styleAttr(svgStyles, token.Type)
+						if attr != "" {
+							text = fmt.Sprintf("<tspan %s>%s</tspan>", attr, text)
+						}
+						fmt.Fprint(writer, text)
+					}
+					fmt.Fprint(writer, "</text>")
+				}
+				fmt.Fprint(writer, "</g></g>")
 			}
-			fmt.Fprint(writer, "</g></g>")
 		} else if targetShape.Type == d2target.ShapeText && targetShape.Language == "latex" {
 			render, err := d2latex.Render(targetShape.Label)
 			if err != nil {
@@ -1798,6 +1808,7 @@ func themeCSS(themeID int64, darkThemeID *int64) (stylesheet string, err error) 
 		if err != nil {
 			return "", err
 		}
+
 		out += fmt.Sprintf("@media screen and (prefers-color-scheme:dark){%s}", darkOut)
 	}
 
@@ -1944,6 +1955,14 @@ func singleThemeRulesets(themeID int64) (rulesets string, err error) {
 		return "", err
 	}
 	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N7, lc, blendMode(lc))
+
+	if theme.IsDark() {
+		out += fmt.Sprintf(".light-code{display: none}")
+		out += fmt.Sprintf(".dark-code{display: block}")
+	} else {
+		out += fmt.Sprintf(".light-code{display: block}")
+		out += fmt.Sprintf(".dark-code{display: none}")
+	}
 
 	return out, nil
 }

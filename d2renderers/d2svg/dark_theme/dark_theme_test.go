@@ -382,6 +382,14 @@ func main() {
   panic("TODO")
 }
 |
+
+text: |md
+Five is a sufficiently close approximation to infinity.
+|
+unknown: |asdf
+Don't hit me!!  I'm in the Twilight Zone!!!
+|
+code -- unknown
 `,
 		},
 	}
