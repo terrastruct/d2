@@ -8,6 +8,7 @@
 
 - SVGs are fit to top left by default to avoid issues with zooming. [#954](https://github.com/terrastruct/d2/pull/954)
 - Person shapes now have labels below them and don't need to expand as much. [#960](https://github.com/terrastruct/d2/pull/960)
+- Code blocks adapt to dark mode [#971](https://github.com/terrastruct/d2/pull/971)
 
 #### Bugfixes ⛑️
 
