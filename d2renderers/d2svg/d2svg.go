@@ -1197,7 +1197,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		if targetShape.Type == d2target.ShapeCode {
 			lexer := lexers.Get(targetShape.Language)
 			if lexer == nil {
-				lexer = lexers.Plaintext
+				lexer = lexers.Fallback
 			}
 			for _, isLight := range []bool{true, false} {
 				theme := "github"
@@ -1808,7 +1808,6 @@ func themeCSS(themeID int64, darkThemeID *int64) (stylesheet string, err error) 
 		if err != nil {
 			return "", err
 		}
-
 		out += fmt.Sprintf("@media screen and (prefers-color-scheme:dark){%s}", darkOut)
 	}
 
