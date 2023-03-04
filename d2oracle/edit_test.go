@@ -4856,6 +4856,15 @@ Text 2
 `,
 		},
 		{
+			name: "drop_value",
+			text: `a.b.c: "c label"
+`,
+			key: `a.b.c`,
+
+			exp: `a.b
+`,
+		},
+		{
 			name: "chaos_1",
 
 			text: `cm: {shape: cylinder}

@@ -939,6 +939,8 @@ func deleteObject(g *d2graph.Graph, key *d2ast.KeyPath, obj *d2graph.Object) (*d
 						}
 					}
 				}
+			} else if isSuffix {
+				ref.MapKey.Value = d2ast.ValueBox{}
 			}
 		} else if ref.InEdge() {
 			edge := ref.MapKey.Edges[ref.MapKeyEdgeIndex]
