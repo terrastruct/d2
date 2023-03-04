@@ -109,6 +109,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 	maxContainerLabelHeight := 0
 	for _, obj := range g.Objects {
+		// TODO count root level container label sizes for ranksep
 		if len(obj.ChildrenArray) == 0 || obj.Parent == g.Root {
 			continue
 		}
@@ -126,15 +127,25 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 	}
 
-	maxLabelSize := 0
+	maxLabelWidth := 0
+	maxLabelHeight := 0
 	for _, edge := range g.Edges {
-		size := edge.LabelDimensions.Width
-		if !isHorizontal {
-			size = edge.LabelDimensions.Height
-		}
-		maxLabelSize = go2.Max(maxLabelSize, size)
+		width := edge.LabelDimensions.Width
+		height := edge.LabelDimensions.Height
+		maxLabelWidth = go2.Max(maxLabelWidth, width)
+		maxLabelHeight = go2.Max(maxLabelHeight, height)
 	}
-	rootAttrs.ranksep = go2.Max(go2.Max(100, maxLabelSize+40), maxContainerLabelHeight)
+
+	if !isHorizontal {
+		rootAttrs.ranksep = go2.Max(go2.Max(100, maxLabelHeight+40), maxContainerLabelHeight)
+	} else {
+		rootAttrs.ranksep = go2.Max(100, maxLabelWidth+40)
+		// use existing config
+		rootAttrs.NodeSep = rootAttrs.EdgeSep
+		// configure vertical padding
+		rootAttrs.EdgeSep = go2.Max(maxLabelHeight+40, maxContainerLabelHeight)
+		// Note: non-containers have both of these as padding (rootAttrs.NodeSep + rootAttrs.EdgeSep)
+	}
 
 	configJS := setGraphAttrs(rootAttrs)
 	if _, err := vm.RunString(configJS); err != nil {
@@ -286,7 +297,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	for _, obj := range g.Objects {
-		if obj.LabelHeight == nil || len(obj.ChildrenArray) <= 0 {
+		if obj.LabelHeight == nil || len(obj.ChildrenArray) == 0 {
 			continue
 		}
 
