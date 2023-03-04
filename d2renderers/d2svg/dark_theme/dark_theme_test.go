@@ -375,6 +375,15 @@ darker: {
 }
 `,
 		},
+		{
+			name: "code",
+			script: `code: |go
+func main() {
+  panic("TODO")
+}
+|
+`,
+		},
 	}
 	runa(t, tcs)
 }

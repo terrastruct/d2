@@ -5,7 +5,7 @@ go 1.18
 require (
 	cdr.dev/slog v1.4.2-0.20221206192828-e4803b10ae17
 	github.com/PuerkitoBio/goquery v1.8.0
-	github.com/alecthomas/chroma v0.10.0
+	github.com/alecthomas/chroma/v2 v2.5.0
 	github.com/dop251/goja v0.0.0-20230122112309-96b1610dd4f7
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
@@ -27,10 +27,11 @@ require (
 )
 
 require (
+	github.com/alecthomas/chroma v0.10.0 // indirect
 	github.com/andybalholm/cascadia v1.3.1 // indirect
 	github.com/danwakefield/fnmatch v0.0.0-20160403171240-cbb64ac3d964 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/dlclark/regexp2 v1.7.0 // indirect
+	github.com/dlclark/regexp2 v1.8.1 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
 	github.com/go-stack/stack v1.8.1 // indirect

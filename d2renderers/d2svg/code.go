@@ -3,8 +3,8 @@ package d2svg
 import (
 	"strings"
 
-	"github.com/alecthomas/chroma"
-	"github.com/alecthomas/chroma/formatters/svg"
+	"github.com/alecthomas/chroma/v2"
+	"github.com/alecthomas/chroma/v2/formatters/svg"
 )
 
 // Copied private functions from chroma. Their public functions do too much (write the whole SVG document)
