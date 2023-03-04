@@ -931,7 +931,6 @@ func deleteObject(g *d2graph.Graph, key *d2ast.KeyPath, obj *d2graph.Object) (*d
 				for i := 0; i < len(ref.MapKey.Value.Map.Nodes); i++ {
 					n := ref.MapKey.Value.Map.Nodes[i]
 					if n.MapKey != nil && n.MapKey.Key != nil {
-						println("\033[1;31m--- DEBUG:", "=======================", "\033[m")
 						_, ok := d2graph.ReservedKeywords[n.MapKey.Key.Path[0].Unbox().ScalarString()]
 						if ok {
 							deleteFromMap(ref.MapKey.Value.Map, n.MapKey)
