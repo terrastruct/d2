@@ -909,6 +909,9 @@ func deleteObject(g *d2graph.Graph, key *d2ast.KeyPath, obj *d2graph.Object) (*d
 
 		if len(ref.MapKey.Edges) == 0 {
 			isSuffix := ref.KeyPathIndex == len(ref.Key.Path)-1
+			if isSuffix && ref.MapKey != nil {
+				ref.MapKey.Primary = d2ast.ScalarBox{}
+			}
 			ref.Key.Path = append(ref.Key.Path[:ref.KeyPathIndex], ref.Key.Path[ref.KeyPathIndex+1:]...)
 			withoutSpecial := go2.Filter(ref.Key.Path, func(x *d2ast.StringBox) bool {
 				_, isReserved := d2graph.ReservedKeywords[x.Unbox().ScalarString()]
@@ -927,7 +930,7 @@ func deleteObject(g *d2graph.Graph, key *d2ast.KeyPath, obj *d2graph.Object) (*d
 				len(obj.Parent.References) > 1 {
 				// Redundant key.
 				deleteFromMap(ref.Scope, ref.MapKey)
-			} else if ref.MapKey.Value.Map != nil {
+			} else if ref.MapKey.Value.Map != nil && isSuffix {
 				for i := 0; i < len(ref.MapKey.Value.Map.Nodes); i++ {
 					n := ref.MapKey.Value.Map.Nodes[i]
 					if n.MapKey != nil && n.MapKey.Key != nil {
@@ -939,6 +942,8 @@ func deleteObject(g *d2graph.Graph, key *d2ast.KeyPath, obj *d2graph.Object) (*d
 						}
 					}
 				}
+			} else if isSuffix {
+				ref.MapKey.Value = d2ast.ValueBox{}
 			}
 		} else if ref.InEdge() {
 			edge := ref.MapKey.Edges[ref.MapKeyEdgeIndex]

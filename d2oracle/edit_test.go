@@ -4856,6 +4856,52 @@ Text 2
 `,
 		},
 		{
+			name: "drop_value",
+			text: `a.b.c: "c label"
+`,
+			key: `a.b.c`,
+
+			exp: `a.b
+`,
+		},
+		{
+			name: "drop_value_with_primary",
+			text: `a.b: hello {
+  shape: circle
+}
+`,
+			key: `a.b`,
+
+			exp: `a
+`,
+		},
+		{
+			name: "save_map",
+			text: `a.b: {
+  shape: circle
+}
+`,
+			key: `a`,
+
+			exp: `b: {
+  shape: circle
+}
+`,
+		},
+		{
+			name: "save_map_with_primary",
+			text: `a.b: hello {
+  shape: circle
+}
+`,
+			key: `a`,
+
+			exp: `b: hello {
+  shape: circle
+}
+`,
+		},
+		{
 			name: "chaos_1",
 
 			text: `cm: {shape: cylinder}
