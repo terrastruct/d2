@@ -4865,6 +4865,19 @@ Text 2
 `,
 		},
 		{
+			name: "save_map",
+			text: `a.b: {
+  shape: circle
+}
+`,
+			key: `a`,
+
+			exp: `b: {
+  shape: circle
+}
+`,
+		},
+		{
 			name: "chaos_1",
 
 			text: `cm: {shape: cylinder}
