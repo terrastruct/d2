@@ -655,6 +655,10 @@ func (m *Map) EnsureField(kp *d2ast.KeyPath, refctx *RefContext) (*Field, error)
 func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field, error) {
 	head := kp.Path[i].Unbox().ScalarString()
 
+	if _, ok := d2graph.ReservedKeywords[strings.ToLower(head)]; ok {
+		head = strings.ToLower(head)
+	}
+
 	if head == "_" {
 		return nil, d2parser.Errorf(kp.Path[i].Unbox(), `parent "_" can only be used in the beginning of paths, e.g. "_.x"`)
 	}

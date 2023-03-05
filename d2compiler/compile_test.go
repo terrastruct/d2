@@ -286,6 +286,17 @@ containers: {
 			expErr: `d2/testdata/d2compiler/TestCompile/image_non_style.d2:4:3: image shapes cannot have children.`,
 		},
 		{
+			name: "image_children_Steps",
+
+			text: `x: {
+  icon: https://icons.terrastruct.com/aws/_Group%20Icons/EC2-instance-container_light-bg.svg
+  shape: image
+  Steps
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/image_children_Steps.d2:4:3: steps is only allowed at a board root`,
+		},
+		{
 			name: "stroke-width",
 
 			text: `hey {
