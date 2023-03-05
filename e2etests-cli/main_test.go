@@ -161,6 +161,16 @@ layers: {
 				assert.Testdata(t, ".svg", stdout.Bytes())
 			},
 		},
+		{
+			name: "abspath",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
+				assert.Success(t, err)
+				svg := readFile(t, dir, "hello-world.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
 	}
 
 	ctx := context.Background()

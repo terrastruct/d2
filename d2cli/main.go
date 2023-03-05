@@ -154,14 +154,14 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		}
 	}
 	if inputPath != "-" {
-		inputPath = filepath.Join(ms.PWD, inputPath)
+		inputPath = ms.AbsPath(inputPath)
 		d, err := os.Stat(inputPath)
 		if err == nil && d.IsDir() {
 			inputPath = filepath.Join(inputPath, "index.d2")
 		}
 	}
 	if outputPath != "-" {
-		outputPath = filepath.Join(ms.PWD, outputPath)
+		outputPath = ms.AbsPath(outputPath)
 	}
 
 	match := d2themescatalog.Find(*themeFlag)
@@ -308,7 +308,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 
 	if filepath.Ext(outputPath) == ".pdf" {
 		dur := time.Since(start)
-		ms.Log.Success.Printf("successfully compiled %s to %s in %s", inputPath, outputPath, dur)
+		ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(outputPath), dur)
 	}
 
 	return svg, true, nil
@@ -383,7 +383,7 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 			return svg, err
 		}
 		dur := compileDur + time.Since(start)
-		ms.Log.Success.Printf("successfully compiled %s to %s in %s", inputPath, boardOutputPath, dur)
+		ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(boardOutputPath), dur)
 		return svg, nil
 	}
 

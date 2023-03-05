@@ -48,6 +48,7 @@ type watcherOpts struct {
 	port          string
 	inputPath     string
 	outputPath    string
+	pwd           string
 	bundle        bool
 	forceAppendix bool
 	pw            png.Playwright
@@ -216,7 +217,7 @@ func (w *watcher) watchLoop(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	w.ms.Log.Info.Printf("compiling %v...", w.inputPath)
+	w.ms.Log.Info.Printf("compiling %v...", w.ms.HumanPath(w.inputPath))
 	w.requestCompile()
 
 	eatBurstTimer := time.NewTimer(0)
@@ -270,7 +271,7 @@ func (w *watcher) watchLoop(ctx context.Context) error {
 			// misleading error.
 			eatBurstTimer.Reset(time.Millisecond * 16)
 		case <-eatBurstTimer.C:
-			w.ms.Log.Info.Printf("detected change in %v: recompiling...", w.inputPath)
+			w.ms.Log.Info.Printf("detected change in %v: recompiling...", w.ms.HumanPath(w.inputPath))
 			w.requestCompile()
 		case err, ok := <-w.fw.Errors:
 			if !ok {
@@ -300,7 +301,7 @@ func (w *watcher) ensureAddWatch(ctx context.Context) (time.Time, error) {
 			return mt, nil
 		}
 		if interval >= time.Second {
-			w.ms.Log.Error.Printf("failed to watch inputPath %q: %v (retrying in %v)", w.inputPath, err, interval)
+			w.ms.Log.Error.Printf("failed to watch inputPath %q: %v (retrying in %v)", w.ms.HumanPath(w.inputPath), err, interval)
 		}
 
 		tc.Reset(interval)
