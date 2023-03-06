@@ -94,6 +94,8 @@ var DefaultOpts = ConfigurableOpts{
 	SelfLoopSpacing: 50.0,
 }
 
+var port_spacing = 40.
+
 type elkOpts struct {
 	Thoroughness                 int    `json:"elk.layered.thoroughness,omitempty"`
 	EdgeEdgeBetweenLayersSpacing int    `json:"elk.layered.spacing.edgeEdgeBetweenLayers,omitempty"`
@@ -176,6 +178,25 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	walk(g.Root, nil, func(obj, parent *d2graph.Object) {
+		incoming := 0.
+		outgoing := 0.
+		for _, e := range g.Edges {
+			if e.Src == obj {
+				outgoing++
+			}
+			if e.Dst == obj {
+				incoming++
+			}
+		}
+		if incoming >= 2 || outgoing >= 2 {
+			switch g.Root.Attributes.Direction.Value {
+			case "right", "left":
+				obj.Height = math.Max(obj.Height, math.Max(incoming, outgoing)*port_spacing)
+			default:
+				obj.Width = math.Max(obj.Width, math.Max(incoming, outgoing)*port_spacing)
+			}
+		}
+
 		height := obj.Height
 		width := obj.Width
 		if obj.LabelWidth != nil && obj.LabelHeight != nil {
