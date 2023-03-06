@@ -3,6 +3,7 @@ package d2svg
 import (
 	"fmt"
 	"io"
+	"strings"
 
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
@@ -18,6 +19,9 @@ func classHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, tex
 	rectEl.Fill = shape.Fill
 	rectEl.ClassName = "class_header"
 	str := rectEl.Render()
+	if shape.BorderRadius != 0 {
+		str = strings.Replace(str, "/>", fmt.Sprintf(`clip-path="url(#%v)" />`, shape.ID), 1)
+	}
 
 	if text != "" {
 		tl := label.InsideMiddleCenter.GetPointOnBox(
@@ -89,6 +93,8 @@ func drawClass(writer io.Writer, targetShape d2target.Shape) {
 	el.Height = float64(targetShape.Height)
 	el.Fill, el.Stroke = d2themes.ShapeTheme(targetShape)
 	el.Style = targetShape.CSSStyle()
+	el.Rx = float64(targetShape.BorderRadius)
+	el.Ry = float64(targetShape.BorderRadius)
 	fmt.Fprint(writer, el.Render())
 
 	box := geo.NewBox(
