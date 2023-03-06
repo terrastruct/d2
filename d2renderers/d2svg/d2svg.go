@@ -877,6 +877,11 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 	if targetShape.Opacity != 1.0 {
 		opacityStyle = fmt.Sprintf(" style='opacity:%f'", targetShape.Opacity)
 	}
+
+	// this clipPath must be defined outside `g` element
+	if targetShape.BorderRadius != 0 {
+		fmt.Fprint(writer, tableHeaderBorderRadius(targetShape))
+	}
 	fmt.Fprintf(writer, `<g id="%s"%s>`, svg.EscapeText(targetShape.ID), opacityStyle)
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
