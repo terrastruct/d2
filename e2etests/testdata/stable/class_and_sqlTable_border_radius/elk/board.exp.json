@@ -8,7 +8,7 @@
       "type": "sql_table",
       "pos": {
         "x": 12,
-        "y": 12
+        "y": 14
       },
       "width": 439,
       "height": 180,
@@ -150,6 +150,61 @@
       "color": "N1",
       "italic": false,
       "bold": true,
+      "underline": false,
+      "labelWidth": 11,
+      "labelHeight": 31,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
+    },
+    {
+      "id": "b",
+      "type": "class",
+      "pos": {
+        "x": 471,
+        "y": 12
+      },
+      "width": 407,
+      "height": 184,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 10,
+      "fill": "N1",
+      "stroke": "N7",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": [
+        {
+          "name": "field",
+          "type": "[]string",
+          "visibility": "public"
+        }
+      ],
+      "methods": [
+        {
+          "name": "method(a uint64)",
+          "return": "(x, y int)",
+          "visibility": "public"
+        }
+      ],
+      "columns": null,
+      "label": "b",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
       "underline": false,
       "labelWidth": 11,
       "labelHeight": 31,

@@ -23,8 +23,19 @@ func testStable(t *testing.T) {
 					json: jsonb  {constraint: unique}
 					last_updated: timestamp with time zone
 					
-					style {
+					style: {
 						fill: red
+						border-radius: 10
+					}
+				}
+
+				b: {
+					shape: class
+
+					field: "[]string"
+					method(a uint64): (x, y int)
+					
+					style: {
 						border-radius: 10
 					}
 				}
