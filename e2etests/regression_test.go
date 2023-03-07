@@ -642,6 +642,10 @@ l3c1.a -> l4.c1.a
 l3c1.b -> l4.c2.b
 l3c2.c -> l4.c3.c`,
 		},
+		{
+			name:   "link_with_ampersand",
+			script: `a.link: https://calendar.google.com/calendar/u/0/r?tab=mc&pli=1`,
+		},
 	}
 
 	runa(t, tcs)
