@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"sync"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
@@ -19,10 +20,11 @@ func init() {
 }
 
 type dagrePlugin struct {
+	mu   sync.Mutex
 	opts *d2dagrelayout.ConfigurableOpts
 }
 
-func (p dagrePlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
+func (p *dagrePlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
 	return []PluginSpecificFlag{
 		{
 			Name:    "dagre-nodesep",
@@ -42,6 +44,8 @@ func (p dagrePlugin) Flags(context.Context) ([]PluginSpecificFlag, error) {
 }
 
 func (p *dagrePlugin) HydrateOpts(opts []byte) error {
+	p.mu.Lock()
+	defer p.mu.Unlock()
 	if opts != nil {
 		var dagreOpts d2dagrelayout.ConfigurableOpts
 		err := json.Unmarshal(opts, &dagreOpts)
@@ -54,7 +58,9 @@ func (p *dagrePlugin) HydrateOpts(opts []byte) error {
 	return nil
 }
 
-func (p dagrePlugin) Info(ctx context.Context) (*PluginInfo, error) {
+func (p *dagrePlugin) Info(ctx context.Context) (*PluginInfo, error) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
 	opts := xmain.NewOpts(nil, nil, nil)
 	flags, err := p.Flags(ctx)
 	if err != nil {
@@ -80,10 +86,13 @@ Flags:
 	}, nil
 }
 
-func (p dagrePlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
-	return d2dagrelayout.Layout(ctx, g, p.opts)
+func (p *dagrePlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
+	p.mu.Lock()
+	optsCopy := *p.opts
+	p.mu.Unlock()
+	return d2dagrelayout.Layout(ctx, g, &optsCopy)
 }
 
-func (p dagrePlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) {
+func (p *dagrePlugin) PostProcess(ctx context.Context, in []byte) ([]byte, error) {
 	return in, nil
 }
