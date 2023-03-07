@@ -868,7 +868,8 @@ func render3dHexagon(targetShape d2target.Shape) string {
 func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, err error) {
 	closingTag := "</g>"
 	if targetShape.Link != "" {
-		fmt.Fprintf(writer, `<a href="%s" xlink:href="%[1]s">`, targetShape.Link)
+
+		fmt.Fprintf(writer, `<a href="%s" xlink:href="%[1]s">`, svg.EscapeText(targetShape.Link))
 		closingTag += "</a>"
 	}
 	// Opacity is a unique style, it applies to everything for a shape
