@@ -1118,6 +1118,24 @@ x: {
 			expErr: `d2/testdata/d2compiler/TestCompile/shape_edge_style.d2:3:2: key "animated" can only be applied to edges`,
 		},
 		{
+			name: "edge_invalid_style",
+
+			text: `x -> y: {
+  opacity: 0.5
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/edge_invalid_style.d2:2:3: opacity must be style.opacity`,
+		},
+		{
+			name: "obj_invalid_style",
+
+			text: `x: {
+  opacity: 0.5
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/obj_invalid_style.d2:2:3: opacity must be style.opacity`,
+		},
+		{
 			name: "edge_chain_map",
 
 			text: `
