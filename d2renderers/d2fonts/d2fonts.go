@@ -211,3 +211,8 @@ func init() {
 		Style:  FONT_STYLE_BOLD,
 	}] = b
 }
+
+var D2_FONT_TO_FAMILY = map[string]FontFamily{
+	"default": SourceSansPro,
+	"mono":    SourceCodePro,
+}

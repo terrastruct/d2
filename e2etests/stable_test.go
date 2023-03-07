@@ -39,6 +39,77 @@ func testStable(t *testing.T) {
 			`,
 		},
 		{
+			name: "mono-font",
+			script: `direction: down
+PRODUCER: {
+  style: {
+		underline: true
+    font-color: white
+    fill: blue
+    border-radius: 4
+		font: mono
+  }
+}
+
+PRODUCER -> api
+
+api: API DESIGN & DEVELOPMENT {
+  shape: text
+	style.font: mono
+}
+
+schema: "" {
+	style.fill: "#e4f4fc"
+	style.stroke-width: 0
+  PROTOBUF SCHEMA: {
+    icon: https://icons.terrastruct.com/essentials%2F257-file.svg
+    shape: image
+		style.font: mono
+  }
+	assets: {
+		label: BUF SUPPORT AND\nGENERATED ASSETS
+		style.font: mono
+		style.fill: white
+		style.font-color: blue
+		style.stroke-width: 0
+		width: 400
+	}
+	PROTOBUF SCHEMA -> assets: {
+		style.opacity: 0
+	}
+}
+
+api -> schema.PROTOBUF SCHEMA
+
+schema -> CONSUMER A
+schema -> CONSUMER B
+schema -> CONSUMER C
+
+# Could really use some classes!
+CONSUMER A: {
+  style.font: mono
+	style.fill: "#000047"
+	style.border-radius: 4
+	style.font-color: white
+	style.stroke-width: 0
+}
+CONSUMER B: {
+  style.font: mono
+	style.fill: "#000047"
+	style.border-radius: 4
+	style.font-color: white
+	style.stroke-width: 0
+}
+CONSUMER C: {
+  style.font: mono
+	style.fill: "#000047"
+	style.border-radius: 4
+	style.font-color: white
+	style.stroke-width: 0
+}
+`,
+		},
+		{
 			name: "connected_container",
 			script: `a.b -> c.d -> f.h.g
 `,

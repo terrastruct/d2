@@ -1186,10 +1186,14 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		)
 
 		fontClass := "text"
-		if targetShape.Bold {
-			fontClass += "-bold"
-		} else if targetShape.Italic {
-			fontClass += "-italic"
+		if targetShape.FontFamily == "mono" {
+			fontClass = "text-mono"
+		} else {
+			if targetShape.Bold {
+				fontClass += "-bold"
+			} else if targetShape.Italic {
+				fontClass += "-italic"
+			}
 		}
 		if targetShape.Underline {
 			fontClass += " text-underline"
@@ -1476,7 +1480,7 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 		buf,
 		source,
 		[]string{
-			`class="text-mono-bold"`,
+			`class="text-mono-bold`,
 		},
 		fmt.Sprintf(`
 .text-mono-bold {
@@ -1494,43 +1498,7 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 		buf,
 		source,
 		[]string{
-			`class="text-mono-italic"`,
-		},
-		fmt.Sprintf(`
-.text-mono-italic {
-	font-family: "font-mono-italic";
-}
-@font-face {
-	font-family: font-mono-italic;
-	src: url("%s");
-}`,
-			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC)],
-		),
-	)
-
-	appendOnTrigger(
-		buf,
-		source,
-		[]string{
-			`class="text-mono-bold"`,
-		},
-		fmt.Sprintf(`
-.text-mono-bold {
-	font-family: "font-mono-bold";
-}
-@font-face {
-	font-family: font-mono-bold;
-	src: url("%s");
-}`,
-			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD)],
-		),
-	)
-
-	appendOnTrigger(
-		buf,
-		source,
-		[]string{
-			`class="text-mono-italic"`,
+			`class="text-mono-italic`,
 		},
 		fmt.Sprintf(`
 .text-mono-italic {
