@@ -450,6 +450,11 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 
 func (c *compiler) compileEdgeField(edge *d2graph.Edge, f *d2ir.Field) {
 	keyword := strings.ToLower(f.Name)
+	_, isStyleReserved := d2graph.StyleKeywords[keyword]
+	if isStyleReserved {
+		c.errorf(f.LastRef().AST(), "%v must be style.%v", f.Name, f.Name)
+		return
+	}
 	_, isReserved := d2graph.SimpleReservedKeywords[keyword]
 	if isReserved {
 		c.compileReserved(edge.Attributes, f)
