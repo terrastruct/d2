@@ -1,6 +1,8 @@
 package d2ir
 
 import (
+	"strings"
+
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2parser"
@@ -163,13 +165,13 @@ func (c *compiler) compileLink(refctx *RefContext) {
 	}
 
 	// If it doesn't start with one of these reserved words, the link is definitely not a board link.
-	if linkIDA[0] != "layers" && linkIDA[0] != "scenarios" && linkIDA[0] != "steps" && linkIDA[0] != "_" {
+	if !strings.EqualFold(linkIDA[0], "layers") && !strings.EqualFold(linkIDA[0], "scenarios") && !strings.EqualFold(linkIDA[0], "steps") && linkIDA[0] != "_" {
 		return
 	}
 
 	// Chop off the non-board portion of the scope, like if this is being defined on a nested object (e.g. `x.y.z`)
 	for i := len(scopeIDA) - 1; i > 0; i-- {
-		if scopeIDA[i-1] == "layers" || scopeIDA[i-1] == "scenarios" || scopeIDA[i-1] == "steps" {
+		if strings.EqualFold(scopeIDA[i-1], "layers") || strings.EqualFold(scopeIDA[i-1], "scenarios") || strings.EqualFold(scopeIDA[i-1], "steps") {
 			scopeIDA = scopeIDA[:i+1]
 			break
 		}
