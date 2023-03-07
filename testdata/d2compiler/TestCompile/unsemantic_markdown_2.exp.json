@@ -1,0 +1,12 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/unsemantic_markdown_2.d2,0:0:0-3:1:20",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/unsemantic_markdown_2.d2:1:1: malformed Markdown: element <br> closed by </p>"
+      }
+    ]
+  }
+}

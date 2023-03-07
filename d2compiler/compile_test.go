@@ -870,6 +870,26 @@ b.(x -> y)[0]: two
 			},
 		},
 		{
+			name: "unsemantic_markdown",
+
+			text: `test:|
+foobar
+<p>
+|
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/unsemantic_markdown.d2:1:1: malformed Markdown: element <p> closed by </div>`,
+		},
+		{
+			name: "unsemantic_markdown_2",
+
+			text: `test:|
+foo<br>
+bar
+|
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/unsemantic_markdown_2.d2:1:1: malformed Markdown: element <br> closed by </p>`,
+		},
+		{
 			name: "edge_map",
 
 			text: `
