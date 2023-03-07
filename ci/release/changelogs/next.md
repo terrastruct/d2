@@ -4,6 +4,7 @@
 
 - ELK nodes with > 1 connection grow to ensure padding around ports [#981](https://github.com/terrastruct/d2/pull/981)
 - Using a style keyword incorrectly in connections returns clear error message [#989](https://github.com/terrastruct/d2/pull/989)
+- Unsemantic Markdown returns clear error message [#994](https://github.com/terrastruct/d2/pull/994)
 
 #### Bugfixes ⛑️
 

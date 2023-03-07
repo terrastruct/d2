@@ -1,6 +1,7 @@
 package d2compiler
 
 import (
+	"encoding/xml"
 	"fmt"
 	"io"
 	"net/url"
@@ -15,6 +16,7 @@ import (
 	"oss.terrastruct.com/d2/d2ir"
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/lib/textmeasure"
 )
 
 type CompileOptions struct {
@@ -224,9 +226,27 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 		if ok {
 			attrs.Language = fullTag
 		}
-		if attrs.Language == "markdown" || attrs.Language == "latex" {
+		switch attrs.Language {
+		case "latex":
 			attrs.Shape.Value = d2target.ShapeText
-		} else {
+		case "markdown":
+			rendered, err := textmeasure.RenderMarkdown(scalar.ScalarString())
+			if err != nil {
+				c.errorf(f.LastPrimaryKey(), "malformed Markdown")
+			}
+			rendered = "<div>" + rendered + "</div>"
+			var xmlParsed interface{}
+			err = xml.Unmarshal([]byte(rendered), &xmlParsed)
+			if err != nil {
+				switch xmlErr := err.(type) {
+				case *xml.SyntaxError:
+					c.errorf(f.LastPrimaryKey(), "malformed Markdown: %s", xmlErr.Msg)
+				default:
+					c.errorf(f.LastPrimaryKey(), "malformed Markdown: %s", err.Error())
+				}
+			}
+			attrs.Shape.Value = d2target.ShapeText
+		default:
 			attrs.Shape.Value = d2target.ShapeCode
 		}
 		attrs.Label.Value = scalar.ScalarString()
