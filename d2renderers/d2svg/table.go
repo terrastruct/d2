@@ -25,7 +25,16 @@ func tableHeaderBorderRadius(shape d2target.Shape) string {
 	out += fmt.Sprintf(`L %f %f L %f %f `, box.TopLeft.X+box.Width-float64(shape.BorderRadius), box.TopLeft.Y, topX-float64(shape.BorderRadius), topY)
 
 	out += fmt.Sprintf(`S %f %f %f %f `, topX, topY, topX, topY+float64(shape.BorderRadius))
-	out += fmt.Sprintf(`L %f %f L %f %f `, topX, topY+box.Height, box.TopLeft.X, box.TopLeft.Y+box.Height)
+	out += fmt.Sprintf(`L %f %f `, topX, topY+box.Height-float64(shape.BorderRadius))
+
+	if len(shape.Columns) != 0 {
+		out += fmt.Sprintf(`L %f %f L %f %f`, topX, topY+box.Height, box.TopLeft.X, box.TopLeft.Y+box.Height)
+	} else {
+		out += fmt.Sprintf(`S %f % f %f %f `, topX, topY+box.Height, topX-float64(shape.BorderRadius), topY+box.Height)
+		out += fmt.Sprintf(`L %f %f `, box.TopLeft.X+float64(shape.BorderRadius), box.TopLeft.Y+box.Height)
+		out += fmt.Sprintf(`S %f %f %f %f`, box.TopLeft.X, box.TopLeft.Y+box.Height, box.TopLeft.X, box.TopLeft.Y+box.Height-float64(shape.BorderRadius))
+		out += fmt.Sprintf(`L %f %f`, box.TopLeft.X, box.TopLeft.Y+float64(shape.BorderRadius))
+	}
 	out += fmt.Sprintf(`Z %f %f" `, box.TopLeft.X, box.TopLeft.Y)
 	return out + `fill="none" /> </clipPath>`
 }

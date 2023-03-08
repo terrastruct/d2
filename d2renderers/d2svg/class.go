@@ -119,8 +119,15 @@ func drawClass(writer io.Writer, targetShape d2target.Shape) {
 	}
 
 	lineEl := d2themes.NewThemableElement("line")
-	lineEl.X1, lineEl.Y1 = rowBox.TopLeft.X, rowBox.TopLeft.Y
-	lineEl.X2, lineEl.Y2 = rowBox.TopLeft.X+rowBox.Width, rowBox.TopLeft.Y
+
+	if targetShape.BorderRadius != 0 && len(targetShape.Methods) == 0 {
+		lineEl.X1, lineEl.Y1 = rowBox.TopLeft.X+float64(targetShape.BorderRadius), rowBox.TopLeft.Y
+		lineEl.X2, lineEl.Y2 = rowBox.TopLeft.X+rowBox.Width-float64(targetShape.BorderRadius), rowBox.TopLeft.Y
+	} else {
+		lineEl.X1, lineEl.Y1 = rowBox.TopLeft.X, rowBox.TopLeft.Y
+		lineEl.X2, lineEl.Y2 = rowBox.TopLeft.X+rowBox.Width, rowBox.TopLeft.Y
+	}
+
 	lineEl.Stroke = targetShape.Fill
 	lineEl.Style = "stroke-width:1"
 	fmt.Fprint(writer, lineEl.Render())
