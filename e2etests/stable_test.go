@@ -39,6 +39,20 @@ func testStable(t *testing.T) {
 						border-radius: 10
 					}
 				}
+
+				c: {
+					shape: class
+					style: {
+						border-radius: 5
+					}
+				}
+
+				d: {
+					shape: sql_table
+					style: {
+						border-radius: 5
+					}
+				}
 			`,
 		},
 		{
