@@ -13,14 +13,16 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 )
 
-func tableHeaderBorderRadius(shape d2target.Shape) string {
+// this func helps define a clipPath for shape class and sql_table
+func tableHeaderBorderRadius(labelMaskID string, shape d2target.Shape) string {
 	box := geo.NewBox(
 		geo.NewPoint(float64(shape.Pos.X), float64(shape.Pos.Y)),
 		float64(shape.Width),
 		float64(shape.Height),
 	)
 	topX, topY := box.TopLeft.X+box.Width, box.TopLeft.Y
-	out := fmt.Sprintf(`<clipPath id="%v">`, shape.ID)
+
+	out := fmt.Sprintf(`<clipPath id="%v-%v">`, labelMaskID, shape.ID)
 	out += fmt.Sprintf(`<path d="M %f %f L %f %f S %f %f %f %f `, box.TopLeft.X, box.TopLeft.Y+float64(shape.BorderRadius), box.TopLeft.X, box.TopLeft.Y+float64(shape.BorderRadius), box.TopLeft.X, box.TopLeft.Y, box.TopLeft.X+float64(shape.BorderRadius), box.TopLeft.Y)
 	out += fmt.Sprintf(`L %f %f L %f %f `, box.TopLeft.X+box.Width-float64(shape.BorderRadius), box.TopLeft.Y, topX-float64(shape.BorderRadius), topY)
 
@@ -39,7 +41,7 @@ func tableHeaderBorderRadius(shape d2target.Shape) string {
 	return out + `fill="none" /> </clipPath>`
 }
 
-func tableHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
+func tableHeader(labelMaskID string, shape d2target.Shape, box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
 	rectEl := d2themes.NewThemableElement("rect")
 	rectEl.X, rectEl.Y = box.TopLeft.X, box.TopLeft.Y
 	rectEl.Width, rectEl.Height = box.Width, box.Height
@@ -47,7 +49,7 @@ func tableHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, tex
 	rectEl.ClassName = "class_header"
 	str := rectEl.Render()
 	if shape.BorderRadius != 0 {
-		str = strings.Replace(str, "/>", fmt.Sprintf(`clip-path="url(#%v)" />`, shape.ID), 1)
+		str = strings.Replace(str, "/>", fmt.Sprintf(`clip-path="url(#%v-%v)" />`, labelMaskID, shape.ID), 1)
 	}
 
 	if text != "" {
@@ -112,7 +114,7 @@ func tableRow(shape d2target.Shape, box *geo.Box, nameText, typeText, constraint
 	return out
 }
 
-func drawTable(writer io.Writer, targetShape d2target.Shape) {
+func drawTable(writer io.Writer, labelMaskID string, targetShape d2target.Shape) {
 	rectEl := d2themes.NewThemableElement("rect")
 	rectEl.X = float64(targetShape.Pos.X)
 	rectEl.Y = float64(targetShape.Pos.Y)
@@ -136,7 +138,7 @@ func drawTable(writer io.Writer, targetShape d2target.Shape) {
 	headerBox := geo.NewBox(box.TopLeft, box.Width, rowHeight)
 
 	fmt.Fprint(writer,
-		tableHeader(targetShape, headerBox, targetShape.Label,
+		tableHeader(labelMaskID, targetShape, headerBox, targetShape.Label,
 			float64(targetShape.LabelWidth), float64(targetShape.LabelHeight), float64(targetShape.FontSize)),
 	)
 

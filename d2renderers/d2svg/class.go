@@ -12,7 +12,7 @@ import (
 	"oss.terrastruct.com/d2/lib/svg"
 )
 
-func classHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
+func classHeader(labelMaskID string, shape d2target.Shape, box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
 	rectEl := d2themes.NewThemableElement("rect")
 	rectEl.X, rectEl.Y = box.TopLeft.X, box.TopLeft.Y
 	rectEl.Width, rectEl.Height = box.Width, box.Height
@@ -20,7 +20,7 @@ func classHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, tex
 	rectEl.ClassName = "class_header"
 	str := rectEl.Render()
 	if shape.BorderRadius != 0 {
-		str = strings.Replace(str, "/>", fmt.Sprintf(`clip-path="url(#%v)" />`, shape.ID), 1)
+		str = strings.Replace(str, "/>", fmt.Sprintf(`clip-path="url(#%v-%v)" />`, labelMaskID, shape.ID), 1)
 	}
 
 	if text != "" {
@@ -85,7 +85,7 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 	return out
 }
 
-func drawClass(writer io.Writer, targetShape d2target.Shape) {
+func drawClass(writer io.Writer, labelMaskID string, targetShape d2target.Shape) {
 	el := d2themes.NewThemableElement("rect")
 	el.X = float64(targetShape.Pos.X)
 	el.Y = float64(targetShape.Pos.Y)
@@ -108,7 +108,7 @@ func drawClass(writer io.Writer, targetShape d2target.Shape) {
 	headerBox := geo.NewBox(box.TopLeft, box.Width, 2*rowHeight)
 
 	fmt.Fprint(writer,
-		classHeader(targetShape, headerBox, targetShape.Label, float64(targetShape.LabelWidth), float64(targetShape.LabelHeight), float64(targetShape.FontSize)),
+		classHeader(labelMaskID, targetShape, headerBox, targetShape.Label, float64(targetShape.LabelWidth), float64(targetShape.LabelHeight), float64(targetShape.FontSize)),
 	)
 
 	rowBox := geo.NewBox(box.TopLeft.Copy(), box.Width, rowHeight)
