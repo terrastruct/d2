@@ -3,6 +3,7 @@ package d2themes
 import (
 	"fmt"
 	"math"
+	"strings"
 
 	"oss.terrastruct.com/d2/lib/color"
 )
@@ -98,6 +99,13 @@ func (el *ThemableElement) SetTranslate(x, y float64) {
 
 func (el *ThemableElement) SetMaskUrl(url string) {
 	el.Mask = fmt.Sprintf("url(#%s)", url)
+}
+
+func (el *ThemableElement) RenderWithClipPath(id string) string {
+	out := el.Render()
+	out = strings.Replace(out, "/>", fmt.Sprintf(`clip-path="url(#%v)" />`, id), 1)
+
+	return out
 }
 
 func (el *ThemableElement) Render() string {

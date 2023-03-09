@@ -3,7 +3,6 @@ package d2svg
 import (
 	"fmt"
 	"io"
-	"strings"
 
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
@@ -47,10 +46,7 @@ func tableHeader(labelMaskID string, shape d2target.Shape, box *geo.Box, text st
 	rectEl.Width, rectEl.Height = box.Width, box.Height
 	rectEl.Fill = shape.Fill
 	rectEl.ClassName = "class_header"
-	str := rectEl.Render()
-	if shape.BorderRadius != 0 {
-		str = strings.Replace(str, "/>", fmt.Sprintf(`clip-path="url(#%v-%v)" />`, labelMaskID, shape.ID), 1)
-	}
+	str := rectEl.RenderWithClipPath(fmt.Sprintf("%v-%v", labelMaskID, shape.ID))
 
 	if text != "" {
 		tl := label.InsideMiddleLeft.GetPointOnBox(
