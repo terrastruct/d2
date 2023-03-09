@@ -879,7 +879,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 	}
 
 	// this clipPath must be defined outside `g` element
-	if targetShape.BorderRadius != 0 {
+	if targetShape.BorderRadius != 0 && (targetShape.Type == d2target.ShapeClass || targetShape.Type == d2target.ShapeSQLTable) {
 		fmt.Fprint(writer, tableHeaderBorderRadius(targetShape))
 	}
 	fmt.Fprintf(writer, `<g id="%s"%s>`, svg.EscapeText(targetShape.ID), opacityStyle)
