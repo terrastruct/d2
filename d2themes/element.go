@@ -101,9 +101,11 @@ func (el *ThemableElement) SetMaskUrl(url string) {
 	el.Mask = fmt.Sprintf("url(#%s)", url)
 }
 
-func (el *ThemableElement) RenderWithClipPath(id string) string {
+func (el *ThemableElement) RenderWithClipPath(id string, shouldAddClipPath bool) string {
 	out := el.Render()
-	out = strings.Replace(out, "/>", fmt.Sprintf(`clip-path="url(#%v)" />`, id), 1)
+	if shouldAddClipPath {
+		out = strings.Replace(out, "/>", fmt.Sprintf(`clip-path="url(#%v)" />`, id), 1)
+	}
 
 	return out
 }

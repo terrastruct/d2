@@ -46,7 +46,7 @@ func tableHeader(labelMaskID string, shape d2target.Shape, box *geo.Box, text st
 	rectEl.Width, rectEl.Height = box.Width, box.Height
 	rectEl.Fill = shape.Fill
 	rectEl.ClassName = "class_header"
-	str := rectEl.RenderWithClipPath(fmt.Sprintf("%v-%v", labelMaskID, shape.ID))
+	str := rectEl.RenderWithClipPath(fmt.Sprintf("%v-%v", labelMaskID, shape.ID), shape.BorderRadius != 0)
 
 	if text != "" {
 		tl := label.InsideMiddleLeft.GetPointOnBox(
