@@ -13,8 +13,8 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 )
 
-// this func helps define a clipPath for shape class and sql_table
-func tableHeaderBorderRadius(labelMaskID string, shape d2target.Shape) string {
+// this func helps define a clipPath for shape class and sql_table to draw border-radius
+func clipPathForBorderRadius(labelMaskID string, shape d2target.Shape) string {
 	box := geo.NewBox(
 		geo.NewPoint(float64(shape.Pos.X), float64(shape.Pos.Y)),
 		float64(shape.Width),

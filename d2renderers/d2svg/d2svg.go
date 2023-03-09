@@ -880,7 +880,7 @@ func drawShape(writer io.Writer, labelMaskID string, targetShape d2target.Shape,
 
 	// this clipPath must be defined outside `g` element
 	if targetShape.BorderRadius != 0 && (targetShape.Type == d2target.ShapeClass || targetShape.Type == d2target.ShapeSQLTable) {
-		fmt.Fprint(writer, tableHeaderBorderRadius(labelMaskID, targetShape))
+		fmt.Fprint(writer, clipPathForBorderRadius(labelMaskID, targetShape))
 	}
 	fmt.Fprintf(writer, `<g id="%s"%s>`, svg.EscapeText(targetShape.ID), opacityStyle)
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
