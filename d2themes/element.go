@@ -135,10 +135,10 @@ func (el *ThemableElement) Render() string {
 		out += fmt.Sprintf(` r="%f"`, el.R)
 	}
 	if el.Rx != math.MaxFloat64 {
-		out += fmt.Sprintf(` rx="%f"`, el.Rx)
+		out += fmt.Sprintf(` rx="%s"`, FormatRxRy(el.Rx))
 	}
 	if el.Ry != math.MaxFloat64 {
-		out += fmt.Sprintf(` ry="%f"`, el.Ry)
+		out += fmt.Sprintf(` ry="%s"`, FormatRxRy(el.Ry))
 	}
 	if el.Cx != math.MaxFloat64 {
 		out += fmt.Sprintf(` cx="%f"`, el.Cx)
@@ -205,4 +205,11 @@ func (el *ThemableElement) Render() string {
 		return fmt.Sprintf("%s>%s</%s>", out, el.Content, el.tag)
 	}
 	return out + " />"
+}
+
+func FormatRxRy(value float64) string {
+	if 0 < value && value < 1 {
+		return fmt.Sprintf(`%v%%`, int(value*100))
+	}
+	return fmt.Sprintf(`%f`, value)
 }

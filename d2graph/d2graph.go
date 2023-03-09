@@ -216,9 +216,12 @@ func (s *Style) Apply(key, value string) error {
 		if s.BorderRadius == nil {
 			break
 		}
-		f, err := strconv.Atoi(value)
+		f, err := strconv.ParseFloat(value, 64)
 		if err != nil || (f < 0 || f > 20) {
 			return errors.New(`expected "border-radius" to be a number between 0 and 20`)
+		}
+		if hasDecimalValue := math.Mod(f, 1) != 0; f > 1 && hasDecimalValue {
+			return errors.New(`expected "border-radius" to be an integer if superior to 1`)
 		}
 		s.BorderRadius.Value = value
 	case "shadow":

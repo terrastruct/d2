@@ -76,7 +76,7 @@ func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
 		shape.Multiple, _ = strconv.ParseBool(obj.Attributes.Style.Multiple.Value)
 	}
 	if obj.Attributes.Style.BorderRadius != nil {
-		shape.BorderRadius, _ = strconv.Atoi(obj.Attributes.Style.BorderRadius.Value)
+		shape.BorderRadius, _ = strconv.ParseFloat(obj.Attributes.Style.BorderRadius.Value, 64)
 	}
 
 	if obj.Attributes.Style.FontColor != nil {

@@ -987,7 +987,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 		// DO
 		rx := ""
 		if targetShape.BorderRadius != 0 {
-			rx = fmt.Sprintf(` rx="%d"`, targetShape.BorderRadius)
+			rx = fmt.Sprintf(` rx="%s"`, d2themes.FormatRxRy(targetShape.BorderRadius))
 		}
 		if targetShape.ThreeDee {
 			fmt.Fprint(writer, render3dRect(targetShape))
@@ -1735,7 +1735,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	backgroundEl.Height = float64(h)
 	backgroundEl.Fill = diagram.Root.Fill
 	backgroundEl.Stroke = diagram.Root.Stroke
-	backgroundEl.Rx = float64(diagram.Root.BorderRadius)
+	backgroundEl.Rx = diagram.Root.BorderRadius
 	if diagram.Root.StrokeDash != 0 {
 		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(diagram.Root.StrokeWidth), diagram.Root.StrokeDash)
 		backgroundEl.StrokeDashArray = fmt.Sprintf("%f, %f", dashSize, gapSize)

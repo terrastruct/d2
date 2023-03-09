@@ -174,7 +174,7 @@ type Shape struct {
 	StrokeDash  float64 `json:"strokeDash"`
 	StrokeWidth int     `json:"strokeWidth"`
 
-	BorderRadius int `json:"borderRadius"`
+	BorderRadius float64 `json:"borderRadius"`
 
 	Fill   string `json:"fill"`
 	Stroke string `json:"stroke"`
