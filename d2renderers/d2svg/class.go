@@ -93,8 +93,10 @@ func drawClass(writer io.Writer, targetShape d2target.Shape) {
 	el.Height = float64(targetShape.Height)
 	el.Fill, el.Stroke = d2themes.ShapeTheme(targetShape)
 	el.Style = targetShape.CSSStyle()
-	el.Rx = float64(targetShape.BorderRadius)
-	el.Ry = float64(targetShape.BorderRadius)
+	if targetShape.BorderRadius != 0 {
+		el.Rx = float64(targetShape.BorderRadius)
+		el.Ry = float64(targetShape.BorderRadius)
+	}
 	fmt.Fprint(writer, el.Render())
 
 	box := geo.NewBox(

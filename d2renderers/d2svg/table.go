@@ -121,8 +121,10 @@ func drawTable(writer io.Writer, targetShape d2target.Shape) {
 	rectEl.Fill, rectEl.Stroke = d2themes.ShapeTheme(targetShape)
 	rectEl.ClassName = "shape"
 	rectEl.Style = targetShape.CSSStyle()
-	rectEl.Rx = float64(targetShape.BorderRadius)
-	rectEl.Ry = float64(targetShape.BorderRadius)
+	if targetShape.BorderRadius != 0 {
+		rectEl.Rx = float64(targetShape.BorderRadius)
+		rectEl.Ry = float64(targetShape.BorderRadius)
+	}
 	fmt.Fprint(writer, rectEl.Render())
 
 	box := geo.NewBox(
