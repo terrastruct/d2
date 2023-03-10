@@ -3,11 +3,11 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,0:0:0-10:0:128",
+      "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,0:0:0-9:0:125",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,0:0:0-9:1:127",
+            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,0:0:0-8:1:124",
             "key": {
               "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,0:0:0-0:5:5",
               "path": [
@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,0:7:7-9:0:126",
+                "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,0:7:7-8:0:123",
                 "nodes": [
                   {
                     "map_key": {
@@ -165,13 +165,13 @@
                   },
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,6:2:88-6:10:96",
+                      "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,5:2:85-5:10:93",
                       "key": {
-                        "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,6:2:88-6:10:96",
+                        "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,5:2:85-5:10:93",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,6:2:88-6:7:93",
+                              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,5:2:85-5:7:90",
                               "value": [
                                 {
                                   "string": "disks",
@@ -182,7 +182,7 @@
                           },
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,6:8:94-6:10:96",
+                              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,5:8:91-5:10:93",
                               "value": [
                                 {
                                   "string": "id",
@@ -199,16 +199,16 @@
                   },
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:2:100-8:27:125",
+                      "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:2:97-7:27:122",
                       "edges": [
                         {
-                          "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:2:100-8:27:125",
+                          "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:2:97-7:27:122",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:2:100-8:19:117",
+                            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:2:97-7:19:114",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:2:100-8:18:116",
+                                  "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:2:97-7:18:113",
                                   "value": [
                                     {
                                       "string": "AWS S3 Vancouver",
@@ -221,11 +221,11 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:21:119-8:27:125",
+                            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:21:116-7:27:122",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:22:120-8:27:125",
+                                  "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:22:117-7:27:122",
                                   "value": [
                                     {
                                       "string": "disks",
@@ -389,11 +389,11 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,6:2:88-6:10:96",
+              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,5:2:85-5:10:93",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,6:2:88-6:7:93",
+                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,5:2:85-5:7:90",
                     "value": [
                       {
                         "string": "disks",
@@ -404,7 +404,7 @@
                 },
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,6:8:94-6:10:96",
+                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,5:8:91-5:10:93",
                     "value": [
                       {
                         "string": "id",
@@ -420,11 +420,11 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:21:119-8:27:125",
+              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:21:116-7:27:122",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:22:120-8:27:125",
+                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:22:117-7:27:122",
                     "value": [
                       {
                         "string": "disks",
@@ -499,11 +499,11 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:2:100-8:19:117",
+              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:2:97-7:19:114",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,8:2:100-8:18:116",
+                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:2:97-7:18:113",
                     "value": [
                       {
                         "string": "AWS S3 Vancouver",
