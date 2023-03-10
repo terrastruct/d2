@@ -1164,6 +1164,10 @@ func getMarkdownDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t
 		return d2target.NewTextDimensions(width, height), nil
 	}
 
+	if strings.TrimSpace(t.Text) == "" {
+		return d2target.NewTextDimensions(1, 1), nil
+	}
+
 	return nil, fmt.Errorf("text not pre-measured and no ruler provided")
 }
 
