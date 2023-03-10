@@ -177,11 +177,27 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		// we will chop the edge where it intersects the container border so it only shows the edge from the container
 		src := edge.Src
 		for len(src.Children) > 0 && src.Class == nil && src.SQLTable == nil {
-			src = src.ChildrenArray[0]
+			// We want to get the bottom node of sources, setting its rank higher than all children
+			src = getLongestEdgeChainTail(g, src)
 		}
 		dst := edge.Dst
 		for len(dst.Children) > 0 && dst.Class == nil && dst.SQLTable == nil {
 			dst = dst.ChildrenArray[0]
+
+			// We want to get the top node of destinations
+			for _, child := range dst.ChildrenArray {
+				isHead := true
+				for _, e := range g.Edges {
+					if inContainer(e.Src, child) != nil && inContainer(e.Dst, dst) != nil {
+						isHead = false
+						break
+					}
+				}
+				if isHead {
+					dst = child
+					break
+				}
+			}
 		}
 		if edge.SrcArrow && !edge.DstArrow {
 			// for `b <- a`, edge.Edge is `a -> b` and we expect this routing result
@@ -549,4 +565,67 @@ func generateAddParentLine(childID, parentID string) string {
 
 func generateAddEdgeLine(fromID, toID, edgeID string, width, height int) string {
 	return fmt.Sprintf("g.setEdge({v:`%s`, w:`%s`, name:`%s`}, { width:%d, height:%d, labelpos: `c` });\n", escapeID(fromID), escapeID(toID), escapeID(edgeID), width, height)
+}
+
+// getLongestEdgeChainTail gets the node at the end of the longest edge chain, because that will be the end of the container
+// and is what external connections should connect with
+func getLongestEdgeChainTail(g *d2graph.Graph, container *d2graph.Object) *d2graph.Object {
+	rank := make(map[*d2graph.Object]int)
+
+	for _, obj := range container.ChildrenArray {
+		isHead := true
+		for _, e := range g.Edges {
+			if inContainer(e.Src, container) != nil && inContainer(e.Dst, obj) != nil {
+				isHead = false
+				break
+			}
+		}
+		if !isHead {
+			continue
+		}
+		rank[obj] = 1
+		// BFS
+		queue := []*d2graph.Object{obj}
+		visited := make(map[*d2graph.Object]struct{})
+		for len(queue) > 0 {
+			curr := queue[0]
+			queue = queue[1:]
+			if _, ok := visited[curr]; ok {
+				continue
+			}
+			visited[curr] = struct{}{}
+			for _, e := range g.Edges {
+				child := inContainer(e.Dst, container)
+				if child == curr {
+					continue
+				}
+				if child != nil && inContainer(e.Src, curr) != nil {
+					rank[child] = go2.Max(rank[child], rank[curr]+1)
+					queue = append(queue, child)
+				}
+			}
+		}
+	}
+	max := int(math.MinInt32)
+	var tail *d2graph.Object
+	for _, obj := range container.ChildrenArray {
+		if rank[obj] >= max {
+			max = rank[obj]
+			tail = obj
+		}
+	}
+	return tail
+}
+
+func inContainer(obj, container *d2graph.Object) *d2graph.Object {
+	if obj == nil {
+		return nil
+	}
+	if obj == container {
+		return obj
+	}
+	if obj.Parent == container {
+		return obj
+	}
+	return inContainer(obj.Parent, container)
 }
