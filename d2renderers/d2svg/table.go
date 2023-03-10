@@ -13,7 +13,7 @@ import (
 )
 
 // this func helps define a clipPath for shape class and sql_table to draw border-radius
-func clipPathForBorderRadius(labelMaskID string, shape d2target.Shape) string {
+func clipPathForBorderRadius(diagramHash string, shape d2target.Shape) string {
 	box := geo.NewBox(
 		geo.NewPoint(float64(shape.Pos.X), float64(shape.Pos.Y)),
 		float64(shape.Width),
@@ -21,7 +21,7 @@ func clipPathForBorderRadius(labelMaskID string, shape d2target.Shape) string {
 	)
 	topX, topY := box.TopLeft.X+box.Width, box.TopLeft.Y
 
-	out := fmt.Sprintf(`<clipPath id="%v-%v">`, labelMaskID, shape.ID)
+	out := fmt.Sprintf(`<clipPath id="%v-%v">`, diagramHash, shape.ID)
 	out += fmt.Sprintf(`<path d="M %f %f L %f %f S %f %f %f %f `, box.TopLeft.X, box.TopLeft.Y+float64(shape.BorderRadius), box.TopLeft.X, box.TopLeft.Y+float64(shape.BorderRadius), box.TopLeft.X, box.TopLeft.Y, box.TopLeft.X+float64(shape.BorderRadius), box.TopLeft.Y)
 	out += fmt.Sprintf(`L %f %f L %f %f `, box.TopLeft.X+box.Width-float64(shape.BorderRadius), box.TopLeft.Y, topX-float64(shape.BorderRadius), topY)
 
@@ -40,13 +40,16 @@ func clipPathForBorderRadius(labelMaskID string, shape d2target.Shape) string {
 	return out + `fill="none" /> </clipPath>`
 }
 
-func tableHeader(labelMaskID string, shape d2target.Shape, box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
+func tableHeader(diagramHash string, shape d2target.Shape, box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
 	rectEl := d2themes.NewThemableElement("rect")
 	rectEl.X, rectEl.Y = box.TopLeft.X, box.TopLeft.Y
 	rectEl.Width, rectEl.Height = box.Width, box.Height
 	rectEl.Fill = shape.Fill
 	rectEl.ClassName = "class_header"
-	str := rectEl.RenderWithClipPath(fmt.Sprintf("%v-%v", labelMaskID, shape.ID), shape.BorderRadius != 0)
+	if shape.BorderRadius != 0 {
+		rectEl.ClipPath = fmt.Sprintf("%v-%v", diagramHash, shape.ID)
+	}
+	str := rectEl.Render()
 
 	if text != "" {
 		tl := label.InsideMiddleLeft.GetPointOnBox(
@@ -110,7 +113,7 @@ func tableRow(shape d2target.Shape, box *geo.Box, nameText, typeText, constraint
 	return out
 }
 
-func drawTable(writer io.Writer, labelMaskID string, targetShape d2target.Shape) {
+func drawTable(writer io.Writer, diagramHash string, targetShape d2target.Shape) {
 	rectEl := d2themes.NewThemableElement("rect")
 	rectEl.X = float64(targetShape.Pos.X)
 	rectEl.Y = float64(targetShape.Pos.Y)
@@ -134,7 +137,7 @@ func drawTable(writer io.Writer, labelMaskID string, targetShape d2target.Shape)
 	headerBox := geo.NewBox(box.TopLeft, box.Width, rowHeight)
 
 	fmt.Fprint(writer,
-		tableHeader(labelMaskID, targetShape, headerBox, targetShape.Label,
+		tableHeader(diagramHash, targetShape, headerBox, targetShape.Label,
 			float64(targetShape.LabelWidth), float64(targetShape.LabelHeight), float64(targetShape.FontSize)),
 	)
 

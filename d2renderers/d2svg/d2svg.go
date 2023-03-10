@@ -865,7 +865,7 @@ func render3dHexagon(targetShape d2target.Shape) string {
 	return borderMask + mainShapeRendered + renderedSides + renderedBorder
 }
 
-func drawShape(writer io.Writer, labelMaskID string, targetShape d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, err error) {
+func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, err error) {
 	closingTag := "</g>"
 	if targetShape.Link != "" {
 
@@ -880,7 +880,7 @@ func drawShape(writer io.Writer, labelMaskID string, targetShape d2target.Shape,
 
 	// this clipPath must be defined outside `g` element
 	if targetShape.BorderRadius != 0 && (targetShape.Type == d2target.ShapeClass || targetShape.Type == d2target.ShapeSQLTable) {
-		fmt.Fprint(writer, clipPathForBorderRadius(labelMaskID, targetShape))
+		fmt.Fprint(writer, clipPathForBorderRadius(diagramHash, targetShape))
 	}
 	fmt.Fprintf(writer, `<g id="%s"%s>`, svg.EscapeText(targetShape.ID), opacityStyle)
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
@@ -925,7 +925,7 @@ func drawShape(writer io.Writer, labelMaskID string, targetShape d2target.Shape,
 			}
 			fmt.Fprint(writer, out)
 		} else {
-			drawClass(writer, labelMaskID, targetShape)
+			drawClass(writer, diagramHash, targetShape)
 		}
 		addAppendixItems(writer, targetShape)
 		fmt.Fprint(writer, `</g>`)
@@ -939,7 +939,7 @@ func drawShape(writer io.Writer, labelMaskID string, targetShape d2target.Shape,
 			}
 			fmt.Fprint(writer, out)
 		} else {
-			drawTable(writer, labelMaskID, targetShape)
+			drawTable(writer, diagramHash, targetShape)
 		}
 		addAppendixItems(writer, targetShape)
 		fmt.Fprint(writer, `</g>`)
