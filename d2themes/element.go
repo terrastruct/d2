@@ -45,7 +45,8 @@ type ThemableElement struct {
 	Style      string
 	Attributes string
 
-	Content string
+	Content  string
+	ClipPath string
 }
 
 func NewThemableElement(tag string) *ThemableElement {
@@ -79,6 +80,7 @@ func NewThemableElement(tag string) *ThemableElement {
 		color.Empty,
 		color.Empty,
 		color.Empty,
+		"",
 		"",
 		"",
 		"",
@@ -201,8 +203,13 @@ func (el *ThemableElement) Render() string {
 		out += fmt.Sprintf(` %s`, el.Attributes)
 	}
 
+	if len(el.ClipPath) > 0 {
+		out += fmt.Sprintf(` clip-path="url(#%s)"`, el.ClipPath)
+	}
+
 	if len(el.Content) > 0 {
 		return fmt.Sprintf("%s>%s</%s>", out, el.Content, el.tag)
 	}
+
 	return out + " />"
 }

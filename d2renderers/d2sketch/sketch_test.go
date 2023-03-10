@@ -1005,6 +1005,49 @@ normal: {
 something
 `,
 		},
+		{
+			name: "class_and_sqlTable_border_radius",
+			script: `
+				a: {
+					shape: sql_table
+					id: int {constraint: primary_key}
+					disk: int {constraint: foreign_key}
+
+					json: jsonb  {constraint: unique}
+					last_updated: timestamp with time zone
+					
+					style: {
+						fill: red
+						border-radius: 0
+					}
+				}
+
+				b: {
+					shape: class
+
+					field: "[]string"
+					method(a uint64): (x, y int)
+					
+					style: {
+						border-radius: 0
+					}
+				}
+
+				c: {
+					shape: class
+					style: {
+						border-radius: 0
+					}
+				}
+
+				d: {
+					shape: sql_table
+					style: {
+						border-radius: 0
+					}
+				}
+			`,
+		},
 	}
 	runa(t, tcs)
 }

@@ -1,4 +1,5 @@
 #### Features 🚀
+- `border-radius` is now supported on both shape class and sql_table. [#982](https://github.com/terrastruct/d2/pull/982)
 
 #### Improvements 🧹
 

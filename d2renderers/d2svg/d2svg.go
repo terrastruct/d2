@@ -865,7 +865,7 @@ func render3dHexagon(targetShape d2target.Shape) string {
 	return borderMask + mainShapeRendered + renderedSides + renderedBorder
 }
 
-func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, err error) {
+func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, err error) {
 	closingTag := "</g>"
 	if targetShape.Link != "" {
 
@@ -876,6 +876,11 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 	opacityStyle := ""
 	if targetShape.Opacity != 1.0 {
 		opacityStyle = fmt.Sprintf(" style='opacity:%f'", targetShape.Opacity)
+	}
+
+	// this clipPath must be defined outside `g` element
+	if targetShape.BorderRadius != 0 && (targetShape.Type == d2target.ShapeClass || targetShape.Type == d2target.ShapeSQLTable) {
+		fmt.Fprint(writer, clipPathForBorderRadius(diagramHash, targetShape))
 	}
 	fmt.Fprintf(writer, `<g id="%s"%s>`, svg.EscapeText(targetShape.ID), opacityStyle)
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
@@ -920,7 +925,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			}
 			fmt.Fprint(writer, out)
 		} else {
-			drawClass(writer, targetShape)
+			drawClass(writer, diagramHash, targetShape)
 		}
 		addAppendixItems(writer, targetShape)
 		fmt.Fprint(writer, `</g>`)
@@ -934,7 +939,7 @@ func drawShape(writer io.Writer, targetShape d2target.Shape, sketchRunner *d2ske
 			}
 			fmt.Fprint(writer, out)
 		} else {
-			drawTable(writer, targetShape)
+			drawTable(writer, diagramHash, targetShape)
 		}
 		addAppendixItems(writer, targetShape)
 		fmt.Fprint(writer, `</g>`)
@@ -1675,7 +1680,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 				labelMasks = append(labelMasks, labelMask)
 			}
 		} else if s, is := obj.(d2target.Shape); is {
-			labelMask, err := drawShape(buf, s, sketchRunner)
+			labelMask, err := drawShape(buf, labelMaskID, s, sketchRunner)
 			if err != nil {
 				return nil, err
 			} else if labelMask != "" {
