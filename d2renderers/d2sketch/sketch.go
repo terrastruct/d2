@@ -316,7 +316,7 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 }
 
 func Connection(r *Runner, connection d2target.Connection, path, attrs string) (string, error) {
-	roughness := 1.0
+	roughness := 0.5
 	js := fmt.Sprintf(`node = rc.path("%s", {roughness: %f, seed: 1});`, path, roughness)
 	paths, err := computeRoughPathData(r, js)
 	if err != nil {
