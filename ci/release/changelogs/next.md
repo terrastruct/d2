@@ -4,6 +4,7 @@
 #### Improvements 🧹
 
 - `dagre` layouts that have a connection where one endpoint is a container is much improved. [#1011](https://github.com/terrastruct/d2/pull/1011)
+- `sketch` draws connections with less roughness, which especially improves look of corner bends in ELK. [#1014](https://github.com/terrastruct/d2/pull/1014)
 
 #### Bugfixes ⛑️
 
