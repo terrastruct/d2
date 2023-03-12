@@ -1353,7 +1353,7 @@ func RenderText(text string, x, height float64) string {
 	return strings.Join(rendered, "")
 }
 
-func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily) {
+func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fonts.FontFamily) {
 	fmt.Fprint(buf, `<style type="text/css"><![CDATA[`)
 
 	appendOnTrigger(
@@ -1365,13 +1365,16 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`class="md"`,
 		},
 		fmt.Sprintf(`
-.text {
-	font-family: "font-regular";
+.%s .text {
+	font-family: "%s-font-regular";
 }
 @font-face {
-	font-family: font-regular;
+	font-family: %s-font-regular;
 	src: url("%s");
 }`,
+			diagramHash,
+			diagramHash,
+			diagramHash,
 			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR)],
 		),
 	)
@@ -1424,13 +1427,16 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`<strong>`,
 		},
 		fmt.Sprintf(`
-.text-bold {
-	font-family: "font-bold";
+.%s .text-bold {
+	font-family: "%s-font-bold";
 }
 @font-face {
-	font-family: font-bold;
+	font-family: %s-font-bold;
 	src: url("%s");
 }`,
+			diagramHash,
+			diagramHash,
+			diagramHash,
 			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_BOLD)],
 		),
 	)
@@ -1444,13 +1450,16 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`<dfn>`,
 		},
 		fmt.Sprintf(`
-.text-italic {
-	font-family: "font-italic";
+.%s .text-italic {
+	font-family: "%s-font-italic";
 }
 @font-face {
-	font-family: font-italic;
+	font-family: %s-font-italic;
 	src: url("%s");
 }`,
+			diagramHash,
+			diagramHash,
+			diagramHash,
 			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_ITALIC)],
 		),
 	)
@@ -1466,13 +1475,16 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`<samp>`,
 		},
 		fmt.Sprintf(`
-.text-mono {
-	font-family: "font-mono";
+.%s .text-mono {
+	font-family: "%s-font-mono";
 }
 @font-face {
-	font-family: font-mono;
+	font-family: %s-font-mono;
 	src: url("%s");
 }`,
+			diagramHash,
+			diagramHash,
+			diagramHash,
 			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_REGULAR)],
 		),
 	)
@@ -1484,13 +1496,16 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`class="text-mono-bold"`,
 		},
 		fmt.Sprintf(`
-.text-mono-bold {
-	font-family: "font-mono-bold";
+.%s .text-mono-bold {
+	font-family: "%s-font-mono-bold";
 }
 @font-face {
-	font-family: font-mono-bold;
+	font-family: %s-font-mono-bold;
 	src: url("%s");
 }`,
+			diagramHash,
+			diagramHash,
+			diagramHash,
 			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD)],
 		),
 	)
@@ -1502,49 +1517,16 @@ func embedFonts(buf *bytes.Buffer, source string, fontFamily *d2fonts.FontFamily
 			`class="text-mono-italic"`,
 		},
 		fmt.Sprintf(`
-.text-mono-italic {
-	font-family: "font-mono-italic";
+.%s .text-mono-italic {
+	font-family: "%s-font-mono-italic";
 }
 @font-face {
-	font-family: font-mono-italic;
+	font-family: %s-font-mono-italic;
 	src: url("%s");
 }`,
-			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC)],
-		),
-	)
-
-	appendOnTrigger(
-		buf,
-		source,
-		[]string{
-			`class="text-mono-bold"`,
-		},
-		fmt.Sprintf(`
-.text-mono-bold {
-	font-family: "font-mono-bold";
-}
-@font-face {
-	font-family: font-mono-bold;
-	src: url("%s");
-}`,
-			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD)],
-		),
-	)
-
-	appendOnTrigger(
-		buf,
-		source,
-		[]string{
-			`class="text-mono-italic"`,
-		},
-		fmt.Sprintf(`
-.text-mono-italic {
-	font-family: "font-mono-italic";
-}
-@font-face {
-	font-family: font-mono-italic;
-	src: url("%s");
-}`,
+			diagramHash,
+			diagramHash,
+			diagramHash,
 			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC)],
 		),
 	)
@@ -1649,10 +1631,12 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 
 	// Mask URLs are global. So when multiple SVGs attach to a DOM, they share
 	// the same namespace for mask URLs.
-	labelMaskID, err := diagram.HashID()
+	diagramHash, err := diagram.HashID()
 	if err != nil {
 		return nil, err
 	}
+	// CSS names can't start with numbers, so prepend a little something
+	diagramHash = "d2-" + diagramHash
 
 	// SVG has no notion of z-index. The z-index is effectively the order it's drawn.
 	// So draw from the least nested to most nested
@@ -1672,7 +1656,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	markers := map[string]struct{}{}
 	for _, obj := range allObjects {
 		if c, is := obj.(d2target.Connection); is {
-			labelMask, err := drawConnection(buf, labelMaskID, c, markers, idToShape, sketchRunner)
+			labelMask, err := drawConnection(buf, diagramHash, c, markers, idToShape, sketchRunner)
 			if err != nil {
 				return nil, err
 			}
@@ -1680,7 +1664,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 				labelMasks = append(labelMasks, labelMask)
 			}
 		} else if s, is := obj.(d2target.Shape); is {
-			labelMask, err := drawShape(buf, labelMaskID, s, sketchRunner)
+			labelMask, err := drawShape(buf, diagramHash, s, sketchRunner)
 			if err != nil {
 				return nil, err
 			} else if labelMask != "" {
@@ -1695,7 +1679,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	left, top, w, h := dimensions(diagram, pad)
 	fmt.Fprint(buf, strings.Join([]string{
 		fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
-			labelMaskID, left, top, w, h,
+			diagramHash, left, top, w, h,
 		),
 		fmt.Sprintf(`<rect x="%d" y="%d" width="%d" height="%d" fill="white"></rect>`,
 			left, top, w, h,
@@ -1706,8 +1690,8 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 
 	// generate style elements that will be appended to the SVG tag
 	upperBuf := &bytes.Buffer{}
-	embedFonts(upperBuf, buf.String(), diagram.FontFamily) // embedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
-	themeStylesheet, err := themeCSS(themeID, darkThemeID)
+	embedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily) // embedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
+	themeStylesheet, err := themeCSS(diagramHash, themeID, darkThemeID)
 	if err != nil {
 		return nil, err
 	}
@@ -1721,7 +1705,12 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 	}
 	if hasMarkdown {
-		fmt.Fprintf(upperBuf, `<style type="text/css">%s</style>`, mdCSS)
+		css := mdCSS
+		css = strings.ReplaceAll(css, "font-italic", fmt.Sprintf("%s-font-italic", diagramHash))
+		css = strings.ReplaceAll(css, "font-bold", fmt.Sprintf("%s-font-bold", diagramHash))
+		css = strings.ReplaceAll(css, "font-mono", fmt.Sprintf("%s-font-mono", diagramHash))
+		css = strings.ReplaceAll(css, "font-regular", fmt.Sprintf("%s-font-regular", diagramHash))
+		fmt.Fprintf(upperBuf, `<style type="text/css">%s</style>`, css)
 	}
 	if sketchRunner != nil {
 		d2sketch.DefineFillPatterns(upperBuf)
@@ -1790,9 +1779,10 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	)
 
 	// TODO minify
-	docRendered := fmt.Sprintf(`%s%s<svg id="d2-svg" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s%s</svg></svg>`,
+	docRendered := fmt.Sprintf(`%s%s<svg id="d2-svg" class="%s" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s%s</svg></svg>`,
 		`<?xml version="1.0" encoding="utf-8"?>`,
 		fitToScreenWrapper,
+		diagramHash,
 		w, h, left, top, w, h,
 		doubleBorderElStr,
 		backgroundEl.Render(),
@@ -1803,14 +1793,14 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 }
 
 // TODO include only colors that are being used to reduce size
-func themeCSS(themeID int64, darkThemeID *int64) (stylesheet string, err error) {
-	out, err := singleThemeRulesets(themeID)
+func themeCSS(diagramHash string, themeID int64, darkThemeID *int64) (stylesheet string, err error) {
+	out, err := singleThemeRulesets(diagramHash, themeID)
 	if err != nil {
 		return "", err
 	}
 
 	if darkThemeID != nil {
-		darkOut, err := singleThemeRulesets(*darkThemeID)
+		darkOut, err := singleThemeRulesets(diagramHash, *darkThemeID)
 		if err != nil {
 			return "", err
 		}
@@ -1820,30 +1810,66 @@ func themeCSS(themeID int64, darkThemeID *int64) (stylesheet string, err error) 
 	return out, nil
 }
 
-func singleThemeRulesets(themeID int64) (rulesets string, err error) {
+func singleThemeRulesets(diagramHash string, themeID int64) (rulesets string, err error) {
 	out := ""
 	theme := d2themescatalog.Find(themeID)
 
 	// Global theme colors
 	for _, property := range []string{"fill", "stroke", "background-color", "color"} {
-		out += fmt.Sprintf(".%s-N1{%s:%s;}.%s-N2{%s:%s;}.%s-N3{%s:%s;}.%s-N4{%s:%s;}.%s-N5{%s:%s;}.%s-N6{%s:%s;}.%s-N7{%s:%s;}.%s-B1{%s:%s;}.%s-B2{%s:%s;}.%s-B3{%s:%s;}.%s-B4{%s:%s;}.%s-B5{%s:%s;}.%s-B6{%s:%s;}.%s-AA2{%s:%s;}.%s-AA4{%s:%s;}.%s-AA5{%s:%s;}.%s-AB4{%s:%s;}.%s-AB5{%s:%s;}",
+		out += fmt.Sprintf(`
+		.%s .%s-N1{%s:%s;}
+		.%s .%s-N2{%s:%s;}
+		.%s .%s-N3{%s:%s;}
+		.%s .%s-N4{%s:%s;}
+		.%s .%s-N5{%s:%s;}
+		.%s .%s-N6{%s:%s;}
+		.%s .%s-N7{%s:%s;}
+		.%s .%s-B1{%s:%s;}
+		.%s .%s-B2{%s:%s;}
+		.%s .%s-B3{%s:%s;}
+		.%s .%s-B4{%s:%s;}
+		.%s .%s-B5{%s:%s;}
+		.%s .%s-B6{%s:%s;}
+		.%s .%s-AA2{%s:%s;}
+		.%s .%s-AA4{%s:%s;}
+		.%s .%s-AA5{%s:%s;}
+		.%s .%s-AB4{%s:%s;}
+		.%s .%s-AB5{%s:%s;}`,
+			diagramHash,
 			property, property, theme.Colors.Neutrals.N1,
+			diagramHash,
 			property, property, theme.Colors.Neutrals.N2,
+			diagramHash,
 			property, property, theme.Colors.Neutrals.N3,
+			diagramHash,
 			property, property, theme.Colors.Neutrals.N4,
+			diagramHash,
 			property, property, theme.Colors.Neutrals.N5,
+			diagramHash,
 			property, property, theme.Colors.Neutrals.N6,
+			diagramHash,
 			property, property, theme.Colors.Neutrals.N7,
+			diagramHash,
 			property, property, theme.Colors.B1,
+			diagramHash,
 			property, property, theme.Colors.B2,
+			diagramHash,
 			property, property, theme.Colors.B3,
+			diagramHash,
 			property, property, theme.Colors.B4,
+			diagramHash,
 			property, property, theme.Colors.B5,
+			diagramHash,
 			property, property, theme.Colors.B6,
+			diagramHash,
 			property, property, theme.Colors.AA2,
+			diagramHash,
 			property, property, theme.Colors.AA4,
+			diagramHash,
 			property, property, theme.Colors.AA5,
+			diagramHash,
 			property, property, theme.Colors.AB4,
+			diagramHash,
 			property, property, theme.Colors.AB5,
 		)
 	}
