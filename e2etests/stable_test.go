@@ -13,6 +13,49 @@ var testMarkdown string
 func testStable(t *testing.T) {
 	tcs := []testCase{
 		{
+			name: "class_and_sqlTable_border_radius",
+			script: `
+				a: {
+					shape: sql_table
+					id: int {constraint: primary_key}
+					disk: int {constraint: foreign_key}
+
+					json: jsonb  {constraint: unique}
+					last_updated: timestamp with time zone
+					
+					style: {
+						fill: red
+						border-radius: 10
+					}
+				}
+
+				b: {
+					shape: class
+
+					field: "[]string"
+					method(a uint64): (x, y int)
+					
+					style: {
+						border-radius: 10
+					}
+				}
+
+				c: {
+					shape: class
+					style: {
+						border-radius: 5
+					}
+				}
+
+				d: {
+					shape: sql_table
+					style: {
+						border-radius: 5
+					}
+				}
+			`,
+		},
+		{
 			name: "elk_border_radius",
 			script: `
 				a -> b

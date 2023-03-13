@@ -972,6 +972,17 @@ x -> y: {
 			},
 		},
 		{
+			name: "edge_arrowhead_primary",
+
+			text: `x -> y: {
+  source-arrowhead: Reisner's Rule of Conceptual Inertia
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.String(t, "Reisner's Rule of Conceptual Inertia", g.Edges[0].SrcArrowhead.Label.Value)
+			},
+		},
+		{
 			name: "edge_arrowhead_fields",
 
 			text: `x -> y: {

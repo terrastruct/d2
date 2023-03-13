@@ -18,6 +18,7 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
+	"oss.terrastruct.com/d2/d2layouts/d2elklayout"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
@@ -37,6 +38,15 @@ func TestSketch(t *testing.T) {
 		{
 			name: "child to child",
 			script: `winter.snow -> summer.sun
+		`,
+		},
+		{
+			name:   "elk corners",
+			engine: "elk",
+			script: `a -> b
+b -> c
+a -> c
+c -> a
 		`,
 		},
 		{
@@ -1005,6 +1015,49 @@ normal: {
 something
 `,
 		},
+		{
+			name: "class_and_sqlTable_border_radius",
+			script: `
+				a: {
+					shape: sql_table
+					id: int {constraint: primary_key}
+					disk: int {constraint: foreign_key}
+
+					json: jsonb  {constraint: unique}
+					last_updated: timestamp with time zone
+
+					style: {
+						fill: red
+						border-radius: 0
+					}
+				}
+
+				b: {
+					shape: class
+
+					field: "[]string"
+					method(a uint64): (x, y int)
+
+					style: {
+						border-radius: 0
+					}
+				}
+
+				c: {
+					shape: class
+					style: {
+						border-radius: 0
+					}
+				}
+
+				d: {
+					shape: sql_table
+					style: {
+						border-radius: 0
+					}
+				}
+			`,
+		},
 	}
 	runa(t, tcs)
 }
@@ -1014,6 +1067,7 @@ type testCase struct {
 	themeID int64
 	script  string
 	skip    bool
+	engine  string
 }
 
 func runa(t *testing.T, tcs []testCase) {
@@ -1040,9 +1094,13 @@ func run(t *testing.T, tc testCase) {
 		return
 	}
 
+	layout := d2dagrelayout.DefaultLayout
+	if strings.EqualFold(tc.engine, "elk") {
+		layout = d2elklayout.DefaultLayout
+	}
 	diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
 		Ruler:      ruler,
-		Layout:     d2dagrelayout.DefaultLayout,
+		Layout:     layout,
 		FontFamily: go2.Pointer(d2fonts.HandDrawn),
 	})
 	if !tassert.Nil(t, err) {
