@@ -158,7 +158,7 @@ You can always install from source:
 go install oss.terrastruct.com/d2@latest
 ```
 
-You need at least Go v1.18
+You need at least Go v1.20
 
 ### Source Release
 
@@ -175,7 +175,7 @@ fonts and icons. Furthermore, when installing a non versioned commit, installing
 will ensure that `d2 --version` works correctly by embedding the commit hash into the `d2`
 binary.
 
-Remember, you need at least Go v1.18
+Remember, you need at least Go v1.20
 
 ## Windows
 

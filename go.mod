@@ -1,6 +1,6 @@
 module oss.terrastruct.com/d2
 
-go 1.18
+go 1.20
 
 require (
 	cdr.dev/slog v1.4.2-0.20221206192828-e4803b10ae17
