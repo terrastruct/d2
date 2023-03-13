@@ -1,0 +1,54 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/less_than_edge#955.d2,0:0:0-2:0:8",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/less_than_edge#955.d2,1:0:1-1:6:7",
+          "edges": [
+            {
+              "range": "d2/testdata/d2parser/TestParse/less_than_edge#955.d2,1:0:1-1:6:7",
+              "src": {
+                "range": "d2/testdata/d2parser/TestParse/less_than_edge#955.d2,1:0:1-1:2:3",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/less_than_edge#955.d2,1:0:1-1:1:2",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "<",
+              "dst": {
+                "range": "d2/testdata/d2parser/TestParse/less_than_edge#955.d2,1:3:4-1:6:7",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "d2/testdata/d2parser/TestParse/less_than_edge#955.d2,1:3:4-1:6:7",
+                      "value": [
+                        {
+                          "string": "= y",
+                          "raw_string": "= y"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ""
+            }
+          ],
+          "primary": {},
+          "value": {}
+        }
+      }
+    ]
+  },
+  "err": null
+}

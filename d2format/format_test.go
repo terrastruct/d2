@@ -611,6 +611,14 @@ x -> y
 y
 `,
 		},
+		{
+			name: "less_than_edge#955",
+			in: `
+x <= y
+`,
+			exp: `x <- = y
+`,
+		},
 	}
 
 	for _, tc := range testCases {
