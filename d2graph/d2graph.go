@@ -252,10 +252,10 @@ func (s *Style) Apply(key, value string) error {
 		if s.Font == nil {
 			break
 		}
-		if !go2.Contains(systemFonts, strings.ToUpper(value)) {
+		if _, ok := d2fonts.D2_FONT_TO_FAMILY[strings.ToLower(value)]; !ok {
 			return fmt.Errorf(`"%v" is not a valid font in our system`, value)
 		}
-		s.Font.Value = strings.ToUpper(value)
+		s.Font.Value = strings.ToLower(value)
 	case "font-size":
 		if s.FontSize == nil {
 			break
@@ -792,6 +792,11 @@ func (obj *Object) AppendReferences(ida []string, ref Reference, unresolvedObj *
 
 func (obj *Object) GetLabelSize(mtexts []*d2target.MText, ruler *textmeasure.Ruler, fontFamily *d2fonts.FontFamily) (*d2target.TextDimensions, error) {
 	shapeType := strings.ToLower(obj.Attributes.Shape.Value)
+
+	if obj.Attributes.Style.Font != nil {
+		f := d2fonts.D2_FONT_TO_FAMILY[obj.Attributes.Style.Font.Value]
+		fontFamily = &f
+	}
 
 	var dims *d2target.TextDimensions
 	switch shapeType {

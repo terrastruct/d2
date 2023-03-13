@@ -1,5 +1,6 @@
 #### Features 🚀
 
+- `style.font: mono` to use a monospaced font for the text/label [#1010](https://github.com/terrastruct/d2/pull/1010)
 - `border-radius` is supported for both `class` and `sql_table` shapes. [#982](https://github.com/terrastruct/d2/pull/982)
 
 #### Improvements 🧹

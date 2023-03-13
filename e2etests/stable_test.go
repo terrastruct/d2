@@ -22,7 +22,7 @@ func testStable(t *testing.T) {
 
 					json: jsonb  {constraint: unique}
 					last_updated: timestamp with time zone
-					
+
 					style: {
 						fill: red
 						border-radius: 10
@@ -34,7 +34,7 @@ func testStable(t *testing.T) {
 
 					field: "[]string"
 					method(a uint64): (x, y int)
-					
+
 					style: {
 						border-radius: 10
 					}
@@ -80,6 +80,40 @@ func testStable(t *testing.T) {
 					}
 				}
 			`,
+		},
+		{
+			name: "mono-font",
+			script: `satellites: SATELLITES {
+  shape: stored_data
+  style: {
+    font: mono
+    fill: white
+    stroke: black
+    multiple: true
+  }
+}
+
+transmitter: TRANSMITTER {
+  style: {
+    font: mono
+    fill: white
+    stroke: black
+  }
+}
+
+satellites -> transmitter: SEND {
+  style.stroke: black
+  style.font: mono
+}
+satellites -> transmitter: SEND {
+  style.stroke: black
+  style.font: mono
+}
+satellites -> transmitter: SEND {
+  style.stroke: black
+  style.font: mono
+}
+`,
 		},
 		{
 			name: "connected_container",

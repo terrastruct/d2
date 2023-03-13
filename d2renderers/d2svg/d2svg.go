@@ -558,6 +558,9 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 
 	if connection.Label != "" {
 		fontClass := "text"
+		if connection.FontFamily == "mono" {
+			fontClass = "text-mono"
+		}
 		if connection.Bold {
 			fontClass += "-bold"
 		} else if connection.Italic {
@@ -1191,10 +1194,14 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 		)
 
 		fontClass := "text"
-		if targetShape.Bold {
-			fontClass += "-bold"
-		} else if targetShape.Italic {
-			fontClass += "-italic"
+		if targetShape.FontFamily == "mono" {
+			fontClass = "text-mono"
+		} else {
+			if targetShape.Bold {
+				fontClass += "-bold"
+			} else if targetShape.Italic {
+				fontClass += "-italic"
+			}
 		}
 		if targetShape.Underline {
 			fontClass += " text-underline"
@@ -1493,7 +1500,7 @@ func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		buf,
 		source,
 		[]string{
-			`class="text-mono-bold"`,
+			`class="text-mono-bold`,
 		},
 		fmt.Sprintf(`
 .%s .text-mono-bold {
@@ -1514,7 +1521,7 @@ func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		buf,
 		source,
 		[]string{
-			`class="text-mono-italic"`,
+			`class="text-mono-italic`,
 		},
 		fmt.Sprintf(`
 .%s .text-mono-italic {
