@@ -22,7 +22,7 @@ func testStable(t *testing.T) {
 
 					json: jsonb  {constraint: unique}
 					last_updated: timestamp with time zone
-					
+
 					style: {
 						fill: red
 						border-radius: 10
@@ -34,7 +34,7 @@ func testStable(t *testing.T) {
 
 					field: "[]string"
 					method(a uint64): (x, y int)
-					
+
 					style: {
 						border-radius: 10
 					}
@@ -83,72 +83,35 @@ func testStable(t *testing.T) {
 		},
 		{
 			name: "mono-font",
-			script: `direction: down
-PRODUCER: {
+			script: `satellites: SATELLITES {
+  shape: stored_data
   style: {
-		underline: true
-    font-color: white
-    fill: blue
-    border-radius: 4
-		font: mono
+    font: mono
+    fill: white
+    stroke: black
+    multiple: true
   }
 }
 
-PRODUCER -> api
-
-api: API DESIGN & DEVELOPMENT {
-  shape: text
-	style.font: mono
-}
-
-schema: "" {
-	style.fill: "#e4f4fc"
-	style.stroke-width: 0
-  PROTOBUF SCHEMA: {
-    icon: https://icons.terrastruct.com/essentials%2F257-file.svg
-    shape: image
-		style.font: mono
+transmitter: TRANSMITTER {
+  style: {
+    font: mono
+    fill: white
+    stroke: black
   }
-	assets: {
-		label: BUF SUPPORT AND\nGENERATED ASSETS
-		style.font: mono
-		style.fill: white
-		style.font-color: blue
-		style.stroke-width: 0
-		width: 400
-	}
-	PROTOBUF SCHEMA -> assets: {
-		style.opacity: 0
-	}
 }
 
-api -> schema.PROTOBUF SCHEMA
-
-schema -> CONSUMER A
-schema -> CONSUMER B
-schema -> CONSUMER C
-
-# Could really use some classes!
-CONSUMER A: {
+satellites -> transmitter: SEND {
+  style.stroke: black
   style.font: mono
-	style.fill: "#000047"
-	style.border-radius: 4
-	style.font-color: white
-	style.stroke-width: 0
 }
-CONSUMER B: {
+satellites -> transmitter: SEND {
+  style.stroke: black
   style.font: mono
-	style.fill: "#000047"
-	style.border-radius: 4
-	style.font-color: white
-	style.stroke-width: 0
 }
-CONSUMER C: {
+satellites -> transmitter: SEND {
+  style.stroke: black
   style.font: mono
-	style.fill: "#000047"
-	style.border-radius: 4
-	style.font-color: white
-	style.stroke-width: 0
 }
 `,
 		},
