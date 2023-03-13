@@ -558,6 +558,9 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 
 	if connection.Label != "" {
 		fontClass := "text"
+		if connection.FontFamily == "mono" {
+			fontClass = "text-mono"
+		}
 		if connection.Bold {
 			fontClass += "-bold"
 		} else if connection.Italic {
