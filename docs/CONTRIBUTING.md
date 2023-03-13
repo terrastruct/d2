@@ -66,8 +66,7 @@ git submodule update --recursive
 
 ## Logistics
 
-- Use Go 1.18. Go 1.19's autofmt inexplicably strips spacing from ASCII art in comments.
-  We're working on it.
+- Use Go 1.20.
 - Please sign your commits
   ([https://github.com/terrastruct/d2/pull/557#issuecomment-1367468730](https://github.com/terrastruct/d2/pull/557#issuecomment-1367468730)).
 - D2 uses Issues as TODOs. No auto-closing on staleness.
