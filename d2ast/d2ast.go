@@ -159,9 +159,9 @@ func (r Range) Before(r2 Range) bool {
 //
 // note: Line and Column are zero indexed.
 // note: Column and Byte are UTF-8 byte indexes unless byUTF16 was passed to Position.Advance in
-//       which they are UTF-16 code unit indexes.
-//       If intended for Javascript consumption like in the browser or via LSP, byUTF16 is
-//       set to true.
+// .     which they are UTF-16 code unit indexes.
+// .     If intended for Javascript consumption like in the browser or via LSP, byUTF16 is
+// .     set to true.
 type Position struct {
 	Line   int
 	Column int
