@@ -650,8 +650,13 @@ func (mk1 *Key) Equals(mk2 *Key) bool {
 	}
 
 	if mk1.Value.Unbox() != nil {
-		if mk1.Value.ScalarBox().Unbox().ScalarString() != mk2.Value.ScalarBox().Unbox().ScalarString() {
+		if (mk1.Value.ScalarBox().Unbox() == nil) != (mk2.Value.ScalarBox().Unbox() == nil) {
 			return false
+		}
+		if mk1.Value.ScalarBox().Unbox() != nil {
+			if mk1.Value.ScalarBox().Unbox().ScalarString() != mk2.Value.ScalarBox().Unbox().ScalarString() {
+				return false
+			}
 		}
 	}
 

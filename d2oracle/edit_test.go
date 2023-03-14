@@ -1859,6 +1859,32 @@ func TestMove(t *testing.T) {
 			},
 		},
 		{
+			name: "duplicate",
+
+			text: `a: {
+  b: {
+    shape: cylinder
+  }
+}
+
+a: {
+  b: {
+    shape: cylinder
+  }
+}
+`,
+			key:    `a.b`,
+			newKey: `b`,
+
+			exp: `a
+
+a
+b: {
+  shape: cylinder
+}
+`,
+		},
+		{
 			name: "rename_2",
 
 			text: `a: {
