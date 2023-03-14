@@ -150,6 +150,7 @@ type Style struct {
 	Opacity      *Scalar `json:"opacity,omitempty"`
 	Stroke       *Scalar `json:"stroke,omitempty"`
 	Fill         *Scalar `json:"fill,omitempty"`
+	FillPattern  *Scalar `json:"fillPattern,omitempty"`
 	StrokeWidth  *Scalar `json:"strokeWidth,omitempty"`
 	StrokeDash   *Scalar `json:"strokeDash,omitempty"`
 	BorderRadius *Scalar `json:"borderRadius,omitempty"`
@@ -194,6 +195,14 @@ func (s *Style) Apply(key, value string) error {
 			return errors.New(`expected "fill" to be a valid named color ("orange") or a hex code ("#f0ff3a")`)
 		}
 		s.Fill.Value = value
+	case "fill-pattern":
+		if s.FillPattern == nil {
+			break
+		}
+		if !go2.Contains(FillPatterns, strings.ToLower(value)) {
+			return fmt.Errorf(`expected "fill-pattern" to be one of: %s`, strings.Join(FillPatterns, ","))
+		}
+		s.FillPattern.Value = value
 	case "stroke-width":
 		if s.StrokeWidth == nil {
 			break
@@ -1499,6 +1508,7 @@ var StyleKeywords = map[string]struct{}{
 	"opacity":       {},
 	"stroke":        {},
 	"fill":          {},
+	"fill-pattern":  {},
 	"stroke-width":  {},
 	"stroke-dash":   {},
 	"border-radius": {},
@@ -1539,6 +1549,11 @@ var NearConstantsArray = []string{
 	"bottom-right",
 }
 var NearConstants map[string]struct{}
+
+var FillPatterns = []string{
+	// TODO add lined later
+	"dots",
+}
 
 // BoardKeywords contains the keywords that create new boards.
 var BoardKeywords = map[string]struct{}{

@@ -59,6 +59,9 @@ var baseStylesheet string
 //go:embed github-markdown.css
 var mdCSS string
 
+//go:embed dots.txt
+var dots string
+
 type RenderOpts struct {
 	Pad         int
 	Sketch      bool
@@ -621,21 +624,22 @@ func renderArrowheadLabel(connection d2target.Connection, text string, position,
 	return textEl.Render()
 }
 
-func renderOval(tl *geo.Point, width, height float64, fill, stroke, style string) string {
+func renderOval(tl *geo.Point, width, height float64, fill, fillPattern, stroke, style string) string {
 	el := d2themes.NewThemableElement("ellipse")
 	el.Rx = width / 2
 	el.Ry = height / 2
 	el.Cx = tl.X + el.Rx
 	el.Cy = tl.Y + el.Ry
 	el.Fill, el.Stroke = fill, stroke
+	el.FillPattern = fillPattern
 	el.ClassName = "shape"
 	el.Style = style
 	return el.Render()
 }
 
-func renderDoubleOval(tl *geo.Point, width, height float64, fill, stroke, style string) string {
+func renderDoubleOval(tl *geo.Point, width, height float64, fill, fillStroke, stroke, style string) string {
 	var innerTL *geo.Point = tl.AddVector(geo.NewVector(d2target.INNER_BORDER_OFFSET, d2target.INNER_BORDER_OFFSET))
-	return renderOval(tl, width, height, fill, stroke, style) + renderOval(innerTL, width-10, height-10, fill, stroke, style)
+	return renderOval(tl, width, height, fill, fillStroke, stroke, style) + renderOval(innerTL, width-10, height-10, fill, "", stroke, style)
 }
 
 func defineShadowFilter(writer io.Writer) {
@@ -713,6 +717,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	mainShape.SetMaskUrl(maskID)
 	mainShapeFill, _ := d2themes.ShapeTheme(targetShape)
 	mainShape.Fill = mainShapeFill
+	mainShape.FillPattern = targetShape.FillPattern
 	mainShape.Stroke = color.None
 	mainShape.Style = targetShape.CSSStyle()
 	mainShapeRendered := mainShape.Render()
@@ -833,6 +838,7 @@ func render3dHexagon(targetShape d2target.Shape) string {
 	mainShape.Points = mainPointsPoly
 	mainShape.SetMaskUrl(maskID)
 	mainShapeFill, _ := d2themes.ShapeTheme(targetShape)
+	mainShape.FillPattern = targetShape.FillPattern
 	mainShape.Fill = mainShapeFill
 	mainShape.Stroke = color.None
 	mainShape.Style = targetShape.CSSStyle()
@@ -952,7 +958,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 	case d2target.ShapeOval:
 		if targetShape.DoubleBorder {
 			if targetShape.Multiple {
-				fmt.Fprint(writer, renderDoubleOval(multipleTL, width, height, fill, stroke, style))
+				fmt.Fprint(writer, renderDoubleOval(multipleTL, width, height, fill, "", stroke, style))
 			}
 			if sketchRunner != nil {
 				out, err := d2sketch.DoubleOval(sketchRunner, targetShape)
@@ -961,11 +967,11 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 				}
 				fmt.Fprint(writer, out)
 			} else {
-				fmt.Fprint(writer, renderDoubleOval(tl, width, height, fill, stroke, style))
+				fmt.Fprint(writer, renderDoubleOval(tl, width, height, fill, targetShape.FillPattern, stroke, style))
 			}
 		} else {
 			if targetShape.Multiple {
-				fmt.Fprint(writer, renderOval(multipleTL, width, height, fill, stroke, style))
+				fmt.Fprint(writer, renderOval(multipleTL, width, height, fill, "", stroke, style))
 			}
 			if sketchRunner != nil {
 				out, err := d2sketch.Oval(sketchRunner, targetShape)
@@ -974,7 +980,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 				}
 				fmt.Fprint(writer, out)
 			} else {
-				fmt.Fprint(writer, renderOval(tl, width, height, fill, stroke, style))
+				fmt.Fprint(writer, renderOval(tl, width, height, fill, targetShape.FillPattern, stroke, style))
 			}
 		}
 
@@ -1027,6 +1033,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.Width = float64(targetShape.Width)
 					el.Height = float64(targetShape.Height)
 					el.Fill = fill
+					el.FillPattern = targetShape.FillPattern
 					el.Stroke = stroke
 					el.Style = style
 					el.Attributes = rx
@@ -1040,6 +1047,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.Width = float64(targetShape.Width)
 					el.Height = float64(targetShape.Height)
 					el.Fill = fill
+					el.FillPattern = targetShape.FillPattern
 					el.Stroke = stroke
 					el.Style = style
 					el.Attributes = rx
@@ -1069,6 +1077,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.Width = float64(targetShape.Width)
 					el.Height = float64(targetShape.Height)
 					el.Fill = fill
+					el.FillPattern = targetShape.FillPattern
 					el.Stroke = stroke
 					el.Style = style
 					el.Attributes = rx
@@ -1079,7 +1088,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.Y = float64(targetShape.Pos.Y + d2target.INNER_BORDER_OFFSET)
 					el.Width = float64(targetShape.Width - 2*d2target.INNER_BORDER_OFFSET)
 					el.Height = float64(targetShape.Height - 2*d2target.INNER_BORDER_OFFSET)
-					el.Fill = fill
+					el.Fill = "transparent"
 					el.Stroke = stroke
 					el.Style = style
 					el.Attributes = rx
@@ -1112,6 +1121,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 			} else {
 				el := d2themes.NewThemableElement("path")
 				el.Fill = fill
+				el.FillPattern = targetShape.FillPattern
 				el.Stroke = stroke
 				el.Style = style
 				for _, pathData := range s.GetSVGPathData() {
@@ -1143,6 +1153,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 		} else {
 			el := d2themes.NewThemableElement("path")
 			el.Fill = fill
+			el.FillPattern = targetShape.FillPattern
 			el.Stroke = stroke
 			el.Style = style
 			for _, pathData := range s.GetSVGPathData() {
@@ -1720,6 +1731,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		css = strings.ReplaceAll(css, "font-regular", fmt.Sprintf("%s-font-regular", diagramHash))
 		fmt.Fprintf(upperBuf, `<style type="text/css">%s</style>`, css)
 	}
+
 	if sketchRunner != nil {
 		d2sketch.DefineFillPatterns(upperBuf)
 	}
@@ -1737,6 +1749,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	backgroundEl.Height = float64(h)
 	backgroundEl.Fill = diagram.Root.Fill
 	backgroundEl.Stroke = diagram.Root.Stroke
+	backgroundEl.FillPattern = diagram.Root.FillPattern
 	backgroundEl.Rx = float64(diagram.Root.BorderRadius)
 	if diagram.Root.StrokeDash != 0 {
 		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(diagram.Root.StrokeWidth), diagram.Root.StrokeDash)
@@ -1773,6 +1786,20 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		top -= int(math.Ceil(float64(diagram.Root.StrokeWidth) / 2.))
 		w += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
 		h += int(math.Ceil(float64(diagram.Root.StrokeWidth)/2.) * 2.)
+	}
+
+	bufStr := buf.String()
+	if strings.Contains(bufStr, "dots-overlay") || diagram.Root.FillPattern != "" {
+		fmt.Fprint(upperBuf, `<style type="text/css"><![CDATA[`)
+		fmt.Fprint(upperBuf, `
+.dots-overlay {
+	fill: url(#dots);
+	mix-blend-mode: multiply;
+}`)
+		fmt.Fprint(upperBuf, `]]></style>`)
+		fmt.Fprint(upperBuf, "<defs>")
+		fmt.Fprintf(upperBuf, dots)
+		fmt.Fprint(upperBuf, "</defs>")
 	}
 
 	var dimensions string
