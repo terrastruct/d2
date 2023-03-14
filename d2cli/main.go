@@ -432,10 +432,10 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 		if err != nil {
 			return svg, err
 		}
-		// out, err = png.AddExif(out)
-		// if err != nil {
-		//   return svg, err
-		// }
+		out, err = png.AddExif(out)
+		if err != nil {
+			return svg, err
+		}
 	} else {
 		if len(out) > 0 && out[len(out)-1] != '\n' {
 			out = append(out, '\n')

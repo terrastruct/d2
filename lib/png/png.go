@@ -13,6 +13,7 @@ import (
 	pngstruct "github.com/dsoprea/go-png-image-structure/v2"
 	"github.com/playwright-community/playwright-go"
 
+	"oss.terrastruct.com/d2/lib/version"
 	"oss.terrastruct.com/util-go/xmain"
 )
 
@@ -109,12 +110,12 @@ func AddExif(png []byte) ([]byte, error) {
 
 	ib := exif.NewIfdBuilder(im, ti, exifcommon.IfdStandardIfdIdentity, exifcommon.TestDefaultByteOrder)
 
-	err = ib.AddStandardWithName("ImageWidth", []uint32{11})
+	err = ib.AddStandardWithName("Make", "D2")
 	if err != nil {
 		return nil, err
 	}
 
-	err = ib.AddStandardWithName("ImageLength", []uint32{22})
+	err = ib.AddStandardWithName("Model", version.Version)
 	if err != nil {
 		return nil, err
 	}
