@@ -16,3 +16,4 @@
 
 - Fixes `d2` erroring on malformed user paths (`fdopendir` error). [util-go#10](https://github.com/terrastruct/util-go/pull/10)
 - Arrowhead labels being set without maps wasn't being picked up. [#1015](https://github.com/terrastruct/d2/pull/1015)
+- Fixes a dagre layout error with connections to a container shape with a block type label. [#1032](https://github.com/terrastruct/d2/pull/1032)
