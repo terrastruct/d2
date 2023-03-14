@@ -73,11 +73,10 @@ type ELKEdge struct {
 }
 
 type ELKGraph struct {
-	ID                   string     `json:"id"`
-	LayoutOptions        *elkOpts   `json:"layoutOptions"`
-	DefaultLayoutOptions *elkOpts   `json:"defaultLayoutOptions"`
-	Children             []*ELKNode `json:"children,omitempty"`
-	Edges                []*ELKEdge `json:"edges,omitempty"`
+	ID            string     `json:"id"`
+	LayoutOptions *elkOpts   `json:"layoutOptions"`
+	Children      []*ELKNode `json:"children,omitempty"`
+	Edges         []*ELKEdge `json:"edges,omitempty"`
 }
 
 type ConfigurableOpts struct {
@@ -99,6 +98,7 @@ var DefaultOpts = ConfigurableOpts{
 var port_spacing = 40.
 
 type elkOpts struct {
+	EdgeNode                     int    `json:"elk.spacing.edgeNode,omitempty"`
 	FixedAlignment               string `json:"elk.layered.nodePlacement.bk.fixedAlignment,omitempty"`
 	Thoroughness                 int    `json:"elk.layered.thoroughness,omitempty"`
 	EdgeEdgeBetweenLayersSpacing int    `json:"elk.layered.spacing.edgeEdgeBetweenLayers,omitempty"`
@@ -143,6 +143,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		LayoutOptions: &elkOpts{
 			Thoroughness:                 8,
 			EdgeEdgeBetweenLayersSpacing: 50,
+			EdgeNode:                     40,
 			HierarchyHandling:            "INCLUDE_CHILDREN",
 			FixedAlignment:               "BALANCED",
 			ConsiderModelOrder:           "NODES_AND_EDGES",
@@ -223,6 +224,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				EdgeEdgeBetweenLayersSpacing: 50,
 				HierarchyHandling:            "INCLUDE_CHILDREN",
 				FixedAlignment:               "BALANCED",
+				EdgeNode:                     40,
 				ConsiderModelOrder:           "NODES_AND_EDGES",
 				// Why is it (height, width)? I have no clue, but it works.
 				NodeSizeMinimum: fmt.Sprintf("(%d, %d)", int(math.Ceil(height)), int(math.Ceil(width))),
@@ -256,6 +258,10 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				n.LayoutOptions.Padding = fmt.Sprintf("[top=%d,left=50,bottom=50,right=50]",
 					paddingTop,
 				)
+			}
+		} else {
+			n.LayoutOptions = &elkOpts{
+				// Margins: "[top=100,left=100,bottom=100,right=100]",
 			}
 		}
 
