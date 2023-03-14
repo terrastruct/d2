@@ -47,6 +47,8 @@ type ThemableElement struct {
 
 	Content  string
 	ClipPath string
+
+	FillPattern string
 }
 
 func NewThemableElement(tag string) *ThemableElement {
@@ -80,6 +82,7 @@ func NewThemableElement(tag string) *ThemableElement {
 		color.Empty,
 		color.Empty,
 		color.Empty,
+		"",
 		"",
 		"",
 		"",
@@ -211,5 +214,16 @@ func (el *ThemableElement) Render() string {
 		return fmt.Sprintf("%s>%s</%s>", out, el.Content, el.tag)
 	}
 
-	return out + " />"
+	out += " />"
+	if el.FillPattern != "" {
+		patternEl := el.Copy()
+		patternEl.Fill = ""
+		patternEl.Stroke = ""
+		patternEl.BackgroundColor = ""
+		patternEl.Color = ""
+		patternEl.ClassName = fmt.Sprintf("%s-overlay", el.FillPattern)
+		patternEl.FillPattern = ""
+		out += patternEl.Render()
+	}
+	return out
 }

@@ -37,6 +37,7 @@ func TestE2E(t *testing.T) {
 	t.Run("sanity", testSanity)
 	t.Run("stable", testStable)
 	t.Run("regression", testRegression)
+	t.Run("patterns", testPatterns)
 	t.Run("todo", testTodo)
 	t.Run("measured", testMeasured)
 	t.Run("unicode", testUnicode)
