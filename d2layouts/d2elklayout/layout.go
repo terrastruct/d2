@@ -457,6 +457,9 @@ func deleteBends(g *d2graph.Graph) {
 			if len(e.Route) < 4 {
 				continue
 			}
+			if e.Src == e.Dst {
+				continue
+			}
 			var endpoint *d2graph.Object
 			var start *geo.Point
 			var corner *geo.Point
@@ -500,6 +503,9 @@ func deleteBends(g *d2graph.Graph) {
 				newStart = geo.NewPoint(end.X, start.Y)
 			}
 
+			endpointShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(endpoint.Attributes.Shape.Value)], endpoint.Box)
+			newStart = shape.TraceToShapeBorder(endpointShape, newStart, end)
+
 			// Check that the new segment doesn't collide with anything new
 
 			oldSegment := geo.NewSegment(start, corner)
@@ -512,10 +518,17 @@ func deleteBends(g *d2graph.Graph) {
 				continue
 			}
 
-			oldIntersects = countEdgeIntersects(g, g.Edges[ei], *oldSegment)
-			newIntersects = countEdgeIntersects(g, g.Edges[ei], *newSegment)
+			oldCrossingsCount, oldOverlapsCount, oldCloseOverlapsCount := countEdgeIntersects(g, g.Edges[ei], *oldSegment)
+			newCrossingsCount, newOverlapsCount, newCloseOverlapsCount := countEdgeIntersects(g, g.Edges[ei], *newSegment)
 
-			if newIntersects > oldIntersects {
+			if newCrossingsCount > oldCrossingsCount {
+				continue
+			}
+			if newOverlapsCount > oldOverlapsCount {
+				continue
+			}
+
+			if newCloseOverlapsCount > oldCloseOverlapsCount {
 				continue
 			}
 
@@ -546,9 +559,11 @@ func countObjectIntersects(g *d2graph.Graph, s geo.Segment) int {
 }
 
 // countEdgeIntersects counts both crossings AND getting too close to a parallel segment
-func countEdgeIntersects(g *d2graph.Graph, sEdge *d2graph.Edge, s geo.Segment) int {
+func countEdgeIntersects(g *d2graph.Graph, sEdge *d2graph.Edge, s geo.Segment) (int, int, int) {
 	isHorizontal := s.Start.Y == s.End.Y
-	count := 0
+	crossingsCount := 0
+	overlapsCount := 0
+	closeOverlapsCount := 0
 	for _, e := range g.Edges {
 		if e == sEdge {
 			continue
@@ -558,16 +573,30 @@ func countEdgeIntersects(g *d2graph.Graph, sEdge *d2graph.Edge, s geo.Segment) i
 			otherS := geo.NewSegment(e.Route[i], e.Route[i+1])
 			otherIsHorizontal := otherS.Start.Y == otherS.End.Y
 			if isHorizontal == otherIsHorizontal {
-				if s.Overlaps(*otherS, isHorizontal, float64(edge_node_spacing)) {
-					count++
+				if s.Overlaps(*otherS, !isHorizontal, 0.) {
+					if isHorizontal {
+						if math.Abs(s.Start.Y-otherS.Start.Y) < float64(edge_node_spacing)/2. {
+							overlapsCount++
+							if math.Abs(s.Start.Y-otherS.Start.Y) < float64(edge_node_spacing)/4. {
+								closeOverlapsCount++
+							}
+						}
+					} else {
+						if math.Abs(s.Start.X-otherS.Start.X) < float64(edge_node_spacing)/2. {
+							overlapsCount++
+							if math.Abs(s.Start.X-otherS.Start.X) < float64(edge_node_spacing)/4. {
+								closeOverlapsCount++
+							}
+						}
+					}
 				}
 			} else {
 				if s.Intersects(*otherS) {
-					count++
+					crossingsCount++
 				}
 			}
 		}
 
 	}
-	return count
+	return crossingsCount, overlapsCount, closeOverlapsCount
 }
