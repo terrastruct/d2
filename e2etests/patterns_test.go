@@ -3,6 +3,8 @@ package e2etests
 import (
 	_ "embed"
 	"testing"
+
+	"github.com/davecgh/go-spew/spew"
 )
 
 func testPatterns(t *testing.T) {
@@ -152,6 +154,11 @@ NETWORK: {
 }
 `,
 		},
+	}
+
+	for i := range tcs {
+		tcs[i].justDagre = true
+		spew.Dump(tcs[i].justDagre)
 	}
 
 	runa(t, tcs)

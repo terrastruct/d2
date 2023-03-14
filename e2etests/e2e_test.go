@@ -76,7 +76,9 @@ a -> c
 }
 
 type testCase struct {
-	name              string
+	name string
+	// if the test is just testing a render/style thing, no need to exercise both engines
+	justDagre         bool
 	script            string
 	mtexts            []*d2target.MText
 	assertions        func(t *testing.T, diagram *d2target.Diagram)
@@ -137,7 +139,10 @@ func run(t *testing.T, tc testCase) {
 		serde(t, tc, ruler)
 	}
 
-	layoutsTested := []string{"dagre", "elk"}
+	layoutsTested := []string{"dagre"}
+	if !tc.justDagre {
+		layoutsTested = append(layoutsTested, "elk")
+	}
 
 	for _, layoutName := range layoutsTested {
 		var layout func(context.Context, *d2graph.Graph) error
