@@ -17,6 +17,8 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2latex"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/d2themes"
+	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/shape"
@@ -43,6 +45,8 @@ type Graph struct {
 	Layers    []*Graph `json:"layers,omitempty"`
 	Scenarios []*Graph `json:"scenarios,omitempty"`
 	Steps     []*Graph `json:"steps,omitempty"`
+
+	Theme *d2themes.Theme `json:"theme,omitempty"`
 }
 
 func NewGraph() *Graph {
@@ -1251,6 +1255,11 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		}
 	}
 
+	if g.Theme != nil && g.Theme.SpecialRules.Mono {
+		tmp := d2fonts.SourceCodePro
+		fontFamily = &tmp
+	}
+
 	for _, obj := range g.Objects {
 		obj.Box = &geo.Box{}
 
@@ -1289,6 +1298,10 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 
 			continue
+		}
+
+		if g.Theme != nil && g.Theme.SpecialRules.CapsLock {
+			obj.Attributes.Label.Value = strings.ToUpper(obj.Attributes.Label.Value)
 		}
 
 		labelDims, err := obj.GetLabelSize(mtexts, ruler, fontFamily)
@@ -1406,6 +1419,10 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 
 		if edge.Attributes.Label.Value == "" {
 			continue
+		}
+
+		if g.Theme != nil && g.Theme.SpecialRules.CapsLock {
+			edge.Attributes.Label.Value = strings.ToUpper(edge.Attributes.Label.Value)
 		}
 
 		dims := GetTextDimensions(mtexts, ruler, edge.Text(), fontFamily)
@@ -1649,4 +1666,16 @@ func (obj *Object) IsDescendantOf(ancestor *Object) bool {
 		return false
 	}
 	return obj.Parent.IsDescendantOf(ancestor)
+}
+
+// ApplyTheme applies themes on the graph level
+// This is different than on the render level, which only changes colors
+// A theme applied on the graph level applies special rules that change the graph
+func (g *Graph) ApplyTheme(themeID int64) error {
+	theme := d2themescatalog.Find(themeID)
+	if theme == (d2themes.Theme{}) {
+		return fmt.Errorf("theme %d not found", themeID)
+	}
+	g.Theme = &theme
+	return nil
 }

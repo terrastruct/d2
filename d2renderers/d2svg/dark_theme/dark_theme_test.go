@@ -430,6 +430,7 @@ func run(t *testing.T, tc testCase) {
 		Ruler:      ruler,
 		Layout:     d2dagrelayout.DefaultLayout,
 		FontFamily: go2.Pointer(d2fonts.HandDrawn),
+		ThemeID:    200,
 	})
 	if !tassert.Nil(t, err) {
 		return
