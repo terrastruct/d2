@@ -8,6 +8,7 @@ import (
 	"context"
 	_ "embed"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math"
 	"strings"
@@ -307,7 +308,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 	val, err := vm.RunString(`elk.layout(graph)
 .then(s => s)
-.catch(s => s)
+.catch(err => err.message)
 `)
 
 	if err != nil {
@@ -328,7 +329,21 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		continue
 	}
 
-	jsonOut := promise.Result().Export().(map[string]interface{})
+	if promise.State() == goja.PromiseStateRejected {
+		return errors.New("ELK: something went wrong")
+	}
+
+	result := promise.Result().Export()
+
+	var jsonOut map[string]interface{}
+	switch out := result.(type) {
+	case string:
+		return fmt.Errorf("ELK layout error: %s", out)
+	case map[string]interface{}:
+		jsonOut = out
+	default:
+		return fmt.Errorf("ELK unexpected return: %v", out)
+	}
 
 	jsonBytes, err := json.Marshal(jsonOut)
 	if err != nil {
