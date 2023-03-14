@@ -98,6 +98,7 @@ func Rect(r *Runner, shape d2target.Shape) (string, error) {
 	pathEl := d2themes.NewThemableElement("path")
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range paths {
@@ -145,6 +146,7 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 	pathEl := d2themes.NewThemableElement("path")
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range pathsBigRect {
