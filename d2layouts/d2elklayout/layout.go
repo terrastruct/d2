@@ -452,6 +452,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 // see https://github.com/terrastruct/d2/issues/1030
 func deleteBends(g *d2graph.Graph) {
 	// Get rid of S-shapes at the source and the target
+	// TODO there might be value in repeating this. removal of an S shape introducing another S shape that can still be removed
 	for _, isSource := range []bool{true, false} {
 		for ei, e := range g.Edges {
 			if len(e.Route) < 4 {
@@ -544,6 +545,97 @@ func deleteBends(g *d2graph.Graph) {
 					newStart,
 				)
 			}
+		}
+	}
+	// Get rid of ladders
+	// ELK likes to do these for some reason
+	// .   ┌─
+	// . ┌─┘
+	// . │
+	// We want to transform these into L-shapes
+	for ei, e := range g.Edges {
+		if len(e.Route) < 6 {
+			continue
+		}
+		if e.Src == e.Dst {
+			continue
+		}
+
+		for i := 1; i < len(e.Route)-3; i++ {
+			before := e.Route[i-1]
+			start := e.Route[i]
+			corner := e.Route[i+1]
+			end := e.Route[i+2]
+			after := e.Route[i+3]
+
+			// S-shape on sources only concerned one segment, since the other was just along the bound of endpoint
+			// These concern two segments
+
+			var newCorner *geo.Point
+			if start.X == corner.X {
+				newCorner = geo.NewPoint(end.X, start.Y)
+				// not ladder
+				if (end.Y > start.Y) != (before.Y > start.Y) {
+					continue
+				}
+				if (end.Y > start.Y) != (end.Y > start.Y) {
+					continue
+				}
+			} else {
+				newCorner = geo.NewPoint(start.X, end.Y)
+				if (end.X > start.X) != (before.X > start.X) {
+					continue
+				}
+				if (end.X > start.X) != (after.X > start.X) {
+					continue
+				}
+			}
+
+			oldS1 := geo.NewSegment(start, corner)
+			oldS2 := geo.NewSegment(corner, end)
+
+			newS1 := geo.NewSegment(start, newCorner)
+			newS2 := geo.NewSegment(newCorner, end)
+
+			// Check that the new segments doesn't collide with anything new
+			oldIntersects := countObjectIntersects(g, *oldS1) + countObjectIntersects(g, *oldS2)
+			newIntersects := countObjectIntersects(g, *newS1) + countObjectIntersects(g, *newS2)
+
+			if newIntersects > oldIntersects {
+				continue
+			}
+
+			oldCrossingsCount1, oldOverlapsCount1, oldCloseOverlapsCount1 := countEdgeIntersects(g, g.Edges[ei], *oldS1)
+			oldCrossingsCount2, oldOverlapsCount2, oldCloseOverlapsCount2 := countEdgeIntersects(g, g.Edges[ei], *oldS2)
+			oldCrossingsCount := oldCrossingsCount1 + oldCrossingsCount2
+			oldOverlapsCount := oldOverlapsCount1 + oldOverlapsCount2
+			oldCloseOverlapsCount := oldCloseOverlapsCount1 + oldCloseOverlapsCount2
+
+			newCrossingsCount1, newOverlapsCount1, newCloseOverlapsCount1 := countEdgeIntersects(g, g.Edges[ei], *newS1)
+			newCrossingsCount2, newOverlapsCount2, newCloseOverlapsCount2 := countEdgeIntersects(g, g.Edges[ei], *newS1)
+			newCrossingsCount := newCrossingsCount1 + newCrossingsCount2
+			newOverlapsCount := newOverlapsCount1 + newOverlapsCount2
+			newCloseOverlapsCount := newCloseOverlapsCount1 + newCloseOverlapsCount2
+
+			if newCrossingsCount > oldCrossingsCount {
+				continue
+			}
+			if newOverlapsCount > oldOverlapsCount {
+				continue
+			}
+
+			if newCloseOverlapsCount > oldCloseOverlapsCount {
+				continue
+			}
+
+			// commit
+			g.Edges[ei].Route = append(append(
+				e.Route[:i],
+				newCorner,
+			),
+				e.Route[i+3:]...,
+			)
+			break
 		}
 	}
 }
