@@ -41,7 +41,7 @@ https://user-images.githubusercontent.com/3120367/206125010-bd1fea8e-248a-43e7-8
   - [Community plugins](#community-plugins)
   - [Misc](#misc)
 - [FAQ](#faq)
-- [Open-source projects documenting with D2](#open-source-projects-documenting-with-d2)
+- [Notable open-source projects documenting with D2](#notable-open-source-projects-documenting-with-d2)
 
 ## What does D2 look like?
 
@@ -250,20 +250,24 @@ let us know and we'll be happy to include it here!
 - I have a private inquiry.
   - Please reach out at [hi@d2lang.com](hi@d2lang.com).
 
-## Open-source projects documenting with D2
+## Notable open-source projects documenting with D2
 
 Do you have or see an open-source project with `.d2` files? Please submit a PR adding to
-this list (ordered by star count, desc).
+this selected list of featured projects using D2.
 
-- [Block Protocol](https://github.com/blockprotocol/blockprotocol) - The Block Protocol is
-  an open standard for building and using data-driven blocks.
-- [Ivy Wallet](https://github.com/Ivy-Apps/ivy-wallet) - Ivy Wallet is an open-source
-  money manager app for Android.
-- [Learn EVM Attacks](https://github.com/coinspect/learn-evm-attacks) - Learn & Contribute
-  on previously exploited vulnerabilities across several EVM projects.
-- [BYCEPS](https://github.com/byceps/byceps) - BYCEPS is a self-hosted web platform to run
-  LAN parties.
-- [Re:Earth](https://github.com/reearth/reearth-web) - A free, open and highly extensible
-  WebGIS platform.
-- [Terraform OCI VSCode Server](https://github.com/timoa/terraform-oci-vscode-server) -
-  Terraform project that deploys VSCode Server on Oracle Cloud Infrastructure.
+- [ElasticSearch](https://github.com/elastic/beats/blob/main/libbeat/publisher/queue/proxy/diagrams/broker.d2)
+- [UC
+  Berkeley](https://github.com/ucb-bar/hammer/blob/2b5c04d7b7d9ee3c73575efcd7ee0698bd5bfa88/doc/Hammer-Use/hier.d2)
+- [Coronacheck](https://github.com/minvws/nl-covid19-coronacheck-app-ios/blob/e1567e9d1633b3273c537a105bff0e7d3a57ecfe/Diagrams/client-side-datamodel.d2)
+  - Official app of the Netherlands for coronavirus entry passes.
+- [Block
+  Protocol](https://github.com/blockprotocol/blockprotocol/blob/db4cf8d422b881e52113aa52467d53115270e2b3/libs/%40blockprotocol/type-system/crate/assets/overview.d2)
+  - The Block Protocol is an open standard for building and using data-driven blocks.
+- [Dagger](https://github.com/dagger/dagger/tree/main/cmd/dagger-graph) - A programmable
+  CI/CD engine that runs your pipelines in containers
+- [Ivy
+  Wallet](https://github.com/Ivy-Apps/ivy-wallet/blob/8062624bfa65175ec143cdc4038de27a84d38b57/assets/calc_algo.d2)
+  - Ivy Wallet is an open-source money manager app for Android.
+- [Shed
+  Skin](https://github.com/shedskin/shedskin/blob/c7929e5fe0290d734ffb7e34e4cfc2cf731c7f98/docs/assets/diagrams/shedskin.d2)
+  - Python to C++ compiler
