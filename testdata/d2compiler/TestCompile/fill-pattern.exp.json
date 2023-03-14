@@ -158,7 +158,11 @@
           "label": {
             "value": "x"
           },
-          "style": {},
+          "style": {
+            "fillPattern": {
+              "value": "dots"
+            }
+          },
           "near_key": null,
           "shape": {
             "value": "rectangle"
