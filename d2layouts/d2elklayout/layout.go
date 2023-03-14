@@ -72,10 +72,11 @@ type ELKEdge struct {
 }
 
 type ELKGraph struct {
-	ID            string     `json:"id"`
-	LayoutOptions *elkOpts   `json:"layoutOptions"`
-	Children      []*ELKNode `json:"children,omitempty"`
-	Edges         []*ELKEdge `json:"edges,omitempty"`
+	ID                   string     `json:"id"`
+	LayoutOptions        *elkOpts   `json:"layoutOptions"`
+	DefaultLayoutOptions *elkOpts   `json:"defaultLayoutOptions"`
+	Children             []*ELKNode `json:"children,omitempty"`
+	Edges                []*ELKEdge `json:"edges,omitempty"`
 }
 
 type ConfigurableOpts struct {
@@ -97,6 +98,7 @@ var DefaultOpts = ConfigurableOpts{
 var port_spacing = 40.
 
 type elkOpts struct {
+	FixedAlignment               string `json:"elk.layered.nodePlacement.bk.fixedAlignment,omitempty"`
 	Thoroughness                 int    `json:"elk.layered.thoroughness,omitempty"`
 	EdgeEdgeBetweenLayersSpacing int    `json:"elk.layered.spacing.edgeEdgeBetweenLayers,omitempty"`
 	Direction                    string `json:"elk.direction"`
@@ -141,6 +143,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			Thoroughness:                 8,
 			EdgeEdgeBetweenLayersSpacing: 50,
 			HierarchyHandling:            "INCLUDE_CHILDREN",
+			FixedAlignment:               "BALANCED",
 			ConsiderModelOrder:           "NODES_AND_EDGES",
 			ConfigurableOpts: ConfigurableOpts{
 				Algorithm:       opts.Algorithm,
@@ -218,6 +221,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				Thoroughness:                 8,
 				EdgeEdgeBetweenLayersSpacing: 50,
 				HierarchyHandling:            "INCLUDE_CHILDREN",
+				FixedAlignment:               "BALANCED",
 				ConsiderModelOrder:           "NODES_AND_EDGES",
 				// Why is it (height, width)? I have no clue, but it works.
 				NodeSizeMinimum: fmt.Sprintf("(%d, %d)", int(math.Ceil(height)), int(math.Ceil(width))),
