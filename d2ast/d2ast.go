@@ -3,23 +3,23 @@
 // d2ast implements the d2 language's abstract syntax tree.
 //
 // Special characters to think about in parser:
-//   #
-//   """
-//   ;
-//   []
-//   {}
-//   |
-//   $
-//   '
-//   "
-//   \
-//   :
-//   .
-//   --
-//   <>
-//   *
-//   &
-//   ()
+// #
+// """
+// ;
+// []
+// {}
+// |
+// $
+// '
+// "
+// \
+// :
+// .
+// --
+// <>
+// *
+// &
+// ()
 package d2ast
 
 import (
@@ -159,9 +159,9 @@ func (r Range) Before(r2 Range) bool {
 //
 // note: Line and Column are zero indexed.
 // note: Column and Byte are UTF-8 byte indexes unless byUTF16 was passed to Position.Advance in
-//       which they are UTF-16 code unit indexes.
-//       If intended for Javascript consumption like in the browser or via LSP, byUTF16 is
-//       set to true.
+// .     which they are UTF-16 code unit indexes.
+// .     If intended for Javascript consumption like in the browser or via LSP, byUTF16 is
+// .     set to true.
 type Position struct {
 	Line   int
 	Column int
@@ -650,8 +650,13 @@ func (mk1 *Key) Equals(mk2 *Key) bool {
 	}
 
 	if mk1.Value.Unbox() != nil {
-		if mk1.Value.ScalarBox().Unbox().ScalarString() != mk2.Value.ScalarBox().Unbox().ScalarString() {
+		if (mk1.Value.ScalarBox().Unbox() == nil) != (mk2.Value.ScalarBox().Unbox() == nil) {
 			return false
+		}
+		if mk1.Value.ScalarBox().Unbox() != nil {
+			if mk1.Value.ScalarBox().Unbox().ScalarString() != mk2.Value.ScalarBox().Unbox().ScalarString() {
+				return false
+			}
 		}
 	}
 
