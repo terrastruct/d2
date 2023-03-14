@@ -175,22 +175,22 @@ func NewShape(shapeType string, box *geo.Box) Shape {
 // p is the prev point (used to calculate slope)
 // s is the point on the actual shape border that'll be returned
 //
-//      p
-//      │
-//      │
-//      ▼
-// ┌────r─────────────────────────┐
-// │                              │
-// │    │                         │
-// │    │      xxxxxxxx           │
-// │    ▼  xxxxx       xxxx       │
-// │    sxxx               xx     │
-// │   x                    xx    │
-// │  xx                     xx   │
-// │  x                      xx   │
-// │  xx                   xxx    │
-// │   xxxx             xxxx      │
-// └──────xxxxxxxxxxxxxx──────────┘
+// .      p
+// .      │
+// .      │
+// .      ▼
+// . ┌────r─────────────────────────┐
+// . │                              │
+// . │    │                         │
+// . │    │      xxxxxxxx           │
+// . │    ▼  xxxxx       xxxx       │
+// . │    sxxx               xx     │
+// . │   x                    xx    │
+// . │  xx                     xx   │
+// . │  x                      xx   │
+// . │  xx                   xxx    │
+// . │   xxxx             xxxx      │
+// . └──────xxxxxxxxxxxxxx──────────┘
 func TraceToShapeBorder(shape Shape, rectBorderPoint, prevPoint *geo.Point) *geo.Point {
 	if shape.Is("") || shape.IsRectangular() {
 		return rectBorderPoint

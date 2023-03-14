@@ -55,24 +55,24 @@ func (segment Segment) Intersections(otherSegment Segment) []*Point {
 // If there is no floor or ceiling, negative or positive infinity is used, respectively
 // The direction is inferred, e.g. b/c the passed in segment is vertical, it's inferred we want horizontal bounds
 // buffer says how close the segment can be, on both axes, to other segments given
-//    │              │
-//    │              │
-//    │              │
-//    │              │
-//    │           non-overlap
-//    │
-//    │
-//    │
-//    │     segment
-//    │       │
-//    │       │         ceil
-//    │       │            │
-//            │            │
-// floor      │            │
-//                         │
-//                         │
-//                         │
-//                         │
+// .    │              │
+// .    │              │
+// .    │              │
+// .    │              │
+// .    │           non-overlap
+// .    │
+// .    │
+// .    │
+// .    │     segment
+// .    │       │
+// .    │       │         ceil
+// .    │       │            │
+// .            │            │
+// . floor      │            │
+// .                         │
+// .                         │
+// .                         │
+// .                         │
 // NOTE: the assumption is that all segments given are orthogonal
 func (segment *Segment) GetBounds(segments []*Segment, buffer float64) (float64, float64) {
 	ceil := math.Inf(1)
