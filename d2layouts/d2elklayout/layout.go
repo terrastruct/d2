@@ -96,6 +96,7 @@ var DefaultOpts = ConfigurableOpts{
 }
 
 var port_spacing = 40.
+var edge_node_spacing = 40
 
 type elkOpts struct {
 	EdgeNode                     int    `json:"elk.spacing.edgeNode,omitempty"`
@@ -143,7 +144,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		LayoutOptions: &elkOpts{
 			Thoroughness:                 8,
 			EdgeEdgeBetweenLayersSpacing: 50,
-			EdgeNode:                     40,
+			EdgeNode:                     edge_node_spacing,
 			HierarchyHandling:            "INCLUDE_CHILDREN",
 			FixedAlignment:               "BALANCED",
 			ConsiderModelOrder:           "NODES_AND_EDGES",
@@ -224,7 +225,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				EdgeEdgeBetweenLayersSpacing: 50,
 				HierarchyHandling:            "INCLUDE_CHILDREN",
 				FixedAlignment:               "BALANCED",
-				EdgeNode:                     40,
+				EdgeNode:                     edge_node_spacing,
 				ConsiderModelOrder:           "NODES_AND_EDGES",
 				// Why is it (height, width)? I have no clue, but it works.
 				NodeSizeMinimum: fmt.Sprintf("(%d, %d)", int(math.Ceil(height)), int(math.Ceil(width))),
@@ -442,5 +443,131 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		edge.Route = points
 	}
 
+	deleteBends(g)
+
 	return nil
+}
+
+// deleteBends is a shim for ELK to delete unnecessary bends
+// see https://github.com/terrastruct/d2/issues/1030
+func deleteBends(g *d2graph.Graph) {
+	// Get rid of S-shapes at the source and the target
+	for _, isSource := range []bool{true, false} {
+		for ei, e := range g.Edges {
+			if len(e.Route) < 4 {
+				continue
+			}
+			var endpoint *d2graph.Object
+			var start *geo.Point
+			var corner *geo.Point
+			var end *geo.Point
+
+			if isSource {
+				start = e.Route[0]
+				corner = e.Route[1]
+				end = e.Route[2]
+				endpoint = e.Src
+			} else {
+				start = e.Route[len(e.Route)-1]
+				corner = e.Route[len(e.Route)-2]
+				end = e.Route[len(e.Route)-3]
+				endpoint = e.Dst
+			}
+
+			isHorizontal := start.Y == corner.Y
+
+			// Make sure it's still attached
+			if isHorizontal {
+				if end.Y <= endpoint.TopLeft.Y+10 {
+					continue
+				}
+				if end.Y >= endpoint.TopLeft.Y+endpoint.Height-10 {
+					continue
+				}
+			} else {
+				if end.X <= endpoint.TopLeft.X+10 {
+					continue
+				}
+				if end.X >= endpoint.TopLeft.X+endpoint.Width-10 {
+					continue
+				}
+			}
+
+			var newStart *geo.Point
+			if isHorizontal {
+				newStart = geo.NewPoint(start.X, end.Y)
+			} else {
+				newStart = geo.NewPoint(end.X, start.Y)
+			}
+
+			// Check that the new segment doesn't collide with anything new
+
+			oldSegment := geo.NewSegment(start, corner)
+			newSegment := geo.NewSegment(newStart, end)
+
+			oldIntersects := countObjectIntersects(g, *oldSegment)
+			newIntersects := countObjectIntersects(g, *newSegment)
+
+			if newIntersects > oldIntersects {
+				continue
+			}
+
+			oldIntersects = countEdgeIntersects(g, g.Edges[ei], *oldSegment)
+			newIntersects = countEdgeIntersects(g, g.Edges[ei], *newSegment)
+
+			if newIntersects > oldIntersects {
+				continue
+			}
+
+			// commit
+			if isSource {
+				g.Edges[ei].Route = append(
+					[]*geo.Point{newStart},
+					e.Route[3:]...,
+				)
+			} else {
+				g.Edges[ei].Route = append(
+					e.Route[:len(e.Route)-3],
+					newStart,
+				)
+			}
+		}
+	}
+}
+
+func countObjectIntersects(g *d2graph.Graph, s geo.Segment) int {
+	count := 0
+	for _, o := range g.Objects {
+		if o.Intersects(s, float64(edge_node_spacing)) {
+			count++
+		}
+	}
+	return count
+}
+
+// countEdgeIntersects counts both crossings AND getting too close to a parallel segment
+func countEdgeIntersects(g *d2graph.Graph, sEdge *d2graph.Edge, s geo.Segment) int {
+	isHorizontal := s.Start.Y == s.End.Y
+	count := 0
+	for _, e := range g.Edges {
+		if e == sEdge {
+			continue
+		}
+
+		for i := 0; i < len(e.Route)-1; i++ {
+			otherS := geo.NewSegment(e.Route[i], e.Route[i+1])
+			otherIsHorizontal := otherS.Start.Y == otherS.End.Y
+			if isHorizontal == otherIsHorizontal {
+				if s.Overlaps(*otherS, isHorizontal, float64(edge_node_spacing)) {
+					count++
+				}
+			} else {
+				if s.Intersects(*otherS) {
+					count++
+				}
+			}
+		}
+
+	}
+	return count
 }

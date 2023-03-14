@@ -38,6 +38,10 @@ func (s Segment) Overlaps(otherS Segment, isHorizontal bool, buffer float64) boo
 	}
 }
 
+func (segment Segment) Intersects(otherSegment Segment) bool {
+	return IntersectionPoint(segment.Start, segment.End, otherSegment.Start, otherSegment.End) != nil
+}
+
 //nolint:unused
 func (s Segment) ToString() string {
 	return fmt.Sprintf("%v -> %v", s.Start.ToString(), s.End.ToString())
