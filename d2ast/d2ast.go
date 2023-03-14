@@ -3,23 +3,23 @@
 // d2ast implements the d2 language's abstract syntax tree.
 //
 // Special characters to think about in parser:
-//   #
-//   """
-//   ;
-//   []
-//   {}
-//   |
-//   $
-//   '
-//   "
-//   \
-//   :
-//   .
-//   --
-//   <>
-//   *
-//   &
-//   ()
+// #
+// """
+// ;
+// []
+// {}
+// |
+// $
+// '
+// "
+// \
+// :
+// .
+// --
+// <>
+// *
+// &
+// ()
 package d2ast
 
 import (
