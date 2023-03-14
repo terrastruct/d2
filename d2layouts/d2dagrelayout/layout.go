@@ -467,7 +467,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		// if an edge to a container runs into its label, stop the edge at the label instead
 		overlapsContainerLabel := false
-		if edge.Dst.IsContainer() && edge.Dst.Attributes.Label.Value != "" {
+		if edge.Dst.IsContainer() && edge.Dst.Attributes.Label.Value != "" && !dstShape.Is(shape.TEXT_TYPE) {
 			// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
 			labelWidth := float64(*edge.Dst.LabelWidth)
 			labelHeight := float64(*edge.Dst.LabelHeight)
