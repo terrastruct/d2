@@ -243,6 +243,25 @@ containers: {
 			},
 		},
 		{
+			name: "fill-pattern",
+			text: `x: {
+	style: {
+    fill-pattern: dots
+  }
+}
+`,
+		},
+		{
+			name: "invalid-fill-pattern",
+			text: `x: {
+	style: {
+    fill-pattern: ddots
+  }
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/invalid-fill-pattern.d2:3:19: expected "fill-pattern" to be one of: dots`,
+		},
+		{
 			name: "shape_unquoted_hex",
 
 			text: `x: {

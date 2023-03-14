@@ -392,6 +392,8 @@ func compileStyleFieldInit(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Style.Stroke = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "fill":
 		attrs.Style.Fill = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+	case "fill-pattern":
+		attrs.Style.FillPattern = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "stroke-width":
 		attrs.Style.StrokeWidth = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "stroke-dash":
