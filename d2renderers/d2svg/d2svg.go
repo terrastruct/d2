@@ -1057,7 +1057,6 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.Y = float64(targetShape.Pos.Y - 10 + d2target.INNER_BORDER_OFFSET)
 					el.Width = float64(targetShape.Width - 2*d2target.INNER_BORDER_OFFSET)
 					el.Height = float64(targetShape.Height - 2*d2target.INNER_BORDER_OFFSET)
-					// TODO inner one can be transparent
 					el.Fill = fill
 					el.Stroke = stroke
 					el.Style = style
@@ -1088,7 +1087,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.Y = float64(targetShape.Pos.Y + d2target.INNER_BORDER_OFFSET)
 					el.Width = float64(targetShape.Width - 2*d2target.INNER_BORDER_OFFSET)
 					el.Height = float64(targetShape.Height - 2*d2target.INNER_BORDER_OFFSET)
-					el.Fill = fill
+					el.Fill = "transparent"
 					el.Stroke = stroke
 					el.Style = style
 					el.Attributes = rx
