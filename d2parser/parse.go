@@ -97,11 +97,12 @@ func ParseValue(value string) (d2ast.Value, error) {
 }
 
 // TODO: refactor parser to keep entire file in memory as []rune
-// 	- trivial to then convert positions
-// 	- lookahead is gone, just forward back as much as you want :)
-// 	- streaming parser isn't really helpful.
-// 	- just read into a string even and decode runes forward/back as needed
-// 	- the whole file essentially exists within the parser as the AST anyway...
+//   - trivial to then convert positions
+//   - lookahead is gone, just forward back as much as you want :)
+//   - streaming parser isn't really helpful.
+//   - just read into a string even and decode runes forward/back as needed
+//   - the whole file essentially exists within the parser as the AST anyway...
+//
 // TODO: ast struct that combines map & errors and pass that around
 type parser struct {
 	path  string
@@ -315,13 +316,15 @@ func (p *parser) commit() {
 //
 // TODO: make each parse function read its delimiter and return nil if not as expected
 // TODO: lookahead *must* always be empty in between parse calls. you either commit or
-//       rewind in each function. if you don't, you pass a hint.
+//
+//	rewind in each function. if you don't, you pass a hint.
 //
 // TODO: omg we don't need two buffers, just a single lookahead and an index...
 // TODO: get rid of lookaheadPos or at least never use directly. maybe rename to beforePeekPos?
-// 		   or better yet keep positions in the lookahead buffer.
-// 		   ok so plan here is to get rid of lookaheadPos and add a rewindPos that stores
-// 		   the pos to rewind to.
+//
+//	or better yet keep positions in the lookahead buffer.
+//	ok so plan here is to get rid of lookaheadPos and add a rewindPos that stores
+//	the pos to rewind to.
 func (p *parser) rewind() {
 	if len(p.lookahead) == 0 {
 		return
