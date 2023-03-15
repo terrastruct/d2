@@ -110,6 +110,7 @@ type elkOpts struct {
 	ConsiderModelOrder           string `json:"elk.layered.considerModelOrder.strategy,omitempty"`
 
 	NodeSizeConstraints string `json:"elk.nodeSize.constraints,omitempty"`
+	ContentAlignment    string `json:"elk.contentAlignment,omitempty"`
 	NodeSizeMinimum     string `json:"elk.nodeSize.minimum,omitempty"`
 
 	ConfigurableOpts
@@ -148,6 +149,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			HierarchyHandling:            "INCLUDE_CHILDREN",
 			FixedAlignment:               "BALANCED",
 			ConsiderModelOrder:           "NODES_AND_EDGES",
+			NodeSizeConstraints:          "MINIMUM_SIZE",
+			ContentAlignment:             "H_CENTER V_CENTER",
 			ConfigurableOpts: ConfigurableOpts{
 				Algorithm:       opts.Algorithm,
 				NodeSpacing:     opts.NodeSpacing,
@@ -227,8 +230,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				FixedAlignment:               "BALANCED",
 				EdgeNode:                     edge_node_spacing,
 				ConsiderModelOrder:           "NODES_AND_EDGES",
-				// Why is it (height, width)? I have no clue, but it works.
-				NodeSizeMinimum: fmt.Sprintf("(%d, %d)", int(math.Ceil(height)), int(math.Ceil(width))),
+				NodeSizeConstraints:          "MINIMUM_SIZE",
+				ContentAlignment:             "H_CENTER V_CENTER",
 				ConfigurableOpts: ConfigurableOpts{
 					NodeSpacing:     opts.NodeSpacing,
 					EdgeNodeSpacing: opts.EdgeNodeSpacing,
@@ -236,11 +239,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					Padding:         opts.Padding,
 				},
 			}
-			// Only set if specified.
-			// There's a bug where if it's the node label dimensions that set the NodeSizeMinimum,
-			// then suddenly it's reversed back to (width, height). I must be missing something
-			if obj.Attributes.Width != nil || obj.Attributes.Height != nil {
-				n.LayoutOptions.NodeSizeConstraints = "MINIMUM_SIZE"
+
+			switch elkGraph.LayoutOptions.Direction {
+			case "DOWN", "UP":
+				n.LayoutOptions.NodeSizeMinimum = fmt.Sprintf("(%d, %d)", int(math.Ceil(height)), int(math.Ceil(width)))
+			case "RIGHT", "LEFT":
+				n.LayoutOptions.NodeSizeMinimum = fmt.Sprintf("(%d, %d)", int(math.Ceil(width)), int(math.Ceil(height)))
 			}
 
 			if n.LayoutOptions.Padding == DefaultOpts.Padding {
