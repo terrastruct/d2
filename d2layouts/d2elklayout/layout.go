@@ -478,7 +478,7 @@ func deleteBends(g *d2graph.Graph) {
 				endpoint = e.Dst
 			}
 
-			isHorizontal := math.Round(start.Y) == math.Round(corner.Y)
+			isHorizontal := math.Ceil(start.Y) == math.Ceil(corner.Y)
 
 			// Make sure it's still attached
 			if isHorizontal {
@@ -575,7 +575,7 @@ func deleteBends(g *d2graph.Graph) {
 			// These concern two segments
 
 			var newCorner *geo.Point
-			if math.Round(start.X) == math.Round(corner.X) {
+			if math.Ceil(start.X) == math.Ceil(corner.X) {
 				newCorner = geo.NewPoint(end.X, start.Y)
 				// not ladder
 				if (end.X > start.X) != (start.X > before.X) {
@@ -663,7 +663,7 @@ func countObjectIntersects(g *d2graph.Graph, src, dst *d2graph.Object, s geo.Seg
 
 // countEdgeIntersects counts both crossings AND getting too close to a parallel segment
 func countEdgeIntersects(g *d2graph.Graph, sEdge *d2graph.Edge, s geo.Segment) (int, int, int, int) {
-	isHorizontal := math.Round(s.Start.Y) == math.Round(s.End.Y)
+	isHorizontal := math.Ceil(s.Start.Y) == math.Ceil(s.End.Y)
 	crossingsCount := 0
 	overlapsCount := 0
 	closeOverlapsCount := 0
@@ -675,7 +675,7 @@ func countEdgeIntersects(g *d2graph.Graph, sEdge *d2graph.Edge, s geo.Segment) (
 
 		for i := 0; i < len(e.Route)-1; i++ {
 			otherS := geo.NewSegment(e.Route[i], e.Route[i+1])
-			otherIsHorizontal := math.Round(otherS.Start.Y) == math.Round(otherS.End.Y)
+			otherIsHorizontal := math.Ceil(otherS.Start.Y) == math.Ceil(otherS.End.Y)
 			if isHorizontal == otherIsHorizontal {
 				if s.Overlaps(*otherS, !isHorizontal, 0.) {
 					if isHorizontal {
