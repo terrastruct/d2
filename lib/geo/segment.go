@@ -20,22 +20,26 @@ func NewSegment(from, to *Point) *Segment {
 
 func (s Segment) Overlaps(otherS Segment, isHorizontal bool, buffer float64) bool {
 	if isHorizontal {
-		if s.Start.Y-otherS.End.Y >= buffer {
+		if math.Min(s.Start.Y, s.End.Y)-math.Max(otherS.Start.Y, otherS.End.Y) >= buffer {
 			return false
 		}
-		if otherS.Start.Y-s.End.Y >= buffer {
+		if math.Min(otherS.Start.Y, otherS.End.Y)-math.Max(s.Start.Y, s.End.Y) >= buffer {
 			return false
 		}
 		return true
 	} else {
-		if s.Start.X-otherS.End.X >= buffer {
+		if math.Min(s.Start.X, s.End.X)-math.Max(otherS.Start.X, otherS.End.X) >= buffer {
 			return false
 		}
-		if otherS.Start.X-s.End.X >= buffer {
+		if math.Min(otherS.Start.X, otherS.End.X)-math.Max(s.Start.X, s.End.X) >= buffer {
 			return false
 		}
 		return true
 	}
+}
+
+func (segment Segment) Intersects(otherSegment Segment) bool {
+	return IntersectionPoint(segment.Start, segment.End, otherSegment.Start, otherSegment.End) != nil
 }
 
 //nolint:unused
