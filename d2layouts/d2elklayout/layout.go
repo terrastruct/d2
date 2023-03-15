@@ -478,7 +478,7 @@ func deleteBends(g *d2graph.Graph) {
 				endpoint = e.Dst
 			}
 
-			isHorizontal := start.Y == corner.Y
+			isHorizontal := math.Round(start.Y) == math.Round(corner.Y)
 
 			// Make sure it's still attached
 			if isHorizontal {
@@ -512,15 +512,15 @@ func deleteBends(g *d2graph.Graph) {
 			oldSegment := geo.NewSegment(start, corner)
 			newSegment := geo.NewSegment(newStart, end)
 
-			oldIntersects := countObjectIntersects(g, *oldSegment)
-			newIntersects := countObjectIntersects(g, *newSegment)
+			oldIntersects := countObjectIntersects(g, e.Src, e.Dst, *oldSegment)
+			newIntersects := countObjectIntersects(g, e.Src, e.Dst, *newSegment)
 
 			if newIntersects > oldIntersects {
 				continue
 			}
 
-			oldCrossingsCount, oldOverlapsCount, oldCloseOverlapsCount := countEdgeIntersects(g, g.Edges[ei], *oldSegment)
-			newCrossingsCount, newOverlapsCount, newCloseOverlapsCount := countEdgeIntersects(g, g.Edges[ei], *newSegment)
+			oldCrossingsCount, oldOverlapsCount, oldCloseOverlapsCount, oldTouchingCount := countEdgeIntersects(g, g.Edges[ei], *oldSegment)
+			newCrossingsCount, newOverlapsCount, newCloseOverlapsCount, newTouchingCount := countEdgeIntersects(g, g.Edges[ei], *newSegment)
 
 			if newCrossingsCount > oldCrossingsCount {
 				continue
@@ -530,6 +530,9 @@ func deleteBends(g *d2graph.Graph) {
 			}
 
 			if newCloseOverlapsCount > oldCloseOverlapsCount {
+				continue
+			}
+			if newTouchingCount > oldTouchingCount {
 				continue
 			}
 
@@ -572,21 +575,21 @@ func deleteBends(g *d2graph.Graph) {
 			// These concern two segments
 
 			var newCorner *geo.Point
-			if start.X == corner.X {
+			if math.Round(start.X) == math.Round(corner.X) {
 				newCorner = geo.NewPoint(end.X, start.Y)
 				// not ladder
-				if (end.Y > start.Y) != (before.Y > start.Y) {
+				if (end.X > start.X) != (start.X > before.X) {
 					continue
 				}
-				if (end.Y > start.Y) != (end.Y > start.Y) {
+				if (end.Y > start.Y) != (after.Y > end.Y) {
 					continue
 				}
 			} else {
 				newCorner = geo.NewPoint(start.X, end.Y)
-				if (end.X > start.X) != (before.X > start.X) {
+				if (end.Y > start.Y) != (start.Y > before.Y) {
 					continue
 				}
-				if (end.X > start.X) != (after.X > start.X) {
+				if (end.X > start.X) != (after.X > end.X) {
 					continue
 				}
 			}
@@ -598,24 +601,26 @@ func deleteBends(g *d2graph.Graph) {
 			newS2 := geo.NewSegment(newCorner, end)
 
 			// Check that the new segments doesn't collide with anything new
-			oldIntersects := countObjectIntersects(g, *oldS1) + countObjectIntersects(g, *oldS2)
-			newIntersects := countObjectIntersects(g, *newS1) + countObjectIntersects(g, *newS2)
+			oldIntersects := countObjectIntersects(g, e.Src, e.Dst, *oldS1) + countObjectIntersects(g, e.Src, e.Dst, *oldS2)
+			newIntersects := countObjectIntersects(g, e.Src, e.Dst, *newS1) + countObjectIntersects(g, e.Src, e.Dst, *newS2)
 
 			if newIntersects > oldIntersects {
 				continue
 			}
 
-			oldCrossingsCount1, oldOverlapsCount1, oldCloseOverlapsCount1 := countEdgeIntersects(g, g.Edges[ei], *oldS1)
-			oldCrossingsCount2, oldOverlapsCount2, oldCloseOverlapsCount2 := countEdgeIntersects(g, g.Edges[ei], *oldS2)
+			oldCrossingsCount1, oldOverlapsCount1, oldCloseOverlapsCount1, oldTouchingCount1 := countEdgeIntersects(g, g.Edges[ei], *oldS1)
+			oldCrossingsCount2, oldOverlapsCount2, oldCloseOverlapsCount2, oldTouchingCount2 := countEdgeIntersects(g, g.Edges[ei], *oldS2)
 			oldCrossingsCount := oldCrossingsCount1 + oldCrossingsCount2
 			oldOverlapsCount := oldOverlapsCount1 + oldOverlapsCount2
 			oldCloseOverlapsCount := oldCloseOverlapsCount1 + oldCloseOverlapsCount2
+			oldTouchingCount := oldTouchingCount1 + oldTouchingCount2
 
-			newCrossingsCount1, newOverlapsCount1, newCloseOverlapsCount1 := countEdgeIntersects(g, g.Edges[ei], *newS1)
-			newCrossingsCount2, newOverlapsCount2, newCloseOverlapsCount2 := countEdgeIntersects(g, g.Edges[ei], *newS1)
+			newCrossingsCount1, newOverlapsCount1, newCloseOverlapsCount1, newTouchingCount1 := countEdgeIntersects(g, g.Edges[ei], *newS1)
+			newCrossingsCount2, newOverlapsCount2, newCloseOverlapsCount2, newTouchingCount2 := countEdgeIntersects(g, g.Edges[ei], *newS2)
 			newCrossingsCount := newCrossingsCount1 + newCrossingsCount2
 			newOverlapsCount := newOverlapsCount1 + newOverlapsCount2
 			newCloseOverlapsCount := newCloseOverlapsCount1 + newCloseOverlapsCount2
+			newTouchingCount := newTouchingCount1 + newTouchingCount2
 
 			if newCrossingsCount > oldCrossingsCount {
 				continue
@@ -625,6 +630,9 @@ func deleteBends(g *d2graph.Graph) {
 			}
 
 			if newCloseOverlapsCount > oldCloseOverlapsCount {
+				continue
+			}
+			if newTouchingCount > oldTouchingCount {
 				continue
 			}
 
@@ -640,10 +648,13 @@ func deleteBends(g *d2graph.Graph) {
 	}
 }
 
-func countObjectIntersects(g *d2graph.Graph, s geo.Segment) int {
+func countObjectIntersects(g *d2graph.Graph, src, dst *d2graph.Object, s geo.Segment) int {
 	count := 0
-	for _, o := range g.Objects {
-		if o.Intersects(s, float64(edge_node_spacing)) {
+	for i, o := range g.Objects {
+		if g.Objects[i] == src || g.Objects[i] == dst {
+			continue
+		}
+		if o.Intersects(s, float64(edge_node_spacing)-1) {
 			count++
 		}
 	}
@@ -651,19 +662,20 @@ func countObjectIntersects(g *d2graph.Graph, s geo.Segment) int {
 }
 
 // countEdgeIntersects counts both crossings AND getting too close to a parallel segment
-func countEdgeIntersects(g *d2graph.Graph, sEdge *d2graph.Edge, s geo.Segment) (int, int, int) {
-	isHorizontal := s.Start.Y == s.End.Y
+func countEdgeIntersects(g *d2graph.Graph, sEdge *d2graph.Edge, s geo.Segment) (int, int, int, int) {
+	isHorizontal := math.Round(s.Start.Y) == math.Round(s.End.Y)
 	crossingsCount := 0
 	overlapsCount := 0
 	closeOverlapsCount := 0
-	for _, e := range g.Edges {
-		if e == sEdge {
+	touchingCount := 0
+	for i, e := range g.Edges {
+		if g.Edges[i] == sEdge {
 			continue
 		}
 
 		for i := 0; i < len(e.Route)-1; i++ {
 			otherS := geo.NewSegment(e.Route[i], e.Route[i+1])
-			otherIsHorizontal := otherS.Start.Y == otherS.End.Y
+			otherIsHorizontal := math.Round(otherS.Start.Y) == math.Round(otherS.End.Y)
 			if isHorizontal == otherIsHorizontal {
 				if s.Overlaps(*otherS, !isHorizontal, 0.) {
 					if isHorizontal {
@@ -671,6 +683,9 @@ func countEdgeIntersects(g *d2graph.Graph, sEdge *d2graph.Edge, s geo.Segment) (
 							overlapsCount++
 							if math.Abs(s.Start.Y-otherS.Start.Y) < float64(edge_node_spacing)/4. {
 								closeOverlapsCount++
+								if math.Abs(s.Start.Y-otherS.Start.Y) < 1. {
+									touchingCount++
+								}
 							}
 						}
 					} else {
@@ -678,6 +693,9 @@ func countEdgeIntersects(g *d2graph.Graph, sEdge *d2graph.Edge, s geo.Segment) (
 							overlapsCount++
 							if math.Abs(s.Start.X-otherS.Start.X) < float64(edge_node_spacing)/4. {
 								closeOverlapsCount++
+								if math.Abs(s.Start.Y-otherS.Start.Y) < 1. {
+									touchingCount++
+								}
 							}
 						}
 					}
@@ -690,5 +708,5 @@ func countEdgeIntersects(g *d2graph.Graph, sEdge *d2graph.Edge, s geo.Segment) (
 		}
 
 	}
-	return crossingsCount, overlapsCount, closeOverlapsCount
+	return crossingsCount, overlapsCount, closeOverlapsCount, touchingCount
 }
