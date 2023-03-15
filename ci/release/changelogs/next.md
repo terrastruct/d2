@@ -10,6 +10,8 @@
 - `elk` layouts have less bends in the routes. [#1033](https://github.com/terrastruct/d2/pull/1033)
 - `elk` layouts center nodes better. [#1028](https://github.com/terrastruct/d2/pull/1028)
 - `elk` layouts have nicer margins between node boundaries and edges. [#1028](https://github.com/terrastruct/d2/pull/1028)
+- `elk` layouts container contents are centered within. [#1038](https://github.com/terrastruct/d2/pull/1038)
+- `elk` layouts container dimensions fit label. [#1038](https://github.com/terrastruct/d2/pull/1038)
 - `sketch` draws connections with less roughness, which especially improves look of corner bends in ELK. [#1014](https://github.com/terrastruct/d2/pull/1014)
 - CSS in SVGs are diagram-specific, which means you can embed multiple D2 diagrams on a web page without fear of style conflicts. [#1016](https://github.com/terrastruct/d2/pull/1016)
 

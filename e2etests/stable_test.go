@@ -103,7 +103,8 @@ func testStable(t *testing.T) {
 		}
   }
 
-  online portal: {
+  # long label to expand
+  online portal: ONLINE PORTALLLL {
     ui: { shape: hexagon }
   }
 
