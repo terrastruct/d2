@@ -1,0 +1,697 @@
+{
+  "name": "",
+  "isFolderOnly": false,
+  "fontFamily": "SourceSansPro",
+  "shapes": [
+    {
+      "id": "OEM Factory",
+      "type": "rectangle",
+      "pos": {
+        "x": 77,
+        "y": 0
+      },
+      "width": 135,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B6",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "OEM Factory",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 90,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "company Warehouse",
+      "type": "text",
+      "pos": {
+        "x": 0,
+        "y": 166
+      },
+      "width": 353,
+      "height": 664,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "transparent",
+      "stroke": "N1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "### company Warehouse\n- Asset Tagging\n- Inventory\n- Staging\n- Dispatch to Site",
+      "fontSize": 28,
+      "fontFamily": "DEFAULT",
+      "language": "markdown",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 184,
+      "labelHeight": 150,
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "company Warehouse.Master",
+      "type": "rectangle",
+      "pos": {
+        "x": 97,
+        "y": 216
+      },
+      "width": 94,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B5",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Master",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 49,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "company Warehouse.Regional-1",
+      "type": "rectangle",
+      "pos": {
+        "x": 194,
+        "y": 382
+      },
+      "width": 120,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B5",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Regional-1",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 75,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "company Warehouse.Regional-2",
+      "type": "rectangle",
+      "pos": {
+        "x": 94,
+        "y": 548
+      },
+      "width": 120,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B5",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Regional-2",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 75,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "company Warehouse.Regional-N",
+      "type": "rectangle",
+      "pos": {
+        "x": 93,
+        "y": 714
+      },
+      "width": 122,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B5",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Regional-N",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 77,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 2
+    }
+  ],
+  "connections": [
+    {
+      "id": "(OEM Factory -> company Warehouse)[0]",
+      "src": "OEM Factory",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "company Warehouse",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 144,
+          "y": 66
+        },
+        {
+          "x": 144,
+          "y": 106
+        },
+        {
+          "x": 144,
+          "y": 126
+        },
+        {
+          "x": 144,
+          "y": 166
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "company Warehouse.(Master -> Regional-1)[0]",
+      "src": "company Warehouse.Master",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "company Warehouse.Regional-1",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 187.53614457831327,
+          "y": 282
+        },
+        {
+          "x": 240.30722891566265,
+          "y": 322
+        },
+        {
+          "x": 253.5,
+          "y": 342
+        },
+        {
+          "x": 253.5,
+          "y": 382
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "company Warehouse.(Master -> Regional-2)[0]",
+      "src": "company Warehouse.Master",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "company Warehouse.Regional-2",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 141.01807228915663,
+          "y": 282
+        },
+        {
+          "x": 137.40361445783134,
+          "y": 322
+        },
+        {
+          "x": 136.5,
+          "y": 348.6
+        },
+        {
+          "x": 136.5,
+          "y": 373.5
+        },
+        {
+          "x": 136.5,
+          "y": 398.4
+        },
+        {
+          "x": 138.5,
+          "y": 508
+        },
+        {
+          "x": 146.5,
+          "y": 548
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "company Warehouse.(Master -> Regional-N)[0]",
+      "src": "company Warehouse.Master",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "company Warehouse.Regional-N",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 108.01807228915663,
+          "y": 282
+        },
+        {
+          "x": 64.40361445783132,
+          "y": 322
+        },
+        {
+          "x": 53.5,
+          "y": 348.6
+        },
+        {
+          "x": 53.5,
+          "y": 373.5
+        },
+        {
+          "x": 53.5,
+          "y": 398.4
+        },
+        {
+          "x": 53.5,
+          "y": 431.6
+        },
+        {
+          "x": 53.5,
+          "y": 456.5
+        },
+        {
+          "x": 53.5,
+          "y": 481.4
+        },
+        {
+          "x": 53.5,
+          "y": 514.6
+        },
+        {
+          "x": 53.5,
+          "y": 539.5
+        },
+        {
+          "x": 53.5,
+          "y": 564.4
+        },
+        {
+          "x": 65.5,
+          "y": 674
+        },
+        {
+          "x": 113.5,
+          "y": 714
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "company Warehouse.(Regional-1 -> Regional-2)[0]",
+      "src": "company Warehouse.Regional-1",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "company Warehouse.Regional-2",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 233.62048192771084,
+          "y": 448
+        },
+        {
+          "x": 209.52409638554218,
+          "y": 488
+        },
+        {
+          "x": 197.5,
+          "y": 508
+        },
+        {
+          "x": 173.5,
+          "y": 548
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "company Warehouse.(Regional-2 -> Regional-N)[0]",
+      "src": "company Warehouse.Regional-2",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "company Warehouse.Regional-N",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 153.5,
+          "y": 614
+        },
+        {
+          "x": 153.5,
+          "y": 654
+        },
+        {
+          "x": 153.5,
+          "y": 674
+        },
+        {
+          "x": 153.5,
+          "y": 714
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "company Warehouse.(Regional-N -> Regional-1)[0]",
+      "src": "company Warehouse.Regional-N",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "company Warehouse.Regional-1",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 209.16265060240966,
+          "y": 714
+        },
+        {
+          "x": 276.63253012048193,
+          "y": 674
+        },
+        {
+          "x": 293.5,
+          "y": 647.4
+        },
+        {
+          "x": 293.5,
+          "y": 622.5
+        },
+        {
+          "x": 293.5,
+          "y": 597.6
+        },
+        {
+          "x": 288.7,
+          "y": 488
+        },
+        {
+          "x": 269.5,
+          "y": 448
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    }
+  ],
+  "root": {
+    "id": "",
+    "type": "",
+    "pos": {
+      "x": 0,
+      "y": 0
+    },
+    "width": 0,
+    "height": 0,
+    "opacity": 0,
+    "strokeDash": 0,
+    "strokeWidth": 0,
+    "borderRadius": 0,
+    "fill": "N7",
+    "stroke": "",
+    "shadow": false,
+    "3d": false,
+    "multiple": false,
+    "double-border": false,
+    "tooltip": "",
+    "link": "",
+    "icon": null,
+    "iconPosition": "",
+    "blend": false,
+    "fields": null,
+    "methods": null,
+    "columns": null,
+    "label": "",
+    "fontSize": 0,
+    "fontFamily": "",
+    "language": "",
+    "color": "",
+    "italic": false,
+    "bold": false,
+    "underline": false,
+    "labelWidth": 0,
+    "labelHeight": 0,
+    "zIndex": 0,
+    "level": 0
+  }
+}

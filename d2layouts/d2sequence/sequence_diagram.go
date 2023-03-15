@@ -355,13 +355,13 @@ func (sd *sequenceDiagram) placeActors() {
 }
 
 // addLifelineEdges adds a new edge for each actor in the graph that represents the its lifeline
-// ┌──────────────┐
-// │     actor    │
-// └──────┬───────┘
-//        │
-//        │ lifeline
-//        │
-//        │
+// . ┌──────────────┐
+// . │     actor    │
+// . └──────┬───────┘
+// .        │
+// .        │ lifeline
+// .        │
+// .        │
 func (sd *sequenceDiagram) addLifelineEdges() {
 	endY := 0.
 	if len(sd.messages) > 0 {
@@ -433,17 +433,17 @@ func (sd *sequenceDiagram) placeNotes() {
 }
 
 // placeSpans places spans over the object lifeline
-// ┌──────────┐
-// │  actor   │
-// └────┬─────┘
-//    ┌─┴──┐
-//    │    │
-//    |span|
-//    │    │
-//    └─┬──┘
-//      │
-//   lifeline
-//      │
+// . ┌──────────┐
+// . │  actor   │
+// . └────┬─────┘
+// .    ┌─┴──┐
+// .    │    │
+// .    |span|
+// .    │    │
+// .    └─┬──┘
+// .      │
+// .   lifeline
+// .      │
 func (sd *sequenceDiagram) placeSpans() {
 	// quickly find the span center X
 	rankToX := make(map[int]float64)
