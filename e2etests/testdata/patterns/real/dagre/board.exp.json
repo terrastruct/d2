@@ -10,7 +10,7 @@
         "x": 0,
         "y": 41
       },
-      "width": 333,
+      "width": 334,
       "height": 412,
       "opacity": 1,
       "strokeDash": 0,
@@ -52,7 +52,7 @@
         "x": 20,
         "y": 106
       },
-      "width": 293,
+      "width": 294,
       "height": 317,
       "opacity": 1,
       "strokeDash": 0,
@@ -91,7 +91,7 @@
       "id": "NETWORK.CELL TOWER.satellites",
       "type": "stored_data",
       "pos": {
-        "x": 86,
+        "x": 87,
         "y": 138
       },
       "width": 161,
@@ -132,7 +132,7 @@
       "id": "NETWORK.CELL TOWER.transmitter",
       "type": "rectangle",
       "pos": {
-        "x": 91,
+        "x": 92,
         "y": 325
       },
       "width": 151,
@@ -192,7 +192,7 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 37,
+      "labelWidth": 38,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
@@ -202,15 +202,15 @@
           "y": 205
         },
         {
-          "x": 106,
+          "x": 106.19999999999999,
           "y": 253
         },
         {
-          "x": 106,
+          "x": 106.25,
           "y": 277.2
         },
         {
-          "x": 142,
+          "x": 142.25,
           "y": 326
         }
       ],
@@ -241,25 +241,25 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 37,
+      "labelWidth": 38,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
       "route": [
         {
-          "x": 166,
+          "x": 167,
           "y": 205
         },
         {
-          "x": 166.4,
+          "x": 167,
           "y": 253
         },
         {
-          "x": 166.5,
+          "x": 167,
           "y": 277.2
         },
         {
-          "x": 166.5,
+          "x": 167,
           "y": 326
         }
       ],
@@ -290,25 +290,25 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 37,
+      "labelWidth": 38,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
       "route": [
         {
-          "x": 191,
+          "x": 192,
           "y": 205
         },
         {
-          "x": 227,
+          "x": 227.8,
           "y": 253
         },
         {
-          "x": 227,
+          "x": 227.75,
           "y": 277.2
         },
         {
-          "x": 191,
+          "x": 191.75,
           "y": 326
         }
       ],

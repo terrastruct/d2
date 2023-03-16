@@ -1424,8 +1424,13 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		if g.Theme != nil && g.Theme.SpecialRules.CapsLock {
 			edge.Attributes.Label.Value = strings.ToUpper(edge.Attributes.Label.Value)
 		}
+		usedFont := fontFamily
+		if edge.Attributes.Style.Font != nil {
+			f := d2fonts.D2_FONT_TO_FAMILY[edge.Attributes.Style.Font.Value]
+			usedFont = &f
+		}
 
-		dims := GetTextDimensions(mtexts, ruler, edge.Text(), fontFamily)
+		dims := GetTextDimensions(mtexts, ruler, edge.Text(), usedFont)
 		if dims == nil {
 			return fmt.Errorf("dimensions for edge label %#v not found", edge.Text())
 		}

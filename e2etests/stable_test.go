@@ -136,6 +136,11 @@ network.data processor -> api server
 			`,
 		},
 		{
+			name: "mono-edge",
+			script: `direction: right
+x -> y: hi { style.font: mono }`,
+		},
+		{
 			name: "mono-font",
 			script: `satellites: SATELLITES {
   shape: stored_data
