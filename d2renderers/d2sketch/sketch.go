@@ -362,6 +362,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 	pathEl := d2themes.NewThemableElement("path")
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range paths {
@@ -388,6 +389,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 	pathEl = d2themes.NewThemableElement("path")
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill = shape.Fill
+	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "class_header"
 	for _, p := range paths {
 		pathEl.D = p
@@ -467,6 +469,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 		}
 		pathEl := d2themes.NewThemableElement("path")
 		pathEl.Fill = shape.Fill
+		pathEl.FillPattern = shape.FillPattern
 		for _, p := range paths {
 			pathEl.D = p
 			output += pathEl.Render()
@@ -501,6 +504,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	pathEl := d2themes.NewThemableElement("path")
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range paths {
@@ -528,6 +532,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	pathEl = d2themes.NewThemableElement("path")
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill = shape.Fill
+	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "class_header"
 	for _, p := range paths {
 		pathEl.D = p
@@ -581,6 +586,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	}
 	pathEl = d2themes.NewThemableElement("path")
 	pathEl.Fill = shape.Fill
+	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "class_header"
 	for _, p := range paths {
 		pathEl.D = p

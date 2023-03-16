@@ -1157,7 +1157,27 @@ NETWORK: {
 		}
   }
 }
-			`,
+D2 Parser: {
+	style.fill-pattern: grain
+  shape: class
+
+  +reader: io.RuneReader
+  # Default visibility is + so no need to specify.
+  readerPos: d2ast.Position
+
+  # Private field.
+  -lookahead: "[]rune"
+
+  # Escape the # to prevent being parsed as comment
+  #lookaheadPos: d2ast.Position
+  # Or just wrap in quotes
+  "#peekn(n int)": (s string, eof bool)
+
+  +peek(): (r rune, eof bool)
+  rewind()
+  commit()
+}
+`,
 		},
 		{
 			name: "dots-3d",

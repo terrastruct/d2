@@ -152,6 +152,78 @@ NETWORK: {
 }
 `,
 		},
+		{
+			name: "real-lines",
+			script: `
+NETWORK: {
+  style: {
+	  stroke: black
+    fill-pattern: lines
+    double-border: true
+    fill: "#E7E9EE"
+    font: mono
+  }
+  CELL TOWER: {
+		style: {
+			stroke: black
+			fill-pattern: lines
+			fill: "#F5F6F9"
+			font: mono
+		}
+		satellites: SATELLITES {
+			shape: stored_data
+			style: {
+				font: mono
+				fill: white
+				stroke: black
+				multiple: true
+			}
+		}
+
+		transmitter: TRANSMITTER {
+			style: {
+				font: mono
+				fill: white
+				stroke: black
+			}
+		}
+
+		satellites -> transmitter: SEND {
+			style.stroke: black
+			style.font: mono
+		}
+		satellites -> transmitter: SEND {
+			style.stroke: black
+			style.font: mono
+		}
+		satellites -> transmitter: SEND {
+			style.stroke: black
+			style.font: mono
+		}
+  }
+}
+
+costumes: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  silliness: int
+  monster: int
+  last_updated: timestamp
+	style.fill-pattern: lines
+}
+
+monsters: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  movie: string
+  weight: int
+  last_updated: timestamp
+	style.fill-pattern: grain
+}
+
+costumes.monster -> monsters.id
+`,
+		},
 	}
 
 	for i := range tcs {

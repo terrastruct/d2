@@ -204,7 +204,7 @@ func (s *Style) Apply(key, value string) error {
 			break
 		}
 		if !go2.Contains(FillPatterns, strings.ToLower(value)) {
-			return fmt.Errorf(`expected "fill-pattern" to be one of: %s`, strings.Join(FillPatterns, ","))
+			return fmt.Errorf(`expected "fill-pattern" to be one of: %s`, strings.Join(FillPatterns, ", "))
 		}
 		s.FillPattern.Value = value
 	case "stroke-width":
@@ -1568,8 +1568,9 @@ var NearConstantsArray = []string{
 var NearConstants map[string]struct{}
 
 var FillPatterns = []string{
-	// TODO add lined later
 	"dots",
+	"lines",
+	"grain",
 }
 
 // BoardKeywords contains the keywords that create new boards.
