@@ -56,6 +56,27 @@ api server -> logs: persist
 logs: { shape: page; style.multiple: true }
 
 network.data processor -> api server
+users: {
+	shape: sql_table
+	id: int
+	name: string
+	email: string
+	password: string
+	last_login: datetime
+}
+
+products: {
+	shape: class
+	id: int
+	price: decimal
+	sku: string
+	name: string
+}
+markdown: |md
+  # A tale
+  - of
+  - two cities
+|
 `,
 		},
 		{
