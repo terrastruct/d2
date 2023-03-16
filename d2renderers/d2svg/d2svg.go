@@ -62,6 +62,12 @@ var mdCSS string
 //go:embed dots.txt
 var dots string
 
+//go:embed lines.txt
+var lines string
+
+//go:embed grain.txt
+var grain string
+
 type RenderOpts struct {
 	Pad         int
 	Sketch      bool
@@ -1789,16 +1795,31 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 
 	bufStr := buf.String()
-	if strings.Contains(bufStr, "dots-overlay") || diagram.Root.FillPattern != "" {
-		fmt.Fprint(upperBuf, `<style type="text/css"><![CDATA[`)
-		fmt.Fprint(upperBuf, `
-.dots-overlay {
-	fill: url(#dots);
+	patternDefs := ""
+	for _, pattern := range d2graph.FillPatterns {
+		if strings.Contains(bufStr, fmt.Sprintf("%s-overlay", pattern)) || diagram.Root.FillPattern != "" {
+			if patternDefs == "" {
+				fmt.Fprint(upperBuf, `<style type="text/css"><![CDATA[`)
+			}
+			switch pattern {
+			case "dots":
+				patternDefs += dots
+			case "lines":
+				patternDefs += lines
+			case "grain":
+				patternDefs += grain
+			}
+			fmt.Fprint(upperBuf, fmt.Sprintf(`
+.%s-overlay {
+	fill: url(#%s);
 	mix-blend-mode: multiply;
-}`)
+}`, pattern, pattern))
+		}
+	}
+	if patternDefs != "" {
 		fmt.Fprint(upperBuf, `]]></style>`)
 		fmt.Fprint(upperBuf, "<defs>")
-		fmt.Fprintf(upperBuf, dots)
+		fmt.Fprintf(upperBuf, patternDefs)
 		fmt.Fprint(upperBuf, "</defs>")
 	}
 

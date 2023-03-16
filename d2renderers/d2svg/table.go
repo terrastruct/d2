@@ -45,6 +45,7 @@ func tableHeader(diagramHash string, shape d2target.Shape, box *geo.Box, text st
 	rectEl.X, rectEl.Y = box.TopLeft.X, box.TopLeft.Y
 	rectEl.Width, rectEl.Height = box.Width, box.Height
 	rectEl.Fill = shape.Fill
+	rectEl.FillPattern = shape.FillPattern
 	rectEl.ClassName = "class_header"
 	if shape.BorderRadius != 0 {
 		rectEl.ClipPath = fmt.Sprintf("%v-%v", diagramHash, shape.ID)
@@ -120,6 +121,7 @@ func drawTable(writer io.Writer, diagramHash string, targetShape d2target.Shape)
 	rectEl.Width = float64(targetShape.Width)
 	rectEl.Height = float64(targetShape.Height)
 	rectEl.Fill, rectEl.Stroke = d2themes.ShapeTheme(targetShape)
+	rectEl.FillPattern = targetShape.FillPattern
 	rectEl.ClassName = "shape"
 	rectEl.Style = targetShape.CSSStyle()
 	if targetShape.BorderRadius != 0 {
