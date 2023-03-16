@@ -8,6 +8,16 @@ type Theme struct {
 	ID     int64        `json:"id"`
 	Name   string       `json:"name"`
 	Colors ColorPalette `json:"colors"`
+
+	SpecialRules SpecialRules `json:"specialRules,omitempty"`
+}
+
+type SpecialRules struct {
+	Mono                       bool `json:"mono"`
+	NoCornerRadius             bool `json:"noCornerRadius"`
+	OuterContainerDoubleBorder bool `json:"outerContainerDoubleBorder"`
+	ContainerDots              bool `json:"containerDots"`
+	CapsLock                   bool `json:"capsLock"`
 }
 
 func (t *Theme) IsDark() bool {

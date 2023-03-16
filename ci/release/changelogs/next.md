@@ -1,5 +1,6 @@
 #### Features 🚀
 
+- New class of special themes, starting with `Terminal` [#1040](https://github.com/terrastruct/d2/pull/1040)
 - `style.font: mono` to use a monospaced font for the text/label [#1010](https://github.com/terrastruct/d2/pull/1010)
 - `border-radius` is supported for both `class` and `sql_table` shapes. [#982](https://github.com/terrastruct/d2/pull/982)
 - Implements `style.fill-pattern`. Currently only value supported is `dots`. [#1024](https://github.com/terrastruct/d2/pull/1024)

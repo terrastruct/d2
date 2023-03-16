@@ -22,6 +22,7 @@ var LightCatalog = []d2themes.Theme{
 	EarthTones,
 	EvergladeGreen,
 	ButteredToast,
+	Terminal,
 }
 
 var DarkCatalog = []d2themes.Theme{

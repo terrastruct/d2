@@ -22,6 +22,7 @@ import (
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
+	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
@@ -505,6 +506,54 @@ darker: {
 	style.font-color: "#fff"
 	style.fill: "#000"
 }
+`,
+		},
+		{
+			name:    "terminal",
+			themeID: d2themescatalog.Terminal.ID,
+			script: `network: {
+  cell tower: {
+		satellites: {
+			shape: stored_data
+      style.multiple: true
+		}
+
+		transmitter
+
+		satellites -> transmitter: send
+		satellites -> transmitter: send
+		satellites -> transmitter: send
+  }
+
+  online portal: {
+    ui: { shape: hexagon }
+  }
+
+  data processor: {
+    storage: {
+      shape: cylinder
+      style.multiple: true
+    }
+  }
+
+  cell tower.transmitter -> data processor.storage: phone logs
+}
+
+user: {
+  shape: person
+  width: 130
+}
+
+user -> network.cell tower: make call
+user -> network.online portal.ui: access {
+  style.stroke-dash: 3
+}
+
+api server -> network.online portal.ui: display
+api server -> logs: persist
+logs: { shape: page; style.multiple: true }
+
+network.data processor -> api server
 `,
 		},
 		{
@@ -1218,6 +1267,7 @@ func run(t *testing.T, tc testCase) {
 		Ruler:      ruler,
 		Layout:     layout,
 		FontFamily: go2.Pointer(d2fonts.HandDrawn),
+		ThemeID:    tc.themeID,
 	})
 	if !tassert.Nil(t, err) {
 		return

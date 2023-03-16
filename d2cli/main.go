@@ -273,8 +273,9 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 
 	layout := plugin.Layout
 	opts := &d2lib.CompileOptions{
-		Layout: layout,
-		Ruler:  ruler,
+		Layout:  layout,
+		Ruler:   ruler,
+		ThemeID: themeID,
 	}
 	if sketch {
 		opts.FontFamily = go2.Pointer(d2fonts.HandDrawn)

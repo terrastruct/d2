@@ -9,6 +9,7 @@ import (
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/lib/color"
 )
 
@@ -20,22 +21,25 @@ func Export(ctx context.Context, g *d2graph.Graph, fontFamily *d2fonts.FontFamil
 	if fontFamily == nil {
 		fontFamily = go2.Pointer(d2fonts.SourceSansPro)
 	}
+	if g.Theme != nil && g.Theme.SpecialRules.Mono {
+		fontFamily = go2.Pointer(d2fonts.SourceCodePro)
+	}
 	diagram.FontFamily = fontFamily
 
 	diagram.Shapes = make([]d2target.Shape, len(g.Objects))
 	for i := range g.Objects {
-		diagram.Shapes[i] = toShape(g.Objects[i])
+		diagram.Shapes[i] = toShape(g.Objects[i], g.Theme)
 	}
 
 	diagram.Connections = make([]d2target.Connection, len(g.Edges))
 	for i := range g.Edges {
-		diagram.Connections[i] = toConnection(g.Edges[i])
+		diagram.Connections[i] = toConnection(g.Edges[i], g.Theme)
 	}
 
 	return diagram, nil
 }
 
-func applyTheme(shape *d2target.Shape, obj *d2graph.Object) {
+func applyTheme(shape *d2target.Shape, obj *d2graph.Object, theme *d2themes.Theme) {
 	shape.Stroke = obj.GetStroke(shape.StrokeDash)
 	shape.Fill = obj.GetFill()
 	if obj.Attributes.Shape.Value == d2target.ShapeText {
@@ -45,6 +49,23 @@ func applyTheme(shape *d2target.Shape, obj *d2graph.Object) {
 		shape.PrimaryAccentColor = color.B2
 		shape.SecondaryAccentColor = color.AA2
 		shape.NeutralAccentColor = color.N2
+	}
+
+	// Theme options that change more than color
+	if theme != nil {
+		if theme.SpecialRules.OuterContainerDoubleBorder {
+			if obj.Level() == 1 && len(obj.ChildrenArray) > 0 {
+				shape.DoubleBorder = true
+			}
+		}
+		if theme.SpecialRules.ContainerDots {
+			if len(obj.ChildrenArray) > 0 {
+				shape.FillPattern = "dots"
+			}
+		}
+		if theme.SpecialRules.Mono {
+			shape.FontFamily = "mono"
+		}
 	}
 }
 
@@ -102,7 +123,7 @@ func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
 	}
 }
 
-func toShape(obj *d2graph.Object) d2target.Shape {
+func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	shape := d2target.BaseShape()
 	shape.SetType(obj.Attributes.Shape.Value)
 	shape.ID = obj.AbsID()
@@ -127,7 +148,7 @@ func toShape(obj *d2graph.Object) d2target.Shape {
 	}
 
 	applyStyles(shape, obj)
-	applyTheme(shape, obj)
+	applyTheme(shape, obj, theme)
 	shape.Color = text.GetColor(shape.Italic)
 	applyStyles(shape, obj)
 
@@ -168,7 +189,7 @@ func toShape(obj *d2graph.Object) d2target.Shape {
 	return *shape
 }
 
-func toConnection(edge *d2graph.Edge) d2target.Connection {
+func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection {
 	connection := d2target.BaseConnection()
 	connection.ID = edge.AbsID()
 	connection.ZIndex = edge.ZIndex
@@ -208,7 +229,9 @@ func toConnection(edge *d2graph.Edge) d2target.Connection {
 			connection.DstLabel = edge.DstArrowhead.Label.Value
 		}
 	}
-
+	if theme != nil && theme.SpecialRules.NoCornerRadius {
+		connection.BorderRadius = 0
+	}
 	if edge.Attributes.Style.BorderRadius != nil {
 		connection.BorderRadius, _ = strconv.ParseFloat(edge.Attributes.Style.BorderRadius.Value, 64)
 	}
@@ -257,6 +280,9 @@ func toConnection(edge *d2graph.Edge) d2target.Connection {
 	}
 	if edge.Attributes.Style.Bold != nil {
 		connection.Bold, _ = strconv.ParseBool(edge.Attributes.Style.Bold.Value)
+	}
+	if theme != nil && theme.SpecialRules.Mono {
+		connection.FontFamily = "mono"
 	}
 	if edge.Attributes.Style.Font != nil {
 		connection.FontFamily = edge.Attributes.Style.Font.Value
