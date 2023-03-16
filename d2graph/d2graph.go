@@ -1445,7 +1445,7 @@ func (g *Graph) Texts() []*d2target.MText {
 	for _, obj := range g.Objects {
 		if obj.Attributes.Label.Value != "" {
 			text := obj.Text()
-			if capsLock && obj.Class == nil && obj.SQLTable == nil {
+			if capsLock {
 				text.Text = strings.ToUpper(text.Text)
 			}
 			texts = appendTextDedup(texts, text)
