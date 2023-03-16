@@ -505,8 +505,11 @@ func (obj *Object) Text() *d2target.MText {
 	}
 	fontSize := d2fonts.FONT_SIZE_M
 
+	labelVal := obj.Attributes.Label.Value
 	if obj.Class != nil || obj.SQLTable != nil {
 		fontSize = d2fonts.FONT_SIZE_L
+	} else if obj.Graph.Theme != nil && obj.Graph.Theme.SpecialRules.CapsLock {
+		labelVal = strings.ToUpper(labelVal)
 	}
 
 	if obj.OuterSequenceDiagram() == nil {
@@ -527,7 +530,7 @@ func (obj *Object) Text() *d2target.MText {
 		isBold = false
 	}
 	return &d2target.MText{
-		Text:     obj.Attributes.Label.Value,
+		Text:     labelVal,
 		FontSize: fontSize,
 		IsBold:   isBold,
 		IsItalic: isItalic,
