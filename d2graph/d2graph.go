@@ -1479,7 +1479,7 @@ func (g *Graph) Texts() []*d2target.MText {
 			if capsLock {
 				text.Text = strings.ToUpper(text.Text)
 			}
-			texts = appendTextDedup(texts, edge.Text())
+			texts = appendTextDedup(texts, text)
 		}
 		if edge.SrcArrowhead != nil && edge.SrcArrowhead.Label.Value != "" {
 			t := edge.Text()
