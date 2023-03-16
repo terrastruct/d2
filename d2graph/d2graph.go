@@ -505,11 +505,8 @@ func (obj *Object) Text() *d2target.MText {
 	}
 	fontSize := d2fonts.FONT_SIZE_M
 
-	labelVal := obj.Attributes.Label.Value
 	if obj.Class != nil || obj.SQLTable != nil {
 		fontSize = d2fonts.FONT_SIZE_L
-	} else if obj.Graph.Theme != nil && obj.Graph.Theme.SpecialRules.CapsLock {
-		labelVal = strings.ToUpper(labelVal)
 	}
 
 	if obj.OuterSequenceDiagram() == nil {
@@ -530,7 +527,7 @@ func (obj *Object) Text() *d2target.MText {
 		isBold = false
 	}
 	return &d2target.MText{
-		Text:     labelVal,
+		Text:     obj.Attributes.Label.Value,
 		FontSize: fontSize,
 		IsBold:   isBold,
 		IsItalic: isItalic,
@@ -1443,9 +1440,15 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 func (g *Graph) Texts() []*d2target.MText {
 	var texts []*d2target.MText
 
+	capsLock := g.Theme != nil && g.Theme.SpecialRules.CapsLock
+
 	for _, obj := range g.Objects {
 		if obj.Attributes.Label.Value != "" {
-			texts = appendTextDedup(texts, obj.Text())
+			text := obj.Text()
+			if capsLock && obj.Class == nil && obj.SQLTable == nil {
+				text.Text = strings.ToUpper(text.Text)
+			}
+			texts = appendTextDedup(texts, text)
 		}
 		if obj.Class != nil {
 			fontSize := d2fonts.FONT_SIZE_L
@@ -1472,6 +1475,10 @@ func (g *Graph) Texts() []*d2target.MText {
 	}
 	for _, edge := range g.Edges {
 		if edge.Attributes.Label.Value != "" {
+			text := edge.Text()
+			if capsLock {
+				text.Text = strings.ToUpper(text.Text)
+			}
 			texts = appendTextDedup(texts, edge.Text())
 		}
 		if edge.SrcArrowhead != nil && edge.SrcArrowhead.Label.Value != "" {
