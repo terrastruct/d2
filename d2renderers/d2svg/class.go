@@ -11,12 +11,16 @@ import (
 	"oss.terrastruct.com/d2/lib/svg"
 )
 
-func classHeader(shape d2target.Shape, box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
+func classHeader(diagramHash string, shape d2target.Shape, box *geo.Box, text string, textWidth, textHeight, fontSize float64) string {
 	rectEl := d2themes.NewThemableElement("rect")
 	rectEl.X, rectEl.Y = box.TopLeft.X, box.TopLeft.Y
 	rectEl.Width, rectEl.Height = box.Width, box.Height
 	rectEl.Fill = shape.Fill
+	rectEl.FillPattern = shape.FillPattern
 	rectEl.ClassName = "class_header"
+	if shape.BorderRadius != 0 {
+		rectEl.ClipPath = fmt.Sprintf("%v-%v", diagramHash, shape.ID)
+	}
 	str := rectEl.Render()
 
 	if text != "" {
@@ -81,14 +85,19 @@ func classRow(shape d2target.Shape, box *geo.Box, prefix, nameText, typeText str
 	return out
 }
 
-func drawClass(writer io.Writer, targetShape d2target.Shape) {
+func drawClass(writer io.Writer, diagramHash string, targetShape d2target.Shape) {
 	el := d2themes.NewThemableElement("rect")
 	el.X = float64(targetShape.Pos.X)
 	el.Y = float64(targetShape.Pos.Y)
 	el.Width = float64(targetShape.Width)
 	el.Height = float64(targetShape.Height)
 	el.Fill, el.Stroke = d2themes.ShapeTheme(targetShape)
+	el.FillPattern = targetShape.FillPattern
 	el.Style = targetShape.CSSStyle()
+	if targetShape.BorderRadius != 0 {
+		el.Rx = float64(targetShape.BorderRadius)
+		el.Ry = float64(targetShape.BorderRadius)
+	}
 	fmt.Fprint(writer, el.Render())
 
 	box := geo.NewBox(
@@ -100,7 +109,7 @@ func drawClass(writer io.Writer, targetShape d2target.Shape) {
 	headerBox := geo.NewBox(box.TopLeft, box.Width, 2*rowHeight)
 
 	fmt.Fprint(writer,
-		classHeader(targetShape, headerBox, targetShape.Label, float64(targetShape.LabelWidth), float64(targetShape.LabelHeight), float64(targetShape.FontSize)),
+		classHeader(diagramHash, targetShape, headerBox, targetShape.Label, float64(targetShape.LabelWidth), float64(targetShape.LabelHeight), float64(targetShape.FontSize)),
 	)
 
 	rowBox := geo.NewBox(box.TopLeft.Copy(), box.Width, rowHeight)
@@ -113,8 +122,15 @@ func drawClass(writer io.Writer, targetShape d2target.Shape) {
 	}
 
 	lineEl := d2themes.NewThemableElement("line")
-	lineEl.X1, lineEl.Y1 = rowBox.TopLeft.X, rowBox.TopLeft.Y
-	lineEl.X2, lineEl.Y2 = rowBox.TopLeft.X+rowBox.Width, rowBox.TopLeft.Y
+
+	if targetShape.BorderRadius != 0 && len(targetShape.Methods) == 0 {
+		lineEl.X1, lineEl.Y1 = rowBox.TopLeft.X+float64(targetShape.BorderRadius), rowBox.TopLeft.Y
+		lineEl.X2, lineEl.Y2 = rowBox.TopLeft.X+rowBox.Width-float64(targetShape.BorderRadius), rowBox.TopLeft.Y
+	} else {
+		lineEl.X1, lineEl.Y1 = rowBox.TopLeft.X, rowBox.TopLeft.Y
+		lineEl.X2, lineEl.Y2 = rowBox.TopLeft.X+rowBox.Width, rowBox.TopLeft.Y
+	}
+
 	lineEl.Stroke = targetShape.Fill
 	lineEl.Style = "stroke-width:1"
 	fmt.Fprint(writer, lineEl.Render())

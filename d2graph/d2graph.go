@@ -17,6 +17,8 @@ import (
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2latex"
 	"oss.terrastruct.com/d2/d2target"
+	"oss.terrastruct.com/d2/d2themes"
+	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/shape"
@@ -43,6 +45,8 @@ type Graph struct {
 	Layers    []*Graph `json:"layers,omitempty"`
 	Scenarios []*Graph `json:"scenarios,omitempty"`
 	Steps     []*Graph `json:"steps,omitempty"`
+
+	Theme *d2themes.Theme `json:"theme,omitempty"`
 }
 
 func NewGraph() *Graph {
@@ -150,6 +154,7 @@ type Style struct {
 	Opacity      *Scalar `json:"opacity,omitempty"`
 	Stroke       *Scalar `json:"stroke,omitempty"`
 	Fill         *Scalar `json:"fill,omitempty"`
+	FillPattern  *Scalar `json:"fillPattern,omitempty"`
 	StrokeWidth  *Scalar `json:"strokeWidth,omitempty"`
 	StrokeDash   *Scalar `json:"strokeDash,omitempty"`
 	BorderRadius *Scalar `json:"borderRadius,omitempty"`
@@ -198,6 +203,14 @@ func (s *Style) Apply(key, value string) error {
 			return errors.New(`expected "fill" to be a valid named color ("orange") or a hex code ("#f0ff3a")`)
 		}
 		s.Fill.Value = value
+	case "fill-pattern":
+		if s.FillPattern == nil {
+			break
+		}
+		if !go2.Contains(FillPatterns, strings.ToLower(value)) {
+			return fmt.Errorf(`expected "fill-pattern" to be one of: %s`, strings.Join(FillPatterns, ", "))
+		}
+		s.FillPattern.Value = value
 	case "stroke-width":
 		if s.StrokeWidth == nil {
 			break
@@ -259,10 +272,10 @@ func (s *Style) Apply(key, value string) error {
 		if s.Font == nil {
 			break
 		}
-		if !go2.Contains(systemFonts, strings.ToUpper(value)) {
+		if _, ok := d2fonts.D2_FONT_TO_FAMILY[strings.ToLower(value)]; !ok {
 			return fmt.Errorf(`"%v" is not a valid font in our system`, value)
 		}
-		s.Font.Value = strings.ToUpper(value)
+		s.Font.Value = strings.ToLower(value)
 	case "font-size":
 		if s.FontSize == nil {
 			break
@@ -800,6 +813,11 @@ func (obj *Object) AppendReferences(ida []string, ref Reference, unresolvedObj *
 func (obj *Object) GetLabelSize(mtexts []*d2target.MText, ruler *textmeasure.Ruler, fontFamily *d2fonts.FontFamily) (*d2target.TextDimensions, error) {
 	shapeType := strings.ToLower(obj.Attributes.Shape.Value)
 
+	if obj.Attributes.Style.Font != nil {
+		f := d2fonts.D2_FONT_TO_FAMILY[obj.Attributes.Style.Font.Value]
+		fontFamily = &f
+	}
+
 	var dims *d2target.TextDimensions
 	switch shapeType {
 	case d2target.ShapeText:
@@ -1171,6 +1189,10 @@ func getMarkdownDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t
 		return d2target.NewTextDimensions(width, height), nil
 	}
 
+	if strings.TrimSpace(t.Text) == "" {
+		return d2target.NewTextDimensions(1, 1), nil
+	}
+
 	return nil, fmt.Errorf("text not pre-measured and no ruler provided")
 }
 
@@ -1240,6 +1262,11 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		}
 	}
 
+	if g.Theme != nil && g.Theme.SpecialRules.Mono {
+		tmp := d2fonts.SourceCodePro
+		fontFamily = &tmp
+	}
+
 	for _, obj := range g.Objects {
 		obj.Box = &geo.Box{}
 
@@ -1278,6 +1305,10 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 
 			continue
+		}
+
+		if g.Theme != nil && g.Theme.SpecialRules.CapsLock {
+			obj.Attributes.Label.Value = strings.ToUpper(obj.Attributes.Label.Value)
 		}
 
 		labelDims, err := obj.GetLabelSize(mtexts, ruler, fontFamily)
@@ -1397,7 +1428,16 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			continue
 		}
 
-		dims := GetTextDimensions(mtexts, ruler, edge.Text(), fontFamily)
+		if g.Theme != nil && g.Theme.SpecialRules.CapsLock {
+			edge.Attributes.Label.Value = strings.ToUpper(edge.Attributes.Label.Value)
+		}
+		usedFont := fontFamily
+		if edge.Attributes.Style.Font != nil {
+			f := d2fonts.D2_FONT_TO_FAMILY[edge.Attributes.Style.Font.Value]
+			usedFont = &f
+		}
+
+		dims := GetTextDimensions(mtexts, ruler, edge.Text(), usedFont)
 		if dims == nil {
 			return fmt.Errorf("dimensions for edge label %#v not found", edge.Text())
 		}
@@ -1412,9 +1452,15 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 func (g *Graph) Texts() []*d2target.MText {
 	var texts []*d2target.MText
 
+	capsLock := g.Theme != nil && g.Theme.SpecialRules.CapsLock
+
 	for _, obj := range g.Objects {
 		if obj.Attributes.Label.Value != "" {
-			texts = appendTextDedup(texts, obj.Text())
+			text := obj.Text()
+			if capsLock {
+				text.Text = strings.ToUpper(text.Text)
+			}
+			texts = appendTextDedup(texts, text)
 		}
 		if obj.Class != nil {
 			fontSize := d2fonts.FONT_SIZE_L
@@ -1441,7 +1487,11 @@ func (g *Graph) Texts() []*d2target.MText {
 	}
 	for _, edge := range g.Edges {
 		if edge.Attributes.Label.Value != "" {
-			texts = appendTextDedup(texts, edge.Text())
+			text := edge.Text()
+			if capsLock {
+				text.Text = strings.ToUpper(text.Text)
+			}
+			texts = appendTextDedup(texts, text)
 		}
 		if edge.SrcArrowhead != nil && edge.SrcArrowhead.Label.Value != "" {
 			t := edge.Text()
@@ -1497,6 +1547,7 @@ var StyleKeywords = map[string]struct{}{
 	"opacity":       {},
 	"stroke":        {},
 	"fill":          {},
+	"fill-pattern":  {},
 	"stroke-width":  {},
 	"stroke-dash":   {},
 	"border-radius": {},
@@ -1537,6 +1588,12 @@ var NearConstantsArray = []string{
 	"bottom-right",
 }
 var NearConstants map[string]struct{}
+
+var FillPatterns = []string{
+	"dots",
+	"lines",
+	"grain",
+}
 
 // BoardKeywords contains the keywords that create new boards.
 var BoardKeywords = map[string]struct{}{
@@ -1632,4 +1689,16 @@ func (obj *Object) IsDescendantOf(ancestor *Object) bool {
 		return false
 	}
 	return obj.Parent.IsDescendantOf(ancestor)
+}
+
+// ApplyTheme applies themes on the graph level
+// This is different than on the render level, which only changes colors
+// A theme applied on the graph level applies special rules that change the graph
+func (g *Graph) ApplyTheme(themeID int64) error {
+	theme := d2themescatalog.Find(themeID)
+	if theme == (d2themes.Theme{}) {
+		return fmt.Errorf("theme %d not found", themeID)
+	}
+	g.Theme = &theme
+	return nil
 }

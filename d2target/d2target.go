@@ -176,8 +176,9 @@ type Shape struct {
 
 	BorderRadius float64 `json:"borderRadius"`
 
-	Fill   string `json:"fill"`
-	Stroke string `json:"stroke"`
+	Fill        string `json:"fill"`
+	FillPattern string `json:"fillPattern,omitempty"`
+	Stroke      string `json:"stroke"`
 
 	Shadow       bool `json:"shadow"`
 	ThreeDee     bool `json:"3d"`

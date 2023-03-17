@@ -392,6 +392,8 @@ func compileStyleFieldInit(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Style.Stroke = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "fill":
 		attrs.Style.Fill = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
+	case "fill-pattern":
+		attrs.Style.FillPattern = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "stroke-width":
 		attrs.Style.StrokeWidth = &d2graph.Scalar{MapKey: f.LastPrimaryKey()}
 	case "stroke-dash":
@@ -488,9 +490,7 @@ func (c *compiler) compileEdgeField(edge *d2graph.Edge, f *d2ir.Field) {
 	}
 
 	if f.Name == "source-arrowhead" || f.Name == "target-arrowhead" {
-		if f.Map() != nil {
-			c.compileArrowheads(edge, f)
-		}
+		c.compileArrowheads(edge, f)
 	}
 }
 
@@ -508,21 +508,23 @@ func (c *compiler) compileArrowheads(edge *d2graph.Edge, f *d2ir.Field) {
 		c.compileLabel(attrs, f)
 	}
 
-	for _, f2 := range f.Map().Fields {
-		keyword := strings.ToLower(f2.Name)
-		_, isReserved := d2graph.SimpleReservedKeywords[keyword]
-		if isReserved {
-			c.compileReserved(attrs, f2)
-			continue
-		} else if f2.Name == "style" {
-			if f2.Map() == nil {
+	if f.Map() != nil {
+		for _, f2 := range f.Map().Fields {
+			keyword := strings.ToLower(f2.Name)
+			_, isReserved := d2graph.SimpleReservedKeywords[keyword]
+			if isReserved {
+				c.compileReserved(attrs, f2)
+				continue
+			} else if f2.Name == "style" {
+				if f2.Map() == nil {
+					continue
+				}
+				c.compileStyle(attrs, f2.Map())
+				continue
+			} else {
+				c.errorf(f2.LastRef().AST(), `source-arrowhead/target-arrowhead map keys must be reserved keywords`)
 				continue
 			}
-			c.compileStyle(attrs, f2.Map())
-			continue
-		} else {
-			c.errorf(f2.LastRef().AST(), `source-arrowhead/target-arrowhead map keys must be reserved keywords`)
-			continue
 		}
 	}
 }

@@ -365,6 +365,20 @@ not part of block string
 q.(x -> y).z: (rawr)
 `,
 		},
+		{
+			name: "less_than_edge#955",
+			text: `
+x <= y
+`,
+		},
+		{
+			name: "merged_shapes_#322",
+			text: `
+a-
+b-
+c-
+`,
+		},
 	}
 
 	for _, tc := range testCases {

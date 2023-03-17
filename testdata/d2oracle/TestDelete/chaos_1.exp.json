@@ -3,7 +3,7 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,0:0:0-8:0:94",
+      "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,0:0:0-6:0:92",
       "nodes": [
         {
           "map_key": {
@@ -221,13 +221,13 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,7:0:91-7:2:93",
+            "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,5:0:89-5:2:91",
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,7:0:91-7:2:93",
+              "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,5:0:89-5:2:91",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,7:0:91-7:2:93",
+                    "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,5:0:89-5:2:91",
                     "value": [
                       {
                         "string": "cm",
@@ -392,11 +392,11 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,7:0:91-7:2:93",
+              "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,5:0:89-5:2:91",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,7:0:91-7:2:93",
+                    "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,5:0:89-5:2:91",
                     "value": [
                       {
                         "string": "cm",

@@ -13,6 +13,49 @@ var testMarkdown string
 func testStable(t *testing.T) {
 	tcs := []testCase{
 		{
+			name: "class_and_sqlTable_border_radius",
+			script: `
+				a: {
+					shape: sql_table
+					id: int {constraint: primary_key}
+					disk: int {constraint: foreign_key}
+
+					json: jsonb  {constraint: unique}
+					last_updated: timestamp with time zone
+
+					style: {
+						fill: red
+						border-radius: 10
+					}
+				}
+
+				b: {
+					shape: class
+
+					field: "[]string"
+					method(a uint64): (x, y int)
+
+					style: {
+						border-radius: 10
+					}
+				}
+
+				c: {
+					shape: class
+					style: {
+						border-radius: 5
+					}
+				}
+
+				d: {
+					shape: sql_table
+					style: {
+						border-radius: 5
+					}
+				}
+			`,
+		},
+		{
 			name: "elk_border_radius",
 			script: `
 				a -> b
@@ -37,6 +80,99 @@ func testStable(t *testing.T) {
 					}
 				}
 			`,
+		},
+		{
+			name: "elk_shim",
+			script: `network: {
+  cell tower: {
+		satellites: {
+			shape: stored_data
+      style.multiple: true
+      width: 140
+		}
+
+		transmitter: {
+      width: 140
+    }
+
+		satellites -> transmitter: send {
+		}
+		satellites -> transmitter: send {
+		}
+		satellites -> transmitter: send {
+		}
+  }
+
+  # long label to expand
+  online portal: ONLINE PORTALLLL {
+    ui: { shape: hexagon }
+  }
+
+  data processor: {
+    storage: {
+      shape: cylinder
+      style.multiple: true
+    }
+  }
+
+  cell tower.transmitter -> data processor.storage: phone logs
+}
+
+user: {
+  shape: person
+  width: 130
+}
+
+user -> network.cell tower: make call
+user -> network.online portal.ui: access {
+  style.stroke-dash: 3
+}
+
+api server -> network.online portal.ui: display
+api server -> logs: persist
+logs: { shape: page; style.multiple: true }
+
+network.data processor -> api server
+			`,
+		},
+		{
+			name: "mono-edge",
+			script: `direction: right
+x -> y: hi { style.font: mono }`,
+		},
+		{
+			name: "mono-font",
+			script: `satellites: SATELLITES {
+  shape: stored_data
+  style: {
+    font: mono
+    fill: white
+    stroke: black
+    multiple: true
+  }
+}
+
+transmitter: TRANSMITTER {
+  style: {
+    font: mono
+    fill: white
+    stroke: black
+  }
+}
+
+satellites -> transmitter: SEND {
+  style.stroke: black
+  style.font: mono
+}
+satellites -> transmitter: SEND {
+  style.stroke: black
+  style.font: mono
+}
+satellites -> transmitter: SEND {
+  style.stroke: black
+  style.font: mono
+}
+`,
 		},
 		{
 			name: "connected_container",

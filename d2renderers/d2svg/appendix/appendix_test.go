@@ -136,8 +136,9 @@ func run(t *testing.T, tc testCase) {
 	}
 
 	diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
-		Ruler:  ruler,
-		Layout: d2dagrelayout.DefaultLayout,
+		Ruler:   ruler,
+		Layout:  d2dagrelayout.DefaultLayout,
+		ThemeID: tc.themeID,
 	})
 	if !tassert.Nil(t, err) {
 		return

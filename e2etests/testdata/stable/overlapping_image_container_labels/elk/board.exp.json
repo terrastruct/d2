@@ -7,7 +7,7 @@
       "id": "root",
       "type": "image",
       "pos": {
-        "x": 204,
+        "x": 484,
         "y": 12
       },
       "width": 128,
@@ -31,6 +31,7 @@
         "Host": "icons.terrastruct.com",
         "Path": "/essentials/004-picture.svg",
         "RawPath": "",
+        "OmitHost": false,
         "ForceQuery": false,
         "RawQuery": "",
         "Fragment": "",
@@ -63,7 +64,7 @@
         "y": 241
       },
       "width": 1072,
-      "height": 1124,
+      "height": 1114,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -100,7 +101,7 @@
       "id": "container.root",
       "type": "image",
       "pos": {
-        "x": 204,
+        "x": 484,
         "y": 291
       },
       "width": 128,
@@ -124,6 +125,7 @@
         "Host": "icons.terrastruct.com",
         "Path": "/essentials/004-picture.svg",
         "RawPath": "",
+        "OmitHost": false,
         "ForceQuery": false,
         "RawQuery": "",
         "Fragment": "",
@@ -156,7 +158,7 @@
         "y": 621
       },
       "width": 476,
-      "height": 694,
+      "height": 684,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -193,7 +195,7 @@
       "id": "container.left2.root",
       "type": "image",
       "pos": {
-        "x": 183,
+        "x": 236,
         "y": 671
       },
       "width": 128,
@@ -217,6 +219,7 @@
         "Host": "icons.terrastruct.com",
         "Path": "/essentials/004-picture.svg",
         "RawPath": "",
+        "OmitHost": false,
         "ForceQuery": false,
         "RawQuery": "",
         "Fragment": "",
@@ -246,7 +249,7 @@
       "type": "rectangle",
       "pos": {
         "x": 112,
-        "y": 1011
+        "y": 1001
       },
       "width": 376,
       "height": 254,
@@ -287,7 +290,7 @@
       "type": "image",
       "pos": {
         "x": 162,
-        "y": 1061
+        "y": 1051
       },
       "width": 128,
       "height": 128,
@@ -310,6 +313,7 @@
         "Host": "icons.terrastruct.com",
         "Path": "/essentials/004-picture.svg",
         "RawPath": "",
+        "OmitHost": false,
         "ForceQuery": false,
         "RawQuery": "",
         "Fragment": "",
@@ -339,7 +343,7 @@
       "type": "image",
       "pos": {
         "x": 310,
-        "y": 1061
+        "y": 1051
       },
       "width": 128,
       "height": 128,
@@ -362,6 +366,7 @@
         "Host": "icons.terrastruct.com",
         "Path": "/essentials/004-picture.svg",
         "RawPath": "",
+        "OmitHost": false,
         "ForceQuery": false,
         "RawQuery": "",
         "Fragment": "",
@@ -394,7 +399,7 @@
         "y": 621
       },
       "width": 476,
-      "height": 694,
+      "height": 684,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -431,7 +436,7 @@
       "id": "container.right.root",
       "type": "image",
       "pos": {
-        "x": 679,
+        "x": 732,
         "y": 671
       },
       "width": 128,
@@ -455,6 +460,7 @@
         "Host": "icons.terrastruct.com",
         "Path": "/essentials/004-picture.svg",
         "RawPath": "",
+        "OmitHost": false,
         "ForceQuery": false,
         "RawQuery": "",
         "Fragment": "",
@@ -484,7 +490,7 @@
       "type": "rectangle",
       "pos": {
         "x": 608,
-        "y": 1011
+        "y": 1001
       },
       "width": 376,
       "height": 254,
@@ -525,7 +531,7 @@
       "type": "image",
       "pos": {
         "x": 658,
-        "y": 1061
+        "y": 1051
       },
       "width": 128,
       "height": 128,
@@ -548,6 +554,7 @@
         "Host": "icons.terrastruct.com",
         "Path": "/essentials/004-picture.svg",
         "RawPath": "",
+        "OmitHost": false,
         "ForceQuery": false,
         "RawQuery": "",
         "Fragment": "",
@@ -577,7 +584,7 @@
       "type": "image",
       "pos": {
         "x": 806,
-        "y": 1061
+        "y": 1051
       },
       "width": 128,
       "height": 128,
@@ -600,6 +607,7 @@
         "Host": "icons.terrastruct.com",
         "Path": "/essentials/004-picture.svg",
         "RawPath": "",
+        "OmitHost": false,
         "ForceQuery": false,
         "RawQuery": "",
         "Fragment": "",
@@ -653,11 +661,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 268.6666666666667,
+          "x": 548,
           "y": 166
         },
         {
-          "x": 268.6666666666667,
+          "x": 548,
           "y": 291
         }
       ],
@@ -693,12 +701,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 226,
+          "x": 278.6666666666667,
           "y": 825
         },
         {
+          "x": 278.6666666666667,
+          "y": 865
+        },
+        {
           "x": 226,
-          "y": 1061
+          "y": 865
+        },
+        {
+          "x": 226,
+          "y": 1051
         }
       ],
       "animated": false,
@@ -733,28 +749,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 268.6666666666667,
+          "x": 321.33333333333337,
           "y": 825
         },
         {
-          "x": 268.6666666666667,
+          "x": 321.33333333333337,
           "y": 865
         },
         {
-          "x": 322,
+          "x": 374,
           "y": 865
         },
         {
-          "x": 322,
-          "y": 966
-        },
-        {
           "x": 374,
-          "y": 966
-        },
-        {
-          "x": 374,
-          "y": 1061
+          "y": 1051
         }
       ],
       "animated": false,
@@ -789,12 +797,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 722,
+          "x": 774.6666666666667,
           "y": 825
         },
         {
+          "x": 774.6666666666667,
+          "y": 865
+        },
+        {
           "x": 722,
-          "y": 1061
+          "y": 865
+        },
+        {
+          "x": 722,
+          "y": 1051
         }
       ],
       "animated": false,
@@ -829,28 +845,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 764.6666666666667,
+          "x": 817.3333333333334,
           "y": 825
         },
         {
-          "x": 764.6666666666667,
+          "x": 817.3333333333334,
           "y": 865
         },
         {
-          "x": 818,
+          "x": 870,
           "y": 865
         },
         {
-          "x": 818,
-          "y": 966
-        },
-        {
           "x": 870,
-          "y": 966
-        },
-        {
-          "x": 870,
-          "y": 1061
+          "y": 1051
         }
       ],
       "animated": false,
@@ -885,11 +893,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 247.33333333333334,
+          "x": 526.6666666666667,
           "y": 445
         },
         {
-          "x": 247.33333333333334,
+          "x": 526.6666666666667,
+          "y": 485
+        },
+        {
+          "x": 300,
+          "y": 485
+        },
+        {
+          "x": 300,
           "y": 671
         }
       ],
@@ -925,19 +941,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 290,
+          "x": 569.3333333333334,
           "y": 445
         },
         {
-          "x": 290,
+          "x": 569.3333333333334,
           "y": 485
         },
         {
-          "x": 743.3333333333334,
+          "x": 796,
           "y": 485
         },
         {
-          "x": 743.3333333333334,
+          "x": 796,
           "y": 671
         }
       ],

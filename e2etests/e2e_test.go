@@ -37,10 +37,12 @@ func TestE2E(t *testing.T) {
 	t.Run("sanity", testSanity)
 	t.Run("stable", testStable)
 	t.Run("regression", testRegression)
+	t.Run("patterns", testPatterns)
 	t.Run("todo", testTodo)
 	t.Run("measured", testMeasured)
 	t.Run("unicode", testUnicode)
 	t.Run("root", testRoot)
+	t.Run("themes", testThemes)
 }
 
 func testSanity(t *testing.T) {
@@ -75,7 +77,9 @@ a -> c
 }
 
 type testCase struct {
-	name              string
+	name string
+	// if the test is just testing a render/style thing, no need to exercise both engines
+	justDagre         bool
 	script            string
 	mtexts            []*d2target.MText
 	assertions        func(t *testing.T, diagram *d2target.Diagram)
@@ -83,6 +87,7 @@ type testCase struct {
 	dagreFeatureError string
 	elkFeatureError   string
 	expErr            string
+	themeID           int64
 }
 
 func runa(t *testing.T, tcs []testCase) {
@@ -136,7 +141,10 @@ func run(t *testing.T, tc testCase) {
 		serde(t, tc, ruler)
 	}
 
-	layoutsTested := []string{"dagre", "elk"}
+	layoutsTested := []string{"dagre"}
+	if !tc.justDagre {
+		layoutsTested = append(layoutsTested, "elk")
+	}
 
 	for _, layoutName := range layoutsTested {
 		var layout func(context.Context, *d2graph.Graph) error
@@ -157,6 +165,7 @@ func run(t *testing.T, tc testCase) {
 			Ruler:         ruler,
 			MeasuredTexts: tc.mtexts,
 			Layout:        layout,
+			ThemeID:       tc.themeID,
 		})
 
 		if tc.expErr != "" {
@@ -198,7 +207,7 @@ func run(t *testing.T, tc testCase) {
 
 		svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
 			Pad:     0,
-			ThemeID: 0,
+			ThemeID: tc.themeID,
 		})
 		assert.Success(t, err)
 		err = os.MkdirAll(dataPath, 0755)

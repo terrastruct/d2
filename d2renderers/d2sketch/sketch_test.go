@@ -18,9 +18,11 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
+	"oss.terrastruct.com/d2/d2layouts/d2elklayout"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
+	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
@@ -37,6 +39,15 @@ func TestSketch(t *testing.T) {
 		{
 			name: "child to child",
 			script: `winter.snow -> summer.sun
+		`,
+		},
+		{
+			name:   "elk corners",
+			engine: "elk",
+			script: `a -> b
+b -> c
+a -> c
+c -> a
 		`,
 		},
 		{
@@ -495,6 +506,54 @@ darker: {
 	style.font-color: "#fff"
 	style.fill: "#000"
 }
+`,
+		},
+		{
+			name:    "terminal",
+			themeID: d2themescatalog.Terminal.ID,
+			script: `network: {
+  cell tower: {
+		satellites: {
+			shape: stored_data
+      style.multiple: true
+		}
+
+		transmitter
+
+		satellites -> transmitter: send
+		satellites -> transmitter: send
+		satellites -> transmitter: send
+  }
+
+  online portal: {
+    ui: { shape: hexagon }
+  }
+
+  data processor: {
+    storage: {
+      shape: cylinder
+      style.multiple: true
+    }
+  }
+
+  cell tower.transmitter -> data processor.storage: phone logs
+}
+
+user: {
+  shape: person
+  width: 130
+}
+
+user -> network.cell tower: make call
+user -> network.online portal.ui: access {
+  style.stroke-dash: 3
+}
+
+api server -> network.online portal.ui: display
+api server -> logs: persist
+logs: { shape: page; style.multiple: true }
+
+network.data processor -> api server
 `,
 		},
 		{
@@ -1005,6 +1064,185 @@ normal: {
 something
 `,
 		},
+		{
+			name: "class_and_sqlTable_border_radius",
+			script: `
+				a: {
+					shape: sql_table
+					id: int {constraint: primary_key}
+					disk: int {constraint: foreign_key}
+
+					json: jsonb  {constraint: unique}
+					last_updated: timestamp with time zone
+
+					style: {
+						fill: red
+						border-radius: 0
+					}
+				}
+
+				b: {
+					shape: class
+
+					field: "[]string"
+					method(a uint64): (x, y int)
+
+					style: {
+						border-radius: 0
+					}
+				}
+
+				c: {
+					shape: class
+					style: {
+						border-radius: 0
+					}
+				}
+
+				d: {
+					shape: sql_table
+					style: {
+						border-radius: 0
+					}
+				}
+			`,
+		},
+		{
+			name: "dots-real",
+			script: `
+NETWORK: {
+  style: {
+	  stroke: black
+    fill-pattern: dots
+    double-border: true
+    fill: "#E7E9EE"
+    font: mono
+  }
+  CELL TOWER: {
+		style: {
+			stroke: black
+			fill-pattern: dots
+			fill: "#F5F6F9"
+			font: mono
+		}
+		satellites: SATELLITES {
+			shape: stored_data
+			style: {
+				font: mono
+				fill: white
+				stroke: black
+				multiple: true
+			}
+		}
+
+		transmitter: TRANSMITTER {
+			style: {
+				font: mono
+				fill: white
+				stroke: black
+			}
+		}
+
+		satellites -> transmitter: SEND {
+			style.stroke: black
+			style.font: mono
+		}
+		satellites -> transmitter: SEND {
+			style.stroke: black
+			style.font: mono
+		}
+		satellites -> transmitter: SEND {
+			style.stroke: black
+			style.font: mono
+		}
+  }
+}
+D2 Parser: {
+	style.fill-pattern: grain
+  shape: class
+
+  +reader: io.RuneReader
+  # Default visibility is + so no need to specify.
+  readerPos: d2ast.Position
+
+  # Private field.
+  -lookahead: "[]rune"
+
+  # Escape the # to prevent being parsed as comment
+  #lookaheadPos: d2ast.Position
+  # Or just wrap in quotes
+  "#peekn(n int)": (s string, eof bool)
+
+  +peek(): (r rune, eof bool)
+  rewind()
+  commit()
+}
+`,
+		},
+		{
+			name: "dots-3d",
+			script: `x: {style.3d: true; style.fill-pattern: dots}
+y: {shape: hexagon; style.3d: true; style.fill-pattern: dots}
+`,
+		},
+		{
+			name: "dots-multiple",
+			script: `
+rectangle: {shape: "rectangle"; style.fill-pattern: dots; style.multiple: true}
+square: {shape: "square"; style.fill-pattern: dots; style.multiple: true}
+page: {shape: "page"; style.fill-pattern: dots; style.multiple: true}
+parallelogram: {shape: "parallelogram"; style.fill-pattern: dots; style.multiple: true}
+document: {shape: "document"; style.fill-pattern: dots; style.multiple: true}
+cylinder: {shape: "cylinder"; style.fill-pattern: dots; style.multiple: true}
+queue: {shape: "queue"; style.fill-pattern: dots; style.multiple: true}
+package: {shape: "package"; style.fill-pattern: dots; style.multiple: true}
+step: {shape: "step"; style.fill-pattern: dots; style.multiple: true}
+callout: {shape: "callout"; style.fill-pattern: dots; style.multiple: true}
+stored_data: {shape: "stored_data"; style.fill-pattern: dots; style.multiple: true}
+person: {shape: "person"; style.fill-pattern: dots; style.multiple: true}
+diamond: {shape: "diamond"; style.fill-pattern: dots; style.multiple: true}
+oval: {shape: "oval"; style.fill-pattern: dots; style.multiple: true}
+circle: {shape: "circle"; style.fill-pattern: dots; style.multiple: true}
+hexagon: {shape: "hexagon"; style.fill-pattern: dots; style.multiple: true}
+cloud: {shape: "cloud"; style.fill-pattern: dots; style.multiple: true}
+
+rectangle -> square -> page
+parallelogram -> document -> cylinder
+queue -> package -> step
+callout -> stored_data -> person
+diamond -> oval -> circle
+hexagon -> cloud
+`,
+		},
+		{
+			name: "dots-all",
+			script: `
+rectangle: {shape: "rectangle"; style.fill-pattern: dots}
+square: {shape: "square"; style.fill-pattern: dots}
+page: {shape: "page"; style.fill-pattern: dots}
+parallelogram: {shape: "parallelogram"; style.fill-pattern: dots}
+document: {shape: "document"; style.fill-pattern: dots}
+cylinder: {shape: "cylinder"; style.fill-pattern: dots}
+queue: {shape: "queue"; style.fill-pattern: dots}
+package: {shape: "package"; style.fill-pattern: dots}
+step: {shape: "step"; style.fill-pattern: dots}
+callout: {shape: "callout"; style.fill-pattern: dots}
+stored_data: {shape: "stored_data"; style.fill-pattern: dots}
+person: {shape: "person"; style.fill-pattern: dots}
+diamond: {shape: "diamond"; style.fill-pattern: dots}
+oval: {shape: "oval"; style.fill-pattern: dots}
+circle: {shape: "circle"; style.fill-pattern: dots}
+hexagon: {shape: "hexagon"; style.fill-pattern: dots}
+cloud: {shape: "cloud"; style.fill-pattern: dots}
+
+rectangle -> square -> page
+parallelogram -> document -> cylinder
+queue -> package -> step
+callout -> stored_data -> person
+diamond -> oval -> circle
+hexagon -> cloud
+`,
+		},
 	}
 	runa(t, tcs)
 }
@@ -1014,6 +1252,7 @@ type testCase struct {
 	themeID int64
 	script  string
 	skip    bool
+	engine  string
 }
 
 func runa(t *testing.T, tcs []testCase) {
@@ -1040,10 +1279,15 @@ func run(t *testing.T, tc testCase) {
 		return
 	}
 
+	layout := d2dagrelayout.DefaultLayout
+	if strings.EqualFold(tc.engine, "elk") {
+		layout = d2elklayout.DefaultLayout
+	}
 	diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
 		Ruler:      ruler,
-		Layout:     d2dagrelayout.DefaultLayout,
+		Layout:     layout,
 		FontFamily: go2.Pointer(d2fonts.HandDrawn),
+		ThemeID:    tc.themeID,
 	})
 	if !tassert.Nil(t, err) {
 		return

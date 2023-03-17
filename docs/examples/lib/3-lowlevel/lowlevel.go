@@ -17,6 +17,7 @@ import (
 // Remember to add if err != nil checks in production.
 func main() {
 	graph, _ := d2compiler.Compile("", strings.NewReader("x -> y"), nil)
+	graph.ApplyTheme(d2themescatalog.NeutralDefault.ID)
 	ruler, _ := textmeasure.NewRuler()
 	_ = graph.SetDimensions(nil, ruler, nil)
 	_ = d2dagrelayout.Layout(context.Background(), graph, nil)

@@ -8,6 +8,7 @@ import (
 	"context"
 	_ "embed"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math"
 	"strings"
@@ -95,8 +96,11 @@ var DefaultOpts = ConfigurableOpts{
 }
 
 var port_spacing = 40.
+var edge_node_spacing = 40
 
 type elkOpts struct {
+	EdgeNode                     int    `json:"elk.spacing.edgeNode,omitempty"`
+	FixedAlignment               string `json:"elk.layered.nodePlacement.bk.fixedAlignment,omitempty"`
 	Thoroughness                 int    `json:"elk.layered.thoroughness,omitempty"`
 	EdgeEdgeBetweenLayersSpacing int    `json:"elk.layered.spacing.edgeEdgeBetweenLayers,omitempty"`
 	Direction                    string `json:"elk.direction"`
@@ -106,6 +110,7 @@ type elkOpts struct {
 	ConsiderModelOrder           string `json:"elk.layered.considerModelOrder.strategy,omitempty"`
 
 	NodeSizeConstraints string `json:"elk.nodeSize.constraints,omitempty"`
+	ContentAlignment    string `json:"elk.contentAlignment,omitempty"`
 	NodeSizeMinimum     string `json:"elk.nodeSize.minimum,omitempty"`
 
 	ConfigurableOpts
@@ -140,8 +145,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		LayoutOptions: &elkOpts{
 			Thoroughness:                 8,
 			EdgeEdgeBetweenLayersSpacing: 50,
+			EdgeNode:                     edge_node_spacing,
 			HierarchyHandling:            "INCLUDE_CHILDREN",
+			FixedAlignment:               "BALANCED",
 			ConsiderModelOrder:           "NODES_AND_EDGES",
+			NodeSizeConstraints:          "MINIMUM_SIZE",
+			ContentAlignment:             "H_CENTER V_CENTER",
 			ConfigurableOpts: ConfigurableOpts{
 				Algorithm:       opts.Algorithm,
 				NodeSpacing:     opts.NodeSpacing,
@@ -218,9 +227,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				Thoroughness:                 8,
 				EdgeEdgeBetweenLayersSpacing: 50,
 				HierarchyHandling:            "INCLUDE_CHILDREN",
+				FixedAlignment:               "BALANCED",
+				EdgeNode:                     edge_node_spacing,
 				ConsiderModelOrder:           "NODES_AND_EDGES",
-				// Why is it (height, width)? I have no clue, but it works.
-				NodeSizeMinimum: fmt.Sprintf("(%d, %d)", int(math.Ceil(height)), int(math.Ceil(width))),
+				NodeSizeConstraints:          "MINIMUM_SIZE",
+				ContentAlignment:             "H_CENTER V_CENTER",
 				ConfigurableOpts: ConfigurableOpts{
 					NodeSpacing:     opts.NodeSpacing,
 					EdgeNodeSpacing: opts.EdgeNodeSpacing,
@@ -228,11 +239,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					Padding:         opts.Padding,
 				},
 			}
-			// Only set if specified.
-			// There's a bug where if it's the node label dimensions that set the NodeSizeMinimum,
-			// then suddenly it's reversed back to (width, height). I must be missing something
-			if obj.Attributes.Width != nil || obj.Attributes.Height != nil {
-				n.LayoutOptions.NodeSizeConstraints = "MINIMUM_SIZE"
+
+			switch elkGraph.LayoutOptions.Direction {
+			case "DOWN", "UP":
+				n.LayoutOptions.NodeSizeMinimum = fmt.Sprintf("(%d, %d)", int(math.Ceil(height)), int(math.Ceil(width)))
+			case "RIGHT", "LEFT":
+				n.LayoutOptions.NodeSizeMinimum = fmt.Sprintf("(%d, %d)", int(math.Ceil(width)), int(math.Ceil(height)))
 			}
 
 			if n.LayoutOptions.Padding == DefaultOpts.Padding {
@@ -251,6 +263,10 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				n.LayoutOptions.Padding = fmt.Sprintf("[top=%d,left=50,bottom=50,right=50]",
 					paddingTop,
 				)
+			}
+		} else {
+			n.LayoutOptions = &elkOpts{
+				// Margins: "[top=100,left=100,bottom=100,right=100]",
 			}
 		}
 
@@ -303,7 +319,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 	val, err := vm.RunString(`elk.layout(graph)
 .then(s => s)
-.catch(s => s)
+.catch(err => err.message)
 `)
 
 	if err != nil {
@@ -324,7 +340,21 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		continue
 	}
 
-	jsonOut := promise.Result().Export().(map[string]interface{})
+	if promise.State() == goja.PromiseStateRejected {
+		return errors.New("ELK: something went wrong")
+	}
+
+	result := promise.Result().Export()
+
+	var jsonOut map[string]interface{}
+	switch out := result.(type) {
+	case string:
+		return fmt.Errorf("ELK layout error: %s", out)
+	case map[string]interface{}:
+		jsonOut = out
+	default:
+		return fmt.Errorf("ELK unexpected return: %v", out)
+	}
 
 	jsonBytes, err := json.Marshal(jsonOut)
 	if err != nil {
@@ -417,5 +447,270 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		edge.Route = points
 	}
 
+	deleteBends(g)
+
 	return nil
+}
+
+// deleteBends is a shim for ELK to delete unnecessary bends
+// see https://github.com/terrastruct/d2/issues/1030
+func deleteBends(g *d2graph.Graph) {
+	// Get rid of S-shapes at the source and the target
+	// TODO there might be value in repeating this. removal of an S shape introducing another S shape that can still be removed
+	for _, isSource := range []bool{true, false} {
+		for ei, e := range g.Edges {
+			if len(e.Route) < 4 {
+				continue
+			}
+			if e.Src == e.Dst {
+				continue
+			}
+			var endpoint *d2graph.Object
+			var start *geo.Point
+			var corner *geo.Point
+			var end *geo.Point
+
+			if isSource {
+				start = e.Route[0]
+				corner = e.Route[1]
+				end = e.Route[2]
+				endpoint = e.Src
+			} else {
+				start = e.Route[len(e.Route)-1]
+				corner = e.Route[len(e.Route)-2]
+				end = e.Route[len(e.Route)-3]
+				endpoint = e.Dst
+			}
+
+			isHorizontal := math.Ceil(start.Y) == math.Ceil(corner.Y)
+
+			// Make sure it's still attached
+			if isHorizontal {
+				if end.Y <= endpoint.TopLeft.Y+10 {
+					continue
+				}
+				if end.Y >= endpoint.TopLeft.Y+endpoint.Height-10 {
+					continue
+				}
+			} else {
+				if end.X <= endpoint.TopLeft.X+10 {
+					continue
+				}
+				if end.X >= endpoint.TopLeft.X+endpoint.Width-10 {
+					continue
+				}
+			}
+
+			var newStart *geo.Point
+			if isHorizontal {
+				newStart = geo.NewPoint(start.X, end.Y)
+			} else {
+				newStart = geo.NewPoint(end.X, start.Y)
+			}
+
+			endpointShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(endpoint.Attributes.Shape.Value)], endpoint.Box)
+			newStart = shape.TraceToShapeBorder(endpointShape, newStart, end)
+
+			// Check that the new segment doesn't collide with anything new
+
+			oldSegment := geo.NewSegment(start, corner)
+			newSegment := geo.NewSegment(newStart, end)
+
+			oldIntersects := countObjectIntersects(g, e.Src, e.Dst, *oldSegment)
+			newIntersects := countObjectIntersects(g, e.Src, e.Dst, *newSegment)
+
+			if newIntersects > oldIntersects {
+				continue
+			}
+
+			oldCrossingsCount, oldOverlapsCount, oldCloseOverlapsCount, oldTouchingCount := countEdgeIntersects(g, g.Edges[ei], *oldSegment)
+			newCrossingsCount, newOverlapsCount, newCloseOverlapsCount, newTouchingCount := countEdgeIntersects(g, g.Edges[ei], *newSegment)
+
+			if newCrossingsCount > oldCrossingsCount {
+				continue
+			}
+			if newOverlapsCount > oldOverlapsCount {
+				continue
+			}
+
+			if newCloseOverlapsCount > oldCloseOverlapsCount {
+				continue
+			}
+			if newTouchingCount > oldTouchingCount {
+				continue
+			}
+
+			// commit
+			if isSource {
+				g.Edges[ei].Route = append(
+					[]*geo.Point{newStart},
+					e.Route[3:]...,
+				)
+			} else {
+				g.Edges[ei].Route = append(
+					e.Route[:len(e.Route)-3],
+					newStart,
+				)
+			}
+		}
+	}
+	// Get rid of ladders
+	// ELK likes to do these for some reason
+	// .   ┌─
+	// . ┌─┘
+	// . │
+	// We want to transform these into L-shapes
+	for ei, e := range g.Edges {
+		if len(e.Route) < 6 {
+			continue
+		}
+		if e.Src == e.Dst {
+			continue
+		}
+
+		for i := 1; i < len(e.Route)-3; i++ {
+			before := e.Route[i-1]
+			start := e.Route[i]
+			corner := e.Route[i+1]
+			end := e.Route[i+2]
+			after := e.Route[i+3]
+
+			// S-shape on sources only concerned one segment, since the other was just along the bound of endpoint
+			// These concern two segments
+
+			var newCorner *geo.Point
+			if math.Ceil(start.X) == math.Ceil(corner.X) {
+				newCorner = geo.NewPoint(end.X, start.Y)
+				// not ladder
+				if (end.X > start.X) != (start.X > before.X) {
+					continue
+				}
+				if (end.Y > start.Y) != (after.Y > end.Y) {
+					continue
+				}
+			} else {
+				newCorner = geo.NewPoint(start.X, end.Y)
+				if (end.Y > start.Y) != (start.Y > before.Y) {
+					continue
+				}
+				if (end.X > start.X) != (after.X > end.X) {
+					continue
+				}
+			}
+
+			oldS1 := geo.NewSegment(start, corner)
+			oldS2 := geo.NewSegment(corner, end)
+
+			newS1 := geo.NewSegment(start, newCorner)
+			newS2 := geo.NewSegment(newCorner, end)
+
+			// Check that the new segments doesn't collide with anything new
+			oldIntersects := countObjectIntersects(g, e.Src, e.Dst, *oldS1) + countObjectIntersects(g, e.Src, e.Dst, *oldS2)
+			newIntersects := countObjectIntersects(g, e.Src, e.Dst, *newS1) + countObjectIntersects(g, e.Src, e.Dst, *newS2)
+
+			if newIntersects > oldIntersects {
+				continue
+			}
+
+			oldCrossingsCount1, oldOverlapsCount1, oldCloseOverlapsCount1, oldTouchingCount1 := countEdgeIntersects(g, g.Edges[ei], *oldS1)
+			oldCrossingsCount2, oldOverlapsCount2, oldCloseOverlapsCount2, oldTouchingCount2 := countEdgeIntersects(g, g.Edges[ei], *oldS2)
+			oldCrossingsCount := oldCrossingsCount1 + oldCrossingsCount2
+			oldOverlapsCount := oldOverlapsCount1 + oldOverlapsCount2
+			oldCloseOverlapsCount := oldCloseOverlapsCount1 + oldCloseOverlapsCount2
+			oldTouchingCount := oldTouchingCount1 + oldTouchingCount2
+
+			newCrossingsCount1, newOverlapsCount1, newCloseOverlapsCount1, newTouchingCount1 := countEdgeIntersects(g, g.Edges[ei], *newS1)
+			newCrossingsCount2, newOverlapsCount2, newCloseOverlapsCount2, newTouchingCount2 := countEdgeIntersects(g, g.Edges[ei], *newS2)
+			newCrossingsCount := newCrossingsCount1 + newCrossingsCount2
+			newOverlapsCount := newOverlapsCount1 + newOverlapsCount2
+			newCloseOverlapsCount := newCloseOverlapsCount1 + newCloseOverlapsCount2
+			newTouchingCount := newTouchingCount1 + newTouchingCount2
+
+			if newCrossingsCount > oldCrossingsCount {
+				continue
+			}
+			if newOverlapsCount > oldOverlapsCount {
+				continue
+			}
+
+			if newCloseOverlapsCount > oldCloseOverlapsCount {
+				continue
+			}
+			if newTouchingCount > oldTouchingCount {
+				continue
+			}
+
+			// commit
+			g.Edges[ei].Route = append(append(
+				e.Route[:i],
+				newCorner,
+			),
+				e.Route[i+3:]...,
+			)
+			break
+		}
+	}
+}
+
+func countObjectIntersects(g *d2graph.Graph, src, dst *d2graph.Object, s geo.Segment) int {
+	count := 0
+	for i, o := range g.Objects {
+		if g.Objects[i] == src || g.Objects[i] == dst {
+			continue
+		}
+		if o.Intersects(s, float64(edge_node_spacing)-1) {
+			count++
+		}
+	}
+	return count
+}
+
+// countEdgeIntersects counts both crossings AND getting too close to a parallel segment
+func countEdgeIntersects(g *d2graph.Graph, sEdge *d2graph.Edge, s geo.Segment) (int, int, int, int) {
+	isHorizontal := math.Ceil(s.Start.Y) == math.Ceil(s.End.Y)
+	crossingsCount := 0
+	overlapsCount := 0
+	closeOverlapsCount := 0
+	touchingCount := 0
+	for i, e := range g.Edges {
+		if g.Edges[i] == sEdge {
+			continue
+		}
+
+		for i := 0; i < len(e.Route)-1; i++ {
+			otherS := geo.NewSegment(e.Route[i], e.Route[i+1])
+			otherIsHorizontal := math.Ceil(otherS.Start.Y) == math.Ceil(otherS.End.Y)
+			if isHorizontal == otherIsHorizontal {
+				if s.Overlaps(*otherS, !isHorizontal, 0.) {
+					if isHorizontal {
+						if math.Abs(s.Start.Y-otherS.Start.Y) < float64(edge_node_spacing)/2. {
+							overlapsCount++
+							if math.Abs(s.Start.Y-otherS.Start.Y) < float64(edge_node_spacing)/4. {
+								closeOverlapsCount++
+								if math.Abs(s.Start.Y-otherS.Start.Y) < 1. {
+									touchingCount++
+								}
+							}
+						}
+					} else {
+						if math.Abs(s.Start.X-otherS.Start.X) < float64(edge_node_spacing)/2. {
+							overlapsCount++
+							if math.Abs(s.Start.X-otherS.Start.X) < float64(edge_node_spacing)/4. {
+								closeOverlapsCount++
+								if math.Abs(s.Start.Y-otherS.Start.Y) < 1. {
+									touchingCount++
+								}
+							}
+						}
+					}
+				}
+			} else {
+				if s.Intersects(*otherS) {
+					crossingsCount++
+				}
+			}
+		}
+
+	}
+	return crossingsCount, overlapsCount, closeOverlapsCount, touchingCount
 }

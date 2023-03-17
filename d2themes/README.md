@@ -18,14 +18,10 @@ Run `d2 --help` or `man d2` for more.
 
 # Color coding guide
 
+To distinguish container nesting, objects get progressively lighter the more nested it is.
+
 <img src="../docs/assets/themes_coding.png" />
 
 # Color coding example
 
 <img src="../docs/assets/themes_coding_example.png" />
-
-# Container gradients
-
-To distinguish container nesting, objects get progressively lighter the more nested it is.
-
-<img src="../docs/assets/themes_gradients.png" width="300px" />

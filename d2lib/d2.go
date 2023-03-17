@@ -22,6 +22,7 @@ type CompileOptions struct {
 	MeasuredTexts []*d2target.MText
 	Ruler         *textmeasure.Ruler
 	Layout        func(context.Context, *d2graph.Graph) error
+	ThemeID       int64
 
 	// FontFamily controls the font family used for all texts that are not the following:
 	// - code
@@ -51,6 +52,11 @@ func Compile(ctx context.Context, input string, opts *CompileOptions) (*d2target
 }
 
 func compile(ctx context.Context, g *d2graph.Graph, opts *CompileOptions) (*d2target.Diagram, error) {
+	err := g.ApplyTheme(opts.ThemeID)
+	if err != nil {
+		return nil, err
+	}
+
 	if len(g.Objects) > 0 {
 		err := g.SetDimensions(opts.MeasuredTexts, opts.Ruler, opts.FontFamily)
 		if err != nil {

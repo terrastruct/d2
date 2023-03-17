@@ -253,6 +253,27 @@ x -> y: {
 y: bar {z}
 `,
 		},
+		{
+			name: "dagre_container_md_label_panic",
+			script: `
+OEM Factory -> company Warehouse
+
+company Warehouse.Master -> company Warehouse.Regional-1
+company Warehouse.Master -> company Warehouse.Regional-2
+company Warehouse.Master -> company Warehouse.Regional-N
+company Warehouse.Regional-1 -> company Warehouse.Regional-2
+company Warehouse.Regional-2 -> company Warehouse.Regional-N
+company Warehouse.Regional-N -> company Warehouse.Regional-1
+
+company Warehouse: |md
+  ### company Warehouse
+  - Asset Tagging
+  - Inventory
+  - Staging
+  - Dispatch to Site
+|
+`,
+		},
 	}
 
 	runa(t, tcs)

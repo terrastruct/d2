@@ -22,18 +22,18 @@ import (
 // The layout plugin protocol works as follows.
 //
 // Info
-// 	1. The binary is invoked with info as the first argument.
-// 	2. The stdout of the binary is unmarshalled into PluginInfo.
+//  1. The binary is invoked with info as the first argument.
+//  2. The stdout of the binary is unmarshalled into PluginInfo.
 //
 // Layout
-// 	1. The binary is invoked with layout as the first argument and the json marshalled
-// 	   d2graph.Graph on stdin.
-// 	2. The stdout of the binary is unmarshalled into a d2graph.Graph
+//  1. The binary is invoked with layout as the first argument and the json marshalled
+//     d2graph.Graph on stdin.
+//  2. The stdout of the binary is unmarshalled into a d2graph.Graph
 //
 // PostProcess
-// 	1. The binary is invoked with postprocess as the first argument and the
-// 	bytes of the SVG render on stdin.
-// 	2. The stdout of the binary is bytes of SVG with any post-processing.
+//  1. The binary is invoked with postprocess as the first argument and the
+//     bytes of the SVG render on stdin.
+//  2. The stdout of the binary is bytes of SVG with any post-processing.
 //
 // If any errors occur the binary will exit with a non zero status code and write
 // the error to stderr.

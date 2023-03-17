@@ -65,7 +65,7 @@ func (bc BezierCurve) At(point float64) *Point {
 	return NewPoint(float64(curvePoint.X), float64(curvePoint.Y))
 }
 
-//nolint
+// nolint
 func ComputeIntersections(px, py, lx, ly []float64) []*Point {
 	out := make([]*Point, 0)
 
@@ -111,7 +111,7 @@ func ComputeIntersections(px, py, lx, ly []float64) []*Point {
 	return out
 }
 
-//nolint
+// nolint
 func cubicRoots(P []float64) []float64 {
 	if PrecisionCompare(P[0], 0, PRECISION) == 0 {
 		if PrecisionCompare(P[1], 0, PRECISION) == 0 {
@@ -209,7 +209,7 @@ func cubicRoots(P []float64) []float64 {
 	return t
 }
 
-//nolint
+// nolint
 func sortSpecial(a []float64) []float64 {
 	var flip bool
 	var temp float64
@@ -235,7 +235,7 @@ func sortSpecial(a []float64) []float64 {
 	return a
 }
 
-//nolint
+// nolint
 func sgn(x float64) float64 {
 	if x < 0.0 {
 		return -1
@@ -243,7 +243,7 @@ func sgn(x float64) float64 {
 	return 1
 }
 
-//nolint
+// nolint
 func bezierCoeffs(P0, P1, P2, P3 float64) []float64 {
 	Z := make([]float64, 4)
 	Z[0] = -P0 + 3*P1 + -3*P2 + P3

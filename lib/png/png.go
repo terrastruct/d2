@@ -1,14 +1,19 @@
 package png
 
 import (
+	"bytes"
 	"encoding/base64"
 	"fmt"
 	"strings"
 
 	_ "embed"
 
+	exif "github.com/dsoprea/go-exif/v3"
+	exifcommon "github.com/dsoprea/go-exif/v3/common"
+	pngstruct "github.com/dsoprea/go-png-image-structure/v2"
 	"github.com/playwright-community/playwright-go"
 
+	"oss.terrastruct.com/d2/lib/version"
 	"oss.terrastruct.com/util-go/xmain"
 )
 
@@ -92,4 +97,44 @@ func ConvertSVG(ms *xmain.State, page playwright.Page, svg []byte) ([]byte, erro
 	}
 	splicedPNGString := pngString[len(pngPrefix):]
 	return base64.StdEncoding.DecodeString(splicedPNGString)
+}
+
+func AddExif(png []byte) ([]byte, error) {
+	// https://pkg.go.dev/github.com/dsoprea/go-png-image-structure/v2?utm_source=godoc#example-ChunkSlice.SetExif
+	im, err := exifcommon.NewIfdMappingWithStandard()
+	if err != nil {
+		return nil, err
+	}
+
+	ti := exif.NewTagIndex()
+
+	ib := exif.NewIfdBuilder(im, ti, exifcommon.IfdStandardIfdIdentity, exifcommon.TestDefaultByteOrder)
+
+	err = ib.AddStandardWithName("Make", "D2")
+	if err != nil {
+		return nil, err
+	}
+
+	err = ib.AddStandardWithName("Model", version.Version)
+	if err != nil {
+		return nil, err
+	}
+
+	pmp := pngstruct.NewPngMediaParser()
+	intfc, err := pmp.ParseBytes(png)
+	if err != nil {
+		return nil, err
+	}
+	cs := intfc.(*pngstruct.ChunkSlice)
+	err = cs.SetExif(ib)
+	if err != nil {
+		return nil, err
+	}
+	b := new(bytes.Buffer)
+	err = cs.WriteTo(b)
+	if err != nil {
+		return nil, err
+	}
+
+	return b.Bytes(), nil
 }

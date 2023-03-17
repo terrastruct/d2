@@ -243,6 +243,25 @@ containers: {
 			},
 		},
 		{
+			name: "fill-pattern",
+			text: `x: {
+	style: {
+    fill-pattern: dots
+  }
+}
+`,
+		},
+		{
+			name: "invalid-fill-pattern",
+			text: `x: {
+	style: {
+    fill-pattern: ddots
+  }
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/invalid-fill-pattern.d2:3:19: expected "fill-pattern" to be one of: dots, lines, grain`,
+		},
+		{
 			name: "shape_unquoted_hex",
 
 			text: `x: {
@@ -969,6 +988,17 @@ x -> y: {
 				if ds != "" {
 					t.Fatalf("exp != newText:\n%s", ds)
 				}
+			},
+		},
+		{
+			name: "edge_arrowhead_primary",
+
+			text: `x -> y: {
+  source-arrowhead: Reisner's Rule of Conceptual Inertia
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				assert.String(t, "Reisner's Rule of Conceptual Inertia", g.Edges[0].SrcArrowhead.Label.Value)
 			},
 		},
 		{

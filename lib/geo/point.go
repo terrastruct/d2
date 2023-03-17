@@ -199,9 +199,23 @@ func (p *Point) FormattedCoordinates() string {
 	return fmt.Sprintf("%d,%d", int(p.X), int(p.Y))
 }
 
-func (q *Point) OnSegment(p, r *Point) bool {
-	return (q.X <= math.Max(p.X, r.X)) && (q.X >= math.Min(p.X, r.X)) &&
-		(q.Y <= math.Max(p.Y, r.Y)) && (q.Y >= math.Min(p.Y, r.Y))
+// returns true if point p is on orthogonal segment between points a and b
+func (p *Point) OnOrthogonalSegment(a, b *Point) bool {
+	if a.X < b.X {
+		if p.X < a.X || b.X < p.X {
+			return false
+		}
+	} else if p.X < b.X || a.X < p.X {
+		return false
+	}
+	if a.Y < b.Y {
+		if p.Y < a.Y || b.Y < p.Y {
+			return false
+		}
+	} else if p.Y < b.Y || a.Y < p.Y {
+		return false
+	}
+	return true
 }
 
 // Creates a Vector pointing to point

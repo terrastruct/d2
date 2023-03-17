@@ -1859,6 +1859,32 @@ func TestMove(t *testing.T) {
 			},
 		},
 		{
+			name: "duplicate",
+
+			text: `a: {
+  b: {
+    shape: cylinder
+  }
+}
+
+a: {
+  b: {
+    shape: cylinder
+  }
+}
+`,
+			key:    `a.b`,
+			newKey: `b`,
+
+			exp: `a
+
+a
+b: {
+  shape: cylinder
+}
+`,
+		},
+		{
 			name: "rename_2",
 
 			text: `a: {
@@ -3400,6 +3426,44 @@ func TestDelete(t *testing.T) {
 `,
 		},
 		{
+			name: "table_refs",
+
+			text: `a: {
+  shape: sql_table
+  b
+}
+c: {
+  shape: sql_table
+  d
+}
+
+a.b
+a.b -> c.d
+`,
+			key: `a`,
+
+			exp: `c: {
+  shape: sql_table
+  d
+}
+c.d
+`,
+		},
+		{
+			name: "class_refs",
+
+			text: `a: {
+  shape: class
+	b: int
+}
+
+a.b
+`,
+			key: `a`,
+
+			exp: ``,
+		},
+		{
 			name: "edge_both_identical_childs",
 
 			text: `x.x.y.z -> x.x.b
@@ -4740,7 +4804,6 @@ a -> b
     shape: sql_table
     id: int {constraint: primary_key}
   }
-
   disks.id
 
   AWS S3 Vancouver -> disks

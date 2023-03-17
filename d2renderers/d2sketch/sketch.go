@@ -98,6 +98,7 @@ func Rect(r *Runner, shape d2target.Shape) (string, error) {
 	pathEl := d2themes.NewThemableElement("path")
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range paths {
@@ -145,6 +146,7 @@ func DoubleRect(r *Runner, shape d2target.Shape) (string, error) {
 	pathEl := d2themes.NewThemableElement("path")
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range pathsBigRect {
@@ -192,6 +194,7 @@ func Oval(r *Runner, shape d2target.Shape) (string, error) {
 	pathEl := d2themes.NewThemableElement("path")
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range paths {
@@ -242,6 +245,7 @@ func DoubleOval(r *Runner, shape d2target.Shape) (string, error) {
 	pathEl := d2themes.NewThemableElement("path")
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range pathsBigCircle {
@@ -292,6 +296,7 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 		}
 		pathEl := d2themes.NewThemableElement("path")
 		pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+		pathEl.FillPattern = shape.FillPattern
 		pathEl.ClassName = "shape"
 		pathEl.Style = shape.CSSStyle()
 		for _, p := range sketchPaths {
@@ -316,7 +321,7 @@ func Paths(r *Runner, shape d2target.Shape, paths []string) (string, error) {
 }
 
 func Connection(r *Runner, connection d2target.Connection, path, attrs string) (string, error) {
-	roughness := 1.0
+	roughness := 0.5
 	js := fmt.Sprintf(`node = rc.path("%s", {roughness: %f, seed: 1});`, path, roughness)
 	paths, err := computeRoughPathData(r, js)
 	if err != nil {
@@ -357,6 +362,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 	pathEl := d2themes.NewThemableElement("path")
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range paths {
@@ -383,6 +389,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 	pathEl = d2themes.NewThemableElement("path")
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill = shape.Fill
+	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "class_header"
 	for _, p := range paths {
 		pathEl.D = p
@@ -462,6 +469,7 @@ func Table(r *Runner, shape d2target.Shape) (string, error) {
 		}
 		pathEl := d2themes.NewThemableElement("path")
 		pathEl.Fill = shape.Fill
+		pathEl.FillPattern = shape.FillPattern
 		for _, p := range paths {
 			pathEl.D = p
 			output += pathEl.Render()
@@ -496,6 +504,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	pathEl := d2themes.NewThemableElement("path")
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill, pathEl.Stroke = d2themes.ShapeTheme(shape)
+	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "shape"
 	pathEl.Style = shape.CSSStyle()
 	for _, p := range paths {
@@ -523,6 +532,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	pathEl = d2themes.NewThemableElement("path")
 	pathEl.SetTranslate(float64(shape.Pos.X), float64(shape.Pos.Y))
 	pathEl.Fill = shape.Fill
+	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "class_header"
 	for _, p := range paths {
 		pathEl.D = p
@@ -576,6 +586,7 @@ func Class(r *Runner, shape d2target.Shape) (string, error) {
 	}
 	pathEl = d2themes.NewThemableElement("path")
 	pathEl.Fill = shape.Fill
+	pathEl.FillPattern = shape.FillPattern
 	pathEl.ClassName = "class_header"
 	for _, p := range paths {
 		pathEl.D = p
