@@ -135,10 +135,10 @@ func (el *ThemableElement) Render() string {
 		out += fmt.Sprintf(` r="%f"`, el.R)
 	}
 	if el.Rx != math.MaxFloat64 {
-		out += fmt.Sprintf(` rx="%s"`, FormatRxRy(el.Rx))
+		out += fmt.Sprintf(` rx="%f"`, calculateAxisRadius(el.Rx, el.Width))
 	}
 	if el.Ry != math.MaxFloat64 {
-		out += fmt.Sprintf(` ry="%s"`, FormatRxRy(el.Ry))
+		out += fmt.Sprintf(` ry="%f"`, calculateAxisRadius(el.Ry, el.Height))
 	}
 	if el.Cx != math.MaxFloat64 {
 		out += fmt.Sprintf(` cx="%f"`, el.Cx)
@@ -207,9 +207,12 @@ func (el *ThemableElement) Render() string {
 	return out + " />"
 }
 
-func FormatRxRy(value float64) string {
-	if 0 < value && value < 1 {
-		return fmt.Sprintf(`%v%%`, int(value*100))
+func calculateAxisRadius(borderRadius float64, sideLength float64) float64 {
+	if borderRadius >= 1 {
+		return borderRadius
 	}
-	return fmt.Sprintf(`%f`, value)
+	if sideLength == math.MaxFloat64 {
+		return 0
+	}
+	return borderRadius * sideLength
 }
