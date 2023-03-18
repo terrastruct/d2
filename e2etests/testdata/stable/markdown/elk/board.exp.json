@@ -11,7 +11,7 @@
         "y": 148
       },
       "width": 531,
-      "height": 187,
+      "height": 227,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -30,7 +30,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "# Every frustum longs to be a cone\n\n- A continuing flow of paper is sufficient to continue the flow of paper\n- Please remain calm, it's no use both of us being hysterical at the same time\n- Visits always give pleasure: if not on arrival, then on the departure\n\n*Festivity Level 1*: Your guests are chatting amiably with each other.",
+      "label": "# Every frustum longs to be a cone\n\n- A continuing flow of paper is sufficient to continue the flow of paper\n- Please remain calm, it's no use both of us being hysterical at the same time\n- Visits always give pleasure: if not on arrival, then on the departure\n\n*Festivity Level 1*: Your guests are chatting amiably with each other.\n\ntest ~~strikethrough~~ test",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "markdown",
@@ -39,7 +39,7 @@
       "bold": false,
       "underline": false,
       "labelWidth": 531,
-      "labelHeight": 187,
+      "labelHeight": 227,
       "zIndex": 0,
       "level": 1
     },
@@ -89,7 +89,7 @@
       "type": "rectangle",
       "pos": {
         "x": 250,
-        "y": 405
+        "y": 445
       },
       "width": 54,
       "height": 66,
@@ -195,11 +195,11 @@
       "route": [
         {
           "x": 277.5,
-          "y": 335
+          "y": 375
         },
         {
           "x": 277.5,
-          "y": 405
+          "y": 445
         }
       ],
       "animated": false,

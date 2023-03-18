@@ -1,6 +1,7 @@
 #### Features 🚀
 
 - `--center` flag centers the SVG in the containing viewbox. [#1056](https://github.com/terrastruct/d2/pull/1056)
+- Strikethrough in Markdown with `~~`. [#1059](https://github.com/terrastruct/d2/pull/1059)
 
 #### Improvements 🧹
 

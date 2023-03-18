@@ -8,6 +8,7 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/extension"
 	goldmarkHtml "github.com/yuin/goldmark/renderer/html"
 	"golang.org/x/net/html"
 
@@ -81,6 +82,9 @@ func init() {
 		goldmark.WithRendererOptions(
 			goldmarkHtml.WithUnsafe(),
 			goldmarkHtml.WithXHTML(),
+		),
+		goldmark.WithExtensions(
+			extension.Strikethrough,
 		),
 	)
 }
