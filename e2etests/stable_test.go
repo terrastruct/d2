@@ -805,6 +805,8 @@ ww -> ff.gg
 - Visits always give pleasure: if not on arrival, then on the departure
 
 *Festivity Level 1*: Your guests are chatting amiably with each other.
+
+test ~~strikethrough~~ test
 |
 
 x -> hey -> y
