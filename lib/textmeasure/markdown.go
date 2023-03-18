@@ -331,6 +331,8 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 				} else if child.Type == html.ElementNode && child.Data == "br" {
 					if inlineBlock != nil {
 						endInlineBlock()
+					} else {
+						block.height += MarkdownLineHeightPx
 					}
 				} else if childBlock.isNotEmpty() {
 					if inlineBlock == nil {
