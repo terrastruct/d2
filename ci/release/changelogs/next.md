@@ -4,4 +4,4 @@
 
 #### Bugfixes ⛑️
 
-- Fixes Fill Pattern replacement in the API. [#853](https://github.com/terrastruct/d2/pull/853)
+- Fixes Fill Pattern replacement in the API. [#1051](https://github.com/terrastruct/d2/pull/1051)
