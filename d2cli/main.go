@@ -83,6 +83,10 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	browserFlag, err := ms.Opts.Bool("BROWSER", "browser", "", true, "open the browser and go to the address that watch streams updates to")
+	if err != nil {
+		return err
+	}
 
 	ps, err := d2plugin.ListPlugins(ctx)
 	if err != nil {
@@ -125,6 +129,9 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 
 	if *debugFlag {
 		ms.Env.Setenv("DEBUG", "1")
+	}
+	if !*browserFlag {
+		ms.Env.Setenv("BROWSER", "0")
 	}
 
 	var inputPath string
