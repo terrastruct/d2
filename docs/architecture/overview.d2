@@ -1,57 +1,61 @@
 input: |d2
+  # D2 script
   hello -> world
 |
 
-input -> compiler.parse
+input -> compiler
 
 compiler: {
-  parse -> AST
-  AST: Abstract Syntax Tree {
-    shape: oval
-  fill: honeydew
+  width: 300
+  height: 100
+  style: {
+    fill: "#7B90D2"
+    font-color: white
   }
-
-  AST -> compile
 }
 
-compiler.compile -> graph
+compiler -> graph
 graph: Graph\n(shapes & connections) {
   shape: oval
-  fill: honeydew
+  style.fill: "#A8D8B9"
 }
 
-graph -> Set Dimensions
-Set Dimensions -> Use ruler to measure all texts -> measured graph
-Set Dimensions -> Use given, premeasured dimensions -> measured graph
+configs -> graph mods
 
-measured graph: {
-  shape: oval
-  fill: honeydew
-}
+graph -> graph mods -> layout
 
-measured graph -> layout engine -> positioned graph
 
-positioned graph: {
-  shape: oval
-  fill: honeydew
-}
+# Set Dimensions -> Use ruler to measure all texts -> measured graph
+# Set Dimensions -> Use given, premeasured dimensions -> measured graph
 
-positioned graph -> exporter -> diagram
-
-diagram: finalized diagram (styled) {
-  shape: oval
-  fill: honeydew
-}
-
-diagram -> render SVG
-
-render SVG -> use sketch post processor: optional
-
-use sketch post processor -> SVG bytes
-
-SVG bytes: {
-  shape: oval
-  fill: honeydew
-}
-
-SVG bytes -> screenshot for PNG: optional
+# measured graph: {
+#   shape: oval
+#   style.fill: honeydew
+# }
+#
+# measured graph -> layout engine -> positioned graph
+#
+# positioned graph: {
+#   shape: oval
+#   style.fill: honeydew
+# }
+#
+# positioned graph -> exporter -> diagram
+#
+# diagram: finalized diagram (styled) {
+#   shape: oval
+#   style.fill: honeydew
+# }
+#
+# diagram -> render SVG
+#
+# render SVG -> use sketch post processor: optional
+#
+# use sketch post processor -> SVG bytes
+#
+# SVG bytes: {
+#   shape: oval
+#   style.fill: honeydew
+# }
+#
+# SVG bytes -> screenshot for PNG: optional
