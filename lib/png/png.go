@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"strings"
+	"time"
 
 	_ "embed"
 
@@ -13,6 +14,7 @@ import (
 	pngstruct "github.com/dsoprea/go-png-image-structure/v2"
 	"github.com/playwright-community/playwright-go"
 
+	"oss.terrastruct.com/d2/lib/background"
 	"oss.terrastruct.com/d2/lib/version"
 	"oss.terrastruct.com/util-go/xmain"
 )
@@ -82,6 +84,11 @@ var genPNGScript string
 const pngPrefix = "data:image/png;base64,"
 
 func ConvertSVG(ms *xmain.State, page playwright.Page, svg []byte) ([]byte, error) {
+	cancel := background.Repeat(func() {
+		ms.Log.Info.Printf("converting to PNG...")
+	}, time.Second*5)
+	defer cancel()
+
 	encodedSVG := base64.StdEncoding.EncodeToString(svg)
 	pngInterface, err := page.Evaluate(genPNGScript, "data:image/svg+xml;charset=utf-8;base64,"+encodedSVG)
 	if err != nil {

@@ -27,6 +27,7 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
+	"oss.terrastruct.com/d2/lib/background"
 	"oss.terrastruct.com/d2/lib/imgbundler"
 	ctxlog "oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/pdf"
@@ -289,10 +290,17 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	if sketch {
 		opts.FontFamily = go2.Pointer(d2fonts.HandDrawn)
 	}
+
+	cancel := background.Repeat(func() {
+		ms.Log.Info.Printf("compiling & running layout algorithms...")
+	}, time.Second*5)
+	defer cancel()
+
 	diagram, g, err := d2lib.Compile(ctx, string(input), opts)
 	if err != nil {
 		return nil, false, err
 	}
+	cancel()
 
 	pluginInfo, err := plugin.Info(ctx)
 	if err != nil {
