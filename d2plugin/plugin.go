@@ -44,6 +44,18 @@ func (f *PluginSpecificFlag) AddToOpts(opts *xmain.Opts) {
 			val = int64(defaultType)
 		}
 		opts.Int64("", f.Name, "", val, f.Usage)
+	case "[]int64":
+		var slice []int64
+		for _, v := range f.Default.([]interface{}) {
+			switch defaultType := v.(type) {
+			case int64:
+				slice = append(slice, defaultType)
+			case float64:
+				// json unmarshals numbers to float64
+				slice = append(slice, int64(defaultType))
+			}
+		}
+		opts.Int64Slice("", f.Name, "", slice, f.Usage)
 	}
 }
 
@@ -177,6 +189,9 @@ func HydratePluginOpts(ctx context.Context, ms *xmain.State, plugin Plugin) erro
 			opts[f.Tag] = val
 		case "int64":
 			val, _ := ms.Opts.Flags.GetInt64(f.Name)
+			opts[f.Tag] = val
+		case "[]int64":
+			val, _ := ms.Opts.Flags.GetInt64Slice(f.Name)
 			opts[f.Tag] = val
 		}
 	}

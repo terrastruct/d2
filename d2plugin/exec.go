@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os/exec"
 	"strconv"
+	"strings"
 	"time"
 
 	"oss.terrastruct.com/util-go/xdefer"
@@ -83,6 +84,12 @@ func (p *execPlugin) HydrateOpts(opts []byte) error {
 				allString[k] = vt
 			case int64:
 				allString[k] = strconv.Itoa(int(vt))
+			case []int64:
+				str := make([]string, len(vt))
+				for i, v := range vt {
+					str[i] = strconv.Itoa(int(v))
+				}
+				allString[k] = strings.Join(str, ",")
 			case float64:
 				allString[k] = strconv.Itoa(int(vt))
 			}
