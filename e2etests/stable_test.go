@@ -967,6 +967,23 @@ A code block continues until it reaches a line that is not indented
 `),
 		},
 		{
+			name: "br",
+			script: `copy: |md
+  # Headline 1
+  ## Headline 2
+  Lorem ipsum dolor
+  <br />
+  ## Headline 3
+  Lorem ipsum dolor
+  <br />
+  <br />
+  ## Headline 3
+  This just disappears
+  <br />
+|
+`,
+		},
+		{
 			name:   "giant_markdown_test",
 			script: mdTestScript(testMarkdown),
 		},
