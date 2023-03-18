@@ -83,6 +83,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	browserFlag := ms.Opts.String("BROWSER", "browser", "", "", "browser executable that watch opens. Setting to 0 opens no browser.")
 	centerFlag, err := ms.Opts.Bool("D2_CENTER", "center", "c", false, "center the SVG in the containing viewbox, such as your browser screen")
 	if err != nil {
 		return err
@@ -129,6 +130,9 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 
 	if *debugFlag {
 		ms.Env.Setenv("DEBUG", "1")
+	}
+	if *browserFlag != "" {
+		ms.Env.Setenv("BROWSER", *browserFlag)
 	}
 
 	var inputPath string
