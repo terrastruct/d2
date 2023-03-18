@@ -11,7 +11,7 @@
         "y": 438
       },
       "width": 480,
-      "height": 1225,
+      "height": 1565,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -53,7 +53,7 @@
         "y": 503
       },
       "width": 364,
-      "height": 317,
+      "height": 657,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -92,7 +92,7 @@
       "type": "stored_data",
       "pos": {
         "x": 136,
-        "y": 535
+        "y": 705
       },
       "width": 161,
       "height": 66,
@@ -133,7 +133,7 @@
       "type": "rectangle",
       "pos": {
         "x": 238,
-        "y": 722
+        "y": 1062
       },
       "width": 151,
       "height": 66,
@@ -174,7 +174,7 @@
       "type": "rectangle",
       "pos": {
         "x": 20,
-        "y": 1482
+        "y": 1822
       },
       "width": 157,
       "height": 151,
@@ -216,7 +216,7 @@
       "type": "hexagon",
       "pos": {
         "x": 71,
-        "y": 1523
+        "y": 1863
       },
       "width": 65,
       "height": 69,
@@ -257,7 +257,7 @@
       "type": "rectangle",
       "pos": {
         "x": 218,
-        "y": 977
+        "y": 1317
       },
       "width": 192,
       "height": 182,
@@ -299,7 +299,7 @@
       "type": "cylinder",
       "pos": {
         "x": 258,
-        "y": 1009
+        "y": 1349
       },
       "width": 112,
       "height": 118,
@@ -381,7 +381,7 @@
       "type": "rectangle",
       "pos": {
         "x": 521,
-        "y": 1239
+        "y": 1579
       },
       "width": 142,
       "height": 66,
@@ -422,7 +422,7 @@
       "type": "page",
       "pos": {
         "x": 551,
-        "y": 1476
+        "y": 1816
       },
       "width": 82,
       "height": 87,
@@ -745,6 +745,46 @@
       "labelHeight": 119,
       "zIndex": 0,
       "level": 1
+    },
+    {
+      "id": "code",
+      "type": "code",
+      "pos": {
+        "x": 526,
+        "y": 497
+      },
+      "width": 868,
+      "height": 406,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N7",
+      "stroke": "N1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "package main\n\nimport (\n\t\"fmt\"\n)\n\ntype City struct {\n\tName       string\n\tPopulation int\n}\n\nfunc tellTale(city1, city2 City) {\n\tfmt.Printf(\"There were two cities, %s and %s.\\n\", city1.Name, city2.Name)\n\tfmt.Printf(\"%s had a population of %d.\\n\", city1.Name, city1.Population)\n\tfmt.Printf(\"%s had a population of %d.\\n\", city2.Name, city2.Population)\n\tfmt.Println(\"Their tales were intertwined, and their people shared many adventures.\")\n}\n\nfunc main() {\n\tcity1 := City{Name: \"CityA\", Population: 1000000}\n\tcity2 := City{Name: \"CityB\", Population: 1200000}\n\n\ttellTale(city1, city2)\n}",
+      "fontSize": 16,
+      "fontFamily": "mono",
+      "language": "golang",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 863,
+      "labelHeight": 401,
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -774,20 +814,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 201,
-          "y": 602
+          "x": 211,
+          "y": 772
         },
         {
-          "x": 179,
-          "y": 650
+          "x": 181,
+          "y": 956
         },
         {
           "x": 191.7,
-          "y": 674.2
+          "y": 1014.2
         },
         {
           "x": 264.5,
-          "y": 723
+          "y": 1063
         }
       ],
       "isCurve": true,
@@ -822,20 +862,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 226,
-          "y": 602
+          "x": 220,
+          "y": 772
         },
         {
-          "x": 239.8,
-          "y": 650
+          "x": 238.6,
+          "y": 956
         },
         {
           "x": 252.25,
-          "y": 674.2
+          "y": 1014.2
         },
         {
           "x": 288.25,
-          "y": 723
+          "y": 1063
         }
       ],
       "isCurve": true,
@@ -870,20 +910,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 290,
-          "y": 602
+          "x": 238,
+          "y": 772
         },
         {
-          "x": 395.2,
-          "y": 650
+          "x": 356.2,
+          "y": 956
         },
         {
-          "x": 407.5,
-          "y": 674.2
+          "x": 376.35,
+          "y": 1014.2
         },
         {
-          "x": 351.5,
-          "y": 723
+          "x": 338.75,
+          "y": 1063
         }
       ],
       "isCurve": true,
@@ -919,31 +959,31 @@
       "route": [
         {
           "x": 313.5,
-          "y": 788.5
+          "y": 1128.5
         },
         {
           "x": 313.5,
-          "y": 814.1
+          "y": 1154.1
         },
         {
           "x": 313.5,
-          "y": 832.6
+          "y": 1172.6
         },
         {
           "x": 313.5,
-          "y": 850.75
+          "y": 1190.75
         },
         {
           "x": 313.5,
-          "y": 868.9
+          "y": 1208.9
         },
         {
           "x": 313.6,
-          "y": 955.2
+          "y": 1295.2
         },
         {
           "x": 314,
-          "y": 1010
+          "y": 1350
         }
       ],
       "isCurve": true,
@@ -1059,143 +1099,143 @@
         },
         {
           "x": 76.25,
-          "y": 463.6
+          "y": 497.6
         },
         {
           "x": 76.25,
-          "y": 488.5
+          "y": 573.5
         },
         {
           "x": 76.25,
-          "y": 513.4
+          "y": 649.4
         },
         {
           "x": 76.25,
-          "y": 548.7
+          "y": 752.7
         },
         {
           "x": 76.25,
-          "y": 576.75
+          "y": 831.75
         },
         {
           "x": 76.25,
-          "y": 604.8
+          "y": 910.8
         },
         {
           "x": 76.25,
-          "y": 642.2
+          "y": 982.2
         },
         {
           "x": 76.25,
-          "y": 670.25
+          "y": 1010.25
         },
         {
           "x": 76.25,
-          "y": 698.3
+          "y": 1038.3
         },
         {
           "x": 76.25,
-          "y": 733.6
+          "y": 1073.6
         },
         {
           "x": 76.25,
-          "y": 758.5
+          "y": 1098.5
         },
         {
           "x": 76.25,
-          "y": 783.4
+          "y": 1123.4
         },
         {
           "x": 76.25,
-          "y": 812.1
+          "y": 1152.1
         },
         {
           "x": 76.25,
-          "y": 830.25
+          "y": 1170.25
         },
         {
           "x": 76.25,
-          "y": 848.4
+          "y": 1188.4
         },
         {
           "x": 76.25,
-          "y": 872.6
+          "y": 1212.6
         },
         {
           "x": 76.25,
-          "y": 890.75
+          "y": 1230.75
         },
         {
           "x": 76.25,
-          "y": 908.9
+          "y": 1248.9
         },
         {
           "x": 76.25,
-          "y": 942.8
+          "y": 1282.8
         },
         {
           "x": 76.25,
-          "y": 975.5
+          "y": 1315.5
         },
         {
           "x": 76.25,
-          "y": 1008.2
+          "y": 1348.2
         },
         {
           "x": 76.25,
-          "y": 1051.8
+          "y": 1391.8
         },
         {
           "x": 76.25,
-          "y": 1084.5
+          "y": 1424.5
         },
         {
           "x": 76.25,
-          "y": 1117.2
+          "y": 1457.2
         },
         {
           "x": 76.25,
-          "y": 1149
+          "y": 1489
         },
         {
           "x": 76.25,
-          "y": 1164
+          "y": 1504
         },
         {
           "x": 76.25,
-          "y": 1179
+          "y": 1519
         },
         {
           "x": 76.25,
-          "y": 1205.6
+          "y": 1545.6
         },
         {
           "x": 76.25,
-          "y": 1230.5
+          "y": 1570.5
         },
         {
           "x": 76.25,
-          "y": 1255.4
+          "y": 1595.4
         },
         {
           "x": 76.25,
-          "y": 1290.7
+          "y": 1630.7
         },
         {
           "x": 76.25,
-          "y": 1318.75
+          "y": 1658.75
         },
         {
           "x": 76.25,
-          "y": 1346.8
+          "y": 1686.8
         },
         {
           "x": 79.6,
-          "y": 1445.6
+          "y": 1785.6
         },
         {
           "x": 93,
-          "y": 1524
+          "y": 1864
         }
       ],
       "isCurve": true,
@@ -1231,19 +1271,19 @@
       "route": [
         {
           "x": 520.5,
-          "y": 1286.4080303852415
+          "y": 1626.4080303852415
         },
         {
           "x": 208.7,
-          "y": 1349.6816060770484
+          "y": 1689.6816060770484
         },
         {
           "x": 127.4,
-          "y": 1445.6
+          "y": 1785.6
         },
         {
           "x": 114,
-          "y": 1524
+          "y": 1864
         }
       ],
       "isCurve": true,
@@ -1279,19 +1319,19 @@
       "route": [
         {
           "x": 591.5,
-          "y": 1305
+          "y": 1645
         },
         {
           "x": 591.5,
-          "y": 1353.4
+          "y": 1693.4
         },
         {
           "x": 591.6,
-          "y": 1436
+          "y": 1776
         },
         {
           "x": 592,
-          "y": 1476
+          "y": 1816
         }
       ],
       "isCurve": true,
@@ -1327,19 +1367,79 @@
       "route": [
         {
           "x": 313.5,
-          "y": 1159.5
+          "y": 1499.5
         },
         {
           "x": 313.5,
-          "y": 1183.1
+          "y": 1523.1
         },
         {
           "x": 354.9,
-          "y": 1201.3604316546762
+          "y": 1541.3604316546762
         },
         {
           "x": 520.5,
-          "y": 1250.8021582733813
+          "y": 1590.8021582733813
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(markdown -> code)[0]",
+      "src": "markdown",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "code",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "mono",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 959.5,
+          "y": 198.5
+        },
+        {
+          "x": 959.5,
+          "y": 308.9
+        },
+        {
+          "x": 959.5,
+          "y": 348.6
+        },
+        {
+          "x": 959.5,
+          "y": 366.75
+        },
+        {
+          "x": 959.5,
+          "y": 384.9
+        },
+        {
+          "x": 959.5,
+          "y": 457
+        },
+        {
+          "x": 959.5,
+          "y": 497
         }
       ],
       "isCurve": true,
