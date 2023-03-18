@@ -433,7 +433,7 @@ func (w *watcher) handleRoot(hw http.ResponseWriter, r *http.Request) {
 	<div id="d2-err" style="display: none"></div>
 	<div id="d2-svg-container"></div>
 </body>
-</html>`, w.outputPath, w.devMode)
+</html>`, filepath.Base(w.outputPath), w.devMode)
 }
 
 func (w *watcher) handleWatch(hw http.ResponseWriter, r *http.Request) error {
