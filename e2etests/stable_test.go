@@ -82,6 +82,14 @@ func testStable(t *testing.T) {
 			`,
 		},
 		{
+			name: "elk_container_height",
+			script: `i can not see the title: {
+  shape: cylinder
+  x
+}
+`,
+		},
+		{
 			name: "elk_shim",
 			script: `network: {
   cell tower: {
