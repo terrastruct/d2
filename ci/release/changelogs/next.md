@@ -2,6 +2,7 @@
 
 #### Improvements 🧹
 
+- `elk` layout containers no longer overlap the label with children. [#1055](https://github.com/terrastruct/d2/pull/1055)
 - `<title>` attribute of HTML in watch mode is the base file name, instead of the whole path. [#1054](https://github.com/terrastruct/d2/pull/1054)
 
 #### Bugfixes ⛑️
