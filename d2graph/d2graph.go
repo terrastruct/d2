@@ -1300,7 +1300,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			continue
 		}
 
-		if g.Theme != nil && g.Theme.SpecialRules.CapsLock {
+		if g.Theme != nil && g.Theme.SpecialRules.CapsLock && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeCode) {
 			obj.Attributes.Label.Value = strings.ToUpper(obj.Attributes.Label.Value)
 		}
 
@@ -1450,7 +1450,7 @@ func (g *Graph) Texts() []*d2target.MText {
 	for _, obj := range g.Objects {
 		if obj.Attributes.Label.Value != "" {
 			text := obj.Text()
-			if capsLock {
+			if capsLock && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeCode) {
 				text.Text = strings.ToUpper(text.Text)
 			}
 			texts = appendTextDedup(texts, text)

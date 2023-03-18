@@ -248,20 +248,31 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 
 			if n.LayoutOptions.Padding == DefaultOpts.Padding {
-				// Default
-				paddingTop := 50
+				labelHeight := 0
 				if obj.LabelHeight != nil {
-					paddingTop = go2.Max(paddingTop, *obj.LabelHeight+label.PADDING)
+					labelHeight = *obj.LabelHeight + label.PADDING
 				}
+
+				n.Height += 100 + float64(labelHeight)
+				n.Width += 100
+				contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(n.Width), float64(n.Height))
+				shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[obj.Attributes.Shape.Value]
+				s := shape.NewShape(shapeType, contentBox)
+
+				paddingTop := n.Height - s.GetInnerBox().Height
+				n.Height -= (100 + float64(labelHeight))
+				n.Width -= 100
+
+				iconHeight := 0
 				if obj.Attributes.Icon != nil && obj.Attributes.Shape.Value != d2target.ShapeImage {
-					contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(n.Width), float64(n.Height))
-					shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[obj.Attributes.Shape.Value]
-					s := shape.NewShape(shapeType, contentBox)
-					iconSize := d2target.GetIconSize(s.GetInnerBox(), string(label.InsideTopLeft))
-					paddingTop = go2.Max(paddingTop, iconSize+label.PADDING*2)
+					iconHeight = d2target.GetIconSize(s.GetInnerBox(), string(label.InsideTopLeft)) + label.PADDING*2
 				}
+
+				paddingTop += float64(go2.Max(labelHeight, iconHeight))
+
 				n.LayoutOptions.Padding = fmt.Sprintf("[top=%d,left=50,bottom=50,right=50]",
-					paddingTop,
+					// Default padding
+					go2.Max(int(math.Ceil(paddingTop)), 50),
 				)
 			}
 		} else {

@@ -46,6 +46,16 @@ func TestCLI_E2E(t *testing.T) {
 			},
 		},
 		{
+			name: "center",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "--center=true", "hello-world.d2")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "hello-world.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
 			name:   "hello_world_png_sketch",
 			skipCI: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {

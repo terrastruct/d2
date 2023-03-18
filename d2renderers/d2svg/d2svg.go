@@ -71,6 +71,7 @@ var grain string
 type RenderOpts struct {
 	Pad         int
 	Sketch      bool
+	Center      bool
 	ThemeID     int64
 	DarkThemeID *int64
 	// disables the fit to screen behavior and ensures the exported svg has the exact dimensions
@@ -1828,9 +1829,14 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		dimensions = fmt.Sprintf(` width="%d" height="%d"`, w, h)
 	}
 
-	fitToScreenWrapper := fmt.Sprintf(`<svg %s d2Version="%s" preserveAspectRatio="xMinYMin meet" viewBox="0 0 %d %d"%s>`,
+	alignment := "xMinYMin"
+	if opts.Center {
+		alignment = "xMidYMid"
+	}
+	fitToScreenWrapper := fmt.Sprintf(`<svg %s d2Version="%s" preserveAspectRatio="%s meet" viewBox="0 0 %d %d"%s>`,
 		`xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"`,
 		version.Version,
+		alignment,
 		w, h,
 		dimensions,
 	)
