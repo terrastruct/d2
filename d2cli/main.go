@@ -83,6 +83,10 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	centerFlag, err := ms.Opts.Bool("D2_CENTER", "center", "c", false, "center the SVG in the containing viewbox, such as your browser screen")
+	if err != nil {
+		return err
+	}
 
 	ps, err := d2plugin.ListPlugins(ctx)
 	if err != nil {
@@ -229,6 +233,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		w, err := newWatcher(ctx, ms, watcherOpts{
 			layoutPlugin:  plugin,
 			sketch:        *sketchFlag,
+			center:        *centerFlag,
 			themeID:       *themeFlag,
 			darkThemeID:   darkThemeFlag,
 			pad:           *padFlag,
@@ -249,7 +254,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	_, written, err := compile(ctx, ms, plugin, *sketchFlag, *padFlag, *themeFlag, darkThemeFlag, inputPath, outputPath, *bundleFlag, *forceAppendixFlag, pw.Page)
+	_, written, err := compile(ctx, ms, plugin, *sketchFlag, *centerFlag, *padFlag, *themeFlag, darkThemeFlag, inputPath, outputPath, *bundleFlag, *forceAppendixFlag, pw.Page)
 	if err != nil {
 		if written {
 			return fmt.Errorf("failed to fully compile (partial render written): %w", err)
@@ -259,7 +264,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad, themeID int64, darkThemeID *int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page) (_ []byte, written bool, _ error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch, center bool, pad, themeID int64, darkThemeID *int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page) (_ []byte, written bool, _ error) {
 	start := time.Now()
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
@@ -298,10 +303,10 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	var svg []byte
 	if filepath.Ext(outputPath) == ".pdf" {
 		pageMap := pdf.BuildPDFPageMap(diagram, nil, nil)
-		svg, err = renderPDF(ctx, ms, plugin, sketch, pad, themeID, outputPath, page, ruler, diagram, nil, nil, pageMap)
+		svg, err = renderPDF(ctx, ms, plugin, sketch, center, pad, themeID, outputPath, page, ruler, diagram, nil, nil, pageMap)
 	} else {
 		compileDur := time.Since(start)
-		svg, err = render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
+		svg, err = render(ctx, ms, compileDur, plugin, sketch, center, pad, themeID, darkThemeID, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
 	}
 	if err != nil {
 		return svg, false, err
@@ -315,7 +320,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	return svg, true, nil
 }
 
-func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, sketch bool, pad int64, themeID int64, darkThemeID *int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
+func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, sketch, center bool, pad int64, themeID int64, darkThemeID *int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
 	if diagram.Name != "" {
 		ext := filepath.Ext(outputPath)
 		outputPath = strings.TrimSuffix(outputPath, ext)
@@ -359,19 +364,19 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 	}
 
 	for _, dl := range diagram.Layers {
-		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, layersOutputPath, bundle, forceAppendix, page, ruler, dl)
+		_, err := render(ctx, ms, compileDur, plugin, sketch, center, pad, themeID, darkThemeID, inputPath, layersOutputPath, bundle, forceAppendix, page, ruler, dl)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, scenariosOutputPath, bundle, forceAppendix, page, ruler, dl)
+		_, err := render(ctx, ms, compileDur, plugin, sketch, center, pad, themeID, darkThemeID, inputPath, scenariosOutputPath, bundle, forceAppendix, page, ruler, dl)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := render(ctx, ms, compileDur, plugin, sketch, pad, themeID, darkThemeID, inputPath, stepsOutputPath, bundle, forceAppendix, page, ruler, dl)
+		_, err := render(ctx, ms, compileDur, plugin, sketch, center, pad, themeID, darkThemeID, inputPath, stepsOutputPath, bundle, forceAppendix, page, ruler, dl)
 		if err != nil {
 			return nil, err
 		}
@@ -379,7 +384,7 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 
 	if !diagram.IsFolderOnly {
 		start := time.Now()
-		svg, err := _render(ctx, ms, plugin, sketch, pad, themeID, darkThemeID, boardOutputPath, bundle, forceAppendix, page, ruler, diagram)
+		svg, err := _render(ctx, ms, plugin, sketch, center, pad, themeID, darkThemeID, boardOutputPath, bundle, forceAppendix, page, ruler, diagram)
 		if err != nil {
 			return svg, err
 		}
@@ -391,11 +396,12 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 	return nil, nil
 }
 
-func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad int64, themeID int64, darkThemeID *int64, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
+func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch, center bool, pad int64, themeID int64, darkThemeID *int64, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
 	toPNG := filepath.Ext(outputPath) == ".png"
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
 		Pad:           int(pad),
 		Sketch:        sketch,
+		Center:        center,
 		ThemeID:       themeID,
 		DarkThemeID:   darkThemeID,
 		SetDimensions: toPNG,
@@ -457,7 +463,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	return svg, nil
 }
 
-func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch bool, pad, themeID int64, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdf *pdflib.GoFPDF, boardPath []string, pageMap map[string]int) (svg []byte, err error) {
+func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch, center bool, pad, themeID int64, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdf *pdflib.GoFPDF, boardPath []string, pageMap map[string]int) (svg []byte, err error) {
 	var isRoot bool
 	if pdf == nil {
 		pdf = pdflib.Init()
@@ -485,6 +491,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
 			Pad:           int(pad),
 			Sketch:        sketch,
+			Center:        center,
 			SetDimensions: true,
 		})
 		if err != nil {
@@ -525,19 +532,19 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, ske
 	}
 
 	for _, dl := range diagram.Layers {
-		_, err := renderPDF(ctx, ms, plugin, sketch, pad, themeID, "", page, ruler, dl, pdf, currBoardPath, pageMap)
+		_, err := renderPDF(ctx, ms, plugin, sketch, center, pad, themeID, "", page, ruler, dl, pdf, currBoardPath, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := renderPDF(ctx, ms, plugin, sketch, pad, themeID, "", page, ruler, dl, pdf, currBoardPath, pageMap)
+		_, err := renderPDF(ctx, ms, plugin, sketch, center, pad, themeID, "", page, ruler, dl, pdf, currBoardPath, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := renderPDF(ctx, ms, plugin, sketch, pad, themeID, "", page, ruler, dl, pdf, currBoardPath, pageMap)
+		_, err := renderPDF(ctx, ms, plugin, sketch, center, pad, themeID, "", page, ruler, dl, pdf, currBoardPath, pageMap)
 		if err != nil {
 			return nil, err
 		}

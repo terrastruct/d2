@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- `--center` flag centers the SVG in the containing viewbox. [#1056](https://github.com/terrastruct/d2/pull/1056)
+
 #### Improvements 🧹
 
 - `elk` layout containers no longer overlap the label with children. [#1055](https://github.com/terrastruct/d2/pull/1055)
