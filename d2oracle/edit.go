@@ -433,6 +433,11 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 						attrs.Style.Underline.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
+				case "fill-pattern":
+					if attrs.Style.FillPattern != nil {
+						attrs.Style.FillPattern.MapKey.SetScalar(mk.Value.ScalarBox())
+						return nil
+					}
 				}
 			case "label":
 				if attrs.Label.MapKey != nil {

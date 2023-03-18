@@ -841,6 +841,27 @@ square.style.opacity: 0.2
 `,
 		},
 		{
+			name:  "set_fill_pattern",
+			text:  `square`,
+			key:   `square.style.fill-pattern`,
+			value: go2.Pointer(`grain`),
+			exp: `square: {style.fill-pattern: grain}
+`,
+		},
+		{
+			name: "replace_fill_pattern",
+			text: `square: {
+  style.fill-pattern: lines
+}
+`,
+			key:   `square.style.fill-pattern`,
+			value: go2.Pointer(`grain`),
+			exp: `square: {
+  style.fill-pattern: grain
+}
+`,
+		},
+		{
 			name: "label_unset",
 			text: `square: "Always try to do things in chronological order; it's less confusing that way."
 `,
