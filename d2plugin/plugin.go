@@ -46,13 +46,18 @@ func (f *PluginSpecificFlag) AddToOpts(opts *xmain.Opts) {
 		opts.Int64("", f.Name, "", val, f.Usage)
 	case "[]int64":
 		var slice []int64
-		for _, v := range f.Default.([]interface{}) {
-			switch defaultType := v.(type) {
-			case int64:
-				slice = append(slice, defaultType)
-			case float64:
-				// json unmarshals numbers to float64
-				slice = append(slice, int64(defaultType))
+		switch defaultType := f.Default.(type) {
+		case []int64:
+			slice = defaultType
+		case []interface{}:
+			for _, v := range defaultType {
+				switch defaultType := v.(type) {
+				case int64:
+					slice = append(slice, defaultType)
+				case float64:
+					// json unmarshals numbers to float64
+					slice = append(slice, int64(defaultType))
+				}
 			}
 		}
 		opts.Int64Slice("", f.Name, "", slice, f.Usage)
