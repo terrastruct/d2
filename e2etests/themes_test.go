@@ -77,6 +77,34 @@ markdown: |md
   - of
   - two cities
 |
+code: |go
+package main
+
+import (
+	"fmt"
+)
+
+type City struct {
+	Name       string
+	Population int
+}
+
+func tellTale(city1, city2 City) {
+	fmt.Printf("There were two cities, %s and %s.\n", city1.Name, city2.Name)
+	fmt.Printf("%s had a population of %d.\n", city1.Name, city1.Population)
+	fmt.Printf("%s had a population of %d.\n", city2.Name, city2.Population)
+	fmt.Println("Their tales were intertwined, and their people shared many adventures.")
+}
+
+func main() {
+	city1 := City{Name: "CityA", Population: 1000000}
+	city2 := City{Name: "CityB", Population: 1200000}
+
+	tellTale(city1, city2)
+}
+|
+
+markdown -> code
 `,
 		},
 		{
