@@ -68,6 +68,9 @@ var lines string
 //go:embed grain.txt
 var grain string
 
+//go:embed paper.txt
+var paper string
+
 type RenderOpts struct {
 	Pad         int
 	Sketch      bool
@@ -1798,7 +1801,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	bufStr := buf.String()
 	patternDefs := ""
 	for _, pattern := range d2graph.FillPatterns {
-		if strings.Contains(bufStr, fmt.Sprintf("%s-overlay", pattern)) || diagram.Root.FillPattern != "" {
+		if strings.Contains(bufStr, fmt.Sprintf("%s-overlay", pattern)) || diagram.Root.FillPattern == pattern {
 			if patternDefs == "" {
 				fmt.Fprint(upperBuf, `<style type="text/css"><![CDATA[`)
 			}
@@ -1809,6 +1812,8 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 				patternDefs += lines
 			case "grain":
 				patternDefs += grain
+			case "paper":
+				patternDefs += paper
 			}
 			fmt.Fprint(upperBuf, fmt.Sprintf(`
 .%s-overlay {

@@ -1108,6 +1108,58 @@ something
 			`,
 		},
 		{
+			name: "paper-real",
+			script: `style.fill-pattern: paper
+style.fill: "#947A6D"
+NETWORK: {
+  style: {
+	  stroke: black
+    fill-pattern: dots
+    double-border: true
+    fill: "#E7E9EE"
+    font: mono
+  }
+  CELL TOWER: {
+		style: {
+			stroke: black
+			fill-pattern: dots
+			fill: "#F5F6F9"
+			font: mono
+		}
+		satellites: SATELLITES {
+			shape: stored_data
+			style: {
+				font: mono
+				fill: white
+				stroke: black
+				multiple: true
+			}
+		}
+
+		transmitter: TRANSMITTER {
+			style: {
+				font: mono
+				fill: white
+				stroke: black
+			}
+		}
+
+		satellites -> transmitter: SEND {
+			style.stroke: black
+			style.font: mono
+		}
+		satellites -> transmitter: SEND {
+			style.stroke: black
+			style.font: mono
+		}
+		satellites -> transmitter: SEND {
+			style.stroke: black
+			style.font: mono
+		}
+  }
+}
+`},
+		{
 			name: "dots-real",
 			script: `
 NETWORK: {

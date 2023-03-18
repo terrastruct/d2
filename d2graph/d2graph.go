@@ -1586,6 +1586,7 @@ var FillPatterns = []string{
 	"dots",
 	"lines",
 	"grain",
+	"paper",
 }
 
 // BoardKeywords contains the keywords that create new boards.
