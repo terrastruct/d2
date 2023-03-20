@@ -3385,7 +3385,8 @@ Square 3
 			key:    `Square 2`,
 			newKey: `Square 3.Square 2`,
 
-			exp: `Square 4: ""
+			exp: `Square 2: ""
+
 Square: ""
 Square 3: {
   Square 2: ""

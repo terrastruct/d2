@@ -1,0 +1,341 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,0:0:0-6:0:54",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,0:0:0-0:12:12",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,0:0:0-0:8:8",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,0:0:0-0:8:8",
+                    "value": [
+                      {
+                        "string": "Square 2",
+                        "raw_string": "Square 2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "double_quoted_string": {
+                "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,0:10:10-0:12:12",
+                "value": null
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,2:0:14-2:10:24",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,2:0:14-2:6:20",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,2:0:14-2:6:20",
+                    "value": [
+                      {
+                        "string": "Square",
+                        "raw_string": "Square"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "double_quoted_string": {
+                "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,2:8:22-2:10:24",
+                "value": null
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,3:0:25-5:1:53",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,3:0:25-3:8:33",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,3:0:25-3:8:33",
+                    "value": [
+                      {
+                        "string": "Square 3",
+                        "raw_string": "Square 3"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,3:10:35-5:0:52",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,4:2:39-4:14:51",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,4:2:39-4:10:47",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,4:2:39-4:10:47",
+                              "value": [
+                                {
+                                  "string": "Square 2",
+                                  "raw_string": "Square 2"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "double_quoted_string": {
+                          "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,4:12:49-4:14:51",
+                          "value": null
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "Square 2",
+        "id_val": "Square 2",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,0:0:0-0:8:8",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,0:0:0-0:8:8",
+                    "value": [
+                      {
+                        "string": "Square 2",
+                        "raw_string": "Square 2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "Square",
+        "id_val": "Square",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,2:0:14-2:6:20",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,2:0:14-2:6:20",
+                    "value": [
+                      {
+                        "string": "Square",
+                        "raw_string": "Square"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "Square 3",
+        "id_val": "Square 3",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,3:0:25-3:8:33",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,3:0:25-3:8:33",
+                    "value": [
+                      {
+                        "string": "Square 3",
+                        "raw_string": "Square 3"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Square 3"
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "Square 2",
+        "id_val": "Square 2",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,4:2:39-4:10:47",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,4:2:39-4:10:47",
+                    "value": [
+                      {
+                        "string": "Square 2",
+                        "raw_string": "Square 2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": "<nil>"
+}
