@@ -2032,6 +2032,25 @@ func DeleteIDDeltas(g *d2graph.Graph, key string) (deltas map[string]string, err
 			return nil, nil
 		}
 		for _, ch := range obj.ChildrenArray {
+			// Record siblings as the unique key generated should not conflict with any siblings either
+			var siblingsToBeHoisted []string
+			for _, ch2 := range obj.ChildrenArray {
+				if ch2 != ch {
+					chMK, err := d2parser.ParseMapKey(ch2.AbsID())
+					if err != nil {
+						return nil, err
+					}
+					ida := d2graph.Key(chMK.Key)
+					if ida[len(ida)-1] == ida[len(ida)-2] {
+						continue
+					}
+					hoistedAbsID := ch2.ID
+					if obj.Parent != g.Root {
+						hoistedAbsID = obj.Parent.AbsID() + "." + ch2.ID
+					}
+					siblingsToBeHoisted = append(siblingsToBeHoisted, hoistedAbsID)
+				}
+			}
 			chMK, err := d2parser.ParseMapKey(ch.AbsID())
 			if err != nil {
 				return nil, err
@@ -2058,7 +2077,7 @@ func DeleteIDDeltas(g *d2graph.Graph, key string) (deltas map[string]string, err
 			}
 
 			if conflictingObj, ok := g.Root.HasChild(d2graph.Key(hoistedMK.Key)); (ok && conflictingObj != obj) || conflictsWithNewID {
-				newKey, _, err := generateUniqueKey(g, hoistedAbsID, obj, newIDs)
+				newKey, _, err := generateUniqueKey(g, hoistedAbsID, obj, append(newIDs, siblingsToBeHoisted...))
 				if err != nil {
 					return nil, err
 				}

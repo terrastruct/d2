@@ -5616,9 +5616,9 @@ Square: {
 			key: "Square",
 
 			exp: `{
-  "Square.Text": "Text 2",
-  "Square.Text 4": "Text",
-  "Square.Text 4.Text 2": "Text.Text 2"
+  "Square.Text": "Text",
+  "Square.Text 4": "Text 2",
+  "Square.Text 4.Text 2": "Text 2.Text 2"
 }`,
 		},
 		{
