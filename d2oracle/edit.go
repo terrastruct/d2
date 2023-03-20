@@ -1886,7 +1886,7 @@ func MoveIDDeltas(g *d2graph.Graph, key, newKey string) (deltas map[string]strin
 			}
 
 			if _, ok := g.Root.HasChild(d2graph.Key(hoistedMK.Key)); ok || conflictsWithNewID {
-				newKey, _, err := generateUniqueKey(g, hoistedAbsID, nil, newIDs)
+				newKey, _, err := generateUniqueKey(g, hoistedAbsID, obj, newIDs)
 				if err != nil {
 					return nil, err
 				}
