@@ -3374,6 +3374,24 @@ b: {
 }
 `,
 		},
+		{
+			name: "container_conflicts_generated",
+			text: `Square 2: "" {
+  Square: ""
+}
+Square: ""
+Square 3
+`,
+			key:    `Square 2`,
+			newKey: `Square 3.Square 2`,
+
+			exp: `Square 4: ""
+Square: ""
+Square 3: {
+  Square 2: ""
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -4939,6 +4957,7 @@ Text
 Text 2
 `,
 		},
+
 		{
 			name: "drop_value",
 			text: `a.b.c: "c label"
@@ -5278,6 +5297,22 @@ x.a -> x.b
   "x.(a -> b)[0]": "(a 2 -> b)[0]",
   "x.a": "a 2",
   "x.b": "b"
+}`,
+		},
+		{
+			name: "container_conflicts_generated",
+			text: `Square 2: "" {
+  Square: ""
+}
+Square: ""
+Square 3
+`,
+			key:    `Square 2`,
+			newKey: `Square 3.Square 2`,
+
+			exp: `{
+  "Square 2": "Square 3.Square 2",
+  "Square 2.Square": "Square 2"
 }`,
 		},
 	}

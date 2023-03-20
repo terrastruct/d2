@@ -14,7 +14,7 @@ func GetParentID(g *d2graph.Graph, absID string) (string, error) {
 	}
 	obj, ok := g.Root.HasChild(d2graph.Key(mk.Key))
 	if !ok {
-		return "", fmt.Errorf("%v parent not found", absID)
+		return "", fmt.Errorf("%v not found", absID)
 	}
 
 	return obj.Parent.AbsID(), nil
