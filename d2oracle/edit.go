@@ -643,7 +643,9 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 		return g, nil
 	}
 
+	// Keep a list of newly generated IDs, so that generateUniqueKey considers them for conflict
 	var newIDs []string
+	// If we already renamed the key from another reference, no need to touch
 	dedupedRenames := map[string]struct{}{}
 	for _, ref := range obj.References {
 		var absKeys []*d2ast.KeyPath
@@ -694,6 +696,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 			if _, ok := dedupedRenames[absKeyStr]; ok {
 				continue
 			}
+			// Stale reference
 			dedupedRenames[absKeyStr] = struct{}{}
 			// Do not consider the parent for conflicts, assume the parent will be deleted
 			if ida[len(ida)-1] == ida[len(ida)-2] {
