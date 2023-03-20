@@ -711,9 +711,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 			if err != nil {
 				return nil, err
 			}
-
 			newIDs = append(newIDs, uniqueKeyStr)
-
 			uniqueKey, err := d2parser.ParseKey(uniqueKeyStr)
 			if err != nil {
 				return nil, err
