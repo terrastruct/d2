@@ -643,6 +643,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 		return g, nil
 	}
 
+	var newIDs []string
 	dedupedRenames := map[string]struct{}{}
 	for _, ref := range obj.References {
 		var absKeys []*d2ast.KeyPath
@@ -686,7 +687,6 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 			absKeys = append(absKeys, absKey)
 		}
 
-		var newIDs []string
 		renames := make(map[string]string)
 		for _, absKey := range absKeys {
 			ida := d2graph.Key(absKey)
@@ -711,7 +711,9 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 			if err != nil {
 				return nil, err
 			}
+
 			newIDs = append(newIDs, uniqueKeyStr)
+
 			uniqueKey, err := d2parser.ParseKey(uniqueKeyStr)
 			if err != nil {
 				return nil, err
@@ -724,6 +726,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 			if absKeyStr != renamedKeyStr {
 				renames[absKeyStr] = renamedKeyStr
 			}
+			dedupedRenames[renamedKeyStr] = struct{}{}
 		}
 		// We need to rename in a conflict-free order
 		// E.g. imagine you have children `Text 4` and `Text`.

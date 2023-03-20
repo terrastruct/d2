@@ -1941,6 +1941,42 @@ z: ""
 `,
 		},
 		{
+			name: "middle_container_generated_conflict",
+
+			text: `a.Square.Text 3 -> a.Square.Text 2
+
+a.Square -> a.Text
+
+a: {
+  Text
+  Square: {
+    Text 2
+    Text 3
+  }
+  Square
+
+  Text 2
+}
+`,
+			key:    `a.Square`,
+			newKey: `Square`,
+
+			exp: `a.Text 3 -> a.Text 4
+
+Square -> a.Text
+
+a: {
+  Text
+
+  Text 4
+  Text 3
+
+  Text 2
+}
+Square
+`,
+		},
+		{
 			name: "into_container_existing_map",
 
 			text: `a: {
@@ -4934,10 +4970,10 @@ Square: {
 
 			exp: `Text 4
 
-Text: {
+Text 2: {
   Text 2
 }
-Text 2
+Text
 `,
 		},
 		{
