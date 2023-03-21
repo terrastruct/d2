@@ -259,7 +259,7 @@ containers: {
   }
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/invalid-fill-pattern.d2:3:19: expected "fill-pattern" to be one of: dots, lines, grain`,
+			expErr: `d2/testdata/d2compiler/TestCompile/invalid-fill-pattern.d2:3:19: expected "fill-pattern" to be one of: dots, lines, grain, paper`,
 		},
 		{
 			name: "shape_unquoted_hex",
