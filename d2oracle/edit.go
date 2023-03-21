@@ -643,6 +643,15 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 		return g, nil
 	}
 
+	// Usually ignore the object when generating, but if a sibling has the same ID, can't ignore
+	ignored := obj
+	for _, ch := range obj.ChildrenArray {
+		if ch.ID == obj.ID {
+			ignored = nil
+			break
+		}
+	}
+
 	// Keep a list of newly generated IDs, so that generateUniqueKey considers them for conflict
 	var newIDs []string
 	// If we already renamed the key from another reference, no need to touch
@@ -710,7 +719,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 			hoistedAbsKey.Path = append(hoistedAbsKey.Path, ref.Key.Path[:ref.KeyPathIndex]...)
 			hoistedAbsKey.Path = append(hoistedAbsKey.Path, absKey.Path[len(absKey.Path)-1])
 
-			uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(hoistedAbsKey), "."), obj, newIDs)
+			uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(hoistedAbsKey), "."), ignored, newIDs)
 			if err != nil {
 				return nil, err
 			}
@@ -1862,6 +1871,14 @@ func MoveIDDeltas(g *d2graph.Graph, key, newKey string) (deltas map[string]strin
 			return nil, nil
 		}
 
+		ignored := obj
+		for _, ch := range obj.ChildrenArray {
+			if ch.ID == obj.ID {
+				ignored = nil
+				break
+			}
+		}
+
 		for _, ch := range obj.ChildrenArray {
 			chMK, err := d2parser.ParseMapKey(ch.AbsID())
 			if err != nil {
@@ -1890,7 +1907,7 @@ func MoveIDDeltas(g *d2graph.Graph, key, newKey string) (deltas map[string]strin
 			}
 
 			if _, ok := g.Root.HasChild(d2graph.Key(hoistedMK.Key)); ok || conflictsWithNewID {
-				newKey, _, err := generateUniqueKey(g, hoistedAbsID, obj, newIDs)
+				newKey, _, err := generateUniqueKey(g, hoistedAbsID, ignored, newIDs)
 				if err != nil {
 					return nil, err
 				}

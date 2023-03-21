@@ -1906,6 +1906,33 @@ b: {
 `,
 		},
 		{
+			name: "duplicate_generated",
+
+			text: `x
+x 2
+x 3: {
+  x 3
+  x 4
+}
+x 4
+y
+`,
+			key:    `x 3`,
+			newKey: `y.x 3`,
+
+			exp: `x
+x 2
+
+x 3
+x 5
+
+x 4
+y: {
+  x 3
+}
+`,
+		},
+		{
 			name: "rename_2",
 
 			text: `a: {
@@ -5350,6 +5377,27 @@ Square 3
 			exp: `{
   "Square 2": "Square 3.Square 2",
   "Square 2.Square": "Square 2"
+}`,
+		},
+		{
+			name: "duplicate_generated",
+
+			text: `x
+x 2
+x 3: {
+  x 3
+  x 4
+}
+x 4
+y
+`,
+			key:    `x 3`,
+			newKey: `y.x 3`,
+
+			exp: `{
+  "x 3": "y.x 3",
+  "x 3.x 3": "x 3",
+  "x 3.x 4": "x 5"
 }`,
 		},
 	}
