@@ -5529,6 +5529,24 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
 }`,
 		},
 		{
+			name: "duplicate_generated",
+
+			text: `x
+x 2
+x 3: {
+  x 3
+  x 4
+}
+x 4
+y
+`,
+			key: `x 3`,
+			exp: `{
+  "x 3.x 3": "x 3",
+  "x 3.x 4": "x 5"
+}`,
+		},
+		{
 			name: "nested-height",
 
 			text: `x: {
