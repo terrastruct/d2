@@ -574,7 +574,6 @@ func (obj *Object) newObject(id string) *Object {
 
 func (obj *Object) HasChild(ids []string) (*Object, bool) {
 	if len(ids) == 0 {
-		println("\033[1;31m--- DEBUG:", "=======================", "\033[m")
 		return obj, true
 	}
 	if len(ids) == 1 && ids[0] != "style" {
