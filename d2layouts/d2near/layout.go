@@ -10,13 +10,12 @@ import (
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/util-go/go2"
 )
 
 const pad = 20
 
 // Layout finds the shapes which are assigned constant near keywords and places them.
-func Layout(ctx context.Context, g *d2graph.Graph, constantNears []*d2graph.Object) error {
+func Layout(ctx context.Context, g *d2graph.Graph, constantNears []*d2graph.Object, descendantObjectMap map[*d2graph.Object][]*d2graph.Object, descendantEdgeMap map[*d2graph.Object][]*d2graph.Edge) error {
 	if len(constantNears) == 0 {
 		return nil
 	}
@@ -27,7 +26,27 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNears []*d2graph.Obje
 	for _, processCenters := range []bool{true, false} {
 		for _, obj := range constantNears {
 			if processCenters == strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "-center") {
+				preX, preY := obj.TopLeft.X, obj.TopLeft.Y
 				obj.TopLeft = geo.NewPoint(place(obj))
+				dx, dy := obj.TopLeft.X-preX, obj.TopLeft.Y-preY
+
+				subObjects, subEdges := descendantObjectMap[obj], descendantEdgeMap[obj]
+				for _, subObject := range subObjects {
+					// `obj` already been replaced above by `place(obj)`
+					if subObject == obj {
+						continue
+					}
+					subObject.TopLeft.X += dx
+					subObject.TopLeft.Y += dy
+				}
+				for _, subEdge := range subEdges {
+					for _, point := range subEdge.Route {
+						point.X += dx
+						point.Y += dy
+					}
+				}
+
+				g.Edges = append(g.Edges, subEdges...)
 			}
 		}
 		for _, obj := range constantNears {
@@ -36,27 +55,38 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNears []*d2graph.Obje
 				g.Objects = append(g.Objects, obj)
 				obj.Parent.Children[obj.ID] = obj
 				obj.Parent.ChildrenArray = append(obj.Parent.ChildrenArray, obj)
+				attachChildren(g, obj)
 			}
 		}
 	}
 
 	// These shapes skipped core layout, which means they also skipped label placements
-	for _, obj := range constantNears {
-		if obj.HasOutsideBottomLabel() {
-			obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
-		} else if obj.Attributes.Icon != nil {
-			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-		} else {
-			obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
-		}
-	}
+	// for _, obj := range constantNears {
+	// 	if obj.HasOutsideBottomLabel() {
+	// 		obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
+	// 	} else if obj.Attributes.Icon != nil {
+	// 		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+	// 	} else {
+	// 		obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+	// 	}
+	// }
 
 	return nil
+}
+
+func attachChildren(g *d2graph.Graph, obj *d2graph.Object) {
+	if obj.ChildrenArray != nil && len(obj.ChildrenArray) != 0 {
+		for _, child := range obj.ChildrenArray {
+			g.Objects = append(g.Objects, child)
+			attachChildren(g, child)
+		}
+	}
 }
 
 // place returns the position of obj, taking into consideration its near value and the diagram
 func place(obj *d2graph.Object) (float64, float64) {
 	tl, br := boundingBox(obj.Graph)
+
 	w := br.X - tl.X
 	h := br.Y - tl.Y
 	switch d2graph.Key(obj.Attributes.NearKey)[0] {
@@ -77,12 +107,16 @@ func place(obj *d2graph.Object) (float64, float64) {
 	case "bottom-right":
 		return br.X + pad, br.Y + pad
 	}
+
 	return 0, 0
 }
 
 // WithoutConstantNears plucks out the graph objects which have "near" set to a constant value
 // This is to be called before layout engines so they don't take part in regular positioning
-func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (nears []*d2graph.Object) {
+func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (nears []*d2graph.Object, descendantObjectMap map[*d2graph.Object][]*d2graph.Object, descendantEdgeMap map[*d2graph.Object][]*d2graph.Edge) {
+	descendantObjectMap = make(map[*d2graph.Object][]*d2graph.Object)
+	descendantEdgeMap = make(map[*d2graph.Object][]*d2graph.Edge)
+
 	for i := 0; i < len(g.Objects); i++ {
 		obj := g.Objects[i]
 		if obj.Attributes.NearKey == nil {
@@ -94,8 +128,11 @@ func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (nears []*d2gra
 		}
 		_, isConst := d2graph.NearConstants[d2graph.Key(obj.Attributes.NearKey)[0]]
 		if isConst {
+			descendantObjects, edges := pluckOutNearObjectAndEdges(g, obj)
+			descendantObjectMap[obj] = descendantObjects
+			descendantEdgeMap[obj] = edges
+
 			nears = append(nears, obj)
-			g.Objects = append(g.Objects[:i], g.Objects[i+1:]...)
 			i--
 			delete(obj.Parent.Children, strings.ToLower(obj.ID))
 			for i := 0; i < len(obj.Parent.ChildrenArray); i++ {
@@ -106,7 +143,34 @@ func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (nears []*d2gra
 			}
 		}
 	}
-	return nears
+	return nears, descendantObjectMap, descendantEdgeMap
+}
+
+func pluckOutNearObjectAndEdges(g *d2graph.Graph, obj *d2graph.Object) (descendantsObjects []*d2graph.Object, edges []*d2graph.Edge) {
+	for i := 0; i < len(g.Edges); i++ {
+		edge := g.Edges[i]
+		if edge.Src == obj || edge.Dst == obj {
+			edges = append(edges, edge)
+			g.Edges = append(g.Edges[:i], g.Edges[i+1:]...)
+			i--
+		}
+	}
+
+	for i := 0; i < len(g.Objects); i++ {
+		temp := g.Objects[i]
+		if temp.AbsID() == obj.AbsID() {
+			descendantsObjects = append(descendantsObjects, obj)
+			g.Objects = append(g.Objects[:i], g.Objects[i+1:]...)
+			for _, child := range obj.ChildrenArray {
+				subObjects, subEdges := pluckOutNearObjectAndEdges(g, child)
+				descendantsObjects = append(descendantsObjects, subObjects...)
+				edges = append(edges, subEdges...)
+			}
+			break
+		}
+	}
+
+	return descendantsObjects, edges
 }
 
 // boundingBox gets the center of the graph as defined by shapes

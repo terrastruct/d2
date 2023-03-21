@@ -68,14 +68,29 @@ func compile(ctx context.Context, g *d2graph.Graph, opts *CompileOptions) (*d2ta
 			return nil, err
 		}
 
-		constantNears := d2near.WithoutConstantNears(ctx, g)
+		constantNears, descendantObjectMap, descendantEdgeMap := d2near.WithoutConstantNears(ctx, g)
+
+		// run core layout for constantNears
+		for _, nearObject := range constantNears {
+			tempGraph := d2graph.NewGraph()
+			tempGraph.Root.ChildrenArray = []*d2graph.Object{nearObject}
+			tempGraph.Root.Children[nearObject.ID] = nearObject
+			tempGraph.Objects = descendantObjectMap[nearObject]
+			tempGraph.Edges = descendantEdgeMap[nearObject]
+
+			nearObject.Parent = tempGraph.Root
+			if err = coreLayout(ctx, tempGraph); err != nil {
+				return nil, err
+			}
+			nearObject.Parent = g.Root
+		}
 
 		err = d2sequence.Layout(ctx, g, coreLayout)
 		if err != nil {
 			return nil, err
 		}
 
-		err = d2near.Layout(ctx, g, constantNears)
+		err = d2near.Layout(ctx, g, constantNears, descendantObjectMap, descendantEdgeMap)
 		if err != nil {
 			return nil, err
 		}

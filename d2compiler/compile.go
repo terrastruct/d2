@@ -735,10 +735,6 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 					c.errorf(obj.Attributes.NearKey, "constant near keys can only be set on root level shapes")
 					continue
 				}
-				if len(obj.ChildrenArray) > 0 {
-					c.errorf(obj.Attributes.NearKey, "constant near keys cannot be set on shapes with children")
-					continue
-				}
 			} else {
 				c.errorf(obj.Attributes.NearKey, "near key %#v must be the absolute path to a shape or one of the following constants: %s", d2format.Format(obj.Attributes.NearKey), strings.Join(d2graph.NearConstantsArray, ", "))
 				continue
