@@ -3529,6 +3529,29 @@ func TestDelete(t *testing.T) {
 `,
 		},
 		{
+			name: "duplicate_generated",
+
+			text: `x
+x 2
+x 3: {
+  x 3
+  x 4
+}
+x 4
+y
+`,
+			key: `x 3`,
+			exp: `x
+x 2
+
+x 3
+x 5
+
+x 4
+y
+`,
+		},
+		{
 			name: "table_refs",
 
 			text: `a: {
