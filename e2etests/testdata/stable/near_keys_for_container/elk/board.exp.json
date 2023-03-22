@@ -209,11 +209,134 @@
       "level": 2
     },
     {
+      "id": "a",
+      "type": "rectangle",
+      "pos": {
+        "x": -126,
+        "y": -286
+      },
+      "width": 253,
+      "height": 266,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B4",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "a",
+      "fontSize": 28,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 12,
+      "labelHeight": 36,
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "a.b",
+      "type": "rectangle",
+      "pos": {
+        "x": -76,
+        "y": -236
+      },
+      "width": 153,
+      "height": 166,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B5",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "b",
+      "fontSize": 24,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 12,
+      "labelHeight": 31,
+      "labelPosition": "INSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "a.b.c",
+      "type": "rectangle",
+      "pos": {
+        "x": -26,
+        "y": -186
+      },
+      "width": 53,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B6",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "c",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 8,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 3
+    },
+    {
       "id": "x",
       "type": "rectangle",
       "pos": {
-        "x": -360,
-        "y": -252
+        "x": -373,
+        "y": -558
       },
       "width": 227,
       "height": 302,
@@ -253,8 +376,8 @@
       "id": "x.a",
       "type": "rectangle",
       "pos": {
-        "x": -310,
-        "y": -202
+        "x": -323,
+        "y": -508
       },
       "width": 53,
       "height": 66,
@@ -294,8 +417,8 @@
       "id": "x.b",
       "type": "rectangle",
       "pos": {
-        "x": -310,
-        "y": -66
+        "x": -323,
+        "y": -372
       },
       "width": 53,
       "height": 66,
@@ -335,8 +458,8 @@
       "id": "x.c",
       "type": "rectangle",
       "pos": {
-        "x": -237,
-        "y": -202
+        "x": -250,
+        "y": -508
       },
       "width": 53,
       "height": 66,
@@ -376,8 +499,8 @@
       "id": "x.d",
       "type": "rectangle",
       "pos": {
-        "x": -237,
-        "y": -66
+        "x": -250,
+        "y": -372
       },
       "width": 54,
       "height": 66,
@@ -417,8 +540,8 @@
       "id": "y",
       "type": "rectangle",
       "pos": {
-        "x": 133,
-        "y": -252
+        "x": 146,
+        "y": -558
       },
       "width": 227,
       "height": 302,
@@ -458,8 +581,8 @@
       "id": "y.a",
       "type": "rectangle",
       "pos": {
-        "x": 183,
-        "y": -202
+        "x": 196,
+        "y": -508
       },
       "width": 53,
       "height": 66,
@@ -499,8 +622,8 @@
       "id": "y.b",
       "type": "rectangle",
       "pos": {
-        "x": 183,
-        "y": -66
+        "x": 196,
+        "y": -372
       },
       "width": 53,
       "height": 66,
@@ -540,8 +663,8 @@
       "id": "y.c",
       "type": "rectangle",
       "pos": {
-        "x": 257,
-        "y": -202
+        "x": 270,
+        "y": -508
       },
       "width": 53,
       "height": 66,
@@ -581,8 +704,8 @@
       "id": "y.d",
       "type": "rectangle",
       "pos": {
-        "x": 256,
-        "y": -66
+        "x": 269,
+        "y": -372
       },
       "width": 54,
       "height": 66,
@@ -727,12 +850,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": -284,
-          "y": -136
+          "x": -297,
+          "y": -442
         },
         {
-          "x": -284,
-          "y": -66
+          "x": -297,
+          "y": -372
         }
       ],
       "animated": false,
@@ -767,12 +890,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": -210.5,
-          "y": -136
+          "x": -223.5,
+          "y": -442
         },
         {
-          "x": -210.5,
-          "y": -66
+          "x": -223.5,
+          "y": -372
         }
       ],
       "animated": false,
@@ -807,12 +930,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 210,
-          "y": -136
+          "x": 223,
+          "y": -442
         },
         {
-          "x": 210,
-          "y": -66
+          "x": 223,
+          "y": -372
         }
       ],
       "animated": false,
@@ -847,12 +970,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 283.5,
-          "y": -136
+          "x": 296.5,
+          "y": -442
         },
         {
-          "x": 283.5,
-          "y": -66
+          "x": 296.5,
+          "y": -372
         }
       ],
       "animated": false,

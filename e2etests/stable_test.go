@@ -30,6 +30,13 @@ func testStable(t *testing.T) {
 					a -> b
 					c -> d
 				}
+
+				a: {
+					near: top-center
+					b: {
+						c
+					}
+				}
 			`,
 		},
 		{
