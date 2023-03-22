@@ -1,8 +1,7 @@
 .make-log
 .changed-files
 .make-log.txt
-*.got.json
-*.got.svg
+*.got.*
 e2e_report.html
 bin
 out
