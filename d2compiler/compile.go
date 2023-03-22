@@ -735,12 +735,44 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 					c.errorf(obj.Attributes.NearKey, "constant near keys can only be set on root level shapes")
 					continue
 				}
+
+				descendantsMap := getNearDescendants(obj)
+				connectToOutside := false
+				for _, edge := range g.Edges {
+					if (descendantsMap[edge.Src] && !descendantsMap[edge.Dst]) ||
+						(!descendantsMap[edge.Src] && descendantsMap[edge.Dst]) {
+						connectToOutside = true
+					}
+				}
+
+				if connectToOutside {
+					c.errorf(obj.Attributes.NearKey, "a child of a near container cannot connect to outside")
+					continue
+				}
 			} else {
 				c.errorf(obj.Attributes.NearKey, "near key %#v must be the absolute path to a shape or one of the following constants: %s", d2format.Format(obj.Attributes.NearKey), strings.Join(d2graph.NearConstantsArray, ", "))
 				continue
 			}
 		}
 	}
+}
+
+func getNearDescendants(nearObj *d2graph.Object) map[*d2graph.Object]bool {
+	descendantsMap := make(map[*d2graph.Object]bool)
+
+	var helper func(obj *d2graph.Object)
+
+	helper = func(obj *d2graph.Object) {
+		if obj.ChildrenArray != nil {
+			for _, child := range obj.ChildrenArray {
+				descendantsMap[child] = true
+				helper(child)
+			}
+		}
+	}
+
+	helper(nearObj)
+	return descendantsMap
 }
 
 func (c *compiler) validateBoardLinks(g *d2graph.Graph) {

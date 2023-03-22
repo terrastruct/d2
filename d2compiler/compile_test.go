@@ -1536,6 +1536,17 @@ d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set
 			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_connected.d2:3:12: constant near keys cannot be set on connected shapes`,
 		},
 		{
+			name: "near_descendant_connect_to_outside",
+			text: `
+				x: {
+					near: top-left
+					y
+				}
+				x.y -> z
+			`,
+			expErr: "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2:3:12: a child of a near container cannot connect to outside",
+		},
+		{
 			name: "nested_near_constant",
 
 			text: `x.y.near: top-center
