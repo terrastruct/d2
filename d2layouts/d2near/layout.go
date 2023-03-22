@@ -15,7 +15,7 @@ import (
 const pad = 20
 
 // Layout finds the shapes which are assigned constant near keywords and places them.
-func Layout(ctx context.Context, g *d2graph.Graph, constantNears []*d2graph.Object, descendantObjectMap map[*d2graph.Object][]*d2graph.Object, descendantEdgeMap map[*d2graph.Object][]*d2graph.Edge) error {
+func Layout(ctx context.Context, g *d2graph.Graph, constantNears []*d2graph.Object, constantNearGraphs map[*d2graph.Object]*d2graph.Graph) error {
 	if len(constantNears) == 0 {
 		return nil
 	}
@@ -30,7 +30,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNears []*d2graph.Obje
 				obj.TopLeft = geo.NewPoint(place(obj))
 				dx, dy := obj.TopLeft.X-preX, obj.TopLeft.Y-preY
 
-				subObjects, subEdges := descendantObjectMap[obj], descendantEdgeMap[obj]
+				tempGraph := constantNearGraphs[obj]
+				if tempGraph == nil {
+					continue
+				}
+
+				subObjects, subEdges := tempGraph.Objects, tempGraph.Edges
 				for _, subObject := range subObjects {
 					// `obj` already been replaced above by `place(obj)`
 					if subObject == obj {
@@ -111,9 +116,8 @@ func place(obj *d2graph.Object) (float64, float64) {
 
 // WithoutConstantNears plucks out the graph objects which have "near" set to a constant value
 // This is to be called before layout engines so they don't take part in regular positioning
-func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (nears []*d2graph.Object, descendantObjectMap map[*d2graph.Object][]*d2graph.Object, descendantEdgeMap map[*d2graph.Object][]*d2graph.Edge) {
-	descendantObjectMap = make(map[*d2graph.Object][]*d2graph.Object)
-	descendantEdgeMap = make(map[*d2graph.Object][]*d2graph.Edge)
+func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (nears []*d2graph.Object, constantNearGraphs map[*d2graph.Object]*d2graph.Graph) {
+	constantNearGraphs = make(map[*d2graph.Object]*d2graph.Graph)
 
 	for i := 0; i < len(g.Objects); i++ {
 		obj := g.Objects[i]
@@ -127,8 +131,14 @@ func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (nears []*d2gra
 		_, isConst := d2graph.NearConstants[d2graph.Key(obj.Attributes.NearKey)[0]]
 		if isConst {
 			descendantObjects, edges := pluckOutNearObjectAndEdges(g, obj)
-			descendantObjectMap[obj] = descendantObjects
-			descendantEdgeMap[obj] = edges
+
+			tempGraph := d2graph.NewGraph()
+			tempGraph.Root.ChildrenArray = []*d2graph.Object{obj}
+			tempGraph.Root.Children[obj.ID] = obj
+			tempGraph.Objects = descendantObjects
+			tempGraph.Edges = edges
+
+			constantNearGraphs[obj] = tempGraph
 
 			nears = append(nears, obj)
 			i--
@@ -141,7 +151,7 @@ func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (nears []*d2gra
 			}
 		}
 	}
-	return nears, descendantObjectMap, descendantEdgeMap
+	return nears, constantNearGraphs
 }
 
 func pluckOutNearObjectAndEdges(g *d2graph.Graph, obj *d2graph.Object) (descendantsObjects []*d2graph.Object, edges []*d2graph.Edge) {
