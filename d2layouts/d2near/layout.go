@@ -86,7 +86,6 @@ func attachChildren(g *d2graph.Graph, obj *d2graph.Object) {
 // place returns the position of obj, taking into consideration its near value and the diagram
 func place(obj *d2graph.Object) (float64, float64) {
 	tl, br := boundingBox(obj.Graph)
-
 	w := br.X - tl.X
 	h := br.Y - tl.Y
 	switch d2graph.Key(obj.Attributes.NearKey)[0] {
@@ -107,7 +106,6 @@ func place(obj *d2graph.Object) (float64, float64) {
 	case "bottom-right":
 		return br.X + pad, br.Y + pad
 	}
-
 	return 0, 0
 }
 
