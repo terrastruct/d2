@@ -79,7 +79,7 @@ type RenderOpts struct {
 	DarkThemeID *int64
 	// disables the fit to screen behavior and ensures the exported svg has the exact dimensions
 	SetDimensions bool
-	FitScreen     bool
+	NoFit         bool
 }
 
 func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height int) {
@@ -1831,7 +1831,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 
 	var dimensions string
-	if setDimensions && opts.FitScreen {
+	if setDimensions && !opts.NoFit {
 		dimensions = fmt.Sprintf(` width="%d" height="%d"`, w, h)
 	}
 

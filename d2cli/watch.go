@@ -52,7 +52,7 @@ type watcherOpts struct {
 	pwd           string
 	bundle        bool
 	forceAppendix bool
-	fitScreen     bool
+	noFit         bool
 	pw            png.Playwright
 }
 
@@ -361,7 +361,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.pw = newPW
 		}
 
-		svg, _, err := compile(ctx, w.ms, w.layoutPlugin, w.sketch, w.center, w.pad, w.themeID, w.darkThemeID, w.inputPath, w.outputPath, w.bundle, w.forceAppendix, w.fitScreen, w.pw.Page)
+		svg, _, err := compile(ctx, w.ms, w.layoutPlugin, w.sketch, w.center, w.pad, w.themeID, w.darkThemeID, w.inputPath, w.outputPath, w.bundle, w.forceAppendix, w.noFit, w.pw.Page)
 		errs := ""
 		if err != nil {
 			if len(svg) > 0 {
