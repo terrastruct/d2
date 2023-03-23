@@ -93,25 +93,67 @@ func place(obj *d2graph.Object) (float64, float64) {
 	tl, br := boundingBox(obj.Graph)
 	w := br.X - tl.X
 	h := br.Y - tl.Y
+
+	var x, y float64
 	switch d2graph.Key(obj.Attributes.NearKey)[0] {
 	case "top-left":
-		return tl.X - obj.Width - pad, tl.Y - obj.Height - pad
+		x, y = tl.X-obj.Width-pad, tl.Y-obj.Height-pad
+		break
 	case "top-center":
-		return tl.X + w/2 - obj.Width/2, tl.Y - obj.Height - pad
+		x, y = tl.X+w/2-obj.Width/2, tl.Y-obj.Height-pad
+		break
 	case "top-right":
-		return br.X + pad, tl.Y - obj.Height - pad
+		x, y = br.X+pad, tl.Y-obj.Height-pad
+		break
 	case "center-left":
-		return tl.X - obj.Width - pad, tl.Y + h/2 - obj.Height/2
+		x, y = tl.X-obj.Width-pad, tl.Y+h/2-obj.Height/2
+		break
 	case "center-right":
-		return br.X + pad, tl.Y + h/2 - obj.Height/2
+		x, y = br.X+pad, tl.Y+h/2-obj.Height/2
+		break
 	case "bottom-left":
-		return tl.X - obj.Width - pad, br.Y + pad
+		x, y = tl.X-obj.Width-pad, br.Y+pad
+		break
 	case "bottom-center":
-		return br.X - w/2 - obj.Width/2, br.Y + pad
+		x, y = br.X-w/2-obj.Width/2, br.Y+pad
+		break
 	case "bottom-right":
-		return br.X + pad, br.Y + pad
+		x, y = br.X+pad, br.Y+pad
+		break
 	}
-	return 0, 0
+
+	return calcLabelDimension(obj, x, y)
+}
+
+func calcLabelDimension(obj *d2graph.Object, x float64, y float64) (float64, float64) {
+	var position string
+	if obj.LabelPosition != nil {
+		if strings.Contains(*obj.LabelPosition, "INSIDE") {
+			return x, y
+		}
+		if strings.Contains(*obj.LabelPosition, "_TOP_") {
+			position = "TOP"
+		} else if strings.Contains(*obj.LabelPosition, "_LEFT_") {
+			position = "LEFT"
+		} else if strings.Contains(*obj.LabelPosition, "_RIGHT_") {
+			position = "RIGHT"
+		} else if strings.Contains(*obj.LabelPosition, "_BOTTOM_") {
+			position = "BOTTOM"
+		}
+
+		switch position {
+		case "TOP":
+			return x, y - float64(*obj.LabelHeight)
+		case "BOTTOM":
+			return x, y + float64(*obj.LabelHeight)
+		case "LEFT":
+			return x - float64(*obj.LabelWidth), y
+		case "RIGHT":
+			return x + float64(*obj.LabelWidth), y
+		}
+	}
+
+	return x, y
 }
 
 // WithoutConstantNears plucks out the graph objects which have "near" set to a constant value
