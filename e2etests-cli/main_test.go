@@ -56,6 +56,42 @@ func TestCLI_E2E(t *testing.T) {
 			},
 		},
 		{
+			name: "animation",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "animation.d2", `Chicken's plan: {
+  style.font-size: 35
+  near: top-center
+  shape: text
+}
+
+steps: {
+  1: {
+    Approach road
+  }
+  2: {
+    Approach road -> Cross road
+  }
+  3: {
+    Cross road -> Make you wonder why
+  }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "--animate-interval=1400", "animation.d2")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "animation.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "incompatible-animation",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "x.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "--animate-interval=2", "x.d2", "x.png")
+				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: bad usage: -animate-interval can only be used when exporting to SVG.
+You provided: .png`)
+			},
+		},
+		{
 			name:   "hello_world_png_sketch",
 			skipCI: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
