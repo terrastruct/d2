@@ -94,7 +94,7 @@
 	fill: url(#paper);
 	mix-blend-mode: multiply;
 }]]></style><defs><pattern id="paper" x="0" y="0" width="75" height="75" patternUnits="userSpaceOnUse">
-<g style="mix-blend-mode:multiply" opacity="0.5">
+<g style="mix-blend-mode:multiply" opacity="0.3">
 <svg width="75" height="75" viewBox="0 0 75 75" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_3964_29771)">
 <mask id="mask0_3964_29771" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="-1" y="-1" width="77" height="77">
