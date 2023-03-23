@@ -1831,7 +1831,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 
 	var dimensions string
-	if setDimensions {
+	if setDimensions && opts.FitScreen {
 		dimensions = fmt.Sprintf(` width="%d" height="%d"`, w, h)
 	}
 
@@ -1846,9 +1846,6 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		w, h,
 		dimensions,
 	)
-	if !opts.FitScreen {
-		fitScreenWrapper = ""
-	}
 
 	// TODO minify
 	docRendered := fmt.Sprintf(`%s%s<svg id="d2-svg" class="%s" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s%s</svg></svg>`,
