@@ -37,6 +37,14 @@ func testStable(t *testing.T) {
 						c
 					}
 				}
+				b: {
+					near: bottom-right
+					a: {
+						c: {
+							d
+						}
+					}
+				}
 			`,
 		},
 		{
