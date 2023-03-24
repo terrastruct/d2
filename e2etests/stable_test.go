@@ -1929,6 +1929,576 @@ i am bottom left: { shape: text; near: bottom-left }
 i am bottom right: { shape: text; near: bottom-right }
 `,
 		},
+		{
+			name: "constant_near_title",
+			script: `title: |md
+  # A winning strategy
+| { near: top-center }
+
+poll the people -> results
+results -> unfavorable -> poll the people
+results -> favorable -> will of the people
+`,
+		},
+		{
+			name: "text_font_sizes",
+			script: `bear: { shape: text; style.font-size: 22; style.bold: true }
+mama bear: { shape: text; style.font-size: 28; style.italic: true }
+papa bear: { shape: text; style.font-size: 32; style.underline: true }
+mama bear -> bear
+papa bear -> bear
+`,
+		},
+		{
+			name: "tooltips",
+			script: `x: { tooltip: Total abstinence is easier than perfect moderation }
+y: { tooltip: Gee, I feel kind of LIGHT in the head now,\nknowing I can't make my satellite dish PAYMENTS! }
+x -> y
+`,
+		},
+		{
+			name: "links",
+			script: `x: { link: https://d2lang.com }
+			y: { link: https://terrastruct.com; tooltip: Gee, I feel kind of LIGHT in the head now,\nknowing I can't make my satellite dish PAYMENTS! }
+x -> y
+`,
+		},
+		{
+			name: "unnamed_only_width",
+			script: `
+
+class -> users -> code -> package -> no width
+
+class: "" {
+	shape: class
+	-num: int
+	-timeout: int
+	-pid
+
+	+getStatus(): Enum
+	+getJobs(): "Job[]"
+	+setTimeout(seconds int)
+}
+
+users: "" {
+	shape: sql_table
+	id: int
+	name: string
+	email: string
+	password: string
+	last_login: datetime
+}
+
+code: |go
+    a := 5
+    b := a + 7
+    fmt.Printf("%d", b)
+|
+
+package: "" { shape: package }
+no width: ""
+
+
+class.width: 512
+users.width: 512
+code.width: 512
+package.width: 512
+`,
+		},
+		{
+			name: "unnamed_only_height",
+			script: `
+
+class -> users -> code -> package -> no height
+
+class: "" {
+	shape: class
+	-num: int
+	-timeout: int
+	-pid
+
+	+getStatus(): Enum
+	+getJobs(): "Job[]"
+	+setTimeout(seconds int)
+}
+
+users: "" {
+	shape: sql_table
+	id: int
+	name: string
+	email: string
+	password: string
+	last_login: datetime
+}
+
+code: |go
+    a := 5
+    b := a + 7
+    fmt.Printf("%d", b)
+|
+
+package: "" { shape: package }
+no height: ""
+
+
+class.height: 512
+users.height: 512
+code.height: 512
+package.height: 512
+`,
+		},
+		{
+			name: "container_dimensions",
+			script: `a: {
+  width: 500
+  b -> c
+	b.width: 400
+	c.width: 600
+}
+
+b: {
+  width: 700
+  b -> c
+	e: {
+		height: 300
+	}
+}
+
+c: {
+  width: 200
+  height: 300
+  a
+}
+`,
+			dagreFeatureError: `Object "a" has attribute "width" and/or "height" set, but layout engine "dagre" does not support dimensions set on containers.`,
+		},
+		{
+			name: "crow_foot_arrowhead",
+			script: `
+a1 <-> b1: {
+	style.stroke-width: 1
+	source-arrowhead: {
+		shape: cf-many
+	}
+	target-arrowhead: {
+		shape: cf-many
+	}
+}
+a2 <-> b2: {
+	style.stroke-width: 3
+	source-arrowhead: {
+		shape: cf-many
+	}
+	target-arrowhead: {
+		shape: cf-many
+	}
+}
+a3 <-> b3: {
+	style.stroke-width: 6
+	source-arrowhead: {
+		shape: cf-many
+	}
+	target-arrowhead: {
+		shape: cf-many
+	}
+}
+
+c1 <-> d1: {
+	style.stroke-width: 1
+	source-arrowhead: {
+		shape: cf-many-required
+	}
+	target-arrowhead: {
+		shape: cf-many-required
+	}
+}
+c2 <-> d2: {
+	style.stroke-width: 3
+	source-arrowhead: {
+		shape: cf-many-required
+	}
+	target-arrowhead: {
+		shape: cf-many-required
+	}
+}
+c3 <-> d3: {
+	style.stroke-width: 6
+	source-arrowhead: {
+		shape: cf-many-required
+	}
+	target-arrowhead: {
+		shape: cf-many-required
+	}
+}
+
+e1 <-> f1: {
+	style.stroke-width: 1
+	source-arrowhead: {
+		shape: cf-one
+	}
+	target-arrowhead: {
+		shape: cf-one
+	}
+}
+e2 <-> f2: {
+	style.stroke-width: 3
+	source-arrowhead: {
+		shape: cf-one
+	}
+	target-arrowhead: {
+		shape: cf-one
+	}
+}
+e3 <-> f3: {
+	style.stroke-width: 6
+	source-arrowhead: {
+		shape: cf-one
+	}
+	target-arrowhead: {
+		shape: cf-one
+	}
+}
+
+g1 <-> h1: {
+	style.stroke-width: 1
+	source-arrowhead: {
+		shape: cf-one-required
+	}
+	target-arrowhead: {
+		shape: cf-one-required
+	}
+}
+g2 <-> h2: {
+	style.stroke-width: 3
+	source-arrowhead: {
+		shape: cf-one-required
+	}
+	target-arrowhead: {
+		shape: cf-one-required
+	}
+}
+g3 <-> h3: {
+	style.stroke-width: 6
+	source-arrowhead: {
+		shape: cf-one-required
+	}
+	target-arrowhead: {
+		shape: cf-one-required
+	}
+}
+
+c <-> d <-> f: {
+	style.stroke-width: 1
+	style.stroke: "orange"
+	source-arrowhead: {
+		shape: cf-many-required
+	}
+	target-arrowhead: {
+		shape: cf-one
+	}
+}
+`,
+		},
+		{
+			name: "circle_arrowhead",
+			script: `
+a <-> b: circle {
+  source-arrowhead: {
+    shape: circle
+  }
+  target-arrowhead: {
+    shape: circle
+  }
+}
+
+c <-> d: filled-circle {
+  source-arrowhead: {
+    shape: circle
+    style.filled: true
+  }
+  target-arrowhead: {
+    shape: circle
+    style.filled: true
+  }
+}`,
+		},
+		{
+			name: "animated",
+			script: `
+your love life will be -> happy: { style.animated: true }
+your love life will be -> harmonious: { style.animated: true }
+
+boredom <- immortality: { style.animated: true }
+
+Friday <-> Monday: { style.animated: true }
+
+Insomnia -- Sleep: { style.animated: true }
+Insomnia -- Wake: {
+	style: {
+		animated: true
+		stroke-width: 2
+	}
+}
+
+Insomnia -- Dream: {
+	style: {
+		animated: true
+		stroke-width: 8
+	}
+}
+
+Listen <-> Talk: {
+	style.animated: true
+	source-arrowhead.shape: cf-one
+	target-arrowhead.shape: diamond
+	label: hear
+}
+`,
+		},
+		{
+			name: "sql_table_tooltip_animated",
+			script: `
+x: {
+  shape: sql_table
+	y
+	tooltip: I like turtles
+}
+
+a: {
+  shape: sql_table
+	b
+}
+
+x.y -> a.b: {
+  style.animated: true
+	target-arrowhead.shape: cf-many
+}
+`,
+		},
+		{
+			name: "sql_table_column_styles",
+			script: `Humor in the Court: {
+  shape: sql_table
+	Could you see him from where you were standing?: "I could see his head."
+	And where was his head?: Just above his shoulders.
+  style.fill: red
+  style.stroke: lightgray
+  style.font-color: orange
+  style.font-size: 20
+}
+
+Humor in the Court2: {
+  shape: sql_table
+	Could you see him from where you were standing?: "I could see his head."
+	And where was his head?: Just above his shoulders.
+  style.fill: red
+  style.stroke: lightgray
+  style.font-color: orange
+  style.font-size: 30
+}
+
+manager: BatchManager {
+  shape: class
+	style.font-size: 20
+
+  -num: int
+  -timeout: int
+  -pid
+
+  +getStatus(): Enum
+  +getJobs(): "Job[]"
+  +setTimeout(seconds int)
+}
+
+manager2: BatchManager {
+  shape: class
+	style.font-size: 30
+
+  -num: int
+  -timeout: int
+  -pid
+
+  +getStatus(): Enum
+  +getJobs(): "Job[]"
+  +setTimeout(seconds int)
+}
+`,
+		},
+		{
+			name: "near-alone",
+			script: `
+x: {
+	near: top-center
+}
+y: {
+	near: bottom-center
+}
+z: {
+	near: center-left
+}
+`,
+		},
+		{
+			name: "border-radius",
+			script: `
+x: {
+	style.border-radius: 4
+}
+y: {
+	style.border-radius: 10
+}
+multiple2: {
+	style.border-radius: 6
+	style.multiple: true
+}
+double: {
+	style.border-radius: 6
+	style.double-border: true
+}
+three-dee: {
+	style.border-radius: 6
+	style.3d: true
+}
+`,
+		},
+		{
+			name: "sequence-inter-span-self",
+			script: `
+shape: sequence_diagram
+a: A
+b: B
+
+a.sp1 -> b: foo
+a.sp1 -> a.sp2: redirect
+a.sp2 -> b: bar
+`,
+		},
+		{
+			name: "people",
+			script: `
+a.shape: person
+b.shape: person
+c.shape: person
+d.shape: person
+e.shape: person
+f.shape: person
+g.shape: person
+
+a: -
+b: --
+c: ----
+d: --------
+e: ----------------
+f: --------------------------------
+g: ----------------------------------------------------------------
+
+1.shape: person
+2.shape: person
+3.shape: person
+4.shape: person
+5.shape: person
+
+1.width: 16
+2.width: 64
+3.width: 128
+4.width: 512
+
+# entering both width and height overrides aspect ratio limit
+5.height: 256
+5.width: 32
+`,
+		},
+		{
+			name: "ovals",
+			script: `
+a.shape: oval
+b.shape: oval
+c.shape: oval
+d.shape: oval
+e.shape: oval
+f.shape: oval
+g.shape: oval
+
+a: -
+b: --
+c: ----
+d: --------
+e: ----------------
+f: --------------------------------
+g: ----------------------------------------------------------------
+
+1.shape: oval
+2.shape: oval
+3.shape: oval
+4.shape: oval
+5.shape: oval
+
+1.width: 16
+2.width: 64
+3.width: 128
+4.width: 512
+
+# entering both width and height overrides aspect ratio limit
+5.height: 256
+5.width: 32
+`,
+		},
+		{
+			name: "complex-layers",
+			script: `
+desc: Multi-layer diagram of a home.
+
+window: {
+  style.double-border: true
+}
+roof
+garage
+
+layers: {
+  window: {
+    blinds
+    glass
+  }
+  roof: {
+    shingles
+    starlink
+    utility hookup
+  }
+  garage: {
+    tools
+    vehicles
+  }
+  repair: {
+    desc: How to repair a home.
+
+    steps: {
+      1: {
+        find contractors: {
+          craigslist
+          facebook
+        }
+      }
+      2: {
+        find contractors -> solicit quotes
+      }
+      3: {
+        obtain quotes -> negotiate
+      }
+      4: {
+        negotiate -> book the best bid
+      }
+    }
+  }
+}
+
+scenarios: {
+  storm: {
+    water
+    rain
+    thunder
+  }
+}`,
+		},
 	}
 
 	runa(t, tcs)
