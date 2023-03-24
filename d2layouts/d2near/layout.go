@@ -65,17 +65,6 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNears []*d2graph.Obje
 		}
 	}
 
-	// These shapes skipped core layout, which means they also skipped label placements
-	// for _, obj := range constantNears {
-	// 	if obj.HasOutsideBottomLabel() {
-	// 		obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
-	// 	} else if obj.Attributes.Icon != nil {
-	// 		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-	// 	} else {
-	// 		obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
-	// 	}
-	// }
-
 	return nil
 }
 
