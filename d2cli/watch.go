@@ -53,6 +53,7 @@ type watcherOpts struct {
 	bundle        bool
 	forceAppendix bool
 	pw            png.Playwright
+	font          string
 }
 
 type watcher struct {
@@ -360,7 +361,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.pw = newPW
 		}
 
-		svg, _, err := compile(ctx, w.ms, w.layoutPlugin, w.sketch, w.center, w.pad, w.themeID, w.darkThemeID, w.inputPath, w.outputPath, w.bundle, w.forceAppendix, w.pw.Page)
+		svg, _, err := compile(ctx, w.ms, w.layoutPlugin, w.sketch, w.center, w.pad, w.themeID, w.darkThemeID, w.inputPath, w.outputPath, w.bundle, w.forceAppendix, w.pw.Page, w.font)
 		errs := ""
 		if err != nil {
 			if len(svg) > 0 {

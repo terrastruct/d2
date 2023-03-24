@@ -89,6 +89,10 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	fontFlag := ms.Opts.String("FONT", "font", "", "", "the font used to render text (default \"Source Sans Pro\"")
+	if err != nil {
+		return err
+	}
 
 	ps, err := d2plugin.ListPlugins(ctx)
 	if err != nil {
@@ -249,6 +253,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			bundle:        *bundleFlag,
 			forceAppendix: *forceAppendixFlag,
 			pw:            pw,
+			font:          *fontFlag,
 		})
 		if err != nil {
 			return err
@@ -259,7 +264,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	_, written, err := compile(ctx, ms, plugin, *sketchFlag, *centerFlag, *padFlag, *themeFlag, darkThemeFlag, inputPath, outputPath, *bundleFlag, *forceAppendixFlag, pw.Page)
+	_, written, err := compile(ctx, ms, plugin, *sketchFlag, *centerFlag, *padFlag, *themeFlag, darkThemeFlag, inputPath, outputPath, *bundleFlag, *forceAppendixFlag, pw.Page, *fontFlag)
 	if err != nil {
 		if written {
 			return fmt.Errorf("failed to fully compile (partial render written): %w", err)
@@ -269,9 +274,15 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch, center bool, pad, themeID int64, darkThemeID *int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page) (_ []byte, written bool, _ error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketch, center bool, pad, themeID int64, darkThemeID *int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, font string) (_ []byte, written bool, _ error) {
 	start := time.Now()
 	input, err := ms.ReadPath(inputPath)
+	if err != nil {
+		return nil, false, err
+	}
+
+	// load custom fonts before initializing ruler
+	fontFamily, err := d2fonts.AddFont(font)
 	if err != nil {
 		return nil, false, err
 	}
@@ -289,6 +300,8 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	}
 	if sketch {
 		opts.FontFamily = go2.Pointer(d2fonts.HandDrawn)
+	} else if fontFamily != "" {
+		opts.FontFamily = go2.Pointer(fontFamily)
 	}
 
 	cancel := background.Repeat(func() {
