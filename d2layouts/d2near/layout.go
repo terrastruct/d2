@@ -15,7 +15,7 @@ import (
 const pad = 20
 
 // Layout finds the shapes which are assigned constant near keywords and places them.
-func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs map[*d2graph.Object]*d2graph.Graph) error {
+func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs []*d2graph.Graph) error {
 	if len(constantNearGraphs) == 0 {
 		return nil
 	}
@@ -24,16 +24,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs map[*d2gra
 	// Top left should go left enough to not collide with center.
 	// So place the center ones first, then the later ones will consider them for bounding box
 	for _, processCenters := range []bool{true, false} {
-		for obj := range constantNearGraphs {
+		for _, tempGraph := range constantNearGraphs {
+			obj := tempGraph.Root.ChildrenArray[0]
 			if processCenters == strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "-center") {
 				preX, preY := obj.TopLeft.X, obj.TopLeft.Y
 				obj.TopLeft = geo.NewPoint(place(obj))
 				dx, dy := obj.TopLeft.X-preX, obj.TopLeft.Y-preY
-
-				tempGraph := constantNearGraphs[obj]
-				if tempGraph == nil {
-					continue
-				}
 
 				subObjects, subEdges := tempGraph.Objects, tempGraph.Edges
 				for _, subObject := range subObjects {
@@ -54,7 +50,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs map[*d2gra
 				g.Edges = append(g.Edges, subEdges...)
 			}
 		}
-		for obj := range constantNearGraphs {
+		for _, tempGraph := range constantNearGraphs {
+			obj := tempGraph.Root.ChildrenArray[0]
 			if processCenters == strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "-center") {
 				// The z-index for constant nears does not matter, as it will not collide
 				g.Objects = append(g.Objects, obj)
@@ -144,9 +141,7 @@ func calcLabelDimension(obj *d2graph.Object, x float64, y float64) (float64, flo
 
 // WithoutConstantNears plucks out the graph objects which have "near" set to a constant value
 // This is to be called before layout engines so they don't take part in regular positioning
-func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (constantNearGraphs map[*d2graph.Object]*d2graph.Graph) {
-	constantNearGraphs = make(map[*d2graph.Object]*d2graph.Graph)
-
+func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (constantNearGraphs []*d2graph.Graph) {
 	for i := 0; i < len(g.Objects); i++ {
 		obj := g.Objects[i]
 		if obj.Attributes.NearKey == nil {
@@ -166,7 +161,7 @@ func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (constantNearGr
 			tempGraph.Objects = descendantObjects
 			tempGraph.Edges = edges
 
-			constantNearGraphs[obj] = tempGraph
+			constantNearGraphs = append(constantNearGraphs, tempGraph)
 
 			i--
 			delete(obj.Parent.Children, strings.ToLower(obj.ID))
