@@ -286,7 +286,8 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	if !sketch {
 		fontFamily, err = d2fonts.AddFont(font)
 		if err != nil {
-			ms.Log.Error.Printf("failed to load font %v, rendering with default font.", font)
+			ms.Log.Error.Printf("failed to load font %v: %v.", font, err)
+			ms.Log.Info.Printf("rendering with default font.")
 		}
 	}
 

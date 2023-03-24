@@ -222,14 +222,20 @@ func AddFont(fontLoc string) (FontFamily, error) {
 	if fontLoc == "" {
 		return "", nil
 	}
-	fontBuf, err := os.ReadFile(fontLoc)
-	if err != nil {
-		return "", fmt.Errorf("failed to read font: %v", err)
-	}
-
 	splitFont := strings.Split(fontLoc, "/")
 	fontFileName := splitFont[len(splitFont)-1]
-	fontName := strings.TrimSuffix(fontFileName, filepath.Ext(fontFileName))
+
+	ext := filepath.Ext(fontFileName)
+	if ext != ".ttf" {
+		return "", fmt.Errorf("cannot open non .ttf fonts")
+	}
+
+	fontBuf, err := os.ReadFile(fontLoc)
+	if err != nil {
+		return "", fmt.Errorf("failed to read font at location %v", err)
+	}
+
+	fontName := strings.TrimSuffix(fontFileName, ext)
 	fontFamily := FontFamily(fontName)
 	woffFont, err := fontlib.Sfnt2Woff(fontBuf)
 	if err != nil {
