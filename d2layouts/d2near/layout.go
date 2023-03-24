@@ -191,7 +191,6 @@ func pluckOutNearObjectAndEdges(g *d2graph.Graph, obj *d2graph.Object) (descenda
 		if temp.AbsID() == obj.AbsID() {
 			descendantsObjects = append(descendantsObjects, obj)
 			g.Objects = append(g.Objects[:i], g.Objects[i+1:]...)
-			obj.IsInsideNearContainer = true
 			for _, child := range obj.ChildrenArray {
 				subObjects, subEdges := pluckOutNearObjectAndEdges(g, child)
 				descendantsObjects = append(descendantsObjects, subObjects...)
@@ -229,7 +228,7 @@ func boundingBox(g *d2graph.Graph) (tl, br *geo.Point) {
 				y2 = math.Max(y2, obj.TopLeft.Y+obj.Height)
 			}
 		} else {
-			if obj.IsInsideNearContainer {
+			if obj.IsInsideNearContainer() {
 				continue
 			}
 			x1 = math.Min(x1, obj.TopLeft.X)

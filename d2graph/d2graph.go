@@ -90,12 +90,11 @@ type Object struct {
 	LabelDimensions d2target.TextDimensions `json:"label_dimensions"`
 	References      []Reference             `json:"references,omitempty"`
 
-	*geo.Box              `json:"box,omitempty"`
-	LabelPosition         *string `json:"labelPosition,omitempty"`
-	LabelWidth            *int    `json:"labelWidth,omitempty"`
-	LabelHeight           *int    `json:"labelHeight,omitempty"`
-	IconPosition          *string `json:"iconPosition,omitempty"`
-	IsInsideNearContainer bool    `json:"isInsideNearContainer,omitempty"`
+	*geo.Box      `json:"box,omitempty"`
+	LabelPosition *string `json:"labelPosition,omitempty"`
+	LabelWidth    *int    `json:"labelWidth,omitempty"`
+	LabelHeight   *int    `json:"labelHeight,omitempty"`
+	IconPosition  *string `json:"iconPosition,omitempty"`
 
 	Class    *d2target.Class    `json:"class,omitempty"`
 	SQLTable *d2target.SQLTable `json:"sql_table,omitempty"`
@@ -967,6 +966,18 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 	}
 
 	return &dims, nil
+}
+
+func (obj *Object) IsInsideNearContainer() bool {
+	temp := obj
+	for temp != nil {
+		fmt.Println(temp.ID)
+		if temp.Attributes.NearKey != nil {
+			return true
+		}
+		temp = temp.Parent
+	}
+	return false
 }
 
 type Edge struct {
