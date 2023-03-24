@@ -282,9 +282,12 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 	}
 
 	// load custom fonts before initializing ruler
-	fontFamily, err := d2fonts.AddFont(font)
-	if err != nil {
-		return nil, false, err
+	var fontFamily d2fonts.FontFamily
+	if !sketch {
+		fontFamily, err = d2fonts.AddFont(font)
+		if err != nil {
+			ms.Log.Error.Printf("failed to load font %v, rendering with default font.", font)
+		}
 	}
 
 	ruler, err := textmeasure.NewRuler()
