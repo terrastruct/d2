@@ -1382,7 +1382,7 @@ func RenderText(text string, x, height float64) string {
 	return strings.Join(rendered, "")
 }
 
-func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fonts.FontFamily) {
+func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fonts.FontFamily, cutSet string) {
 	fmt.Fprint(buf, `<style type="text/css"><![CDATA[`)
 
 	appendOnTrigger(
@@ -1404,7 +1404,7 @@ func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR)],
+			fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR).GetEncodedSubset(cutSet),
 		),
 	)
 
@@ -1466,7 +1466,7 @@ func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_BOLD)],
+			fontFamily.Font(0, d2fonts.FONT_STYLE_BOLD).GetEncodedSubset(cutSet),
 		),
 	)
 
@@ -1490,7 +1490,7 @@ func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_ITALIC)],
+			fontFamily.Font(0, d2fonts.FONT_STYLE_ITALIC).GetEncodedSubset(cutSet),
 		),
 	)
 
@@ -1515,7 +1515,7 @@ func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_REGULAR)],
+			d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_REGULAR).GetEncodedSubset(cutSet),
 		),
 	)
 
@@ -1536,7 +1536,7 @@ func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD)],
+			d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD).GetEncodedSubset(cutSet),
 		),
 	)
 
@@ -1557,7 +1557,7 @@ func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC)],
+			d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC).GetEncodedSubset(cutSet),
 		),
 	)
 
@@ -1720,7 +1720,15 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 
 	// generate style elements that will be appended to the SVG tag
 	upperBuf := &bytes.Buffer{}
-	embedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily) // embedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
+	var allLabels string
+	for _, s := range diagram.Shapes {
+		allLabels += s.Text.Label
+	}
+	for _, c := range diagram.Connections {
+		allLabels += c.Text.Label
+	}
+
+	embedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily, allLabels) // embedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
 	themeStylesheet, err := themeCSS(diagramHash, themeID, darkThemeID)
 	if err != nil {
 		return nil, err

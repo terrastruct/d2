@@ -3,10 +3,13 @@ package font
 import (
 	"bytes"
 	"compress/zlib"
+	"encoding/base64"
 	"encoding/binary"
 	"fmt"
 	"math"
 	"sort"
+
+	"github.com/jung-kurt/gofpdf"
 )
 
 var (
@@ -209,6 +212,13 @@ func Sfnt2Woff(fontBuf []byte) ([]byte, error) {
 }
 
 // gofpdf subset only accepts .ttf fonts
-// func Subset(fontBuf []byte, cutset string) []byte {
-// 	return gofpdf.UTF8CutFont(fontBuf, cutset)
-// }
+func Subset(fontBuf []byte, cutset string) (string, error) {
+	subsetFont := gofpdf.UTF8CutFont(fontBuf, cutset)
+	subsetWoff, err := Sfnt2Woff(subsetFont)
+	if err != nil {
+		return "", fmt.Errorf("failed to convert to woff font: %v", err)
+	}
+
+	encodedWoff := fmt.Sprintf("data:application/font-woff;base64,%v", base64.StdEncoding.EncodeToString(subsetWoff))
+	return encodedWoff, nil
+}

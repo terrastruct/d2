@@ -32,6 +32,15 @@ func (f FontFamily) Font(size int, style FontStyle) Font {
 	}
 }
 
+func (f Font) GetEncodedSubset(cutSet string) string {
+	fontString, err := fontlib.Subset(FontFaces[f], cutSet)
+	if err != nil {
+		// If subset fails, return full encoding
+		fontString = FontEncodings[f]
+	}
+	return fontString
+}
+
 const (
 	FONT_SIZE_XS   = 13
 	FONT_SIZE_S    = 14
