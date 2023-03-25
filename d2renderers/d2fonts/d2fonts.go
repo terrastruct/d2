@@ -222,8 +222,7 @@ func AddFont(fontLoc string) (FontFamily, error) {
 	if fontLoc == "" {
 		return "", nil
 	}
-	splitFont := strings.Split(fontLoc, "/")
-	fontFileName := splitFont[len(splitFont)-1]
+	fontFileName := filepath.Base(fontLoc)
 
 	ext := filepath.Ext(fontFileName)
 	if ext != ".ttf" {
