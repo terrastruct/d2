@@ -2405,6 +2405,19 @@ layers: {
 			},
 		},
 		{
+			name: "scenarios_edge_index",
+			run: func(t *testing.T) {
+				assertCompile(t, `a -> x
+
+scenarios: {
+  1: {
+    (a -> x)[0].style.opacity: 0.1
+  }
+}
+`, "")
+			},
+		},
+		{
 			name: "errs/duplicate_board",
 			run: func(t *testing.T) {
 				assertCompile(t, `base

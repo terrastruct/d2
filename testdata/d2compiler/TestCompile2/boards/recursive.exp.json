@@ -1443,6 +1443,53 @@
             "edges": null,
             "objects": [
               {
+                "id": "clause",
+                "id_val": "clause",
+                "label_dimensions": {
+                  "width": 0,
+                  "height": 0
+                },
+                "references": [
+                  {
+                    "key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
+                            "value": [
+                              {
+                                "string": "clause",
+                                "raw_string": "clause"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "key_path_index": 0,
+                    "map_key_edge_index": -1
+                  }
+                ],
+                "attributes": {
+                  "label": {
+                    "value": "clause"
+                  },
+                  "style": {},
+                  "near_key": null,
+                  "shape": {
+                    "value": "rectangle"
+                  },
+                  "direction": {
+                    "value": ""
+                  },
+                  "constraint": {
+                    "value": ""
+                  }
+                },
+                "zIndex": 0
+              },
+              {
                 "id": "reindeer",
                 "id_val": "reindeer",
                 "label_dimensions": {
@@ -1815,6 +1862,100 @@
             },
             "edges": null,
             "objects": [
+              {
+                "id": "clause",
+                "id_val": "clause",
+                "label_dimensions": {
+                  "width": 0,
+                  "height": 0
+                },
+                "references": [
+                  {
+                    "key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
+                            "value": [
+                              {
+                                "string": "clause",
+                                "raw_string": "clause"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "key_path_index": 0,
+                    "map_key_edge_index": -1
+                  }
+                ],
+                "attributes": {
+                  "label": {
+                    "value": "clause"
+                  },
+                  "style": {},
+                  "near_key": null,
+                  "shape": {
+                    "value": "rectangle"
+                  },
+                  "direction": {
+                    "value": ""
+                  },
+                  "constraint": {
+                    "value": ""
+                  }
+                },
+                "zIndex": 0
+              },
+              {
+                "id": "reindeer",
+                "id_val": "reindeer",
+                "label_dimensions": {
+                  "width": 0,
+                  "height": 0
+                },
+                "references": [
+                  {
+                    "key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
+                            "value": [
+                              {
+                                "string": "reindeer",
+                                "raw_string": "reindeer"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "key_path_index": 0,
+                    "map_key_edge_index": -1
+                  }
+                ],
+                "attributes": {
+                  "label": {
+                    "value": "reindeer"
+                  },
+                  "style": {},
+                  "near_key": null,
+                  "shape": {
+                    "value": "rectangle"
+                  },
+                  "direction": {
+                    "value": ""
+                  },
+                  "constraint": {
+                    "value": ""
+                  }
+                },
+                "zIndex": 0
+              },
               {
                 "id": "montana",
                 "id_val": "montana",

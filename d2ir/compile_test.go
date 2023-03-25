@@ -379,6 +379,20 @@ scenarios: {
 				assertQuery(t, m, 0, 0, nil, "scenarios.nuclear.quiche")
 			},
 		},
+		{
+			name: "edge",
+			run: func(t testing.TB) {
+				m, err := compile(t, `a -> b
+scenarios: {
+  1: {
+    (a -> b)[0].style.opacity: 0.1
+  }
+}`)
+				assert.Success(t, err)
+
+				assertQuery(t, m, 0, 0, nil, "(a -> b)[0]")
+			},
+		},
 	}
 	runa(t, tca)
 }
@@ -431,9 +445,8 @@ scenarios: {
   shape: sql_table
   hey: int {constraint: primary_key}
 }`)
-				assert.ErrorString(t, err, `TestCompile/steps/steps_panic.d2:6:3: invalid scenario
-TestCompile/steps/steps_panic.d2:7:3: invalid scenario
-TestCompile/steps/steps_panic.d2:2:3: invalid step`)
+				assert.ErrorString(t, err, `TestCompile/steps/steps_panic.d2:3:3: invalid step
+TestCompile/steps/steps_panic.d2:7:3: invalid scenario`)
 			},
 		},
 		{
