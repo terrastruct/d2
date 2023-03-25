@@ -1481,6 +1481,7 @@ func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		fmt.Sprintf(`
 .%s .text-italic {
 	font-family: "%s-font-italic";
+	font-style: italic;
 }
 @font-face {
 	font-family: %s-font-italic;
