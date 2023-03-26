@@ -4,4 +4,6 @@
 
 #### Improvements 🧹
 
+- prevent `tooltip` to be an URL when `link` is already set. [#888](https://github.com/terrastruct/d2/pull/1091)
+
 #### Bugfixes ⛑️

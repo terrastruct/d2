@@ -363,6 +363,14 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Constraint.Value = scalar.ScalarString()
 		attrs.Constraint.MapKey = f.LastPrimaryKey()
 	}
+
+	if attrs.Link != nil && attrs.Tooltip != nil {
+		_, err := url.ParseRequestURI(attrs.Tooltip.Value)
+		if err == nil {
+			c.errorf(scalar, "Tooltip cannot be an URL when Link is set")
+		}
+	}
+
 }
 
 func (c *compiler) compileStyle(attrs *d2graph.Attributes, m *d2ir.Map) {
