@@ -1458,6 +1458,40 @@ x -> y: {
 			},
 		},
 		{
+			name: "url_tooltip",
+			text: `x: {tooltip: https://google.com}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatal(g.Objects)
+				}
+
+				if g.Objects[0].Attributes.Tooltip.Value != "https://google.com" {
+					t.Fatal(g.Objects[0].Attributes.Tooltip.Value)
+				}
+			},
+		},
+		{
+			name:   "no_url_link_and_url_tooltip_concurrently",
+			text:   `x: {link: https://not-google.com; tooltip: https://google.com}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_url_link_and_url_tooltip_concurrently.d2:1:44: Tooltip cannot be an URL when Link is set`,
+		},
+		{
+			name: "url_link_and_not_url_tooltip_concurrently",
+			text: `x: {link: https://google.com; tooltip: hello world}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatal(g.Objects)
+				}
+				if g.Objects[0].Attributes.Link.Value != "https://google.com" {
+					t.Fatal(g.Objects[0].Attributes.Link.Value)
+				}
+
+				if g.Objects[0].Attributes.Tooltip.Value != "hello world" {
+					t.Fatal(g.Objects[0].Attributes.Tooltip.Value)
+				}
+			},
+		},
+		{
 			name: "nil_scope_obj_regression",
 
 			text: `a
