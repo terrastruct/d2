@@ -247,6 +247,18 @@ func (diagram Diagram) GetUniqueChars() string {
 				uniqueChars = uniqueChars + string(char)
 			}
 		}
+		for _, char := range s.Tooltip {
+			if _, exists := uniqueMap[char]; !exists {
+				uniqueMap[char] = true
+				uniqueChars = uniqueChars + string(char)
+			}
+		}
+		for _, char := range s.Link {
+			if _, exists := uniqueMap[char]; !exists {
+				uniqueMap[char] = true
+				uniqueChars = uniqueChars + string(char)
+			}
+		}
 		if s.Type == ShapeClass {
 			for _, cf := range s.Fields {
 				uniqueChars = uniqueChars + cf.GetUniqueChars(uniqueMap)
