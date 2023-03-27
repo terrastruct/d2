@@ -46,6 +46,12 @@ func (cf ClassField) VisibilityToken() string {
 
 func (cf ClassField) GetUniqueChars(uniqueMap map[rune]bool) string {
 	var uniqueChars string
+	for _, char := range "+-#" {
+		if _, exists := uniqueMap[char]; !exists {
+			uniqueMap[char] = true
+			uniqueChars = uniqueChars + string(char)
+		}
+	}
 	for _, char := range cf.Name {
 		if _, exists := uniqueMap[char]; !exists {
 			uniqueMap[char] = true
@@ -96,6 +102,12 @@ func (cm ClassMethod) VisibilityToken() string {
 
 func (cm ClassMethod) GetUniqueChars(uniqueMap map[rune]bool) string {
 	var uniqueChars string
+	for _, char := range "+-#" {
+		if _, exists := uniqueMap[char]; !exists {
+			uniqueMap[char] = true
+			uniqueChars = uniqueChars + string(char)
+		}
+	}
 	for _, char := range cm.Name {
 		if _, exists := uniqueMap[char]; !exists {
 			uniqueMap[char] = true
