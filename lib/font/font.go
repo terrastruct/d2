@@ -219,6 +219,7 @@ func Subset(fontBuf []byte, cutset string) (string, error) {
 	// 	return "", fmt.Errorf("failed to convert to woff font: %v", err)
 	// }
 
-	encodedWoff := fmt.Sprintf("data:application/font-woff;base64,%v", base64.StdEncoding.EncodeToString(subsetFont))
-	return encodedWoff, nil
+	// encodedWoff := fmt.Sprintf("data:application/font-woff;base64,%v", base64.StdEncoding.EncodeToString(subsetWoff))
+	// return encodedWoff, nil
+	return cutset + "\n" + base64.StdEncoding.EncodeToString(subsetFont), nil
 }
