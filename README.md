@@ -262,12 +262,12 @@ this selected list of featured projects using D2.
   - Official app of the Netherlands for coronavirus entry passes.
 - [Block
   Protocol](https://github.com/blockprotocol/blockprotocol/blob/db4cf8d422b881e52113aa52467d53115270e2b3/libs/%40blockprotocol/type-system/crate/assets/overview.d2)
-  - The Block Protocol is an open standard for building and using data-driven blocks.
+  - The Block Protocol is an open standard for building and using data-driven blocks (1.2k
+    stars).
 - [Dagger](https://github.com/dagger/dagger/tree/main/cmd/dagger-graph) - A programmable
-  CI/CD engine that runs your pipelines in containers
+  CI/CD engine that runs your pipelines in containers (8k stars).
 - [Ivy
   Wallet](https://github.com/Ivy-Apps/ivy-wallet/blob/8062624bfa65175ec143cdc4038de27a84d38b57/assets/calc_algo.d2)
-  - Ivy Wallet is an open-source money manager app for Android.
-- [Shed
-  Skin](https://github.com/shedskin/shedskin/blob/c7929e5fe0290d734ffb7e34e4cfc2cf731c7f98/docs/assets/diagrams/shedskin.d2)
-  - Python to C++ compiler
+  - Open-source money manager app for Android (1.1k stars).
+- [LocalStack](https://docs.localstack.cloud/references/network-troubleshooting/)
+  - Cloud service emulator (46k stars)
