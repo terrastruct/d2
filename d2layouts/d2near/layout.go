@@ -117,12 +117,12 @@ func place(obj *d2graph.Object) (float64, float64) {
 			}
 		} else if strings.Contains(*obj.LabelPosition, "_LEFT_") {
 			// label is on the left, and container is placed on the right
-			if strings.Contains(nearKeyStr, "bottom") {
+			if strings.Contains(nearKeyStr, "right") {
 				x += float64(*obj.LabelWidth)
 			}
 		} else if strings.Contains(*obj.LabelPosition, "_RIGHT_") {
 			// label is on the right, and container is placed on the left
-			if strings.Contains(nearKeyStr, "bottom") {
+			if strings.Contains(nearKeyStr, "left") {
 				x -= float64(*obj.LabelWidth)
 			}
 		} else if strings.Contains(*obj.LabelPosition, "_BOTTOM_") {
