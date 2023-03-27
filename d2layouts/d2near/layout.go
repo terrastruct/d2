@@ -109,7 +109,7 @@ func place(obj *d2graph.Object) (float64, float64) {
 		break
 	}
 
-	if !strings.Contains(*obj.LabelPosition, "INSIDE") && obj.LabelPosition != nil {
+	if obj.LabelPosition != nil && !strings.Contains(*obj.LabelPosition, "INSIDE") {
 		if strings.Contains(*obj.LabelPosition, "_TOP_") {
 			// label is on the top, and container is placed on the bottom
 			if strings.Contains(nearKeyStr, "bottom") {
