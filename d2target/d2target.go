@@ -247,6 +247,19 @@ func (diagram Diagram) GetUniqueChars() string {
 				uniqueChars = uniqueChars + string(char)
 			}
 		}
+		if s.Type == ShapeClass {
+			for _, cf := range s.Fields {
+				uniqueChars = uniqueChars + cf.GetUniqueChars(uniqueMap)
+			}
+			for _, cm := range s.Methods {
+				uniqueChars = uniqueChars + cm.GetUniqueChars(uniqueMap)
+			}
+		}
+		if s.Type == ShapeSQLTable {
+			for _, c := range s.Columns {
+				uniqueChars = uniqueChars + c.GetUniqueChars(uniqueMap)
+			}
+		}
 	}
 	for _, c := range diagram.Connections {
 		for _, char := range c.Label {

@@ -52,3 +52,26 @@ func (c SQLColumn) ConstraintAbbr() string {
 		return ""
 	}
 }
+
+func (c SQLColumn) GetUniqueChars(uniqueMap map[rune]bool) string {
+	var uniqueChars string
+	for _, char := range c.Name.Label {
+		if _, exists := uniqueMap[char]; !exists {
+			uniqueMap[char] = true
+			uniqueChars = uniqueChars + string(char)
+		}
+	}
+	for _, char := range c.Type.Label {
+		if _, exists := uniqueMap[char]; !exists {
+			uniqueMap[char] = true
+			uniqueChars = uniqueChars + string(char)
+		}
+	}
+	for _, char := range c.ConstraintAbbr() {
+		if _, exists := uniqueMap[char]; !exists {
+			uniqueMap[char] = true
+			uniqueChars = uniqueChars + string(char)
+		}
+	}
+	return uniqueChars
+}
