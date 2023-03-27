@@ -38,7 +38,7 @@ func (f Font) GetEncodedSubset(cutSet string) string {
 		// If subset fails, return full encoding
 		fontString = FontEncodings[f]
 	}
-	return cutSet + fontString
+	return fontString
 }
 
 const (
