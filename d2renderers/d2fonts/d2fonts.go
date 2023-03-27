@@ -12,6 +12,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/jung-kurt/gofpdf"
+
 	fontlib "oss.terrastruct.com/d2/lib/font"
 )
 
@@ -32,13 +34,18 @@ func (f FontFamily) Font(size int, style FontStyle) Font {
 	}
 }
 
-func (f Font) GetEncodedSubset(cutSet string) string {
-	fontString, err := fontlib.Subset(FontFaces[f], cutSet)
+func (f Font) GetEncodedSubset(cutset string) string {
+	// gofpdf subset only accepts .ttf fonts
+	fontBuf := FontFaces[f]
+	subsetFont := gofpdf.UTF8CutFont(fontBuf, cutset)
+
+	subsetWoff, err := fontlib.Sfnt2Woff(subsetFont)
 	if err != nil {
 		// If subset fails, return full encoding
-		fontString = FontEncodings[f]
+		return FontEncodings[f]
 	}
-	return fontString
+
+	return fmt.Sprintf("data:application/font-woff;base64,%v", base64.StdEncoding.EncodeToString(subsetWoff))
 }
 
 const (
