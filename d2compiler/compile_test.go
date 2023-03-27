@@ -1473,7 +1473,7 @@ x -> y: {
 		{
 			name:   "no_url_link_and_url_tooltip_concurrently",
 			text:   `x: {link: https://not-google.com; tooltip: https://google.com}`,
-			expErr: `d2/testdata/d2compiler/TestCompile/no_url_link_and_url_tooltip_concurrently.d2:1:44: Tooltip cannot be an URL when Link is set`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_url_link_and_url_tooltip_concurrently.d2:1:44: Tooltip cannot be set to URL when link is also set (for security)`,
 		},
 		{
 			name: "url_link_and_not_url_tooltip_concurrently",
