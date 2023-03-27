@@ -51,18 +51,101 @@ type Diagram struct {
 	Steps     []*Diagram `json:"steps,omitempty"`
 }
 
-func (diagram Diagram) HashID() (string, error) {
+func (diagram Diagram) Bytes() ([]byte, error) {
 	b1, err := json.Marshal(diagram.Shapes)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	b2, err := json.Marshal(diagram.Connections)
+	if err != nil {
+		return nil, err
+	}
+	base := append(b1, b2...)
+
+	for _, d := range diagram.Layers {
+		slices, err := d.Bytes()
+		if err != nil {
+			return nil, err
+		}
+		base = append(base, slices...)
+	}
+	for _, d := range diagram.Scenarios {
+		slices, err := d.Bytes()
+		if err != nil {
+			return nil, err
+		}
+		base = append(base, slices...)
+	}
+	for _, d := range diagram.Steps {
+		slices, err := d.Bytes()
+		if err != nil {
+			return nil, err
+		}
+		base = append(base, slices...)
+	}
+
+	return base, nil
+}
+
+func (diagram Diagram) HasShape(condition func(Shape) bool) bool {
+	for _, d := range diagram.Layers {
+		if d.HasShape(condition) {
+			return true
+		}
+	}
+	for _, d := range diagram.Scenarios {
+		if d.HasShape(condition) {
+			return true
+		}
+	}
+	for _, d := range diagram.Steps {
+		if d.HasShape(condition) {
+			return true
+		}
+	}
+	for _, s := range diagram.Shapes {
+		if condition(s) {
+			return true
+		}
+	}
+	return false
+}
+
+func (diagram Diagram) HashID() (string, error) {
+	bytes, err := diagram.Bytes()
 	if err != nil {
 		return "", err
 	}
 	h := fnv.New32a()
-	h.Write(append(b1, b2...))
-	return fmt.Sprint(h.Sum32()), nil
+	h.Write(bytes)
+	// CSS names can't start with numbers, so prepend a little something
+	return fmt.Sprintf("d2-%d", h.Sum32()), nil
+}
+
+func (diagram Diagram) NestedBoundingBox() (topLeft, bottomRight Point) {
+	tl, br := diagram.BoundingBox()
+	for _, d := range diagram.Layers {
+		tl2, br2 := d.NestedBoundingBox()
+		tl.X = go2.Min(tl.X, tl2.X)
+		tl.Y = go2.Min(tl.Y, tl2.Y)
+		br.X = go2.Max(br.X, br2.X)
+		br.Y = go2.Max(br.Y, br2.Y)
+	}
+	for _, d := range diagram.Scenarios {
+		tl2, br2 := d.NestedBoundingBox()
+		tl.X = go2.Min(tl.X, tl2.X)
+		tl.Y = go2.Min(tl.Y, tl2.Y)
+		br.X = go2.Max(br.X, br2.X)
+		br.Y = go2.Max(br.Y, br2.Y)
+	}
+	for _, d := range diagram.Steps {
+		tl2, br2 := d.NestedBoundingBox()
+		tl.X = go2.Min(tl.X, tl2.X)
+		tl.Y = go2.Min(tl.Y, tl2.Y)
+		br.X = go2.Max(br.X, br2.X)
+		br.Y = go2.Max(br.Y, br2.Y)
+	}
+	return tl, br
 }
 
 func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
@@ -152,6 +235,29 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 	}
 
 	return Point{x1, y1}, Point{x2, y2}
+}
+
+func (diagram Diagram) GetUniqueChars() string {
+	var uniqueChars string
+	uniqueMap := make(map[rune]bool)
+	for _, s := range diagram.Shapes {
+		for _, char := range s.Label {
+			if _, exists := uniqueMap[char]; !exists {
+				uniqueMap[char] = true
+				uniqueChars = uniqueChars + string(char)
+			}
+		}
+	}
+	for _, c := range diagram.Connections {
+		for _, char := range c.Label {
+			if _, exists := uniqueMap[char]; !exists {
+				uniqueMap[char] = true
+				uniqueChars = uniqueChars + string(char)
+			}
+		}
+	}
+
+	return uniqueChars
 }
 
 func NewDiagram() *Diagram {
