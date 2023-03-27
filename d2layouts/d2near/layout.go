@@ -80,8 +80,9 @@ func place(obj *d2graph.Object) (float64, float64) {
 	w := br.X - tl.X
 	h := br.Y - tl.Y
 
+	nearKeyStr := d2graph.Key(obj.Attributes.NearKey)[0]
 	var x, y float64
-	switch d2graph.Key(obj.Attributes.NearKey)[0] {
+	switch nearKeyStr {
 	case "top-left":
 		x, y = tl.X-obj.Width-pad, tl.Y-obj.Height-pad
 		break
@@ -108,31 +109,27 @@ func place(obj *d2graph.Object) (float64, float64) {
 		break
 	}
 
-	return calcLabelDimension(obj, x, y)
-}
-
-func calcLabelDimension(obj *d2graph.Object, x float64, y float64) (float64, float64) {
-	var position string
-	if obj.LabelPosition != nil {
+	if !strings.Contains(*obj.LabelPosition, "INSIDE") && obj.LabelPosition != nil {
 		if strings.Contains(*obj.LabelPosition, "_TOP_") {
-			position = "TOP"
+			// label is on the top, and container is placed on the bottom
+			if strings.Contains(nearKeyStr, "bottom") {
+				y += float64(*obj.LabelHeight)
+			}
 		} else if strings.Contains(*obj.LabelPosition, "_LEFT_") {
-			position = "LEFT"
+			// label is on the left, and container is placed on the right
+			if strings.Contains(nearKeyStr, "bottom") {
+				x += float64(*obj.LabelWidth)
+			}
 		} else if strings.Contains(*obj.LabelPosition, "_RIGHT_") {
-			position = "RIGHT"
+			// label is on the right, and container is placed on the left
+			if strings.Contains(nearKeyStr, "bottom") {
+				x -= float64(*obj.LabelWidth)
+			}
 		} else if strings.Contains(*obj.LabelPosition, "_BOTTOM_") {
-			position = "BOTTOM"
-		}
-
-		switch position {
-		case "TOP":
-			return x, y - float64(*obj.LabelHeight)
-		case "BOTTOM":
-			return x, y + float64(*obj.LabelHeight)
-		case "LEFT":
-			return x - float64(*obj.LabelWidth), y
-		case "RIGHT":
-			return x + float64(*obj.LabelWidth), y
+			// label is on the bottom, and container is placed on the top
+			if strings.Contains(nearKeyStr, "top") {
+				y -= float64(*obj.LabelHeight)
+			}
 		}
 	}
 
