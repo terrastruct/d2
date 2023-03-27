@@ -37,15 +37,15 @@ func (f FontFamily) Font(size int, style FontStyle) Font {
 func (f Font) GetEncodedSubset(cutset string) string {
 	// gofpdf subset only accepts .ttf fonts
 	fontBuf := FontFaces[f]
-	subsetFont := gofpdf.UTF8CutFont(fontBuf, cutset)
+	fontBuf = gofpdf.UTF8CutFont(fontBuf, cutset)
 
-	subsetWoff, err := fontlib.Sfnt2Woff(subsetFont)
+	fontBuf, err := fontlib.Sfnt2Woff(fontBuf)
 	if err != nil {
 		// If subset fails, return full encoding
 		return FontEncodings[f]
 	}
 
-	return fmt.Sprintf("data:application/font-woff;base64,%v", base64.StdEncoding.EncodeToString(subsetWoff))
+	return fmt.Sprintf("data:application/font-woff;base64,%v", base64.StdEncoding.EncodeToString(fontBuf))
 }
 
 const (
