@@ -1335,7 +1335,7 @@ func run(t *testing.T, tc testCase) {
 	if strings.EqualFold(tc.engine, "elk") {
 		layout = d2elklayout.DefaultLayout
 	}
-	diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
+	diagram, g, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
 		Ruler:      ruler,
 		Layout:     layout,
 		FontFamily: go2.Pointer(d2fonts.HandDrawn),
@@ -1348,7 +1348,7 @@ func run(t *testing.T, tc testCase) {
 	dataPath := filepath.Join("testdata", strings.TrimPrefix(t.Name(), "TestSketch/"))
 	pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
 
-	svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
+	svgBytes, err := d2svg.Render(diagram, g, &d2svg.RenderOpts{
 		Pad:     d2svg.DEFAULT_PADDING,
 		Sketch:  true,
 		ThemeID: tc.themeID,

@@ -135,7 +135,7 @@ func run(t *testing.T, tc testCase) {
 		return
 	}
 
-	diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
+	diagram, g, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
 		Ruler:   ruler,
 		Layout:  d2dagrelayout.DefaultLayout,
 		ThemeID: tc.themeID,
@@ -147,7 +147,7 @@ func run(t *testing.T, tc testCase) {
 	dataPath := filepath.Join("testdata", strings.TrimPrefix(t.Name(), "TestAppendix/"))
 	pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
 
-	svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
+	svgBytes, err := d2svg.Render(diagram, g, &d2svg.RenderOpts{
 		Pad:     d2svg.DEFAULT_PADDING,
 		ThemeID: tc.themeID,
 	})

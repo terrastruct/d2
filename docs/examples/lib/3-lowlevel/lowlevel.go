@@ -22,7 +22,7 @@ func main() {
 	_ = graph.SetDimensions(nil, ruler, nil)
 	_ = d2dagrelayout.Layout(context.Background(), graph, nil)
 	diagram, _ := d2exporter.Export(context.Background(), graph, nil)
-	out, _ := d2svg.Render(diagram, &d2svg.RenderOpts{
+	out, _ := d2svg.Render(diagram, graph, &d2svg.RenderOpts{
 		Pad:     d2svg.DEFAULT_PADDING,
 		ThemeID: d2themescatalog.NeutralDefault.ID,
 	})
