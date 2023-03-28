@@ -8,3 +8,5 @@
 - prevent `tooltip` to be an URL when `link` is already set. [#1091](https://github.com/terrastruct/d2/pull/1091)
 
 #### Bugfixes ⛑️
+
+- prevent an object's `near` from targeting a text near a constant. [#1100](https://github.com/terrastruct/d2/pull/1100)
