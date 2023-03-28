@@ -2255,6 +2255,19 @@ layers: {
 }`,
 			expErr: `d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:9: invalid underscore usage`,
 		},
+		{
+			name: "near_near_const",
+			text: `
+title: Title {
+	near: top-center
+}
+
+obj {
+	near: title
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_near_const.d2:7:8: near keys cannot be set to an object with a constant near key`,
+		},
 	}
 
 	for _, tc := range testCases {

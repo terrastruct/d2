@@ -726,6 +726,13 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 					c.errorf(obj.Attributes.NearKey, "near keys cannot be set to an object within sequence diagrams")
 					continue
 				}
+				if nearObj.Attributes.NearKey != nil {
+					_, nearObjNearIsConst := d2graph.NearConstants[d2graph.Key(nearObj.Attributes.NearKey)[0]]
+					if nearObjNearIsConst {
+						c.errorf(obj.Attributes.NearKey, "near keys cannot be set to an object with a constant near key")
+						continue
+					}
+				}
 			} else if isConst {
 				is := false
 				for _, e := range g.Edges {
