@@ -225,7 +225,7 @@ func boundingBox(g *d2graph.Graph) (tl, br *geo.Point) {
 				y2 = math.Max(y2, obj.TopLeft.Y+obj.Height)
 			}
 		} else {
-			if obj.IsInsideNearContainer() {
+			if obj.OuterNearContainer() != nil {
 				continue
 			}
 			x1 = math.Min(x1, obj.TopLeft.X)

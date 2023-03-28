@@ -968,16 +968,15 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 	return &dims, nil
 }
 
-func (obj *Object) IsInsideNearContainer() bool {
+func (obj *Object) OuterNearContainer() *Object {
 	temp := obj
 	for temp != nil {
-		fmt.Println(temp.ID)
 		if temp.Attributes.NearKey != nil {
-			return true
+			return temp
 		}
 		temp = temp.Parent
 	}
-	return false
+	return nil
 }
 
 type Edge struct {
