@@ -736,12 +736,14 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 					continue
 				}
 
-				descendantsMap := getNearDescendants(obj)
 				connectToOutside := false
 				for _, edge := range g.Edges {
-					if (descendantsMap[edge.Src] && !descendantsMap[edge.Dst]) ||
-						(!descendantsMap[edge.Src] && descendantsMap[edge.Dst]) {
+					srcNearContainer := edge.Src.OuterNearContainer()
+					dstNearContainer := edge.Dst.OuterNearContainer()
+
+					if srcNearContainer != dstNearContainer {
 						connectToOutside = true
+						break
 					}
 				}
 
@@ -755,24 +757,6 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 			}
 		}
 	}
-}
-
-func getNearDescendants(nearObj *d2graph.Object) map[*d2graph.Object]bool {
-	descendantsMap := make(map[*d2graph.Object]bool)
-
-	var helper func(obj *d2graph.Object)
-
-	helper = func(obj *d2graph.Object) {
-		if obj.ChildrenArray != nil {
-			for _, child := range obj.ChildrenArray {
-				descendantsMap[child] = true
-				helper(child)
-			}
-		}
-	}
-
-	helper(nearObj)
-	return descendantsMap
 }
 
 func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
