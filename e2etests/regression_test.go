@@ -498,15 +498,8 @@ b -> c
 		},
 		{
 			name: "empty_class_height",
-			script: `
-class1: class with rows {
-	shape: class
-	-num: int
-	-timeout: int
-}
-
-class2: class without rows {
-	shape: class
+			script: `A: {
+	style.font: mono
 }
 `,
 		},
