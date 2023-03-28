@@ -8,8 +8,6 @@ import (
 	"embed"
 	"encoding/base64"
 	"fmt"
-	"os"
-	"path/filepath"
 	"strings"
 
 	fontlib "oss.terrastruct.com/d2/lib/font"
@@ -230,48 +228,6 @@ func init() {
 		Family: HandDrawn,
 		Style:  FONT_STYLE_BOLD,
 	}] = b
-}
-
-func AddFont(fontLoc string) (FontFamily, error) {
-	if fontLoc == "" {
-		return "", nil
-	}
-	fontFileName := filepath.Base(fontLoc)
-
-	ext := filepath.Ext(fontFileName)
-	if ext != ".ttf" {
-		return "", fmt.Errorf("cannot open non .ttf fonts")
-	}
-
-	fontBuf, err := os.ReadFile(fontLoc)
-	if err != nil {
-		return "", fmt.Errorf("failed to read font at location %v", err)
-	}
-
-	fontName := strings.TrimSuffix(fontFileName, ext)
-	fontFamily := FontFamily(fontName)
-	woffFont, err := fontlib.Sfnt2Woff(fontBuf)
-	if err != nil {
-		return "", fmt.Errorf("failed to convert to woff font: %v", err)
-	}
-
-	encodedWoff := fmt.Sprintf("data:application/font-woff;base64,%v", base64.StdEncoding.EncodeToString(woffFont))
-
-	// Encode all styles for now
-	customFont := fontFamily.Font(0, FONT_STYLE_REGULAR)
-	FontFaces[customFont] = fontBuf
-	FontEncodings[customFont] = encodedWoff
-
-	customFont = fontFamily.Font(0, FONT_STYLE_BOLD)
-	FontFaces[customFont] = fontBuf
-	FontEncodings[customFont] = encodedWoff
-
-	customFont = fontFamily.Font(0, FONT_STYLE_ITALIC)
-	FontFaces[customFont] = fontBuf
-	FontEncodings[customFont] = encodedWoff
-
-	FontFamilies = append(FontFamilies, fontFamily)
-	return fontFamily, nil
 }
 
 var D2_FONT_TO_FAMILY = map[string]FontFamily{

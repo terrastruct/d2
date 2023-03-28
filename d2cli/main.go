@@ -94,10 +94,6 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
-	fontFlag := ms.Opts.String("FONT", "font", "", "", "the font used to render text (default \"Source Sans Pro\"")
-	if err != nil {
-		return err
-	}
 
 	ps, err := d2plugin.ListPlugins(ctx)
 	if err != nil {
@@ -252,7 +248,6 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		Center:      *centerFlag,
 		ThemeID:     *themeFlag,
 		DarkThemeID: darkThemeFlag,
-		Font:        *fontFlag,
 	}
 
 	if *watchFlag {
@@ -297,16 +292,6 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		return nil, false, err
 	}
 
-	// load custom fonts before initializing ruler
-	var fontFamily d2fonts.FontFamily
-	if !renderOpts.Sketch {
-		fontFamily, err = d2fonts.AddFont(renderOpts.Font)
-		if err != nil {
-			ms.Log.Error.Printf("failed to load font %v: %v.", renderOpts.Font, err)
-			ms.Log.Info.Printf("rendering with default font.")
-		}
-	}
-
 	ruler, err := textmeasure.NewRuler()
 	if err != nil {
 		return nil, false, err
@@ -320,8 +305,6 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 	}
 	if renderOpts.Sketch {
 		opts.FontFamily = go2.Pointer(d2fonts.HandDrawn)
-	} else if fontFamily != "" {
-		opts.FontFamily = go2.Pointer(fontFamily)
 	}
 
 	cancel := background.Repeat(func() {
