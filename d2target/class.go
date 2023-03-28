@@ -52,7 +52,7 @@ type ClassMethod struct {
 
 func (cm ClassMethod) Text(fontSize int) *MText {
 	return &MText{
-		Text:     fmt.Sprintf("%s%s", cm.Name, cm.Return),
+		Text:     fmt.Sprintf("%s%s%s", cm.VisibilityToken(), cm.Name, cm.Return),
 		FontSize: fontSize,
 		IsBold:   false,
 		IsItalic: false,
