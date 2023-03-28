@@ -30,7 +30,6 @@ type utf8FontFile struct {
 	charSymbolDictionary map[int]int
 	Ascent               int
 	Descent              int
-	fontElementSize      int
 	Bbox                 fontBoxType
 	CapHeight            int
 	StemV                int
@@ -78,29 +77,6 @@ func newUTF8Font(reader *fileReader) *utf8FontFile {
 		fileReader: reader,
 	}
 	return &utf
-}
-
-func (utf *utf8FontFile) parseFile() error {
-	utf.fileReader.readerPosition = 0
-	utf.symbolPosition = make([]int, 0)
-	utf.charSymbolDictionary = make(map[int]int)
-	utf.tableDescriptions = make(map[string]*tableDescription)
-	utf.outTablesData = make(map[string][]byte)
-	utf.Ascent = 0
-	utf.Descent = 0
-	codeType := uint32(utf.readUint32())
-	if codeType == 0x4F54544F {
-		return fmt.Errorf("not supported\n ")
-	}
-	if codeType == 0x74746366 {
-		return fmt.Errorf("not supported\n ")
-	}
-	if codeType != 0x00010000 && codeType != 0x74727565 {
-		return fmt.Errorf("Not a TrueType font: codeType=%v\n ", codeType)
-	}
-	utf.generateTableDescriptions()
-	utf.parseTables()
-	return nil
 }
 
 func (utf *utf8FontFile) generateTableDescriptions() {
@@ -244,243 +220,6 @@ func (utf *utf8FontFile) setOutTable(name string, data []byte) {
 	utf.outTablesData[name] = data
 }
 
-func arrayKeys(arr map[int]string) []int {
-	answer := make([]int, len(arr))
-	i := 0
-	for key := range arr {
-		answer[i] = key
-		i++
-	}
-	return answer
-}
-
-func inArray(s int, arr []int) bool {
-	for _, i := range arr {
-		if s == i {
-			return true
-		}
-	}
-	return false
-}
-
-func (utf *utf8FontFile) parseNAMETable() int {
-	namePosition := utf.SeekTable("name")
-	format := utf.readUint16()
-	if format != 0 {
-		fmt.Printf("Illegal format %d\n", format)
-		return format
-	}
-	nameCount := utf.readUint16()
-	stringDataPosition := namePosition + utf.readUint16()
-	names := map[int]string{1: "", 2: "", 3: "", 4: "", 6: ""}
-	keys := arrayKeys(names)
-	counter := len(names)
-	for i := 0; i < nameCount; i++ {
-		system := utf.readUint16()
-		code := utf.readUint16()
-		local := utf.readUint16()
-		nameID := utf.readUint16()
-		size := utf.readUint16()
-		position := utf.readUint16()
-		if !inArray(nameID, keys) {
-			continue
-		}
-		currentName := ""
-		if system == 3 && code == 1 && local == 0x409 {
-			oldPos := utf.fileReader.readerPosition
-			utf.seek(stringDataPosition + position)
-			if size%2 != 0 {
-				fmt.Printf("name is not binar byte format\n")
-				return format
-			}
-			size /= 2
-			currentName = ""
-			for size > 0 {
-				char := utf.readUint16()
-				currentName += string(rune(char))
-				size--
-			}
-			utf.fileReader.readerPosition = oldPos
-			utf.seek(int(oldPos))
-		} else if system == 1 && code == 0 && local == 0 {
-			oldPos := utf.fileReader.readerPosition
-			currentName = string(utf.getRange(stringDataPosition+position, size))
-			utf.fileReader.readerPosition = oldPos
-			utf.seek(int(oldPos))
-		}
-		if currentName != "" && names[nameID] == "" {
-			names[nameID] = currentName
-			counter--
-			if counter == 0 {
-				break
-			}
-		}
-	}
-	return format
-}
-
-func (utf *utf8FontFile) parseHEADTable() {
-	utf.SeekTable("head")
-	utf.skip(18)
-	utf.fontElementSize = utf.readUint16()
-	scale := 1000.0 / float64(utf.fontElementSize)
-	utf.skip(16)
-	xMin := utf.readInt16()
-	yMin := utf.readInt16()
-	xMax := utf.readInt16()
-	yMax := utf.readInt16()
-	utf.Bbox = fontBoxType{int(float64(xMin) * scale), int(float64(yMin) * scale), int(float64(xMax) * scale), int(float64(yMax) * scale)}
-	utf.skip(3 * 2)
-	_ = utf.readUint16()
-	symbolDataFormat := utf.readUint16()
-	if symbolDataFormat != 0 {
-		fmt.Printf("Unknown symbol data format %d\n", symbolDataFormat)
-		return
-	}
-}
-
-func (utf *utf8FontFile) parseHHEATable() int {
-	metricsCount := 0
-	if _, OK := utf.tableDescriptions["hhea"]; OK {
-		scale := 1000.0 / float64(utf.fontElementSize)
-		utf.SeekTable("hhea")
-		utf.skip(4)
-		hheaAscender := utf.readInt16()
-		hheaDescender := utf.readInt16()
-		utf.Ascent = int(float64(hheaAscender) * scale)
-		utf.Descent = int(float64(hheaDescender) * scale)
-		utf.skip(24)
-		metricDataFormat := utf.readUint16()
-		if metricDataFormat != 0 {
-			fmt.Printf("Unknown horizontal metric data format %d\n", metricDataFormat)
-			return 0
-		}
-		metricsCount = utf.readUint16()
-		if metricsCount == 0 {
-			fmt.Printf("Number of horizontal metrics is 0\n")
-			return 0
-		}
-	}
-	return metricsCount
-}
-
-func (utf *utf8FontFile) parseOS2Table() int {
-	var weightType int
-	scale := 1000.0 / float64(utf.fontElementSize)
-	if _, OK := utf.tableDescriptions["OS/2"]; OK {
-		utf.SeekTable("OS/2")
-		version := utf.readUint16()
-		utf.skip(2)
-		weightType = utf.readUint16()
-		utf.skip(2)
-		fsType := utf.readUint16()
-		if fsType == 0x0002 || (fsType&0x0300) != 0 {
-			fmt.Printf("ERROR - copyright restrictions.\n")
-			return 0
-		}
-		utf.skip(20)
-		_ = utf.readInt16()
-
-		utf.skip(36)
-		sTypoAscender := utf.readInt16()
-		sTypoDescender := utf.readInt16()
-		if utf.Ascent == 0 {
-			utf.Ascent = int(float64(sTypoAscender) * scale)
-		}
-		if utf.Descent == 0 {
-			utf.Descent = int(float64(sTypoDescender) * scale)
-		}
-		if version > 1 {
-			utf.skip(16)
-			sCapHeight := utf.readInt16()
-			utf.CapHeight = int(float64(sCapHeight) * scale)
-		} else {
-			utf.CapHeight = utf.Ascent
-		}
-	} else {
-		weightType = 500
-		if utf.Ascent == 0 {
-			utf.Ascent = int(float64(utf.Bbox.Ymax) * scale)
-		}
-		if utf.Descent == 0 {
-			utf.Descent = int(float64(utf.Bbox.Ymin) * scale)
-		}
-		utf.CapHeight = utf.Ascent
-	}
-	utf.StemV = 50 + int(math.Pow(float64(weightType)/65.0, 2))
-	return weightType
-}
-
-func (utf *utf8FontFile) parsePOSTTable(weight int) {
-	utf.SeekTable("post")
-	utf.skip(4)
-	utf.ItalicAngle = int(utf.readInt16()) + utf.readUint16()/65536.0
-	scale := 1000.0 / float64(utf.fontElementSize)
-	utf.UnderlinePosition = float64(utf.readInt16()) * scale
-	utf.UnderlineThickness = float64(utf.readInt16()) * scale
-	fixed := utf.readUint32()
-
-	utf.Flags = 4
-
-	if utf.ItalicAngle != 0 {
-		utf.Flags = utf.Flags | 64
-	}
-	if weight >= 600 {
-		utf.Flags = utf.Flags | 262144
-	}
-	if fixed != 0 {
-		utf.Flags = utf.Flags | 1
-	}
-}
-
-func (utf *utf8FontFile) parseCMAPTable(format int) int {
-	cmapPosition := utf.SeekTable("cmap")
-	utf.skip(2)
-	cmapTableCount := utf.readUint16()
-	cidCMAPPosition := 0
-	for i := 0; i < cmapTableCount; i++ {
-		system := utf.readUint16()
-		coded := utf.readUint16()
-		position := utf.readUint32()
-		oldReaderPosition := utf.fileReader.readerPosition
-		if (system == 3 && coded == 1) || system == 0 { // Microsoft, Unicode
-			format = utf.getUint16(cmapPosition + position)
-			if format == 4 {
-				if cidCMAPPosition == 0 {
-					cidCMAPPosition = cmapPosition + position
-				}
-				break
-			}
-		}
-		utf.seek(int(oldReaderPosition))
-	}
-	if cidCMAPPosition == 0 {
-		fmt.Printf("Font does not have cmap for Unicode\n")
-		return cidCMAPPosition
-	}
-	return cidCMAPPosition
-}
-
-func (utf *utf8FontFile) parseTables() {
-	f := utf.parseNAMETable()
-	utf.parseHEADTable()
-	n := utf.parseHHEATable()
-	w := utf.parseOS2Table()
-	utf.parsePOSTTable(w)
-	runeCMAPPosition := utf.parseCMAPTable(f)
-
-	utf.SeekTable("maxp")
-	utf.skip(4)
-	numSymbols := utf.readUint16()
-
-	symbolCharDictionary := make(map[int][]int)
-	charSymbolDictionary := make(map[int]int)
-	utf.generateSCCSDictionaries(runeCMAPPosition, symbolCharDictionary, charSymbolDictionary)
-
-	scale := 1000.0 / float64(utf.fontElementSize)
-	utf.parseHMTXTable(n, numSymbols, symbolCharDictionary, scale)
-}
-
 func (utf *utf8FontFile) generateCMAP() map[int][]int {
 	cmapPosition := utf.SeekTable("cmap")
 	utf.skip(2)
@@ -595,9 +334,7 @@ func (utf *utf8FontFile) generateCMAPTable(cidSymbolPairCollection map[int]int, 
 	cmap = append(cmap, 0xFFFF)
 	cmap = append(cmap, 0)
 
-	for _, cidKey := range cidArrayKeys {
-		cmap = append(cmap, cidKey)
-	}
+	cmap = append(cmap, cidArrayKeys...)
 	cmap = append(cmap, 0xFFFF)
 	for _, cidKey := range cidArrayKeys {
 		idDelta := -(cidKey - cidArray[cidKey][0])
@@ -610,9 +347,7 @@ func (utf *utf8FontFile) generateCMAPTable(cidSymbolPairCollection map[int]int, 
 	}
 	cmap = append(cmap, 0)
 	for _, start := range cidArrayKeys {
-		for _, glidx := range cidArray[start] {
-			cmap = append(cmap, glidx)
-		}
+		cmap = append(cmap, cidArray[start]...)
 	}
 	cmap = append(cmap, 0)
 	cmapstr := make([]byte, 0)
@@ -1130,7 +865,7 @@ func keySortArrayRangeMap(s map[int][]int) []int {
 // UTF8CutFont is a utility function that generates a TrueType font composed
 // only of the runes included in cutset. The rune glyphs are copied from This
 // function is demonstrated in ExampleUTF8CutFont().
-func UTF8CutFont(inBuf []byte, cutset string) (outBuf []byte) {
+func CutFont(inBuf []byte, cutset string) (outBuf []byte) {
 	f := newUTF8Font(&fileReader{readerPosition: 0, array: inBuf})
 	runes := map[int]int{}
 	for i, r := range cutset {
@@ -1138,15 +873,4 @@ func UTF8CutFont(inBuf []byte, cutset string) (outBuf []byte) {
 	}
 	outBuf = f.GenerateCutFont(runes)
 	return outBuf
-}
-
-func valSortInt(s map[int]int) []int {
-	vals := make([]int, len(s))
-	i := 0
-	for _, val := range s {
-		vals[i] = val
-		i++
-	}
-	sort.Ints(vals)
-	return vals
 }

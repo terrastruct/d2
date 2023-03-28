@@ -15,7 +15,7 @@ func TestCutFont(t *testing.T) {
 		Style:  FONT_STYLE_REGULAR,
 	}
 	fontBuf := FontFaces[f]
-	fontBuf = font.UTF8CutFont(fontBuf, "a")
+	fontBuf = font.CutFont(fontBuf, "a")
 	err := diff.Testdata(filepath.Join("testdata", "d2fonts", "cut"), ".txt", fontBuf)
 	assert.Success(t, err)
 }
