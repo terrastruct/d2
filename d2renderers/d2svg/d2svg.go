@@ -19,7 +19,6 @@ import (
 	"github.com/alecthomas/chroma/v2/formatters"
 	"github.com/alecthomas/chroma/v2/lexers"
 	"github.com/alecthomas/chroma/v2/styles"
-	"github.com/davecgh/go-spew/spew"
 
 	"oss.terrastruct.com/util-go/go2"
 
@@ -1389,7 +1388,6 @@ func RenderText(text string, x, height float64) string {
 }
 
 func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fonts.FontFamily, cutSet string) {
-	spew.Dump(cutSet)
 	fmt.Fprint(buf, `<style type="text/css"><![CDATA[`)
 
 	appendOnTrigger(
