@@ -1634,7 +1634,7 @@ const DEFAULT_THEME int64 = 0
 
 var DEFAULT_DARK_THEME *int64 = nil // no theme selected
 
-func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
+func Render(diagram *d2target.Diagram, g *d2graph.Graph, opts *RenderOpts) ([]byte, error) {
 	var sketchRunner *d2sketch.Runner
 	pad := DEFAULT_PADDING
 	themeID := DEFAULT_THEME
@@ -1728,7 +1728,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	// generate style elements that will be appended to the SVG tag
 	upperBuf := &bytes.Buffer{}
 	if opts.MasterID == "" {
-		EmbedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily, diagram.GetUniqueChars()) // EmbedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
+		EmbedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily, g.UniqueChars()) // EmbedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
 		themeStylesheet, err := ThemeCSS(diagramHash, themeID, darkThemeID)
 		if err != nil {
 			return nil, err

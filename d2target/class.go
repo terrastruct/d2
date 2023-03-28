@@ -25,7 +25,7 @@ type ClassField struct {
 
 func (cf ClassField) Text(fontSize int) *MText {
 	return &MText{
-		Text:     fmt.Sprintf("%s%s", cf.Name, cf.Type),
+		Text:     fmt.Sprintf("%s%s%s", cf.VisibilityToken(), cf.Name, cf.Type),
 		FontSize: fontSize,
 		IsBold:   false,
 		IsItalic: false,
@@ -42,35 +42,6 @@ func (cf ClassField) VisibilityToken() string {
 	default:
 		return "+"
 	}
-}
-
-func (cf ClassField) GetUniqueChars(uniqueMap map[rune]bool) string {
-	var uniqueChars string
-	for _, char := range "+-#" {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	for _, char := range cf.Name {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	for _, char := range cf.Type {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	for _, char := range cf.Visibility {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	return uniqueChars
 }
 
 type ClassMethod struct {
@@ -98,33 +69,4 @@ func (cm ClassMethod) VisibilityToken() string {
 	default:
 		return "+"
 	}
-}
-
-func (cm ClassMethod) GetUniqueChars(uniqueMap map[rune]bool) string {
-	var uniqueChars string
-	for _, char := range "+-#" {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	for _, char := range cm.Name {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	for _, char := range cm.Return {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	for _, char := range cm.Visibility {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	return uniqueChars
 }
