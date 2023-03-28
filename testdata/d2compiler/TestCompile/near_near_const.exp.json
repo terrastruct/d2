@@ -1,0 +1,12 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/near_near_const.d2,6:7:50-6:12:55",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/near_near_const.d2:7:8: near keys cannot be set to an object with a constant near key"
+      }
+    ]
+  }
+}
