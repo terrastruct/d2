@@ -238,98 +238,56 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 }
 
 func (diagram Diagram) GetNestedUniqueChars() string {
+	var texts = diagram.GetUniqueChars()
+	for _, d := range diagram.Layers {
+		texts = texts + d.GetNestedUniqueChars()
+	}
+	for _, d := range diagram.Scenarios {
+		texts = texts + d.GetNestedUniqueChars()
+	}
+	for _, d := range diagram.Steps {
+		texts = texts + d.GetNestedUniqueChars()
+	}
+
 	var uniqueChars string
 	uniqueMap := make(map[rune]bool)
-	for _, char := range diagram.GetUniqueChars() {
+	for _, char := range texts {
 		if _, exists := uniqueMap[char]; !exists {
 			uniqueMap[char] = true
 			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	for _, d := range diagram.Layers {
-		for _, char := range d.GetNestedUniqueChars() {
-			if _, exists := uniqueMap[char]; !exists {
-				uniqueMap[char] = true
-				uniqueChars = uniqueChars + string(char)
-			}
-		}
-	}
-	for _, d := range diagram.Scenarios {
-		for _, char := range d.GetNestedUniqueChars() {
-			if _, exists := uniqueMap[char]; !exists {
-				uniqueMap[char] = true
-				uniqueChars = uniqueChars + string(char)
-			}
-		}
-	}
-	for _, d := range diagram.Steps {
-		for _, char := range d.GetNestedUniqueChars() {
-			if _, exists := uniqueMap[char]; !exists {
-				uniqueMap[char] = true
-				uniqueChars = uniqueChars + string(char)
-			}
 		}
 	}
 	return uniqueChars
 }
 
 func (diagram Diagram) GetUniqueChars() string {
-	var uniqueChars string
-	uniqueMap := make(map[rune]bool)
+	var texts string
 	for _, s := range diagram.Shapes {
-		for _, char := range s.Label {
-			if _, exists := uniqueMap[char]; !exists {
-				uniqueMap[char] = true
-				uniqueChars = uniqueChars + string(char)
-			}
-		}
-		for _, char := range s.Tooltip {
-			if _, exists := uniqueMap[char]; !exists {
-				uniqueMap[char] = true
-				uniqueChars = uniqueChars + string(char)
-			}
-		}
-		for _, char := range s.Link {
-			if _, exists := uniqueMap[char]; !exists {
-				uniqueMap[char] = true
-				uniqueChars = uniqueChars + string(char)
-			}
-		}
+		texts = texts + s.Label + s.Tooltip + s.Link
 		if s.Type == ShapeClass {
 			for _, cf := range s.Fields {
-				for _, char := range cf.GetUniqueChars() {
-					if _, exists := uniqueMap[char]; !exists {
-						uniqueMap[char] = true
-						uniqueChars = uniqueChars + string(char)
-					}
-				}
+				texts = texts + cf.GetUniqueChars()
 			}
 			for _, cm := range s.Methods {
-				for _, char := range cm.GetUniqueChars() {
-					if _, exists := uniqueMap[char]; !exists {
-						uniqueMap[char] = true
-						uniqueChars = uniqueChars + string(char)
-					}
-				}
+				texts = texts + cm.GetUniqueChars()
 			}
 		}
 		if s.Type == ShapeSQLTable {
 			for _, c := range s.Columns {
-				for _, char := range c.GetUniqueChars() {
-					if _, exists := uniqueMap[char]; !exists {
-						uniqueMap[char] = true
-						uniqueChars = uniqueChars + string(char)
-					}
-				}
+				texts = texts + c.GetUniqueChars()
 			}
 		}
 	}
 	for _, c := range diagram.Connections {
-		for _, char := range c.Label {
-			if _, exists := uniqueMap[char]; !exists {
-				uniqueMap[char] = true
-				uniqueChars = uniqueChars + string(char)
-			}
+		texts = texts + c.Label
+	}
+
+	var uniqueChars string
+	uniqueMap := make(map[rune]bool)
+	for _, char := range texts {
+		if _, exists := uniqueMap[char]; !exists {
+			uniqueMap[char] = true
+			uniqueChars = uniqueChars + string(char)
 		}
 	}
 
