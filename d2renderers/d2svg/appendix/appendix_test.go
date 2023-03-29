@@ -93,6 +93,23 @@ x -> y
 `,
 		},
 		{
+			name: "internal-links",
+			script: `x: { link: layers.x }
+layers: {
+  x: {
+    gooo
+    home.link: _
+    next.link: steps.next
+    steps: {
+      next: {
+          hi
+      }
+    }
+  }
+}
+`,
+		},
+		{
 			name: "tooltip_fill",
 			script: `x: { tooltip: Total abstinence is easier than perfect moderation }
 y: { tooltip: Gee, I feel kind of LIGHT in the head now,\nknowing I can't make my satellite dish PAYMENTS! }
