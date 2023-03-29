@@ -1,7 +1,5 @@
 package d2target
 
-import "fmt"
-
 const (
 	NamePadding   = 10
 	TypePadding   = 20
@@ -53,16 +51,4 @@ func (c SQLColumn) ConstraintAbbr() string {
 	default:
 		return ""
 	}
-}
-
-func (c SQLColumn) GetUniqueChars() string {
-	var uniqueChars string
-	uniqueMap := make(map[rune]bool)
-	for _, char := range fmt.Sprintf("%s%s%s", c.Name.Label, c.Type.Label, c.ConstraintAbbr()) {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	return uniqueChars
 }

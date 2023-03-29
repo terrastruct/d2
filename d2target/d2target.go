@@ -237,61 +237,47 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 	return Point{x1, y1}, Point{x2, y2}
 }
 
-func (diagram Diagram) GetNestedUniqueChars() string {
-	chars := diagram.GetUniqueChars()
+func (diagram Diagram) GetNestedCorpus() string {
+	corpus := diagram.GetCorpus()
 	for _, d := range diagram.Layers {
-		chars = chars + d.GetNestedUniqueChars()
+		corpus += d.GetNestedCorpus()
 	}
 	for _, d := range diagram.Scenarios {
-		chars = chars + d.GetNestedUniqueChars()
+		corpus += d.GetNestedCorpus()
 	}
 	for _, d := range diagram.Steps {
-		chars = chars + d.GetNestedUniqueChars()
+		corpus += d.GetNestedCorpus()
 	}
 
-	var uniqueChars string
-	uniqueMap := make(map[rune]bool)
-	for _, char := range chars {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	return uniqueChars
+	return corpus
 }
 
-func (diagram Diagram) GetUniqueChars() string {
-	var chars string
+func (diagram Diagram) GetCorpus() string {
+	var corpus string
 	for _, s := range diagram.Shapes {
-		chars = chars + s.Label + s.Tooltip + s.Link
+		corpus += s.Label + s.Tooltip + s.Link
 		if s.Type == ShapeClass {
 			for _, cf := range s.Fields {
-				chars = chars + cf.GetUniqueChars()
+				corpus += cf.Text(0).Text + cf.VisibilityToken()
 			}
 			for _, cm := range s.Methods {
-				chars = chars + cm.GetUniqueChars()
+				corpus += cm.Text(0).Text + cm.VisibilityToken()
 			}
 		}
 		if s.Type == ShapeSQLTable {
 			for _, c := range s.Columns {
-				chars = chars + c.GetUniqueChars()
+				for _, t := range c.Texts(0) {
+					corpus = corpus + t.Text
+				}
+				corpus += c.ConstraintAbbr()
 			}
 		}
 	}
 	for _, c := range diagram.Connections {
-		chars = chars + c.Label
+		corpus += c.Label
 	}
 
-	var uniqueChars string
-	uniqueMap := make(map[rune]bool)
-	for _, char := range chars {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-
-	return uniqueChars
+	return corpus
 }
 
 func NewDiagram() *Diagram {

@@ -33,9 +33,18 @@ func (f FontFamily) Font(size int, style FontStyle) Font {
 }
 
 func (f Font) GetEncodedSubset(corpus string) string {
+	var uniqueChars string
+	uniqueMap := make(map[rune]bool)
+	for _, char := range corpus {
+		if _, exists := uniqueMap[char]; !exists {
+			uniqueMap[char] = true
+			uniqueChars = uniqueChars + string(char)
+		}
+	}
+
 	fontBuf := make([]byte, len(FontFaces[f]))
 	copy(fontBuf, FontFaces[f])
-	fontBuf = gofpdf.UTF8CutFont(fontBuf, corpus)
+	fontBuf = gofpdf.UTF8CutFont(fontBuf, uniqueChars)
 
 	fontBuf, err := fontlib.Sfnt2Woff(fontBuf)
 	if err != nil {

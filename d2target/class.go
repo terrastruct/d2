@@ -44,18 +44,6 @@ func (cf ClassField) VisibilityToken() string {
 	}
 }
 
-func (cf ClassField) GetUniqueChars() string {
-	var uniqueChars string
-	uniqueMap := make(map[rune]bool)
-	for _, char := range fmt.Sprintf("%s%s%s", cf.VisibilityToken(), cf.Name, cf.Type) {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	return uniqueChars
-}
-
 type ClassMethod struct {
 	Name       string `json:"name"`
 	Return     string `json:"return"`
@@ -81,16 +69,4 @@ func (cm ClassMethod) VisibilityToken() string {
 	default:
 		return "+"
 	}
-}
-
-func (cm ClassMethod) GetUniqueChars() string {
-	var uniqueChars string
-	uniqueMap := make(map[rune]bool)
-	for _, char := range fmt.Sprintf("%s%s%s", cm.VisibilityToken(), cm.Name, cm.Return) {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	return uniqueChars
 }
