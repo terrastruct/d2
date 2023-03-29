@@ -238,20 +238,20 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 }
 
 func (diagram Diagram) GetNestedUniqueChars() string {
-	texts := diagram.GetUniqueChars()
+	chars := diagram.GetUniqueChars()
 	for _, d := range diagram.Layers {
-		texts = texts + d.GetNestedUniqueChars()
+		chars = chars + d.GetNestedUniqueChars()
 	}
 	for _, d := range diagram.Scenarios {
-		texts = texts + d.GetNestedUniqueChars()
+		chars = chars + d.GetNestedUniqueChars()
 	}
 	for _, d := range diagram.Steps {
-		texts = texts + d.GetNestedUniqueChars()
+		chars = chars + d.GetNestedUniqueChars()
 	}
 
 	var uniqueChars string
 	uniqueMap := make(map[rune]bool)
-	for _, char := range texts {
+	for _, char := range chars {
 		if _, exists := uniqueMap[char]; !exists {
 			uniqueMap[char] = true
 			uniqueChars = uniqueChars + string(char)
@@ -261,30 +261,30 @@ func (diagram Diagram) GetNestedUniqueChars() string {
 }
 
 func (diagram Diagram) GetUniqueChars() string {
-	var texts string
+	var chars string
 	for _, s := range diagram.Shapes {
-		texts = texts + s.Label + s.Tooltip + s.Link
+		chars = chars + s.Label + s.Tooltip + s.Link
 		if s.Type == ShapeClass {
 			for _, cf := range s.Fields {
-				texts = texts + cf.GetUniqueChars()
+				chars = chars + cf.GetUniqueChars()
 			}
 			for _, cm := range s.Methods {
-				texts = texts + cm.GetUniqueChars()
+				chars = chars + cm.GetUniqueChars()
 			}
 		}
 		if s.Type == ShapeSQLTable {
 			for _, c := range s.Columns {
-				texts = texts + c.GetUniqueChars()
+				chars = chars + c.GetUniqueChars()
 			}
 		}
 	}
 	for _, c := range diagram.Connections {
-		texts = texts + c.Label
+		chars = chars + c.Label
 	}
 
 	var uniqueChars string
 	uniqueMap := make(map[rune]bool)
-	for _, char := range texts {
+	for _, char := range chars {
 		if _, exists := uniqueMap[char]; !exists {
 			uniqueMap[char] = true
 			uniqueChars = uniqueChars + string(char)
