@@ -504,6 +504,7 @@ class1: class with rows {
 	-num: int
 	-timeout: int
 }
+
 class2: class without rows {
 	shape: class
 }
