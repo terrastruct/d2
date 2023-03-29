@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2target"
@@ -162,6 +163,31 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 	return []byte(svg)
 }
 
+// transformInternalLink turns
+// "root.layers.x.layers.y"
+// into
+// "root > x > y"
+func transformInternalLink(link string) string {
+	if link == "" || !strings.HasPrefix(link, "root") {
+		return link
+	}
+
+	mk, err := d2parser.ParseMapKey(link)
+	if err != nil {
+		return ""
+	}
+
+	key := d2graph.Key(mk.Key)
+
+	if len(key) > 1 {
+		for i := 1; i < len(key); i += 2 {
+			key[i] = ">"
+		}
+	}
+
+	return strings.Join(key, " ")
+}
+
 func generateAppendix(diagram *d2target.Diagram, ruler *textmeasure.Ruler, svg string) (string, int, int) {
 	tl, br := diagram.BoundingBox()
 
@@ -171,7 +197,7 @@ func generateAppendix(diagram *d2target.Diagram, ruler *textmeasure.Ruler, svg s
 	i := 1
 
 	for _, s := range diagram.Shapes {
-		for _, txt := range []string{s.Tooltip, s.Link} {
+		for _, txt := range []string{s.Tooltip, transformInternalLink(s.Link)} {
 			if txt != "" {
 				line, w, h := generateLine(i, br.Y+(PAD_TOP*2)+totalHeight, txt, ruler)
 				i++
