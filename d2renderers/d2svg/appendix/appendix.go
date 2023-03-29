@@ -166,8 +166,8 @@ func Append(diagram *d2target.Diagram, ruler *textmeasure.Ruler, in []byte) []by
 // transformInternalLink turns
 // "root.layers.x.layers.y"
 // into
-// "[name] > x > y"
-func transformInternalLink(rootName, link string) string {
+// "root > x > y"
+func transformInternalLink(link string) string {
 	if link == "" || !strings.HasPrefix(link, "root") {
 		return link
 	}
@@ -178,8 +178,6 @@ func transformInternalLink(rootName, link string) string {
 	}
 
 	key := d2graph.Key(mk.Key)
-
-	key[0] = rootName
 
 	if len(key) > 1 {
 		for i := 1; i < len(key); i += 2 {
@@ -199,7 +197,7 @@ func generateAppendix(diagram *d2target.Diagram, ruler *textmeasure.Ruler, svg s
 	i := 1
 
 	for _, s := range diagram.Shapes {
-		for _, txt := range []string{s.Tooltip, transformInternalLink(diagram.Name, s.Link)} {
+		for _, txt := range []string{s.Tooltip, transformInternalLink(s.Link)} {
 			if txt != "" {
 				line, w, h := generateLine(i, br.Y+(PAD_TOP*2)+totalHeight, txt, ruler)
 				i++
