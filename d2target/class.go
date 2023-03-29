@@ -44,8 +44,9 @@ func (cf ClassField) VisibilityToken() string {
 	}
 }
 
-func (cf ClassField) GetUniqueChars(uniqueMap map[rune]bool) string {
+func (cf ClassField) GetUniqueChars() string {
 	var uniqueChars string
+	uniqueMap := make(map[rune]bool)
 	for _, char := range fmt.Sprintf("%s%s%s", cf.VisibilityToken(), cf.Name, cf.Type) {
 		if _, exists := uniqueMap[char]; !exists {
 			uniqueMap[char] = true
@@ -82,8 +83,9 @@ func (cm ClassMethod) VisibilityToken() string {
 	}
 }
 
-func (cm ClassMethod) GetUniqueChars(uniqueMap map[rune]bool) string {
+func (cm ClassMethod) GetUniqueChars() string {
 	var uniqueChars string
+	uniqueMap := make(map[rune]bool)
 	for _, char := range fmt.Sprintf("%s%s%s", cm.VisibilityToken(), cm.Name, cm.Return) {
 		if _, exists := uniqueMap[char]; !exists {
 			uniqueMap[char] = true

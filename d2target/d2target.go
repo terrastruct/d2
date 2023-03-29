@@ -237,6 +237,42 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 	return Point{x1, y1}, Point{x2, y2}
 }
 
+func (diagram Diagram) GetNestedUniqueChars() string {
+	var uniqueChars string
+	uniqueMap := make(map[rune]bool)
+	for _, char := range diagram.GetUniqueChars() {
+		if _, exists := uniqueMap[char]; !exists {
+			uniqueMap[char] = true
+			uniqueChars = uniqueChars + string(char)
+		}
+	}
+	for _, d := range diagram.Layers {
+		for _, char := range d.GetNestedUniqueChars() {
+			if _, exists := uniqueMap[char]; !exists {
+				uniqueMap[char] = true
+				uniqueChars = uniqueChars + string(char)
+			}
+		}
+	}
+	for _, d := range diagram.Scenarios {
+		for _, char := range d.GetNestedUniqueChars() {
+			if _, exists := uniqueMap[char]; !exists {
+				uniqueMap[char] = true
+				uniqueChars = uniqueChars + string(char)
+			}
+		}
+	}
+	for _, d := range diagram.Steps {
+		for _, char := range d.GetNestedUniqueChars() {
+			if _, exists := uniqueMap[char]; !exists {
+				uniqueMap[char] = true
+				uniqueChars = uniqueChars + string(char)
+			}
+		}
+	}
+	return uniqueChars
+}
+
 func (diagram Diagram) GetUniqueChars() string {
 	var uniqueChars string
 	uniqueMap := make(map[rune]bool)
@@ -261,15 +297,30 @@ func (diagram Diagram) GetUniqueChars() string {
 		}
 		if s.Type == ShapeClass {
 			for _, cf := range s.Fields {
-				uniqueChars = uniqueChars + cf.GetUniqueChars(uniqueMap)
+				for _, char := range cf.GetUniqueChars() {
+					if _, exists := uniqueMap[char]; !exists {
+						uniqueMap[char] = true
+						uniqueChars = uniqueChars + string(char)
+					}
+				}
 			}
 			for _, cm := range s.Methods {
-				uniqueChars = uniqueChars + cm.GetUniqueChars(uniqueMap)
+				for _, char := range cm.GetUniqueChars() {
+					if _, exists := uniqueMap[char]; !exists {
+						uniqueMap[char] = true
+						uniqueChars = uniqueChars + string(char)
+					}
+				}
 			}
 		}
 		if s.Type == ShapeSQLTable {
 			for _, c := range s.Columns {
-				uniqueChars = uniqueChars + c.GetUniqueChars(uniqueMap)
+				for _, char := range c.GetUniqueChars() {
+					if _, exists := uniqueMap[char]; !exists {
+						uniqueMap[char] = true
+						uniqueChars = uniqueChars + string(char)
+					}
+				}
 			}
 		}
 	}

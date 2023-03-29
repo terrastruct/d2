@@ -55,8 +55,9 @@ func (c SQLColumn) ConstraintAbbr() string {
 	}
 }
 
-func (c SQLColumn) GetUniqueChars(uniqueMap map[rune]bool) string {
+func (c SQLColumn) GetUniqueChars() string {
 	var uniqueChars string
+	uniqueMap := make(map[rune]bool)
 	for _, char := range fmt.Sprintf("%s%s%s", c.Name.Label, c.Type.Label, c.ConstraintAbbr()) {
 		if _, exists := uniqueMap[char]; !exists {
 			uniqueMap[char] = true
