@@ -254,8 +254,19 @@ func (diagram Diagram) GetNestedCorpus() string {
 
 func (diagram Diagram) GetCorpus() string {
 	var corpus string
+	appendixCount := 0
 	for _, s := range diagram.Shapes {
-		corpus += s.Label + s.Tooltip + s.Link
+		corpus += s.Label
+		if s.Tooltip != "" {
+			corpus += s.Tooltip
+			appendixCount++
+			corpus += fmt.Sprint(appendixCount)
+		}
+		if s.Link != "" {
+			corpus += s.Link
+			appendixCount++
+			corpus += fmt.Sprint(appendixCount)
+		}
 		if s.Type == ShapeClass {
 			for _, cf := range s.Fields {
 				corpus += cf.Text(0).Text + cf.VisibilityToken()
