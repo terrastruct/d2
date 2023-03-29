@@ -237,6 +237,51 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 	return Point{x1, y1}, Point{x2, y2}
 }
 
+func (diagram Diagram) GetNestedCorpus() string {
+	corpus := diagram.GetCorpus()
+	for _, d := range diagram.Layers {
+		corpus += d.GetNestedCorpus()
+	}
+	for _, d := range diagram.Scenarios {
+		corpus += d.GetNestedCorpus()
+	}
+	for _, d := range diagram.Steps {
+		corpus += d.GetNestedCorpus()
+	}
+
+	return corpus
+}
+
+func (diagram Diagram) GetCorpus() string {
+	var corpus string
+	for _, s := range diagram.Shapes {
+		corpus += s.Label + s.Tooltip + s.Link
+		if s.Type == ShapeClass {
+			for _, cf := range s.Fields {
+				corpus += cf.Text(0).Text + cf.VisibilityToken()
+			}
+			for _, cm := range s.Methods {
+				corpus += cm.Text(0).Text + cm.VisibilityToken()
+			}
+		}
+		if s.Type == ShapeSQLTable {
+			for _, c := range s.Columns {
+				for _, t := range c.Texts(0) {
+					corpus += t.Text
+				}
+				corpus += c.ConstraintAbbr()
+			}
+		}
+	}
+	for _, c := range diagram.Connections {
+		corpus += c.Label
+		corpus += c.SrcLabel
+		corpus += c.DstLabel
+	}
+
+	return corpus
+}
+
 func NewDiagram() *Diagram {
 	return &Diagram{
 		Root: Shape{

@@ -6,7 +6,13 @@ package d2fonts
 
 import (
 	"embed"
+	"encoding/base64"
+	"fmt"
 	"strings"
+
+	"github.com/jung-kurt/gofpdf"
+
+	fontlib "oss.terrastruct.com/d2/lib/font"
 )
 
 type FontFamily string
@@ -24,6 +30,29 @@ func (f FontFamily) Font(size int, style FontStyle) Font {
 		Style:  style,
 		Size:   size,
 	}
+}
+
+func (f Font) GetEncodedSubset(corpus string) string {
+	var uniqueChars string
+	uniqueMap := make(map[rune]bool)
+	for _, char := range corpus {
+		if _, exists := uniqueMap[char]; !exists {
+			uniqueMap[char] = true
+			uniqueChars = uniqueChars + string(char)
+		}
+	}
+
+	fontBuf := make([]byte, len(FontFaces[f]))
+	copy(fontBuf, FontFaces[f])
+	fontBuf = gofpdf.UTF8CutFont(fontBuf, uniqueChars)
+
+	fontBuf, err := fontlib.Sfnt2Woff(fontBuf)
+	if err != nil {
+		// If subset fails, return full encoding
+		return FontEncodings[f]
+	}
+
+	return fmt.Sprintf("data:application/font-woff;base64,%v", base64.StdEncoding.EncodeToString(fontBuf))
 }
 
 const (
