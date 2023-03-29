@@ -19,11 +19,11 @@ func main() {
 	defaultLayout := func(ctx context.Context, g *d2graph.Graph) error {
 		return d2dagrelayout.Layout(ctx, g, nil)
 	}
-	diagram, g, _ := d2lib.Compile(context.Background(), "x -> y", &d2lib.CompileOptions{
+	diagram, _, _ := d2lib.Compile(context.Background(), "x -> y", &d2lib.CompileOptions{
 		Layout: defaultLayout,
 		Ruler:  ruler,
 	})
-	out, _ := d2svg.Render(diagram, g, &d2svg.RenderOpts{
+	out, _ := d2svg.Render(diagram, &d2svg.RenderOpts{
 		Pad:     d2svg.DEFAULT_PADDING,
 		ThemeID: d2themescatalog.GrapeSoda.ID,
 	})

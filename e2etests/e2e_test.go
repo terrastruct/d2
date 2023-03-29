@@ -205,7 +205,7 @@ func run(t *testing.T, tc testCase) {
 		dataPath := filepath.Join("testdata", strings.TrimPrefix(t.Name(), "TestE2E/"), layoutName)
 		pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
 
-		svgBytes, err := d2svg.Render(diagram, g, &d2svg.RenderOpts{
+		svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
 			Pad:     0,
 			ThemeID: tc.themeID,
 		})

@@ -426,7 +426,7 @@ func run(t *testing.T, tc testCase) {
 		return
 	}
 
-	diagram, g, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
+	diagram, _, err := d2lib.Compile(ctx, tc.script, &d2lib.CompileOptions{
 		Ruler:      ruler,
 		Layout:     d2dagrelayout.DefaultLayout,
 		FontFamily: go2.Pointer(d2fonts.HandDrawn),
@@ -439,7 +439,7 @@ func run(t *testing.T, tc testCase) {
 	dataPath := filepath.Join("testdata", strings.TrimPrefix(t.Name(), "TestDarkTheme/"))
 	pathGotSVG := filepath.Join(dataPath, "dark_theme.got.svg")
 
-	svgBytes, err := d2svg.Render(diagram, g, &d2svg.RenderOpts{
+	svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
 		Pad:     d2svg.DEFAULT_PADDING,
 		ThemeID: 200,
 	})
