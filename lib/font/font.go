@@ -1,3 +1,7 @@
+// Sfnt2Woff is a native go port of the JS library
+// https://github.com/fontello/ttf2woff
+// that converts sfnt fonts (.ttf and .otf) to .woff fonts
+
 package font
 
 import (
@@ -77,9 +81,6 @@ func calcChecksum(buf []byte) uint32 {
 	return sum
 }
 
-// Sfnt2Woff is a native go port of the JS library
-// https://github.com/fontello/ttf2woff
-// that converts sfnt fonts (.ttf and .otf) to .woff fonts
 func Sfnt2Woff(fontBuf []byte) ([]byte, error) {
 	numTables := binary.BigEndian.Uint16(fontBuf[4:])
 
