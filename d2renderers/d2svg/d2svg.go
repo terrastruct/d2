@@ -1387,7 +1387,7 @@ func RenderText(text string, x, height float64) string {
 	return strings.Join(rendered, "")
 }
 
-func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fonts.FontFamily, cutSet string) {
+func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fonts.FontFamily, corpus string) {
 	fmt.Fprint(buf, `<style type="text/css"><![CDATA[`)
 
 	appendOnTrigger(
@@ -1409,7 +1409,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR).GetEncodedSubset(cutSet),
+			fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1471,7 +1471,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			fontFamily.Font(0, d2fonts.FONT_STYLE_BOLD).GetEncodedSubset(cutSet),
+			fontFamily.Font(0, d2fonts.FONT_STYLE_BOLD).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1494,7 +1494,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			fontFamily.Font(0, d2fonts.FONT_STYLE_ITALIC).GetEncodedSubset(cutSet),
+			fontFamily.Font(0, d2fonts.FONT_STYLE_ITALIC).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1519,7 +1519,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_REGULAR).GetEncodedSubset(cutSet),
+			d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_REGULAR).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1540,7 +1540,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD).GetEncodedSubset(cutSet),
+			d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1561,7 +1561,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC).GetEncodedSubset(cutSet),
+			d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC).GetEncodedSubset(corpus),
 		),
 	)
 

@@ -46,25 +46,7 @@ func (cf ClassField) VisibilityToken() string {
 
 func (cf ClassField) GetUniqueChars(uniqueMap map[rune]bool) string {
 	var uniqueChars string
-	for _, char := range "+-#" {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	for _, char := range cf.Name {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	for _, char := range cf.Type {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	for _, char := range cf.Visibility {
+	for _, char := range fmt.Sprintf("%s%s%s", cf.VisibilityToken(), cf.Name, cf.Type) {
 		if _, exists := uniqueMap[char]; !exists {
 			uniqueMap[char] = true
 			uniqueChars = uniqueChars + string(char)
@@ -81,7 +63,7 @@ type ClassMethod struct {
 
 func (cm ClassMethod) Text(fontSize int) *MText {
 	return &MText{
-		Text:     fmt.Sprintf("%s%s%s", cm.VisibilityToken(), cm.Name, cm.Return),
+		Text:     fmt.Sprintf("%s%s", cm.Name, cm.Return),
 		FontSize: fontSize,
 		IsBold:   false,
 		IsItalic: false,
@@ -102,25 +84,7 @@ func (cm ClassMethod) VisibilityToken() string {
 
 func (cm ClassMethod) GetUniqueChars(uniqueMap map[rune]bool) string {
 	var uniqueChars string
-	for _, char := range "+-#" {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	for _, char := range cm.Name {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	for _, char := range cm.Return {
-		if _, exists := uniqueMap[char]; !exists {
-			uniqueMap[char] = true
-			uniqueChars = uniqueChars + string(char)
-		}
-	}
-	for _, char := range cm.Visibility {
+	for _, char := range fmt.Sprintf("%s%s%s", cm.VisibilityToken(), cm.Name, cm.Return) {
 		if _, exists := uniqueMap[char]; !exists {
 			uniqueMap[char] = true
 			uniqueChars = uniqueChars + string(char)
