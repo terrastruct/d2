@@ -237,6 +237,54 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 	return Point{x1, y1}, Point{x2, y2}
 }
 
+func (diagram Diagram) GetUniqueChars() string {
+	var uniqueChars string
+	uniqueMap := make(map[rune]bool)
+	for _, s := range diagram.Shapes {
+		for _, char := range s.Label {
+			if _, exists := uniqueMap[char]; !exists {
+				uniqueMap[char] = true
+				uniqueChars = uniqueChars + string(char)
+			}
+		}
+		for _, char := range s.Tooltip {
+			if _, exists := uniqueMap[char]; !exists {
+				uniqueMap[char] = true
+				uniqueChars = uniqueChars + string(char)
+			}
+		}
+		for _, char := range s.Link {
+			if _, exists := uniqueMap[char]; !exists {
+				uniqueMap[char] = true
+				uniqueChars = uniqueChars + string(char)
+			}
+		}
+		if s.Type == ShapeClass {
+			for _, cf := range s.Fields {
+				uniqueChars = uniqueChars + cf.GetUniqueChars(uniqueMap)
+			}
+			for _, cm := range s.Methods {
+				uniqueChars = uniqueChars + cm.GetUniqueChars(uniqueMap)
+			}
+		}
+		if s.Type == ShapeSQLTable {
+			for _, c := range s.Columns {
+				uniqueChars = uniqueChars + c.GetUniqueChars(uniqueMap)
+			}
+		}
+	}
+	for _, c := range diagram.Connections {
+		for _, char := range c.Label {
+			if _, exists := uniqueMap[char]; !exists {
+				uniqueMap[char] = true
+				uniqueChars = uniqueChars + string(char)
+			}
+		}
+	}
+
+	return uniqueChars
+}
+
 func NewDiagram() *Diagram {
 	return &Diagram{
 		Root: Shape{

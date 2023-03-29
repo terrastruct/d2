@@ -32,10 +32,11 @@ func (f FontFamily) Font(size int, style FontStyle) Font {
 	}
 }
 
-func (f Font) GetEncodedSubset(cutSet string) string {
+func (f Font) GetEncodedSubset(cutset string) string {
 	fontBuf := make([]byte, len(FontFaces[f]))
 	copy(fontBuf, FontFaces[f])
-	fontBuf = gofpdf.UTF8CutFont(fontBuf, cutSet)
+	// gofpdf subset only accepts .ttf fonts
+	fontBuf = gofpdf.UTF8CutFont(fontBuf, cutset)
 
 	fontBuf, err := fontlib.Sfnt2Woff(fontBuf)
 	if err != nil {

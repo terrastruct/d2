@@ -6,7 +6,6 @@ import (
 	"math"
 	"strings"
 
-	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2renderers/d2sketch"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2target"
@@ -44,7 +43,7 @@ func makeKeyframe(delayMS, durationMS, totalMS, identifier int) string {
 }`, identifier, percentageBefore, percentageStart, percentageEnd, percentageAfter)
 }
 
-func Wrap(rootDiagram *d2target.Diagram, g *d2graph.Graph, svgs [][]byte, renderOpts d2svg.RenderOpts, intervalMS int) ([]byte, error) {
+func Wrap(rootDiagram *d2target.Diagram, svgs [][]byte, renderOpts d2svg.RenderOpts, intervalMS int) ([]byte, error) {
 	buf := &bytes.Buffer{}
 
 	// TODO account for stroke width of root border
@@ -75,7 +74,7 @@ func Wrap(rootDiagram *d2target.Diagram, g *d2graph.Graph, svgs [][]byte, render
 		return nil, err
 	}
 
-	d2svg.EmbedFonts(buf, diagramHash, svgsStr, rootDiagram.FontFamily, g.UniqueChars())
+	d2svg.EmbedFonts(buf, diagramHash, svgsStr, rootDiagram.FontFamily, rootDiagram.GetUniqueChars())
 
 	themeStylesheet, err := d2svg.ThemeCSS(diagramHash, renderOpts.ThemeID, renderOpts.DarkThemeID)
 	if err != nil {

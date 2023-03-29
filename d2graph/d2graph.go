@@ -1501,21 +1501,6 @@ func (g *Graph) Texts() []*d2target.MText {
 	return texts
 }
 
-func (g *Graph) UniqueChars() string {
-	var uniqueChars string
-	uniqueMap := make(map[rune]bool)
-	texts := g.Texts()
-	for _, t := range texts {
-		for _, char := range t.Text {
-			if _, exists := uniqueMap[char]; !exists {
-				uniqueMap[char] = true
-				uniqueChars = uniqueChars + string(char)
-			}
-		}
-	}
-	return uniqueChars
-}
-
 func Key(k *d2ast.KeyPath) []string {
 	return d2format.KeyPath(k)
 }
