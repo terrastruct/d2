@@ -238,7 +238,7 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 }
 
 func (diagram Diagram) GetNestedUniqueChars() string {
-	var texts = diagram.GetUniqueChars()
+	texts := diagram.GetUniqueChars()
 	for _, d := range diagram.Layers {
 		texts = texts + d.GetNestedUniqueChars()
 	}
