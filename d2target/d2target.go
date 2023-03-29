@@ -267,7 +267,7 @@ func (diagram Diagram) GetCorpus() string {
 		if s.Type == ShapeSQLTable {
 			for _, c := range s.Columns {
 				for _, t := range c.Texts(0) {
-					corpus = corpus + t.Text
+					corpus += t.Text
 				}
 				corpus += c.ConstraintAbbr()
 			}
@@ -275,6 +275,8 @@ func (diagram Diagram) GetCorpus() string {
 	}
 	for _, c := range diagram.Connections {
 		corpus += c.Label
+		corpus += c.SrcLabel
+		corpus += c.DstLabel
 	}
 
 	return corpus
