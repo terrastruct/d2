@@ -1032,10 +1032,14 @@ func (e *Edge) Text() *d2target.MText {
 	if e.Attributes.Style.FontSize != nil {
 		fontSize, _ = strconv.Atoi(e.Attributes.Style.FontSize.Value)
 	}
+	isBold := false
+	if e.Attributes.Style.Bold != nil {
+		isBold, _ = strconv.ParseBool(e.Attributes.Style.Bold.Value)
+	}
 	return &d2target.MText{
 		Text:     e.Attributes.Label.Value,
 		FontSize: fontSize,
-		IsBold:   false,
+		IsBold:   isBold,
 		IsItalic: true,
 
 		Dimensions: e.LabelDimensions,
