@@ -11,3 +11,4 @@
 #### Bugfixes ⛑️
 
 - prevent an object's `near` from targeting a text near a constant. [#1100](https://github.com/terrastruct/d2/pull/1100)
+- fixes inaccurate bold edge label padding. [#1108](https://github.com/terrastruct/d2/pull/1108)
