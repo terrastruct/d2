@@ -95,6 +95,10 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		return err
 	}
 
+	fontRegularFlag := ms.Opts.String("D2_FONT_REGULAR", "font-regular", "", "", "path to .ttf file to use for the regular font. If none provided, Source Sans Pro Regular is used.")
+	fontItalicFlag := ms.Opts.String("D2_FONT_ITALIC", "font-italic", "", "", "path to .ttf file to use for the italic font. If none provided, Source Sans Pro Regular-Italic is used.")
+	fontBoldFlag := ms.Opts.String("D2_FONT_BOLD", "font-bold", "", "", "path to .ttf file to use for the bold font. If none provided, Source Sans Pro Bold is used.")
+
 	ps, err := d2plugin.ListPlugins(ctx)
 	if err != nil {
 		return err
@@ -112,6 +116,11 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if errors.Is(err, pflag.ErrHelp) {
 		help(ms)
 		return nil
+	}
+
+	fontFamily, err := loadFonts(ms, *fontRegularFlag, *fontItalicFlag, *fontBoldFlag)
+	if err != nil {
+		return xmain.UsageErrorf("failed to load specified fonts: %v", err)
 	}
 
 	if len(ms.Opts.Flags.Args()) > 0 {
@@ -265,6 +274,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			bundle:          *bundleFlag,
 			forceAppendix:   *forceAppendixFlag,
 			pw:              pw,
+			fontFamily:      fontFamily,
 		})
 		if err != nil {
 			return err
@@ -275,7 +285,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	ctx, cancel := context.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
-	_, written, err := compile(ctx, ms, plugin, renderOpts, *animateIntervalFlag, inputPath, outputPath, *bundleFlag, *forceAppendixFlag, pw.Page)
+	_, written, err := compile(ctx, ms, plugin, renderOpts, fontFamily, *animateIntervalFlag, inputPath, outputPath, *bundleFlag, *forceAppendixFlag, pw.Page)
 	if err != nil {
 		if written {
 			return fmt.Errorf("failed to fully compile (partial render written): %w", err)
@@ -285,7 +295,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	return nil
 }
 
-func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, renderOpts d2svg.RenderOpts, animateInterval int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page) (_ []byte, written bool, _ error) {
+func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, renderOpts d2svg.RenderOpts, fontFamily *d2fonts.FontFamily, animateInterval int64, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page) (_ []byte, written bool, _ error) {
 	start := time.Now()
 	input, err := ms.ReadPath(inputPath)
 	if err != nil {
@@ -299,9 +309,10 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 
 	layout := plugin.Layout
 	opts := &d2lib.CompileOptions{
-		Layout:  layout,
-		Ruler:   ruler,
-		ThemeID: renderOpts.ThemeID,
+		Layout:     layout,
+		Ruler:      ruler,
+		ThemeID:    renderOpts.ThemeID,
+		FontFamily: fontFamily,
 	}
 	if renderOpts.Sketch {
 		opts.FontFamily = go2.Pointer(d2fonts.HandDrawn)
@@ -658,4 +669,48 @@ func initPlaywright() error {
 		return err
 	}
 	return pw.Cleanup()
+}
+
+func loadFont(ms *xmain.State, path string) ([]byte, error) {
+	if filepath.Ext(path) != ".ttf" {
+		return nil, fmt.Errorf("expected .ttf file but %s has extension %s", path, filepath.Ext(path))
+	}
+	ttf, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read font at %s: %v", path, err)
+	}
+	ms.Log.Info.Printf("font %s loaded", filepath.Base(path))
+	return ttf, nil
+}
+
+func loadFonts(ms *xmain.State, pathToRegular, pathToItalic, pathToBold string) (*d2fonts.FontFamily, error) {
+	if pathToRegular == "" && pathToItalic == "" && pathToBold == "" {
+		return nil, nil
+	}
+
+	var regularTTF []byte
+	var italicTTF []byte
+	var boldTTF []byte
+
+	var err error
+	if pathToRegular != "" {
+		regularTTF, err = loadFont(ms, pathToRegular)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if pathToItalic != "" {
+		italicTTF, err = loadFont(ms, pathToItalic)
+		if err != nil {
+			return nil, err
+		}
+	}
+	if pathToBold != "" {
+		boldTTF, err = loadFont(ms, pathToBold)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return d2fonts.AddFontFamily("custom", regularTTF, italicTTF, boldTTF)
 }

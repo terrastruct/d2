@@ -83,6 +83,19 @@ steps: {
 			},
 		},
 		{
+			name: "with-font",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "font.d2", `a: Why do computers get sick often?
+b: Because their Windows are always open!
+a -> b: italic font
+`)
+				err := runTestMain(t, ctx, dir, env, "--font-bold=./RockSalt-Regular.ttf", "font.d2")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "font.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
 			name: "incompatible-animation",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "x.d2", `x -> y`)
