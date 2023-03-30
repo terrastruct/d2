@@ -736,19 +736,19 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 					continue
 				}
 
-				connectToOutside := false
+				var edgeConnectToOutsideOfNear *d2graph.Edge
 				for _, edge := range g.Edges {
 					srcNearContainer := edge.Src.OuterNearContainer()
 					dstNearContainer := edge.Dst.OuterNearContainer()
 
 					if srcNearContainer != dstNearContainer {
-						connectToOutside = true
+						edgeConnectToOutsideOfNear = edge
 						break
 					}
 				}
 
-				if connectToOutside {
-					c.errorf(obj.Attributes.NearKey, "a child of a near container cannot connect to outside")
+				if edgeConnectToOutsideOfNear != nil {
+					c.errorf(edgeConnectToOutsideOfNear.References[0].Edge, "cannot connect objects from within a container, that has near constant set, to objects outside that container")
 					continue
 				}
 			} else {
