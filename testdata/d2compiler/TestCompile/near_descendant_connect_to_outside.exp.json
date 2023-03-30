@@ -4,8 +4,8 @@
     "ioerr": null,
     "errs": [
       {
-        "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,2:11:21-2:19:29",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2:3:12: a child of a near container cannot connect to outside"
+        "range": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2,5:4:47-5:12:55",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2:6:5: cannot connect objects from within a container, that has near constant set, to objects outside that container"
       }
     ]
   }

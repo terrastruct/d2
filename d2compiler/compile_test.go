@@ -1544,7 +1544,7 @@ d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set
 				}
 				x.y -> z
 			`,
-			expErr: "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2:3:12: a child of a near container cannot connect to outside",
+			expErr: "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2:6:5: cannot connect objects from within a container, that has near constant set, to objects outside that container",
 		},
 		{
 			name: "nested_near_constant",
