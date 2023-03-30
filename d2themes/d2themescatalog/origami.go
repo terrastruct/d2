@@ -25,7 +25,7 @@ var Origami = d2themes.Theme{
 	SpecialRules: d2themes.SpecialRules{
 		NoCornerRadius:             true,
 		OuterContainerDoubleBorder: true,
-		ContainerPaper:             true,
+		AllPaper:                   true,
 	},
 }
 
