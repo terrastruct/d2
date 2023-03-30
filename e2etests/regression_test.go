@@ -643,6 +643,14 @@ l3c1.b -> l4.c2.b
 l3c2.c -> l4.c3.c`,
 		},
 		{
+			name: "phantom_edge",
+			script: `
+app -> db1: w
+app -> db2: r
+db1 -- db2
+`,
+		},
+		{
 			name:   "link_with_ampersand",
 			script: `a.link: https://calendar.google.com/calendar/u/0/r?tab=mc&pli=1`,
 		},

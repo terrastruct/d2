@@ -1,0 +1,331 @@
+{
+  "name": "",
+  "isFolderOnly": false,
+  "fontFamily": "SourceSansPro",
+  "shapes": [
+    {
+      "id": "app",
+      "type": "rectangle",
+      "pos": {
+        "x": 7,
+        "y": 0
+      },
+      "width": 72,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B6",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "app",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 27,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "db1",
+      "type": "rectangle",
+      "pos": {
+        "x": 47,
+        "y": 187
+      },
+      "width": 72,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B6",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "db1",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 27,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "db2",
+      "type": "rectangle",
+      "pos": {
+        "x": 7,
+        "y": 353
+      },
+      "width": 72,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B6",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "db2",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 27,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    }
+  ],
+  "connections": [
+    {
+      "id": "(app -> db1)[0]",
+      "src": "app",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "db1",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "w",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 11,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 57.279411764705884,
+          "y": 66
+        },
+        {
+          "x": 77.85588235294118,
+          "y": 114.4
+        },
+        {
+          "x": 83,
+          "y": 138.7
+        },
+        {
+          "x": 83,
+          "y": 187.5
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(app -> db2)[0]",
+      "src": "app",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "db2",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "r",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 7,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 29.220588235294116,
+          "y": 66
+        },
+        {
+          "x": 8.64411764705882,
+          "y": 114.4
+        },
+        {
+          "x": 3.5,
+          "y": 145.2
+        },
+        {
+          "x": 3.5,
+          "y": 173.25
+        },
+        {
+          "x": 3.5,
+          "y": 201.3
+        },
+        {
+          "x": 8.3,
+          "y": 313
+        },
+        {
+          "x": 27.5,
+          "y": 353
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(db1 -- db2)[0]",
+      "src": "db1",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "db2",
+      "dstArrow": "none",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 83,
+          "y": 253
+        },
+        {
+          "x": 83,
+          "y": 293
+        },
+        {
+          "x": 78.2,
+          "y": 313
+        },
+        {
+          "x": 59,
+          "y": 353
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    }
+  ],
+  "root": {
+    "id": "",
+    "type": "",
+    "pos": {
+      "x": 0,
+      "y": 0
+    },
+    "width": 0,
+    "height": 0,
+    "opacity": 0,
+    "strokeDash": 0,
+    "strokeWidth": 0,
+    "borderRadius": 0,
+    "fill": "N7",
+    "stroke": "",
+    "shadow": false,
+    "3d": false,
+    "multiple": false,
+    "double-border": false,
+    "tooltip": "",
+    "link": "",
+    "icon": null,
+    "iconPosition": "",
+    "blend": false,
+    "fields": null,
+    "methods": null,
+    "columns": null,
+    "label": "",
+    "fontSize": 0,
+    "fontFamily": "",
+    "language": "",
+    "color": "",
+    "italic": false,
+    "bold": false,
+    "underline": false,
+    "labelWidth": 0,
+    "labelHeight": 0,
+    "zIndex": 0,
+    "level": 0
+  }
+}
