@@ -156,6 +156,56 @@ logs: { shape: page; style.multiple: true }
 network.data processor -> api server
 `,
 		},
+		{
+			name:    "origami",
+			themeID: d2themescatalog.Origami.ID,
+			script: `
+network: 通信網 {
+  cell tower: {
+		satellites: 衛星 {
+			shape: stored_data
+      style.multiple: true
+		}
+
+		transmitter: 送信機
+
+		satellites -> transmitter: send
+		satellites -> transmitter: send
+		satellites -> transmitter: send
+  }
+
+  online portal: オンラインポータル {
+    ui: { shape: hexagon }
+  }
+
+  data processor: データプロセッサ {
+    storage: 保管所 {
+      shape: cylinder
+      style.multiple: true
+    }
+  }
+
+  cell tower.transmitter -> data processor.storage: 電話ログ
+}
+
+user: ユーザー {
+  shape: person
+  width: 130
+}
+
+user -> network.cell tower: 電話をかける
+user -> network.online portal.ui: アクセス {
+  style.stroke-dash: 3
+}
+
+api server: API サーバー
+api server -> network.online portal.ui: 画面
+api server -> logs: 持続する
+logs: ログ { shape: page; style.multiple: true }
+
+network.data processor -> api server
+`,
+		},
 	}
 
 	runa(t, tcs)

@@ -62,6 +62,10 @@ func applyTheme(shape *d2target.Shape, obj *d2graph.Object, theme *d2themes.Them
 			if len(obj.ChildrenArray) > 0 {
 				shape.FillPattern = "dots"
 			}
+		} else if theme.SpecialRules.ContainerPaper {
+			if len(obj.ChildrenArray) > 0 {
+				shape.FillPattern = "paper"
+			}
 		}
 		if theme.SpecialRules.Mono {
 			shape.FontFamily = "mono"
