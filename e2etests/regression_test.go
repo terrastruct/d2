@@ -647,7 +647,9 @@ l3c2.c -> l4.c3.c`,
 			script: `
 app -> db1: w
 app -> db2: r
-db1 -- db2
+db1 -- db2: {
+	phantom: true
+}
 `,
 		},
 		{
