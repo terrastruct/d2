@@ -362,6 +362,15 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		}
 		attrs.Constraint.Value = scalar.ScalarString()
 		attrs.Constraint.MapKey = f.LastPrimaryKey()
+	case "phantom":
+		_, err := strconv.ParseBool(scalar.ScalarString())
+		if err != nil {
+			c.errorf(f.LastPrimaryKey(), `expected "phantom" to be true or false`)
+			return
+		}
+		attrs.IsPhantom = &d2graph.Scalar{}
+		attrs.IsPhantom.Value = scalar.ScalarString()
+		attrs.IsPhantom.MapKey = f.LastPrimaryKey()
 	}
 
 	if attrs.Link != nil && attrs.Tooltip != nil {

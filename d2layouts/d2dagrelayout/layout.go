@@ -173,6 +173,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 	}
 	for _, edge := range g.Edges {
+		if edge.IsPhantom {
+			continue
+		}
 		// dagre doesn't work with edges to containers so we connect container edges to their first child instead (going all the way down)
 		// we will chop the edge where it intersects the container border so it only shows the edge from the container
 		src := edge.Src
@@ -265,6 +268,18 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	for i, edge := range g.Edges {
+		if edge.IsPhantom {
+			segment := *geo.NewSegment(edge.Src.Center(), edge.Dst.Center())
+			if intersections := edge.Src.Box.Intersections(segment); len(intersections) > 0 {
+				segment.Start = intersections[0]
+			}
+			if intersections := edge.Dst.Box.Intersections(segment); len(intersections) > 0 {
+				segment.End = intersections[0]
+			}
+			edge.Route = []*geo.Point{segment.Start, segment.End}
+			continue
+		}
+
 		val, err := vm.RunString(fmt.Sprintf("JSON.stringify(g.edge(g.edges()[%d]))", i))
 		if err != nil {
 			return err

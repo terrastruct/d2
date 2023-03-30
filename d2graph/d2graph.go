@@ -129,6 +129,8 @@ type Attributes struct {
 
 	Direction  Scalar `json:"direction"`
 	Constraint Scalar `json:"constraint"`
+
+	IsPhantom *Scalar `json:"isPhantom,omitempty"`
 }
 
 // TODO references at the root scope should have their Scope set to root graph AST
@@ -996,6 +998,8 @@ type Edge struct {
 	Attributes *Attributes     `json:"attributes,omitempty"`
 
 	ZIndex int `json:"zIndex"`
+
+	IsPhantom bool `json:"isPhantom,omitempty"`
 }
 
 type EdgeReference struct {
@@ -1406,6 +1410,12 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		}
 	}
 	for _, edge := range g.Edges {
+		if edge.Attributes.IsPhantom != nil {
+			edge.IsPhantom, _ = strconv.ParseBool(edge.Attributes.IsPhantom.Value)
+		}
+		// if edge.Src.AbsID() == "db1" && edge.Dst.AbsID() == "db2" {
+		// 	edge.IsPhantom = true
+		// }
 		endpointLabels := []string{}
 		if edge.SrcArrowhead != nil && edge.SrcArrowhead.Label.Value != "" {
 			endpointLabels = append(endpointLabels, edge.SrcArrowhead.Label.Value)
@@ -1532,6 +1542,7 @@ var SimpleReservedKeywords = map[string]struct{}{
 	"width":      {},
 	"height":     {},
 	"direction":  {},
+	"phantom":    {},
 	"top":        {},
 	"left":       {},
 }
