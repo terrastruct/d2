@@ -1063,6 +1063,15 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 				if eof {
 					return s
 				}
+				switch r2 {
+				case '\n', ';', '#', '{', '}', '[', ']':
+					p.rewind()
+					p.peek()
+					p.commit()
+					sb.WriteRune(r)
+					rawb.WriteRune(r)
+					return s
+				}
 				if r2 == '-' || r2 == '>' || r2 == '*' {
 					p.rewind()
 					return s
