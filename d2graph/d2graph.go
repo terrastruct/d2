@@ -1305,7 +1305,9 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		}
 
 		if g.Theme != nil && g.Theme.SpecialRules.CapsLock && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeCode) {
-			obj.Attributes.Label.Value = strings.ToUpper(obj.Attributes.Label.Value)
+			if obj.Attributes.Language != "latex" {
+				obj.Attributes.Label.Value = strings.ToUpper(obj.Attributes.Label.Value)
+			}
 		}
 
 		labelDims, err := obj.GetLabelSize(mtexts, ruler, fontFamily)
@@ -1455,7 +1457,9 @@ func (g *Graph) Texts() []*d2target.MText {
 		if obj.Attributes.Label.Value != "" {
 			text := obj.Text()
 			if capsLock && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeCode) {
-				text.Text = strings.ToUpper(text.Text)
+				if obj.Attributes.Language != "latex" {
+					text.Text = strings.ToUpper(text.Text)
+				}
 			}
 			texts = appendTextDedup(texts, text)
 		}

@@ -785,6 +785,46 @@
       "labelHeight": 401,
       "zIndex": 0,
       "level": 1
+    },
+    {
+      "id": "ex",
+      "type": "text",
+      "pos": {
+        "x": 758,
+        "y": 1031
+      },
+      "width": 404,
+      "height": 52,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "transparent",
+      "stroke": "N1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "\\\\displaylines{x = a + b \\\\\\\\ y = b + c}\n\\\\sum_{k=1}^{n} h_{k} \\\\int_{0}^{1} \\\\bigl(\\\\partial_{k} f(x_{k-1}+t h_{k} e_{k}) -\\\\partial_{k} f(a)\\\\bigr) \\\\,dt",
+      "fontSize": 16,
+      "fontFamily": "mono",
+      "language": "latex",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 404,
+      "labelHeight": 52,
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -1440,6 +1480,54 @@
         {
           "x": 959.5,
           "y": 497
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(code -> ex)[0]",
+      "src": "code",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "ex",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "mono",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 959.5,
+          "y": 903
+        },
+        {
+          "x": 959.5,
+          "y": 951.4
+        },
+        {
+          "x": 959.5,
+          "y": 977.1
+        },
+        {
+          "x": 959.5,
+          "y": 1031.5
         }
       ],
       "isCurve": true,
