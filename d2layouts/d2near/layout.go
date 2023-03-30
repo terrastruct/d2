@@ -155,6 +155,10 @@ func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (constantNearGr
 			tempGraph := d2graph.NewGraph()
 			tempGraph.Root.ChildrenArray = []*d2graph.Object{obj}
 			tempGraph.Root.Children[obj.ID] = obj
+
+			for _, descendantObj := range descendantObjects {
+				descendantObj.Graph = tempGraph
+			}
 			tempGraph.Objects = descendantObjects
 			tempGraph.Edges = edges
 

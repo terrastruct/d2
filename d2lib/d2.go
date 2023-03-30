@@ -78,6 +78,9 @@ func compile(ctx context.Context, g *d2graph.Graph, opts *CompileOptions) (*d2ta
 				return nil, err
 			}
 			nearObject.Parent = g.Root
+			for _, obj := range tempGraph.Objects {
+				obj.Graph = g
+			}
 		}
 
 		err = d2sequence.Layout(ctx, g, coreLayout)
