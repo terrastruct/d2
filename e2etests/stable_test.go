@@ -2464,6 +2464,7 @@ scenarios: {
   }
 }`,
 		},
+		loadFromFile(t, "arrowhead_scaling"),
 	}
 
 	runa(t, tcs)

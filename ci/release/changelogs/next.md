@@ -9,6 +9,7 @@
 #### Improvements 🧹
 
 - prevent `tooltip` to be an URL when `link` is already set. [#1091](https://github.com/terrastruct/d2/pull/1091)
+- improve scaling of arrowhead sizes according to stroke-width. [#1101](https://github.com/terrastruct/d2/pull/1101)
 
 #### Bugfixes ⛑️
 

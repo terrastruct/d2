@@ -110,34 +110,46 @@ func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
 }
 
 func arrowheadDimensions(arrowhead d2target.Arrowhead, strokeWidth float64) (width, height float64) {
-	var widthMultiplier float64
-	var heightMultiplier float64
+	var baseWidth, baseHeight float64
+	var widthMultiplier, heightMultiplier float64
 	switch arrowhead {
 	case d2target.ArrowArrowhead:
-		widthMultiplier = 5
-		heightMultiplier = 5
+		baseWidth = 4
+		baseHeight = 4
+		widthMultiplier = 4
+		heightMultiplier = 4
 	case d2target.TriangleArrowhead:
-		widthMultiplier = 5
-		heightMultiplier = 6
+		baseWidth = 4
+		baseHeight = 4
+		widthMultiplier = 3
+		heightMultiplier = 4
 	case d2target.LineArrowhead:
 		widthMultiplier = 5
 		heightMultiplier = 8
 	case d2target.FilledDiamondArrowhead:
-		widthMultiplier = 11
-		heightMultiplier = 7
+		baseWidth = 11
+		baseHeight = 7
+		widthMultiplier = 5.5
+		heightMultiplier = 3.5
 	case d2target.DiamondArrowhead:
-		widthMultiplier = 11
-		heightMultiplier = 9
+		baseWidth = 11
+		baseHeight = 9
+		widthMultiplier = 5.5
+		heightMultiplier = 4.5
 	case d2target.FilledCircleArrowhead, d2target.CircleArrowhead:
-		widthMultiplier = 12
-		heightMultiplier = 12
+		baseWidth = 8
+		baseHeight = 8
+		widthMultiplier = 5
+		heightMultiplier = 5
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
-		widthMultiplier = 9
-		heightMultiplier = 9
+		baseWidth = 9
+		baseHeight = 9
+		widthMultiplier = 4.5
+		heightMultiplier = 4.5
 	}
 
 	clippedStrokeWidth := go2.Max(MIN_ARROWHEAD_STROKE_WIDTH, strokeWidth)
-	return clippedStrokeWidth * widthMultiplier, clippedStrokeWidth * heightMultiplier
+	return baseWidth + clippedStrokeWidth*widthMultiplier, baseHeight + clippedStrokeWidth*heightMultiplier
 }
 
 func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) string {
