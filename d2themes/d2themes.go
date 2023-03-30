@@ -19,7 +19,7 @@ type SpecialRules struct {
 	ContainerDots              bool `json:"containerDots"`
 	CapsLock                   bool `json:"capsLock"`
 
-	ContainerPaper bool `json:"containerPaper"`
+	AllPaper bool `json:"allPaper"`
 }
 
 func (t *Theme) IsDark() bool {
