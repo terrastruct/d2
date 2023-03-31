@@ -750,27 +750,31 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 					continue
 				}
 
-				var edgeConnectToOutsideOfNear *d2graph.Edge
-				for _, edge := range g.Edges {
-					srcNearContainer := edge.Src.OuterNearContainer()
-					dstNearContainer := edge.Dst.OuterNearContainer()
-
-					if srcNearContainer != dstNearContainer {
-						edgeConnectToOutsideOfNear = edge
-						break
-					}
-				}
-
-				if edgeConnectToOutsideOfNear != nil {
-					c.errorf(edgeConnectToOutsideOfNear.References[0].Edge, "cannot connect objects from within a container, that has near constant set, to objects outside that container")
-					continue
-				}
 			} else {
 				c.errorf(obj.Attributes.NearKey, "near key %#v must be the absolute path to a shape or one of the following constants: %s", d2format.Format(obj.Attributes.NearKey), strings.Join(d2graph.NearConstantsArray, ", "))
 				continue
 			}
 		}
 	}
+
+	for _, edge := range g.Edges {
+		srcNearContainer := edge.Src.OuterNearContainer()
+		dstNearContainer := edge.Dst.OuterNearContainer()
+
+		var isSrcNearConst, isDstNearConst bool
+
+		if srcNearContainer != nil {
+			_, isSrcNearConst = d2graph.NearConstants[d2graph.Key(srcNearContainer.Attributes.NearKey)[0]]
+		}
+		if dstNearContainer != nil {
+			_, isDstNearConst = d2graph.NearConstants[d2graph.Key(dstNearContainer.Attributes.NearKey)[0]]
+		}
+
+		if (isSrcNearConst || isDstNearConst) && srcNearContainer != dstNearContainer {
+			c.errorf(edge.References[0].Edge, "cannot connect objects from within a container, that has near constant set, to objects outside that container")
+		}
+	}
+
 }
 
 func (c *compiler) validateBoardLinks(g *d2graph.Graph) {
