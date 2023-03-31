@@ -21,6 +21,7 @@ func TestCLI_E2E(t *testing.T) {
 	tca := []struct {
 		name   string
 		skipCI bool
+		skip   bool
 		run    func(t *testing.T, ctx context.Context, dir string, env *xos.Env)
 	}{
 		{
@@ -84,6 +85,8 @@ steps: {
 		},
 		{
 			name: "linked-path",
+			// TODO tempdir is random, resulting in different test results each time with the links
+			skip: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "linked.d2", `cat: how does the cat go? {
   link: layers.cat
@@ -266,6 +269,9 @@ layers: {
 			t.Parallel()
 
 			if tc.skipCI && os.Getenv("CI") != "" {
+				t.SkipNow()
+			}
+			if tc.skip {
 				t.SkipNow()
 			}
 
