@@ -970,9 +970,9 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 
 func (obj *Object) OuterNearContainer() *Object {
 	temp := obj
-	// find outer near container that isn't itself
-	for temp != nil && temp != obj {
-		if temp.Attributes.NearKey != nil {
+	for temp != nil {
+		// find outer near container that isn't itself
+		if temp.Attributes.NearKey != nil && temp != obj {
 			return temp
 		}
 		temp = temp.Parent
