@@ -21,6 +21,7 @@ func TestCLI_E2E(t *testing.T) {
 	tca := []struct {
 		name   string
 		skipCI bool
+		skip   bool
 		run    func(t *testing.T, ctx context.Context, dir string, env *xos.Env)
 	}{
 		{
@@ -80,6 +81,35 @@ steps: {
 				assert.Success(t, err)
 				svg := readFile(t, dir, "animation.svg")
 				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "linked-path",
+			// TODO tempdir is random, resulting in different test results each time with the links
+			skip: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "linked.d2", `cat: how does the cat go? {
+  link: layers.cat
+}
+layers: {
+  cat: {
+    home: {
+      link: _
+    }
+    the cat -> meow: goes
+
+    scenarios: {
+      big cat: {
+        the cat -> roar: goes
+      }
+    }
+  }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "linked.d2")
+				assert.Success(t, err)
+
+				assert.TestdataDir(t, filepath.Join(dir, "linked"))
 			},
 		},
 		{
@@ -239,6 +269,9 @@ layers: {
 			t.Parallel()
 
 			if tc.skipCI && os.Getenv("CI") != "" {
+				t.SkipNow()
+			}
+			if tc.skip {
 				t.SkipNow()
 			}
 
