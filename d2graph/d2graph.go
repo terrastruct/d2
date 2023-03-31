@@ -10,6 +10,9 @@ import (
 	"strconv"
 	"strings"
 
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
+
 	"oss.terrastruct.com/util-go/go2"
 
 	"oss.terrastruct.com/d2/d2ast"
@@ -141,6 +144,25 @@ type Attributes struct {
 	Classes []string `json:"classes,omitempty"`
 }
 
+// ApplyTextTransform will alter the `Label.Value` of the current object based
+// on the specification of the `text-transform` styling option. This function
+// has side-effects!
+func (a *Attributes) ApplyTextTransform() {
+	if a.Style.NoneTextTransform() {
+		return
+	}
+
+	if a.Style.TextTransform != nil && a.Style.TextTransform.Value == "uppercase" {
+		a.Label.Value = strings.ToUpper(a.Label.Value)
+	}
+	if a.Style.TextTransform != nil && a.Style.TextTransform.Value == "lowercase" {
+		a.Label.Value = strings.ToLower(a.Label.Value)
+	}
+	if a.Style.TextTransform != nil && a.Style.TextTransform.Value == "capitalize" {
+		a.Label.Value = cases.Title(language.Und).String(a.Label.Value)
+	}
+}
+
 // TODO references at the root scope should have their Scope set to root graph AST
 type Reference struct {
 	Key          *d2ast.KeyPath `json:"key"`
@@ -161,25 +183,33 @@ func (r Reference) InEdge() bool {
 }
 
 type Style struct {
-	Opacity      *Scalar `json:"opacity,omitempty"`
-	Stroke       *Scalar `json:"stroke,omitempty"`
-	Fill         *Scalar `json:"fill,omitempty"`
-	FillPattern  *Scalar `json:"fillPattern,omitempty"`
-	StrokeWidth  *Scalar `json:"strokeWidth,omitempty"`
-	StrokeDash   *Scalar `json:"strokeDash,omitempty"`
-	BorderRadius *Scalar `json:"borderRadius,omitempty"`
-	Shadow       *Scalar `json:"shadow,omitempty"`
-	ThreeDee     *Scalar `json:"3d,omitempty"`
-	Multiple     *Scalar `json:"multiple,omitempty"`
-	Font         *Scalar `json:"font,omitempty"`
-	FontSize     *Scalar `json:"fontSize,omitempty"`
-	FontColor    *Scalar `json:"fontColor,omitempty"`
-	Animated     *Scalar `json:"animated,omitempty"`
-	Bold         *Scalar `json:"bold,omitempty"`
-	Italic       *Scalar `json:"italic,omitempty"`
-	Underline    *Scalar `json:"underline,omitempty"`
-	Filled       *Scalar `json:"filled,omitempty"`
-	DoubleBorder *Scalar `json:"doubleBorder,omitempty"`
+	Opacity       *Scalar `json:"opacity,omitempty"`
+	Stroke        *Scalar `json:"stroke,omitempty"`
+	Fill          *Scalar `json:"fill,omitempty"`
+	FillPattern   *Scalar `json:"fillPattern,omitempty"`
+	StrokeWidth   *Scalar `json:"strokeWidth,omitempty"`
+	StrokeDash    *Scalar `json:"strokeDash,omitempty"`
+	BorderRadius  *Scalar `json:"borderRadius,omitempty"`
+	Shadow        *Scalar `json:"shadow,omitempty"`
+	ThreeDee      *Scalar `json:"3d,omitempty"`
+	Multiple      *Scalar `json:"multiple,omitempty"`
+	Font          *Scalar `json:"font,omitempty"`
+	FontSize      *Scalar `json:"fontSize,omitempty"`
+	FontColor     *Scalar `json:"fontColor,omitempty"`
+	Animated      *Scalar `json:"animated,omitempty"`
+	Bold          *Scalar `json:"bold,omitempty"`
+	Italic        *Scalar `json:"italic,omitempty"`
+	Underline     *Scalar `json:"underline,omitempty"`
+	Filled        *Scalar `json:"filled,omitempty"`
+	DoubleBorder  *Scalar `json:"doubleBorder,omitempty"`
+	TextTransform *Scalar `json:"textTransform,omitempty"`
+}
+
+// NoneTextTransform will return a boolean if the text should not have any
+// transformation applied. This should overwrite theme specific transformations
+// like `CapsLock` from the `terminal` theme.
+func (s Style) NoneTextTransform() bool {
+	return s.TextTransform != nil && s.TextTransform.Value == "none"
 }
 
 func (s *Style) Apply(key, value string) error {
@@ -350,6 +380,14 @@ func (s *Style) Apply(key, value string) error {
 			return errors.New(`expected "double-border" to be true or false`)
 		}
 		s.DoubleBorder.Value = value
+	case "text-transform":
+		if s.TextTransform == nil {
+			break
+		}
+		if !go2.Contains(textTransforms, strings.ToLower(value)) {
+			return fmt.Errorf(`expected "text-transform" to be one of (%s)`, strings.Join(textTransforms, ","))
+		}
+		s.TextTransform.Value = value
 	default:
 		return fmt.Errorf("unknown style key: %s", key)
 	}
@@ -1329,10 +1367,11 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		}
 
 		if g.Theme != nil && g.Theme.SpecialRules.CapsLock && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeCode) {
-			if obj.Attributes.Language != "latex" {
+			if obj.Attributes.Language != "latex" && !obj.Attributes.Style.NoneTextTransform() {
 				obj.Attributes.Label.Value = strings.ToUpper(obj.Attributes.Label.Value)
 			}
 		}
+		obj.Attributes.ApplyTextTransform()
 
 		labelDims, err := obj.GetLabelSize(mtexts, ruler, fontFamily)
 		if err != nil {
@@ -1451,9 +1490,11 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			continue
 		}
 
-		if g.Theme != nil && g.Theme.SpecialRules.CapsLock {
+		if g.Theme != nil && g.Theme.SpecialRules.CapsLock && !edge.Attributes.Style.NoneTextTransform() {
 			edge.Attributes.Label.Value = strings.ToUpper(edge.Attributes.Label.Value)
 		}
+		edge.Attributes.ApplyTextTransform()
+
 		usedFont := fontFamily
 		if edge.Attributes.Style.Font != nil {
 			f := d2fonts.D2_FONT_TO_FAMILY[edge.Attributes.Style.Font.Value]
@@ -1479,9 +1520,10 @@ func (g *Graph) Texts() []*d2target.MText {
 
 	for _, obj := range g.Objects {
 		if obj.Attributes.Label.Value != "" {
+			obj.Attributes.ApplyTextTransform()
 			text := obj.Text()
 			if capsLock && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeCode) {
-				if obj.Attributes.Language != "latex" {
+				if obj.Attributes.Language != "latex" && !obj.Attributes.Style.NoneTextTransform() {
 					text.Text = strings.ToUpper(text.Text)
 				}
 			}
@@ -1512,8 +1554,9 @@ func (g *Graph) Texts() []*d2target.MText {
 	}
 	for _, edge := range g.Edges {
 		if edge.Attributes.Label.Value != "" {
+			edge.Attributes.ApplyTextTransform()
 			text := edge.Text()
-			if capsLock {
+			if capsLock && !edge.Attributes.Style.NoneTextTransform() {
 				text.Text = strings.ToUpper(text.Text)
 			}
 			texts = appendTextDedup(texts, text)
@@ -1624,6 +1667,8 @@ var FillPatterns = []string{
 	"grain",
 	"paper",
 }
+
+var textTransforms = []string{"none", "uppercase", "lowercase", "capitalize"}
 
 // BoardKeywords contains the keywords that create new boards.
 var BoardKeywords = map[string]struct{}{
