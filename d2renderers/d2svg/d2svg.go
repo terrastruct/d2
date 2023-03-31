@@ -77,6 +77,7 @@ type RenderOpts struct {
 	Center      bool
 	ThemeID     int64
 	DarkThemeID *int64
+	Font        string
 	// disables the fit to screen behavior and ensures the exported svg has the exact dimensions
 	SetDimensions bool
 
@@ -109,34 +110,46 @@ func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
 }
 
 func arrowheadDimensions(arrowhead d2target.Arrowhead, strokeWidth float64) (width, height float64) {
-	var widthMultiplier float64
-	var heightMultiplier float64
+	var baseWidth, baseHeight float64
+	var widthMultiplier, heightMultiplier float64
 	switch arrowhead {
 	case d2target.ArrowArrowhead:
-		widthMultiplier = 5
-		heightMultiplier = 5
+		baseWidth = 4
+		baseHeight = 4
+		widthMultiplier = 4
+		heightMultiplier = 4
 	case d2target.TriangleArrowhead:
-		widthMultiplier = 5
-		heightMultiplier = 6
+		baseWidth = 4
+		baseHeight = 4
+		widthMultiplier = 3
+		heightMultiplier = 4
 	case d2target.LineArrowhead:
 		widthMultiplier = 5
 		heightMultiplier = 8
 	case d2target.FilledDiamondArrowhead:
-		widthMultiplier = 11
-		heightMultiplier = 7
+		baseWidth = 11
+		baseHeight = 7
+		widthMultiplier = 5.5
+		heightMultiplier = 3.5
 	case d2target.DiamondArrowhead:
-		widthMultiplier = 11
-		heightMultiplier = 9
+		baseWidth = 11
+		baseHeight = 9
+		widthMultiplier = 5.5
+		heightMultiplier = 4.5
 	case d2target.FilledCircleArrowhead, d2target.CircleArrowhead:
-		widthMultiplier = 12
-		heightMultiplier = 12
+		baseWidth = 8
+		baseHeight = 8
+		widthMultiplier = 5
+		heightMultiplier = 5
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
-		widthMultiplier = 9
-		heightMultiplier = 9
+		baseWidth = 9
+		baseHeight = 9
+		widthMultiplier = 4.5
+		heightMultiplier = 4.5
 	}
 
 	clippedStrokeWidth := go2.Max(MIN_ARROWHEAD_STROKE_WIDTH, strokeWidth)
-	return clippedStrokeWidth * widthMultiplier, clippedStrokeWidth * heightMultiplier
+	return baseWidth + clippedStrokeWidth*widthMultiplier, baseHeight + clippedStrokeWidth*heightMultiplier
 }
 
 func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) string {
@@ -1386,7 +1399,7 @@ func RenderText(text string, x, height float64) string {
 	return strings.Join(rendered, "")
 }
 
-func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fonts.FontFamily) {
+func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fonts.FontFamily, corpus string) {
 	fmt.Fprint(buf, `<style type="text/css"><![CDATA[`)
 
 	appendOnTrigger(
@@ -1408,7 +1421,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR)],
+			fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1470,7 +1483,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_BOLD)],
+			fontFamily.Font(0, d2fonts.FONT_STYLE_BOLD).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1493,7 +1506,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_ITALIC)],
+			fontFamily.Font(0, d2fonts.FONT_STYLE_ITALIC).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1518,7 +1531,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_REGULAR)],
+			d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_REGULAR).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1539,7 +1552,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD)],
+			d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1560,7 +1573,7 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC)],
+			d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1726,7 +1739,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	// generate style elements that will be appended to the SVG tag
 	upperBuf := &bytes.Buffer{}
 	if opts.MasterID == "" {
-		EmbedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily) // EmbedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
+		EmbedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily, diagram.GetCorpus()) // EmbedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
 		themeStylesheet, err := ThemeCSS(diagramHash, themeID, darkThemeID)
 		if err != nil {
 			return nil, err

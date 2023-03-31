@@ -1,0 +1,12 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/no_url_link_and_url_tooltip_concurrently.d2,0:43:43-0:61:61",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/no_url_link_and_url_tooltip_concurrently.d2:1:44: Tooltip cannot be set to URL when link is also set (for security)"
+      }
+    ]
+  }
+}

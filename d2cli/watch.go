@@ -26,6 +26,7 @@ import (
 	"oss.terrastruct.com/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2plugin"
+	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/lib/png"
 )
@@ -51,6 +52,7 @@ type watcherOpts struct {
 	bundle          bool
 	forceAppendix   bool
 	pw              png.Playwright
+	fontFamily      *d2fonts.FontFamily
 }
 
 type watcher struct {
@@ -358,7 +360,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.pw = newPW
 		}
 
-		svg, _, err := compile(ctx, w.ms, w.layoutPlugin, w.renderOpts, w.animateInterval, w.inputPath, w.outputPath, w.bundle, w.forceAppendix, w.pw.Page)
+		svg, _, err := compile(ctx, w.ms, w.layoutPlugin, w.renderOpts, w.fontFamily, w.animateInterval, w.inputPath, w.outputPath, w.bundle, w.forceAppendix, w.pw.Page)
 		errs := ""
 		if err != nil {
 			if len(svg) > 0 {

@@ -1043,10 +1043,14 @@ func (e *Edge) Text() *d2target.MText {
 	if e.Attributes.Style.FontSize != nil {
 		fontSize, _ = strconv.Atoi(e.Attributes.Style.FontSize.Value)
 	}
+	isBold := false
+	if e.Attributes.Style.Bold != nil {
+		isBold, _ = strconv.ParseBool(e.Attributes.Style.Bold.Value)
+	}
 	return &d2target.MText{
 		Text:     e.Attributes.Label.Value,
 		FontSize: fontSize,
-		IsBold:   false,
+		IsBold:   isBold,
 		IsItalic: true,
 
 		Dimensions: e.LabelDimensions,
@@ -1312,7 +1316,9 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		}
 
 		if g.Theme != nil && g.Theme.SpecialRules.CapsLock && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeCode) {
-			obj.Attributes.Label.Value = strings.ToUpper(obj.Attributes.Label.Value)
+			if obj.Attributes.Language != "latex" {
+				obj.Attributes.Label.Value = strings.ToUpper(obj.Attributes.Label.Value)
+			}
 		}
 
 		labelDims, err := obj.GetLabelSize(mtexts, ruler, fontFamily)
@@ -1462,7 +1468,9 @@ func (g *Graph) Texts() []*d2target.MText {
 		if obj.Attributes.Label.Value != "" {
 			text := obj.Text()
 			if capsLock && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeCode) {
-				text.Text = strings.ToUpper(text.Text)
+				if obj.Attributes.Language != "latex" {
+					text.Text = strings.ToUpper(text.Text)
+				}
 			}
 			texts = appendTextDedup(texts, text)
 		}

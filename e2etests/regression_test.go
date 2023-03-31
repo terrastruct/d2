@@ -646,6 +646,16 @@ l3c2.c -> l4.c3.c`,
 			name:   "link_with_ampersand",
 			script: `a.link: https://calendar.google.com/calendar/u/0/r?tab=mc&pli=1`,
 		},
+		{
+			name: "bold_edge_label",
+			script: `
+direction: right
+x -> y: sync
+y -> z: sync {
+	style.bold: true
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
