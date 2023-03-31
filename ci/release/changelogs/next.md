@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- Multi-board SVG outputs with internal links go to their output paths [#1116](https://github.com/terrastruct/d2/pull/1116)
+
 #### Improvements 🧹
 
 #### Bugfixes ⛑️

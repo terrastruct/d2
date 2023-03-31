@@ -358,6 +358,15 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		return pdf, true, nil
 	} else {
 		compileDur := time.Since(start)
+		if animateInterval <= 0 {
+			// Rename all the "root.layers.x" to the paths that the boards get output to
+			linkToOutput, err := resolveLinks("root", outputPath, diagram)
+			if err != nil {
+				return nil, false, err
+			}
+			relink(diagram, linkToOutput)
+		}
+
 		boards, err := render(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
 		if err != nil {
 			return nil, false, err
@@ -379,6 +388,99 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 			ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(outputPath), time.Since(start))
 		}
 		return out, true, nil
+	}
+}
+
+func resolveLinks(currDiagramPath, outputPath string, diagram *d2target.Diagram) (linkToOutput map[string]string, err error) {
+	if diagram.Name != "" {
+		ext := filepath.Ext(outputPath)
+		outputPath = strings.TrimSuffix(outputPath, ext)
+		outputPath = filepath.Join(outputPath, diagram.Name)
+		outputPath += ext
+	}
+
+	boardOutputPath := outputPath
+	if len(diagram.Layers) > 0 || len(diagram.Scenarios) > 0 || len(diagram.Steps) > 0 {
+		ext := filepath.Ext(boardOutputPath)
+		boardOutputPath = strings.TrimSuffix(boardOutputPath, ext)
+		boardOutputPath = filepath.Join(boardOutputPath, "index")
+		boardOutputPath += ext
+	}
+
+	layersOutputPath := outputPath
+	if len(diagram.Scenarios) > 0 || len(diagram.Steps) > 0 {
+		ext := filepath.Ext(layersOutputPath)
+		layersOutputPath = strings.TrimSuffix(layersOutputPath, ext)
+		layersOutputPath = filepath.Join(layersOutputPath, "layers")
+		layersOutputPath += ext
+	}
+	scenariosOutputPath := outputPath
+	if len(diagram.Layers) > 0 || len(diagram.Steps) > 0 {
+		ext := filepath.Ext(scenariosOutputPath)
+		scenariosOutputPath = strings.TrimSuffix(scenariosOutputPath, ext)
+		scenariosOutputPath = filepath.Join(scenariosOutputPath, "scenarios")
+		scenariosOutputPath += ext
+	}
+	stepsOutputPath := outputPath
+	if len(diagram.Layers) > 0 || len(diagram.Scenarios) > 0 {
+		ext := filepath.Ext(stepsOutputPath)
+		stepsOutputPath = strings.TrimSuffix(stepsOutputPath, ext)
+		stepsOutputPath = filepath.Join(stepsOutputPath, "steps")
+		stepsOutputPath += ext
+	}
+
+	linkToOutput = map[string]string{currDiagramPath: boardOutputPath}
+
+	for _, dl := range diagram.Layers {
+		m, err := resolveLinks(strings.Join([]string{currDiagramPath, "layers", dl.Name}, "."), layersOutputPath, dl)
+		if err != nil {
+			return nil, err
+		}
+		for k, v := range m {
+			linkToOutput[k] = v
+		}
+	}
+	for _, dl := range diagram.Scenarios {
+		m, err := resolveLinks(strings.Join([]string{currDiagramPath, "scenarios", dl.Name}, "."), scenariosOutputPath, dl)
+		if err != nil {
+			return nil, err
+		}
+		for k, v := range m {
+			linkToOutput[k] = v
+		}
+	}
+	for _, dl := range diagram.Steps {
+		m, err := resolveLinks(strings.Join([]string{currDiagramPath, "steps", dl.Name}, "."), stepsOutputPath, dl)
+		if err != nil {
+			return nil, err
+		}
+		for k, v := range m {
+			linkToOutput[k] = v
+		}
+	}
+
+	return linkToOutput, nil
+}
+
+func relink(d *d2target.Diagram, linkToOutput map[string]string) {
+	for i, shape := range d.Shapes {
+		if shape.Link != "" {
+			for k, v := range linkToOutput {
+				if shape.Link == k {
+					d.Shapes[i].Link = v
+					break
+				}
+			}
+		}
+	}
+	for _, board := range d.Layers {
+		relink(board, linkToOutput)
+	}
+	for _, board := range d.Scenarios {
+		relink(board, linkToOutput)
+	}
+	for _, board := range d.Steps {
+		relink(board, linkToOutput)
 	}
 }
 

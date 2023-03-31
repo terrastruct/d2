@@ -83,6 +83,33 @@ steps: {
 			},
 		},
 		{
+			name: "linked-path",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "linked.d2", `cat: how does the cat go? {
+  link: layers.cat
+}
+layers: {
+  cat: {
+    home: {
+      link: _
+    }
+    the cat -> meow: goes
+
+    scenarios: {
+      big cat: {
+        the cat -> roar: goes
+      }
+    }
+  }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "linked.d2")
+				assert.Success(t, err)
+
+				assert.TestdataDir(t, filepath.Join(dir, "linked"))
+			},
+		},
+		{
 			name: "with-font",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "font.d2", `a: Why do computers get sick often?
