@@ -14,23 +14,23 @@ import (
 
 var transitionDurationMS = 1
 
-func makeKeyframe(delayMS, durationMS, totalMS, identifier int) string {
+func makeKeyframe(delayMS, durationMS, totalMS, identifier int, diagramHash string) string {
 	percentageBefore := (math.Max(0, float64(delayMS-transitionDurationMS)) / float64(totalMS)) * 100.
 	percentageStart := (float64(delayMS) / float64(totalMS)) * 100.
 	percentageEnd := (float64(delayMS+durationMS-transitionDurationMS) / float64(totalMS)) * 100.
 	if int(math.Ceil(percentageEnd)) == 100 {
-		return fmt.Sprintf(`@keyframes d2Transition-%d {
+		return fmt.Sprintf(`@keyframes d2Transition-%s-%d {
 		0%%, %f%% {
 				opacity: 0;
 		}
 		%f%%, %f%% {
 				opacity: 1;
 		}
-}`, identifier, percentageBefore, percentageStart, math.Ceil(percentageEnd))
+}`, diagramHash, identifier, percentageBefore, percentageStart, math.Ceil(percentageEnd))
 	}
 
 	percentageAfter := (float64(delayMS+durationMS) / float64(totalMS)) * 100.
-	return fmt.Sprintf(`@keyframes d2Transition-%d {
+	return fmt.Sprintf(`@keyframes d2Transition-%s-%d {
 		0%%, %f%% {
 				opacity: 0;
 		}
@@ -40,7 +40,7 @@ func makeKeyframe(delayMS, durationMS, totalMS, identifier int) string {
 		%f%%, 100%% {
 				opacity: 0;
 		}
-}`, identifier, percentageBefore, percentageStart, percentageEnd, percentageAfter)
+}`, diagramHash, identifier, percentageBefore, percentageStart, percentageEnd, percentageAfter)
 }
 
 func Wrap(rootDiagram *d2target.Diagram, svgs [][]byte, renderOpts d2svg.RenderOpts, intervalMS int) ([]byte, error) {
@@ -99,13 +99,13 @@ func Wrap(rootDiagram *d2target.Diagram, svgs [][]byte, renderOpts d2svg.RenderO
 
 	fmt.Fprint(buf, `<style type="text/css"><![CDATA[`)
 	for i := range svgs {
-		fmt.Fprint(buf, makeKeyframe(i*intervalMS, intervalMS, len(svgs)*intervalMS, i))
+		fmt.Fprint(buf, makeKeyframe(i*intervalMS, intervalMS, len(svgs)*intervalMS, i, diagramHash))
 	}
 	fmt.Fprint(buf, `]]></style>`)
 
 	for i, svg := range svgs {
 		str := string(svg)
-		str = strings.Replace(str, "<g", fmt.Sprintf(`<g style="animation: d2Transition-%d %dms infinite"`, i, len(svgs)*intervalMS), 1)
+		str = strings.Replace(str, "<g", fmt.Sprintf(`<g style="animation: d2Transition-%s-%d %dms infinite"`, diagramHash, i, len(svgs)*intervalMS), 1)
 		buf.Write([]byte(str))
 	}
 
