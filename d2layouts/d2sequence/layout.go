@@ -78,7 +78,7 @@ func WithoutSequenceDiagrams(ctx context.Context, g *d2graph.Graph) (map[string]
 // 5. Set the resulting dimensions to the main graph shape
 // 6. Run core layouts (still without sequence diagram innards)
 // 7. Put back sequence diagram innards in correct location
-func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Context, g *d2graph.Graph) error) error {
+func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) error {
 	sequenceDiagrams, objectOrder, edgeOrder, err := WithoutSequenceDiagrams(ctx, g)
 	if err != nil {
 		return err

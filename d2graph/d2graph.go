@@ -1,6 +1,7 @@
 package d2graph
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"math"
@@ -67,6 +68,8 @@ func (g *Graph) RootBoard() *Graph {
 	return g
 }
 
+type LayoutGraph func(context.Context, *Graph) error
+
 // TODO consider having different Scalar types
 // Right now we'll hold any types in Value and just convert, e.g. floats
 type Scalar struct {
@@ -129,6 +132,9 @@ type Attributes struct {
 
 	Direction  Scalar `json:"direction"`
 	Constraint Scalar `json:"constraint"`
+
+	Rows    *Scalar `json:"rows,omitempty"`
+	Columns *Scalar `json:"columns,omitempty"`
 }
 
 // TODO references at the root scope should have their Scope set to root graph AST
@@ -1534,6 +1540,8 @@ var SimpleReservedKeywords = map[string]struct{}{
 	"direction":  {},
 	"top":        {},
 	"left":       {},
+	"rows":       {},
+	"columns":    {},
 }
 
 // ReservedKeywordHolders are reserved keywords that are meaningless on its own and exist solely to hold a set of reserved keywords

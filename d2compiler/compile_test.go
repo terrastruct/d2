@@ -2268,6 +2268,26 @@ obj {
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/near_near_const.d2:7:8: near keys cannot be set to an object with a constant near key`,
 		},
+		{
+			name: "grid",
+			text: `hey: {
+	rows: 200
+	columns: 230
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "200", g.Objects[0].Attributes.Rows.Value)
+			},
+		},
+		{
+			name: "grid_negative",
+			text: `hey: {
+	rows: 200
+	columns: -200
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_negative.d2:3:11: columns must be a non-negative integer: "-200"`,
+		},
 	}
 
 	for _, tc := range testCases {
