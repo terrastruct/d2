@@ -1,0 +1,72 @@
+direction: right
+
+users -- via -- teleport
+
+teleport -> jita: "all connections audited and logged"
+teleport -> infra
+
+teleport -> identity provider
+teleport <- identity provider
+
+users: "" {
+  rows: 2
+
+  Engineers: {
+    shape: circle
+    icon: https://icons.terrastruct.com/essentials%2F365-user.svg
+  }
+  Machines: {
+    shape: circle
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FCompute.svg
+  }
+}
+
+via: "" {
+  columns: 1
+
+  https: "HTTPS://"
+  kubectl: "> kubectl"
+  tsh: "> tsh"
+  api: "> api"
+  db clients: "DB Clients"
+}
+
+teleport: "" {
+  rows: 2
+  columns: 2
+
+  t: |md
+    # Teleport
+  |
+  inp: |md
+    # Identity Native Proxy
+  |
+
+  Audit Log.icon: https://icons.terrastruct.com/tech%2Flaptop.svg
+  Cert Authority.icon: https://icons.terrastruct.com/azure%2FWeb%20Service%20Color%2FApp%20Service%20Certificates.svg
+}
+
+jita: "Just-in-time Access via" {
+  rows: 1
+
+  Slack.icon: https://icons.terrastruct.com/dev%2Fslack.svg
+  Mattermost
+  Jira
+  Pagerduty
+  Email.icon: https://icons.terrastruct.com/aws%2F_General%2FAWS-Email_light-bg.svg
+}
+
+infra: Infrastructure {
+  rows: 2
+
+  ssh.icon: https://icons.terrastruct.com/essentials%2F112-server.svg
+  Kubernetes.icon: https://icons.terrastruct.com/azure%2F_Companies%2FKubernetes.svg
+  My SQL.icon: https://icons.terrastruct.com/dev%2Fmysql.svg
+  MongoDB.icon: https://icons.terrastruct.com/dev%2Fmongodb.svg
+  PSQL.icon: https://icons.terrastruct.com/dev%2Fpostgresql.svg
+  Windows.icon: https://icons.terrastruct.com/dev%2Fwindows.svg
+}
+
+identity provider: Indentity Provider {
+  icon: https://icons.terrastruct.com/azure%2FIdentity%20Service%20Color%2FIdentity%20governance.svg
+}

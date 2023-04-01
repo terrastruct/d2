@@ -2465,6 +2465,7 @@ scenarios: {
 }`,
 		},
 		loadFromFile(t, "arrowhead_scaling"),
+		loadFromFile(t, "teleport_grid"),
 	}
 
 	runa(t, tcs)
