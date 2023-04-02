@@ -238,7 +238,7 @@ func generateLine(i, y int, text string, ruler *textmeasure.Ruler) (string, int,
 		0, y, generateNumberedIcon(i, 0, 0))
 
 	line += fmt.Sprintf(`<text class="text" x="%d" y="%d" style="font-size: %dpx;">%s</text>`,
-		ICON_RADIUS*3, y, FONT_SIZE, d2svg.RenderText(text, ICON_RADIUS*3, float64(dims.Height)))
+		ICON_RADIUS*3, y+5, FONT_SIZE, d2svg.RenderText(text, ICON_RADIUS*3, float64(dims.Height)))
 
 	return line, dims.Width + ICON_RADIUS*3, go2.IntMax(dims.Height, ICON_RADIUS*2)
 }
