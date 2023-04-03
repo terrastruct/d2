@@ -5,7 +5,7 @@
     "errs": [
       {
         "range": "d2/testdata/d2compiler/TestCompile/grid_negative.d2,2:10:28-2:14:32",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_negative.d2:3:11: columns must be a non-negative integer: \"-200\""
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_negative.d2:3:11: columns must be a positive integer: \"-200\""
       }
     ]
   }

@@ -29,15 +29,9 @@ func newGrid(root *d2graph.Object) *grid {
 	// TODO consider making this based on node dimensions
 	if g.rows == 0 {
 		// set rows based on number of columns
-		if g.columns == 0 {
-			// 0,0: put everything in one row
-			g.rows = 1
-			g.columns = len(g.nodes)
-		} else {
-			g.rows = len(g.nodes) / g.columns
-			if len(g.nodes)%g.columns != 0 {
-				g.rows++
-			}
+		g.rows = len(g.nodes) / g.columns
+		if len(g.nodes)%g.columns != 0 {
+			g.rows++
 		}
 	} else if g.columns == 0 {
 		// set columns based on number of rows

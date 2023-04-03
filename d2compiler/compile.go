@@ -368,8 +368,8 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 			c.errorf(scalar, "non-integer rows %#v: %s", scalar.ScalarString(), err)
 			return
 		}
-		if v < 0 {
-			c.errorf(scalar, "rows must be a non-negative integer: %#v", scalar.ScalarString())
+		if v <= 0 {
+			c.errorf(scalar, "rows must be a positive integer: %#v", scalar.ScalarString())
 			return
 		}
 		attrs.Rows = &d2graph.Scalar{}
@@ -381,8 +381,8 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 			c.errorf(scalar, "non-integer columns %#v: %s", scalar.ScalarString(), err)
 			return
 		}
-		if v < 0 {
-			c.errorf(scalar, "columns must be a non-negative integer: %#v", scalar.ScalarString())
+		if v <= 0 {
+			c.errorf(scalar, "columns must be a positive integer: %#v", scalar.ScalarString())
 			return
 		}
 		attrs.Columns = &d2graph.Scalar{}

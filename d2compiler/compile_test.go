@@ -2286,7 +2286,7 @@ obj {
 	columns: -200
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/grid_negative.d2:3:11: columns must be a non-negative integer: "-200"`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_negative.d2:3:11: columns must be a positive integer: "-200"`,
 		},
 	}
 
