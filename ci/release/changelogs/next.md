@@ -11,3 +11,4 @@
 - Fix a bug in watch mode parsing SVG [#1119](https://github.com/terrastruct/d2/issues/1119)
 - Namespace transitions so that multiple animated D2 diagrams can exist on the same page [#1123](https://github.com/terrastruct/d2/issues/1123)
 - Fix a bug in vertical alignment of appendix lines [#1104](https://github.com/terrastruct/d2/issues/1104)
+- Fix precision difference for sketch mode running on different architectures [#921](https://github.com/terrastruct/d2/issues/921)
