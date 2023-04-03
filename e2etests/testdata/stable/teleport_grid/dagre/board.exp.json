@@ -8,10 +8,10 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 204
+        "y": 203
       },
       "width": 272,
-      "height": 461,
+      "height": 464,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -90,10 +90,10 @@
       "type": "rectangle",
       "pos": {
         "x": 1050,
-        "y": 283
+        "y": 263
       },
-      "width": 584,
-      "height": 303,
+      "width": 764,
+      "height": 344,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -130,10 +130,10 @@
       "id": "jita",
       "type": "rectangle",
       "pos": {
-        "x": 2136,
+        "x": 2316,
         "y": 0
       },
-      "width": 820,
+      "width": 920,
       "height": 212,
       "opacity": 1,
       "strokeDash": 0,
@@ -171,10 +171,10 @@
       "id": "infra",
       "type": "rectangle",
       "pos": {
-        "x": 2255,
+        "x": 2448,
         "y": 232
       },
-      "width": 582,
+      "width": 656,
       "height": 344,
       "opacity": 1,
       "strokeDash": 0,
@@ -212,7 +212,7 @@
       "id": "identity provider",
       "type": "rectangle",
       "pos": {
-        "x": 2446,
+        "x": 2676,
         "y": 596
       },
       "width": 201,
@@ -266,7 +266,7 @@
       "type": "oval",
       "pos": {
         "x": 60,
-        "y": 264
+        "y": 263
       },
       "width": 152,
       "height": 152,
@@ -319,10 +319,10 @@
       "type": "oval",
       "pos": {
         "x": 60,
-        "y": 456
+        "y": 455
       },
-      "width": 149,
-      "height": 149,
+      "width": 152,
+      "height": 152,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -374,7 +374,7 @@
         "x": 603,
         "y": 190
       },
-      "width": 107,
+      "width": 116,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -415,7 +415,7 @@
         "x": 603,
         "y": 296
       },
-      "width": 111,
+      "width": 116,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -456,7 +456,7 @@
         "x": 603,
         "y": 402
       },
-      "width": 79,
+      "width": 116,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -497,7 +497,7 @@
         "x": 603,
         "y": 508
       },
-      "width": 79,
+      "width": 116,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -577,10 +577,10 @@
       "type": "text",
       "pos": {
         "x": 1110,
-        "y": 343
+        "y": 323
       },
-      "width": 122,
-      "height": 51,
+      "width": 302,
+      "height": 92,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -617,11 +617,11 @@
       "id": "teleport.inp",
       "type": "text",
       "pos": {
-        "x": 1272,
-        "y": 343
+        "x": 1452,
+        "y": 323
       },
       "width": 302,
-      "height": 51,
+      "height": 92,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -659,9 +659,9 @@
       "type": "rectangle",
       "pos": {
         "x": 1110,
-        "y": 434
+        "y": 455
       },
-      "width": 140,
+      "width": 302,
       "height": 92,
       "opacity": 1,
       "strokeDash": 0,
@@ -711,10 +711,10 @@
       "id": "teleport.Cert Authority",
       "type": "rectangle",
       "pos": {
-        "x": 1290,
-        "y": 434
+        "x": 1452,
+        "y": 455
       },
-      "width": 173,
+      "width": 302,
       "height": 92,
       "opacity": 1,
       "strokeDash": 0,
@@ -764,10 +764,10 @@
       "id": "jita.Slack",
       "type": "rectangle",
       "pos": {
-        "x": 2196,
+        "x": 2376,
         "y": 60
       },
-      "width": 110,
+      "width": 128,
       "height": 92,
       "opacity": 1,
       "strokeDash": 0,
@@ -817,11 +817,11 @@
       "id": "jita.Mattermost",
       "type": "rectangle",
       "pos": {
-        "x": 2346,
+        "x": 2544,
         "y": 60
       },
       "width": 128,
-      "height": 66,
+      "height": 92,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -858,11 +858,11 @@
       "id": "jita.Jira",
       "type": "rectangle",
       "pos": {
-        "x": 2514,
+        "x": 2712,
         "y": 60
       },
-      "width": 72,
-      "height": 66,
+      "width": 128,
+      "height": 92,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -899,11 +899,11 @@
       "id": "jita.Pagerduty",
       "type": "rectangle",
       "pos": {
-        "x": 2626,
+        "x": 2880,
         "y": 60
       },
-      "width": 119,
-      "height": 66,
+      "width": 128,
+      "height": 92,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -940,10 +940,10 @@
       "id": "jita.Email",
       "type": "rectangle",
       "pos": {
-        "x": 2785,
+        "x": 3048,
         "y": 60
       },
-      "width": 111,
+      "width": 128,
       "height": 92,
       "opacity": 1,
       "strokeDash": 0,
@@ -993,10 +993,10 @@
       "id": "infra.ssh",
       "type": "rectangle",
       "pos": {
-        "x": 2315,
+        "x": 2508,
         "y": 292
       },
-      "width": 95,
+      "width": 152,
       "height": 92,
       "opacity": 1,
       "strokeDash": 0,
@@ -1046,7 +1046,7 @@
       "id": "infra.Kubernetes",
       "type": "rectangle",
       "pos": {
-        "x": 2450,
+        "x": 2700,
         "y": 292
       },
       "width": 152,
@@ -1099,10 +1099,10 @@
       "id": "infra.My SQL",
       "type": "rectangle",
       "pos": {
-        "x": 2642,
+        "x": 2892,
         "y": 292
       },
-      "width": 122,
+      "width": 152,
       "height": 92,
       "opacity": 1,
       "strokeDash": 0,
@@ -1152,10 +1152,10 @@
       "id": "infra.MongoDB",
       "type": "rectangle",
       "pos": {
-        "x": 2315,
+        "x": 2508,
         "y": 424
       },
-      "width": 138,
+      "width": 152,
       "height": 92,
       "opacity": 1,
       "strokeDash": 0,
@@ -1205,10 +1205,10 @@
       "id": "infra.PSQL",
       "type": "rectangle",
       "pos": {
-        "x": 2493,
+        "x": 2700,
         "y": 424
       },
-      "width": 108,
+      "width": 152,
       "height": 92,
       "opacity": 1,
       "strokeDash": 0,
@@ -1258,10 +1258,10 @@
       "id": "infra.Windows",
       "type": "rectangle",
       "pos": {
-        "x": 2641,
+        "x": 2892,
         "y": 424
       },
-      "width": 136,
+      "width": 152,
       "height": 92,
       "opacity": 1,
       "strokeDash": 0,
@@ -1434,19 +1434,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1592.4246575342465,
-          "y": 283
+          "x": 1763.433789954338,
+          "y": 262.5
         },
         {
-          "x": 1826.4849315068493,
-          "y": 141.4
+          "x": 2004.6867579908676,
+          "y": 137.3
         },
         {
-          "x": 1935.2,
+          "x": 2115.2,
           "y": 106
         },
         {
-          "x": 2136,
+          "x": 2316,
           "y": 106
         }
       ],
@@ -1483,19 +1483,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1634,
-          "y": 418.0985267034991
+          "x": 1814,
+          "y": 416.09399684044234
         },
         {
-          "x": 1834.8,
-          "y": 406.81970534069984
+          "x": 2014.8,
+          "y": 406.41879936808846
         },
         {
-          "x": 1959,
+          "x": 2141.6,
           "y": 404
         },
         {
-          "x": 2255,
+          "x": 2448,
           "y": 404
         }
       ],
@@ -1532,20 +1532,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1634,
-          "y": 501.98802946593
+          "x": 1814,
+          "y": 510.2361769352291
         },
         {
-          "x": 1834.8,
-          "y": 548.397605893186
+          "x": 2014.8,
+          "y": 550.0472353870458
         },
         {
-          "x": 1997.1,
-          "y": 576.1111951588503
+          "x": 2187.1,
+          "y": 576.3143459915611
         },
         {
-          "x": 2445.5,
-          "y": 640.5559757942511
+          "x": 2675.5,
+          "y": 641.5717299578059
         }
       ],
       "isCurve": true,
@@ -1581,20 +1581,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1634,
-          "y": 569.47605893186
+          "x": 1814,
+          "y": 585.9723538704582
         },
         {
-          "x": 1834.8,
-          "y": 662.295211786372
+          "x": 2014.8,
+          "y": 665.5944707740916
         },
         {
-          "x": 1997.1,
-          "y": 680.3274583963691
+          "x": 2187.1,
+          "y": 680.2622362869198
         },
         {
-          "x": 2445.5,
-          "y": 659.6372919818457
+          "x": 2675.5,
+          "y": 659.3111814345991
         }
       ],
       "isCurve": true,
