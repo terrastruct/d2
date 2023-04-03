@@ -271,3 +271,5 @@ this selected list of featured projects using D2.
   - Open-source money manager app for Android (1.1k stars).
 - [LocalStack](https://docs.localstack.cloud/references/network-troubleshooting/)
   - Cloud service emulator (46k stars)
+- [Queue Library](https://github.com/golang-queue/queue/tree/master/images)
+  - Queue is a Golang library for spawning and managing a Goroutine pool
