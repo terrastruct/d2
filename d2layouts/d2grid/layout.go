@@ -2,7 +2,6 @@ package d2grid
 
 import (
 	"context"
-	"math"
 	"sort"
 
 	"oss.terrastruct.com/d2/d2graph"
@@ -69,7 +68,7 @@ func withoutGrids(ctx context.Context, g *d2graph.Graph) (idToGrid map[string]*g
 			}
 			obj.Children = make(map[string]*d2graph.Object)
 			obj.ChildrenArray = nil
-			obj.Box = geo.NewBox(nil, grid.width+CONTAINER_PADDING*2, grid.height+CONTAINER_PADDING*2)
+			obj.Box = geo.NewBox(nil, grid.width+2*CONTAINER_PADDING, grid.height+2*CONTAINER_PADDING)
 			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 			grids[obj.AbsID()] = grid
 
@@ -97,21 +96,17 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*grid, error) {
 
 	// position nodes
 	cursor := geo.NewPoint(0, 0)
-	maxWidth := 0.
 	for i := 0; i < grid.rows; i++ {
-		maxHeight := 0.
 		for j := 0; j < grid.columns; j++ {
 			n := grid.nodes[i*grid.columns+j]
+			n.Width = grid.cellWidth
+			n.Height = grid.cellHeight
 			n.TopLeft = cursor.Copy()
-			cursor.X += n.Width + HORIZONTAL_PAD
-			maxHeight = math.Max(maxHeight, n.Height)
+			cursor.X += grid.cellWidth + HORIZONTAL_PAD
 		}
-		maxWidth = math.Max(maxWidth, cursor.X-HORIZONTAL_PAD)
 		cursor.X = 0
-		cursor.Y += float64(maxHeight) + VERTICAL_PAD
+		cursor.Y += float64(grid.cellHeight) + VERTICAL_PAD
 	}
-	grid.width = maxWidth
-	grid.height = cursor.Y - VERTICAL_PAD
 
 	// position labels and icons
 	for _, n := range grid.nodes {
