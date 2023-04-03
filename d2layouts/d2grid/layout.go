@@ -4,7 +4,6 @@ import (
 	"context"
 	"math"
 	"sort"
-	"strconv"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/lib/geo"
@@ -12,67 +11,11 @@ import (
 	"oss.terrastruct.com/util-go/go2"
 )
 
-const CONTAINER_PADDING = 60.
-const HORIZONTAL_PAD = 40.
-const VERTICAL_PAD = 40.
-
-type grid struct {
-	root    *d2graph.Object
-	nodes   []*d2graph.Object
-	rows    int
-	columns int
-
-	width  float64
-	height float64
-}
-
-func newGrid(root *d2graph.Object) *grid {
-	g := grid{root: root, nodes: root.ChildrenArray}
-	if root.Attributes.Rows != nil {
-		g.rows, _ = strconv.Atoi(root.Attributes.Rows.Value)
-	}
-	if root.Attributes.Columns != nil {
-		g.columns, _ = strconv.Atoi(root.Attributes.Columns.Value)
-	}
-
-	// compute exact row/column count based on values entered
-	// TODO consider making this based on node dimensions
-	if g.rows == 0 {
-		// set rows based on number of columns
-		if g.columns == 0 {
-			// 0,0: put everything in one row
-			g.rows = 1
-			g.columns = len(g.nodes)
-		} else {
-			g.rows = len(g.nodes) / g.columns
-			if len(g.nodes)%g.columns != 0 {
-				g.rows++
-			}
-		}
-	} else if g.columns == 0 {
-		// set columns based on number of rows
-		g.columns = len(g.nodes) / g.rows
-		if len(g.nodes)%g.rows != 0 {
-			g.columns++
-		}
-	} else {
-		// rows and columns specified (add more rows if needed)
-		capacity := g.rows * g.columns
-		for capacity < len(g.nodes) {
-			g.rows++
-			capacity += g.columns
-		}
-	}
-
-	return &g
-}
-
-func (g *grid) shift(dx, dy float64) {
-	for _, obj := range g.nodes {
-		obj.TopLeft.X += dx
-		obj.TopLeft.Y += dy
-	}
-}
+const (
+	CONTAINER_PADDING = 60
+	HORIZONTAL_PAD    = 40.
+	VERTICAL_PAD      = 40.
+)
 
 // Layout runs the grid layout on containers with rows/columns
 // Note: children are not allowed edges or descendants
@@ -100,40 +43,6 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) d
 		cleanup(g, grids, objectOrder)
 		return nil
 	}
-}
-
-func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*grid, error) {
-	grid := newGrid(obj)
-
-	// position nodes
-	cursor := geo.NewPoint(0, 0)
-	maxWidth := 0.
-	for i := 0; i < grid.rows; i++ {
-		maxHeight := 0.
-		for j := 0; j < grid.columns; j++ {
-			n := grid.nodes[i*grid.columns+j]
-			n.TopLeft = cursor.Copy()
-			cursor.X += n.Width + HORIZONTAL_PAD
-			maxHeight = math.Max(maxHeight, n.Height)
-		}
-		maxWidth = math.Max(maxWidth, cursor.X-HORIZONTAL_PAD)
-		cursor.X = 0
-		cursor.Y += float64(maxHeight) + VERTICAL_PAD
-	}
-	grid.width = maxWidth
-	grid.height = cursor.Y - VERTICAL_PAD
-
-	// position labels and icons
-	for _, n := range grid.nodes {
-		if n.Attributes.Icon != nil {
-			n.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-			n.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
-		} else {
-			n.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
-		}
-	}
-
-	return grid, nil
 }
 
 func withoutGrids(ctx context.Context, g *d2graph.Graph) (idToGrid map[string]*grid, objectOrder map[string]int, err error) {
@@ -183,6 +92,40 @@ func withoutGrids(ctx context.Context, g *d2graph.Graph) (idToGrid map[string]*g
 	return grids, objectOrder, nil
 }
 
+func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*grid, error) {
+	grid := newGrid(obj)
+
+	// position nodes
+	cursor := geo.NewPoint(0, 0)
+	maxWidth := 0.
+	for i := 0; i < grid.rows; i++ {
+		maxHeight := 0.
+		for j := 0; j < grid.columns; j++ {
+			n := grid.nodes[i*grid.columns+j]
+			n.TopLeft = cursor.Copy()
+			cursor.X += n.Width + HORIZONTAL_PAD
+			maxHeight = math.Max(maxHeight, n.Height)
+		}
+		maxWidth = math.Max(maxWidth, cursor.X-HORIZONTAL_PAD)
+		cursor.X = 0
+		cursor.Y += float64(maxHeight) + VERTICAL_PAD
+	}
+	grid.width = maxWidth
+	grid.height = cursor.Y - VERTICAL_PAD
+
+	// position labels and icons
+	for _, n := range grid.nodes {
+		if n.Attributes.Icon != nil {
+			n.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+			n.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+		} else {
+			n.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+		}
+	}
+
+	return grid, nil
+}
+
 // cleanup restores the graph after the core layout engine finishes
 // - translating the grid to its position placed by the core layout engine
 // - restore the children of the grid
@@ -195,26 +138,26 @@ func cleanup(g *d2graph.Graph, grids map[string]*grid, objectsOrder map[string]i
 		objects = g.Objects
 	}
 	for _, obj := range objects {
-		if _, exists := grids[obj.AbsID()]; !exists {
+		grid, exists := grids[obj.AbsID()]
+		if !exists {
 			continue
 		}
 		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-		sd := grids[obj.AbsID()]
 
 		// shift the grid from (0, 0)
-		sd.shift(
+		grid.shift(
 			obj.TopLeft.X+CONTAINER_PADDING,
 			obj.TopLeft.Y+CONTAINER_PADDING,
 		)
 
 		obj.Children = make(map[string]*d2graph.Object)
 		obj.ChildrenArray = make([]*d2graph.Object, 0)
-		for _, child := range sd.nodes {
+		for _, child := range grid.nodes {
 			obj.Children[child.ID] = child
 			obj.ChildrenArray = append(obj.ChildrenArray, child)
 		}
 
-		g.Objects = append(g.Objects, grids[obj.AbsID()].nodes...)
+		g.Objects = append(g.Objects, grid.nodes...)
 	}
 
 	sort.SliceStable(g.Objects, func(i, j int) bool {
