@@ -78,7 +78,7 @@ func GetUnitNormalVector(x1, y1, x2, y2 float64) (float64, float64) {
 }
 
 func (a Vector) Radians() float64 {
-	return math.Atan2(a[1], a[0])
+	return float64(float32(math.Atan2(a[1], a[0])))
 }
 
 func (a Vector) Degrees() float64 {
