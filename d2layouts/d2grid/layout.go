@@ -135,15 +135,15 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*grid, error) {
 		}
 	} else {
 		targetHeight := totalHeight / float64(grid.columns)
-		columnHeight := 0.
-		columnIndex := 0
+		colHeight := 0.
+		colIndex := 0
 		for i, n := range grid.nodes {
-			layout[columnIndex] = append(layout[columnIndex], i)
-			columnHeight += n.Height + VERTICAL_PAD
-			if columnHeight > targetHeight && i < len(grid.nodes)-1 {
+			layout[colIndex] = append(layout[colIndex], i)
+			colHeight += n.Height + VERTICAL_PAD
+			if colHeight > targetHeight && i < len(grid.nodes)-1 {
 				layout = append(layout, []int{})
-				columnIndex++
-				columnHeight = 0
+				colIndex++
+				colHeight = 0
 			}
 		}
 	}
@@ -260,24 +260,27 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*grid, error) {
 		// . └───┴──────────┘  │          │
 		// .                   │         ││
 		// .                   └─────────┴┘
+		colHeights := []float64{}
 		for _, column := range layout {
-			columnWidth := 0.
+			colWidth := 0.
 			for _, nodeIndex := range column {
 				n := grid.nodes[nodeIndex]
 				n.TopLeft = cursor.Copy()
 				cursor.Y += n.Height + VERTICAL_PAD
-				columnWidth = math.Max(columnWidth, n.Width)
+				colWidth = math.Max(colWidth, n.Width)
 			}
-			maxY = math.Max(maxY, cursor.Y-VERTICAL_PAD)
+			colHeight := cursor.Y - VERTICAL_PAD
+			colHeights = append(colHeights, colHeight)
+			maxY = math.Max(maxY, colHeight)
 			// set all nodes in column to the same width
 			for _, nodeIndex := range column {
 				n := grid.nodes[nodeIndex]
-				n.Width = columnWidth
+				n.Width = colWidth
 			}
 
 			// new column
 			cursor.Y = 0
-			cursor.X += columnWidth + HORIZONTAL_PAD
+			cursor.X += colWidth + HORIZONTAL_PAD
 		}
 		maxX = cursor.X - HORIZONTAL_PAD
 		// then expand shortest nodes to make each column the same height
@@ -291,7 +294,54 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*grid, error) {
 		// . │              │  │          │  │                 │
 		// . │              │  │          │  │                 │
 		// . └──────────────┘  └──────────┘  └─────────────────┘
-		// TODO see rows
+		for i, column := range layout {
+			colHeight := colHeights[i]
+			if colHeight == maxY {
+				continue
+			}
+			delta := maxY - colHeight
+			nodes := []*d2graph.Object{}
+			var tallest float64
+			for _, nodeIndex := range column {
+				n := grid.nodes[nodeIndex]
+				tallest = math.Max(tallest, n.Height)
+				nodes = append(nodes, n)
+			}
+			sort.Slice(nodes, func(i, j int) bool {
+				return nodes[i].Height < nodes[j].Height
+			})
+			// expand smaller nodes to fill remaining space
+			for _, n := range nodes {
+				if n.Height < tallest {
+					var index int
+					for i, nodeIndex := range column {
+						if n == grid.nodes[nodeIndex] {
+							index = i
+							break
+						}
+					}
+					grow := math.Min(tallest-n.Height, delta)
+					n.Height += grow
+					// shift following nodes
+					for i := index + 1; i < len(column); i++ {
+						grid.nodes[column[i]].TopLeft.Y += grow
+					}
+					delta -= grow
+					if delta <= 0 {
+						break
+					}
+				}
+			}
+			if delta > 0 {
+				grow := delta / float64(len(column))
+				for i := len(column) - 1; i >= 0; i-- {
+					n := grid.nodes[column[i]]
+					n.TopLeft.Y += grow * float64(i)
+					n.Height += grow
+					delta -= grow
+				}
+			}
+		}
 	}
 	grid.width = maxX
 	grid.height = maxY
