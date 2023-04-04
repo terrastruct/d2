@@ -10,7 +10,7 @@
         "x": 0,
         "y": 0
       },
-      "width": 136,
+      "width": 128,
       "height": 100,
       "opacity": 1,
       "strokeDash": 0,
@@ -48,10 +48,10 @@
       "id": "flow2",
       "type": "rectangle",
       "pos": {
-        "x": 176,
+        "x": 168,
         "y": 0
       },
-      "width": 136,
+      "width": 128,
       "height": 100,
       "opacity": 1,
       "strokeDash": 0,
@@ -89,10 +89,10 @@
       "id": "flow3",
       "type": "rectangle",
       "pos": {
-        "x": 352,
+        "x": 336,
         "y": 0
       },
-      "width": 136,
+      "width": 128,
       "height": 100,
       "opacity": 1,
       "strokeDash": 0,
@@ -130,10 +130,10 @@
       "id": "flow4",
       "type": "rectangle",
       "pos": {
-        "x": 528,
+        "x": 504,
         "y": 0
       },
-      "width": 136,
+      "width": 128,
       "height": 100,
       "opacity": 1,
       "strokeDash": 0,
@@ -171,10 +171,10 @@
       "id": "flow5",
       "type": "rectangle",
       "pos": {
-        "x": 704,
+        "x": 672,
         "y": 0
       },
-      "width": 136,
+      "width": 128,
       "height": 100,
       "opacity": 1,
       "strokeDash": 0,
@@ -256,7 +256,7 @@
         "x": 280,
         "y": 140
       },
-      "width": 100,
+      "width": 120,
       "height": 100,
       "opacity": 1,
       "strokeDash": 0,
@@ -294,10 +294,10 @@
       "id": "flow8",
       "type": "rectangle",
       "pos": {
-        "x": 420,
+        "x": 440,
         "y": 140
       },
-      "width": 100,
+      "width": 160,
       "height": 100,
       "opacity": 1,
       "strokeDash": 0,
@@ -335,51 +335,10 @@
       "id": "flow9",
       "type": "rectangle",
       "pos": {
-        "x": 560,
+        "x": 640,
         "y": 140
       },
-      "width": 120,
-      "height": 100,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 10,
-      "borderRadius": 0,
-      "fill": "white",
-      "stroke": "cornflowerblue",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "",
-      "color": "N1",
-      "italic": false,
-      "bold": true,
-      "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 1
-    },
-    {
-      "id": "flow10",
-      "type": "rectangle",
-      "pos": {
-        "x": 720,
-        "y": 140
-      },
-      "width": 120,
+      "width": 160,
       "height": 100,
       "opacity": 1,
       "strokeDash": 0,
@@ -420,7 +379,7 @@
         "x": 0,
         "y": 280
       },
-      "width": 840,
+      "width": 800,
       "height": 61,
       "opacity": 1,
       "strokeDash": 0,
@@ -461,7 +420,7 @@
         "x": 0,
         "y": 381
       },
-      "width": 840,
+      "width": 800,
       "height": 87,
       "opacity": 1,
       "strokeDash": 0,
@@ -555,7 +514,7 @@
         "x": 179,
         "y": 508
       },
-      "width": 124,
+      "width": 117,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -593,7 +552,7 @@
       "id": "LINUX",
       "type": "rectangle",
       "pos": {
-        "x": 343,
+        "x": 336,
         "y": 508
       },
       "width": 139,
@@ -634,10 +593,10 @@
       "id": "MACOS",
       "type": "rectangle",
       "pos": {
-        "x": 522,
+        "x": 515,
         "y": 508
       },
-      "width": 139,
+      "width": 106,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -675,7 +634,7 @@
       "id": "KUBERNETES",
       "type": "rectangle",
       "pos": {
-        "x": 701,
+        "x": 661,
         "y": 508
       },
       "width": 139,
