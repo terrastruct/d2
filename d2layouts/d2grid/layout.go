@@ -123,27 +123,62 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*grid, error) {
 		targetWidth := totalWidth / float64(grid.rows)
 		rowWidth := 0.
 		rowIndex := 0
-		for i, n := range grid.nodes {
+		addRow := func() {
+			layout = append(layout, []int{})
+			rowIndex++
+			rowWidth = 0
+		}
+		addNode := func(i int, n *d2graph.Object) {
 			layout[rowIndex] = append(layout[rowIndex], i)
 			rowWidth += n.Width + HORIZONTAL_PAD
-			// add a new row if we pass the target width and there are more nodes
-			if rowWidth > targetWidth && i < len(grid.nodes)-1 {
-				layout = append(layout, []int{})
-				rowIndex++
-				rowWidth = 0
+		}
+
+		for i, n := range grid.nodes {
+			// if the next node will be past the target, start a new row
+			if rowWidth+n.Width+HORIZONTAL_PAD > targetWidth {
+				// if the node is mostly past the target, put it on the next row
+				if rowWidth+n.Width/2 > targetWidth {
+					addRow()
+					addNode(i, n)
+				} else {
+					addNode(i, n)
+					if i < len(grid.nodes)-1 {
+						addRow()
+					}
+				}
+			} else {
+				addNode(i, n)
 			}
 		}
 	} else {
 		targetHeight := totalHeight / float64(grid.columns)
 		colHeight := 0.
 		colIndex := 0
-		for i, n := range grid.nodes {
+		addCol := func() {
+			layout = append(layout, []int{})
+			colIndex++
+			colHeight = 0
+		}
+		addNode := func(i int, n *d2graph.Object) {
 			layout[colIndex] = append(layout[colIndex], i)
 			colHeight += n.Height + VERTICAL_PAD
-			if colHeight > targetHeight && i < len(grid.nodes)-1 {
-				layout = append(layout, []int{})
-				colIndex++
-				colHeight = 0
+		}
+
+		for i, n := range grid.nodes {
+			// if the next node will be past the target, start a new row
+			if colHeight+n.Height+VERTICAL_PAD > targetHeight {
+				// if the node is mostly past the target, put it on the next row
+				if colHeight+n.Height/2 > targetHeight {
+					addCol()
+					addNode(i, n)
+				} else {
+					addNode(i, n)
+					if i < len(grid.nodes)-1 {
+						addCol()
+					}
+				}
+			} else {
+				addNode(i, n)
 			}
 		}
 	}
