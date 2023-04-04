@@ -2,6 +2,7 @@ package d2grid
 
 import (
 	"context"
+	"math"
 	"sort"
 
 	"oss.terrastruct.com/d2/d2graph"
@@ -33,7 +34,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) d
 			return err
 		}
 
-		if g.Root.IsGrid() {
+		if g.Root.IsGrid() && len(g.Root.ChildrenArray) != 0 {
 			g.Root.TopLeft = geo.NewPoint(0, 0)
 		} else if err := layout(ctx, g); err != nil {
 			return err
@@ -93,20 +94,207 @@ func withoutGrids(ctx context.Context, g *d2graph.Graph) (idToGrid map[string]*g
 
 func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*grid, error) {
 	grid := newGrid(obj)
+	// assume we have the following nodes to layout:
+	// . ┌A──────────────┐  ┌B──┐  ┌C─────────┐  ┌D────────┐  ┌E────────────────┐
+	// . └───────────────┘  │   │  │          │  │         │  │                 │
+	// .                    │   │  └──────────┘  │         │  │                 │
+	// .                    │   │                │         │  └─────────────────┘
+	// .                    └───┘                │         │
+	// .                                         └─────────┘
+	// Note: if the grid is row dominant, all nodes should be the same height (same width if column dominant)
+	// . ┌A─────────────┐  ┌B──┐  ┌C─────────┐  ┌D────────┐  ┌E────────────────┐
+	// . ├ ─ ─ ─ ─ ─ ─ ─┤  │   │  │          │  │         │  │                 │
+	// . │              │  │   │  ├ ─ ─ ─ ─ ─┤  │         │  │                 │
+	// . │              │  │   │  │          │  │         │  ├ ─ ─ ─ ─ ─ ─ ─ ─ ┤
+	// . │              │  ├ ─ ┤  │          │  │         │  │                 │
+	// . └──────────────┘  └───┘  └──────────┘  └─────────┘  └─────────────────┘
 
-	// position nodes
-	cursor := geo.NewPoint(0, 0)
-	for i := 0; i < grid.rows; i++ {
-		for j := 0; j < grid.columns; j++ {
-			n := grid.nodes[i*grid.columns+j]
-			n.Width = grid.cellWidth
-			n.Height = grid.cellHeight
-			n.TopLeft = cursor.Copy()
-			cursor.X += grid.cellWidth + HORIZONTAL_PAD
-		}
-		cursor.X = 0
-		cursor.Y += float64(grid.cellHeight) + VERTICAL_PAD
+	// we want to split up the total width across the N rows or columns as evenly as possible
+	var totalWidth, totalHeight float64
+	for _, n := range grid.nodes {
+		totalWidth += n.Width
+		totalHeight += n.Height
 	}
+	totalWidth += HORIZONTAL_PAD * float64(len(grid.nodes)-1)
+	totalHeight += VERTICAL_PAD * float64(len(grid.nodes)-1)
+
+	layout := [][]int{{}}
+	if grid.rowDominant {
+		targetWidth := totalWidth / float64(grid.rows)
+		rowWidth := 0.
+		rowIndex := 0
+		for i, n := range grid.nodes {
+			layout[rowIndex] = append(layout[rowIndex], i)
+			rowWidth += n.Width + HORIZONTAL_PAD
+			// add a new row if we pass the target width and there are more nodes
+			if rowWidth > targetWidth && i < len(grid.nodes)-1 {
+				layout = append(layout, []int{})
+				rowIndex++
+				rowWidth = 0
+			}
+		}
+	} else {
+		targetHeight := totalHeight / float64(grid.columns)
+		columnHeight := 0.
+		columnIndex := 0
+		for i, n := range grid.nodes {
+			layout[columnIndex] = append(layout[columnIndex], i)
+			columnHeight += n.Height + VERTICAL_PAD
+			if columnHeight > targetHeight && i < len(grid.nodes)-1 {
+				layout = append(layout, []int{})
+				columnIndex++
+				columnHeight = 0
+			}
+		}
+	}
+
+	cursor := geo.NewPoint(0, 0)
+	var maxY, maxX float64
+	if grid.rowDominant {
+		// if we have 2 rows, then each row's nodes should have the same height
+		// . ┌A─────────────┐  ┌B──┐  ┌C─────────┐ ┬ maxHeight(A,B,C)
+		// . ├ ─ ─ ─ ─ ─ ─ ─┤  │   │  │          │ │
+		// . │              │  │   │  ├ ─ ─ ─ ─ ─┤ │
+		// . │              │  │   │  │          │ │
+		// . └──────────────┘  └───┘  └──────────┘ ┴
+		// . ┌D────────┐  ┌E────────────────┐ ┬ maxHeight(D,E)
+		// . │         │  │                 │ │
+		// . │         │  │                 │ │
+		// . │         │  ├ ─ ─ ─ ─ ─ ─ ─ ─ ┤ │
+		// . │         │  │                 │ │
+		// . └─────────┘  └─────────────────┘ ┴
+		rowWidths := []float64{}
+		for _, row := range layout {
+			rowHeight := 0.
+			for _, nodeIndex := range row {
+				n := grid.nodes[nodeIndex]
+				n.TopLeft = cursor.Copy()
+				cursor.X += n.Width + HORIZONTAL_PAD
+				rowHeight = math.Max(rowHeight, n.Height)
+			}
+			rowWidth := cursor.X - HORIZONTAL_PAD
+			rowWidths = append(rowWidths, rowWidth)
+			maxX = math.Max(maxX, rowWidth)
+
+			// set all nodes in row to the same height
+			for _, nodeIndex := range row {
+				n := grid.nodes[nodeIndex]
+				n.Height = rowHeight
+			}
+
+			// new row
+			cursor.X = 0
+			cursor.Y += rowHeight + VERTICAL_PAD
+		}
+		maxY = cursor.Y - VERTICAL_PAD
+
+		// then expand thinnest nodes to make each row the same width
+		// . ┌A─────────────┐  ┌B──┐  ┌C─────────┐ ┬ maxHeight(A,B,C)
+		// . │              │  │   │  │          │ │
+		// . │              │  │   │  │          │ │
+		// . │              │  │   │  │          │ │
+		// . └──────────────┘  └───┘  └──────────┘ ┴
+		// . ┌D────────┬────┐  ┌E────────────────┐ ┬ maxHeight(D,E)
+		// . │              │  │                 │ │
+		// . │         │    │  │                 │ │
+		// . │              │  │                 │ │
+		// . │         │    │  │                 │ │
+		// . └─────────┴────┘  └─────────────────┘ ┴
+		for i, row := range layout {
+			rowWidth := rowWidths[i]
+			if rowWidth == maxX {
+				continue
+			}
+			delta := maxX - rowWidth
+			nodes := []*d2graph.Object{}
+			var widest float64
+			for _, nodeIndex := range row {
+				n := grid.nodes[nodeIndex]
+				widest = math.Max(widest, n.Width)
+				nodes = append(nodes, n)
+			}
+			sort.Slice(nodes, func(i, j int) bool {
+				return nodes[i].Width < nodes[j].Width
+			})
+			// expand smaller nodes to fill remaining space
+			for _, n := range nodes {
+				if n.Width < widest {
+					var index int
+					for i, nodeIndex := range row {
+						if n == grid.nodes[nodeIndex] {
+							index = i
+							break
+						}
+					}
+					grow := math.Min(widest-n.Width, delta)
+					n.Width += grow
+					// shift following nodes
+					for i := index + 1; i < len(row); i++ {
+						grid.nodes[row[i]].TopLeft.X += grow
+					}
+					delta -= grow
+					if delta <= 0 {
+						break
+					}
+				}
+			}
+			if delta > 0 {
+				grow := delta / float64(len(row))
+				for i := len(row) - 1; i >= 0; i-- {
+					n := grid.nodes[row[i]]
+					n.TopLeft.X += grow * float64(i)
+					n.Width += grow
+					delta -= grow
+				}
+			}
+		}
+	} else {
+		// if we have 3 columns, then each column's nodes should have the same width
+		// . ├maxWidth(A,B)─┤  ├maxW(C,D)─┤  ├maxWidth(E)──────┤
+		// . ┌A─────────────┐  ┌C─────────┐  ┌E────────────────┐
+		// . └──────────────┘  │          │  │                 │
+		// . ┌B──┬──────────┐  └──────────┘  │                 │
+		// . │              │  ┌D────────┬┐  └─────────────────┘
+		// . │   │          │  │          │
+		// . │              │  │         ││
+		// . └───┴──────────┘  │          │
+		// .                   │         ││
+		// .                   └─────────┴┘
+		for _, column := range layout {
+			columnWidth := 0.
+			for _, nodeIndex := range column {
+				n := grid.nodes[nodeIndex]
+				n.TopLeft = cursor.Copy()
+				cursor.Y += n.Height + VERTICAL_PAD
+				columnWidth = math.Max(columnWidth, n.Width)
+			}
+			maxY = math.Max(maxY, cursor.Y-VERTICAL_PAD)
+			// set all nodes in column to the same width
+			for _, nodeIndex := range column {
+				n := grid.nodes[nodeIndex]
+				n.Width = columnWidth
+			}
+
+			// new column
+			cursor.Y = 0
+			cursor.X += columnWidth + HORIZONTAL_PAD
+		}
+		maxX = cursor.X - HORIZONTAL_PAD
+		// then expand shortest nodes to make each column the same height
+		// . ├maxWidth(A,B)─┤  ├maxW(C,D)─┤  ├maxWidth(E)──────┤
+		// . ┌A─────────────┐  ┌C─────────┐  ┌E────────────────┐
+		// . ├ ─ ─ ─ ─ ─ ─  ┤  │          │  │                 │
+		// . │              │  └──────────┘  │                 │
+		// . └──────────────┘  ┌D─────────┐  ├ ─ ─ ─ ─ ─ ─ ─ ─ ┤
+		// . ┌B─────────────┐  │          │  │                 │
+		// . │              │  │          │  │                 │
+		// . │              │  │          │  │                 │
+		// . │              │  │          │  │                 │
+		// . └──────────────┘  └──────────┘  └─────────────────┘
+		// TODO see rows
+	}
+	grid.width = maxX
+	grid.height = maxY
 
 	// position labels and icons
 	for _, n := range grid.nodes {
@@ -125,37 +313,32 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*grid, error) {
 // - translating the grid to its position placed by the core layout engine
 // - restore the children of the grid
 // - sorts objects to their original graph order
-func cleanup(g *d2graph.Graph, grids map[string]*grid, objectsOrder map[string]int) {
-	var objects []*d2graph.Object
-	if g.Root.IsGrid() {
-		objects = []*d2graph.Object{g.Root}
-	} else {
-		objects = g.Objects
+func cleanup(graph *d2graph.Graph, grids map[string]*grid, objectsOrder map[string]int) {
+	defer func() {
+		sort.SliceStable(graph.Objects, func(i, j int) bool {
+			return objectsOrder[graph.Objects[i].AbsID()] < objectsOrder[graph.Objects[j].AbsID()]
+		})
+	}()
+
+	if graph.Root.IsGrid() {
+		grid, exists := grids[graph.Root.AbsID()]
+		if exists {
+			grid.cleanup(graph.Root, graph)
+			return
+		}
 	}
-	for _, obj := range objects {
+
+	for _, obj := range graph.Objects {
 		grid, exists := grids[obj.AbsID()]
 		if !exists {
 			continue
 		}
 		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-
 		// shift the grid from (0, 0)
 		grid.shift(
 			obj.TopLeft.X+CONTAINER_PADDING,
 			obj.TopLeft.Y+CONTAINER_PADDING,
 		)
-
-		obj.Children = make(map[string]*d2graph.Object)
-		obj.ChildrenArray = make([]*d2graph.Object, 0)
-		for _, child := range grid.nodes {
-			obj.Children[child.ID] = child
-			obj.ChildrenArray = append(obj.ChildrenArray, child)
-		}
-
-		g.Objects = append(g.Objects, grid.nodes...)
+		grid.cleanup(obj, graph)
 	}
-
-	sort.SliceStable(g.Objects, func(i, j int) bool {
-		return objectsOrder[g.Objects[i].AbsID()] < objectsOrder[g.Objects[j].AbsID()]
-	})
 }

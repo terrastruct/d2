@@ -1,25 +1,61 @@
-todo root level grid: {
-  rows: 4
+rows: 4
+style.fill: black
 
-  flow: {
-    width: 800
-    height: 200
+flow: "" {
+  width: 800
+  height: 200
+  style: {
+    fill: cornflowerblue
   }
+}
 
-  dagger engine: {
-    width: 800
+DAGGER ENGINE: {
+  width: 800
+  style: {
+    fill: beige
+    stroke: darkcyan
+    font-color: blue
+    stroke-width: 8
   }
+}
 
-  any docker compatible runtime: {
-    width: 800
+ANY DOCKER COMPATIBLE RUNTIME: {
+  width: 800
+  style: {
+    fill: lightcyan
+    stroke: darkcyan
+    font-color: black
+    stroke-width: 8
   }
+  icon: https://icons.terrastruct.com/dev%2Fdocker.svg
+}
 
-  any ci: {
-    width: 800
+ANY CI: {
+  style: {
+    fill: gold
+    stroke: maroon
+    font-color: maroon
+    stroke-width: 8
   }
+}
 
-  windows
-  linux
-  macos
-  kubernetes
+WINDOWS.style: {
+  font-color: white
+  fill: darkcyan
+  stroke: black
+}
+LINUX.style: {
+  font-color: white
+  fill: darkcyan
+  stroke: black
+}
+MACOS.style: {
+  font-color: white
+  fill: darkcyan
+  stroke: black
+}
+KUBERNETES.style: {
+  font-color: white
+  fill: darkcyan
+  stroke: black
 }

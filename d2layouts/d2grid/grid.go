@@ -1,7 +1,6 @@
 package d2grid
 
 import (
-	"math"
 	"strconv"
 
 	"oss.terrastruct.com/d2/d2graph"
@@ -12,6 +11,8 @@ type grid struct {
 	nodes   []*d2graph.Object
 	rows    int
 	columns int
+
+	rowDominant bool
 
 	cellWidth  float64
 	cellHeight float64
@@ -29,63 +30,37 @@ func newGrid(root *d2graph.Object) *grid {
 	}
 
 	// compute exact row/column count based on values entered
-	if g.rows == 0 {
-		// set rows based on number of columns
-		g.rows = len(g.nodes) / g.columns
-		if len(g.nodes)%g.columns != 0 {
-			g.rows++
-		}
-	} else if g.columns == 0 {
-		// set columns based on number of rows
-		g.columns = len(g.nodes) / g.rows
-		if len(g.nodes)%g.rows != 0 {
-			g.columns++
-		}
+	if g.columns == 0 {
+		g.rowDominant = true
+	} else if g.rows == 0 {
+		g.rowDominant = false
 	} else {
-		// rows and columns specified (add more rows if needed)
+		// if keyword rows is first, rows are primary, columns secondary.
+		if root.Attributes.Rows.MapKey.Range.Before(root.Attributes.Columns.MapKey.Range) {
+			g.rowDominant = true
+		}
+
+		// rows and columns specified, but we want to continue naturally if user enters more nodes
+		// e.g. 2 rows, 3 columns specified + g node added: │ with 3 columns, 2 rows:
+		// . original  add row   add column                 │ original  add row   add column
+		// . ┌───────┐ ┌───────┐ ┌─────────┐                │ ┌───────┐ ┌───────┐ ┌─────────┐
+		// . │ a b c │ │ a b c │ │ a b c d │                │ │ a c e │ │ a d g │ │ a c e g │
+		// . │ d e f │ │ d e f │ │ e f g   │                │ │ b d f │ │ b e   │ │ b d f   │
+		// . └───────┘ │ g     │ └─────────┘                │ └───────┘ │ c f   │ └─────────┘
+		// .           └───────┘ ▲                          │           └───────┘ ▲
+		// .           ▲         └─existing nodes modified  │           ▲         └─existing nodes preserved
+		// .           └─existing rows preserved            │           └─existing rows modified
 		capacity := g.rows * g.columns
 		for capacity < len(g.nodes) {
-			g.rows++
-			capacity += g.columns
+			if g.rowDominant {
+				g.rows++
+				capacity += g.columns
+			} else {
+				g.columns++
+				capacity += g.rows
+			}
 		}
 	}
-
-	// if we have the following nodes for a 2 row, 3 column grid
-	// . ┌A──────────────────┐  ┌B─────┐  ┌C────────────┐  ┌D───────────┐  ┌E───────────────────┐
-	// . │                   │  │      │  │             │  │            │  │                    │
-	// . │                   │  │      │  │             │  │            │  │                    │
-	// . └───────────────────┘  │      │  │             │  │            │  │                    │
-	// .                        │      │  └─────────────┘  │            │  │                    │
-	// .                        │      │                   │            │  └────────────────────┘
-	// .                        └──────┘                   │            │
-	// .                                                   └────────────┘
-	// Then we must get the max width and max height to determine the grid cell size
-	// .                                          maxWidth├────────────────────┤
-	// .  ┌A───────────────────┐  ┌B───────────────────┐  ┌C───────────────────┐ ┬maxHeight
-	// .  │                    │  │                    │  │                    │ │
-	// .  │                    │  │                    │  │                    │ │
-	// .  │                    │  │                    │  │                    │ │
-	// .  │                    │  │                    │  │                    │ │
-	// .  │                    │  │                    │  │                    │ │
-	// .  │                    │  │                    │  │                    │ │
-	// .  └────────────────────┘  └────────────────────┘  └────────────────────┘ ┴
-	// .  ┌D───────────────────┐  ┌E───────────────────┐
-	// .  │                    │  │                    │
-	// .  │                    │  │                    │
-	// .  │                    │  │                    │
-	// .  │                    │  │                    │
-	// .  │                    │  │                    │
-	// .  │                    │  │                    │
-	// .  └────────────────────┘  └────────────────────┘
-	var maxWidth, maxHeight float64
-	for _, n := range g.nodes {
-		maxWidth = math.Max(maxWidth, n.Width)
-		maxHeight = math.Max(maxHeight, n.Height)
-	}
-	g.cellWidth = maxWidth
-	g.cellHeight = maxHeight
-	g.width = maxWidth + (float64(g.columns)-1)*(maxWidth+HORIZONTAL_PAD)
-	g.height = maxHeight + (float64(g.rows)-1)*(maxHeight+VERTICAL_PAD)
 
 	return &g
 }
@@ -95,4 +70,14 @@ func (g *grid) shift(dx, dy float64) {
 		obj.TopLeft.X += dx
 		obj.TopLeft.Y += dy
 	}
+}
+
+func (g *grid) cleanup(obj *d2graph.Object, graph *d2graph.Graph) {
+	obj.Children = make(map[string]*d2graph.Object)
+	obj.ChildrenArray = make([]*d2graph.Object, 0)
+	for _, child := range g.nodes {
+		obj.Children[child.ID] = child
+		obj.ChildrenArray = append(obj.ChildrenArray, child)
+	}
+	graph.Objects = append(graph.Objects, g.nodes...)
 }
