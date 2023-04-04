@@ -144,6 +144,12 @@ network.data processor -> api server
 			`,
 		},
 		{
+			name: "edge-label-overflow",
+			script: `student -> committee chair: Apply for appeal
+student <- committee chair: Deny. Need more information
+committee chair -> committee: Accept appeal`,
+		},
+		{
 			name: "mono-edge",
 			script: `direction: right
 x -> y: hi { style.font: mono }`,
