@@ -9,7 +9,10 @@ import (
 	"os"
 )
 
-type Pptx struct {
+// TODO: comments / references / assumptions
+// TODO: update core files with metadata
+
+type Presentation struct {
 	Slides []*Slide
 }
 
@@ -17,33 +20,48 @@ type Slide struct {
 	Image  []byte
 	Width  int
 	Height int
+	Top    int
+	Left   int
 }
 
-func NewPresentation() *Pptx {
-	return &Pptx{}
+func NewPresentation() *Presentation {
+	return &Presentation{}
 }
 
-func (p *Pptx) AddSlide(pngContent []byte) error {
+func (p *Presentation) AddSlide(pngContent []byte) error {
 	src, err := png.Decode(bytes.NewReader(pngContent))
 	if err != nil {
 		return fmt.Errorf("error decoding PNG image: %v", err)
 	}
 
+	var width, height, top, left int
 	srcSize := src.Bounds().Size()
-	height := int(float64(SLIDE_WIDTH) * (float64(srcSize.X) / float64(srcSize.Y)))
+
+	// compute the size and position to fit the slide
+	if srcSize.X > srcSize.Y {
+		width = SLIDE_WIDTH
+		height = int(float64(width) * (float64(srcSize.X) / float64(srcSize.Y)))
+		left = 0
+		top = (SLIDE_HEIGHT - height) / 2
+	} else {
+		height = SLIDE_HEIGHT
+		width = int(float64(height) * (float64(srcSize.X) / float64(srcSize.Y)))
+		top = 0
+		left = (SLIDE_WIDTH - width) / 2
+	}
 
 	p.Slides = append(p.Slides, &Slide{
 		Image:  pngContent,
-		Width:  SLIDE_WIDTH,
+		Width:  width,
 		Height: height,
+		Top:    top,
+		Left:   left,
 	})
 
 	return nil
 }
 
-func (p *Pptx) SaveTo(filePath string) error {
-	// TODO: update core files with metadata
-
+func (p *Presentation) SaveTo(filePath string) error {
 	f, err := os.Create(filePath)
 	if err != nil {
 		return err
@@ -75,7 +93,7 @@ func (p *Pptx) SaveTo(filePath string) error {
 		}
 
 		// TODO: center the image?
-		err = addFile(zipFile, fmt.Sprintf("ppt/slides/%s.xml", slideFileName), getSlideXml(imageId, imageId, 0, 0, slide.Width, slide.Height))
+		err = addFile(zipFile, fmt.Sprintf("ppt/slides/%s.xml", slideFileName), getSlideXml(imageId, imageId, slide.Top, slide.Left, slide.Width, slide.Height))
 		if err != nil {
 			return err
 		}

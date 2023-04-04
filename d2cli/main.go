@@ -750,7 +750,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 	return svg, nil
 }
 
-func renderPPTX(ctx context.Context, ms *xmain.State, presentation *ppt.Pptx, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, diagram *d2target.Diagram, boardPath []string) error {
+func renderPPTX(ctx context.Context, ms *xmain.State, presentation *ppt.Presentation, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, diagram *d2target.Diagram, boardPath []string) error {
 	var currBoardPath []string
 	// Root board doesn't have a name, so we use the output filename
 	if diagram.Name == "" {
