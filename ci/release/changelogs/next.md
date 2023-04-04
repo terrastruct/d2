@@ -4,6 +4,8 @@
 
 #### Improvements 🧹
 
+- Labels on parallel `dagre` connections include a gap between them [#1134](https://github.com/terrastruct/d2/pull/1134)
+
 #### Bugfixes ⛑️
 
 - Fix a bug in 32bit builds [#1115](https://github.com/terrastruct/d2/issues/1115)
