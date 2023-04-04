@@ -50,6 +50,10 @@ func addFile(zipFile *zip.Writer, filePath, content string) error {
 // https://startbigthinksmall.wordpress.com/2010/01/04/points-inches-and-emus-measuring-units-in-office-open-xml/
 const SLIDE_WIDTH = 9144000
 const SLIDE_HEIGHT = 5143500
+const HEADER_HEIGHT = 392471
+
+const IMAGE_WIDTH = SLIDE_WIDTH
+const IMAGE_HEIGHT = SLIDE_HEIGHT - HEADER_HEIGHT
 
 const RELS_SLIDE_XML = `<?xml version='1.0' encoding='UTF-8' standalone='yes'?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout7.xml" /><Relationship Id="%s" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="../media/%s.png" /></Relationships>`
 
@@ -57,10 +61,11 @@ func getRelsSlideXml(imageId string) string {
 	return fmt.Sprintf(RELS_SLIDE_XML, imageId, imageId)
 }
 
-const SLIDE_XML = `<?xml version='1.0' encoding='UTF-8' standalone='yes'?><p:sld xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><p:cSld><p:spTree><p:nvGrpSpPr><p:cNvPr id="1" name="" /><p:cNvGrpSpPr /><p:nvPr /></p:nvGrpSpPr><p:grpSpPr /><p:pic><p:nvPicPr><p:cNvPr id="2" name="%s" descr="%s" /><p:cNvPicPr><a:picLocks noChangeAspect="1" /></p:cNvPicPr><p:nvPr /></p:nvPicPr><p:blipFill><a:blip r:embed="%s" /><a:stretch><a:fillRect /></a:stretch></p:blipFill><p:spPr><a:xfrm><a:off x="%d" y="%d" /><a:ext cx="%d" cy="%d" /></a:xfrm><a:prstGeom prst="rect"><a:avLst /></a:prstGeom></p:spPr></p:pic></p:spTree></p:cSld><p:clrMapOvr><a:masterClrMapping /></p:clrMapOvr></p:sld>`
+const SLIDE_XML = `<?xml version='1.0' encoding='UTF-8' standalone='yes'?><p:sld xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><p:cSld><p:spTree><p:nvGrpSpPr><p:cNvPr id="1" name="" /><p:cNvGrpSpPr /><p:nvPr /></p:nvGrpSpPr><p:grpSpPr /><p:pic><p:nvPicPr><p:cNvPr id="2" name="%s" descr="%s" /><p:cNvPicPr><a:picLocks noChangeAspect="1" /></p:cNvPicPr><p:nvPr /></p:nvPicPr><p:blipFill><a:blip r:embed="%s" /><a:stretch><a:fillRect /></a:stretch></p:blipFill><p:spPr><a:xfrm><a:off x="%d" y="%d" /><a:ext cx="%d" cy="%d" /></a:xfrm><a:prstGeom prst="rect"><a:avLst /></a:prstGeom></p:spPr></p:pic><p:sp><p:nvSpPr><p:cNvPr id="95" name="%s" /><p:cNvSpPr txBox="1" /><p:nvPr /></p:nvSpPr><p:spPr><a:xfrm><a:off x="4001" y="6239" /><a:ext cx="9135998" cy="%d" /></a:xfrm><a:prstGeom prst="rect"><a:avLst /></a:prstGeom><a:ln w="12700"><a:miter lim="400000" /></a:ln><a:extLst><a:ext uri="{C572A759-6A51-4108-AA02-DFA0A04FC94B}"><ma14:wrappingTextBoxFlag val="1" xmlns:ma14="http://schemas.microsoft.com/office/mac/drawingml/2011/main" /></a:ext></a:extLst></p:spPr><p:txBody><a:bodyPr lIns="45719" rIns="45719"><a:spAutoFit /></a:bodyPr><a:lstStyle><a:lvl1pPr><a:defRPr sz="2400" /></a:lvl1pPr></a:lstStyle><a:p><a:pPr /><a:r><a:t>%s</a:t></a:r></a:p></p:txBody></p:sp></p:spTree></p:cSld><p:clrMapOvr><a:masterClrMapping /></p:clrMapOvr></p:sld>`
 
-func getSlideXml(imageId, imageName string, top, left, width, height int) string {
-	return fmt.Sprintf(SLIDE_XML, imageName, imageName, imageId, left, top, width, height)
+func getSlideXml(slideTitle, imageId string, top, left, width, height int) string {
+	top += HEADER_HEIGHT
+	return fmt.Sprintf(SLIDE_XML, slideTitle, slideTitle, imageId, left, top, width, height, slideTitle, HEADER_HEIGHT, slideTitle)
 }
 
 func getPresentationXmlRels(slideFileNames []string) string {

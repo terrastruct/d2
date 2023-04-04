@@ -17,18 +17,19 @@ type Presentation struct {
 }
 
 type Slide struct {
-	Image  []byte
-	Width  int
-	Height int
-	Top    int
-	Left   int
+	Title       string
+	Image       []byte
+	ImageWidth  int
+	ImageHeight int
+	ImageTop    int
+	ImageLeft   int
 }
 
 func NewPresentation() *Presentation {
 	return &Presentation{}
 }
 
-func (p *Presentation) AddSlide(pngContent []byte) error {
+func (p *Presentation) AddSlide(title string, pngContent []byte) error {
 	src, err := png.Decode(bytes.NewReader(pngContent))
 	if err != nil {
 		return fmt.Errorf("error decoding PNG image: %v", err)
@@ -39,23 +40,24 @@ func (p *Presentation) AddSlide(pngContent []byte) error {
 
 	// compute the size and position to fit the slide
 	if srcSize.X > srcSize.Y {
-		width = SLIDE_WIDTH
+		width = IMAGE_WIDTH
 		height = int(float64(width) * (float64(srcSize.X) / float64(srcSize.Y)))
 		left = 0
-		top = (SLIDE_HEIGHT - height) / 2
+		top = (IMAGE_HEIGHT - height) / 2
 	} else {
-		height = SLIDE_HEIGHT
+		height = IMAGE_HEIGHT
 		width = int(float64(height) * (float64(srcSize.X) / float64(srcSize.Y)))
 		top = 0
-		left = (SLIDE_WIDTH - width) / 2
+		left = (IMAGE_WIDTH - width) / 2
 	}
 
 	p.Slides = append(p.Slides, &Slide{
-		Image:  pngContent,
-		Width:  width,
-		Height: height,
-		Top:    top,
-		Left:   left,
+		Title:       title,
+		Image:       pngContent,
+		ImageWidth:  width,
+		ImageHeight: height,
+		ImageTop:    top,
+		ImageLeft:   left,
 	})
 
 	return nil
@@ -93,7 +95,11 @@ func (p *Presentation) SaveTo(filePath string) error {
 		}
 
 		// TODO: center the image?
-		err = addFile(zipFile, fmt.Sprintf("ppt/slides/%s.xml", slideFileName), getSlideXml(imageId, imageId, slide.Top, slide.Left, slide.Width, slide.Height))
+		err = addFile(
+			zipFile,
+			fmt.Sprintf("ppt/slides/%s.xml", slideFileName),
+			getSlideXml(slide.Title, imageId, slide.ImageTop, slide.ImageLeft, slide.ImageWidth, slide.ImageHeight),
+		)
 		if err != nil {
 			return err
 		}
