@@ -92,7 +92,7 @@
         "x": 660,
         "y": 275
       },
-      "width": 584,
+      "width": 473,
       "height": 303,
       "opacity": 1,
       "strokeDash": 0,
@@ -112,7 +112,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "",
+      "label": "Teleport",
       "fontSize": 28,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -120,8 +120,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
+      "labelWidth": 101,
+      "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
@@ -130,7 +130,7 @@
       "id": "jita",
       "type": "rectangle",
       "pos": {
-        "x": 2026,
+        "x": 1915,
         "y": 12
       },
       "width": 820,
@@ -171,7 +171,7 @@
       "id": "infra",
       "type": "rectangle",
       "pos": {
-        "x": 1374,
+        "x": 1263,
         "y": 150
       },
       "width": 582,
@@ -212,7 +212,7 @@
       "id": "identity provider",
       "type": "rectangle",
       "pos": {
-        "x": 1374,
+        "x": 1263,
         "y": 514
       },
       "width": 201,
@@ -573,54 +573,13 @@
       "level": 2
     },
     {
-      "id": "teleport.t",
+      "id": "teleport.inp",
       "type": "text",
       "pos": {
         "x": 720,
         "y": 335
       },
-      "width": 122,
-      "height": 51,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "transparent",
-      "stroke": "N1",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "# Teleport",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "markdown",
-      "color": "N1",
-      "italic": false,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 122,
-      "labelHeight": 51,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 2
-    },
-    {
-      "id": "teleport.inp",
-      "type": "text",
-      "pos": {
-        "x": 882,
-        "y": 335
-      },
-      "width": 302,
+      "width": 353,
       "height": 51,
       "opacity": 1,
       "strokeDash": 0,
@@ -661,7 +620,7 @@
         "x": 720,
         "y": 426
       },
-      "width": 212,
+      "width": 140,
       "height": 92,
       "opacity": 1,
       "strokeDash": 0,
@@ -711,10 +670,10 @@
       "id": "teleport.Cert Authority",
       "type": "rectangle",
       "pos": {
-        "x": 972,
+        "x": 900,
         "y": 426
       },
-      "width": 212,
+      "width": 173,
       "height": 92,
       "opacity": 1,
       "strokeDash": 0,
@@ -764,7 +723,7 @@
       "id": "jita.Slack",
       "type": "rectangle",
       "pos": {
-        "x": 2086,
+        "x": 1975,
         "y": 72
       },
       "width": 110,
@@ -817,7 +776,7 @@
       "id": "jita.Mattermost",
       "type": "rectangle",
       "pos": {
-        "x": 2236,
+        "x": 2125,
         "y": 72
       },
       "width": 128,
@@ -858,7 +817,7 @@
       "id": "jita.Jira",
       "type": "rectangle",
       "pos": {
-        "x": 2404,
+        "x": 2293,
         "y": 72
       },
       "width": 72,
@@ -899,7 +858,7 @@
       "id": "jita.Pagerduty",
       "type": "rectangle",
       "pos": {
-        "x": 2516,
+        "x": 2405,
         "y": 72
       },
       "width": 119,
@@ -940,7 +899,7 @@
       "id": "jita.Email",
       "type": "rectangle",
       "pos": {
-        "x": 2675,
+        "x": 2564,
         "y": 72
       },
       "width": 111,
@@ -993,7 +952,7 @@
       "id": "infra.ssh",
       "type": "rectangle",
       "pos": {
-        "x": 1434,
+        "x": 1323,
         "y": 210
       },
       "width": 108,
@@ -1046,7 +1005,7 @@
       "id": "infra.Kubernetes",
       "type": "rectangle",
       "pos": {
-        "x": 1582,
+        "x": 1471,
         "y": 210
       },
       "width": 152,
@@ -1099,7 +1058,7 @@
       "id": "infra.My SQL",
       "type": "rectangle",
       "pos": {
-        "x": 1774,
+        "x": 1663,
         "y": 210
       },
       "width": 122,
@@ -1152,7 +1111,7 @@
       "id": "infra.MongoDB",
       "type": "rectangle",
       "pos": {
-        "x": 1434,
+        "x": 1323,
         "y": 342
       },
       "width": 138,
@@ -1205,7 +1164,7 @@
       "id": "infra.PSQL",
       "type": "rectangle",
       "pos": {
-        "x": 1612,
+        "x": 1501,
         "y": 342
       },
       "width": 108,
@@ -1258,7 +1217,7 @@
       "id": "infra.Windows",
       "type": "rectangle",
       "pos": {
-        "x": 1760,
+        "x": 1649,
         "y": 342
       },
       "width": 136,
@@ -1416,19 +1375,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1244,
+          "x": 1133,
           "y": 336.1333333333333
         },
         {
-          "x": 1284,
+          "x": 1173,
           "y": 336.1333333333333
         },
         {
-          "x": 1284,
+          "x": 1173,
           "y": 118
         },
         {
-          "x": 2026,
+          "x": 1915,
           "y": 118
         }
       ],
@@ -1464,11 +1423,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1244,
+          "x": 1133,
           "y": 396.7333333333333
         },
         {
-          "x": 1374,
+          "x": 1263,
           "y": 396.7333333333333
         }
       ],
@@ -1504,19 +1463,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1244,
+          "x": 1133,
           "y": 457.3333333333333
         },
         {
-          "x": 1334,
+          "x": 1223,
           "y": 457.3333333333333
         },
         {
-          "x": 1334,
+          "x": 1223,
           "y": 553.3333333333333
         },
         {
-          "x": 1374,
+          "x": 1263,
           "y": 553.3333333333333
         }
       ],
@@ -1552,19 +1511,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1244,
+          "x": 1133,
           "y": 517.9333333333333
         },
         {
-          "x": 1284,
+          "x": 1173,
           "y": 517.9333333333333
         },
         {
-          "x": 1284,
+          "x": 1173,
           "y": 592.6666666666666
         },
         {
-          "x": 1374,
+          "x": 1263,
           "y": 592.6666666666666
         }
       ],

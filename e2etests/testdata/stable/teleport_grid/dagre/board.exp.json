@@ -92,7 +92,7 @@
         "x": 1050,
         "y": 283
       },
-      "width": 584,
+      "width": 473,
       "height": 303,
       "opacity": 1,
       "strokeDash": 0,
@@ -112,7 +112,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "",
+      "label": "Teleport",
       "fontSize": 28,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -120,8 +120,8 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 0,
-      "labelHeight": 0,
+      "labelWidth": 101,
+      "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
@@ -130,7 +130,7 @@
       "id": "jita",
       "type": "rectangle",
       "pos": {
-        "x": 2136,
+        "x": 2025,
         "y": 0
       },
       "width": 820,
@@ -171,7 +171,7 @@
       "id": "infra",
       "type": "rectangle",
       "pos": {
-        "x": 2255,
+        "x": 2144,
         "y": 232
       },
       "width": 582,
@@ -212,7 +212,7 @@
       "id": "identity provider",
       "type": "rectangle",
       "pos": {
-        "x": 2446,
+        "x": 2335,
         "y": 596
       },
       "width": 201,
@@ -573,54 +573,13 @@
       "level": 2
     },
     {
-      "id": "teleport.t",
+      "id": "teleport.inp",
       "type": "text",
       "pos": {
         "x": 1110,
         "y": 343
       },
-      "width": 122,
-      "height": 51,
-      "opacity": 1,
-      "strokeDash": 0,
-      "strokeWidth": 2,
-      "borderRadius": 0,
-      "fill": "transparent",
-      "stroke": "N1",
-      "shadow": false,
-      "3d": false,
-      "multiple": false,
-      "double-border": false,
-      "tooltip": "",
-      "link": "",
-      "icon": null,
-      "iconPosition": "",
-      "blend": false,
-      "fields": null,
-      "methods": null,
-      "columns": null,
-      "label": "# Teleport",
-      "fontSize": 16,
-      "fontFamily": "DEFAULT",
-      "language": "markdown",
-      "color": "N1",
-      "italic": false,
-      "bold": false,
-      "underline": false,
-      "labelWidth": 122,
-      "labelHeight": 51,
-      "labelPosition": "INSIDE_MIDDLE_CENTER",
-      "zIndex": 0,
-      "level": 2
-    },
-    {
-      "id": "teleport.inp",
-      "type": "text",
-      "pos": {
-        "x": 1272,
-        "y": 343
-      },
-      "width": 302,
+      "width": 353,
       "height": 51,
       "opacity": 1,
       "strokeDash": 0,
@@ -661,7 +620,7 @@
         "x": 1110,
         "y": 434
       },
-      "width": 212,
+      "width": 140,
       "height": 92,
       "opacity": 1,
       "strokeDash": 0,
@@ -711,10 +670,10 @@
       "id": "teleport.Cert Authority",
       "type": "rectangle",
       "pos": {
-        "x": 1362,
+        "x": 1290,
         "y": 434
       },
-      "width": 212,
+      "width": 173,
       "height": 92,
       "opacity": 1,
       "strokeDash": 0,
@@ -764,7 +723,7 @@
       "id": "jita.Slack",
       "type": "rectangle",
       "pos": {
-        "x": 2196,
+        "x": 2085,
         "y": 60
       },
       "width": 110,
@@ -817,7 +776,7 @@
       "id": "jita.Mattermost",
       "type": "rectangle",
       "pos": {
-        "x": 2346,
+        "x": 2235,
         "y": 60
       },
       "width": 128,
@@ -858,7 +817,7 @@
       "id": "jita.Jira",
       "type": "rectangle",
       "pos": {
-        "x": 2514,
+        "x": 2403,
         "y": 60
       },
       "width": 72,
@@ -899,7 +858,7 @@
       "id": "jita.Pagerduty",
       "type": "rectangle",
       "pos": {
-        "x": 2626,
+        "x": 2515,
         "y": 60
       },
       "width": 119,
@@ -940,7 +899,7 @@
       "id": "jita.Email",
       "type": "rectangle",
       "pos": {
-        "x": 2785,
+        "x": 2674,
         "y": 60
       },
       "width": 111,
@@ -993,7 +952,7 @@
       "id": "infra.ssh",
       "type": "rectangle",
       "pos": {
-        "x": 2315,
+        "x": 2204,
         "y": 292
       },
       "width": 108,
@@ -1046,7 +1005,7 @@
       "id": "infra.Kubernetes",
       "type": "rectangle",
       "pos": {
-        "x": 2463,
+        "x": 2352,
         "y": 292
       },
       "width": 152,
@@ -1099,7 +1058,7 @@
       "id": "infra.My SQL",
       "type": "rectangle",
       "pos": {
-        "x": 2655,
+        "x": 2544,
         "y": 292
       },
       "width": 122,
@@ -1152,7 +1111,7 @@
       "id": "infra.MongoDB",
       "type": "rectangle",
       "pos": {
-        "x": 2315,
+        "x": 2204,
         "y": 424
       },
       "width": 138,
@@ -1205,7 +1164,7 @@
       "id": "infra.PSQL",
       "type": "rectangle",
       "pos": {
-        "x": 2493,
+        "x": 2382,
         "y": 424
       },
       "width": 108,
@@ -1258,7 +1217,7 @@
       "id": "infra.Windows",
       "type": "rectangle",
       "pos": {
-        "x": 2641,
+        "x": 2530,
         "y": 424
       },
       "width": 136,
@@ -1434,19 +1393,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1592.4246575342465,
+          "x": 1511.3287671232877,
           "y": 283
         },
         {
-          "x": 1826.4849315068493,
+          "x": 1721.4657534246576,
           "y": 141.4
         },
         {
-          "x": 1935.2,
+          "x": 1824.2,
           "y": 106
         },
         {
-          "x": 2136,
+          "x": 2025,
           "y": 106
         }
       ],
@@ -1483,19 +1442,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1634,
-          "y": 418.0985267034991
+          "x": 1523,
+          "y": 419.70358974358976
         },
         {
-          "x": 1834.8,
-          "y": 406.81970534069984
+          "x": 1723.8,
+          "y": 407.14071794871796
         },
         {
-          "x": 1959,
+          "x": 1848,
           "y": 404
         },
         {
-          "x": 2255,
+          "x": 2144,
           "y": 404
         }
       ],
@@ -1532,19 +1491,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1634,
-          "y": 501.98802946593
+          "x": 1523,
+          "y": 495.38358974358977
         },
         {
-          "x": 1834.8,
-          "y": 548.397605893186
+          "x": 1723.8,
+          "y": 547.0767179487179
         },
         {
-          "x": 1997.1,
+          "x": 1886.1,
           "y": 576.1111951588503
         },
         {
-          "x": 2445.5,
+          "x": 2334.5,
           "y": 640.5559757942511
         }
       ],
@@ -1581,19 +1540,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1634,
-          "y": 569.47605893186
+          "x": 1523,
+          "y": 556.2671794871795
         },
         {
-          "x": 1834.8,
-          "y": 662.295211786372
+          "x": 1723.8,
+          "y": 659.6534358974359
         },
         {
-          "x": 1997.1,
+          "x": 1886.1,
           "y": 680.3274583963691
         },
         {
-          "x": 2445.5,
+          "x": 2334.5,
           "y": 659.6372919818457
         }
       ],
