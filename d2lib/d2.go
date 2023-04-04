@@ -72,12 +72,10 @@ func compile(ctx context.Context, g *d2graph.Graph, opts *CompileOptions) (*d2ta
 
 		// run core layout for constantNears
 		for _, tempGraph := range constantNearGraphs {
-			nearObject := tempGraph.Root.ChildrenArray[0]
-			nearObject.Parent = tempGraph.Root
 			if err = coreLayout(ctx, tempGraph); err != nil {
 				return nil, err
 			}
-			nearObject.Parent = g.Root
+			tempGraph.Root.ChildrenArray[0].Parent = g.Root
 			for _, obj := range tempGraph.Objects {
 				obj.Graph = g
 			}

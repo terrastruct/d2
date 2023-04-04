@@ -27,12 +27,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs []*d2graph
 		for _, tempGraph := range constantNearGraphs {
 			obj := tempGraph.Root.ChildrenArray[0]
 			if processCenters == strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "-center") {
-				preX, preY := obj.TopLeft.X, obj.TopLeft.Y
+				prevX, prevY := obj.TopLeft.X, obj.TopLeft.Y
 				obj.TopLeft = geo.NewPoint(place(obj))
-				dx, dy := obj.TopLeft.X-preX, obj.TopLeft.Y-preY
+				dx, dy := obj.TopLeft.X-prevX, obj.TopLeft.Y-prevY
 
-				subObjects, subEdges := tempGraph.Objects, tempGraph.Edges
-				for _, subObject := range subObjects {
+				for _, subObject := range tempGraph.Objects {
 					// `obj` already been replaced above by `place(obj)`
 					if subObject == obj {
 						continue
@@ -40,14 +39,14 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs []*d2graph
 					subObject.TopLeft.X += dx
 					subObject.TopLeft.Y += dy
 				}
-				for _, subEdge := range subEdges {
+				for _, subEdge := range tempGraph.Edges {
 					for _, point := range subEdge.Route {
 						point.X += dx
 						point.Y += dy
 					}
 				}
 
-				g.Edges = append(g.Edges, subEdges...)
+				g.Edges = append(g.Edges, tempGraph.Edges...)
 			}
 		}
 		for _, tempGraph := range constantNearGraphs {
@@ -66,11 +65,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs []*d2graph
 }
 
 func attachChildren(g *d2graph.Graph, obj *d2graph.Object) {
-	if obj.ChildrenArray != nil && len(obj.ChildrenArray) != 0 {
-		for _, child := range obj.ChildrenArray {
-			g.Objects = append(g.Objects, child)
-			attachChildren(g, child)
-		}
+	for _, child := range obj.ChildrenArray {
+		g.Objects = append(g.Objects, child)
+		attachChildren(g, child)
 	}
 }
 
@@ -150,7 +147,7 @@ func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (constantNearGr
 		}
 		_, isConst := d2graph.NearConstants[d2graph.Key(obj.Attributes.NearKey)[0]]
 		if isConst {
-			descendantObjects, edges := pluckOutNearObjectAndEdges(g, obj)
+			descendantObjects, edges := pluckObjAndEdges(g, obj)
 
 			tempGraph := d2graph.NewGraph()
 			tempGraph.Root.ChildrenArray = []*d2graph.Object{obj}
@@ -172,12 +169,14 @@ func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (constantNearGr
 					break
 				}
 			}
+
+			obj.Parent = tempGraph.Root
 		}
 	}
 	return constantNearGraphs
 }
 
-func pluckOutNearObjectAndEdges(g *d2graph.Graph, obj *d2graph.Object) (descendantsObjects []*d2graph.Object, edges []*d2graph.Edge) {
+func pluckObjAndEdges(g *d2graph.Graph, obj *d2graph.Object) (descendantsObjects []*d2graph.Object, edges []*d2graph.Edge) {
 	for i := 0; i < len(g.Edges); i++ {
 		edge := g.Edges[i]
 		if edge.Src == obj || edge.Dst == obj {
@@ -193,7 +192,7 @@ func pluckOutNearObjectAndEdges(g *d2graph.Graph, obj *d2graph.Object) (descenda
 			descendantsObjects = append(descendantsObjects, obj)
 			g.Objects = append(g.Objects[:i], g.Objects[i+1:]...)
 			for _, child := range obj.ChildrenArray {
-				subObjects, subEdges := pluckOutNearObjectAndEdges(g, child)
+				subObjects, subEdges := pluckObjAndEdges(g, child)
 				descendantsObjects = append(descendantsObjects, subObjects...)
 				edges = append(edges, subEdges...)
 			}
