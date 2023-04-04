@@ -11,6 +11,10 @@ import (
 
 // TODO: comments / references / assumptions
 // TODO: update core files with metadata
+// TODO: first slide title
+// TODO: steps number title
+// TODO: links?
+// TODO: appendix?
 
 type Presentation struct {
 	Slides []*Slide
@@ -94,7 +98,6 @@ func (p *Presentation) SaveTo(filePath string) error {
 			return err
 		}
 
-		// TODO: center the image?
 		err = addFile(
 			zipFile,
 			fmt.Sprintf("ppt/slides/%s.xml", slideFileName),
