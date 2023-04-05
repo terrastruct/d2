@@ -763,10 +763,10 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 
 		var isSrcNearConst, isDstNearConst bool
 
-		if srcNearContainer != nil {
+		if srcNearContainer != nil && srcNearContainer != edge.Src {
 			_, isSrcNearConst = d2graph.NearConstants[d2graph.Key(srcNearContainer.Attributes.NearKey)[0]]
 		}
-		if dstNearContainer != nil {
+		if dstNearContainer != nil && dstNearContainer != edge.Dst {
 			_, isDstNearConst = d2graph.NearConstants[d2graph.Key(dstNearContainer.Attributes.NearKey)[0]]
 		}
 
