@@ -246,72 +246,16 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 		totalWidth += n.Width
 		totalHeight += n.Height
 	}
-	totalWidth += HORIZONTAL_PAD * float64(len(gd.nodes)-1)
-	totalHeight += VERTICAL_PAD * float64(len(gd.nodes)-1)
+	totalWidth += HORIZONTAL_PAD * float64(len(gd.nodes)-gd.rows)
+	totalHeight += VERTICAL_PAD * float64(len(gd.nodes)-gd.columns)
 
-	layout := [][]int{{}}
+	var layout [][]*d2graph.Object
 	if gd.rowDominant {
 		targetWidth := totalWidth / float64(gd.rows)
-		rowWidth := 0.
-		rowIndex := 0
-		addRow := func() {
-			layout = append(layout, []int{})
-			rowIndex++
-			rowWidth = 0
-		}
-		addNode := func(i int, n *d2graph.Object) {
-			layout[rowIndex] = append(layout[rowIndex], i)
-			rowWidth += n.Width + HORIZONTAL_PAD
-		}
-
-		for i, n := range gd.nodes {
-			// if the next node will be past the target, start a new row
-			if rowWidth+n.Width+HORIZONTAL_PAD > targetWidth {
-				// if the node is mostly past the target, put it on the next row
-				if rowWidth+n.Width/2 > targetWidth {
-					addRow()
-					addNode(i, n)
-				} else {
-					addNode(i, n)
-					if i < len(gd.nodes)-1 {
-						addRow()
-					}
-				}
-			} else {
-				addNode(i, n)
-			}
-		}
+		layout = gd.getBestLayout(targetWidth, false)
 	} else {
 		targetHeight := totalHeight / float64(gd.columns)
-		colHeight := 0.
-		colIndex := 0
-		addCol := func() {
-			layout = append(layout, []int{})
-			colIndex++
-			colHeight = 0
-		}
-		addNode := func(i int, n *d2graph.Object) {
-			layout[colIndex] = append(layout[colIndex], i)
-			colHeight += n.Height + VERTICAL_PAD
-		}
-
-		for i, n := range gd.nodes {
-			// if the next node will be past the target, start a new row
-			if colHeight+n.Height+VERTICAL_PAD > targetHeight {
-				// if the node is mostly past the target, put it on the next row
-				if colHeight+n.Height/2 > targetHeight {
-					addCol()
-					addNode(i, n)
-				} else {
-					addNode(i, n)
-					if i < len(gd.nodes)-1 {
-						addCol()
-					}
-				}
-			} else {
-				addNode(i, n)
-			}
-		}
+		layout = gd.getBestLayout(targetHeight, true)
 	}
 
 	cursor := geo.NewPoint(0, 0)
@@ -332,8 +276,7 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 		rowWidths := []float64{}
 		for _, row := range layout {
 			rowHeight := 0.
-			for _, nodeIndex := range row {
-				n := gd.nodes[nodeIndex]
+			for _, n := range row {
 				n.TopLeft = cursor.Copy()
 				cursor.X += n.Width + HORIZONTAL_PAD
 				rowHeight = math.Max(rowHeight, n.Height)
@@ -343,8 +286,7 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			maxX = math.Max(maxX, rowWidth)
 
 			// set all nodes in row to the same height
-			for _, nodeIndex := range row {
-				n := gd.nodes[nodeIndex]
+			for _, n := range row {
 				n.Height = rowHeight
 			}
 
@@ -374,8 +316,7 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			delta := maxX - rowWidth
 			nodes := []*d2graph.Object{}
 			var widest float64
-			for _, nodeIndex := range row {
-				n := gd.nodes[nodeIndex]
+			for _, n := range row {
 				widest = math.Max(widest, n.Width)
 				nodes = append(nodes, n)
 			}
@@ -386,8 +327,8 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			for _, n := range nodes {
 				if n.Width < widest {
 					var index int
-					for i, nodeIndex := range row {
-						if n == gd.nodes[nodeIndex] {
+					for i, node := range row {
+						if n == node {
 							index = i
 							break
 						}
@@ -396,7 +337,7 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 					n.Width += grow
 					// shift following nodes
 					for i := index + 1; i < len(row); i++ {
-						gd.nodes[row[i]].TopLeft.X += grow
+						row[i].TopLeft.X += grow
 					}
 					delta -= grow
 					if delta <= 0 {
@@ -407,7 +348,7 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			if delta > 0 {
 				grow := delta / float64(len(row))
 				for i := len(row) - 1; i >= 0; i-- {
-					n := gd.nodes[row[i]]
+					n := row[i]
 					n.TopLeft.X += grow * float64(i)
 					n.Width += grow
 					delta -= grow
@@ -429,8 +370,7 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 		colHeights := []float64{}
 		for _, column := range layout {
 			colWidth := 0.
-			for _, nodeIndex := range column {
-				n := gd.nodes[nodeIndex]
+			for _, n := range column {
 				n.TopLeft = cursor.Copy()
 				cursor.Y += n.Height + VERTICAL_PAD
 				colWidth = math.Max(colWidth, n.Width)
@@ -439,8 +379,7 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			colHeights = append(colHeights, colHeight)
 			maxY = math.Max(maxY, colHeight)
 			// set all nodes in column to the same width
-			for _, nodeIndex := range column {
-				n := gd.nodes[nodeIndex]
+			for _, n := range column {
 				n.Width = colWidth
 			}
 
@@ -468,8 +407,7 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			delta := maxY - colHeight
 			nodes := []*d2graph.Object{}
 			var tallest float64
-			for _, nodeIndex := range column {
-				n := gd.nodes[nodeIndex]
+			for _, n := range column {
 				tallest = math.Max(tallest, n.Height)
 				nodes = append(nodes, n)
 			}
@@ -480,8 +418,8 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			for _, n := range nodes {
 				if n.Height < tallest {
 					var index int
-					for i, nodeIndex := range column {
-						if n == gd.nodes[nodeIndex] {
+					for i, node := range column {
+						if n == node {
 							index = i
 							break
 						}
@@ -490,7 +428,7 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 					n.Height += grow
 					// shift following nodes
 					for i := index + 1; i < len(column); i++ {
-						gd.nodes[column[i]].TopLeft.Y += grow
+						column[i].TopLeft.Y += grow
 					}
 					delta -= grow
 					if delta <= 0 {
@@ -501,7 +439,7 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			if delta > 0 {
 				grow := delta / float64(len(column))
 				for i := len(column) - 1; i >= 0; i-- {
-					n := gd.nodes[column[i]]
+					n := column[i]
 					n.TopLeft.Y += grow * float64(i)
 					n.Height += grow
 					delta -= grow
@@ -511,6 +449,98 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 	}
 	gd.width = maxX
 	gd.height = maxY
+}
+
+// generate the best layout of nodes aiming for each row to be the targetSize width
+// if columns is true, each column aims to have the targetSize height
+func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2graph.Object {
+	var nCuts int
+	if columns {
+		nCuts = gd.columns - 1
+	} else {
+		nCuts = gd.rows - 1
+	}
+	if nCuts == 0 {
+		return genLayout(gd.nodes, nil)
+	}
+
+	// get all options for where to place these cuts, preferring later cuts over earlier cuts
+	// with 5 nodes and 2 cuts we have these options:
+	// .       A   B   C │ D │ E     <- these cuts would produce: ┌A─┐ ┌B─┐ ┌C─┐
+	// .       A   B │ C   D │ E                                  └──┘ └──┘ └──┘
+	// .       A │ B   C   D │ E                                  ┌D───────────┐
+	// .       A   B │ C │ D   E                                  └────────────┘
+	// .       A │ B   C │ D   E                                  ┌E───────────┐
+	// .       A │ B │ C   D   E                                  └────────────┘
+	divisions := genDivisions(gd.nodes, nCuts)
+
+	var bestLayout [][]*d2graph.Object
+	bestDist := math.MaxFloat64
+	// of these divisions, find the layout with rows closest to the targetSize
+	for _, division := range divisions {
+		layout := genLayout(gd.nodes, division)
+		dist := getDistToTarget(layout, targetSize, columns)
+		if dist < bestDist {
+			bestLayout = layout
+			bestDist = dist
+		}
+	}
+
+	return bestLayout
+}
+
+// get all possible divisions of nodes by the number of cuts
+func genDivisions(nodes []*d2graph.Object, nCuts int) (divisions [][]int) {
+	if len(nodes) < 2 || nCuts == 0 {
+		return nil
+	}
+	// we go in this order to prefer extra nodes in starting rows rather than later ones
+	lastNode := len(nodes) - 1
+	for index := lastNode; index >= nCuts; index-- {
+		if nCuts > 1 {
+			for _, inner := range genDivisions(nodes[:index], nCuts-1) {
+				divisions = append(divisions, append(inner, index-1))
+			}
+		} else {
+			divisions = append(divisions, []int{index - 1})
+		}
+	}
+
+	return divisions
+}
+
+// generate a grid of nodes from the given cut indices
+func genLayout(nodes []*d2graph.Object, cutIndices []int) [][]*d2graph.Object {
+	layout := make([][]*d2graph.Object, len(cutIndices)+1)
+	nodeIndex := 0
+	for i := 0; i <= len(cutIndices); i++ {
+		var stop int
+		if i < len(cutIndices) {
+			stop = cutIndices[i]
+		} else {
+			stop = len(nodes) - 1
+		}
+		for ; nodeIndex <= stop; nodeIndex++ {
+			layout[i] = append(layout[i], nodes[nodeIndex])
+		}
+	}
+	return layout
+}
+
+func getDistToTarget(layout [][]*d2graph.Object, targetSize float64, columns bool) float64 {
+	totalDelta := 0.
+	for _, row := range layout {
+		rowSize := 0.
+		for _, n := range row {
+			if columns {
+				rowSize += n.Height + VERTICAL_PAD
+			} else {
+				rowSize += n.Width + HORIZONTAL_PAD
+			}
+		}
+		totalDelta += math.Abs(rowSize - targetSize)
+	}
+	return totalDelta
 }
 
 // cleanup restores the graph after the core layout engine finishes
