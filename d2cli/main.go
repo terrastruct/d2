@@ -795,7 +795,7 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *ppt.Presenta
 			return err
 		}
 
-		err = presentation.AddSlide(strings.Join(boardPath, "  /  "), pngImg)
+		err = presentation.AddSlide(pngImg, currBoardPath)
 		if err != nil {
 			return err
 		}

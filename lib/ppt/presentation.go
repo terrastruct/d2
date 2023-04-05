@@ -21,7 +21,7 @@ type Presentation struct {
 }
 
 type Slide struct {
-	Title       string
+	BoardPath   []string
 	Image       []byte
 	ImageWidth  int
 	ImageHeight int
@@ -33,7 +33,7 @@ func NewPresentation() *Presentation {
 	return &Presentation{}
 }
 
-func (p *Presentation) AddSlide(title string, pngContent []byte) error {
+func (p *Presentation) AddSlide(pngContent []byte, boardPath []string) error {
 	src, err := png.Decode(bytes.NewReader(pngContent))
 	if err != nil {
 		return fmt.Errorf("error decoding PNG image: %v", err)
@@ -55,15 +55,18 @@ func (p *Presentation) AddSlide(title string, pngContent []byte) error {
 		left = (IMAGE_WIDTH - width) / 2
 	}
 
-	p.Slides = append(p.Slides, &Slide{
-		Title:       title,
+	slide := &Slide{
+		BoardPath:   make([]string, len(boardPath)),
 		Image:       pngContent,
 		ImageWidth:  width,
 		ImageHeight: height,
 		ImageTop:    top,
 		ImageLeft:   left,
-	})
+	}
+	// it must copy the board path to avoid slice reference issues
+	copy(slide.BoardPath, boardPath)
 
+	p.Slides = append(p.Slides, slide)
 	return nil
 }
 
@@ -101,7 +104,7 @@ func (p *Presentation) SaveTo(filePath string) error {
 		err = addFile(
 			zipFile,
 			fmt.Sprintf("ppt/slides/%s.xml", slideFileName),
-			getSlideXml(slide.Title, imageId, slide.ImageTop, slide.ImageLeft, slide.ImageWidth, slide.ImageHeight),
+			getSlideXml(slide.BoardPath, imageId, slide.ImageTop, slide.ImageLeft, slide.ImageWidth, slide.ImageHeight),
 		)
 		if err != nil {
 			return err
