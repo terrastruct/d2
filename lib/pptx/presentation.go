@@ -1,4 +1,13 @@
-package ppt
+// pptx is a package to create slide presentations in pptx (Microsoft Power Point) format.
+// A `.pptx` file is just a bunch of zip compressed `.xml` files following the Office Open XML (OOXML) format.
+// To see its content, you can just `unzip <path/to/file>.pptx -d <folder>`.
+// With this package, it is possible to create a `Presentation` and add `Slide`s to it.
+// Then, when saving the presentation, it will generate the required `.xml` files, compress them and write to the disk.
+// Note that this isn't a full implementation of the OOXML format, but a wrapper around it.
+// There's a base template with common files to the presentation and then when saving, the package generate only the slides and relationships.
+// The base template and slide templates were generated using https://python-pptx.readthedocs.io/en/latest/
+// For more information about OOXML, check http://officeopenxml.com/index.php
+package pptx
 
 import (
 	"archive/zip"
@@ -8,11 +17,6 @@ import (
 	"image/png"
 	"os"
 )
-
-// TODO: comments / references / assumptions
-// TODO: update core files with metadata
-// TODO: links?
-// TODO: appendix?
 
 type Presentation struct {
 	Title       string

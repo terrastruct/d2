@@ -35,7 +35,7 @@ import (
 	"oss.terrastruct.com/d2/lib/pdf"
 	pdflib "oss.terrastruct.com/d2/lib/pdf"
 	"oss.terrastruct.com/d2/lib/png"
-	"oss.terrastruct.com/d2/lib/ppt"
+	"oss.terrastruct.com/d2/lib/pptx"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 	"oss.terrastruct.com/d2/lib/version"
 
@@ -368,7 +368,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		if user, err := user.Current(); err != nil {
 			username = user.Username
 		}
-		p := ppt.NewPresentation(rootName, rootName, rootName, username, version.Version)
+		p := pptx.NewPresentation(rootName, rootName, rootName, username, version.Version)
 		err := renderPPTX(ctx, ms, p, plugin, renderOpts, outputPath, page, diagram, nil)
 		if err != nil {
 			return nil, false, err
@@ -759,7 +759,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 	return svg, nil
 }
 
-func renderPPTX(ctx context.Context, ms *xmain.State, presentation *ppt.Presentation, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, diagram *d2target.Diagram, boardPath []string) error {
+func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Presentation, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, diagram *d2target.Diagram, boardPath []string) error {
 	var currBoardPath []string
 	// Root board doesn't have a name, so we use the output filename
 	if diagram.Name == "" {
