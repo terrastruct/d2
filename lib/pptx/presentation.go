@@ -53,21 +53,19 @@ func (p *Presentation) AddSlide(pngContent []byte, boardPath []string) error {
 		return fmt.Errorf("error decoding PNG image: %v", err)
 	}
 
-	var width, height, top, left int
+	var width, height int
 	srcSize := src.Bounds().Size()
 
 	// compute the size and position to fit the slide
 	if srcSize.X > srcSize.Y {
 		width = IMAGE_WIDTH
-		height = int(float64(width) * (float64(srcSize.X) / float64(srcSize.Y)))
-		left = 0
-		top = (IMAGE_HEIGHT - height) / 2
+		height = int(float64(width) * (float64(srcSize.Y) / float64(srcSize.X)))
 	} else {
 		height = IMAGE_HEIGHT
 		width = int(float64(height) * (float64(srcSize.X) / float64(srcSize.Y)))
-		top = 0
-		left = (IMAGE_WIDTH - width) / 2
 	}
+	top := (IMAGE_HEIGHT - height) / 2
+	left := (SLIDE_WIDTH - width) / 2
 
 	slide := &Slide{
 		BoardPath:   make([]string, len(boardPath)),
