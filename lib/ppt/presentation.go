@@ -11,12 +11,16 @@ import (
 
 // TODO: comments / references / assumptions
 // TODO: update core files with metadata
-// TODO: first slide title
-// TODO: steps number title
 // TODO: links?
 // TODO: appendix?
 
 type Presentation struct {
+	Title       string
+	Description string
+	Subject     string
+	Creator     string
+	D2Version   string
+
 	Slides []*Slide
 }
 
@@ -29,8 +33,14 @@ type Slide struct {
 	ImageLeft   int
 }
 
-func NewPresentation() *Presentation {
-	return &Presentation{}
+func NewPresentation(title, description, subject, creator, d2Version string) *Presentation {
+	return &Presentation{
+		Title:       title,
+		Description: description,
+		Subject:     subject,
+		Creator:     creator,
+		D2Version:   d2Version,
+	}
 }
 
 func (p *Presentation) AddSlide(pngContent []byte, boardPath []string) error {
@@ -122,6 +132,16 @@ func (p *Presentation) SaveTo(filePath string) error {
 	}
 
 	err = addFile(zipFile, "ppt/presentation.xml", getPresentationXml(slideFileNames))
+	if err != nil {
+		return err
+	}
+
+	err = addFile(zipFile, "docProps/core.xml", getCoreXml(p.Title, p.Subject, p.Description, p.Creator))
+	if err != nil {
+		return err
+	}
+
+	err = addFile(zipFile, "docProps/app.xml", getAppXml(len(p.Slides), p.D2Version))
 	if err != nil {
 		return err
 	}

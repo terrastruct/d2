@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"os/user"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -359,7 +360,15 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(outputPath), dur)
 		return pdf, true, nil
 	case ".pptx":
-		p := ppt.NewPresentation()
+		ext := filepath.Ext(outputPath)
+		trimmedPath := strings.TrimSuffix(outputPath, ext)
+		splitPath := strings.Split(trimmedPath, "/")
+		rootName := splitPath[len(splitPath)-1]
+		var username string
+		if user, err := user.Current(); err != nil {
+			username = user.Username
+		}
+		p := ppt.NewPresentation(rootName, rootName, rootName, username, version.Version)
 		err := renderPPTX(ctx, ms, p, plugin, renderOpts, outputPath, page, diagram, nil)
 		if err != nil {
 			return nil, false, err

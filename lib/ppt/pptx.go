@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"strings"
+	"time"
 )
 
 // Office Open XML (OOXML) http://officeopenxml.com/prPresentation.php
@@ -122,5 +123,72 @@ func getPresentationXml(slideFileNames []string) string {
 		SLIDE_WIDTH,
 		SLIDE_HEIGHT,
 	))
+	return builder.String()
+}
+
+func getCoreXml(title, subject, description, creator string) string {
+	var builder strings.Builder
+
+	builder.WriteString(`<?xml version='1.0' encoding='UTF-8' standalone='yes'?>`)
+	builder.WriteString(`<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">`)
+	builder.WriteString(fmt.Sprintf(`<dc:title>%s</dc:title>`, title))
+	builder.WriteString(fmt.Sprintf(`<dc:subject>%s</dc:subject>`, subject))
+	builder.WriteString(fmt.Sprintf(`<dc:creator>%s</dc:creator>`, creator))
+	builder.WriteString(`<cp:keywords />`)
+	builder.WriteString(fmt.Sprintf(`<dc:description>%s</dc:description>`, description))
+	builder.WriteString(fmt.Sprintf(`<cp:lastModifiedBy>%s</cp:lastModifiedBy>`, creator))
+	builder.WriteString(`<cp:revision>1</cp:revision>`)
+	dateTime := time.Now().Format("RFC3339")
+	builder.WriteString(fmt.Sprintf(`<dcterms:created xsi:type="dcterms:W3CDTF">%s</dcterms:created>`, dateTime))
+	builder.WriteString(fmt.Sprintf(`<dcterms:modified xsi:type="dcterms:W3CDTF">%s</dcterms:modified>`, dateTime))
+	builder.WriteString(`<cp:category />`)
+	builder.WriteString(`</cp:coreProperties>`)
+
+	return builder.String()
+}
+
+func getAppXml(nSlides int, d2version string) string {
+	var builder strings.Builder
+	builder.WriteString(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>`)
+	builder.WriteString(`<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">`)
+	builder.WriteString(`<TotalTime>1</TotalTime>`)
+	builder.WriteString(`<Words>0</Words>`)
+	builder.WriteString(`<Application>D2</Application>`)
+	builder.WriteString(`<PresentationFormat>On-screen Show (4:3)</PresentationFormat>`)
+	builder.WriteString(`<Paragraphs>0</Paragraphs>`)
+	builder.WriteString(fmt.Sprintf(`<Slides>%d</Slides>`, nSlides))
+	builder.WriteString(`<Notes>0</Notes>`)
+	builder.WriteString(`<HiddenSlides>0</HiddenSlides>`)
+	builder.WriteString(`<MMClips>0</MMClips>`)
+	builder.WriteString(`<ScaleCrop>false</ScaleCrop>`)
+	builder.WriteString(`<HeadingPairs>`)
+	builder.WriteString(`<vt:vector size="4" baseType="variant">`)
+	builder.WriteString(`<vt:variant>`)
+	builder.WriteString(`<vt:lpstr>Theme</vt:lpstr>`)
+	builder.WriteString(`</vt:variant>`)
+	builder.WriteString(`<vt:variant>`)
+	builder.WriteString(`<vt:i4>1</vt:i4>`)
+	builder.WriteString(`</vt:variant>`)
+	builder.WriteString(`<vt:variant>`)
+	builder.WriteString(`<vt:lpstr>Slide Titles</vt:lpstr>`)
+	builder.WriteString(`</vt:variant>`)
+	builder.WriteString(`<vt:variant>`)
+	builder.WriteString(`<vt:i4>0</vt:i4>`)
+	builder.WriteString(`</vt:variant>`)
+	builder.WriteString(`</vt:vector>`)
+	builder.WriteString(`</HeadingPairs>`)
+	builder.WriteString(`<TitlesOfParts>`)
+	builder.WriteString(`<vt:vector size="1" baseType="lpstr">`)
+	builder.WriteString(`<vt:lpstr>Office Theme</vt:lpstr>`)
+	builder.WriteString(`</vt:vector>`)
+	builder.WriteString(`</TitlesOfParts>`)
+	builder.WriteString(`<Manager></Manager>`)
+	builder.WriteString(`<Company></Company>`)
+	builder.WriteString(`<LinksUpToDate>false</LinksUpToDate>`)
+	builder.WriteString(`<SharedDoc>false</SharedDoc>`)
+	builder.WriteString(`<HyperlinkBase></HyperlinkBase>`)
+	builder.WriteString(`<HyperlinksChanged>false</HyperlinksChanged>`)
+	builder.WriteString(fmt.Sprintf(`<AppVersion>%s</AppVersion>`, d2version))
+	builder.WriteString(`</Properties>`)
 	return builder.String()
 }
