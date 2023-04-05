@@ -20,6 +20,13 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs []*d2graph
 		return nil
 	}
 
+	for _, tempGraph := range constantNearGraphs {
+		tempGraph.Root.ChildrenArray[0].Parent = g.Root
+		for _, obj := range tempGraph.Objects {
+			obj.Graph = g
+		}
+	}
+
 	// Imagine the graph has two long texts, one at top center and one at top left.
 	// Top left should go left enough to not collide with center.
 	// So place the center ones first, then the later ones will consider them for bounding box
@@ -151,7 +158,7 @@ func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (constantNearGr
 
 			tempGraph := d2graph.NewGraph()
 			tempGraph.Root.ChildrenArray = []*d2graph.Object{obj}
-			tempGraph.Root.Children[obj.ID] = obj
+			tempGraph.Root.Children[strings.ToLower(obj.ID)] = obj
 
 			for _, descendantObj := range descendantObjects {
 				descendantObj.Graph = tempGraph

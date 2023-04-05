@@ -1567,7 +1567,7 @@ d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set
 				}
 				x -> y
 			`,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_connected.d2:3:12: constant near keys cannot be set on connected shapes`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_connected.d2:5:5: cannot connect objects from within a container, that has near constant set, to objects outside that container`,
 		},
 		{
 			name: "near_descendant_connect_to_outside",

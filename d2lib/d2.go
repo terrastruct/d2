@@ -75,10 +75,6 @@ func compile(ctx context.Context, g *d2graph.Graph, opts *CompileOptions) (*d2ta
 			if err = coreLayout(ctx, tempGraph); err != nil {
 				return nil, err
 			}
-			tempGraph.Root.ChildrenArray[0].Parent = g.Root
-			for _, obj := range tempGraph.Objects {
-				obj.Graph = g
-			}
 		}
 
 		err = d2sequence.Layout(ctx, g, coreLayout)
