@@ -1013,6 +1013,10 @@ type EdgeReference struct {
 	ScopeObj        *Object    `json:"-"`
 }
 
+func (e *Edge) GetAstEdge() *d2ast.Edge {
+	return e.References[0].Edge
+}
+
 func (e *Edge) GetStroke(dashGapSize interface{}) string {
 	if dashGapSize != 0.0 {
 		return color.B2

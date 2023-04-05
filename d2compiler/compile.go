@@ -73,6 +73,7 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 		c.validateKeys(g.Root, ir)
 	}
 	c.validateNear(g)
+	c.validateEdges(g)
 
 	c.compileBoardsField(g, ir, "layers")
 	c.compileBoardsField(g, ir, "scenarios")
@@ -783,6 +784,19 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 				c.errorf(obj.Attributes.NearKey, "near key %#v must be the absolute path to a shape or one of the following constants: %s", d2format.Format(obj.Attributes.NearKey), strings.Join(d2graph.NearConstantsArray, ", "))
 				continue
 			}
+		}
+	}
+}
+
+func (c *compiler) validateEdges(g *d2graph.Graph) {
+	for _, edge := range g.Edges {
+		if grid := edge.Src.ClosestGrid(); grid != nil {
+			c.errorf(edge.GetAstEdge(), "edge %#v cannot enter grid %#v", d2format.Format(edge.GetAstEdge()), grid.AbsID())
+			continue
+		}
+		if grid := edge.Dst.ClosestGrid(); grid != nil {
+			c.errorf(edge.GetAstEdge(), "edge %#v cannot enter grid %#v", d2format.Format(edge.GetAstEdge()), grid.AbsID())
+			continue
 		}
 	}
 }

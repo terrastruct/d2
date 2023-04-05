@@ -2288,6 +2288,21 @@ obj {
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/grid_negative.d2:3:11: columns must be a positive integer: "-200"`,
 		},
+		{
+			name: "grid_edge",
+			text: `hey: {
+	rows: 1
+	a -> b
+}
+	c -> hey.b
+	hey.a -> c
+
+	hey -> c: ok
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_edge.d2:3:2: edge "a -> b" cannot enter grid "hey"
+d2/testdata/d2compiler/TestCompile/grid_edge.d2:5:2: edge "c -> hey.b" cannot enter grid "hey"
+d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edge "hey.a -> c" cannot enter grid "hey"`,
+		},
 	}
 
 	for _, tc := range testCases {
