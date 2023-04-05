@@ -5,15 +5,15 @@
     "errs": [
       {
         "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,2:1:17-2:7:23",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:3:2: edge \"a -> b\" cannot enter grid \"hey\""
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:3:2: edge \"a -> b\" cannot enter grid diagram \"hey\""
       },
       {
         "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,4:1:27-4:11:37",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:5:2: edge \"c -> hey.b\" cannot enter grid \"hey\""
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:5:2: edge \"c -> hey.b\" cannot enter grid diagram \"hey\""
       },
       {
         "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,5:1:39-5:11:49",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edge \"hey.a -> c\" cannot enter grid \"hey\""
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edge \"hey.a -> c\" cannot enter grid diagram \"hey\""
       }
     ]
   }

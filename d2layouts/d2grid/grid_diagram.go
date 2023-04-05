@@ -6,7 +6,7 @@ import (
 	"oss.terrastruct.com/d2/d2graph"
 )
 
-type grid struct {
+type gridDiagram struct {
 	root    *d2graph.Object
 	nodes   []*d2graph.Object
 	rows    int
@@ -18,24 +18,24 @@ type grid struct {
 	height float64
 }
 
-func newGrid(root *d2graph.Object) *grid {
-	g := grid{root: root, nodes: root.ChildrenArray}
+func newGridDiagram(root *d2graph.Object) *gridDiagram {
+	gd := gridDiagram{root: root, nodes: root.ChildrenArray}
 	if root.Attributes.Rows != nil {
-		g.rows, _ = strconv.Atoi(root.Attributes.Rows.Value)
+		gd.rows, _ = strconv.Atoi(root.Attributes.Rows.Value)
 	}
 	if root.Attributes.Columns != nil {
-		g.columns, _ = strconv.Atoi(root.Attributes.Columns.Value)
+		gd.columns, _ = strconv.Atoi(root.Attributes.Columns.Value)
 	}
 
 	// compute exact row/column count based on values entered
-	if g.columns == 0 {
-		g.rowDominant = true
-	} else if g.rows == 0 {
-		g.rowDominant = false
+	if gd.columns == 0 {
+		gd.rowDominant = true
+	} else if gd.rows == 0 {
+		gd.rowDominant = false
 	} else {
 		// if keyword rows is first, rows are primary, columns secondary.
 		if root.Attributes.Rows.MapKey.Range.Before(root.Attributes.Columns.MapKey.Range) {
-			g.rowDominant = true
+			gd.rowDominant = true
 		}
 
 		// rows and columns specified, but we want to continue naturally if user enters more nodes
@@ -48,34 +48,34 @@ func newGrid(root *d2graph.Object) *grid {
 		// .           └───────┘ ▲                          │           └───────┘ ▲
 		// .           ▲         └─existing nodes modified  │           ▲         └─existing nodes preserved
 		// .           └─existing rows preserved            │           └─existing rows modified
-		capacity := g.rows * g.columns
-		for capacity < len(g.nodes) {
-			if g.rowDominant {
-				g.rows++
-				capacity += g.columns
+		capacity := gd.rows * gd.columns
+		for capacity < len(gd.nodes) {
+			if gd.rowDominant {
+				gd.rows++
+				capacity += gd.columns
 			} else {
-				g.columns++
-				capacity += g.rows
+				gd.columns++
+				capacity += gd.rows
 			}
 		}
 	}
 
-	return &g
+	return &gd
 }
 
-func (g *grid) shift(dx, dy float64) {
-	for _, obj := range g.nodes {
+func (gd *gridDiagram) shift(dx, dy float64) {
+	for _, obj := range gd.nodes {
 		obj.TopLeft.X += dx
 		obj.TopLeft.Y += dy
 	}
 }
 
-func (g *grid) cleanup(obj *d2graph.Object, graph *d2graph.Graph) {
+func (gd *gridDiagram) cleanup(obj *d2graph.Object, graph *d2graph.Graph) {
 	obj.Children = make(map[string]*d2graph.Object)
 	obj.ChildrenArray = make([]*d2graph.Object, 0)
-	for _, child := range g.nodes {
+	for _, child := range gd.nodes {
 		obj.Children[child.ID] = child
 		obj.ChildrenArray = append(obj.ChildrenArray, child)
 	}
-	graph.Objects = append(graph.Objects, g.nodes...)
+	graph.Objects = append(graph.Objects, gd.nodes...)
 }

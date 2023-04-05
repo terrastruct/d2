@@ -29,25 +29,25 @@ const (
 // 7. Put grid children back in correct location
 func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) d2graph.LayoutGraph {
 	return func(ctx context.Context, g *d2graph.Graph) error {
-		grids, objectOrder, err := withoutGrids(ctx, g)
+		gridDiagrams, objectOrder, err := withoutGridDiagrams(ctx, g)
 		if err != nil {
 			return err
 		}
 
-		if g.Root.IsGrid() && len(g.Root.ChildrenArray) != 0 {
+		if g.Root.IsGridDiagram() && len(g.Root.ChildrenArray) != 0 {
 			g.Root.TopLeft = geo.NewPoint(0, 0)
 		} else if err := layout(ctx, g); err != nil {
 			return err
 		}
 
-		cleanup(g, grids, objectOrder)
+		cleanup(g, gridDiagrams, objectOrder)
 		return nil
 	}
 }
 
-func withoutGrids(ctx context.Context, g *d2graph.Graph) (idToGrid map[string]*grid, objectOrder map[string]int, err error) {
+func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph) (gridDiagrams map[string]*gridDiagram, objectOrder map[string]int, err error) {
 	toRemove := make(map[*d2graph.Object]struct{})
-	grids := make(map[string]*grid)
+	gridDiagrams = make(map[string]*gridDiagram)
 
 	if len(g.Objects) > 0 {
 		queue := make([]*d2graph.Object, 1, len(g.Objects))
@@ -58,12 +58,12 @@ func withoutGrids(ctx context.Context, g *d2graph.Graph) (idToGrid map[string]*g
 			if len(obj.ChildrenArray) == 0 {
 				continue
 			}
-			if !obj.IsGrid() {
+			if !obj.IsGridDiagram() {
 				queue = append(queue, obj.ChildrenArray...)
 				continue
 			}
 
-			grid, err := layoutGrid(g, obj)
+			gd, err := layoutGrid(g, obj)
 			if err != nil {
 				return nil, nil, err
 			}
@@ -71,13 +71,13 @@ func withoutGrids(ctx context.Context, g *d2graph.Graph) (idToGrid map[string]*g
 			obj.ChildrenArray = nil
 
 			var dx, dy float64
-			width := grid.width + 2*CONTAINER_PADDING
+			width := gd.width + 2*CONTAINER_PADDING
 			labelWidth := float64(obj.LabelDimensions.Width) + 2*label.PADDING
 			if labelWidth > width {
 				dx = (labelWidth - width) / 2
 				width = labelWidth
 			}
-			height := grid.height + 2*CONTAINER_PADDING
+			height := gd.height + 2*CONTAINER_PADDING
 			labelHeight := float64(obj.LabelDimensions.Height) + 2*label.PADDING
 			if labelHeight > CONTAINER_PADDING {
 				// if the label doesn't fit within the padding, we need to add more
@@ -87,14 +87,14 @@ func withoutGrids(ctx context.Context, g *d2graph.Graph) (idToGrid map[string]*g
 			}
 			// we need to center children if we have to expand to fit the container label
 			if dx != 0 || dy != 0 {
-				grid.shift(dx, dy)
+				gd.shift(dx, dy)
 			}
 			obj.Box = geo.NewBox(nil, width, height)
 
 			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-			grids[obj.AbsID()] = grid
+			gridDiagrams[obj.AbsID()] = gd
 
-			for _, node := range grid.nodes {
+			for _, node := range gd.nodes {
 				toRemove[node] = struct{}{}
 			}
 		}
@@ -110,20 +110,20 @@ func withoutGrids(ctx context.Context, g *d2graph.Graph) (idToGrid map[string]*g
 	}
 	g.Objects = layoutObjects
 
-	return grids, objectOrder, nil
+	return gridDiagrams, objectOrder, nil
 }
 
-func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*grid, error) {
-	grid := newGrid(obj)
+func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
+	gd := newGridDiagram(obj)
 
-	if grid.rows != 0 && grid.columns != 0 {
-		grid.layoutEvenly(g, obj)
+	if gd.rows != 0 && gd.columns != 0 {
+		gd.layoutEvenly(g, obj)
 	} else {
-		grid.layoutDynamic(g, obj)
+		gd.layoutDynamic(g, obj)
 	}
 
 	// position labels and icons
-	for _, n := range grid.nodes {
+	for _, n := range gd.nodes {
 		if n.Attributes.Icon != nil {
 			n.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 			n.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
@@ -132,32 +132,32 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*grid, error) {
 		}
 	}
 
-	return grid, nil
+	return gd, nil
 }
 
-func (grid *grid) layoutEvenly(g *d2graph.Graph, obj *d2graph.Object) {
+func (gd *gridDiagram) layoutEvenly(g *d2graph.Graph, obj *d2graph.Object) {
 	// layout nodes in a grid with these 2 properties:
 	// all nodes in the same row should have the same height
 	// all nodes in the same column should have the same width
 
 	getNode := func(rowIndex, columnIndex int) *d2graph.Object {
 		var index int
-		if grid.rowDominant {
-			index = rowIndex*grid.columns + columnIndex
+		if gd.rowDominant {
+			index = rowIndex*gd.columns + columnIndex
 		} else {
-			index = columnIndex*grid.rows + rowIndex
+			index = columnIndex*gd.rows + rowIndex
 		}
-		if index < len(grid.nodes) {
-			return grid.nodes[index]
+		if index < len(gd.nodes) {
+			return gd.nodes[index]
 		}
 		return nil
 	}
 
-	rowHeights := make([]float64, 0, grid.rows)
-	colWidths := make([]float64, 0, grid.columns)
-	for i := 0; i < grid.rows; i++ {
+	rowHeights := make([]float64, 0, gd.rows)
+	colWidths := make([]float64, 0, gd.columns)
+	for i := 0; i < gd.rows; i++ {
 		rowHeight := 0.
-		for j := 0; j < grid.columns; j++ {
+		for j := 0; j < gd.columns; j++ {
 			n := getNode(i, j)
 			if n == nil {
 				break
@@ -166,9 +166,9 @@ func (grid *grid) layoutEvenly(g *d2graph.Graph, obj *d2graph.Object) {
 		}
 		rowHeights = append(rowHeights, rowHeight)
 	}
-	for j := 0; j < grid.columns; j++ {
+	for j := 0; j < gd.columns; j++ {
 		columnWidth := 0.
-		for i := 0; i < grid.rows; i++ {
+		for i := 0; i < gd.rows; i++ {
 			n := getNode(i, j)
 			if n == nil {
 				break
@@ -179,9 +179,9 @@ func (grid *grid) layoutEvenly(g *d2graph.Graph, obj *d2graph.Object) {
 	}
 
 	cursor := geo.NewPoint(0, 0)
-	if grid.rowDominant {
-		for i := 0; i < grid.rows; i++ {
-			for j := 0; j < grid.columns; j++ {
+	if gd.rowDominant {
+		for i := 0; i < gd.rows; i++ {
+			for j := 0; j < gd.columns; j++ {
 				n := getNode(i, j)
 				if n == nil {
 					break
@@ -195,8 +195,8 @@ func (grid *grid) layoutEvenly(g *d2graph.Graph, obj *d2graph.Object) {
 			cursor.Y += rowHeights[i] + VERTICAL_PAD
 		}
 	} else {
-		for j := 0; j < grid.columns; j++ {
-			for i := 0; i < grid.rows; i++ {
+		for j := 0; j < gd.columns; j++ {
+			for i := 0; i < gd.rows; i++ {
 				n := getNode(i, j)
 				if n == nil {
 					break
@@ -220,11 +220,11 @@ func (grid *grid) layoutEvenly(g *d2graph.Graph, obj *d2graph.Object) {
 	}
 	totalWidth -= HORIZONTAL_PAD
 	totalHeight -= VERTICAL_PAD
-	grid.width = totalWidth
-	grid.height = totalHeight
+	gd.width = totalWidth
+	gd.height = totalHeight
 }
 
-func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
+func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 	// assume we have the following nodes to layout:
 	// . ┌A──────────────┐  ┌B──┐  ┌C─────────┐  ┌D────────┐  ┌E────────────────┐
 	// . └───────────────┘  │   │  │          │  │         │  │                 │
@@ -242,16 +242,16 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 
 	// we want to split up the total width across the N rows or columns as evenly as possible
 	var totalWidth, totalHeight float64
-	for _, n := range grid.nodes {
+	for _, n := range gd.nodes {
 		totalWidth += n.Width
 		totalHeight += n.Height
 	}
-	totalWidth += HORIZONTAL_PAD * float64(len(grid.nodes)-1)
-	totalHeight += VERTICAL_PAD * float64(len(grid.nodes)-1)
+	totalWidth += HORIZONTAL_PAD * float64(len(gd.nodes)-1)
+	totalHeight += VERTICAL_PAD * float64(len(gd.nodes)-1)
 
 	layout := [][]int{{}}
-	if grid.rowDominant {
-		targetWidth := totalWidth / float64(grid.rows)
+	if gd.rowDominant {
+		targetWidth := totalWidth / float64(gd.rows)
 		rowWidth := 0.
 		rowIndex := 0
 		addRow := func() {
@@ -264,7 +264,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			rowWidth += n.Width + HORIZONTAL_PAD
 		}
 
-		for i, n := range grid.nodes {
+		for i, n := range gd.nodes {
 			// if the next node will be past the target, start a new row
 			if rowWidth+n.Width+HORIZONTAL_PAD > targetWidth {
 				// if the node is mostly past the target, put it on the next row
@@ -273,7 +273,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 					addNode(i, n)
 				} else {
 					addNode(i, n)
-					if i < len(grid.nodes)-1 {
+					if i < len(gd.nodes)-1 {
 						addRow()
 					}
 				}
@@ -282,7 +282,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			}
 		}
 	} else {
-		targetHeight := totalHeight / float64(grid.columns)
+		targetHeight := totalHeight / float64(gd.columns)
 		colHeight := 0.
 		colIndex := 0
 		addCol := func() {
@@ -295,7 +295,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			colHeight += n.Height + VERTICAL_PAD
 		}
 
-		for i, n := range grid.nodes {
+		for i, n := range gd.nodes {
 			// if the next node will be past the target, start a new row
 			if colHeight+n.Height+VERTICAL_PAD > targetHeight {
 				// if the node is mostly past the target, put it on the next row
@@ -304,7 +304,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 					addNode(i, n)
 				} else {
 					addNode(i, n)
-					if i < len(grid.nodes)-1 {
+					if i < len(gd.nodes)-1 {
 						addCol()
 					}
 				}
@@ -316,7 +316,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 
 	cursor := geo.NewPoint(0, 0)
 	var maxY, maxX float64
-	if grid.rowDominant {
+	if gd.rowDominant {
 		// if we have 2 rows, then each row's nodes should have the same height
 		// . ┌A─────────────┐  ┌B──┐  ┌C─────────┐ ┬ maxHeight(A,B,C)
 		// . ├ ─ ─ ─ ─ ─ ─ ─┤  │   │  │          │ │
@@ -333,7 +333,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 		for _, row := range layout {
 			rowHeight := 0.
 			for _, nodeIndex := range row {
-				n := grid.nodes[nodeIndex]
+				n := gd.nodes[nodeIndex]
 				n.TopLeft = cursor.Copy()
 				cursor.X += n.Width + HORIZONTAL_PAD
 				rowHeight = math.Max(rowHeight, n.Height)
@@ -344,7 +344,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 
 			// set all nodes in row to the same height
 			for _, nodeIndex := range row {
-				n := grid.nodes[nodeIndex]
+				n := gd.nodes[nodeIndex]
 				n.Height = rowHeight
 			}
 
@@ -375,7 +375,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			nodes := []*d2graph.Object{}
 			var widest float64
 			for _, nodeIndex := range row {
-				n := grid.nodes[nodeIndex]
+				n := gd.nodes[nodeIndex]
 				widest = math.Max(widest, n.Width)
 				nodes = append(nodes, n)
 			}
@@ -387,7 +387,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 				if n.Width < widest {
 					var index int
 					for i, nodeIndex := range row {
-						if n == grid.nodes[nodeIndex] {
+						if n == gd.nodes[nodeIndex] {
 							index = i
 							break
 						}
@@ -396,7 +396,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 					n.Width += grow
 					// shift following nodes
 					for i := index + 1; i < len(row); i++ {
-						grid.nodes[row[i]].TopLeft.X += grow
+						gd.nodes[row[i]].TopLeft.X += grow
 					}
 					delta -= grow
 					if delta <= 0 {
@@ -407,7 +407,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			if delta > 0 {
 				grow := delta / float64(len(row))
 				for i := len(row) - 1; i >= 0; i-- {
-					n := grid.nodes[row[i]]
+					n := gd.nodes[row[i]]
 					n.TopLeft.X += grow * float64(i)
 					n.Width += grow
 					delta -= grow
@@ -430,7 +430,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 		for _, column := range layout {
 			colWidth := 0.
 			for _, nodeIndex := range column {
-				n := grid.nodes[nodeIndex]
+				n := gd.nodes[nodeIndex]
 				n.TopLeft = cursor.Copy()
 				cursor.Y += n.Height + VERTICAL_PAD
 				colWidth = math.Max(colWidth, n.Width)
@@ -440,7 +440,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			maxY = math.Max(maxY, colHeight)
 			// set all nodes in column to the same width
 			for _, nodeIndex := range column {
-				n := grid.nodes[nodeIndex]
+				n := gd.nodes[nodeIndex]
 				n.Width = colWidth
 			}
 
@@ -469,7 +469,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			nodes := []*d2graph.Object{}
 			var tallest float64
 			for _, nodeIndex := range column {
-				n := grid.nodes[nodeIndex]
+				n := gd.nodes[nodeIndex]
 				tallest = math.Max(tallest, n.Height)
 				nodes = append(nodes, n)
 			}
@@ -481,7 +481,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 				if n.Height < tallest {
 					var index int
 					for i, nodeIndex := range column {
-						if n == grid.nodes[nodeIndex] {
+						if n == gd.nodes[nodeIndex] {
 							index = i
 							break
 						}
@@ -490,7 +490,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 					n.Height += grow
 					// shift following nodes
 					for i := index + 1; i < len(column); i++ {
-						grid.nodes[column[i]].TopLeft.Y += grow
+						gd.nodes[column[i]].TopLeft.Y += grow
 					}
 					delta -= grow
 					if delta <= 0 {
@@ -501,7 +501,7 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			if delta > 0 {
 				grow := delta / float64(len(column))
 				for i := len(column) - 1; i >= 0; i-- {
-					n := grid.nodes[column[i]]
+					n := gd.nodes[column[i]]
 					n.TopLeft.Y += grow * float64(i)
 					n.Height += grow
 					delta -= grow
@@ -509,40 +509,40 @@ func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			}
 		}
 	}
-	grid.width = maxX
-	grid.height = maxY
+	gd.width = maxX
+	gd.height = maxY
 }
 
 // cleanup restores the graph after the core layout engine finishes
 // - translating the grid to its position placed by the core layout engine
 // - restore the children of the grid
 // - sorts objects to their original graph order
-func cleanup(graph *d2graph.Graph, grids map[string]*grid, objectsOrder map[string]int) {
+func cleanup(graph *d2graph.Graph, gridDiagrams map[string]*gridDiagram, objectsOrder map[string]int) {
 	defer func() {
 		sort.SliceStable(graph.Objects, func(i, j int) bool {
 			return objectsOrder[graph.Objects[i].AbsID()] < objectsOrder[graph.Objects[j].AbsID()]
 		})
 	}()
 
-	if graph.Root.IsGrid() {
-		grid, exists := grids[graph.Root.AbsID()]
+	if graph.Root.IsGridDiagram() {
+		gd, exists := gridDiagrams[graph.Root.AbsID()]
 		if exists {
-			grid.cleanup(graph.Root, graph)
+			gd.cleanup(graph.Root, graph)
 			return
 		}
 	}
 
 	for _, obj := range graph.Objects {
-		grid, exists := grids[obj.AbsID()]
+		gd, exists := gridDiagrams[obj.AbsID()]
 		if !exists {
 			continue
 		}
 		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 		// shift the grid from (0, 0)
-		grid.shift(
+		gd.shift(
 			obj.TopLeft.X+CONTAINER_PADDING,
 			obj.TopLeft.Y+CONTAINER_PADDING,
 		)
-		grid.cleanup(obj, graph)
+		gd.cleanup(obj, graph)
 	}
 }

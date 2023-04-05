@@ -2299,9 +2299,9 @@ obj {
 
 	hey -> c: ok
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/grid_edge.d2:3:2: edge "a -> b" cannot enter grid "hey"
-d2/testdata/d2compiler/TestCompile/grid_edge.d2:5:2: edge "c -> hey.b" cannot enter grid "hey"
-d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edge "hey.a -> c" cannot enter grid "hey"`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_edge.d2:3:2: edge "a -> b" cannot enter grid diagram "hey"
+d2/testdata/d2compiler/TestCompile/grid_edge.d2:5:2: edge "c -> hey.b" cannot enter grid diagram "hey"
+d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edge "hey.a -> c" cannot enter grid diagram "hey"`,
 		},
 		{
 			name: "grid_nested",
@@ -2315,8 +2315,8 @@ d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edge "hey.a -> c" cannot en
 	d.invalid descendant
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/grid_nested.d2:2:2: invalid grid "hey". can only set "rows" with no descendants (see "hey.d.invalid descendant")
-d2/testdata/d2compiler/TestCompile/grid_nested.d2:3:2: invalid grid "hey". can only set "columns" with no descendants (see "hey.d.invalid descendant")`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_nested.d2:2:2: invalid grid diagram "hey". can only set "rows" with no descendants (see "hey.d.invalid descendant")
+d2/testdata/d2compiler/TestCompile/grid_nested.d2:3:2: invalid grid diagram "hey". can only set "columns" with no descendants (see "hey.d.invalid descendant")`,
 		},
 	}
 
