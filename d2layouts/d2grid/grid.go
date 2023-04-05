@@ -14,10 +14,8 @@ type grid struct {
 
 	rowDominant bool
 
-	cellWidth  float64
-	cellHeight float64
-	width      float64
-	height     float64
+	width  float64
+	height float64
 }
 
 func newGrid(root *d2graph.Object) *grid {

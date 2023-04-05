@@ -115,6 +115,116 @@ func withoutGrids(ctx context.Context, g *d2graph.Graph) (idToGrid map[string]*g
 
 func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*grid, error) {
 	grid := newGrid(obj)
+
+	if grid.rows != 0 && grid.columns != 0 {
+		grid.layoutEvenly(g, obj)
+	} else {
+		grid.layoutDynamic(g, obj)
+	}
+
+	// position labels and icons
+	for _, n := range grid.nodes {
+		if n.Attributes.Icon != nil {
+			n.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+			n.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+		} else {
+			n.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+		}
+	}
+
+	return grid, nil
+}
+
+func (grid *grid) layoutEvenly(g *d2graph.Graph, obj *d2graph.Object) {
+	// layout nodes in a grid with these 2 properties:
+	// all nodes in the same row should have the same height
+	// all nodes in the same column should have the same width
+
+	getNode := func(rowIndex, columnIndex int) *d2graph.Object {
+		var index int
+		if grid.rowDominant {
+			index = rowIndex*grid.columns + columnIndex
+		} else {
+			index = columnIndex*grid.rows + rowIndex
+		}
+		if index < len(grid.nodes) {
+			return grid.nodes[index]
+		}
+		return nil
+	}
+
+	rowHeights := make([]float64, 0, grid.rows)
+	colWidths := make([]float64, 0, grid.columns)
+	for i := 0; i < grid.rows; i++ {
+		rowHeight := 0.
+		for j := 0; j < grid.columns; j++ {
+			n := getNode(i, j)
+			if n == nil {
+				break
+			}
+			rowHeight = math.Max(rowHeight, n.Height)
+		}
+		rowHeights = append(rowHeights, rowHeight)
+	}
+	for j := 0; j < grid.columns; j++ {
+		columnWidth := 0.
+		for i := 0; i < grid.rows; i++ {
+			n := getNode(i, j)
+			if n == nil {
+				break
+			}
+			columnWidth = math.Max(columnWidth, n.Width)
+		}
+		colWidths = append(colWidths, columnWidth)
+	}
+
+	cursor := geo.NewPoint(0, 0)
+	if grid.rowDominant {
+		for i := 0; i < grid.rows; i++ {
+			for j := 0; j < grid.columns; j++ {
+				n := getNode(i, j)
+				if n == nil {
+					break
+				}
+				n.Width = colWidths[j]
+				n.Height = rowHeights[i]
+				n.TopLeft = cursor.Copy()
+				cursor.X += n.Width + HORIZONTAL_PAD
+			}
+			cursor.X = 0
+			cursor.Y += rowHeights[i] + VERTICAL_PAD
+		}
+	} else {
+		for j := 0; j < grid.columns; j++ {
+			for i := 0; i < grid.rows; i++ {
+				n := getNode(i, j)
+				if n == nil {
+					break
+				}
+				n.Width = colWidths[j]
+				n.Height = rowHeights[i]
+				n.TopLeft = cursor.Copy()
+				cursor.Y += n.Height + VERTICAL_PAD
+			}
+			cursor.X += colWidths[j] + HORIZONTAL_PAD
+			cursor.Y = 0
+		}
+	}
+
+	var totalWidth, totalHeight float64
+	for _, w := range colWidths {
+		totalWidth += w + HORIZONTAL_PAD
+	}
+	for _, h := range rowHeights {
+		totalHeight += h + VERTICAL_PAD
+	}
+	totalWidth -= HORIZONTAL_PAD
+	totalHeight -= VERTICAL_PAD
+	grid.width = totalWidth
+	grid.height = totalHeight
+}
+
+func (grid *grid) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 	// assume we have the following nodes to layout:
 	// . ┌A──────────────┐  ┌B──┐  ┌C─────────┐  ┌D────────┐  ┌E────────────────┐
 	// . └───────────────┘  │   │  │          │  │         │  │                 │
@@ -401,18 +511,6 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*grid, error) {
 	}
 	grid.width = maxX
 	grid.height = maxY
-
-	// position labels and icons
-	for _, n := range grid.nodes {
-		if n.Attributes.Icon != nil {
-			n.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-			n.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
-		} else {
-			n.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
-		}
-	}
-
-	return grid, nil
 }
 
 // cleanup restores the graph after the core layout engine finishes
