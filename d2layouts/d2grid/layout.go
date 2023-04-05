@@ -69,7 +69,28 @@ func withoutGrids(ctx context.Context, g *d2graph.Graph) (idToGrid map[string]*g
 			}
 			obj.Children = make(map[string]*d2graph.Object)
 			obj.ChildrenArray = nil
-			obj.Box = geo.NewBox(nil, grid.width+2*CONTAINER_PADDING, grid.height+2*CONTAINER_PADDING)
+
+			var dx, dy float64
+			width := grid.width + 2*CONTAINER_PADDING
+			labelWidth := float64(obj.LabelDimensions.Width) + 2*label.PADDING
+			if labelWidth > width {
+				dx = (labelWidth - width) / 2
+				width = labelWidth
+			}
+			height := grid.height + 2*CONTAINER_PADDING
+			labelHeight := float64(obj.LabelDimensions.Height) + 2*label.PADDING
+			if labelHeight > CONTAINER_PADDING {
+				// if the label doesn't fit within the padding, we need to add more
+				grow := labelHeight - CONTAINER_PADDING
+				dy = grow / 2
+				height += grow
+			}
+			// we need to center children if we have to expand to fit the container label
+			if dx != 0 || dy != 0 {
+				grid.shift(dx, dy)
+			}
+			obj.Box = geo.NewBox(nil, width, height)
+
 			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 			grids[obj.AbsID()] = grid
 
