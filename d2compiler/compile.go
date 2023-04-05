@@ -705,6 +705,12 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 			if !in && arrowheadIn {
 				c.errorf(f.LastPrimaryKey(), fmt.Sprintf(`invalid shape, can only set "%s" for arrowheads`, obj.Attributes.Shape.Value))
 			}
+		case "rows", "columns":
+			for _, child := range obj.ChildrenArray {
+				if child.IsContainer() {
+					c.errorf(f.LastPrimaryKey(), fmt.Sprintf(`invalid grid %#v. can only set %#v with no descendants (see %#v)`, obj.AbsID(), keyword, child.ChildrenArray[0].AbsID()))
+				}
+			}
 		}
 		return
 	}
