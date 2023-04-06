@@ -2300,6 +2300,29 @@ three-dee: {
 `,
 		},
 		{
+			name: "border-radius-percent",
+			script: `
+x: {
+	style.border-radius: 0.1
+}
+y: {
+	style.border-radius: 0.2
+}
+multiple2: {
+	style.border-radius: 0.25
+	style.multiple: true
+}
+double: {
+	style.border-radius: 0.35
+	style.double-border: true
+}
+three-dee: {
+	style.border-radius: 0.3
+	style.3d: true
+}
+`,
+		},
+		{
 			name: "sequence-inter-span-self",
 			script: `
 shape: sequence_diagram
