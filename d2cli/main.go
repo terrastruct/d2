@@ -421,8 +421,7 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, sketc
 		Center:        center,
 		ThemeID:       themeID,
 		DarkThemeID:   darkThemeID,
-		SetDimensions: toPNG,
-		NoFit:         noFit,
+		SetDimensions: toPNG || noFit,
 	})
 	if err != nil {
 		return nil, err
