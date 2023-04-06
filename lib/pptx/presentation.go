@@ -88,10 +88,12 @@ func (p *Presentation) SaveTo(filePath string) error {
 		return err
 	}
 	defer f.Close()
-	zipFile := zip.NewWriter(f)
-	defer zipFile.Close()
+	zipWriter := zip.NewWriter(f)
+	defer zipWriter.Close()
 
-	copyPptxTemplateTo(zipFile)
+	if err = copyPptxTemplateTo(zipWriter); err != nil {
+		return err
+	}
 
 	var slideFileNames []string
 	for i, slide := range p.Slides {
@@ -99,7 +101,7 @@ func (p *Presentation) SaveTo(filePath string) error {
 		slideFileName := fmt.Sprintf("slide%d", i+1)
 		slideFileNames = append(slideFileNames, slideFileName)
 
-		imageWriter, err := zipFile.Create(fmt.Sprintf("ppt/media/%s.png", imageId))
+		imageWriter, err := zipWriter.Create(fmt.Sprintf("ppt/media/%s.png", imageId))
 		if err != nil {
 			return err
 		}
@@ -108,13 +110,13 @@ func (p *Presentation) SaveTo(filePath string) error {
 			return err
 		}
 
-		err = addFile(zipFile, fmt.Sprintf("ppt/slides/_rels/%s.xml.rels", slideFileName), getRelsSlideXml(imageId))
+		err = addFile(zipWriter, fmt.Sprintf("ppt/slides/_rels/%s.xml.rels", slideFileName), getRelsSlideXml(imageId))
 		if err != nil {
 			return err
 		}
 
 		err = addFile(
-			zipFile,
+			zipWriter,
 			fmt.Sprintf("ppt/slides/%s.xml", slideFileName),
 			getSlideXml(slide.BoardPath, imageId, slide.ImageTop, slide.ImageLeft, slide.ImageWidth, slide.ImageHeight),
 		)
@@ -123,27 +125,27 @@ func (p *Presentation) SaveTo(filePath string) error {
 		}
 	}
 
-	err = addFile(zipFile, "[Content_Types].xml", getContentTypesXml(slideFileNames))
+	err = addFile(zipWriter, "[Content_Types].xml", getContentTypesXml(slideFileNames))
 	if err != nil {
 		return err
 	}
 
-	err = addFile(zipFile, "ppt/_rels/presentation.xml.rels", getPresentationXmlRels(slideFileNames))
+	err = addFile(zipWriter, "ppt/_rels/presentation.xml.rels", getPresentationXmlRels(slideFileNames))
 	if err != nil {
 		return err
 	}
 
-	err = addFile(zipFile, "ppt/presentation.xml", getPresentationXml(slideFileNames))
+	err = addFile(zipWriter, "ppt/presentation.xml", getPresentationXml(slideFileNames))
 	if err != nil {
 		return err
 	}
 
-	err = addFile(zipFile, "docProps/core.xml", getCoreXml(p.Title, p.Subject, p.Description, p.Creator))
+	err = addFile(zipWriter, "docProps/core.xml", getCoreXml(p.Title, p.Subject, p.Description, p.Creator))
 	if err != nil {
 		return err
 	}
 
-	err = addFile(zipFile, "docProps/app.xml", getAppXml(p.Slides, p.D2Version))
+	err = addFile(zipWriter, "docProps/app.xml", getAppXml(p.Slides, p.D2Version))
 	if err != nil {
 		return err
 	}

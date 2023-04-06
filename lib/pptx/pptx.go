@@ -5,7 +5,6 @@ import (
 	"bytes"
 	_ "embed"
 	"fmt"
-	"io"
 	"strings"
 	"time"
 )
@@ -19,21 +18,12 @@ func copyPptxTemplateTo(w *zip.Writer) error {
 	reader := bytes.NewReader(pptx_template)
 	zipReader, err := zip.NewReader(reader, reader.Size())
 	if err != nil {
-		fmt.Printf("%v", err)
+		fmt.Printf("error creating zip reader: %v", err)
 	}
 
 	for _, f := range zipReader.File {
-		fw, err := w.Create(f.Name)
-		if err != nil {
-			return err
-		}
-		fr, err := f.Open()
-		if err != nil {
-			return err
-		}
-		_, err = io.Copy(fw, fr)
-		if err != nil {
-			return err
+		if err := w.Copy(f); err != nil {
+			return fmt.Errorf("error copying %s: %v", f.Name, err)
 		}
 	}
 	return nil
@@ -116,6 +106,7 @@ func getPresentationXml(slideFileNames []string) string {
 
 	builder.WriteString("<p:sldIdLst>")
 	for i, name := range slideFileNames {
+		// in the exported presentation, the first slide ID was 256, so keeping it here for compatibility
 		builder.WriteString(fmt.Sprintf(`<p:sldId id="%d" r:id="%s" />`, 256+i, name))
 	}
 	builder.WriteString("</p:sldIdLst>")
