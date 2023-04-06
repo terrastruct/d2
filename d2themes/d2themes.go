@@ -18,6 +18,8 @@ type SpecialRules struct {
 	OuterContainerDoubleBorder bool `json:"outerContainerDoubleBorder"`
 	ContainerDots              bool `json:"containerDots"`
 	CapsLock                   bool `json:"capsLock"`
+
+	AllPaper bool `json:"allPaper"`
 }
 
 func (t *Theme) IsDark() bool {

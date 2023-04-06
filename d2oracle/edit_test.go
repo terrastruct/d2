@@ -841,6 +841,27 @@ square.style.opacity: 0.2
 `,
 		},
 		{
+			name:  "set_fill_pattern",
+			text:  `square`,
+			key:   `square.style.fill-pattern`,
+			value: go2.Pointer(`grain`),
+			exp: `square: {style.fill-pattern: grain}
+`,
+		},
+		{
+			name: "replace_fill_pattern",
+			text: `square: {
+  style.fill-pattern: lines
+}
+`,
+			key:   `square.style.fill-pattern`,
+			value: go2.Pointer(`grain`),
+			exp: `square: {
+  style.fill-pattern: grain
+}
+`,
+		},
+		{
 			name: "label_unset",
 			text: `square: "Always try to do things in chronological order; it's less confusing that way."
 `,
@@ -1885,6 +1906,33 @@ b: {
 `,
 		},
 		{
+			name: "duplicate_generated",
+
+			text: `x
+x 2
+x 3: {
+  x 3
+  x 4
+}
+x 4
+y
+`,
+			key:    `x 3`,
+			newKey: `y.x 3`,
+
+			exp: `x
+x 2
+
+x 3
+x 5
+
+x 4
+y: {
+  x 3
+}
+`,
+		},
+		{
 			name: "rename_2",
 
 			text: `a: {
@@ -1917,6 +1965,42 @@ z: ""
 
 			exp: `x -> z.y (z)
 z: ""
+`,
+		},
+		{
+			name: "middle_container_generated_conflict",
+
+			text: `a.Square.Text 3 -> a.Square.Text 2
+
+a.Square -> a.Text
+
+a: {
+  Text
+  Square: {
+    Text 2
+    Text 3
+  }
+  Square
+
+  Text 2
+}
+`,
+			key:    `a.Square`,
+			newKey: `Square`,
+
+			exp: `a.Text 3 -> a.Text 4
+
+Square -> a.Text
+
+a: {
+  Text
+
+  Text 4
+  Text 3
+
+  Text 2
+}
+Square
 `,
 		},
 		{
@@ -3353,6 +3437,25 @@ b: {
 }
 `,
 		},
+		{
+			name: "container_conflicts_generated",
+			text: `Square 2: "" {
+  Square: ""
+}
+Square: ""
+Square 3
+`,
+			key:    `Square 2`,
+			newKey: `Square 3.Square 2`,
+
+			exp: `Square 2: ""
+
+Square: ""
+Square 3: {
+  Square 2: ""
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -3423,6 +3526,29 @@ func TestDelete(t *testing.T) {
 			key: `x`,
 
 			exp: `x.y.z -> y.b
+`,
+		},
+		{
+			name: "duplicate_generated",
+
+			text: `x
+x 2
+x 3: {
+  x 3
+  x 4
+}
+x 4
+y
+`,
+			key: `x 3`,
+			exp: `x
+x 2
+
+x 3
+x 5
+
+x 4
+y
 `,
 		},
 		{
@@ -4894,10 +5020,10 @@ Square: {
 
 			exp: `Text 4
 
-Text: {
+Text 2: {
   Text 2
 }
-Text 2
+Text
 `,
 		},
 		{
@@ -4918,6 +5044,7 @@ Text
 Text 2
 `,
 		},
+
 		{
 			name: "drop_value",
 			text: `a.b.c: "c label"
@@ -5259,6 +5386,43 @@ x.a -> x.b
   "x.b": "b"
 }`,
 		},
+		{
+			name: "container_conflicts_generated",
+			text: `Square 2: "" {
+  Square: ""
+}
+Square: ""
+Square 3
+`,
+			key:    `Square 2`,
+			newKey: `Square 3.Square 2`,
+
+			exp: `{
+  "Square 2": "Square 3.Square 2",
+  "Square 2.Square": "Square 2"
+}`,
+		},
+		{
+			name: "duplicate_generated",
+
+			text: `x
+x 2
+x 3: {
+  x 3
+  x 4
+}
+x 4
+y
+`,
+			key:    `x 3`,
+			newKey: `y.x 3`,
+
+			exp: `{
+  "x 3": "y.x 3",
+  "x 3.x 3": "x 3",
+  "x 3.x 4": "x 5"
+}`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -5362,6 +5526,24 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
 
 			exp: `{
   "x.x": "x"
+}`,
+		},
+		{
+			name: "duplicate_generated",
+
+			text: `x
+x 2
+x 3: {
+  x 3
+  x 4
+}
+x 4
+y
+`,
+			key: `x 3`,
+			exp: `{
+  "x 3.x 3": "x 3",
+  "x 3.x 4": "x 5"
 }`,
 		},
 		{
@@ -5523,9 +5705,9 @@ Square: {
 			key: "Square",
 
 			exp: `{
-  "Square.Text": "Text 2",
-  "Square.Text 4": "Text",
-  "Square.Text 4.Text 2": "Text.Text 2"
+  "Square.Text": "Text",
+  "Square.Text 4": "Text 2",
+  "Square.Text 4.Text 2": "Text 2.Text 2"
 }`,
 		},
 		{

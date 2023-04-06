@@ -82,6 +82,14 @@ func testStable(t *testing.T) {
 			`,
 		},
 		{
+			name: "elk_container_height",
+			script: `i can not see the title: {
+  shape: cylinder
+  x
+}
+`,
+		},
+		{
 			name: "elk_shim",
 			script: `network: {
   cell tower: {
@@ -134,6 +142,12 @@ logs: { shape: page; style.multiple: true }
 
 network.data processor -> api server
 			`,
+		},
+		{
+			name: "edge-label-overflow",
+			script: `student -> committee chair: Apply for appeal
+student <- committee chair: Deny. Need more information
+committee chair -> committee: Accept appeal`,
 		},
 		{
 			name: "mono-edge",
@@ -797,6 +811,8 @@ ww -> ff.gg
 - Visits always give pleasure: if not on arrival, then on the departure
 
 *Festivity Level 1*: Your guests are chatting amiably with each other.
+
+test ~~strikethrough~~ test
 |
 
 x -> hey -> y
@@ -955,6 +971,23 @@ Here is an example of AppleScript:
 A code block continues until it reaches a line that is not indented
 (or the end of the article).
 `),
+		},
+		{
+			name: "br",
+			script: `copy: |md
+  # Headline 1
+  ## Headline 2
+  Lorem ipsum dolor
+  <br />
+  ## Headline 3
+  Lorem ipsum dolor
+  <br />
+  <br />
+  ## Headline 3
+  This just disappears
+  <br />
+|
+`,
 		},
 		{
 			name:   "giant_markdown_test",
@@ -2460,6 +2493,7 @@ scenarios: {
   }
 }`,
 		},
+		loadFromFile(t, "arrowhead_scaling"),
 	}
 
 	runa(t, tcs)

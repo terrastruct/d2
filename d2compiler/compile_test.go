@@ -259,7 +259,7 @@ containers: {
   }
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/invalid-fill-pattern.d2:3:19: expected "fill-pattern" to be one of: dots, lines, grain`,
+			expErr: `d2/testdata/d2compiler/TestCompile/invalid-fill-pattern.d2:3:19: expected "fill-pattern" to be one of: dots, lines, grain, paper`,
 		},
 		{
 			name: "shape_unquoted_hex",
@@ -1458,6 +1458,40 @@ x -> y: {
 			},
 		},
 		{
+			name: "url_tooltip",
+			text: `x: {tooltip: https://google.com}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatal(g.Objects)
+				}
+
+				if g.Objects[0].Attributes.Tooltip.Value != "https://google.com" {
+					t.Fatal(g.Objects[0].Attributes.Tooltip.Value)
+				}
+			},
+		},
+		{
+			name:   "no_url_link_and_url_tooltip_concurrently",
+			text:   `x: {link: https://not-google.com; tooltip: https://google.com}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_url_link_and_url_tooltip_concurrently.d2:1:44: Tooltip cannot be set to URL when link is also set (for security)`,
+		},
+		{
+			name: "url_link_and_not_url_tooltip_concurrently",
+			text: `x: {link: https://google.com; tooltip: hello world}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatal(g.Objects)
+				}
+				if g.Objects[0].Attributes.Link.Value != "https://google.com" {
+					t.Fatal(g.Objects[0].Attributes.Link.Value)
+				}
+
+				if g.Objects[0].Attributes.Tooltip.Value != "hello world" {
+					t.Fatal(g.Objects[0].Attributes.Tooltip.Value)
+				}
+			},
+		},
+		{
 			name: "nil_scope_obj_regression",
 
 			text: `a
@@ -2244,6 +2278,19 @@ x: {
   style.border-radius: 1.5
 }`,
 			expErr: `d2/testdata/d2compiler/TestCompile/border-radius-more-than-100-percent.d2:3:24: expected "border-radius" to be an integer if greater than 1`,
+		},
+		{
+			name: "near_near_const",
+			text: `
+title: Title {
+	near: top-center
+}
+
+obj {
+	near: title
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_near_const.d2:7:8: near keys cannot be set to an object with a constant near key`,
 		},
 	}
 

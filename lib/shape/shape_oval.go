@@ -35,7 +35,7 @@ func (s shapeOval) GetInnerBox() *geo.Box {
 }
 
 func (s shapeOval) GetDimensionsToFit(width, height, paddingX, paddingY float64) (float64, float64) {
-	theta := math.Atan2(height, width)
+	theta := float64(float32(math.Atan2(height, width)))
 	// add padding in direction of diagonal so there is padding distance between top left and border
 	paddedWidth := width + paddingX*math.Cos(theta)
 	paddedHeight := height + paddingY*math.Sin(theta)
@@ -59,7 +59,7 @@ func (s shapeOval) GetInsidePlacement(width, height, paddingX, paddingY float64)
 	//        ├───cos*r───┤
 	rx := s.Box.Width / 2
 	ry := s.Box.Height / 2
-	theta := math.Atan2(ry, rx)
+	theta := float64(float32(math.Atan2(ry, rx)))
 	sin := math.Sin(theta)
 	cos := math.Cos(theta)
 	// r is the ellipse radius on the line between node.TopLeft and the ellipse center

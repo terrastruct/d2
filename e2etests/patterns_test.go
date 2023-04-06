@@ -101,6 +101,35 @@ hexagon -> cloud
 `,
 		},
 		{
+			name: "paper",
+			script: `
+rectangle: {shape: "rectangle"; style.fill: "#8F5A3C"; style.fill-pattern: paper}
+square: {shape: "square"; style.fill: "#D0104C"; style.fill-pattern: paper}
+page: {shape: "page"; style.fill-pattern: paper}
+parallelogram: {shape: "parallelogram"; style.fill-pattern: paper}
+document: {shape: "document"; style.fill-pattern: paper}
+cylinder: {shape: "cylinder"; style.fill-pattern: paper}
+queue: {shape: "queue"; style.fill-pattern: paper}
+package: {shape: "package"; style.fill-pattern: paper}
+step: {shape: "step"; style.fill-pattern: paper}
+callout: {shape: "callout"; style.fill-pattern: paper}
+stored_data: {shape: "stored_data"; style.fill-pattern: paper}
+person: {shape: "person"; style.fill-pattern: paper}
+diamond: {shape: "diamond"; style.fill-pattern: paper}
+oval: {shape: "oval"; style.fill-pattern: paper}
+circle: {shape: "circle"; style.fill-pattern: paper}
+hexagon: {shape: "hexagon"; style.fill-pattern: paper}
+cloud: {shape: "cloud"; style.fill-pattern: paper}
+
+rectangle -> square -> page
+parallelogram -> document -> cylinder
+queue -> package -> step
+callout -> stored_data -> person
+diamond -> oval -> circle
+hexagon -> cloud
+`,
+		},
+		{
 			name: "real",
 			script: `
 NETWORK: {

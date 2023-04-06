@@ -1039,10 +1039,14 @@ func (e *Edge) Text() *d2target.MText {
 	if e.Attributes.Style.FontSize != nil {
 		fontSize, _ = strconv.Atoi(e.Attributes.Style.FontSize.Value)
 	}
+	isBold := false
+	if e.Attributes.Style.Bold != nil {
+		isBold, _ = strconv.ParseBool(e.Attributes.Style.Bold.Value)
+	}
 	return &d2target.MText{
 		Text:     e.Attributes.Label.Value,
 		FontSize: fontSize,
-		IsBold:   false,
+		IsBold:   isBold,
 		IsItalic: true,
 
 		Dimensions: e.LabelDimensions,
@@ -1307,8 +1311,10 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			continue
 		}
 
-		if g.Theme != nil && g.Theme.SpecialRules.CapsLock {
-			obj.Attributes.Label.Value = strings.ToUpper(obj.Attributes.Label.Value)
+		if g.Theme != nil && g.Theme.SpecialRules.CapsLock && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeCode) {
+			if obj.Attributes.Language != "latex" {
+				obj.Attributes.Label.Value = strings.ToUpper(obj.Attributes.Label.Value)
+			}
 		}
 
 		labelDims, err := obj.GetLabelSize(mtexts, ruler, fontFamily)
@@ -1457,8 +1463,10 @@ func (g *Graph) Texts() []*d2target.MText {
 	for _, obj := range g.Objects {
 		if obj.Attributes.Label.Value != "" {
 			text := obj.Text()
-			if capsLock {
-				text.Text = strings.ToUpper(text.Text)
+			if capsLock && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeCode) {
+				if obj.Attributes.Language != "latex" {
+					text.Text = strings.ToUpper(text.Text)
+				}
 			}
 			texts = appendTextDedup(texts, text)
 		}
@@ -1593,6 +1601,7 @@ var FillPatterns = []string{
 	"dots",
 	"lines",
 	"grain",
+	"paper",
 }
 
 // BoardKeywords contains the keywords that create new boards.

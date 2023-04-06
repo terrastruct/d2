@@ -363,6 +363,13 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Constraint.Value = scalar.ScalarString()
 		attrs.Constraint.MapKey = f.LastPrimaryKey()
 	}
+
+	if attrs.Link != nil && attrs.Tooltip != nil {
+		_, err := url.ParseRequestURI(attrs.Tooltip.Value)
+		if err == nil {
+			c.errorf(scalar, "Tooltip cannot be set to URL when link is also set (for security)")
+		}
+	}
 }
 
 func (c *compiler) compileStyle(attrs *d2graph.Attributes, m *d2ir.Map) {
@@ -718,6 +725,13 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 				if nearObj.OuterSequenceDiagram() != nil {
 					c.errorf(obj.Attributes.NearKey, "near keys cannot be set to an object within sequence diagrams")
 					continue
+				}
+				if nearObj.Attributes.NearKey != nil {
+					_, nearObjNearIsConst := d2graph.NearConstants[d2graph.Key(nearObj.Attributes.NearKey)[0]]
+					if nearObjNearIsConst {
+						c.errorf(obj.Attributes.NearKey, "near keys cannot be set to an object with a constant near key")
+						continue
+					}
 				}
 			} else if isConst {
 				is := false

@@ -77,6 +77,38 @@ markdown: |md
   - of
   - two cities
 |
+code: |go
+package main
+
+import (
+	"fmt"
+)
+
+type City struct {
+	Name       string
+	Population int
+}
+
+func tellTale(city1, city2 City) {
+	fmt.Printf("There were two cities, %s and %s.\n", city1.Name, city2.Name)
+	fmt.Printf("%s had a population of %d.\n", city1.Name, city1.Population)
+	fmt.Printf("%s had a population of %d.\n", city2.Name, city2.Population)
+	fmt.Println("Their tales were intertwined, and their people shared many adventures.")
+}
+
+func main() {
+	city1 := City{Name: "CityA", Population: 1000000}
+	city2 := City{Name: "CityB", Population: 1200000}
+
+	tellTale(city1, city2)
+}
+|
+
+markdown -> code -> ex
+ex: |tex
+	\\displaylines{x = a + b \\\\ y = b + c}
+	\\sum_{k=1}^{n} h_{k} \\int_{0}^{1} \\bigl(\\partial_{k} f(x_{k-1}+t h_{k} e_{k}) -\\partial_{k} f(a)\\bigr) \\,dt
+|
 `,
 		},
 		{
@@ -124,6 +156,56 @@ user -> network.online portal.ui: access {
 api server -> network.online portal.ui: display
 api server -> logs: persist
 logs: { shape: page; style.multiple: true }
+
+network.data processor -> api server
+`,
+		},
+		{
+			name:    "origami",
+			themeID: d2themescatalog.Origami.ID,
+			script: `
+network: 通信網 {
+  cell tower: {
+		satellites: 衛星 {
+			shape: stored_data
+      style.multiple: true
+		}
+
+		transmitter: 送信機
+
+		satellites -> transmitter: send
+		satellites -> transmitter: send
+		satellites -> transmitter: send
+  }
+
+  online portal: オンラインポータル {
+    ui: { shape: hexagon }
+  }
+
+  data processor: データプロセッサ {
+    storage: 保管所 {
+      shape: cylinder
+      style.multiple: true
+    }
+  }
+
+  cell tower.transmitter -> data processor.storage: 電話ログ
+}
+
+user: ユーザー {
+  shape: person
+  width: 130
+}
+
+user -> network.cell tower: 電話をかける
+user -> network.online portal.ui: アクセス {
+  style.stroke-dash: 3
+}
+
+api server: API サーバー
+api server -> network.online portal.ui: 画面
+api server -> logs: 持続する
+logs: ログ { shape: page; style.multiple: true }
 
 network.data processor -> api server
 `,

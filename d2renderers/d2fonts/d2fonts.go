@@ -6,7 +6,13 @@ package d2fonts
 
 import (
 	"embed"
+	"encoding/base64"
+	"fmt"
 	"strings"
+
+	"github.com/jung-kurt/gofpdf"
+
+	fontlib "oss.terrastruct.com/d2/lib/font"
 )
 
 type FontFamily string
@@ -24,6 +30,29 @@ func (f FontFamily) Font(size int, style FontStyle) Font {
 		Style:  style,
 		Size:   size,
 	}
+}
+
+func (f Font) GetEncodedSubset(corpus string) string {
+	var uniqueChars string
+	uniqueMap := make(map[rune]bool)
+	for _, char := range corpus {
+		if _, exists := uniqueMap[char]; !exists {
+			uniqueMap[char] = true
+			uniqueChars = uniqueChars + string(char)
+		}
+	}
+
+	fontBuf := make([]byte, len(FontFaces[f]))
+	copy(fontBuf, FontFaces[f])
+	fontBuf = gofpdf.UTF8CutFont(fontBuf, uniqueChars)
+
+	fontBuf, err := fontlib.Sfnt2Woff(fontBuf)
+	if err != nil {
+		// If subset fails, return full encoding
+		return FontEncodings[f]
+	}
+
+	return fmt.Sprintf("data:application/font-woff;base64,%v", base64.StdEncoding.EncodeToString(fontBuf))
 }
 
 const (
@@ -215,4 +244,79 @@ func init() {
 var D2_FONT_TO_FAMILY = map[string]FontFamily{
 	"default": SourceSansPro,
 	"mono":    SourceCodePro,
+}
+
+func AddFontStyle(font Font, style FontStyle, ttf []byte) error {
+	FontFaces[font] = ttf
+
+	woff, err := fontlib.Sfnt2Woff(ttf)
+	if err != nil {
+		return fmt.Errorf("failed to encode ttf to woff: %v", err)
+	}
+	encodedWoff := fmt.Sprintf("data:application/font-woff;base64,%v", base64.StdEncoding.EncodeToString(woff))
+	FontEncodings[font] = encodedWoff
+
+	return nil
+}
+
+func AddFontFamily(name string, regularTTF, italicTTF, boldTTF []byte) (*FontFamily, error) {
+	customFontFamily := FontFamily(name)
+
+	regularFont := Font{
+		Family: customFontFamily,
+		Style:  FONT_STYLE_REGULAR,
+	}
+	if regularTTF != nil {
+		err := AddFontStyle(regularFont, FONT_STYLE_REGULAR, regularTTF)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		fallbackFont := Font{
+			Family: SourceSansPro,
+			Style:  FONT_STYLE_REGULAR,
+		}
+		FontFaces[regularFont] = FontFaces[fallbackFont]
+		FontEncodings[regularFont] = FontEncodings[fallbackFont]
+	}
+
+	italicFont := Font{
+		Family: customFontFamily,
+		Style:  FONT_STYLE_ITALIC,
+	}
+	if italicTTF != nil {
+		err := AddFontStyle(italicFont, FONT_STYLE_ITALIC, italicTTF)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		fallbackFont := Font{
+			Family: SourceSansPro,
+			Style:  FONT_STYLE_ITALIC,
+		}
+		FontFaces[italicFont] = FontFaces[fallbackFont]
+		FontEncodings[italicFont] = FontEncodings[fallbackFont]
+	}
+
+	boldFont := Font{
+		Family: customFontFamily,
+		Style:  FONT_STYLE_BOLD,
+	}
+	if boldTTF != nil {
+		err := AddFontStyle(boldFont, FONT_STYLE_BOLD, boldTTF)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		fallbackFont := Font{
+			Family: SourceSansPro,
+			Style:  FONT_STYLE_BOLD,
+		}
+		FontFaces[boldFont] = FontFaces[fallbackFont]
+		FontEncodings[boldFont] = FontEncodings[fallbackFont]
+	}
+
+	FontFamilies = append(FontFamilies, customFontFamily)
+
+	return &customFontFamily, nil
 }

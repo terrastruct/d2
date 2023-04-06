@@ -21,6 +21,7 @@ func TestCLI_E2E(t *testing.T) {
 	tca := []struct {
 		name   string
 		skipCI bool
+		skip   bool
 		run    func(t *testing.T, ctx context.Context, dir string, env *xos.Env)
 	}{
 		{
@@ -43,6 +44,94 @@ func TestCLI_E2E(t *testing.T) {
 				assert.Success(t, err)
 				png := readFile(t, dir, "hello-world.png")
 				testdataIgnoreDiff(t, ".png", png)
+			},
+		},
+		{
+			name: "center",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "--center=true", "hello-world.d2")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "hello-world.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "animation",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "animation.d2", `Chicken's plan: {
+  style.font-size: 35
+  near: top-center
+  shape: text
+}
+
+steps: {
+  1: {
+    Approach road
+  }
+  2: {
+    Approach road -> Cross road
+  }
+  3: {
+    Cross road -> Make you wonder why
+  }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "--animate-interval=1400", "animation.d2")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "animation.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "linked-path",
+			// TODO tempdir is random, resulting in different test results each time with the links
+			skip: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "linked.d2", `cat: how does the cat go? {
+  link: layers.cat
+}
+layers: {
+  cat: {
+    home: {
+      link: _
+    }
+    the cat -> meow: goes
+
+    scenarios: {
+      big cat: {
+        the cat -> roar: goes
+      }
+    }
+  }
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "linked.d2")
+				assert.Success(t, err)
+
+				assert.TestdataDir(t, filepath.Join(dir, "linked"))
+			},
+		},
+		{
+			name: "with-font",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "font.d2", `a: Why do computers get sick often?
+b: Because their Windows are always open!
+a -> b: italic font
+`)
+				err := runTestMain(t, ctx, dir, env, "--font-bold=./RockSalt-Regular.ttf", "font.d2")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "font.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "incompatible-animation",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "x.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "--animate-interval=2", "x.d2", "x.png")
+				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: bad usage: -animate-interval can only be used when exporting to SVG.
+You provided: .png`)
 			},
 		},
 		{
@@ -180,6 +269,9 @@ layers: {
 			t.Parallel()
 
 			if tc.skipCI && os.Getenv("CI") != "" {
+				t.SkipNow()
+			}
+			if tc.skip {
 				t.SkipNow()
 			}
 

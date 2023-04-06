@@ -8,7 +8,7 @@
       "type": "rectangle",
       "pos": {
         "x": 12,
-        "y": 524
+        "y": 909
       },
       "width": 611,
       "height": 902,
@@ -50,7 +50,7 @@
       "type": "rectangle",
       "pos": {
         "x": 62,
-        "y": 574
+        "y": 959
       },
       "width": 261,
       "height": 413,
@@ -92,7 +92,7 @@
       "type": "stored_data",
       "pos": {
         "x": 112,
-        "y": 624
+        "y": 1009
       },
       "width": 161,
       "height": 66,
@@ -133,7 +133,7 @@
       "type": "rectangle",
       "pos": {
         "x": 117,
-        "y": 871
+        "y": 1256
       },
       "width": 151,
       "height": 66,
@@ -174,7 +174,7 @@
       "type": "rectangle",
       "pos": {
         "x": 343,
-        "y": 579
+        "y": 964
       },
       "width": 230,
       "height": 169,
@@ -216,7 +216,7 @@
       "type": "hexagon",
       "pos": {
         "x": 418,
-        "y": 629
+        "y": 1014
       },
       "width": 80,
       "height": 69,
@@ -257,7 +257,7 @@
       "type": "rectangle",
       "pos": {
         "x": 70,
-        "y": 1158
+        "y": 1543
       },
       "width": 245,
       "height": 218,
@@ -299,7 +299,7 @@
       "type": "cylinder",
       "pos": {
         "x": 136,
-        "y": 1208
+        "y": 1593
       },
       "width": 112,
       "height": 118,
@@ -422,7 +422,7 @@
       "type": "page",
       "pos": {
         "x": 703,
-        "y": 524
+        "y": 909
       },
       "width": 82,
       "height": 87,
@@ -711,7 +711,7 @@
       "type": "text",
       "pos": {
         "x": 1243,
-        "y": 90
+        "y": 169
       },
       "width": 128,
       "height": 119,
@@ -745,6 +745,86 @@
       "labelHeight": 119,
       "zIndex": 0,
       "level": 1
+    },
+    {
+      "id": "code",
+      "type": "code",
+      "pos": {
+        "x": 873,
+        "y": 418
+      },
+      "width": 868,
+      "height": 406,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N7",
+      "stroke": "N1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "package main\n\nimport (\n\t\"fmt\"\n)\n\ntype City struct {\n\tName       string\n\tPopulation int\n}\n\nfunc tellTale(city1, city2 City) {\n\tfmt.Printf(\"There were two cities, %s and %s.\\n\", city1.Name, city2.Name)\n\tfmt.Printf(\"%s had a population of %d.\\n\", city1.Name, city1.Population)\n\tfmt.Printf(\"%s had a population of %d.\\n\", city2.Name, city2.Population)\n\tfmt.Println(\"Their tales were intertwined, and their people shared many adventures.\")\n}\n\nfunc main() {\n\tcity1 := City{Name: \"CityA\", Population: 1000000}\n\tcity2 := City{Name: \"CityB\", Population: 1200000}\n\n\ttellTale(city1, city2)\n}",
+      "fontSize": 16,
+      "fontFamily": "mono",
+      "language": "golang",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 863,
+      "labelHeight": 401,
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "ex",
+      "type": "text",
+      "pos": {
+        "x": 1105,
+        "y": 909
+      },
+      "width": 404,
+      "height": 52,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "transparent",
+      "stroke": "N1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "\\\\displaylines{x = a + b \\\\\\\\ y = b + c}\n\\\\sum_{k=1}^{n} h_{k} \\\\int_{0}^{1} \\\\bigl(\\\\partial_{k} f(x_{k-1}+t h_{k} e_{k}) -\\\\partial_{k} f(a)\\\\bigr) \\\\,dt",
+      "fontSize": 16,
+      "fontFamily": "mono",
+      "language": "latex",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 404,
+      "labelHeight": 52,
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -775,11 +855,11 @@
       "route": [
         {
           "x": 143,
-          "y": 690
+          "y": 1075
         },
         {
           "x": 143.5,
-          "y": 871
+          "y": 1256
         }
       ],
       "animated": false,
@@ -814,11 +894,11 @@
       "route": [
         {
           "x": 192,
-          "y": 690
+          "y": 1075
         },
         {
           "x": 192.5,
-          "y": 871
+          "y": 1256
         }
       ],
       "animated": false,
@@ -853,11 +933,11 @@
       "route": [
         {
           "x": 241,
-          "y": 690
+          "y": 1075
         },
         {
           "x": 241.5,
-          "y": 871
+          "y": 1256
         }
       ],
       "animated": false,
@@ -892,11 +972,11 @@
       "route": [
         {
           "x": 192.5,
-          "y": 937
+          "y": 1322
         },
         {
           "x": 193,
-          "y": 1208
+          "y": 1593
         }
       ],
       "animated": false,
@@ -943,7 +1023,7 @@
         },
         {
           "x": 214.08333333333337,
-          "y": 574
+          "y": 959
         }
       ],
       "animated": false,
@@ -981,16 +1061,16 @@
           "y": 262
         },
         {
-          "x": 343.8333333333333,
-          "y": 479
+          "x": 343.83333333333337,
+          "y": 864
         },
         {
           "x": 444.6666666666667,
-          "y": 479
+          "y": 864
         },
         {
           "x": 445,
-          "y": 629
+          "y": 1014
         }
       ],
       "animated": false,
@@ -1029,15 +1109,15 @@
         },
         {
           "x": 573.3333333333334,
-          "y": 479
+          "y": 864
         },
         {
           "x": 471.33333333333337,
-          "y": 479
+          "y": 864
         },
         {
           "x": 471,
-          "y": 629
+          "y": 1014
         }
       ],
       "animated": false,
@@ -1084,7 +1164,7 @@
         },
         {
           "x": 744,
-          "y": 524
+          "y": 909
         }
       ],
       "animated": false,
@@ -1119,15 +1199,15 @@
       "route": [
         {
           "x": 136.5,
-          "y": 1376
+          "y": 1761
         },
         {
           "x": 136.5,
-          "y": 1471
+          "y": 1856
         },
         {
           "x": 663,
-          "y": 1471
+          "y": 1856
         },
         {
           "x": 663,
@@ -1140,6 +1220,84 @@
         {
           "x": 608.8333333333334,
           "y": 288
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(markdown -> code)[0]",
+      "src": "markdown",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "code",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "mono",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1307.8333333333333,
+          "y": 288
+        },
+        {
+          "x": 1307.8333333333333,
+          "y": 418
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(code -> ex)[0]",
+      "src": "code",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "ex",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "mono",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1307.8333333333333,
+          "y": 824
+        },
+        {
+          "x": 1307.8333333333333,
+          "y": 909
         }
       ],
       "animated": false,

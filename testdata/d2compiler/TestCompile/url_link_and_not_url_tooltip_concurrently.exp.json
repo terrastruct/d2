@@ -1,0 +1,188 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/url_link_and_not_url_tooltip_concurrently.d2,0:0:0-0:51:51",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/url_link_and_not_url_tooltip_concurrently.d2,0:0:0-0:51:51",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/url_link_and_not_url_tooltip_concurrently.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/url_link_and_not_url_tooltip_concurrently.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/url_link_and_not_url_tooltip_concurrently.d2,0:3:3-0:50:50",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/url_link_and_not_url_tooltip_concurrently.d2,0:4:4-0:28:28",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/url_link_and_not_url_tooltip_concurrently.d2,0:4:4-0:8:8",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/url_link_and_not_url_tooltip_concurrently.d2,0:4:4-0:8:8",
+                              "value": [
+                                {
+                                  "string": "link",
+                                  "raw_string": "link"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/url_link_and_not_url_tooltip_concurrently.d2,0:10:10-0:28:28",
+                          "value": [
+                            {
+                              "string": "https://google.com",
+                              "raw_string": "https://google.com"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/url_link_and_not_url_tooltip_concurrently.d2,0:30:30-0:50:50",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/url_link_and_not_url_tooltip_concurrently.d2,0:30:30-0:37:37",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/url_link_and_not_url_tooltip_concurrently.d2,0:30:30-0:37:37",
+                              "value": [
+                                {
+                                  "string": "tooltip",
+                                  "raw_string": "tooltip"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/url_link_and_not_url_tooltip_concurrently.d2,0:39:39-0:50:50",
+                          "value": [
+                            {
+                              "string": "hello world",
+                              "raw_string": "hello world"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "label_dimensions": {
+        "width": 0,
+        "height": 0
+      },
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "label_dimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/url_link_and_not_url_tooltip_concurrently.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/url_link_and_not_url_tooltip_concurrently.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "style": {},
+          "tooltip": {
+            "value": "hello world"
+          },
+          "link": {
+            "value": "https://google.com"
+          },
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

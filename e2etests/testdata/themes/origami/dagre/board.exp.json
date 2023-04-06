@@ -1,0 +1,1111 @@
+{
+  "name": "",
+  "isFolderOnly": false,
+  "fontFamily": "SourceSansPro",
+  "shapes": [
+    {
+      "id": "network",
+      "type": "rectangle",
+      "pos": {
+        "x": 0,
+        "y": 275
+      },
+      "width": 399,
+      "height": 1225,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B4",
+      "fillPattern": "paper",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": true,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "通信網",
+      "fontSize": 28,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 104,
+      "labelHeight": 36,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "network.cell tower",
+      "type": "rectangle",
+      "pos": {
+        "x": 95,
+        "y": 340
+      },
+      "width": 284,
+      "height": 317,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B5",
+      "fillPattern": "paper",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "cell tower",
+      "fontSize": 24,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 99,
+      "labelHeight": 31,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "network.cell tower.satellites",
+      "type": "stored_data",
+      "pos": {
+        "x": 185,
+        "y": 372
+      },
+      "width": 104,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "AA5",
+      "fillPattern": "paper",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": true,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "衛星",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 39,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 3
+    },
+    {
+      "id": "network.cell tower.transmitter",
+      "type": "rectangle",
+      "pos": {
+        "x": 185,
+        "y": 559
+      },
+      "width": 104,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B6",
+      "fillPattern": "paper",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "送信機",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 59,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 3
+    },
+    {
+      "id": "network.online portal",
+      "type": "rectangle",
+      "pos": {
+        "x": 20,
+        "y": 1319
+      },
+      "width": 144,
+      "height": 151,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B5",
+      "fillPattern": "paper",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "オンラインポータル",
+      "fontSize": 24,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 271,
+      "labelHeight": 31,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "network.online portal.ui",
+      "type": "hexagon",
+      "pos": {
+        "x": 65,
+        "y": 1360
+      },
+      "width": 59,
+      "height": 69,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N5",
+      "fillPattern": "paper",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "ui",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 14,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 3
+    },
+    {
+      "id": "network.data processor",
+      "type": "rectangle",
+      "pos": {
+        "x": 145,
+        "y": 814
+      },
+      "width": 184,
+      "height": 182,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B5",
+      "fillPattern": "paper",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "データプロセッサ",
+      "fontSize": 24,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 241,
+      "labelHeight": 31,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "network.data processor.storage",
+      "type": "cylinder",
+      "pos": {
+        "x": 185,
+        "y": 846
+      },
+      "width": 104,
+      "height": 118,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "AA5",
+      "fillPattern": "paper",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": true,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "保管所",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 59,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 3
+    },
+    {
+      "id": "user",
+      "type": "person",
+      "pos": {
+        "x": 80,
+        "y": 0
+      },
+      "width": 130,
+      "height": 87,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B3",
+      "fillPattern": "paper",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "ユーザー",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 79,
+      "labelHeight": 21,
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "api server",
+      "type": "rectangle",
+      "pos": {
+        "x": 439,
+        "y": 1076
+      },
+      "width": 153,
+      "height": 66,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B6",
+      "fillPattern": "paper",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "API サーバー",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 108,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "logs",
+      "type": "page",
+      "pos": {
+        "x": 474,
+        "y": 1313
+      },
+      "width": 84,
+      "height": 87,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "AB4",
+      "fillPattern": "paper",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": true,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "ログ",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 39,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "zIndex": 0,
+      "level": 1
+    }
+  ],
+  "connections": [
+    {
+      "id": "network.cell tower.(satellites -> transmitter)[0]",
+      "src": "network.cell tower.satellites",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "network.cell tower.transmitter",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "label": "send",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 33,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 211,
+          "y": 439
+        },
+        {
+          "x": 173.4,
+          "y": 487
+        },
+        {
+          "x": 173.4,
+          "y": 511.2
+        },
+        {
+          "x": 211,
+          "y": 560
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "network.cell tower.(satellites -> transmitter)[1]",
+      "src": "network.cell tower.satellites",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "network.cell tower.transmitter",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "label": "send",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 33,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 237,
+          "y": 439
+        },
+        {
+          "x": 237,
+          "y": 487
+        },
+        {
+          "x": 237,
+          "y": 511.2
+        },
+        {
+          "x": 237,
+          "y": 560
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "network.cell tower.(satellites -> transmitter)[2]",
+      "src": "network.cell tower.satellites",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "network.cell tower.transmitter",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "label": "send",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 33,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 263,
+          "y": 439
+        },
+        {
+          "x": 300.6,
+          "y": 487
+        },
+        {
+          "x": 300.6,
+          "y": 511.2
+        },
+        {
+          "x": 263,
+          "y": 560
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "network.(cell tower.transmitter -> data processor.storage)[0]",
+      "src": "network.cell tower.transmitter",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "network.data processor.storage",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "label": "電話ログ",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 77,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 237,
+          "y": 625.5
+        },
+        {
+          "x": 237,
+          "y": 651.1
+        },
+        {
+          "x": 237,
+          "y": 669.6
+        },
+        {
+          "x": 237,
+          "y": 687.75
+        },
+        {
+          "x": 237,
+          "y": 705.9
+        },
+        {
+          "x": 237,
+          "y": 792.2
+        },
+        {
+          "x": 237,
+          "y": 847
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(user -> network.cell tower)[0]",
+      "src": "user",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "network.cell tower",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "label": "電話をかける",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 116,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 169,
+          "y": 87
+        },
+        {
+          "x": 223.4,
+          "y": 156.2
+        },
+        {
+          "x": 237,
+          "y": 248.2
+        },
+        {
+          "x": 237,
+          "y": 305
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(user -> network.online portal.ui)[0]",
+      "src": "user",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "network.online portal.ui",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 3,
+      "strokeWidth": 2,
+      "stroke": "B2",
+      "label": "アクセス",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 77,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 126,
+          "y": 87
+        },
+        {
+          "x": 85,
+          "y": 156.2
+        },
+        {
+          "x": 74.75,
+          "y": 185.6
+        },
+        {
+          "x": 74.75,
+          "y": 203.75
+        },
+        {
+          "x": 74.75,
+          "y": 221.9
+        },
+        {
+          "x": 74.75,
+          "y": 244
+        },
+        {
+          "x": 74.75,
+          "y": 259
+        },
+        {
+          "x": 74.75,
+          "y": 274
+        },
+        {
+          "x": 74.75,
+          "y": 300.6
+        },
+        {
+          "x": 74.75,
+          "y": 325.5
+        },
+        {
+          "x": 74.75,
+          "y": 350.4
+        },
+        {
+          "x": 74.75,
+          "y": 385.7
+        },
+        {
+          "x": 74.75,
+          "y": 413.75
+        },
+        {
+          "x": 74.75,
+          "y": 441.8
+        },
+        {
+          "x": 74.75,
+          "y": 479.2
+        },
+        {
+          "x": 74.75,
+          "y": 507.25
+        },
+        {
+          "x": 74.75,
+          "y": 535.3
+        },
+        {
+          "x": 74.75,
+          "y": 570.6
+        },
+        {
+          "x": 74.75,
+          "y": 595.5
+        },
+        {
+          "x": 74.75,
+          "y": 620.4
+        },
+        {
+          "x": 74.75,
+          "y": 649.1
+        },
+        {
+          "x": 74.75,
+          "y": 667.25
+        },
+        {
+          "x": 74.75,
+          "y": 685.4
+        },
+        {
+          "x": 74.75,
+          "y": 709.6
+        },
+        {
+          "x": 74.75,
+          "y": 727.75
+        },
+        {
+          "x": 74.75,
+          "y": 745.9
+        },
+        {
+          "x": 74.75,
+          "y": 779.8
+        },
+        {
+          "x": 74.75,
+          "y": 812.5
+        },
+        {
+          "x": 74.75,
+          "y": 845.2
+        },
+        {
+          "x": 74.75,
+          "y": 888.8
+        },
+        {
+          "x": 74.75,
+          "y": 921.5
+        },
+        {
+          "x": 74.75,
+          "y": 954.2
+        },
+        {
+          "x": 74.75,
+          "y": 986
+        },
+        {
+          "x": 74.75,
+          "y": 1001
+        },
+        {
+          "x": 74.75,
+          "y": 1016
+        },
+        {
+          "x": 74.75,
+          "y": 1042.6
+        },
+        {
+          "x": 74.75,
+          "y": 1067.5
+        },
+        {
+          "x": 74.75,
+          "y": 1092.4
+        },
+        {
+          "x": 74.75,
+          "y": 1127.7
+        },
+        {
+          "x": 74.75,
+          "y": 1155.75
+        },
+        {
+          "x": 74.75,
+          "y": 1183.8
+        },
+        {
+          "x": 77.2,
+          "y": 1282.6
+        },
+        {
+          "x": 87,
+          "y": 1361
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(api server -> network.online portal.ui)[0]",
+      "src": "api server",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "network.online portal.ui",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "label": "画面",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 39,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 439.25,
+          "y": 1127.0397225725094
+        },
+        {
+          "x": 183.25,
+          "y": 1187.4079445145019
+        },
+        {
+          "x": 116,
+          "y": 1282.6
+        },
+        {
+          "x": 103,
+          "y": 1361
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(api server -> logs)[0]",
+      "src": "api server",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "logs",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "label": "持続する",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 77,
+      "labelHeight": 21,
+      "labelPosition": "INSIDE_MIDDLE_CENTER",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 515.75,
+          "y": 1142
+        },
+        {
+          "x": 515.75,
+          "y": 1190.4
+        },
+        {
+          "x": 515.8,
+          "y": 1273
+        },
+        {
+          "x": 516,
+          "y": 1313
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(network.data processor -> api server)[0]",
+      "src": "network.data processor",
+      "srcArrow": "none",
+      "srcLabel": "",
+      "dst": "api server",
+      "dstArrow": "triangle",
+      "dstLabel": "",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 237,
+          "y": 996.5
+        },
+        {
+          "x": 237,
+          "y": 1020.1
+        },
+        {
+          "x": 277.4,
+          "y": 1038
+        },
+        {
+          "x": 439,
+          "y": 1086
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    }
+  ],
+  "root": {
+    "id": "",
+    "type": "",
+    "pos": {
+      "x": 0,
+      "y": 0
+    },
+    "width": 0,
+    "height": 0,
+    "opacity": 0,
+    "strokeDash": 0,
+    "strokeWidth": 0,
+    "borderRadius": 0,
+    "fill": "N7",
+    "stroke": "",
+    "shadow": false,
+    "3d": false,
+    "multiple": false,
+    "double-border": false,
+    "tooltip": "",
+    "link": "",
+    "icon": null,
+    "iconPosition": "",
+    "blend": false,
+    "fields": null,
+    "methods": null,
+    "columns": null,
+    "label": "",
+    "fontSize": 0,
+    "fontFamily": "",
+    "language": "",
+    "color": "",
+    "italic": false,
+    "bold": false,
+    "underline": false,
+    "labelWidth": 0,
+    "labelHeight": 0,
+    "zIndex": 0,
+    "level": 0
+  }
+}

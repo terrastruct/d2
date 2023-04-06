@@ -54,10 +54,10 @@ var TooltipIcon string
 var LinkIcon string
 
 //go:embed style.css
-var baseStylesheet string
+var BaseStylesheet string
 
 //go:embed github-markdown.css
-var mdCSS string
+var MarkdownCSS string
 
 //go:embed dots.txt
 var dots string
@@ -68,13 +68,22 @@ var lines string
 //go:embed grain.txt
 var grain string
 
+//go:embed paper.txt
+var paper string
+
 type RenderOpts struct {
 	Pad         int
 	Sketch      bool
+	Center      bool
 	ThemeID     int64
 	DarkThemeID *int64
+	Font        string
 	// disables the fit to screen behavior and ensures the exported svg has the exact dimensions
 	SetDimensions bool
+
+	// MasterID is passed when the diagram should use something other than its own hash for unique targeting
+	// Currently, that's when multi-boards are collapsed
+	MasterID string
 }
 
 func dimensions(diagram *d2target.Diagram, pad int) (left, top, width, height int) {
@@ -101,34 +110,46 @@ func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
 }
 
 func arrowheadDimensions(arrowhead d2target.Arrowhead, strokeWidth float64) (width, height float64) {
-	var widthMultiplier float64
-	var heightMultiplier float64
+	var baseWidth, baseHeight float64
+	var widthMultiplier, heightMultiplier float64
 	switch arrowhead {
 	case d2target.ArrowArrowhead:
-		widthMultiplier = 5
-		heightMultiplier = 5
+		baseWidth = 4
+		baseHeight = 4
+		widthMultiplier = 4
+		heightMultiplier = 4
 	case d2target.TriangleArrowhead:
-		widthMultiplier = 5
-		heightMultiplier = 6
+		baseWidth = 4
+		baseHeight = 4
+		widthMultiplier = 3
+		heightMultiplier = 4
 	case d2target.LineArrowhead:
 		widthMultiplier = 5
 		heightMultiplier = 8
 	case d2target.FilledDiamondArrowhead:
-		widthMultiplier = 11
-		heightMultiplier = 7
+		baseWidth = 11
+		baseHeight = 7
+		widthMultiplier = 5.5
+		heightMultiplier = 3.5
 	case d2target.DiamondArrowhead:
-		widthMultiplier = 11
-		heightMultiplier = 9
+		baseWidth = 11
+		baseHeight = 9
+		widthMultiplier = 5.5
+		heightMultiplier = 4.5
 	case d2target.FilledCircleArrowhead, d2target.CircleArrowhead:
-		widthMultiplier = 12
-		heightMultiplier = 12
+		baseWidth = 8
+		baseHeight = 8
+		widthMultiplier = 5
+		heightMultiplier = 5
 	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
-		widthMultiplier = 9
-		heightMultiplier = 9
+		baseWidth = 9
+		baseHeight = 9
+		widthMultiplier = 4.5
+		heightMultiplier = 4.5
 	}
 
 	clippedStrokeWidth := go2.Max(MIN_ARROWHEAD_STROKE_WIDTH, strokeWidth)
-	return clippedStrokeWidth * widthMultiplier, clippedStrokeWidth * heightMultiplier
+	return baseWidth + clippedStrokeWidth*widthMultiplier, baseHeight + clippedStrokeWidth*heightMultiplier
 }
 
 func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) string {
@@ -1382,7 +1403,7 @@ func RenderText(text string, x, height float64) string {
 	return strings.Join(rendered, "")
 }
 
-func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fonts.FontFamily) {
+func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fonts.FontFamily, corpus string) {
 	fmt.Fprint(buf, `<style type="text/css"><![CDATA[`)
 
 	appendOnTrigger(
@@ -1404,7 +1425,7 @@ func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR)],
+			fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1466,7 +1487,7 @@ func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_BOLD)],
+			fontFamily.Font(0, d2fonts.FONT_STYLE_BOLD).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1489,7 +1510,7 @@ func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[fontFamily.Font(0, d2fonts.FONT_STYLE_ITALIC)],
+			fontFamily.Font(0, d2fonts.FONT_STYLE_ITALIC).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1514,7 +1535,7 @@ func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_REGULAR)],
+			d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_REGULAR).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1535,7 +1556,7 @@ func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD)],
+			d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_BOLD).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1556,7 +1577,7 @@ func embedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			diagramHash,
-			d2fonts.FontEncodings[d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC)],
+			d2fonts.SourceCodePro.Font(0, d2fonts.FONT_STYLE_ITALIC).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1658,14 +1679,16 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 	}
 
-	// Mask URLs are global. So when multiple SVGs attach to a DOM, they share
-	// the same namespace for mask URLs.
+	// Apply hash on IDs for targeting, to be specific for this diagram
 	diagramHash, err := diagram.HashID()
 	if err != nil {
 		return nil, err
 	}
-	// CSS names can't start with numbers, so prepend a little something
-	diagramHash = "d2-" + diagramHash
+	// Some targeting is still per-board, like masks for connections
+	isolatedDiagramHash := diagramHash
+	if opts != nil && opts.MasterID != "" {
+		diagramHash = opts.MasterID
+	}
 
 	// SVG has no notion of z-index. The z-index is effectively the order it's drawn.
 	// So draw from the least nested to most nested
@@ -1685,7 +1708,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	markers := map[string]struct{}{}
 	for _, obj := range allObjects {
 		if c, is := obj.(d2target.Connection); is {
-			labelMask, err := drawConnection(buf, diagramHash, c, markers, idToShape, sketchRunner)
+			labelMask, err := drawConnection(buf, isolatedDiagramHash, c, markers, idToShape, sketchRunner)
 			if err != nil {
 				return nil, err
 			}
@@ -1708,7 +1731,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	left, top, w, h := dimensions(diagram, pad)
 	fmt.Fprint(buf, strings.Join([]string{
 		fmt.Sprintf(`<mask id="%s" maskUnits="userSpaceOnUse" x="%d" y="%d" width="%d" height="%d">`,
-			diagramHash, left, top, w, h,
+			isolatedDiagramHash, left, top, w, h,
 		),
 		fmt.Sprintf(`<rect x="%d" y="%d" width="%d" height="%d" fill="white"></rect>`,
 			left, top, w, h,
@@ -1719,31 +1742,33 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 
 	// generate style elements that will be appended to the SVG tag
 	upperBuf := &bytes.Buffer{}
-	embedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily) // embedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
-	themeStylesheet, err := themeCSS(diagramHash, themeID, darkThemeID)
-	if err != nil {
-		return nil, err
-	}
-	fmt.Fprintf(upperBuf, `<style type="text/css"><![CDATA[%s%s]]></style>`, baseStylesheet, themeStylesheet)
-
-	hasMarkdown := false
-	for _, s := range diagram.Shapes {
-		if s.Label != "" && s.Type == d2target.ShapeText {
-			hasMarkdown = true
-			break
+	if opts.MasterID == "" {
+		EmbedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily, diagram.GetCorpus()) // EmbedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
+		themeStylesheet, err := ThemeCSS(diagramHash, themeID, darkThemeID)
+		if err != nil {
+			return nil, err
 		}
-	}
-	if hasMarkdown {
-		css := mdCSS
-		css = strings.ReplaceAll(css, "font-italic", fmt.Sprintf("%s-font-italic", diagramHash))
-		css = strings.ReplaceAll(css, "font-bold", fmt.Sprintf("%s-font-bold", diagramHash))
-		css = strings.ReplaceAll(css, "font-mono", fmt.Sprintf("%s-font-mono", diagramHash))
-		css = strings.ReplaceAll(css, "font-regular", fmt.Sprintf("%s-font-regular", diagramHash))
-		fmt.Fprintf(upperBuf, `<style type="text/css">%s</style>`, css)
-	}
+		fmt.Fprintf(upperBuf, `<style type="text/css"><![CDATA[%s%s]]></style>`, BaseStylesheet, themeStylesheet)
 
-	if sketchRunner != nil {
-		d2sketch.DefineFillPatterns(upperBuf)
+		hasMarkdown := false
+		for _, s := range diagram.Shapes {
+			if s.Label != "" && s.Type == d2target.ShapeText {
+				hasMarkdown = true
+				break
+			}
+		}
+		if hasMarkdown {
+			css := MarkdownCSS
+			css = strings.ReplaceAll(css, "font-italic", fmt.Sprintf("%s-font-italic", diagramHash))
+			css = strings.ReplaceAll(css, "font-bold", fmt.Sprintf("%s-font-bold", diagramHash))
+			css = strings.ReplaceAll(css, "font-mono", fmt.Sprintf("%s-font-mono", diagramHash))
+			css = strings.ReplaceAll(css, "font-regular", fmt.Sprintf("%s-font-regular", diagramHash))
+			fmt.Fprintf(upperBuf, `<style type="text/css">%s</style>`, css)
+		}
+
+		if sketchRunner != nil {
+			d2sketch.DefineFillPatterns(upperBuf)
+		}
 	}
 
 	// This shift is for background el to envelop the diagram
@@ -1801,7 +1826,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	bufStr := buf.String()
 	patternDefs := ""
 	for _, pattern := range d2graph.FillPatterns {
-		if strings.Contains(bufStr, fmt.Sprintf("%s-overlay", pattern)) || diagram.Root.FillPattern != "" {
+		if strings.Contains(bufStr, fmt.Sprintf("%s-overlay", pattern)) || diagram.Root.FillPattern == pattern {
 			if patternDefs == "" {
 				fmt.Fprint(upperBuf, `<style type="text/css"><![CDATA[`)
 			}
@@ -1812,6 +1837,8 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 				patternDefs += lines
 			case "grain":
 				patternDefs += grain
+			case "paper":
+				patternDefs += paper
 			}
 			fmt.Fprint(upperBuf, fmt.Sprintf(`
 .%s-overlay {
@@ -1832,29 +1859,49 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		dimensions = fmt.Sprintf(` width="%d" height="%d"`, w, h)
 	}
 
-	fitToScreenWrapper := fmt.Sprintf(`<svg %s d2Version="%s" preserveAspectRatio="xMinYMin meet" viewBox="0 0 %d %d"%s>`,
-		`xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"`,
-		version.Version,
-		w, h,
-		dimensions,
-	)
+	alignment := "xMinYMin"
+	if opts.Center {
+		alignment = "xMidYMid"
+	}
+	fitToScreenWrapperOpening := ""
+	xmlTag := ""
+	fitToScreenWrapperClosing := ""
+	idAttr := ""
+	tag := "g"
+	// Many things change when this is rendering for animation
+	if opts.MasterID == "" {
+		fitToScreenWrapperOpening = fmt.Sprintf(`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" d2Version="%s" preserveAspectRatio="%s meet" viewBox="0 0 %d %d"%s>`,
+			version.Version,
+			alignment,
+			w, h,
+			dimensions,
+		)
+		xmlTag = `<?xml version="1.0" encoding="utf-8"?>`
+		fitToScreenWrapperClosing = "</svg>"
+		idAttr = `id="d2-svg"`
+		tag = "svg"
+	}
 
 	// TODO minify
-	docRendered := fmt.Sprintf(`%s%s<svg id="d2-svg" class="%s" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s%s</svg></svg>`,
-		`<?xml version="1.0" encoding="utf-8"?>`,
-		fitToScreenWrapper,
+	docRendered := fmt.Sprintf(`%s%s<%s %s class="%s" width="%d" height="%d" viewBox="%d %d %d %d">%s%s%s%s</%s>%s`,
+		xmlTag,
+		fitToScreenWrapperOpening,
+		tag,
+		idAttr,
 		diagramHash,
 		w, h, left, top, w, h,
 		doubleBorderElStr,
 		backgroundEl.Render(),
 		upperBuf.String(),
 		buf.String(),
+		tag,
+		fitToScreenWrapperClosing,
 	)
 	return []byte(docRendered), nil
 }
 
 // TODO include only colors that are being used to reduce size
-func themeCSS(diagramHash string, themeID int64, darkThemeID *int64) (stylesheet string, err error) {
+func ThemeCSS(diagramHash string, themeID int64, darkThemeID *int64) (stylesheet string, err error) {
 	out, err := singleThemeRulesets(diagramHash, themeID)
 	if err != nil {
 		return "", err

@@ -8,6 +8,7 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/extension"
 	goldmarkHtml "github.com/yuin/goldmark/renderer/html"
 	"golang.org/x/net/html"
 
@@ -81,6 +82,9 @@ func init() {
 		goldmark.WithRendererOptions(
 			goldmarkHtml.WithUnsafe(),
 			goldmarkHtml.WithXHTML(),
+		),
+		goldmark.WithExtensions(
+			extension.Strikethrough,
 		),
 	)
 }
@@ -327,6 +331,8 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 				} else if child.Type == html.ElementNode && child.Data == "br" {
 					if inlineBlock != nil {
 						endInlineBlock()
+					} else {
+						block.height += MarkdownLineHeightPx
 					}
 				} else if childBlock.isNotEmpty() {
 					if inlineBlock == nil {

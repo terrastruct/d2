@@ -433,6 +433,11 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 						attrs.Style.Underline.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
+				case "fill-pattern":
+					if attrs.Style.FillPattern != nil {
+						attrs.Style.FillPattern.MapKey.SetScalar(mk.Value.ScalarBox())
+						return nil
+					}
 				}
 			case "label":
 				if attrs.Label.MapKey != nil {
@@ -638,6 +643,18 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 		return g, nil
 	}
 
+	// Usually ignore the object when generating, but if a sibling has the same ID, can't ignore
+	ignored := obj
+	for _, ch := range obj.ChildrenArray {
+		if ch.ID == obj.ID {
+			ignored = nil
+			break
+		}
+	}
+
+	// Keep a list of newly generated IDs, so that generateUniqueKey considers them for conflict
+	var newIDs []string
+	// If we already renamed the key from another reference, no need to touch
 	dedupedRenames := map[string]struct{}{}
 	for _, ref := range obj.References {
 		var absKeys []*d2ast.KeyPath
@@ -681,7 +698,6 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 			absKeys = append(absKeys, absKey)
 		}
 
-		var newIDs []string
 		renames := make(map[string]string)
 		for _, absKey := range absKeys {
 			ida := d2graph.Key(absKey)
@@ -689,6 +705,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 			if _, ok := dedupedRenames[absKeyStr]; ok {
 				continue
 			}
+			// Stale reference
 			dedupedRenames[absKeyStr] = struct{}{}
 			// Do not consider the parent for conflicts, assume the parent will be deleted
 			if ida[len(ida)-1] == ida[len(ida)-2] {
@@ -702,7 +719,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 			hoistedAbsKey.Path = append(hoistedAbsKey.Path, ref.Key.Path[:ref.KeyPathIndex]...)
 			hoistedAbsKey.Path = append(hoistedAbsKey.Path, absKey.Path[len(absKey.Path)-1])
 
-			uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(hoistedAbsKey), "."), obj, newIDs)
+			uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(hoistedAbsKey), "."), ignored, newIDs)
 			if err != nil {
 				return nil, err
 			}
@@ -719,6 +736,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 			if absKeyStr != renamedKeyStr {
 				renames[absKeyStr] = renamedKeyStr
 			}
+			dedupedRenames[renamedKeyStr] = struct{}{}
 		}
 		// We need to rename in a conflict-free order
 		// E.g. imagine you have children `Text 4` and `Text`.
@@ -1853,6 +1871,14 @@ func MoveIDDeltas(g *d2graph.Graph, key, newKey string) (deltas map[string]strin
 			return nil, nil
 		}
 
+		ignored := obj
+		for _, ch := range obj.ChildrenArray {
+			if ch.ID == obj.ID {
+				ignored = nil
+				break
+			}
+		}
+
 		for _, ch := range obj.ChildrenArray {
 			chMK, err := d2parser.ParseMapKey(ch.AbsID())
 			if err != nil {
@@ -1881,7 +1907,7 @@ func MoveIDDeltas(g *d2graph.Graph, key, newKey string) (deltas map[string]strin
 			}
 
 			if _, ok := g.Root.HasChild(d2graph.Key(hoistedMK.Key)); ok || conflictsWithNewID {
-				newKey, _, err := generateUniqueKey(g, hoistedAbsID, nil, newIDs)
+				newKey, _, err := generateUniqueKey(g, hoistedAbsID, ignored, newIDs)
 				if err != nil {
 					return nil, err
 				}
@@ -2022,7 +2048,35 @@ func DeleteIDDeltas(g *d2graph.Graph, key string) (deltas map[string]string, err
 		if !ok {
 			return nil, nil
 		}
+
+		ignored := obj
 		for _, ch := range obj.ChildrenArray {
+			if ch.ID == obj.ID {
+				ignored = nil
+				break
+			}
+		}
+
+		for _, ch := range obj.ChildrenArray {
+			// Record siblings as the unique key generated should not conflict with any siblings either
+			var siblingsToBeHoisted []string
+			for _, ch2 := range obj.ChildrenArray {
+				if ch2 != ch {
+					chMK, err := d2parser.ParseMapKey(ch2.AbsID())
+					if err != nil {
+						return nil, err
+					}
+					ida := d2graph.Key(chMK.Key)
+					if ida[len(ida)-1] == ida[len(ida)-2] {
+						continue
+					}
+					hoistedAbsID := ch2.ID
+					if obj.Parent != g.Root {
+						hoistedAbsID = obj.Parent.AbsID() + "." + ch2.ID
+					}
+					siblingsToBeHoisted = append(siblingsToBeHoisted, hoistedAbsID)
+				}
+			}
 			chMK, err := d2parser.ParseMapKey(ch.AbsID())
 			if err != nil {
 				return nil, err
@@ -2049,7 +2103,7 @@ func DeleteIDDeltas(g *d2graph.Graph, key string) (deltas map[string]string, err
 			}
 
 			if conflictingObj, ok := g.Root.HasChild(d2graph.Key(hoistedMK.Key)); (ok && conflictingObj != obj) || conflictsWithNewID {
-				newKey, _, err := generateUniqueKey(g, hoistedAbsID, obj, newIDs)
+				newKey, _, err := generateUniqueKey(g, hoistedAbsID, ignored, append(newIDs, siblingsToBeHoisted...))
 				if err != nil {
 					return nil, err
 				}
