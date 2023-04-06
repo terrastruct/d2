@@ -143,7 +143,7 @@ func (p *Presentation) SaveTo(filePath string) error {
 		return err
 	}
 
-	err = addFile(zipFile, "docProps/app.xml", getAppXml(len(p.Slides), p.D2Version))
+	err = addFile(zipFile, "docProps/app.xml", getAppXml(p.Slides, p.D2Version))
 	if err != nil {
 		return err
 	}
