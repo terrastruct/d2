@@ -363,32 +363,32 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		}
 		attrs.Constraint.Value = scalar.ScalarString()
 		attrs.Constraint.MapKey = f.LastPrimaryKey()
-	case "rows":
+	case "grid-rows":
 		v, err := strconv.Atoi(scalar.ScalarString())
 		if err != nil {
-			c.errorf(scalar, "non-integer rows %#v: %s", scalar.ScalarString(), err)
+			c.errorf(scalar, "non-integer grid-rows %#v: %s", scalar.ScalarString(), err)
 			return
 		}
 		if v <= 0 {
-			c.errorf(scalar, "rows must be a positive integer: %#v", scalar.ScalarString())
+			c.errorf(scalar, "grid-rows must be a positive integer: %#v", scalar.ScalarString())
 			return
 		}
-		attrs.Rows = &d2graph.Scalar{}
-		attrs.Rows.Value = scalar.ScalarString()
-		attrs.Rows.MapKey = f.LastPrimaryKey()
-	case "columns":
+		attrs.GridRows = &d2graph.Scalar{}
+		attrs.GridRows.Value = scalar.ScalarString()
+		attrs.GridRows.MapKey = f.LastPrimaryKey()
+	case "grid-columns":
 		v, err := strconv.Atoi(scalar.ScalarString())
 		if err != nil {
-			c.errorf(scalar, "non-integer columns %#v: %s", scalar.ScalarString(), err)
+			c.errorf(scalar, "non-integer grid-columns %#v: %s", scalar.ScalarString(), err)
 			return
 		}
 		if v <= 0 {
-			c.errorf(scalar, "columns must be a positive integer: %#v", scalar.ScalarString())
+			c.errorf(scalar, "grid-columns must be a positive integer: %#v", scalar.ScalarString())
 			return
 		}
-		attrs.Columns = &d2graph.Scalar{}
-		attrs.Columns.Value = scalar.ScalarString()
-		attrs.Columns.MapKey = f.LastPrimaryKey()
+		attrs.GridColumns = &d2graph.Scalar{}
+		attrs.GridColumns.Value = scalar.ScalarString()
+		attrs.GridColumns.MapKey = f.LastPrimaryKey()
 	}
 
 	if attrs.Link != nil && attrs.Tooltip != nil {
@@ -705,7 +705,7 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 			if !in && arrowheadIn {
 				c.errorf(f.LastPrimaryKey(), fmt.Sprintf(`invalid shape, can only set "%s" for arrowheads`, obj.Attributes.Shape.Value))
 			}
-		case "rows", "columns":
+		case "grid-rows", "grid-columns":
 			for _, child := range obj.ChildrenArray {
 				if child.IsContainer() {
 					c.errorf(f.LastPrimaryKey(),

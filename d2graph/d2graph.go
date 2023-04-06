@@ -133,8 +133,8 @@ type Attributes struct {
 	Direction  Scalar `json:"direction"`
 	Constraint Scalar `json:"constraint"`
 
-	Rows    *Scalar `json:"rows,omitempty"`
-	Columns *Scalar `json:"columns,omitempty"`
+	GridRows    *Scalar `json:"gridRows,omitempty"`
+	GridColumns *Scalar `json:"gridColumns,omitempty"`
 }
 
 // TODO references at the root scope should have their Scope set to root graph AST
@@ -1531,21 +1531,21 @@ var ReservedKeywords2 map[string]struct{}
 
 // Non Style/Holder keywords.
 var SimpleReservedKeywords = map[string]struct{}{
-	"label":      {},
-	"desc":       {},
-	"shape":      {},
-	"icon":       {},
-	"constraint": {},
-	"tooltip":    {},
-	"link":       {},
-	"near":       {},
-	"width":      {},
-	"height":     {},
-	"direction":  {},
-	"top":        {},
-	"left":       {},
-	"rows":       {},
-	"columns":    {},
+	"label":        {},
+	"desc":         {},
+	"shape":        {},
+	"icon":         {},
+	"constraint":   {},
+	"tooltip":      {},
+	"link":         {},
+	"near":         {},
+	"width":        {},
+	"height":       {},
+	"direction":    {},
+	"top":          {},
+	"left":         {},
+	"grid-rows":    {},
+	"grid-columns": {},
 }
 
 // ReservedKeywordHolders are reserved keywords that are meaningless on its own and exist solely to hold a set of reserved keywords

@@ -9,7 +9,7 @@ teleport -> identity provider
 teleport <- identity provider
 
 users: "" {
-  columns: 1
+  grid-columns: 1
 
   Engineers: {
     shape: circle
@@ -22,7 +22,7 @@ users: "" {
 }
 
 via: "" {
-  columns: 1
+  grid-columns: 1
 
   https: "HTTPS://"
   kubectl: "> kubectl"
@@ -32,7 +32,7 @@ via: "" {
 }
 
 teleport: Teleport {
-  rows: 2
+  grid-rows: 2
 
   inp: |md
     # Identity Native Proxy
@@ -45,7 +45,7 @@ teleport: Teleport {
 }
 
 jita: "Just-in-time Access via" {
-  rows: 1
+  grid-rows: 1
 
   Slack.icon: https://icons.terrastruct.com/dev%2Fslack.svg
   Mattermost
@@ -55,7 +55,7 @@ jita: "Just-in-time Access via" {
 }
 
 infra: Infrastructure {
-  rows: 2
+  grid-rows: 2
 
   ssh.icon: https://icons.terrastruct.com/essentials%2F112-server.svg
   Kubernetes.icon: https://icons.terrastruct.com/azure%2F_Companies%2FKubernetes.svg

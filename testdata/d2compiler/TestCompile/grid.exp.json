@@ -3,11 +3,11 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile/grid.d2,0:0:0-4:0:34",
+      "range": "d2/testdata/d2compiler/TestCompile/grid.d2,0:0:0-4:0:44",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile/grid.d2,0:0:0-3:1:33",
+            "range": "d2/testdata/d2compiler/TestCompile/grid.d2,0:0:0-3:1:43",
             "key": {
               "range": "d2/testdata/d2compiler/TestCompile/grid.d2,0:0:0-0:3:3",
               "path": [
@@ -27,21 +27,21 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/grid.d2,0:5:5-3:0:32",
+                "range": "d2/testdata/d2compiler/TestCompile/grid.d2,0:5:5-3:0:42",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/grid.d2,1:1:8-1:10:17",
+                      "range": "d2/testdata/d2compiler/TestCompile/grid.d2,1:1:8-1:15:22",
                       "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile/grid.d2,1:1:8-1:5:12",
+                        "range": "d2/testdata/d2compiler/TestCompile/grid.d2,1:1:8-1:10:17",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile/grid.d2,1:1:8-1:5:12",
+                              "range": "d2/testdata/d2compiler/TestCompile/grid.d2,1:1:8-1:10:17",
                               "value": [
                                 {
-                                  "string": "rows",
-                                  "raw_string": "rows"
+                                  "string": "grid-rows",
+                                  "raw_string": "grid-rows"
                                 }
                               ]
                             }
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "number": {
-                          "range": "d2/testdata/d2compiler/TestCompile/grid.d2,1:7:14-1:10:17",
+                          "range": "d2/testdata/d2compiler/TestCompile/grid.d2,1:12:19-1:15:22",
                           "raw": "200",
                           "value": "200"
                         }
@@ -60,17 +60,17 @@
                   },
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/grid.d2,2:1:19-2:13:31",
+                      "range": "d2/testdata/d2compiler/TestCompile/grid.d2,2:1:24-2:18:41",
                       "key": {
-                        "range": "d2/testdata/d2compiler/TestCompile/grid.d2,2:1:19-2:8:26",
+                        "range": "d2/testdata/d2compiler/TestCompile/grid.d2,2:1:24-2:13:36",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2compiler/TestCompile/grid.d2,2:1:19-2:8:26",
+                              "range": "d2/testdata/d2compiler/TestCompile/grid.d2,2:1:24-2:13:36",
                               "value": [
                                 {
-                                  "string": "columns",
-                                  "raw_string": "columns"
+                                  "string": "grid-columns",
+                                  "raw_string": "grid-columns"
                                 }
                               ]
                             }
@@ -80,7 +80,7 @@
                       "primary": {},
                       "value": {
                         "number": {
-                          "range": "d2/testdata/d2compiler/TestCompile/grid.d2,2:10:28-2:13:31",
+                          "range": "d2/testdata/d2compiler/TestCompile/grid.d2,2:15:38-2:18:41",
                           "raw": "230",
                           "value": "230"
                         }
@@ -165,10 +165,10 @@
           "constraint": {
             "value": ""
           },
-          "rows": {
+          "gridRows": {
             "value": "200"
           },
-          "columns": {
+          "gridColumns": {
             "value": "230"
           }
         },

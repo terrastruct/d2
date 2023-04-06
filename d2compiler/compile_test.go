@@ -2271,27 +2271,27 @@ obj {
 		{
 			name: "grid",
 			text: `hey: {
-	rows: 200
-	columns: 230
+	grid-rows: 200
+	grid-columns: 230
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				tassert.Equal(t, "200", g.Objects[0].Attributes.Rows.Value)
+				tassert.Equal(t, "200", g.Objects[0].Attributes.GridRows.Value)
 			},
 		},
 		{
 			name: "grid_negative",
 			text: `hey: {
-	rows: 200
-	columns: -200
+	grid-rows: 200
+	grid-columns: -200
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/grid_negative.d2:3:11: columns must be a positive integer: "-200"`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_negative.d2:3:16: grid-columns must be a positive integer: "-200"`,
 		},
 		{
 			name: "grid_edge",
 			text: `hey: {
-	rows: 1
+	grid-rows: 1
 	a -> b
 }
 	c -> hey.b
@@ -2306,8 +2306,8 @@ d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edges in grid diagrams are 
 		{
 			name: "grid_nested",
 			text: `hey: {
-	rows: 200
-	columns: 200
+	grid-rows: 200
+	grid-columns: 200
 
 	a
 	b
@@ -2315,8 +2315,8 @@ d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edges in grid diagrams are 
 	d.invalid descendant
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/grid_nested.d2:2:2: "rows" can only be used on containers with one level of nesting right now. ("hey.d" has nested "invalid descendant")
-d2/testdata/d2compiler/TestCompile/grid_nested.d2:3:2: "columns" can only be used on containers with one level of nesting right now. ("hey.d" has nested "invalid descendant")`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_nested.d2:2:2: "grid-rows" can only be used on containers with one level of nesting right now. ("hey.d" has nested "invalid descendant")
+d2/testdata/d2compiler/TestCompile/grid_nested.d2:3:2: "grid-columns" can only be used on containers with one level of nesting right now. ("hey.d" has nested "invalid descendant")`,
 		},
 	}
 

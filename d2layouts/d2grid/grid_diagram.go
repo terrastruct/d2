@@ -23,11 +23,11 @@ type gridDiagram struct {
 
 func newGridDiagram(root *d2graph.Object) *gridDiagram {
 	gd := gridDiagram{root: root, objects: root.ChildrenArray}
-	if root.Attributes.Rows != nil {
-		gd.rows, _ = strconv.Atoi(root.Attributes.Rows.Value)
+	if root.Attributes.GridRows != nil {
+		gd.rows, _ = strconv.Atoi(root.Attributes.GridRows.Value)
 	}
-	if root.Attributes.Columns != nil {
-		gd.columns, _ = strconv.Atoi(root.Attributes.Columns.Value)
+	if root.Attributes.GridColumns != nil {
+		gd.columns, _ = strconv.Atoi(root.Attributes.GridColumns.Value)
 	}
 
 	if gd.rows != 0 && gd.columns != 0 {
@@ -38,7 +38,7 @@ func newGridDiagram(root *d2graph.Object) *gridDiagram {
 		// .  │ g h i │    │ c f i │
 		// .  └───────┘    └───────┘
 		// if keyword rows is first, make it row-directed, if columns is first it is column-directed
-		if root.Attributes.Rows.MapKey.Range.Before(root.Attributes.Columns.MapKey.Range) {
+		if root.Attributes.GridRows.MapKey.Range.Before(root.Attributes.GridColumns.MapKey.Range) {
 			gd.rowDirected = true
 		}
 

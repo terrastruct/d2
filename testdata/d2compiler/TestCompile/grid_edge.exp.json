@@ -4,15 +4,15 @@
     "ioerr": null,
     "errs": [
       {
-        "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,2:1:17-2:7:23",
+        "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,2:1:22-2:7:28",
         "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:3:2: edges in grid diagrams are not supported yet"
       },
       {
-        "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,4:1:27-4:11:37",
+        "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,4:1:32-4:11:42",
         "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:5:2: edges in grid diagrams are not supported yet"
       },
       {
-        "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,5:1:39-5:11:49",
+        "range": "d2/testdata/d2compiler/TestCompile/grid_edge.d2,5:1:44-5:11:54",
         "errmsg": "d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edges in grid diagrams are not supported yet"
       }
     ]
