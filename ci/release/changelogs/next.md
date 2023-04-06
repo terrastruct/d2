@@ -5,6 +5,7 @@
 #### Improvements 🧹
 
 - Labels on parallel `dagre` connections include a gap between them [#1134](https://github.com/terrastruct/d2/pull/1134)
+- Sequence Diagram `Lifelines` now inherit the Actor `stroke` and `stroke-dash` [#1140](https://github.com/terrastruct/d2/pull/1140)
 
 #### Bugfixes ⛑️
 
