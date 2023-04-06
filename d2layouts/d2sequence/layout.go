@@ -171,12 +171,12 @@ func cleanup(g *d2graph.Graph, sequenceDiagrams map[string]*sequenceDiagram, obj
 		obj.Children = make(map[string]*d2graph.Object)
 		obj.ChildrenArray = make([]*d2graph.Object, 0)
 		for _, child := range sd.actors {
-			obj.Children[child.ID] = child
+			obj.Children[strings.ToLower(child.ID)] = child
 			obj.ChildrenArray = append(obj.ChildrenArray, child)
 		}
 		for _, child := range sd.groups {
 			if child.Parent.AbsID() == obj.AbsID() {
-				obj.Children[child.ID] = child
+				obj.Children[strings.ToLower(child.ID)] = child
 				obj.ChildrenArray = append(obj.ChildrenArray, child)
 			}
 		}

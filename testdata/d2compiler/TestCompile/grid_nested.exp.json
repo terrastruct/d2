@@ -5,11 +5,11 @@
     "errs": [
       {
         "range": "d2/testdata/d2compiler/TestCompile/grid_nested.d2,1:1:8-1:10:17",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_nested.d2:2:2: invalid grid diagram \"hey\". can only set \"rows\" with no descendants (see \"hey.d.invalid descendant\")"
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_nested.d2:2:2: \"rows\" can only be used on containers with one level of nesting right now. (\"hey.d\" has nested \"invalid descendant\")"
       },
       {
         "range": "d2/testdata/d2compiler/TestCompile/grid_nested.d2,2:1:19-2:13:31",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_nested.d2:3:2: invalid grid diagram \"hey\". can only set \"columns\" with no descendants (see \"hey.d.invalid descendant\")"
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_nested.d2:3:2: \"columns\" can only be used on containers with one level of nesting right now. (\"hey.d\" has nested \"invalid descendant\")"
       }
     ]
   }

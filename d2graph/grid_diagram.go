@@ -6,11 +6,11 @@ func (obj *Object) IsGridDiagram() bool {
 }
 
 func (obj *Object) ClosestGridDiagram() *Object {
-	if obj.Parent == nil {
+	if obj == nil {
 		return nil
 	}
-	if obj.Parent.IsGridDiagram() {
-		return obj.Parent
+	if obj.IsGridDiagram() {
+		return obj
 	}
 	return obj.Parent.ClosestGridDiagram()
 }

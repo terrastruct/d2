@@ -2,6 +2,7 @@ package d2grid
 
 import (
 	"strconv"
+	"strings"
 
 	"oss.terrastruct.com/d2/d2graph"
 )
@@ -79,7 +80,7 @@ func (gd *gridDiagram) cleanup(obj *d2graph.Object, graph *d2graph.Graph) {
 	obj.Children = make(map[string]*d2graph.Object)
 	obj.ChildrenArray = make([]*d2graph.Object, 0)
 	for _, child := range gd.objects {
-		obj.Children[child.ID] = child
+		obj.Children[strings.ToLower(child.ID)] = child
 		obj.ChildrenArray = append(obj.ChildrenArray, child)
 	}
 	graph.Objects = append(graph.Objects, gd.objects...)

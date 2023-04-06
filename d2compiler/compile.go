@@ -708,7 +708,8 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 		case "rows", "columns":
 			for _, child := range obj.ChildrenArray {
 				if child.IsContainer() {
-					c.errorf(f.LastPrimaryKey(), fmt.Sprintf(`invalid grid diagram %#v. can only set %#v with no descendants (see %#v)`, obj.AbsID(), keyword, child.ChildrenArray[0].AbsID()))
+					c.errorf(f.LastPrimaryKey(),
+						fmt.Sprintf(`%#v can only be used on containers with one level of nesting right now. (%#v has nested %#v)`, keyword, child.AbsID(), child.ChildrenArray[0].ID))
 				}
 			}
 		}
@@ -796,12 +797,12 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 
 func (c *compiler) validateEdges(g *d2graph.Graph) {
 	for _, edge := range g.Edges {
-		if gd := edge.Src.ClosestGridDiagram(); gd != nil {
-			c.errorf(edge.GetAstEdge(), "edge %#v cannot enter grid diagram %#v", d2format.Format(edge.GetAstEdge()), gd.AbsID())
+		if gd := edge.Src.Parent.ClosestGridDiagram(); gd != nil {
+			c.errorf(edge.GetAstEdge(), "edges in grid diagrams are not supported yet")
 			continue
 		}
-		if gd := edge.Dst.ClosestGridDiagram(); gd != nil {
-			c.errorf(edge.GetAstEdge(), "edge %#v cannot enter grid diagram %#v", d2format.Format(edge.GetAstEdge()), gd.AbsID())
+		if gd := edge.Dst.Parent.ClosestGridDiagram(); gd != nil {
+			c.errorf(edge.GetAstEdge(), "edges in grid diagrams are not supported yet")
 			continue
 		}
 	}
