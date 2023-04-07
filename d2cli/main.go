@@ -393,21 +393,24 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		if err != nil {
 			return nil, false, err
 		}
-		out := boards[0]
-		if animateInterval > 0 {
-			out, err = d2animate.Wrap(diagram, boards, renderOpts, int(animateInterval))
-			if err != nil {
-				return nil, false, err
+		var out []byte
+		if len(boards) > 0 {
+			out := boards[0]
+			if animateInterval > 0 {
+				out, err = d2animate.Wrap(diagram, boards, renderOpts, int(animateInterval))
+				if err != nil {
+					return nil, false, err
+				}
+				err = os.MkdirAll(filepath.Dir(outputPath), 0755)
+				if err != nil {
+					return nil, false, err
+				}
+				err = ms.WritePath(outputPath, out)
+				if err != nil {
+					return nil, false, err
+				}
+				ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(outputPath), time.Since(start))
 			}
-			err = os.MkdirAll(filepath.Dir(outputPath), 0755)
-			if err != nil {
-				return nil, false, err
-			}
-			err = ms.WritePath(outputPath, out)
-			if err != nil {
-				return nil, false, err
-			}
-			ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(outputPath), time.Since(start))
 		}
 		return out, true, nil
 	}

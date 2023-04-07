@@ -49,8 +49,8 @@ var (
 	WOFF_ENTRY_OFFSET_CHECKSUM     = 16
 
 	// magic
-	MAGIC_WOFF                = 0x774f4646
-	MAGIC_CHECKSUM_ADJUSTMENT = 0xb1b0afba
+	MAGIC_WOFF                uint32 = 0x774f4646
+	MAGIC_CHECKSUM_ADJUSTMENT uint32 = 0xb1b0afba
 
 	// sizes
 	SIZE_OF_WOFF_HEADER      = 44
@@ -85,7 +85,7 @@ func Sfnt2Woff(fontBuf []byte) ([]byte, error) {
 	numTables := binary.BigEndian.Uint16(fontBuf[4:])
 
 	woffHeader := make([]byte, SIZE_OF_WOFF_HEADER)
-	binary.BigEndian.PutUint32(woffHeader[WOFF_OFFSET_MAGIC:], uint32(MAGIC_WOFF))
+	binary.BigEndian.PutUint32(woffHeader[WOFF_OFFSET_MAGIC:], MAGIC_WOFF)
 	binary.BigEndian.PutUint16(woffHeader[WOFF_OFFSET_NUM_TABLES:], numTables)
 	binary.BigEndian.PutUint16(woffHeader[WOFF_OFFSET_SFNT_SIZE:], 0)
 	binary.BigEndian.PutUint32(woffHeader[WOFF_OFFSET_META_OFFSET:], 0)
@@ -148,7 +148,7 @@ func Sfnt2Woff(fontBuf []byte) ([]byte, error) {
 		csum += tableEntry.CheckSum
 	}
 
-	var checksumAdjustment = uint32(MAGIC_CHECKSUM_ADJUSTMENT) - csum
+	var checksumAdjustment = MAGIC_CHECKSUM_ADJUSTMENT - csum
 
 	majorVersion := uint16(0)
 	minVersion := uint16(1)

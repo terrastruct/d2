@@ -1,6 +1,7 @@
 package d2graph
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"math"
@@ -67,6 +68,8 @@ func (g *Graph) RootBoard() *Graph {
 	return g
 }
 
+type LayoutGraph func(context.Context, *Graph) error
+
 // TODO consider having different Scalar types
 // Right now we'll hold any types in Value and just convert, e.g. floats
 type Scalar struct {
@@ -129,6 +132,13 @@ type Attributes struct {
 
 	Direction  Scalar `json:"direction"`
 	Constraint Scalar `json:"constraint"`
+
+	GridRows    *Scalar `json:"gridRows,omitempty"`
+	GridColumns *Scalar `json:"gridColumns,omitempty"`
+
+	// These names are attached to the rendered elements in SVG
+	// so that users can target them however they like outside of D2
+	Classes []string `json:"classes,omitempty"`
 }
 
 // TODO references at the root scope should have their Scope set to root graph AST
@@ -968,6 +978,16 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 	return &dims, nil
 }
 
+func (obj *Object) OuterNearContainer() *Object {
+	for obj != nil {
+		if obj.Attributes.NearKey != nil {
+			return obj
+		}
+		obj = obj.Parent
+	}
+	return nil
+}
+
 type Edge struct {
 	Index int `json:"index"`
 
@@ -1005,6 +1025,10 @@ type EdgeReference struct {
 	MapKeyEdgeIndex int        `json:"map_key_edge_index"`
 	Scope           *d2ast.Map `json:"-"`
 	ScopeObj        *Object    `json:"-"`
+}
+
+func (e *Edge) GetAstEdge() *d2ast.Edge {
+	return e.References[0].Edge
 }
 
 func (e *Edge) GetStroke(dashGapSize interface{}) string {
@@ -1521,19 +1545,23 @@ var ReservedKeywords2 map[string]struct{}
 
 // Non Style/Holder keywords.
 var SimpleReservedKeywords = map[string]struct{}{
-	"label":      {},
-	"desc":       {},
-	"shape":      {},
-	"icon":       {},
-	"constraint": {},
-	"tooltip":    {},
-	"link":       {},
-	"near":       {},
-	"width":      {},
-	"height":     {},
-	"direction":  {},
-	"top":        {},
-	"left":       {},
+	"label":        {},
+	"desc":         {},
+	"shape":        {},
+	"icon":         {},
+	"constraint":   {},
+	"tooltip":      {},
+	"link":         {},
+	"near":         {},
+	"width":        {},
+	"height":       {},
+	"direction":    {},
+	"top":          {},
+	"left":         {},
+	"grid-rows":    {},
+	"grid-columns": {},
+	"class":        {},
+	"classes":      {},
 }
 
 // ReservedKeywordHolders are reserved keywords that are meaningless on its own and exist solely to hold a set of reserved keywords

@@ -314,6 +314,16 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 					attrs.Left.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
+			case "grid-rows":
+				if attrs.GridRows != nil && attrs.GridRows.MapKey != nil {
+					attrs.GridRows.MapKey.SetScalar(mk.Value.ScalarBox())
+					return nil
+				}
+			case "grid-columns":
+				if attrs.GridColumns != nil && attrs.GridColumns.MapKey != nil {
+					attrs.GridColumns.MapKey.SetScalar(mk.Value.ScalarBox())
+					return nil
+				}
 			case "source-arrowhead", "target-arrowhead":
 				if reservedKey == "source-arrowhead" {
 					attrs = edge.SrcArrowhead

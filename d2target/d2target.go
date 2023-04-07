@@ -305,6 +305,8 @@ type Shape struct {
 	ID   string `json:"id"`
 	Type string `json:"type"`
 
+	Classes []string `json:"classes,omitempty"`
+
 	Pos    Point `json:"pos"`
 	Width  int   `json:"width"`
 	Height int   `json:"height"`
@@ -424,6 +426,8 @@ func BaseShape() *Shape {
 
 type Connection struct {
 	ID string `json:"id"`
+
+	Classes []string `json:"classes,omitempty"`
 
 	Src      string    `json:"src"`
 	SrcArrow Arrowhead `json:"srcArrow"`

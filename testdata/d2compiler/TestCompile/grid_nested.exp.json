@@ -1,0 +1,16 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/grid_nested.d2,1:1:8-1:15:22",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_nested.d2:2:2: \"grid-rows\" can only be used on containers with one level of nesting right now. (\"hey.d\" has nested \"invalid descendant\")"
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/grid_nested.d2,2:1:24-2:18:41",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/grid_nested.d2:3:2: \"grid-columns\" can only be used on containers with one level of nesting right now. (\"hey.d\" has nested \"invalid descendant\")"
+      }
+    ]
+  }
+}

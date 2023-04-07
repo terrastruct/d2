@@ -271,9 +271,9 @@ m6_desc -> queue.M6
 			name: "unnamed_class_table_code",
 			script: `
 
-class -> users -> code
+class2 -> users -> code
 
-class: "" {
+class2: "" {
 	shape: class
 	-num: int
 	-timeout: int
@@ -318,7 +318,7 @@ ico: {
 			name: "only_header_class_table",
 			script: `
 
-class: RefreshAuthorizationPolicyProtocolServerSideTranslatorProtocolBuffer {
+class2: RefreshAuthorizationPolicyProtocolServerSideTranslatorProtocolBuffer {
 	shape: class
 }
 
@@ -331,7 +331,7 @@ table with short col: RefreshAuthorizationPolicyCache {
 	ok
 }
 
-class -> table -> table with short col
+class2 -> table -> table with short col
 `,
 		},
 		{

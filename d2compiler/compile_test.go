@@ -1559,24 +1559,26 @@ d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set
 			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_constant.d2:1:9: near key "txop-center" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right`,
 		},
 		{
-			name: "near_bad_container",
-
-			text: `x: {
-  near: top-center
-  y
-}
-`,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_container.d2:2:9: constant near keys cannot be set on shapes with children`,
-		},
-		{
 			name: "near_bad_connected",
 
-			text: `x: {
-  near: top-center
-}
-x -> y
-`,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_connected.d2:2:9: constant near keys cannot be set on connected shapes`,
+			text: `
+				x: {
+					near: top-center
+				}
+				x -> y
+			`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_connected.d2:5:5: cannot connect objects from within a container, that has near constant set, to objects outside that container`,
+		},
+		{
+			name: "near_descendant_connect_to_outside",
+			text: `
+				x: {
+					near: top-left
+					y
+				}
+				x.y -> z
+			`,
+			expErr: "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2:6:5: cannot connect objects from within a container, that has near constant set, to objects outside that container",
 		},
 		{
 			name: "nested_near_constant",
@@ -2268,6 +2270,150 @@ obj {
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/near_near_const.d2:7:8: near keys cannot be set to an object with a constant near key`,
 		},
+		{
+			name: "grid",
+			text: `hey: {
+	grid-rows: 200
+	grid-columns: 230
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "200", g.Objects[0].Attributes.GridRows.Value)
+			},
+		},
+		{
+			name: "grid_negative",
+			text: `hey: {
+	grid-rows: 200
+	grid-columns: -200
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_negative.d2:3:16: grid-columns must be a positive integer: "-200"`,
+		},
+		{
+			name: "grid_edge",
+			text: `hey: {
+	grid-rows: 1
+	a -> b
+}
+	c -> hey.b
+	hey.a -> c
+
+	hey -> c: ok
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_edge.d2:3:2: edges in grid diagrams are not supported yet
+d2/testdata/d2compiler/TestCompile/grid_edge.d2:5:2: edges in grid diagrams are not supported yet
+d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edges in grid diagrams are not supported yet`,
+		},
+		{
+			name: "grid_nested",
+			text: `hey: {
+	grid-rows: 200
+	grid-columns: 200
+
+	a
+	b
+	c
+	d.invalid descendant
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_nested.d2:2:2: "grid-rows" can only be used on containers with one level of nesting right now. ("hey.d" has nested "invalid descendant")
+d2/testdata/d2compiler/TestCompile/grid_nested.d2:3:2: "grid-columns" can only be used on containers with one level of nesting right now. ("hey.d" has nested "invalid descendant")`,
+		},
+		{
+			name: "classes",
+			text: `classes: {
+  dragon_ball: {
+    label: ""
+    shape: circle
+    style.fill: orange
+  }
+  path: {
+    label: "then"
+    style.stroke-width: 4
+  }
+}
+nostar: { class: dragon_ball }
+1star: "*" { class: dragon_ball; style.fill: red }
+2star: { label: "**"; class: dragon_ball }
+
+nostar -> 1star: { class: path }
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 3, len(g.Objects))
+				tassert.Equal(t, "dragon_ball", g.Objects[0].Attributes.Classes[0])
+				tassert.Equal(t, "", g.Objects[0].Attributes.Label.Value)
+				// Class field overrides primary
+				tassert.Equal(t, "", g.Objects[1].Attributes.Label.Value)
+				tassert.Equal(t, "**", g.Objects[2].Attributes.Label.Value)
+				tassert.Equal(t, "orange", g.Objects[0].Attributes.Style.Fill.Value)
+				tassert.Equal(t, "red", g.Objects[1].Attributes.Style.Fill.Value)
+
+				tassert.Equal(t, "4", g.Edges[0].Attributes.Style.StrokeWidth.Value)
+				tassert.Equal(t, "then", g.Edges[0].Attributes.Label.Value)
+			},
+		},
+		{
+			name: "reordered-classes",
+			text: `classes: {
+  x: {
+    shape: circle
+  }
+}
+a.class: x
+classes.x.shape: diamond
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 1, len(g.Objects))
+				tassert.Equal(t, "diamond", g.Objects[0].Attributes.Shape.Value)
+			},
+		},
+		{
+			name: "no-class-primary",
+			text: `x.class
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no-class-primary.d2:1:3: class missing value`,
+		},
+		{
+			name: "no-class-inside-classes",
+			text: `classes: {
+  x: {
+    class: y
+  }
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no-class-inside-classes.d2:3:5: "class" cannot appear within "classes"`,
+		},
+		{
+			// This is okay
+			name: "missing-class",
+			text: `x.class: yo
+`,
+		},
+		{
+			name: "classes-unreserved",
+			text: `classes: {
+  mango: {
+    seed
+  }
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/classes-unreserved.d2:3:5: seed is an invalid class field, must be reserved keyword`,
+		},
+		{
+			name: "classes-internal-edge",
+			text: `classes: {
+  mango: {
+		width: 100
+  }
+  jango: {
+    height: 100
+  }
+  mango -> jango
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/classes-internal-edge.d2:8:3: classes cannot contain an edge`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -2402,6 +2548,19 @@ layers: {
 				assert.Equal(t, 2, len(g.Layers[1].Scenarios))
 				assert.False(t, g.Layers[1].Scenarios[0].IsFolderOnly)
 				assert.False(t, g.Layers[1].Scenarios[1].IsFolderOnly)
+			},
+		},
+		{
+			name: "scenarios_edge_index",
+			run: func(t *testing.T) {
+				assertCompile(t, `a -> x
+
+scenarios: {
+  1: {
+    (a -> x)[0].style.opacity: 0.1
+  }
+}
+`, "")
 			},
 		},
 		{

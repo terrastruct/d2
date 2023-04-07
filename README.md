@@ -226,6 +226,7 @@ let us know and we'll be happy to include it here!
 - **CIL (C#, Visual Basic, F#, C++ CLR) to D2**: [https://github.com/HugoVG/AppDiagram](https://github.com/HugoVG/AppDiagram)
 - **D2 Snippets (for text editors)**: [https://github.com/Paracelsus-Rose/D2-Language-Code-Snippets](https://github.com/Paracelsus-Rose/D2-Language-Code-Snippets)
 - **Mongo to D2**: [https://github.com/novuhq/mongo-to-D2](https://github.com/novuhq/mongo-to-D2)
+- **Pandoc filter**: [https://github.com/ram02z/d2-filter](https://github.com/ram02z/d2-filter)
 
 ### Misc
 
@@ -271,3 +272,5 @@ this selected list of featured projects using D2.
   - Open-source money manager app for Android (1.1k stars).
 - [LocalStack](https://docs.localstack.cloud/references/network-troubleshooting/)
   - Cloud service emulator (46k stars)
+- [Queue Library](https://github.com/golang-queue/queue/tree/master/images)
+  - Queue is a Golang library for spawning and managing a Goroutine pool

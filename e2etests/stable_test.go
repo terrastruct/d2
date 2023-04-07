@@ -13,6 +13,68 @@ var testMarkdown string
 func testStable(t *testing.T) {
 	tcs := []testCase{
 		{
+			name: "legend_with_near_key",
+			script: `
+				direction: right
+
+				x -> y: {
+					style.stroke: green
+				}
+				
+				y -> z: {
+					style.stroke: red
+				}
+				
+				legend: {
+					near: bottom-center
+					color1: foo {
+						shape: text
+						style.font-color: green
+					}
+				
+					color2: bar {
+						shape: text
+						style.font-color: red
+					}
+				}
+			`,
+		},
+		{
+			name: "near_keys_for_container",
+			script: `
+				x: {
+					near: top-left
+					a -> b
+					c -> d
+				}
+				y: {
+					near: top-right
+					a -> b
+					c -> d
+				}
+				z: {
+					near: bottom-center
+					a -> b
+					c -> d
+				}
+
+				a: {
+					near: top-center
+					b: {
+						c
+					}
+				}
+				b: {
+					near: bottom-right
+					a: {
+						c: {
+							d
+						}
+					}
+				}
+			`,
+		},
+		{
 			name: "class_and_sqlTable_border_radius",
 			script: `
 				a: {
@@ -142,6 +204,12 @@ logs: { shape: page; style.multiple: true }
 
 network.data processor -> api server
 			`,
+		},
+		{
+			name: "edge-label-overflow",
+			script: `student -> committee chair: Apply for appeal
+student <- committee chair: Deny. Need more information
+committee chair -> committee: Accept appeal`,
 		},
 		{
 			name: "mono-edge",
@@ -1481,8 +1549,13 @@ finally: {
     sequence: {
         shape: sequence_diagram
 		# items appear in this order
-        scorer
-        concept
+        scorer {
+					style.stroke: red
+					style.stroke-dash: 2
+				}
+        concept {
+					style.stroke-width: 6
+				}
         essayRubric
         item
         itemOutcome
@@ -1932,9 +2005,9 @@ x -> y
 			name: "unnamed_only_width",
 			script: `
 
-class -> users -> code -> package -> no width
+class2 -> users -> code -> package -> no width
 
-class: "" {
+class2: "" {
 	shape: class
 	-num: int
 	-timeout: int
@@ -1964,7 +2037,7 @@ package: "" { shape: package }
 no width: ""
 
 
-class.width: 512
+class2.width: 512
 users.width: 512
 code.width: 512
 package.width: 512
@@ -1974,9 +2047,9 @@ package.width: 512
 			name: "unnamed_only_height",
 			script: `
 
-class -> users -> code -> package -> no height
+class2 -> users -> code -> package -> no height
 
-class: "" {
+class2: "" {
 	shape: class
 	-num: int
 	-timeout: int
@@ -2006,7 +2079,7 @@ package: "" { shape: package }
 no height: ""
 
 
-class.height: 512
+class2.height: 512
 users.height: 512
 code.height: 512
 package.height: 512
@@ -2304,6 +2377,29 @@ z: {
 `,
 		},
 		{
+			name: "classes",
+			script: `classes: {
+  dragon_ball: {
+    label: ""
+    shape: circle
+    style.fill: orange
+		style.stroke-width: 0
+		width: 50
+  }
+  path: {
+    label: "then"
+    style.stroke-width: 4
+  }
+}
+nostar: { class: dragon_ball }
+1star: { label: "*"; class: dragon_ball }
+2star: { label: "**"; class: dragon_ball }
+
+nostar -> 1star: { class: path }
+1star -> 2star: { class: path }
+`,
+		},
+		{
 			name: "border-radius",
 			script: `
 x: {
@@ -2465,6 +2561,10 @@ scenarios: {
 }`,
 		},
 		loadFromFile(t, "arrowhead_scaling"),
+		loadFromFile(t, "teleport_grid"),
+		loadFromFile(t, "dagger_grid"),
+		loadFromFile(t, "grid_tests"),
+		loadFromFile(t, "executive_grid"),
 	}
 
 	runa(t, tcs)

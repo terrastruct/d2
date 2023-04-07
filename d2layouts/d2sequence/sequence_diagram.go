@@ -386,15 +386,21 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 		}
 		actorLifelineEnd := actor.Center()
 		actorLifelineEnd.Y = endY
+		style := d2graph.Style{
+			StrokeDash:  &d2graph.Scalar{Value: fmt.Sprintf("%d", LIFELINE_STROKE_DASH)},
+			StrokeWidth: &d2graph.Scalar{Value: fmt.Sprintf("%d", LIFELINE_STROKE_WIDTH)},
+		}
+		if actor.Attributes.Style.StrokeDash != nil {
+			style.StrokeDash = &d2graph.Scalar{Value: actor.Attributes.Style.StrokeDash.Value}
+		}
+		if actor.Attributes.Style.Stroke != nil {
+			style.Stroke = &d2graph.Scalar{Value: actor.Attributes.Style.Stroke.Value}
+		}
+
 		sd.lifelines = append(sd.lifelines, &d2graph.Edge{
-			Attributes: &d2graph.Attributes{
-				Style: d2graph.Style{
-					StrokeDash:  &d2graph.Scalar{Value: fmt.Sprintf("%d", LIFELINE_STROKE_DASH)},
-					StrokeWidth: &d2graph.Scalar{Value: fmt.Sprintf("%d", LIFELINE_STROKE_WIDTH)},
-				},
-			},
-			Src:      actor,
-			SrcArrow: false,
+			Attributes: &d2graph.Attributes{Style: style},
+			Src:        actor,
+			SrcArrow:   false,
 			Dst: &d2graph.Object{
 				ID: actor.ID + fmt.Sprintf("-lifeline-end-%d", go2.StringToIntHash(actor.ID+"-lifeline-end")),
 			},

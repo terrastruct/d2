@@ -58,6 +58,16 @@ func TestCLI_E2E(t *testing.T) {
 			},
 		},
 		{
+			name: "empty-layer",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "empty-layer.d2", `layers: { x: {} }`)
+				err := runTestMain(t, ctx, dir, env, "empty-layer.d2")
+				assert.Success(t, err)
+
+				assert.TestdataDir(t, filepath.Join(dir, "empty-layer"))
+			},
+		},
+		{
 			name: "animation",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "animation.d2", `Chicken's plan: {

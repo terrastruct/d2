@@ -73,6 +73,7 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 		c.validateKeys(g.Root, ir)
 	}
 	c.validateNear(g)
+	c.validateEdges(g)
 
 	c.compileBoardsField(g, ir, "layers")
 	c.compileBoardsField(g, ir, "scenarios")
@@ -115,8 +116,7 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 }
 
 type compiler struct {
-	inEdgeGroup bool
-	err         d2parser.ParseError
+	err d2parser.ParseError
 }
 
 func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
@@ -124,6 +124,18 @@ func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 }
 
 func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
+	class := m.GetField("class")
+	if class != nil {
+		className := class.Primary()
+		if className == nil {
+			c.errorf(class.LastRef().AST(), "class missing value")
+		} else {
+			classMap := m.GetClassMap(className.String())
+			if classMap != nil {
+				c.compileMap(obj, classMap)
+			}
+		}
+	}
 	shape := m.GetField("shape")
 	if shape != nil {
 		c.compileField(obj, shape)
@@ -158,7 +170,27 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 		return
 	}
 	_, isReserved := d2graph.SimpleReservedKeywords[keyword]
-	if isReserved {
+	if f.Name == "classes" {
+		if f.Map() != nil {
+			if len(f.Map().Edges) > 0 {
+				c.errorf(f.Map().Edges[0].LastRef().AST(), "classes cannot contain an edge")
+			}
+			for _, classesField := range f.Map().Fields {
+				if classesField.Map() == nil {
+					continue
+				}
+				for _, cf := range classesField.Map().Fields {
+					if _, ok := d2graph.ReservedKeywords[cf.Name]; !ok {
+						c.errorf(cf.LastRef().AST(), "%s is an invalid class field, must be reserved keyword", cf.Name)
+					}
+					if cf.Name == "class" {
+						c.errorf(cf.LastRef().AST(), `"class" cannot appear within "classes"`)
+					}
+				}
+			}
+		}
+		return
+	} else if isReserved {
 		c.compileReserved(obj.Attributes, f)
 		return
 	} else if f.Name == "style" {
@@ -362,6 +394,35 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		}
 		attrs.Constraint.Value = scalar.ScalarString()
 		attrs.Constraint.MapKey = f.LastPrimaryKey()
+	case "grid-rows":
+		v, err := strconv.Atoi(scalar.ScalarString())
+		if err != nil {
+			c.errorf(scalar, "non-integer grid-rows %#v: %s", scalar.ScalarString(), err)
+			return
+		}
+		if v <= 0 {
+			c.errorf(scalar, "grid-rows must be a positive integer: %#v", scalar.ScalarString())
+			return
+		}
+		attrs.GridRows = &d2graph.Scalar{}
+		attrs.GridRows.Value = scalar.ScalarString()
+		attrs.GridRows.MapKey = f.LastPrimaryKey()
+	case "grid-columns":
+		v, err := strconv.Atoi(scalar.ScalarString())
+		if err != nil {
+			c.errorf(scalar, "non-integer grid-columns %#v: %s", scalar.ScalarString(), err)
+			return
+		}
+		if v <= 0 {
+			c.errorf(scalar, "grid-columns must be a positive integer: %#v", scalar.ScalarString())
+			return
+		}
+		attrs.GridColumns = &d2graph.Scalar{}
+		attrs.GridColumns.Value = scalar.ScalarString()
+		attrs.GridColumns.MapKey = f.LastPrimaryKey()
+	case "class":
+		attrs.Classes = append(attrs.Classes, scalar.ScalarString())
+	case "classes":
 	}
 
 	if attrs.Link != nil && attrs.Tooltip != nil {
@@ -453,14 +514,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 		c.compileLabel(edge.Attributes, e)
 	}
 	if e.Map() != nil {
-		for _, f := range e.Map().Fields {
-			_, ok := d2graph.ReservedKeywords[f.Name]
-			if !ok {
-				c.errorf(f.References[0].AST(), `edge map keys must be reserved keywords`)
-				continue
-			}
-			c.compileEdgeField(edge, f)
-		}
+		c.compileEdgeMap(edge, e.Map())
 	}
 
 	edge.Attributes.Label.MapKey = e.LastPrimaryKey()
@@ -474,6 +528,29 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 			Scope:           er.Context.Scope,
 			ScopeObj:        scopeObj,
 		})
+	}
+}
+
+func (c *compiler) compileEdgeMap(edge *d2graph.Edge, m *d2ir.Map) {
+	class := m.GetField("class")
+	if class != nil {
+		className := class.Primary()
+		if className == nil {
+			c.errorf(class.LastRef().AST(), "class missing value")
+		} else {
+			classMap := m.GetClassMap(className.String())
+			if classMap != nil {
+				c.compileEdgeMap(edge, classMap)
+			}
+		}
+	}
+	for _, f := range m.Fields {
+		_, ok := d2graph.ReservedKeywords[f.Name]
+		if !ok {
+			c.errorf(f.References[0].AST(), `edge map keys must be reserved keywords`)
+			continue
+		}
+		c.compileEdgeField(edge, f)
 	}
 }
 
@@ -678,6 +755,13 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 			if !in && arrowheadIn {
 				c.errorf(f.LastPrimaryKey(), fmt.Sprintf(`invalid shape, can only set "%s" for arrowheads`, obj.Attributes.Shape.Value))
 			}
+		case "grid-rows", "grid-columns":
+			for _, child := range obj.ChildrenArray {
+				if child.IsContainer() {
+					c.errorf(f.LastPrimaryKey(),
+						fmt.Sprintf(`%#v can only be used on containers with one level of nesting right now. (%#v has nested %#v)`, keyword, child.AbsID(), child.ChildrenArray[0].ID))
+				}
+			}
 		}
 		return
 	}
@@ -734,29 +818,46 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 					}
 				}
 			} else if isConst {
-				is := false
-				for _, e := range g.Edges {
-					if e.Src == obj || e.Dst == obj {
-						is = true
-						break
-					}
-				}
-				if is {
-					c.errorf(obj.Attributes.NearKey, "constant near keys cannot be set on connected shapes")
-					continue
-				}
 				if obj.Parent != g.Root {
 					c.errorf(obj.Attributes.NearKey, "constant near keys can only be set on root level shapes")
-					continue
-				}
-				if len(obj.ChildrenArray) > 0 {
-					c.errorf(obj.Attributes.NearKey, "constant near keys cannot be set on shapes with children")
 					continue
 				}
 			} else {
 				c.errorf(obj.Attributes.NearKey, "near key %#v must be the absolute path to a shape or one of the following constants: %s", d2format.Format(obj.Attributes.NearKey), strings.Join(d2graph.NearConstantsArray, ", "))
 				continue
 			}
+		}
+	}
+
+	for _, edge := range g.Edges {
+		srcNearContainer := edge.Src.OuterNearContainer()
+		dstNearContainer := edge.Dst.OuterNearContainer()
+
+		var isSrcNearConst, isDstNearConst bool
+
+		if srcNearContainer != nil {
+			_, isSrcNearConst = d2graph.NearConstants[d2graph.Key(srcNearContainer.Attributes.NearKey)[0]]
+		}
+		if dstNearContainer != nil {
+			_, isDstNearConst = d2graph.NearConstants[d2graph.Key(dstNearContainer.Attributes.NearKey)[0]]
+		}
+
+		if (isSrcNearConst || isDstNearConst) && srcNearContainer != dstNearContainer {
+			c.errorf(edge.References[0].Edge, "cannot connect objects from within a container, that has near constant set, to objects outside that container")
+		}
+	}
+
+}
+
+func (c *compiler) validateEdges(g *d2graph.Graph) {
+	for _, edge := range g.Edges {
+		if gd := edge.Src.Parent.ClosestGridDiagram(); gd != nil {
+			c.errorf(edge.GetAstEdge(), "edges in grid diagrams are not supported yet")
+			continue
+		}
+		if gd := edge.Dst.Parent.ClosestGridDiagram(); gd != nil {
+			c.errorf(edge.GetAstEdge(), "edges in grid diagrams are not supported yet")
+			continue
 		}
 	}
 }
