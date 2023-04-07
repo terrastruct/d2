@@ -2270,6 +2270,56 @@ obj {
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/near_near_const.d2:7:8: near keys cannot be set to an object with a constant near key`,
 		},
+		{
+			name: "grid",
+			text: `hey: {
+	grid-rows: 200
+	grid-columns: 230
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "200", g.Objects[0].Attributes.GridRows.Value)
+			},
+		},
+		{
+			name: "grid_negative",
+			text: `hey: {
+	grid-rows: 200
+	grid-columns: -200
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_negative.d2:3:16: grid-columns must be a positive integer: "-200"`,
+		},
+		{
+			name: "grid_edge",
+			text: `hey: {
+	grid-rows: 1
+	a -> b
+}
+	c -> hey.b
+	hey.a -> c
+
+	hey -> c: ok
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_edge.d2:3:2: edges in grid diagrams are not supported yet
+d2/testdata/d2compiler/TestCompile/grid_edge.d2:5:2: edges in grid diagrams are not supported yet
+d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edges in grid diagrams are not supported yet`,
+		},
+		{
+			name: "grid_nested",
+			text: `hey: {
+	grid-rows: 200
+	grid-columns: 200
+
+	a
+	b
+	c
+	d.invalid descendant
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_nested.d2:2:2: "grid-rows" can only be used on containers with one level of nesting right now. ("hey.d" has nested "invalid descendant")
+d2/testdata/d2compiler/TestCompile/grid_nested.d2:3:2: "grid-columns" can only be used on containers with one level of nesting right now. ("hey.d" has nested "invalid descendant")`,
+		},
 	}
 
 	for _, tc := range testCases {

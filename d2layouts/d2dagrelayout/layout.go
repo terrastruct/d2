@@ -33,6 +33,7 @@ var dagreJS string
 const (
 	MIN_SEGMENT_LEN = 10
 	MIN_RANK_SEP    = 60
+	EDGE_LABEL_GAP  = 20
 )
 
 type ConfigurableOpts struct {
@@ -173,37 +174,30 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 	}
 	for _, edge := range g.Edges {
-		// dagre doesn't work with edges to containers so we connect container edges to their first child instead (going all the way down)
-		// we will chop the edge where it intersects the container border so it only shows the edge from the container
-		src := edge.Src
-		for len(src.Children) > 0 && src.Class == nil && src.SQLTable == nil {
-			// We want to get the bottom node of sources, setting its rank higher than all children
-			src = getLongestEdgeChainTail(g, src)
-		}
-		dst := edge.Dst
-		for len(dst.Children) > 0 && dst.Class == nil && dst.SQLTable == nil {
-			dst = dst.ChildrenArray[0]
+		src, dst := getEdgeEndpoints(g, edge)
 
-			// We want to get the top node of destinations
-			for _, child := range dst.ChildrenArray {
-				isHead := true
-				for _, e := range g.Edges {
-					if inContainer(e.Src, child) != nil && inContainer(e.Dst, dst) != nil {
-						isHead = false
-						break
-					}
-				}
-				if isHead {
-					dst = child
-					break
-				}
+		width := edge.LabelDimensions.Width
+		height := edge.LabelDimensions.Height
+
+		numEdges := 0
+		for _, e := range g.Edges {
+			otherSrc, otherDst := getEdgeEndpoints(g, e)
+			if (otherSrc == src && otherDst == dst) || (otherSrc == dst && otherDst == src) {
+				numEdges++
 			}
 		}
-		if edge.SrcArrow && !edge.DstArrow {
-			// for `b <- a`, edge.Edge is `a -> b` and we expect this routing result
-			src, dst = dst, src
+
+		// We want to leave some gap between multiple edges
+		if numEdges > 1 {
+			switch g.Root.Attributes.Direction.Value {
+			case "down", "up", "":
+				width += EDGE_LABEL_GAP
+			case "left", "right":
+				height += EDGE_LABEL_GAP
+			}
 		}
-		loadScript += generateAddEdgeLine(src.AbsID(), dst.AbsID(), edge.AbsID(), edge.LabelDimensions.Width, edge.LabelDimensions.Height)
+
+		loadScript += generateAddEdgeLine(src.AbsID(), dst.AbsID(), edge.AbsID(), width, height)
 	}
 
 	if debugJS {
@@ -526,6 +520,40 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	return nil
+}
+
+func getEdgeEndpoints(g *d2graph.Graph, edge *d2graph.Edge) (*d2graph.Object, *d2graph.Object) {
+	// dagre doesn't work with edges to containers so we connect container edges to their first child instead (going all the way down)
+	// we will chop the edge where it intersects the container border so it only shows the edge from the container
+	src := edge.Src
+	for len(src.Children) > 0 && src.Class == nil && src.SQLTable == nil {
+		// We want to get the bottom node of sources, setting its rank higher than all children
+		src = getLongestEdgeChainTail(g, src)
+	}
+	dst := edge.Dst
+	for len(dst.Children) > 0 && dst.Class == nil && dst.SQLTable == nil {
+		dst = dst.ChildrenArray[0]
+
+		// We want to get the top node of destinations
+		for _, child := range dst.ChildrenArray {
+			isHead := true
+			for _, e := range g.Edges {
+				if inContainer(e.Src, child) != nil && inContainer(e.Dst, dst) != nil {
+					isHead = false
+					break
+				}
+			}
+			if isHead {
+				dst = child
+				break
+			}
+		}
+	}
+	if edge.SrcArrow && !edge.DstArrow {
+		// for `b <- a`, edge.Edge is `a -> b` and we expect this routing result
+		src, dst = dst, src
+	}
+	return src, dst
 }
 
 func setGraphAttrs(attrs dagreOpts) string {
