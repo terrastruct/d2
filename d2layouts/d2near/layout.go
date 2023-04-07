@@ -52,30 +52,21 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs []*d2graph
 						point.Y += dy
 					}
 				}
-
-				g.Edges = append(g.Edges, tempGraph.Edges...)
 			}
 		}
 		for _, tempGraph := range constantNearGraphs {
 			obj := tempGraph.Root.ChildrenArray[0]
 			if processCenters == strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "-center") {
 				// The z-index for constant nears does not matter, as it will not collide
-				g.Objects = append(g.Objects, obj)
+				g.Objects = append(g.Objects, tempGraph.Objects...)
 				obj.Parent.Children[obj.ID] = obj
 				obj.Parent.ChildrenArray = append(obj.Parent.ChildrenArray, obj)
-				attachChildren(g, obj)
+				g.Edges = append(g.Edges, tempGraph.Edges...)
 			}
 		}
 	}
 
 	return nil
-}
-
-func attachChildren(g *d2graph.Graph, obj *d2graph.Object) {
-	for _, child := range obj.ChildrenArray {
-		g.Objects = append(g.Objects, child)
-		attachChildren(g, child)
-	}
 }
 
 // place returns the position of obj, taking into consideration its near value and the diagram
