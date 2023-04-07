@@ -36,6 +36,26 @@ func testMeasured(t *testing.T) {
 |
 `,
 		},
+		{
+			name: "empty-code",
+			mtexts: []*d2target.MText{
+				{
+					Text:     "  ",
+					FontSize: 16,
+					IsBold:   true,
+					Shape:    "code",
+					Language: "java",
+					Dimensions: d2target.TextDimensions{
+						Width:  55,
+						Height: 30,
+					},
+				},
+			},
+			script: `a: |java
+` + "  " + `
+|
+`,
+		},
 	}
 
 	runa(t, tcs)

@@ -168,6 +168,22 @@ func run(t *testing.T, tc testCase) {
 			ThemeID:       tc.themeID,
 		})
 
+		if len(tc.mtexts) > 0 {
+			for _, expText := range g.Texts() {
+				found := false
+				for _, gotText := range tc.mtexts {
+					if *expText == *gotText {
+						found = true
+						break
+					}
+				}
+				if !found {
+					t.Fatalf("expected measured text not found:%#v", expText)
+					return
+				}
+			}
+		}
+
 		if tc.expErr != "" {
 			assert.Error(t, err)
 			assert.ErrorString(t, err, tc.expErr)
