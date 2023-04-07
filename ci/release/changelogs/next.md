@@ -10,6 +10,7 @@
 
 #### Bugfixes ⛑️
 
+- Fix inheritence in scenarios/steps [#1090](https://github.com/terrastruct/d2/pull/1090)
 - Fix a bug in 32bit builds [#1115](https://github.com/terrastruct/d2/issues/1115)
 - Fix a bug in ID parsing [#322](https://github.com/terrastruct/d2/issues/322)
 - Fix a bug in watch mode parsing SVG [#1119](https://github.com/terrastruct/d2/issues/1119)
