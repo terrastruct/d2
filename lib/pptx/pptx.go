@@ -49,27 +49,69 @@ const IMAGE_HEIGHT = SLIDE_HEIGHT - HEADER_HEIGHT
 const IMAGE_WIDTH = 8_446_273
 const IMAGE_ASPECT_RATIO = float64(IMAGE_WIDTH) / float64(IMAGE_HEIGHT)
 
-const RELS_SLIDE_XML = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout7.xml" /><Relationship Id="%s" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="../media/%s.png" /></Relationships>`
+func getRelsSlideXml(slide *Slide) string {
+	var builder strings.Builder
+	builder.WriteString(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout7.xml" />`)
+	builder.WriteString(
+		fmt.Sprintf(
+			`<Relationship Id="%s" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="../media/%s.png" />`,
+			slide.ImageId,
+			slide.ImageId,
+		),
+	)
+	for _, link := range slide.Links {
+		if link.isExternal() {
+			builder.WriteString(
+				fmt.Sprintf(
+					`<Relationship Id="%s" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink" Target="%s" TargetMode="External" />`,
+					link.Id,
+					link.ExternalUrl,
+				),
+			)
+		} else {
+			builder.WriteString(
+				fmt.Sprintf(
+					`<Relationship Id="%s" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slide%d.xml" />`,
+					link.Id,
+					link.SlideIndex,
+				),
+			)
+		}
+	}
 
-func getRelsSlideXml(imageId string) string {
-	return fmt.Sprintf(RELS_SLIDE_XML, imageId, imageId)
+	builder.WriteString(`</Relationships>`)
+	return builder.String()
 }
 
-const SLIDE_XML = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><p:sld xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><p:cSld><p:spTree><p:nvGrpSpPr><p:cNvPr id="1" name="" /><p:cNvGrpSpPr /><p:nvPr /></p:nvGrpSpPr><p:grpSpPr><a:xfrm><a:off x="0" y="0" /><a:ext cx="0" cy="0" /><a:chOff x="0" y="0" /><a:chExt cx="0" cy="0" /></a:xfrm></p:grpSpPr><p:pic><p:nvPicPr><p:cNvPr id="2" name="%s" descr="%s" /><p:cNvPicPr><a:picLocks noChangeAspect="1" /></p:cNvPicPr><p:nvPr /></p:nvPicPr><p:blipFill><a:blip r:embed="%s" /><a:stretch><a:fillRect /></a:stretch></p:blipFill><p:spPr><a:xfrm><a:off x="%d" y="%d" /><a:ext cx="%d" cy="%d" /></a:xfrm><a:prstGeom prst="rect"><a:avLst /></a:prstGeom></p:spPr></p:pic><p:sp><p:nvSpPr><p:cNvPr id="95" name="%s" /><p:cNvSpPr txBox="1" /><p:nvPr /></p:nvSpPr><p:spPr><a:xfrm><a:off x="4001" y="6239" /><a:ext cx="9135998" cy="%d" /></a:xfrm><a:prstGeom prst="rect"><a:avLst /></a:prstGeom><a:ln w="12700"><a:miter lim="400000" /></a:ln><a:extLst><a:ext uri="{C572A759-6A51-4108-AA02-DFA0A04FC94B}"><ma14:wrappingTextBoxFlag xmlns:ma14="http://schemas.microsoft.com/office/mac/drawingml/2011/main" xmlns="" val="1" /></a:ext></a:extLst></p:spPr><p:txBody><a:bodyPr lIns="45719" rIns="45719"><a:spAutoFit /></a:bodyPr><a:lstStyle><a:lvl1pPr><a:defRPr sz="2400" /></a:lvl1pPr></a:lstStyle><a:p>%s</a:p></p:txBody></p:sp></p:spTree></p:cSld><p:clrMapOvr><a:masterClrMapping /></p:clrMapOvr></p:sld>`
-
-func getSlideXml(boardPath []string, imageId string, top, left, width, height int) string {
-	var slideTitle string
-	boardName := boardPath[len(boardPath)-1]
-	prefixPath := boardPath[:len(boardPath)-1]
+func getSlideXml(slide *Slide) string {
+	var builder strings.Builder
+	builder.WriteString(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><p:sld xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><p:cSld><p:spTree><p:nvGrpSpPr><p:cNvPr id="1" name="" /><p:cNvGrpSpPr /><p:nvPr /></p:nvGrpSpPr><p:grpSpPr><a:xfrm><a:off x="0" y="0" /><a:ext cx="0" cy="0" /><a:chOff x="0" y="0" /><a:chExt cx="0" cy="0" /></a:xfrm></p:grpSpPr><p:pic><p:nvPicPr>`)
+	slideDescription := strings.Join(slide.BoardPath, " / ")
+	builder.WriteString(fmt.Sprintf(`<p:cNvPr id="2" name="%s" descr="%s" />`, slideDescription, slideDescription))
+	builder.WriteString(`<p:cNvPicPr><a:picLocks noChangeAspect="1" /></p:cNvPicPr><p:nvPr /></p:nvPicPr><p:blipFill>`)
+	builder.WriteString(fmt.Sprintf(`<a:blip r:embed="%s" />`, slide.ImageId))
+	builder.WriteString(`<a:stretch><a:fillRect /></a:stretch></p:blipFill><p:spPr><a:xfrm>`)
+	builder.WriteString(fmt.Sprintf(`<a:off x="%d" y="%d" />`, slide.ImageLeft, slide.ImageTop))
+	builder.WriteString(fmt.Sprintf(`<a:ext cx="%d" cy="%d" />`, slide.ImageWidth, slide.ImageHeight))
+	builder.WriteString(`</a:xfrm><a:prstGeom prst="rect"><a:avLst /></a:prstGeom></p:spPr></p:pic><p:sp><p:nvSpPr>`)
+	builder.WriteString(fmt.Sprintf(`<p:cNvPr id="95" name="%s" />`, slideDescription))
+	builder.WriteString(`<p:cNvSpPr txBox="1" /><p:nvPr /></p:nvSpPr><p:spPr><a:xfrm>`)
+	builder.WriteString(`<a:off x="4001" y="6239" />`)
+	builder.WriteString(fmt.Sprintf(`<a:ext cx="9135998" cy="%d" />`, HEADER_HEIGHT))
+	builder.WriteString(`</a:xfrm><a:prstGeom prst="rect"><a:avLst /></a:prstGeom><a:ln w="12700"><a:miter lim="400000" /></a:ln><a:extLst><a:ext uri="{C572A759-6A51-4108-AA02-DFA0A04FC94B}"><ma14:wrappingTextBoxFlag xmlns:ma14="http://schemas.microsoft.com/office/mac/drawingml/2011/main" xmlns="" val="1" /></a:ext></a:extLst></p:spPr><p:txBody><a:bodyPr lIns="45719" rIns="45719"><a:spAutoFit /></a:bodyPr><a:lstStyle><a:lvl1pPr><a:defRPr sz="2400" /></a:lvl1pPr></a:lstStyle>`)
+	boardName := slide.BoardPath[len(slide.BoardPath)-1]
+	prefixPath := slide.BoardPath[:len(slide.BoardPath)-1]
 	if len(prefixPath) > 0 {
 		prefix := strings.Join(prefixPath, "  /  ") + "  /  "
-		slideTitle = fmt.Sprintf(`<a:r><a:t>%s</a:t></a:r><a:r><a:rPr b="1" /><a:t>%s</a:t></a:r>`, prefix, boardName)
+		builder.WriteString(fmt.Sprintf(`<a:p><a:r><a:t>%s</a:t></a:r><a:r><a:rPr b="1" /><a:t>%s</a:t></a:r></a:p></p:txBody></p:sp>`, prefix, boardName))
 	} else {
-		slideTitle = fmt.Sprintf(`<a:r><a:rPr b="1" /><a:t>%s</a:t></a:r>`, boardName)
+		builder.WriteString(fmt.Sprintf(`<a:p><a:r><a:rPr b="1" /><a:t>%s</a:t></a:r></a:p></p:txBody></p:sp>`, boardName))
 	}
-	slideDescription := strings.Join(boardPath, " / ")
-	top += HEADER_HEIGHT
-	return fmt.Sprintf(SLIDE_XML, slideDescription, slideDescription, imageId, left, top, width, height, slideDescription, HEADER_HEIGHT, slideTitle)
+	for _, link := range slide.Links {
+		builder.WriteString(getLinkXml(link))
+	}
+	builder.WriteString(`</p:spTree></p:cSld><p:clrMapOvr><a:masterClrMapping /></p:clrMapOvr></p:sld>`)
+	return builder.String()
 }
 
 func getPresentationXmlRels(slideFileNames []string) string {
@@ -113,7 +155,7 @@ func getPresentationXml(slideFileNames []string) string {
 	builder.WriteString("</p:sldIdLst>")
 
 	builder.WriteString(fmt.Sprintf(
-		`<p:sldSz cx="%d" cy="%d" type="screen4x3" /><p:notesSz cx="6858000" cy="9144000" /><p:defaultTextStyle><a:defPPr><a:defRPr lang="en-US" /></a:defPPr><a:lvl1pPr marL="0" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl1pPr><a:lvl2pPr marL="457200" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl2pPr><a:lvl3pPr marL="914400" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl3pPr><a:lvl4pPr marL="1371600" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl4pPr><a:lvl5pPr marL="1828800" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl5pPr><a:lvl6pPr marL="2286000" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl6pPr><a:lvl7pPr marL="2743200" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl7pPr><a:lvl8pPr marL="3200400" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl8pPr><a:lvl9pPr marL="3657600" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl9pPr></p:defaultTextStyle><p:extLst><p:ext uri="{EFAFB233-063F-42B5-8137-9DF3F51BA10A}"><p15:sldGuideLst xmlns:p15="http://schemas.microsoft.com/office/powerpoint/2012/main"><p15:guide id="1" orient="horz" pos="2160"><p15:clr><a:srgbClr val="A4A3A4" /></p15:clr></p15:guide><p15:guide id="2" pos="2880"><p15:clr><a:srgbClr val="A4A3A4" /></p15:clr></p15:guide></p15:sldGuideLst></p:ext></p:extLst></p:presentation>`,
+		`<p:sldSz cx="%d" cy="%d" /><p:notesSz cx="6858000" cy="9144000" /><p:defaultTextStyle><a:defPPr><a:defRPr lang="en-US" /></a:defPPr><a:lvl1pPr marL="0" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl1pPr><a:lvl2pPr marL="457200" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl2pPr><a:lvl3pPr marL="914400" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl3pPr><a:lvl4pPr marL="1371600" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl4pPr><a:lvl5pPr marL="1828800" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl5pPr><a:lvl6pPr marL="2286000" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl6pPr><a:lvl7pPr marL="2743200" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl7pPr><a:lvl8pPr marL="3200400" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl8pPr><a:lvl9pPr marL="3657600" algn="l" defTabSz="457200" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1"><a:defRPr sz="1800" kern="1200"><a:solidFill><a:schemeClr val="tx1" /></a:solidFill><a:latin typeface="+mn-lt" /><a:ea typeface="+mn-ea" /><a:cs typeface="+mn-cs" /></a:defRPr></a:lvl9pPr></p:defaultTextStyle><p:extLst><p:ext uri="{EFAFB233-063F-42B5-8137-9DF3F51BA10A}"><p15:sldGuideLst xmlns:p15="http://schemas.microsoft.com/office/powerpoint/2012/main"><p15:guide id="1" orient="horz" pos="2160"><p15:clr><a:srgbClr val="A4A3A4" /></p15:clr></p15:guide><p15:guide id="2" pos="2880"><p15:clr><a:srgbClr val="A4A3A4" /></p15:clr></p15:guide></p15:sldGuideLst></p:ext></p:extLst></p:presentation>`,
 		SLIDE_WIDTH,
 		SLIDE_HEIGHT,
 	))
@@ -196,5 +238,28 @@ func getAppXml(slides []*Slide, d2version string) string {
 	builder.WriteString(`<HyperlinksChanged>false</HyperlinksChanged>`)
 	builder.WriteString(fmt.Sprintf(`<AppVersion>%s</AppVersion>`, d2version))
 	builder.WriteString(`</Properties>`)
+	return builder.String()
+}
+
+func getLinkXml(link *Link) string {
+	var builder strings.Builder
+
+	builder.WriteString("<p:sp><p:nvSpPr>")
+	builder.WriteString(fmt.Sprintf(`<p:cNvPr id="%d" name="%s">`, link.Index, link.Tooltip))
+	var linkAction string
+	if !link.isExternal() {
+		linkAction = "ppaction://hlinksldjump"
+	}
+	builder.WriteString(
+		fmt.Sprintf(`<a:hlinkClick r:id="%s" action="%s" tooltip="%s" history="1" />`,
+			link.Id,
+			linkAction,
+			link.Tooltip,
+		),
+	)
+	builder.WriteString("</p:cNvPr><p:cNvSpPr /><p:nvPr /></p:nvSpPr><p:spPr><a:xfrm>")
+	builder.WriteString(fmt.Sprintf(`<a:off x="%d" y="%d" />`, link.Left, link.Top))
+	builder.WriteString(fmt.Sprintf(`<a:ext cx="%d" cy="%d" />`, link.Width, link.Height))
+	builder.WriteString(`</a:xfrm><a:prstGeom prst="rect"><a:avLst /></a:prstGeom><a:noFill /><a:ln><a:noFill /></a:ln></p:spPr></p:sp>`)
 	return builder.String()
 }

@@ -83,6 +83,8 @@ var genPNGScript string
 
 const pngPrefix = "data:image/png;base64,"
 
+// ConvertSVG converts the given SVG into a PNG.
+// Note that the resulting PNG has 2x the size (width and height) of the original SVG (see generate_png.js)
 func ConvertSVG(ms *xmain.State, page playwright.Page, svg []byte) ([]byte, error) {
 	cancel := background.Repeat(func() {
 		ms.Log.Info.Printf("converting to PNG...")

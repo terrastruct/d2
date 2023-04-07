@@ -16,6 +16,8 @@ import (
 	"fmt"
 	"image/png"
 	"os"
+
+	"oss.terrastruct.com/d2/d2target"
 )
 
 type Presentation struct {
@@ -29,12 +31,41 @@ type Presentation struct {
 }
 
 type Slide struct {
-	BoardPath   []string
-	Image       []byte
-	ImageWidth  int
-	ImageHeight int
-	ImageTop    int
-	ImageLeft   int
+	BoardPath        []string
+	Links            []*Link
+	Image            []byte
+	ImageId          string
+	ImageWidth       int
+	ImageHeight      int
+	ImageTop         int
+	ImageLeft        int
+	ImageScaleFactor float64
+}
+
+func (s *Slide) AddLink(link *Link) {
+	link.Index = len(s.Links)
+	s.Links = append(s.Links, link)
+	link.Id = fmt.Sprintf("link%d", len(s.Links))
+	link.Height *= int(s.ImageScaleFactor)
+	link.Width *= int(s.ImageScaleFactor)
+	link.Top = s.ImageTop + int(float64(link.Top)*s.ImageScaleFactor)
+	link.Left = s.ImageLeft + int(float64(link.Left)*s.ImageScaleFactor)
+}
+
+type Link struct {
+	Id          string
+	Index       int
+	Top         int
+	Left        int
+	Width       int
+	Height      int
+	SlideIndex  int
+	ExternalUrl string
+	Tooltip     string
+}
+
+func (l *Link) isExternal() bool {
+	return l.ExternalUrl != ""
 }
 
 func NewPresentation(title, description, subject, creator, d2Version string) *Presentation {
@@ -47,15 +78,15 @@ func NewPresentation(title, description, subject, creator, d2Version string) *Pr
 	}
 }
 
-func (p *Presentation) AddSlide(pngContent []byte, boardPath []string) error {
+func (p *Presentation) AddSlide(pngContent []byte, diagram *d2target.Diagram, boardPath []string) (*Slide, error) {
 	src, err := png.Decode(bytes.NewReader(pngContent))
 	if err != nil {
-		return fmt.Errorf("error decoding PNG image: %v", err)
+		return nil, fmt.Errorf("error decoding PNG image: %v", err)
 	}
-
-	var width, height int
 	srcSize := src.Bounds().Size()
 	srcWidth, srcHeight := float64(srcSize.X), float64(srcSize.Y)
+
+	var width, height int
 
 	// compute the size and position to fit the slide
 	// if the image is wider than taller and its aspect ratio is, at least, the same as the available image space aspect ratio
@@ -73,22 +104,24 @@ func (p *Presentation) AddSlide(pngContent []byte, boardPath []string) error {
 		height = IMAGE_HEIGHT
 		width = int(float64(height) * (srcWidth / srcHeight))
 	}
-	top := (IMAGE_HEIGHT - height) / 2
+	top := HEADER_HEIGHT + ((IMAGE_HEIGHT - height) / 2)
 	left := (SLIDE_WIDTH - width) / 2
 
 	slide := &Slide{
-		BoardPath:   make([]string, len(boardPath)),
-		Image:       pngContent,
-		ImageWidth:  width,
-		ImageHeight: height,
-		ImageTop:    top,
-		ImageLeft:   left,
+		BoardPath:        make([]string, len(boardPath)),
+		ImageId:          fmt.Sprintf("slide%dImage", len(p.Slides)+1),
+		Image:            pngContent,
+		ImageWidth:       width,
+		ImageHeight:      height,
+		ImageTop:         top,
+		ImageLeft:        left,
+		ImageScaleFactor: float64(width) / srcWidth,
 	}
 	// it must copy the board path to avoid slice reference issues
 	copy(slide.BoardPath, boardPath)
 
 	p.Slides = append(p.Slides, slide)
-	return nil
+	return slide, nil
 }
 
 func (p *Presentation) SaveTo(filePath string) error {
@@ -106,11 +139,10 @@ func (p *Presentation) SaveTo(filePath string) error {
 
 	var slideFileNames []string
 	for i, slide := range p.Slides {
-		imageId := fmt.Sprintf("slide%dImage", i+1)
 		slideFileName := fmt.Sprintf("slide%d", i+1)
 		slideFileNames = append(slideFileNames, slideFileName)
 
-		imageWriter, err := zipWriter.Create(fmt.Sprintf("ppt/media/%s.png", imageId))
+		imageWriter, err := zipWriter.Create(fmt.Sprintf("ppt/media/%s.png", slide.ImageId))
 		if err != nil {
 			return err
 		}
@@ -119,7 +151,7 @@ func (p *Presentation) SaveTo(filePath string) error {
 			return err
 		}
 
-		err = addFile(zipWriter, fmt.Sprintf("ppt/slides/_rels/%s.xml.rels", slideFileName), getRelsSlideXml(imageId))
+		err = addFile(zipWriter, fmt.Sprintf("ppt/slides/_rels/%s.xml.rels", slideFileName), getRelsSlideXml(slide))
 		if err != nil {
 			return err
 		}
@@ -127,7 +159,7 @@ func (p *Presentation) SaveTo(filePath string) error {
 		err = addFile(
 			zipWriter,
 			fmt.Sprintf("ppt/slides/%s.xml", slideFileName),
-			getSlideXml(slide.BoardPath, imageId, slide.ImageTop, slide.ImageLeft, slide.ImageWidth, slide.ImageHeight),
+			getSlideXml(slide),
 		)
 		if err != nil {
 			return err
