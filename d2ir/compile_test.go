@@ -19,6 +19,7 @@ func TestCompile(t *testing.T) {
 	t.Parallel()
 
 	t.Run("fields", testCompileFields)
+	t.Run("classes", testCompileClasses)
 	t.Run("edges", testCompileEdges)
 	t.Run("layers", testCompileLayers)
 	t.Run("scenarios", testCompileScenarios)
@@ -101,10 +102,12 @@ func makeScalar(v interface{}) *d2ir.Scalar {
 		bv := &big.Rat{}
 		bv.SetFloat64(v)
 		s.Value = &d2ast.Number{
+			Raw:   fmt.Sprint(v),
 			Value: bv,
 		}
 	case int:
 		s.Value = &d2ast.Number{
+			Raw:   fmt.Sprint(v),
 			Value: big.NewRat(int64(v), 1),
 		}
 	case string:
@@ -498,6 +501,157 @@ steps: {
 				assertQuery(t, m, 0, 0, nil, "steps.nuclear.scenarios.bavarian.p.q.z")
 				assertQuery(t, m, 0, 0, nil, "steps.nuclear.scenarios.bavarian.quiche")
 				assertQuery(t, m, 0, 0, nil, "steps.nuclear.scenarios.bavarian.perseverance")
+			},
+		},
+	}
+	runa(t, tca)
+}
+
+func testCompileClasses(t *testing.T) {
+	t.Parallel()
+	tca := []testCase{
+		{
+			name: "basic",
+			run: func(t testing.TB) {
+				_, err := compile(t, `x
+classes: {
+  mango: {
+    style.fill: orange
+  }
+}
+`)
+				assert.Success(t, err)
+			},
+		},
+		{
+			name: "nonroot",
+			run: func(t testing.TB) {
+				_, err := compile(t, `x: {
+  classes: {
+    mango: {
+      style.fill: orange
+    }
+  }
+}
+`)
+				assert.ErrorString(t, err, `TestCompile/classes/nonroot.d2:2:3: classes is only allowed at a board root`)
+			},
+		},
+		{
+			name: "merge",
+			run: func(t testing.TB) {
+				m, err := compile(t, `classes: {
+  mango: {
+    style.fill: orange
+		width: 10
+  }
+}
+layers: {
+  hawaii: {
+    classes: {
+      mango: {
+        width: 9000
+      }
+    }
+  }
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 3, 0, nil, "layers.hawaii.classes.mango")
+				assertQuery(t, m, 0, 0, "orange", "layers.hawaii.classes.mango.style.fill")
+				assertQuery(t, m, 0, 0, 9000, "layers.hawaii.classes.mango.width")
+			},
+		},
+		{
+			name: "nested",
+			run: func(t testing.TB) {
+				m, err := compile(t, `classes: {
+  mango: {
+    style.fill: orange
+  }
+}
+layers: {
+  hawaii: {
+		layers: {
+      maui: {
+        x
+      }
+    }
+  }
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 3, 0, nil, "layers.hawaii.classes")
+				assertQuery(t, m, 3, 0, nil, "layers.hawaii.layers.maui.classes")
+			},
+		},
+		{
+			name: "inherited",
+			run: func(t testing.TB) {
+				m, err := compile(t, `classes: {
+  mango: {
+    style.fill: orange
+  }
+}
+scenarios: {
+  hawaii: {
+		steps: {
+      1: {
+        classes: {
+          cherry: {
+            style.fill: red
+          }
+        }
+        x
+      }
+      2: {
+        y
+      }
+      3: {
+        classes: {
+          cherry: {
+            style.fill: blue
+          }
+        }
+        y
+      }
+      4: {
+        layers: {
+          deep: {
+            x
+          }
+        }
+        x
+      }
+    }
+  }
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 3, 0, nil, "scenarios.hawaii.classes")
+				assertQuery(t, m, 2, 0, nil, "scenarios.hawaii.steps.2.classes.mango")
+				assertQuery(t, m, 2, 0, nil, "scenarios.hawaii.steps.2.classes.cherry")
+				assertQuery(t, m, 0, 0, "blue", "scenarios.hawaii.steps.4.classes.cherry.style.fill")
+				assertQuery(t, m, 0, 0, "blue", "scenarios.hawaii.steps.4.layers.deep.classes.cherry.style.fill")
+			},
+		},
+		{
+			name: "layer-modify",
+			run: func(t testing.TB) {
+				m, err := compile(t, `classes: {
+  orb: {
+    style.fill: yellow
+  }
+}
+layers: {
+  x: {
+    classes.orb.style.stroke: red
+  }
+}
+`)
+				assert.Success(t, err)
+				assertQuery(t, m, 0, 0, "yellow", "layers.x.classes.orb.style.fill")
+				assertQuery(t, m, 0, 0, "red", "layers.x.classes.orb.style.stroke")
 			},
 		},
 	}

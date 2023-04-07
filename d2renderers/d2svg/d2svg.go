@@ -515,7 +515,12 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 	if connection.Opacity != 1.0 {
 		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
 	}
-	fmt.Fprintf(writer, `<g id="%s"%s>`, svg.EscapeText(connection.ID), opacityStyle)
+
+	classStr := ""
+	if len(connection.Classes) > 0 {
+		classStr = fmt.Sprintf(` class="%s"`, strings.Join(connection.Classes, " "))
+	}
+	fmt.Fprintf(writer, `<g id="%s"%s%s>`, svg.EscapeText(connection.ID), opacityStyle, classStr)
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(false, connection)
@@ -919,7 +924,11 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 	if targetShape.BorderRadius != 0 && (targetShape.Type == d2target.ShapeClass || targetShape.Type == d2target.ShapeSQLTable) {
 		fmt.Fprint(writer, clipPathForBorderRadius(diagramHash, targetShape))
 	}
-	fmt.Fprintf(writer, `<g id="%s"%s>`, svg.EscapeText(targetShape.ID), opacityStyle)
+	classStr := ""
+	if len(targetShape.Classes) > 0 {
+		classStr = fmt.Sprintf(` class="%s"`, strings.Join(targetShape.Classes, " "))
+	}
+	fmt.Fprintf(writer, `<g id="%s"%s%s>`, svg.EscapeText(targetShape.ID), opacityStyle, classStr)
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)

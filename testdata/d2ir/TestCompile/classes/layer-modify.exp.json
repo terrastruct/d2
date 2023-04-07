@@ -1,0 +1,1583 @@
+{
+  "fields": [
+    {
+      "name": "classes",
+      "composite": {
+        "fields": [
+          {
+            "name": "orb",
+            "composite": {
+              "fields": [
+                {
+                  "name": "style",
+                  "composite": {
+                    "fields": [
+                      {
+                        "name": "fill",
+                        "primary": {
+                          "value": {
+                            "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
+                            "value": [
+                              {
+                                "string": "yellow",
+                                "raw_string": "yellow"
+                              }
+                            ]
+                          }
+                        },
+                        "references": [
+                          {
+                            "string": {
+                              "range": "TestCompile/classes/layer-modify.d2,2:10:30-2:14:34",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:14:34",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:9:29",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/layer-modify.d2,2:10:30-2:14:34",
+                                    "value": [
+                                      {
+                                        "string": "fill",
+                                        "raw_string": "fill"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:22:42",
+                                "key": {
+                                  "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:14:34",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:9:29",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/classes/layer-modify.d2,2:10:30-2:14:34",
+                                        "value": [
+                                          {
+                                            "string": "fill",
+                                            "raw_string": "fill"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
+                                    "value": [
+                                      {
+                                        "string": "yellow",
+                                        "raw_string": "yellow"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "edges": null
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:9:29",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:14:34",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:9:29",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/classes/layer-modify.d2,2:10:30-2:14:34",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:22:42",
+                          "key": {
+                            "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:14:34",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:9:29",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/layer-modify.d2,2:10:30-2:14:34",
+                                  "value": [
+                                    {
+                                      "string": "fill",
+                                      "raw_string": "fill"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
+                              "value": [
+                                {
+                                  "string": "yellow",
+                                  "raw_string": "yellow"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/classes/layer-modify.d2,1:2:13-1:5:16",
+                  "value": [
+                    {
+                      "string": "orb",
+                      "raw_string": "orb"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/classes/layer-modify.d2,1:2:13-1:5:16",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/classes/layer-modify.d2,1:2:13-1:5:16",
+                        "value": [
+                          {
+                            "string": "orb",
+                            "raw_string": "orb"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/classes/layer-modify.d2,1:2:13-3:3:46",
+                    "key": {
+                      "range": "TestCompile/classes/layer-modify.d2,1:2:13-1:5:16",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/classes/layer-modify.d2,1:2:13-1:5:16",
+                            "value": [
+                              {
+                                "string": "orb",
+                                "raw_string": "orb"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/classes/layer-modify.d2,1:7:18-3:2:45",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:22:42",
+                              "key": {
+                                "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:14:34",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:9:29",
+                                      "value": [
+                                        {
+                                          "string": "style",
+                                          "raw_string": "style"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/layer-modify.d2,2:10:30-2:14:34",
+                                      "value": [
+                                        {
+                                          "string": "fill",
+                                          "raw_string": "fill"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
+                                  "value": [
+                                    {
+                                      "string": "yellow",
+                                      "raw_string": "yellow"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/classes/layer-modify.d2,0:0:0-0:7:7",
+            "value": [
+              {
+                "string": "classes",
+                "raw_string": "classes"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/classes/layer-modify.d2,0:0:0-0:7:7",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/classes/layer-modify.d2,0:0:0-0:7:7",
+                  "value": [
+                    {
+                      "string": "classes",
+                      "raw_string": "classes"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/classes/layer-modify.d2,0:0:0-4:1:48",
+              "key": {
+                "range": "TestCompile/classes/layer-modify.d2,0:0:0-0:7:7",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/classes/layer-modify.d2,0:0:0-0:7:7",
+                      "value": [
+                        {
+                          "string": "classes",
+                          "raw_string": "classes"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/classes/layer-modify.d2,0:9:9-4:0:47",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/classes/layer-modify.d2,1:2:13-3:3:46",
+                        "key": {
+                          "range": "TestCompile/classes/layer-modify.d2,1:2:13-1:5:16",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/classes/layer-modify.d2,1:2:13-1:5:16",
+                                "value": [
+                                  {
+                                    "string": "orb",
+                                    "raw_string": "orb"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "map": {
+                            "range": "TestCompile/classes/layer-modify.d2,1:7:18-3:2:45",
+                            "nodes": [
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:22:42",
+                                  "key": {
+                                    "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:14:34",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:9:29",
+                                          "value": [
+                                            {
+                                              "string": "style",
+                                              "raw_string": "style"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/layer-modify.d2,2:10:30-2:14:34",
+                                          "value": [
+                                            {
+                                              "string": "fill",
+                                              "raw_string": "fill"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
+                                      "value": [
+                                        {
+                                          "string": "yellow",
+                                          "raw_string": "yellow"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "layers",
+      "composite": {
+        "fields": [
+          {
+            "name": "x",
+            "composite": {
+              "fields": [
+                {
+                  "name": "classes",
+                  "composite": {
+                    "fields": [
+                      {
+                        "name": "orb",
+                        "composite": {
+                          "fields": [
+                            {
+                              "name": "style",
+                              "composite": {
+                                "fields": [
+                                  {
+                                    "name": "fill",
+                                    "primary": {
+                                      "value": {
+                                        "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
+                                        "value": [
+                                          {
+                                            "string": "yellow",
+                                            "raw_string": "yellow"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "references": [
+                                      {
+                                        "string": {
+                                          "range": "TestCompile/classes/layer-modify.d2,2:10:30-2:14:34",
+                                          "value": [
+                                            {
+                                              "string": "fill",
+                                              "raw_string": "fill"
+                                            }
+                                          ]
+                                        },
+                                        "key_path": {
+                                          "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:14:34",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:9:29",
+                                                "value": [
+                                                  {
+                                                    "string": "style",
+                                                    "raw_string": "style"
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "unquoted_string": {
+                                                "range": "TestCompile/classes/layer-modify.d2,2:10:30-2:14:34",
+                                                "value": [
+                                                  {
+                                                    "string": "fill",
+                                                    "raw_string": "fill"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "context": {
+                                          "edge": null,
+                                          "key": {
+                                            "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:22:42",
+                                            "key": {
+                                              "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:14:34",
+                                              "path": [
+                                                {
+                                                  "unquoted_string": {
+                                                    "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:9:29",
+                                                    "value": [
+                                                      {
+                                                        "string": "style",
+                                                        "raw_string": "style"
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "unquoted_string": {
+                                                    "range": "TestCompile/classes/layer-modify.d2,2:10:30-2:14:34",
+                                                    "value": [
+                                                      {
+                                                        "string": "fill",
+                                                        "raw_string": "fill"
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "primary": {},
+                                            "value": {
+                                              "unquoted_string": {
+                                                "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
+                                                "value": [
+                                                  {
+                                                    "string": "yellow",
+                                                    "raw_string": "yellow"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "name": "stroke",
+                                    "primary": {
+                                      "value": {
+                                        "range": "TestCompile/classes/layer-modify.d2,7:30:96-7:33:99",
+                                        "value": [
+                                          {
+                                            "string": "red",
+                                            "raw_string": "red"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "references": [
+                                      {
+                                        "string": {
+                                          "range": "TestCompile/classes/layer-modify.d2,7:22:88-7:28:94",
+                                          "value": [
+                                            {
+                                              "string": "stroke",
+                                              "raw_string": "stroke"
+                                            }
+                                          ]
+                                        },
+                                        "key_path": {
+                                          "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:28:94",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:11:77",
+                                                "value": [
+                                                  {
+                                                    "string": "classes",
+                                                    "raw_string": "classes"
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "unquoted_string": {
+                                                "range": "TestCompile/classes/layer-modify.d2,7:12:78-7:15:81",
+                                                "value": [
+                                                  {
+                                                    "string": "orb",
+                                                    "raw_string": "orb"
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "unquoted_string": {
+                                                "range": "TestCompile/classes/layer-modify.d2,7:16:82-7:21:87",
+                                                "value": [
+                                                  {
+                                                    "string": "style",
+                                                    "raw_string": "style"
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "unquoted_string": {
+                                                "range": "TestCompile/classes/layer-modify.d2,7:22:88-7:28:94",
+                                                "value": [
+                                                  {
+                                                    "string": "stroke",
+                                                    "raw_string": "stroke"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "context": {
+                                          "edge": null,
+                                          "key": {
+                                            "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:33:99",
+                                            "key": {
+                                              "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:28:94",
+                                              "path": [
+                                                {
+                                                  "unquoted_string": {
+                                                    "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:11:77",
+                                                    "value": [
+                                                      {
+                                                        "string": "classes",
+                                                        "raw_string": "classes"
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "unquoted_string": {
+                                                    "range": "TestCompile/classes/layer-modify.d2,7:12:78-7:15:81",
+                                                    "value": [
+                                                      {
+                                                        "string": "orb",
+                                                        "raw_string": "orb"
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "unquoted_string": {
+                                                    "range": "TestCompile/classes/layer-modify.d2,7:16:82-7:21:87",
+                                                    "value": [
+                                                      {
+                                                        "string": "style",
+                                                        "raw_string": "style"
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "unquoted_string": {
+                                                    "range": "TestCompile/classes/layer-modify.d2,7:22:88-7:28:94",
+                                                    "value": [
+                                                      {
+                                                        "string": "stroke",
+                                                        "raw_string": "stroke"
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "primary": {},
+                                            "value": {
+                                              "unquoted_string": {
+                                                "range": "TestCompile/classes/layer-modify.d2,7:30:96-7:33:99",
+                                                "value": [
+                                                  {
+                                                    "string": "red",
+                                                    "raw_string": "red"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                ],
+                                "edges": null
+                              },
+                              "references": [
+                                {
+                                  "string": {
+                                    "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:9:29",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  },
+                                  "key_path": {
+                                    "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:14:34",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:9:29",
+                                          "value": [
+                                            {
+                                              "string": "style",
+                                              "raw_string": "style"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/layer-modify.d2,2:10:30-2:14:34",
+                                          "value": [
+                                            {
+                                              "string": "fill",
+                                              "raw_string": "fill"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "context": {
+                                    "edge": null,
+                                    "key": {
+                                      "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:22:42",
+                                      "key": {
+                                        "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:14:34",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:9:29",
+                                              "value": [
+                                                {
+                                                  "string": "style",
+                                                  "raw_string": "style"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/classes/layer-modify.d2,2:10:30-2:14:34",
+                                              "value": [
+                                                {
+                                                  "string": "fill",
+                                                  "raw_string": "fill"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "primary": {},
+                                      "value": {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
+                                          "value": [
+                                            {
+                                              "string": "yellow",
+                                              "raw_string": "yellow"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                {
+                                  "string": {
+                                    "range": "TestCompile/classes/layer-modify.d2,7:16:82-7:21:87",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  },
+                                  "key_path": {
+                                    "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:28:94",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:11:77",
+                                          "value": [
+                                            {
+                                              "string": "classes",
+                                              "raw_string": "classes"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/layer-modify.d2,7:12:78-7:15:81",
+                                          "value": [
+                                            {
+                                              "string": "orb",
+                                              "raw_string": "orb"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/layer-modify.d2,7:16:82-7:21:87",
+                                          "value": [
+                                            {
+                                              "string": "style",
+                                              "raw_string": "style"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/layer-modify.d2,7:22:88-7:28:94",
+                                          "value": [
+                                            {
+                                              "string": "stroke",
+                                              "raw_string": "stroke"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "context": {
+                                    "edge": null,
+                                    "key": {
+                                      "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:33:99",
+                                      "key": {
+                                        "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:28:94",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:11:77",
+                                              "value": [
+                                                {
+                                                  "string": "classes",
+                                                  "raw_string": "classes"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/classes/layer-modify.d2,7:12:78-7:15:81",
+                                              "value": [
+                                                {
+                                                  "string": "orb",
+                                                  "raw_string": "orb"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/classes/layer-modify.d2,7:16:82-7:21:87",
+                                              "value": [
+                                                {
+                                                  "string": "style",
+                                                  "raw_string": "style"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/classes/layer-modify.d2,7:22:88-7:28:94",
+                                              "value": [
+                                                {
+                                                  "string": "stroke",
+                                                  "raw_string": "stroke"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "primary": {},
+                                      "value": {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/layer-modify.d2,7:30:96-7:33:99",
+                                          "value": [
+                                            {
+                                              "string": "red",
+                                              "raw_string": "red"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "edges": null
+                        },
+                        "references": [
+                          {
+                            "string": {
+                              "range": "TestCompile/classes/layer-modify.d2,1:2:13-1:5:16",
+                              "value": [
+                                {
+                                  "string": "orb",
+                                  "raw_string": "orb"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/classes/layer-modify.d2,1:2:13-1:5:16",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/layer-modify.d2,1:2:13-1:5:16",
+                                    "value": [
+                                      {
+                                        "string": "orb",
+                                        "raw_string": "orb"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/classes/layer-modify.d2,1:2:13-3:3:46",
+                                "key": {
+                                  "range": "TestCompile/classes/layer-modify.d2,1:2:13-1:5:16",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/classes/layer-modify.d2,1:2:13-1:5:16",
+                                        "value": [
+                                          {
+                                            "string": "orb",
+                                            "raw_string": "orb"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "map": {
+                                    "range": "TestCompile/classes/layer-modify.d2,1:7:18-3:2:45",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:22:42",
+                                          "key": {
+                                            "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:14:34",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:9:29",
+                                                  "value": [
+                                                    {
+                                                      "string": "style",
+                                                      "raw_string": "style"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "TestCompile/classes/layer-modify.d2,2:10:30-2:14:34",
+                                                  "value": [
+                                                    {
+                                                      "string": "fill",
+                                                      "raw_string": "fill"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
+                                              "value": [
+                                                {
+                                                  "string": "yellow",
+                                                  "raw_string": "yellow"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "string": {
+                              "range": "TestCompile/classes/layer-modify.d2,7:12:78-7:15:81",
+                              "value": [
+                                {
+                                  "string": "orb",
+                                  "raw_string": "orb"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:28:94",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:11:77",
+                                    "value": [
+                                      {
+                                        "string": "classes",
+                                        "raw_string": "classes"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/layer-modify.d2,7:12:78-7:15:81",
+                                    "value": [
+                                      {
+                                        "string": "orb",
+                                        "raw_string": "orb"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/layer-modify.d2,7:16:82-7:21:87",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/layer-modify.d2,7:22:88-7:28:94",
+                                    "value": [
+                                      {
+                                        "string": "stroke",
+                                        "raw_string": "stroke"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:33:99",
+                                "key": {
+                                  "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:28:94",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:11:77",
+                                        "value": [
+                                          {
+                                            "string": "classes",
+                                            "raw_string": "classes"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/classes/layer-modify.d2,7:12:78-7:15:81",
+                                        "value": [
+                                          {
+                                            "string": "orb",
+                                            "raw_string": "orb"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/classes/layer-modify.d2,7:16:82-7:21:87",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/classes/layer-modify.d2,7:22:88-7:28:94",
+                                        "value": [
+                                          {
+                                            "string": "stroke",
+                                            "raw_string": "stroke"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/layer-modify.d2,7:30:96-7:33:99",
+                                    "value": [
+                                      {
+                                        "string": "red",
+                                        "raw_string": "red"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "edges": null
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/classes/layer-modify.d2,0:0:0-0:7:7",
+                        "value": [
+                          {
+                            "string": "classes",
+                            "raw_string": "classes"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/classes/layer-modify.d2,0:0:0-0:7:7",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/classes/layer-modify.d2,0:0:0-0:7:7",
+                              "value": [
+                                {
+                                  "string": "classes",
+                                  "raw_string": "classes"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/classes/layer-modify.d2,0:0:0-4:1:48",
+                          "key": {
+                            "range": "TestCompile/classes/layer-modify.d2,0:0:0-0:7:7",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/layer-modify.d2,0:0:0-0:7:7",
+                                  "value": [
+                                    {
+                                      "string": "classes",
+                                      "raw_string": "classes"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": "TestCompile/classes/layer-modify.d2,0:9:9-4:0:47",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": "TestCompile/classes/layer-modify.d2,1:2:13-3:3:46",
+                                    "key": {
+                                      "range": "TestCompile/classes/layer-modify.d2,1:2:13-1:5:16",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "TestCompile/classes/layer-modify.d2,1:2:13-1:5:16",
+                                            "value": [
+                                              {
+                                                "string": "orb",
+                                                "raw_string": "orb"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {
+                                      "map": {
+                                        "range": "TestCompile/classes/layer-modify.d2,1:7:18-3:2:45",
+                                        "nodes": [
+                                          {
+                                            "map_key": {
+                                              "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:22:42",
+                                              "key": {
+                                                "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:14:34",
+                                                "path": [
+                                                  {
+                                                    "unquoted_string": {
+                                                      "range": "TestCompile/classes/layer-modify.d2,2:4:24-2:9:29",
+                                                      "value": [
+                                                        {
+                                                          "string": "style",
+                                                          "raw_string": "style"
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  {
+                                                    "unquoted_string": {
+                                                      "range": "TestCompile/classes/layer-modify.d2,2:10:30-2:14:34",
+                                                      "value": [
+                                                        {
+                                                          "string": "fill",
+                                                          "raw_string": "fill"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              },
+                                              "primary": {},
+                                              "value": {
+                                                "unquoted_string": {
+                                                  "range": "TestCompile/classes/layer-modify.d2,2:16:36-2:22:42",
+                                                  "value": [
+                                                    {
+                                                      "string": "yellow",
+                                                      "raw_string": "yellow"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/classes/layer-modify.d2,6:2:61-6:3:62",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/classes/layer-modify.d2,6:2:61-6:3:62",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/classes/layer-modify.d2,6:2:61-6:3:62",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/classes/layer-modify.d2,6:2:61-8:3:103",
+                    "key": {
+                      "range": "TestCompile/classes/layer-modify.d2,6:2:61-6:3:62",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/classes/layer-modify.d2,6:2:61-6:3:62",
+                            "value": [
+                              {
+                                "string": "x",
+                                "raw_string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/classes/layer-modify.d2,6:5:64-8:2:102",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:33:99",
+                              "key": {
+                                "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:28:94",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:11:77",
+                                      "value": [
+                                        {
+                                          "string": "classes",
+                                          "raw_string": "classes"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/layer-modify.d2,7:12:78-7:15:81",
+                                      "value": [
+                                        {
+                                          "string": "orb",
+                                          "raw_string": "orb"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/layer-modify.d2,7:16:82-7:21:87",
+                                      "value": [
+                                        {
+                                          "string": "style",
+                                          "raw_string": "style"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/layer-modify.d2,7:22:88-7:28:94",
+                                      "value": [
+                                        {
+                                          "string": "stroke",
+                                          "raw_string": "stroke"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/layer-modify.d2,7:30:96-7:33:99",
+                                  "value": [
+                                    {
+                                      "string": "red",
+                                      "raw_string": "red"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/classes/layer-modify.d2,5:0:49-5:6:55",
+            "value": [
+              {
+                "string": "layers",
+                "raw_string": "layers"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/classes/layer-modify.d2,5:0:49-5:6:55",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/classes/layer-modify.d2,5:0:49-5:6:55",
+                  "value": [
+                    {
+                      "string": "layers",
+                      "raw_string": "layers"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/classes/layer-modify.d2,5:0:49-9:1:105",
+              "key": {
+                "range": "TestCompile/classes/layer-modify.d2,5:0:49-5:6:55",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/classes/layer-modify.d2,5:0:49-5:6:55",
+                      "value": [
+                        {
+                          "string": "layers",
+                          "raw_string": "layers"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/classes/layer-modify.d2,5:8:57-9:0:104",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/classes/layer-modify.d2,6:2:61-8:3:103",
+                        "key": {
+                          "range": "TestCompile/classes/layer-modify.d2,6:2:61-6:3:62",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/classes/layer-modify.d2,6:2:61-6:3:62",
+                                "value": [
+                                  {
+                                    "string": "x",
+                                    "raw_string": "x"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "map": {
+                            "range": "TestCompile/classes/layer-modify.d2,6:5:64-8:2:102",
+                            "nodes": [
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:33:99",
+                                  "key": {
+                                    "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:28:94",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/layer-modify.d2,7:4:70-7:11:77",
+                                          "value": [
+                                            {
+                                              "string": "classes",
+                                              "raw_string": "classes"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/layer-modify.d2,7:12:78-7:15:81",
+                                          "value": [
+                                            {
+                                              "string": "orb",
+                                              "raw_string": "orb"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/layer-modify.d2,7:16:82-7:21:87",
+                                          "value": [
+                                            {
+                                              "string": "style",
+                                              "raw_string": "style"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/layer-modify.d2,7:22:88-7:28:94",
+                                          "value": [
+                                            {
+                                              "string": "stroke",
+                                              "raw_string": "stroke"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/layer-modify.d2,7:30:96-7:33:99",
+                                      "value": [
+                                        {
+                                          "string": "red",
+                                          "raw_string": "red"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

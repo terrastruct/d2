@@ -601,6 +601,18 @@ func (m *Map) EdgeCountRecursive() int {
 	return acc
 }
 
+func (m *Map) GetClassMap(name string) *Map {
+	root := RootMap(m)
+	classes := root.Map().GetField("classes")
+	if classes != nil && classes.Map() != nil {
+		class := classes.Map().GetField(name)
+		if class != nil && class.Map() != nil {
+			return class.Map()
+		}
+	}
+	return nil
+}
+
 func (m *Map) GetField(ida ...string) *Field {
 	for len(ida) > 0 && ida[0] == "_" {
 		m = ParentMap(m)
@@ -661,6 +673,10 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 
 	if head == "_" {
 		return nil, d2parser.Errorf(kp.Path[i].Unbox(), `parent "_" can only be used in the beginning of paths, e.g. "_.x"`)
+	}
+
+	if head == "classes" && NodeBoardKind(m) == "" {
+		return nil, d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head)
 	}
 
 	if findBoardKeyword(head) != -1 && NodeBoardKind(m) == "" {
@@ -933,6 +949,13 @@ func (m *Map) appendFieldReferences(i int, kp *d2ast.KeyPath, refctx *RefContext
 	if f.Map() != nil {
 		f.Map().appendFieldReferences(i+1, kp, refctx)
 	}
+}
+
+func RootMap(m *Map) *Map {
+	if m.Root() {
+		return m
+	}
+	return RootMap(ParentMap(m))
 }
 
 func ParentMap(n Node) *Map {

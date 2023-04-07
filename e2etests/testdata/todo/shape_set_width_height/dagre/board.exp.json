@@ -455,7 +455,7 @@
       "level": 1
     },
     {
-      "id": "class",
+      "id": "class2",
       "type": "class",
       "pos": {
         "x": 828,
@@ -513,7 +513,7 @@
         }
       ],
       "columns": null,
-      "label": "class",
+      "label": "class2",
       "fontSize": 20,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -521,7 +521,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 70,
+      "labelWidth": 85,
       "labelHeight": 31,
       "zIndex": 0,
       "level": 1,
@@ -877,11 +877,11 @@
   ],
   "connections": [
     {
-      "id": "(cloud -> class)[0]",
+      "id": "(cloud -> class2)[0]",
       "src": "cloud",
       "srcArrow": "none",
       "srcLabel": "",
-      "dst": "class",
+      "dst": "class2",
       "dstArrow": "triangle",
       "dstLabel": "",
       "opacity": 1,
@@ -938,8 +938,8 @@
       "zIndex": 0
     },
     {
-      "id": "(class -> tall cylinder)[0]",
-      "src": "class",
+      "id": "(class2 -> tall cylinder)[0]",
+      "src": "class2",
       "srcArrow": "none",
       "srcLabel": "",
       "dst": "tall cylinder",

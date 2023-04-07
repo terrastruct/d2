@@ -135,6 +135,10 @@ type Attributes struct {
 
 	GridRows    *Scalar `json:"gridRows,omitempty"`
 	GridColumns *Scalar `json:"gridColumns,omitempty"`
+
+	// These names are attached to the rendered elements in SVG
+	// so that users can target them however they like outside of D2
+	Classes []string `json:"classes,omitempty"`
 }
 
 // TODO references at the root scope should have their Scope set to root graph AST
@@ -1556,6 +1560,8 @@ var SimpleReservedKeywords = map[string]struct{}{
 	"left":         {},
 	"grid-rows":    {},
 	"grid-columns": {},
+	"class":        {},
+	"classes":      {},
 }
 
 // ReservedKeywordHolders are reserved keywords that are meaningless on its own and exist solely to hold a set of reserved keywords
