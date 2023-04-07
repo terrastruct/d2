@@ -55,14 +55,23 @@ func (p *Presentation) AddSlide(pngContent []byte, boardPath []string) error {
 
 	var width, height int
 	srcSize := src.Bounds().Size()
+	srcWidth, srcHeight := float64(srcSize.X), float64(srcSize.Y)
 
 	// compute the size and position to fit the slide
-	if srcSize.X > srcSize.Y {
-		width = IMAGE_WIDTH
-		height = int(float64(width) * (float64(srcSize.Y) / float64(srcSize.X)))
+	// if the image is wider than taller and its aspect ratio is, at least, the same as the available image space aspect ratio
+	// then, set the image width to the available space and compute the height
+	if srcWidth/srcHeight >= IMAGE_ASPECT_RATIO {
+		width = SLIDE_WIDTH
+		height = int(float64(width) * (srcHeight / srcWidth))
+		if height > IMAGE_HEIGHT {
+			// this would overflow with the title, so we need to adjust to use only IMAGE_WIDTH
+			width = IMAGE_WIDTH
+			height = int(float64(width) * (srcHeight / srcWidth))
+		}
 	} else {
+		// otherwise, this image could overflow the slide height/header
 		height = IMAGE_HEIGHT
-		width = int(float64(height) * (float64(srcSize.X) / float64(srcSize.Y)))
+		width = int(float64(height) * (srcWidth / srcHeight))
 	}
 	top := (IMAGE_HEIGHT - height) / 2
 	left := (SLIDE_WIDTH - width) / 2

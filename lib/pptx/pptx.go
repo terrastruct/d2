@@ -39,14 +39,15 @@ func addFile(zipFile *zip.Writer, filePath, content string) error {
 }
 
 // https://startbigthinksmall.wordpress.com/2010/01/04/points-inches-and-emus-measuring-units-in-office-open-xml/
-const SLIDE_WIDTH = 9144000
-const SLIDE_HEIGHT = 5143500
-const HEADER_HEIGHT = 392471
+const SLIDE_WIDTH = 9_144_000
+const SLIDE_HEIGHT = 5_143_500
+const HEADER_HEIGHT = 392_471
 
 const IMAGE_HEIGHT = SLIDE_HEIGHT - HEADER_HEIGHT
 
 // keep the right aspect ratio: SLIDE_WIDTH / SLIDE_HEIGHT = IMAGE_WIDTH / IMAGE_HEIGHT
-const IMAGE_WIDTH = IMAGE_HEIGHT * (SLIDE_WIDTH / SLIDE_HEIGHT)
+const IMAGE_WIDTH = 8_446_273
+const IMAGE_ASPECT_RATIO = float64(IMAGE_WIDTH) / float64(IMAGE_HEIGHT)
 
 const RELS_SLIDE_XML = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/slideLayout7.xml" /><Relationship Id="%s" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="../media/%s.png" /></Relationships>`
 
