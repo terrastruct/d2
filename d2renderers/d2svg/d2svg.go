@@ -2165,3 +2165,38 @@ func hash(s string) string {
 	h.Write([]byte(fmt.Sprintf("%s%s", s, secret)))
 	return fmt.Sprint(h.Sum32())
 }
+
+func RenderMultiboard(diagram *d2target.Diagram, opts *RenderOpts) ([][]byte, error) {
+	var boards [][]byte
+	for _, dl := range diagram.Layers {
+		childrenBoards, err := RenderMultiboard(dl, opts)
+		if err != nil {
+			return nil, err
+		}
+		boards = append(boards, childrenBoards...)
+	}
+	for _, dl := range diagram.Scenarios {
+		childrenBoards, err := RenderMultiboard(dl, opts)
+		if err != nil {
+			return nil, err
+		}
+		boards = append(boards, childrenBoards...)
+	}
+	for _, dl := range diagram.Steps {
+		childrenBoards, err := RenderMultiboard(dl, opts)
+		if err != nil {
+			return nil, err
+		}
+		boards = append(boards, childrenBoards...)
+	}
+
+	if !diagram.IsFolderOnly {
+		out, err := Render(diagram, opts)
+		if err != nil {
+			return boards, err
+		}
+		boards = append([][]byte{out}, boards...)
+		return boards, nil
+	}
+	return boards, nil
+}
