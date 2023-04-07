@@ -1549,8 +1549,13 @@ finally: {
     sequence: {
         shape: sequence_diagram
 		# items appear in this order
-        scorer
-        concept
+        scorer {
+					style.stroke: red
+					style.stroke-dash: 2
+				}
+        concept {
+					style.stroke-width: 6
+				}
         essayRubric
         item
         itemOutcome
