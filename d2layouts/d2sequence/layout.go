@@ -13,6 +13,33 @@ import (
 	"oss.terrastruct.com/d2/lib/label"
 )
 
+// Layout runs the sequence diagram layout engine on objects of shape sequence_diagram
+//
+// 1. Traverse graph from root, skip objects with shape not `sequence_diagram`
+// 2. Construct a sequence diagram from all descendant objects and edges
+// 3. Remove those objects and edges from the main graph
+// 4. Run layout on sequence diagrams
+// 5. Set the resulting dimensions to the main graph shape
+// 6. Run core layouts (still without sequence diagram innards)
+// 7. Put back sequence diagram innards in correct location
+func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) error {
+	sequenceDiagrams, objectOrder, edgeOrder, err := WithoutSequenceDiagrams(ctx, g)
+	if err != nil {
+		return err
+	}
+
+	if g.Root.IsSequenceDiagram() {
+		// the sequence diagram is the only layout engine if the whole diagram is
+		// shape: sequence_diagram
+		g.Root.TopLeft = geo.NewPoint(0, 0)
+	} else if err := layout(ctx, g); err != nil {
+		return err
+	}
+
+	cleanup(g, sequenceDiagrams, objectOrder, edgeOrder)
+	return nil
+}
+
 func WithoutSequenceDiagrams(ctx context.Context, g *d2graph.Graph) (map[string]*sequenceDiagram, map[string]int, map[string]int, error) {
 	objectsToRemove := make(map[*d2graph.Object]struct{})
 	edgesToRemove := make(map[*d2graph.Edge]struct{})
@@ -67,33 +94,6 @@ func WithoutSequenceDiagrams(ctx context.Context, g *d2graph.Graph) (map[string]
 	g.Objects = layoutObjects
 
 	return sequenceDiagrams, objectOrder, edgeOrder, nil
-}
-
-// Layout runs the sequence diagram layout engine on objects of shape sequence_diagram
-//
-// 1. Traverse graph from root, skip objects with shape not `sequence_diagram`
-// 2. Construct a sequence diagram from all descendant objects and edges
-// 3. Remove those objects and edges from the main graph
-// 4. Run layout on sequence diagrams
-// 5. Set the resulting dimensions to the main graph shape
-// 6. Run core layouts (still without sequence diagram innards)
-// 7. Put back sequence diagram innards in correct location
-func Layout(ctx context.Context, g *d2graph.Graph, layout func(ctx context.Context, g *d2graph.Graph) error) error {
-	sequenceDiagrams, objectOrder, edgeOrder, err := WithoutSequenceDiagrams(ctx, g)
-	if err != nil {
-		return err
-	}
-
-	if g.Root.IsSequenceDiagram() {
-		// the sequence diagram is the only layout engine if the whole diagram is
-		// shape: sequence_diagram
-		g.Root.TopLeft = geo.NewPoint(0, 0)
-	} else if err := layout(ctx, g); err != nil {
-		return err
-	}
-
-	cleanup(g, sequenceDiagrams, objectOrder, edgeOrder)
-	return nil
 }
 
 // layoutSequenceDiagram finds the edges inside the sequence diagram and performs the layout on the object descendants
@@ -154,11 +154,11 @@ func cleanup(g *d2graph.Graph, sequenceDiagrams map[string]*sequenceDiagram, obj
 		objects = g.Objects
 	}
 	for _, obj := range objects {
-		if _, exists := sequenceDiagrams[obj.AbsID()]; !exists {
+		sd, exists := sequenceDiagrams[obj.AbsID()]
+		if !exists {
 			continue
 		}
 		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-		sd := sequenceDiagrams[obj.AbsID()]
 
 		// shift the sequence diagrams as they are always placed at (0, 0) with some padding
 		sd.shift(
@@ -171,22 +171,22 @@ func cleanup(g *d2graph.Graph, sequenceDiagrams map[string]*sequenceDiagram, obj
 		obj.Children = make(map[string]*d2graph.Object)
 		obj.ChildrenArray = make([]*d2graph.Object, 0)
 		for _, child := range sd.actors {
-			obj.Children[child.ID] = child
+			obj.Children[strings.ToLower(child.ID)] = child
 			obj.ChildrenArray = append(obj.ChildrenArray, child)
 		}
 		for _, child := range sd.groups {
 			if child.Parent.AbsID() == obj.AbsID() {
-				obj.Children[child.ID] = child
+				obj.Children[strings.ToLower(child.ID)] = child
 				obj.ChildrenArray = append(obj.ChildrenArray, child)
 			}
 		}
 
-		g.Edges = append(g.Edges, sequenceDiagrams[obj.AbsID()].messages...)
-		g.Edges = append(g.Edges, sequenceDiagrams[obj.AbsID()].lifelines...)
-		g.Objects = append(g.Objects, sequenceDiagrams[obj.AbsID()].actors...)
-		g.Objects = append(g.Objects, sequenceDiagrams[obj.AbsID()].notes...)
-		g.Objects = append(g.Objects, sequenceDiagrams[obj.AbsID()].groups...)
-		g.Objects = append(g.Objects, sequenceDiagrams[obj.AbsID()].spans...)
+		g.Edges = append(g.Edges, sd.messages...)
+		g.Edges = append(g.Edges, sd.lifelines...)
+		g.Objects = append(g.Objects, sd.actors...)
+		g.Objects = append(g.Objects, sd.notes...)
+		g.Objects = append(g.Objects, sd.groups...)
+		g.Objects = append(g.Objects, sd.spans...)
 	}
 
 	// no new objects, so just keep the same position

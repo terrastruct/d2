@@ -2471,6 +2471,10 @@ scenarios: {
 }`,
 		},
 		loadFromFile(t, "arrowhead_scaling"),
+		loadFromFile(t, "teleport_grid"),
+		loadFromFile(t, "dagger_grid"),
+		loadFromFile(t, "grid_tests"),
+		loadFromFile(t, "executive_grid"),
 	}
 
 	runa(t, tcs)

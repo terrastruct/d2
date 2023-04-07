@@ -1,6 +1,7 @@
 package d2graph
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"math"
@@ -67,6 +68,8 @@ func (g *Graph) RootBoard() *Graph {
 	return g
 }
 
+type LayoutGraph func(context.Context, *Graph) error
+
 // TODO consider having different Scalar types
 // Right now we'll hold any types in Value and just convert, e.g. floats
 type Scalar struct {
@@ -129,6 +132,9 @@ type Attributes struct {
 
 	Direction  Scalar `json:"direction"`
 	Constraint Scalar `json:"constraint"`
+
+	GridRows    *Scalar `json:"gridRows,omitempty"`
+	GridColumns *Scalar `json:"gridColumns,omitempty"`
 }
 
 // TODO references at the root scope should have their Scope set to root graph AST
@@ -1007,6 +1013,10 @@ type EdgeReference struct {
 	ScopeObj        *Object    `json:"-"`
 }
 
+func (e *Edge) GetAstEdge() *d2ast.Edge {
+	return e.References[0].Edge
+}
+
 func (e *Edge) GetStroke(dashGapSize interface{}) string {
 	if dashGapSize != 0.0 {
 		return color.B2
@@ -1521,19 +1531,21 @@ var ReservedKeywords2 map[string]struct{}
 
 // Non Style/Holder keywords.
 var SimpleReservedKeywords = map[string]struct{}{
-	"label":      {},
-	"desc":       {},
-	"shape":      {},
-	"icon":       {},
-	"constraint": {},
-	"tooltip":    {},
-	"link":       {},
-	"near":       {},
-	"width":      {},
-	"height":     {},
-	"direction":  {},
-	"top":        {},
-	"left":       {},
+	"label":        {},
+	"desc":         {},
+	"shape":        {},
+	"icon":         {},
+	"constraint":   {},
+	"tooltip":      {},
+	"link":         {},
+	"near":         {},
+	"width":        {},
+	"height":       {},
+	"direction":    {},
+	"top":          {},
+	"left":         {},
+	"grid-rows":    {},
+	"grid-columns": {},
 }
 
 // ReservedKeywordHolders are reserved keywords that are meaningless on its own and exist solely to hold a set of reserved keywords

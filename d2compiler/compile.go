@@ -73,6 +73,7 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 		c.validateKeys(g.Root, ir)
 	}
 	c.validateNear(g)
+	c.validateEdges(g)
 
 	c.compileBoardsField(g, ir, "layers")
 	c.compileBoardsField(g, ir, "scenarios")
@@ -362,6 +363,32 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		}
 		attrs.Constraint.Value = scalar.ScalarString()
 		attrs.Constraint.MapKey = f.LastPrimaryKey()
+	case "grid-rows":
+		v, err := strconv.Atoi(scalar.ScalarString())
+		if err != nil {
+			c.errorf(scalar, "non-integer grid-rows %#v: %s", scalar.ScalarString(), err)
+			return
+		}
+		if v <= 0 {
+			c.errorf(scalar, "grid-rows must be a positive integer: %#v", scalar.ScalarString())
+			return
+		}
+		attrs.GridRows = &d2graph.Scalar{}
+		attrs.GridRows.Value = scalar.ScalarString()
+		attrs.GridRows.MapKey = f.LastPrimaryKey()
+	case "grid-columns":
+		v, err := strconv.Atoi(scalar.ScalarString())
+		if err != nil {
+			c.errorf(scalar, "non-integer grid-columns %#v: %s", scalar.ScalarString(), err)
+			return
+		}
+		if v <= 0 {
+			c.errorf(scalar, "grid-columns must be a positive integer: %#v", scalar.ScalarString())
+			return
+		}
+		attrs.GridColumns = &d2graph.Scalar{}
+		attrs.GridColumns.Value = scalar.ScalarString()
+		attrs.GridColumns.MapKey = f.LastPrimaryKey()
 	}
 
 	if attrs.Link != nil && attrs.Tooltip != nil {
@@ -678,6 +705,13 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 			if !in && arrowheadIn {
 				c.errorf(f.LastPrimaryKey(), fmt.Sprintf(`invalid shape, can only set "%s" for arrowheads`, obj.Attributes.Shape.Value))
 			}
+		case "grid-rows", "grid-columns":
+			for _, child := range obj.ChildrenArray {
+				if child.IsContainer() {
+					c.errorf(f.LastPrimaryKey(),
+						fmt.Sprintf(`%#v can only be used on containers with one level of nesting right now. (%#v has nested %#v)`, keyword, child.AbsID(), child.ChildrenArray[0].ID))
+				}
+			}
 		}
 		return
 	}
@@ -757,6 +791,19 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 				c.errorf(obj.Attributes.NearKey, "near key %#v must be the absolute path to a shape or one of the following constants: %s", d2format.Format(obj.Attributes.NearKey), strings.Join(d2graph.NearConstantsArray, ", "))
 				continue
 			}
+		}
+	}
+}
+
+func (c *compiler) validateEdges(g *d2graph.Graph) {
+	for _, edge := range g.Edges {
+		if gd := edge.Src.Parent.ClosestGridDiagram(); gd != nil {
+			c.errorf(edge.GetAstEdge(), "edges in grid diagrams are not supported yet")
+			continue
+		}
+		if gd := edge.Dst.Parent.ClosestGridDiagram(); gd != nil {
+			c.errorf(edge.GetAstEdge(), "edges in grid diagrams are not supported yet")
+			continue
 		}
 	}
 }
