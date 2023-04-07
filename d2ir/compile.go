@@ -88,13 +88,13 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		}
 		switch NodeBoardKind(f) {
 		case BoardScenario:
-			c.overlay(dst.Parent().Parent().(*Map), f)
+			c.overlay(ParentBoard(f).Map(), f)
 		case BoardStep:
-			stepsMap := dst.Parent().Map()
+			stepsMap := ParentMap(f)
 			for i := range stepsMap.Fields {
 				if stepsMap.Fields[i] == f {
 					if i == 0 {
-						c.overlay(dst.Parent().Parent().(*Map), f)
+						c.overlay(ParentBoard(f).Map(), f)
 					} else {
 						c.overlay(stepsMap.Fields[i-1].Map(), f)
 					}
