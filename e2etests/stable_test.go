@@ -13,6 +13,68 @@ var testMarkdown string
 func testStable(t *testing.T) {
 	tcs := []testCase{
 		{
+			name: "legend_with_near_key",
+			script: `
+				direction: right
+
+				x -> y: {
+					style.stroke: green
+				}
+				
+				y -> z: {
+					style.stroke: red
+				}
+				
+				legend: {
+					near: bottom-center
+					color1: foo {
+						shape: text
+						style.font-color: green
+					}
+				
+					color2: bar {
+						shape: text
+						style.font-color: red
+					}
+				}
+			`,
+		},
+		{
+			name: "near_keys_for_container",
+			script: `
+				x: {
+					near: top-left
+					a -> b
+					c -> d
+				}
+				y: {
+					near: top-right
+					a -> b
+					c -> d
+				}
+				z: {
+					near: bottom-center
+					a -> b
+					c -> d
+				}
+
+				a: {
+					near: top-center
+					b: {
+						c
+					}
+				}
+				b: {
+					near: bottom-right
+					a: {
+						c: {
+							d
+						}
+					}
+				}
+			`,
+		},
+		{
 			name: "class_and_sqlTable_border_radius",
 			script: `
 				a: {

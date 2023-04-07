@@ -974,6 +974,16 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 	return &dims, nil
 }
 
+func (obj *Object) OuterNearContainer() *Object {
+	for obj != nil {
+		if obj.Attributes.NearKey != nil {
+			return obj
+		}
+		obj = obj.Parent
+	}
+	return nil
+}
+
 type Edge struct {
 	Index int `json:"index"`
 

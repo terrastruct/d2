@@ -768,23 +768,8 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 					}
 				}
 			} else if isConst {
-				is := false
-				for _, e := range g.Edges {
-					if e.Src == obj || e.Dst == obj {
-						is = true
-						break
-					}
-				}
-				if is {
-					c.errorf(obj.Attributes.NearKey, "constant near keys cannot be set on connected shapes")
-					continue
-				}
 				if obj.Parent != g.Root {
 					c.errorf(obj.Attributes.NearKey, "constant near keys can only be set on root level shapes")
-					continue
-				}
-				if len(obj.ChildrenArray) > 0 {
-					c.errorf(obj.Attributes.NearKey, "constant near keys cannot be set on shapes with children")
 					continue
 				}
 			} else {
@@ -793,6 +778,25 @@ func (c *compiler) validateNear(g *d2graph.Graph) {
 			}
 		}
 	}
+
+	for _, edge := range g.Edges {
+		srcNearContainer := edge.Src.OuterNearContainer()
+		dstNearContainer := edge.Dst.OuterNearContainer()
+
+		var isSrcNearConst, isDstNearConst bool
+
+		if srcNearContainer != nil {
+			_, isSrcNearConst = d2graph.NearConstants[d2graph.Key(srcNearContainer.Attributes.NearKey)[0]]
+		}
+		if dstNearContainer != nil {
+			_, isDstNearConst = d2graph.NearConstants[d2graph.Key(dstNearContainer.Attributes.NearKey)[0]]
+		}
+
+		if (isSrcNearConst || isDstNearConst) && srcNearContainer != dstNearContainer {
+			c.errorf(edge.References[0].Edge, "cannot connect objects from within a container, that has near constant set, to objects outside that container")
+		}
+	}
+
 }
 
 func (c *compiler) validateEdges(g *d2graph.Graph) {
