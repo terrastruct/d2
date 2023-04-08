@@ -2258,6 +2258,17 @@ layers: {
 			expErr: `d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:9: invalid underscore usage`,
 		},
 		{
+			name: "text-transform",
+			text: `direction: right
+x -> y: hi {
+  style: {
+    text-transform: capitalize
+  }
+}
+x.style.text-transform: uppercase
+y.style.text-transform: lowercase`,
+		},
+		{
 			name: "near_near_const",
 			text: `
 title: Title {

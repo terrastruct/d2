@@ -1625,12 +1625,13 @@ var StyleKeywords = map[string]struct{}{
 	"border-radius": {},
 
 	// Only for text
-	"font":       {},
-	"font-size":  {},
-	"font-color": {},
-	"bold":       {},
-	"italic":     {},
-	"underline":  {},
+	"font":           {},
+	"font-size":      {},
+	"font-color":     {},
+	"bold":           {},
+	"italic":         {},
+	"underline":      {},
+	"text-transform": {},
 
 	// Only for shapes
 	"shadow":        {},
