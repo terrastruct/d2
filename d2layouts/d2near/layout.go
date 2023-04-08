@@ -59,6 +59,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs []*d2graph
 			if processCenters == strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "-center") {
 				// The z-index for constant nears does not matter, as it will not collide
 				g.Objects = append(g.Objects, tempGraph.Objects...)
+				if obj.Parent.Children == nil {
+					obj.Parent.Children = make(map[string]*d2graph.Object)
+				}
 				obj.Parent.Children[strings.ToLower(obj.ID)] = obj
 				obj.Parent.ChildrenArray = append(obj.Parent.ChildrenArray, obj)
 				g.Edges = append(g.Edges, tempGraph.Edges...)
