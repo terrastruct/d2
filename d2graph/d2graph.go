@@ -385,7 +385,7 @@ func (s *Style) Apply(key, value string) error {
 			break
 		}
 		if !go2.Contains(textTransforms, strings.ToLower(value)) {
-			return fmt.Errorf(`expected "text-transform" to be one of (%s)`, strings.Join(textTransforms, ","))
+			return fmt.Errorf(`expected "text-transform" to be one of (%s)`, strings.Join(textTransforms, ", "))
 		}
 		s.TextTransform.Value = value
 	default:
