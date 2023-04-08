@@ -41,6 +41,12 @@ func testStable(t *testing.T) {
 		},
 		{
 			name: "near_keys_for_container",
+			script: `title: |md
+  # Service-Cluster Provisioning ("Outside view")
+| {near: top-center}`,
+		},
+		{
+			name: "near_keys_for_container",
 			script: `
 				x: {
 					near: top-left
