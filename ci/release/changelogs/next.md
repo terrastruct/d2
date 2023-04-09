@@ -1,6 +1,4 @@
-Our last release was 0.3.0 but this one has so many long-awaited upgrades we're bumping straight to 0.4.0.
-
-Major updates:
+Major updates in 0.4.0:
 
 - `classes` and `class` are finally here. No more repeating styles!
 - Introducing Grid diagrams. A very popular form of diagramming software architecture.
