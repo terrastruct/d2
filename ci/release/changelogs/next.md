@@ -1,15 +1,30 @@
+Our last release was 0.3.0 but this one has so many long-awaited upgrades we're bumping straight to 0.4.0.
+
+Major updates:
+
+- `classes` and `class` are finally here. No more repeating styles!
+- Introducing Grid diagrams. A very popular form of diagramming software architecture.
+
+To showcase both of these, here's a demo with a link to the source code below:
+
+<img width="671" alt="Screen Shot 2023-04-08 at 7 20 04 PM" src="https://user-images.githubusercontent.com/3120367/230750853-5925f8a1-98bc-4f51-b6f7-26ada4534a58.png">
+
+- [Playground link to source code](https://play.d2lang.com/?script=nJRPbvMgEMX3nGIU6Vt-zp82bcoBeg-Mpw4yBhdD0qjK3SvAJMENatWFF8zDjx9vRlwyo7Al4bjKt4FCLRnvCJk6TuGTABz3wiKM744ZjBWAkCqFxSKsgieF9WYVlsEw7QSIzsFlqsQbU-DaqDepj2hq6XLxf_KMlmcSv1pq3iXr2Tl5BhTcMKDhbEzG14HKaSJfw0zHT0zNEGMgV4QzIZ54XYWIaBZOUDZF5aGoPBaVbVF5KirPRWVXVF7uKqRhbYsGULVCTUlPfdmtfGOmn0JXyKwh00ChaJHcJpoFfduTywzkE7BLuTN1gkbzDg1w3Q_MiloiGKes6P8GJ_2DcWH5BWCahXuEAP7pobC3dhjpculXY2XRGDZa47ituO6XDR7-bV7jNarx0KaLcRHRfoZutWwy3p4Zrb_T3pTvB3oUyr9qVXakFMp95KWecT3b1bkajUKLs_pXAAAA__8%3D&sketch=1&)
+
+Bunch of other features, improvements, and bug fixes too. Make sure to check out the updated docs for how to use these new features!
+
 #### Features 🚀
 
-- Container with constant key near attribute now can have descendant objects and connections [#1071](https://github.com/terrastruct/d2/pull/1071)
-- Classes are implemented. See [docs](https://d2lang.com/todo). [#772](https://github.com/terrastruct/d2/pull/772)
+- Classes are implemented. See [docs](https://d2lang.com/classes). [#772](https://github.com/terrastruct/d2/pull/772)
+- Grid diagrams are implemented. See [docs](https://d2lang.com/grid-diagrams). [#1122](https://github.com/terrastruct/d2/pull/1122)
+- Container with constant key near attribute now can have descendant objects and connections (thank you @donglixiaoche) [#1071](https://github.com/terrastruct/d2/pull/1071)
 - Multi-board SVG outputs with internal links go to their output paths [#1116](https://github.com/terrastruct/d2/pull/1116)
-- New grid layout to place nodes in rows and columns [#1122](https://github.com/terrastruct/d2/pull/1122)
 
 #### Improvements 🧹
 
 - Labels on parallel `dagre` connections include a gap between them [#1134](https://github.com/terrastruct/d2/pull/1134)
-- Sequence Diagram `Lifelines` now inherit the Actor `stroke` and `stroke-dash` [#1140](https://github.com/terrastruct/d2/pull/1140)
-- Add `text-transform` styling option [#1118](https://github.com/terrastruct/d2/pull/1118)
+- Sequence diagram lifelines inherit the actor's `stroke` and `stroke-dash` [#1140](https://github.com/terrastruct/d2/pull/1140)
+- Add `text-transform` styling option (thank you @alexstoick for these 2) [#1118](https://github.com/terrastruct/d2/pull/1118)
 
 #### Bugfixes ⛑️
 
@@ -25,3 +40,4 @@
 #### Breaking changes
 
 - `class` and `classes` are now reserved keywords.
+- `text-transform` is now a reserved keyword.
