@@ -3,7 +3,7 @@
     <Relationship Id="rId1"
         Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout"
         Target="../slideLayouts/slideLayout7.xml" />
-    <Relationship Id="%s"
+    <Relationship Id="{{.RelationshipID}}"
         Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
-        Target="../media/%s.png" />
+        Target="../media/{{.FileName}}.png" />
 </Relationships>

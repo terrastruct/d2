@@ -6,8 +6,12 @@
     <p:sldMasterIdLst>
         <p:sldMasterId id="2147483648" r:id="rId1" />
     </p:sldMasterIdLst>
-    <p:sldIdLst>%s</p:sldIdLst>
-    <p:sldSz cx="%d" cy="%d" type="screen4x3" />
+    <p:sldIdLst>
+        {{range .Slides}}
+        <p:sldId id="{{.ID}}" r:id="{{.RelationshipID}}" />
+        {{end}}
+    </p:sldIdLst>
+    <p:sldSz cx="{{.SlideWidth}}" cy="{{.SlideHeight}}" type="screen4x3" />
     <p:notesSz cx="6858000" cy="9144000" />
     <p:defaultTextStyle>
         <a:defPPr>

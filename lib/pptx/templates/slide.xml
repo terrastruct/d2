@@ -19,22 +19,22 @@
             </p:grpSpPr>
             <p:pic>
                 <p:nvPicPr>
-                    <p:cNvPr id="2" name="%s" descr="%s" />
+                    <p:cNvPr id="2" name="{{.Description}}" descr="{{.Description}}" />
                     <p:cNvPicPr>
                         <a:picLocks noChangeAspect="1" />
                     </p:cNvPicPr>
                     <p:nvPr />
                 </p:nvPicPr>
                 <p:blipFill>
-                    <a:blip r:embed="%s" />
+                    <a:blip r:embed="{{.ImageID}}" />
                     <a:stretch>
                         <a:fillRect />
                     </a:stretch>
                 </p:blipFill>
                 <p:spPr>
                     <a:xfrm>
-                        <a:off x="%d" y="%d" />
-                        <a:ext cx="%d" cy="%d" />
+                        <a:off x="{{.ImageLeft}}" y="{{.ImageTop}}" />
+                        <a:ext cx="{{.ImageWidth}}" cy="{{.ImageHeight}}" />
                     </a:xfrm>
                     <a:prstGeom prst="rect">
                         <a:avLst />
@@ -43,14 +43,14 @@
             </p:pic>
             <p:sp>
                 <p:nvSpPr>
-                    <p:cNvPr id="95" name="%s" />
+                    <p:cNvPr id="95" name="{{.Description}}" />
                     <p:cNvSpPr txBox="1" />
                     <p:nvPr />
                 </p:nvSpPr>
                 <p:spPr>
                     <a:xfrm>
                         <a:off x="4001" y="6239" />
-                        <a:ext cx="9135998" cy="%d" />
+                        <a:ext cx="9135998" cy="{{.HeaderHeight}}" />
                     </a:xfrm>
                     <a:prstGeom prst="rect">
                         <a:avLst />
@@ -75,7 +75,17 @@
                             <a:defRPr sz="2400" />
                         </a:lvl1pPr>
                     </a:lstStyle>
-                    <a:p>%s</a:p>
+                    <a:p>
+                        {{if .TitlePrefix}}
+                        <a:r>
+                            <a:t>{{.TitlePrefix}}</a:t>
+                        </a:r>
+                        {{end}}
+                        <a:r>
+                            <a:rPr b="1" />
+                            <a:t>{{.Title}}</a:t>
+                        </a:r>
+                    </a:p>
                 </p:txBody>
             </p:sp>
         </p:spTree>

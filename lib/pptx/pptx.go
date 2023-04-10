@@ -6,7 +6,7 @@ import (
 	_ "embed"
 	"fmt"
 	"strings"
-	"time"
+	"text/template"
 )
 
 // Measurements in OOXML are made in English Metric Units (EMUs) where 1 inch = 914,400 EMUs
@@ -41,111 +41,142 @@ func copyPptxTemplateTo(w *zip.Writer) error {
 	return nil
 }
 
-func addFile(zipFile *zip.Writer, filePath, content string) error {
-	w, err := zipFile.Create(filePath)
-	if err != nil {
-		return err
-	}
-	w.Write([]byte(content))
-	return nil
-}
-
 //go:embed templates/slide.xml.rels
 var RELS_SLIDE_XML string
 
-func getRelsSlideXml(imageID string) string {
-	return fmt.Sprintf(RELS_SLIDE_XML, imageID, imageID)
+type RelsSlideXmlContent struct {
+	FileName       string
+	RelationshipID string
 }
 
 //go:embed templates/slide.xml
 var SLIDE_XML string
 
-func getSlideXml(boardPath []string, imageID string, top, left, width, height int) string {
-	var slideTitle string
+type SlideXmlContent struct {
+	Title        string
+	TitlePrefix  string
+	Description  string
+	HeaderHeight int
+	ImageID      string
+	ImageLeft    int
+	ImageTop     int
+	ImageWidth   int
+	ImageHeight  int
+}
+
+func getSlideXmlContent(imageID string, slide *Slide) SlideXmlContent {
+	boardPath := slide.BoardPath
 	boardName := boardPath[len(boardPath)-1]
 	prefixPath := boardPath[:len(boardPath)-1]
+	var prefix string
 	if len(prefixPath) > 0 {
-		prefix := strings.Join(prefixPath, "  /  ") + "  /  "
-		slideTitle = fmt.Sprintf(`<a:r><a:t>%s</a:t></a:r><a:r><a:rPr b="1" /><a:t>%s</a:t></a:r>`, prefix, boardName)
-	} else {
-		slideTitle = fmt.Sprintf(`<a:r><a:rPr b="1" /><a:t>%s</a:t></a:r>`, boardName)
+		prefix = strings.Join(prefixPath, "  /  ") + "  /  "
 	}
-	slideDescription := strings.Join(boardPath, " / ")
-	top += HEADER_HEIGHT
-	return fmt.Sprintf(SLIDE_XML, slideDescription, slideDescription, imageID, left, top, width, height, slideDescription, HEADER_HEIGHT, slideTitle)
+	return SlideXmlContent{
+		Title:        boardName,
+		TitlePrefix:  prefix,
+		Description:  strings.Join(boardPath, " / "),
+		HeaderHeight: HEADER_HEIGHT,
+		ImageID:      imageID,
+		ImageLeft:    slide.ImageLeft,
+		ImageTop:     slide.ImageTop + HEADER_HEIGHT,
+		ImageWidth:   slide.ImageWidth,
+		ImageHeight:  slide.ImageHeight,
+	}
 }
 
 //go:embed templates/rels_presentation.xml
 var RELS_PRESENTATION_XML string
 
-func getPresentationXmlRels(slideFileNames []string) string {
-	var builder strings.Builder
+type RelsPresentationSlideXmlContent struct {
+	RelationshipID string
+	FileName       string
+}
+
+type RelsPresentationXmlContent struct {
+	Slides []RelsPresentationSlideXmlContent
+}
+
+func getRelsPresentationXmlContent(slideFileNames []string) RelsPresentationXmlContent {
+	var content RelsPresentationXmlContent
 	for _, name := range slideFileNames {
-		builder.WriteString(fmt.Sprintf(
-			`<Relationship Id="%s" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slides/%s.xml" />`, name, name,
-		))
+		content.Slides = append(content.Slides, RelsPresentationSlideXmlContent{
+			RelationshipID: name,
+			FileName:       name,
+		})
 	}
 
-	return fmt.Sprintf(RELS_PRESENTATION_XML, builder.String())
+	return content
 }
 
 //go:embed templates/content_types.xml
 var CONTENT_TYPES_XML string
 
-func getContentTypesXml(slideFileNames []string) string {
-	var builder strings.Builder
-	for _, name := range slideFileNames {
-		builder.WriteString(fmt.Sprintf(
-			`<Override PartName="/ppt/slides/%s.xml" ContentType="application/vnd.openxmlformats-officedocument.presentationml.slide+xml" />`, name,
-		))
-	}
-
-	return fmt.Sprintf(CONTENT_TYPES_XML, builder.String())
+type ContentTypesXmlContent struct {
+	FileNames []string
 }
 
 //go:embed templates/presentation.xml
 var PRESENTATION_XML string
 
-func getPresentationXml(slideFileNames []string) string {
-	var builder strings.Builder
-	for i, name := range slideFileNames {
-		// in the exported presentation, the first slide ID was 256, so keeping it here for compatibility
-		builder.WriteString(fmt.Sprintf(`<p:sldId id="%d" r:id="%s" />`, 256+i, name))
+type PresentationSlideXmlContent struct {
+	ID             int
+	RelationshipID string
+}
+
+type PresentationXmlContent struct {
+	SlideWidth  int
+	SlideHeight int
+	Slides      []PresentationSlideXmlContent
+}
+
+func getPresentationXmlContent(slideFileNames []string) PresentationXmlContent {
+	content := PresentationXmlContent{
+		SlideWidth:  SLIDE_WIDTH,
+		SlideHeight: SLIDE_HEIGHT,
 	}
-	return fmt.Sprintf(PRESENTATION_XML, builder.String(), SLIDE_WIDTH, SLIDE_HEIGHT)
+	for i, name := range slideFileNames {
+		content.Slides = append(content.Slides, PresentationSlideXmlContent{
+			// in the exported presentation, the first slide ID was 256, so keeping it here for compatibility
+			ID:             256 + i,
+			RelationshipID: name,
+		})
+	}
+	return content
 }
 
 //go:embed templates/core.xml
 var CORE_XML string
 
-func getCoreXml(title, subject, description, creator string) string {
-	dateTime := time.Now().Format(time.RFC3339)
-	return fmt.Sprintf(
-		CORE_XML,
-		title,
-		subject,
-		creator,
-		description,
-		creator,
-		dateTime,
-		dateTime,
-	)
+type CoreXmlContent struct {
+	Title          string
+	Subject        string
+	Creator        string
+	Description    string
+	LastModifiedBy string
+	Created        string
+	Modified       string
 }
 
 //go:embed templates/app.xml
 var APP_XML string
 
-func getAppXml(slides []*Slide, d2version string) string {
-	var builder strings.Builder
-	for _, slide := range slides {
-		builder.WriteString(fmt.Sprintf(`<vt:lpstr>%s</vt:lpstr>`, strings.Join(slide.BoardPath, "/")))
+type AppXmlContent struct {
+	SlideCount         int
+	TitlesOfPartsCount int
+	Titles             []string
+	D2Version          string
+}
+
+func addFileFromTemplate(zipFile *zip.Writer, filePath, templateContent string, templateData interface{}) error {
+	w, err := zipFile.Create(filePath)
+	if err != nil {
+		return err
 	}
-	return fmt.Sprintf(
-		APP_XML,
-		len(slides),
-		len(slides),
-		len(slides)+3, // number of entries, len(slides) + Office Theme + 2 Fonts
-		builder.String(),
-		d2version,
-	)
+
+	tmpl, err := template.New(filePath).Parse(templateContent)
+	if err != nil {
+		return err
+	}
+	return tmpl.Execute(w, templateData)
 }

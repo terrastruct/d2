@@ -15,5 +15,7 @@
 <Relationship Id="rId1"
     Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster"
     Target="slideMasters/slideMaster1.xml" />
-    %s
+    {{range .Slides}}
+    <Relationship Id="{{.RelationshipID}}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slides/{{.FileName}}.xml" />
+    {{end}}
 </Relationships>

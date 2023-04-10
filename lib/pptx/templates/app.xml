@@ -4,9 +4,9 @@
     <TotalTime>1</TotalTime>
     <Words>0</Words>
     <Application>D2</Application>
-    <PresentationFormat>On-screen Show (4:3)</PresentationFormat>
+    <PresentationFormat>On-screen Show (16:9)</PresentationFormat>
     <Paragraphs>0</Paragraphs>
-    <Slides>%d</Slides>
+    <Slides>{{.SlideCount}}</Slides>
     <Notes>0</Notes>
     <HiddenSlides>0</HiddenSlides>
     <MMClips>0</MMClips>
@@ -29,23 +29,23 @@
                 <vt:lpstr>Slide Titles</vt:lpstr>
             </vt:variant>
             <vt:variant>
-                <vt:i4>%d</vt:i4>
+                <vt:i4>{{.SlideCount}}</vt:i4>
             </vt:variant>
         </vt:vector>
     </HeadingPairs>
     <TitlesOfParts>
-        <vt:vector size="%d" baseType="lpstr">
+        <vt:vector size="{{.TitlesOfPartsCount}}" baseType="lpstr">
             <vt:lpstr>Arial</vt:lpstr>
             <vt:lpstr>Calibri</vt:lpstr>
             <vt:lpstr>Office Theme</vt:lpstr>
-            %s
+            {{range .Titles}}
+            <vt:lpstr>{{.}}</vt:lpstr>
+            {{end}}
         </vt:vector>
     </TitlesOfParts>
-    <Manager></Manager>
-    <Company></Company>
     <LinksUpToDate>false</LinksUpToDate>
     <SharedDoc>false</SharedDoc>
     <HyperlinkBase></HyperlinkBase>
     <HyperlinksChanged>false</HyperlinksChanged>
-    <AppVersion>%s</AppVersion>
+    <AppVersion>{{.D2Version}}</AppVersion>
 </Properties>

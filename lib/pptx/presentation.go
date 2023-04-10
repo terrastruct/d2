@@ -16,6 +16,8 @@ import (
 	"fmt"
 	"image/png"
 	"os"
+	"strings"
+	"time"
 )
 
 type Presentation struct {
@@ -142,42 +144,61 @@ func (p *Presentation) SaveTo(filePath string) error {
 			return err
 		}
 
-		err = addFile(zipWriter, fmt.Sprintf("ppt/slides/_rels/%s.xml.rels", slideFileName), getRelsSlideXml(imageID))
+		err = addFileFromTemplate(zipWriter, fmt.Sprintf("ppt/slides/_rels/%s.xml.rels", slideFileName), RELS_SLIDE_XML, RelsSlideXmlContent{
+			FileName:       imageID,
+			RelationshipID: imageID,
+		})
 		if err != nil {
 			return err
 		}
 
-		err = addFile(
-			zipWriter,
-			fmt.Sprintf("ppt/slides/%s.xml", slideFileName),
-			getSlideXml(slide.BoardPath, imageID, slide.ImageTop, slide.ImageLeft, slide.ImageWidth, slide.ImageHeight),
-		)
+		err = addFileFromTemplate(zipWriter, fmt.Sprintf("ppt/slides/%s.xml", slideFileName), SLIDE_XML, getSlideXmlContent(imageID, slide))
 		if err != nil {
 			return err
 		}
 	}
 
-	err = addFile(zipWriter, "[Content_Types].xml", getContentTypesXml(slideFileNames))
+	err = addFileFromTemplate(zipWriter, "[Content_Types].xml", CONTENT_TYPES_XML, ContentTypesXmlContent{
+		FileNames: slideFileNames,
+	})
 	if err != nil {
 		return err
 	}
 
-	err = addFile(zipWriter, "ppt/_rels/presentation.xml.rels", getPresentationXmlRels(slideFileNames))
+	err = addFileFromTemplate(zipWriter, "ppt/_rels/presentation.xml.rels", RELS_PRESENTATION_XML, getRelsPresentationXmlContent(slideFileNames))
 	if err != nil {
 		return err
 	}
 
-	err = addFile(zipWriter, "ppt/presentation.xml", getPresentationXml(slideFileNames))
+	err = addFileFromTemplate(zipWriter, "ppt/presentation.xml", PRESENTATION_XML, getPresentationXmlContent(slideFileNames))
 	if err != nil {
 		return err
 	}
 
-	err = addFile(zipWriter, "docProps/core.xml", getCoreXml(p.Title, p.Subject, p.Description, p.Creator))
+	dateTime := time.Now().Format(time.RFC3339)
+	err = addFileFromTemplate(zipWriter, "docProps/core.xml", CORE_XML, CoreXmlContent{
+		Creator:        p.Creator,
+		Subject:        p.Subject,
+		Description:    p.Description,
+		LastModifiedBy: p.Creator,
+		Title:          p.Title,
+		Created:        dateTime,
+		Modified:       dateTime,
+	})
 	if err != nil {
 		return err
 	}
 
-	err = addFile(zipWriter, "docProps/app.xml", getAppXml(p.Slides, p.D2Version))
+	titles := make([]string, 0, len(p.Slides))
+	for _, slide := range p.Slides {
+		titles = append(titles, strings.Join(slide.BoardPath, "/"))
+	}
+	err = addFileFromTemplate(zipWriter, "docProps/app.xml", APP_XML, AppXmlContent{
+		SlideCount:         len(p.Slides),
+		TitlesOfPartsCount: len(p.Slides) + 3,
+		D2Version:          p.D2Version,
+		Titles:             titles,
+	})
 	if err != nil {
 		return err
 	}
