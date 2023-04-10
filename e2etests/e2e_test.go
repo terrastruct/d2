@@ -25,6 +25,7 @@ import (
 	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2lib"
 	"oss.terrastruct.com/d2/d2plugin"
+	"oss.terrastruct.com/d2/d2renderers/d2animate"
 	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/log"
@@ -205,11 +206,26 @@ func run(t *testing.T, tc testCase) {
 		dataPath := filepath.Join("testdata", strings.TrimPrefix(t.Name(), "TestE2E/"), layoutName)
 		pathGotSVG := filepath.Join(dataPath, "sketch.got.svg")
 
-		svgBytes, err := d2svg.Render(diagram, &d2svg.RenderOpts{
+		renderOpts := &d2svg.RenderOpts{
 			Pad:     0,
 			ThemeID: tc.themeID,
-		})
+		}
+		if len(diagram.Layers) > 0 || len(diagram.Scenarios) > 0 || len(diagram.Steps) > 0 {
+			masterID, err := diagram.HashID()
+			assert.Success(t, err)
+			renderOpts.MasterID = masterID
+		}
+		boards, err := d2svg.RenderMultiboard(diagram, renderOpts)
 		assert.Success(t, err)
+
+		var svgBytes []byte
+		if len(boards) == 1 {
+			svgBytes = boards[0]
+		} else {
+			svgBytes, err = d2animate.Wrap(diagram, boards, *renderOpts, 1000)
+			assert.Success(t, err)
+		}
+
 		err = os.MkdirAll(dataPath, 0755)
 		assert.Success(t, err)
 		err = ioutil.WriteFile(pathGotSVG, svgBytes, 0600)
