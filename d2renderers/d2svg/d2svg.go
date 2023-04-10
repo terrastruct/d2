@@ -1434,21 +1434,19 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 		),
 	)
 
-	if fontFamily != nil && *fontFamily == d2fonts.SourceSansPro {
-		appendOnTrigger(
-			buf,
-			source,
-			[]string{`class="md"`},
-			fmt.Sprintf(`
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{`class="md"`},
+		fmt.Sprintf(`
 @font-face {
 	font-family: %s-font-semibold;
 	src: url("%s");
 }`,
-				diagramHash,
-				fontFamily.Font(0, d2fonts.FONT_STYLE_SEMIBOLD).GetEncodedSubset(corpus),
-			),
-		)
-	}
+			diagramHash,
+			fontFamily.Font(0, d2fonts.FONT_STYLE_SEMIBOLD).GetEncodedSubset(corpus),
+		),
+	)
 
 	appendOnTrigger(
 		buf,

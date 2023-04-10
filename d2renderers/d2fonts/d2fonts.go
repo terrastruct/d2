@@ -115,6 +115,9 @@ var sourceCodeProRegularBase64 string
 //go:embed encoded/SourceCodePro-Bold.txt
 var sourceCodeProBoldBase64 string
 
+//go:embed encoded/SourceCodePro-Semibold.txt
+var sourceCodeProSemiboldBase64 string
+
 //go:embed encoded/SourceCodePro-Italic.txt
 var sourceCodeProItalicBase64 string
 
@@ -156,6 +159,10 @@ func init() {
 			Family: SourceCodePro,
 			Style:  FONT_STYLE_BOLD,
 		}: sourceCodeProBoldBase64,
+		{
+			Family: SourceCodePro,
+			Style:  FONT_STYLE_SEMIBOLD,
+		}: sourceCodeProSemiboldBase64,
 		{
 			Family: SourceCodePro,
 			Style:  FONT_STYLE_ITALIC,
@@ -203,6 +210,14 @@ func init() {
 	FontFaces[Font{
 		Family: SourceCodePro,
 		Style:  FONT_STYLE_BOLD,
+	}] = b
+	b, err = fontFacesFS.ReadFile("ttf/SourceCodePro-Semibold.ttf")
+	if err != nil {
+		panic(err)
+	}
+	FontFaces[Font{
+		Family: SourceCodePro,
+		Style:  FONT_STYLE_SEMIBOLD,
 	}] = b
 	b, err = fontFacesFS.ReadFile("ttf/SourceCodePro-Italic.ttf")
 	if err != nil {
