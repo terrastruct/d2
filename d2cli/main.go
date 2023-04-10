@@ -368,7 +368,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		rootName := getFileName(outputPath)
 		// version must be only numbers to avoid issues with PowerPoint
 		p := pptx.NewPresentation(rootName, description, rootName, username, version.OnlyNumbers())
-		err := renderPPTX(ctx, ms, p, plugin, renderOpts, outputPath, page, diagram, nil)
+		svg, err := renderPPTX(ctx, ms, p, plugin, renderOpts, outputPath, page, diagram, nil)
 		if err != nil {
 			return nil, false, err
 		}
@@ -378,7 +378,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		}
 		dur := time.Since(start)
 		ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(outputPath), dur)
-		return nil, true, nil
+		return svg, true, nil
 	default:
 		compileDur := time.Since(start)
 		if animateInterval <= 0 {
@@ -757,7 +757,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 	return svg, nil
 }
 
-func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Presentation, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, diagram *d2target.Diagram, boardPath []string) error {
+func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Presentation, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, diagram *d2target.Diagram, boardPath []string) ([]byte, error) {
 	var currBoardPath []string
 	// Root board doesn't have a name, so we use the output filename
 	if diagram.Name == "" {
@@ -766,65 +766,66 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 		currBoardPath = append(boardPath, diagram.Name)
 	}
 
+	var svg []byte
 	if !diagram.IsFolderOnly {
 		// gofpdf will print the png img with a slight filter
 		// make the bg fill within the png transparent so that the pdf bg fill is the only bg color present
 		diagram.Root.Fill = "transparent"
 
-		svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
+		var err error
+		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
 			Pad:           opts.Pad,
 			Sketch:        opts.Sketch,
 			Center:        opts.Center,
 			SetDimensions: true,
 		})
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		svg, err = plugin.PostProcess(ctx, svg)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
 		svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
 		bundleErr = multierr.Combine(bundleErr, bundleErr2)
 		if bundleErr != nil {
-			return bundleErr
+			return nil, bundleErr
 		}
 
 		pngImg, err := png.ConvertSVG(ms, page, svg)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		err = presentation.AddSlide(pngImg, currBoardPath)
 		if err != nil {
-			return err
+			return nil, err
 		}
 	}
 
 	for _, dl := range diagram.Layers {
-		err := renderPPTX(ctx, ms, presentation, plugin, opts, "", page, dl, currBoardPath)
+		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, "", page, dl, currBoardPath)
 		if err != nil {
-			return err
+			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		err := renderPPTX(ctx, ms, presentation, plugin, opts, "", page, dl, currBoardPath)
+		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, "", page, dl, currBoardPath)
 		if err != nil {
-			return err
+			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		err := renderPPTX(ctx, ms, presentation, plugin, opts, "", page, dl, currBoardPath)
+		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, "", page, dl, currBoardPath)
 		if err != nil {
-			return err
+			return nil, err
 		}
 	}
 
-	// TODO: return SVG?
-	return nil
+	return svg, nil
 }
 
 // newExt must include leading .
