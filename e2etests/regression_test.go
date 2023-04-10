@@ -656,6 +656,20 @@ y -> z: sync {
 }
 `,
 		},
+		{
+			name: "grid_in_constant_near",
+			script: `
+a
+b
+c
+x: {
+	near: top-right
+	grid-columns: 1
+	y
+	z
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
