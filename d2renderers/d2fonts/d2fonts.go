@@ -64,9 +64,10 @@ const (
 	FONT_SIZE_XXL  = 28
 	FONT_SIZE_XXXL = 32
 
-	FONT_STYLE_REGULAR FontStyle = "regular"
-	FONT_STYLE_BOLD    FontStyle = "bold"
-	FONT_STYLE_ITALIC  FontStyle = "italic"
+	FONT_STYLE_REGULAR  FontStyle = "regular"
+	FONT_STYLE_BOLD     FontStyle = "bold"
+	FONT_STYLE_SEMIBOLD FontStyle = "semibold"
+	FONT_STYLE_ITALIC   FontStyle = "italic"
 
 	SourceSansPro FontFamily = "SourceSansPro"
 	SourceCodePro FontFamily = "SourceCodePro"
@@ -86,6 +87,7 @@ var FontSizes = []int{
 var FontStyles = []FontStyle{
 	FONT_STYLE_REGULAR,
 	FONT_STYLE_BOLD,
+	FONT_STYLE_SEMIBOLD,
 	FONT_STYLE_ITALIC,
 }
 
@@ -100,6 +102,9 @@ var sourceSansProRegularBase64 string
 
 //go:embed encoded/SourceSansPro-Bold.txt
 var sourceSansProBoldBase64 string
+
+//go:embed encoded/SourceSansPro-Semibold.txt
+var sourceSansProSemiboldBase64 string
 
 //go:embed encoded/SourceSansPro-Italic.txt
 var sourceSansProItalicBase64 string
@@ -135,6 +140,10 @@ func init() {
 			Family: SourceSansPro,
 			Style:  FONT_STYLE_BOLD,
 		}: sourceSansProBoldBase64,
+		{
+			Family: SourceSansPro,
+			Style:  FONT_STYLE_SEMIBOLD,
+		}: sourceSansProSemiboldBase64,
 		{
 			Family: SourceSansPro,
 			Style:  FONT_STYLE_ITALIC,
@@ -210,6 +219,14 @@ func init() {
 	FontFaces[Font{
 		Family: SourceSansPro,
 		Style:  FONT_STYLE_BOLD,
+	}] = b
+	b, err = fontFacesFS.ReadFile("ttf/SourceSansPro-Semibold.ttf")
+	if err != nil {
+		panic(err)
+	}
+	FontFaces[Font{
+		Family: SourceSansPro,
+		Style:  FONT_STYLE_SEMIBOLD,
 	}] = b
 	b, err = fontFacesFS.ReadFile("ttf/SourceSansPro-Italic.ttf")
 	if err != nil {
