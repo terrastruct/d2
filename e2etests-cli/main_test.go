@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"oss.terrastruct.com/d2/d2cli"
+	"oss.terrastruct.com/d2/lib/pptx"
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
 	"oss.terrastruct.com/util-go/xmain"
@@ -242,6 +243,33 @@ layers: {
 
 				pdf := readFile(t, dir, "out.pdf")
 				testdataIgnoreDiff(t, ".pdf", pdf)
+			},
+		},
+		{
+			name:   "how_to_solve_problems_pptx",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `how to solve a hard problem?
+steps: {
+	1: {
+		w: write down the problem
+	}
+	2: {
+		w -> t
+		t: think really hard about it
+	}
+	3: {
+		t -> w2
+		w2: write down the solution
+	}
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "in.d2", "how_to_solve_problems.pptx")
+				assert.Success(t, err)
+
+				file := readFile(t, dir, "how_to_solve_problems.pptx")
+				err = pptx.Validate(file, 4)
+				assert.Success(t, err)
 			},
 		},
 		{
