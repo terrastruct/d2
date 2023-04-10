@@ -291,7 +291,7 @@ func AddFontStyle(font Font, style FontStyle, ttf []byte) error {
 	return nil
 }
 
-func AddFontFamily(name string, regularTTF, italicTTF, boldTTF []byte) (*FontFamily, error) {
+func AddFontFamily(name string, regularTTF, italicTTF, boldTTF, semiboldTTF []byte) (*FontFamily, error) {
 	customFontFamily := FontFamily(name)
 
 	regularFont := Font{
@@ -346,6 +346,24 @@ func AddFontFamily(name string, regularTTF, italicTTF, boldTTF []byte) (*FontFam
 		}
 		FontFaces[boldFont] = FontFaces[fallbackFont]
 		FontEncodings[boldFont] = FontEncodings[fallbackFont]
+	}
+
+	semiboldFont := Font{
+		Family: customFontFamily,
+		Style:  FONT_STYLE_SEMIBOLD,
+	}
+	if semiboldTTF != nil {
+		err := AddFontStyle(semiboldFont, FONT_STYLE_SEMIBOLD, semiboldTTF)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		fallbackFont := Font{
+			Family: SourceSansPro,
+			Style:  FONT_STYLE_SEMIBOLD,
+		}
+		FontFaces[semiboldFont] = FontFaces[fallbackFont]
+		FontEncodings[semiboldFont] = FontEncodings[fallbackFont]
 	}
 
 	FontFamilies = append(FontFamilies, customFontFamily)

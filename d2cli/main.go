@@ -100,6 +100,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	fontRegularFlag := ms.Opts.String("D2_FONT_REGULAR", "font-regular", "", "", "path to .ttf file to use for the regular font. If none provided, Source Sans Pro Regular is used.")
 	fontItalicFlag := ms.Opts.String("D2_FONT_ITALIC", "font-italic", "", "", "path to .ttf file to use for the italic font. If none provided, Source Sans Pro Regular-Italic is used.")
 	fontBoldFlag := ms.Opts.String("D2_FONT_BOLD", "font-bold", "", "", "path to .ttf file to use for the bold font. If none provided, Source Sans Pro Bold is used.")
+	fontSemiboldFlag := ms.Opts.String("D2_FONT_SEMIBOLD", "font-semibold", "", "", "path to .ttf file to use for the semibold font. If none provided, Source Sans Pro Semibold is used.")
 
 	ps, err := d2plugin.ListPlugins(ctx)
 	if err != nil {
@@ -120,7 +121,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		return nil
 	}
 
-	fontFamily, err := loadFonts(ms, *fontRegularFlag, *fontItalicFlag, *fontBoldFlag)
+	fontFamily, err := loadFonts(ms, *fontRegularFlag, *fontItalicFlag, *fontBoldFlag, *fontSemiboldFlag)
 	if err != nil {
 		return xmain.UsageErrorf("failed to load specified fonts: %v", err)
 	}
@@ -883,14 +884,15 @@ func loadFont(ms *xmain.State, path string) ([]byte, error) {
 	return ttf, nil
 }
 
-func loadFonts(ms *xmain.State, pathToRegular, pathToItalic, pathToBold string) (*d2fonts.FontFamily, error) {
-	if pathToRegular == "" && pathToItalic == "" && pathToBold == "" {
+func loadFonts(ms *xmain.State, pathToRegular, pathToItalic, pathToBold, pathToSemibold string) (*d2fonts.FontFamily, error) {
+	if pathToRegular == "" && pathToItalic == "" && pathToBold == "" && pathToSemibold == "" {
 		return nil, nil
 	}
 
 	var regularTTF []byte
 	var italicTTF []byte
 	var boldTTF []byte
+	var semiboldTTF []byte
 
 	var err error
 	if pathToRegular != "" {
@@ -911,6 +913,12 @@ func loadFonts(ms *xmain.State, pathToRegular, pathToItalic, pathToBold string) 
 			return nil, err
 		}
 	}
+	if pathToSemibold != "" {
+		semiboldTTF, err = loadFont(ms, pathToSemibold)
+		if err != nil {
+			return nil, err
+		}
+	}
 
-	return d2fonts.AddFontFamily("custom", regularTTF, italicTTF, boldTTF)
+	return d2fonts.AddFontFamily("custom", regularTTF, italicTTF, boldTTF, semiboldTTF)
 }
