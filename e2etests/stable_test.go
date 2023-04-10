@@ -2573,6 +2573,7 @@ scenarios: {
 		loadFromFile(t, "executive_grid"),
 		loadFromFile(t, "grid_animated"),
 		loadFromFile(t, "grid_gap"),
+		loadFromFile(t, "ent2d2_basic"),
 	}
 
 	runa(t, tcs)
