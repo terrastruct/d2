@@ -180,6 +180,11 @@ func init() {
 			Family: HandDrawn,
 			Style:  FONT_STYLE_BOLD,
 		}: fuzzyBubblesBoldBase64,
+		{
+			Family: HandDrawn,
+			Style:  FONT_STYLE_SEMIBOLD,
+			// This font has no semibold, so just reuse bold
+		}: fuzzyBubblesBoldBase64,
 	}
 
 	for k, v := range FontEncodings {
@@ -270,6 +275,10 @@ func init() {
 	FontFaces[Font{
 		Family: HandDrawn,
 		Style:  FONT_STYLE_BOLD,
+	}] = b
+	FontFaces[Font{
+		Family: HandDrawn,
+		Style:  FONT_STYLE_SEMIBOLD,
 	}] = b
 }
 
