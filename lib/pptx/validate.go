@@ -70,7 +70,7 @@ func checkFile(reader *zip.Reader, fname string) error {
 }
 
 func getExpectedPptxFileCount(nSlides int) int {
-	reader := bytes.NewReader(pptx_template)
+	reader := bytes.NewReader(PPTX_TEMPLATE)
 	zipReader, err := zip.NewReader(reader, reader.Size())
 	if err != nil {
 		return -1
