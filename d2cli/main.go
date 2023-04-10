@@ -368,13 +368,9 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		rootName := getFileName(outputPath)
 		// version must be only numbers to avoid issues with PowerPoint
 		p := pptx.NewPresentation(rootName, description, rootName, username, version.OnlyNumbers())
-<<<<<<< HEAD
 
 		boardIdToIndex := buildBoardIdToIndex(diagram, nil, nil)
-		err := renderPPTX(ctx, ms, p, plugin, renderOpts, ruler, outputPath, page, diagram, nil, boardIdToIndex)
-=======
-		svg, err := renderPPTX(ctx, ms, p, plugin, renderOpts, outputPath, page, diagram, nil)
->>>>>>> gh-821-ppt
+		svg, err := renderPPTX(ctx, ms, p, plugin, renderOpts, ruler, outputPath, page, diagram, nil, boardIdToIndex)
 		if err != nil {
 			return nil, false, err
 		}
@@ -763,11 +759,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 	return svg, nil
 }
 
-<<<<<<< HEAD
-func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Presentation, plugin d2plugin.Plugin, opts d2svg.RenderOpts, ruler *textmeasure.Ruler, outputPath string, page playwright.Page, diagram *d2target.Diagram, boardPath []string, boardIdToIndex map[string]int) error {
-=======
-func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Presentation, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, diagram *d2target.Diagram, boardPath []string) ([]byte, error) {
->>>>>>> gh-821-ppt
+func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Presentation, plugin d2plugin.Plugin, opts d2svg.RenderOpts, ruler *textmeasure.Ruler, outputPath string, page playwright.Page, diagram *d2target.Diagram, boardPath []string, boardIdToIndex map[string]int) ([]byte, error) {
 	var currBoardPath []string
 	// Root board doesn't have a name, so we use the output filename
 	if diagram.Name == "" {
@@ -814,7 +806,7 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 			return nil, err
 		}
 
-		slide, err := presentation.AddSlide(pngImg, diagram, currBoardPath)
+		slide, err := presentation.AddSlide(pngImg, currBoardPath)
 		if err != nil {
 			return nil, err
 		}
@@ -822,11 +814,11 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 		viewboxSlice := appendix.FindViewboxSlice(svg)
 		viewboxX, err := strconv.ParseFloat(viewboxSlice[0], 64)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		viewboxY, err := strconv.ParseFloat(viewboxSlice[1], 64)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		// Draw links
@@ -859,31 +851,19 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 	}
 
 	for _, dl := range diagram.Layers {
-<<<<<<< HEAD
-		err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, currBoardPath, boardIdToIndex)
-=======
-		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, "", page, dl, currBoardPath)
->>>>>>> gh-821-ppt
+		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, currBoardPath, boardIdToIndex)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-<<<<<<< HEAD
-		err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, currBoardPath, boardIdToIndex)
-=======
-		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, "", page, dl, currBoardPath)
->>>>>>> gh-821-ppt
+		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, currBoardPath, boardIdToIndex)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-<<<<<<< HEAD
-		err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, currBoardPath, boardIdToIndex)
-=======
-		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, "", page, dl, currBoardPath)
->>>>>>> gh-821-ppt
+		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, currBoardPath, boardIdToIndex)
 		if err != nil {
 			return nil, err
 		}

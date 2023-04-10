@@ -249,7 +249,9 @@ layers: {
 			name:   "how_to_solve_problems_pptx",
 			skipCI: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
-				writeFile(t, dir, "in.d2", `how to solve a hard problem?
+				writeFile(t, dir, "in.d2", `how to solve a hard problem? {
+	link: steps.2
+}
 steps: {
 	1: {
 		w: write down the problem
@@ -261,6 +263,9 @@ steps: {
 	3: {
 		t -> w2
 		w2: write down the solution
+		w2: {
+			link: https://d2lang.com
+		}
 	}
 }
 `)
