@@ -73,7 +73,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "CELL TOWER",
+      "label": "Cell Tower",
       "fontSize": 24,
       "fontFamily": "mono",
       "language": "",
@@ -81,7 +81,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 143,
+      "labelWidth": 142,
       "labelHeight": 31,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
@@ -472,7 +472,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
-      "label": "SEND",
+      "label": "send",
       "fontSize": 16,
       "fontFamily": "mono",
       "language": "",
@@ -480,7 +480,7 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 38,
+      "labelWidth": 39,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
@@ -490,7 +490,7 @@
           "y": 477
         },
         {
-          "x": 143.5,
+          "x": 143.25,
           "y": 658
         }
       ],
@@ -525,11 +525,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 192,
+          "x": 193,
           "y": 477
         },
         {
-          "x": 192.5,
+          "x": 192.75,
           "y": 658
         }
       ],
@@ -564,11 +564,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 241,
+          "x": 242,
           "y": 477
         },
         {
-          "x": 241.5,
+          "x": 241.75,
           "y": 658
         }
       ],
@@ -589,7 +589,7 @@
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
-      "label": "PHONE LOGS",
+      "label": "phone logs",
       "fontSize": 16,
       "fontFamily": "mono",
       "language": "",
@@ -597,7 +597,7 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 96,
+      "labelWidth": 97,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,

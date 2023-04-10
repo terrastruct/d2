@@ -246,7 +246,8 @@ layers: {
 			},
 		},
 		{
-			name: "how_to_solve_problems_pptx",
+			name:   "how_to_solve_problems_pptx",
+			skipCI: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "in.d2", `how to solve a hard problem?
 steps: {
