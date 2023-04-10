@@ -209,7 +209,7 @@ let us know and we'll be happy to include it here!
 
 ### Community plugins
 
-- **Tree-sitter grammar**: [https://github.com/pleshevskiy/tree-sitter-d2](https://github.com/pleshevskiy/tree-sitter-d2)
+- **Tree-sitter grammar**: [https://git.pleshevski.ru/pleshevskiy/tree-sitter-d2](https://git.pleshevski.ru/pleshevskiy/tree-sitter-d2)
 - **Emacs major mode**: [https://github.com/andorsk/d2-mode](https://github.com/andorsk/d2-mode)
 - **Goldmark extension**: [https://github.com/FurqanSoftware/goldmark-d2](https://github.com/FurqanSoftware/goldmark-d2)
 - **Telegram bot**: [https://github.com/meinside/telegram-d2-bot](https://github.com/meinside/telegram-d2-bot)

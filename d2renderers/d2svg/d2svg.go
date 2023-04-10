@@ -1764,6 +1764,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 		if hasMarkdown {
 			css := MarkdownCSS
+			css = strings.ReplaceAll(css, ".md", fmt.Sprintf(".%s .md", diagramHash))
 			css = strings.ReplaceAll(css, "font-italic", fmt.Sprintf("%s-font-italic", diagramHash))
 			css = strings.ReplaceAll(css, "font-bold", fmt.Sprintf("%s-font-bold", diagramHash))
 			css = strings.ReplaceAll(css, "font-mono", fmt.Sprintf("%s-font-mono", diagramHash))

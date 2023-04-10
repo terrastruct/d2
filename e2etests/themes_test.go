@@ -15,14 +15,19 @@ func testThemes(t *testing.T) {
 			script: `
 network: {
   cell tower: {
+		style.text-transform: capitalize
 		satellites: {
 			shape: stored_data
       style.multiple: true
 		}
 
-		transmitter
+		transmitter : {
+			style.text-transform: uppercase
+		}
 
-		satellites -> transmitter: send
+		satellites -> transmitter: SEnD {
+			style.text-transform: lowercase
+		}
 		satellites -> transmitter: send
 		satellites -> transmitter: send
   }
@@ -117,6 +122,7 @@ ex: |tex
 			script: `
 network: {
   cell tower: {
+		style.text-transform: capitalize
 		satellites: {
 			shape: stored_data
       style.multiple: true
@@ -124,7 +130,9 @@ network: {
 
 		transmitter
 
-		satellites -> transmitter: send
+		satellites -> transmitter: SEnD {
+			style.text-transform: lowercase
+		}
 		satellites -> transmitter: send
 		satellites -> transmitter: send
   }
@@ -140,7 +148,9 @@ network: {
     }
   }
 
-  cell tower.transmitter -> data processor.storage: phone logs
+  cell tower.transmitter -> data processor.storage: phone logs {
+		style.text-transform: none
+	}
 }
 
 user: {
@@ -166,6 +176,7 @@ network.data processor -> api server
 			script: `
 network: 通信網 {
   cell tower: {
+		style.text-transform: capitalize
 		satellites: 衛星 {
 			shape: stored_data
       style.multiple: true
@@ -173,8 +184,12 @@ network: 通信網 {
 
 		transmitter: 送信機
 
-		satellites -> transmitter: send
-		satellites -> transmitter: send
+		satellites -> transmitter: SEnD {
+			style.text-transform: lowercase
+		}
+		satellites -> transmitter: send {
+			style.text-transform: uppercase
+		}
 		satellites -> transmitter: send
   }
 
@@ -189,12 +204,20 @@ network: 通信網 {
     }
   }
 
-  cell tower.transmitter -> data processor.storage: 電話ログ
+  cell tower.transmitter -> data processor.storage: 電話ログ {
+		style.text-transform: lowercase
+	}
 }
 
 user: ユーザー {
   shape: person
   width: 130
+	style.text-transform: capitalize
+}
+
+other-user: {
+	shape: person
+	style.text-transform: uppercase
 }
 
 user -> network.cell tower: 電話をかける
@@ -202,7 +225,9 @@ user -> network.online portal.ui: アクセス {
   style.stroke-dash: 3
 }
 
-api server: API サーバー
+api server: API サーバー {
+	style.text-transform: lowercase
+}
 api server -> network.online portal.ui: 画面
 api server -> logs: 持続する
 logs: ログ { shape: page; style.multiple: true }

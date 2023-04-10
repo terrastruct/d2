@@ -395,7 +395,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		}
 		var out []byte
 		if len(boards) > 0 {
-			out := boards[0]
+			out = boards[0]
 			if animateInterval > 0 {
 				out, err = d2animate.Wrap(diagram, boards, renderOpts, int(animateInterval))
 				if err != nil {
