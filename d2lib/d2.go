@@ -71,14 +71,14 @@ func compile(ctx context.Context, g *d2graph.Graph, opts *CompileOptions) (*d2ta
 
 		constantNearGraphs := d2near.WithoutConstantNears(ctx, g)
 
+		layoutWithGrids := d2grid.Layout(ctx, g, coreLayout)
+
 		// run core layout for constantNears
 		for _, tempGraph := range constantNearGraphs {
-			if err = coreLayout(ctx, tempGraph); err != nil {
+			if err = layoutWithGrids(ctx, tempGraph); err != nil {
 				return nil, err
 			}
 		}
-
-		layoutWithGrids := d2grid.Layout(ctx, g, coreLayout)
 
 		err = d2sequence.Layout(ctx, g, layoutWithGrids)
 		if err != nil {
