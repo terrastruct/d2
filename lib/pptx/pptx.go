@@ -241,25 +241,24 @@ func getAppXml(slides []*Slide, d2version string) string {
 	return builder.String()
 }
 
-func getLinkXml(link *Link) string {
-	var builder strings.Builder
+//go:embed xmlTemplates/link.xml
+var linkTemplate string
 
-	builder.WriteString("<p:sp><p:nvSpPr>")
-	builder.WriteString(fmt.Sprintf(`<p:cNvPr id="%d" name="%s">`, link.Index, link.Tooltip))
+func getLinkXml(link *Link) string {
 	var linkAction string
 	if !link.isExternal() {
 		linkAction = "ppaction://hlinksldjump"
 	}
-	builder.WriteString(
-		fmt.Sprintf(`<a:hlinkClick r:id="%s" action="%s" tooltip="%s" history="1" />`,
-			link.Id,
-			linkAction,
-			link.Tooltip,
-		),
+	return fmt.Sprintf(
+		linkTemplate,
+		link.Index,
+		link.Tooltip,
+		link.Id,
+		linkAction,
+		link.Tooltip,
+		link.Left,
+		link.Top,
+		link.Width,
+		link.Height,
 	)
-	builder.WriteString("</p:cNvPr><p:cNvSpPr /><p:nvPr /></p:nvSpPr><p:spPr><a:xfrm>")
-	builder.WriteString(fmt.Sprintf(`<a:off x="%d" y="%d" />`, link.Left, link.Top))
-	builder.WriteString(fmt.Sprintf(`<a:ext cx="%d" cy="%d" />`, link.Width, link.Height))
-	builder.WriteString(`</a:xfrm><a:prstGeom prst="rect"><a:avLst /></a:prstGeom><a:noFill /><a:ln><a:noFill /></a:ln></p:spPr></p:sp>`)
-	return builder.String()
 }
