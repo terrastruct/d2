@@ -23,7 +23,9 @@ type Presentation struct {
 	Description string
 	Subject     string
 	Creator     string
-	D2Version   string
+	// D2Version can't have letters, only numbers (`[0-9]`) and `.`
+	// Otherwise, it may fail to open in PowerPoint
+	D2Version string
 
 	Slides []*Slide
 }
@@ -60,16 +62,37 @@ func (p *Presentation) AddSlide(pngContent []byte, boardPath []string) error {
 	// compute the size and position to fit the slide
 	// if the image is wider than taller and its aspect ratio is, at least, the same as the available image space aspect ratio
 	// then, set the image width to the available space and compute the height
+	// ┌──────────────────────────────────────────────────┐   ─┬─
+	// │  HEADER                                          │    │
+	// ├──┬────────────────────────────────────────────┬──┤    │         ─┬─
+	// │  │                                            │  │    │          │
+	// │  │                                            │  │  SLIDE        │
+	// │  │                                            │  │  HEIGHT       │
+	// │  │                                            │  │    │        IMAGE
+	// │  │                                            │  │    │        HEIGHT
+	// │  │                                            │  │    │          │
+	// │  │                                            │  │    │          │
+	// │  │                                            │  │    │          │
+	// │  │                                            │  │    │          │
+	// └──┴────────────────────────────────────────────┴──┘   ─┴─        ─┴─
+	// ├────────────────────SLIDE WIDTH───────────────────┤
+	//    ├─────────────────IMAGE WIDTH────────────────┤
 	if srcWidth/srcHeight >= IMAGE_ASPECT_RATIO {
+		// here, the image aspect ratio is, at least, equal to the slide aspect ratio
+		// so, it makes sense to expand the image horizontally to use as much as space as possible
 		width = SLIDE_WIDTH
 		height = int(float64(width) * (srcHeight / srcWidth))
+		// first, try to make the image as wide as the slide
+		// but, if this results in a tall image, use only the
+		// image adjusted width to avoid overlapping with the header
 		if height > IMAGE_HEIGHT {
-			// this would overflow with the title, so we need to adjust to use only IMAGE_WIDTH
 			width = IMAGE_WIDTH
 			height = int(float64(width) * (srcHeight / srcWidth))
 		}
 	} else {
-		// otherwise, this image could overflow the slide height/header
+		// here, the aspect ratio could be 4x3, in which the image is still wider than taller,
+		// but expanding horizontally would result in an overflow
+		// so, we expand to make it fit the available vertical space
 		height = IMAGE_HEIGHT
 		width = int(float64(height) * (srcWidth / srcHeight))
 	}
@@ -106,11 +129,11 @@ func (p *Presentation) SaveTo(filePath string) error {
 
 	var slideFileNames []string
 	for i, slide := range p.Slides {
-		imageId := fmt.Sprintf("slide%dImage", i+1)
+		imageID := fmt.Sprintf("slide%dImage", i+1)
 		slideFileName := fmt.Sprintf("slide%d", i+1)
 		slideFileNames = append(slideFileNames, slideFileName)
 
-		imageWriter, err := zipWriter.Create(fmt.Sprintf("ppt/media/%s.png", imageId))
+		imageWriter, err := zipWriter.Create(fmt.Sprintf("ppt/media/%s.png", imageID))
 		if err != nil {
 			return err
 		}
@@ -119,7 +142,7 @@ func (p *Presentation) SaveTo(filePath string) error {
 			return err
 		}
 
-		err = addFile(zipWriter, fmt.Sprintf("ppt/slides/_rels/%s.xml.rels", slideFileName), getRelsSlideXml(imageId))
+		err = addFile(zipWriter, fmt.Sprintf("ppt/slides/_rels/%s.xml.rels", slideFileName), getRelsSlideXml(imageID))
 		if err != nil {
 			return err
 		}
@@ -127,7 +150,7 @@ func (p *Presentation) SaveTo(filePath string) error {
 		err = addFile(
 			zipWriter,
 			fmt.Sprintf("ppt/slides/%s.xml", slideFileName),
-			getSlideXml(slide.BoardPath, imageId, slide.ImageTop, slide.ImageLeft, slide.ImageWidth, slide.ImageHeight),
+			getSlideXml(slide.BoardPath, imageID, slide.ImageTop, slide.ImageLeft, slide.ImageWidth, slide.ImageHeight),
 		)
 		if err != nil {
 			return err
