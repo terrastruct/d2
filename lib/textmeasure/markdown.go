@@ -273,7 +273,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 		switch n.Data {
 		case "h1", "h2", "h3", "h4", "h5", "h6":
 			fontSize = HeaderToFontSize[n.Data]
-			fontStyle = d2fonts.FONT_STYLE_BOLD
+			fontStyle = d2fonts.FONT_STYLE_SEMIBOLD
 			originalLineHeight := ruler.LineHeightFactor
 			ruler.LineHeightFactor = LineHeight_h
 			defer func() {
