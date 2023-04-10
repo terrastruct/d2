@@ -131,10 +131,10 @@
       "type": "rectangle",
       "pos": {
         "x": 231,
-        "y": -174
+        "y": -300
       },
-      "width": 226,
-      "height": 166,
+      "width": 174,
+      "height": 292,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -171,8 +171,8 @@
       "id": "x.y",
       "type": "rectangle",
       "pos": {
-        "x": 281,
-        "y": -124
+        "x": 291,
+        "y": -240
       },
       "width": 54,
       "height": 66,
@@ -212,10 +212,10 @@
       "id": "x.z",
       "type": "rectangle",
       "pos": {
-        "x": 355,
-        "y": -124
+        "x": 291,
+        "y": -134
       },
-      "width": 52,
+      "width": 54,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,

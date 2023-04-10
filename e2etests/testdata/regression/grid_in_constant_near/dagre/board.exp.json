@@ -131,10 +131,10 @@
       "type": "rectangle",
       "pos": {
         "x": 299,
-        "y": -145
+        "y": -312
       },
-      "width": 246,
-      "height": 125,
+      "width": 174,
+      "height": 292,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -163,7 +163,7 @@
       "underline": false,
       "labelWidth": 13,
       "labelHeight": 36,
-      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
@@ -171,8 +171,8 @@
       "id": "x.y",
       "type": "rectangle",
       "pos": {
-        "x": 339,
-        "y": -115
+        "x": 359,
+        "y": -252
       },
       "width": 54,
       "height": 66,
@@ -212,10 +212,10 @@
       "id": "x.z",
       "type": "rectangle",
       "pos": {
-        "x": 453,
-        "y": -115
+        "x": 359,
+        "y": -146
       },
-      "width": 52,
+      "width": 54,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
