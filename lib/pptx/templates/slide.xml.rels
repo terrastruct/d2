@@ -6,4 +6,11 @@
     <Relationship Id="{{.RelationshipID}}"
         Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
         Target="../media/{{.FileName}}.png" />
+    {{range .Links}}
+    {{if .ExternalUrl}}
+    <Relationship Id="{{.RelationshipID}}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink" Target="{{.ExternalUrl}}" TargetMode="External" />
+    {{else}}
+    <Relationship Id="{{.RelationshipID}}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slide{{.SlideIndex}}.xml" />
+    {{end}}
+    {{end}}
 </Relationships>

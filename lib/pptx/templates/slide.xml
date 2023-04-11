@@ -75,19 +75,44 @@
                             <a:defRPr sz="2400" />
                         </a:lvl1pPr>
                     </a:lstStyle>
-                    <a:p>
-                        {{if .TitlePrefix}}
-                        <a:r>
+                    <a:p> {{if .TitlePrefix}} <a:r>
                             <a:t>{{.TitlePrefix}}</a:t>
-                        </a:r>
-                        {{end}}
-                        <a:r>
+                        </a:r> {{end}} <a:r>
                             <a:rPr b="1" />
                             <a:t>{{.Title}}</a:t>
                         </a:r>
                     </a:p>
                 </p:txBody>
             </p:sp>
+            {{range .Links}}
+            <p:sp>
+                <p:nvSpPr>
+                    <p:cNvPr id="{{.ID}}" name="{{.Name}}">
+                        <a:hlinkClick r:id="{{.RelationshipID}}" action="{{.Action}}" tooltip="{{.Name}}" history="1" invalidUrl=""
+                            tgtFrame="" highlightClick="0" endSnd="0" />
+                    </p:cNvPr>
+                    <p:cNvSpPr />
+                    <p:nvPr />
+                </p:nvSpPr>
+                <p:spPr>
+                    <a:xfrm>
+                        <a:off x="{{.Left}}" y="{{.Top}}" />
+                        <a:ext cx="{{.Width}}" cy="{{.Height}}" />
+                    </a:xfrm>
+                    <a:prstGeom prst="rect">
+                        <a:avLst />
+                    </a:prstGeom>
+                    <a:solidFill>
+                        <a:srgbClr val="FFFFFF">
+                            <a:alpha val="0" />
+                        </a:srgbClr>
+                    </a:solidFill>
+                    <a:ln w="12700">
+                        <a:miter lim="400000" />
+                    </a:ln>
+                </p:spPr>
+            </p:sp>
+            {{end}}
         </p:spTree>
     </p:cSld>
     <p:clrMapOvr>

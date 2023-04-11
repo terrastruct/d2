@@ -164,28 +164,3 @@ func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill 
 func (g *GoFPDF) Export(outputPath string) error {
 	return g.pdf.OutputFileAndClose(outputPath)
 }
-
-// BuildPDFPageMap returns a map from board path to page int
-// To map correctly, it must follow the same traversal of PDF building
-func BuildPDFPageMap(diagram *d2target.Diagram, dictionary map[string]int, path []string) map[string]int {
-	newPath := append(path, diagram.Name)
-	if dictionary == nil {
-		dictionary = map[string]int{}
-		newPath[0] = "root"
-	}
-
-	key := strings.Join(newPath, ".")
-	dictionary[key] = len(dictionary)
-
-	for _, dl := range diagram.Layers {
-		BuildPDFPageMap(dl, dictionary, append(newPath, "layers"))
-	}
-	for _, dl := range diagram.Scenarios {
-		BuildPDFPageMap(dl, dictionary, append(newPath, "scenarios"))
-	}
-	for _, dl := range diagram.Steps {
-		BuildPDFPageMap(dl, dictionary, append(newPath, "steps"))
-	}
-
-	return dictionary
-}

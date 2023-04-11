@@ -32,14 +32,38 @@ type Presentation struct {
 
 	Slides []*Slide
 }
-
 type Slide struct {
-	BoardPath   []string
-	Image       []byte
-	ImageWidth  int
-	ImageHeight int
-	ImageTop    int
-	ImageLeft   int
+	BoardPath        []string
+	Links            []*Link
+	Image            []byte
+	ImageId          string
+	ImageWidth       int
+	ImageHeight      int
+	ImageTop         int
+	ImageLeft        int
+	ImageScaleFactor float64
+}
+
+func (s *Slide) AddLink(link *Link) {
+	link.Index = len(s.Links)
+	s.Links = append(s.Links, link)
+	link.ID = fmt.Sprintf("link%d", len(s.Links))
+	link.Height *= int(s.ImageScaleFactor)
+	link.Width *= int(s.ImageScaleFactor)
+	link.Top = s.ImageTop + int(float64(link.Top)*s.ImageScaleFactor)
+	link.Left = s.ImageLeft + int(float64(link.Left)*s.ImageScaleFactor)
+}
+
+type Link struct {
+	ID          string
+	Index       int
+	Top         int
+	Left        int
+	Width       int
+	Height      int
+	SlideIndex  int
+	ExternalUrl string
+	Tooltip     string
 }
 
 func NewPresentation(title, description, subject, creator, d2Version string) *Presentation {
@@ -52,10 +76,10 @@ func NewPresentation(title, description, subject, creator, d2Version string) *Pr
 	}
 }
 
-func (p *Presentation) AddSlide(pngContent []byte, boardPath []string) error {
+func (p *Presentation) AddSlide(pngContent []byte, boardPath []string) (*Slide, error) {
 	src, err := png.Decode(bytes.NewReader(pngContent))
 	if err != nil {
-		return fmt.Errorf("error decoding PNG image: %v", err)
+		return nil, fmt.Errorf("error decoding PNG image: %v", err)
 	}
 
 	var width, height int
@@ -99,22 +123,24 @@ func (p *Presentation) AddSlide(pngContent []byte, boardPath []string) error {
 		height = IMAGE_HEIGHT
 		width = int(float64(height) * (srcWidth / srcHeight))
 	}
-	top := (IMAGE_HEIGHT - height) / 2
+	top := HEADER_HEIGHT + ((IMAGE_HEIGHT - height) / 2)
 	left := (SLIDE_WIDTH - width) / 2
 
 	slide := &Slide{
-		BoardPath:   make([]string, len(boardPath)),
-		Image:       pngContent,
-		ImageWidth:  width,
-		ImageHeight: height,
-		ImageTop:    top,
-		ImageLeft:   left,
+		BoardPath:        make([]string, len(boardPath)),
+		ImageId:          fmt.Sprintf("slide%dImage", len(p.Slides)+1),
+		Image:            pngContent,
+		ImageWidth:       width,
+		ImageHeight:      height,
+		ImageTop:         top,
+		ImageLeft:        left,
+		ImageScaleFactor: float64(width) / srcWidth,
 	}
 	// it must copy the board path to avoid slice reference issues
 	copy(slide.BoardPath, boardPath)
 
 	p.Slides = append(p.Slides, slide)
-	return nil
+	return slide, nil
 }
 
 func (p *Presentation) SaveTo(filePath string) error {
@@ -145,10 +171,7 @@ func (p *Presentation) SaveTo(filePath string) error {
 			return err
 		}
 
-		err = addFileFromTemplate(zipWriter, fmt.Sprintf("ppt/slides/_rels/%s.xml.rels", slideFileName), RELS_SLIDE_XML, RelsSlideXmlContent{
-			FileName:       imageID,
-			RelationshipID: imageID,
-		})
+		err = addFileFromTemplate(zipWriter, fmt.Sprintf("ppt/slides/_rels/%s.xml.rels", slideFileName), RELS_SLIDE_XML, getSlideXmlRelsContent(imageID, slide))
 		if err != nil {
 			return err
 		}
@@ -242,13 +265,48 @@ func copyPptxTemplateTo(w *zip.Writer) error {
 //go:embed templates/slide.xml.rels
 var RELS_SLIDE_XML string
 
+type RelsSlideXmlLinkContent struct {
+	RelationshipID string
+	ExternalUrl    string
+	SlideIndex     int
+}
+
 type RelsSlideXmlContent struct {
 	FileName       string
 	RelationshipID string
+	Links          []RelsSlideXmlLinkContent
+}
+
+func getSlideXmlRelsContent(imageID string, slide *Slide) RelsSlideXmlContent {
+	content := RelsSlideXmlContent{
+		FileName:       imageID,
+		RelationshipID: imageID,
+	}
+
+	for _, link := range slide.Links {
+		content.Links = append(content.Links, RelsSlideXmlLinkContent{
+			RelationshipID: link.ID,
+			ExternalUrl:    link.ExternalUrl,
+			SlideIndex:     link.SlideIndex,
+		})
+	}
+
+	return content
 }
 
 //go:embed templates/slide.xml
 var SLIDE_XML string
+
+type SlideLinkXmlContent struct {
+	ID             int
+	RelationshipID string
+	Name           string
+	Action         string
+	Left           int
+	Top            int
+	Width          int
+	Height         int
+}
 
 type SlideXmlContent struct {
 	Title        string
@@ -260,6 +318,8 @@ type SlideXmlContent struct {
 	ImageTop     int
 	ImageWidth   int
 	ImageHeight  int
+
+	Links []SlideLinkXmlContent
 }
 
 func getSlideXmlContent(imageID string, slide *Slide) SlideXmlContent {
@@ -270,17 +330,36 @@ func getSlideXmlContent(imageID string, slide *Slide) SlideXmlContent {
 	if len(prefixPath) > 0 {
 		prefix = strings.Join(prefixPath, "  /  ") + "  /  "
 	}
-	return SlideXmlContent{
+	content := SlideXmlContent{
 		Title:        boardName,
 		TitlePrefix:  prefix,
 		Description:  strings.Join(boardPath, " / "),
 		HeaderHeight: HEADER_HEIGHT,
 		ImageID:      imageID,
 		ImageLeft:    slide.ImageLeft,
-		ImageTop:     slide.ImageTop + HEADER_HEIGHT,
+		ImageTop:     slide.ImageTop,
 		ImageWidth:   slide.ImageWidth,
 		ImageHeight:  slide.ImageHeight,
 	}
+
+	for _, link := range slide.Links {
+		var action string
+		if link.ExternalUrl == "" {
+			action = "ppaction://hlinksldjump"
+		}
+		content.Links = append(content.Links, SlideLinkXmlContent{
+			ID:             link.Index,
+			RelationshipID: link.ID,
+			Name:           link.Tooltip,
+			Action:         action,
+			Left:           link.Left,
+			Top:            link.Top,
+			Width:          link.Width,
+			Height:         link.Height,
+		})
+	}
+
+	return content
 }
 
 //go:embed templates/rels_presentation.xml
