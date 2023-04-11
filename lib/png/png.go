@@ -19,6 +19,9 @@ import (
 	"oss.terrastruct.com/util-go/xmain"
 )
 
+// ConvertSVG scales the image by 2x
+const SCALE = 2.
+
 type Playwright struct {
 	PW      *playwright.Playwright
 	Browser playwright.Browser

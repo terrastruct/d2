@@ -351,7 +351,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 
 	switch filepath.Ext(outputPath) {
 	case ".pdf":
-		pageMap := buildBoardIdToIndex(diagram, nil, nil)
+		pageMap := buildBoardIDToIndex(diagram, nil, nil)
 		pdf, err := renderPDF(ctx, ms, plugin, renderOpts, outputPath, page, ruler, diagram, nil, nil, pageMap)
 		if err != nil {
 			return pdf, false, err
@@ -369,7 +369,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		// version must be only numbers to avoid issues with PowerPoint
 		p := pptx.NewPresentation(rootName, description, rootName, username, version.OnlyNumbers())
 
-		boardIdToIndex := buildBoardIdToIndex(diagram, nil, nil)
+		boardIdToIndex := buildBoardIDToIndex(diagram, nil, nil)
 		svg, err := renderPPTX(ctx, ms, p, plugin, renderOpts, ruler, outputPath, page, diagram, nil, boardIdToIndex)
 		if err != nil {
 			return nil, false, err
@@ -799,8 +799,6 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 
 		svg = appendix.Append(diagram, ruler, svg)
 
-		// png.ConvertSVG scales the image by 2x
-		pngScale := 2.
 		pngImg, err := png.ConvertSVG(ms, page, svg)
 		if err != nil {
 			return nil, err
@@ -827,10 +825,10 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 				continue
 			}
 
-			linkX := pngScale * (float64(shape.Pos.X) - viewboxX - float64(shape.StrokeWidth))
-			linkY := pngScale * (float64(shape.Pos.Y) - viewboxY - float64(shape.StrokeWidth))
-			linkWidth := pngScale * (float64(shape.Width) + float64(shape.StrokeWidth*2))
-			linkHeight := pngScale * (float64(shape.Height) + float64(shape.StrokeWidth*2))
+			linkX := png.SCALE * (float64(shape.Pos.X) - viewboxX - float64(shape.StrokeWidth))
+			linkY := png.SCALE * (float64(shape.Pos.Y) - viewboxY - float64(shape.StrokeWidth))
+			linkWidth := png.SCALE * (float64(shape.Width) + float64(shape.StrokeWidth*2))
+			linkHeight := png.SCALE * (float64(shape.Height) + float64(shape.StrokeWidth*2))
 			link := &pptx.Link{
 				Left:    int(linkX),
 				Top:     int(linkY),
@@ -959,9 +957,9 @@ func loadFonts(ms *xmain.State, pathToRegular, pathToItalic, pathToBold string) 
 	return d2fonts.AddFontFamily("custom", regularTTF, italicTTF, boldTTF)
 }
 
-// buildBoardIdToIndex returns a map from board path to page int
-// To map correctly, it must follow the same traversal of PDF building
-func buildBoardIdToIndex(diagram *d2target.Diagram, dictionary map[string]int, path []string) map[string]int {
+// buildBoardIDToIndex returns a map from board path to page int
+// To map correctly, it must follow the same traversal of pdf/pptx building
+func buildBoardIDToIndex(diagram *d2target.Diagram, dictionary map[string]int, path []string) map[string]int {
 	newPath := append(path, diagram.Name)
 	if dictionary == nil {
 		dictionary = map[string]int{}
@@ -972,13 +970,13 @@ func buildBoardIdToIndex(diagram *d2target.Diagram, dictionary map[string]int, p
 	dictionary[key] = len(dictionary)
 
 	for _, dl := range diagram.Layers {
-		buildBoardIdToIndex(dl, dictionary, append(newPath, "layers"))
+		buildBoardIDToIndex(dl, dictionary, append(newPath, "layers"))
 	}
 	for _, dl := range diagram.Scenarios {
-		buildBoardIdToIndex(dl, dictionary, append(newPath, "scenarios"))
+		buildBoardIDToIndex(dl, dictionary, append(newPath, "scenarios"))
 	}
 	for _, dl := range diagram.Steps {
-		buildBoardIdToIndex(dl, dictionary, append(newPath, "steps"))
+		buildBoardIDToIndex(dl, dictionary, append(newPath, "steps"))
 	}
 
 	return dictionary
