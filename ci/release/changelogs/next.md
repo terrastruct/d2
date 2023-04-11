@@ -1,6 +1,7 @@
 #### Features 🚀
 
 - Export diagrams to `.pptx` (PowerPoint)[#1139](https://github.com/terrastruct/d2/pull/1139)
+- Customize gap size in grid diagrams with `grid-gap`, `grid-gap-rows`, or `grid-gap-columns` [#1178](https://github.com/terrastruct/d2/issues/1178)
 
 #### Improvements 🧹
 
