@@ -20,8 +20,8 @@ type gridDiagram struct {
 	width  float64
 	height float64
 
-	gapRows    float64
-	gapColumns float64
+	gapRows    int
+	gapColumns int
 }
 
 func newGridDiagram(root *d2graph.Object) *gridDiagram {
@@ -77,14 +77,14 @@ func newGridDiagram(root *d2graph.Object) *gridDiagram {
 
 	// grid gap sets both, but can be overridden
 	if root.Attributes.GridGap != nil {
-		gd.gapRows, _ = strconv.ParseFloat(root.Attributes.GridGap.Value, 64)
+		gd.gapRows, _ = strconv.Atoi(root.Attributes.GridGap.Value)
 		gd.gapColumns = gd.gapRows
 	}
 	if root.Attributes.GridGapRows != nil {
-		gd.gapRows, _ = strconv.ParseFloat(root.Attributes.GridGapRows.Value, 64)
+		gd.gapRows, _ = strconv.Atoi(root.Attributes.GridGapRows.Value)
 	}
 	if root.Attributes.GridGapColumns != nil {
-		gd.gapColumns, _ = strconv.ParseFloat(root.Attributes.GridGapColumns.Value, 64)
+		gd.gapColumns, _ = strconv.Atoi(root.Attributes.GridGapColumns.Value)
 	}
 
 	return &gd

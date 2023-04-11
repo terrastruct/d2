@@ -13,7 +13,7 @@ import (
 
 const (
 	CONTAINER_PADDING = 60
-	DEFAULT_GAP       = 40.
+	DEFAULT_GAP       = 40
 )
 
 // Layout runs the grid layout on containers with rows/columns
@@ -188,10 +188,10 @@ func (gd *gridDiagram) layoutEvenly(g *d2graph.Graph, obj *d2graph.Object) {
 				o.Width = colWidths[j]
 				o.Height = rowHeights[i]
 				o.TopLeft = cursor.Copy()
-				cursor.X += o.Width + gd.gapColumns
+				cursor.X += o.Width + float64(gd.gapColumns)
 			}
 			cursor.X = 0
-			cursor.Y += rowHeights[i] + gd.gapRows
+			cursor.Y += rowHeights[i] + float64(gd.gapRows)
 		}
 	} else {
 		for j := 0; j < gd.columns; j++ {
@@ -203,22 +203,22 @@ func (gd *gridDiagram) layoutEvenly(g *d2graph.Graph, obj *d2graph.Object) {
 				o.Width = colWidths[j]
 				o.Height = rowHeights[i]
 				o.TopLeft = cursor.Copy()
-				cursor.Y += o.Height + gd.gapRows
+				cursor.Y += o.Height + float64(gd.gapRows)
 			}
-			cursor.X += colWidths[j] + gd.gapColumns
+			cursor.X += colWidths[j] + float64(gd.gapColumns)
 			cursor.Y = 0
 		}
 	}
 
 	var totalWidth, totalHeight float64
 	for _, w := range colWidths {
-		totalWidth += w + gd.gapColumns
+		totalWidth += w + float64(gd.gapColumns)
 	}
 	for _, h := range rowHeights {
-		totalHeight += h + gd.gapRows
+		totalHeight += h + float64(gd.gapRows)
 	}
-	totalWidth -= gd.gapColumns
-	totalHeight -= gd.gapRows
+	totalWidth -= float64(gd.gapColumns)
+	totalHeight -= float64(gd.gapRows)
 	gd.width = totalWidth
 	gd.height = totalHeight
 }
@@ -245,8 +245,8 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 		totalWidth += o.Width
 		totalHeight += o.Height
 	}
-	totalWidth += gd.gapColumns * float64(len(gd.objects)-gd.rows)
-	totalHeight += gd.gapRows * float64(len(gd.objects)-gd.columns)
+	totalWidth += float64(gd.gapColumns * (len(gd.objects) - gd.rows))
+	totalHeight += float64(gd.gapRows * (len(gd.objects) - gd.columns))
 
 	var layout [][]*d2graph.Object
 	if gd.rowDirected {
@@ -277,10 +277,10 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			rowHeight := 0.
 			for _, o := range row {
 				o.TopLeft = cursor.Copy()
-				cursor.X += o.Width + gd.gapColumns
+				cursor.X += o.Width + float64(gd.gapColumns)
 				rowHeight = math.Max(rowHeight, o.Height)
 			}
-			rowWidth := cursor.X - gd.gapColumns
+			rowWidth := cursor.X - float64(gd.gapColumns)
 			rowWidths = append(rowWidths, rowWidth)
 			maxX = math.Max(maxX, rowWidth)
 
@@ -291,9 +291,9 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 
 			// new row
 			cursor.X = 0
-			cursor.Y += rowHeight + gd.gapRows
+			cursor.Y += rowHeight + float64(gd.gapRows)
 		}
-		maxY = cursor.Y - gd.gapRows
+		maxY = cursor.Y - float64(gd.gapRows)
 
 		// then expand thinnest objects to make each row the same width
 		// . ┌A─────────────┐  ┌B──┐  ┌C─────────┐ ┬ maxHeight(A,B,C)
@@ -371,10 +371,10 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			colWidth := 0.
 			for _, o := range column {
 				o.TopLeft = cursor.Copy()
-				cursor.Y += o.Height + gd.gapRows
+				cursor.Y += o.Height + float64(gd.gapRows)
 				colWidth = math.Max(colWidth, o.Width)
 			}
-			colHeight := cursor.Y - gd.gapRows
+			colHeight := cursor.Y - float64(gd.gapRows)
 			colHeights = append(colHeights, colHeight)
 			maxY = math.Max(maxY, colHeight)
 			// set all objects in column to the same width
@@ -384,9 +384,9 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 
 			// new column
 			cursor.Y = 0
-			cursor.X += colWidth + gd.gapColumns
+			cursor.X += colWidth + float64(gd.gapColumns)
 		}
-		maxX = cursor.X - gd.gapColumns
+		maxX = cursor.X - float64(gd.gapColumns)
 		// then expand shortest objects to make each column the same height
 		// . ├maxWidth(A,B)─┤  ├maxW(C,D)─┤  ├maxWidth(E)──────┤
 		// . ┌A─────────────┐  ┌C─────────┐  ┌E────────────────┐
@@ -526,15 +526,15 @@ func genLayout(objects []*d2graph.Object, cutIndices []int) [][]*d2graph.Object 
 	return layout
 }
 
-func getDistToTarget(layout [][]*d2graph.Object, targetSize, gapRows, gapColumns float64, columns bool) float64 {
+func getDistToTarget(layout [][]*d2graph.Object, targetSize float64, gapRows, gapColumns int, columns bool) float64 {
 	totalDelta := 0.
 	for _, row := range layout {
 		rowSize := 0.
 		for _, o := range row {
 			if columns {
-				rowSize += o.Height + gapRows
+				rowSize += o.Height + float64(gapRows)
 			} else {
-				rowSize += o.Width + gapColumns
+				rowSize += o.Width + float64(gapColumns)
 			}
 		}
 		totalDelta += math.Abs(rowSize - targetSize)
