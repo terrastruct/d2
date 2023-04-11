@@ -19,10 +19,19 @@ type gridDiagram struct {
 
 	width  float64
 	height float64
+
+	gapRows    float64
+	gapColumns float64
 }
 
 func newGridDiagram(root *d2graph.Object) *gridDiagram {
-	gd := gridDiagram{root: root, objects: root.ChildrenArray}
+	gd := gridDiagram{
+		root:       root,
+		objects:    root.ChildrenArray,
+		gapRows:    DEFAULT_GAP,
+		gapColumns: DEFAULT_GAP,
+	}
+
 	if root.Attributes.GridRows != nil {
 		gd.rows, _ = strconv.Atoi(root.Attributes.GridRows.Value)
 	}
@@ -64,6 +73,18 @@ func newGridDiagram(root *d2graph.Object) *gridDiagram {
 		}
 	} else if gd.columns == 0 {
 		gd.rowDirected = true
+	}
+
+	// grid gap sets both, but can be overridden
+	if root.Attributes.GridGap != nil {
+		gd.gapRows, _ = strconv.ParseFloat(root.Attributes.GridGap.Value, 64)
+		gd.gapColumns = gd.gapRows
+	}
+	if root.Attributes.GridGapRows != nil {
+		gd.gapRows, _ = strconv.ParseFloat(root.Attributes.GridGapRows.Value, 64)
+	}
+	if root.Attributes.GridGapColumns != nil {
+		gd.gapColumns, _ = strconv.ParseFloat(root.Attributes.GridGapColumns.Value, 64)
 	}
 
 	return &gd
