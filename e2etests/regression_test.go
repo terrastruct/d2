@@ -670,6 +670,19 @@ x: {
 }
 `,
 		},
+		{
+			name: "md_font_weight",
+			script: `
+explanation: |md
+# I can do headers
+
+- lists
+- lists
+
+And other normal markdown stuff
+|
+`,
+		},
 	}
 
 	runa(t, tcs)

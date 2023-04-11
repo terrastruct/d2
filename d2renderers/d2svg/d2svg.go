@@ -1437,6 +1437,20 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 	appendOnTrigger(
 		buf,
 		source,
+		[]string{`class="md"`},
+		fmt.Sprintf(`
+@font-face {
+	font-family: %s-font-semibold;
+	src: url("%s");
+}`,
+			diagramHash,
+			fontFamily.Font(0, d2fonts.FONT_STYLE_SEMIBOLD).GetEncodedSubset(corpus),
+		),
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
 		[]string{
 			`text-underline`,
 		},
@@ -1769,6 +1783,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			css = strings.ReplaceAll(css, "font-bold", fmt.Sprintf("%s-font-bold", diagramHash))
 			css = strings.ReplaceAll(css, "font-mono", fmt.Sprintf("%s-font-mono", diagramHash))
 			css = strings.ReplaceAll(css, "font-regular", fmt.Sprintf("%s-font-regular", diagramHash))
+			css = strings.ReplaceAll(css, "font-semibold", fmt.Sprintf("%s-font-semibold", diagramHash))
 			fmt.Fprintf(upperBuf, `<style type="text/css">%s</style>`, css)
 		}
 

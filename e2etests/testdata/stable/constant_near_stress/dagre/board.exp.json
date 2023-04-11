@@ -129,10 +129,10 @@
       "id": "bottom",
       "type": "text",
       "pos": {
-        "x": -444,
+        "x": -431,
         "y": 252
       },
-      "width": 943,
+      "width": 917,
       "height": 131,
       "opacity": 1,
       "strokeDash": 0,
@@ -160,7 +160,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 943,
+      "labelWidth": 917,
       "labelHeight": 131,
       "zIndex": 0,
       "level": 1
@@ -169,7 +169,7 @@
       "id": "Joe",
       "type": "person",
       "pos": {
-        "x": -508,
+        "x": -495,
         "y": 83
       },
       "width": 44,
@@ -210,7 +210,7 @@
       "id": "Donald",
       "type": "person",
       "pos": {
-        "x": 518,
+        "x": 505,
         "y": 83
       },
       "width": 65,
@@ -251,7 +251,7 @@
       "id": "i am top left",
       "type": "text",
       "pos": {
-        "x": -544,
+        "x": -531,
         "y": -41
       },
       "width": 80,
@@ -291,7 +291,7 @@
       "id": "i am top right",
       "type": "text",
       "pos": {
-        "x": 518,
+        "x": 505,
         "y": -41
       },
       "width": 90,
@@ -331,7 +331,7 @@
       "id": "i am bottom left",
       "type": "text",
       "pos": {
-        "x": -571,
+        "x": -558,
         "y": 252
       },
       "width": 107,
@@ -371,7 +371,7 @@
       "id": "i am bottom right",
       "type": "text",
       "pos": {
-        "x": 518,
+        "x": 505,
         "y": 252
       },
       "width": 117,
