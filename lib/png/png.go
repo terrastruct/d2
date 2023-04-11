@@ -95,7 +95,10 @@ func ConvertSVG(ms *xmain.State, page playwright.Page, svg []byte) ([]byte, erro
 	defer cancel()
 
 	encodedSVG := base64.StdEncoding.EncodeToString(svg)
-	pngInterface, err := page.Evaluate(genPNGScript, "data:image/svg+xml;charset=utf-8;base64,"+encodedSVG)
+	pngInterface, err := page.Evaluate(genPNGScript, map[string]interface{}{
+		"imgString": "data:image/svg+xml;charset=utf-8;base64," + encodedSVG,
+		"scale":     int(SCALE),
+	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to generate png: %w", err)
 	}
