@@ -2572,6 +2572,7 @@ scenarios: {
 		loadFromFile(t, "grid_tests"),
 		loadFromFile(t, "executive_grid"),
 		loadFromFile(t, "grid_animated"),
+		loadFromFile(t, "grid_gap"),
 	}
 
 	runa(t, tcs)
