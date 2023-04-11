@@ -177,6 +177,9 @@ func (gd *gridDiagram) layoutEvenly(g *d2graph.Graph, obj *d2graph.Object) {
 		colWidths = append(colWidths, columnWidth)
 	}
 
+	horizontalGap := float64(gd.gapColumns)
+	verticalGap := float64(gd.gapRows)
+
 	cursor := geo.NewPoint(0, 0)
 	if gd.rowDirected {
 		for i := 0; i < gd.rows; i++ {
@@ -188,10 +191,10 @@ func (gd *gridDiagram) layoutEvenly(g *d2graph.Graph, obj *d2graph.Object) {
 				o.Width = colWidths[j]
 				o.Height = rowHeights[i]
 				o.TopLeft = cursor.Copy()
-				cursor.X += o.Width + float64(gd.gapColumns)
+				cursor.X += o.Width + horizontalGap
 			}
 			cursor.X = 0
-			cursor.Y += rowHeights[i] + float64(gd.gapRows)
+			cursor.Y += rowHeights[i] + verticalGap
 		}
 	} else {
 		for j := 0; j < gd.columns; j++ {
@@ -203,22 +206,22 @@ func (gd *gridDiagram) layoutEvenly(g *d2graph.Graph, obj *d2graph.Object) {
 				o.Width = colWidths[j]
 				o.Height = rowHeights[i]
 				o.TopLeft = cursor.Copy()
-				cursor.Y += o.Height + float64(gd.gapRows)
+				cursor.Y += o.Height + verticalGap
 			}
-			cursor.X += colWidths[j] + float64(gd.gapColumns)
+			cursor.X += colWidths[j] + horizontalGap
 			cursor.Y = 0
 		}
 	}
 
 	var totalWidth, totalHeight float64
 	for _, w := range colWidths {
-		totalWidth += w + float64(gd.gapColumns)
+		totalWidth += w + horizontalGap
 	}
 	for _, h := range rowHeights {
-		totalHeight += h + float64(gd.gapRows)
+		totalHeight += h + verticalGap
 	}
-	totalWidth -= float64(gd.gapColumns)
-	totalHeight -= float64(gd.gapRows)
+	totalWidth -= horizontalGap
+	totalHeight -= verticalGap
 	gd.width = totalWidth
 	gd.height = totalHeight
 }
@@ -239,14 +242,17 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 	// . │              │  ├ ─ ┤  │          │  │         │  │                 │
 	// . └──────────────┘  └───┘  └──────────┘  └─────────┘  └─────────────────┘
 
+	horizontalGap := float64(gd.gapColumns)
+	verticalGap := float64(gd.gapRows)
+
 	// we want to split up the total width across the N rows or columns as evenly as possible
 	var totalWidth, totalHeight float64
 	for _, o := range gd.objects {
 		totalWidth += o.Width
 		totalHeight += o.Height
 	}
-	totalWidth += float64(gd.gapColumns * (len(gd.objects) - gd.rows))
-	totalHeight += float64(gd.gapRows * (len(gd.objects) - gd.columns))
+	totalWidth += horizontalGap * float64(len(gd.objects)-gd.rows)
+	totalHeight += verticalGap * float64(len(gd.objects)-gd.columns)
 
 	var layout [][]*d2graph.Object
 	if gd.rowDirected {
@@ -277,10 +283,10 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			rowHeight := 0.
 			for _, o := range row {
 				o.TopLeft = cursor.Copy()
-				cursor.X += o.Width + float64(gd.gapColumns)
+				cursor.X += o.Width + horizontalGap
 				rowHeight = math.Max(rowHeight, o.Height)
 			}
-			rowWidth := cursor.X - float64(gd.gapColumns)
+			rowWidth := cursor.X - horizontalGap
 			rowWidths = append(rowWidths, rowWidth)
 			maxX = math.Max(maxX, rowWidth)
 
@@ -291,9 +297,9 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 
 			// new row
 			cursor.X = 0
-			cursor.Y += rowHeight + float64(gd.gapRows)
+			cursor.Y += rowHeight + verticalGap
 		}
-		maxY = cursor.Y - float64(gd.gapRows)
+		maxY = cursor.Y - horizontalGap
 
 		// then expand thinnest objects to make each row the same width
 		// . ┌A─────────────┐  ┌B──┐  ┌C─────────┐ ┬ maxHeight(A,B,C)
@@ -371,10 +377,10 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			colWidth := 0.
 			for _, o := range column {
 				o.TopLeft = cursor.Copy()
-				cursor.Y += o.Height + float64(gd.gapRows)
+				cursor.Y += o.Height + verticalGap
 				colWidth = math.Max(colWidth, o.Width)
 			}
-			colHeight := cursor.Y - float64(gd.gapRows)
+			colHeight := cursor.Y - verticalGap
 			colHeights = append(colHeights, colHeight)
 			maxY = math.Max(maxY, colHeight)
 			// set all objects in column to the same width
@@ -384,9 +390,9 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 
 			// new column
 			cursor.Y = 0
-			cursor.X += colWidth + float64(gd.gapColumns)
+			cursor.X += colWidth + horizontalGap
 		}
-		maxX = cursor.X - float64(gd.gapColumns)
+		maxX = cursor.X - horizontalGap
 		// then expand shortest objects to make each column the same height
 		// . ├maxWidth(A,B)─┤  ├maxW(C,D)─┤  ├maxWidth(E)──────┤
 		// . ┌A─────────────┐  ┌C─────────┐  ┌E────────────────┐
@@ -478,7 +484,7 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 	// of these divisions, find the layout with rows closest to the targetSize
 	for _, division := range divisions {
 		layout := genLayout(gd.objects, division)
-		dist := getDistToTarget(layout, targetSize, gd.gapRows, gd.gapColumns, columns)
+		dist := getDistToTarget(layout, targetSize, float64(gd.gapColumns), float64(gd.gapRows), columns)
 		if dist < bestDist {
 			bestLayout = layout
 			bestDist = dist
@@ -526,15 +532,15 @@ func genLayout(objects []*d2graph.Object, cutIndices []int) [][]*d2graph.Object 
 	return layout
 }
 
-func getDistToTarget(layout [][]*d2graph.Object, targetSize float64, gapRows, gapColumns int, columns bool) float64 {
+func getDistToTarget(layout [][]*d2graph.Object, targetSize float64, horizontalGap, verticalGap float64, columns bool) float64 {
 	totalDelta := 0.
 	for _, row := range layout {
 		rowSize := 0.
 		for _, o := range row {
 			if columns {
-				rowSize += o.Height + float64(gapRows)
+				rowSize += o.Height + verticalGap
 			} else {
-				rowSize += o.Width + float64(gapColumns)
+				rowSize += o.Width + horizontalGap
 			}
 		}
 		totalDelta += math.Abs(rowSize - targetSize)
