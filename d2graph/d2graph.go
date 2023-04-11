@@ -136,8 +136,11 @@ type Attributes struct {
 	Direction  Scalar `json:"direction"`
 	Constraint Scalar `json:"constraint"`
 
-	GridRows    *Scalar `json:"gridRows,omitempty"`
-	GridColumns *Scalar `json:"gridColumns,omitempty"`
+	GridRows       *Scalar `json:"gridRows,omitempty"`
+	GridColumns    *Scalar `json:"gridColumns,omitempty"`
+	GridGap        *Scalar `json:"gridGap,omitempty"`
+	GridGapRows    *Scalar `json:"gridGapRows,omitempty"`
+	GridGapColumns *Scalar `json:"gridGapColumns,omitempty"`
 
 	// These names are attached to the rendered elements in SVG
 	// so that users can target them however they like outside of D2
@@ -1588,23 +1591,26 @@ var ReservedKeywords2 map[string]struct{}
 
 // Non Style/Holder keywords.
 var SimpleReservedKeywords = map[string]struct{}{
-	"label":        {},
-	"desc":         {},
-	"shape":        {},
-	"icon":         {},
-	"constraint":   {},
-	"tooltip":      {},
-	"link":         {},
-	"near":         {},
-	"width":        {},
-	"height":       {},
-	"direction":    {},
-	"top":          {},
-	"left":         {},
-	"grid-rows":    {},
-	"grid-columns": {},
-	"class":        {},
-	"classes":      {},
+	"label":            {},
+	"desc":             {},
+	"shape":            {},
+	"icon":             {},
+	"constraint":       {},
+	"tooltip":          {},
+	"link":             {},
+	"near":             {},
+	"width":            {},
+	"height":           {},
+	"direction":        {},
+	"top":              {},
+	"left":             {},
+	"grid-rows":        {},
+	"grid-columns":     {},
+	"grid-gap":         {},
+	"grid-gap-rows":    {},
+	"grid-gap-columns": {},
+	"class":            {},
+	"classes":          {},
 }
 
 // ReservedKeywordHolders are reserved keywords that are meaningless on its own and exist solely to hold a set of reserved keywords

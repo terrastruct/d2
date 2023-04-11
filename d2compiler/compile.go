@@ -420,6 +420,45 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.GridColumns = &d2graph.Scalar{}
 		attrs.GridColumns.Value = scalar.ScalarString()
 		attrs.GridColumns.MapKey = f.LastPrimaryKey()
+	case "grid-gap":
+		v, err := strconv.Atoi(scalar.ScalarString())
+		if err != nil {
+			c.errorf(scalar, "non-integer grid-gap %#v: %s", scalar.ScalarString(), err)
+			return
+		}
+		if v < 0 {
+			c.errorf(scalar, "grid-gap must be a non-negative integer: %#v", scalar.ScalarString())
+			return
+		}
+		attrs.GridGap = &d2graph.Scalar{}
+		attrs.GridGap.Value = scalar.ScalarString()
+		attrs.GridGap.MapKey = f.LastPrimaryKey()
+	case "grid-gap-rows":
+		v, err := strconv.Atoi(scalar.ScalarString())
+		if err != nil {
+			c.errorf(scalar, "non-integer grid-gap-rows %#v: %s", scalar.ScalarString(), err)
+			return
+		}
+		if v < 0 {
+			c.errorf(scalar, "grid-gap-rows must be a non-negative integer: %#v", scalar.ScalarString())
+			return
+		}
+		attrs.GridGapRows = &d2graph.Scalar{}
+		attrs.GridGapRows.Value = scalar.ScalarString()
+		attrs.GridGapRows.MapKey = f.LastPrimaryKey()
+	case "grid-gap-columns":
+		v, err := strconv.Atoi(scalar.ScalarString())
+		if err != nil {
+			c.errorf(scalar, "non-integer grid-gap-columns %#v: %s", scalar.ScalarString(), err)
+			return
+		}
+		if v < 0 {
+			c.errorf(scalar, "grid-gap-columns must be a non-negative integer: %#v", scalar.ScalarString())
+			return
+		}
+		attrs.GridGapColumns = &d2graph.Scalar{}
+		attrs.GridGapColumns.Value = scalar.ScalarString()
+		attrs.GridGapColumns.MapKey = f.LastPrimaryKey()
 	case "class":
 		attrs.Classes = append(attrs.Classes, scalar.ScalarString())
 	case "classes":
@@ -757,7 +796,7 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 			if !in && arrowheadIn {
 				c.errorf(f.LastPrimaryKey(), fmt.Sprintf(`invalid shape, can only set "%s" for arrowheads`, obj.Attributes.Shape.Value))
 			}
-		case "grid-rows", "grid-columns":
+		case "grid-rows", "grid-columns", "grid-gap", "grid-gap-rows", "grid-gap-columns":
 			for _, child := range obj.ChildrenArray {
 				if child.IsContainer() {
 					c.errorf(f.LastPrimaryKey(),
