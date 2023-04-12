@@ -20,16 +20,16 @@ type gridDiagram struct {
 	width  float64
 	height float64
 
-	gapRows    int
-	gapColumns int
+	verticalGap   int
+	horizontalGap int
 }
 
 func newGridDiagram(root *d2graph.Object) *gridDiagram {
 	gd := gridDiagram{
-		root:       root,
-		objects:    root.ChildrenArray,
-		gapRows:    DEFAULT_GAP,
-		gapColumns: DEFAULT_GAP,
+		root:          root,
+		objects:       root.ChildrenArray,
+		verticalGap:   DEFAULT_GAP,
+		horizontalGap: DEFAULT_GAP,
 	}
 
 	if root.Attributes.GridRows != nil {
@@ -77,14 +77,14 @@ func newGridDiagram(root *d2graph.Object) *gridDiagram {
 
 	// grid gap sets both, but can be overridden
 	if root.Attributes.GridGap != nil {
-		gd.gapRows, _ = strconv.Atoi(root.Attributes.GridGap.Value)
-		gd.gapColumns = gd.gapRows
+		gd.verticalGap, _ = strconv.Atoi(root.Attributes.GridGap.Value)
+		gd.horizontalGap = gd.verticalGap
 	}
-	if root.Attributes.GridGapRows != nil {
-		gd.gapRows, _ = strconv.Atoi(root.Attributes.GridGapRows.Value)
+	if root.Attributes.VerticalGap != nil {
+		gd.verticalGap, _ = strconv.Atoi(root.Attributes.VerticalGap.Value)
 	}
-	if root.Attributes.GridGapColumns != nil {
-		gd.gapColumns, _ = strconv.Atoi(root.Attributes.GridGapColumns.Value)
+	if root.Attributes.HorizontalGap != nil {
+		gd.horizontalGap, _ = strconv.Atoi(root.Attributes.HorizontalGap.Value)
 	}
 
 	return &gd

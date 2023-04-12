@@ -177,8 +177,8 @@ func (gd *gridDiagram) layoutEvenly(g *d2graph.Graph, obj *d2graph.Object) {
 		colWidths = append(colWidths, columnWidth)
 	}
 
-	horizontalGap := float64(gd.gapColumns)
-	verticalGap := float64(gd.gapRows)
+	horizontalGap := float64(gd.horizontalGap)
+	verticalGap := float64(gd.verticalGap)
 
 	cursor := geo.NewPoint(0, 0)
 	if gd.rowDirected {
@@ -242,8 +242,8 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 	// . │              │  ├ ─ ┤  │          │  │         │  │                 │
 	// . └──────────────┘  └───┘  └──────────┘  └─────────┘  └─────────────────┘
 
-	horizontalGap := float64(gd.gapColumns)
-	verticalGap := float64(gd.gapRows)
+	horizontalGap := float64(gd.horizontalGap)
+	verticalGap := float64(gd.verticalGap)
 
 	// we want to split up the total width across the N rows or columns as evenly as possible
 	var totalWidth, totalHeight float64
@@ -484,7 +484,7 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 	// of these divisions, find the layout with rows closest to the targetSize
 	for _, division := range divisions {
 		layout := genLayout(gd.objects, division)
-		dist := getDistToTarget(layout, targetSize, float64(gd.gapColumns), float64(gd.gapRows), columns)
+		dist := getDistToTarget(layout, targetSize, float64(gd.horizontalGap), float64(gd.verticalGap), columns)
 		if dist < bestDist {
 			bestLayout = layout
 			bestDist = dist

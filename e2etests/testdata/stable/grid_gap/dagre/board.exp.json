@@ -4,7 +4,7 @@
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
-      "id": "gap-rows 30 gap-columns 100",
+      "id": "vertical-gap 30 horizontal-gap 100",
       "type": "rectangle",
       "pos": {
         "x": 0,
@@ -30,7 +30,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "gap-rows 30 gap-columns 100",
+      "label": "vertical-gap 30 horizontal-gap 100",
       "fontSize": 28,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -38,14 +38,14 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 347,
+      "labelWidth": 398,
       "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
-      "id": "gap-rows 30 gap-columns 100.a",
+      "id": "vertical-gap 30 horizontal-gap 100.a",
       "type": "rectangle",
       "pos": {
         "x": 60,
@@ -86,7 +86,7 @@
       "level": 2
     },
     {
-      "id": "gap-rows 30 gap-columns 100.b",
+      "id": "vertical-gap 30 horizontal-gap 100.b",
       "type": "rectangle",
       "pos": {
         "x": 214,
@@ -127,7 +127,7 @@
       "level": 2
     },
     {
-      "id": "gap-rows 30 gap-columns 100.c",
+      "id": "vertical-gap 30 horizontal-gap 100.c",
       "type": "rectangle",
       "pos": {
         "x": 367,
@@ -168,7 +168,7 @@
       "level": 2
     },
     {
-      "id": "gap-rows 30 gap-columns 100.d",
+      "id": "vertical-gap 30 horizontal-gap 100.d",
       "type": "rectangle",
       "pos": {
         "x": 60,
@@ -209,7 +209,7 @@
       "level": 2
     },
     {
-      "id": "gap-rows 30 gap-columns 100.e",
+      "id": "vertical-gap 30 horizontal-gap 100.e",
       "type": "rectangle",
       "pos": {
         "x": 214,
@@ -250,7 +250,7 @@
       "level": 2
     },
     {
-      "id": "gap-rows 30 gap-columns 100.f",
+      "id": "vertical-gap 30 horizontal-gap 100.f",
       "type": "rectangle",
       "pos": {
         "x": 367,
@@ -291,7 +291,7 @@
       "level": 2
     },
     {
-      "id": "gap-rows 30 gap-columns 100.g",
+      "id": "vertical-gap 30 horizontal-gap 100.g",
       "type": "rectangle",
       "pos": {
         "x": 60,
@@ -332,7 +332,7 @@
       "level": 2
     },
     {
-      "id": "gap-rows 30 gap-columns 100.h",
+      "id": "vertical-gap 30 horizontal-gap 100.h",
       "type": "rectangle",
       "pos": {
         "x": 214,
@@ -373,7 +373,7 @@
       "level": 2
     },
     {
-      "id": "gap-rows 30 gap-columns 100.i",
+      "id": "vertical-gap 30 horizontal-gap 100.i",
       "type": "rectangle",
       "pos": {
         "x": 367,
@@ -414,13 +414,13 @@
       "level": 2
     },
     {
-      "id": "gap-rows 100 gap-columns 30",
+      "id": "vertical-gap 100 horizontal-gap 30",
       "type": "rectangle",
       "pos": {
         "x": 540,
         "y": 0
       },
-      "width": 357,
+      "width": 408,
       "height": 518,
       "opacity": 1,
       "strokeDash": 0,
@@ -440,7 +440,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "gap-rows 100 gap-columns 30",
+      "label": "vertical-gap 100 horizontal-gap 30",
       "fontSize": 28,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -448,17 +448,17 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 347,
+      "labelWidth": 398,
       "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
-      "id": "gap-rows 100 gap-columns 30.a",
+      "id": "vertical-gap 100 horizontal-gap 30.a",
       "type": "rectangle",
       "pos": {
-        "x": 608,
+        "x": 634,
         "y": 60
       },
       "width": 54,
@@ -496,10 +496,10 @@
       "level": 2
     },
     {
-      "id": "gap-rows 100 gap-columns 30.b",
+      "id": "vertical-gap 100 horizontal-gap 30.b",
       "type": "rectangle",
       "pos": {
-        "x": 692,
+        "x": 718,
         "y": 60
       },
       "width": 53,
@@ -537,10 +537,10 @@
       "level": 2
     },
     {
-      "id": "gap-rows 100 gap-columns 30.c",
+      "id": "vertical-gap 100 horizontal-gap 30.c",
       "type": "rectangle",
       "pos": {
-        "x": 775,
+        "x": 801,
         "y": 60
       },
       "width": 53,
@@ -578,10 +578,10 @@
       "level": 2
     },
     {
-      "id": "gap-rows 100 gap-columns 30.d",
+      "id": "vertical-gap 100 horizontal-gap 30.d",
       "type": "rectangle",
       "pos": {
-        "x": 608,
+        "x": 634,
         "y": 226
       },
       "width": 54,
@@ -619,10 +619,10 @@
       "level": 2
     },
     {
-      "id": "gap-rows 100 gap-columns 30.e",
+      "id": "vertical-gap 100 horizontal-gap 30.e",
       "type": "rectangle",
       "pos": {
-        "x": 692,
+        "x": 718,
         "y": 226
       },
       "width": 53,
@@ -660,10 +660,10 @@
       "level": 2
     },
     {
-      "id": "gap-rows 100 gap-columns 30.f",
+      "id": "vertical-gap 100 horizontal-gap 30.f",
       "type": "rectangle",
       "pos": {
-        "x": 775,
+        "x": 801,
         "y": 226
       },
       "width": 53,
@@ -701,10 +701,10 @@
       "level": 2
     },
     {
-      "id": "gap-rows 100 gap-columns 30.g",
+      "id": "vertical-gap 100 horizontal-gap 30.g",
       "type": "rectangle",
       "pos": {
-        "x": 608,
+        "x": 634,
         "y": 392
       },
       "width": 54,
@@ -742,10 +742,10 @@
       "level": 2
     },
     {
-      "id": "gap-rows 100 gap-columns 30.h",
+      "id": "vertical-gap 100 horizontal-gap 30.h",
       "type": "rectangle",
       "pos": {
-        "x": 692,
+        "x": 718,
         "y": 392
       },
       "width": 53,
@@ -783,10 +783,10 @@
       "level": 2
     },
     {
-      "id": "gap-rows 100 gap-columns 30.i",
+      "id": "vertical-gap 100 horizontal-gap 30.i",
       "type": "rectangle",
       "pos": {
-        "x": 775,
+        "x": 801,
         "y": 392
       },
       "width": 53,
@@ -827,7 +827,7 @@
       "id": "gap 0",
       "type": "rectangle",
       "pos": {
-        "x": 957,
+        "x": 1008,
         "y": 100
       },
       "width": 280,
@@ -868,7 +868,7 @@
       "id": "gap 0.a",
       "type": "rectangle",
       "pos": {
-        "x": 1017,
+        "x": 1068,
         "y": 160
       },
       "width": 54,
@@ -909,7 +909,7 @@
       "id": "gap 0.b",
       "type": "rectangle",
       "pos": {
-        "x": 1071,
+        "x": 1122,
         "y": 160
       },
       "width": 53,
@@ -950,7 +950,7 @@
       "id": "gap 0.c",
       "type": "rectangle",
       "pos": {
-        "x": 1124,
+        "x": 1175,
         "y": 160
       },
       "width": 53,
@@ -991,7 +991,7 @@
       "id": "gap 0.d",
       "type": "rectangle",
       "pos": {
-        "x": 1017,
+        "x": 1068,
         "y": 226
       },
       "width": 54,
@@ -1032,7 +1032,7 @@
       "id": "gap 0.e",
       "type": "rectangle",
       "pos": {
-        "x": 1071,
+        "x": 1122,
         "y": 226
       },
       "width": 53,
@@ -1073,7 +1073,7 @@
       "id": "gap 0.f",
       "type": "rectangle",
       "pos": {
-        "x": 1124,
+        "x": 1175,
         "y": 226
       },
       "width": 53,
@@ -1114,7 +1114,7 @@
       "id": "gap 0.g",
       "type": "rectangle",
       "pos": {
-        "x": 1017,
+        "x": 1068,
         "y": 292
       },
       "width": 54,
@@ -1155,7 +1155,7 @@
       "id": "gap 0.h",
       "type": "rectangle",
       "pos": {
-        "x": 1071,
+        "x": 1122,
         "y": 292
       },
       "width": 53,
@@ -1196,7 +1196,7 @@
       "id": "gap 0.i",
       "type": "rectangle",
       "pos": {
-        "x": 1124,
+        "x": 1175,
         "y": 292
       },
       "width": 53,
@@ -1234,10 +1234,10 @@
       "level": 2
     },
     {
-      "id": "gap 10 gap-rows 100",
+      "id": "gap 10 vertical-gap 100",
       "type": "rectangle",
       "pos": {
-        "x": 1297,
+        "x": 1348,
         "y": 0
       },
       "width": 300,
@@ -1260,7 +1260,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "gap 10 gap-rows 100",
+      "label": "gap 10 vertical-gap 100",
       "fontSize": 28,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -1268,17 +1268,17 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 238,
+      "labelWidth": 268,
       "labelHeight": 36,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
       "level": 1
     },
     {
-      "id": "gap 10 gap-rows 100.a",
+      "id": "gap 10 vertical-gap 100.a",
       "type": "rectangle",
       "pos": {
-        "x": 1357,
+        "x": 1408,
         "y": 60
       },
       "width": 54,
@@ -1316,10 +1316,10 @@
       "level": 2
     },
     {
-      "id": "gap 10 gap-rows 100.b",
+      "id": "gap 10 vertical-gap 100.b",
       "type": "rectangle",
       "pos": {
-        "x": 1421,
+        "x": 1472,
         "y": 60
       },
       "width": 53,
@@ -1357,10 +1357,10 @@
       "level": 2
     },
     {
-      "id": "gap 10 gap-rows 100.c",
+      "id": "gap 10 vertical-gap 100.c",
       "type": "rectangle",
       "pos": {
-        "x": 1484,
+        "x": 1535,
         "y": 60
       },
       "width": 53,
@@ -1398,10 +1398,10 @@
       "level": 2
     },
     {
-      "id": "gap 10 gap-rows 100.d",
+      "id": "gap 10 vertical-gap 100.d",
       "type": "rectangle",
       "pos": {
-        "x": 1357,
+        "x": 1408,
         "y": 226
       },
       "width": 54,
@@ -1439,10 +1439,10 @@
       "level": 2
     },
     {
-      "id": "gap 10 gap-rows 100.e",
+      "id": "gap 10 vertical-gap 100.e",
       "type": "rectangle",
       "pos": {
-        "x": 1421,
+        "x": 1472,
         "y": 226
       },
       "width": 53,
@@ -1480,10 +1480,10 @@
       "level": 2
     },
     {
-      "id": "gap 10 gap-rows 100.f",
+      "id": "gap 10 vertical-gap 100.f",
       "type": "rectangle",
       "pos": {
-        "x": 1484,
+        "x": 1535,
         "y": 226
       },
       "width": 53,
@@ -1521,10 +1521,10 @@
       "level": 2
     },
     {
-      "id": "gap 10 gap-rows 100.g",
+      "id": "gap 10 vertical-gap 100.g",
       "type": "rectangle",
       "pos": {
-        "x": 1357,
+        "x": 1408,
         "y": 392
       },
       "width": 54,
@@ -1562,10 +1562,10 @@
       "level": 2
     },
     {
-      "id": "gap 10 gap-rows 100.h",
+      "id": "gap 10 vertical-gap 100.h",
       "type": "rectangle",
       "pos": {
-        "x": 1421,
+        "x": 1472,
         "y": 392
       },
       "width": 53,
@@ -1603,10 +1603,10 @@
       "level": 2
     },
     {
-      "id": "gap 10 gap-rows 100.i",
+      "id": "gap 10 vertical-gap 100.i",
       "type": "rectangle",
       "pos": {
-        "x": 1484,
+        "x": 1535,
         "y": 392
       },
       "width": 53,

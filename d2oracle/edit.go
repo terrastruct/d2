@@ -329,14 +329,14 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 					attrs.GridGap.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
-			case "grid-gap-rows":
-				if attrs.GridGapRows != nil && attrs.GridGapRows.MapKey != nil {
-					attrs.GridGapRows.MapKey.SetScalar(mk.Value.ScalarBox())
+			case "vertical-gap":
+				if attrs.VerticalGap != nil && attrs.VerticalGap.MapKey != nil {
+					attrs.VerticalGap.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
-			case "grid-gap-columns":
-				if attrs.GridGapColumns != nil && attrs.GridGapColumns.MapKey != nil {
-					attrs.GridGapColumns.MapKey.SetScalar(mk.Value.ScalarBox())
+			case "horizontal-gap":
+				if attrs.HorizontalGap != nil && attrs.HorizontalGap.MapKey != nil {
+					attrs.HorizontalGap.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
 			case "source-arrowhead", "target-arrowhead":

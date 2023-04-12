@@ -2304,12 +2304,12 @@ obj {
 		{
 			name: "grid_gap_negative",
 			text: `hey: {
-	grid-gap-columns: -200
-	grid-gap-rows: -30
+	horizontal-gap: -200
+	vertical-gap: -30
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/grid_gap_negative.d2:2:20: grid-gap-columns must be a non-negative integer: "-200"
-d2/testdata/d2compiler/TestCompile/grid_gap_negative.d2:3:17: grid-gap-rows must be a non-negative integer: "-30"`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_gap_negative.d2:2:18: horizontal-gap must be a non-negative integer: "-200"
+d2/testdata/d2compiler/TestCompile/grid_gap_negative.d2:3:16: vertical-gap must be a non-negative integer: "-30"`,
 		},
 		{
 			name: "grid_edge",
