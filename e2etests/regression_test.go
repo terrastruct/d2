@@ -683,6 +683,28 @@ And other normal markdown stuff
 |
 `,
 		},
+		{
+			name: "grid_panic",
+			script: `
+			2 rows 1 obj: {
+				grid-rows: 2
+
+				one
+			}
+			3 rows 2 obj: {
+				grid-rows: 3
+
+				one
+				two
+			}
+			4 columns 2 obj: {
+				grid-columns: 4
+
+				one
+				two
+			}
+`,
+		},
 	}
 
 	runa(t, tcs)
