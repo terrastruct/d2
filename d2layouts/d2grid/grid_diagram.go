@@ -64,6 +64,14 @@ func newGridDiagram(root *d2graph.Object) *gridDiagram {
 		}
 	} else if gd.columns == 0 {
 		gd.rowDirected = true
+		// we can only make N rows with N objects
+		if len(gd.objects) < gd.rows {
+			gd.rows = len(gd.objects)
+		}
+	} else {
+		if len(gd.objects) < gd.columns {
+			gd.columns = len(gd.objects)
+		}
 	}
 
 	return &gd
