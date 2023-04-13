@@ -67,7 +67,7 @@ func TestOutputFormat(t *testing.T) {
 			assert.Equal(t, tc.extension, extension)
 			assert.Equal(t, tc.supportsAnimation, extension.supportsAnimation())
 			assert.Equal(t, tc.supportsDarkTheme, extension.supportsDarkTheme())
-			assert.Equal(t, tc.requiresPngRender, extension.requiresPngRenderer())
+			assert.Equal(t, tc.requiresPngRender, extension.requiresPNGRenderer())
 		})
 	}
 }

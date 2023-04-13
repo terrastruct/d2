@@ -1,10 +1,18 @@
 package d2cli
 
-import "path/filepath"
+import (
+	"path/filepath"
+)
 
 type exportExtension string
 
-var KNOWN_EXTENSIONS = []string{".svg", ".png", ".pptx", ".pdf"}
+const GIF = ".gif"
+const PNG = ".png"
+const PPTX = ".pptx"
+const PDF = ".pdf"
+const SVG = ".svg"
+
+var KNOWN_EXTENSIONS = []string{SVG, PNG, PDF, PPTX, GIF}
 
 func getExportExtension(outputPath string) exportExtension {
 	ext := filepath.Ext(outputPath)
@@ -14,17 +22,17 @@ func getExportExtension(outputPath string) exportExtension {
 		}
 	}
 	// default is svg
-	return exportExtension(".svg")
+	return exportExtension(SVG)
 }
 
 func (ex exportExtension) supportsAnimation() bool {
-	return ex == ".svg"
+	return ex == SVG || ex == GIF
 }
 
-func (ex exportExtension) requiresPngRenderer() bool {
-	return ex == ".png" || ex == ".pdf" || ex == ".pptx"
+func (ex exportExtension) requiresPNGRenderer() bool {
+	return ex == PNG || ex == PDF || ex == PPTX || ex == GIF
 }
 
 func (ex exportExtension) supportsDarkTheme() bool {
-	return ex == ".svg"
+	return ex == SVG
 }

@@ -38,6 +38,7 @@ import (
 	"oss.terrastruct.com/d2/lib/pptx"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 	"oss.terrastruct.com/d2/lib/version"
+	"oss.terrastruct.com/d2/lib/xgif"
 
 	"cdr.dev/slog"
 	"cdr.dev/slog/sloggers/sloghuman"
@@ -190,9 +191,10 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if outputPath != "-" {
 		outputPath = ms.AbsPath(outputPath)
 		if *animateIntervalFlag > 0 && !outputFormat.supportsAnimation() {
-			return xmain.UsageErrorf("-animate-interval can only be used when exporting to SVG.\nYou provided: %s", filepath.Ext(outputPath))
+			return xmain.UsageErrorf("-animate-interval can only be used when exporting to SVG or GIF.\nYou provided: %s", filepath.Ext(outputPath))
+		} else if *animateIntervalFlag <= 0 && outputFormat == GIF {
+			return xmain.UsageErrorf("-animate-interval must be greater than 0 for GIF outputs.\nYou provided: %d", *animateIntervalFlag)
 		}
-
 	}
 
 	match := d2themescatalog.Find(*themeFlag)
@@ -242,7 +244,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		}
 	}
 	var pw png.Playwright
-	if outputFormat.requiresPngRenderer() {
+	if outputFormat.requiresPNGRenderer() {
 		pw, err = png.InitPlaywright()
 		if err != nil {
 			return err
@@ -351,8 +353,9 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		return nil, false, err
 	}
 
-	switch filepath.Ext(outputPath) {
-	case ".pdf":
+	ext := getExportExtension(outputPath)
+	switch ext {
+	case PDF:
 		pageMap := buildBoardIDToIndex(diagram, nil, nil)
 		pdf, err := renderPDF(ctx, ms, plugin, renderOpts, outputPath, page, ruler, diagram, nil, nil, pageMap)
 		if err != nil {
@@ -361,7 +364,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		dur := time.Since(start)
 		ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(outputPath), dur)
 		return pdf, true, nil
-	case ".pptx":
+	case PPTX:
 		var username string
 		if user, err := user.Current(); err == nil {
 			username = user.Username
@@ -398,11 +401,19 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		if err != nil {
 			return nil, false, err
 		}
+		// TODO: test GIF with 1 frame
 		var out []byte
 		if len(boards) > 0 {
 			out = boards[0]
 			if animateInterval > 0 {
-				out, err = d2animate.Wrap(diagram, boards, renderOpts, int(animateInterval))
+				if ext == GIF {
+					tl, br := diagram.NestedBoundingBox()
+					width := png.SCALE*(br.X-tl.X) + renderOpts.Pad*2
+					height := png.SCALE*(br.Y-tl.Y) + renderOpts.Pad*2
+					out, err = xgif.AnimatePNGs(boards, width, height, int(animateInterval))
+				} else {
+					out, err = d2animate.Wrap(diagram, boards, renderOpts, int(animateInterval))
+				}
 				if err != nil {
 					return nil, false, err
 				}
@@ -599,7 +610,7 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 }
 
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
-	toPNG := filepath.Ext(outputPath) == ".png"
+	toPNG := getExportExtension(outputPath).requiresPNGRenderer()
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
 		Pad:           opts.Pad,
 		Sketch:        opts.Sketch,
