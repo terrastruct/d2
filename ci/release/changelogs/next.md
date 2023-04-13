@@ -5,6 +5,8 @@
 
 #### Improvements 🧹
 
+- Markdown text can now be adjusted with `font-size` [#1191](https://github.com/terrastruct/d2/issues/1191)
+
 #### Bugfixes ⛑️
 
 - Fixes grid layouts not applying on objects with a constant near [#1173](https://github.com/terrastruct/d2/issues/1173)

@@ -887,6 +887,25 @@ x -> hey -> y
 `,
 		},
 		{
+			name: "md_fontsize_10",
+			script: `hey: |md
+# Every frustum longs to be a cone
+
+- A continuing flow of paper is sufficient to continue the flow of paper
+- Please remain calm, it's no use both of us being hysterical at the same time
+- Visits always give pleasure: if not on arrival, then on the departure
+
+*Festivity Level 1*: Your guests are chatting amiably with each other.
+
+test ~~strikethrough~~ test
+|
+
+hey.style.font-size: 10
+
+x -> hey -> y
+`,
+		},
+		{
 			name: "font_sizes_containers_large",
 			script: `
 ninety nine: {

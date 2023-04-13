@@ -1333,6 +1333,9 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 			mdEl := d2themes.NewThemableElement("div")
 			mdEl.ClassName = "md"
 			mdEl.Content = render
+			if targetShape.FontSize != textmeasure.MarkdownFontSize {
+				mdEl.Style = fmt.Sprintf("font-size:%vpx", targetShape.FontSize)
+			}
 			fmt.Fprint(writer, mdEl.Render())
 			fmt.Fprint(writer, `</foreignObject></g>`)
 		} else {
