@@ -1027,7 +1027,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 	case d2target.ShapeRectangle, d2target.ShapeSequenceDiagram, "":
 		borderRadius := math.MaxFloat64
 		if targetShape.BorderRadius != 0 {
-			borderRadius = targetShape.BorderRadius
+			borderRadius = float64(targetShape.BorderRadius)
 		}
 		if targetShape.ThreeDee {
 			fmt.Fprint(writer, render3dRect(targetShape))
@@ -1043,7 +1043,6 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.Stroke = stroke
 					el.Style = style
 					el.Rx = borderRadius
-					el.Ry = borderRadius
 					fmt.Fprint(writer, el.Render())
 				}
 				if sketchRunner != nil {
@@ -1063,7 +1062,6 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.Stroke = stroke
 					el.Style = style
 					el.Rx = borderRadius
-					el.Ry = borderRadius
 					fmt.Fprint(writer, el.Render())
 				}
 			} else {
@@ -1078,7 +1076,6 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.Stroke = stroke
 					el.Style = style
 					el.Rx = borderRadius
-					el.Ry = borderRadius
 					fmt.Fprint(writer, el.Render())
 
 					el = d2themes.NewThemableElement("rect")
@@ -1090,7 +1087,6 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.Stroke = stroke
 					el.Style = style
 					el.Rx = borderRadius
-					el.Ry = borderRadius
 					fmt.Fprint(writer, el.Render())
 				}
 				if sketchRunner != nil {
@@ -1110,7 +1106,6 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.Stroke = stroke
 					el.Style = style
 					el.Rx = borderRadius
-					el.Ry = borderRadius
 					fmt.Fprint(writer, el.Render())
 
 					el = d2themes.NewThemableElement("rect")
@@ -1122,7 +1117,6 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.Stroke = stroke
 					el.Style = style
 					el.Rx = borderRadius
-					el.Ry = borderRadius
 					fmt.Fprint(writer, el.Render())
 				}
 			}
@@ -1785,7 +1779,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	backgroundEl.Fill = diagram.Root.Fill
 	backgroundEl.Stroke = diagram.Root.Stroke
 	backgroundEl.FillPattern = diagram.Root.FillPattern
-	backgroundEl.Rx = diagram.Root.BorderRadius
+	backgroundEl.Rx = float64(diagram.Root.BorderRadius)
 	if diagram.Root.StrokeDash != 0 {
 		dashSize, gapSize := svg.GetStrokeDashAttributes(float64(diagram.Root.StrokeWidth), diagram.Root.StrokeDash)
 		backgroundEl.StrokeDashArray = fmt.Sprintf("%f, %f", dashSize, gapSize)

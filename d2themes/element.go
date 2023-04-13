@@ -140,10 +140,10 @@ func (el *ThemableElement) Render() string {
 		out += fmt.Sprintf(` r="%f"`, el.R)
 	}
 	if el.Rx != math.MaxFloat64 {
-		out += fmt.Sprintf(` rx="%f"`, calculateAxisRadius(el.Rx, el.Width))
+		out += fmt.Sprintf(` rx="%f"`, calculateAxisRadius(el.Rx, el.Width, el.Height))
 	}
 	if el.Ry != math.MaxFloat64 {
-		out += fmt.Sprintf(` ry="%f"`, calculateAxisRadius(el.Ry, el.Height))
+		out += fmt.Sprintf(` ry="%f"`, calculateAxisRadius(el.Ry, el.Width, el.Height))
 	}
 	if el.Cx != math.MaxFloat64 {
 		out += fmt.Sprintf(` cx="%f"`, el.Cx)
@@ -228,12 +228,8 @@ func (el *ThemableElement) Render() string {
 	return out
 }
 
-func calculateAxisRadius(borderRadius float64, sideLength float64) float64 {
-	if borderRadius >= 1 {
-		return borderRadius
-	}
-	if sideLength == math.MaxFloat64 {
-		return 0
-	}
-	return borderRadius * sideLength
+func calculateAxisRadius(borderRadius float64, width float64, height float64) float64 {
+	var minimumSideSize = math.Min(width, height)
+	var maximumBorderRadiusValue = minimumSideSize / 2.0
+	return math.Min(borderRadius, maximumBorderRadiusValue)
 }

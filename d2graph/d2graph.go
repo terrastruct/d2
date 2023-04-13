@@ -172,10 +172,6 @@ type Style struct {
 	DoubleBorder *Scalar `json:"doubleBorder,omitempty"`
 }
 
-func hasDecimalValue(value float64) bool {
-	return math.Mod(value, 1) != 0
-}
-
 func (s *Style) Apply(key, value string) error {
 	switch key {
 	case "opacity":
@@ -233,12 +229,9 @@ func (s *Style) Apply(key, value string) error {
 		if s.BorderRadius == nil {
 			break
 		}
-		f, err := strconv.ParseFloat(value, 64)
-		if err != nil || (f < 0 || f > 20) {
-			return errors.New(`expected "border-radius" to be a number between 0 and 20`)
-		}
-		if f > 1 && hasDecimalValue(f) {
-			return errors.New(`expected "border-radius" to be an integer if greater than 1`)
+		f, err := strconv.Atoi(value)
+		if err != nil || (f < 0) {
+			return errors.New(`expected "border-radius" to be a number greater or equal to 0`)
 		}
 		s.BorderRadius.Value = value
 	case "shadow":
