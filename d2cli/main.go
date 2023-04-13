@@ -186,14 +186,13 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			inputPath = filepath.Join(inputPath, "index.d2")
 		}
 	}
+	outputFormat := getExportExtension(outputPath)
 	if outputPath != "-" {
 		outputPath = ms.AbsPath(outputPath)
-		if *animateIntervalFlag > 0 {
-			// Not checking for extension == "svg", because users may want to write SVG data to a non-svg-extension file
-			if filepath.Ext(outputPath) == ".png" || filepath.Ext(outputPath) == ".pdf" || filepath.Ext(outputPath) == ".pptx" {
-				return xmain.UsageErrorf("-animate-interval can only be used when exporting to SVG.\nYou provided: %s", filepath.Ext(outputPath))
-			}
+		if *animateIntervalFlag > 0 && !outputFormat.supportsAnimation() {
+			return xmain.UsageErrorf("-animate-interval can only be used when exporting to SVG.\nYou provided: %s", filepath.Ext(outputPath))
 		}
+
 	}
 
 	match := d2themescatalog.Find(*themeFlag)
@@ -236,12 +235,14 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	ms.Log.Debug.Printf("using layout plugin %s (%s)", *layoutFlag, plocation)
 
-	var pw png.Playwright
-	if filepath.Ext(outputPath) == ".png" || filepath.Ext(outputPath) == ".pdf" || filepath.Ext(outputPath) == ".pptx" {
+	if !outputFormat.supportsDarkTheme() {
 		if darkThemeFlag != nil {
 			ms.Log.Warn.Printf("--dark-theme cannot be used while exporting to another format other than .svg")
 			darkThemeFlag = nil
 		}
+	}
+	var pw png.Playwright
+	if outputFormat.requiresPngRenderer() {
 		pw, err = png.InitPlaywright()
 		if err != nil {
 			return err
