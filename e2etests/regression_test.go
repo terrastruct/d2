@@ -705,6 +705,14 @@ And other normal markdown stuff
 			}
 `,
 		},
+		{
+			name: "long_arrowhead_label",
+			script: `
+a -> b: {
+	target-arrowhead: "a to b with unexpectedly long target arrowhead label"
+}
+`,
+		},
 	}
 
 	runa(t, tcs)
