@@ -148,7 +148,7 @@ func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill 
 		}
 	}
 
-	// Draw header/img seperator
+	// Draw header/img separator
 	g.pdf.SetXY(headerMargin, headerHeight)
 	g.pdf.SetLineWidth(1)
 	if fillRGB.IsLight() {

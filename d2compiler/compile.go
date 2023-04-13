@@ -250,7 +250,7 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 	scalar := f.Primary().Value
 	switch scalar := scalar.(type) {
 	case *d2ast.Null:
-		// TODO: Delete instaed.
+		// TODO: Delete instead.
 		attrs.Label.Value = scalar.ScalarString()
 	case *d2ast.BlockString:
 		attrs.Language = scalar.Tag
@@ -669,7 +669,7 @@ var FullToShortLanguageAliases map[string]string
 func (c *compiler) compileClass(obj *d2graph.Object) {
 	obj.Class = &d2target.Class{}
 	for _, f := range obj.ChildrenArray {
-		visiblity := "public"
+		visibility := "public"
 		name := f.IDVal
 		// See https://www.uml-diagrams.org/visibility.html
 		if name != "" {
@@ -677,10 +677,10 @@ func (c *compiler) compileClass(obj *d2graph.Object) {
 			case '+':
 				name = name[1:]
 			case '-':
-				visiblity = "private"
+				visibility = "private"
 				name = name[1:]
 			case '#':
-				visiblity = "protected"
+				visibility = "protected"
 				name = name[1:]
 			}
 		}
@@ -693,7 +693,7 @@ func (c *compiler) compileClass(obj *d2graph.Object) {
 			obj.Class.Fields = append(obj.Class.Fields, d2target.ClassField{
 				Name:       name,
 				Type:       typ,
-				Visibility: visiblity,
+				Visibility: visibility,
 			})
 		} else {
 			// TODO: Not great, AST should easily allow specifying alternate primary field
@@ -705,7 +705,7 @@ func (c *compiler) compileClass(obj *d2graph.Object) {
 			obj.Class.Methods = append(obj.Class.Methods, d2target.ClassMethod{
 				Name:       name,
 				Return:     returnType,
-				Visibility: visiblity,
+				Visibility: visibility,
 			})
 		}
 	}

@@ -1,7 +1,7 @@
 # d2fonts
 
 The SVG renderer embeds fonts directly into the SVG as base64 data. This is to give
-determinstic outputs and load without a network call.
+deterministic outputs and load without a network call.
 
 To include your own font, e.g. `Helvetica`, you must include the Truetype glyphs:
 - `./ttf/Helvetica-Bold.ttf`

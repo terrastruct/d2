@@ -428,7 +428,7 @@ func CompareSerializedEdge(edge, other *Edge) error {
 
 	if edge.LabelDimensions.Height != other.LabelDimensions.Height {
 		return fmt.Errorf(
-			"label hieght differs: edge=%d, other=%d",
+			"label height differs: edge=%d, other=%d",
 			edge.LabelDimensions.Height,
 			other.LabelDimensions.Height,
 		)
