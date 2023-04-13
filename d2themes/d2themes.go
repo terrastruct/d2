@@ -81,8 +81,8 @@ var DarkNeutral = Neutral{
 	N1: "#F4F6FA",
 	N2: "#BBBEC9",
 	N3: "#868A96",
-	N4: "#3A3D49",
-	N5: "#676D7D",
+	N4: "#676D7D",
+	N5: "#3A3D49",
 	N6: "#191C28",
 	N7: "#000410",
 }
