@@ -6,7 +6,7 @@ var DarkMauve = d2themes.Theme{
 	ID:   200,
 	Name: "Dark Mauve",
 	Colors: d2themes.ColorPalette{
-		Neutrals: d2themes.DarkNeutral,
+		Neutrals: d2themes.DarkMauveNeutral,
 
 		B1: "#CBA6f7",
 		B2: "#CBA6f7",
