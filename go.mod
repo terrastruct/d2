@@ -9,6 +9,7 @@ require (
 	github.com/dop251/goja v0.0.0-20230122112309-96b1610dd4f7
 	github.com/dsoprea/go-exif/v3 v3.0.0-20221012082141-d21ac8e2de85
 	github.com/dsoprea/go-png-image-structure/v2 v2.0.0-20210512210324-29b889a6093d
+	github.com/ericpauley/go-quantize v0.0.0-20200331213906-ae555eb2afa4
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 	github.com/jung-kurt/gofpdf v1.16.2
