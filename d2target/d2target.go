@@ -226,7 +226,7 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 		}
 
 		if connection.Label != "" {
-			labelTL := connection.GetLabelTopLeft()
+			labelTL := connection.GetLabelTopLeft(0, 0)
 			x1 = go2.Min(x1, int(labelTL.X))
 			y1 = go2.Min(y1, int(labelTL.Y))
 			x2 = go2.Max(x2, int(labelTL.X)+connection.LabelWidth)
@@ -505,13 +505,15 @@ func (c Connection) CSSStyle() string {
 	return out
 }
 
-func (c *Connection) GetLabelTopLeft() *geo.Point {
+func (c *Connection) GetLabelTopLeft(srcAdjDistance, dstAdjDistance float64) *geo.Point {
 	return label.Position(c.LabelPosition).GetPointOnRoute(
 		c.Route,
 		float64(c.StrokeWidth),
 		c.LabelPercentage,
 		float64(c.LabelWidth),
 		float64(c.LabelHeight),
+		srcAdjDistance,
+		dstAdjDistance,
 	)
 }
 

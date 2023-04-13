@@ -549,9 +549,18 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		markerEnd = fmt.Sprintf(`marker-end="url(#%s)" `, id)
 	}
 
+	srcAdj, dstAdj := getArrowheadAdjustments(connection, idToShape)
+	path := pathData(connection, srcAdj, dstAdj)
+	mask := fmt.Sprintf(`mask="url(#%s)"`, labelMaskID)
+
 	var labelTL *geo.Point
 	if connection.Label != "" {
-		labelTL = connection.GetLabelTopLeft()
+		srcArrowWidth, _ := arrowheadDimensions(connection.SrcArrow, float64(connection.StrokeWidth))
+		dstArrowWidth, _ := arrowheadDimensions(connection.DstArrow, float64(connection.StrokeWidth))
+
+		srcAdjDistance := geo.EuclideanDistance(srcAdj.X, srcAdj.Y, 0, 0) + srcArrowWidth
+		dstAdjDistance := geo.EuclideanDistance(dstAdj.X, dstAdj.Y, 0, 0) + dstArrowWidth
+		labelTL = connection.GetLabelTopLeft(srcAdjDistance, dstAdjDistance)
 		labelTL.X = math.Round(labelTL.X)
 		labelTL.Y = math.Round(labelTL.Y)
 
@@ -560,9 +569,6 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		}
 	}
 
-	srcAdj, dstAdj := getArrowheadAdjustments(connection, idToShape)
-	path := pathData(connection, srcAdj, dstAdj)
-	mask := fmt.Sprintf(`mask="url(#%s)"`, labelMaskID)
 	if sketchRunner != nil {
 		out, err := d2sketch.Connection(sketchRunner, connection, path, mask)
 		if err != nil {
@@ -644,7 +650,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 }
 
 func renderArrowheadLabel(connection d2target.Connection, text string, position, width, height float64) string {
-	labelTL := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, width, height)
+	labelTL := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, width, height, 0, 0)
 
 	textEl := d2themes.NewThemableElement("text")
 	textEl.X = labelTL.X + width/2

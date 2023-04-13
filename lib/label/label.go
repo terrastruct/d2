@@ -223,12 +223,13 @@ func (labelPosition Position) GetPointOnBox(box *geo.Box, padding, width, height
 }
 
 // return the top left point of a width x height label at the given label position on the route
-func (labelPosition Position) GetPointOnRoute(route geo.Route, strokeWidth, labelPercentage, width, height float64) *geo.Point {
-	totalLength := route.Length()
-	leftPosition := LEFT_LABEL_POSITION * totalLength
-	centerPosition := CENTER_LABEL_POSITION * totalLength
-	rightPosition := RIGHT_LABEL_POSITION * totalLength
-	unlockedPosition := labelPercentage * totalLength
+func (labelPosition Position) GetPointOnRoute(route geo.Route, strokeWidth, labelPercentage, width, height float64, srcAdjDistance, dstAdjDistance float64) *geo.Point {
+	totalRenderingLength := route.Length() - srcAdjDistance - dstAdjDistance
+
+	leftPosition := LEFT_LABEL_POSITION*totalRenderingLength + srcAdjDistance
+	centerPosition := CENTER_LABEL_POSITION*totalRenderingLength + srcAdjDistance
+	rightPosition := RIGHT_LABEL_POSITION*totalRenderingLength + srcAdjDistance
+	unlockedPosition := labelPercentage*totalRenderingLength + srcAdjDistance
 
 	// outside labels have to be offset in the direction of the edge's normal Vector
 	// Note: we flip the normal for Top labels but keep it as is for Bottom labels since positive Y is below in SVG
