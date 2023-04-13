@@ -561,7 +561,7 @@ func (obj *Object) Text() *d2target.MText {
 	}
 
 	if obj.OuterSequenceDiagram() == nil {
-		if obj.IsContainer() {
+		if obj.IsContainer() && obj.Attributes.Shape.Value != "text" {
 			fontSize = obj.Level().LabelSize()
 		}
 	} else {
