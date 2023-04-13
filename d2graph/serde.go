@@ -334,34 +334,20 @@ func CompareSerializedObject(obj, other *Object) error {
 		}
 	}
 
-	if obj.LabelWidth != nil {
-		if other.LabelWidth == nil {
-			return fmt.Errorf("other does not have a label width")
-		}
-		if *obj.LabelWidth != *other.LabelWidth {
-			return fmt.Errorf(
-				"label widths differ: obj=%d, other=%d",
-				*obj.LabelWidth,
-				*other.LabelWidth,
-			)
-		}
-	} else if other.LabelWidth != nil {
-		return fmt.Errorf("other should not have label width")
+	if obj.LabelDimensions.Width != other.LabelDimensions.Width {
+		return fmt.Errorf(
+			"label width differs: obj=%d, other=%d",
+			obj.LabelDimensions.Width,
+			other.LabelDimensions.Width,
+		)
 	}
 
-	if obj.LabelHeight != nil {
-		if other.LabelHeight == nil {
-			return fmt.Errorf("other does not have a label height")
-		}
-		if *obj.LabelHeight != *other.LabelHeight {
-			return fmt.Errorf(
-				"label heights differ: obj=%d, other=%d",
-				*obj.LabelHeight,
-				*other.LabelHeight,
-			)
-		}
-	} else if other.LabelHeight != nil {
-		return fmt.Errorf("other should not have label height")
+	if obj.LabelDimensions.Height != other.LabelDimensions.Height {
+		return fmt.Errorf(
+			"label height differs: obj=%d, other=%d",
+			obj.LabelDimensions.Height,
+			other.LabelDimensions.Height,
+		)
 	}
 
 	return nil

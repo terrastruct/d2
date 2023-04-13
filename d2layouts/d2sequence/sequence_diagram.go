@@ -186,8 +186,8 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*s
 
 	sd.yStep += VERTICAL_PAD
 	sd.maxActorHeight += VERTICAL_PAD
-	if sd.root.LabelHeight != nil {
-		sd.maxActorHeight += float64(*sd.root.LabelHeight)
+	if sd.root.HasLabel() {
+		sd.maxActorHeight += float64(sd.root.LabelDimensions.Height)
 	}
 
 	return sd, nil
@@ -282,11 +282,11 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 }
 
 func (sd *sequenceDiagram) adjustGroupLabel(group *d2graph.Object) {
-	if group.LabelHeight == nil {
+	if !group.HasLabel() {
 		return
 	}
 
-	heightAdd := (*group.LabelHeight + EDGE_GROUP_LABEL_PADDING) - GROUP_CONTAINER_PADDING
+	heightAdd := (group.LabelDimensions.Height + EDGE_GROUP_LABEL_PADDING) - GROUP_CONTAINER_PADDING
 	if heightAdd < 0 {
 		return
 	}
@@ -339,8 +339,8 @@ func (sd *sequenceDiagram) placeActors() {
 		if actor.HasOutsideBottomLabel() {
 			actor.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
 			yOffset = sd.maxActorHeight - actor.Height
-			if actor.LabelHeight != nil {
-				yOffset -= float64(*actor.LabelHeight)
+			if actor.HasLabel() {
+				yOffset -= float64(actor.LabelDimensions.Height)
 			}
 		} else {
 			actor.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
@@ -381,8 +381,8 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 	for _, actor := range sd.actors {
 		actorBottom := actor.Center()
 		actorBottom.Y = actor.TopLeft.Y + actor.Height
-		if *actor.LabelPosition == string(label.OutsideBottomCenter) && actor.LabelHeight != nil {
-			actorBottom.Y += float64(*actor.LabelHeight) + LIFELINE_LABEL_PAD
+		if *actor.LabelPosition == string(label.OutsideBottomCenter) && actor.HasLabel() {
+			actorBottom.Y += float64(actor.LabelDimensions.Height) + LIFELINE_LABEL_PAD
 		}
 		actorLifelineEnd := actor.Center()
 		actorLifelineEnd.Y = endY

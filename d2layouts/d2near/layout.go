@@ -111,22 +111,22 @@ func place(obj *d2graph.Object) (float64, float64) {
 		if strings.Contains(*obj.LabelPosition, "_TOP_") {
 			// label is on the top, and container is placed on the bottom
 			if strings.Contains(nearKeyStr, "bottom") {
-				y += float64(*obj.LabelHeight)
+				y += float64(obj.LabelDimensions.Height)
 			}
 		} else if strings.Contains(*obj.LabelPosition, "_LEFT_") {
 			// label is on the left, and container is placed on the right
 			if strings.Contains(nearKeyStr, "right") {
-				x += float64(*obj.LabelWidth)
+				x += float64(obj.LabelDimensions.Width)
 			}
 		} else if strings.Contains(*obj.LabelPosition, "_RIGHT_") {
 			// label is on the right, and container is placed on the left
 			if strings.Contains(nearKeyStr, "left") {
-				x -= float64(*obj.LabelWidth)
+				x -= float64(obj.LabelDimensions.Width)
 			}
 		} else if strings.Contains(*obj.LabelPosition, "_BOTTOM_") {
 			// label is on the bottom, and container is placed on the top
 			if strings.Contains(nearKeyStr, "top") {
-				y -= float64(*obj.LabelHeight)
+				y -= float64(obj.LabelDimensions.Height)
 			}
 		}
 	}
@@ -239,11 +239,11 @@ func boundingBox(g *d2graph.Graph) (tl, br *geo.Point) {
 			if obj.Attributes.Label.Value != "" && obj.LabelPosition != nil {
 				labelPosition := label.Position(*obj.LabelPosition)
 				if labelPosition.IsOutside() {
-					labelTL := labelPosition.GetPointOnBox(obj.Box, label.PADDING, float64(*obj.LabelWidth), float64(*obj.LabelHeight))
+					labelTL := labelPosition.GetPointOnBox(obj.Box, label.PADDING, float64(obj.LabelDimensions.Width), float64(obj.LabelDimensions.Height))
 					x1 = math.Min(x1, labelTL.X)
 					y1 = math.Min(y1, labelTL.Y)
-					x2 = math.Max(x2, labelTL.X+float64(*obj.LabelWidth))
-					y2 = math.Max(y2, labelTL.Y+float64(*obj.LabelHeight))
+					x2 = math.Max(x2, labelTL.X+float64(obj.LabelDimensions.Width))
+					y2 = math.Max(y2, labelTL.Y+float64(obj.LabelDimensions.Height))
 				}
 			}
 		}

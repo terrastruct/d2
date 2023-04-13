@@ -114,8 +114,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		if len(obj.ChildrenArray) == 0 || obj.Parent == g.Root {
 			continue
 		}
-		if obj.LabelHeight != nil {
-			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, *obj.LabelHeight+label.PADDING)
+		if obj.HasLabel() {
+			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, obj.LabelDimensions.Height+label.PADDING)
 		}
 
 		if obj.Attributes.Icon != nil && obj.Attributes.Shape.Value != d2target.ShapeImage {
@@ -160,12 +160,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		idToObj[id] = obj
 
 		height := obj.Height
-		if obj.LabelWidth != nil && obj.LabelHeight != nil {
+		if obj.HasLabel() {
 			if obj.HasOutsideBottomLabel() || obj.Attributes.Icon != nil {
-				height += float64(*obj.LabelHeight) + label.PADDING
+				height += float64(obj.LabelDimensions.Height) + label.PADDING
 			}
 			if len(obj.ChildrenArray) > 0 {
-				height += float64(*obj.LabelHeight) + label.PADDING
+				height += float64(obj.LabelDimensions.Height) + label.PADDING
 			}
 		}
 		loadScript += generateAddNodeLine(id, int(obj.Width), int(height))
@@ -235,13 +235,13 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		obj.Width = dn.Width
 		obj.Height = dn.Height
 
-		if obj.LabelWidth != nil && obj.LabelHeight != nil {
+		if obj.HasLabel() {
 			if len(obj.ChildrenArray) > 0 {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
 			} else if obj.HasOutsideBottomLabel() {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
 				// remove the extra height we added to the node when passing to dagre
-				obj.Height -= float64(*obj.LabelHeight) + label.PADDING
+				obj.Height -= float64(obj.LabelDimensions.Height) + label.PADDING
 			} else if obj.Attributes.Icon != nil {
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 			} else {
@@ -307,14 +307,14 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	for _, obj := range g.Objects {
-		if obj.LabelHeight == nil || len(obj.ChildrenArray) == 0 {
+		if !obj.HasLabel() || len(obj.ChildrenArray) == 0 {
 			continue
 		}
 
 		// usually you don't want to take away here more than what was added, which is the label height
 		// however, if the label height is more than the ranksep/2, we'll have no padding around children anymore
 		// so cap the amount taken off at ranksep/2
-		subtract := float64(go2.Min(rootAttrs.ranksep/2, *obj.LabelHeight+label.PADDING))
+		subtract := float64(go2.Min(rootAttrs.ranksep/2, obj.LabelDimensions.Height+label.PADDING))
 
 		obj.Height -= subtract
 
@@ -373,7 +373,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					// Don't move src points on side of container
 					if almostEqual(e.Route[0].X, obj.TopLeft.X) || almostEqual(e.Route[0].X, obj.TopLeft.X+obj.Width) {
 						// Unless the dst is also on a container
-						if e.Dst.LabelHeight == nil || len(e.Dst.ChildrenArray) <= 0 {
+						if !e.Dst.HasLabel() || len(e.Dst.ChildrenArray) <= 0 {
 							continue
 						}
 					}
@@ -463,8 +463,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		overlapsContainerLabel := false
 		if edge.Dst.IsContainer() && edge.Dst.Attributes.Label.Value != "" && !dstShape.Is(shape.TEXT_TYPE) {
 			// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
-			labelWidth := float64(*edge.Dst.LabelWidth)
-			labelHeight := float64(*edge.Dst.LabelHeight)
+			labelWidth := float64(edge.Dst.LabelDimensions.Width)
+			labelHeight := float64(edge.Dst.LabelDimensions.Height)
 			labelTL := label.Position(*edge.Dst.LabelPosition).
 				GetPointOnBox(edge.Dst.Box, label.PADDING, labelWidth, labelHeight)
 
