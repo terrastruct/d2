@@ -2333,24 +2333,24 @@ three-dee: {
 `,
 		},
 		{
-			name: "border-radius-percent",
+			name: "border-radius-pill-shape",
 			script: `
 x: {
-	style.border-radius: 0.1
+	style.border-radius: 999
 }
 y: {
-	style.border-radius: 0.2
+	style.border-radius: 999
 }
 multiple2: {
-	style.border-radius: 0.25
+	style.border-radius: 999
 	style.multiple: true
 }
 double: {
-	style.border-radius: 0.35
+	style.border-radius: 999
 	style.double-border: true
 }
 three-dee: {
-	style.border-radius: 0.3
+	style.border-radius: 999
 	style.3d: true
 }
 `,

@@ -2261,23 +2261,7 @@ layers: {
 x: {
   style.border-radius: -1
 }`,
-			expErr: `d2/testdata/d2compiler/TestCompile/border-radius-negative.d2:3:24: expected "border-radius" to be a number between 0 and 20`,
-		},
-		{
-			name: "border-radius-more-than-20",
-			text: `x
-x: {
-  style.border-radius: 21
-}`,
-			expErr: `d2/testdata/d2compiler/TestCompile/border-radius-more-than-20.d2:3:24: expected "border-radius" to be a number between 0 and 20`,
-		},
-		{
-			name: "border-radius-more-than-100-percent",
-			text: `x
-x: {
-  style.border-radius: 1.5
-}`,
-			expErr: `d2/testdata/d2compiler/TestCompile/border-radius-more-than-100-percent.d2:3:24: expected "border-radius" to be an integer if greater than 1`,
+			expErr: `d2/testdata/d2compiler/TestCompile/border-radius-negative.d2:3:24: expected "border-radius" to be a number greater or equal to 0`,
 		},
 		{
 			name: "near_near_const",
