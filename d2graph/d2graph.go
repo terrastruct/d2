@@ -1244,7 +1244,7 @@ func getMarkdownDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t
 	}
 
 	if ruler != nil {
-		width, height, err := textmeasure.MeasureMarkdown(t.Text, ruler, fontFamily)
+		width, height, err := textmeasure.MeasureMarkdown(t.Text, ruler, fontFamily, t.FontSize)
 		if err != nil {
 			return nil, err
 		}
