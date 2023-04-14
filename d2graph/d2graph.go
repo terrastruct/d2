@@ -98,8 +98,6 @@ type Object struct {
 
 	*geo.Box      `json:"box,omitempty"`
 	LabelPosition *string `json:"labelPosition,omitempty"`
-	LabelWidth    *int    `json:"labelWidth,omitempty"`
-	LabelHeight   *int    `json:"labelHeight,omitempty"`
 	IconPosition  *string `json:"iconPosition,omitempty"`
 
 	Class    *d2target.Class    `json:"class,omitempty"`
@@ -528,6 +526,18 @@ func (obj *Object) HasOutsideBottomLabel() bool {
 		return true
 	default:
 		return false
+	}
+}
+
+func (obj *Object) HasLabel() bool {
+	if obj == nil || obj.Attributes == nil {
+		return false
+	}
+	switch obj.Attributes.Shape.Value {
+	case d2target.ShapeText, d2target.ShapeClass, d2target.ShapeSQLTable, d2target.ShapeCode:
+		return false
+	default:
+		return obj.Attributes.Label.Value != ""
 	}
 }
 
@@ -1381,16 +1391,6 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			return err
 		}
 		obj.LabelDimensions = *labelDims
-
-		switch dslShape {
-		case d2target.ShapeText, d2target.ShapeClass, d2target.ShapeSQLTable, d2target.ShapeCode:
-			// no labels
-		default:
-			if obj.Attributes.Label.Value != "" {
-				obj.LabelWidth = go2.Pointer(labelDims.Width)
-				obj.LabelHeight = go2.Pointer(labelDims.Height)
-			}
-		}
 
 		// if there is a desired width or height, fit to content box without inner label padding for smallest minimum size
 		withInnerLabelPadding := desiredWidth == 0 && desiredHeight == 0 &&

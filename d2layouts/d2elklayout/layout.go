@@ -208,11 +208,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		height := obj.Height
 		width := obj.Width
-		if obj.LabelWidth != nil && obj.LabelHeight != nil {
+		if obj.HasLabel() {
 			if obj.HasOutsideBottomLabel() || obj.Attributes.Icon != nil {
-				height += float64(*obj.LabelHeight) + label.PADDING
+				height += float64(obj.LabelDimensions.Height) + label.PADDING
 			}
-			width = go2.Max(width, float64(*obj.LabelWidth))
+			width = go2.Max(width, float64(obj.LabelDimensions.Width))
 		}
 
 		n := &ELKNode{
@@ -249,8 +249,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 			if n.LayoutOptions.Padding == DefaultOpts.Padding {
 				labelHeight := 0
-				if obj.LabelHeight != nil {
-					labelHeight = *obj.LabelHeight + label.PADDING
+				if obj.HasLabel() {
+					labelHeight = obj.LabelDimensions.Height + label.PADDING
 				}
 
 				n.Height += 100 + float64(labelHeight)
@@ -281,11 +281,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
-		if obj.LabelWidth != nil && obj.LabelHeight != nil {
+		if obj.HasLabel() {
 			n.Labels = append(n.Labels, &ELKLabel{
 				Text:   obj.Attributes.Label.Value,
-				Width:  float64(*obj.LabelWidth),
-				Height: float64(*obj.LabelHeight),
+				Width:  float64(obj.LabelDimensions.Width),
+				Height: float64(obj.LabelDimensions.Height),
 			})
 		}
 
@@ -391,12 +391,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		obj.Width = n.Width
 		obj.Height = n.Height
 
-		if obj.LabelWidth != nil && obj.LabelHeight != nil {
+		if obj.HasLabel() {
 			if len(obj.ChildrenArray) > 0 {
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 			} else if obj.HasOutsideBottomLabel() {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
-				obj.Height -= float64(*obj.LabelHeight) + label.PADDING
+				obj.Height -= float64(obj.LabelDimensions.Height) + label.PADDING
 			} else if obj.Attributes.Icon != nil {
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 			} else {
