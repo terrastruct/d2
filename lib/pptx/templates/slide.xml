@@ -75,9 +75,19 @@
                             <a:defRPr sz="2400" />
                         </a:lvl1pPr>
                     </a:lstStyle>
-                    <a:p> {{if .TitlePrefix}} <a:r>
-                            <a:t>{{.TitlePrefix}}</a:t>
-                        </a:r> {{end}} <a:r>
+                    <a:p>
+                        {{range .TitlePrefix}}
+                        <a:r>
+                            <a:rPr>
+                                <a:hlinkClick r:id="{{.RelationshipID}}" invalidUrl=""
+                                    action="ppaction://hlinksldjump" tgtFrame="" tooltip=""
+                                    history="1" highlightClick="0" endSnd="0" />
+                            </a:rPr>
+                            <a:t>{{.Name}}</a:t>
+                        </a:r>
+                        <a:r><a:t>  /  </a:t></a:r>
+                        {{end}}
+                        <a:r>
                             <a:rPr b="1" />
                             <a:t>{{.Title}}</a:t>
                         </a:r>

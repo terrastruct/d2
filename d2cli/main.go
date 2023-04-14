@@ -372,7 +372,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		p := pptx.NewPresentation(rootName, description, rootName, username, version.OnlyNumbers())
 
 		boardIdToIndex := buildBoardIDToIndex(diagram, nil, nil)
-		svg, err := renderPPTX(ctx, ms, p, plugin, renderOpts, ruler, outputPath, page, diagram, nil, boardIdToIndex)
+		svg, err := renderPPTX(ctx, ms, p, plugin, renderOpts, ruler, outputPath, page, diagram, nil, "", boardIdToIndex)
 		if err != nil {
 			return nil, false, err
 		}
@@ -785,14 +785,24 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 	return svg, nil
 }
 
-func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Presentation, plugin d2plugin.Plugin, opts d2svg.RenderOpts, ruler *textmeasure.Ruler, outputPath string, page playwright.Page, diagram *d2target.Diagram, boardPath []string, boardIdToIndex map[string]int) ([]byte, error) {
-	var currBoardPath []string
-	// Root board doesn't have a name, so we use the output filename
+func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Presentation, plugin d2plugin.Plugin, opts d2svg.RenderOpts, ruler *textmeasure.Ruler, outputPath string, page playwright.Page, diagram *d2target.Diagram, boardPath []pptx.BoardTitle, boardType string, boardIDToIndex map[string]int) ([]byte, error) {
+	var curr pptx.BoardTitle
 	if diagram.Name == "" {
-		currBoardPath = append(boardPath, "root")
+		curr = pptx.BoardTitle{
+			Name:    "root",
+			BoardID: "root",
+		}
 	} else {
-		currBoardPath = append(boardPath, diagram.Name)
+		prev := boardPath[len(boardPath)-1]
+		curr = pptx.BoardTitle{
+			Name:    diagram.Name,
+			BoardID: strings.Join([]string{prev.BoardID, boardType, diagram.Name}, "."),
+		}
 	}
+	if pageNum, ok := boardIDToIndex[curr.BoardID]; ok {
+		curr.LinkToSlide = pageNum + 1
+	}
+	currBoardPath := append(boardPath, curr)
 
 	var svg []byte
 	if !diagram.IsFolderOnly {
@@ -867,7 +877,7 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 			if err != nil || key.Path[0].Unbox().ScalarString() != "root" {
 				// External link
 				link.ExternalUrl = shape.Link
-			} else if pageNum, ok := boardIdToIndex[shape.Link]; ok {
+			} else if pageNum, ok := boardIDToIndex[shape.Link]; ok {
 				// Internal link
 				link.SlideIndex = pageNum + 1
 			}
@@ -875,19 +885,19 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 	}
 
 	for _, dl := range diagram.Layers {
-		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, currBoardPath, boardIdToIndex)
+		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, currBoardPath, LAYERS, boardIDToIndex)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, currBoardPath, boardIdToIndex)
+		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, currBoardPath, SCENARIOS, boardIDToIndex)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, currBoardPath, boardIdToIndex)
+		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, currBoardPath, STEPS, boardIDToIndex)
 		if err != nil {
 			return nil, err
 		}
