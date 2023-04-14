@@ -286,8 +286,12 @@ func (diagram Diagram) GetCorpus() string {
 	}
 	for _, c := range diagram.Connections {
 		corpus += c.Label
-		corpus += c.SrcLabel
-		corpus += c.DstLabel
+		if c.SrcLabel != nil {
+			corpus += c.SrcLabel.Label
+		}
+		if c.DstLabel != nil {
+			corpus += c.DstLabel.Label
+		}
 	}
 
 	return corpus
@@ -431,11 +435,11 @@ type Connection struct {
 
 	Src      string    `json:"src"`
 	SrcArrow Arrowhead `json:"srcArrow"`
-	SrcLabel string    `json:"srcLabel"`
+	SrcLabel *Text     `json:"srcLabel,omitempty"`
 
 	Dst      string    `json:"dst"`
 	DstArrow Arrowhead `json:"dstArrow"`
-	DstLabel string    `json:"dstLabel"`
+	DstLabel *Text     `json:"dstLabel,omitempty"`
 
 	Opacity      float64 `json:"opacity"`
 	StrokeDash   float64 `json:"strokeDash"`
