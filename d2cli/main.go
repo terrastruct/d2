@@ -757,19 +757,19 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 	}
 
 	for _, dl := range diagram.Layers {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, "layers", pageMap)
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, LAYERS, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, "scenarios", pageMap)
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, SCENARIOS, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, "steps", pageMap)
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, STEPS, pageMap)
 		if err != nil {
 			return nil, err
 		}
@@ -990,6 +990,10 @@ func loadFonts(ms *xmain.State, pathToRegular, pathToItalic, pathToBold, pathToS
 	return d2fonts.AddFontFamily("custom", regularTTF, italicTTF, boldTTF, semiboldTTF)
 }
 
+const LAYERS = "layers"
+const STEPS = "steps"
+const SCENARIOS = "scenarios"
+
 // buildBoardIDToIndex returns a map from board path to page int
 // To map correctly, it must follow the same traversal of pdf/pptx building
 func buildBoardIDToIndex(diagram *d2target.Diagram, dictionary map[string]int, path []string) map[string]int {
@@ -1003,13 +1007,13 @@ func buildBoardIDToIndex(diagram *d2target.Diagram, dictionary map[string]int, p
 	dictionary[key] = len(dictionary)
 
 	for _, dl := range diagram.Layers {
-		buildBoardIDToIndex(dl, dictionary, append(newPath, "layers"))
+		buildBoardIDToIndex(dl, dictionary, append(newPath, LAYERS))
 	}
 	for _, dl := range diagram.Scenarios {
-		buildBoardIDToIndex(dl, dictionary, append(newPath, "scenarios"))
+		buildBoardIDToIndex(dl, dictionary, append(newPath, SCENARIOS))
 	}
 	for _, dl := range diagram.Steps {
-		buildBoardIDToIndex(dl, dictionary, append(newPath, "steps"))
+		buildBoardIDToIndex(dl, dictionary, append(newPath, STEPS))
 	}
 
 	return dictionary
