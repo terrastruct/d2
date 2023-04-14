@@ -1471,21 +1471,21 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		}
 	}
 	for _, edge := range g.Edges {
-		endpointLabels := []string{}
 		if edge.SrcArrowhead != nil && edge.SrcArrowhead.Label.Value != "" {
-			endpointLabels = append(endpointLabels, edge.SrcArrowhead.Label.Value)
+			t := edge.Text()
+			t.Text = edge.SrcArrowhead.Label.Value
+			dims := GetTextDimensions(mtexts, ruler, t, fontFamily)
+			edge.MinWidth += dims.Width + INNER_LABEL_PADDING
+			edge.MinHeight += dims.Height + INNER_LABEL_PADDING
+			edge.SrcArrowhead.LabelDimensions = *dims
 		}
 		if edge.DstArrowhead != nil && edge.DstArrowhead.Label.Value != "" {
-			endpointLabels = append(endpointLabels, edge.DstArrowhead.Label.Value)
-		}
-
-		for _, label := range endpointLabels {
 			t := edge.Text()
-			t.Text = label
+			t.Text = edge.DstArrowhead.Label.Value
 			dims := GetTextDimensions(mtexts, ruler, t, fontFamily)
-			edge.MinWidth += dims.Width
-			// Some padding as it's not totally near the end
-			edge.MinHeight += dims.Height + 5
+			edge.MinWidth += dims.Width + INNER_LABEL_PADDING
+			edge.MinHeight += dims.Height + INNER_LABEL_PADDING
+			edge.DstArrowhead.LabelDimensions = *dims
 		}
 
 		if edge.Label.Value == "" {
