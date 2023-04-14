@@ -6,6 +6,7 @@
 #### Improvements 🧹
 
 - Markdown text can now be adjusted with `font-size` [#1191](https://github.com/terrastruct/d2/issues/1191)
+- SVG outputs for internal links use relative paths instead of absolute [#1197](https://github.com/terrastruct/d2/pull/1197)
 
 #### Bugfixes ⛑️
 
