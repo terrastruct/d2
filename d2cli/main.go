@@ -694,7 +694,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 	var currBoardPath []string
 	// Root board doesn't have a name, so we use the output filename
 	if diagram.Name == "" {
-		currBoardPath = append(boardPath, getFileName(outputPath))
+		currBoardPath = append(boardPath, "root")
 	} else {
 		currBoardPath = append(boardPath, diagram.Name)
 	}
@@ -781,7 +781,7 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 	var currBoardPath []string
 	// Root board doesn't have a name, so we use the output filename
 	if diagram.Name == "" {
-		currBoardPath = append(boardPath, getFileName(outputPath))
+		currBoardPath = append(boardPath, "root")
 	} else {
 		currBoardPath = append(boardPath, diagram.Name)
 	}
