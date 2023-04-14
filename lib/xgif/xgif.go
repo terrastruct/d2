@@ -1,3 +1,11 @@
+// xgif is a helper package to create GIF animations based on PNG images
+// The resulting animations have the following properties:
+// 1. All frames have the same size (max(pngs.width), max(pngs.height))
+// 2. All PNGs are centered in the given frame
+// 3. The frame background is plain white
+// Note that to convert from a PNG to a GIF compatible image (Bitmap), the PNG image must be quantized (colors are aggregated in median buckets)
+// so that it has at most 255 colors.
+// This is required because GIFs support only 256 colors and we must keep 1 slot for the white background.
 package xgif
 
 import (
@@ -9,6 +17,7 @@ import (
 	"image/png"
 
 	"github.com/ericpauley/go-quantize/quantize"
+
 	"oss.terrastruct.com/util-go/go2"
 )
 
