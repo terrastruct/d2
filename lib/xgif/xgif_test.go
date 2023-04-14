@@ -1,13 +1,11 @@
 package xgif
 
 import (
-	"bytes"
 	_ "embed"
-	"image/png"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"oss.terrastruct.com/util-go/go2"
 )
 
 //go:embed test_input1.png
@@ -20,20 +18,18 @@ var test_input2 []byte
 var test_output []byte
 
 func TestPngToGif(t *testing.T) {
-	board1, err := png.Decode(bytes.NewBuffer(test_input1))
-	assert.NoError(t, err)
-	gifWidth := board1.Bounds().Dx()
-	gifHeight := board1.Bounds().Dy()
-
-	board2, err := png.Decode(bytes.NewBuffer(test_input2))
-	assert.NoError(t, err)
-	gifWidth = go2.Max(board2.Bounds().Dx(), gifWidth)
-	gifHeight = go2.Max(board2.Bounds().Dy(), gifHeight)
-
 	boards := [][]byte{test_input1, test_input2}
 	interval := 1_000
-	gifBytes, err := AnimatePNGs(boards, gifWidth, gifHeight, interval)
+	gifBytes, err := AnimatePNGs(boards, interval)
 	assert.NoError(t, err)
+
+	// use this to update the test output
+	if false {
+		f, err := os.Create("test_output_2.gif")
+		assert.NoError(t, err)
+		defer f.Close()
+		f.Write(gifBytes)
+	}
 
 	assert.Equal(t, test_output, gifBytes)
 }

@@ -355,6 +355,26 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 
 	ext := getExportExtension(outputPath)
 	switch ext {
+	case GIF:
+		svg, pngs, err := renderPNGsForGIF(ctx, ms, plugin, renderOpts, ruler, page, diagram)
+		if err != nil {
+			return nil, false, err
+		}
+		out, err := xgif.AnimatePNGs(pngs, int(animateInterval))
+		if err != nil {
+			return nil, false, err
+		}
+		err = os.MkdirAll(filepath.Dir(outputPath), 0755)
+		if err != nil {
+			return nil, false, err
+		}
+		err = ms.WritePath(outputPath, out)
+		if err != nil {
+			return nil, false, err
+		}
+		dur := time.Since(start)
+		ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(outputPath), dur)
+		return svg, true, nil
 	case PDF:
 		pageMap := buildBoardIDToIndex(diagram, nil, nil)
 		pdf, err := renderPDF(ctx, ms, plugin, renderOpts, outputPath, page, ruler, diagram, nil, nil, pageMap)
@@ -401,19 +421,11 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		if err != nil {
 			return nil, false, err
 		}
-		// TODO: test GIF with 1 frame
 		var out []byte
 		if len(boards) > 0 {
 			out = boards[0]
-			if animateInterval > 0 {
-				if ext == GIF {
-					tl, br := diagram.NestedBoundingBox()
-					width := png.SCALE*(br.X-tl.X) + renderOpts.Pad*2
-					height := png.SCALE*(br.Y-tl.Y) + renderOpts.Pad*2
-					out, err = xgif.AnimatePNGs(boards, width, height, int(animateInterval))
-				} else {
-					out, err = d2animate.Wrap(diagram, boards, renderOpts, int(animateInterval))
-				}
+			if animateInterval > 0 && ext != GIF {
+				out, err = d2animate.Wrap(diagram, boards, renderOpts, int(animateInterval))
 				if err != nil {
 					return nil, false, err
 				}
@@ -610,7 +622,7 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 }
 
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
-	toPNG := getExportExtension(outputPath).requiresPNGRenderer()
+	toPNG := getExportExtension(outputPath) == PNG
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
 		Pad:           opts.Pad,
 		Sketch:        opts.Sketch,
@@ -1000,4 +1012,62 @@ func buildBoardIDToIndex(diagram *d2target.Diagram, dictionary map[string]int, p
 	}
 
 	return dictionary
+}
+
+func renderPNGsForGIF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, ruler *textmeasure.Ruler, page playwright.Page, diagram *d2target.Diagram) (svg []byte, pngs [][]byte, err error) {
+	if !diagram.IsFolderOnly {
+		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
+			Pad:           opts.Pad,
+			Sketch:        opts.Sketch,
+			Center:        opts.Center,
+			SetDimensions: true,
+		})
+		if err != nil {
+			return nil, nil, err
+		}
+
+		svg, err = plugin.PostProcess(ctx, svg)
+		if err != nil {
+			return nil, nil, err
+		}
+
+		svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
+		svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
+		bundleErr = multierr.Combine(bundleErr, bundleErr2)
+		if bundleErr != nil {
+			return nil, nil, bundleErr
+		}
+
+		svg = appendix.Append(diagram, ruler, svg)
+
+		pngImg, err := png.ConvertSVG(ms, page, svg)
+		if err != nil {
+			return nil, nil, err
+		}
+		pngs = append(pngs, pngImg)
+	}
+
+	for _, dl := range diagram.Layers {
+		_, layerPNGs, err := renderPNGsForGIF(ctx, ms, plugin, opts, ruler, page, dl)
+		if err != nil {
+			return nil, nil, err
+		}
+		pngs = append(pngs, layerPNGs...)
+	}
+	for _, dl := range diagram.Scenarios {
+		_, scenarioPNGs, err := renderPNGsForGIF(ctx, ms, plugin, opts, ruler, page, dl)
+		if err != nil {
+			return nil, nil, err
+		}
+		pngs = append(pngs, scenarioPNGs...)
+	}
+	for _, dl := range diagram.Steps {
+		_, stepsPNGs, err := renderPNGsForGIF(ctx, ms, plugin, opts, ruler, page, dl)
+		if err != nil {
+			return nil, nil, err
+		}
+		pngs = append(pngs, stepsPNGs...)
+	}
+
+	return svg, pngs, nil
 }
