@@ -20,7 +20,7 @@ func TestSegmentIntersections(t *testing.T) {
 	assert.Equal(t, len(intersections), 1)
 	assert.True(t, intersections[0].Equals(NewPoint(10, 10)))
 
-	// intersection at the beginnig
+	// intersection at the beginning
 	s4 := NewSegment(NewPoint(0, 0), NewPoint(0, 10))
 	intersections = s1.Intersections(*s4)
 	assert.Equal(t, len(intersections), 1)

@@ -1,6 +1,6 @@
 package d2layoutfeatures
 
-// When this is true, objects can set ther `near` key to another object
+// When this is true, objects can set their `near` key to another object
 // When this is false, objects can only set `near` to constants
 const NEAR_OBJECT = "near_object"
 

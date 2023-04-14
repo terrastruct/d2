@@ -8,7 +8,7 @@ import (
 
 type PluginFeature string
 
-// When this is true, objects can set ther `near` key to another object
+// When this is true, objects can set their `near` key to another object
 // When this is false, objects can only set `near` to constants
 const NEAR_OBJECT PluginFeature = "near_object"
 
