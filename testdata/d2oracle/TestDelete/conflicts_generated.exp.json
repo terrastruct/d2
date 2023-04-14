@@ -108,13 +108,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -135,10 +135,6 @@
       {
         "id": "Text 4",
         "id_val": "Text 4",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -165,6 +161,10 @@
           "label": {
             "value": "Text 4"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -182,10 +182,6 @@
       {
         "id": "Text 2",
         "id_val": "Text 2",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -212,6 +208,10 @@
           "label": {
             "value": "Text 2"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -229,10 +229,6 @@
       {
         "id": "Text 2",
         "id_val": "Text 2",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -259,6 +255,10 @@
           "label": {
             "value": "Text 2"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -276,10 +276,6 @@
       {
         "id": "Text",
         "id_val": "Text",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -305,6 +301,10 @@
         "attributes": {
           "label": {
             "value": "Text"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

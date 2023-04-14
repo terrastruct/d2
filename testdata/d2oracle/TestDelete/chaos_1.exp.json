@@ -247,13 +247,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -274,15 +274,15 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": true,
         "srcArrowhead": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -306,6 +306,10 @@
           "label": {
             "value": ""
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -325,10 +329,6 @@
       {
         "id": "cm",
         "id_val": "cm",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -415,6 +415,10 @@
           "label": {
             "value": "cm"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -432,10 +436,6 @@
       {
         "id": "mt",
         "id_val": "mt",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -462,6 +462,10 @@
           "label": {
             "value": "z"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -479,10 +483,6 @@
       {
         "id": "cdpdxz",
         "id_val": "cdpdxz",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -508,6 +508,10 @@
         "attributes": {
           "label": {
             "value": "cdpdxz"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

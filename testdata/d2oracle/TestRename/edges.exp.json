@@ -400,13 +400,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -427,10 +427,6 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -443,6 +439,10 @@
           "label": {
             "value": ""
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -461,10 +461,6 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -477,6 +473,10 @@
           "label": {
             "value": ""
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -495,10 +495,6 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -511,6 +507,10 @@
           "label": {
             "value": ""
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -529,10 +529,6 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -545,6 +541,10 @@
           "label": {
             "value": ""
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -563,10 +563,6 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -579,6 +575,10 @@
           "label": {
             "value": ""
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -597,10 +597,6 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -612,6 +608,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -632,10 +632,6 @@
       {
         "id": "q",
         "id_val": "q",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -786,6 +782,10 @@
           "label": {
             "value": "q"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -803,10 +803,6 @@
       {
         "id": "%%%",
         "id_val": "%%%",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -977,6 +973,10 @@
           "label": {
             "value": "label"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -994,10 +994,6 @@
       {
         "id": "p",
         "id_val": "p",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1066,6 +1062,10 @@
           "label": {
             "value": "p"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -1083,10 +1083,6 @@
       {
         "id": "k",
         "id_val": "k",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1155,6 +1151,10 @@
           "label": {
             "value": "k"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -1172,10 +1172,6 @@
       {
         "id": "l",
         "id_val": "l",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1244,6 +1240,10 @@
           "label": {
             "value": "l"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -1261,10 +1261,6 @@
       {
         "id": "a",
         "id_val": "a",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1333,6 +1329,10 @@
           "label": {
             "value": "a"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -1350,10 +1350,6 @@
       {
         "id": "q",
         "id_val": "q",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1380,6 +1376,10 @@
           "label": {
             "value": "q"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -1397,10 +1397,6 @@
       {
         "id": "+",
         "id_val": "+",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1446,6 +1442,10 @@
         "attributes": {
           "label": {
             "value": "+"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

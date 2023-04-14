@@ -85,13 +85,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -112,10 +112,6 @@
       {
         "id": "y",
         "id_val": "y",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -142,6 +138,10 @@
           "label": {
             "value": "y"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -159,10 +159,6 @@
       {
         "id": "z",
         "id_val": "z",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -189,6 +185,10 @@
           "label": {
             "value": "z"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -206,10 +206,6 @@
       {
         "id": "z",
         "id_val": "z",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -235,6 +231,10 @@
         "attributes": {
           "label": {
             "value": "z"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

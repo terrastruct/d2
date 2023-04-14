@@ -293,13 +293,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -322,10 +322,6 @@
         "minHeight": 0,
         "srcTableColumnIndex": 0,
         "dstTableColumnIndex": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -337,6 +333,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {
             "animated": {
@@ -361,10 +361,6 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -454,6 +450,10 @@
           "label": {
             "value": "x"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -471,10 +471,6 @@
       {
         "id": "a",
         "id_val": "a",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -563,6 +559,10 @@
         "attributes": {
           "label": {
             "value": "a"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

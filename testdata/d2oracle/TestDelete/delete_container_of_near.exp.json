@@ -465,13 +465,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -492,10 +492,6 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -507,6 +503,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -526,10 +526,6 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -541,6 +537,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -560,10 +560,6 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -575,6 +571,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -594,10 +594,6 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -610,6 +606,10 @@
           "label": {
             "value": ""
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -628,10 +628,6 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -644,6 +640,10 @@
           "label": {
             "value": ""
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -662,10 +662,6 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -678,6 +674,10 @@
           "label": {
             "value": ""
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -696,10 +696,6 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -712,6 +708,10 @@
           "label": {
             "value": ""
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -730,10 +730,6 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -746,6 +742,10 @@
           "label": {
             "value": ""
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -764,10 +764,6 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -779,6 +775,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -799,10 +799,6 @@
       {
         "id": "first input",
         "id_val": "first input",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -829,6 +825,10 @@
           "label": {
             "value": "first input"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -846,10 +846,6 @@
       {
         "id": "start game",
         "id_val": "start game",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -876,6 +872,10 @@
           "label": {
             "value": "start game"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -893,10 +893,6 @@
       {
         "id": "input",
         "id_val": "input",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -923,6 +919,10 @@
           "label": {
             "value": "input"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -940,10 +940,6 @@
       {
         "id": "increase bird top velocity",
         "id_val": "increase bird top velocity",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -970,6 +966,10 @@
           "label": {
             "value": "increase bird top velocity"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -987,10 +987,6 @@
       {
         "id": "move bird",
         "id_val": "move bird",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1037,6 +1033,10 @@
           "label": {
             "value": "move bird"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -1054,10 +1054,6 @@
       {
         "id": "move pipes",
         "id_val": "move pipes",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1104,6 +1100,10 @@
           "label": {
             "value": "move pipes"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -1121,10 +1121,6 @@
       {
         "id": "render",
         "id_val": "render",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1191,6 +1187,10 @@
           "label": {
             "value": "render"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -1208,10 +1208,6 @@
       {
         "id": "no collision",
         "id_val": "no collision",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1289,6 +1285,10 @@
           "label": {
             "value": "no collision"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": {
             "range": "d2/testdata/d2oracle/TestDelete/delete_container_of_near.d2,9:19:236-9:37:254",
@@ -1321,10 +1321,6 @@
       {
         "id": "wait 16 milliseconds",
         "id_val": "wait 16 milliseconds",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1371,6 +1367,10 @@
           "label": {
             "value": "wait 16 milliseconds"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -1388,10 +1388,6 @@
       {
         "id": "collision detected",
         "id_val": "collision detected",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1438,6 +1434,10 @@
           "label": {
             "value": "collision detected"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -1455,10 +1455,6 @@
       {
         "id": "game over",
         "id_val": "game over",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1484,6 +1480,10 @@
         "attributes": {
           "label": {
             "value": "game over"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

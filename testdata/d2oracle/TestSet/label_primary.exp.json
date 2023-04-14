@@ -91,13 +91,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -118,10 +118,6 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -133,6 +129,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -153,10 +153,6 @@
       {
         "id": "oreo",
         "id_val": "oreo",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -183,6 +179,10 @@
           "label": {
             "value": "QOTD: \"It's been Monday all week today.\""
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -200,10 +200,6 @@
       {
         "id": "q",
         "id_val": "q",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -230,6 +226,10 @@
           "label": {
             "value": "q"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -247,10 +247,6 @@
       {
         "id": "z",
         "id_val": "z",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -276,6 +272,10 @@
         "attributes": {
           "label": {
             "value": "z"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

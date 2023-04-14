@@ -438,13 +438,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -465,10 +465,6 @@
         "index": 0,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -483,6 +479,10 @@
         "attributes": {
           "label": {
             "value": "zero"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -502,10 +502,6 @@
         "index": 1,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -520,6 +516,10 @@
         "attributes": {
           "label": {
             "value": "one"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -539,10 +539,6 @@
         "index": 2,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -557,6 +553,10 @@
         "attributes": {
           "label": {
             "value": "three"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -576,10 +576,6 @@
         "index": 3,
         "minWidth": 0,
         "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -594,6 +590,10 @@
         "attributes": {
           "label": {
             "value": "four"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -614,10 +614,6 @@
       {
         "id": "a",
         "id_val": "a",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -784,6 +780,10 @@
           "label": {
             "value": "a"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -801,10 +801,6 @@
       {
         "id": "b",
         "id_val": "b",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -970,6 +966,10 @@
         "attributes": {
           "label": {
             "value": "b"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

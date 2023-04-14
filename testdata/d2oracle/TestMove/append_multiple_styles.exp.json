@@ -217,13 +217,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -244,10 +244,6 @@
       {
         "id": "d",
         "id_val": "d",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -274,6 +270,10 @@
           "label": {
             "value": "d"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -291,10 +291,6 @@
       {
         "id": "a",
         "id_val": "a",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -340,6 +336,10 @@
         "attributes": {
           "label": {
             "value": "a"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {
             "opacity": {
