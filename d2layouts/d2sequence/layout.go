@@ -54,7 +54,7 @@ func WithoutSequenceDiagrams(ctx context.Context, g *d2graph.Graph) (map[string]
 			if len(obj.ChildrenArray) == 0 {
 				continue
 			}
-			if obj.Attributes.Shape.Value != d2target.ShapeSequenceDiagram {
+			if obj.Shape.Value != d2target.ShapeSequenceDiagram {
 				queue = append(queue, obj.ChildrenArray...)
 				continue
 			}

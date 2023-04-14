@@ -123,7 +123,7 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
 
 	// position labels and icons
 	for _, o := range gd.objects {
-		if o.Attributes.Icon != nil {
+		if o.Icon != nil {
 			o.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 			o.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
 		} else {

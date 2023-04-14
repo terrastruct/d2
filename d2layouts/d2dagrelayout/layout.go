@@ -93,7 +93,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		},
 	}
 	isHorizontal := false
-	switch g.Root.Attributes.Direction.Value {
+	switch g.Root.Direction.Value {
 	case "down":
 		rootAttrs.rankdir = "TB"
 	case "right":
@@ -118,9 +118,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, obj.LabelDimensions.Height+label.PADDING)
 		}
 
-		if obj.Attributes.Icon != nil && obj.Attributes.Shape.Value != d2target.ShapeImage {
+		if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
 			contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(obj.Width), float64(obj.Height))
-			shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[obj.Attributes.Shape.Value]
+			shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[obj.Shape.Value]
 			s := shape.NewShape(shapeType, contentBox)
 			iconSize := d2target.GetIconSize(s.GetInnerBox(), string(label.InsideTopLeft))
 			// Since dagre container labels are pushed up, we don't want a child container to collide
@@ -161,7 +161,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		height := obj.Height
 		if obj.HasLabel() {
-			if obj.HasOutsideBottomLabel() || obj.Attributes.Icon != nil {
+			if obj.HasOutsideBottomLabel() || obj.Icon != nil {
 				height += float64(obj.LabelDimensions.Height) + label.PADDING
 			}
 			if len(obj.ChildrenArray) > 0 {
@@ -189,7 +189,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		// We want to leave some gap between multiple edges
 		if numEdges > 1 {
-			switch g.Root.Attributes.Direction.Value {
+			switch g.Root.Direction.Value {
 			case "down", "up", "":
 				width += EDGE_LABEL_GAP
 			case "left", "right":
@@ -242,13 +242,13 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
 				// remove the extra height we added to the node when passing to dagre
 				obj.Height -= float64(obj.LabelDimensions.Height) + label.PADDING
-			} else if obj.Attributes.Icon != nil {
+			} else if obj.Icon != nil {
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 			} else {
 				obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			}
 		}
-		if obj.Attributes.Icon != nil {
+		if obj.Icon != nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.IconPosition = go2.Pointer(string(label.OutsideTopLeft))
 				obj.LabelPosition = go2.Pointer(string(label.OutsideTopRight))
@@ -453,15 +453,15 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
-		srcShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Src.Attributes.Shape.Value)], edge.Src.Box)
-		dstShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Dst.Attributes.Shape.Value)], edge.Dst.Box)
+		srcShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Src.Shape.Value)], edge.Src.Box)
+		dstShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Dst.Shape.Value)], edge.Dst.Box)
 
 		// trace the edge to the specific shape's border
 		points[startIndex] = shape.TraceToShapeBorder(srcShape, start, points[startIndex+1])
 
 		// if an edge to a container runs into its label, stop the edge at the label instead
 		overlapsContainerLabel := false
-		if edge.Dst.IsContainer() && edge.Dst.Attributes.Label.Value != "" && !dstShape.Is(shape.TEXT_TYPE) {
+		if edge.Dst.IsContainer() && edge.Dst.Label.Value != "" && !dstShape.Is(shape.TEXT_TYPE) {
 			// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
 			labelWidth := float64(edge.Dst.LabelDimensions.Width)
 			labelHeight := float64(edge.Dst.LabelDimensions.Height)
@@ -514,7 +514,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		edge.Route = path
 		// compile needs to assign edge label positions
-		if edge.Attributes.Label.Value != "" {
+		if edge.Label.Value != "" {
 			edge.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 		}
 	}

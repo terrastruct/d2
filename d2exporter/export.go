@@ -42,10 +42,10 @@ func Export(ctx context.Context, g *d2graph.Graph, fontFamily *d2fonts.FontFamil
 func applyTheme(shape *d2target.Shape, obj *d2graph.Object, theme *d2themes.Theme) {
 	shape.Stroke = obj.GetStroke(shape.StrokeDash)
 	shape.Fill = obj.GetFill()
-	if obj.Attributes.Shape.Value == d2target.ShapeText {
+	if obj.Shape.Value == d2target.ShapeText {
 		shape.Color = color.N1
 	}
-	if obj.Attributes.Shape.Value == d2target.ShapeSQLTable || obj.Attributes.Shape.Value == d2target.ShapeClass {
+	if obj.Shape.Value == d2target.ShapeSQLTable || obj.Shape.Value == d2target.ShapeClass {
 		shape.PrimaryAccentColor = color.B2
 		shape.SecondaryAccentColor = color.AA2
 		shape.NeutralAccentColor = color.N2
@@ -72,64 +72,64 @@ func applyTheme(shape *d2target.Shape, obj *d2graph.Object, theme *d2themes.Them
 }
 
 func applyStyles(shape *d2target.Shape, obj *d2graph.Object) {
-	if obj.Attributes.Style.Opacity != nil {
-		shape.Opacity, _ = strconv.ParseFloat(obj.Attributes.Style.Opacity.Value, 64)
+	if obj.Style.Opacity != nil {
+		shape.Opacity, _ = strconv.ParseFloat(obj.Style.Opacity.Value, 64)
 	}
-	if obj.Attributes.Style.StrokeDash != nil {
-		shape.StrokeDash, _ = strconv.ParseFloat(obj.Attributes.Style.StrokeDash.Value, 64)
+	if obj.Style.StrokeDash != nil {
+		shape.StrokeDash, _ = strconv.ParseFloat(obj.Style.StrokeDash.Value, 64)
 	}
-	if obj.Attributes.Style.Fill != nil {
-		shape.Fill = obj.Attributes.Style.Fill.Value
-	} else if obj.Attributes.Shape.Value == d2target.ShapeText {
+	if obj.Style.Fill != nil {
+		shape.Fill = obj.Style.Fill.Value
+	} else if obj.Shape.Value == d2target.ShapeText {
 		shape.Fill = "transparent"
 	}
-	if obj.Attributes.Style.FillPattern != nil {
-		shape.FillPattern = obj.Attributes.Style.FillPattern.Value
+	if obj.Style.FillPattern != nil {
+		shape.FillPattern = obj.Style.FillPattern.Value
 	}
-	if obj.Attributes.Style.Stroke != nil {
-		shape.Stroke = obj.Attributes.Style.Stroke.Value
+	if obj.Style.Stroke != nil {
+		shape.Stroke = obj.Style.Stroke.Value
 	}
-	if obj.Attributes.Style.StrokeWidth != nil {
-		shape.StrokeWidth, _ = strconv.Atoi(obj.Attributes.Style.StrokeWidth.Value)
+	if obj.Style.StrokeWidth != nil {
+		shape.StrokeWidth, _ = strconv.Atoi(obj.Style.StrokeWidth.Value)
 	}
-	if obj.Attributes.Style.Shadow != nil {
-		shape.Shadow, _ = strconv.ParseBool(obj.Attributes.Style.Shadow.Value)
+	if obj.Style.Shadow != nil {
+		shape.Shadow, _ = strconv.ParseBool(obj.Style.Shadow.Value)
 	}
-	if obj.Attributes.Style.ThreeDee != nil {
-		shape.ThreeDee, _ = strconv.ParseBool(obj.Attributes.Style.ThreeDee.Value)
+	if obj.Style.ThreeDee != nil {
+		shape.ThreeDee, _ = strconv.ParseBool(obj.Style.ThreeDee.Value)
 	}
-	if obj.Attributes.Style.Multiple != nil {
-		shape.Multiple, _ = strconv.ParseBool(obj.Attributes.Style.Multiple.Value)
+	if obj.Style.Multiple != nil {
+		shape.Multiple, _ = strconv.ParseBool(obj.Style.Multiple.Value)
 	}
-	if obj.Attributes.Style.BorderRadius != nil {
-		shape.BorderRadius, _ = strconv.Atoi(obj.Attributes.Style.BorderRadius.Value)
+	if obj.Style.BorderRadius != nil {
+		shape.BorderRadius, _ = strconv.Atoi(obj.Style.BorderRadius.Value)
 	}
 
-	if obj.Attributes.Style.FontColor != nil {
-		shape.Color = obj.Attributes.Style.FontColor.Value
+	if obj.Style.FontColor != nil {
+		shape.Color = obj.Style.FontColor.Value
 	}
-	if obj.Attributes.Style.Italic != nil {
-		shape.Italic, _ = strconv.ParseBool(obj.Attributes.Style.Italic.Value)
+	if obj.Style.Italic != nil {
+		shape.Italic, _ = strconv.ParseBool(obj.Style.Italic.Value)
 	}
-	if obj.Attributes.Style.Bold != nil {
-		shape.Bold, _ = strconv.ParseBool(obj.Attributes.Style.Bold.Value)
+	if obj.Style.Bold != nil {
+		shape.Bold, _ = strconv.ParseBool(obj.Style.Bold.Value)
 	}
-	if obj.Attributes.Style.Underline != nil {
-		shape.Underline, _ = strconv.ParseBool(obj.Attributes.Style.Underline.Value)
+	if obj.Style.Underline != nil {
+		shape.Underline, _ = strconv.ParseBool(obj.Style.Underline.Value)
 	}
-	if obj.Attributes.Style.Font != nil {
-		shape.FontFamily = obj.Attributes.Style.Font.Value
+	if obj.Style.Font != nil {
+		shape.FontFamily = obj.Style.Font.Value
 	}
-	if obj.Attributes.Style.DoubleBorder != nil {
-		shape.DoubleBorder, _ = strconv.ParseBool(obj.Attributes.Style.DoubleBorder.Value)
+	if obj.Style.DoubleBorder != nil {
+		shape.DoubleBorder, _ = strconv.ParseBool(obj.Style.DoubleBorder.Value)
 	}
 }
 
 func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	shape := d2target.BaseShape()
-	shape.SetType(obj.Attributes.Shape.Value)
+	shape.SetType(obj.Shape.Value)
 	shape.ID = obj.AbsID()
-	shape.Classes = obj.Attributes.Classes
+	shape.Classes = obj.Classes
 	shape.ZIndex = obj.ZIndex
 	shape.Level = int(obj.Level())
 	shape.Pos = d2target.NewPoint(int(obj.TopLeft.X), int(obj.TopLeft.Y))
@@ -155,10 +155,10 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 	shape.Color = text.GetColor(shape.Italic)
 	applyStyles(shape, obj)
 
-	switch obj.Attributes.Shape.Value {
+	switch obj.Shape.Value {
 	case d2target.ShapeCode, d2target.ShapeText:
-		shape.Language = obj.Attributes.Language
-		shape.Label = obj.Attributes.Label.Value
+		shape.Language = obj.Language
+		shape.Label = obj.Label.Value
 	case d2target.ShapeClass:
 		shape.Class = *obj.Class
 		// The label is the header for classes and tables, which is set in client to be 4 px larger than the object's set font size
@@ -178,13 +178,13 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 		}
 	}
 
-	if obj.Attributes.Tooltip != nil {
-		shape.Tooltip = obj.Attributes.Tooltip.Value
+	if obj.Tooltip != nil {
+		shape.Tooltip = obj.Tooltip.Value
 	}
-	if obj.Attributes.Link != nil {
-		shape.Link = obj.Attributes.Link.Value
+	if obj.Link != nil {
+		shape.Link = obj.Link.Value
 	}
-	shape.Icon = obj.Attributes.Icon
+	shape.Icon = obj.Icon
 	if obj.IconPosition != nil {
 		shape.IconPosition = *obj.IconPosition
 	}
@@ -195,7 +195,7 @@ func toShape(obj *d2graph.Object, theme *d2themes.Theme) d2target.Shape {
 func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection {
 	connection := d2target.BaseConnection()
 	connection.ID = edge.AbsID()
-	connection.Classes = edge.Attributes.Classes
+	connection.Classes = edge.Classes
 	connection.ZIndex = edge.ZIndex
 	text := edge.Text()
 
@@ -236,60 +236,60 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 	if theme != nil && theme.SpecialRules.NoCornerRadius {
 		connection.BorderRadius = 0
 	}
-	if edge.Attributes.Style.BorderRadius != nil {
-		connection.BorderRadius, _ = strconv.ParseFloat(edge.Attributes.Style.BorderRadius.Value, 64)
+	if edge.Style.BorderRadius != nil {
+		connection.BorderRadius, _ = strconv.ParseFloat(edge.Style.BorderRadius.Value, 64)
 	}
 
-	if edge.Attributes.Style.Opacity != nil {
-		connection.Opacity, _ = strconv.ParseFloat(edge.Attributes.Style.Opacity.Value, 64)
+	if edge.Style.Opacity != nil {
+		connection.Opacity, _ = strconv.ParseFloat(edge.Style.Opacity.Value, 64)
 	}
 
-	if edge.Attributes.Style.StrokeDash != nil {
-		connection.StrokeDash, _ = strconv.ParseFloat(edge.Attributes.Style.StrokeDash.Value, 64)
+	if edge.Style.StrokeDash != nil {
+		connection.StrokeDash, _ = strconv.ParseFloat(edge.Style.StrokeDash.Value, 64)
 	}
 	connection.Stroke = edge.GetStroke(connection.StrokeDash)
-	if edge.Attributes.Style.Stroke != nil {
-		connection.Stroke = edge.Attributes.Style.Stroke.Value
+	if edge.Style.Stroke != nil {
+		connection.Stroke = edge.Style.Stroke.Value
 	}
 
-	if edge.Attributes.Style.StrokeWidth != nil {
-		connection.StrokeWidth, _ = strconv.Atoi(edge.Attributes.Style.StrokeWidth.Value)
+	if edge.Style.StrokeWidth != nil {
+		connection.StrokeWidth, _ = strconv.Atoi(edge.Style.StrokeWidth.Value)
 	}
 
-	if edge.Attributes.Style.Fill != nil {
-		connection.Fill = edge.Attributes.Style.Fill.Value
+	if edge.Style.Fill != nil {
+		connection.Fill = edge.Style.Fill.Value
 	}
 
 	connection.FontSize = text.FontSize
-	if edge.Attributes.Style.FontSize != nil {
-		connection.FontSize, _ = strconv.Atoi(edge.Attributes.Style.FontSize.Value)
+	if edge.Style.FontSize != nil {
+		connection.FontSize, _ = strconv.Atoi(edge.Style.FontSize.Value)
 	}
 
-	if edge.Attributes.Style.Animated != nil {
-		connection.Animated, _ = strconv.ParseBool(edge.Attributes.Style.Animated.Value)
+	if edge.Style.Animated != nil {
+		connection.Animated, _ = strconv.ParseBool(edge.Style.Animated.Value)
 	}
 
-	if edge.Attributes.Tooltip != nil {
-		connection.Tooltip = edge.Attributes.Tooltip.Value
+	if edge.Tooltip != nil {
+		connection.Tooltip = edge.Tooltip.Value
 	}
-	connection.Icon = edge.Attributes.Icon
+	connection.Icon = edge.Icon
 
-	if edge.Attributes.Style.Italic != nil {
-		connection.Italic, _ = strconv.ParseBool(edge.Attributes.Style.Italic.Value)
+	if edge.Style.Italic != nil {
+		connection.Italic, _ = strconv.ParseBool(edge.Style.Italic.Value)
 	}
 
 	connection.Color = text.GetColor(connection.Italic)
-	if edge.Attributes.Style.FontColor != nil {
-		connection.Color = edge.Attributes.Style.FontColor.Value
+	if edge.Style.FontColor != nil {
+		connection.Color = edge.Style.FontColor.Value
 	}
-	if edge.Attributes.Style.Bold != nil {
-		connection.Bold, _ = strconv.ParseBool(edge.Attributes.Style.Bold.Value)
+	if edge.Style.Bold != nil {
+		connection.Bold, _ = strconv.ParseBool(edge.Style.Bold.Value)
 	}
 	if theme != nil && theme.SpecialRules.Mono {
 		connection.FontFamily = "mono"
 	}
-	if edge.Attributes.Style.Font != nil {
-		connection.FontFamily = edge.Attributes.Style.Font.Value
+	if edge.Style.Font != nil {
+		connection.FontFamily = edge.Style.Font.Value
 	}
 	connection.Label = text.Text
 	connection.LabelWidth = text.Dimensions.Width

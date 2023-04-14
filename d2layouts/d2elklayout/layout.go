@@ -159,7 +159,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			},
 		},
 	}
-	switch g.Root.Attributes.Direction.Value {
+	switch g.Root.Direction.Value {
 	case "down":
 		elkGraph.LayoutOptions.Direction = "DOWN"
 	case "up":
@@ -198,7 +198,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 		if incoming >= 2 || outgoing >= 2 {
-			switch g.Root.Attributes.Direction.Value {
+			switch g.Root.Direction.Value {
 			case "right", "left":
 				obj.Height = math.Max(obj.Height, math.Max(incoming, outgoing)*port_spacing)
 			default:
@@ -209,7 +209,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		height := obj.Height
 		width := obj.Width
 		if obj.HasLabel() {
-			if obj.HasOutsideBottomLabel() || obj.Attributes.Icon != nil {
+			if obj.HasOutsideBottomLabel() || obj.Icon != nil {
 				height += float64(obj.LabelDimensions.Height) + label.PADDING
 			}
 			width = go2.Max(width, float64(obj.LabelDimensions.Width))
@@ -256,7 +256,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				n.Height += 100 + float64(labelHeight)
 				n.Width += 100
 				contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(n.Width), float64(n.Height))
-				shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[obj.Attributes.Shape.Value]
+				shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[obj.Shape.Value]
 				s := shape.NewShape(shapeType, contentBox)
 
 				paddingTop := n.Height - s.GetInnerBox().Height
@@ -264,7 +264,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				n.Width -= 100
 
 				iconHeight := 0
-				if obj.Attributes.Icon != nil && obj.Attributes.Shape.Value != d2target.ShapeImage {
+				if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
 					iconHeight = d2target.GetIconSize(s.GetInnerBox(), string(label.InsideTopLeft)) + label.PADDING*2
 				}
 
@@ -283,7 +283,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		if obj.HasLabel() {
 			n.Labels = append(n.Labels, &ELKLabel{
-				Text:   obj.Attributes.Label.Value,
+				Text:   obj.Label.Value,
 				Width:  float64(obj.LabelDimensions.Width),
 				Height: float64(obj.LabelDimensions.Height),
 			})
@@ -303,9 +303,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			Sources: []string{edge.Src.AbsID()},
 			Targets: []string{edge.Dst.AbsID()},
 		}
-		if edge.Attributes.Label.Value != "" {
+		if edge.Label.Value != "" {
 			e.Labels = append(e.Labels, &ELKLabel{
-				Text:   edge.Attributes.Label.Value,
+				Text:   edge.Label.Value,
 				Width:  float64(edge.LabelDimensions.Width),
 				Height: float64(edge.LabelDimensions.Height),
 				LayoutOptions: &elkOpts{
@@ -397,13 +397,13 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			} else if obj.HasOutsideBottomLabel() {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
 				obj.Height -= float64(obj.LabelDimensions.Height) + label.PADDING
-			} else if obj.Attributes.Icon != nil {
+			} else if obj.Icon != nil {
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 			} else {
 				obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			}
 		}
-		if obj.Attributes.Icon != nil {
+		if obj.Icon != nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopRight))
@@ -444,14 +444,14 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 
 		startIndex, endIndex := 0, len(points)-1
-		srcShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Src.Attributes.Shape.Value)], edge.Src.Box)
-		dstShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Dst.Attributes.Shape.Value)], edge.Dst.Box)
+		srcShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Src.Shape.Value)], edge.Src.Box)
+		dstShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Dst.Shape.Value)], edge.Dst.Box)
 
 		// trace the edge to the specific shape's border
 		points[startIndex] = shape.TraceToShapeBorder(srcShape, points[startIndex], points[startIndex+1])
 		points[endIndex] = shape.TraceToShapeBorder(dstShape, points[endIndex], points[endIndex-1])
 
-		if edge.Attributes.Label.Value != "" {
+		if edge.Label.Value != "" {
 			edge.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 		}
 
@@ -519,7 +519,7 @@ func deleteBends(g *d2graph.Graph) {
 				newStart = geo.NewPoint(end.X, start.Y)
 			}
 
-			endpointShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(endpoint.Attributes.Shape.Value)], endpoint.Box)
+			endpointShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(endpoint.Shape.Value)], endpoint.Box)
 			newStart = shape.TraceToShapeBorder(endpointShape, newStart, end)
 
 			// Check that the new segment doesn't collide with anything new

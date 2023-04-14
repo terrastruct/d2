@@ -33,7 +33,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs []*d2graph
 	for _, processCenters := range []bool{true, false} {
 		for _, tempGraph := range constantNearGraphs {
 			obj := tempGraph.Root.ChildrenArray[0]
-			if processCenters == strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "-center") {
+			if processCenters == strings.Contains(d2graph.Key(obj.NearKey)[0], "-center") {
 				prevX, prevY := obj.TopLeft.X, obj.TopLeft.Y
 				obj.TopLeft = geo.NewPoint(place(obj))
 				dx, dy := obj.TopLeft.X-prevX, obj.TopLeft.Y-prevY
@@ -56,7 +56,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, constantNearGraphs []*d2graph
 		}
 		for _, tempGraph := range constantNearGraphs {
 			obj := tempGraph.Root.ChildrenArray[0]
-			if processCenters == strings.Contains(d2graph.Key(obj.Attributes.NearKey)[0], "-center") {
+			if processCenters == strings.Contains(d2graph.Key(obj.NearKey)[0], "-center") {
 				// The z-index for constant nears does not matter, as it will not collide
 				g.Objects = append(g.Objects, tempGraph.Objects...)
 				if obj.Parent.Children == nil {
@@ -78,7 +78,7 @@ func place(obj *d2graph.Object) (float64, float64) {
 	w := br.X - tl.X
 	h := br.Y - tl.Y
 
-	nearKeyStr := d2graph.Key(obj.Attributes.NearKey)[0]
+	nearKeyStr := d2graph.Key(obj.NearKey)[0]
 	var x, y float64
 	switch nearKeyStr {
 	case "top-left":
@@ -139,14 +139,14 @@ func place(obj *d2graph.Object) (float64, float64) {
 func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (constantNearGraphs []*d2graph.Graph) {
 	for i := 0; i < len(g.Objects); i++ {
 		obj := g.Objects[i]
-		if obj.Attributes.NearKey == nil {
+		if obj.NearKey == nil {
 			continue
 		}
-		_, isKey := g.Root.HasChild(d2graph.Key(obj.Attributes.NearKey))
+		_, isKey := g.Root.HasChild(d2graph.Key(obj.NearKey))
 		if isKey {
 			continue
 		}
-		_, isConst := d2graph.NearConstants[d2graph.Key(obj.Attributes.NearKey)[0]]
+		_, isConst := d2graph.NearConstants[d2graph.Key(obj.NearKey)[0]]
 		if isConst {
 			descendantObjects, edges := pluckObjAndEdges(g, obj)
 
@@ -217,10 +217,10 @@ func boundingBox(g *d2graph.Graph) (tl, br *geo.Point) {
 	y2 := math.Inf(-1)
 
 	for _, obj := range g.Objects {
-		if obj.Attributes.NearKey != nil {
+		if obj.NearKey != nil {
 			// Top left should not be MORE top than top-center
 			// But it should go more left if top-center label extends beyond bounds of diagram
-			switch d2graph.Key(obj.Attributes.NearKey)[0] {
+			switch d2graph.Key(obj.NearKey)[0] {
 			case "top-center", "bottom-center":
 				x1 = math.Min(x1, obj.TopLeft.X)
 				x2 = math.Max(x2, obj.TopLeft.X+obj.Width)
@@ -236,7 +236,7 @@ func boundingBox(g *d2graph.Graph) (tl, br *geo.Point) {
 			y1 = math.Min(y1, obj.TopLeft.Y)
 			x2 = math.Max(x2, obj.TopLeft.X+obj.Width)
 			y2 = math.Max(y2, obj.TopLeft.Y+obj.Height)
-			if obj.Attributes.Label.Value != "" && obj.LabelPosition != nil {
+			if obj.Label.Value != "" && obj.LabelPosition != nil {
 				labelPosition := label.Position(*obj.LabelPosition)
 				if labelPosition.IsOutside() {
 					labelTL := labelPosition.GetPointOnBox(obj.Box, label.PADDING, float64(obj.LabelDimensions.Width), float64(obj.LabelDimensions.Height))

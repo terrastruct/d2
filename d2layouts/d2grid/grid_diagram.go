@@ -32,11 +32,11 @@ func newGridDiagram(root *d2graph.Object) *gridDiagram {
 		horizontalGap: DEFAULT_GAP,
 	}
 
-	if root.Attributes.GridRows != nil {
-		gd.rows, _ = strconv.Atoi(root.Attributes.GridRows.Value)
+	if root.GridRows != nil {
+		gd.rows, _ = strconv.Atoi(root.GridRows.Value)
 	}
-	if root.Attributes.GridColumns != nil {
-		gd.columns, _ = strconv.Atoi(root.Attributes.GridColumns.Value)
+	if root.GridColumns != nil {
+		gd.columns, _ = strconv.Atoi(root.GridColumns.Value)
 	}
 
 	if gd.rows != 0 && gd.columns != 0 {
@@ -47,7 +47,7 @@ func newGridDiagram(root *d2graph.Object) *gridDiagram {
 		// .  │ g h i │    │ c f i │
 		// .  └───────┘    └───────┘
 		// if keyword rows is first, make it row-directed, if columns is first it is column-directed
-		if root.Attributes.GridRows.MapKey.Range.Before(root.Attributes.GridColumns.MapKey.Range) {
+		if root.GridRows.MapKey.Range.Before(root.GridColumns.MapKey.Range) {
 			gd.rowDirected = true
 		}
 
@@ -84,15 +84,15 @@ func newGridDiagram(root *d2graph.Object) *gridDiagram {
 	}
 
 	// grid gap sets both, but can be overridden
-	if root.Attributes.GridGap != nil {
-		gd.verticalGap, _ = strconv.Atoi(root.Attributes.GridGap.Value)
+	if root.GridGap != nil {
+		gd.verticalGap, _ = strconv.Atoi(root.GridGap.Value)
 		gd.horizontalGap = gd.verticalGap
 	}
-	if root.Attributes.VerticalGap != nil {
-		gd.verticalGap, _ = strconv.Atoi(root.Attributes.VerticalGap.Value)
+	if root.VerticalGap != nil {
+		gd.verticalGap, _ = strconv.Atoi(root.VerticalGap.Value)
 	}
-	if root.Attributes.HorizontalGap != nil {
-		gd.horizontalGap, _ = strconv.Atoi(root.Attributes.HorizontalGap.Value)
+	if root.HorizontalGap != nil {
+		gd.horizontalGap, _ = strconv.Atoi(root.HorizontalGap.Value)
 	}
 
 	return &gd

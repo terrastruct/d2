@@ -159,12 +159,12 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 			}
 		}
 
-		if obj.Attributes.Label.MapKey != nil && obj.Map == nil && (!found || reserved || len(mk.Edges) > 0) {
+		if obj.Label.MapKey != nil && obj.Map == nil && (!found || reserved || len(mk.Edges) > 0) {
 			obj.Map = &d2ast.Map{
 				Range: d2ast.MakeRange(",1:0:0-1:0:0"),
 			}
-			obj.Attributes.Label.MapKey.Primary = obj.Attributes.Label.MapKey.Value.ScalarBox()
-			obj.Attributes.Label.MapKey.Value = d2ast.MakeValueBox(obj.Map)
+			obj.Label.MapKey.Primary = obj.Label.MapKey.Value.ScalarBox()
+			obj.Label.MapKey.Value = d2ast.MakeValueBox(obj.Map)
 			scope = obj.Map
 
 			mk.Key.Path = mk.Key.Path[toSkip-1:]
@@ -247,10 +247,10 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 						if n.MapKey.Key.Path[0].Unbox().ScalarString() == mk.Key.Path[toSkip-1].Unbox().ScalarString() {
 							scope = n.MapKey.Value.Map
 							if mk.Key.Path[0].Unbox().ScalarString() == "source-arrowhead" && edge.SrcArrowhead != nil {
-								attrs = edge.SrcArrowhead
+								attrs = *edge.SrcArrowhead
 							}
 							if mk.Key.Path[0].Unbox().ScalarString() == "target-arrowhead" && edge.DstArrowhead != nil {
-								attrs = edge.DstArrowhead
+								attrs = *edge.DstArrowhead
 							}
 							reservedKey = mk.Key.Path[0].Unbox().ScalarString()
 							mk.Key.Path = mk.Key.Path[1:]
@@ -295,13 +295,13 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 					return nil
 				}
 			case "width":
-				if attrs.Width != nil && attrs.Width.MapKey != nil {
-					attrs.Width.MapKey.SetScalar(mk.Value.ScalarBox())
+				if attrs.WidthAttr != nil && attrs.WidthAttr.MapKey != nil {
+					attrs.WidthAttr.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
 			case "height":
-				if attrs.Height != nil && attrs.Height.MapKey != nil {
-					attrs.Height.MapKey.SetScalar(mk.Value.ScalarBox())
+				if attrs.HeightAttr != nil && attrs.HeightAttr.MapKey != nil {
+					attrs.HeightAttr.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
 			case "top":
@@ -340,12 +340,13 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 					return nil
 				}
 			case "source-arrowhead", "target-arrowhead":
+				var arrowhead *d2graph.Attributes
 				if reservedKey == "source-arrowhead" {
-					attrs = edge.SrcArrowhead
+					arrowhead = edge.SrcArrowhead
 				} else {
-					attrs = edge.DstArrowhead
+					arrowhead = edge.DstArrowhead
 				}
-				if attrs != nil {
+				if arrowhead != nil {
 					if reservedTargetKey == "" {
 						if len(mk.Key.Path[reservedIndex:]) != 2 {
 							return errors.New("malformed style setting, expected 2 part path")
@@ -354,13 +355,13 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 					}
 					switch reservedTargetKey {
 					case "shape":
-						if attrs.Shape.MapKey != nil {
-							attrs.Shape.MapKey.SetScalar(mk.Value.ScalarBox())
+						if arrowhead.Shape.MapKey != nil {
+							arrowhead.Shape.MapKey.SetScalar(mk.Value.ScalarBox())
 							return nil
 						}
 					case "label":
-						if attrs.Label.MapKey != nil {
-							attrs.Label.MapKey.SetScalar(mk.Value.ScalarBox())
+						if arrowhead.Label.MapKey != nil {
+							arrowhead.Label.MapKey.SetScalar(mk.Value.ScalarBox())
 							return nil
 						}
 					}
@@ -664,7 +665,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 	if !ok {
 		return g, nil
 	}
-	if obj.Attributes.Shape.Value == d2target.ShapeSQLTable || obj.Attributes.Shape.Value == d2target.ShapeClass {
+	if obj.Shape.Value == d2target.ShapeSQLTable || obj.Shape.Value == d2target.ShapeClass {
 		return g, nil
 	}
 
@@ -961,7 +962,7 @@ func deleteObject(g *d2graph.Graph, key *d2ast.KeyPath, obj *d2graph.Object) (*d
 				isSpecial := isReserved || x.Unbox().ScalarString() == "_"
 				return !isSpecial
 			})
-			if obj.Attributes.Shape.Value == d2target.ShapeSQLTable || obj.Attributes.Shape.Value == d2target.ShapeClass {
+			if obj.Shape.Value == d2target.ShapeSQLTable || obj.Shape.Value == d2target.ShapeClass {
 				deleteFromMap(ref.Scope, ref.MapKey)
 			} else if len(withoutSpecial) == 0 {
 				hoistRefChildren(g, key, ref)
@@ -990,7 +991,7 @@ func deleteObject(g *d2graph.Graph, key *d2ast.KeyPath, obj *d2graph.Object) (*d
 		} else if ref.InEdge() {
 			edge := ref.MapKey.Edges[ref.MapKeyEdgeIndex]
 
-			if obj.Attributes.Shape.Value == d2target.ShapeSQLTable || obj.Attributes.Shape.Value == d2target.ShapeClass {
+			if obj.Shape.Value == d2target.ShapeSQLTable || obj.Shape.Value == d2target.ShapeClass {
 				if ref.MapKeyEdgeDest() {
 					ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, edge.Src, true)
 				} else {
