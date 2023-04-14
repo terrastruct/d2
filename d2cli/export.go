@@ -1,32 +1,40 @@
 package d2cli
 
 import (
+	"fmt"
 	"path/filepath"
 )
 
 type exportExtension string
 
-const GIF = ".gif"
-const PNG = ".png"
-const PPTX = ".pptx"
-const PDF = ".pdf"
-const SVG = ".svg"
+const GIF exportExtension = ".gif"
+const PNG exportExtension = ".png"
+const PPTX exportExtension = ".pptx"
+const PDF exportExtension = ".pdf"
+const SVG exportExtension = ".svg"
 
-var KNOWN_EXTENSIONS = []string{SVG, PNG, PDF, PPTX, GIF}
+var SUPPORTED_EXTENSIONS = []exportExtension{SVG, PNG, PDF, PPTX, GIF}
 
-func getExportExtension(outputPath string) exportExtension {
+func getExportExtension(outputPath string) (exportExtension, error) {
 	ext := filepath.Ext(outputPath)
-	for _, kext := range KNOWN_EXTENSIONS {
-		if kext == ext {
-			return exportExtension(ext)
+	if ext == ".ppt" {
+		return "", fmt.Errorf("D2 does not support ppt exports, did you mean \"pptx\"?")
+	}
+	for _, kext := range SUPPORTED_EXTENSIONS {
+		if kext == exportExtension(ext) {
+			return exportExtension(ext), nil
 		}
 	}
 	// default is svg
-	return exportExtension(SVG)
+	return exportExtension(SVG), nil
 }
 
 func (ex exportExtension) supportsAnimation() bool {
 	return ex == SVG || ex == GIF
+}
+
+func (ex exportExtension) requiresAnimationInterval() bool {
+	return ex == GIF
 }
 
 func (ex exportExtension) requiresPNGRenderer() bool {

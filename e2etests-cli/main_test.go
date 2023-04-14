@@ -247,6 +247,14 @@ layers: {
 			},
 		},
 		{
+			name: "export_ppt",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "x.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "x.d2", "x.ppt")
+				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: bad usage: D2 does not support ppt exports, did you mean "pptx"?`)
+			},
+		},
+		{
 			name:   "how_to_solve_problems_pptx",
 			skipCI: true,
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {

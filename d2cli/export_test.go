@@ -8,66 +8,87 @@ import (
 
 func TestOutputFormat(t *testing.T) {
 	type testCase struct {
-		outputPath        string
-		extension         exportExtension
-		supportsDarkTheme bool
-		supportsAnimation bool
-		requiresPngRender bool
+		outputPath                string
+		extension                 exportExtension
+		supportsDarkTheme         bool
+		supportsAnimation         bool
+		requiresAnimationInterval bool
+		requiresPngRender         bool
 	}
 	testCases := []testCase{
 		{
-			outputPath:        "/out.svg",
-			extension:         ".svg",
-			supportsDarkTheme: true,
-			supportsAnimation: true,
-			requiresPngRender: false,
+			outputPath:                "/out.svg",
+			extension:                 SVG,
+			supportsDarkTheme:         true,
+			supportsAnimation:         true,
+			requiresAnimationInterval: false,
+			requiresPngRender:         false,
 		},
 		{
 			// assumes SVG by default
-			outputPath:        "/out",
-			extension:         ".svg",
-			supportsDarkTheme: true,
-			supportsAnimation: true,
-			requiresPngRender: false,
+			outputPath:                "/out",
+			extension:                 SVG,
+			supportsDarkTheme:         true,
+			supportsAnimation:         true,
+			requiresAnimationInterval: false,
+			requiresPngRender:         false,
 		},
 		{
-			outputPath:        "-",
-			extension:         ".svg",
-			supportsDarkTheme: true,
-			supportsAnimation: true,
-			requiresPngRender: false,
+			outputPath:                "-",
+			extension:                 SVG,
+			supportsDarkTheme:         true,
+			supportsAnimation:         true,
+			requiresAnimationInterval: false,
+			requiresPngRender:         false,
 		},
 		{
-			outputPath:        "/out.png",
-			extension:         ".png",
-			supportsDarkTheme: false,
-			supportsAnimation: false,
-			requiresPngRender: true,
+			outputPath:                "/out.png",
+			extension:                 PNG,
+			supportsDarkTheme:         false,
+			supportsAnimation:         false,
+			requiresAnimationInterval: false,
+			requiresPngRender:         true,
 		},
 		{
-			outputPath:        "/out.pptx",
-			extension:         ".pptx",
-			supportsDarkTheme: false,
-			supportsAnimation: false,
-			requiresPngRender: true,
+			outputPath:                "/out.pptx",
+			extension:                 PPTX,
+			supportsDarkTheme:         false,
+			supportsAnimation:         false,
+			requiresAnimationInterval: false,
+			requiresPngRender:         true,
 		},
 		{
-			outputPath:        "/out.pdf",
-			extension:         ".pdf",
-			supportsDarkTheme: false,
-			supportsAnimation: false,
-			requiresPngRender: true,
+			outputPath:                "/out.pdf",
+			extension:                 PDF,
+			supportsDarkTheme:         false,
+			supportsAnimation:         false,
+			requiresAnimationInterval: false,
+			requiresPngRender:         true,
+		},
+		{
+			outputPath:                "/out.gif",
+			extension:                 GIF,
+			supportsDarkTheme:         false,
+			supportsAnimation:         true,
+			requiresAnimationInterval: true,
+			requiresPngRender:         true,
 		},
 	}
 
 	for _, tc := range testCases {
 		tc := tc
 		t.Run(tc.outputPath, func(t *testing.T) {
-			extension := getExportExtension(tc.outputPath)
+			extension, err := getExportExtension(tc.outputPath)
+			assert.NoError(t, err)
 			assert.Equal(t, tc.extension, extension)
 			assert.Equal(t, tc.supportsAnimation, extension.supportsAnimation())
 			assert.Equal(t, tc.supportsDarkTheme, extension.supportsDarkTheme())
 			assert.Equal(t, tc.requiresPngRender, extension.requiresPNGRenderer())
 		})
 	}
+
+	// unsupported format
+	_, err := getExportExtension("/out.ppt")
+	assert.NotNil(t, err)
+	assert.Equal(t, "D2 does not support ppt exports, did you mean \"pptx\"?", err.Error())
 }

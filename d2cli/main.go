@@ -187,12 +187,15 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			inputPath = filepath.Join(inputPath, "index.d2")
 		}
 	}
-	outputFormat := getExportExtension(outputPath)
+	outputFormat, err := getExportExtension(outputPath)
+	if err != nil {
+		return xmain.UsageErrorf(err.Error())
+	}
 	if outputPath != "-" {
 		outputPath = ms.AbsPath(outputPath)
 		if *animateIntervalFlag > 0 && !outputFormat.supportsAnimation() {
 			return xmain.UsageErrorf("-animate-interval can only be used when exporting to SVG or GIF.\nYou provided: %s", filepath.Ext(outputPath))
-		} else if *animateIntervalFlag <= 0 && outputFormat == GIF {
+		} else if *animateIntervalFlag <= 0 && outputFormat.requiresAnimationInterval() {
 			return xmain.UsageErrorf("-animate-interval must be greater than 0 for GIF outputs.\nYou provided: %d", *animateIntervalFlag)
 		}
 	}
@@ -353,7 +356,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		return nil, false, err
 	}
 
-	ext := getExportExtension(outputPath)
+	ext, _ := getExportExtension(outputPath)
 	switch ext {
 	case GIF:
 		svg, pngs, err := renderPNGsForGIF(ctx, ms, plugin, renderOpts, ruler, page, diagram)
@@ -424,7 +427,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		var out []byte
 		if len(boards) > 0 {
 			out = boards[0]
-			if animateInterval > 0 && ext != GIF {
+			if animateInterval > 0 {
 				out, err = d2animate.Wrap(diagram, boards, renderOpts, int(animateInterval))
 				if err != nil {
 					return nil, false, err
@@ -622,7 +625,8 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 }
 
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
-	toPNG := getExportExtension(outputPath) == PNG
+	ext, _ := getExportExtension(outputPath)
+	toPNG := ext == PNG
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
 		Pad:           opts.Pad,
 		Sketch:        opts.Sketch,
