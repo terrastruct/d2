@@ -33,6 +33,7 @@ import (
 	"oss.terrastruct.com/d2/lib/background"
 	"oss.terrastruct.com/d2/lib/imgbundler"
 	ctxlog "oss.terrastruct.com/d2/lib/log"
+	"oss.terrastruct.com/d2/lib/pdf"
 	pdflib "oss.terrastruct.com/d2/lib/pdf"
 	"oss.terrastruct.com/d2/lib/png"
 	"oss.terrastruct.com/d2/lib/pptx"
@@ -353,7 +354,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 	switch filepath.Ext(outputPath) {
 	case ".pdf":
 		pageMap := buildBoardIDToIndex(diagram, nil, nil)
-		pdf, err := renderPDF(ctx, ms, plugin, renderOpts, outputPath, page, ruler, diagram, nil, nil, pageMap)
+		pdf, err := renderPDF(ctx, ms, plugin, renderOpts, outputPath, page, ruler, diagram, nil, nil, "", pageMap)
 		if err != nil {
 			return pdf, false, err
 		}
@@ -684,19 +685,26 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 	return svg, nil
 }
 
-func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdf *pdflib.GoFPDF, boardPath []string, pageMap map[string]int) (svg []byte, err error) {
+func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdf *pdflib.GoFPDF, boardPath []pdf.BoardTitle, boardType string, pageMap map[string]int) (svg []byte, err error) {
 	var isRoot bool
 	if pdf == nil {
 		pdf = pdflib.Init()
 		isRoot = true
 	}
 
-	var currBoardPath []string
+	var currBoardPath []pdflib.BoardTitle
 	// Root board doesn't have a name, so we use the output filename
 	if diagram.Name == "" {
-		currBoardPath = append(boardPath, "root")
+		currBoardPath = append(boardPath, pdflib.BoardTitle{
+			Name:    "root",
+			BoardID: "root",
+		})
 	} else {
-		currBoardPath = append(boardPath, diagram.Name)
+		prev := boardPath[len(boardPath)-1]
+		currBoardPath = append(boardPath, pdflib.BoardTitle{
+			Name:    diagram.Name,
+			BoardID: strings.Join([]string{prev.BoardID, boardType, diagram.Name}, "."),
+		})
 	}
 
 	if !diagram.IsFolderOnly {
@@ -749,19 +757,19 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 	}
 
 	for _, dl := range diagram.Layers {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, pageMap)
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, "layers", pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, pageMap)
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, "scenarios", pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, pageMap)
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, "steps", pageMap)
 		if err != nil {
 			return nil, err
 		}
