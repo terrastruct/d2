@@ -390,7 +390,10 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 			if err != nil {
 				return nil, false, err
 			}
-			relink(diagram, linkToOutput)
+			err = relink("root", diagram, linkToOutput)
+			if err != nil {
+				return nil, false, err
+			}
 		}
 
 		boards, err := render(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
@@ -491,26 +494,40 @@ func resolveLinks(currDiagramPath, outputPath string, diagram *d2target.Diagram)
 	return linkToOutput, nil
 }
 
-func relink(d *d2target.Diagram, linkToOutput map[string]string) {
+func relink(currDiagramPath string, d *d2target.Diagram, linkToOutput map[string]string) error {
 	for i, shape := range d.Shapes {
 		if shape.Link != "" {
 			for k, v := range linkToOutput {
 				if shape.Link == k {
-					d.Shapes[i].Link = v
+					rel, err := filepath.Rel(filepath.Dir(linkToOutput[currDiagramPath]), v)
+					if err != nil {
+						return err
+					}
+					d.Shapes[i].Link = rel
 					break
 				}
 			}
 		}
 	}
 	for _, board := range d.Layers {
-		relink(board, linkToOutput)
+		err := relink(strings.Join([]string{currDiagramPath, "layers", board.Name}, "."), board, linkToOutput)
+		if err != nil {
+			return err
+		}
 	}
 	for _, board := range d.Scenarios {
-		relink(board, linkToOutput)
+		err := relink(strings.Join([]string{currDiagramPath, "scenarios", board.Name}, "."), board, linkToOutput)
+		if err != nil {
+			return err
+		}
 	}
 	for _, board := range d.Steps {
-		relink(board, linkToOutput)
+		err := relink(strings.Join([]string{currDiagramPath, "steps", board.Name}, "."), board, linkToOutput)
+		if err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
 func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([][]byte, error) {
