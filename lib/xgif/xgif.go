@@ -65,7 +65,7 @@ func AnimatePNGs(pngs [][]byte, animIntervalMs int) ([]byte, error) {
 		}
 		palettedImg, ok := gifImg.(*image.Paletted)
 		if !ok {
-			return nil, fmt.Errorf("decoded git image could not be cast as *image.Paletted")
+			return nil, fmt.Errorf("decoded gif image could not be cast as *image.Paletted")
 		}
 
 		// 2. make GIF frames of the same size, keeping images centered and with a white background
