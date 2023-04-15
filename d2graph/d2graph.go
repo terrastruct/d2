@@ -30,6 +30,7 @@ import (
 )
 
 const INNER_LABEL_PADDING int = 5
+const EDGE_LABEL_PADDING int = 5
 const DEFAULT_SHAPE_SIZE = 100.
 const MIN_SHAPE_SIZE = 5
 
@@ -1471,20 +1472,26 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		}
 	}
 	for _, edge := range g.Edges {
+		usedFont := fontFamily
+		if edge.Style.Font != nil {
+			f := d2fonts.D2_FONT_TO_FAMILY[edge.Style.Font.Value]
+			usedFont = &f
+		}
+
 		if edge.SrcArrowhead != nil && edge.SrcArrowhead.Label.Value != "" {
 			t := edge.Text()
 			t.Text = edge.SrcArrowhead.Label.Value
-			dims := GetTextDimensions(mtexts, ruler, t, fontFamily)
-			edge.MinWidth += dims.Width + INNER_LABEL_PADDING
-			edge.MinHeight += dims.Height + INNER_LABEL_PADDING
+			dims := GetTextDimensions(mtexts, ruler, t, usedFont)
+			edge.MinWidth += dims.Width + EDGE_LABEL_PADDING
+			edge.MinHeight += dims.Height + EDGE_LABEL_PADDING
 			edge.SrcArrowhead.LabelDimensions = *dims
 		}
 		if edge.DstArrowhead != nil && edge.DstArrowhead.Label.Value != "" {
 			t := edge.Text()
 			t.Text = edge.DstArrowhead.Label.Value
-			dims := GetTextDimensions(mtexts, ruler, t, fontFamily)
-			edge.MinWidth += dims.Width + INNER_LABEL_PADDING
-			edge.MinHeight += dims.Height + INNER_LABEL_PADDING
+			dims := GetTextDimensions(mtexts, ruler, t, usedFont)
+			edge.MinWidth += dims.Width + EDGE_LABEL_PADDING
+			edge.MinHeight += dims.Height + EDGE_LABEL_PADDING
 			edge.DstArrowhead.LabelDimensions = *dims
 		}
 
@@ -1496,12 +1503,6 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			edge.Label.Value = strings.ToUpper(edge.Label.Value)
 		}
 		edge.ApplyTextTransform()
-
-		usedFont := fontFamily
-		if edge.Style.Font != nil {
-			f := d2fonts.D2_FONT_TO_FAMILY[edge.Style.Font.Value]
-			usedFont = &f
-		}
 
 		dims := GetTextDimensions(mtexts, ruler, edge.Text(), usedFont)
 		if dims == nil {

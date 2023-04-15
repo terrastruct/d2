@@ -620,42 +620,99 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		fmt.Fprint(writer, textEl.Render())
 	}
 
-	length := geo.Route(connection.Route).Length()
 	if connection.SrcLabel != nil && connection.SrcLabel.Label != "" {
 		// TODO use arrowhead label dimensions https://github.com/terrastruct/d2/issues/183
-		// size := float64(connection.FontSize)
-		width := float64(connection.SrcLabel.LabelWidth)
-		height := float64(connection.DstLabel.LabelHeight)
-		position := 0.
-		if length > 0 {
-			position = math.Max(width, height) / length
-		}
-		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.SrcLabel.Label, position, width, height))
+		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.SrcLabel.Label, false))
 	}
 	if connection.DstLabel != nil && connection.DstLabel.Label != "" {
 		// TODO use arrowhead label dimensions https://github.com/terrastruct/d2/issues/183
-		// size := float64(connection.FontSize)
-		width := float64(connection.DstLabel.LabelWidth)
-		height := float64(connection.DstLabel.LabelHeight)
-		position := 1.
-		if length > 0 {
-			position -= math.Max(width, height) / length
-		}
-		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.DstLabel.Label, position, width, height))
+		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.DstLabel.Label, true))
 	}
 	fmt.Fprintf(writer, `</g>`)
 	return
 }
 
-func renderArrowheadLabel(connection d2target.Connection, text string, position, width, height float64) string {
-	labelTL := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, width, height)
+func renderArrowheadLabel(connection d2target.Connection, text string, isDst bool) string {
+	var width, height float64
+	if isDst {
+		width = float64(connection.DstLabel.LabelWidth)
+		height = float64(connection.DstLabel.LabelHeight)
+	} else {
+		width = float64(connection.SrcLabel.LabelWidth)
+		height = float64(connection.SrcLabel.LabelHeight)
+	}
+
+	// get the start/end points of edge segment with arrowhead
+	index := 0
+	if isDst {
+		index = len(connection.Route) - 2
+	}
+	start, end := connection.Route[index], connection.Route[index+1]
+
+	// how much to move the label back from the very end of the edge
+	var shift float64
+	if start.Y == end.Y {
+		// shift left/right to fit on horizontal segment
+		shift = width/2. + label.PADDING
+	} else if start.X == end.X {
+		// shift up/down to fit on vertical segment
+		shift = height/2. + label.PADDING
+	} else {
+		// TODO compute amount to shift according to angle instead of max
+		shift = math.Max(width, height)
+	}
+
+	length := geo.Route(connection.Route).Length()
+	var position float64
+	if isDst {
+		position = 1.
+		if length > 0 {
+			position -= shift / length
+		}
+	} else {
+		position = 0.
+		if length > 0 {
+			position = shift / length
+		}
+	}
+
+	labelTL, index := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, width, height)
+
+	// svg text is positioned with the center of its baseline
+	baselineCenter := geo.Point{
+		X: labelTL.X + width/2.,
+		Y: labelTL.Y + float64(connection.FontSize),
+	}
+
+	var arrowheadOffset float64
+	if isDst && connection.DstArrow != d2target.NoArrowhead {
+		// TODO offset according to arrowhead dimensions
+		arrowheadOffset = 5
+	} else if connection.SrcArrow != d2target.NoArrowhead {
+		arrowheadOffset = 5
+	}
+
+	var offsetX, offsetY float64
+	if start.Y == end.Y {
+		// shift up/down over horizontal segment
+		offsetY = arrowheadOffset
+		if end.Y < start.Y {
+			offsetY = -offsetY
+		}
+	} else if start.X == end.X {
+		// shift left/right across vertical segment
+		offsetX = arrowheadOffset
+		if end.X < start.X {
+			offsetX = -offsetX
+		}
+	}
 
 	textEl := d2themes.NewThemableElement("text")
-	textEl.X = labelTL.X + width/2
-	textEl.Y = labelTL.Y + float64(connection.FontSize)
+	textEl.X = baselineCenter.X + offsetX
+	textEl.Y = baselineCenter.Y + offsetY
 	textEl.Fill = d2target.FG_COLOR
 	textEl.ClassName = "text-italic"
-	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", connection.FontSize)
+	textEl.Style = fmt.Sprintf("text-anchor:middle;font-size:%vpx", connection.FontSize)
 	textEl.Content = RenderText(text, textEl.X, height)
 	return textEl.Render()
 }

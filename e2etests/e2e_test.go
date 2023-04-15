@@ -209,6 +209,7 @@ func run(t *testing.T, tc testCase) {
 		renderOpts := &d2svg.RenderOpts{
 			Pad:     0,
 			ThemeID: tc.themeID,
+			// SetDimensions: true,
 		}
 		if len(diagram.Layers) > 0 || len(diagram.Scenarios) > 0 || len(diagram.Steps) > 0 {
 			masterID, err := diagram.HashID()
