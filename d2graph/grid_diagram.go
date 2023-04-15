@@ -1,8 +1,8 @@
 package d2graph
 
 func (obj *Object) IsGridDiagram() bool {
-	return obj != nil && obj.Attributes != nil &&
-		(obj.Attributes.GridRows != nil || obj.Attributes.GridColumns != nil)
+	return obj != nil &&
+		(obj.GridRows != nil || obj.GridColumns != nil)
 }
 
 func (obj *Object) ClosestGridDiagram() *Object {

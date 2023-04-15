@@ -3,7 +3,7 @@ package d2graph
 import "oss.terrastruct.com/d2/d2target"
 
 func (obj *Object) IsSequenceDiagram() bool {
-	return obj != nil && obj.Attributes != nil && obj.Attributes.Shape.Value == d2target.ShapeSequenceDiagram
+	return obj != nil && obj.Shape.Value == d2target.ShapeSequenceDiagram
 }
 
 func (obj *Object) OuterSequenceDiagram() *Object {
