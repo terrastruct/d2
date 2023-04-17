@@ -29,6 +29,9 @@ const (
 
 	BG_COLOR = color.N7
 	FG_COLOR = color.N1
+
+	MIN_ARROWHEAD_STROKE_WIDTH = 2
+	ARROWHEAD_PADDING          = 2.
 )
 
 var BorderOffset = geo.NewVector(5, 5)
@@ -233,14 +236,14 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			y2 = go2.Max(y2, int(labelTL.Y)+connection.LabelHeight)
 		}
 		if connection.SrcLabel != nil && connection.SrcLabel.Label != "" {
-			labelTL := connection.GetArrowHeadLabelPosition(false)
+			labelTL := connection.GetArrowheadLabelPosition(false)
 			x1 = go2.Min(x1, int(labelTL.X))
 			y1 = go2.Min(y1, int(labelTL.Y))
 			x2 = go2.Max(x2, int(labelTL.X)+connection.SrcLabel.LabelWidth)
 			y2 = go2.Max(y2, int(labelTL.Y)+connection.SrcLabel.LabelHeight)
 		}
 		if connection.DstLabel != nil && connection.DstLabel.Label != "" {
-			labelTL := connection.GetArrowHeadLabelPosition(true)
+			labelTL := connection.GetArrowheadLabelPosition(true)
 			x1 = go2.Min(x1, int(labelTL.X))
 			y1 = go2.Min(y1, int(labelTL.Y))
 			x2 = go2.Max(x2, int(labelTL.X)+connection.DstLabel.LabelWidth)
@@ -534,7 +537,7 @@ func (c *Connection) GetLabelTopLeft() *geo.Point {
 	return point
 }
 
-func (connection *Connection) GetArrowHeadLabelPosition(isDst bool) *geo.Point {
+func (connection *Connection) GetArrowheadLabelPosition(isDst bool) *geo.Point {
 	var width, height float64
 	if isDst {
 		width = float64(connection.DstLabel.LabelWidth)
@@ -578,35 +581,29 @@ func (connection *Connection) GetArrowHeadLabelPosition(isDst bool) *geo.Point {
 		}
 	}
 
-	labelTL, index := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, width, height)
+	strokeWidth := float64(connection.StrokeWidth)
 
-	var arrowheadOffset float64
+	labelTL, index := label.UnlockedTop.GetPointOnRoute(connection.Route, strokeWidth, position, width, height)
+
+	var arrowSize float64
 	if isDst && connection.DstArrow != NoArrowhead {
-		// TODO offset according to arrowhead dimensions
-		arrowheadOffset = 5
+		// Note: these dimensions are for rendering arrowheads on their side so we want the height
+		_, arrowSize = connection.DstArrow.Dimensions(strokeWidth)
 	} else if connection.SrcArrow != NoArrowhead {
-		arrowheadOffset = 5
+		_, arrowSize = connection.SrcArrow.Dimensions(strokeWidth)
 	}
 
-	var offsetX, offsetY float64
-	// get the start/end points of edge segment with arrowhead
-	start, end = connection.Route[index], connection.Route[index+1]
-	if start.Y == end.Y {
-		// shift up/down over horizontal segment
-		offsetY = arrowheadOffset
-		if end.Y < start.Y {
-			offsetY = -offsetY
-		}
-	} else if start.X == end.X {
-		// shift left/right across vertical segment
-		offsetX = arrowheadOffset
-		if end.X < start.X {
-			offsetX = -offsetX
+	if arrowSize > 0 {
+		// labelTL already accounts for strokeWidth and padding, we only want to shift further if the arrow is larger than this
+		offset := (arrowSize/2 + ARROWHEAD_PADDING) - strokeWidth/2 - label.PADDING
+		if offset > 0 {
+			start, end = connection.Route[index], connection.Route[index+1]
+			// Note: end to start to get normal towards unlocked top position
+			normalX, normalY := geo.GetUnitNormalVector(end.X, end.Y, start.X, start.Y)
+			labelTL.X += normalX * offset
+			labelTL.Y += normalY * offset
 		}
 	}
-
-	labelTL.X += offsetX
-	labelTL.Y += offsetY
 
 	return labelTL
 }
@@ -679,6 +676,49 @@ func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
 	default:
 		return TriangleArrowhead
 	}
+}
+
+func (arrowhead Arrowhead) Dimensions(strokeWidth float64) (width, height float64) {
+	var baseWidth, baseHeight float64
+	var widthMultiplier, heightMultiplier float64
+	switch arrowhead {
+	case ArrowArrowhead:
+		baseWidth = 4
+		baseHeight = 4
+		widthMultiplier = 4
+		heightMultiplier = 4
+	case TriangleArrowhead:
+		baseWidth = 4
+		baseHeight = 4
+		widthMultiplier = 3
+		heightMultiplier = 4
+	case LineArrowhead:
+		widthMultiplier = 5
+		heightMultiplier = 8
+	case FilledDiamondArrowhead:
+		baseWidth = 11
+		baseHeight = 7
+		widthMultiplier = 5.5
+		heightMultiplier = 3.5
+	case DiamondArrowhead:
+		baseWidth = 11
+		baseHeight = 9
+		widthMultiplier = 5.5
+		heightMultiplier = 4.5
+	case FilledCircleArrowhead, CircleArrowhead:
+		baseWidth = 8
+		baseHeight = 8
+		widthMultiplier = 5
+		heightMultiplier = 5
+	case CfOne, CfMany, CfOneRequired, CfManyRequired:
+		baseWidth = 9
+		baseHeight = 9
+		widthMultiplier = 4.5
+		heightMultiplier = 4.5
+	}
+
+	clippedStrokeWidth := go2.Max(MIN_ARROWHEAD_STROKE_WIDTH, strokeWidth)
+	return baseWidth + clippedStrokeWidth*widthMultiplier, baseHeight + clippedStrokeWidth*heightMultiplier
 }
 
 type Point struct {
