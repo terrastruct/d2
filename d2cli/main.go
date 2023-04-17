@@ -353,7 +353,10 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 	switch filepath.Ext(outputPath) {
 	case ".pdf":
 		pageMap := buildBoardIDToIndex(diagram, nil, nil)
-		pdf, err := renderPDF(ctx, ms, plugin, renderOpts, outputPath, page, ruler, diagram, nil, nil, "", pageMap)
+		path := []pdf.BoardTitle{
+			{Name: "root", BoardID: "root"},
+		}
+		pdf, err := renderPDF(ctx, ms, plugin, renderOpts, outputPath, page, ruler, diagram, nil, path, pageMap)
 		if err != nil {
 			return pdf, false, err
 		}
@@ -684,26 +687,11 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 	return svg, nil
 }
 
-func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, doc *pdf.GoFPDF, boardPath []pdf.BoardTitle, boardType string, pageMap map[string]int) (svg []byte, err error) {
+func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, doc *pdf.GoFPDF, boardPath []pdf.BoardTitle, pageMap map[string]int) (svg []byte, err error) {
 	var isRoot bool
 	if doc == nil {
 		doc = pdf.Init()
 		isRoot = true
-	}
-
-	var currBoardPath []pdf.BoardTitle
-	// Root board doesn't have a name, so we use the output filename
-	if diagram.Name == "" {
-		currBoardPath = append(boardPath, pdf.BoardTitle{
-			Name:    "root",
-			BoardID: "root",
-		})
-	} else {
-		prev := boardPath[len(boardPath)-1]
-		currBoardPath = append(boardPath, pdf.BoardTitle{
-			Name:    diagram.Name,
-			BoardID: strings.Join([]string{prev.BoardID, boardType, diagram.Name}, "."),
-		})
 	}
 
 	if !diagram.IsFolderOnly {
@@ -749,26 +737,38 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 		if err != nil {
 			return svg, err
 		}
-		err = doc.AddPDFPage(pngImg, currBoardPath, opts.ThemeID, rootFill, diagram.Shapes, int64(opts.Pad), viewboxX, viewboxY, pageMap)
+		err = doc.AddPDFPage(pngImg, boardPath, opts.ThemeID, rootFill, diagram.Shapes, int64(opts.Pad), viewboxX, viewboxY, pageMap)
 		if err != nil {
 			return svg, err
 		}
 	}
 
 	for _, dl := range diagram.Layers {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, currBoardPath, LAYERS, pageMap)
+		path := append(boardPath, pdf.BoardTitle{
+			Name:    dl.Name,
+			BoardID: strings.Join([]string{boardPath[len(boardPath)-1].BoardID, LAYERS, dl.Name}, "."),
+		})
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, path, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, currBoardPath, SCENARIOS, pageMap)
+		path := append(boardPath, pdf.BoardTitle{
+			Name:    dl.Name,
+			BoardID: strings.Join([]string{boardPath[len(boardPath)-1].BoardID, SCENARIOS, dl.Name}, "."),
+		})
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, path, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, currBoardPath, STEPS, pageMap)
+		path := append(boardPath, pdf.BoardTitle{
+			Name:    dl.Name,
+			BoardID: strings.Join([]string{boardPath[len(boardPath)-1].BoardID, STEPS, dl.Name}, "."),
+		})
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, path, pageMap)
 		if err != nil {
 			return nil, err
 		}
