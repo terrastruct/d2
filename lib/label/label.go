@@ -223,6 +223,7 @@ func (labelPosition Position) GetPointOnBox(box *geo.Box, padding, width, height
 }
 
 // return the top left point of a width x height label at the given label position on the route
+// also return the index of the route segment that point is on
 func (labelPosition Position) GetPointOnRoute(route geo.Route, strokeWidth, labelPercentage, width, height float64) (point *geo.Point, index int) {
 	totalLength := route.Length()
 	leftPosition := LEFT_LABEL_POSITION * totalLength
