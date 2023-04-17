@@ -642,41 +642,7 @@ func renderArrowheadLabel(connection d2target.Connection, text string, isDst boo
 		height = float64(connection.SrcLabel.LabelHeight)
 	}
 
-	// get the start/end points of edge segment with arrowhead
-	index := 0
-	if isDst {
-		index = len(connection.Route) - 2
-	}
-	start, end := connection.Route[index], connection.Route[index+1]
-
-	// how much to move the label back from the very end of the edge
-	var shift float64
-	if start.Y == end.Y {
-		// shift left/right to fit on horizontal segment
-		shift = width/2. + label.PADDING
-	} else if start.X == end.X {
-		// shift up/down to fit on vertical segment
-		shift = height/2. + label.PADDING
-	} else {
-		// TODO compute amount to shift according to angle instead of max
-		shift = math.Max(width, height)
-	}
-
-	length := geo.Route(connection.Route).Length()
-	var position float64
-	if isDst {
-		position = 1.
-		if length > 0 {
-			position -= shift / length
-		}
-	} else {
-		position = 0.
-		if length > 0 {
-			position = shift / length
-		}
-	}
-
-	labelTL, index := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, width, height)
+	labelTL := connection.GetArrowHeadLabelPosition(isDst)
 
 	// svg text is positioned with the center of its baseline
 	baselineCenter := geo.Point{
@@ -684,32 +650,9 @@ func renderArrowheadLabel(connection d2target.Connection, text string, isDst boo
 		Y: labelTL.Y + float64(connection.FontSize),
 	}
 
-	var arrowheadOffset float64
-	if isDst && connection.DstArrow != d2target.NoArrowhead {
-		// TODO offset according to arrowhead dimensions
-		arrowheadOffset = 5
-	} else if connection.SrcArrow != d2target.NoArrowhead {
-		arrowheadOffset = 5
-	}
-
-	var offsetX, offsetY float64
-	if start.Y == end.Y {
-		// shift up/down over horizontal segment
-		offsetY = arrowheadOffset
-		if end.Y < start.Y {
-			offsetY = -offsetY
-		}
-	} else if start.X == end.X {
-		// shift left/right across vertical segment
-		offsetX = arrowheadOffset
-		if end.X < start.X {
-			offsetX = -offsetX
-		}
-	}
-
 	textEl := d2themes.NewThemableElement("text")
-	textEl.X = baselineCenter.X + offsetX
-	textEl.Y = baselineCenter.Y + offsetY
+	textEl.X = baselineCenter.X
+	textEl.Y = baselineCenter.Y
 	textEl.Fill = d2target.FG_COLOR
 	textEl.ClassName = "text-italic"
 	textEl.Style = fmt.Sprintf("text-anchor:middle;font-size:%vpx", connection.FontSize)

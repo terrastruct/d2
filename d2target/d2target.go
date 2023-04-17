@@ -232,6 +232,20 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			x2 = go2.Max(x2, int(labelTL.X)+connection.LabelWidth)
 			y2 = go2.Max(y2, int(labelTL.Y)+connection.LabelHeight)
 		}
+		if connection.SrcLabel != nil && connection.SrcLabel.Label != "" {
+			labelTL := connection.GetArrowHeadLabelPosition(false)
+			x1 = go2.Min(x1, int(labelTL.X))
+			y1 = go2.Min(y1, int(labelTL.Y))
+			x2 = go2.Max(x2, int(labelTL.X)+connection.SrcLabel.LabelWidth)
+			y2 = go2.Max(y2, int(labelTL.Y)+connection.SrcLabel.LabelHeight)
+		}
+		if connection.DstLabel != nil && connection.DstLabel.Label != "" {
+			labelTL := connection.GetArrowHeadLabelPosition(true)
+			x1 = go2.Min(x1, int(labelTL.X))
+			y1 = go2.Min(y1, int(labelTL.Y))
+			x2 = go2.Max(x2, int(labelTL.X)+connection.DstLabel.LabelWidth)
+			y2 = go2.Max(y2, int(labelTL.Y)+connection.DstLabel.LabelHeight)
+		}
 	}
 
 	return Point{x1, y1}, Point{x2, y2}
@@ -518,6 +532,83 @@ func (c *Connection) GetLabelTopLeft() *geo.Point {
 		float64(c.LabelHeight),
 	)
 	return point
+}
+
+func (connection *Connection) GetArrowHeadLabelPosition(isDst bool) *geo.Point {
+	var width, height float64
+	if isDst {
+		width = float64(connection.DstLabel.LabelWidth)
+		height = float64(connection.DstLabel.LabelHeight)
+	} else {
+		width = float64(connection.SrcLabel.LabelWidth)
+		height = float64(connection.SrcLabel.LabelHeight)
+	}
+
+	// get the start/end points of edge segment with arrowhead
+	index := 0
+	if isDst {
+		index = len(connection.Route) - 2
+	}
+	start, end := connection.Route[index], connection.Route[index+1]
+
+	// how much to move the label back from the very end of the edge
+	var shift float64
+	if start.Y == end.Y {
+		// shift left/right to fit on horizontal segment
+		shift = width/2. + label.PADDING
+	} else if start.X == end.X {
+		// shift up/down to fit on vertical segment
+		shift = height/2. + label.PADDING
+	} else {
+		// TODO compute amount to shift according to angle instead of max
+		shift = math.Max(width, height)
+	}
+
+	length := geo.Route(connection.Route).Length()
+	var position float64
+	if isDst {
+		position = 1.
+		if length > 0 {
+			position -= shift / length
+		}
+	} else {
+		position = 0.
+		if length > 0 {
+			position = shift / length
+		}
+	}
+
+	labelTL, index := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, width, height)
+
+	var arrowheadOffset float64
+	if isDst && connection.DstArrow != NoArrowhead {
+		// TODO offset according to arrowhead dimensions
+		arrowheadOffset = 5
+	} else if connection.SrcArrow != NoArrowhead {
+		arrowheadOffset = 5
+	}
+
+	var offsetX, offsetY float64
+	// get the start/end points of edge segment with arrowhead
+	start, end = connection.Route[index], connection.Route[index+1]
+	if start.Y == end.Y {
+		// shift up/down over horizontal segment
+		offsetY = arrowheadOffset
+		if end.Y < start.Y {
+			offsetY = -offsetY
+		}
+	} else if start.X == end.X {
+		// shift left/right across vertical segment
+		offsetX = arrowheadOffset
+		if end.X < start.X {
+			offsetX = -offsetX
+		}
+	}
+
+	labelTL.X += offsetX
+	labelTL.Y += offsetY
+
+	return labelTL
 }
 
 func (c Connection) GetZIndex() int {
