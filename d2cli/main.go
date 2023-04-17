@@ -363,7 +363,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		if err != nil {
 			return nil, false, err
 		}
-		out, err := xgif.AnimatePNGs(pngs, int(animateInterval))
+		out, err := xgif.AnimatePNGs(ms, pngs, int(animateInterval))
 		if err != nil {
 			return nil, false, err
 		}

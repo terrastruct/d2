@@ -20,7 +20,7 @@ var test_output []byte
 func TestPngToGif(t *testing.T) {
 	boards := [][]byte{test_input1, test_input2}
 	interval := 1_000
-	gifBytes, err := AnimatePNGs(boards, interval)
+	gifBytes, err := AnimatePNGs(nil, boards, interval)
 	assert.NoError(t, err)
 
 	// use this to update the test output

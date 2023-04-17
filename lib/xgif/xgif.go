@@ -15,10 +15,13 @@ import (
 	"image/color"
 	"image/gif"
 	"image/png"
+	"time"
 
 	"github.com/ericpauley/go-quantize/quantize"
 
+	"oss.terrastruct.com/d2/lib/background"
 	"oss.terrastruct.com/util-go/go2"
+	"oss.terrastruct.com/util-go/xmain"
 )
 
 const INFINITE_LOOP = 0
@@ -26,7 +29,14 @@ const BG_INDEX uint8 = 255
 
 var BG_COLOR = color.White
 
-func AnimatePNGs(pngs [][]byte, animIntervalMs int) ([]byte, error) {
+func AnimatePNGs(ms *xmain.State, pngs [][]byte, animIntervalMs int) ([]byte, error) {
+	if ms != nil {
+		cancel := background.Repeat(func() {
+			ms.Log.Info.Printf("generating GIF...")
+		}, time.Second*5)
+		defer cancel()
+	}
+
 	var width, height int
 	pngImgs := make([]image.Image, len(pngs))
 	for i, pngBytes := range pngs {
