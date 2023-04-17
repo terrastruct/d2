@@ -9,11 +9,10 @@ type exportExtension string
 const GIF exportExtension = ".gif"
 const PNG exportExtension = ".png"
 const PPTX exportExtension = ".pptx"
-const PPT exportExtension = ".ppt"
 const PDF exportExtension = ".pdf"
 const SVG exportExtension = ".svg"
 
-var SUPPORTED_EXTENSIONS = []exportExtension{SVG, PNG, PDF, PPTX, GIF, PPT}
+var SUPPORTED_EXTENSIONS = []exportExtension{SVG, PNG, PDF, PPTX, GIF}
 
 func getExportExtension(outputPath string) exportExtension {
 	ext := filepath.Ext(outputPath)

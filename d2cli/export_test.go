@@ -58,14 +58,6 @@ func TestOutputFormat(t *testing.T) {
 			requiresPngRender:         true,
 		},
 		{
-			outputPath:                "/out.ppt",
-			extension:                 PPT,
-			supportsDarkTheme:         false,
-			supportsAnimation:         false,
-			requiresAnimationInterval: false,
-			requiresPngRender:         false,
-		},
-		{
 			outputPath:                "/out.pdf",
 			extension:                 PDF,
 			supportsDarkTheme:         false,

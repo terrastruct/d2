@@ -187,10 +187,10 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			inputPath = filepath.Join(inputPath, "index.d2")
 		}
 	}
-	outputFormat := getExportExtension(outputPath)
-	if outputFormat == PPT {
+	if filepath.Ext(outputPath) == ".ppt" {
 		return xmain.UsageErrorf("D2 does not support ppt exports, did you mean \"pptx\"?")
 	}
+	outputFormat := getExportExtension(outputPath)
 	if outputPath != "-" {
 		outputPath = ms.AbsPath(outputPath)
 		if *animateIntervalFlag > 0 && !outputFormat.supportsAnimation() {
