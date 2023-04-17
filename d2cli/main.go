@@ -196,7 +196,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		if *animateIntervalFlag > 0 && !outputFormat.supportsAnimation() {
 			return xmain.UsageErrorf("-animate-interval can only be used when exporting to SVG or GIF.\nYou provided: %s", filepath.Ext(outputPath))
 		} else if *animateIntervalFlag <= 0 && outputFormat.requiresAnimationInterval() {
-			return xmain.UsageErrorf("-animate-interval must be greater than 0 for GIF outputs.\nYou provided: %d", *animateIntervalFlag)
+			return xmain.UsageErrorf("-animate-interval must be greater than 0 for %s outputs.\nYou provided: %d", outputFormat, *animateIntervalFlag)
 		}
 	}
 
