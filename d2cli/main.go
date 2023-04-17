@@ -34,7 +34,6 @@ import (
 	"oss.terrastruct.com/d2/lib/imgbundler"
 	ctxlog "oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/pdf"
-	pdflib "oss.terrastruct.com/d2/lib/pdf"
 	"oss.terrastruct.com/d2/lib/png"
 	"oss.terrastruct.com/d2/lib/pptx"
 	"oss.terrastruct.com/d2/lib/textmeasure"
@@ -685,23 +684,23 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 	return svg, nil
 }
 
-func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdf *pdflib.GoFPDF, boardPath []pdf.BoardTitle, boardType string, pageMap map[string]int) (svg []byte, err error) {
+func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdfDoc *pdf.GoFPDF, boardPath []pdf.BoardTitle, boardType string, pageMap map[string]int) (svg []byte, err error) {
 	var isRoot bool
-	if pdf == nil {
-		pdf = pdflib.Init()
+	if pdfDoc == nil {
+		pdfDoc = pdf.Init()
 		isRoot = true
 	}
 
-	var currBoardPath []pdflib.BoardTitle
+	var currBoardPath []pdf.BoardTitle
 	// Root board doesn't have a name, so we use the output filename
 	if diagram.Name == "" {
-		currBoardPath = append(boardPath, pdflib.BoardTitle{
+		currBoardPath = append(boardPath, pdf.BoardTitle{
 			Name:    "root",
 			BoardID: "root",
 		})
 	} else {
 		prev := boardPath[len(boardPath)-1]
-		currBoardPath = append(boardPath, pdflib.BoardTitle{
+		currBoardPath = append(boardPath, pdf.BoardTitle{
 			Name:    diagram.Name,
 			BoardID: strings.Join([]string{prev.BoardID, boardType, diagram.Name}, "."),
 		})
@@ -750,33 +749,33 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 		if err != nil {
 			return svg, err
 		}
-		err = pdf.AddPDFPage(pngImg, currBoardPath, opts.ThemeID, rootFill, diagram.Shapes, int64(opts.Pad), viewboxX, viewboxY, pageMap)
+		err = pdfDoc.AddPDFPage(pngImg, currBoardPath, opts.ThemeID, rootFill, diagram.Shapes, int64(opts.Pad), viewboxX, viewboxY, pageMap)
 		if err != nil {
 			return svg, err
 		}
 	}
 
 	for _, dl := range diagram.Layers {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, LAYERS, pageMap)
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdfDoc, currBoardPath, LAYERS, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, SCENARIOS, pageMap)
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdfDoc, currBoardPath, SCENARIOS, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, STEPS, pageMap)
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdfDoc, currBoardPath, STEPS, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	if isRoot {
-		err := pdf.Export(outputPath)
+		err := pdfDoc.Export(outputPath)
 		if err != nil {
 			return nil, err
 		}
