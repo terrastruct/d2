@@ -38,6 +38,7 @@ import (
 	"oss.terrastruct.com/d2/lib/pptx"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 	"oss.terrastruct.com/d2/lib/version"
+	"oss.terrastruct.com/d2/lib/xgif"
 
 	"cdr.dev/slog"
 	"cdr.dev/slog/sloggers/sloghuman"
@@ -186,13 +187,16 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			inputPath = filepath.Join(inputPath, "index.d2")
 		}
 	}
+	if filepath.Ext(outputPath) == ".ppt" {
+		return xmain.UsageErrorf("D2 does not support ppt exports, did you mean \"pptx\"?")
+	}
+	outputFormat := getExportExtension(outputPath)
 	if outputPath != "-" {
 		outputPath = ms.AbsPath(outputPath)
-		if *animateIntervalFlag > 0 {
-			// Not checking for extension == "svg", because users may want to write SVG data to a non-svg-extension file
-			if filepath.Ext(outputPath) == ".png" || filepath.Ext(outputPath) == ".pdf" || filepath.Ext(outputPath) == ".pptx" {
-				return xmain.UsageErrorf("-animate-interval can only be used when exporting to SVG.\nYou provided: %s", filepath.Ext(outputPath))
-			}
+		if *animateIntervalFlag > 0 && !outputFormat.supportsAnimation() {
+			return xmain.UsageErrorf("-animate-interval can only be used when exporting to SVG or GIF.\nYou provided: %s", filepath.Ext(outputPath))
+		} else if *animateIntervalFlag <= 0 && outputFormat.requiresAnimationInterval() {
+			return xmain.UsageErrorf("-animate-interval must be greater than 0 for %s outputs.\nYou provided: %d", outputFormat, *animateIntervalFlag)
 		}
 	}
 
@@ -236,12 +240,14 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	ms.Log.Debug.Printf("using layout plugin %s (%s)", *layoutFlag, plocation)
 
-	var pw png.Playwright
-	if filepath.Ext(outputPath) == ".png" || filepath.Ext(outputPath) == ".pdf" || filepath.Ext(outputPath) == ".pptx" {
+	if !outputFormat.supportsDarkTheme() {
 		if darkThemeFlag != nil {
 			ms.Log.Warn.Printf("--dark-theme cannot be used while exporting to another format other than .svg")
 			darkThemeFlag = nil
 		}
+	}
+	var pw png.Playwright
+	if outputFormat.requiresPNGRenderer() {
 		pw, err = png.InitPlaywright()
 		if err != nil {
 			return err
@@ -350,8 +356,29 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		return nil, false, err
 	}
 
-	switch filepath.Ext(outputPath) {
-	case ".pdf":
+	ext := getExportExtension(outputPath)
+	switch ext {
+	case GIF:
+		svg, pngs, err := renderPNGsForGIF(ctx, ms, plugin, renderOpts, ruler, page, diagram)
+		if err != nil {
+			return nil, false, err
+		}
+		out, err := xgif.AnimatePNGs(ms, pngs, int(animateInterval))
+		if err != nil {
+			return nil, false, err
+		}
+		err = os.MkdirAll(filepath.Dir(outputPath), 0755)
+		if err != nil {
+			return nil, false, err
+		}
+		err = ms.WritePath(outputPath, out)
+		if err != nil {
+			return nil, false, err
+		}
+		dur := time.Since(start)
+		ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(outputPath), dur)
+		return svg, true, nil
+	case PDF:
 		pageMap := buildBoardIDToIndex(diagram, nil, nil)
 		pdf, err := renderPDF(ctx, ms, plugin, renderOpts, outputPath, page, ruler, diagram, nil, nil, pageMap)
 		if err != nil {
@@ -360,7 +387,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		dur := time.Since(start)
 		ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(outputPath), dur)
 		return pdf, true, nil
-	case ".pptx":
+	case PPTX:
 		var username string
 		if user, err := user.Current(); err == nil {
 			username = user.Username
@@ -615,7 +642,7 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 }
 
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
-	toPNG := filepath.Ext(outputPath) == ".png"
+	toPNG := getExportExtension(outputPath) == PNG
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
 		Pad:           opts.Pad,
 		Sketch:        opts.Sketch,
@@ -1005,4 +1032,62 @@ func buildBoardIDToIndex(diagram *d2target.Diagram, dictionary map[string]int, p
 	}
 
 	return dictionary
+}
+
+func renderPNGsForGIF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, ruler *textmeasure.Ruler, page playwright.Page, diagram *d2target.Diagram) (svg []byte, pngs [][]byte, err error) {
+	if !diagram.IsFolderOnly {
+		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
+			Pad:           opts.Pad,
+			Sketch:        opts.Sketch,
+			Center:        opts.Center,
+			SetDimensions: true,
+		})
+		if err != nil {
+			return nil, nil, err
+		}
+
+		svg, err = plugin.PostProcess(ctx, svg)
+		if err != nil {
+			return nil, nil, err
+		}
+
+		svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
+		svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
+		bundleErr = multierr.Combine(bundleErr, bundleErr2)
+		if bundleErr != nil {
+			return nil, nil, bundleErr
+		}
+
+		svg = appendix.Append(diagram, ruler, svg)
+
+		pngImg, err := png.ConvertSVG(ms, page, svg)
+		if err != nil {
+			return nil, nil, err
+		}
+		pngs = append(pngs, pngImg)
+	}
+
+	for _, dl := range diagram.Layers {
+		_, layerPNGs, err := renderPNGsForGIF(ctx, ms, plugin, opts, ruler, page, dl)
+		if err != nil {
+			return nil, nil, err
+		}
+		pngs = append(pngs, layerPNGs...)
+	}
+	for _, dl := range diagram.Scenarios {
+		_, scenarioPNGs, err := renderPNGsForGIF(ctx, ms, plugin, opts, ruler, page, dl)
+		if err != nil {
+			return nil, nil, err
+		}
+		pngs = append(pngs, scenarioPNGs...)
+	}
+	for _, dl := range diagram.Steps {
+		_, stepsPNGs, err := renderPNGsForGIF(ctx, ms, plugin, opts, ruler, page, dl)
+		if err != nil {
+			return nil, nil, err
+		}
+		pngs = append(pngs, stepsPNGs...)
+	}
+
+	return svg, pngs, nil
 }
