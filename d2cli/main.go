@@ -684,10 +684,10 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 	return svg, nil
 }
 
-func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdfDoc *pdf.GoFPDF, boardPath []pdf.BoardTitle, boardType string, pageMap map[string]int) (svg []byte, err error) {
+func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, doc *pdf.GoFPDF, boardPath []pdf.BoardTitle, boardType string, pageMap map[string]int) (svg []byte, err error) {
 	var isRoot bool
-	if pdfDoc == nil {
-		pdfDoc = pdf.Init()
+	if doc == nil {
+		doc = pdf.Init()
 		isRoot = true
 	}
 
@@ -749,33 +749,33 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 		if err != nil {
 			return svg, err
 		}
-		err = pdfDoc.AddPDFPage(pngImg, currBoardPath, opts.ThemeID, rootFill, diagram.Shapes, int64(opts.Pad), viewboxX, viewboxY, pageMap)
+		err = doc.AddPDFPage(pngImg, currBoardPath, opts.ThemeID, rootFill, diagram.Shapes, int64(opts.Pad), viewboxX, viewboxY, pageMap)
 		if err != nil {
 			return svg, err
 		}
 	}
 
 	for _, dl := range diagram.Layers {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdfDoc, currBoardPath, LAYERS, pageMap)
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, currBoardPath, LAYERS, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdfDoc, currBoardPath, SCENARIOS, pageMap)
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, currBoardPath, SCENARIOS, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdfDoc, currBoardPath, STEPS, pageMap)
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, currBoardPath, STEPS, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	if isRoot {
-		err := pdfDoc.Export(outputPath)
+		err := doc.Export(outputPath)
 		if err != nil {
 			return nil, err
 		}
