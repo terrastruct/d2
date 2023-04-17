@@ -58,6 +58,14 @@ func TestOutputFormat(t *testing.T) {
 			requiresPngRender:         true,
 		},
 		{
+			outputPath:                "/out.ppt",
+			extension:                 PPT,
+			supportsDarkTheme:         false,
+			supportsAnimation:         false,
+			requiresAnimationInterval: false,
+			requiresPngRender:         false,
+		},
+		{
 			outputPath:                "/out.pdf",
 			extension:                 PDF,
 			supportsDarkTheme:         false,
@@ -78,17 +86,11 @@ func TestOutputFormat(t *testing.T) {
 	for _, tc := range testCases {
 		tc := tc
 		t.Run(tc.outputPath, func(t *testing.T) {
-			extension, err := getExportExtension(tc.outputPath)
-			assert.NoError(t, err)
+			extension := getExportExtension(tc.outputPath)
 			assert.Equal(t, tc.extension, extension)
 			assert.Equal(t, tc.supportsAnimation, extension.supportsAnimation())
 			assert.Equal(t, tc.supportsDarkTheme, extension.supportsDarkTheme())
 			assert.Equal(t, tc.requiresPngRender, extension.requiresPNGRenderer())
 		})
 	}
-
-	// unsupported format
-	_, err := getExportExtension("/out.ppt")
-	assert.NotNil(t, err)
-	assert.Equal(t, "D2 does not support ppt exports, did you mean \"pptx\"?", err.Error())
 }

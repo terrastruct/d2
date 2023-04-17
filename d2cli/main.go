@@ -187,9 +187,9 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			inputPath = filepath.Join(inputPath, "index.d2")
 		}
 	}
-	outputFormat, err := getExportExtension(outputPath)
-	if err != nil {
-		return xmain.UsageErrorf(err.Error())
+	outputFormat := getExportExtension(outputPath)
+	if outputFormat == PPT {
+		return xmain.UsageErrorf("D2 does not support ppt exports, did you mean \"pptx\"?")
 	}
 	if outputPath != "-" {
 		outputPath = ms.AbsPath(outputPath)
@@ -356,7 +356,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		return nil, false, err
 	}
 
-	ext, _ := getExportExtension(outputPath)
+	ext := getExportExtension(outputPath)
 	switch ext {
 	case GIF:
 		svg, pngs, err := renderPNGsForGIF(ctx, ms, plugin, renderOpts, ruler, page, diagram)
@@ -625,8 +625,7 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 }
 
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
-	ext, _ := getExportExtension(outputPath)
-	toPNG := ext == PNG
+	toPNG := getExportExtension(outputPath) == PNG
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
 		Pad:           opts.Pad,
 		Sketch:        opts.Sketch,
