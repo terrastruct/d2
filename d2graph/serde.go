@@ -388,22 +388,6 @@ func CompareSerializedEdge(edge, other *Edge) error {
 		)
 	}
 
-	if edge.MinWidth != other.MinWidth {
-		return fmt.Errorf(
-			"min width differs: edge=%d, other=%d",
-			edge.MinWidth,
-			other.MinWidth,
-		)
-	}
-
-	if edge.MinHeight != other.MinHeight {
-		return fmt.Errorf(
-			"min height differs: edge=%d, other=%d",
-			edge.MinHeight,
-			other.MinHeight,
-		)
-	}
-
 	if edge.Label.Value != other.Label.Value {
 		return fmt.Errorf(
 			"labels differ: edge=%s, other=%s",

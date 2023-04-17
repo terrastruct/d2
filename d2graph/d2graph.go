@@ -30,7 +30,6 @@ import (
 )
 
 const INNER_LABEL_PADDING int = 5
-const EDGE_LABEL_PADDING int = 5
 const DEFAULT_SHAPE_SIZE = 100.
 const MIN_SHAPE_SIZE = 5
 
@@ -1043,9 +1042,6 @@ func (obj *Object) OuterNearContainer() *Object {
 type Edge struct {
 	Index int `json:"index"`
 
-	MinWidth  int `json:"minWidth"`
-	MinHeight int `json:"minHeight"`
-
 	SrcTableColumnIndex *int `json:"srcTableColumnIndex,omitempty"`
 	DstTableColumnIndex *int `json:"dstTableColumnIndex,omitempty"`
 
@@ -1482,16 +1478,12 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			t := edge.Text()
 			t.Text = edge.SrcArrowhead.Label.Value
 			dims := GetTextDimensions(mtexts, ruler, t, usedFont)
-			edge.MinWidth += dims.Width + EDGE_LABEL_PADDING
-			edge.MinHeight += dims.Height + EDGE_LABEL_PADDING
 			edge.SrcArrowhead.LabelDimensions = *dims
 		}
 		if edge.DstArrowhead != nil && edge.DstArrowhead.Label.Value != "" {
 			t := edge.Text()
 			t.Text = edge.DstArrowhead.Label.Value
 			dims := GetTextDimensions(mtexts, ruler, t, usedFont)
-			edge.MinWidth += dims.Width + EDGE_LABEL_PADDING
-			edge.MinHeight += dims.Height + EDGE_LABEL_PADDING
 			edge.DstArrowhead.LabelDimensions = *dims
 		}
 
@@ -1510,8 +1502,6 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		}
 
 		edge.LabelDimensions = *dims
-		edge.MinWidth += dims.Width
-		edge.MinHeight += dims.Height
 	}
 	return nil
 }
