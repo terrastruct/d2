@@ -16,10 +16,16 @@ import (
 	"fmt"
 	"image/png"
 	"os"
-	"strings"
 	"text/template"
 	"time"
 )
+
+type BoardTitle struct {
+	LinkID      string
+	Name        string
+	BoardID     string
+	LinkToSlide int
+}
 
 type Presentation struct {
 	Title       string
@@ -32,8 +38,9 @@ type Presentation struct {
 
 	Slides []*Slide
 }
+
 type Slide struct {
-	BoardPath        []string
+	BoardTitle       []BoardTitle
 	Links            []*Link
 	Image            []byte
 	ImageId          string
@@ -76,7 +83,7 @@ func NewPresentation(title, description, subject, creator, d2Version string) *Pr
 	}
 }
 
-func (p *Presentation) AddSlide(pngContent []byte, boardPath []string) (*Slide, error) {
+func (p *Presentation) AddSlide(pngContent []byte, titlePath []BoardTitle) (*Slide, error) {
 	src, err := png.Decode(bytes.NewReader(pngContent))
 	if err != nil {
 		return nil, fmt.Errorf("error decoding PNG image: %v", err)
@@ -127,7 +134,7 @@ func (p *Presentation) AddSlide(pngContent []byte, boardPath []string) (*Slide, 
 	left := (SLIDE_WIDTH - width) / 2
 
 	slide := &Slide{
-		BoardPath:        make([]string, len(boardPath)),
+		BoardTitle:       make([]BoardTitle, len(titlePath)),
 		ImageId:          fmt.Sprintf("slide%dImage", len(p.Slides)+1),
 		Image:            pngContent,
 		ImageWidth:       width,
@@ -137,7 +144,10 @@ func (p *Presentation) AddSlide(pngContent []byte, boardPath []string) (*Slide, 
 		ImageScaleFactor: float64(width) / srcWidth,
 	}
 	// it must copy the board path to avoid slice reference issues
-	copy(slide.BoardPath, boardPath)
+	for i := 0; i < len(titlePath); i++ {
+		titlePath[i].LinkID = fmt.Sprintf("navLink%d", i)
+		slide.BoardTitle[i] = titlePath[i]
+	}
 
 	p.Slides = append(p.Slides, slide)
 	return slide, nil
@@ -215,11 +225,11 @@ func (p *Presentation) SaveTo(filePath string) error {
 
 	titles := make([]string, 0, len(p.Slides))
 	for _, slide := range p.Slides {
-		titles = append(titles, strings.Join(slide.BoardPath, "/"))
+		titles = append(titles, slide.BoardTitle[len(slide.BoardTitle)-1].BoardID)
 	}
 	err = addFileFromTemplate(zipWriter, "docProps/app.xml", APP_XML, AppXmlContent{
 		SlideCount:         len(p.Slides),
-		TitlesOfPartsCount: len(p.Slides) + 3,
+		TitlesOfPartsCount: len(p.Slides) + 3, // + 3 for fonts and theme
 		D2Version:          p.D2Version,
 		Titles:             titles,
 	})
@@ -291,6 +301,13 @@ func getSlideXmlRelsContent(imageID string, slide *Slide) RelsSlideXmlContent {
 		})
 	}
 
+	for _, t := range slide.BoardTitle {
+		content.Links = append(content.Links, RelsSlideXmlLinkContent{
+			RelationshipID: t.LinkID,
+			SlideIndex:     t.LinkToSlide,
+		})
+	}
+
 	return content
 }
 
@@ -308,9 +325,14 @@ type SlideLinkXmlContent struct {
 	Height         int
 }
 
+type SlideXmlTitlePathContent struct {
+	Name           string
+	RelationshipID string
+}
+
 type SlideXmlContent struct {
 	Title        string
-	TitlePrefix  string
+	TitlePrefix  []SlideXmlTitlePathContent
 	Description  string
 	HeaderHeight int
 	ImageID      string
@@ -323,17 +345,18 @@ type SlideXmlContent struct {
 }
 
 func getSlideXmlContent(imageID string, slide *Slide) SlideXmlContent {
-	boardPath := slide.BoardPath
-	boardName := boardPath[len(boardPath)-1]
-	prefixPath := boardPath[:len(boardPath)-1]
-	var prefix string
-	if len(prefixPath) > 0 {
-		prefix = strings.Join(prefixPath, "  /  ") + "  /  "
+	title := make([]SlideXmlTitlePathContent, len(slide.BoardTitle)-1)
+	for i := 0; i < len(slide.BoardTitle)-1; i++ {
+		t := slide.BoardTitle[i]
+		title[i] = SlideXmlTitlePathContent{
+			Name:           t.Name,
+			RelationshipID: t.LinkID,
+		}
 	}
 	content := SlideXmlContent{
-		Title:        boardName,
-		TitlePrefix:  prefix,
-		Description:  strings.Join(boardPath, " / "),
+		Title:        slide.BoardTitle[len(slide.BoardTitle)-1].Name,
+		TitlePrefix:  title,
+		Description:  slide.BoardTitle[len(slide.BoardTitle)-1].BoardID,
 		HeaderHeight: HEADER_HEIGHT,
 		ImageID:      imageID,
 		ImageLeft:    slide.ImageLeft,

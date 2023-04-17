@@ -15,8 +15,15 @@ import (
 	"oss.terrastruct.com/d2/lib/color"
 )
 
+const TITLE_SEP = "  /  "
+
 type GoFPDF struct {
 	pdf *gofpdf.Fpdf
+}
+
+type BoardTitle struct {
+	Name    string
+	BoardID string
 }
 
 func Init() *GoFPDF {
@@ -59,9 +66,13 @@ func (g *GoFPDF) GetFillRGB(themeID int64, fill string) (color.RGB, error) {
 	return color.Hex2RGB(fill)
 }
 
-func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill string, shapes []d2target.Shape, pad int64, viewboxX, viewboxY float64, pageMap map[string]int) error {
+func (g *GoFPDF) AddPDFPage(png []byte, titlePath []BoardTitle, themeID int64, fill string, shapes []d2target.Shape, pad int64, viewboxX, viewboxY float64, pageMap map[string]int) error {
 	var opt gofpdf.ImageOptions
 	opt.ImageType = "png"
+	boardPath := make([]string, len(titlePath))
+	for i, t := range titlePath {
+		boardPath[i] = t.Name
+	}
 	imageInfo := g.pdf.RegisterImageOptionsReader(strings.Join(boardPath, "/"), opt, bytes.NewReader(png))
 	if g.pdf.Err() {
 		return g.pdf.Error()
@@ -102,20 +113,30 @@ func (g *GoFPDF) AddPDFPage(png []byte, boardPath []string, themeID int64, fill 
 	g.pdf.SetFont("source", "", 14)
 
 	// Draw board path prefix
-	var prefixWidth float64
-	prefixPath := boardPath[:len(boardPath)-1]
-	if len(prefixPath) > 0 {
-		prefix := strings.Join(boardPath[:len(boardPath)-1], "  /  ") + "  /  "
-		prefixWidth = g.pdf.GetStringWidth(prefix)
+	prefixWidth := headerMargin
+	if len(titlePath) > 1 {
+		for _, t := range titlePath[:len(titlePath)-1] {
+			g.pdf.SetXY(prefixWidth, 0)
+			w := g.pdf.GetStringWidth(t.Name)
+			var linkID int
+			if pageNum, ok := pageMap[t.BoardID]; ok {
+				linkID = g.pdf.AddLink()
+				g.pdf.SetLink(linkID, 0, pageNum+1)
+			}
+			g.pdf.CellFormat(w, headerHeight, t.Name, "", 0, "", false, linkID, "")
+			prefixWidth += w
 
-		g.pdf.SetXY(headerMargin, 0)
-		g.pdf.CellFormat(prefixWidth, headerHeight, prefix, "", 0, "", false, 0, "")
+			g.pdf.SetXY(prefixWidth, 0)
+			w = g.pdf.GetStringWidth(TITLE_SEP)
+			g.pdf.CellFormat(prefixWidth, headerHeight, TITLE_SEP, "", 0, "", false, 0, "")
+			prefixWidth += w
+		}
 	}
 
 	// Draw board name
 	boardName := boardPath[len(boardPath)-1]
 	g.pdf.SetFont("source", "B", 14)
-	g.pdf.SetXY(prefixWidth+headerMargin, 0)
+	g.pdf.SetXY(prefixWidth, 0)
 	g.pdf.CellFormat(pageWidth-prefixWidth-headerMargin, headerHeight, boardName, "", 0, "", false, 0, "")
 
 	// Draw image

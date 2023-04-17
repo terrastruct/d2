@@ -33,7 +33,7 @@ import (
 	"oss.terrastruct.com/d2/lib/background"
 	"oss.terrastruct.com/d2/lib/imgbundler"
 	ctxlog "oss.terrastruct.com/d2/lib/log"
-	pdflib "oss.terrastruct.com/d2/lib/pdf"
+	"oss.terrastruct.com/d2/lib/pdf"
 	"oss.terrastruct.com/d2/lib/png"
 	"oss.terrastruct.com/d2/lib/pptx"
 	"oss.terrastruct.com/d2/lib/textmeasure"
@@ -380,7 +380,10 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		return svg, true, nil
 	case PDF:
 		pageMap := buildBoardIDToIndex(diagram, nil, nil)
-		pdf, err := renderPDF(ctx, ms, plugin, renderOpts, outputPath, page, ruler, diagram, nil, nil, pageMap)
+		path := []pdf.BoardTitle{
+			{Name: "root", BoardID: "root"},
+		}
+		pdf, err := renderPDF(ctx, ms, plugin, renderOpts, outputPath, page, ruler, diagram, nil, path, pageMap)
 		if err != nil {
 			return pdf, false, err
 		}
@@ -398,7 +401,10 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		p := pptx.NewPresentation(rootName, description, rootName, username, version.OnlyNumbers())
 
 		boardIdToIndex := buildBoardIDToIndex(diagram, nil, nil)
-		svg, err := renderPPTX(ctx, ms, p, plugin, renderOpts, ruler, outputPath, page, diagram, nil, boardIdToIndex)
+		path := []pptx.BoardTitle{
+			{Name: "root", BoardID: "root", LinkToSlide: boardIdToIndex["root"] + 1},
+		}
+		svg, err := renderPPTX(ctx, ms, p, plugin, renderOpts, ruler, outputPath, page, diagram, path, boardIdToIndex)
 		if err != nil {
 			return nil, false, err
 		}
@@ -711,19 +717,11 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 	return svg, nil
 }
 
-func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdf *pdflib.GoFPDF, boardPath []string, pageMap map[string]int) (svg []byte, err error) {
+func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, doc *pdf.GoFPDF, boardPath []pdf.BoardTitle, pageMap map[string]int) (svg []byte, err error) {
 	var isRoot bool
-	if pdf == nil {
-		pdf = pdflib.Init()
+	if doc == nil {
+		doc = pdf.Init()
 		isRoot = true
-	}
-
-	var currBoardPath []string
-	// Root board doesn't have a name, so we use the output filename
-	if diagram.Name == "" {
-		currBoardPath = append(boardPath, getFileName(outputPath))
-	} else {
-		currBoardPath = append(boardPath, diagram.Name)
 	}
 
 	if !diagram.IsFolderOnly {
@@ -769,33 +767,45 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 		if err != nil {
 			return svg, err
 		}
-		err = pdf.AddPDFPage(pngImg, currBoardPath, opts.ThemeID, rootFill, diagram.Shapes, int64(opts.Pad), viewboxX, viewboxY, pageMap)
+		err = doc.AddPDFPage(pngImg, boardPath, opts.ThemeID, rootFill, diagram.Shapes, int64(opts.Pad), viewboxX, viewboxY, pageMap)
 		if err != nil {
 			return svg, err
 		}
 	}
 
 	for _, dl := range diagram.Layers {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, pageMap)
+		path := append(boardPath, pdf.BoardTitle{
+			Name:    dl.Name,
+			BoardID: strings.Join([]string{boardPath[len(boardPath)-1].BoardID, LAYERS, dl.Name}, "."),
+		})
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, path, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, pageMap)
+		path := append(boardPath, pdf.BoardTitle{
+			Name:    dl.Name,
+			BoardID: strings.Join([]string{boardPath[len(boardPath)-1].BoardID, SCENARIOS, dl.Name}, "."),
+		})
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, path, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, pageMap)
+		path := append(boardPath, pdf.BoardTitle{
+			Name:    dl.Name,
+			BoardID: strings.Join([]string{boardPath[len(boardPath)-1].BoardID, STEPS, dl.Name}, "."),
+		})
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, path, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	if isRoot {
-		err := pdf.Export(outputPath)
+		err := doc.Export(outputPath)
 		if err != nil {
 			return nil, err
 		}
@@ -804,15 +814,7 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 	return svg, nil
 }
 
-func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Presentation, plugin d2plugin.Plugin, opts d2svg.RenderOpts, ruler *textmeasure.Ruler, outputPath string, page playwright.Page, diagram *d2target.Diagram, boardPath []string, boardIdToIndex map[string]int) ([]byte, error) {
-	var currBoardPath []string
-	// Root board doesn't have a name, so we use the output filename
-	if diagram.Name == "" {
-		currBoardPath = append(boardPath, getFileName(outputPath))
-	} else {
-		currBoardPath = append(boardPath, diagram.Name)
-	}
-
+func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Presentation, plugin d2plugin.Plugin, opts d2svg.RenderOpts, ruler *textmeasure.Ruler, outputPath string, page playwright.Page, diagram *d2target.Diagram, boardPath []pptx.BoardTitle, boardIDToIndex map[string]int) ([]byte, error) {
 	var svg []byte
 	if !diagram.IsFolderOnly {
 		// gofpdf will print the png img with a slight filter
@@ -849,7 +851,7 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 			return nil, err
 		}
 
-		slide, err := presentation.AddSlide(pngImg, currBoardPath)
+		slide, err := presentation.AddSlide(pngImg, boardPath)
 		if err != nil {
 			return nil, err
 		}
@@ -886,7 +888,7 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 			if err != nil || key.Path[0].Unbox().ScalarString() != "root" {
 				// External link
 				link.ExternalUrl = shape.Link
-			} else if pageNum, ok := boardIdToIndex[shape.Link]; ok {
+			} else if pageNum, ok := boardIDToIndex[shape.Link]; ok {
 				// Internal link
 				link.SlideIndex = pageNum + 1
 			}
@@ -894,19 +896,37 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 	}
 
 	for _, dl := range diagram.Layers {
-		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, currBoardPath, boardIdToIndex)
+		boardID := strings.Join([]string{boardPath[len(boardPath)-1].BoardID, LAYERS, dl.Name}, ".")
+		path := append(boardPath, pptx.BoardTitle{
+			Name:        dl.Name,
+			BoardID:     boardID,
+			LinkToSlide: boardIDToIndex[boardID] + 1,
+		})
+		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, path, boardIDToIndex)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, currBoardPath, boardIdToIndex)
+		boardID := strings.Join([]string{boardPath[len(boardPath)-1].BoardID, SCENARIOS, dl.Name}, ".")
+		path := append(boardPath, pptx.BoardTitle{
+			Name:        dl.Name,
+			BoardID:     boardID,
+			LinkToSlide: boardIDToIndex[boardID] + 1,
+		})
+		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, path, boardIDToIndex)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, currBoardPath, boardIdToIndex)
+		boardID := strings.Join([]string{boardPath[len(boardPath)-1].BoardID, STEPS, dl.Name}, ".")
+		path := append(boardPath, pptx.BoardTitle{
+			Name:        dl.Name,
+			BoardID:     boardID,
+			LinkToSlide: boardIDToIndex[boardID] + 1,
+		})
+		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, path, boardIDToIndex)
 		if err != nil {
 			return nil, err
 		}
@@ -1009,6 +1029,10 @@ func loadFonts(ms *xmain.State, pathToRegular, pathToItalic, pathToBold, pathToS
 	return d2fonts.AddFontFamily("custom", regularTTF, italicTTF, boldTTF, semiboldTTF)
 }
 
+const LAYERS = "layers"
+const STEPS = "steps"
+const SCENARIOS = "scenarios"
+
 // buildBoardIDToIndex returns a map from board path to page int
 // To map correctly, it must follow the same traversal of pdf/pptx building
 func buildBoardIDToIndex(diagram *d2target.Diagram, dictionary map[string]int, path []string) map[string]int {
@@ -1022,13 +1046,13 @@ func buildBoardIDToIndex(diagram *d2target.Diagram, dictionary map[string]int, p
 	dictionary[key] = len(dictionary)
 
 	for _, dl := range diagram.Layers {
-		buildBoardIDToIndex(dl, dictionary, append(newPath, "layers"))
+		buildBoardIDToIndex(dl, dictionary, append(newPath, LAYERS))
 	}
 	for _, dl := range diagram.Scenarios {
-		buildBoardIDToIndex(dl, dictionary, append(newPath, "scenarios"))
+		buildBoardIDToIndex(dl, dictionary, append(newPath, SCENARIOS))
 	}
 	for _, dl := range diagram.Steps {
-		buildBoardIDToIndex(dl, dictionary, append(newPath, "steps"))
+		buildBoardIDToIndex(dl, dictionary, append(newPath, STEPS))
 	}
 
 	return dictionary
