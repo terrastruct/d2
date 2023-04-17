@@ -1042,9 +1042,6 @@ func (obj *Object) OuterNearContainer() *Object {
 type Edge struct {
 	Index int `json:"index"`
 
-	MinWidth  int `json:"minWidth"`
-	MinHeight int `json:"minHeight"`
-
 	SrcTableColumnIndex *int `json:"srcTableColumnIndex,omitempty"`
 	DstTableColumnIndex *int `json:"dstTableColumnIndex,omitempty"`
 
@@ -1471,21 +1468,23 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		}
 	}
 	for _, edge := range g.Edges {
-		endpointLabels := []string{}
-		if edge.SrcArrowhead != nil && edge.SrcArrowhead.Label.Value != "" {
-			endpointLabels = append(endpointLabels, edge.SrcArrowhead.Label.Value)
-		}
-		if edge.DstArrowhead != nil && edge.DstArrowhead.Label.Value != "" {
-			endpointLabels = append(endpointLabels, edge.DstArrowhead.Label.Value)
+		usedFont := fontFamily
+		if edge.Style.Font != nil {
+			f := d2fonts.D2_FONT_TO_FAMILY[edge.Style.Font.Value]
+			usedFont = &f
 		}
 
-		for _, label := range endpointLabels {
+		if edge.SrcArrowhead != nil && edge.SrcArrowhead.Label.Value != "" {
 			t := edge.Text()
-			t.Text = label
-			dims := GetTextDimensions(mtexts, ruler, t, fontFamily)
-			edge.MinWidth += dims.Width
-			// Some padding as it's not totally near the end
-			edge.MinHeight += dims.Height + 5
+			t.Text = edge.SrcArrowhead.Label.Value
+			dims := GetTextDimensions(mtexts, ruler, t, usedFont)
+			edge.SrcArrowhead.LabelDimensions = *dims
+		}
+		if edge.DstArrowhead != nil && edge.DstArrowhead.Label.Value != "" {
+			t := edge.Text()
+			t.Text = edge.DstArrowhead.Label.Value
+			dims := GetTextDimensions(mtexts, ruler, t, usedFont)
+			edge.DstArrowhead.LabelDimensions = *dims
 		}
 
 		if edge.Label.Value == "" {
@@ -1497,20 +1496,12 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		}
 		edge.ApplyTextTransform()
 
-		usedFont := fontFamily
-		if edge.Style.Font != nil {
-			f := d2fonts.D2_FONT_TO_FAMILY[edge.Style.Font.Value]
-			usedFont = &f
-		}
-
 		dims := GetTextDimensions(mtexts, ruler, edge.Text(), usedFont)
 		if dims == nil {
 			return fmt.Errorf("dimensions for edge label %#v not found", edge.Text())
 		}
 
 		edge.LabelDimensions = *dims
-		edge.MinWidth += dims.Width
-		edge.MinHeight += dims.Height
 	}
 	return nil
 }

@@ -705,6 +705,220 @@ And other normal markdown stuff
 			}
 `,
 		},
+		{
+			name: "long_arrowhead_label",
+			script: `
+a -> b: {
+	target-arrowhead: "a to b with unexpectedly long target arrowhead label"
+}
+`,
+		},
+		{
+			name: "arrowhead_sizes_with_labels",
+			script: `
+triangle: {
+	a <-> b: {
+		source-arrowhead: 1
+		target-arrowhead: 1
+	}
+	c <-> d: {
+		source-arrowhead: 1
+		target-arrowhead: 1
+		style.stroke-width: 8
+	}
+}
+none: {
+	a -- b: {
+		source-arrowhead: 1
+		target-arrowhead: 1
+	}
+	c -- d: {
+		source-arrowhead: 1
+		target-arrowhead: 1
+		style.stroke-width: 8
+	}
+}
+arrow: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: arrow
+		}
+		target-arrowhead: 1 {
+			shape: arrow
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: arrow
+		}
+		target-arrowhead: 1 {
+			shape: arrow
+		}
+		style.stroke-width: 8
+	}
+}
+diamond: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: diamond
+		}
+		target-arrowhead: 1 {
+			shape: diamond
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: diamond
+		}
+		target-arrowhead: 1 {
+			shape: diamond
+		}
+		style.stroke-width: 8
+	}
+}
+filled diamond: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: diamond
+			style.filled: true
+		}
+		target-arrowhead: 1 {
+			shape: diamond
+			style.filled: true
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: diamond
+			style.filled: true
+		}
+		target-arrowhead: 1 {
+			shape: diamond
+			style.filled: true
+		}
+		style.stroke-width: 8
+	}
+}
+circle: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: circle
+		}
+		target-arrowhead: 1 {
+			shape: circle
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: circle
+		}
+		target-arrowhead: 1 {
+			shape: circle
+		}
+		style.stroke-width: 8
+	}
+}
+filled circle: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: circle
+			style.filled: true
+		}
+		target-arrowhead: 1 {
+			shape: circle
+			style.filled: true
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: circle
+			style.filled: true
+		}
+		target-arrowhead: 1 {
+			shape: circle
+			style.filled: true
+		}
+		style.stroke-width: 8
+	}
+}
+cf one: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: cf-one
+		}
+		target-arrowhead: 1 {
+			shape: cf-one
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: cf-one
+		}
+		target-arrowhead: 1 {
+			shape: cf-one
+		}
+		style.stroke-width: 8
+	}
+}
+cf one required: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: cf-one-required
+		}
+		target-arrowhead: 1 {
+			shape: cf-one-required
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: cf-one-required
+		}
+		target-arrowhead: 1 {
+			shape: cf-one-required
+		}
+		style.stroke-width: 8
+	}
+}
+cf many: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: cf-many
+		}
+		target-arrowhead: 1 {
+			shape: cf-many
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: cf-many
+		}
+		target-arrowhead: 1 {
+			shape: cf-many
+		}
+		style.stroke-width: 8
+	}
+}
+cf many required: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: cf-many-required
+		}
+		target-arrowhead: 1 {
+			shape: cf-many-required
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: cf-many-required
+		}
+		target-arrowhead: 1 {
+			shape: cf-many-required
+		}
+		style.stroke-width: 8
+	}
+}
+`,
+		},
 	}
 
 	runa(t, tcs)

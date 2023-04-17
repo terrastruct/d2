@@ -20,8 +20,6 @@ import (
 	"github.com/alecthomas/chroma/v2/lexers"
 	"github.com/alecthomas/chroma/v2/styles"
 
-	"oss.terrastruct.com/util-go/go2"
-
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2latex"
@@ -39,8 +37,7 @@ import (
 )
 
 const (
-	DEFAULT_PADDING            = 100
-	MIN_ARROWHEAD_STROKE_WIDTH = 2
+	DEFAULT_PADDING = 100
 
 	appendixIconRadius = 16
 )
@@ -109,56 +106,13 @@ func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
 	)))
 }
 
-func arrowheadDimensions(arrowhead d2target.Arrowhead, strokeWidth float64) (width, height float64) {
-	var baseWidth, baseHeight float64
-	var widthMultiplier, heightMultiplier float64
-	switch arrowhead {
-	case d2target.ArrowArrowhead:
-		baseWidth = 4
-		baseHeight = 4
-		widthMultiplier = 4
-		heightMultiplier = 4
-	case d2target.TriangleArrowhead:
-		baseWidth = 4
-		baseHeight = 4
-		widthMultiplier = 3
-		heightMultiplier = 4
-	case d2target.LineArrowhead:
-		widthMultiplier = 5
-		heightMultiplier = 8
-	case d2target.FilledDiamondArrowhead:
-		baseWidth = 11
-		baseHeight = 7
-		widthMultiplier = 5.5
-		heightMultiplier = 3.5
-	case d2target.DiamondArrowhead:
-		baseWidth = 11
-		baseHeight = 9
-		widthMultiplier = 5.5
-		heightMultiplier = 4.5
-	case d2target.FilledCircleArrowhead, d2target.CircleArrowhead:
-		baseWidth = 8
-		baseHeight = 8
-		widthMultiplier = 5
-		heightMultiplier = 5
-	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
-		baseWidth = 9
-		baseHeight = 9
-		widthMultiplier = 4.5
-		heightMultiplier = 4.5
-	}
-
-	clippedStrokeWidth := go2.Max(MIN_ARROWHEAD_STROKE_WIDTH, strokeWidth)
-	return baseWidth + clippedStrokeWidth*widthMultiplier, baseHeight + clippedStrokeWidth*heightMultiplier
-}
-
 func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) string {
 	arrowhead := connection.DstArrow
 	if !isTarget {
 		arrowhead = connection.SrcArrow
 	}
 	strokeWidth := float64(connection.StrokeWidth)
-	width, height := arrowheadDimensions(arrowhead, strokeWidth)
+	width, height := arrowhead.Dimensions(strokeWidth)
 
 	var path string
 	switch arrowhead {
@@ -620,38 +574,40 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		fmt.Fprint(writer, textEl.Render())
 	}
 
-	length := geo.Route(connection.Route).Length()
-	if connection.SrcLabel != "" {
-		// TODO use arrowhead label dimensions https://github.com/terrastruct/d2/issues/183
-		size := float64(connection.FontSize)
-		position := 0.
-		if length > 0 {
-			position = size / length
-		}
-		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.SrcLabel, position, size, size))
+	if connection.SrcLabel != nil && connection.SrcLabel.Label != "" {
+		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.SrcLabel.Label, false))
 	}
-	if connection.DstLabel != "" {
-		// TODO use arrowhead label dimensions https://github.com/terrastruct/d2/issues/183
-		size := float64(connection.FontSize)
-		position := 1.
-		if length > 0 {
-			position -= size / length
-		}
-		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.DstLabel, position, size, size))
+	if connection.DstLabel != nil && connection.DstLabel.Label != "" {
+		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.DstLabel.Label, true))
 	}
 	fmt.Fprintf(writer, `</g>`)
 	return
 }
 
-func renderArrowheadLabel(connection d2target.Connection, text string, position, width, height float64) string {
-	labelTL := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, width, height)
+func renderArrowheadLabel(connection d2target.Connection, text string, isDst bool) string {
+	var width, height float64
+	if isDst {
+		width = float64(connection.DstLabel.LabelWidth)
+		height = float64(connection.DstLabel.LabelHeight)
+	} else {
+		width = float64(connection.SrcLabel.LabelWidth)
+		height = float64(connection.SrcLabel.LabelHeight)
+	}
+
+	labelTL := connection.GetArrowheadLabelPosition(isDst)
+
+	// svg text is positioned with the center of its baseline
+	baselineCenter := geo.Point{
+		X: labelTL.X + width/2.,
+		Y: labelTL.Y + float64(connection.FontSize),
+	}
 
 	textEl := d2themes.NewThemableElement("text")
-	textEl.X = labelTL.X + width/2
-	textEl.Y = labelTL.Y + float64(connection.FontSize)
+	textEl.X = baselineCenter.X
+	textEl.Y = baselineCenter.Y
 	textEl.Fill = d2target.FG_COLOR
 	textEl.ClassName = "text-italic"
-	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", connection.FontSize)
+	textEl.Style = fmt.Sprintf("text-anchor:middle;font-size:%vpx", connection.FontSize)
 	textEl.Content = RenderText(text, textEl.X, height)
 	return textEl.Render()
 }

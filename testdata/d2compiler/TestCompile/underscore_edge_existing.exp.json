@@ -198,8 +198,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -232,8 +230,6 @@
       },
       {
         "index": 1,
-        "minWidth": 0,
-        "minHeight": 0,
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,

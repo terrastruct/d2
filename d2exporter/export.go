@@ -213,7 +213,11 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 	}
 	if edge.SrcArrowhead != nil {
 		if edge.SrcArrowhead.Label.Value != "" {
-			connection.SrcLabel = edge.SrcArrowhead.Label.Value
+			connection.SrcLabel = &d2target.Text{
+				Label:       edge.SrcArrowhead.Label.Value,
+				LabelWidth:  edge.SrcArrowhead.LabelDimensions.Width,
+				LabelHeight: edge.SrcArrowhead.LabelDimensions.Height,
+			}
 		}
 	}
 	if edge.DstArrow {
@@ -230,7 +234,11 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 	}
 	if edge.DstArrowhead != nil {
 		if edge.DstArrowhead.Label.Value != "" {
-			connection.DstLabel = edge.DstArrowhead.Label.Value
+			connection.DstLabel = &d2target.Text{
+				Label:       edge.DstArrowhead.Label.Value,
+				LabelWidth:  edge.DstArrowhead.LabelDimensions.Width,
+				LabelHeight: edge.DstArrowhead.LabelDimensions.Height,
+			}
 		}
 	}
 	if theme != nil && theme.SpecialRules.NoCornerRadius {
