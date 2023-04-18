@@ -931,6 +931,17 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 	default:
 		return d2target.NewTextDimensions(labelDims.Width, labelDims.Height), nil
 
+	case d2target.ShapeText:
+		w := labelDims.Width
+		if w < MIN_SHAPE_SIZE {
+			w = MIN_SHAPE_SIZE
+		}
+		h := labelDims.Height
+		if h < MIN_SHAPE_SIZE {
+			h = MIN_SHAPE_SIZE
+		}
+		return d2target.NewTextDimensions(w, h), nil
+
 	case d2target.ShapeImage:
 		return d2target.NewTextDimensions(128, 128), nil
 
