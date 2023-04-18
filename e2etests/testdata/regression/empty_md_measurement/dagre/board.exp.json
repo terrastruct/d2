@@ -48,11 +48,11 @@
       "id": "b",
       "type": "text",
       "pos": {
-        "x": 27,
+        "x": 24,
         "y": 166
       },
-      "width": 0,
-      "height": 0,
+      "width": 5,
+      "height": 5,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -89,7 +89,7 @@
       "type": "rectangle",
       "pos": {
         "x": 0,
-        "y": 266
+        "y": 271
       },
       "width": 53,
       "height": 66,
@@ -194,13 +194,22 @@
       "route": [
         {
           "x": 26.5,
-          "y": 0
+          "y": 66
         },
         {
           "x": 26.5,
-          "y": 0
+          "y": 106
+        },
+        {
+          "x": 26.5,
+          "y": 126
+        },
+        {
+          "x": 26.5,
+          "y": 166
         }
       ],
+      "isCurve": true,
       "animated": false,
       "tooltip": "",
       "icon": null,
@@ -232,19 +241,19 @@
       "route": [
         {
           "x": 26.5,
-          "y": 0
+          "y": 171
         },
         {
           "x": 26.5,
-          "y": 172.8
+          "y": 211
         },
         {
           "x": 26.5,
-          "y": 226
+          "y": 231
         },
         {
           "x": 26.5,
-          "y": 266
+          "y": 271
         }
       ],
       "isCurve": true,
