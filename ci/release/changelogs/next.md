@@ -17,7 +17,8 @@ This is the same diagram as one we shared when we announced animated SVGs, but i
 #### Features 🚀
 
 - Export diagrams to `.pptx` (PowerPoint) [#1139](https://github.com/terrastruct/d2/pull/1139)
-- Customize gap size in grid diagrams with `grid-gap`, `vertical-gap`, or `horizontal-gap` [#1178](https://github.com/terrastruct/d2/issues/1178)
+- Export diagrams to `.gif` [#1200](https://github.com/terrastruct/d2/pull/1200)
+- Customize gap size in grid diagrams with `grid-gap`, `vertical-gap`, or `horizontal-gap` (see [docs](https://d2lang.com/tour/grid-diagrams/#gap-size)) [#1178](https://github.com/terrastruct/d2/issues/1178)
 - New dark theme "Dark Terrastruct Flagship" with the theme ID of `201` [#1150](https://github.com/terrastruct/d2/issues/1150)
 
 #### Improvements 🧹
