@@ -1,4 +1,4 @@
-Multi-board D2 compositions now get 2 more useful formats to export to: Powerpoint and GIFs.
+Multi-board D2 compositions now get 2 more useful formats to export to: PowerPoint and GIFs.
 
 ## Powerpoint example
 
@@ -16,7 +16,7 @@ This is the same diagram as one we shared when we announced animated SVGs, but i
 
 #### Features 🚀
 
-- Export diagrams to `.pptx` (PowerPoint)[#1139](https://github.com/terrastruct/d2/pull/1139)
+- Export diagrams to `.pptx` (PowerPoint) [#1139](https://github.com/terrastruct/d2/pull/1139)
 - Customize gap size in grid diagrams with `grid-gap`, `vertical-gap`, or `horizontal-gap` [#1178](https://github.com/terrastruct/d2/issues/1178)
 - New dark theme "Dark Terrastruct Flagship" with the theme ID of `201` [#1150](https://github.com/terrastruct/d2/issues/1150)
 
