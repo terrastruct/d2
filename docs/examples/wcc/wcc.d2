@@ -1,0 +1,183 @@
+How to become the World Chess Champion: {
+  near: top-center
+  shape: text
+  style.font-size: 55
+}
+
+gm: Become a Grandmaster (GM) {
+  link: layers.gm
+}
+qualify: Qualify for the Candidates Tournament {
+  link: layers.qualify
+}
+win: Win the Candidates Tournament {
+  link: layers.win
+}
+match: Defeat the former Champion {
+  link: layers.match
+}
+
+gm -> qualify -> win -> match
+
+layers: {
+  gm: {
+    description: |md
+      # Become a Grandmaster (GM)
+      A Grandmaster is the highest title awarded by FIDE (the International Chess Federation).
+    | {
+      near: top-center
+    }
+    play: Play in FIDE-rated tournaments
+    ➡️: {
+      shape: text
+      near: center-right
+      link: steps.1
+      style.font-size: 24
+    }
+    steps: {
+      1: {
+        titled: Earn pre-requisite titles (IM)
+        play -> titled
+        ➡️.link: _.steps.2
+      }
+      2: {
+        ➡️.link: _._
+        rating: Achieve 2500 rating
+        norms: Earn 3 GM norms\n(defeat other GMs in tournaments)
+        titled -> rating
+        titled -> norms
+      }
+    }
+  }
+  qualify: {
+    description: |md
+      # Qualify for the Candidates Tournament
+      The Candidates tournament is played among the best players in the world to determine the challenger for the next world chess championship.
+    | {
+      near: top-center
+    }
+    One of: {
+      Runner-up to last championship
+      Finish top 2 in FIDE Grand Prix
+      Top 2 highest rated
+      Organizer wild card
+      Occasional other FIDE events: {
+        This varies year to year
+      }
+    }
+  }
+  win: {
+    description: |md
+      # Winning the Candidates tournament
+
+      8-players face off in a double round-robin.
+
+      Which mean each player plays every other player, one with white and once with black.
+    | {
+      near: top-center
+    }
+
+    2022 Players: {
+      grid-rows: 9
+      grid-columns: 3
+      grid-gap: 0
+
+      Player
+      Rating
+      World ranking
+
+      Ian Nepomniachtchi
+      2766
+      7
+
+      Teimour Radjabov
+      2753
+      13
+
+      Jan-Krzysztof Duda
+      2750
+      16
+
+      Alireza Firouzja
+      2793
+      3
+
+      Fabiano Caruana
+      2783
+      4
+
+      Hikaru Nakamura
+      2760
+      11
+
+      Richard Rapport
+      2764
+      8
+
+      Ding Liren
+      2806
+      2
+    }
+  }
+  match: {
+    description: |md
+      # World Chess Championship Match
+      A 14-game 1v1 between the challenger and the current world champion[0].
+
+      [0] Usually. In 2023, Magnus Carlsen declined to participate.
+
+      Instead, the runner-up of the Candidates tournament plays.
+    | {
+      near: top-center
+    }
+
+    ding: Ding Liren {
+      icon: https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/World_Chess_Championship_2023%2C_game_01%2C_Ding_Liren.jpg/220px-World_Chess_Championship_2023%2C_game_01%2C_Ding_Liren.jpg
+      shape: image
+      near: center-left
+      height: 300
+      width: 200
+    }
+
+    nepo: Ian Nepomniachtchi {
+      icon: https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/World_Chess_Championship_2021%2C_game_07%2C_Ian_Nepomniachtchi_%28cropped%29.jpg/220px-World_Chess_Championship_2021%2C_game_07%2C_Ian_Nepomniachtchi_%28cropped%29.jpg
+      shape: image
+      near: center-right
+      height: 300
+      width: 200
+    }
+
+    best of 14 games -> tiebreaks: if needed
+    tiebreaks.link: layers.tiebreaks
+
+    layers: {
+      tiebreaks: {
+        description: |md
+          # Tiebreaks
+
+          Use faster time controls to induce errors.
+        | {
+          near: top-center
+        }
+
+        rapid: 4 rapid games {
+          25 mins per side
+          10-second increment
+        }
+
+        blitz: 2 blitz games {
+          5 mins per side
+          3-second increment
+        }
+
+        sudden death: {
+          3 mins per side
+          2-second increment
+          repeat until a win
+        }
+
+        rapid -> blitz -> sudden death: if needed
+      }
+    }
+  }
+}
