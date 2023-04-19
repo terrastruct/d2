@@ -1177,3 +1177,27 @@ func (m *Map) Equal(n2 Node) bool {
 
 	return true
 }
+
+func (m *Map) InClass(key *d2ast.Key) bool {
+	classes := m.Map().GetField("classes")
+	if classes == nil || classes.Map() == nil {
+		return false
+	}
+
+	for _, class := range classes.Map().Fields {
+		if class.Map() == nil {
+			continue
+		}
+		classF := class.Map().GetField(key.Key.IDA()...)
+		if classF == nil {
+			continue
+		}
+
+		for _, ref := range classF.References {
+			if ref.Context.Key == key {
+				return true
+			}
+		}
+	}
+	return false
+}

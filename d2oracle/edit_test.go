@@ -862,6 +862,85 @@ square.style.opacity: 0.2
 `,
 		},
 		{
+			name: "classes-style",
+			text: `classes: {
+  a: {
+    style.fill: red
+  }
+}
+b.class: a
+`,
+			key:   `b.style.fill`,
+			value: go2.Pointer(`green`),
+			exp: `classes: {
+  a: {
+    style.fill: red
+  }
+}
+b.class: a
+b.style.fill: green
+`,
+		},
+		{
+			name: "dupe-classes-style",
+			text: `classes: {
+  a: {
+    style.fill: red
+  }
+}
+b.class: a
+b.style.fill: red
+`,
+			key:   `b.style.fill`,
+			value: go2.Pointer(`green`),
+			exp: `classes: {
+  a: {
+    style.fill: red
+  }
+}
+b.class: a
+b.style.fill: green
+`,
+		},
+		{
+			name: "unapplied-classes-style",
+			text: `classes: {
+  a: {
+    style.fill: red
+  }
+}
+b.style.fill: red
+`,
+			key:   `b.style.fill`,
+			value: go2.Pointer(`green`),
+			exp: `classes: {
+  a: {
+    style.fill: red
+  }
+}
+b.style.fill: green
+`,
+		},
+		{
+			name: "unapplied-classes-style-2",
+			text: `classes: {
+  a: {
+    style.fill: red
+  }
+}
+b
+`,
+			key:   `b.style.fill`,
+			value: go2.Pointer(`green`),
+			exp: `classes: {
+  a: {
+    style.fill: red
+  }
+}
+b: {style.fill: green}
+`,
+		},
+		{
 			name: "label_unset",
 			text: `square: "Always try to do things in chronological order; it's less confusing that way."
 `,
