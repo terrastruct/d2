@@ -2,6 +2,7 @@
 
 - Export diagrams to `.pptx` (PowerPoint)[#1139](https://github.com/terrastruct/d2/pull/1139)
 - Customize gap size in grid diagrams with `grid-gap`, `vertical-gap`, or `horizontal-gap` [#1178](https://github.com/terrastruct/d2/issues/1178)
+- Exclude arrowheads when position connection label [#793](https://github.com/terrastruct/d2/pull/1192)
 
 #### Improvements 🧹
 
