@@ -1,0 +1,12 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/border-radius-negative.d2,2:23:30-2:25:32",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/border-radius-negative.d2:3:24: expected \"border-radius\" to be a number greater or equal to 0"
+      }
+    ]
+  }
+}

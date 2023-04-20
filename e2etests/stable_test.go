@@ -2448,6 +2448,29 @@ three-dee: {
 `,
 		},
 		{
+			name: "border-radius-pill-shape",
+			script: `
+x: {
+	style.border-radius: 999
+}
+y: {
+	style.border-radius: 999
+}
+multiple2: {
+	style.border-radius: 999
+	style.multiple: true
+}
+double: {
+	style.border-radius: 999
+	style.double-border: true
+}
+three-dee: {
+	style.border-radius: 999
+	style.3d: true
+}
+`,
+		},
+		{
 			name: "sequence-inter-span-self",
 			script: `
 shape: sequence_diagram

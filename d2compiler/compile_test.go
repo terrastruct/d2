@@ -2258,6 +2258,14 @@ layers: {
 			expErr: `d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:9: invalid underscore usage`,
 		},
 		{
+			name: "border-radius-negative",
+			text: `x
+x: {
+  style.border-radius: -1
+}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/border-radius-negative.d2:3:24: expected "border-radius" to be a number greater or equal to 0`,
+		},
+		{
 			name: "text-transform",
 			text: `direction: right
 x -> y: hi {

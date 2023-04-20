@@ -990,11 +990,9 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 
 	// TODO should standardize "" to rectangle
 	case d2target.ShapeRectangle, d2target.ShapeSequenceDiagram, "":
-		// TODO use Rx property of NewThemableElement instead
-		// DO
-		rx := ""
+		borderRadius := math.MaxFloat64
 		if targetShape.BorderRadius != 0 {
-			rx = fmt.Sprintf(` rx="%d"`, targetShape.BorderRadius)
+			borderRadius = float64(targetShape.BorderRadius)
 		}
 		if targetShape.ThreeDee {
 			fmt.Fprint(writer, render3dRect(targetShape))
@@ -1009,7 +1007,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.Fill = fill
 					el.Stroke = stroke
 					el.Style = style
-					el.Attributes = rx
+					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 				}
 				if sketchRunner != nil {
@@ -1028,7 +1026,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.FillPattern = targetShape.FillPattern
 					el.Stroke = stroke
 					el.Style = style
-					el.Attributes = rx
+					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 				}
 			} else {
@@ -1042,7 +1040,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.FillPattern = targetShape.FillPattern
 					el.Stroke = stroke
 					el.Style = style
-					el.Attributes = rx
+					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 
 					el = d2themes.NewThemableElement("rect")
@@ -1053,7 +1051,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.Fill = fill
 					el.Stroke = stroke
 					el.Style = style
-					el.Attributes = rx
+					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 				}
 				if sketchRunner != nil {
@@ -1072,7 +1070,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.FillPattern = targetShape.FillPattern
 					el.Stroke = stroke
 					el.Style = style
-					el.Attributes = rx
+					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 
 					el = d2themes.NewThemableElement("rect")
@@ -1083,7 +1081,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 					el.Fill = "transparent"
 					el.Stroke = stroke
 					el.Style = style
-					el.Attributes = rx
+					el.Rx = borderRadius
 					fmt.Fprint(writer, el.Render())
 				}
 			}
