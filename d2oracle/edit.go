@@ -1791,11 +1791,13 @@ func generateUniqueKey(g *d2graph.Graph, prefix string, ignored *d2graph.Object,
 	} else if obj, ok := g.Root.HasChild(d2graph.Key(mk.Key)); ok && obj != ignored {
 		// The key may already have an index, e.g. "x 2"
 		spaced := strings.Split(prefix, " ")
-		if _, err := strconv.Atoi(spaced[len(spaced)-1]); err == nil {
-			withoutIndex := strings.Join(spaced[:len(spaced)-1], " ")
-			mk, err = d2parser.ParseMapKey(withoutIndex)
-			if err != nil {
-				return "", false, err
+		if len(spaced) > 1 {
+			if _, err := strconv.Atoi(spaced[len(spaced)-1]); err == nil {
+				withoutIndex := strings.Join(spaced[:len(spaced)-1], " ")
+				mk, err = d2parser.ParseMapKey(withoutIndex)
+				if err != nil {
+					return "", false, err
+				}
 			}
 		}
 	}

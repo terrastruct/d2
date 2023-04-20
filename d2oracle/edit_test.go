@@ -1598,6 +1598,19 @@ y
 `,
 		},
 		{
+			name: "conflict_with_numbers",
+
+			text: `1
+Square
+`,
+			key:     `Square`,
+			newName: `1`,
+
+			exp: `1
+1 2
+`,
+		},
+		{
 			name: "nested",
 
 			text: `x.y.z.q.nerve-gift-earther
@@ -5935,6 +5948,19 @@ y
 
 			exp: `{
   "y": "\"a.b 2\""
+}`,
+		},
+		{
+			name: "rename_conflict_with_numbers",
+
+			text: `1
+Square
+`,
+			key:     `Square`,
+			newName: `1`,
+
+			exp: `{
+  "Square": "1 2"
 }`,
 		},
 		{
