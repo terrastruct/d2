@@ -228,8 +228,8 @@ func (el *ThemableElement) Render() string {
 	return out
 }
 
-func calculateAxisRadius(borderRadius float64, width float64, height float64) float64 {
-	var minimumSideSize = math.Min(width, height)
-	var maximumBorderRadiusValue = minimumSideSize / 2.0
+func calculateAxisRadius(borderRadius, width, height float64) float64 {
+	minimumSideSize := math.Min(width, height)
+	maximumBorderRadiusValue := minimumSideSize / 2.0
 	return math.Min(borderRadius, maximumBorderRadiusValue)
 }
