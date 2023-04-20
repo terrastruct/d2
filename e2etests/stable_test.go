@@ -2471,6 +2471,90 @@ three-dee: {
 `,
 		},
 		{
+			name: "cycle-order",
+			script: `direction: right
+classes: {
+  group: {
+    style: {
+      fill: transparent
+      stroke-dash: 5
+    }
+  }
+  icon: {
+    shape: image
+    height: 70
+    width: 70
+  }
+}
+
+Plan -> Code -> Build -> Test -> Check -> Release -> Deploy -> Operate -> Monitor -> Plan
+
+Plan: {
+  class: group
+  ClickUp: {
+    class: icon
+    icon: https://avatars.githubusercontent.com/u/27873294?s=200&v=4
+  }
+}
+Code: {
+  class: group
+  Git: {
+    class: icon
+    icon: https://icons.terrastruct.com/dev%2Fgit.svg
+  }
+}
+Build: {
+  class: group
+  Docker: {
+    class: icon
+    icon: https://icons.terrastruct.com/dev%2Fdocker.svg
+  }
+}
+Test: {
+  class: group
+  Playwright: {
+    class: icon
+    icon: https://playwright.dev/img/playwright-logo.svg
+  }
+}
+Check: {
+  class: group
+  TruffleHog: {
+    class: icon
+    icon: https://avatars.githubusercontent.com/u/79229934?s=200&v=4
+  }
+}
+Release: {
+  class: group
+  Github Action: {
+    class: icon
+    icon: https://icons.terrastruct.com/dev%2Fgithub.svg
+  }
+}
+Deploy: {
+  class: group
+  "AWS Copilot": {
+    class: icon
+    icon: https://icons.terrastruct.com/aws%2FDeveloper%20Tools%2FAWS-CodeDeploy.svg
+  }
+}
+Operate: {
+  class: group
+  "AWS ECS": {
+    class: icon
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Fargate.svg
+  }
+}
+Monitor: {
+  class: group
+  Grafana: {
+    class: icon
+    icon: https://avatars.githubusercontent.com/u/7195757?s=200&v=4
+  }
+}
+`,
+		},
+		{
 			name: "sequence-inter-span-self",
 			script: `
 shape: sequence_diagram

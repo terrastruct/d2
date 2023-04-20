@@ -108,6 +108,7 @@ type elkOpts struct {
 	InlineEdgeLabels             bool   `json:"elk.edgeLabels.inline,omitempty"`
 	ForceNodeModelOrder          bool   `json:"elk.layered.crossingMinimization.forceNodeModelOrder,omitempty"`
 	ConsiderModelOrder           string `json:"elk.layered.considerModelOrder.strategy,omitempty"`
+	CycleBreakingStrategy        string `json:"elk.layered.cycleBreaking.strategy,omitempty"`
 
 	SelfLoopDistribution string `json:"elk.layered.edgeRouting.selfLoopDistribution,omitempty"`
 
@@ -151,6 +152,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			HierarchyHandling:            "INCLUDE_CHILDREN",
 			FixedAlignment:               "BALANCED",
 			ConsiderModelOrder:           "NODES_AND_EDGES",
+			CycleBreakingStrategy:        "GREEDY_MODEL_ORDER",
 			NodeSizeConstraints:          "MINIMUM_SIZE",
 			ContentAlignment:             "H_CENTER V_CENTER",
 			ConfigurableOpts: ConfigurableOpts{
@@ -236,6 +238,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				FixedAlignment:               "BALANCED",
 				EdgeNode:                     edge_node_spacing,
 				ConsiderModelOrder:           "NODES_AND_EDGES",
+				CycleBreakingStrategy:        "GREEDY_MODEL_ORDER",
 				NodeSizeConstraints:          "MINIMUM_SIZE",
 				ContentAlignment:             "H_CENTER V_CENTER",
 				ConfigurableOpts: ConfigurableOpts{
