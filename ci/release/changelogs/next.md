@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- Pill shape is implemented with rectangles of large border radius. Thanks @Poivey ! [#1006](https://github.com/terrastruct/d2/pull/1006)
+
 #### Improvements 🧹
 
 - ELK self loops get distributed around the object instead of stacking [#1232](https://github.com/terrastruct/d2/pull/1232)
