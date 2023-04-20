@@ -109,6 +109,8 @@ type elkOpts struct {
 	ForceNodeModelOrder          bool   `json:"elk.layered.crossingMinimization.forceNodeModelOrder,omitempty"`
 	ConsiderModelOrder           string `json:"elk.layered.considerModelOrder.strategy,omitempty"`
 
+	SelfLoopDistribution string `json:"elk.layered.edgeRouting.selfLoopDistribution,omitempty"`
+
 	NodeSizeConstraints string `json:"elk.nodeSize.constraints,omitempty"`
 	ContentAlignment    string `json:"elk.contentAlignment,omitempty"`
 	NodeSizeMinimum     string `json:"elk.nodeSize.minimum,omitempty"`
@@ -158,6 +160,10 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				SelfLoopSpacing: opts.SelfLoopSpacing,
 			},
 		},
+	}
+	if elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing == DefaultOpts.SelfLoopSpacing {
+		// +5 for a tiny bit of padding
+		elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(elkGraph.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(g.Root, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
 	}
 	switch g.Root.Direction.Value {
 	case "down":
@@ -239,6 +245,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					Padding:         opts.Padding,
 				},
 			}
+			if n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing == DefaultOpts.SelfLoopSpacing {
+				n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing = go2.Max(n.LayoutOptions.ConfigurableOpts.SelfLoopSpacing, childrenMaxSelfLoop(obj, g.Root.Direction.Value == "down" || g.Root.Direction.Value == "" || g.Root.Direction.Value == "up")/2+5)
+			}
 
 			switch elkGraph.LayoutOptions.Direction {
 			case "DOWN", "UP":
@@ -277,7 +286,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		} else {
 			n.LayoutOptions = &elkOpts{
-				// Margins: "[top=100,left=100,bottom=100,right=100]",
+				SelfLoopDistribution: "EQUALLY",
 			}
 		}
 
@@ -724,4 +733,21 @@ func countEdgeIntersects(g *d2graph.Graph, sEdge *d2graph.Edge, s geo.Segment) (
 
 	}
 	return crossingsCount, overlapsCount, closeOverlapsCount, touchingCount
+}
+
+func childrenMaxSelfLoop(parent *d2graph.Object, isWidth bool) int {
+	max := 0
+	for _, ch := range parent.Children {
+		for _, e := range parent.Graph.Edges {
+			if e.Src == e.Dst && e.Src == ch && e.Label.Value != "" {
+				if isWidth {
+					max = go2.Max(max, e.LabelDimensions.Width)
+				} else {
+					max = go2.Max(max, e.LabelDimensions.Height)
+				}
+			}
+		}
+	}
+
+	return max
 }

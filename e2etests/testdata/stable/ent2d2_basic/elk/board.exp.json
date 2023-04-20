@@ -687,19 +687,19 @@
       "route": [
         {
           "x": 453.5,
-          "y": 69.6
+          "y": 60
         },
         {
-          "x": 403.5,
-          "y": 69.6
+          "x": 365.5,
+          "y": 60
         },
         {
-          "x": 403.5,
-          "y": 98.4
+          "x": 365.5,
+          "y": 108
         },
         {
           "x": 453.5,
-          "y": 98.4
+          "y": 108
         }
       ],
       "animated": false,
@@ -718,7 +718,7 @@
       "strokeWidth": 2,
       "stroke": "B1",
       "borderRadius": 10,
-      "label": "children/parent",
+      "label": "children/parent/ancestor",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -726,26 +726,26 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 104,
+      "labelWidth": 167,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
       "route": [
         {
-          "x": 453.5,
-          "y": 40.8
+          "x": 733.5,
+          "y": 108
         },
         {
-          "x": 343.5,
-          "y": 40.8
+          "x": 821.5,
+          "y": 108
         },
         {
-          "x": 343.5,
-          "y": 127.2
+          "x": 821.5,
+          "y": 60
         },
         {
-          "x": 453.5,
-          "y": 127.2
+          "x": 733.5,
+          "y": 60
         }
       ],
       "animated": false,
@@ -778,11 +778,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 500.16666666666663,
+          "x": 500.1666666666667,
           "y": 156
         },
         {
-          "x": 500.16666666666663,
+          "x": 500.1666666666667,
           "y": 196
         },
         {

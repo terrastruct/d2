@@ -20,18 +20,18 @@ func testStable(t *testing.T) {
 				x -> y: {
 					style.stroke: green
 				}
-				
+
 				y -> z: {
 					style.stroke: red
 				}
-				
+
 				legend: {
 					near: bottom-center
 					color1: foo {
 						shape: text
 						style.font-color: green
 					}
-				
+
 					color2: bar {
 						shape: text
 						style.font-color: red
@@ -2593,6 +2593,7 @@ scenarios: {
 		loadFromFile(t, "grid_animated"),
 		loadFromFile(t, "grid_gap"),
 		loadFromFile(t, "ent2d2_basic"),
+		loadFromFile(t, "ent2d2_right"),
 	}
 
 	runa(t, tcs)
