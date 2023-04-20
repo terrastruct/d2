@@ -20,8 +20,6 @@ import (
 	"github.com/alecthomas/chroma/v2/lexers"
 	"github.com/alecthomas/chroma/v2/styles"
 
-	"oss.terrastruct.com/util-go/go2"
-
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
 	"oss.terrastruct.com/d2/d2renderers/d2latex"
@@ -39,8 +37,7 @@ import (
 )
 
 const (
-	DEFAULT_PADDING            = 100
-	MIN_ARROWHEAD_STROKE_WIDTH = 2
+	DEFAULT_PADDING = 100
 
 	appendixIconRadius = 16
 )
@@ -109,56 +106,13 @@ func arrowheadMarkerID(isTarget bool, connection d2target.Connection) string {
 	)))
 }
 
-func arrowheadDimensions(arrowhead d2target.Arrowhead, strokeWidth float64) (width, height float64) {
-	var baseWidth, baseHeight float64
-	var widthMultiplier, heightMultiplier float64
-	switch arrowhead {
-	case d2target.ArrowArrowhead:
-		baseWidth = 4
-		baseHeight = 4
-		widthMultiplier = 4
-		heightMultiplier = 4
-	case d2target.TriangleArrowhead:
-		baseWidth = 4
-		baseHeight = 4
-		widthMultiplier = 3
-		heightMultiplier = 4
-	case d2target.LineArrowhead:
-		widthMultiplier = 5
-		heightMultiplier = 8
-	case d2target.FilledDiamondArrowhead:
-		baseWidth = 11
-		baseHeight = 7
-		widthMultiplier = 5.5
-		heightMultiplier = 3.5
-	case d2target.DiamondArrowhead:
-		baseWidth = 11
-		baseHeight = 9
-		widthMultiplier = 5.5
-		heightMultiplier = 4.5
-	case d2target.FilledCircleArrowhead, d2target.CircleArrowhead:
-		baseWidth = 8
-		baseHeight = 8
-		widthMultiplier = 5
-		heightMultiplier = 5
-	case d2target.CfOne, d2target.CfMany, d2target.CfOneRequired, d2target.CfManyRequired:
-		baseWidth = 9
-		baseHeight = 9
-		widthMultiplier = 4.5
-		heightMultiplier = 4.5
-	}
-
-	clippedStrokeWidth := go2.Max(MIN_ARROWHEAD_STROKE_WIDTH, strokeWidth)
-	return baseWidth + clippedStrokeWidth*widthMultiplier, baseHeight + clippedStrokeWidth*heightMultiplier
-}
-
 func arrowheadMarker(isTarget bool, id string, connection d2target.Connection) string {
 	arrowhead := connection.DstArrow
 	if !isTarget {
 		arrowhead = connection.SrcArrow
 	}
 	strokeWidth := float64(connection.StrokeWidth)
-	width, height := arrowheadDimensions(arrowhead, strokeWidth)
+	width, height := arrowhead.Dimensions(strokeWidth)
 
 	var path string
 	switch arrowhead {
@@ -515,7 +469,12 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 	if connection.Opacity != 1.0 {
 		opacityStyle = fmt.Sprintf(" style='opacity:%f'", connection.Opacity)
 	}
-	fmt.Fprintf(writer, `<g id="%s"%s>`, svg.EscapeText(connection.ID), opacityStyle)
+
+	classStr := ""
+	if len(connection.Classes) > 0 {
+		classStr = fmt.Sprintf(` class="%s"`, strings.Join(connection.Classes, " "))
+	}
+	fmt.Fprintf(writer, `<g id="%s"%s%s>`, svg.EscapeText(connection.ID), opacityStyle, classStr)
 	var markerStart string
 	if connection.SrcArrow != d2target.NoArrowhead {
 		id := arrowheadMarkerID(false, connection)
@@ -615,38 +574,40 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		fmt.Fprint(writer, textEl.Render())
 	}
 
-	length := geo.Route(connection.Route).Length()
-	if connection.SrcLabel != "" {
-		// TODO use arrowhead label dimensions https://github.com/terrastruct/d2/issues/183
-		size := float64(connection.FontSize)
-		position := 0.
-		if length > 0 {
-			position = size / length
-		}
-		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.SrcLabel, position, size, size))
+	if connection.SrcLabel != nil && connection.SrcLabel.Label != "" {
+		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.SrcLabel.Label, false))
 	}
-	if connection.DstLabel != "" {
-		// TODO use arrowhead label dimensions https://github.com/terrastruct/d2/issues/183
-		size := float64(connection.FontSize)
-		position := 1.
-		if length > 0 {
-			position -= size / length
-		}
-		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.DstLabel, position, size, size))
+	if connection.DstLabel != nil && connection.DstLabel.Label != "" {
+		fmt.Fprint(writer, renderArrowheadLabel(connection, connection.DstLabel.Label, true))
 	}
 	fmt.Fprintf(writer, `</g>`)
 	return
 }
 
-func renderArrowheadLabel(connection d2target.Connection, text string, position, width, height float64) string {
-	labelTL := label.UnlockedTop.GetPointOnRoute(connection.Route, float64(connection.StrokeWidth), position, width, height)
+func renderArrowheadLabel(connection d2target.Connection, text string, isDst bool) string {
+	var width, height float64
+	if isDst {
+		width = float64(connection.DstLabel.LabelWidth)
+		height = float64(connection.DstLabel.LabelHeight)
+	} else {
+		width = float64(connection.SrcLabel.LabelWidth)
+		height = float64(connection.SrcLabel.LabelHeight)
+	}
+
+	labelTL := connection.GetArrowheadLabelPosition(isDst)
+
+	// svg text is positioned with the center of its baseline
+	baselineCenter := geo.Point{
+		X: labelTL.X + width/2.,
+		Y: labelTL.Y + float64(connection.FontSize),
+	}
 
 	textEl := d2themes.NewThemableElement("text")
-	textEl.X = labelTL.X + width/2
-	textEl.Y = labelTL.Y + float64(connection.FontSize)
+	textEl.X = baselineCenter.X
+	textEl.Y = baselineCenter.Y
 	textEl.Fill = d2target.FG_COLOR
 	textEl.ClassName = "text-italic"
-	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "middle", connection.FontSize)
+	textEl.Style = fmt.Sprintf("text-anchor:middle;font-size:%vpx", connection.FontSize)
 	textEl.Content = RenderText(text, textEl.X, height)
 	return textEl.Render()
 }
@@ -919,7 +880,11 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 	if targetShape.BorderRadius != 0 && (targetShape.Type == d2target.ShapeClass || targetShape.Type == d2target.ShapeSQLTable) {
 		fmt.Fprint(writer, clipPathForBorderRadius(diagramHash, targetShape))
 	}
-	fmt.Fprintf(writer, `<g id="%s"%s>`, svg.EscapeText(targetShape.ID), opacityStyle)
+	classStr := ""
+	if len(targetShape.Classes) > 0 {
+		classStr = fmt.Sprintf(` class="%s"`, strings.Join(targetShape.Classes, " "))
+	}
+	fmt.Fprintf(writer, `<g id="%s"%s%s>`, svg.EscapeText(targetShape.ID), opacityStyle, classStr)
 	tl := geo.NewPoint(float64(targetShape.Pos.X), float64(targetShape.Pos.Y))
 	width := float64(targetShape.Width)
 	height := float64(targetShape.Height)
@@ -1322,6 +1287,9 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 			mdEl := d2themes.NewThemableElement("div")
 			mdEl.ClassName = "md"
 			mdEl.Content = render
+			if targetShape.FontSize != textmeasure.MarkdownFontSize {
+				mdEl.Style = fmt.Sprintf("font-size:%vpx", targetShape.FontSize)
+			}
 			fmt.Fprint(writer, mdEl.Render())
 			fmt.Fprint(writer, `</foreignObject></g>`)
 		} else {
@@ -1420,6 +1388,20 @@ func EmbedFonts(buf *bytes.Buffer, diagramHash, source string, fontFamily *d2fon
 			diagramHash,
 			diagramHash,
 			fontFamily.Font(0, d2fonts.FONT_STYLE_REGULAR).GetEncodedSubset(corpus),
+		),
+	)
+
+	appendOnTrigger(
+		buf,
+		source,
+		[]string{`class="md"`},
+		fmt.Sprintf(`
+@font-face {
+	font-family: %s-font-semibold;
+	src: url("%s");
+}`,
+			diagramHash,
+			fontFamily.Font(0, d2fonts.FONT_STYLE_SEMIBOLD).GetEncodedSubset(corpus),
 		),
 	)
 
@@ -1753,10 +1735,12 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 		if hasMarkdown {
 			css := MarkdownCSS
+			css = strings.ReplaceAll(css, ".md", fmt.Sprintf(".%s .md", diagramHash))
 			css = strings.ReplaceAll(css, "font-italic", fmt.Sprintf("%s-font-italic", diagramHash))
 			css = strings.ReplaceAll(css, "font-bold", fmt.Sprintf("%s-font-bold", diagramHash))
 			css = strings.ReplaceAll(css, "font-mono", fmt.Sprintf("%s-font-mono", diagramHash))
 			css = strings.ReplaceAll(css, "font-regular", fmt.Sprintf("%s-font-regular", diagramHash))
+			css = strings.ReplaceAll(css, "font-semibold", fmt.Sprintf("%s-font-semibold", diagramHash))
 			fmt.Fprintf(upperBuf, `<style type="text/css">%s</style>`, css)
 		}
 
@@ -2152,4 +2136,39 @@ func hash(s string) string {
 	h := fnv.New32a()
 	h.Write([]byte(fmt.Sprintf("%s%s", s, secret)))
 	return fmt.Sprint(h.Sum32())
+}
+
+func RenderMultiboard(diagram *d2target.Diagram, opts *RenderOpts) ([][]byte, error) {
+	var boards [][]byte
+	for _, dl := range diagram.Layers {
+		childrenBoards, err := RenderMultiboard(dl, opts)
+		if err != nil {
+			return nil, err
+		}
+		boards = append(boards, childrenBoards...)
+	}
+	for _, dl := range diagram.Scenarios {
+		childrenBoards, err := RenderMultiboard(dl, opts)
+		if err != nil {
+			return nil, err
+		}
+		boards = append(boards, childrenBoards...)
+	}
+	for _, dl := range diagram.Steps {
+		childrenBoards, err := RenderMultiboard(dl, opts)
+		if err != nil {
+			return nil, err
+		}
+		boards = append(boards, childrenBoards...)
+	}
+
+	if !diagram.IsFolderOnly {
+		out, err := Render(diagram, opts)
+		if err != nil {
+			return boards, err
+		}
+		boards = append([][]byte{out}, boards...)
+		return boards, nil
+	}
+	return boards, nil
 }

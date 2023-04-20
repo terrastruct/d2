@@ -11,8 +11,8 @@ var LightCatalog = []d2themes.Theme{
 	NeutralDefault,
 	NeutralGrey,
 	FlagshipTerrastruct,
-	MixedBerryBlue,
 	CoolClassics,
+	MixedBerryBlue,
 	GrapeSoda,
 	Aubergine,
 	ColorblindClear,
@@ -29,6 +29,7 @@ var LightCatalog = []d2themes.Theme{
 
 var DarkCatalog = []d2themes.Theme{
 	DarkMauve,
+	DarkFlagshipTerrastruct,
 }
 
 func Find(id int64) d2themes.Theme {

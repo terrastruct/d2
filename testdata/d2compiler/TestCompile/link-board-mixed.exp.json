@@ -313,13 +313,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -340,10 +340,6 @@
       {
         "id": "question",
         "id_val": "question",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -400,6 +396,10 @@
         "attributes": {
           "label": {
             "value": "How does the cat go?"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "link": {
@@ -734,13 +734,13 @@
         "root": {
           "id": "",
           "id_val": "",
-          "label_dimensions": {
-            "width": 0,
-            "height": 0
-          },
           "attributes": {
             "label": {
               "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
             },
             "style": {},
             "near_key": null,
@@ -759,12 +759,6 @@
         "edges": [
           {
             "index": 0,
-            "minWidth": 0,
-            "minHeight": 0,
-            "label_dimensions": {
-              "width": 0,
-              "height": 0
-            },
             "isCurve": false,
             "src_arrow": false,
             "dst_arrow": true,
@@ -776,6 +770,10 @@
             "attributes": {
               "label": {
                 "value": "goes"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
               },
               "style": {},
               "near_key": null,
@@ -796,10 +794,6 @@
           {
             "id": "the cat",
             "id_val": "the cat",
-            "label_dimensions": {
-              "width": 0,
-              "height": 0
-            },
             "references": [
               {
                 "key": {
@@ -826,6 +820,10 @@
               "label": {
                 "value": "the cat"
               },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
               "style": {},
               "near_key": null,
               "shape": {
@@ -843,10 +841,6 @@
           {
             "id": "meeeowwww",
             "id_val": "meeeowwww",
-            "label_dimensions": {
-              "width": 0,
-              "height": 0
-            },
             "references": [
               {
                 "key": {
@@ -872,6 +866,10 @@
             "attributes": {
               "label": {
                 "value": "meeeowwww"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
               },
               "style": {},
               "near_key": null,
@@ -1205,13 +1203,13 @@
         "root": {
           "id": "",
           "id_val": "",
-          "label_dimensions": {
-            "width": 0,
-            "height": 0
-          },
           "attributes": {
             "label": {
               "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
             },
             "style": {},
             "near_key": null,
@@ -1232,10 +1230,6 @@
           {
             "id": "question",
             "id_val": "question",
-            "label_dimensions": {
-              "width": 0,
-              "height": 0
-            },
             "references": [
               {
                 "key": {
@@ -1334,6 +1328,10 @@
             "attributes": {
               "label": {
                 "value": "How does the cat go?"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
               },
               "style": {
                 "fill": {

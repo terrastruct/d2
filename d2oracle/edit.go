@@ -17,6 +17,7 @@ import (
 	"oss.terrastruct.com/d2/d2compiler"
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2ir"
 	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2target"
 )
@@ -159,12 +160,12 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 			}
 		}
 
-		if obj.Attributes.Label.MapKey != nil && obj.Map == nil && (!found || reserved || len(mk.Edges) > 0) {
+		if obj.Label.MapKey != nil && obj.Map == nil && (!found || reserved || len(mk.Edges) > 0) {
 			obj.Map = &d2ast.Map{
 				Range: d2ast.MakeRange(",1:0:0-1:0:0"),
 			}
-			obj.Attributes.Label.MapKey.Primary = obj.Attributes.Label.MapKey.Value.ScalarBox()
-			obj.Attributes.Label.MapKey.Value = d2ast.MakeValueBox(obj.Map)
+			obj.Label.MapKey.Primary = obj.Label.MapKey.Value.ScalarBox()
+			obj.Label.MapKey.Value = d2ast.MakeValueBox(obj.Map)
 			scope = obj.Map
 
 			mk.Key.Path = mk.Key.Path[toSkip-1:]
@@ -180,6 +181,10 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 		}
 	}
 
+	ir, err := d2ir.Compile(g.AST)
+	if err != nil {
+		return err
+	}
 	attrs := obj.Attributes
 	var edge *d2graph.Edge
 	if len(mk.Edges) == 1 {
@@ -247,10 +252,10 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 						if n.MapKey.Key.Path[0].Unbox().ScalarString() == mk.Key.Path[toSkip-1].Unbox().ScalarString() {
 							scope = n.MapKey.Value.Map
 							if mk.Key.Path[0].Unbox().ScalarString() == "source-arrowhead" && edge.SrcArrowhead != nil {
-								attrs = edge.SrcArrowhead
+								attrs = *edge.SrcArrowhead
 							}
 							if mk.Key.Path[0].Unbox().ScalarString() == "target-arrowhead" && edge.DstArrowhead != nil {
-								attrs = edge.DstArrowhead
+								attrs = *edge.DstArrowhead
 							}
 							reservedKey = mk.Key.Path[0].Unbox().ScalarString()
 							mk.Key.Path = mk.Key.Path[1:]
@@ -273,6 +278,9 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 	}
 
 	if reserved {
+		inlined := func(s *d2graph.Scalar) bool {
+			return s != nil && s.MapKey != nil && !ir.InClass(s.MapKey)
+		}
 		reservedIndex := toSkip - 1
 		if mk.Key != nil && len(mk.Key.Path) > 0 {
 			if reservedKey == "" {
@@ -280,47 +288,73 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 			}
 			switch reservedKey {
 			case "shape":
-				if attrs.Shape.MapKey != nil {
+				if inlined(&attrs.Shape) {
 					attrs.Shape.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
 			case "link":
-				if attrs.Link != nil && attrs.Link.MapKey != nil {
+				if inlined(attrs.Link) {
 					attrs.Link.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
 			case "tooltip":
-				if attrs.Tooltip != nil && attrs.Tooltip.MapKey != nil {
+				if inlined(attrs.Tooltip) {
 					attrs.Tooltip.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
 			case "width":
-				if attrs.Width != nil && attrs.Width.MapKey != nil {
-					attrs.Width.MapKey.SetScalar(mk.Value.ScalarBox())
+				if inlined(attrs.WidthAttr) {
+					attrs.WidthAttr.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
 			case "height":
-				if attrs.Height != nil && attrs.Height.MapKey != nil {
-					attrs.Height.MapKey.SetScalar(mk.Value.ScalarBox())
+				if inlined(attrs.HeightAttr) {
+					attrs.HeightAttr.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
 			case "top":
-				if attrs.Top != nil && attrs.Top.MapKey != nil {
+				if inlined(attrs.Top) {
 					attrs.Top.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
 			case "left":
-				if attrs.Left != nil && attrs.Left.MapKey != nil {
+				if inlined(attrs.Left) {
 					attrs.Left.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
-			case "source-arrowhead", "target-arrowhead":
-				if reservedKey == "source-arrowhead" {
-					attrs = edge.SrcArrowhead
-				} else {
-					attrs = edge.DstArrowhead
+			case "grid-rows":
+				if inlined(attrs.GridRows) {
+					attrs.GridRows.MapKey.SetScalar(mk.Value.ScalarBox())
+					return nil
 				}
-				if attrs != nil {
+			case "grid-columns":
+				if inlined(attrs.GridColumns) {
+					attrs.GridColumns.MapKey.SetScalar(mk.Value.ScalarBox())
+					return nil
+				}
+			case "grid-gap":
+				if inlined(attrs.GridGap) {
+					attrs.GridGap.MapKey.SetScalar(mk.Value.ScalarBox())
+					return nil
+				}
+			case "vertical-gap":
+				if inlined(attrs.VerticalGap) {
+					attrs.VerticalGap.MapKey.SetScalar(mk.Value.ScalarBox())
+					return nil
+				}
+			case "horizontal-gap":
+				if inlined(attrs.HorizontalGap) {
+					attrs.HorizontalGap.MapKey.SetScalar(mk.Value.ScalarBox())
+					return nil
+				}
+			case "source-arrowhead", "target-arrowhead":
+				var arrowhead *d2graph.Attributes
+				if reservedKey == "source-arrowhead" {
+					arrowhead = edge.SrcArrowhead
+				} else {
+					arrowhead = edge.DstArrowhead
+				}
+				if arrowhead != nil {
 					if reservedTargetKey == "" {
 						if len(mk.Key.Path[reservedIndex:]) != 2 {
 							return errors.New("malformed style setting, expected 2 part path")
@@ -329,13 +363,13 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 					}
 					switch reservedTargetKey {
 					case "shape":
-						if attrs.Shape.MapKey != nil {
-							attrs.Shape.MapKey.SetScalar(mk.Value.ScalarBox())
+						if inlined(&arrowhead.Shape) {
+							arrowhead.Shape.MapKey.SetScalar(mk.Value.ScalarBox())
 							return nil
 						}
 					case "label":
-						if attrs.Label.MapKey != nil {
-							attrs.Label.MapKey.SetScalar(mk.Value.ScalarBox())
+						if inlined(&arrowhead.Label) {
+							arrowhead.Label.MapKey.SetScalar(mk.Value.ScalarBox())
 							return nil
 						}
 					}
@@ -349,98 +383,98 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 				}
 				switch reservedTargetKey {
 				case "opacity":
-					if attrs.Style.Opacity != nil {
+					if inlined(attrs.Style.Opacity) {
 						attrs.Style.Opacity.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				case "stroke":
-					if attrs.Style.Stroke != nil {
+					if inlined(attrs.Style.Stroke) {
 						attrs.Style.Stroke.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				case "fill":
-					if attrs.Style.Fill != nil {
+					if inlined(attrs.Style.Fill) {
 						attrs.Style.Fill.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				case "stroke-width":
-					if attrs.Style.StrokeWidth != nil {
+					if inlined(attrs.Style.StrokeWidth) {
 						attrs.Style.StrokeWidth.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				case "stroke-dash":
-					if attrs.Style.StrokeDash != nil {
+					if inlined(attrs.Style.StrokeDash) {
 						attrs.Style.StrokeDash.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				case "border-radius":
-					if attrs.Style.BorderRadius != nil {
+					if inlined(attrs.Style.BorderRadius) {
 						attrs.Style.BorderRadius.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				case "shadow":
-					if attrs.Style.Shadow != nil {
+					if inlined(attrs.Style.Shadow) {
 						attrs.Style.Shadow.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				case "3d":
-					if attrs.Style.ThreeDee != nil {
+					if inlined(attrs.Style.ThreeDee) {
 						attrs.Style.ThreeDee.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				case "multiple":
-					if attrs.Style.Multiple != nil {
+					if inlined(attrs.Style.Multiple) {
 						attrs.Style.Multiple.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				case "double-border":
-					if attrs.Style.DoubleBorder != nil {
+					if inlined(attrs.Style.DoubleBorder) {
 						attrs.Style.DoubleBorder.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				case "font":
-					if attrs.Style.Font != nil {
+					if inlined(attrs.Style.Font) {
 						attrs.Style.Font.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				case "font-size":
-					if attrs.Style.FontSize != nil {
+					if inlined(attrs.Style.FontSize) {
 						attrs.Style.FontSize.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				case "font-color":
-					if attrs.Style.FontColor != nil {
+					if inlined(attrs.Style.FontColor) {
 						attrs.Style.FontColor.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				case "animated":
-					if attrs.Style.Animated != nil {
+					if inlined(attrs.Style.Animated) {
 						attrs.Style.Animated.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				case "bold":
-					if attrs.Style.Bold != nil {
+					if inlined(attrs.Style.Bold) {
 						attrs.Style.Bold.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				case "italic":
-					if attrs.Style.Italic != nil {
+					if inlined(attrs.Style.Italic) {
 						attrs.Style.Italic.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				case "underline":
-					if attrs.Style.Underline != nil {
+					if inlined(attrs.Style.Underline) {
 						attrs.Style.Underline.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				case "fill-pattern":
-					if attrs.Style.FillPattern != nil {
+					if inlined(attrs.Style.FillPattern) {
 						attrs.Style.FillPattern.MapKey.SetScalar(mk.Value.ScalarBox())
 						return nil
 					}
 				}
 			case "label":
-				if attrs.Label.MapKey != nil {
+				if inlined(&attrs.Label) {
 					attrs.Label.MapKey.SetScalar(mk.Value.ScalarBox())
 					return nil
 				}
@@ -639,7 +673,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 	if !ok {
 		return g, nil
 	}
-	if obj.Attributes.Shape.Value == d2target.ShapeSQLTable || obj.Attributes.Shape.Value == d2target.ShapeClass {
+	if obj.Shape.Value == d2target.ShapeSQLTable || obj.Shape.Value == d2target.ShapeClass {
 		return g, nil
 	}
 
@@ -936,7 +970,7 @@ func deleteObject(g *d2graph.Graph, key *d2ast.KeyPath, obj *d2graph.Object) (*d
 				isSpecial := isReserved || x.Unbox().ScalarString() == "_"
 				return !isSpecial
 			})
-			if obj.Attributes.Shape.Value == d2target.ShapeSQLTable || obj.Attributes.Shape.Value == d2target.ShapeClass {
+			if obj.Shape.Value == d2target.ShapeSQLTable || obj.Shape.Value == d2target.ShapeClass {
 				deleteFromMap(ref.Scope, ref.MapKey)
 			} else if len(withoutSpecial) == 0 {
 				hoistRefChildren(g, key, ref)
@@ -965,7 +999,7 @@ func deleteObject(g *d2graph.Graph, key *d2ast.KeyPath, obj *d2graph.Object) (*d
 		} else if ref.InEdge() {
 			edge := ref.MapKey.Edges[ref.MapKeyEdgeIndex]
 
-			if obj.Attributes.Shape.Value == d2target.ShapeSQLTable || obj.Attributes.Shape.Value == d2target.ShapeClass {
+			if obj.Shape.Value == d2target.ShapeSQLTable || obj.Shape.Value == d2target.ShapeClass {
 				if ref.MapKeyEdgeDest() {
 					ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, edge.Src, true)
 				} else {

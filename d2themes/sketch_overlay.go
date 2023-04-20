@@ -19,7 +19,7 @@ func NewThemableSketchOverlay(el *ThemableElement, fill string) *ThemableSketchO
 }
 
 // TODO we can just call el.Copy() to prevent that
-// WARNING: Do not reuse the element afterwards as this function changes the Class propery
+// WARNING: Do not reuse the element afterwards as this function changes the Class property
 func (o *ThemableSketchOverlay) Render() (string, error) {
 	if color.IsThemeColor(o.fill) {
 		o.el.ClassName += fmt.Sprintf(" sketch-overlay-%s", o.fill) // e.g. sketch-overlay-B3

@@ -64,9 +64,10 @@ const (
 	FONT_SIZE_XXL  = 28
 	FONT_SIZE_XXXL = 32
 
-	FONT_STYLE_REGULAR FontStyle = "regular"
-	FONT_STYLE_BOLD    FontStyle = "bold"
-	FONT_STYLE_ITALIC  FontStyle = "italic"
+	FONT_STYLE_REGULAR  FontStyle = "regular"
+	FONT_STYLE_BOLD     FontStyle = "bold"
+	FONT_STYLE_SEMIBOLD FontStyle = "semibold"
+	FONT_STYLE_ITALIC   FontStyle = "italic"
 
 	SourceSansPro FontFamily = "SourceSansPro"
 	SourceCodePro FontFamily = "SourceCodePro"
@@ -86,6 +87,7 @@ var FontSizes = []int{
 var FontStyles = []FontStyle{
 	FONT_STYLE_REGULAR,
 	FONT_STYLE_BOLD,
+	FONT_STYLE_SEMIBOLD,
 	FONT_STYLE_ITALIC,
 }
 
@@ -101,6 +103,9 @@ var sourceSansProRegularBase64 string
 //go:embed encoded/SourceSansPro-Bold.txt
 var sourceSansProBoldBase64 string
 
+//go:embed encoded/SourceSansPro-Semibold.txt
+var sourceSansProSemiboldBase64 string
+
 //go:embed encoded/SourceSansPro-Italic.txt
 var sourceSansProItalicBase64 string
 
@@ -109,6 +114,9 @@ var sourceCodeProRegularBase64 string
 
 //go:embed encoded/SourceCodePro-Bold.txt
 var sourceCodeProBoldBase64 string
+
+//go:embed encoded/SourceCodePro-Semibold.txt
+var sourceCodeProSemiboldBase64 string
 
 //go:embed encoded/SourceCodePro-Italic.txt
 var sourceCodeProItalicBase64 string
@@ -137,6 +145,10 @@ func init() {
 		}: sourceSansProBoldBase64,
 		{
 			Family: SourceSansPro,
+			Style:  FONT_STYLE_SEMIBOLD,
+		}: sourceSansProSemiboldBase64,
+		{
+			Family: SourceSansPro,
 			Style:  FONT_STYLE_ITALIC,
 		}: sourceSansProItalicBase64,
 		{
@@ -147,6 +159,10 @@ func init() {
 			Family: SourceCodePro,
 			Style:  FONT_STYLE_BOLD,
 		}: sourceCodeProBoldBase64,
+		{
+			Family: SourceCodePro,
+			Style:  FONT_STYLE_SEMIBOLD,
+		}: sourceCodeProSemiboldBase64,
 		{
 			Family: SourceCodePro,
 			Style:  FONT_STYLE_ITALIC,
@@ -163,6 +179,11 @@ func init() {
 		{
 			Family: HandDrawn,
 			Style:  FONT_STYLE_BOLD,
+		}: fuzzyBubblesBoldBase64,
+		{
+			Family: HandDrawn,
+			Style:  FONT_STYLE_SEMIBOLD,
+			// This font has no semibold, so just reuse bold
 		}: fuzzyBubblesBoldBase64,
 	}
 
@@ -195,6 +216,14 @@ func init() {
 		Family: SourceCodePro,
 		Style:  FONT_STYLE_BOLD,
 	}] = b
+	b, err = fontFacesFS.ReadFile("ttf/SourceCodePro-Semibold.ttf")
+	if err != nil {
+		panic(err)
+	}
+	FontFaces[Font{
+		Family: SourceCodePro,
+		Style:  FONT_STYLE_SEMIBOLD,
+	}] = b
 	b, err = fontFacesFS.ReadFile("ttf/SourceCodePro-Italic.ttf")
 	if err != nil {
 		panic(err)
@@ -210,6 +239,14 @@ func init() {
 	FontFaces[Font{
 		Family: SourceSansPro,
 		Style:  FONT_STYLE_BOLD,
+	}] = b
+	b, err = fontFacesFS.ReadFile("ttf/SourceSansPro-Semibold.ttf")
+	if err != nil {
+		panic(err)
+	}
+	FontFaces[Font{
+		Family: SourceSansPro,
+		Style:  FONT_STYLE_SEMIBOLD,
 	}] = b
 	b, err = fontFacesFS.ReadFile("ttf/SourceSansPro-Italic.ttf")
 	if err != nil {
@@ -239,6 +276,10 @@ func init() {
 		Family: HandDrawn,
 		Style:  FONT_STYLE_BOLD,
 	}] = b
+	FontFaces[Font{
+		Family: HandDrawn,
+		Style:  FONT_STYLE_SEMIBOLD,
+	}] = b
 }
 
 var D2_FONT_TO_FAMILY = map[string]FontFamily{
@@ -259,7 +300,7 @@ func AddFontStyle(font Font, style FontStyle, ttf []byte) error {
 	return nil
 }
 
-func AddFontFamily(name string, regularTTF, italicTTF, boldTTF []byte) (*FontFamily, error) {
+func AddFontFamily(name string, regularTTF, italicTTF, boldTTF, semiboldTTF []byte) (*FontFamily, error) {
 	customFontFamily := FontFamily(name)
 
 	regularFont := Font{
@@ -314,6 +355,24 @@ func AddFontFamily(name string, regularTTF, italicTTF, boldTTF []byte) (*FontFam
 		}
 		FontFaces[boldFont] = FontFaces[fallbackFont]
 		FontEncodings[boldFont] = FontEncodings[fallbackFont]
+	}
+
+	semiboldFont := Font{
+		Family: customFontFamily,
+		Style:  FONT_STYLE_SEMIBOLD,
+	}
+	if semiboldTTF != nil {
+		err := AddFontStyle(semiboldFont, FONT_STYLE_SEMIBOLD, semiboldTTF)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		fallbackFont := Font{
+			Family: SourceSansPro,
+			Style:  FONT_STYLE_SEMIBOLD,
+		}
+		FontFaces[semiboldFont] = FontFaces[fallbackFont]
+		FontEncodings[semiboldFont] = FontEncodings[fallbackFont]
 	}
 
 	FontFamilies = append(FontFamilies, customFontFamily)

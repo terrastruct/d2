@@ -9,6 +9,8 @@ import (
 	"time"
 
 	"oss.terrastruct.com/d2/d2cli"
+	"oss.terrastruct.com/d2/lib/pptx"
+	"oss.terrastruct.com/d2/lib/xgif"
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
 	"oss.terrastruct.com/util-go/xmain"
@@ -54,6 +56,16 @@ func TestCLI_E2E(t *testing.T) {
 				assert.Success(t, err)
 				svg := readFile(t, dir, "hello-world.svg")
 				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "empty-layer",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "empty-layer.d2", `layers: { x: {} }`)
+				err := runTestMain(t, ctx, dir, env, "empty-layer.d2")
+				assert.Success(t, err)
+
+				assert.TestdataDir(t, filepath.Join(dir, "empty-layer"))
 			},
 		},
 		{
@@ -130,7 +142,7 @@ a -> b: italic font
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "x.d2", `x -> y`)
 				err := runTestMain(t, ctx, dir, env, "--animate-interval=2", "x.d2", "x.png")
-				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: bad usage: -animate-interval can only be used when exporting to SVG.
+				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: bad usage: -animate-interval can only be used when exporting to SVG or GIF.
 You provided: .png`)
 			},
 		},
@@ -232,6 +244,78 @@ layers: {
 
 				pdf := readFile(t, dir, "out.pdf")
 				testdataIgnoreDiff(t, ".pdf", pdf)
+			},
+		},
+		{
+			name: "export_ppt",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "x.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "x.d2", "x.ppt")
+				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: bad usage: D2 does not support ppt exports, did you mean "pptx"?`)
+			},
+		},
+		{
+			name:   "how_to_solve_problems_pptx",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `how to solve a hard problem? {
+	link: steps.2
+}
+steps: {
+	1: {
+		w: write down the problem
+	}
+	2: {
+		w -> t
+		t: think really hard about it
+	}
+	3: {
+		t -> w2
+		w2: write down the solution
+		w2: {
+			link: https://d2lang.com
+		}
+	}
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "in.d2", "how_to_solve_problems.pptx")
+				assert.Success(t, err)
+
+				file := readFile(t, dir, "how_to_solve_problems.pptx")
+				err = pptx.Validate(file, 4)
+				assert.Success(t, err)
+			},
+		},
+		{
+			name:   "how_to_solve_problems_gif",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `how to solve a hard problem? {
+	link: steps.2
+}
+steps: {
+	1: {
+		w: write down the problem
+	}
+	2: {
+		w -> t
+		t: think really hard about it
+	}
+	3: {
+		t -> w2
+		w2: write down the solution
+		w2: {
+			link: https://d2lang.com
+		}
+	}
+}
+`)
+				err := runTestMain(t, ctx, dir, env, "--animate-interval=10", "in.d2", "how_to_solve_problems.gif")
+				assert.Success(t, err)
+
+				gifBytes := readFile(t, dir, "how_to_solve_problems.gif")
+				err = xgif.Validate(gifBytes, 4, 10)
+				assert.Success(t, err)
 			},
 		},
 		{

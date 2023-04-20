@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"os/user"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -20,6 +21,7 @@ import (
 	"oss.terrastruct.com/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2lib"
+	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2renderers/d2animate"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
@@ -32,10 +34,11 @@ import (
 	"oss.terrastruct.com/d2/lib/imgbundler"
 	ctxlog "oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/pdf"
-	pdflib "oss.terrastruct.com/d2/lib/pdf"
 	"oss.terrastruct.com/d2/lib/png"
+	"oss.terrastruct.com/d2/lib/pptx"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 	"oss.terrastruct.com/d2/lib/version"
+	"oss.terrastruct.com/d2/lib/xgif"
 
 	"cdr.dev/slog"
 	"cdr.dev/slog/sloggers/sloghuman"
@@ -98,6 +101,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	fontRegularFlag := ms.Opts.String("D2_FONT_REGULAR", "font-regular", "", "", "path to .ttf file to use for the regular font. If none provided, Source Sans Pro Regular is used.")
 	fontItalicFlag := ms.Opts.String("D2_FONT_ITALIC", "font-italic", "", "", "path to .ttf file to use for the italic font. If none provided, Source Sans Pro Regular-Italic is used.")
 	fontBoldFlag := ms.Opts.String("D2_FONT_BOLD", "font-bold", "", "", "path to .ttf file to use for the bold font. If none provided, Source Sans Pro Bold is used.")
+	fontSemiboldFlag := ms.Opts.String("D2_FONT_SEMIBOLD", "font-semibold", "", "", "path to .ttf file to use for the semibold font. If none provided, Source Sans Pro Semibold is used.")
 
 	ps, err := d2plugin.ListPlugins(ctx)
 	if err != nil {
@@ -118,7 +122,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		return nil
 	}
 
-	fontFamily, err := loadFonts(ms, *fontRegularFlag, *fontItalicFlag, *fontBoldFlag)
+	fontFamily, err := loadFonts(ms, *fontRegularFlag, *fontItalicFlag, *fontBoldFlag, *fontSemiboldFlag)
 	if err != nil {
 		return xmain.UsageErrorf("failed to load specified fonts: %v", err)
 	}
@@ -183,13 +187,16 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 			inputPath = filepath.Join(inputPath, "index.d2")
 		}
 	}
+	if filepath.Ext(outputPath) == ".ppt" {
+		return xmain.UsageErrorf("D2 does not support ppt exports, did you mean \"pptx\"?")
+	}
+	outputFormat := getExportExtension(outputPath)
 	if outputPath != "-" {
 		outputPath = ms.AbsPath(outputPath)
-		if *animateIntervalFlag > 0 {
-			// Not checking for extension == "svg", because users may want to write SVG data to a non-svg-extension file
-			if filepath.Ext(outputPath) == ".png" || filepath.Ext(outputPath) == ".pdf" {
-				return xmain.UsageErrorf("-animate-interval can only be used when exporting to SVG.\nYou provided: %s", filepath.Ext(outputPath))
-			}
+		if *animateIntervalFlag > 0 && !outputFormat.supportsAnimation() {
+			return xmain.UsageErrorf("-animate-interval can only be used when exporting to SVG or GIF.\nYou provided: %s", filepath.Ext(outputPath))
+		} else if *animateIntervalFlag <= 0 && outputFormat.requiresAnimationInterval() {
+			return xmain.UsageErrorf("-animate-interval must be greater than 0 for %s outputs.\nYou provided: %d", outputFormat, *animateIntervalFlag)
 		}
 	}
 
@@ -233,12 +240,14 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	ms.Log.Debug.Printf("using layout plugin %s (%s)", *layoutFlag, plocation)
 
-	var pw png.Playwright
-	if filepath.Ext(outputPath) == ".png" || filepath.Ext(outputPath) == ".pdf" {
+	if !outputFormat.supportsDarkTheme() {
 		if darkThemeFlag != nil {
 			ms.Log.Warn.Printf("--dark-theme cannot be used while exporting to another format other than .svg")
 			darkThemeFlag = nil
 		}
+	}
+	var pw png.Playwright
+	if outputFormat.requiresPNGRenderer() {
 		pw, err = png.InitPlaywright()
 		if err != nil {
 			return err
@@ -347,16 +356,66 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		return nil, false, err
 	}
 
-	if filepath.Ext(outputPath) == ".pdf" {
-		pageMap := pdf.BuildPDFPageMap(diagram, nil, nil)
-		pdf, err := renderPDF(ctx, ms, plugin, renderOpts, outputPath, page, ruler, diagram, nil, nil, pageMap)
+	ext := getExportExtension(outputPath)
+	switch ext {
+	case GIF:
+		svg, pngs, err := renderPNGsForGIF(ctx, ms, plugin, renderOpts, ruler, page, diagram)
+		if err != nil {
+			return nil, false, err
+		}
+		out, err := xgif.AnimatePNGs(ms, pngs, int(animateInterval))
+		if err != nil {
+			return nil, false, err
+		}
+		err = os.MkdirAll(filepath.Dir(outputPath), 0755)
+		if err != nil {
+			return nil, false, err
+		}
+		err = ms.WritePath(outputPath, out)
+		if err != nil {
+			return nil, false, err
+		}
+		dur := time.Since(start)
+		ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(outputPath), dur)
+		return svg, true, nil
+	case PDF:
+		pageMap := buildBoardIDToIndex(diagram, nil, nil)
+		path := []pdf.BoardTitle{
+			{Name: "root", BoardID: "root"},
+		}
+		pdf, err := renderPDF(ctx, ms, plugin, renderOpts, outputPath, page, ruler, diagram, nil, path, pageMap)
 		if err != nil {
 			return pdf, false, err
 		}
 		dur := time.Since(start)
 		ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(outputPath), dur)
 		return pdf, true, nil
-	} else {
+	case PPTX:
+		var username string
+		if user, err := user.Current(); err == nil {
+			username = user.Username
+		}
+		description := "Presentation generated with D2 - https://d2lang.com/"
+		rootName := getFileName(outputPath)
+		// version must be only numbers to avoid issues with PowerPoint
+		p := pptx.NewPresentation(rootName, description, rootName, username, version.OnlyNumbers())
+
+		boardIdToIndex := buildBoardIDToIndex(diagram, nil, nil)
+		path := []pptx.BoardTitle{
+			{Name: "root", BoardID: "root", LinkToSlide: boardIdToIndex["root"] + 1},
+		}
+		svg, err := renderPPTX(ctx, ms, p, plugin, renderOpts, ruler, outputPath, page, diagram, path, boardIdToIndex)
+		if err != nil {
+			return nil, false, err
+		}
+		err = p.SaveTo(outputPath)
+		if err != nil {
+			return nil, false, err
+		}
+		dur := time.Since(start)
+		ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(outputPath), dur)
+		return svg, true, nil
+	default:
 		compileDur := time.Since(start)
 		if animateInterval <= 0 {
 			// Rename all the "root.layers.x" to the paths that the boards get output to
@@ -364,28 +423,34 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 			if err != nil {
 				return nil, false, err
 			}
-			relink(diagram, linkToOutput)
+			err = relink("root", diagram, linkToOutput)
+			if err != nil {
+				return nil, false, err
+			}
 		}
 
 		boards, err := render(ctx, ms, compileDur, plugin, renderOpts, inputPath, outputPath, bundle, forceAppendix, page, ruler, diagram)
 		if err != nil {
 			return nil, false, err
 		}
-		out := boards[0]
-		if animateInterval > 0 {
-			out, err = d2animate.Wrap(diagram, boards, renderOpts, int(animateInterval))
-			if err != nil {
-				return nil, false, err
+		var out []byte
+		if len(boards) > 0 {
+			out = boards[0]
+			if animateInterval > 0 {
+				out, err = d2animate.Wrap(diagram, boards, renderOpts, int(animateInterval))
+				if err != nil {
+					return nil, false, err
+				}
+				err = os.MkdirAll(filepath.Dir(outputPath), 0755)
+				if err != nil {
+					return nil, false, err
+				}
+				err = ms.WritePath(outputPath, out)
+				if err != nil {
+					return nil, false, err
+				}
+				ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(outputPath), time.Since(start))
 			}
-			err = os.MkdirAll(filepath.Dir(outputPath), 0755)
-			if err != nil {
-				return nil, false, err
-			}
-			err = ms.WritePath(outputPath, out)
-			if err != nil {
-				return nil, false, err
-			}
-			ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(outputPath), time.Since(start))
 		}
 		return out, true, nil
 	}
@@ -462,26 +527,40 @@ func resolveLinks(currDiagramPath, outputPath string, diagram *d2target.Diagram)
 	return linkToOutput, nil
 }
 
-func relink(d *d2target.Diagram, linkToOutput map[string]string) {
+func relink(currDiagramPath string, d *d2target.Diagram, linkToOutput map[string]string) error {
 	for i, shape := range d.Shapes {
 		if shape.Link != "" {
 			for k, v := range linkToOutput {
 				if shape.Link == k {
-					d.Shapes[i].Link = v
+					rel, err := filepath.Rel(filepath.Dir(linkToOutput[currDiagramPath]), v)
+					if err != nil {
+						return err
+					}
+					d.Shapes[i].Link = rel
 					break
 				}
 			}
 		}
 	}
 	for _, board := range d.Layers {
-		relink(board, linkToOutput)
+		err := relink(strings.Join([]string{currDiagramPath, "layers", board.Name}, "."), board, linkToOutput)
+		if err != nil {
+			return err
+		}
 	}
 	for _, board := range d.Scenarios {
-		relink(board, linkToOutput)
+		err := relink(strings.Join([]string{currDiagramPath, "scenarios", board.Name}, "."), board, linkToOutput)
+		if err != nil {
+			return err
+		}
 	}
 	for _, board := range d.Steps {
-		relink(board, linkToOutput)
+		err := relink(strings.Join([]string{currDiagramPath, "steps", board.Name}, "."), board, linkToOutput)
+		if err != nil {
+			return err
+		}
 	}
+	return nil
 }
 
 func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plugin d2plugin.Plugin, opts d2svg.RenderOpts, inputPath, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([][]byte, error) {
@@ -569,7 +648,7 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 }
 
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
-	toPNG := filepath.Ext(outputPath) == ".png"
+	toPNG := getExportExtension(outputPath) == PNG
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
 		Pad:           opts.Pad,
 		Sketch:        opts.Sketch,
@@ -638,23 +717,11 @@ func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts 
 	return svg, nil
 }
 
-func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, pdf *pdflib.GoFPDF, boardPath []string, pageMap map[string]int) (svg []byte, err error) {
+func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram, doc *pdf.GoFPDF, boardPath []pdf.BoardTitle, pageMap map[string]int) (svg []byte, err error) {
 	var isRoot bool
-	if pdf == nil {
-		pdf = pdflib.Init()
+	if doc == nil {
+		doc = pdf.Init()
 		isRoot = true
-	}
-
-	var currBoardPath []string
-	// Root board doesn't have a name, so we use the output filename
-	if diagram.Name == "" {
-		ext := filepath.Ext(outputPath)
-		trimmedPath := strings.TrimSuffix(outputPath, ext)
-		splitPath := strings.Split(trimmedPath, "/")
-		rootName := splitPath[len(splitPath)-1]
-		currBoardPath = append(boardPath, rootName)
-	} else {
-		currBoardPath = append(boardPath, diagram.Name)
 	}
 
 	if !diagram.IsFolderOnly {
@@ -700,33 +767,166 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 		if err != nil {
 			return svg, err
 		}
-		err = pdf.AddPDFPage(pngImg, currBoardPath, opts.ThemeID, rootFill, diagram.Shapes, int64(opts.Pad), viewboxX, viewboxY, pageMap)
+		err = doc.AddPDFPage(pngImg, boardPath, opts.ThemeID, rootFill, diagram.Shapes, int64(opts.Pad), viewboxX, viewboxY, pageMap)
 		if err != nil {
 			return svg, err
 		}
 	}
 
 	for _, dl := range diagram.Layers {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, pageMap)
+		path := append(boardPath, pdf.BoardTitle{
+			Name:    dl.Name,
+			BoardID: strings.Join([]string{boardPath[len(boardPath)-1].BoardID, LAYERS, dl.Name}, "."),
+		})
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, path, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Scenarios {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, pageMap)
+		path := append(boardPath, pdf.BoardTitle{
+			Name:    dl.Name,
+			BoardID: strings.Join([]string{boardPath[len(boardPath)-1].BoardID, SCENARIOS, dl.Name}, "."),
+		})
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, path, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 	for _, dl := range diagram.Steps {
-		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, pdf, currBoardPath, pageMap)
+		path := append(boardPath, pdf.BoardTitle{
+			Name:    dl.Name,
+			BoardID: strings.Join([]string{boardPath[len(boardPath)-1].BoardID, STEPS, dl.Name}, "."),
+		})
+		_, err := renderPDF(ctx, ms, plugin, opts, "", page, ruler, dl, doc, path, pageMap)
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	if isRoot {
-		err := pdf.Export(outputPath)
+		err := doc.Export(outputPath)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return svg, nil
+}
+
+func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Presentation, plugin d2plugin.Plugin, opts d2svg.RenderOpts, ruler *textmeasure.Ruler, outputPath string, page playwright.Page, diagram *d2target.Diagram, boardPath []pptx.BoardTitle, boardIDToIndex map[string]int) ([]byte, error) {
+	var svg []byte
+	if !diagram.IsFolderOnly {
+		// gofpdf will print the png img with a slight filter
+		// make the bg fill within the png transparent so that the pdf bg fill is the only bg color present
+		diagram.Root.Fill = "transparent"
+
+		var err error
+		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
+			Pad:           opts.Pad,
+			Sketch:        opts.Sketch,
+			Center:        opts.Center,
+			SetDimensions: true,
+		})
+		if err != nil {
+			return nil, err
+		}
+
+		svg, err = plugin.PostProcess(ctx, svg)
+		if err != nil {
+			return nil, err
+		}
+
+		svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
+		svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
+		bundleErr = multierr.Combine(bundleErr, bundleErr2)
+		if bundleErr != nil {
+			return nil, bundleErr
+		}
+
+		svg = appendix.Append(diagram, ruler, svg)
+
+		pngImg, err := png.ConvertSVG(ms, page, svg)
+		if err != nil {
+			return nil, err
+		}
+
+		slide, err := presentation.AddSlide(pngImg, boardPath)
+		if err != nil {
+			return nil, err
+		}
+
+		viewboxSlice := appendix.FindViewboxSlice(svg)
+		viewboxX, err := strconv.ParseFloat(viewboxSlice[0], 64)
+		if err != nil {
+			return nil, err
+		}
+		viewboxY, err := strconv.ParseFloat(viewboxSlice[1], 64)
+		if err != nil {
+			return nil, err
+		}
+
+		// Draw links
+		for _, shape := range diagram.Shapes {
+			if shape.Link == "" {
+				continue
+			}
+
+			linkX := png.SCALE * (float64(shape.Pos.X) - viewboxX - float64(shape.StrokeWidth))
+			linkY := png.SCALE * (float64(shape.Pos.Y) - viewboxY - float64(shape.StrokeWidth))
+			linkWidth := png.SCALE * (float64(shape.Width) + float64(shape.StrokeWidth*2))
+			linkHeight := png.SCALE * (float64(shape.Height) + float64(shape.StrokeWidth*2))
+			link := &pptx.Link{
+				Left:    int(linkX),
+				Top:     int(linkY),
+				Width:   int(linkWidth),
+				Height:  int(linkHeight),
+				Tooltip: shape.Link,
+			}
+			slide.AddLink(link)
+			key, err := d2parser.ParseKey(shape.Link)
+			if err != nil || key.Path[0].Unbox().ScalarString() != "root" {
+				// External link
+				link.ExternalUrl = shape.Link
+			} else if pageNum, ok := boardIDToIndex[shape.Link]; ok {
+				// Internal link
+				link.SlideIndex = pageNum + 1
+			}
+		}
+	}
+
+	for _, dl := range diagram.Layers {
+		boardID := strings.Join([]string{boardPath[len(boardPath)-1].BoardID, LAYERS, dl.Name}, ".")
+		path := append(boardPath, pptx.BoardTitle{
+			Name:        dl.Name,
+			BoardID:     boardID,
+			LinkToSlide: boardIDToIndex[boardID] + 1,
+		})
+		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, path, boardIDToIndex)
+		if err != nil {
+			return nil, err
+		}
+	}
+	for _, dl := range diagram.Scenarios {
+		boardID := strings.Join([]string{boardPath[len(boardPath)-1].BoardID, SCENARIOS, dl.Name}, ".")
+		path := append(boardPath, pptx.BoardTitle{
+			Name:        dl.Name,
+			BoardID:     boardID,
+			LinkToSlide: boardIDToIndex[boardID] + 1,
+		})
+		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, path, boardIDToIndex)
+		if err != nil {
+			return nil, err
+		}
+	}
+	for _, dl := range diagram.Steps {
+		boardID := strings.Join([]string{boardPath[len(boardPath)-1].BoardID, STEPS, dl.Name}, ".")
+		path := append(boardPath, pptx.BoardTitle{
+			Name:        dl.Name,
+			BoardID:     boardID,
+			LinkToSlide: boardIDToIndex[boardID] + 1,
+		})
+		_, err := renderPPTX(ctx, ms, presentation, plugin, opts, ruler, "", page, dl, path, boardIDToIndex)
 		if err != nil {
 			return nil, err
 		}
@@ -743,6 +943,11 @@ func renameExt(fp string, newExt string) string {
 	} else {
 		return strings.TrimSuffix(fp, ext) + newExt
 	}
+}
+
+func getFileName(path string) string {
+	ext := filepath.Ext(path)
+	return strings.TrimSuffix(filepath.Base(path), ext)
 }
 
 // TODO: remove after removing slog
@@ -785,14 +990,15 @@ func loadFont(ms *xmain.State, path string) ([]byte, error) {
 	return ttf, nil
 }
 
-func loadFonts(ms *xmain.State, pathToRegular, pathToItalic, pathToBold string) (*d2fonts.FontFamily, error) {
-	if pathToRegular == "" && pathToItalic == "" && pathToBold == "" {
+func loadFonts(ms *xmain.State, pathToRegular, pathToItalic, pathToBold, pathToSemibold string) (*d2fonts.FontFamily, error) {
+	if pathToRegular == "" && pathToItalic == "" && pathToBold == "" && pathToSemibold == "" {
 		return nil, nil
 	}
 
 	var regularTTF []byte
 	var italicTTF []byte
 	var boldTTF []byte
+	var semiboldTTF []byte
 
 	var err error
 	if pathToRegular != "" {
@@ -813,6 +1019,99 @@ func loadFonts(ms *xmain.State, pathToRegular, pathToItalic, pathToBold string) 
 			return nil, err
 		}
 	}
+	if pathToSemibold != "" {
+		semiboldTTF, err = loadFont(ms, pathToSemibold)
+		if err != nil {
+			return nil, err
+		}
+	}
 
-	return d2fonts.AddFontFamily("custom", regularTTF, italicTTF, boldTTF)
+	return d2fonts.AddFontFamily("custom", regularTTF, italicTTF, boldTTF, semiboldTTF)
+}
+
+const LAYERS = "layers"
+const STEPS = "steps"
+const SCENARIOS = "scenarios"
+
+// buildBoardIDToIndex returns a map from board path to page int
+// To map correctly, it must follow the same traversal of pdf/pptx building
+func buildBoardIDToIndex(diagram *d2target.Diagram, dictionary map[string]int, path []string) map[string]int {
+	newPath := append(path, diagram.Name)
+	if dictionary == nil {
+		dictionary = map[string]int{}
+		newPath[0] = "root"
+	}
+
+	key := strings.Join(newPath, ".")
+	dictionary[key] = len(dictionary)
+
+	for _, dl := range diagram.Layers {
+		buildBoardIDToIndex(dl, dictionary, append(newPath, LAYERS))
+	}
+	for _, dl := range diagram.Scenarios {
+		buildBoardIDToIndex(dl, dictionary, append(newPath, SCENARIOS))
+	}
+	for _, dl := range diagram.Steps {
+		buildBoardIDToIndex(dl, dictionary, append(newPath, STEPS))
+	}
+
+	return dictionary
+}
+
+func renderPNGsForGIF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, ruler *textmeasure.Ruler, page playwright.Page, diagram *d2target.Diagram) (svg []byte, pngs [][]byte, err error) {
+	if !diagram.IsFolderOnly {
+		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
+			Pad:           opts.Pad,
+			Sketch:        opts.Sketch,
+			Center:        opts.Center,
+			SetDimensions: true,
+		})
+		if err != nil {
+			return nil, nil, err
+		}
+
+		svg, err = plugin.PostProcess(ctx, svg)
+		if err != nil {
+			return nil, nil, err
+		}
+
+		svg, bundleErr := imgbundler.BundleLocal(ctx, ms, svg)
+		svg, bundleErr2 := imgbundler.BundleRemote(ctx, ms, svg)
+		bundleErr = multierr.Combine(bundleErr, bundleErr2)
+		if bundleErr != nil {
+			return nil, nil, bundleErr
+		}
+
+		svg = appendix.Append(diagram, ruler, svg)
+
+		pngImg, err := png.ConvertSVG(ms, page, svg)
+		if err != nil {
+			return nil, nil, err
+		}
+		pngs = append(pngs, pngImg)
+	}
+
+	for _, dl := range diagram.Layers {
+		_, layerPNGs, err := renderPNGsForGIF(ctx, ms, plugin, opts, ruler, page, dl)
+		if err != nil {
+			return nil, nil, err
+		}
+		pngs = append(pngs, layerPNGs...)
+	}
+	for _, dl := range diagram.Scenarios {
+		_, scenarioPNGs, err := renderPNGsForGIF(ctx, ms, plugin, opts, ruler, page, dl)
+		if err != nil {
+			return nil, nil, err
+		}
+		pngs = append(pngs, scenarioPNGs...)
+	}
+	for _, dl := range diagram.Steps {
+		_, stepsPNGs, err := renderPNGsForGIF(ctx, ms, plugin, opts, ruler, page, dl)
+		if err != nil {
+			return nil, nil, err
+		}
+		pngs = append(pngs, stepsPNGs...)
+	}
+
+	return svg, pngs, nil
 }

@@ -107,7 +107,7 @@ tall cylinder: {
 	width: 256
 	height: 512
 }
-cloud -> class -> tall cylinder ->  users
+cloud -> class2 -> tall cylinder ->  users
 
 users: {
 	shape: sql_table
@@ -121,7 +121,7 @@ users: {
 	height: 400
 }
 
-class: {
+class2: {
 	shape: class
 	-num: int
 	-timeout: int

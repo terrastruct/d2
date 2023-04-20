@@ -4,7 +4,7 @@
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
-      "id": "class",
+      "id": "class2",
       "type": "class",
       "pos": {
         "x": 12,
@@ -164,13 +164,11 @@
   ],
   "connections": [
     {
-      "id": "(class -> table)[0]",
-      "src": "class",
+      "id": "(class2 -> table)[0]",
+      "src": "class2",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "table",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -207,10 +205,8 @@
       "id": "(table -> table with short col)[0]",
       "src": "table",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "table with short col",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,

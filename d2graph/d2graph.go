@@ -1,6 +1,7 @@
 package d2graph
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"math"
@@ -8,6 +9,9 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 
 	"oss.terrastruct.com/util-go/go2"
 
@@ -52,10 +56,9 @@ type Graph struct {
 func NewGraph() *Graph {
 	d := &Graph{}
 	d.Root = &Object{
-		Graph:      d,
-		Parent:     nil,
-		Children:   make(map[string]*Object),
-		Attributes: &Attributes{},
+		Graph:    d,
+		Parent:   nil,
+		Children: make(map[string]*Object),
 	}
 	return d
 }
@@ -66,6 +69,8 @@ func (g *Graph) RootBoard() *Graph {
 	}
 	return g
 }
+
+type LayoutGraph func(context.Context, *Graph) error
 
 // TODO consider having different Scalar types
 // Right now we'll hold any types in Value and just convert, e.g. floats
@@ -84,16 +89,13 @@ type Object struct {
 	//      IDVal: yes'"
 	//
 	// ID allows joining on . naively and construct a valid D2 key path
-	ID              string                  `json:"id"`
-	IDVal           string                  `json:"id_val"`
-	Map             *d2ast.Map              `json:"-"`
-	LabelDimensions d2target.TextDimensions `json:"label_dimensions"`
-	References      []Reference             `json:"references,omitempty"`
+	ID         string      `json:"id"`
+	IDVal      string      `json:"id_val"`
+	Map        *d2ast.Map  `json:"-"`
+	References []Reference `json:"references,omitempty"`
 
 	*geo.Box      `json:"box,omitempty"`
 	LabelPosition *string `json:"labelPosition,omitempty"`
-	LabelWidth    *int    `json:"labelWidth,omitempty"`
-	LabelHeight   *int    `json:"labelHeight,omitempty"`
 	IconPosition  *string `json:"iconPosition,omitempty"`
 
 	Class    *d2target.Class    `json:"class,omitempty"`
@@ -102,20 +104,22 @@ type Object struct {
 	Children      map[string]*Object `json:"-"`
 	ChildrenArray []*Object          `json:"-"`
 
-	Attributes *Attributes `json:"attributes,omitempty"`
+	Attributes `json:"attributes"`
 
 	ZIndex int `json:"zIndex"`
 }
 
 type Attributes struct {
-	Label   Scalar   `json:"label"`
+	Label           Scalar                  `json:"label"`
+	LabelDimensions d2target.TextDimensions `json:"labelDimensions"`
+
 	Style   Style    `json:"style"`
 	Icon    *url.URL `json:"icon,omitempty"`
 	Tooltip *Scalar  `json:"tooltip,omitempty"`
 	Link    *Scalar  `json:"link,omitempty"`
 
-	Width  *Scalar `json:"width,omitempty"`
-	Height *Scalar `json:"height,omitempty"`
+	WidthAttr  *Scalar `json:"width,omitempty"`
+	HeightAttr *Scalar `json:"height,omitempty"`
 
 	Top  *Scalar `json:"top,omitempty"`
 	Left *Scalar `json:"left,omitempty"`
@@ -129,6 +133,35 @@ type Attributes struct {
 
 	Direction  Scalar `json:"direction"`
 	Constraint Scalar `json:"constraint"`
+
+	GridRows      *Scalar `json:"gridRows,omitempty"`
+	GridColumns   *Scalar `json:"gridColumns,omitempty"`
+	GridGap       *Scalar `json:"gridGap,omitempty"`
+	VerticalGap   *Scalar `json:"verticalGap,omitempty"`
+	HorizontalGap *Scalar `json:"horizontalGap,omitempty"`
+
+	// These names are attached to the rendered elements in SVG
+	// so that users can target them however they like outside of D2
+	Classes []string `json:"classes,omitempty"`
+}
+
+// ApplyTextTransform will alter the `Label.Value` of the current object based
+// on the specification of the `text-transform` styling option. This function
+// has side-effects!
+func (a *Attributes) ApplyTextTransform() {
+	if a.Style.NoneTextTransform() {
+		return
+	}
+
+	if a.Style.TextTransform != nil && a.Style.TextTransform.Value == "uppercase" {
+		a.Label.Value = strings.ToUpper(a.Label.Value)
+	}
+	if a.Style.TextTransform != nil && a.Style.TextTransform.Value == "lowercase" {
+		a.Label.Value = strings.ToLower(a.Label.Value)
+	}
+	if a.Style.TextTransform != nil && a.Style.TextTransform.Value == "capitalize" {
+		a.Label.Value = cases.Title(language.Und).String(a.Label.Value)
+	}
 }
 
 // TODO references at the root scope should have their Scope set to root graph AST
@@ -151,25 +184,33 @@ func (r Reference) InEdge() bool {
 }
 
 type Style struct {
-	Opacity      *Scalar `json:"opacity,omitempty"`
-	Stroke       *Scalar `json:"stroke,omitempty"`
-	Fill         *Scalar `json:"fill,omitempty"`
-	FillPattern  *Scalar `json:"fillPattern,omitempty"`
-	StrokeWidth  *Scalar `json:"strokeWidth,omitempty"`
-	StrokeDash   *Scalar `json:"strokeDash,omitempty"`
-	BorderRadius *Scalar `json:"borderRadius,omitempty"`
-	Shadow       *Scalar `json:"shadow,omitempty"`
-	ThreeDee     *Scalar `json:"3d,omitempty"`
-	Multiple     *Scalar `json:"multiple,omitempty"`
-	Font         *Scalar `json:"font,omitempty"`
-	FontSize     *Scalar `json:"fontSize,omitempty"`
-	FontColor    *Scalar `json:"fontColor,omitempty"`
-	Animated     *Scalar `json:"animated,omitempty"`
-	Bold         *Scalar `json:"bold,omitempty"`
-	Italic       *Scalar `json:"italic,omitempty"`
-	Underline    *Scalar `json:"underline,omitempty"`
-	Filled       *Scalar `json:"filled,omitempty"`
-	DoubleBorder *Scalar `json:"doubleBorder,omitempty"`
+	Opacity       *Scalar `json:"opacity,omitempty"`
+	Stroke        *Scalar `json:"stroke,omitempty"`
+	Fill          *Scalar `json:"fill,omitempty"`
+	FillPattern   *Scalar `json:"fillPattern,omitempty"`
+	StrokeWidth   *Scalar `json:"strokeWidth,omitempty"`
+	StrokeDash    *Scalar `json:"strokeDash,omitempty"`
+	BorderRadius  *Scalar `json:"borderRadius,omitempty"`
+	Shadow        *Scalar `json:"shadow,omitempty"`
+	ThreeDee      *Scalar `json:"3d,omitempty"`
+	Multiple      *Scalar `json:"multiple,omitempty"`
+	Font          *Scalar `json:"font,omitempty"`
+	FontSize      *Scalar `json:"fontSize,omitempty"`
+	FontColor     *Scalar `json:"fontColor,omitempty"`
+	Animated      *Scalar `json:"animated,omitempty"`
+	Bold          *Scalar `json:"bold,omitempty"`
+	Italic        *Scalar `json:"italic,omitempty"`
+	Underline     *Scalar `json:"underline,omitempty"`
+	Filled        *Scalar `json:"filled,omitempty"`
+	DoubleBorder  *Scalar `json:"doubleBorder,omitempty"`
+	TextTransform *Scalar `json:"textTransform,omitempty"`
+}
+
+// NoneTextTransform will return a boolean if the text should not have any
+// transformation applied. This should overwrite theme specific transformations
+// like `CapsLock` from the `terminal` theme.
+func (s Style) NoneTextTransform() bool {
+	return s.TextTransform != nil && s.TextTransform.Value == "none"
 }
 
 func (s *Style) Apply(key, value string) error {
@@ -340,6 +381,14 @@ func (s *Style) Apply(key, value string) error {
 			return errors.New(`expected "double-border" to be true or false`)
 		}
 		s.DoubleBorder.Value = value
+	case "text-transform":
+		if s.TextTransform == nil {
+			break
+		}
+		if !go2.Contains(textTransforms, strings.ToLower(value)) {
+			return fmt.Errorf(`expected "text-transform" to be one of (%s)`, strings.Join(textTransforms, ", "))
+		}
+		s.TextTransform.Value = value
 	default:
 		return fmt.Errorf("unknown style key: %s", key)
 	}
@@ -363,7 +412,7 @@ func (l ContainerLevel) LabelSize() int {
 
 func (obj *Object) GetFill() string {
 	level := int(obj.Level())
-	shape := obj.Attributes.Shape.Value
+	shape := obj.Shape.Value
 
 	if strings.EqualFold(shape, d2target.ShapeSQLTable) || strings.EqualFold(shape, d2target.ShapeClass) {
 		return color.N1
@@ -442,7 +491,7 @@ func (obj *Object) GetFill() string {
 }
 
 func (obj *Object) GetStroke(dashGapSize interface{}) string {
-	shape := obj.Attributes.Shape.Value
+	shape := obj.Shape.Value
 	if strings.EqualFold(shape, d2target.ShapeCode) ||
 		strings.EqualFold(shape, d2target.ShapeText) {
 		return color.N1
@@ -469,14 +518,26 @@ func (obj *Object) IsContainer() bool {
 }
 
 func (obj *Object) HasOutsideBottomLabel() bool {
-	if obj == nil || obj.Attributes == nil {
+	if obj == nil {
 		return false
 	}
-	switch obj.Attributes.Shape.Value {
+	switch obj.Shape.Value {
 	case d2target.ShapeImage, d2target.ShapePerson:
 		return true
 	default:
 		return false
+	}
+}
+
+func (obj *Object) HasLabel() bool {
+	if obj == nil {
+		return false
+	}
+	switch obj.Shape.Value {
+	case d2target.ShapeText, d2target.ShapeClass, d2target.ShapeSQLTable, d2target.ShapeCode:
+		return false
+	default:
+		return obj.Label.Value != ""
 	}
 }
 
@@ -495,12 +556,12 @@ func (obj *Object) AbsIDArray() []string {
 }
 
 func (obj *Object) Text() *d2target.MText {
-	isBold := !obj.IsContainer() && obj.Attributes.Shape.Value != "text"
+	isBold := !obj.IsContainer() && obj.Shape.Value != "text"
 	isItalic := false
-	if obj.Attributes.Style.Bold != nil && obj.Attributes.Style.Bold.Value == "true" {
+	if obj.Style.Bold != nil && obj.Style.Bold.Value == "true" {
 		isBold = true
 	}
-	if obj.Attributes.Style.Italic != nil && obj.Attributes.Style.Italic.Value == "true" {
+	if obj.Style.Italic != nil && obj.Style.Italic.Value == "true" {
 		isItalic = true
 	}
 	fontSize := d2fonts.FONT_SIZE_M
@@ -510,14 +571,14 @@ func (obj *Object) Text() *d2target.MText {
 	}
 
 	if obj.OuterSequenceDiagram() == nil {
-		if obj.IsContainer() {
+		if obj.IsContainer() && obj.Shape.Value != "text" {
 			fontSize = obj.Level().LabelSize()
 		}
 	} else {
 		isBold = false
 	}
-	if obj.Attributes.Style.FontSize != nil {
-		fontSize, _ = strconv.Atoi(obj.Attributes.Style.FontSize.Value)
+	if obj.Style.FontSize != nil {
+		fontSize, _ = strconv.Atoi(obj.Style.FontSize.Value)
 	}
 	// Class and Table objects have Label set to header
 	if obj.Class != nil || obj.SQLTable != nil {
@@ -527,12 +588,12 @@ func (obj *Object) Text() *d2target.MText {
 		isBold = false
 	}
 	return &d2target.MText{
-		Text:     obj.Attributes.Label.Value,
+		Text:     obj.Label.Value,
 		FontSize: fontSize,
 		IsBold:   isBold,
 		IsItalic: isItalic,
-		Language: obj.Attributes.Language,
-		Shape:    obj.Attributes.Shape.Value,
+		Language: obj.Language,
+		Shape:    obj.Shape.Value,
 
 		Dimensions: obj.LabelDimensions,
 	}
@@ -547,7 +608,7 @@ func (obj *Object) newObject(id string) *Object {
 	child := &Object{
 		ID:    id,
 		IDVal: idval,
-		Attributes: &Attributes{
+		Attributes: Attributes{
 			Label: Scalar{
 				Value: idval,
 			},
@@ -725,7 +786,7 @@ func (obj *Object) FindEdges(mk *d2ast.Key) ([]*Edge, bool) {
 
 func (obj *Object) ensureChildEdge(ida []string) *Object {
 	for i := range ida {
-		switch obj.Attributes.Shape.Value {
+		switch obj.Shape.Value {
 		case d2target.ShapeClass, d2target.ShapeSQLTable:
 			// This will only be called for connecting edges where we want to truncate to the
 			// container.
@@ -804,23 +865,23 @@ func (obj *Object) AppendReferences(ida []string, ref Reference, unresolvedObj *
 }
 
 func (obj *Object) GetLabelSize(mtexts []*d2target.MText, ruler *textmeasure.Ruler, fontFamily *d2fonts.FontFamily) (*d2target.TextDimensions, error) {
-	shapeType := strings.ToLower(obj.Attributes.Shape.Value)
+	shapeType := strings.ToLower(obj.Shape.Value)
 
-	if obj.Attributes.Style.Font != nil {
-		f := d2fonts.D2_FONT_TO_FAMILY[obj.Attributes.Style.Font.Value]
+	if obj.Style.Font != nil {
+		f := d2fonts.D2_FONT_TO_FAMILY[obj.Style.Font.Value]
 		fontFamily = &f
 	}
 
 	var dims *d2target.TextDimensions
 	switch shapeType {
 	case d2target.ShapeText:
-		if obj.Attributes.Language == "latex" {
+		if obj.Language == "latex" {
 			width, height, err := d2latex.Measure(obj.Text().Text)
 			if err != nil {
 				return nil, err
 			}
 			dims = d2target.NewTextDimensions(width, height)
-		} else if obj.Attributes.Language != "" {
+		} else if obj.Language != "" {
 			var err error
 			dims, err = getMarkdownDimensions(mtexts, ruler, obj.Text(), fontFamily)
 			if err != nil {
@@ -837,7 +898,7 @@ func (obj *Object) GetLabelSize(mtexts []*d2target.MText, ruler *textmeasure.Rul
 		dims = GetTextDimensions(mtexts, ruler, obj.Text(), fontFamily)
 	}
 
-	if shapeType == d2target.ShapeSQLTable && obj.Attributes.Label.Value == "" {
+	if shapeType == d2target.ShapeSQLTable && obj.Label.Value == "" {
 		// measure with placeholder text to determine height
 		placeholder := *obj.Text()
 		placeholder.Text = "Table"
@@ -866,9 +927,20 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 		labelDims.Height += INNER_LABEL_PADDING
 	}
 
-	switch strings.ToLower(obj.Attributes.Shape.Value) {
+	switch strings.ToLower(obj.Shape.Value) {
 	default:
 		return d2target.NewTextDimensions(labelDims.Width, labelDims.Height), nil
+
+	case d2target.ShapeText:
+		w := labelDims.Width
+		if w < MIN_SHAPE_SIZE {
+			w = MIN_SHAPE_SIZE
+		}
+		h := labelDims.Height
+		if h < MIN_SHAPE_SIZE {
+			h = MIN_SHAPE_SIZE
+		}
+		return d2target.NewTextDimensions(w, h), nil
 
 	case d2target.ShapeImage:
 		return d2target.NewTextDimensions(128, 128), nil
@@ -877,8 +949,8 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 		maxWidth := go2.Max(12, labelDims.Width)
 
 		fontSize := d2fonts.FONT_SIZE_L
-		if obj.Attributes.Style.FontSize != nil {
-			fontSize, _ = strconv.Atoi(obj.Attributes.Style.FontSize.Value)
+		if obj.Style.FontSize != nil {
+			fontSize, _ = strconv.Atoi(obj.Style.FontSize.Value)
 		}
 
 		for _, f := range obj.Class.Fields {
@@ -923,8 +995,8 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 		constraintWidth := 0
 
 		colFontSize := d2fonts.FONT_SIZE_L
-		if obj.Attributes.Style.FontSize != nil {
-			colFontSize, _ = strconv.Atoi(obj.Attributes.Style.FontSize.Value)
+		if obj.Style.FontSize != nil {
+			colFontSize, _ = strconv.Atoi(obj.Style.FontSize.Value)
 		}
 
 		for i := range obj.SQLTable.Columns {
@@ -968,18 +1040,24 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 	return &dims, nil
 }
 
+func (obj *Object) OuterNearContainer() *Object {
+	for obj != nil {
+		if obj.NearKey != nil {
+			return obj
+		}
+		obj = obj.Parent
+	}
+	return nil
+}
+
 type Edge struct {
 	Index int `json:"index"`
-
-	MinWidth  int `json:"minWidth"`
-	MinHeight int `json:"minHeight"`
 
 	SrcTableColumnIndex *int `json:"srcTableColumnIndex,omitempty"`
 	DstTableColumnIndex *int `json:"dstTableColumnIndex,omitempty"`
 
-	LabelDimensions d2target.TextDimensions `json:"label_dimensions"`
-	LabelPosition   *string                 `json:"labelPosition,omitempty"`
-	LabelPercentage *float64                `json:"labelPercentage,omitempty"`
+	LabelPosition   *string  `json:"labelPosition,omitempty"`
+	LabelPercentage *float64 `json:"labelPercentage,omitempty"`
 
 	IsCurve bool         `json:"isCurve"`
 	Route   []*geo.Point `json:"route,omitempty"`
@@ -993,7 +1071,7 @@ type Edge struct {
 	DstArrowhead *Attributes `json:"dstArrowhead,omitempty"`
 
 	References []EdgeReference `json:"references,omitempty"`
-	Attributes *Attributes     `json:"attributes,omitempty"`
+	Attributes `json:"attributes,omitempty"`
 
 	ZIndex int `json:"zIndex"`
 }
@@ -1005,6 +1083,10 @@ type EdgeReference struct {
 	MapKeyEdgeIndex int        `json:"map_key_edge_index"`
 	Scope           *d2ast.Map `json:"-"`
 	ScopeObj        *Object    `json:"-"`
+}
+
+func (e *Edge) GetAstEdge() *d2ast.Edge {
+	return e.References[0].Edge
 }
 
 func (e *Edge) GetStroke(dashGapSize interface{}) string {
@@ -1029,15 +1111,15 @@ func (e *Edge) ArrowString() string {
 
 func (e *Edge) Text() *d2target.MText {
 	fontSize := d2fonts.FONT_SIZE_M
-	if e.Attributes.Style.FontSize != nil {
-		fontSize, _ = strconv.Atoi(e.Attributes.Style.FontSize.Value)
+	if e.Style.FontSize != nil {
+		fontSize, _ = strconv.Atoi(e.Style.FontSize.Value)
 	}
 	isBold := false
-	if e.Attributes.Style.Bold != nil {
-		isBold, _ = strconv.ParseBool(e.Attributes.Style.Bold.Value)
+	if e.Style.Bold != nil {
+		isBold, _ = strconv.ParseBool(e.Style.Bold.Value)
 	}
 	return &d2target.MText{
-		Text:     e.Attributes.Label.Value,
+		Text:     e.Label.Value,
 		FontSize: fontSize,
 		IsBold:   isBold,
 		IsItalic: true,
@@ -1085,7 +1167,7 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 	}
 
 	e := &Edge{
-		Attributes: &Attributes{
+		Attributes: Attributes{
 			Label: Scalar{
 				Value: label,
 			},
@@ -1104,7 +1186,7 @@ func (obj *Object) Connect(srcID, dstID []string, srcArrow, dstArrow bool, label
 }
 
 func addSQLTableColumnIndices(e *Edge, srcID, dstID []string, obj, src, dst *Object) {
-	if src.Attributes.Shape.Value == d2target.ShapeSQLTable {
+	if src.Shape.Value == d2target.ShapeSQLTable {
 		if src == dst {
 			// Ignore edge to column inside table.
 			return
@@ -1122,7 +1204,7 @@ func addSQLTableColumnIndices(e *Edge, srcID, dstID []string, obj, src, dst *Obj
 			}
 		}
 	}
-	if dst.Attributes.Shape.Value == d2target.ShapeSQLTable {
+	if dst.Shape.Value == d2target.ShapeSQLTable {
 		objAbsID := obj.AbsIDArray()
 		dstAbsID := dst.AbsIDArray()
 		if len(objAbsID)+len(dstID) > len(dstAbsID) {
@@ -1179,7 +1261,7 @@ func getMarkdownDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t
 	}
 
 	if ruler != nil {
-		width, height, err := textmeasure.MeasureMarkdown(t.Text, ruler, fontFamily)
+		width, height, err := textmeasure.MeasureMarkdown(t.Text, ruler, fontFamily, t.FontSize)
 		if err != nil {
 			return nil, err
 		}
@@ -1269,16 +1351,16 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 
 		var desiredWidth int
 		var desiredHeight int
-		if obj.Attributes.Width != nil {
-			desiredWidth, _ = strconv.Atoi(obj.Attributes.Width.Value)
+		if obj.WidthAttr != nil {
+			desiredWidth, _ = strconv.Atoi(obj.WidthAttr.Value)
 		}
-		if obj.Attributes.Height != nil {
-			desiredHeight, _ = strconv.Atoi(obj.Attributes.Height.Value)
+		if obj.HeightAttr != nil {
+			desiredHeight, _ = strconv.Atoi(obj.HeightAttr.Value)
 		}
 
-		dslShape := strings.ToLower(obj.Attributes.Shape.Value)
+		dslShape := strings.ToLower(obj.Shape.Value)
 
-		if obj.Attributes.Label.Value == "" &&
+		if obj.Label.Value == "" &&
 			dslShape != d2target.ShapeImage &&
 			dslShape != d2target.ShapeSQLTable &&
 			dslShape != d2target.ShapeClass {
@@ -1304,11 +1386,12 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			continue
 		}
 
-		if g.Theme != nil && g.Theme.SpecialRules.CapsLock && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeCode) {
-			if obj.Attributes.Language != "latex" {
-				obj.Attributes.Label.Value = strings.ToUpper(obj.Attributes.Label.Value)
+		if g.Theme != nil && g.Theme.SpecialRules.CapsLock && !strings.EqualFold(obj.Shape.Value, d2target.ShapeCode) {
+			if obj.Language != "latex" && !obj.Style.NoneTextTransform() {
+				obj.Label.Value = strings.ToUpper(obj.Label.Value)
 			}
 		}
+		obj.ApplyTextTransform()
 
 		labelDims, err := obj.GetLabelSize(mtexts, ruler, fontFamily)
 		if err != nil {
@@ -1316,19 +1399,9 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		}
 		obj.LabelDimensions = *labelDims
 
-		switch dslShape {
-		case d2target.ShapeText, d2target.ShapeClass, d2target.ShapeSQLTable, d2target.ShapeCode:
-			// no labels
-		default:
-			if obj.Attributes.Label.Value != "" {
-				obj.LabelWidth = go2.Pointer(labelDims.Width)
-				obj.LabelHeight = go2.Pointer(labelDims.Height)
-			}
-		}
-
 		// if there is a desired width or height, fit to content box without inner label padding for smallest minimum size
 		withInnerLabelPadding := desiredWidth == 0 && desiredHeight == 0 &&
-			dslShape != d2target.ShapeText && obj.Attributes.Label.Value != ""
+			dslShape != d2target.ShapeText && obj.Label.Value != ""
 		defaultDims, err := obj.GetDefaultSize(mtexts, ruler, fontFamily, *labelDims, withInnerLabelPadding)
 		if err != nil {
 			return err
@@ -1360,7 +1433,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		}
 
 		// give shapes with icons extra padding to fit their label
-		if obj.Attributes.Icon != nil {
+		if obj.Icon != nil {
 			labelHeight := float64(labelDims.Height + INNER_LABEL_PADDING)
 			// Evenly pad enough to fit label above icon
 			if desiredWidth == 0 {
@@ -1374,10 +1447,10 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			switch shapeType {
 			case shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE, shape.IMAGE_TYPE:
 			default:
-				if obj.Attributes.Link != nil {
+				if obj.Link != nil {
 					paddingX += 32
 				}
-				if obj.Attributes.Tooltip != nil {
+				if obj.Tooltip != nil {
 					paddingX += 32
 				}
 			}
@@ -1406,35 +1479,33 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		}
 	}
 	for _, edge := range g.Edges {
-		endpointLabels := []string{}
+		usedFont := fontFamily
+		if edge.Style.Font != nil {
+			f := d2fonts.D2_FONT_TO_FAMILY[edge.Style.Font.Value]
+			usedFont = &f
+		}
+
 		if edge.SrcArrowhead != nil && edge.SrcArrowhead.Label.Value != "" {
-			endpointLabels = append(endpointLabels, edge.SrcArrowhead.Label.Value)
+			t := edge.Text()
+			t.Text = edge.SrcArrowhead.Label.Value
+			dims := GetTextDimensions(mtexts, ruler, t, usedFont)
+			edge.SrcArrowhead.LabelDimensions = *dims
 		}
 		if edge.DstArrowhead != nil && edge.DstArrowhead.Label.Value != "" {
-			endpointLabels = append(endpointLabels, edge.DstArrowhead.Label.Value)
-		}
-
-		for _, label := range endpointLabels {
 			t := edge.Text()
-			t.Text = label
-			dims := GetTextDimensions(mtexts, ruler, t, fontFamily)
-			edge.MinWidth += dims.Width
-			// Some padding as it's not totally near the end
-			edge.MinHeight += dims.Height + 5
+			t.Text = edge.DstArrowhead.Label.Value
+			dims := GetTextDimensions(mtexts, ruler, t, usedFont)
+			edge.DstArrowhead.LabelDimensions = *dims
 		}
 
-		if edge.Attributes.Label.Value == "" {
+		if edge.Label.Value == "" {
 			continue
 		}
 
-		if g.Theme != nil && g.Theme.SpecialRules.CapsLock {
-			edge.Attributes.Label.Value = strings.ToUpper(edge.Attributes.Label.Value)
+		if g.Theme != nil && g.Theme.SpecialRules.CapsLock && !edge.Style.NoneTextTransform() {
+			edge.Label.Value = strings.ToUpper(edge.Label.Value)
 		}
-		usedFont := fontFamily
-		if edge.Attributes.Style.Font != nil {
-			f := d2fonts.D2_FONT_TO_FAMILY[edge.Attributes.Style.Font.Value]
-			usedFont = &f
-		}
+		edge.ApplyTextTransform()
 
 		dims := GetTextDimensions(mtexts, ruler, edge.Text(), usedFont)
 		if dims == nil {
@@ -1442,8 +1513,6 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		}
 
 		edge.LabelDimensions = *dims
-		edge.MinWidth += dims.Width
-		edge.MinHeight += dims.Height
 	}
 	return nil
 }
@@ -1454,10 +1523,11 @@ func (g *Graph) Texts() []*d2target.MText {
 	capsLock := g.Theme != nil && g.Theme.SpecialRules.CapsLock
 
 	for _, obj := range g.Objects {
-		if obj.Attributes.Label.Value != "" {
+		if obj.Label.Value != "" {
+			obj.ApplyTextTransform()
 			text := obj.Text()
-			if capsLock && !strings.EqualFold(obj.Attributes.Shape.Value, d2target.ShapeCode) {
-				if obj.Attributes.Language != "latex" {
+			if capsLock && !strings.EqualFold(obj.Shape.Value, d2target.ShapeCode) {
+				if obj.Language != "latex" && !obj.Style.NoneTextTransform() {
 					text.Text = strings.ToUpper(text.Text)
 				}
 			}
@@ -1465,8 +1535,8 @@ func (g *Graph) Texts() []*d2target.MText {
 		}
 		if obj.Class != nil {
 			fontSize := d2fonts.FONT_SIZE_L
-			if obj.Attributes.Style.FontSize != nil {
-				fontSize, _ = strconv.Atoi(obj.Attributes.Style.FontSize.Value)
+			if obj.Style.FontSize != nil {
+				fontSize, _ = strconv.Atoi(obj.Style.FontSize.Value)
 			}
 			for _, field := range obj.Class.Fields {
 				texts = appendTextDedup(texts, field.Text(fontSize))
@@ -1476,8 +1546,8 @@ func (g *Graph) Texts() []*d2target.MText {
 			}
 		} else if obj.SQLTable != nil {
 			colFontSize := d2fonts.FONT_SIZE_L
-			if obj.Attributes.Style.FontSize != nil {
-				colFontSize, _ = strconv.Atoi(obj.Attributes.Style.FontSize.Value)
+			if obj.Style.FontSize != nil {
+				colFontSize, _ = strconv.Atoi(obj.Style.FontSize.Value)
 			}
 			for _, column := range obj.SQLTable.Columns {
 				for _, t := range column.Texts(colFontSize) {
@@ -1487,9 +1557,10 @@ func (g *Graph) Texts() []*d2target.MText {
 		}
 	}
 	for _, edge := range g.Edges {
-		if edge.Attributes.Label.Value != "" {
+		if edge.Label.Value != "" {
+			edge.ApplyTextTransform()
 			text := edge.Text()
-			if capsLock {
+			if capsLock && !edge.Style.NoneTextTransform() {
 				text.Text = strings.ToUpper(text.Text)
 			}
 			texts = appendTextDedup(texts, text)
@@ -1521,19 +1592,26 @@ var ReservedKeywords2 map[string]struct{}
 
 // Non Style/Holder keywords.
 var SimpleReservedKeywords = map[string]struct{}{
-	"label":      {},
-	"desc":       {},
-	"shape":      {},
-	"icon":       {},
-	"constraint": {},
-	"tooltip":    {},
-	"link":       {},
-	"near":       {},
-	"width":      {},
-	"height":     {},
-	"direction":  {},
-	"top":        {},
-	"left":       {},
+	"label":          {},
+	"desc":           {},
+	"shape":          {},
+	"icon":           {},
+	"constraint":     {},
+	"tooltip":        {},
+	"link":           {},
+	"near":           {},
+	"width":          {},
+	"height":         {},
+	"direction":      {},
+	"top":            {},
+	"left":           {},
+	"grid-rows":      {},
+	"grid-columns":   {},
+	"grid-gap":       {},
+	"vertical-gap":   {},
+	"horizontal-gap": {},
+	"class":          {},
+	"classes":        {},
 }
 
 // ReservedKeywordHolders are reserved keywords that are meaningless on its own and exist solely to hold a set of reserved keywords
@@ -1554,12 +1632,13 @@ var StyleKeywords = map[string]struct{}{
 	"border-radius": {},
 
 	// Only for text
-	"font":       {},
-	"font-size":  {},
-	"font-color": {},
-	"bold":       {},
-	"italic":     {},
-	"underline":  {},
+	"font":           {},
+	"font-size":      {},
+	"font-color":     {},
+	"bold":           {},
+	"italic":         {},
+	"underline":      {},
+	"text-transform": {},
 
 	// Only for shapes
 	"shadow":        {},
@@ -1596,6 +1675,8 @@ var FillPatterns = []string{
 	"grain",
 	"paper",
 }
+
+var textTransforms = []string{"none", "uppercase", "lowercase", "capitalize"}
 
 // BoardKeywords contains the keywords that create new boards.
 var BoardKeywords = map[string]struct{}{

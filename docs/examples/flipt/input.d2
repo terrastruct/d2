@@ -1,0 +1,94 @@
+classes: {
+  block: {
+    style: {
+      font: mono
+      stroke-dash: 2
+      stroke: black
+      border-radius: 5
+    }
+  }
+  grid-block: {
+    label: ""
+    style: {
+      fill: "#6EF759"
+      border-radius: 5
+    }
+    width: 40
+    height: 40
+  }
+}
+
+direction: right
+
+Build: {
+  class: block
+  style: {
+    fill: "#FFEBCD"
+  }
+  source -> linked
+  source -> assets
+  linked -> artifacts
+  assets -> artifacts
+  artifacts: "" {
+    shape: image
+    icon: https://icons.terrastruct.com/essentials/220-layers.svg
+    width: 100
+    height: 100
+  }
+}
+
+Test: {
+  class: block
+  style: {
+    fill: "#ffc9d6"
+  }
+  grid: "" {
+    grid-columns: 4
+    grid-rows: 4
+    1.class: grid-block
+    2.class: grid-block
+    3.class: grid-block
+    4.class: grid-block
+    5.class: grid-block
+    6.class: grid-block
+    7.class: grid-block
+    8.class: grid-block
+    9.class: grid-block
+    10.class: grid-block
+    11.class: grid-block
+    12.class: grid-block
+    13.class: grid-block
+    14.class: grid-block
+    15.class: grid-block
+    16.class: grid-block
+
+    6.style.fill: red
+    12.style.fill: red
+  }
+}
+
+Release: {
+  class: block
+  style: {
+    fill: "#d5ffcd"
+  }
+
+  incoming.class: grid-block
+  incoming -> db1
+  incoming -> db2
+
+  db1: "" {
+    shape: image
+    icon: https://icons.terrastruct.com/essentials/117-database.svg
+    width: 70
+    height: 70
+  }
+  db2: "" {
+    shape: image
+    icon: https://icons.terrastruct.com/essentials/117-database.svg
+    width: 70
+    height: 70
+  }
+}
+
+Build.artifacts -> Test.grid -> Release.incoming

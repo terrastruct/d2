@@ -10,7 +10,7 @@
         "x": 0,
         "y": 166
       },
-      "width": 266,
+      "width": 257,
       "height": 51,
       "opacity": 1,
       "strokeDash": 0,
@@ -38,7 +38,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 266,
+      "labelWidth": 257,
       "labelHeight": 51,
       "zIndex": 0,
       "level": 1
@@ -47,7 +47,7 @@
       "id": "a",
       "type": "rectangle",
       "pos": {
-        "x": 107,
+        "x": 102,
         "y": 0
       },
       "width": 53,
@@ -88,7 +88,7 @@
       "id": "b",
       "type": "rectangle",
       "pos": {
-        "x": 107,
+        "x": 102,
         "y": 317
       },
       "width": 53,
@@ -131,10 +131,8 @@
       "id": "(a -> md)[0]",
       "src": "a",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "md",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -154,19 +152,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 133,
+          "x": 128.5,
           "y": 66
         },
         {
-          "x": 133,
+          "x": 128.5,
           "y": 106
         },
         {
-          "x": 133,
+          "x": 128.5,
           "y": 126
         },
         {
-          "x": 133,
+          "x": 128.5,
           "y": 166
         }
       ],
@@ -180,10 +178,8 @@
       "id": "(md -> b)[0]",
       "src": "md",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "b",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -203,19 +199,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 133,
+          "x": 128.5,
           "y": 217
         },
         {
-          "x": 133,
+          "x": 128.5,
           "y": 257
         },
         {
-          "x": 133,
+          "x": 128.5,
           "y": 277
         },
         {
-          "x": 133,
+          "x": 128.5,
           "y": 317
         }
       ],

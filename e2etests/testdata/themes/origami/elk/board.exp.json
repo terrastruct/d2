@@ -10,7 +10,7 @@
         "x": 12,
         "y": 311
       },
-      "width": 690,
+      "width": 692,
       "height": 902,
       "opacity": 1,
       "strokeDash": 0,
@@ -49,10 +49,10 @@
       "id": "network.cell tower",
       "type": "rectangle",
       "pos": {
-        "x": 94,
+        "x": 92,
         "y": 361
       },
-      "width": 222,
+      "width": 226,
       "height": 413,
       "opacity": 1,
       "strokeDash": 0,
@@ -73,7 +73,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "cell tower",
+      "label": "Cell Tower",
       "fontSize": 24,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -81,7 +81,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 99,
+      "labelWidth": 106,
       "labelHeight": 31,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
@@ -175,7 +175,7 @@
       "id": "network.online portal",
       "type": "rectangle",
       "pos": {
-        "x": 336,
+        "x": 338,
         "y": 366
       },
       "width": 316,
@@ -217,7 +217,7 @@
       "id": "network.online portal.ui",
       "type": "hexagon",
       "pos": {
-        "x": 454,
+        "x": 456,
         "y": 416
       },
       "width": 80,
@@ -343,7 +343,7 @@
       "id": "user",
       "type": "person",
       "pos": {
-        "x": 341,
+        "x": 343,
         "y": 12
       },
       "width": 130,
@@ -382,13 +382,55 @@
       "level": 1
     },
     {
+      "id": "other-user",
+      "type": "person",
+      "pos": {
+        "x": 511,
+        "y": 19
+      },
+      "width": 108,
+      "height": 72,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "B3",
+      "fillPattern": "paper",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "OTHER-USER",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 93,
+      "labelHeight": 21,
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
       "id": "api server",
       "type": "rectangle",
       "pos": {
-        "x": 666,
+        "x": 669,
         "y": 59
       },
-      "width": 153,
+      "width": 151,
       "height": 66,
       "opacity": 1,
       "strokeDash": 0,
@@ -409,7 +451,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "API サーバー",
+      "label": "api サーバー",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -417,7 +459,7 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 108,
+      "labelWidth": 106,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "zIndex": 0,
@@ -427,7 +469,7 @@
       "id": "logs",
       "type": "page",
       "pos": {
-        "x": 782,
+        "x": 784,
         "y": 311
       },
       "width": 84,
@@ -471,10 +513,8 @@
       "id": "network.cell tower.(satellites -> transmitter)[0]",
       "src": "network.cell tower.satellites",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "network.cell tower.transmitter",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -493,11 +533,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 161,
+          "x": 159,
           "y": 477
         },
         {
-          "x": 161,
+          "x": 159,
           "y": 658
         }
       ],
@@ -510,15 +550,13 @@
       "id": "network.cell tower.(satellites -> transmitter)[1]",
       "src": "network.cell tower.satellites",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "network.cell tower.transmitter",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
-      "label": "send",
+      "label": "SEND",
       "fontSize": 16,
       "fontFamily": "DEFAULT",
       "language": "",
@@ -526,7 +564,7 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 33,
+      "labelWidth": 37,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
@@ -549,10 +587,8 @@
       "id": "network.cell tower.(satellites -> transmitter)[2]",
       "src": "network.cell tower.satellites",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "network.cell tower.transmitter",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -571,11 +607,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 249,
+          "x": 251,
           "y": 477
         },
         {
-          "x": 249,
+          "x": 251,
           "y": 658
         }
       ],
@@ -588,10 +624,8 @@
       "id": "network.(cell tower.transmitter -> data processor.storage)[0]",
       "src": "network.cell tower.transmitter",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "network.data processor.storage",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -627,10 +661,8 @@
       "id": "(user -> network.cell tower)[0]",
       "src": "user",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "network.cell tower",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -649,19 +681,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 385,
+          "x": 387,
           "y": 99
         },
         {
-          "x": 384.5833333333333,
+          "x": 386.5833333333333,
           "y": 165
         },
         {
-          "x": 259.3333333333333,
+          "x": 260.3333333333333,
           "y": 165
         },
         {
-          "x": 259.3333333333333,
+          "x": 260.3333333333333,
           "y": 361
         }
       ],
@@ -674,10 +706,8 @@
       "id": "(user -> network.online portal.ui)[0]",
       "src": "user",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "network.online portal.ui",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 3,
       "strokeWidth": 2,
@@ -696,19 +726,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 428,
+          "x": 430,
           "y": 99
         },
         {
-          "x": 427.91666666666663,
+          "x": 429.91666666666663,
           "y": 165
         },
         {
-          "x": 481.16666666666663,
+          "x": 483.16666666666663,
           "y": 165
         },
         {
-          "x": 481,
+          "x": 483,
           "y": 416
         }
       ],
@@ -721,10 +751,8 @@
       "id": "(api server -> network.online portal.ui)[0]",
       "src": "api server",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "network.online portal.ui",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -743,19 +771,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 704.25,
+          "x": 706.75,
           "y": 125
         },
         {
-          "x": 704.25,
+          "x": 706.75,
           "y": 266
         },
         {
-          "x": 507.83333333333337,
+          "x": 509.83333333333337,
           "y": 266
         },
         {
-          "x": 508,
+          "x": 510,
           "y": 416
         }
       ],
@@ -768,10 +796,8 @@
       "id": "(api server -> logs)[0]",
       "src": "api server",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "logs",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -790,19 +816,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 780.75,
+          "x": 782.25,
           "y": 125
         },
         {
-          "x": 780.75,
+          "x": 782.25,
           "y": 165
         },
         {
-          "x": 824.5,
+          "x": 826.5,
           "y": 165
         },
         {
-          "x": 825,
+          "x": 827,
           "y": 311
         }
       ],
@@ -815,10 +841,8 @@
       "id": "(network.data processor -> api server)[0]",
       "src": "network.data processor",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "api server",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -845,11 +869,11 @@
           "y": 1258
         },
         {
-          "x": 742.5,
+          "x": 744.5,
           "y": 1258
         },
         {
-          "x": 742.5,
+          "x": 744.5,
           "y": 125
         }
       ],

@@ -192,13 +192,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -219,10 +219,6 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -259,6 +255,10 @@
         "attributes": {
           "label": {
             "value": "x"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "link": {
@@ -472,13 +472,13 @@
         "root": {
           "id": "",
           "id_val": "",
-          "label_dimensions": {
-            "width": 0,
-            "height": 0
-          },
           "attributes": {
             "label": {
               "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
             },
             "style": {},
             "near_key": null,
@@ -690,13 +690,13 @@
             "root": {
               "id": "",
               "id_val": "",
-              "label_dimensions": {
-                "width": 0,
-                "height": 0
-              },
               "attributes": {
                 "label": {
                   "value": ""
+                },
+                "labelDimensions": {
+                  "width": 0,
+                  "height": 0
                 },
                 "style": {},
                 "near_key": null,
@@ -717,10 +717,6 @@
               {
                 "id": "hello",
                 "id_val": "hello",
-                "label_dimensions": {
-                  "width": 0,
-                  "height": 0
-                },
                 "references": [
                   {
                     "key": {
@@ -746,6 +742,10 @@
                 "attributes": {
                   "label": {
                     "value": "hello"
+                  },
+                  "labelDimensions": {
+                    "width": 0,
+                    "height": 0
                   },
                   "style": {},
                   "near_key": null,

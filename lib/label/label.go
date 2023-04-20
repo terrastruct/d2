@@ -223,7 +223,8 @@ func (labelPosition Position) GetPointOnBox(box *geo.Box, padding, width, height
 }
 
 // return the top left point of a width x height label at the given label position on the route
-func (labelPosition Position) GetPointOnRoute(route geo.Route, strokeWidth, labelPercentage, width, height float64) *geo.Point {
+// also return the index of the route segment that point is on
+func (labelPosition Position) GetPointOnRoute(route geo.Route, strokeWidth, labelPercentage, width, height float64) (point *geo.Point, index int) {
 	totalLength := route.Length()
 	leftPosition := LEFT_LABEL_POSITION * totalLength
 	centerPosition := CENTER_LABEL_POSITION * totalLength
@@ -272,11 +273,11 @@ func (labelPosition Position) GetPointOnRoute(route geo.Route, strokeWidth, labe
 	var labelCenter *geo.Point
 	switch labelPosition {
 	case InsideMiddleLeft:
-		labelCenter, _ = route.GetPointAtDistance(leftPosition)
+		labelCenter, index = route.GetPointAtDistance(leftPosition)
 	case InsideMiddleCenter:
-		labelCenter, _ = route.GetPointAtDistance(centerPosition)
+		labelCenter, index = route.GetPointAtDistance(centerPosition)
 	case InsideMiddleRight:
-		labelCenter, _ = route.GetPointAtDistance(rightPosition)
+		labelCenter, index = route.GetPointAtDistance(rightPosition)
 
 	case OutsideTopLeft:
 		basePoint, index := route.GetPointAtDistance(leftPosition)
@@ -302,17 +303,17 @@ func (labelPosition Position) GetPointOnRoute(route geo.Route, strokeWidth, labe
 		basePoint, index := route.GetPointAtDistance(unlockedPosition)
 		labelCenter = getOffsetLabelPosition(basePoint, route[index], route[index+1], true)
 	case UnlockedMiddle:
-		labelCenter, _ = route.GetPointAtDistance(unlockedPosition)
+		labelCenter, index = route.GetPointAtDistance(unlockedPosition)
 	case UnlockedBottom:
 		basePoint, index := route.GetPointAtDistance(unlockedPosition)
 		labelCenter = getOffsetLabelPosition(basePoint, route[index], route[index+1], false)
 	default:
-		return nil
+		return nil, -1
 	}
 	// convert from center to top left
 	labelCenter.X = chopPrecision(labelCenter.X - width/2)
 	labelCenter.Y = chopPrecision(labelCenter.Y - height/2)
-	return labelCenter
+	return labelCenter, index
 }
 
 // TODO probably use math.Big

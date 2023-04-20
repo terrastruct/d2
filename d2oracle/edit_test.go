@@ -50,11 +50,11 @@ func TestCreate(t *testing.T) {
 				if g.Objects[0].ID != "square" {
 					t.Fatalf("expected g.Objects[0].ID to be square: %#v", g.Objects[0])
 				}
-				if g.Objects[0].Attributes.Label.MapKey.Value.Unbox() != nil {
-					t.Fatalf("expected g.Objects[0].Attributes.Label.Node.Value.Unbox() == nil: %#v", g.Objects[0].Attributes.Label.MapKey.Value)
+				if g.Objects[0].Label.MapKey.Value.Unbox() != nil {
+					t.Fatalf("expected g.Objects[0].Label.Node.Value.Unbox() == nil: %#v", g.Objects[0].Label.MapKey.Value)
 				}
-				if d2format.Format(g.Objects[0].Attributes.Label.MapKey.Key) != "square" {
-					t.Fatalf("expected g.Objects[0].Attributes.Label.Node.Key to be square: %#v", g.Objects[0].Attributes.Label.MapKey.Key)
+				if d2format.Format(g.Objects[0].Label.MapKey.Key) != "square" {
+					t.Fatalf("expected g.Objects[0].Label.Node.Key to be square: %#v", g.Objects[0].Label.MapKey.Key)
 				}
 			},
 		},
@@ -92,11 +92,11 @@ x  2
 				if g.Objects[2].AbsID() != "b.c.square" {
 					t.Fatalf("bad absolute ID: %#v", g.Objects[2].AbsID())
 				}
-				if d2format.Format(g.Objects[2].Attributes.Label.MapKey.Key) != "b.c.square" {
-					t.Fatalf("bad mapkey: %#v", g.Objects[2].Attributes.Label.MapKey.Key)
+				if d2format.Format(g.Objects[2].Label.MapKey.Key) != "b.c.square" {
+					t.Fatalf("bad mapkey: %#v", g.Objects[2].Label.MapKey.Key)
 				}
-				if g.Objects[2].Attributes.Label.MapKey.Value.Unbox() != nil {
-					t.Fatalf("expected nil mapkey value: %#v", g.Objects[2].Attributes.Label.MapKey.Value)
+				if g.Objects[2].Label.MapKey.Value.Unbox() != nil {
+					t.Fatalf("expected nil mapkey value: %#v", g.Objects[2].Label.MapKey.Value)
 				}
 			},
 		},
@@ -116,11 +116,11 @@ square 2
 				if g.Objects[1].ID != "square 2" {
 					t.Fatalf("expected g.Objects[1].ID to be square 2: %#v", g.Objects[1])
 				}
-				if g.Objects[1].Attributes.Label.MapKey.Value.Unbox() != nil {
-					t.Fatalf("expected g.Objects[1].Attributes.Label.Node.Value.Unbox() == nil: %#v", g.Objects[1].Attributes.Label.MapKey.Value)
+				if g.Objects[1].Label.MapKey.Value.Unbox() != nil {
+					t.Fatalf("expected g.Objects[1].Label.Node.Value.Unbox() == nil: %#v", g.Objects[1].Label.MapKey.Value)
 				}
-				if d2format.Format(g.Objects[1].Attributes.Label.MapKey.Key) != "square 2" {
-					t.Fatalf("expected g.Objects[1].Attributes.Label.Node.Key to be square 2: %#v", g.Objects[1].Attributes.Label.MapKey.Key)
+				if d2format.Format(g.Objects[1].Label.MapKey.Key) != "square 2" {
+					t.Fatalf("expected g.Objects[1].Label.Node.Key to be square 2: %#v", g.Objects[1].Label.MapKey.Key)
 				}
 			},
 		},
@@ -160,11 +160,11 @@ x.y.z.square 2
 				if g.Objects[3].ID != "square" {
 					t.Fatalf("expected g.Objects[3].ID to be square: %#v", g.Objects[3])
 				}
-				if g.Objects[3].Attributes.Label.MapKey.Value.Unbox() != nil {
-					t.Fatalf("expected g.Objects[3].Attributes.Label.Node.Value.Unbox() == nil: %#v", g.Objects[3].Attributes.Label.MapKey.Value)
+				if g.Objects[3].Label.MapKey.Value.Unbox() != nil {
+					t.Fatalf("expected g.Objects[3].Label.Node.Value.Unbox() == nil: %#v", g.Objects[3].Label.MapKey.Value)
 				}
-				if d2format.Format(g.Objects[3].Attributes.Label.MapKey.Key) != "square" {
-					t.Fatalf("expected g.Objects[3].Attributes.Label.Node.Key to be square: %#v", g.Objects[3].Attributes.Label.MapKey.Key)
+				if d2format.Format(g.Objects[3].Label.MapKey.Key) != "square" {
+					t.Fatalf("expected g.Objects[3].Label.Node.Key to be square: %#v", g.Objects[3].Label.MapKey.Key)
 				}
 			},
 		},
@@ -188,11 +188,11 @@ x.y.z.square 2
 				if g.Objects[4].ID != "square 2" {
 					t.Fatalf("expected g.Objects[4].ID to be square 2: %#v", g.Objects[4])
 				}
-				if g.Objects[4].Attributes.Label.MapKey.Value.Unbox() != nil {
-					t.Fatalf("expected g.Objects[4].Attributes.Label.Node.Value.Unbox() == nil: %#v", g.Objects[4].Attributes.Label.MapKey.Value)
+				if g.Objects[4].Label.MapKey.Value.Unbox() != nil {
+					t.Fatalf("expected g.Objects[4].Label.Node.Value.Unbox() == nil: %#v", g.Objects[4].Label.MapKey.Value)
 				}
-				if d2format.Format(g.Objects[4].Attributes.Label.MapKey.Key) != "square 2" {
-					t.Fatalf("expected g.Objects[4].Attributes.Label.Node.Key to be square 2: %#v", g.Objects[4].Attributes.Label.MapKey.Key)
+				if d2format.Format(g.Objects[4].Label.MapKey.Key) != "square 2" {
+					t.Fatalf("expected g.Objects[4].Label.Node.Key to be square 2: %#v", g.Objects[4].Label.MapKey.Key)
 				}
 			},
 		},
@@ -234,8 +234,8 @@ x.y.z.square 2
 				if g.Objects[13].ID != "square 11" {
 					t.Fatalf("expected g.Objects[13].ID to be square 11: %#v", g.Objects[13])
 				}
-				if d2format.Format(g.Objects[13].Attributes.Label.MapKey.Key) != "square 11" {
-					t.Fatalf("expected g.Objects[13].Attributes.Label.Node.Key to be square 11: %#v", g.Objects[13].Attributes.Label.MapKey.Key)
+				if d2format.Format(g.Objects[13].Label.MapKey.Key) != "square 11" {
+					t.Fatalf("expected g.Objects[13].Label.Node.Key to be square 11: %#v", g.Objects[13].Label.MapKey.Key)
 				}
 			},
 		},
@@ -517,11 +517,11 @@ func TestSet(t *testing.T) {
 				if g.Objects[0].ID != "square" {
 					t.Fatalf("expected g.Objects[0].ID to be square: %#v", g.Objects[0])
 				}
-				if g.Objects[0].Attributes.Label.MapKey.Value.Unbox() != nil {
-					t.Fatalf("expected g.Objects[0].Attributes.Label.Node.Value.Unbox() == nil: %#v", g.Objects[0].Attributes.Label.MapKey.Value)
+				if g.Objects[0].Label.MapKey.Value.Unbox() != nil {
+					t.Fatalf("expected g.Objects[0].Label.Node.Value.Unbox() == nil: %#v", g.Objects[0].Label.MapKey.Value)
 				}
-				if d2format.Format(g.Objects[0].Attributes.Label.MapKey.Key) != "square" {
-					t.Fatalf("expected g.Objects[0].Attributes.Label.Node.Key to be square: %#v", g.Objects[0].Attributes.Label.MapKey.Key)
+				if d2format.Format(g.Objects[0].Label.MapKey.Key) != "square" {
+					t.Fatalf("expected g.Objects[0].Label.Node.Key to be square: %#v", g.Objects[0].Label.MapKey.Key)
 				}
 			},
 		},
@@ -546,8 +546,8 @@ func TestSet(t *testing.T) {
 				if g.Edges[0].Dst.ID != "y" {
 					t.Fatalf("expected g.Edges[0].Dst.ID == y: %#v", g.Edges[0].Dst.ID)
 				}
-				if g.Edges[0].Attributes.Label.Value != "two" {
-					t.Fatalf("expected g.Edges[0].Attributes.Label.Value == two: %#v", g.Edges[0].Attributes.Label.Value)
+				if g.Edges[0].Label.Value != "two" {
+					t.Fatalf("expected g.Edges[0].Label.Value == two: %#v", g.Edges[0].Label.Value)
 				}
 			},
 		},
@@ -566,8 +566,8 @@ func TestSet(t *testing.T) {
 				if g.Objects[0].ID != "square" {
 					t.Fatalf("expected g.Objects[0].ID to be square: %#v", g.Objects[0])
 				}
-				if g.Objects[0].Attributes.Shape.Value != d2target.ShapeSquare {
-					t.Fatalf("expected g.Objects[0].Attributes.Shape.Value == square: %#v", g.Objects[0].Attributes.Shape.Value)
+				if g.Objects[0].Shape.Value != d2target.ShapeSquare {
+					t.Fatalf("expected g.Objects[0].Shape.Value == square: %#v", g.Objects[0].Shape.Value)
 				}
 			},
 		},
@@ -586,8 +586,8 @@ func TestSet(t *testing.T) {
 				if g.Objects[0].ID != "square" {
 					t.Fatalf("expected g.Objects[0].ID to be square: %#v", g.Objects[0])
 				}
-				if g.Objects[0].Attributes.Shape.Value != d2target.ShapeCircle {
-					t.Fatalf("expected g.Objects[0].Attributes.Shape.Value == circle: %#v", g.Objects[0].Attributes.Shape.Value)
+				if g.Objects[0].Shape.Value != d2target.ShapeCircle {
+					t.Fatalf("expected g.Objects[0].Shape.Value == circle: %#v", g.Objects[0].Shape.Value)
 				}
 			},
 		},
@@ -606,7 +606,7 @@ func TestSet(t *testing.T) {
 				if len(g.Objects) != 1 {
 					t.Fatalf("expected 1 object but got %#v", len(g.Objects))
 				}
-				f, err := strconv.ParseFloat(g.Objects[0].Attributes.Style.Opacity.Value, 64)
+				f, err := strconv.ParseFloat(g.Objects[0].Style.Opacity.Value, 64)
 				if err != nil || f != 0.2 {
 					t.Fatalf("expected g.Objects[0].Map.Nodes[0].MapKey.Value.Number.Value.Float64() == 0.2: %#v", f)
 				}
@@ -652,7 +652,7 @@ func TestSet(t *testing.T) {
 				if len(g.AST.Nodes[0].MapKey.Value.Map.Nodes) != 1 {
 					t.Fatalf("expected 1 node within square but got %v", len(g.AST.Nodes[0].MapKey.Value.Map.Nodes))
 				}
-				f, err := strconv.ParseFloat(g.Objects[0].Attributes.Style.Opacity.Value, 64)
+				f, err := strconv.ParseFloat(g.Objects[0].Style.Opacity.Value, 64)
 				if err != nil || f != 0.2 {
 					t.Fatal(err, f)
 				}
@@ -670,7 +670,7 @@ func TestSet(t *testing.T) {
 				if len(g.AST.Nodes) != 1 {
 					t.Fatal(g.AST)
 				}
-				f, err := strconv.ParseFloat(g.Objects[0].Attributes.Style.Opacity.Value, 64)
+				f, err := strconv.ParseFloat(g.Objects[0].Style.Opacity.Value, 64)
 				if err != nil || f != 0.2 {
 					t.Fatal(err, f)
 				}
@@ -689,7 +689,7 @@ square.style.opacity: 0.2
 				if len(g.AST.Nodes) != 2 {
 					t.Fatal(g.AST)
 				}
-				f, err := strconv.ParseFloat(g.Objects[0].Attributes.Style.Opacity.Value, 64)
+				f, err := strconv.ParseFloat(g.Objects[0].Style.Opacity.Value, 64)
 				if err != nil || f != 0.2 {
 					t.Fatal(err, f)
 				}
@@ -862,6 +862,85 @@ square.style.opacity: 0.2
 `,
 		},
 		{
+			name: "classes-style",
+			text: `classes: {
+  a: {
+    style.fill: red
+  }
+}
+b.class: a
+`,
+			key:   `b.style.fill`,
+			value: go2.Pointer(`green`),
+			exp: `classes: {
+  a: {
+    style.fill: red
+  }
+}
+b.class: a
+b.style.fill: green
+`,
+		},
+		{
+			name: "dupe-classes-style",
+			text: `classes: {
+  a: {
+    style.fill: red
+  }
+}
+b.class: a
+b.style.fill: red
+`,
+			key:   `b.style.fill`,
+			value: go2.Pointer(`green`),
+			exp: `classes: {
+  a: {
+    style.fill: red
+  }
+}
+b.class: a
+b.style.fill: green
+`,
+		},
+		{
+			name: "unapplied-classes-style",
+			text: `classes: {
+  a: {
+    style.fill: red
+  }
+}
+b.style.fill: red
+`,
+			key:   `b.style.fill`,
+			value: go2.Pointer(`green`),
+			exp: `classes: {
+  a: {
+    style.fill: red
+  }
+}
+b.style.fill: green
+`,
+		},
+		{
+			name: "unapplied-classes-style-2",
+			text: `classes: {
+  a: {
+    style.fill: red
+  }
+}
+b
+`,
+			key:   `b.style.fill`,
+			value: go2.Pointer(`green`),
+			exp: `classes: {
+  a: {
+    style.fill: red
+  }
+}
+b: {style.fill: green}
+`,
+		},
+		{
 			name: "label_unset",
 			text: `square: "Always try to do things in chronological order; it's less confusing that way."
 `,
@@ -877,8 +956,8 @@ square.style.opacity: 0.2
 				if g.Objects[0].ID != "square" {
 					t.Fatalf("expected g.Objects[0].ID to be square: %#v", g.Objects[0])
 				}
-				if g.Objects[0].Attributes.Shape.Value == d2target.ShapeSquare {
-					t.Fatalf("expected g.Objects[0].Attributes.Shape.Value == square: %#v", g.Objects[0].Attributes.Shape.Value)
+				if g.Objects[0].Shape.Value == d2target.ShapeSquare {
+					t.Fatalf("expected g.Objects[0].Shape.Value == square: %#v", g.Objects[0].Shape.Value)
 				}
 			},
 		},
@@ -897,8 +976,8 @@ square.style.opacity: 0.2
 				if g.Objects[0].ID != "square" {
 					t.Fatalf("expected g.Objects[0].ID to be square: %#v", g.Objects[0])
 				}
-				if g.Objects[0].Attributes.Shape.Value == d2target.ShapeSquare {
-					t.Fatalf("expected g.Objects[0].Attributes.Shape.Value == square: %#v", g.Objects[0].Attributes.Shape.Value)
+				if g.Objects[0].Shape.Value == d2target.ShapeSquare {
+					t.Fatalf("expected g.Objects[0].Shape.Value == square: %#v", g.Objects[0].Shape.Value)
 				}
 			},
 		},
@@ -920,8 +999,8 @@ square.style.opacity: 0.2
 				if g.Objects[0].ID != "square" {
 					t.Fatal(g.Objects[0])
 				}
-				if g.Objects[0].Attributes.Label.Value == "I am deeply CONCERNED and I want something GOOD for BREAKFAST!" {
-					t.Fatal(g.Objects[0].Attributes.Label.Value)
+				if g.Objects[0].Label.Value == "I am deeply CONCERNED and I want something GOOD for BREAKFAST!" {
+					t.Fatal(g.Objects[0].Label.Value)
 				}
 			},
 		},
@@ -1036,8 +1115,8 @@ z: {
 				if len(g.Edges) != 2 {
 					t.Fatalf("expected 2 edges: %#v", g.Edges)
 				}
-				if g.Edges[0].Attributes.Label.Value != "two" {
-					t.Fatalf("expected g.Edges[0].Attributes.Label.Value == two: %#v", g.Edges[0].Attributes.Label.Value)
+				if g.Edges[0].Label.Value != "two" {
+					t.Fatalf("expected g.Edges[0].Label.Value == two: %#v", g.Edges[0].Label.Value)
 				}
 			},
 		},
@@ -1054,8 +1133,8 @@ z: {
 				if len(g.Objects) != 1 {
 					t.Fatal(g.Objects)
 				}
-				if g.Objects[0].Attributes.Icon.String() != "https://icons.terrastruct.com/essentials/087-menu.svg" {
-					t.Fatal(g.Objects[0].Attributes.Icon.String())
+				if g.Objects[0].Icon.String() != "https://icons.terrastruct.com/essentials/087-menu.svg" {
+					t.Fatal(g.Objects[0].Icon.String())
 				}
 			},
 		},
@@ -1133,7 +1212,7 @@ z: {
 				assert.JSON(t, 3, len(g.Objects))
 				assert.JSON(t, 1, len(g.Edges))
 				assert.JSON(t, "q", g.Edges[0].Src.ID)
-				assert.JSON(t, "0.4", g.Edges[0].Attributes.Style.Opacity.Value)
+				assert.JSON(t, "0.4", g.Edges[0].Style.Opacity.Value)
 			},
 		},
 		{
@@ -1309,8 +1388,8 @@ a.b -> a.c: {style.animated: true}
 				if g.Edges[0].Src.ID != "q" {
 					t.Fatal(g.Edges[0].Src.ID)
 				}
-				if g.Edges[0].Attributes.Style.Opacity.Value != "0.4" {
-					t.Fatal(g.Edges[0].Attributes.Style.Opacity.Value)
+				if g.Edges[0].Style.Opacity.Value != "0.4" {
+					t.Fatal(g.Edges[0].Style.Opacity.Value)
 				}
 			},
 		},

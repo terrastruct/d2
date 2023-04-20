@@ -209,7 +209,7 @@ let us know and we'll be happy to include it here!
 
 ### Community plugins
 
-- **Tree-sitter grammar**: [https://github.com/pleshevskiy/tree-sitter-d2](https://github.com/pleshevskiy/tree-sitter-d2)
+- **Tree-sitter grammar**: [https://git.pleshevski.ru/pleshevskiy/tree-sitter-d2](https://git.pleshevski.ru/pleshevskiy/tree-sitter-d2)
 - **Emacs major mode**: [https://github.com/andorsk/d2-mode](https://github.com/andorsk/d2-mode)
 - **Goldmark extension**: [https://github.com/FurqanSoftware/goldmark-d2](https://github.com/FurqanSoftware/goldmark-d2)
 - **Telegram bot**: [https://github.com/meinside/telegram-d2-bot](https://github.com/meinside/telegram-d2-bot)
@@ -226,6 +226,7 @@ let us know and we'll be happy to include it here!
 - **CIL (C#, Visual Basic, F#, C++ CLR) to D2**: [https://github.com/HugoVG/AppDiagram](https://github.com/HugoVG/AppDiagram)
 - **D2 Snippets (for text editors)**: [https://github.com/Paracelsus-Rose/D2-Language-Code-Snippets](https://github.com/Paracelsus-Rose/D2-Language-Code-Snippets)
 - **Mongo to D2**: [https://github.com/novuhq/mongo-to-D2](https://github.com/novuhq/mongo-to-D2)
+- **Pandoc filter**: [https://github.com/ram02z/d2-filter](https://github.com/ram02z/d2-filter)
 
 ### Misc
 

@@ -180,13 +180,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -207,10 +207,6 @@
       {
         "id": "API",
         "id_val": "API",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -237,6 +233,10 @@
           "label": {
             "value": "API"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -254,10 +254,6 @@
       {
         "id": "Bluefish",
         "id_val": "Bluefish",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -283,6 +279,10 @@
         "attributes": {
           "label": {
             "value": "Bluefish"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": {
@@ -316,10 +316,6 @@
       {
         "id": "Yo",
         "id_val": "Yo",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -345,6 +341,10 @@
         "attributes": {
           "label": {
             "value": "Yo"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": {
@@ -378,10 +378,6 @@
       {
         "id": "Blah",
         "id_val": "Blah",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -407,6 +403,10 @@
         "attributes": {
           "label": {
             "value": "Blah"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

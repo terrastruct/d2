@@ -1,0 +1,1202 @@
+{
+  "fields": [
+    {
+      "name": "classes",
+      "composite": {
+        "fields": [
+          {
+            "name": "mango",
+            "composite": {
+              "fields": [
+                {
+                  "name": "style",
+                  "composite": {
+                    "fields": [
+                      {
+                        "name": "fill",
+                        "primary": {
+                          "value": {
+                            "range": "TestCompile/classes/merge-classes.d2,2:16:38-2:22:44",
+                            "value": [
+                              {
+                                "string": "orange",
+                                "raw_string": "orange"
+                              }
+                            ]
+                          }
+                        },
+                        "references": [
+                          {
+                            "string": {
+                              "range": "TestCompile/classes/merge-classes.d2,2:10:32-2:14:36",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/classes/merge-classes.d2,2:4:26-2:14:36",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/merge-classes.d2,2:4:26-2:9:31",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/merge-classes.d2,2:10:32-2:14:36",
+                                    "value": [
+                                      {
+                                        "string": "fill",
+                                        "raw_string": "fill"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/classes/merge-classes.d2,2:4:26-2:22:44",
+                                "key": {
+                                  "range": "TestCompile/classes/merge-classes.d2,2:4:26-2:14:36",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/classes/merge-classes.d2,2:4:26-2:9:31",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/classes/merge-classes.d2,2:10:32-2:14:36",
+                                        "value": [
+                                          {
+                                            "string": "fill",
+                                            "raw_string": "fill"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/merge-classes.d2,2:16:38-2:22:44",
+                                    "value": [
+                                      {
+                                        "string": "orange",
+                                        "raw_string": "orange"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "edges": null
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/classes/merge-classes.d2,2:4:26-2:9:31",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/classes/merge-classes.d2,2:4:26-2:14:36",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/classes/merge-classes.d2,2:4:26-2:9:31",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/classes/merge-classes.d2,2:10:32-2:14:36",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/classes/merge-classes.d2,2:4:26-2:22:44",
+                          "key": {
+                            "range": "TestCompile/classes/merge-classes.d2,2:4:26-2:14:36",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/merge-classes.d2,2:4:26-2:9:31",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/merge-classes.d2,2:10:32-2:14:36",
+                                  "value": [
+                                    {
+                                      "string": "fill",
+                                      "raw_string": "fill"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/classes/merge-classes.d2,2:16:38-2:22:44",
+                              "value": [
+                                {
+                                  "string": "orange",
+                                  "raw_string": "orange"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "width",
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/classes/merge-classes.d2,3:9:54-3:11:56",
+                      "raw": "10",
+                      "value": "10"
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/classes/merge-classes.d2,3:2:47-3:7:52",
+                        "value": [
+                          {
+                            "string": "width",
+                            "raw_string": "width"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/classes/merge-classes.d2,3:2:47-3:7:52",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/classes/merge-classes.d2,3:2:47-3:7:52",
+                              "value": [
+                                {
+                                  "string": "width",
+                                  "raw_string": "width"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/classes/merge-classes.d2,3:2:47-3:11:56",
+                          "key": {
+                            "range": "TestCompile/classes/merge-classes.d2,3:2:47-3:7:52",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/merge-classes.d2,3:2:47-3:7:52",
+                                  "value": [
+                                    {
+                                      "string": "width",
+                                      "raw_string": "width"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "number": {
+                              "range": "TestCompile/classes/merge-classes.d2,3:9:54-3:11:56",
+                              "raw": "10",
+                              "value": "10"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/classes/merge-classes.d2,1:2:13-1:7:18",
+                  "value": [
+                    {
+                      "string": "mango",
+                      "raw_string": "mango"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/classes/merge-classes.d2,1:2:13-1:7:18",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/classes/merge-classes.d2,1:2:13-1:7:18",
+                        "value": [
+                          {
+                            "string": "mango",
+                            "raw_string": "mango"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/classes/merge-classes.d2,1:2:13-4:3:60",
+                    "key": {
+                      "range": "TestCompile/classes/merge-classes.d2,1:2:13-1:7:18",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/classes/merge-classes.d2,1:2:13-1:7:18",
+                            "value": [
+                              {
+                                "string": "mango",
+                                "raw_string": "mango"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/classes/merge-classes.d2,1:9:20-4:2:59",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/classes/merge-classes.d2,2:4:26-2:22:44",
+                              "key": {
+                                "range": "TestCompile/classes/merge-classes.d2,2:4:26-2:14:36",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/merge-classes.d2,2:4:26-2:9:31",
+                                      "value": [
+                                        {
+                                          "string": "style",
+                                          "raw_string": "style"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/merge-classes.d2,2:10:32-2:14:36",
+                                      "value": [
+                                        {
+                                          "string": "fill",
+                                          "raw_string": "fill"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/merge-classes.d2,2:16:38-2:22:44",
+                                  "value": [
+                                    {
+                                      "string": "orange",
+                                      "raw_string": "orange"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          },
+                          {
+                            "map_key": {
+                              "range": "TestCompile/classes/merge-classes.d2,3:2:47-3:11:56",
+                              "key": {
+                                "range": "TestCompile/classes/merge-classes.d2,3:2:47-3:7:52",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/merge-classes.d2,3:2:47-3:7:52",
+                                      "value": [
+                                        {
+                                          "string": "width",
+                                          "raw_string": "width"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "number": {
+                                  "range": "TestCompile/classes/merge-classes.d2,3:9:54-3:11:56",
+                                  "raw": "10",
+                                  "value": "10"
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/classes/merge-classes.d2,0:0:0-0:7:7",
+            "value": [
+              {
+                "string": "classes",
+                "raw_string": "classes"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/classes/merge-classes.d2,0:0:0-0:7:7",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/classes/merge-classes.d2,0:0:0-0:7:7",
+                  "value": [
+                    {
+                      "string": "classes",
+                      "raw_string": "classes"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/classes/merge-classes.d2,0:0:0-5:1:62",
+              "key": {
+                "range": "TestCompile/classes/merge-classes.d2,0:0:0-0:7:7",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/classes/merge-classes.d2,0:0:0-0:7:7",
+                      "value": [
+                        {
+                          "string": "classes",
+                          "raw_string": "classes"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/classes/merge-classes.d2,0:9:9-5:0:61",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/classes/merge-classes.d2,1:2:13-4:3:60",
+                        "key": {
+                          "range": "TestCompile/classes/merge-classes.d2,1:2:13-1:7:18",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/classes/merge-classes.d2,1:2:13-1:7:18",
+                                "value": [
+                                  {
+                                    "string": "mango",
+                                    "raw_string": "mango"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "map": {
+                            "range": "TestCompile/classes/merge-classes.d2,1:9:20-4:2:59",
+                            "nodes": [
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/classes/merge-classes.d2,2:4:26-2:22:44",
+                                  "key": {
+                                    "range": "TestCompile/classes/merge-classes.d2,2:4:26-2:14:36",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/merge-classes.d2,2:4:26-2:9:31",
+                                          "value": [
+                                            {
+                                              "string": "style",
+                                              "raw_string": "style"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/merge-classes.d2,2:10:32-2:14:36",
+                                          "value": [
+                                            {
+                                              "string": "fill",
+                                              "raw_string": "fill"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/merge-classes.d2,2:16:38-2:22:44",
+                                      "value": [
+                                        {
+                                          "string": "orange",
+                                          "raw_string": "orange"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              },
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/classes/merge-classes.d2,3:2:47-3:11:56",
+                                  "key": {
+                                    "range": "TestCompile/classes/merge-classes.d2,3:2:47-3:7:52",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/merge-classes.d2,3:2:47-3:7:52",
+                                          "value": [
+                                            {
+                                              "string": "width",
+                                              "raw_string": "width"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {
+                                    "number": {
+                                      "range": "TestCompile/classes/merge-classes.d2,3:9:54-3:11:56",
+                                      "raw": "10",
+                                      "value": "10"
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "layers",
+      "composite": {
+        "fields": [
+          {
+            "name": "hawaii",
+            "composite": {
+              "fields": [
+                {
+                  "name": "classes",
+                  "composite": {
+                    "fields": [
+                      {
+                        "name": "mango",
+                        "composite": {
+                          "fields": [
+                            {
+                              "name": "width",
+                              "primary": {
+                                "value": {
+                                  "range": "TestCompile/classes/merge-classes.d2,10:15:130-10:19:134",
+                                  "raw": "9000",
+                                  "value": "9000"
+                                }
+                              },
+                              "references": [
+                                {
+                                  "string": {
+                                    "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:13:128",
+                                    "value": [
+                                      {
+                                        "string": "width",
+                                        "raw_string": "width"
+                                      }
+                                    ]
+                                  },
+                                  "key_path": {
+                                    "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:13:128",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:13:128",
+                                          "value": [
+                                            {
+                                              "string": "width",
+                                              "raw_string": "width"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "context": {
+                                    "edge": null,
+                                    "key": {
+                                      "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:19:134",
+                                      "key": {
+                                        "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:13:128",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:13:128",
+                                              "value": [
+                                                {
+                                                  "string": "width",
+                                                  "raw_string": "width"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "primary": {},
+                                      "value": {
+                                        "number": {
+                                          "range": "TestCompile/classes/merge-classes.d2,10:15:130-10:19:134",
+                                          "raw": "9000",
+                                          "value": "9000"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "edges": null
+                        },
+                        "references": [
+                          {
+                            "string": {
+                              "range": "TestCompile/classes/merge-classes.d2,9:6:106-9:11:111",
+                              "value": [
+                                {
+                                  "string": "mango",
+                                  "raw_string": "mango"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/classes/merge-classes.d2,9:6:106-9:11:111",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/merge-classes.d2,9:6:106-9:11:111",
+                                    "value": [
+                                      {
+                                        "string": "mango",
+                                        "raw_string": "mango"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/classes/merge-classes.d2,9:6:106-11:7:142",
+                                "key": {
+                                  "range": "TestCompile/classes/merge-classes.d2,9:6:106-9:11:111",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/classes/merge-classes.d2,9:6:106-9:11:111",
+                                        "value": [
+                                          {
+                                            "string": "mango",
+                                            "raw_string": "mango"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "map": {
+                                    "range": "TestCompile/classes/merge-classes.d2,9:13:113-11:6:141",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:19:134",
+                                          "key": {
+                                            "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:13:128",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:13:128",
+                                                  "value": [
+                                                    {
+                                                      "string": "width",
+                                                      "raw_string": "width"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "number": {
+                                              "range": "TestCompile/classes/merge-classes.d2,10:15:130-10:19:134",
+                                              "raw": "9000",
+                                              "value": "9000"
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "edges": null
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/classes/merge-classes.d2,8:4:89-8:11:96",
+                        "value": [
+                          {
+                            "string": "classes",
+                            "raw_string": "classes"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/classes/merge-classes.d2,8:4:89-8:11:96",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/classes/merge-classes.d2,8:4:89-8:11:96",
+                              "value": [
+                                {
+                                  "string": "classes",
+                                  "raw_string": "classes"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/classes/merge-classes.d2,8:4:89-12:5:148",
+                          "key": {
+                            "range": "TestCompile/classes/merge-classes.d2,8:4:89-8:11:96",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/merge-classes.d2,8:4:89-8:11:96",
+                                  "value": [
+                                    {
+                                      "string": "classes",
+                                      "raw_string": "classes"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": "TestCompile/classes/merge-classes.d2,8:13:98-12:4:147",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": "TestCompile/classes/merge-classes.d2,9:6:106-11:7:142",
+                                    "key": {
+                                      "range": "TestCompile/classes/merge-classes.d2,9:6:106-9:11:111",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "TestCompile/classes/merge-classes.d2,9:6:106-9:11:111",
+                                            "value": [
+                                              {
+                                                "string": "mango",
+                                                "raw_string": "mango"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {
+                                      "map": {
+                                        "range": "TestCompile/classes/merge-classes.d2,9:13:113-11:6:141",
+                                        "nodes": [
+                                          {
+                                            "map_key": {
+                                              "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:19:134",
+                                              "key": {
+                                                "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:13:128",
+                                                "path": [
+                                                  {
+                                                    "unquoted_string": {
+                                                      "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:13:128",
+                                                      "value": [
+                                                        {
+                                                          "string": "width",
+                                                          "raw_string": "width"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              },
+                                              "primary": {},
+                                              "value": {
+                                                "number": {
+                                                  "range": "TestCompile/classes/merge-classes.d2,10:15:130-10:19:134",
+                                                  "raw": "9000",
+                                                  "value": "9000"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/classes/merge-classes.d2,7:2:75-7:8:81",
+                  "value": [
+                    {
+                      "string": "hawaii",
+                      "raw_string": "hawaii"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/classes/merge-classes.d2,7:2:75-7:8:81",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/classes/merge-classes.d2,7:2:75-7:8:81",
+                        "value": [
+                          {
+                            "string": "hawaii",
+                            "raw_string": "hawaii"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/classes/merge-classes.d2,7:2:75-13:3:152",
+                    "key": {
+                      "range": "TestCompile/classes/merge-classes.d2,7:2:75-7:8:81",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/classes/merge-classes.d2,7:2:75-7:8:81",
+                            "value": [
+                              {
+                                "string": "hawaii",
+                                "raw_string": "hawaii"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/classes/merge-classes.d2,7:10:83-13:2:151",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/classes/merge-classes.d2,8:4:89-12:5:148",
+                              "key": {
+                                "range": "TestCompile/classes/merge-classes.d2,8:4:89-8:11:96",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/merge-classes.d2,8:4:89-8:11:96",
+                                      "value": [
+                                        {
+                                          "string": "classes",
+                                          "raw_string": "classes"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "map": {
+                                  "range": "TestCompile/classes/merge-classes.d2,8:13:98-12:4:147",
+                                  "nodes": [
+                                    {
+                                      "map_key": {
+                                        "range": "TestCompile/classes/merge-classes.d2,9:6:106-11:7:142",
+                                        "key": {
+                                          "range": "TestCompile/classes/merge-classes.d2,9:6:106-9:11:111",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "TestCompile/classes/merge-classes.d2,9:6:106-9:11:111",
+                                                "value": [
+                                                  {
+                                                    "string": "mango",
+                                                    "raw_string": "mango"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {},
+                                        "value": {
+                                          "map": {
+                                            "range": "TestCompile/classes/merge-classes.d2,9:13:113-11:6:141",
+                                            "nodes": [
+                                              {
+                                                "map_key": {
+                                                  "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:19:134",
+                                                  "key": {
+                                                    "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:13:128",
+                                                    "path": [
+                                                      {
+                                                        "unquoted_string": {
+                                                          "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:13:128",
+                                                          "value": [
+                                                            {
+                                                              "string": "width",
+                                                              "raw_string": "width"
+                                                            }
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "primary": {},
+                                                  "value": {
+                                                    "number": {
+                                                      "range": "TestCompile/classes/merge-classes.d2,10:15:130-10:19:134",
+                                                      "raw": "9000",
+                                                      "value": "9000"
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/classes/merge-classes.d2,6:0:63-6:6:69",
+            "value": [
+              {
+                "string": "layers",
+                "raw_string": "layers"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/classes/merge-classes.d2,6:0:63-6:6:69",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/classes/merge-classes.d2,6:0:63-6:6:69",
+                  "value": [
+                    {
+                      "string": "layers",
+                      "raw_string": "layers"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/classes/merge-classes.d2,6:0:63-14:1:154",
+              "key": {
+                "range": "TestCompile/classes/merge-classes.d2,6:0:63-6:6:69",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/classes/merge-classes.d2,6:0:63-6:6:69",
+                      "value": [
+                        {
+                          "string": "layers",
+                          "raw_string": "layers"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/classes/merge-classes.d2,6:8:71-14:0:153",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/classes/merge-classes.d2,7:2:75-13:3:152",
+                        "key": {
+                          "range": "TestCompile/classes/merge-classes.d2,7:2:75-7:8:81",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/classes/merge-classes.d2,7:2:75-7:8:81",
+                                "value": [
+                                  {
+                                    "string": "hawaii",
+                                    "raw_string": "hawaii"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "map": {
+                            "range": "TestCompile/classes/merge-classes.d2,7:10:83-13:2:151",
+                            "nodes": [
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/classes/merge-classes.d2,8:4:89-12:5:148",
+                                  "key": {
+                                    "range": "TestCompile/classes/merge-classes.d2,8:4:89-8:11:96",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/merge-classes.d2,8:4:89-8:11:96",
+                                          "value": [
+                                            {
+                                              "string": "classes",
+                                              "raw_string": "classes"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {
+                                    "map": {
+                                      "range": "TestCompile/classes/merge-classes.d2,8:13:98-12:4:147",
+                                      "nodes": [
+                                        {
+                                          "map_key": {
+                                            "range": "TestCompile/classes/merge-classes.d2,9:6:106-11:7:142",
+                                            "key": {
+                                              "range": "TestCompile/classes/merge-classes.d2,9:6:106-9:11:111",
+                                              "path": [
+                                                {
+                                                  "unquoted_string": {
+                                                    "range": "TestCompile/classes/merge-classes.d2,9:6:106-9:11:111",
+                                                    "value": [
+                                                      {
+                                                        "string": "mango",
+                                                        "raw_string": "mango"
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "primary": {},
+                                            "value": {
+                                              "map": {
+                                                "range": "TestCompile/classes/merge-classes.d2,9:13:113-11:6:141",
+                                                "nodes": [
+                                                  {
+                                                    "map_key": {
+                                                      "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:19:134",
+                                                      "key": {
+                                                        "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:13:128",
+                                                        "path": [
+                                                          {
+                                                            "unquoted_string": {
+                                                              "range": "TestCompile/classes/merge-classes.d2,10:8:123-10:13:128",
+                                                              "value": [
+                                                                {
+                                                                  "string": "width",
+                                                                  "raw_string": "width"
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        ]
+                                                      },
+                                                      "primary": {},
+                                                      "value": {
+                                                        "number": {
+                                                          "range": "TestCompile/classes/merge-classes.d2,10:15:130-10:19:134",
+                                                          "raw": "9000",
+                                                          "value": "9000"
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

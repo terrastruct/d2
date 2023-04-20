@@ -8,7 +8,7 @@ import (
 
 type PluginFeature string
 
-// When this is true, objects can set ther `near` key to another object
+// When this is true, objects can set their `near` key to another object
 // When this is false, objects can only set `near` to constants
 const NEAR_OBJECT PluginFeature = "near_object"
 
@@ -33,19 +33,19 @@ func FeatureSupportCheck(info *PluginInfo, g *d2graph.Graph) error {
 	}
 
 	for _, obj := range g.Objects {
-		if obj.Attributes.Top != nil || obj.Attributes.Left != nil {
+		if obj.Top != nil || obj.Left != nil {
 			if _, ok := featureMap[TOP_LEFT]; !ok {
 				return fmt.Errorf(`Object "%s" has attribute "top" and/or "left" set, but layout engine "%s" does not support locked positions.`, obj.AbsID(), info.Name)
 			}
 		}
-		if (obj.Attributes.Width != nil || obj.Attributes.Height != nil) && len(obj.ChildrenArray) > 0 {
+		if (obj.WidthAttr != nil || obj.HeightAttr != nil) && len(obj.ChildrenArray) > 0 {
 			if _, ok := featureMap[CONTAINER_DIMENSIONS]; !ok {
 				return fmt.Errorf(`Object "%s" has attribute "width" and/or "height" set, but layout engine "%s" does not support dimensions set on containers.`, obj.AbsID(), info.Name)
 			}
 		}
 
-		if obj.Attributes.NearKey != nil {
-			_, isKey := g.Root.HasChild(d2graph.Key(obj.Attributes.NearKey))
+		if obj.NearKey != nil {
+			_, isKey := g.Root.HasChild(d2graph.Key(obj.NearKey))
 			if isKey {
 				if _, ok := featureMap[NEAR_OBJECT]; !ok {
 					return fmt.Errorf(`Object "%s" has "near" set to another object, but layout engine "%s" only supports constant values for "near".`, obj.AbsID(), info.Name)

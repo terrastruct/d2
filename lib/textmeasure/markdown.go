@@ -21,15 +21,15 @@ var markdownRenderer goldmark.Markdown
 
 // these are css values from github-markdown.css so we can accurately compute the rendered dimensions
 const (
-	MarkdownFontSize     = d2fonts.FONT_SIZE_M
-	MarkdownLineHeight   = 1.5
-	MarkdownLineHeightPx = MarkdownFontSize * MarkdownLineHeight
+	MarkdownFontSize   = d2fonts.FONT_SIZE_M
+	MarkdownLineHeight = 1.5
 
-	PaddingLeft_ul_ol = 32
-	MarginBottom_ul   = MarkdownFontSize
+	PaddingLeft_ul_ol_em = 2.
+	MarginBottom_ul      = 16.
 
-	MarginTop_li_p = MarkdownFontSize
-	MarginBottom_p = MarkdownFontSize
+	MarginTop_li_p  = 16.
+	MarginTop_li_em = 0.25
+	MarginBottom_p  = 16.
 
 	LineHeight_h           = 1.25
 	MarginTop_h            = 24
@@ -37,7 +37,7 @@ const (
 	PaddingBottom_h1_h2_em = 0.3
 	BorderBottom_h1_h2     = 1
 
-	Height_hr          = 4
+	Height_hr_em       = 0.25
 	MarginTopBottom_hr = 24
 
 	Padding_pre          = 16
@@ -52,21 +52,30 @@ const (
 	MarginBottom_blockquote  = 16
 	BorderLeft_blockquote_em = 0.25
 
-	FONT_SIZE_H1 = d2fonts.FONT_SIZE_XXXL
-	FONT_SIZE_H2 = d2fonts.FONT_SIZE_XL
-	FONT_SIZE_H3 = d2fonts.FONT_SIZE_L
-	FONT_SIZE_H4 = d2fonts.FONT_SIZE_M
-	FONT_SIZE_H5 = d2fonts.FONT_SIZE_S
-	FONT_SIZE_H6 = d2fonts.FONT_SIZE_XS
+	h1_em = 2.
+	h2_em = 1.5
+	h3_em = 1.25
+	h4_em = 1.
+	h5_em = 0.875
+	h6_em = 0.85
 )
 
-var HeaderToFontSize = map[string]int{
-	"h1": FONT_SIZE_H1,
-	"h2": FONT_SIZE_H2,
-	"h3": FONT_SIZE_H3,
-	"h4": FONT_SIZE_H4,
-	"h5": FONT_SIZE_H5,
-	"h6": FONT_SIZE_H6,
+func HeaderToFontSize(baseFontSize int, header string) int {
+	switch header {
+	case "h1":
+		return int(h1_em * float64(baseFontSize))
+	case "h2":
+		return int(h2_em * float64(baseFontSize))
+	case "h3":
+		return int(h3_em * float64(baseFontSize))
+	case "h4":
+		return int(h4_em * float64(baseFontSize))
+	case "h5":
+		return int(h5_em * float64(baseFontSize))
+	case "h6":
+		return int(h6_em * float64(baseFontSize))
+	}
+	return 0
 }
 
 func RenderMarkdown(m string) (string, error) {
@@ -89,7 +98,7 @@ func init() {
 	)
 }
 
-func MeasureMarkdown(mdText string, ruler *Ruler, fontFamily *d2fonts.FontFamily) (width, height int, err error) {
+func MeasureMarkdown(mdText string, ruler *Ruler, fontFamily *d2fonts.FontFamily, fontSize int) (width, height int, err error) {
 	render, err := RenderMarkdown(mdText)
 	if err != nil {
 		return width, height, err
@@ -112,7 +121,7 @@ func MeasureMarkdown(mdText string, ruler *Ruler, fontFamily *d2fonts.FontFamily
 
 	// TODO consider setting a max width + (manual) text wrapping
 	bodyNode := doc.Find("body").First().Nodes[0]
-	bodyAttrs := ruler.measureNode(0, bodyNode, fontFamily, MarkdownFontSize, d2fonts.FONT_STYLE_REGULAR)
+	bodyAttrs := ruler.measureNode(0, bodyNode, fontFamily, fontSize, d2fonts.FONT_STYLE_REGULAR)
 
 	return int(math.Ceil(bodyAttrs.width)), int(math.Ceil(bodyAttrs.height)), nil
 }
@@ -272,8 +281,8 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 		isCode := false
 		switch n.Data {
 		case "h1", "h2", "h3", "h4", "h5", "h6":
-			fontSize = HeaderToFontSize[n.Data]
-			fontStyle = d2fonts.FONT_STYLE_BOLD
+			fontSize = HeaderToFontSize(fontSize, n.Data)
+			fontStyle = d2fonts.FONT_STYLE_SEMIBOLD
 			originalLineHeight := ruler.LineHeightFactor
 			ruler.LineHeightFactor = LineHeight_h
 			defer func() {
@@ -290,6 +299,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 		}
 
 		block := blockAttrs{}
+		lineHeightPx := float64(fontSize) * ruler.LineHeightFactor
 
 		if n.FirstChild != nil {
 			first := getNext(n.FirstChild)
@@ -300,8 +310,8 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 			// first create blocks from combined inline elements, then combine all blocks
 			// inlineBlock will be non-nil while inline elements are being combined into a block
 			endInlineBlock := func() {
-				if !isCode && inlineBlock.height > 0 && inlineBlock.height < MarkdownLineHeightPx {
-					inlineBlock.height = MarkdownLineHeightPx
+				if !isCode && inlineBlock.height > 0 && inlineBlock.height < lineHeightPx {
+					inlineBlock.height = lineHeightPx
 				}
 				blocks = append(blocks, *inlineBlock)
 				inlineBlock = nil
@@ -332,7 +342,7 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 					if inlineBlock != nil {
 						endInlineBlock()
 					} else {
-						block.height += MarkdownLineHeightPx
+						block.height += lineHeightPx
 					}
 				} else if childBlock.isNotEmpty() {
 					if inlineBlock == nil {
@@ -391,9 +401,9 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 				block.height += PaddingBottom_h1_h2_em*float64(fontSize) + BorderBottom_h1_h2
 			}
 		case "li":
-			block.width += PaddingLeft_ul_ol
+			block.width += PaddingLeft_ul_ol_em * float64(fontSize)
 			if hasPrev(n) {
-				block.marginTop = go2.Max(block.marginTop, 4)
+				block.marginTop = go2.Max(block.marginTop, MarginTop_li_em*float64(fontSize))
 			}
 		case "ol", "ul":
 			if hasAncestorElement(n, "ul") || hasAncestorElement(n, "ol") {
@@ -412,12 +422,12 @@ func (ruler *Ruler) measureNode(depth int, n *html.Node, fontFamily *d2fonts.Fon
 				block.height += 2 * PaddingTopBottom_code_em * float64(fontSize)
 			}
 		case "hr":
-			block.height += Height_hr
+			block.height += Height_hr_em * float64(fontSize)
 			block.marginTop = go2.Max(block.marginTop, MarginTopBottom_hr)
 			block.marginBottom = go2.Max(block.marginBottom, MarginTopBottom_hr)
 		}
-		if block.height > 0 && block.height < MarkdownLineHeightPx {
-			block.height = MarkdownLineHeightPx
+		if block.height > 0 && block.height < lineHeightPx {
+			block.height = lineHeightPx
 		}
 		if debugMeasure {
 			fmt.Printf("%s%s(%v,%v) mt:%v mb:%v\n", depthStr, n.Data, block.width, block.height, block.marginTop, block.marginBottom)

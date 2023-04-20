@@ -828,15 +828,15 @@
               "type": "rectangle",
               "pos": {
                 "x": 0,
-                "y": 0
+                "y": 41
               },
-              "width": 159,
-              "height": 66,
+              "width": 361,
+              "height": 125,
               "opacity": 1,
               "strokeDash": 0,
               "strokeWidth": 2,
               "borderRadius": 0,
-              "fill": "B6",
+              "fill": "B4",
               "stroke": "B1",
               "shadow": false,
               "3d": false,
@@ -851,6 +851,47 @@
               "methods": null,
               "columns": null,
               "label": "find contractors",
+              "fontSize": 28,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N1",
+              "italic": false,
+              "bold": false,
+              "underline": false,
+              "labelWidth": 187,
+              "labelHeight": 36,
+              "labelPosition": "OUTSIDE_TOP_CENTER",
+              "zIndex": 0,
+              "level": 1
+            },
+            {
+              "id": "find contractors.craigslist",
+              "type": "rectangle",
+              "pos": {
+                "x": 40,
+                "y": 70
+              },
+              "width": 110,
+              "height": 66,
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "borderRadius": 0,
+              "fill": "B5",
+              "stroke": "B1",
+              "shadow": false,
+              "3d": false,
+              "multiple": false,
+              "double-border": false,
+              "tooltip": "",
+              "link": "",
+              "icon": null,
+              "iconPosition": "",
+              "blend": false,
+              "fields": null,
+              "methods": null,
+              "columns": null,
+              "label": "craigslist",
               "fontSize": 16,
               "fontFamily": "DEFAULT",
               "language": "",
@@ -858,18 +899,59 @@
               "italic": false,
               "bold": true,
               "underline": false,
-              "labelWidth": 114,
+              "labelWidth": 65,
               "labelHeight": 21,
               "labelPosition": "INSIDE_MIDDLE_CENTER",
               "zIndex": 0,
-              "level": 1
+              "level": 2
+            },
+            {
+              "id": "find contractors.facebook",
+              "type": "rectangle",
+              "pos": {
+                "x": 210,
+                "y": 70
+              },
+              "width": 111,
+              "height": 66,
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "borderRadius": 0,
+              "fill": "B5",
+              "stroke": "B1",
+              "shadow": false,
+              "3d": false,
+              "multiple": false,
+              "double-border": false,
+              "tooltip": "",
+              "link": "",
+              "icon": null,
+              "iconPosition": "",
+              "blend": false,
+              "fields": null,
+              "methods": null,
+              "columns": null,
+              "label": "facebook",
+              "fontSize": 16,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N1",
+              "italic": false,
+              "bold": true,
+              "underline": false,
+              "labelWidth": 66,
+              "labelHeight": 21,
+              "labelPosition": "INSIDE_MIDDLE_CENTER",
+              "zIndex": 0,
+              "level": 2
             },
             {
               "id": "solicit quotes",
               "type": "rectangle",
               "pos": {
-                "x": 10,
-                "y": 166
+                "x": 196,
+                "y": 266
               },
               "width": 140,
               "height": 66,
@@ -911,10 +993,8 @@
               "id": "(find contractors -> solicit quotes)[0]",
               "src": "find contractors",
               "srcArrow": "none",
-              "srcLabel": "",
               "dst": "solicit quotes",
               "dstArrow": "triangle",
-              "dstLabel": "",
               "opacity": 1,
               "strokeDash": 0,
               "strokeWidth": 2,
@@ -934,20 +1014,20 @@
               "labelPercentage": 0,
               "route": [
                 {
-                  "x": 79.5,
-                  "y": 66
-                },
-                {
-                  "x": 79.5,
-                  "y": 106
-                },
-                {
-                  "x": 79.5,
-                  "y": 126
-                },
-                {
-                  "x": 79.5,
+                  "x": 265.5,
                   "y": 166
+                },
+                {
+                  "x": 265.5,
+                  "y": 206
+                },
+                {
+                  "x": 265.5,
+                  "y": 226
+                },
+                {
+                  "x": 265.5,
+                  "y": 266
                 }
               ],
               "isCurve": true,
@@ -1004,11 +1084,175 @@
           "fontFamily": "SourceSansPro",
           "shapes": [
             {
-              "id": "obtain quotes",
+              "id": "find contractors",
               "type": "rectangle",
               "pos": {
                 "x": 0,
-                "y": 0
+                "y": 41
+              },
+              "width": 361,
+              "height": 125,
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "borderRadius": 0,
+              "fill": "B4",
+              "stroke": "B1",
+              "shadow": false,
+              "3d": false,
+              "multiple": false,
+              "double-border": false,
+              "tooltip": "",
+              "link": "",
+              "icon": null,
+              "iconPosition": "",
+              "blend": false,
+              "fields": null,
+              "methods": null,
+              "columns": null,
+              "label": "find contractors",
+              "fontSize": 28,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N1",
+              "italic": false,
+              "bold": false,
+              "underline": false,
+              "labelWidth": 187,
+              "labelHeight": 36,
+              "labelPosition": "OUTSIDE_TOP_CENTER",
+              "zIndex": 0,
+              "level": 1
+            },
+            {
+              "id": "find contractors.craigslist",
+              "type": "rectangle",
+              "pos": {
+                "x": 40,
+                "y": 70
+              },
+              "width": 110,
+              "height": 66,
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "borderRadius": 0,
+              "fill": "B5",
+              "stroke": "B1",
+              "shadow": false,
+              "3d": false,
+              "multiple": false,
+              "double-border": false,
+              "tooltip": "",
+              "link": "",
+              "icon": null,
+              "iconPosition": "",
+              "blend": false,
+              "fields": null,
+              "methods": null,
+              "columns": null,
+              "label": "craigslist",
+              "fontSize": 16,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N1",
+              "italic": false,
+              "bold": true,
+              "underline": false,
+              "labelWidth": 65,
+              "labelHeight": 21,
+              "labelPosition": "INSIDE_MIDDLE_CENTER",
+              "zIndex": 0,
+              "level": 2
+            },
+            {
+              "id": "find contractors.facebook",
+              "type": "rectangle",
+              "pos": {
+                "x": 210,
+                "y": 70
+              },
+              "width": 111,
+              "height": 66,
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "borderRadius": 0,
+              "fill": "B5",
+              "stroke": "B1",
+              "shadow": false,
+              "3d": false,
+              "multiple": false,
+              "double-border": false,
+              "tooltip": "",
+              "link": "",
+              "icon": null,
+              "iconPosition": "",
+              "blend": false,
+              "fields": null,
+              "methods": null,
+              "columns": null,
+              "label": "facebook",
+              "fontSize": 16,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N1",
+              "italic": false,
+              "bold": true,
+              "underline": false,
+              "labelWidth": 66,
+              "labelHeight": 21,
+              "labelPosition": "INSIDE_MIDDLE_CENTER",
+              "zIndex": 0,
+              "level": 2
+            },
+            {
+              "id": "solicit quotes",
+              "type": "rectangle",
+              "pos": {
+                "x": 196,
+                "y": 266
+              },
+              "width": 140,
+              "height": 66,
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "borderRadius": 0,
+              "fill": "B6",
+              "stroke": "B1",
+              "shadow": false,
+              "3d": false,
+              "multiple": false,
+              "double-border": false,
+              "tooltip": "",
+              "link": "",
+              "icon": null,
+              "iconPosition": "",
+              "blend": false,
+              "fields": null,
+              "methods": null,
+              "columns": null,
+              "label": "solicit quotes",
+              "fontSize": 16,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N1",
+              "italic": false,
+              "bold": true,
+              "underline": false,
+              "labelWidth": 95,
+              "labelHeight": 21,
+              "labelPosition": "INSIDE_MIDDLE_CENTER",
+              "zIndex": 0,
+              "level": 1
+            },
+            {
+              "id": "obtain quotes",
+              "type": "rectangle",
+              "pos": {
+                "x": 401,
+                "y": 50
               },
               "width": 143,
               "height": 66,
@@ -1048,8 +1292,8 @@
               "id": "negotiate",
               "type": "rectangle",
               "pos": {
-                "x": 16,
-                "y": 166
+                "x": 417,
+                "y": 266
               },
               "width": 112,
               "height": 66,
@@ -1088,13 +1332,11 @@
           ],
           "connections": [
             {
-              "id": "(obtain quotes -> negotiate)[0]",
-              "src": "obtain quotes",
+              "id": "(find contractors -> solicit quotes)[0]",
+              "src": "find contractors",
               "srcArrow": "none",
-              "srcLabel": "",
-              "dst": "negotiate",
+              "dst": "solicit quotes",
               "dstArrow": "triangle",
-              "dstLabel": "",
               "opacity": 1,
               "strokeDash": 0,
               "strokeWidth": 2,
@@ -1114,20 +1356,67 @@
               "labelPercentage": 0,
               "route": [
                 {
-                  "x": 71.5,
-                  "y": 66
-                },
-                {
-                  "x": 71.5,
-                  "y": 106
-                },
-                {
-                  "x": 71.5,
-                  "y": 126
-                },
-                {
-                  "x": 71.5,
+                  "x": 265.5,
                   "y": 166
+                },
+                {
+                  "x": 265.5,
+                  "y": 206
+                },
+                {
+                  "x": 265.5,
+                  "y": 226
+                },
+                {
+                  "x": 265.5,
+                  "y": 266
+                }
+              ],
+              "isCurve": true,
+              "animated": false,
+              "tooltip": "",
+              "icon": null,
+              "zIndex": 0
+            },
+            {
+              "id": "(obtain quotes -> negotiate)[0]",
+              "src": "obtain quotes",
+              "srcArrow": "none",
+              "dst": "negotiate",
+              "dstArrow": "triangle",
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "stroke": "B1",
+              "borderRadius": 10,
+              "label": "",
+              "fontSize": 16,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N2",
+              "italic": true,
+              "bold": false,
+              "underline": false,
+              "labelWidth": 0,
+              "labelHeight": 0,
+              "labelPosition": "",
+              "labelPercentage": 0,
+              "route": [
+                {
+                  "x": 472.5,
+                  "y": 116
+                },
+                {
+                  "x": 472.5,
+                  "y": 156
+                },
+                {
+                  "x": 472.5,
+                  "y": 226
+                },
+                {
+                  "x": 472.5,
+                  "y": 266
                 }
               ],
               "isCurve": true,
@@ -1184,11 +1473,216 @@
           "fontFamily": "SourceSansPro",
           "shapes": [
             {
+              "id": "find contractors",
+              "type": "rectangle",
+              "pos": {
+                "x": 0,
+                "y": 41
+              },
+              "width": 361,
+              "height": 125,
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "borderRadius": 0,
+              "fill": "B4",
+              "stroke": "B1",
+              "shadow": false,
+              "3d": false,
+              "multiple": false,
+              "double-border": false,
+              "tooltip": "",
+              "link": "",
+              "icon": null,
+              "iconPosition": "",
+              "blend": false,
+              "fields": null,
+              "methods": null,
+              "columns": null,
+              "label": "find contractors",
+              "fontSize": 28,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N1",
+              "italic": false,
+              "bold": false,
+              "underline": false,
+              "labelWidth": 187,
+              "labelHeight": 36,
+              "labelPosition": "OUTSIDE_TOP_CENTER",
+              "zIndex": 0,
+              "level": 1
+            },
+            {
+              "id": "find contractors.craigslist",
+              "type": "rectangle",
+              "pos": {
+                "x": 40,
+                "y": 70
+              },
+              "width": 110,
+              "height": 66,
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "borderRadius": 0,
+              "fill": "B5",
+              "stroke": "B1",
+              "shadow": false,
+              "3d": false,
+              "multiple": false,
+              "double-border": false,
+              "tooltip": "",
+              "link": "",
+              "icon": null,
+              "iconPosition": "",
+              "blend": false,
+              "fields": null,
+              "methods": null,
+              "columns": null,
+              "label": "craigslist",
+              "fontSize": 16,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N1",
+              "italic": false,
+              "bold": true,
+              "underline": false,
+              "labelWidth": 65,
+              "labelHeight": 21,
+              "labelPosition": "INSIDE_MIDDLE_CENTER",
+              "zIndex": 0,
+              "level": 2
+            },
+            {
+              "id": "find contractors.facebook",
+              "type": "rectangle",
+              "pos": {
+                "x": 210,
+                "y": 70
+              },
+              "width": 111,
+              "height": 66,
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "borderRadius": 0,
+              "fill": "B5",
+              "stroke": "B1",
+              "shadow": false,
+              "3d": false,
+              "multiple": false,
+              "double-border": false,
+              "tooltip": "",
+              "link": "",
+              "icon": null,
+              "iconPosition": "",
+              "blend": false,
+              "fields": null,
+              "methods": null,
+              "columns": null,
+              "label": "facebook",
+              "fontSize": 16,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N1",
+              "italic": false,
+              "bold": true,
+              "underline": false,
+              "labelWidth": 66,
+              "labelHeight": 21,
+              "labelPosition": "INSIDE_MIDDLE_CENTER",
+              "zIndex": 0,
+              "level": 2
+            },
+            {
+              "id": "solicit quotes",
+              "type": "rectangle",
+              "pos": {
+                "x": 196,
+                "y": 266
+              },
+              "width": 140,
+              "height": 66,
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "borderRadius": 0,
+              "fill": "B6",
+              "stroke": "B1",
+              "shadow": false,
+              "3d": false,
+              "multiple": false,
+              "double-border": false,
+              "tooltip": "",
+              "link": "",
+              "icon": null,
+              "iconPosition": "",
+              "blend": false,
+              "fields": null,
+              "methods": null,
+              "columns": null,
+              "label": "solicit quotes",
+              "fontSize": 16,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N1",
+              "italic": false,
+              "bold": true,
+              "underline": false,
+              "labelWidth": 95,
+              "labelHeight": 21,
+              "labelPosition": "INSIDE_MIDDLE_CENTER",
+              "zIndex": 0,
+              "level": 1
+            },
+            {
+              "id": "obtain quotes",
+              "type": "rectangle",
+              "pos": {
+                "x": 401,
+                "y": 50
+              },
+              "width": 143,
+              "height": 66,
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "borderRadius": 0,
+              "fill": "B6",
+              "stroke": "B1",
+              "shadow": false,
+              "3d": false,
+              "multiple": false,
+              "double-border": false,
+              "tooltip": "",
+              "link": "",
+              "icon": null,
+              "iconPosition": "",
+              "blend": false,
+              "fields": null,
+              "methods": null,
+              "columns": null,
+              "label": "obtain quotes",
+              "fontSize": 16,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N1",
+              "italic": false,
+              "bold": true,
+              "underline": false,
+              "labelWidth": 98,
+              "labelHeight": 21,
+              "labelPosition": "INSIDE_MIDDLE_CENTER",
+              "zIndex": 0,
+              "level": 1
+            },
+            {
               "id": "negotiate",
               "type": "rectangle",
               "pos": {
-                "x": 28,
-                "y": 0
+                "x": 417,
+                "y": 266
               },
               "width": 112,
               "height": 66,
@@ -1228,8 +1722,8 @@
               "id": "book the best bid",
               "type": "rectangle",
               "pos": {
-                "x": 0,
-                "y": 166
+                "x": 389,
+                "y": 432
               },
               "width": 167,
               "height": 66,
@@ -1268,13 +1762,11 @@
           ],
           "connections": [
             {
-              "id": "(negotiate -> book the best bid)[0]",
-              "src": "negotiate",
+              "id": "(find contractors -> solicit quotes)[0]",
+              "src": "find contractors",
               "srcArrow": "none",
-              "srcLabel": "",
-              "dst": "book the best bid",
+              "dst": "solicit quotes",
               "dstArrow": "triangle",
-              "dstLabel": "",
               "opacity": 1,
               "strokeDash": 0,
               "strokeWidth": 2,
@@ -1294,20 +1786,114 @@
               "labelPercentage": 0,
               "route": [
                 {
-                  "x": 83.5,
-                  "y": 66
-                },
-                {
-                  "x": 83.5,
-                  "y": 106
-                },
-                {
-                  "x": 83.5,
-                  "y": 126
-                },
-                {
-                  "x": 83.5,
+                  "x": 265.5,
                   "y": 166
+                },
+                {
+                  "x": 265.5,
+                  "y": 206
+                },
+                {
+                  "x": 265.5,
+                  "y": 226
+                },
+                {
+                  "x": 265.5,
+                  "y": 266
+                }
+              ],
+              "isCurve": true,
+              "animated": false,
+              "tooltip": "",
+              "icon": null,
+              "zIndex": 0
+            },
+            {
+              "id": "(obtain quotes -> negotiate)[0]",
+              "src": "obtain quotes",
+              "srcArrow": "none",
+              "dst": "negotiate",
+              "dstArrow": "triangle",
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "stroke": "B1",
+              "borderRadius": 10,
+              "label": "",
+              "fontSize": 16,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N2",
+              "italic": true,
+              "bold": false,
+              "underline": false,
+              "labelWidth": 0,
+              "labelHeight": 0,
+              "labelPosition": "",
+              "labelPercentage": 0,
+              "route": [
+                {
+                  "x": 472.5,
+                  "y": 116
+                },
+                {
+                  "x": 472.5,
+                  "y": 156
+                },
+                {
+                  "x": 472.5,
+                  "y": 226
+                },
+                {
+                  "x": 472.5,
+                  "y": 266
+                }
+              ],
+              "isCurve": true,
+              "animated": false,
+              "tooltip": "",
+              "icon": null,
+              "zIndex": 0
+            },
+            {
+              "id": "(negotiate -> book the best bid)[0]",
+              "src": "negotiate",
+              "srcArrow": "none",
+              "dst": "book the best bid",
+              "dstArrow": "triangle",
+              "opacity": 1,
+              "strokeDash": 0,
+              "strokeWidth": 2,
+              "stroke": "B1",
+              "borderRadius": 10,
+              "label": "",
+              "fontSize": 16,
+              "fontFamily": "DEFAULT",
+              "language": "",
+              "color": "N2",
+              "italic": true,
+              "bold": false,
+              "underline": false,
+              "labelWidth": 0,
+              "labelHeight": 0,
+              "labelPosition": "",
+              "labelPercentage": 0,
+              "route": [
+                {
+                  "x": 472.5,
+                  "y": 332
+                },
+                {
+                  "x": 472.5,
+                  "y": 372
+                },
+                {
+                  "x": 472.5,
+                  "y": 392
+                },
+                {
+                  "x": 472.5,
+                  "y": 432
                 }
               ],
               "isCurve": true,

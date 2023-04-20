@@ -271,9 +271,9 @@ m6_desc -> queue.M6
 			name: "unnamed_class_table_code",
 			script: `
 
-class -> users -> code
+class2 -> users -> code
 
-class: "" {
+class2: "" {
 	shape: class
 	-num: int
 	-timeout: int
@@ -318,7 +318,7 @@ ico: {
 			name: "only_header_class_table",
 			script: `
 
-class: RefreshAuthorizationPolicyProtocolServerSideTranslatorProtocolBuffer {
+class2: RefreshAuthorizationPolicyProtocolServerSideTranslatorProtocolBuffer {
 	shape: class
 }
 
@@ -331,7 +331,7 @@ table with short col: RefreshAuthorizationPolicyCache {
 	ok
 }
 
-class -> table -> table with short col
+class2 -> table -> table with short col
 `,
 		},
 		{
@@ -654,6 +654,282 @@ x -> y: sync
 y -> z: sync {
 	style.bold: true
 }
+`,
+		},
+		{
+			name: "grid_in_constant_near",
+			script: `
+a
+b
+c
+x: {
+	near: top-right
+	grid-columns: 1
+	y
+	z
+}
+`,
+		},
+		{
+			name: "md_font_weight",
+			script: `
+explanation: |md
+# I can do headers
+
+- lists
+- lists
+
+And other normal markdown stuff
+|
+`,
+		},
+		{
+			name: "grid_panic",
+			script: `
+			2 rows 1 obj: {
+				grid-rows: 2
+
+				one
+			}
+			3 rows 2 obj: {
+				grid-rows: 3
+
+				one
+				two
+			}
+			4 columns 2 obj: {
+				grid-columns: 4
+
+				one
+				two
+			}
+`,
+		},
+		{
+			name: "long_arrowhead_label",
+			script: `
+a -> b: {
+	target-arrowhead: "a to b with unexpectedly long target arrowhead label"
+}
+`,
+		},
+		{
+			name: "arrowhead_sizes_with_labels",
+			script: `
+triangle: {
+	a <-> b: {
+		source-arrowhead: 1
+		target-arrowhead: 1
+	}
+	c <-> d: {
+		source-arrowhead: 1
+		target-arrowhead: 1
+		style.stroke-width: 8
+	}
+}
+none: {
+	a -- b: {
+		source-arrowhead: 1
+		target-arrowhead: 1
+	}
+	c -- d: {
+		source-arrowhead: 1
+		target-arrowhead: 1
+		style.stroke-width: 8
+	}
+}
+arrow: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: arrow
+		}
+		target-arrowhead: 1 {
+			shape: arrow
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: arrow
+		}
+		target-arrowhead: 1 {
+			shape: arrow
+		}
+		style.stroke-width: 8
+	}
+}
+diamond: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: diamond
+		}
+		target-arrowhead: 1 {
+			shape: diamond
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: diamond
+		}
+		target-arrowhead: 1 {
+			shape: diamond
+		}
+		style.stroke-width: 8
+	}
+}
+filled diamond: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: diamond
+			style.filled: true
+		}
+		target-arrowhead: 1 {
+			shape: diamond
+			style.filled: true
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: diamond
+			style.filled: true
+		}
+		target-arrowhead: 1 {
+			shape: diamond
+			style.filled: true
+		}
+		style.stroke-width: 8
+	}
+}
+circle: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: circle
+		}
+		target-arrowhead: 1 {
+			shape: circle
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: circle
+		}
+		target-arrowhead: 1 {
+			shape: circle
+		}
+		style.stroke-width: 8
+	}
+}
+filled circle: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: circle
+			style.filled: true
+		}
+		target-arrowhead: 1 {
+			shape: circle
+			style.filled: true
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: circle
+			style.filled: true
+		}
+		target-arrowhead: 1 {
+			shape: circle
+			style.filled: true
+		}
+		style.stroke-width: 8
+	}
+}
+cf one: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: cf-one
+		}
+		target-arrowhead: 1 {
+			shape: cf-one
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: cf-one
+		}
+		target-arrowhead: 1 {
+			shape: cf-one
+		}
+		style.stroke-width: 8
+	}
+}
+cf one required: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: cf-one-required
+		}
+		target-arrowhead: 1 {
+			shape: cf-one-required
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: cf-one-required
+		}
+		target-arrowhead: 1 {
+			shape: cf-one-required
+		}
+		style.stroke-width: 8
+	}
+}
+cf many: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: cf-many
+		}
+		target-arrowhead: 1 {
+			shape: cf-many
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: cf-many
+		}
+		target-arrowhead: 1 {
+			shape: cf-many
+		}
+		style.stroke-width: 8
+	}
+}
+cf many required: {
+	a <-> b: {
+		source-arrowhead: 1 {
+			shape: cf-many-required
+		}
+		target-arrowhead: 1 {
+			shape: cf-many-required
+		}
+	}
+	c <-> d: {
+		source-arrowhead: 1 {
+			shape: cf-many-required
+		}
+		target-arrowhead: 1 {
+			shape: cf-many-required
+		}
+		style.stroke-width: 8
+	}
+}
+`,
+		},
+		{
+			name: "empty_md_measurement",
+			script: `
+a
+b: |md
+
+
+|
+c
+d
+a -> b -> c
 `,
 		},
 	}
