@@ -5,6 +5,7 @@
 #### Improvements 🧹
 
 - ELK self loops get distributed around the object instead of stacking [#1232](https://github.com/terrastruct/d2/pull/1232)
+- ELK preserves order of objects in cycles [#1235](https://github.com/terrastruct/d2/pull/1235)
 
 #### Bugfixes ⛑️
 
