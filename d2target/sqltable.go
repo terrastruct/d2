@@ -46,6 +46,8 @@ func (c SQLColumn) ConstraintAbbr() string {
 		return "PK"
 	case "foreign_key":
 		return "FK"
+	case "primary_key_foreign_key":
+		return "PK FK"
 	case "unique":
 		return "UNQ"
 	default:

@@ -1024,8 +1024,11 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 			}
 			maxTypeWidth = go2.Max(maxTypeWidth, typeDims.Width)
 
-			if c.Constraint != "" {
-				// covers UNQ constraint with padding
+			if c.Constraint == "primary_key_foreign_key" {
+				// covers "PK FK" constraint with padding
+				constraintWidth = 80
+			} else if c.Constraint != "" && constraintWidth == 0 {
+				// covers remaining constraints with "UNQ" being the largest
 				constraintWidth = 60
 			}
 		}
