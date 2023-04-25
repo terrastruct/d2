@@ -932,6 +932,8 @@ d
 a -> b -> c
 `,
 		},
+		loadFromFile(t, "slow_grid"),
+		loadFromFile(t, "grid_oom"),
 	}
 
 	runa(t, tcs)
