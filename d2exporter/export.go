@@ -200,15 +200,9 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 	text := edge.Text()
 
 	if edge.SrcArrow {
-		connection.SrcArrow = d2target.TriangleArrowhead
-		if edge.SrcArrowhead != nil {
-			if edge.SrcArrowhead.Shape.Value != "" {
-				filled := false
-				if edge.SrcArrowhead.Style.Filled != nil {
-					filled, _ = strconv.ParseBool(edge.SrcArrowhead.Style.Filled.Value)
-				}
-				connection.SrcArrow = d2target.ToArrowhead(edge.SrcArrowhead.Shape.Value, filled)
-			}
+		connection.SrcArrow = d2target.DefaultArrowhead
+		if edge.SrcArrowhead != nil && edge.SrcArrowhead.Shape.Value != "" {
+			connection.SrcArrow = edge.SrcArrowhead.ToArrowhead()
 		}
 	}
 	if edge.SrcArrowhead != nil {
@@ -221,15 +215,9 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 		}
 	}
 	if edge.DstArrow {
-		connection.DstArrow = d2target.TriangleArrowhead
-		if edge.DstArrowhead != nil {
-			if edge.DstArrowhead.Shape.Value != "" {
-				filled := false
-				if edge.DstArrowhead.Style.Filled != nil {
-					filled, _ = strconv.ParseBool(edge.DstArrowhead.Style.Filled.Value)
-				}
-				connection.DstArrow = d2target.ToArrowhead(edge.DstArrowhead.Shape.Value, filled)
-			}
+		connection.DstArrow = d2target.DefaultArrowhead
+		if edge.DstArrowhead != nil && edge.DstArrowhead.Shape.Value != "" {
+			connection.DstArrow = edge.DstArrowhead.ToArrowhead()
 		}
 	}
 	if edge.DstArrowhead != nil {

@@ -635,6 +635,8 @@ const (
 	CfMany         Arrowhead = "cf-many"
 	CfOneRequired  Arrowhead = "cf-one-required"
 	CfManyRequired Arrowhead = "cf-many-required"
+
+	DefaultArrowhead Arrowhead = TriangleArrowhead
 )
 
 var Arrowheads = map[string]struct{}{
@@ -663,8 +665,12 @@ func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
 			return FilledCircleArrowhead
 		}
 		return CircleArrowhead
+	case string(NoArrowhead):
+		return NoArrowhead
 	case string(ArrowArrowhead):
 		return ArrowArrowhead
+	case string(TriangleArrowhead):
+		return TriangleArrowhead
 	case string(CfOne):
 		return CfOne
 	case string(CfMany):
@@ -674,7 +680,7 @@ func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
 	case string(CfManyRequired):
 		return CfManyRequired
 	default:
-		return TriangleArrowhead
+		return DefaultArrowhead
 	}
 }
 
