@@ -553,19 +553,13 @@ func (connection *Connection) GetArrowheadLabelPosition(isDst bool) *geo.Point {
 		index = len(connection.Route) - 2
 	}
 	start, end := connection.Route[index], connection.Route[index+1]
+	// Note: end to start to get normal towards unlocked top position
+	normalX, normalY := geo.GetUnitNormalVector(end.X, end.Y, start.X, start.Y)
 
-	// how much to move the label back from the very end of the edge
-	var shift float64
-	if start.Y == end.Y {
-		// shift left/right to fit on horizontal segment
-		shift = width/2. + label.PADDING
-	} else if start.X == end.X {
-		// shift up/down to fit on vertical segment
-		shift = height/2. + label.PADDING
-	} else {
-		// TODO compute amount to shift according to angle instead of max
-		shift = math.Max(width, height)
-	}
+	// determine how much to move the label back from the very end of the edge
+	// e.g. if normal points up {x: 0, y:1}, shift width/2 + padding to fit
+	shift := math.Abs(normalX)*(height/2.+label.PADDING) +
+		math.Abs(normalY)*(width/2.+label.PADDING)
 
 	length := geo.Route(connection.Route).Length()
 	var position float64
@@ -583,7 +577,7 @@ func (connection *Connection) GetArrowheadLabelPosition(isDst bool) *geo.Point {
 
 	strokeWidth := float64(connection.StrokeWidth)
 
-	labelTL, index := label.UnlockedTop.GetPointOnRoute(connection.Route, strokeWidth, position, width, height)
+	labelTL, _ := label.UnlockedTop.GetPointOnRoute(connection.Route, strokeWidth, position, width, height)
 
 	var arrowSize float64
 	if isDst && connection.DstArrow != NoArrowhead {
@@ -597,9 +591,6 @@ func (connection *Connection) GetArrowheadLabelPosition(isDst bool) *geo.Point {
 		// labelTL already accounts for strokeWidth and padding, we only want to shift further if the arrow is larger than this
 		offset := (arrowSize/2 + ARROWHEAD_PADDING) - strokeWidth/2 - label.PADDING
 		if offset > 0 {
-			start, end = connection.Route[index], connection.Route[index+1]
-			// Note: end to start to get normal towards unlocked top position
-			normalX, normalY := geo.GetUnitNormalVector(end.X, end.Y, start.X, start.Y)
 			labelTL.X += normalX * offset
 			labelTL.Y += normalY * offset
 		}
