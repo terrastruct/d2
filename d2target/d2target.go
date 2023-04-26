@@ -254,60 +254,77 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 	return Point{x1, y1}, Point{x2, y2}
 }
 
-func (diagram Diagram) GetNestedCorpus() string {
+func (diagram Diagram) GetNestedCorpus() []Text {
 	corpus := diagram.GetCorpus()
 	for _, d := range diagram.Layers {
-		corpus += d.GetNestedCorpus()
+		corpus = append(corpus, d.GetNestedCorpus()...)
 	}
 	for _, d := range diagram.Scenarios {
-		corpus += d.GetNestedCorpus()
+		corpus = append(corpus, d.GetNestedCorpus()...)
 	}
 	for _, d := range diagram.Steps {
-		corpus += d.GetNestedCorpus()
+		corpus = append(corpus, d.GetNestedCorpus()...)
 	}
 
 	return corpus
 }
 
-func (diagram Diagram) GetCorpus() string {
-	var corpus string
+func (diagram Diagram) GetCorpus() []Text {
 	appendixCount := 0
+	var corpus []Text
 	for _, s := range diagram.Shapes {
-		corpus += s.Label
+		corpus = append(corpus, s.Text)
+
 		if s.Tooltip != "" {
-			corpus += s.Tooltip
+			corpus = append(corpus, Text{
+				Label: s.Tooltip,
+			})
 			appendixCount++
-			corpus += fmt.Sprint(appendixCount)
+			corpus = append(corpus, Text{
+				Label: fmt.Sprint(appendixCount),
+			})
 		}
 		if s.Link != "" {
-			corpus += s.Link
+			corpus = append(corpus, Text{
+				Label: s.Link,
+			})
 			appendixCount++
-			corpus += fmt.Sprint(appendixCount)
+			corpus = append(corpus, Text{
+				Label: fmt.Sprint(appendixCount),
+			})
 		}
 		if s.Type == ShapeClass {
 			for _, cf := range s.Fields {
-				corpus += cf.Text(0).Text + cf.VisibilityToken()
+				corpus = append(corpus, Text{
+					Label: cf.Text(0).Text + cf.VisibilityToken(),
+				})
 			}
 			for _, cm := range s.Methods {
-				corpus += cm.Text(0).Text + cm.VisibilityToken()
+				corpus = append(corpus, Text{
+					Label: cm.Text(0).Text + cm.VisibilityToken(),
+				})
 			}
 		}
 		if s.Type == ShapeSQLTable {
 			for _, c := range s.Columns {
 				for _, t := range c.Texts(0) {
-					corpus += t.Text
+					corpus = append(corpus, Text{
+						Label: t.Text,
+					})
 				}
-				corpus += c.ConstraintAbbr()
+				corpus = append(corpus, Text{
+					Label: c.ConstraintAbbr(),
+				})
 			}
 		}
 	}
 	for _, c := range diagram.Connections {
-		corpus += c.Label
+		corpus = append(corpus, c.Text)
 		if c.SrcLabel != nil {
-			corpus += c.SrcLabel.Label
+			corpus = append(corpus, *c.SrcLabel)
 		}
 		if c.DstLabel != nil {
-			corpus += c.DstLabel.Label
+			corpus = append(corpus, *c.DstLabel)
 		}
 	}
 
