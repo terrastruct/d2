@@ -472,32 +472,46 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 	// .       A │ B   C │ D   E                                  ┌E───────────┐
 	// .       A │ B │ C   D   E                                  └────────────┘
 	// of these divisions, find the layout with rows closest to the targetSize
-	iterDivisions(gd.objects, nCuts, func(division []int) {
+	count := 0
+	iterDivisions(gd.objects, nCuts, func(division []int) bool {
 		layout := genLayout(gd.objects, division)
 		dist := getDistToTarget(layout, targetSize, float64(gd.horizontalGap), float64(gd.verticalGap), columns)
 		if dist < bestDist {
 			bestLayout = layout
 			bestDist = dist
 		}
+		count++
+		if count > 1_000_000 {
+			return true
+		}
+		return false
 	})
 
 	return bestLayout
 }
 
+// process current division, return true to stop iterating
+type iterDivision func(division []int) (done bool)
+
 // get all possible divisions of objects by the number of cuts
-func iterDivisions(objects []*d2graph.Object, nCuts int, f func([]int)) {
+func iterDivisions(objects []*d2graph.Object, nCuts int, f iterDivision) {
 	if len(objects) < 2 || nCuts == 0 {
 		return
 	}
+	done := false
 	// we go in this order to prefer extra objects in starting rows rather than later ones
 	lastObj := len(objects) - 1
 	for index := lastObj; index >= nCuts; index-- {
 		if nCuts > 1 {
-			iterDivisions(objects[:index], nCuts-1, func(inner []int) {
-				f(append(inner, index-1))
+			iterDivisions(objects[:index], nCuts-1, func(inner []int) bool {
+				done = f(append(inner, index-1))
+				return done
 			})
 		} else {
-			f([]int{index - 1})
+			done = f([]int{index - 1})
+		}
+		if done {
+			return
 		}
 	}
 }
