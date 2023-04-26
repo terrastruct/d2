@@ -1,0 +1,286 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,0:0:0-10:0:99",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,0:0:0-4:1:49",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,0:0:0-0:7:7",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,0:0:0-0:7:7",
+                    "value": [
+                      {
+                        "string": "classes",
+                        "raw_string": "classes"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,0:9:9-4:0:48",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,1:2:13-3:3:47",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,1:2:13-1:12:23",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,1:2:13-1:12:23",
+                              "value": [
+                                {
+                                  "string": "classClass",
+                                  "raw_string": "classClass"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,1:14:25-3:2:46",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,2:4:31-2:16:43",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,2:4:31-2:9:36",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,2:4:31-2:9:36",
+                                        "value": [
+                                          {
+                                            "string": "shape",
+                                            "raw_string": "shape"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,2:11:38-2:16:43",
+                                    "value": [
+                                      {
+                                        "string": "class",
+                                        "raw_string": "class"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,6:0:51-9:1:98",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,6:0:51-6:6:57",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,6:0:51-6:6:57",
+                    "value": [
+                      {
+                        "string": "object",
+                        "raw_string": "object"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,6:8:59-9:0:97",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,7:2:63-7:19:80",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,7:2:63-7:7:68",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,7:2:63-7:7:68",
+                              "value": [
+                                {
+                                  "string": "class",
+                                  "raw_string": "class"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,7:9:70-7:19:80",
+                          "value": [
+                            {
+                              "string": "classClass",
+                              "raw_string": "classClass"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,8:2:83-8:15:96",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,8:2:83-8:10:91",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,8:2:83-8:10:91",
+                              "value": [
+                                {
+                                  "string": "length()",
+                                  "raw_string": "length()"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,8:12:93-8:15:96",
+                          "value": [
+                            {
+                              "string": "int",
+                              "raw_string": "int"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "object",
+        "id_val": "object",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,6:0:51-6:6:57",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,6:0:51-6:6:57",
+                    "value": [
+                      {
+                        "string": "object",
+                        "raw_string": "object"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "class": {
+          "fields": null,
+          "methods": [
+            {
+              "name": "length()",
+              "return": "int",
+              "visibility": "public"
+            }
+          ]
+        },
+        "attributes": {
+          "label": {
+            "value": "object"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "class"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          },
+          "classes": [
+            "classClass"
+          ]
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

@@ -2398,6 +2398,20 @@ classes.x.shape: diamond
 			},
 		},
 		{
+			name: "class-shape-class",
+			text: `classes: {
+  classClass: {
+    shape: class
+  }
+}
+
+object: {
+  class: classClass
+  length(): int
+}
+`,
+		},
+		{
 			name: "no-class-primary",
 			text: `x.class
 `,
