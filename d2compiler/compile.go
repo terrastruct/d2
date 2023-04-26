@@ -150,15 +150,17 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 		c.compileField(obj, f)
 	}
 
-	switch obj.Shape.Value {
-	case d2target.ShapeClass:
-		c.compileClass(obj)
-	case d2target.ShapeSQLTable:
-		c.compileSQLTable(obj)
-	}
+	if !m.IsClass() {
+		switch obj.Shape.Value {
+		case d2target.ShapeClass:
+			c.compileClass(obj)
+		case d2target.ShapeSQLTable:
+			c.compileSQLTable(obj)
+		}
 
-	for _, e := range m.Edges {
-		c.compileEdge(obj, e)
+		for _, e := range m.Edges {
+			c.compileEdge(obj, e)
+		}
 	}
 }
 

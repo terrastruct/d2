@@ -1201,3 +1201,21 @@ func (m *Map) InClass(key *d2ast.Key) bool {
 	}
 	return false
 }
+
+func (m *Map) IsClass() bool {
+	parentBoard := ParentBoard(m)
+	if parentBoard.Map() == nil {
+		return false
+	}
+	classes := parentBoard.Map().GetField("classes")
+	if classes == nil || classes.Map() == nil {
+		return false
+	}
+
+	for _, class := range classes.Map().Fields {
+		if class.Map() == m {
+			return true
+		}
+	}
+	return false
+}
