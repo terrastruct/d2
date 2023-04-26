@@ -461,6 +461,8 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 		return genLayout(gd.objects, nil)
 	}
 
+	var bestLayout [][]*d2graph.Object
+	bestDist := math.MaxFloat64
 	// get all options for where to place these cuts, preferring later cuts over earlier cuts
 	// with 5 objects and 2 cuts we have these options:
 	// .       A   B   C │ D │ E     <- these cuts would produce: ┌A─┐ ┌B─┐ ┌C─┐
@@ -469,41 +471,35 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 	// .       A   B │ C │ D   E                                  └────────────┘
 	// .       A │ B   C │ D   E                                  ┌E───────────┐
 	// .       A │ B │ C   D   E                                  └────────────┘
-	divisions := genDivisions(gd.objects, nCuts)
-
-	var bestLayout [][]*d2graph.Object
-	bestDist := math.MaxFloat64
 	// of these divisions, find the layout with rows closest to the targetSize
-	for _, division := range divisions {
+	iterDivisions(gd.objects, nCuts, func(division []int) {
 		layout := genLayout(gd.objects, division)
 		dist := getDistToTarget(layout, targetSize, float64(gd.horizontalGap), float64(gd.verticalGap), columns)
 		if dist < bestDist {
 			bestLayout = layout
 			bestDist = dist
 		}
-	}
+	})
 
 	return bestLayout
 }
 
 // get all possible divisions of objects by the number of cuts
-func genDivisions(objects []*d2graph.Object, nCuts int) (divisions [][]int) {
+func iterDivisions(objects []*d2graph.Object, nCuts int, f func([]int)) {
 	if len(objects) < 2 || nCuts == 0 {
-		return nil
+		return
 	}
 	// we go in this order to prefer extra objects in starting rows rather than later ones
 	lastObj := len(objects) - 1
 	for index := lastObj; index >= nCuts; index-- {
 		if nCuts > 1 {
-			for _, inner := range genDivisions(objects[:index], nCuts-1) {
-				divisions = append(divisions, append(inner, index-1))
-			}
+			iterDivisions(objects[:index], nCuts-1, func(inner []int) {
+				f(append(inner, index-1))
+			})
 		} else {
-			divisions = append(divisions, []int{index - 1})
+			f([]int{index - 1})
 		}
 	}
-
-	return divisions
 }
 
 // generate a grid of objects from the given cut indices
@@ -516,6 +512,9 @@ func genLayout(objects []*d2graph.Object, cutIndices []int) [][]*d2graph.Object 
 			stop = cutIndices[i]
 		} else {
 			stop = len(objects) - 1
+		}
+		if stop >= objIndex {
+			layout[i] = make([]*d2graph.Object, 0, stop-objIndex+1)
 		}
 		for ; objIndex <= stop; objIndex++ {
 			layout[i] = append(layout[i], objects[objIndex])
