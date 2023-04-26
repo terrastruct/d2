@@ -461,8 +461,58 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 		return genLayout(gd.objects, nil)
 	}
 
+	var gap float64
+	if columns {
+		gap = float64(gd.verticalGap)
+	} else {
+		gap = float64(gd.horizontalGap)
+	}
+	getSize := func(o *d2graph.Object) float64 {
+		if columns {
+			return o.Height
+		} else {
+			return o.Width
+		}
+	}
+
+	skipCount := 0
+	// quickly eliminate bad row groupings
+	startingCache := make(map[int]bool)
+	okThreshold := 1.4
+	thresholdStep := 0.4
+	rowOk := func(row []*d2graph.Object, starting bool) (ok bool) {
+		if starting {
+			if ok, has := startingCache[len(row)]; has {
+				return ok
+			}
+			defer func() {
+				startingCache[len(row)] = ok
+			}()
+		}
+		rowSize := 0.
+		for _, obj := range row {
+			rowSize += getSize(obj)
+		}
+		if len(row) > 1 {
+			rowSize += gap * float64(len(row)-1)
+			// if multiple nodes are too big, it isn't ok. but a single node can't shrink
+			if rowSize > okThreshold*targetSize {
+				skipCount++
+				return false
+			}
+		}
+		// too small
+		if rowSize < targetSize/okThreshold {
+			skipCount++
+			return false
+		}
+		return true
+	}
+
 	var bestLayout [][]*d2graph.Object
 	bestDist := math.MaxFloat64
+	count := 0
+	attemptLimit := 1_000_000
 	// get all options for where to place these cuts, preferring later cuts over earlier cuts
 	// with 5 objects and 2 cuts we have these options:
 	// .       A   B   C │ D │ E     <- these cuts would produce: ┌A─┐ ┌B─┐ ┌C─┐
@@ -472,8 +522,7 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 	// .       A │ B   C │ D   E                                  ┌E───────────┐
 	// .       A │ B │ C   D   E                                  └────────────┘
 	// of these divisions, find the layout with rows closest to the targetSize
-	count := 0
-	iterDivisions(gd.objects, nCuts, func(division []int) bool {
+	tryDivision := func(division []int) bool {
 		layout := genLayout(gd.objects, division)
 		dist := getDistToTarget(layout, targetSize, float64(gd.horizontalGap), float64(gd.verticalGap), columns)
 		if dist < bestDist {
@@ -481,33 +530,105 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 			bestDist = dist
 		}
 		count++
-		if count > 1_000_000 {
-			return true
-		}
-		return false
-	})
+		// with few objects we can try all options to get best result but this won't scale, so only try up to 1mil options
+		return count >= attemptLimit
+	}
 
+	for bestLayout == nil {
+		iterDivisions(gd.objects, nCuts, tryDivision, rowOk)
+		okThreshold += thresholdStep
+		startingCache = make(map[int]bool)
+	}
+	// fmt.Printf("final count %d, skip count %d\n", count, skipCount)
+
+	// try fast layout algorithm, see if it is better than first 1mil
+	debt := 0.
+	fastDivision := make([]int, 0, nCuts)
+	rowSize := 0.
+	for i := 0; i < len(gd.objects); i++ {
+		o := gd.objects[i]
+		size := getSize(o)
+		if rowSize == 0 {
+			if size > targetSize-debt {
+				fastDivision = append(fastDivision, i-1)
+				newDebt := size - targetSize
+				debt += newDebt
+			} else {
+				rowSize += size
+			}
+			continue
+		}
+		if rowSize+(gap+size)/2. > targetSize-debt {
+			fastDivision = append(fastDivision, i-1)
+			newDebt := rowSize - targetSize
+			debt += newDebt
+			rowSize = size
+		} else {
+			rowSize += gap + size
+		}
+	}
+	// should always be the same with debt management, but haven't proven it
+	if len(fastDivision) == nCuts {
+		layout := genLayout(gd.objects, fastDivision)
+		dist := getDistToTarget(layout, targetSize, float64(gd.horizontalGap), float64(gd.verticalGap), columns)
+		if dist < bestDist {
+			bestLayout = layout
+			bestDist = dist
+		}
+	}
 	return bestLayout
 }
 
 // process current division, return true to stop iterating
 type iterDivision func(division []int) (done bool)
+type checkCut func(objects []*d2graph.Object, starting bool) (ok bool)
 
 // get all possible divisions of objects by the number of cuts
-func iterDivisions(objects []*d2graph.Object, nCuts int, f iterDivision) {
+func iterDivisions(objects []*d2graph.Object, nCuts int, f iterDivision, check checkCut) {
 	if len(objects) < 2 || nCuts == 0 {
 		return
 	}
 	done := false
 	// we go in this order to prefer extra objects in starting rows rather than later ones
 	lastObj := len(objects) - 1
+	// with objects=[A, B, C, D, E]; nCuts=2
+	// d:depth; i:index; n:nCuts;
+	// ┌────┬───┬───┬─────────────────────┬────────────┐
+	// │ d  │ i │ n │ objects             │ cuts       │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ 0  │ 4 │ 2 │ [A   B   C   D | E] │            │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ └1 │ 3 │ 1 │ [A   B   C | D]     │ + | E]     │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ └1 │ 2 │ 1 │ [A   B | C   D]     │ + | E]     │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ └1 │ 1 │ 1 │ [A | B   C   D]     │ + | E]     │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ 0  │ 3 │ 2 │ [A   B   C | D   E] │            │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ └1 │ 2 │ 1 │ [A   B | C]         │ + | D E]   │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ └1 │ 1 │ 1 │ [A | B   C]         │ + | D E]   │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ 0  │ 2 │ 2 │ [A   B | C   D   E] │            │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ └1 │ 1 │ 1 │ [A | B]             │ + | C D E] │
+	// └────┴───┴───┴─────────────────────┴────────────┘
 	for index := lastObj; index >= nCuts; index-- {
+		if !check(objects[index:], false) {
+			// optimization: if current cut gives a bad grouping, don't recurse
+			continue
+		}
 		if nCuts > 1 {
 			iterDivisions(objects[:index], nCuts-1, func(inner []int) bool {
 				done = f(append(inner, index-1))
 				return done
-			})
+			}, check)
 		} else {
+			if !check(objects[:index], true) {
+				// e.g. [A   B   C | D] if [A,B,C] is bad, skip it
+				continue
+			}
 			done = f([]int{index - 1})
 		}
 		if done {
