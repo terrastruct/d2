@@ -2425,6 +2425,24 @@ nostar -> 1star: { class: path }
 `,
 		},
 		{
+			name: "array-classes",
+			script: `classes: {
+  button: {
+	  style.border-radius: 999
+		style.stroke: black
+	}
+  success: {
+	  style.fill: "#90EE90"
+	}
+  error: {
+	  style.fill: "#EA9999"
+	}
+}
+yay: Successful { class: [button; success] }
+nay: Failure { class: [button; error] }
+`,
+		},
+		{
 			name: "border-radius",
 			script: `
 x: {

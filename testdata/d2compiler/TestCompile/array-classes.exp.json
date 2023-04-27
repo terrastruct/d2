@@ -1,0 +1,822 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,0:0:0-18:0:306",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,0:0:0-13:1:185",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,0:0:0-0:7:7",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,0:0:0-0:7:7",
+                    "value": [
+                      {
+                        "string": "classes",
+                        "raw_string": "classes"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,0:9:9-13:0:184",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,1:2:13-5:3:86",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,1:2:13-1:13:24",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,1:2:13-1:13:24",
+                              "value": [
+                                {
+                                  "string": "dragon_ball",
+                                  "raw_string": "dragon_ball"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,1:15:26-5:2:85",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,2:4:32-2:13:41",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,2:4:32-2:9:37",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,2:4:32-2:9:37",
+                                        "value": [
+                                          {
+                                            "string": "label",
+                                            "raw_string": "label"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "double_quoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,2:11:39-2:13:41",
+                                    "value": null
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,3:4:46-3:17:59",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,3:4:46-3:9:51",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,3:4:46-3:9:51",
+                                        "value": [
+                                          {
+                                            "string": "shape",
+                                            "raw_string": "shape"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,3:11:53-3:17:59",
+                                    "value": [
+                                      {
+                                        "string": "circle",
+                                        "raw_string": "circle"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,4:4:64-4:22:82",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,4:4:64-4:14:74",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,4:4:64-4:9:69",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,4:10:70-4:14:74",
+                                        "value": [
+                                          {
+                                            "string": "fill",
+                                            "raw_string": "fill"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,4:16:76-4:22:82",
+                                    "value": [
+                                      {
+                                        "string": "orange",
+                                        "raw_string": "orange"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,6:2:89-9:3:144",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,6:2:89-6:6:93",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,6:2:89-6:6:93",
+                              "value": [
+                                {
+                                  "string": "path",
+                                  "raw_string": "path"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,6:8:95-9:2:143",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,7:4:101-7:17:114",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,7:4:101-7:9:106",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,7:4:101-7:9:106",
+                                        "value": [
+                                          {
+                                            "string": "label",
+                                            "raw_string": "label"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "double_quoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,7:11:108-7:17:114",
+                                    "value": [
+                                      {
+                                        "string": "then",
+                                        "raw_string": "then"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,8:4:119-8:25:140",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,8:4:119-8:22:137",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,8:4:119-8:9:124",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,8:10:125-8:22:137",
+                                        "value": [
+                                          {
+                                            "string": "stroke-width",
+                                            "raw_string": "stroke-width"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,8:24:139-8:25:140",
+                                    "raw": "4",
+                                    "value": "4"
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,10:1:146-12:2:183",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,10:1:146-10:6:151",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,10:1:146-10:6:151",
+                              "value": [
+                                {
+                                  "string": "path2",
+                                  "raw_string": "path2"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,10:8:153-12:1:182",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,11:4:159-11:25:180",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,11:4:159-11:22:177",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,11:4:159-11:9:164",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,11:10:165-11:22:177",
+                                        "value": [
+                                          {
+                                            "string": "stroke-width",
+                                            "raw_string": "stroke-width"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,11:24:179-11:25:180",
+                                    "raw": "2",
+                                    "value": "2"
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,14:0:186-14:38:224",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,14:0:186-14:6:192",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,14:0:186-14:6:192",
+                    "value": [
+                      {
+                        "string": "nostar",
+                        "raw_string": "nostar"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,14:8:194-14:37:223",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,14:10:196-14:36:222",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,14:10:196-14:15:201",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,14:10:196-14:15:201",
+                              "value": [
+                                {
+                                  "string": "class",
+                                  "raw_string": "class"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "array": {
+                          "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,14:17:203-14:35:221",
+                          "nodes": [
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,14:18:204-14:29:215",
+                                "value": [
+                                  {
+                                    "string": "dragon_ball",
+                                    "raw_string": "dragon_ball"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,14:31:217-14:35:221",
+                                "value": [
+                                  {
+                                    "string": "path",
+                                    "raw_string": "path"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,15:0:225-15:37:262",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,15:0:225-15:5:230",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,15:0:225-15:5:230",
+                    "value": [
+                      {
+                        "string": "1star",
+                        "raw_string": "1star"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,15:7:232-15:36:261",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,15:9:234-15:35:260",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,15:9:234-15:14:239",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,15:9:234-15:14:239",
+                              "value": [
+                                {
+                                  "string": "class",
+                                  "raw_string": "class"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "array": {
+                          "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,15:16:241-15:34:259",
+                          "nodes": [
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,15:17:242-15:21:246",
+                                "value": [
+                                  {
+                                    "string": "path",
+                                    "raw_string": "path"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,15:23:248-15:34:259",
+                                "value": [
+                                  {
+                                    "string": "dragon_ball",
+                                    "raw_string": "dragon_ball"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:0:264-17:41:305",
+            "edges": [
+              {
+                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:0:264-17:15:279",
+                "src": {
+                  "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:0:264-17:7:271",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:0:264-17:6:270",
+                        "value": [
+                          {
+                            "string": "nostar",
+                            "raw_string": "nostar"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:9:273-17:15:279",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:10:274-17:15:279",
+                        "value": [
+                          {
+                            "string": "1star",
+                            "raw_string": "1star"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:17:281-17:40:304",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:19:283-17:39:303",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:19:283-17:24:288",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:19:283-17:24:288",
+                              "value": [
+                                {
+                                  "string": "class",
+                                  "raw_string": "class"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "array": {
+                          "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:26:290-17:38:302",
+                          "nodes": [
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:27:291-17:31:295",
+                                "value": [
+                                  {
+                                    "string": "path",
+                                    "raw_string": "path"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:33:297-17:38:302",
+                                "value": [
+                                  {
+                                    "string": "path2",
+                                    "raw_string": "path2"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": [
+      {
+        "index": 0,
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "then"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "strokeWidth": {
+              "value": "2"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ],
+    "objects": [
+      {
+        "id": "nostar",
+        "id_val": "nostar",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,14:0:186-14:6:192",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,14:0:186-14:6:192",
+                    "value": [
+                      {
+                        "string": "nostar",
+                        "raw_string": "nostar"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:0:264-17:7:271",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:0:264-17:6:270",
+                    "value": [
+                      {
+                        "string": "nostar",
+                        "raw_string": "nostar"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "then"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "fill": {
+              "value": "orange"
+            },
+            "strokeWidth": {
+              "value": "4"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": "circle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "1star",
+        "id_val": "1star",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,15:0:225-15:5:230",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,15:0:225-15:5:230",
+                    "value": [
+                      {
+                        "string": "1star",
+                        "raw_string": "1star"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:9:273-17:15:279",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:10:274-17:15:279",
+                    "value": [
+                      {
+                        "string": "1star",
+                        "raw_string": "1star"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "fill": {
+              "value": "orange"
+            },
+            "strokeWidth": {
+              "value": "4"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": "circle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}
