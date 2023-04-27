@@ -244,7 +244,7 @@ Android: {
 
 web -> twitter fe
 timeline scorer: "Timeline\nScorer" {
-  style.fill "#ffdef1"
+	style.fill: "#ffdef1"
 }
 home ranker: Home Ranker
 
@@ -283,7 +283,7 @@ prediction service2: Prediction Service {
   icon: https://cdn-icons-png.flaticon.com/512/6461/6461819.png
 }
 home scorer: Home Scorer {
-  style.fill "#ffdef1"
+	style.fill: "#ffdef1"
 }
 manhattan: Manhattan
 memcache: Memcache {
@@ -766,7 +766,7 @@ Android: {
 
 web -> twitter fe
 timeline scorer: "Timeline\nScorer" {
-  style.fill "#ffdef1"
+	style.fill: "#ffdef1"
 }
 home ranker: Home Ranker
 
@@ -805,7 +805,7 @@ prediction service2: Prediction Service {
   icon: https://cdn-icons-png.flaticon.com/512/6461/6461819.png
 }
 home scorer: Home Scorer {
-  style.fill "#ffdef1"
+	style.fill: "#ffdef1"
 }
 manhattan: Manhattan
 memcache: Memcache {

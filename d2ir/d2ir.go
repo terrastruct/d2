@@ -671,6 +671,10 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 		head = strings.ToLower(head)
 	}
 
+	if head == "class" && i < len(kp.Path)-1 {
+		return nil, d2parser.Errorf(kp.Path[i].Unbox(), `"class" must be the last part of the key`)
+	}
+
 	if head == "_" {
 		return nil, d2parser.Errorf(kp.Path[i].Unbox(), `parent "_" can only be used in the beginning of paths, e.g. "_.x"`)
 	}
