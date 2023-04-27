@@ -723,7 +723,7 @@ eee.shape: document
 eee <- aaa.ccc
 (eee <- aaa.ccc)[0]: '222'
 `,
-			dagreFeatureError: `Connection "(aaa.ccc -- aaa)[0]" goes from a container to a descendant, but layout engine "dagre" does not support this.`,
+			dagreFeatureError: `Connection "(aaa.ccc -- aaa)[0]" goes from a container to a descendant, but layout engine "dagre" does not support this. See https://d2lang.com/tour/layouts/#layout-specific-functionality for more.`,
 		},
 		{
 			name: "chaos2",
@@ -2133,7 +2133,7 @@ c: {
   a
 }
 `,
-			dagreFeatureError: `Object "a" has attribute "width" and/or "height" set, but layout engine "dagre" does not support dimensions set on containers.`,
+			dagreFeatureError: `Object "a" has attribute "width" and/or "height" set, but layout engine "dagre" does not support dimensions set on containers. See https://d2lang.com/tour/layouts/#layout-specific-functionality for more.`,
 		},
 		{
 			name: "crow_foot_arrowhead",
