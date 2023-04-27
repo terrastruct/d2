@@ -2401,6 +2401,35 @@ nostar -> 1star: { class: path }
 			},
 		},
 		{
+			name: "array-classes",
+			text: `classes: {
+  dragon_ball: {
+    label: ""
+    shape: circle
+    style.fill: orange
+  }
+  path: {
+    label: "then"
+    style.stroke-width: 4
+  }
+	path2: {
+    style.stroke-width: 2
+	}
+}
+nostar: { class: [dragon_ball; path] }
+1star: { class: [path; dragon_ball] }
+
+nostar -> 1star: { class: [path; path2] }
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "then", g.Objects[0].Label.Value)
+				tassert.Equal(t, "", g.Objects[1].Label.Value)
+				tassert.Equal(t, "circle", g.Objects[0].Shape.Value)
+				tassert.Equal(t, "circle", g.Objects[1].Shape.Value)
+				tassert.Equal(t, "2", g.Edges[0].Style.StrokeWidth.Value)
+			},
+		},
+		{
 			name: "reordered-classes",
 			text: `classes: {
   x: {

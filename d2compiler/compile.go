@@ -126,11 +126,25 @@ func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 	class := m.GetField("class")
 	if class != nil {
-		className := class.Primary()
-		if className == nil {
-			c.errorf(class.LastRef().AST(), "class missing value")
+		var classNames []string
+		if class.Primary() != nil {
+			classNames = append(classNames, class.Primary().String())
+		} else if class.Composite != nil {
+			if arr, ok := class.Composite.(*d2ir.Array); ok {
+				for _, class := range arr.Values {
+					if scalar, ok := class.(*d2ir.Scalar); ok {
+						classNames = append(classNames, scalar.Value.ScalarString())
+					} else {
+						c.errorf(class.LastPrimaryKey(), "invalid value in array")
+					}
+				}
+			}
 		} else {
-			classMap := m.GetClassMap(className.String())
+			c.errorf(class.LastRef().AST(), "class missing value")
+		}
+
+		for _, className := range classNames {
+			classMap := m.GetClassMap(className)
 			if classMap != nil {
 				c.compileMap(obj, classMap)
 			}
@@ -293,7 +307,7 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 
 func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 	if f.Primary() == nil {
-		if f.Composite != nil {
+		if f.Composite != nil && !strings.EqualFold(f.Name, "class") {
 			c.errorf(f.LastPrimaryKey(), "reserved field %v does not accept composite", f.Name)
 		}
 		return
@@ -463,7 +477,17 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.HorizontalGap.Value = scalar.ScalarString()
 		attrs.HorizontalGap.MapKey = f.LastPrimaryKey()
 	case "class":
-		attrs.Classes = append(attrs.Classes, scalar.ScalarString())
+		if f.Primary() != nil {
+			attrs.Classes = append(attrs.Classes, scalar.ScalarString())
+		} else if f.Composite != nil {
+			if arr, ok := f.Composite.(*d2ir.Array); ok {
+				for _, class := range arr.Values {
+					if scalar, ok := class.(*d2ir.Scalar); ok {
+						attrs.Classes = append(attrs.Classes, scalar.Value.ScalarString())
+					}
+				}
+			}
+		}
 	case "classes":
 	}
 
@@ -582,11 +606,25 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 func (c *compiler) compileEdgeMap(edge *d2graph.Edge, m *d2ir.Map) {
 	class := m.GetField("class")
 	if class != nil {
-		className := class.Primary()
-		if className == nil {
-			c.errorf(class.LastRef().AST(), "class missing value")
+		var classNames []string
+		if class.Primary() != nil {
+			classNames = append(classNames, class.Primary().String())
+		} else if class.Composite != nil {
+			if arr, ok := class.Composite.(*d2ir.Array); ok {
+				for _, class := range arr.Values {
+					if scalar, ok := class.(*d2ir.Scalar); ok {
+						classNames = append(classNames, scalar.Value.ScalarString())
+					} else {
+						c.errorf(class.LastPrimaryKey(), "invalid value in array")
+					}
+				}
+			}
 		} else {
-			classMap := m.GetClassMap(className.String())
+			c.errorf(class.LastRef().AST(), "class missing value")
+		}
+
+		for _, className := range classNames {
+			classMap := m.GetClassMap(className)
 			if classMap != nil {
 				c.compileEdgeMap(edge, classMap)
 			}
