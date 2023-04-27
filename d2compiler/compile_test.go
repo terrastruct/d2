@@ -1679,6 +1679,24 @@ x.a.b`,
 			expErr: `d2/testdata/d2compiler/TestCompile/no-nested-columns-class.d2:3:5: class fields cannot have children`,
 		},
 		{
+			name: "improper-class-ref",
+
+			text:   `myobj.class.style.stroke-dash: 3`,
+			expErr: `d2/testdata/d2compiler/TestCompile/improper-class-ref.d2:1:7: "class" must be the last part of the key`,
+		},
+		{
+			name: "tail-style",
+
+			text:   `myobj.style: 3`,
+			expErr: `d2/testdata/d2compiler/TestCompile/tail-style.d2:1:7: "style" expected to be set to a map, or contain an additional keyword like "style.opacity: 0.4"`,
+		},
+		{
+			name: "bad-style-nesting",
+
+			text:   `myobj.style.style.stroke-dash: 3`,
+			expErr: `d2/testdata/d2compiler/TestCompile/bad-style-nesting.d2:1:13: invalid style keyword: "style"`,
+		},
+		{
 			name: "edge_to_style",
 
 			text: `x: {style.opacity: 0.4}

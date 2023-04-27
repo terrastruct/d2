@@ -197,6 +197,7 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 		return
 	} else if f.Name == "style" {
 		if f.Map() == nil {
+			c.errorf(f.LastRef().AST(), `"style" expected to be set to a map, or contain an additional keyword like "style.opacity: 0.4"`)
 			return
 		}
 		c.compileStyle(&obj.Attributes, f.Map())
@@ -481,6 +482,10 @@ func (c *compiler) compileStyle(attrs *d2graph.Attributes, m *d2ir.Map) {
 }
 
 func (c *compiler) compileStyleField(attrs *d2graph.Attributes, f *d2ir.Field) {
+	if _, ok := d2graph.StyleKeywords[f.Name]; !ok {
+		c.errorf(f.LastRef().AST(), `invalid style keyword: "%s"`, f.Name)
+		return
+	}
 	if f.Primary() == nil {
 		return
 	}
