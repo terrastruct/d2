@@ -482,7 +482,7 @@ func (c *compiler) compileStyle(attrs *d2graph.Attributes, m *d2ir.Map) {
 }
 
 func (c *compiler) compileStyleField(attrs *d2graph.Attributes, f *d2ir.Field) {
-	if _, ok := d2graph.StyleKeywords[f.Name]; !ok {
+	if _, ok := d2graph.StyleKeywords[strings.ToLower(f.Name)]; !ok {
 		c.errorf(f.LastRef().AST(), `invalid style keyword: "%s"`, f.Name)
 		return
 	}
