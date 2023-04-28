@@ -60,6 +60,7 @@ func Wrap(rootDiagram *d2target.Diagram, svgs [][]byte, renderOpts d2svg.RenderO
 	)
 	fmt.Fprint(buf, fitToScreenWrapperOpening)
 
+	println("\033[1;31m--- DEBUG:", "=======================", "\033[m")
 	innerOpening := fmt.Sprintf(`<svg id="d2-svg" width="%d" height="%d" viewBox="%d %d %d %d">`,
 		width, height, left, top, width, height)
 	fmt.Fprint(buf, innerOpening)

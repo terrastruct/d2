@@ -434,6 +434,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 			return nil, false, err
 		}
 		var out []byte
+		println("\033[1;31m--- DEBUG:", "=======================", "\033[m")
 		if len(boards) > 0 {
 			out = boards[0]
 			if animateInterval > 0 {

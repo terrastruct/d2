@@ -96,6 +96,17 @@ steps: {
 			},
 		},
 		{
+			name: "animate-appendix",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "animation.d2", `a: {link: http://www.google.com}
+`)
+				err := runTestMain(t, ctx, dir, env, "--animate-interval=1400", "--force-appendix", "animation.d2")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "animation.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
 			name: "linked-path",
 			// TODO tempdir is random, resulting in different test results each time with the links
 			skip: true,
