@@ -62,7 +62,7 @@ func AnimatePNGs(ms *xmain.State, pngs [][]byte, animIntervalMs int) ([]byte, er
 		// 1. convert the PNG into a GIF compatible image (Bitmap) by quantizing it to 255 colors
 		buf := bytes.NewBuffer(nil)
 		err := gif.Encode(buf, pngImage, &gif.Options{
-			NumColors: 255, // GIFs can have up to 256 colors, so keep 1 slot for white background
+			NumColors: 256, // GIFs can have up to 256 colors
 			Quantizer: quantize.MedianCutQuantizer{},
 		})
 		if err != nil {
@@ -86,8 +86,8 @@ func AnimatePNGs(ms *xmain.State, pngs [][]byte, animIntervalMs int) ([]byte, er
 
 		var bgIndex int
 		if len(palettedImg.Palette) == 256 {
-			bgIndex = 255
-			palettedImg.Palette[255] = BG_COLOR
+			bgIndex = findWhiteIndex(palettedImg.Palette)
+			palettedImg.Palette[bgIndex] = BG_COLOR
 		} else {
 			bgIndex = len(palettedImg.Palette)
 			palettedImg.Palette = append(palettedImg.Palette, BG_COLOR)
@@ -113,6 +113,24 @@ func AnimatePNGs(ms *xmain.State, pngs [][]byte, animIntervalMs int) ([]byte, er
 		return nil, err
 	}
 	return buf.Bytes(), nil
+}
+
+func findWhiteIndex(palette color.Palette) int {
+	nearestIndex := 0
+	nearestScore := 0.
+	for i, c := range palette {
+		r, g, b, _ := c.RGBA()
+		if r == 255 && g == 255 && b == 255 {
+			return i
+		}
+
+		avg := float64(r+g+b) / 255.
+		if avg > nearestScore {
+			nearestScore = avg
+			nearestIndex = i
+		}
+	}
+	return nearestIndex
 }
 
 func Validate(gifBytes []byte, nFrames int, intervalMS int) error {
