@@ -319,6 +319,19 @@ steps: {
 			},
 		},
 		{
+			name:   "one-layer-gif",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `x`)
+				err := runTestMain(t, ctx, dir, env, "--animate-interval=10", "in.d2", "out.gif")
+				assert.Success(t, err)
+
+				gifBytes := readFile(t, dir, "out.gif")
+				err = xgif.Validate(gifBytes, 1, 10)
+				assert.Success(t, err)
+			},
+		},
+		{
 			name: "stdin",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				stdin := bytes.NewBufferString(`x -> y`)
