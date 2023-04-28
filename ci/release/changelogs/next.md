@@ -14,3 +14,4 @@
 - Fixes an issue with markdown labels that are empty when rendered [#1223](https://github.com/terrastruct/d2/issues/1223)
 - ELK self loops always have enough space for long labels [#1232](https://github.com/terrastruct/d2/pull/1232)
 - Fixes panic when setting `shape` to be `class` or `sql_table` within a class [#1251](https://github.com/terrastruct/d2/pull/1251)
+- Fixes rare panic exporting to gifs [#1257](https://github.com/terrastruct/d2/pull/1257)
