@@ -36,9 +36,13 @@ func main() {
 	vFlag := false
 	testCaseFlag := ""
 	testSetFlag := ""
+	cpuProfileFlag := false
+	memProfileFlag := false
 	flag.BoolVar(&deltaFlag, "delta", false, "Generate the report only for cases that changed.")
 	flag.StringVar(&testSetFlag, "test-set", "", "Only run set of tests matching this string. e.g. regressions")
 	flag.StringVar(&testCaseFlag, "test-case", "", "Only run tests matching this string. e.g. all_shapes")
+	flag.BoolVar(&cpuProfileFlag, "cpuprofile", false, "Profile test cpu usage. `go tool pprof out/cpu.prof`")
+	flag.BoolVar(&memProfileFlag, "memprofile", false, "Profile test memory usage. `go tool pprof out/mem.prof`")
 	skipTests := flag.Bool("skip-tests", false, "Skip running tests first")
 	flag.BoolVar(&vFlag, "v", false, "verbose")
 	flag.Parse()
@@ -47,7 +51,16 @@ func main() {
 	if vFlag {
 		vString = "-v"
 	}
-	testMatchString := fmt.Sprintf("TestE2E/%s/%s", testSetFlag, testCaseFlag)
+	testMatchString := fmt.Sprintf("-run=TestE2E/%s/%s", testSetFlag, testCaseFlag)
+
+	cpuProfileStr := ""
+	if cpuProfileFlag {
+		cpuProfileStr = `-cpuprofile=out/cpu.prof`
+	}
+	memProfileStr := ""
+	if memProfileFlag {
+		memProfileStr = `-memprofile=out/mem.prof`
+	}
 
 	testDir := os.Getenv("TEST_DIR")
 	if testDir == "" {
@@ -58,7 +71,7 @@ func main() {
 		ctx := log.Stderr(context.Background())
 		ctx, cancel := context.WithTimeout(ctx, 2*time.Minute)
 		defer cancel()
-		cmd := exec.CommandContext(ctx, "go", "test", testDir, "-run", testMatchString, vString)
+		cmd := exec.CommandContext(ctx, "go", "test", testDir, testMatchString, cpuProfileStr, memProfileStr, vString)
 		cmd.Env = os.Environ()
 		cmd.Env = append(cmd.Env, "FORCE_COLOR=1")
 		cmd.Env = append(cmd.Env, "DEBUG=1")
