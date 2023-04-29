@@ -1373,5 +1373,6 @@ func run(t *testing.T, tc testCase) {
 	assert.Success(t, err)
 
 	// We want the visual diffs to compare, but there's floating point precision differences between CI and user machines, so don't compare raw strings
-	diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
+	err = diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
+	assert.Success(t, err)
 }
