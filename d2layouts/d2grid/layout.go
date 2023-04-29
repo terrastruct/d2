@@ -2,6 +2,7 @@ package d2grid
 
 import (
 	"context"
+	"fmt"
 	"math"
 	"sort"
 
@@ -266,40 +267,17 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 	cursor := geo.NewPoint(0, 0)
 	var maxY, maxX float64
 	if gd.rowDirected {
-		// if we have 2 rows, then each row's objects should have the same height
-		// . ┌A─────────────┐  ┌B──┐  ┌C─────────┐ ┬ maxHeight(A,B,C)
-		// . ├ ─ ─ ─ ─ ─ ─ ─┤  │   │  │          │ │
-		// . │              │  │   │  ├ ─ ─ ─ ─ ─┤ │
-		// . │              │  │   │  │          │ │
-		// . └──────────────┘  └───┘  └──────────┘ ┴
-		// . ┌D────────┐  ┌E────────────────┐ ┬ maxHeight(D,E)
-		// . │         │  │                 │ │
-		// . │         │  │                 │ │
-		// . │         │  ├ ─ ─ ─ ─ ─ ─ ─ ─ ┤ │
-		// . │         │  │                 │ │
-		// . └─────────┘  └─────────────────┘ ┴
+		// measure row widths
 		rowWidths := []float64{}
 		for _, row := range layout {
-			rowHeight := 0.
+			x := 0.
 			for _, o := range row {
-				o.TopLeft = cursor.Copy()
-				cursor.X += o.Width + horizontalGap
-				rowHeight = math.Max(rowHeight, o.Height)
+				x += o.Width + horizontalGap
 			}
-			rowWidth := cursor.X - horizontalGap
+			rowWidth := x - horizontalGap
 			rowWidths = append(rowWidths, rowWidth)
 			maxX = math.Max(maxX, rowWidth)
-
-			// set all objects in row to the same height
-			for _, o := range row {
-				o.Height = rowHeight
-			}
-
-			// new row
-			cursor.X = 0
-			cursor.Y += rowHeight + verticalGap
 		}
-		maxY = cursor.Y - horizontalGap
 
 		// then expand thinnest objects to make each row the same width
 		// . ┌A─────────────┐  ┌B──┐  ┌C─────────┐ ┬ maxHeight(A,B,C)
@@ -319,80 +297,79 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 				continue
 			}
 			delta := maxX - rowWidth
-			objects := []*d2graph.Object{}
 			var widest float64
 			for _, o := range row {
 				widest = math.Max(widest, o.Width)
-				objects = append(objects, o)
 			}
-			sort.Slice(objects, func(i, j int) bool {
-				return objects[i].Width < objects[j].Width
-			})
-			// expand smaller objects to fill remaining space
-			for _, o := range objects {
-				if o.Width < widest {
-					var index int
-					for i, rowObj := range row {
-						if o == rowObj {
-							index = i
-							break
-						}
-					}
-					grow := math.Min(widest-o.Width, delta)
-					o.Width += grow
-					// shift following objects
-					for i := index + 1; i < len(row); i++ {
-						row[i].TopLeft.X += grow
-					}
-					delta -= grow
-					if delta <= 0 {
-						break
-					}
+			diffs := make([]float64, len(row))
+			totalDiff := 0.
+			for i, o := range row {
+				diffs[i] = widest - o.Width
+				totalDiff += diffs[i]
+			}
+			if totalDiff > 0 {
+				// expand smaller nodes up to the size of the larger ones with delta
+				// percentage diff
+				for i := range diffs {
+					diffs[i] /= totalDiff
+				}
+				growth := math.Min(delta, totalDiff)
+				// expand smaller objects to fill remaining space
+				for i, o := range row {
+					o.Width += diffs[i] * growth
 				}
 			}
-			if delta > 0 {
-				grow := delta / float64(len(row))
-				for i := len(row) - 1; i >= 0; i-- {
-					o := row[i]
-					o.TopLeft.X += grow * float64(i)
-					o.Width += grow
-					delta -= grow
+			if delta > totalDiff {
+				growth := (delta - totalDiff) / float64(len(row))
+				for _, o := range row {
+					o.Width += growth
 				}
 			}
 		}
-	} else {
-		// if we have 3 columns, then each column's objects should have the same width
-		// . ├maxWidth(A,B)─┤  ├maxW(C,D)─┤  ├maxWidth(E)──────┤
-		// . ┌A─────────────┐  ┌C─────────┐  ┌E────────────────┐
-		// . └──────────────┘  │          │  │                 │
-		// . ┌B──┬──────────┐  └──────────┘  │                 │
-		// . │              │  ┌D────────┬┐  └─────────────────┘
-		// . │   │          │  │          │
-		// . │              │  │         ││
-		// . └───┴──────────┘  │          │
-		// .                   │         ││
-		// .                   └─────────┴┘
-		colHeights := []float64{}
-		for _, column := range layout {
-			colWidth := 0.
-			for _, o := range column {
+
+		// if we have 2 rows, then each row's objects should have the same height
+		// . ┌A─────────────┐  ┌B──┐  ┌C─────────┐ ┬ maxHeight(A,B,C)
+		// . ├ ─ ─ ─ ─ ─ ─ ─┤  │   │  │          │ │
+		// . │              │  │   │  ├ ─ ─ ─ ─ ─┤ │
+		// . │              │  │   │  │          │ │
+		// . └──────────────┘  └───┘  └──────────┘ ┴
+		// . ┌D────────┐  ┌E────────────────┐ ┬ maxHeight(D,E)
+		// . │         │  │                 │ │
+		// . │         │  │                 │ │
+		// . │         │  ├ ─ ─ ─ ─ ─ ─ ─ ─ ┤ │
+		// . │         │  │                 │ │
+		// . └─────────┘  └─────────────────┘ ┴
+		for _, row := range layout {
+			rowHeight := 0.
+			for _, o := range row {
 				o.TopLeft = cursor.Copy()
-				cursor.Y += o.Height + verticalGap
-				colWidth = math.Max(colWidth, o.Width)
-			}
-			colHeight := cursor.Y - verticalGap
-			colHeights = append(colHeights, colHeight)
-			maxY = math.Max(maxY, colHeight)
-			// set all objects in column to the same width
-			for _, o := range column {
-				o.Width = colWidth
+				cursor.X += o.Width + horizontalGap
+				rowHeight = math.Max(rowHeight, o.Height)
 			}
 
-			// new column
-			cursor.Y = 0
-			cursor.X += colWidth + horizontalGap
+			// set all objects in row to the same height
+			for _, o := range row {
+				o.Height = rowHeight
+			}
+
+			// new row
+			cursor.X = 0
+			cursor.Y += rowHeight + verticalGap
 		}
-		maxX = cursor.X - horizontalGap
+		maxY = cursor.Y - horizontalGap
+	} else {
+		// measure column heights
+		colHeights := []float64{}
+		for _, column := range layout {
+			y := 0.
+			for _, o := range column {
+				y += o.Height + verticalGap
+			}
+			colHeight := y - verticalGap
+			colHeights = append(colHeights, colHeight)
+			maxY = math.Max(maxY, colHeight)
+		}
+
 		// then expand shortest objects to make each column the same height
 		// . ├maxWidth(A,B)─┤  ├maxW(C,D)─┤  ├maxWidth(E)──────┤
 		// . ┌A─────────────┐  ┌C─────────┐  ┌E────────────────┐
@@ -410,47 +387,63 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 				continue
 			}
 			delta := maxY - colHeight
-			objects := []*d2graph.Object{}
 			var tallest float64
 			for _, o := range column {
 				tallest = math.Max(tallest, o.Height)
-				objects = append(objects, o)
 			}
-			sort.Slice(objects, func(i, j int) bool {
-				return objects[i].Height < objects[j].Height
-			})
-			// expand smaller objects to fill remaining space
-			for _, o := range objects {
-				if o.Height < tallest {
-					var index int
-					for i, colObj := range column {
-						if o == colObj {
-							index = i
-							break
-						}
-					}
-					grow := math.Min(tallest-o.Height, delta)
-					o.Height += grow
-					// shift following objects
-					for i := index + 1; i < len(column); i++ {
-						column[i].TopLeft.Y += grow
-					}
-					delta -= grow
-					if delta <= 0 {
-						break
-					}
+			diffs := make([]float64, len(column))
+			totalDiff := 0.
+			for i, o := range column {
+				diffs[i] = tallest - o.Height
+				totalDiff += diffs[i]
+			}
+			if totalDiff > 0 {
+				// expand smaller nodes up to the size of the larger ones with delta
+				// percentage diff
+				for i := range diffs {
+					diffs[i] /= totalDiff
+				}
+				growth := math.Min(delta, totalDiff)
+				// expand smaller objects to fill remaining space
+				for i, o := range column {
+					o.Height += diffs[i] * growth
 				}
 			}
-			if delta > 0 {
-				grow := delta / float64(len(column))
-				for i := len(column) - 1; i >= 0; i-- {
-					o := column[i]
-					o.TopLeft.Y += grow * float64(i)
-					o.Height += grow
-					delta -= grow
+			if delta > totalDiff {
+				growth := (delta - totalDiff) / float64(len(column))
+				for _, o := range column {
+					o.Height += growth
 				}
 			}
 		}
+		// if we have 3 columns, then each column's objects should have the same width
+		// . ├maxWidth(A,B)─┤  ├maxW(C,D)─┤  ├maxWidth(E)──────┤
+		// . ┌A─────────────┐  ┌C─────────┐  ┌E────────────────┐
+		// . └──────────────┘  │          │  │                 │
+		// . ┌B──┬──────────┐  └──────────┘  │                 │
+		// . │              │  ┌D────────┬┐  └─────────────────┘
+		// . │   │          │  │          │
+		// . │              │  │         ││
+		// . └───┴──────────┘  │          │
+		// .                   │         ││
+		// .                   └─────────┴┘
+		for _, column := range layout {
+			colWidth := 0.
+			for _, o := range column {
+				o.TopLeft = cursor.Copy()
+				cursor.Y += o.Height + verticalGap
+				colWidth = math.Max(colWidth, o.Width)
+			}
+			// set all objects in column to the same width
+			for _, o := range column {
+				o.Width = colWidth
+			}
+
+			// new column
+			cursor.Y = 0
+			cursor.X += colWidth + horizontalGap
+		}
+		maxX = cursor.X - horizontalGap
 	}
 	gd.width = maxX
 	gd.height = maxY
@@ -469,6 +462,68 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 		return genLayout(gd.objects, nil)
 	}
 
+	var gap float64
+	if columns {
+		gap = float64(gd.verticalGap)
+	} else {
+		gap = float64(gd.horizontalGap)
+	}
+	getSize := func(o *d2graph.Object) float64 {
+		if columns {
+			return o.Height
+		} else {
+			return o.Width
+		}
+	}
+
+	debug := false
+	skipCount := 0
+	// quickly eliminate bad row groupings
+	startingCache := make(map[int]bool)
+	// try to find a layout with all rows within 1.2*targetSize
+	// skip options with a row that is 1.2*longer or shorter
+	// Note: we want a low threshold to explore good options within attemptLimit,
+	// but the best option may require a few rows that are far from the target size.
+	okThreshold := 1.2
+	// if we don't find a layout try 25% larger threshold
+	thresholdStep := 0.25
+	rowOk := func(row []*d2graph.Object, starting bool) (ok bool) {
+		if starting {
+			// we can cache results from starting positions since they repeat and don't change
+			// with starting=true it will always be the 1st N objects based on len(row)
+			if ok, has := startingCache[len(row)]; has {
+				return ok
+			}
+			defer func() {
+				// cache result before returning
+				startingCache[len(row)] = ok
+			}()
+		}
+
+		rowSize := 0.
+		for _, obj := range row {
+			rowSize += getSize(obj)
+		}
+		if len(row) > 1 {
+			rowSize += gap * float64(len(row)-1)
+			// if multiple nodes are too big, it isn't ok. but a single node can't shrink so only check here
+			if rowSize > okThreshold*targetSize {
+				skipCount++
+				return false
+			}
+		}
+		// row is too small to be good overall
+		if rowSize < targetSize/okThreshold {
+			skipCount++
+			return false
+		}
+		return true
+	}
+
+	var bestLayout [][]*d2graph.Object
+	bestDist := math.MaxFloat64
+	count := 0
+	attemptLimit := 100_000
 	// get all options for where to place these cuts, preferring later cuts over earlier cuts
 	// with 5 objects and 2 cuts we have these options:
 	// .       A   B   C │ D │ E     <- these cuts would produce: ┌A─┐ ┌B─┐ ┌C─┐
@@ -477,41 +532,128 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 	// .       A   B │ C │ D   E                                  └────────────┘
 	// .       A │ B   C │ D   E                                  ┌E───────────┐
 	// .       A │ B │ C   D   E                                  └────────────┘
-	divisions := genDivisions(gd.objects, nCuts)
-
-	var bestLayout [][]*d2graph.Object
-	bestDist := math.MaxFloat64
 	// of these divisions, find the layout with rows closest to the targetSize
-	for _, division := range divisions {
+	tryDivision := func(division []int) bool {
 		layout := genLayout(gd.objects, division)
 		dist := getDistToTarget(layout, targetSize, float64(gd.horizontalGap), float64(gd.verticalGap), columns)
 		if dist < bestDist {
 			bestLayout = layout
 			bestDist = dist
 		}
+		count++
+		// with few objects we can try all options to get best result but this won't scale, so only try up to 100k options
+		return count >= attemptLimit
 	}
 
+	// try at least 3 different okThresholds
+	for i := 0; i < 3 || bestLayout == nil; i++ {
+		iterDivisions(gd.objects, nCuts, tryDivision, rowOk)
+		okThreshold += thresholdStep
+		if debug {
+			fmt.Printf("increasing ok threshold to %v\n", okThreshold)
+		}
+		startingCache = make(map[int]bool)
+		count = 0.
+	}
+	if debug {
+		fmt.Printf("final count %d, skip count %d\n", count, skipCount)
+	}
+
+	// try fast layout algorithm, see if it is better than first 1mil attempts
+	debt := 0.
+	fastDivision := make([]int, 0, nCuts)
+	rowSize := 0.
+	for i := 0; i < len(gd.objects); i++ {
+		o := gd.objects[i]
+		size := getSize(o)
+		if rowSize == 0 {
+			if size > targetSize-debt {
+				fastDivision = append(fastDivision, i-1)
+				// we build up a debt of distance past the target size across rows
+				newDebt := size - targetSize
+				debt += newDebt
+			} else {
+				rowSize += size
+			}
+			continue
+		}
+		// debt is paid by decreasing threshold to start new row and ending below targetSize
+		if rowSize+(gap+size)/2. > targetSize-debt {
+			fastDivision = append(fastDivision, i-1)
+			newDebt := rowSize - targetSize
+			debt += newDebt
+			rowSize = size
+		} else {
+			rowSize += gap + size
+		}
+	}
+	if len(fastDivision) == nCuts {
+		layout := genLayout(gd.objects, fastDivision)
+		dist := getDistToTarget(layout, targetSize, float64(gd.horizontalGap), float64(gd.verticalGap), columns)
+		if dist < bestDist {
+			bestLayout = layout
+			bestDist = dist
+		}
+	}
 	return bestLayout
 }
 
+// process current division, return true to stop iterating
+type iterDivision func(division []int) (done bool)
+type checkCut func(objects []*d2graph.Object, starting bool) (ok bool)
+
 // get all possible divisions of objects by the number of cuts
-func genDivisions(objects []*d2graph.Object, nCuts int) (divisions [][]int) {
+func iterDivisions(objects []*d2graph.Object, nCuts int, f iterDivision, check checkCut) {
 	if len(objects) < 2 || nCuts == 0 {
-		return nil
+		return
 	}
+	done := false
 	// we go in this order to prefer extra objects in starting rows rather than later ones
 	lastObj := len(objects) - 1
+	// with objects=[A, B, C, D, E]; nCuts=2
+	// d:depth; i:index; n:nCuts;
+	// ┌────┬───┬───┬─────────────────────┬────────────┐
+	// │ d  │ i │ n │ objects             │ cuts       │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ 0  │ 4 │ 2 │ [A   B   C   D | E] │            │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ └1 │ 3 │ 1 │ [A   B   C | D]     │ + | E]     │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ └1 │ 2 │ 1 │ [A   B | C   D]     │ + | E]     │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ └1 │ 1 │ 1 │ [A | B   C   D]     │ + | E]     │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ 0  │ 3 │ 2 │ [A   B   C | D   E] │            │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ └1 │ 2 │ 1 │ [A   B | C]         │ + | D E]   │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ └1 │ 1 │ 1 │ [A | B   C]         │ + | D E]   │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ 0  │ 2 │ 2 │ [A   B | C   D   E] │            │
+	// ├────┼───┼───┼─────────────────────┼────────────┤
+	// │ └1 │ 1 │ 1 │ [A | B]             │ + | C D E] │
+	// └────┴───┴───┴─────────────────────┴────────────┘
 	for index := lastObj; index >= nCuts; index-- {
+		if !check(objects[index:], false) {
+			// optimization: if current cut gives a bad grouping, don't recurse
+			continue
+		}
 		if nCuts > 1 {
-			for _, inner := range genDivisions(objects[:index], nCuts-1) {
-				divisions = append(divisions, append(inner, index-1))
-			}
+			iterDivisions(objects[:index], nCuts-1, func(inner []int) bool {
+				done = f(append(inner, index-1))
+				return done
+			}, check)
 		} else {
-			divisions = append(divisions, []int{index - 1})
+			if !check(objects[:index], true) {
+				// e.g. [A   B   C | D] if [A,B,C] is bad, skip it
+				continue
+			}
+			done = f([]int{index - 1})
+		}
+		if done {
+			return
 		}
 	}
-
-	return divisions
 }
 
 // generate a grid of objects from the given cut indices
@@ -524,6 +666,9 @@ func genLayout(objects []*d2graph.Object, cutIndices []int) [][]*d2graph.Object 
 			stop = cutIndices[i]
 		} else {
 			stop = len(objects) - 1
+		}
+		if stop >= objIndex {
+			layout[i] = make([]*d2graph.Object, 0, stop-objIndex+1)
 		}
 		for ; objIndex <= stop; objIndex++ {
 			layout[i] = append(layout[i], objects[objIndex])
