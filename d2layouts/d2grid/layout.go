@@ -266,40 +266,17 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 	cursor := geo.NewPoint(0, 0)
 	var maxY, maxX float64
 	if gd.rowDirected {
-		// if we have 2 rows, then each row's objects should have the same height
-		// . ┌A─────────────┐  ┌B──┐  ┌C─────────┐ ┬ maxHeight(A,B,C)
-		// . ├ ─ ─ ─ ─ ─ ─ ─┤  │   │  │          │ │
-		// . │              │  │   │  ├ ─ ─ ─ ─ ─┤ │
-		// . │              │  │   │  │          │ │
-		// . └──────────────┘  └───┘  └──────────┘ ┴
-		// . ┌D────────┐  ┌E────────────────┐ ┬ maxHeight(D,E)
-		// . │         │  │                 │ │
-		// . │         │  │                 │ │
-		// . │         │  ├ ─ ─ ─ ─ ─ ─ ─ ─ ┤ │
-		// . │         │  │                 │ │
-		// . └─────────┘  └─────────────────┘ ┴
+		// measure row widths
 		rowWidths := []float64{}
 		for _, row := range layout {
-			rowHeight := 0.
+			x := 0.
 			for _, o := range row {
-				o.TopLeft = cursor.Copy()
-				cursor.X += o.Width + horizontalGap
-				rowHeight = math.Max(rowHeight, o.Height)
+				x += o.Width + horizontalGap
 			}
-			rowWidth := cursor.X - horizontalGap
+			rowWidth := x - horizontalGap
 			rowWidths = append(rowWidths, rowWidth)
 			maxX = math.Max(maxX, rowWidth)
-
-			// set all objects in row to the same height
-			for _, o := range row {
-				o.Height = rowHeight
-			}
-
-			// new row
-			cursor.X = 0
-			cursor.Y += rowHeight + verticalGap
 		}
-		maxY = cursor.Y - horizontalGap
 
 		// then expand thinnest objects to make each row the same width
 		// . ┌A─────────────┐  ┌B──┐  ┌C─────────┐ ┬ maxHeight(A,B,C)
@@ -319,80 +296,79 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 				continue
 			}
 			delta := maxX - rowWidth
-			objects := []*d2graph.Object{}
 			var widest float64
 			for _, o := range row {
 				widest = math.Max(widest, o.Width)
-				objects = append(objects, o)
 			}
-			sort.Slice(objects, func(i, j int) bool {
-				return objects[i].Width < objects[j].Width
-			})
-			// expand smaller objects to fill remaining space
-			for _, o := range objects {
-				if o.Width < widest {
-					var index int
-					for i, rowObj := range row {
-						if o == rowObj {
-							index = i
-							break
-						}
-					}
-					grow := math.Min(widest-o.Width, delta)
-					o.Width += grow
-					// shift following objects
-					for i := index + 1; i < len(row); i++ {
-						row[i].TopLeft.X += grow
-					}
-					delta -= grow
-					if delta <= 0 {
-						break
-					}
+			diffs := make([]float64, len(row))
+			totalDiff := 0.
+			for i, o := range row {
+				diffs[i] = widest - o.Width
+				totalDiff += diffs[i]
+			}
+			if totalDiff > 0 {
+				// expand smaller nodes up to the size of the larger ones with delta
+				// percentage diff
+				for i := range diffs {
+					diffs[i] /= totalDiff
+				}
+				growth := math.Min(delta, totalDiff)
+				// expand smaller objects to fill remaining space
+				for i, o := range row {
+					o.Width += diffs[i] * growth
 				}
 			}
-			if delta > 0 {
-				grow := delta / float64(len(row))
-				for i := len(row) - 1; i >= 0; i-- {
-					o := row[i]
-					o.TopLeft.X += grow * float64(i)
-					o.Width += grow
-					delta -= grow
+			if delta > totalDiff {
+				growth := (delta - totalDiff) / float64(len(row))
+				for _, o := range row {
+					o.Width += growth
 				}
 			}
 		}
-	} else {
-		// if we have 3 columns, then each column's objects should have the same width
-		// . ├maxWidth(A,B)─┤  ├maxW(C,D)─┤  ├maxWidth(E)──────┤
-		// . ┌A─────────────┐  ┌C─────────┐  ┌E────────────────┐
-		// . └──────────────┘  │          │  │                 │
-		// . ┌B──┬──────────┐  └──────────┘  │                 │
-		// . │              │  ┌D────────┬┐  └─────────────────┘
-		// . │   │          │  │          │
-		// . │              │  │         ││
-		// . └───┴──────────┘  │          │
-		// .                   │         ││
-		// .                   └─────────┴┘
-		colHeights := []float64{}
-		for _, column := range layout {
-			colWidth := 0.
-			for _, o := range column {
+
+		// if we have 2 rows, then each row's objects should have the same height
+		// . ┌A─────────────┐  ┌B──┐  ┌C─────────┐ ┬ maxHeight(A,B,C)
+		// . ├ ─ ─ ─ ─ ─ ─ ─┤  │   │  │          │ │
+		// . │              │  │   │  ├ ─ ─ ─ ─ ─┤ │
+		// . │              │  │   │  │          │ │
+		// . └──────────────┘  └───┘  └──────────┘ ┴
+		// . ┌D────────┐  ┌E────────────────┐ ┬ maxHeight(D,E)
+		// . │         │  │                 │ │
+		// . │         │  │                 │ │
+		// . │         │  ├ ─ ─ ─ ─ ─ ─ ─ ─ ┤ │
+		// . │         │  │                 │ │
+		// . └─────────┘  └─────────────────┘ ┴
+		for _, row := range layout {
+			rowHeight := 0.
+			for _, o := range row {
 				o.TopLeft = cursor.Copy()
-				cursor.Y += o.Height + verticalGap
-				colWidth = math.Max(colWidth, o.Width)
-			}
-			colHeight := cursor.Y - verticalGap
-			colHeights = append(colHeights, colHeight)
-			maxY = math.Max(maxY, colHeight)
-			// set all objects in column to the same width
-			for _, o := range column {
-				o.Width = colWidth
+				cursor.X += o.Width + horizontalGap
+				rowHeight = math.Max(rowHeight, o.Height)
 			}
 
-			// new column
-			cursor.Y = 0
-			cursor.X += colWidth + horizontalGap
+			// set all objects in row to the same height
+			for _, o := range row {
+				o.Height = rowHeight
+			}
+
+			// new row
+			cursor.X = 0
+			cursor.Y += rowHeight + verticalGap
 		}
-		maxX = cursor.X - horizontalGap
+		maxY = cursor.Y - horizontalGap
+	} else {
+		// measure column heights
+		colHeights := []float64{}
+		for _, column := range layout {
+			y := 0.
+			for _, o := range column {
+				y += o.Height + verticalGap
+			}
+			colHeight := y - verticalGap
+			colHeights = append(colHeights, colHeight)
+			maxY = math.Max(maxY, colHeight)
+		}
+
 		// then expand shortest objects to make each column the same height
 		// . ├maxWidth(A,B)─┤  ├maxW(C,D)─┤  ├maxWidth(E)──────┤
 		// . ┌A─────────────┐  ┌C─────────┐  ┌E────────────────┐
@@ -410,47 +386,63 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 				continue
 			}
 			delta := maxY - colHeight
-			objects := []*d2graph.Object{}
 			var tallest float64
 			for _, o := range column {
 				tallest = math.Max(tallest, o.Height)
-				objects = append(objects, o)
 			}
-			sort.Slice(objects, func(i, j int) bool {
-				return objects[i].Height < objects[j].Height
-			})
-			// expand smaller objects to fill remaining space
-			for _, o := range objects {
-				if o.Height < tallest {
-					var index int
-					for i, colObj := range column {
-						if o == colObj {
-							index = i
-							break
-						}
-					}
-					grow := math.Min(tallest-o.Height, delta)
-					o.Height += grow
-					// shift following objects
-					for i := index + 1; i < len(column); i++ {
-						column[i].TopLeft.Y += grow
-					}
-					delta -= grow
-					if delta <= 0 {
-						break
-					}
+			diffs := make([]float64, len(column))
+			totalDiff := 0.
+			for i, o := range column {
+				diffs[i] = tallest - o.Height
+				totalDiff += diffs[i]
+			}
+			if totalDiff > 0 {
+				// expand smaller nodes up to the size of the larger ones with delta
+				// percentage diff
+				for i := range diffs {
+					diffs[i] /= totalDiff
+				}
+				growth := math.Min(delta, totalDiff)
+				// expand smaller objects to fill remaining space
+				for i, o := range column {
+					o.Height += diffs[i] * growth
 				}
 			}
-			if delta > 0 {
-				grow := delta / float64(len(column))
-				for i := len(column) - 1; i >= 0; i-- {
-					o := column[i]
-					o.TopLeft.Y += grow * float64(i)
-					o.Height += grow
-					delta -= grow
+			if delta > totalDiff {
+				growth := (delta - totalDiff) / float64(len(column))
+				for _, o := range column {
+					o.Height += growth
 				}
 			}
 		}
+		// if we have 3 columns, then each column's objects should have the same width
+		// . ├maxWidth(A,B)─┤  ├maxW(C,D)─┤  ├maxWidth(E)──────┤
+		// . ┌A─────────────┐  ┌C─────────┐  ┌E────────────────┐
+		// . └──────────────┘  │          │  │                 │
+		// . ┌B──┬──────────┐  └──────────┘  │                 │
+		// . │              │  ┌D────────┬┐  └─────────────────┘
+		// . │   │          │  │          │
+		// . │              │  │         ││
+		// . └───┴──────────┘  │          │
+		// .                   │         ││
+		// .                   └─────────┴┘
+		for _, column := range layout {
+			colWidth := 0.
+			for _, o := range column {
+				o.TopLeft = cursor.Copy()
+				cursor.Y += o.Height + verticalGap
+				colWidth = math.Max(colWidth, o.Width)
+			}
+			// set all objects in column to the same width
+			for _, o := range column {
+				o.Width = colWidth
+			}
+
+			// new column
+			cursor.Y = 0
+			cursor.X += colWidth + horizontalGap
+		}
+		maxX = cursor.X - horizontalGap
 	}
 	gd.width = maxX
 	gd.height = maxY
