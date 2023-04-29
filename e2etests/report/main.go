@@ -71,7 +71,18 @@ func main() {
 		ctx := log.Stderr(context.Background())
 		ctx, cancel := context.WithTimeout(ctx, 2*time.Minute)
 		defer cancel()
-		cmd := exec.CommandContext(ctx, "go", "test", testDir, testMatchString, cpuProfileStr, memProfileStr, vString)
+		// don't want to pass empty args to CommandContext
+		args := []string{"test", testDir, testMatchString}
+		if cpuProfileStr != "" {
+			args = append(args, cpuProfileStr)
+		}
+		if memProfileStr != "" {
+			args = append(args, memProfileStr)
+		}
+		if vString != "" {
+			args = append(args, vString)
+		}
+		cmd := exec.CommandContext(ctx, "go", args...)
 		cmd.Env = os.Environ()
 		cmd.Env = append(cmd.Env, "FORCE_COLOR=1")
 		cmd.Env = append(cmd.Env, "DEBUG=1")
