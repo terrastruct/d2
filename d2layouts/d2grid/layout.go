@@ -2,6 +2,7 @@ package d2grid
 
 import (
 	"context"
+	"fmt"
 	"math"
 	"sort"
 
@@ -475,33 +476,43 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 		}
 	}
 
+	debug := false
 	skipCount := 0
 	// quickly eliminate bad row groupings
 	startingCache := make(map[int]bool)
-	okThreshold := 1.4
-	thresholdStep := 0.4
+	// try to find a layout with all rows within 1.2*targetSize
+	// skip options with a row that is 1.2*longer or shorter
+	// Note: we want a low threshold to explore good options within attemptLimit,
+	// but the best option may require a few rows that are far from the target size.
+	okThreshold := 1.2
+	// if we don't find a layout try 25% larger threshold
+	thresholdStep := 0.25
 	rowOk := func(row []*d2graph.Object, starting bool) (ok bool) {
 		if starting {
+			// we can cache results from starting positions since they repeat and don't change
+			// with starting=true it will always be the 1st N objects based on len(row)
 			if ok, has := startingCache[len(row)]; has {
 				return ok
 			}
 			defer func() {
+				// cache result before returning
 				startingCache[len(row)] = ok
 			}()
 		}
+
 		rowSize := 0.
 		for _, obj := range row {
 			rowSize += getSize(obj)
 		}
 		if len(row) > 1 {
 			rowSize += gap * float64(len(row)-1)
-			// if multiple nodes are too big, it isn't ok. but a single node can't shrink
+			// if multiple nodes are too big, it isn't ok. but a single node can't shrink so only check here
 			if rowSize > okThreshold*targetSize {
 				skipCount++
 				return false
 			}
 		}
-		// too small
+		// row is too small to be good overall
 		if rowSize < targetSize/okThreshold {
 			skipCount++
 			return false
@@ -512,7 +523,7 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 	var bestLayout [][]*d2graph.Object
 	bestDist := math.MaxFloat64
 	count := 0
-	attemptLimit := 1_000_000
+	attemptLimit := 100_000
 	// get all options for where to place these cuts, preferring later cuts over earlier cuts
 	// with 5 objects and 2 cuts we have these options:
 	// .       A   B   C │ D │ E     <- these cuts would produce: ┌A─┐ ┌B─┐ ┌C─┐
@@ -530,18 +541,25 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 			bestDist = dist
 		}
 		count++
-		// with few objects we can try all options to get best result but this won't scale, so only try up to 1mil options
+		// with few objects we can try all options to get best result but this won't scale, so only try up to 100k options
 		return count >= attemptLimit
 	}
 
-	for bestLayout == nil {
+	// try at least 3 different okThresholds
+	for i := 0; i < 3 || bestLayout == nil; i++ {
 		iterDivisions(gd.objects, nCuts, tryDivision, rowOk)
 		okThreshold += thresholdStep
+		if debug {
+			fmt.Printf("increasing ok threshold to %v\n", okThreshold)
+		}
 		startingCache = make(map[int]bool)
+		count = 0.
 	}
-	// fmt.Printf("final count %d, skip count %d\n", count, skipCount)
+	if debug {
+		fmt.Printf("final count %d, skip count %d\n", count, skipCount)
+	}
 
-	// try fast layout algorithm, see if it is better than first 1mil
+	// try fast layout algorithm, see if it is better than first 1mil attempts
 	debt := 0.
 	fastDivision := make([]int, 0, nCuts)
 	rowSize := 0.
@@ -551,6 +569,7 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 		if rowSize == 0 {
 			if size > targetSize-debt {
 				fastDivision = append(fastDivision, i-1)
+				// we build up a debt of distance past the target size across rows
 				newDebt := size - targetSize
 				debt += newDebt
 			} else {
@@ -558,6 +577,7 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 			}
 			continue
 		}
+		// debt is paid by decreasing threshold to start new row and ending below targetSize
 		if rowSize+(gap+size)/2. > targetSize-debt {
 			fastDivision = append(fastDivision, i-1)
 			newDebt := rowSize - targetSize
@@ -567,7 +587,6 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 			rowSize += gap + size
 		}
 	}
-	// should always be the same with debt management, but haven't proven it
 	if len(fastDivision) == nCuts {
 		layout := genLayout(gd.objects, fastDivision)
 		dist := getDistToTarget(layout, targetSize, float64(gd.horizontalGap), float64(gd.verticalGap), columns)
