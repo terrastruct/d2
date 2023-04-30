@@ -1493,6 +1493,304 @@ six
 	}
 }
 
+func TestReconnectEdge(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name    string
+		text    string
+		edgeKey string
+		newSrc  string
+		newDst  string
+
+		expErr     string
+		exp        string
+		assertions func(t *testing.T, g *d2graph.Graph)
+	}{
+		{
+			name: "basic",
+			text: `a
+b
+c
+a -> b
+`,
+			edgeKey: `(a -> b)[0]`,
+			newDst:  "c",
+			exp: `a
+b
+c
+a -> c
+`,
+		},
+		{
+			name: "src",
+			text: `a
+b
+c
+a -> b
+`,
+			edgeKey: `(a -> b)[0]`,
+			newSrc:  "c",
+			exp: `a
+b
+c
+c -> b
+`,
+		},
+		{
+			name: "both",
+			text: `a
+b
+c
+a -> b
+`,
+			edgeKey: `(a -> b)[0]`,
+			newSrc:  "b",
+			newDst:  "a",
+			exp: `a
+b
+c
+b -> a
+`,
+		},
+		{
+			name: "contained",
+			text: `a.x -> a.y
+a.z`,
+			edgeKey: `(a.x -> a.y)[0]`,
+			newDst:  "a.z",
+			exp: `a.x -> a.z
+a.y
+a.z
+`,
+		},
+		{
+			name: "scope_outer",
+			text: `a: {
+  x -> y
+}
+b`,
+			edgeKey: `(a.x -> a.y)[0]`,
+			newDst:  "b",
+			exp: `a: {
+  x -> _.b
+  y
+}
+b
+`,
+		},
+		{
+			name: "scope_inner",
+			text: `a: {
+  x -> y
+	z: {
+    b
+  }
+}`,
+			edgeKey: `(a.x -> a.y)[0]`,
+			newDst:  "a.z.b",
+			exp: `a: {
+  x -> z.b
+  y
+
+  z: {
+    b
+  }
+}
+`,
+		},
+		{
+			name: "loop",
+			text: `a -> a
+b`,
+			edgeKey: `(a -> a)[0]`,
+			newDst:  "b",
+			exp: `a -> b
+b
+`,
+		},
+		{
+			name: "middle_chain",
+			text: `a -> b -> c
+x`,
+			edgeKey: `(a -> b)[0]`,
+			newDst:  "x",
+			exp: `b -> c
+a -> x
+x
+`,
+		},
+		{
+			name: "middle_chain_src",
+			text: `a -> b -> c
+x`,
+			edgeKey: `(b -> c)[0]`,
+			newSrc:  "x",
+			exp: `a -> b
+x -> c
+x
+`,
+		},
+		{
+			name: "middle_chain_both",
+			text: `a -> b -> c -> d
+x`,
+			edgeKey: `(b -> c)[0]`,
+			newSrc:  "x",
+			newDst:  "x",
+			exp: `a -> b
+c -> d
+x -> x
+x
+`,
+		},
+		{
+			name: "middle_chain_first",
+			text: `a -> b -> c -> d
+x`,
+			edgeKey: `(a -> b)[0]`,
+			newSrc:  "x",
+			exp: `a
+x -> b -> c -> d
+x
+`,
+		},
+		{
+			name: "middle_chain_last",
+			text: `a -> b -> c -> d
+x`,
+			edgeKey: `(c -> d)[0]`,
+			newDst:  "x",
+			exp: `a -> b -> c -> x
+d
+x
+`,
+		},
+		// These _3 and _4 match the delta tests
+		{
+			name: "in_chain_3",
+
+			text: `a -> b -> a -> c
+`,
+			edgeKey: "(a -> b)[0]",
+			newDst:  "c",
+
+			exp: `b -> a -> c
+a -> c
+`,
+		},
+		{
+			name: "in_chain_4",
+
+			text: `a -> c -> a -> c
+b
+`,
+			edgeKey: "(a -> c)[0]",
+			newDst:  "b",
+
+			exp: `c -> a -> c
+a -> b
+b
+`,
+		},
+		{
+			name: "indexed_ref",
+			text: `a -> b
+x
+(a -> b)[0].style.stroke: red
+`,
+			edgeKey: `(a -> b)[0]`,
+			newDst:  "x",
+			exp: `a -> x
+b
+x
+(a -> x)[0].style.stroke: red
+`,
+		},
+		{
+			name: "reverse",
+			text: `a -> b
+`,
+			edgeKey: `(a -> b)[0]`,
+			newSrc:  "b",
+			newDst:  "a",
+			exp: `b -> a
+`,
+		},
+		{
+			name: "second_index",
+			text: `a -> b: {
+  style.stroke: blue
+}
+a -> b: {
+  style.stroke: red
+}
+x
+`,
+			edgeKey: `(a -> b)[1]`,
+			newDst:  "x",
+			exp: `a -> b: {
+  style.stroke: blue
+}
+a -> x: {
+  style.stroke: red
+}
+x
+`,
+		},
+		{
+			name: "nonexistant_edge",
+			text: `a -> b
+`,
+			edgeKey: `(b -> a)[0]`,
+			newDst:  "a",
+			expErr:  "edge not found",
+		},
+		{
+			name: "nonexistant_obj",
+			text: `a -> b
+`,
+			edgeKey: `(a -> b)[0]`,
+			newDst:  "x",
+			expErr:  "newDst not found",
+		},
+		{
+			name: "missing_params",
+			text: `a -> b
+`,
+			edgeKey: `(a -> b)[0]`,
+			expErr:  "must provide at least one new endpoint",
+		},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			et := editTest{
+				text: tc.text,
+				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
+					var newSrc *string
+					var newDst *string
+					if tc.newSrc != "" {
+						newSrc = &tc.newSrc
+					}
+					if tc.newDst != "" {
+						newDst = &tc.newDst
+					}
+					return d2oracle.ReconnectEdge(g, tc.edgeKey, newSrc, newDst)
+				},
+
+				exp:        tc.exp,
+				expErr:     tc.expErr,
+				assertions: tc.assertions,
+			}
+			et.run(t)
+		})
+	}
+}
+
 func TestRename(t *testing.T) {
 	t.Parallel()
 
@@ -5298,6 +5596,227 @@ func (tc editTest) run(t *testing.T) {
 
 	err = diff.TestdataJSON(filepath.Join("..", "testdata", "d2oracle", t.Name()), got)
 	assert.Success(t, err)
+}
+
+func TestReconnectEdgeIDDeltas(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name string
+
+		text   string
+		edge   string
+		newSrc string
+		newDst string
+
+		exp    string
+		expErr string
+	}{
+		{
+			name: "basic",
+
+			text: `a -> b
+x
+`,
+			edge:   "(a -> b)[0]",
+			newDst: "x",
+
+			exp: `{
+  "(a -> b)[0]": "(a -> x)[0]"
+}`,
+		},
+		{
+			name: "both",
+			text: `a
+b
+c
+a -> b
+`,
+			edge:   `(a -> b)[0]`,
+			newSrc: "b",
+			newDst: "a",
+			exp: `{
+  "(a -> b)[0]": "(b -> a)[0]"
+}`,
+		},
+		{
+			name: "contained",
+
+			text: `a.x -> a.y
+a.z
+`,
+			edge:   "(a.x -> a.y)[0]",
+			newDst: "a.z",
+
+			exp: `{
+  "a.(x -> y)[0]": "a.(x -> z)[0]"
+}`,
+		},
+		{
+			name: "second_index",
+
+			text: `a -> b
+a -> b
+c
+`,
+			edge:   "(a -> b)[1]",
+			newDst: "c",
+
+			exp: `{
+  "(a -> b)[1]": "(a -> c)[0]"
+}`,
+		},
+		{
+			name: "old_sibling_decrement",
+
+			text: `a -> b
+a -> b
+c
+`,
+			edge:   "(a -> b)[0]",
+			newDst: "c",
+
+			exp: `{
+  "(a -> b)[0]": "(a -> c)[0]",
+  "(a -> b)[1]": "(a -> b)[0]"
+}`,
+		},
+		{
+			name: "new_sibling_increment",
+
+			text: `a -> b
+c -> b
+a -> b
+`,
+			edge:   "(c -> b)[0]",
+			newSrc: "a",
+
+			exp: `{
+  "(a -> b)[1]": "(a -> b)[2]",
+  "(c -> b)[0]": "(a -> b)[1]"
+}`,
+		},
+		{
+			name: "increment_and_decrement",
+
+			text: `a -> b
+c -> b
+c -> b
+a -> b
+`,
+			edge:   "(c -> b)[0]",
+			newSrc: "a",
+
+			exp: `{
+  "(a -> b)[1]": "(a -> b)[2]",
+  "(c -> b)[0]": "(a -> b)[1]",
+  "(c -> b)[1]": "(c -> b)[0]"
+}`,
+		},
+		{
+			name: "in_chain",
+
+			text: `a -> b -> a -> b
+c
+`,
+			edge:   "(a -> b)[0]",
+			newDst: "c",
+
+			exp: `{
+  "(a -> b)[0]": "(a -> c)[0]",
+  "(a -> b)[1]": "(a -> b)[0]"
+}`,
+		},
+		{
+			name: "in_chain_2",
+
+			text: `a -> b -> a -> b
+c
+`,
+			edge:   "(a -> b)[1]",
+			newDst: "c",
+
+			exp: `{
+  "(a -> b)[1]": "(a -> c)[0]"
+}`,
+		},
+		{
+			name: "in_chain_3",
+
+			text: `a -> b -> a -> c
+`,
+			edge:   "(a -> b)[0]",
+			newDst: "c",
+
+			exp: `{
+  "(a -> b)[0]": "(a -> c)[1]"
+}`,
+		},
+		{
+			name: "in_chain_4",
+
+			text: `a -> c -> a -> c
+b
+`,
+			edge:   "(a -> c)[0]",
+			newDst: "b",
+
+			exp: `{
+  "(a -> c)[0]": "(a -> b)[0]",
+  "(a -> c)[1]": "(a -> c)[0]"
+}`,
+		},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			d2Path := fmt.Sprintf("d2/testdata/d2oracle/%v.d2", t.Name())
+			g, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			var newSrc *string
+			var newDst *string
+			if tc.newSrc != "" {
+				newSrc = &tc.newSrc
+			}
+			if tc.newDst != "" {
+				newDst = &tc.newDst
+			}
+
+			deltas, err := d2oracle.ReconnectEdgeIDDeltas(g, tc.edge, newSrc, newDst)
+			if tc.expErr != "" {
+				if err == nil {
+					t.Fatalf("expected error with: %q", tc.expErr)
+				}
+				ds, err := diff.Strings(tc.expErr, err.Error())
+				if err != nil {
+					t.Fatal(err)
+				}
+				if ds != "" {
+					t.Fatalf("unexpected error: %s", ds)
+				}
+			} else if err != nil {
+				t.Fatal(err)
+			}
+
+			if hasRepeatedValue(deltas) {
+				t.Fatalf("deltas set more than one value equal to another: %s", string(xjson.Marshal(deltas)))
+			}
+
+			ds, err := diff.Strings(tc.exp, string(xjson.Marshal(deltas)))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if ds != "" {
+				t.Fatalf("unexpected deltas: %s", ds)
+			}
+		})
+	}
 }
 
 func TestMoveIDDeltas(t *testing.T) {

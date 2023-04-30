@@ -68,6 +68,146 @@ func Set(g *d2graph.Graph, key string, tag, value *string) (_ *d2graph.Graph, er
 	return recompile(g)
 }
 
+func ReconnectEdge(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (_ *d2graph.Graph, err error) {
+	mk, err := d2parser.ParseMapKey(edgeKey)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(mk.Edges) == 0 {
+		return nil, errors.New("edgeKey must be an edge")
+	}
+
+	if mk.EdgeIndex == nil {
+		return nil, errors.New("edgeKey must refer to an existing edge")
+	}
+
+	if srcKey == nil && dstKey == nil {
+		return nil, errors.New("must provide at least one new endpoint")
+	}
+
+	edge, ok := g.Root.HasEdge(mk)
+	if !ok {
+		return nil, errors.New("edge not found")
+	}
+
+	var src *d2graph.Object
+	var dst *d2graph.Object
+	if srcKey != nil {
+		srcmk, err := d2parser.ParseMapKey(*srcKey)
+		if err != nil {
+			return nil, err
+		}
+		src, ok = g.Root.HasChild(d2graph.Key(srcmk.Key))
+		if !ok {
+			return nil, errors.New("newSrc not found")
+		}
+	}
+	if dstKey != nil {
+		dstmk, err := d2parser.ParseMapKey(*dstKey)
+		if err != nil {
+			return nil, err
+		}
+		dst, ok = g.Root.HasChild(d2graph.Key(dstmk.Key))
+		if !ok {
+			return nil, errors.New("newDst not found")
+		}
+	}
+
+	ref := edge.References[0]
+
+	// for loops where only one end is changing, node is always ensured
+	if edge.Src != edge.Dst && (srcKey == nil || dstKey == nil) {
+		var refEdges []*d2ast.Edge
+		for _, ref := range edge.References {
+			refEdges = append(refEdges, ref.Edge)
+		}
+
+		if srcKey != nil {
+			ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, ref.MapKey.Edges[ref.MapKeyEdgeIndex].Src, true)
+		}
+		if dstKey != nil {
+			ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, ref.MapKey.Edges[ref.MapKeyEdgeIndex].Dst, false)
+		}
+	}
+
+	for i := range edge.References {
+		ref := edge.References[i]
+		// it's a chain
+		if len(ref.MapKey.Edges) > 1 && ref.MapKey.EdgeIndex == nil {
+			splitChain := true
+			// Changing the start of a chain is okay
+			if ref.MapKeyEdgeIndex == 0 && dstKey == nil {
+				splitChain = false
+			}
+			// Changing the end of a chain is okay
+			if ref.MapKeyEdgeIndex == len(ref.MapKey.Edges)-1 && srcKey == nil {
+				splitChain = false
+			}
+			if splitChain {
+				tmp := *ref.MapKey
+				mk2 := &tmp
+				mk2.Edges = []*d2ast.Edge{ref.MapKey.Edges[ref.MapKeyEdgeIndex]}
+				ref.Scope.InsertAfter(ref.MapKey, mk2)
+
+				if ref.MapKeyEdgeIndex < len(ref.MapKey.Edges)-1 {
+					tmp := *ref.MapKey
+					mk2 := &tmp
+					mk2.Edges = ref.MapKey.Edges[ref.MapKeyEdgeIndex+1:]
+					ref.Scope.InsertAfter(ref.MapKey, mk2)
+				}
+				ref.MapKey.Edges = ref.MapKey.Edges[:ref.MapKeyEdgeIndex]
+			}
+		}
+
+		if src != nil {
+			srcmk, _ := d2parser.ParseMapKey(*srcKey)
+			ref.Edge.Src = srcmk.Key
+			newPath, err := pathFromScope(g, srcmk, ref.ScopeObj)
+			if err != nil {
+				return nil, err
+			}
+			ref.Edge.Src.Path = newPath
+		}
+		if dst != nil {
+			dstmk, _ := d2parser.ParseMapKey(*dstKey)
+			ref.Edge.Dst = dstmk.Key
+			newPath, err := pathFromScope(g, dstmk, ref.ScopeObj)
+			if err != nil {
+				return nil, err
+			}
+			ref.Edge.Dst.Path = newPath
+		}
+	}
+
+	return recompile(g)
+}
+
+func pathFromScope(g *d2graph.Graph, key *d2ast.Key, fromScope *d2graph.Object) ([]*d2ast.StringBox, error) {
+	ak2 := d2graph.Key(key.Key)
+
+	// We don't want this to be underscore-resolved scope. We want to ignore underscores
+	var scopeak []string
+	if fromScope != g.Root {
+		scopek, err := d2parser.ParseKey(fromScope.AbsID())
+		if err != nil {
+			return nil, err
+		}
+		scopeak = d2graph.Key(scopek)
+	}
+	commonPath := getCommonPath(scopeak, ak2)
+
+	var newPath []*d2ast.StringBox
+	// Move out to most common scope
+	for i := len(commonPath); i < len(scopeak); i++ {
+		newPath = append(newPath, d2ast.MakeValueBox(d2ast.RawString("_", true)).StringBox())
+	}
+	// From most common scope, target the toKey
+	newPath = append(newPath, key.Key.Path[len(commonPath):]...)
+
+	return newPath, nil
+}
+
 func recompile(g *d2graph.Graph) (*d2graph.Graph, error) {
 	s := d2format.Format(g.AST)
 	g, err := d2compiler.Compile(g.AST.Range.Path, strings.NewReader(s), nil)
@@ -1476,17 +1616,6 @@ func move(g *d2graph.Graph, key, newKey string) (*d2graph.Graph, error) {
 			continue
 		}
 
-		// We don't want this to be underscore-resolved scope. We want to ignore underscores
-		var scopeak []string
-		if ref.ScopeObj != g.Root {
-			scopek, err := d2parser.ParseKey(ref.ScopeObj.AbsID())
-			if err != nil {
-				return nil, err
-			}
-			scopeak = d2graph.Key(scopek)
-		}
-		commonPath := getCommonPath(scopeak, ak2)
-
 		// When moving a node out of an edge, e.g. the `b` out of `a.b.c -> ...`,
 		// The edge needs to continue targeting the same thing (c)
 		if ref.KeyPathIndex != len(ref.Key.Path)-1 {
@@ -1507,13 +1636,12 @@ func move(g *d2graph.Graph, key, newKey string) (*d2graph.Graph, error) {
 				detachedK.Path = detachedK.Path[:len(detachedK.Path)-1]
 				ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, detachedK, false)
 			}
-			// Move out to most common scope
-			ref.Key.Path = nil
-			for i := len(commonPath); i < len(scopeak); i++ {
-				ref.Key.Path = append(ref.Key.Path, d2ast.MakeValueBox(d2ast.RawString("_", true)).StringBox())
+
+			newPath, err := pathFromScope(g, mk2, ref.ScopeObj)
+			if err != nil {
+				return nil, err
 			}
-			// From most common scope, target the toKey
-			ref.Key.Path = append(ref.Key.Path, mk2.Key.Path[len(commonPath):]...)
+			ref.Key.Path = newPath
 		}
 	}
 
@@ -1691,55 +1819,112 @@ func ReparentIDDelta(g *d2graph.Graph, key, parentKey string) (string, error) {
 	return id, nil
 }
 
-func ReconnectEdgeIDDelta(g *d2graph.Graph, edgeID, srcID, dstID string) (string, error) {
-	mk, err := d2parser.ParseMapKey(edgeID)
+func ReconnectEdgeIDDeltas(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (deltas map[string]string, err error) {
+	defer xdefer.Errorf(&err, "failed to get deltas for reconnect edge %#v", edgeKey)
+	deltas = make(map[string]string)
+	// Reconnection: nothing is created or destroyed, the edge just gets a new ID
+	// For deltas, it's indices that change:
+	// - old sibling edges may decrement index
+	// -- happens when the edge is not the last edge index
+	// - new sibling edges may increment index
+	// -- happens when the edge is not the last edge index
+	// - new edge of course always needs an entry
+
+	// The change happens at the first ref, since that is what changes index
+	mk, err := d2parser.ParseMapKey(edgeKey)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	edgeTrimCommon(mk)
-	obj := g.Root
-	if mk.Key != nil {
-		var ok bool
-		obj, ok = g.Root.HasChild(d2graph.Key(mk.Key))
-		if !ok {
-			return "", errors.New("edge key not found")
-		}
+
+	if len(mk.Edges) == 0 {
+		return nil, errors.New("edgeKey must be an edge")
 	}
-	e, ok := obj.HasEdge(mk)
+
+	if mk.EdgeIndex == nil {
+		return nil, errors.New("edgeKey must refer to an existing edge")
+	}
+
+	if srcKey == nil && dstKey == nil {
+		return nil, errors.New("must provide at least one new endpoint")
+	}
+
+	edge, ok := g.Root.HasEdge(mk)
 	if !ok {
-		return "", fmt.Errorf("edge %v not found", edgeID)
+		return nil, errors.New("edge not found")
 	}
-	if e.Src.AbsID() == srcID && e.Dst.AbsID() == dstID {
-		return edgeID, nil
-	}
-	oldSrc := e.Src
-	oldDst := e.Dst
-	if e.Src.AbsID() != srcID {
-		mk, err := d2parser.ParseMapKey(srcID)
+
+	newSrc := edge.Src
+	newDst := edge.Dst
+	var src *d2graph.Object
+	var dst *d2graph.Object
+	if srcKey != nil {
+		srcmk, err := d2parser.ParseMapKey(*srcKey)
 		if err != nil {
-			return "", err
+			return nil, err
 		}
-		src, ok := g.Root.HasChild(d2graph.Key(mk.Key))
+		src, ok = g.Root.HasChild(d2graph.Key(srcmk.Key))
 		if !ok {
-			return "", fmt.Errorf("src %v not found", srcID)
+			return nil, errors.New("newSrc not found")
 		}
-		e.Src = src
+		newSrc = src
 	}
-	if e.Dst.AbsID() != dstID {
-		mk, err := d2parser.ParseMapKey(dstID)
+	if dstKey != nil {
+		dstmk, err := d2parser.ParseMapKey(*dstKey)
 		if err != nil {
-			return "", err
+			return nil, err
 		}
-		dst, ok := g.Root.HasChild(d2graph.Key(mk.Key))
+		dst, ok = g.Root.HasChild(d2graph.Key(dstmk.Key))
 		if !ok {
-			return "", fmt.Errorf("dst %v not found", dstID)
+			return nil, errors.New("newDst not found")
 		}
-		e.Dst = dst
+		newDst = dst
 	}
-	newID := fmt.Sprintf("%s %s %s", e.Src.AbsID(), e.ArrowString(), e.Dst.AbsID())
-	e.Src = oldSrc
-	e.Dst = oldDst
-	return newID, nil
+
+	// The first ref is always the definition
+	firstRef := edge.References[0]
+	line := firstRef.MapKey.Range.Start.Line
+	newIndex := 0
+
+	// For the edge's own delta, it just needs to know how many edges came before it with the same src and dst
+	for _, otherEdge := range g.Edges {
+		if otherEdge.Src == newSrc && otherEdge.Dst == newDst {
+			firstRef := otherEdge.References[0]
+			if firstRef.MapKey.Range.Start.Line <= line {
+				newIndex++
+			}
+		}
+		if otherEdge.Src == edge.Src && otherEdge.Dst == edge.Dst && otherEdge.Index > edge.Index {
+			before := otherEdge.AbsID()
+			otherEdge.Index--
+			after := otherEdge.AbsID()
+			deltas[before] = after
+			otherEdge.Index++
+		}
+	}
+
+	for _, otherEdge := range g.Edges {
+		if otherEdge.Src == newSrc && otherEdge.Dst == newDst {
+			if otherEdge.Index >= newIndex {
+				before := otherEdge.AbsID()
+				otherEdge.Index++
+				after := otherEdge.AbsID()
+				deltas[before] = after
+				otherEdge.Index--
+			}
+		}
+	}
+
+	newEdge := &d2graph.Edge{
+		Src:      newSrc,
+		Dst:      newDst,
+		SrcArrow: edge.SrcArrow,
+		DstArrow: edge.DstArrow,
+		Index:    newIndex,
+	}
+
+	deltas[edge.AbsID()] = newEdge.AbsID()
+
+	return deltas, nil
 }
 
 // generateUniqueKey generates a unique key by appending a number after `prefix` such that it doesn't conflict with any IDs in `g`
