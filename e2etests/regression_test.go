@@ -91,6 +91,18 @@ a: A
 b: B`,
 		},
 		{
+			name: "root-container",
+			script: `main: {
+  x -> y
+  y <- z
+}
+
+root: {
+  x -> y
+  y <- z
+}`,
+		},
+		{
 			name: "sequence_diagram_name_crash",
 			script: `foo: {
 	shape: sequence_diagram
