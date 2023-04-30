@@ -413,7 +413,11 @@ func (p *parser) parseMap(isFileMap bool) *d2ast.Map {
 		if after != p.pos {
 			if n.Unbox() != nil {
 				if n.MapKey != nil && n.MapKey.Value.Unbox() != nil {
-					p.errorf(after, p.pos, "unexpected text after %v", n.MapKey.Value.Unbox().Type())
+					ps := ""
+					if _, ok := n.MapKey.Value.Unbox().(*d2ast.BlockString); ok {
+						ps = ". See https://d2lang.com/tour/text#advanced-block-strings."
+					}
+					p.errorf(after, p.pos, "unexpected text after %v%s", n.MapKey.Value.Unbox().Type(), ps)
 				} else {
 					p.errorf(after, p.pos, "unexpected text after %v", n.Unbox().Type())
 				}
