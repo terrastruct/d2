@@ -9,6 +9,7 @@
 - ELK preserves order of objects in cycles [#1235](https://github.com/terrastruct/d2/pull/1235)
 - Improper usages of `class` and `style` get error messages [#1254](https://github.com/terrastruct/d2/pull/1254)
 - Improves scaling of object widths/heights in grid diagrams [#1263](https://github.com/terrastruct/d2/pull/1263)
+- Enhance Markdown parsing error message by appending link to docs [#1269](https://github.com/terrastruct/d2/pull/1269)
 
 #### Bugfixes ⛑️
 
