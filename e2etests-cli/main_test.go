@@ -59,6 +59,14 @@ func TestCLI_E2E(t *testing.T) {
 			},
 		},
 		{
+			name: "flags-panic",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "layout", "dagre", "--dagre-nodesep", "50", "hello-world.d2")
+				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: failed to unmarshal input to graph: `)
+			},
+		},
+		{
 			name: "empty-layer",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "empty-layer.d2", `layers: { x: {} }`)
