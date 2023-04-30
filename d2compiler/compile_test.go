@@ -599,6 +599,18 @@ x: {
 			},
 		},
 		{
+			name: "md_block_string_err",
+
+			text: `test: |md
+  # What about pipes
+
+  Will escaping \| work?
+|
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/md_block_string_err.d2:4:19: unexpected text after md block string. See https://d2lang.com/tour/text#advanced-block-strings.
+d2/testdata/d2compiler/TestCompile/md_block_string_err.d2:5:1: block string must be terminated with |`,
+		},
+		{
 			name: "underscore_edge_existing",
 
 			text: `
@@ -1679,6 +1691,24 @@ x.a.b`,
 			expErr: `d2/testdata/d2compiler/TestCompile/no-nested-columns-class.d2:3:5: class fields cannot have children`,
 		},
 		{
+			name: "improper-class-ref",
+
+			text:   `myobj.class.style.stroke-dash: 3`,
+			expErr: `d2/testdata/d2compiler/TestCompile/improper-class-ref.d2:1:7: "class" must be the last part of the key`,
+		},
+		{
+			name: "tail-style",
+
+			text:   `myobj.style: 3`,
+			expErr: `d2/testdata/d2compiler/TestCompile/tail-style.d2:1:7: "style" expected to be set to a map, or contain an additional keyword like "style.opacity: 0.4"`,
+		},
+		{
+			name: "bad-style-nesting",
+
+			text:   `myobj.style.style.stroke-dash: 3`,
+			expErr: `d2/testdata/d2compiler/TestCompile/bad-style-nesting.d2:1:13: invalid style keyword: "style"`,
+		},
+		{
 			name: "edge_to_style",
 
 			text: `x: {style.opacity: 0.4}
@@ -2383,6 +2413,35 @@ nostar -> 1star: { class: path }
 			},
 		},
 		{
+			name: "array-classes",
+			text: `classes: {
+  dragon_ball: {
+    label: ""
+    shape: circle
+    style.fill: orange
+  }
+  path: {
+    label: "then"
+    style.stroke-width: 4
+  }
+	path2: {
+    style.stroke-width: 2
+	}
+}
+nostar: { class: [dragon_ball; path] }
+1star: { class: [path; dragon_ball] }
+
+nostar -> 1star: { class: [path; path2] }
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "then", g.Objects[0].Label.Value)
+				tassert.Equal(t, "", g.Objects[1].Label.Value)
+				tassert.Equal(t, "circle", g.Objects[0].Shape.Value)
+				tassert.Equal(t, "circle", g.Objects[1].Shape.Value)
+				tassert.Equal(t, "2", g.Edges[0].Style.StrokeWidth.Value)
+			},
+		},
+		{
 			name: "reordered-classes",
 			text: `classes: {
   x: {
@@ -2396,6 +2455,20 @@ classes.x.shape: diamond
 				tassert.Equal(t, 1, len(g.Objects))
 				tassert.Equal(t, "diamond", g.Objects[0].Shape.Value)
 			},
+		},
+		{
+			name: "class-shape-class",
+			text: `classes: {
+  classClass: {
+    shape: class
+  }
+}
+
+object: {
+  class: classClass
+  length(): int
+}
+`,
 		},
 		{
 			name: "no-class-primary",

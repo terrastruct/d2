@@ -144,7 +144,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	elkGraph := &ELKGraph{
-		ID: "root",
+		ID: "",
 		LayoutOptions: &elkOpts{
 			Thoroughness:                 8,
 			EdgeEdgeBetweenLayersSpacing: 50,
@@ -432,7 +432,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		parentX := 0.0
 		parentY := 0.0
-		if e.Container != "root" {
+		if e.Container != "" {
 			parentX = byID[e.Container].TopLeft.X
 			parentY = byID[e.Container].TopLeft.Y
 		}

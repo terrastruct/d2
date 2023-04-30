@@ -59,6 +59,14 @@ func TestCLI_E2E(t *testing.T) {
 			},
 		},
 		{
+			name: "flags-panic",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, "layout", "dagre", "--dagre-nodesep", "50", "hello-world.d2")
+				assert.ErrorString(t, err, `failed to wait xmain test: e2etests-cli/d2: failed to unmarshal input to graph: `)
+			},
+		},
+		{
 			name: "empty-layer",
 			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
 				writeFile(t, dir, "empty-layer.d2", `layers: { x: {} }`)
@@ -315,6 +323,19 @@ steps: {
 
 				gifBytes := readFile(t, dir, "how_to_solve_problems.gif")
 				err = xgif.Validate(gifBytes, 4, 10)
+				assert.Success(t, err)
+			},
+		},
+		{
+			name:   "one-layer-gif",
+			skipCI: true,
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "in.d2", `x`)
+				err := runTestMain(t, ctx, dir, env, "--animate-interval=10", "in.d2", "out.gif")
+				assert.Success(t, err)
+
+				gifBytes := readFile(t, dir, "out.gif")
+				err = xgif.Validate(gifBytes, 1, 10)
 				assert.Success(t, err)
 			},
 		},

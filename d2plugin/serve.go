@@ -21,20 +21,22 @@ import (
 // Also see execPlugin in exec.go for the d2 binary plugin protocol.
 func Serve(p Plugin) xmain.RunFunc {
 	return func(ctx context.Context, ms *xmain.State) (err error) {
-		fs, err := p.Flags(ctx)
-		if err != nil {
-			return err
-		}
-		for _, f := range fs {
-			f.AddToOpts(ms.Opts)
-		}
-		err = ms.Opts.Flags.Parse(ms.Opts.Args)
-		if !errors.Is(err, pflag.ErrHelp) && err != nil {
-			return xmain.UsageErrorf("failed to parse flags: %v", err)
-		}
-		if errors.Is(err, pflag.ErrHelp) {
-			// At some point we want to write a friendly help.
-			return info(ctx, p, ms)
+		if !ms.Opts.Flags.Parsed() {
+			fs, err := p.Flags(ctx)
+			if err != nil {
+				return err
+			}
+			for _, f := range fs {
+				f.AddToOpts(ms.Opts)
+			}
+			err = ms.Opts.Flags.Parse(ms.Opts.Args)
+			if !errors.Is(err, pflag.ErrHelp) && err != nil {
+				return xmain.UsageErrorf("failed to parse flags: %v", err)
+			}
+			if errors.Is(err, pflag.ErrHelp) {
+				// At some point we want to write a friendly help.
+				return info(ctx, p, ms)
+			}
 		}
 
 		if len(ms.Opts.Flags.Args()) < 1 {

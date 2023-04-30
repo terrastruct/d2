@@ -25,7 +25,6 @@ import (
 )
 
 const INFINITE_LOOP = 0
-const BG_INDEX uint8 = 255
 
 var BG_COLOR = color.White
 
@@ -63,7 +62,7 @@ func AnimatePNGs(ms *xmain.State, pngs [][]byte, animIntervalMs int) ([]byte, er
 		// 1. convert the PNG into a GIF compatible image (Bitmap) by quantizing it to 255 colors
 		buf := bytes.NewBuffer(nil)
 		err := gif.Encode(buf, pngImage, &gif.Options{
-			NumColors: 255, // GIFs can have up to 256 colors, so keep 1 slot for white background
+			NumColors: 256, // GIFs can have up to 256 colors
 			Quantizer: quantize.MedianCutQuantizer{},
 		})
 		if err != nil {
@@ -85,12 +84,19 @@ func AnimatePNGs(ms *xmain.State, pngs [][]byte, animIntervalMs int) ([]byte, er
 		left := (width - bounds.Dx()) / 2
 		right := left + bounds.Dx()
 
-		palettedImg.Palette[BG_INDEX] = BG_COLOR
+		var bgIndex int
+		if len(palettedImg.Palette) == 256 {
+			bgIndex = findWhiteIndex(palettedImg.Palette)
+			palettedImg.Palette[bgIndex] = BG_COLOR
+		} else {
+			bgIndex = len(palettedImg.Palette)
+			palettedImg.Palette = append(palettedImg.Palette, BG_COLOR)
+		}
 		frame := image.NewPaletted(image.Rect(0, 0, width, height), palettedImg.Palette)
 		for x := 0; x < width; x++ {
 			for y := 0; y < height; y++ {
 				if x <= left || y <= top || x >= right || y >= bottom {
-					frame.SetColorIndex(x, y, BG_INDEX)
+					frame.SetColorIndex(x, y, uint8(bgIndex))
 				} else {
 					frame.SetColorIndex(x, y, palettedImg.ColorIndexAt(x-left, y-top))
 				}
@@ -109,14 +115,34 @@ func AnimatePNGs(ms *xmain.State, pngs [][]byte, animIntervalMs int) ([]byte, er
 	return buf.Bytes(), nil
 }
 
+func findWhiteIndex(palette color.Palette) int {
+	nearestIndex := 0
+	nearestScore := 0.
+	for i, c := range palette {
+		r, g, b, _ := c.RGBA()
+		if r == 255 && g == 255 && b == 255 {
+			return i
+		}
+
+		avg := float64(r+g+b) / 255.
+		if avg > nearestScore {
+			nearestScore = avg
+			nearestIndex = i
+		}
+	}
+	return nearestIndex
+}
+
 func Validate(gifBytes []byte, nFrames int, intervalMS int) error {
 	anim, err := gif.DecodeAll(bytes.NewBuffer(gifBytes))
 	if err != nil {
 		return err
 	}
 
-	if anim.LoopCount != INFINITE_LOOP {
+	if nFrames > 1 && anim.LoopCount != INFINITE_LOOP {
 		return fmt.Errorf("expected infinite loop, got=%d", anim.LoopCount)
+	} else if nFrames == 1 && anim.LoopCount != -1 {
+		return fmt.Errorf("wrong loop count for single frame gif, got=%d", anim.LoopCount)
 	}
 
 	if len(anim.Image) != nFrames {

@@ -164,6 +164,18 @@ func (a *Attributes) ApplyTextTransform() {
 	}
 }
 
+func (a *Attributes) ToArrowhead() d2target.Arrowhead {
+	if a.Shape.Value == "" {
+		return d2target.NoArrowhead
+	}
+
+	filled := false
+	if a.Style.Filled != nil {
+		filled, _ = strconv.ParseBool(a.Style.Filled.Value)
+	}
+	return d2target.ToArrowhead(a.Shape.Value, filled)
+}
+
 // TODO references at the root scope should have their Scope set to root graph AST
 type Reference struct {
 	Key          *d2ast.KeyPath `json:"key"`
