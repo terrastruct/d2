@@ -19,3 +19,4 @@
 - Fixes rare panic exporting to gifs [#1257](https://github.com/terrastruct/d2/pull/1257)
 - Fixes bad performance in large grid diagrams [#1263](https://github.com/terrastruct/d2/pull/1263)
 - Fixes bug in ELK when container has ID "root" [#1268](https://github.com/terrastruct/d2/pull/1268)
+- Fixes edge case panic with invalid CLI arguments [#1271](https://github.com/terrastruct/d2/pull/1271)
