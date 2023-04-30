@@ -599,6 +599,18 @@ x: {
 			},
 		},
 		{
+			name: "md_block_string_err",
+
+			text: `test: |md
+  # What about pipes
+
+  Will escaping \| work?
+|
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/md_block_string_err.d2:4:19: unexpected text after md block string. See https://d2lang.com/tour/text#advanced-block-strings.
+d2/testdata/d2compiler/TestCompile/md_block_string_err.d2:5:1: block string must be terminated with |`,
+		},
+		{
 			name: "underscore_edge_existing",
 
 			text: `
