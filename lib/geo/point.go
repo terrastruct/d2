@@ -287,3 +287,11 @@ func (p *Point) Transpose() {
 	}
 	p.X, p.Y = p.Y, p.X
 }
+
+// point t% of the way between a and b
+func (a *Point) Interpolate(b *Point, t float64) *Point {
+	return NewPoint(
+		a.X*(1.0-t)+b.X*t,
+		a.Y*(1.0-t)+b.Y*t,
+	)
+}
