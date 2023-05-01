@@ -131,8 +131,8 @@ type Attributes struct {
 	// TODO: default to ShapeRectangle instead of empty string
 	Shape Scalar `json:"shape"`
 
-	Direction  Scalar `json:"direction"`
-	Constraint Scalar `json:"constraint"`
+	Direction  Scalar   `json:"direction"`
+	Constraint []string `json:"constraint"`
 
 	GridRows      *Scalar `json:"gridRows,omitempty"`
 	GridColumns   *Scalar `json:"gridColumns,omitempty"`
@@ -1036,11 +1036,7 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 			}
 			maxTypeWidth = go2.Max(maxTypeWidth, typeDims.Width)
 
-			if c.Constraint == "primary_key_foreign_key" {
-				// covers "PK FK" constraint with padding
-				constraintWidth = 80
-			} else if c.Constraint != "" && constraintWidth == 0 {
-				// covers remaining constraints with "UNQ" being the largest
+			if len(c.Constraint) > 0 {
 				constraintWidth = 60
 			}
 		}

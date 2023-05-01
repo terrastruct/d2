@@ -623,9 +623,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -660,9 +658,11 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null,
+          "classes": [
+            "path",
+            "path2"
+          ]
         },
         "zIndex": 0
       }
@@ -736,9 +736,11 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null,
+          "classes": [
+            "dragon_ball",
+            "path"
+          ]
         },
         "zIndex": 0
       },
@@ -810,9 +812,11 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null,
+          "classes": [
+            "path",
+            "dragon_ball"
+          ]
         },
         "zIndex": 0
       }
