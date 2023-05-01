@@ -164,7 +164,9 @@
         "direction": {
           "value": ""
         },
-        "constraint": null
+        "constraint": {
+          "value": ""
+        }
       },
       "zIndex": 0
     },
@@ -222,7 +224,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": null,
+              "constraint": "",
               "reference": ""
             },
             {
@@ -250,7 +252,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": null,
+              "constraint": "",
               "reference": ""
             }
           ]
@@ -271,7 +273,9 @@
           "direction": {
             "value": ""
           },
-          "constraint": null
+          "constraint": {
+            "value": ""
+          }
         },
         "zIndex": 0
       }

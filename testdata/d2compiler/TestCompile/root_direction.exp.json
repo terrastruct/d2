@@ -59,7 +59,9 @@
         "direction": {
           "value": "right"
         },
-        "constraint": null
+        "constraint": {
+          "value": ""
+        }
       },
       "zIndex": 0
     },

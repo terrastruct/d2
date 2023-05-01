@@ -122,7 +122,9 @@
         "direction": {
           "value": ""
         },
-        "constraint": null
+        "constraint": {
+          "value": ""
+        }
       },
       "zIndex": 0
     },
@@ -148,7 +150,9 @@
           "direction": {
             "value": ""
           },
-          "constraint": null
+          "constraint": {
+            "value": ""
+          }
         },
         "references": [
           {
@@ -171,7 +175,9 @@
           "direction": {
             "value": ""
           },
-          "constraint": null
+          "constraint": {
+            "value": ""
+          }
         },
         "zIndex": 0
       }
@@ -218,7 +224,9 @@
           "direction": {
             "value": ""
           },
-          "constraint": null
+          "constraint": {
+            "value": ""
+          }
         },
         "zIndex": 0
       },
@@ -263,7 +271,9 @@
           "direction": {
             "value": ""
           },
-          "constraint": null
+          "constraint": {
+            "value": ""
+          }
         },
         "zIndex": 0
       }

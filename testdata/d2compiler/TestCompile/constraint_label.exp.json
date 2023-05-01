@@ -121,7 +121,9 @@
         "direction": {
           "value": ""
         },
-        "constraint": null
+        "constraint": {
+          "value": ""
+        }
       },
       "zIndex": 0
     },
@@ -168,9 +170,9 @@
           "direction": {
             "value": ""
           },
-          "constraint": [
-            "BIZ"
-          ]
+          "constraint": {
+            "value": "BIZ"
+          }
         },
         "zIndex": 0
       }

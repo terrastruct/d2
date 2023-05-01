@@ -1,0 +1,7 @@
+test: {
+  shape: sql_table
+  a: INT
+  b: INT {constraint: foreign_key}
+  c: INT {constraint: [foreign_key; primary_key]}
+  d: VARCHAR(255) {constraint: [foreign_key; unique]}
+}

@@ -6,10 +6,6 @@
     {
       "id": "yay",
       "type": "rectangle",
-      "classes": [
-        "button",
-        "success"
-      ],
       "pos": {
         "x": 0,
         "y": 0
@@ -51,10 +47,6 @@
     {
       "id": "nay",
       "type": "rectangle",
-      "classes": [
-        "button",
-        "error"
-      ],
       "pos": {
         "x": 180,
         "y": 0

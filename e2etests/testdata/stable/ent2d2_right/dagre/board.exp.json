@@ -55,9 +55,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": [
-            "primary_key"
-          ],
+          "constraint": "primary_key",
           "reference": ""
         },
         {
@@ -85,9 +83,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": [
-            "foreign_key"
-          ],
+          "constraint": "foreign_key",
           "reference": ""
         },
         {
@@ -115,9 +111,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": [
-            "foreign_key"
-          ],
+          "constraint": "foreign_key",
           "reference": ""
         }
       ],
@@ -189,9 +183,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": [
-            "primary_key"
-          ],
+          "constraint": "primary_key",
           "reference": ""
         },
         {
@@ -219,9 +211,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": [
-            "foreign_key"
-          ],
+          "constraint": "foreign_key",
           "reference": ""
         }
       ],
@@ -293,9 +283,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": [
-            "primary_key"
-          ],
+          "constraint": "primary_key",
           "reference": ""
         },
         {
@@ -323,9 +311,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": [
-            "foreign_key"
-          ],
+          "constraint": "foreign_key",
           "reference": ""
         }
       ],
@@ -397,9 +383,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": [
-            "primary_key"
-          ],
+          "constraint": "primary_key",
           "reference": ""
         },
         {
@@ -427,7 +411,7 @@
             "labelWidth": 48,
             "labelHeight": 26
           },
-          "constraint": null,
+          "constraint": "",
           "reference": ""
         },
         {
@@ -455,9 +439,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": [
-            "foreign_key"
-          ],
+          "constraint": "foreign_key",
           "reference": ""
         }
       ],
@@ -529,9 +511,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": [
-            "primary_key"
-          ],
+          "constraint": "primary_key",
           "reference": ""
         },
         {
@@ -559,7 +539,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": null,
+          "constraint": "",
           "reference": ""
         }
       ],
@@ -631,9 +611,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": [
-            "primary_key"
-          ],
+          "constraint": "primary_key",
           "reference": ""
         },
         {
@@ -661,7 +639,7 @@
             "labelWidth": 149,
             "labelHeight": 26
           },
-          "constraint": null,
+          "constraint": "",
           "reference": ""
         }
       ],

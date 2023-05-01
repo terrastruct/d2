@@ -710,7 +710,9 @@
         "direction": {
           "value": ""
         },
-        "constraint": null
+        "constraint": {
+          "value": ""
+        }
       },
       "zIndex": 0
     },
@@ -743,7 +745,9 @@
           "direction": {
             "value": ""
           },
-          "constraint": null
+          "constraint": {
+            "value": ""
+          }
         },
         "zIndex": 0
       }
@@ -832,9 +836,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": [
-                "primary_key"
-              ],
+              "constraint": "primary_key",
               "reference": ""
             },
             {
@@ -862,7 +864,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": null,
+              "constraint": "",
               "reference": ""
             },
             {
@@ -890,7 +892,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": null,
+              "constraint": "",
               "reference": ""
             },
             {
@@ -918,7 +920,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": null,
+              "constraint": "",
               "reference": ""
             },
             {
@@ -946,9 +948,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": [
-                "foreign_key"
-              ],
+              "constraint": "foreign_key",
               "reference": ""
             },
             {
@@ -976,9 +976,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": [
-                "foreign_key"
-              ],
+              "constraint": "foreign_key",
               "reference": ""
             }
           ]
@@ -999,7 +997,9 @@
           "direction": {
             "value": ""
           },
-          "constraint": null
+          "constraint": {
+            "value": ""
+          }
         },
         "zIndex": 0
       },
@@ -1086,7 +1086,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": null,
+              "constraint": "",
               "reference": ""
             },
             {
@@ -1114,9 +1114,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": [
-                "foreign_key"
-              ],
+              "constraint": "foreign_key",
               "reference": ""
             },
             {
@@ -1144,9 +1142,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": [
-                "foreign_key"
-              ],
+              "constraint": "foreign_key",
               "reference": ""
             }
           ]
@@ -1167,7 +1163,9 @@
           "direction": {
             "value": ""
           },
-          "constraint": null
+          "constraint": {
+            "value": ""
+          }
         },
         "zIndex": 0
       }
