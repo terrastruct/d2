@@ -34,7 +34,7 @@ server-2.class: [base; success]
 #### Features 🚀
 
 - `class` field now accepts arrays. See [docs](https://d2lang.com/tour/classes/#multiple-classes). [#1256](https://github.com/terrastruct/d2/pull/1256)
-- Pill shape is implemented with rectangles of large border radius. Thanks @Poivey ! [#1006](https://github.com/terrastruct/d2/pull/1006)
+- Pill shape is implemented with rectangles of large border radius. See [docs](https://d2lang.com/tour/style/#border-radius). Thanks @Poivey ! [#1006](https://github.com/terrastruct/d2/pull/1006)
 
 #### Improvements 🧹
 
