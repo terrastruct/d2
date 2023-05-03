@@ -1036,8 +1036,8 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 			}
 			maxTypeWidth = go2.Max(maxTypeWidth, typeDims.Width)
 
-			// 60 covers UNQ constraint with padding, 50 for further constraints covers UNQ + space
-			if newWidth := 60 + 50*(len(c.Constraint)-1); newWidth > constraintWidth {
+			// 60 covers UNQ constraint with padding, 40 for further constraints covers UNQ + space
+			if newWidth := 60 + 40*(len(c.Constraint)-1); newWidth > constraintWidth {
 				constraintWidth = newWidth
 			}
 		}

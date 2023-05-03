@@ -307,26 +307,26 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 
 func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 	if f.Primary() == nil {
-		compositeAccepted := strings.EqualFold(f.Name, "class") || strings.EqualFold(f.Name, "constraint")
-		if f.Composite != nil && !compositeAccepted {
-			c.errorf(f.LastPrimaryKey(), "reserved field %v does not accept composite", f.Name)
-		}
-		switch f.Name {
-		case "class":
-			if arr, ok := f.Composite.(*d2ir.Array); ok {
-				for _, class := range arr.Values {
-					if scalar, ok := class.(*d2ir.Scalar); ok {
-						attrs.Classes = append(attrs.Classes, scalar.Value.ScalarString())
+		if f.Composite != nil {
+			switch f.Name {
+			case "class":
+				if arr, ok := f.Composite.(*d2ir.Array); ok {
+					for _, class := range arr.Values {
+						if scalar, ok := class.(*d2ir.Scalar); ok {
+							attrs.Classes = append(attrs.Classes, scalar.Value.ScalarString())
+						}
 					}
 				}
-			}
-		case "constraint":
-			if arr, ok := f.Composite.(*d2ir.Array); ok {
-				for _, constraint := range arr.Values {
-					if scalar, ok := constraint.(*d2ir.Scalar); ok {
-						attrs.Constraint = append(attrs.Constraint, scalar.Value.ScalarString())
+			case "constraint":
+				if arr, ok := f.Composite.(*d2ir.Array); ok {
+					for _, constraint := range arr.Values {
+						if scalar, ok := constraint.(*d2ir.Scalar); ok {
+							attrs.Constraint = append(attrs.Constraint, scalar.Value.ScalarString())
+						}
 					}
 				}
+			default:
+				c.errorf(f.LastPrimaryKey(), "reserved field %v does not accept composite", f.Name)
 			}
 		}
 		return
