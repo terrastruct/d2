@@ -22,6 +22,7 @@ func TestParse(t *testing.T) {
 	testCases := []struct {
 		name string
 		text string
+		assert func(t testing.TB, ast *d2ast.Map, err error)
 
 		// exp is in testdata/d2parser/TestParse/${name}.json
 	}{
@@ -379,6 +380,14 @@ b-
 c-
 `,
 		},
+		{
+			name: "leading_whitespace_range",
+			text: `a -> b`,
+			assert: func(t testing.TB, ast *d2ast.Map, err error) {
+				assert.Equal(t, "1:6", ast.Nodes[0].MapKey.Edges[0].Dst.Range.Start.String())
+				assert.Equal(t, "1:7", ast.Nodes[0].MapKey.Edges[0].Dst.Range.End.String())
+			},
+		},
 	}
 
 	for _, tc := range testCases {
@@ -388,6 +397,10 @@ c-
 
 			d2Path := fmt.Sprintf("d2/testdata/d2parser/%v.d2", t.Name())
 			ast, err := d2parser.Parse(d2Path, strings.NewReader(tc.text), nil)
+
+			if tc.assert != nil {
+				tc.assert(t, ast, err)
+			}
 
 			got := struct {
 				AST *d2ast.Map `json:"ast"`
