@@ -946,6 +946,7 @@ a -> b -> c
 		},
 		loadFromFile(t, "slow_grid"),
 		loadFromFile(t, "grid_oom"),
+		loadFromFile(t, "cylinder_grid_label"),
 	}
 
 	runa(t, tcs)
