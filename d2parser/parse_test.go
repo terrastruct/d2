@@ -381,11 +381,15 @@ c-
 `,
 		},
 		{
-			name: "leading_whitespace_range",
-			text: `a -> b`,
+			name: "whitespace_range",
+			text: `a -> b -> c`,
 			assert: func(t testing.TB, ast *d2ast.Map, err error) {
+				assert.Equal(t, "1:1", ast.Nodes[0].MapKey.Edges[0].Src.Range.Start.String())
+				assert.Equal(t, "1:2", ast.Nodes[0].MapKey.Edges[0].Src.Range.End.String())
 				assert.Equal(t, "1:6", ast.Nodes[0].MapKey.Edges[0].Dst.Range.Start.String())
 				assert.Equal(t, "1:7", ast.Nodes[0].MapKey.Edges[0].Dst.Range.End.String())
+				assert.Equal(t, "1:6", ast.Nodes[0].MapKey.Edges[1].Dst.Range.Start.String())
+				assert.Equal(t, "1:6", ast.Nodes[0].MapKey.Edges[1].Dst.Range.End.String())
 			},
 		},
 	}
