@@ -20,8 +20,8 @@ func TestParse(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name string
-		text string
+		name   string
+		text   string
 		assert func(t testing.TB, ast *d2ast.Map, err error)
 
 		// exp is in testdata/d2parser/TestParse/${name}.json
@@ -382,14 +382,14 @@ c-
 		},
 		{
 			name: "whitespace_range",
-			text: `a -> b -> c`,
+			text: ` a -> b -> c `,
 			assert: func(t testing.TB, ast *d2ast.Map, err error) {
-				assert.Equal(t, "1:1", ast.Nodes[0].MapKey.Edges[0].Src.Range.Start.String())
-				assert.Equal(t, "1:2", ast.Nodes[0].MapKey.Edges[0].Src.Range.End.String())
-				assert.Equal(t, "1:6", ast.Nodes[0].MapKey.Edges[0].Dst.Range.Start.String())
-				assert.Equal(t, "1:7", ast.Nodes[0].MapKey.Edges[0].Dst.Range.End.String())
-				assert.Equal(t, "1:6", ast.Nodes[0].MapKey.Edges[1].Dst.Range.Start.String())
-				assert.Equal(t, "1:6", ast.Nodes[0].MapKey.Edges[1].Dst.Range.End.String())
+				assert.Equal(t, "1:2", ast.Nodes[0].MapKey.Edges[0].Src.Range.Start.String())
+				assert.Equal(t, "1:3", ast.Nodes[0].MapKey.Edges[0].Src.Range.End.String())
+				assert.Equal(t, "1:7", ast.Nodes[0].MapKey.Edges[0].Dst.Range.Start.String())
+				assert.Equal(t, "1:8", ast.Nodes[0].MapKey.Edges[0].Dst.Range.End.String())
+				assert.Equal(t, "1:12", ast.Nodes[0].MapKey.Edges[1].Dst.Range.Start.String())
+				assert.Equal(t, "1:13", ast.Nodes[0].MapKey.Edges[1].Dst.Range.End.String())
 			},
 		},
 	}
