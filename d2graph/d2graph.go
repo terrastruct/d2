@@ -1052,6 +1052,34 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 	return &dims, nil
 }
 
+func (obj *Object) SizeToContent(contentBox *geo.Box, paddingX, paddingY, desiredWidth, desiredHeight float64, labelDims d2target.TextDimensions) {
+	dslShape := strings.ToLower(obj.Shape.Value)
+	shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
+	s := shape.NewShape(shapeType, contentBox)
+
+	var fitWidth, fitHeight float64
+	if shapeType == shape.PERSON_TYPE {
+		fitWidth = contentBox.Width + paddingX
+		fitHeight = contentBox.Height + paddingY
+	} else {
+		fitWidth, fitHeight = s.GetDimensionsToFit(contentBox.Width, contentBox.Height, paddingX, paddingY)
+	}
+	obj.Width = math.Max(float64(desiredWidth), fitWidth)
+	obj.Height = math.Max(float64(desiredHeight), fitHeight)
+	if s.AspectRatio1() {
+		sideLength := math.Max(obj.Width, obj.Height)
+		obj.Width = sideLength
+		obj.Height = sideLength
+	} else if desiredHeight == 0 || desiredWidth == 0 {
+		switch s.GetType() {
+		case shape.PERSON_TYPE:
+			obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.PERSON_AR_LIMIT)
+		case shape.OVAL_TYPE:
+			obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.OVAL_AR_LIMIT)
+		}
+	}
+}
+
 func (obj *Object) OuterNearContainer() *Object {
 	for obj != nil {
 		if obj.NearKey != nil {
@@ -1435,7 +1463,6 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(defaultDims.Width), float64(defaultDims.Height))
 		shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
 		s := shape.NewShape(shapeType, contentBox)
-
 		paddingX, paddingY := s.GetDefaultPadding()
 		if desiredWidth != 0 {
 			paddingX = 0.
@@ -1468,27 +1495,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 		}
 
-		var fitWidth, fitHeight float64
-		if shapeType == shape.PERSON_TYPE {
-			fitWidth = contentBox.Width + paddingX
-			fitHeight = contentBox.Height + paddingY
-		} else {
-			fitWidth, fitHeight = s.GetDimensionsToFit(contentBox.Width, contentBox.Height, paddingX, paddingY)
-		}
-		obj.Width = math.Max(float64(desiredWidth), fitWidth)
-		obj.Height = math.Max(float64(desiredHeight), fitHeight)
-		if s.AspectRatio1() {
-			sideLength := math.Max(obj.Width, obj.Height)
-			obj.Width = sideLength
-			obj.Height = sideLength
-		} else if desiredHeight == 0 || desiredWidth == 0 {
-			switch s.GetType() {
-			case shape.PERSON_TYPE:
-				obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.PERSON_AR_LIMIT)
-			case shape.OVAL_TYPE:
-				obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.OVAL_AR_LIMIT)
-			}
-		}
+		obj.SizeToContent(contentBox, paddingX, paddingY, float64(desiredWidth), float64(desiredHeight), *labelDims)
 	}
 	for _, edge := range g.Edges {
 		usedFont := fontFamily
