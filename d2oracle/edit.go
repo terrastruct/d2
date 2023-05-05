@@ -82,7 +82,17 @@ func ReconnectEdge(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (_ 
 		return nil, errors.New("edgeKey must refer to an existing edge")
 	}
 
-	edge, ok := g.Root.HasEdge(mk)
+	edgeTrimCommon(mk)
+	obj := g.Root
+	if mk.Key != nil {
+		var ok bool
+		obj, ok = g.Root.HasChild(d2graph.Key(mk.Key))
+		if !ok {
+			return nil, errors.New("edge not found")
+		}
+	}
+
+	edge, ok := obj.HasEdge(mk)
 	if !ok {
 		return nil, errors.New("edge not found")
 	}
@@ -1856,7 +1866,16 @@ func ReconnectEdgeIDDeltas(g *d2graph.Graph, edgeKey string, srcKey, dstKey *str
 		return nil, errors.New("edgeKey must refer to an existing edge")
 	}
 
-	edge, ok := g.Root.HasEdge(mk)
+	edgeTrimCommon(mk)
+	obj := g.Root
+	if mk.Key != nil {
+		var ok bool
+		obj, ok = g.Root.HasChild(d2graph.Key(mk.Key))
+		if !ok {
+			return nil, errors.New("edge not found")
+		}
+	}
+	edge, ok := obj.HasEdge(mk)
 	if !ok {
 		return nil, errors.New("edge not found")
 	}

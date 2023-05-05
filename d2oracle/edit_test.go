@@ -1557,7 +1557,7 @@ b -> a
 			name: "contained",
 			text: `a.x -> a.y
 a.z`,
-			edgeKey: `(a.x -> a.y)[0]`,
+			edgeKey: `a.(x -> y)[0]`,
 			newDst:  "a.z",
 			exp: `a.x -> a.z
 a.y
@@ -5667,7 +5667,7 @@ a -> b
 			text: `a.x -> a.y
 a.z
 `,
-			edge:   "(a.x -> a.y)[0]",
+			edge:   "a.(x -> y)[0]",
 			newDst: "a.z",
 
 			exp: `{
