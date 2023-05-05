@@ -1768,21 +1768,6 @@ x
 			newDst:  "x",
 			expErr:  "newDst not found",
 		},
-		{
-			name: "missing_params",
-			text: `a -> b
-`,
-			edgeKey: `(a -> b)[0]`,
-			expErr:  "must provide at least one new endpoint",
-		},
-		{
-			name: "bad_params",
-			text: `a -> b
-`,
-			edgeKey: `(a -> b)[0]`,
-			newDst:  "b",
-			expErr:  "must provide at least one new endpoint",
-		},
 	}
 
 	for _, tc := range testCases {

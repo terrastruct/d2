@@ -110,7 +110,7 @@ func ReconnectEdge(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (_ 
 	}
 
 	if srcKey == nil && dstKey == nil {
-		return nil, errors.New("must provide at least one new endpoint")
+		return g, nil
 	}
 
 	var src *d2graph.Object
@@ -1893,7 +1893,7 @@ func ReconnectEdgeIDDeltas(g *d2graph.Graph, edgeKey string, srcKey, dstKey *str
 	}
 
 	if srcKey == nil && dstKey == nil {
-		return nil, errors.New("must provide at least one new endpoint")
+		return nil, nil
 	}
 
 	newSrc := edge.Src
