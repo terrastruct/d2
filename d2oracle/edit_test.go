@@ -1610,6 +1610,20 @@ b
 `,
 		},
 		{
+			name: "preserve_old_obj",
+			text: `a -> b
+(a -> b)[0].style.stroke: red
+c`,
+			edgeKey: `(a -> b)[0]`,
+			newSrc:  "a",
+			newDst:  "c",
+			exp: `a -> c
+b
+(a -> c)[0].style.stroke: red
+c
+`,
+		},
+		{
 			name: "middle_chain",
 			text: `a -> b -> c
 x`,
@@ -1759,6 +1773,14 @@ x
 			text: `a -> b
 `,
 			edgeKey: `(a -> b)[0]`,
+			expErr:  "must provide at least one new endpoint",
+		},
+		{
+			name: "bad_params",
+			text: `a -> b
+`,
+			edgeKey: `(a -> b)[0]`,
+			newDst:  "b",
 			expErr:  "must provide at least one new endpoint",
 		},
 	}

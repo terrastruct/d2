@@ -82,13 +82,25 @@ func ReconnectEdge(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (_ 
 		return nil, errors.New("edgeKey must refer to an existing edge")
 	}
 
-	if srcKey == nil && dstKey == nil {
-		return nil, errors.New("must provide at least one new endpoint")
-	}
-
 	edge, ok := g.Root.HasEdge(mk)
 	if !ok {
 		return nil, errors.New("edge not found")
+	}
+
+	if srcKey != nil {
+		if edge.Src.AbsID() == *srcKey {
+			srcKey = nil
+		}
+	}
+
+	if dstKey != nil {
+		if edge.Dst.AbsID() == *dstKey {
+			dstKey = nil
+		}
+	}
+
+	if srcKey == nil && dstKey == nil {
+		return nil, errors.New("must provide at least one new endpoint")
 	}
 
 	var src *d2graph.Object
@@ -1844,13 +1856,25 @@ func ReconnectEdgeIDDeltas(g *d2graph.Graph, edgeKey string, srcKey, dstKey *str
 		return nil, errors.New("edgeKey must refer to an existing edge")
 	}
 
-	if srcKey == nil && dstKey == nil {
-		return nil, errors.New("must provide at least one new endpoint")
-	}
-
 	edge, ok := g.Root.HasEdge(mk)
 	if !ok {
 		return nil, errors.New("edge not found")
+	}
+
+	if srcKey != nil {
+		if edge.Src.AbsID() == *srcKey {
+			srcKey = nil
+		}
+	}
+
+	if dstKey != nil {
+		if edge.Dst.AbsID() == *dstKey {
+			dstKey = nil
+		}
+	}
+
+	if srcKey == nil && dstKey == nil {
+		return nil, errors.New("must provide at least one new endpoint")
 	}
 
 	newSrc := edge.Src
