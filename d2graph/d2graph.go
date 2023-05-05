@@ -1052,17 +1052,28 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 	return &dims, nil
 }
 
-func (obj *Object) SizeToContent(contentBox *geo.Box, paddingX, paddingY, desiredWidth, desiredHeight float64, labelDims d2target.TextDimensions) {
+// resizes the object to fit content of the given width and height in its inner box with the given padding.
+// this accounts for the shape of the object, and if there is a desired width or height set for the object
+func (obj *Object) SizeToContent(contentWidth, contentHeight, paddingX, paddingY float64) {
+	var desiredWidth int
+	var desiredHeight int
+	if obj.WidthAttr != nil {
+		desiredWidth, _ = strconv.Atoi(obj.WidthAttr.Value)
+	}
+	if obj.HeightAttr != nil {
+		desiredHeight, _ = strconv.Atoi(obj.HeightAttr.Value)
+	}
+
 	dslShape := strings.ToLower(obj.Shape.Value)
 	shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
-	s := shape.NewShape(shapeType, contentBox)
+	s := shape.NewShape(shapeType, geo.NewBox(geo.NewPoint(0, 0), contentWidth, contentHeight))
 
 	var fitWidth, fitHeight float64
 	if shapeType == shape.PERSON_TYPE {
-		fitWidth = contentBox.Width + paddingX
-		fitHeight = contentBox.Height + paddingY
+		fitWidth = contentWidth + paddingX
+		fitHeight = contentHeight + paddingY
 	} else {
-		fitWidth, fitHeight = s.GetDimensionsToFit(contentBox.Width, contentBox.Height, paddingX, paddingY)
+		fitWidth, fitHeight = s.GetDimensionsToFit(contentWidth, contentHeight, paddingX, paddingY)
 	}
 	obj.Width = math.Max(float64(desiredWidth), fitWidth)
 	obj.Height = math.Max(float64(desiredHeight), fitHeight)
@@ -1495,7 +1506,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 		}
 
-		obj.SizeToContent(contentBox, paddingX, paddingY, float64(desiredWidth), float64(desiredHeight), *labelDims)
+		obj.SizeToContent(contentBox.Width, contentBox.Height, paddingX, paddingY)
 	}
 	for _, edge := range g.Edges {
 		usedFont := fontFamily

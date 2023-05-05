@@ -75,8 +75,7 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph) (gridDiagrams ma
 
 			if obj.Box != nil {
 				// size shape according to grid
-				contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(gd.width), float64(gd.height))
-				obj.SizeToContent(contentBox, 2*CONTAINER_PADDING, 2*CONTAINER_PADDING, 0, 0, obj.LabelDimensions)
+				obj.SizeToContent(float64(gd.width), float64(gd.height), 2*CONTAINER_PADDING, 2*CONTAINER_PADDING)
 
 				// compute where the grid should be placed inside shape
 				dslShape := strings.ToLower(obj.Shape.Value)
