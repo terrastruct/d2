@@ -69,7 +69,7 @@
                         {
                           "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:2:22-2:14:34",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:2:22-2:7:27",
+                            "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:2:22-2:6:26",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -86,7 +86,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:9:29-2:14:34",
+                            "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:10:30-2:14:34",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -271,7 +271,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:2:22-2:7:27",
+              "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:2:22-2:6:26",
               "path": [
                 {
                   "unquoted_string": {
@@ -318,7 +318,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:9:29-2:14:34",
+              "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:10:30-2:14:34",
               "path": [
                 {
                   "unquoted_string": {

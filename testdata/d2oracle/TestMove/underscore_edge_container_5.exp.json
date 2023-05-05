@@ -36,7 +36,7 @@
                         {
                           "range": "d2/testdata/d2oracle/TestMove/underscore_edge_container_5.d2,1:2:7-1:14:19",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestMove/underscore_edge_container_5.d2,1:2:7-1:8:13",
+                            "range": "d2/testdata/d2oracle/TestMove/underscore_edge_container_5.d2,1:2:7-1:7:12",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -75,7 +75,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestMove/underscore_edge_container_5.d2,1:10:15-1:14:19",
+                            "range": "d2/testdata/d2oracle/TestMove/underscore_edge_container_5.d2,1:11:16-1:14:19",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -228,7 +228,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/underscore_edge_container_5.d2,1:2:7-1:8:13",
+              "range": "d2/testdata/d2oracle/TestMove/underscore_edge_container_5.d2,1:2:7-1:7:12",
               "path": [
                 {
                   "unquoted_string": {
@@ -270,7 +270,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/underscore_edge_container_5.d2,1:10:15-1:14:19",
+              "range": "d2/testdata/d2oracle/TestMove/underscore_edge_container_5.d2,1:11:16-1:14:19",
               "path": [
                 {
                   "unquoted_string": {
@@ -328,7 +328,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/underscore_edge_container_5.d2,1:2:7-1:8:13",
+              "range": "d2/testdata/d2oracle/TestMove/underscore_edge_container_5.d2,1:2:7-1:7:12",
               "path": [
                 {
                   "unquoted_string": {

@@ -70,7 +70,7 @@
                         {
                           "range": "d2/testdata/d2oracle/TestDelete/children_scope.d2,2:2:21-2:8:27",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestDelete/children_scope.d2,2:2:21-2:4:23",
+                            "range": "d2/testdata/d2oracle/TestDelete/children_scope.d2,2:2:21-2:3:22",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -87,7 +87,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestDelete/children_scope.d2,2:6:25-2:8:27",
+                            "range": "d2/testdata/d2oracle/TestDelete/children_scope.d2,2:7:26-2:8:27",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -345,7 +345,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/children_scope.d2,2:2:21-2:4:23",
+              "range": "d2/testdata/d2oracle/TestDelete/children_scope.d2,2:2:21-2:3:22",
               "path": [
                 {
                   "unquoted_string": {
@@ -392,7 +392,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/children_scope.d2,2:6:25-2:8:27",
+              "range": "d2/testdata/d2oracle/TestDelete/children_scope.d2,2:7:26-2:8:27",
               "path": [
                 {
                   "unquoted_string": {

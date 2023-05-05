@@ -6,7 +6,7 @@
         "map_key": {
           "range": "d2/testdata/d2parser/TestParse/key_with_edge.d2,1:0:1-1:8:9",
           "key": {
-            "range": "d2/testdata/d2parser/TestParse/key_with_edge.d2,1:0:1-1:2:3",
+            "range": "d2/testdata/d2parser/TestParse/key_with_edge.d2,1:0:1-1:1:2",
             "path": [
               {
                 "unquoted_string": {

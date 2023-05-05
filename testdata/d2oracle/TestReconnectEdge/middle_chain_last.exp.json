@@ -10,9 +10,9 @@
             "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:0:0-0:16:16",
             "edges": [
               {
-                "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:0:0-0:7:7",
+                "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:0:0-0:6:6",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:0:0-0:2:2",
+                  "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:0:0-0:1:1",
                   "path": [
                     {
                       "unquoted_string": {
@@ -29,7 +29,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:4:4-0:7:7",
+                  "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:5:5-0:6:6",
                   "path": [
                     {
                       "unquoted_string": {
@@ -47,9 +47,9 @@
                 "dst_arrow": ">"
               },
               {
-                "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:4:4-0:12:12",
+                "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:5:5-0:11:11",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:4:4-0:7:7",
+                  "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:5:5-0:6:6",
                   "path": [
                     {
                       "unquoted_string": {
@@ -66,7 +66,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:9:9-0:12:12",
+                  "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:10:10-0:11:11",
                   "path": [
                     {
                       "unquoted_string": {
@@ -84,9 +84,9 @@
                 "dst_arrow": ">"
               },
               {
-                "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:9:9-0:16:16",
+                "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:10:10-0:16:16",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:9:9-0:12:12",
+                  "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:10:10-0:11:11",
                   "path": [
                     {
                       "unquoted_string": {
@@ -103,7 +103,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:14:14-0:16:16",
+                  "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:15:15-0:16:16",
                   "path": [
                     {
                       "unquoted_string": {
@@ -303,7 +303,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:0:0-0:2:2",
+              "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:0:0-0:1:1",
               "path": [
                 {
                   "unquoted_string": {
@@ -350,7 +350,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:4:4-0:7:7",
+              "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:5:5-0:6:6",
               "path": [
                 {
                   "unquoted_string": {
@@ -370,7 +370,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:4:4-0:7:7",
+              "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:5:5-0:6:6",
               "path": [
                 {
                   "unquoted_string": {
@@ -417,7 +417,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:9:9-0:12:12",
+              "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:10:10-0:11:11",
               "path": [
                 {
                   "unquoted_string": {
@@ -437,7 +437,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:9:9-0:12:12",
+              "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:10:10-0:11:11",
               "path": [
                 {
                   "unquoted_string": {
@@ -484,7 +484,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:14:14-0:16:16",
+              "range": "d2/testdata/d2oracle/TestReconnectEdge/middle_chain_last.d2,0:15:15-0:16:16",
               "path": [
                 {
                   "unquoted_string": {

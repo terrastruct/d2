@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-0:6:6",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-0:2:2",
+                  "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-0:1:1",
                   "path": [
                     {
                       "unquoted_string": {
@@ -29,7 +29,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:4:4-0:6:6",
+                  "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:5:5-0:6:6",
                   "path": [
                     {
                       "unquoted_string": {
@@ -106,7 +106,7 @@
                                   {
                                     "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:5:33-4:11:39",
                                     "src": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:5:33-4:7:35",
+                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:5:33-4:6:34",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -123,7 +123,7 @@
                                     },
                                     "src_arrow": "",
                                     "dst": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:9:37-4:11:39",
+                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:10:38-4:11:39",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -261,7 +261,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-0:2:2",
+              "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-0:1:1",
               "path": [
                 {
                   "unquoted_string": {
@@ -308,7 +308,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:4:4-0:6:6",
+              "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:5:5-0:6:6",
               "path": [
                 {
                   "unquoted_string": {
@@ -364,7 +364,7 @@
                   {
                     "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-0:6:6",
                     "src": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-0:2:2",
+                      "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-0:1:1",
                       "path": [
                         {
                           "unquoted_string": {
@@ -381,7 +381,7 @@
                     },
                     "src_arrow": "",
                     "dst": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:4:4-0:6:6",
+                      "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:5:5-0:6:6",
                       "path": [
                         {
                           "unquoted_string": {
@@ -458,7 +458,7 @@
                                       {
                                         "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:5:33-4:11:39",
                                         "src": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:5:33-4:7:35",
+                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:5:33-4:6:34",
                                           "path": [
                                             {
                                               "unquoted_string": {
@@ -475,7 +475,7 @@
                                         },
                                         "src_arrow": "",
                                         "dst": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:9:37-4:11:39",
+                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:10:38-4:11:39",
                                           "path": [
                                             {
                                               "unquoted_string": {
@@ -620,7 +620,7 @@
             "references": [
               {
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-0:2:2",
+                  "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-0:1:1",
                   "path": [
                     {
                       "unquoted_string": {
@@ -640,7 +640,7 @@
               },
               {
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:5:33-4:7:35",
+                  "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:5:33-4:6:34",
                   "path": [
                     {
                       "unquoted_string": {
@@ -687,7 +687,7 @@
             "references": [
               {
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:4:4-0:6:6",
+                  "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:5:5-0:6:6",
                   "path": [
                     {
                       "unquoted_string": {
@@ -707,7 +707,7 @@
               },
               {
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:9:37-4:11:39",
+                  "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:10:38-4:11:39",
                   "path": [
                     {
                       "unquoted_string": {

@@ -173,7 +173,7 @@
                                   {
                                     "range": "d2/testdata/d2compiler/TestCompile/sequence-timestamp.d2,7:4:124-7:10:130",
                                     "src": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/sequence-timestamp.d2,7:4:124-7:6:126",
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence-timestamp.d2,7:4:124-7:5:125",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -190,7 +190,7 @@
                                     },
                                     "src_arrow": "",
                                     "dst": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/sequence-timestamp.d2,7:8:128-7:10:130",
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence-timestamp.d2,7:9:129-7:10:130",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -341,7 +341,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence-timestamp.d2,7:4:124-7:6:126",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence-timestamp.d2,7:4:124-7:5:125",
               "path": [
                 {
                   "unquoted_string": {
@@ -408,7 +408,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence-timestamp.d2,7:8:128-7:10:130",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence-timestamp.d2,7:9:129-7:10:130",
               "path": [
                 {
                   "unquoted_string": {

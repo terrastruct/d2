@@ -9,7 +9,7 @@
             {
               "range": "d2/testdata/d2parser/TestParse/edge_line_continuation_2.d2,1:0:1-2:38:68",
               "src": {
-                "range": "d2/testdata/d2parser/TestParse/edge_line_continuation_2.d2,1:0:1-1:25:26",
+                "range": "d2/testdata/d2parser/TestParse/edge_line_continuation_2.d2,1:0:1-1:24:25",
                 "path": [
                   {
                     "unquoted_string": {
@@ -26,7 +26,7 @@
               },
               "src_arrow": "",
               "dst": {
-                "range": "d2/testdata/d2parser/TestParse/edge_line_continuation_2.d2,2:1:31-2:38:68",
+                "range": "d2/testdata/d2parser/TestParse/edge_line_continuation_2.d2,2:2:32-2:38:68",
                 "path": [
                   {
                     "unquoted_string": {

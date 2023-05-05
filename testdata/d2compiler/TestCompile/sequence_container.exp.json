@@ -45,7 +45,7 @@
               {
                 "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,1:0:24-1:14:38",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,1:0:24-1:6:30",
+                  "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,1:0:24-1:5:29",
                   "path": [
                     {
                       "unquoted_string": {
@@ -84,7 +84,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,1:8:32-1:14:38",
+                  "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,1:9:33-1:14:38",
                   "path": [
                     {
                       "unquoted_string": {
@@ -159,7 +159,7 @@
                         {
                           "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,3:1:46-3:15:60",
                           "src": {
-                            "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,3:1:46-3:7:52",
+                            "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,3:1:46-3:6:51",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -198,7 +198,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,3:9:54-3:15:60",
+                            "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,3:10:55-3:15:60",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -347,7 +347,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,1:0:24-1:6:30",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,1:0:24-1:5:29",
               "path": [
                 {
                   "unquoted_string": {
@@ -389,7 +389,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,3:1:46-3:7:52",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,3:1:46-3:6:51",
               "path": [
                 {
                   "unquoted_string": {
@@ -458,7 +458,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,1:0:24-1:6:30",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,1:0:24-1:5:29",
               "path": [
                 {
                   "unquoted_string": {
@@ -500,7 +500,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,3:1:46-3:7:52",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,3:1:46-3:6:51",
               "path": [
                 {
                   "unquoted_string": {
@@ -569,7 +569,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,1:0:24-1:6:30",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,1:0:24-1:5:29",
               "path": [
                 {
                   "unquoted_string": {
@@ -611,7 +611,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,3:1:46-3:7:52",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,3:1:46-3:6:51",
               "path": [
                 {
                   "unquoted_string": {
@@ -680,7 +680,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,1:8:32-1:14:38",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,1:9:33-1:14:38",
               "path": [
                 {
                   "unquoted_string": {
@@ -722,7 +722,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,3:9:54-3:15:60",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,3:10:55-3:15:60",
               "path": [
                 {
                   "unquoted_string": {
@@ -791,7 +791,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,1:8:32-1:14:38",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,1:9:33-1:14:38",
               "path": [
                 {
                   "unquoted_string": {
@@ -833,7 +833,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,3:9:54-3:15:60",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,3:10:55-3:15:60",
               "path": [
                 {
                   "unquoted_string": {
@@ -902,7 +902,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,1:8:32-1:14:38",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,1:9:33-1:14:38",
               "path": [
                 {
                   "unquoted_string": {
@@ -944,7 +944,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,3:9:54-3:15:60",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_container.d2,3:10:55-3:15:60",
               "path": [
                 {
                   "unquoted_string": {

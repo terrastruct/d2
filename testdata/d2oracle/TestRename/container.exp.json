@@ -10,9 +10,9 @@
             "range": "d2/testdata/d2oracle/TestRename/container.d2,0:0:0-0:70:70",
             "edges": [
               {
-                "range": "d2/testdata/d2oracle/TestRename/container.d2,0:0:0-0:24:24",
+                "range": "d2/testdata/d2oracle/TestRename/container.d2,0:0:0-0:23:23",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestRename/container.d2,0:0:0-0:17:17",
+                  "range": "d2/testdata/d2oracle/TestRename/container.d2,0:0:0-0:16:16",
                   "path": [
                     {
                       "unquoted_string": {
@@ -51,7 +51,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestRename/container.d2,0:19:19-0:24:24",
+                  "range": "d2/testdata/d2oracle/TestRename/container.d2,0:20:20-0:23:23",
                   "path": [
                     {
                       "unquoted_string": {
@@ -80,9 +80,9 @@
                 "dst_arrow": ">"
               },
               {
-                "range": "d2/testdata/d2oracle/TestRename/container.d2,0:19:19-0:44:44",
+                "range": "d2/testdata/d2oracle/TestRename/container.d2,0:20:20-0:43:43",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestRename/container.d2,0:19:19-0:24:24",
+                  "range": "d2/testdata/d2oracle/TestRename/container.d2,0:20:20-0:23:23",
                   "path": [
                     {
                       "unquoted_string": {
@@ -110,7 +110,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestRename/container.d2,0:26:26-0:44:44",
+                  "range": "d2/testdata/d2oracle/TestRename/container.d2,0:27:27-0:43:43",
                   "path": [
                     {
                       "unquoted_string": {
@@ -150,9 +150,9 @@
                 "dst_arrow": ">"
               },
               {
-                "range": "d2/testdata/d2oracle/TestRename/container.d2,0:26:26-0:51:51",
+                "range": "d2/testdata/d2oracle/TestRename/container.d2,0:27:27-0:50:50",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestRename/container.d2,0:26:26-0:44:44",
+                  "range": "d2/testdata/d2oracle/TestRename/container.d2,0:27:27-0:43:43",
                   "path": [
                     {
                       "unquoted_string": {
@@ -191,7 +191,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestRename/container.d2,0:46:46-0:51:51",
+                  "range": "d2/testdata/d2oracle/TestRename/container.d2,0:47:47-0:50:50",
                   "path": [
                     {
                       "unquoted_string": {
@@ -220,9 +220,9 @@
                 "dst_arrow": ">"
               },
               {
-                "range": "d2/testdata/d2oracle/TestRename/container.d2,0:46:46-0:70:70",
+                "range": "d2/testdata/d2oracle/TestRename/container.d2,0:47:47-0:70:70",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestRename/container.d2,0:46:46-0:51:51",
+                  "range": "d2/testdata/d2oracle/TestRename/container.d2,0:47:47-0:50:50",
                   "path": [
                     {
                       "unquoted_string": {
@@ -250,7 +250,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestRename/container.d2,0:53:53-0:70:70",
+                  "range": "d2/testdata/d2oracle/TestRename/container.d2,0:54:54-0:70:70",
                   "path": [
                     {
                       "unquoted_string": {
@@ -334,9 +334,9 @@
                       "range": "d2/testdata/d2oracle/TestRename/container.d2,2:2:91-2:13:102",
                       "edges": [
                         {
-                          "range": "d2/testdata/d2oracle/TestRename/container.d2,2:2:91-2:9:98",
+                          "range": "d2/testdata/d2oracle/TestRename/container.d2,2:2:91-2:8:97",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestRename/container.d2,2:2:91-2:4:93",
+                            "range": "d2/testdata/d2oracle/TestRename/container.d2,2:2:91-2:3:92",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -353,7 +353,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestRename/container.d2,2:6:95-2:9:98",
+                            "range": "d2/testdata/d2oracle/TestRename/container.d2,2:7:96-2:8:97",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -371,9 +371,9 @@
                           "dst_arrow": ">"
                         },
                         {
-                          "range": "d2/testdata/d2oracle/TestRename/container.d2,2:6:95-2:13:102",
+                          "range": "d2/testdata/d2oracle/TestRename/container.d2,2:7:96-2:13:102",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestRename/container.d2,2:6:95-2:9:98",
+                            "range": "d2/testdata/d2oracle/TestRename/container.d2,2:7:96-2:8:97",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -390,7 +390,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestRename/container.d2,2:11:100-2:13:102",
+                            "range": "d2/testdata/d2oracle/TestRename/container.d2,2:12:101-2:13:102",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -538,7 +538,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestRename/container.d2,10:1:152-10:24:175",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestRename/container.d2,10:1:152-10:18:169",
+                  "range": "d2/testdata/d2oracle/TestRename/container.d2,10:1:152-10:17:168",
                   "path": [
                     {
                       "unquoted_string": {
@@ -577,7 +577,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestRename/container.d2,10:20:171-10:24:175",
+                  "range": "d2/testdata/d2oracle/TestRename/container.d2,10:21:172-10:24:175",
                   "path": [
                     {
                       "unquoted_string": {
@@ -629,7 +629,7 @@
           "map_key": {
             "range": "d2/testdata/d2oracle/TestRename/container.d2,11:0:197-11:37:234",
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,11:0:197-11:5:202",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,11:0:197-11:4:201",
               "path": [
                 {
                   "unquoted_string": {
@@ -648,7 +648,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestRename/container.d2,11:6:203-11:19:216",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestRename/container.d2,11:6:203-11:13:210",
+                  "range": "d2/testdata/d2oracle/TestRename/container.d2,11:6:203-11:12:209",
                   "path": [
                     {
                       "unquoted_string": {
@@ -687,7 +687,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestRename/container.d2,11:15:212-11:19:216",
+                  "range": "d2/testdata/d2oracle/TestRename/container.d2,11:16:213-11:19:216",
                   "path": [
                     {
                       "unquoted_string": {
@@ -993,7 +993,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:0:0-0:17:17",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:0:0-0:16:16",
               "path": [
                 {
                   "unquoted_string": {
@@ -1035,7 +1035,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:26:26-0:44:44",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:27:27-0:43:43",
               "path": [
                 {
                   "unquoted_string": {
@@ -1077,7 +1077,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:26:26-0:44:44",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:27:27-0:43:43",
               "path": [
                 {
                   "unquoted_string": {
@@ -1119,7 +1119,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:53:53-0:70:70",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:54:54-0:70:70",
               "path": [
                 {
                   "unquoted_string": {
@@ -1212,7 +1212,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,10:1:152-10:18:169",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,10:1:152-10:17:168",
               "path": [
                 {
                   "unquoted_string": {
@@ -1281,7 +1281,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:0:0-0:17:17",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:0:0-0:16:16",
               "path": [
                 {
                   "unquoted_string": {
@@ -1323,7 +1323,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:26:26-0:44:44",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:27:27-0:43:43",
               "path": [
                 {
                   "unquoted_string": {
@@ -1365,7 +1365,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:26:26-0:44:44",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:27:27-0:43:43",
               "path": [
                 {
                   "unquoted_string": {
@@ -1407,7 +1407,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:53:53-0:70:70",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:54:54-0:70:70",
               "path": [
                 {
                   "unquoted_string": {
@@ -1500,7 +1500,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,10:1:152-10:18:169",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,10:1:152-10:17:168",
               "path": [
                 {
                   "unquoted_string": {
@@ -1569,7 +1569,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:0:0-0:17:17",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:0:0-0:16:16",
               "path": [
                 {
                   "unquoted_string": {
@@ -1611,7 +1611,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:26:26-0:44:44",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:27:27-0:43:43",
               "path": [
                 {
                   "unquoted_string": {
@@ -1653,7 +1653,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:26:26-0:44:44",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:27:27-0:43:43",
               "path": [
                 {
                   "unquoted_string": {
@@ -1695,7 +1695,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:53:53-0:70:70",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:54:54-0:70:70",
               "path": [
                 {
                   "unquoted_string": {
@@ -1737,7 +1737,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,2:11:100-2:13:102",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,2:12:101-2:13:102",
               "path": [
                 {
                   "unquoted_string": {
@@ -1777,7 +1777,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,10:1:152-10:18:169",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,10:1:152-10:17:168",
               "path": [
                 {
                   "unquoted_string": {
@@ -1846,7 +1846,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:19:19-0:24:24",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:20:20-0:23:23",
               "path": [
                 {
                   "unquoted_string": {
@@ -1877,7 +1877,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:19:19-0:24:24",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:20:20-0:23:23",
               "path": [
                 {
                   "unquoted_string": {
@@ -1908,7 +1908,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,10:20:171-10:24:175",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,10:21:172-10:24:175",
               "path": [
                 {
                   "unquoted_string": {
@@ -1966,7 +1966,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:19:19-0:24:24",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:20:20-0:23:23",
               "path": [
                 {
                   "unquoted_string": {
@@ -1997,7 +1997,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:19:19-0:24:24",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:20:20-0:23:23",
               "path": [
                 {
                   "unquoted_string": {
@@ -2028,7 +2028,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,10:20:171-10:24:175",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,10:21:172-10:24:175",
               "path": [
                 {
                   "unquoted_string": {
@@ -2086,7 +2086,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:46:46-0:51:51",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:47:47-0:50:50",
               "path": [
                 {
                   "unquoted_string": {
@@ -2117,7 +2117,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:46:46-0:51:51",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:47:47-0:50:50",
               "path": [
                 {
                   "unquoted_string": {
@@ -2175,7 +2175,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:46:46-0:51:51",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:47:47-0:50:50",
               "path": [
                 {
                   "unquoted_string": {
@@ -2206,7 +2206,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:46:46-0:51:51",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,0:47:47-0:50:50",
               "path": [
                 {
                   "unquoted_string": {
@@ -2264,7 +2264,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,2:2:91-2:4:93",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,2:2:91-2:3:92",
               "path": [
                 {
                   "unquoted_string": {
@@ -2311,7 +2311,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,2:6:95-2:9:98",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,2:7:96-2:8:97",
               "path": [
                 {
                   "unquoted_string": {
@@ -2331,7 +2331,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,2:6:95-2:9:98",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,2:7:96-2:8:97",
               "path": [
                 {
                   "unquoted_string": {
@@ -2425,7 +2425,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,11:0:197-11:5:202",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,11:0:197-11:4:201",
               "path": [
                 {
                   "unquoted_string": {
@@ -2472,7 +2472,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,11:6:203-11:13:210",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,11:6:203-11:12:209",
               "path": [
                 {
                   "unquoted_string": {
@@ -2541,7 +2541,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,11:6:203-11:13:210",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,11:6:203-11:12:209",
               "path": [
                 {
                   "unquoted_string": {
@@ -2610,7 +2610,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,11:6:203-11:13:210",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,11:6:203-11:12:209",
               "path": [
                 {
                   "unquoted_string": {
@@ -2679,7 +2679,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,11:15:212-11:19:216",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,11:16:213-11:19:216",
               "path": [
                 {
                   "unquoted_string": {
@@ -2737,7 +2737,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/container.d2,11:15:212-11:19:216",
+              "range": "d2/testdata/d2oracle/TestRename/container.d2,11:16:213-11:19:216",
               "path": [
                 {
                   "unquoted_string": {

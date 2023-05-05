@@ -204,7 +204,7 @@
                         {
                           "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:2:97-7:27:122",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:2:97-7:19:114",
+                            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:2:97-7:18:113",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -221,7 +221,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:21:116-7:27:122",
+                            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:22:117-7:27:122",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -414,7 +414,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:21:116-7:27:122",
+              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:22:117-7:27:122",
               "path": [
                 {
                   "unquoted_string": {
@@ -493,7 +493,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:2:97-7:19:114",
+              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:2:97-7:18:113",
               "path": [
                 {
                   "unquoted_string": {

@@ -18,7 +18,7 @@
                   ]
                 },
                 "key_path": {
-                  "range": "TestCompile/edges/nested.d2,0:0:0-0:4:4",
+                  "range": "TestCompile/edges/nested.d2,0:0:0-0:3:3",
                   "path": [
                     {
                       "unquoted_string": {
@@ -48,7 +48,7 @@
                   "edge": {
                     "range": "TestCompile/edges/nested.d2,0:0:0-0:10:10",
                     "src": {
-                      "range": "TestCompile/edges/nested.d2,0:0:0-0:4:4",
+                      "range": "TestCompile/edges/nested.d2,0:0:0-0:3:3",
                       "path": [
                         {
                           "unquoted_string": {
@@ -76,7 +76,7 @@
                     },
                     "src_arrow": "",
                     "dst": {
-                      "range": "TestCompile/edges/nested.d2,0:6:6-0:10:10",
+                      "range": "TestCompile/edges/nested.d2,0:7:7-0:10:10",
                       "path": [
                         {
                           "unquoted_string": {
@@ -110,7 +110,7 @@
                       {
                         "range": "TestCompile/edges/nested.d2,0:0:0-0:10:10",
                         "src": {
-                          "range": "TestCompile/edges/nested.d2,0:0:0-0:4:4",
+                          "range": "TestCompile/edges/nested.d2,0:0:0-0:3:3",
                           "path": [
                             {
                               "unquoted_string": {
@@ -138,7 +138,7 @@
                         },
                         "src_arrow": "",
                         "dst": {
-                          "range": "TestCompile/edges/nested.d2,0:6:6-0:10:10",
+                          "range": "TestCompile/edges/nested.d2,0:7:7-0:10:10",
                           "path": [
                             {
                               "unquoted_string": {
@@ -189,7 +189,7 @@
             ]
           },
           "key_path": {
-            "range": "TestCompile/edges/nested.d2,0:0:0-0:4:4",
+            "range": "TestCompile/edges/nested.d2,0:0:0-0:3:3",
             "path": [
               {
                 "unquoted_string": {
@@ -219,7 +219,7 @@
             "edge": {
               "range": "TestCompile/edges/nested.d2,0:0:0-0:10:10",
               "src": {
-                "range": "TestCompile/edges/nested.d2,0:0:0-0:4:4",
+                "range": "TestCompile/edges/nested.d2,0:0:0-0:3:3",
                 "path": [
                   {
                     "unquoted_string": {
@@ -247,7 +247,7 @@
               },
               "src_arrow": "",
               "dst": {
-                "range": "TestCompile/edges/nested.d2,0:6:6-0:10:10",
+                "range": "TestCompile/edges/nested.d2,0:7:7-0:10:10",
                 "path": [
                   {
                     "unquoted_string": {
@@ -281,7 +281,7 @@
                 {
                   "range": "TestCompile/edges/nested.d2,0:0:0-0:10:10",
                   "src": {
-                    "range": "TestCompile/edges/nested.d2,0:0:0-0:4:4",
+                    "range": "TestCompile/edges/nested.d2,0:0:0-0:3:3",
                     "path": [
                       {
                         "unquoted_string": {
@@ -309,7 +309,7 @@
                   },
                   "src_arrow": "",
                   "dst": {
-                    "range": "TestCompile/edges/nested.d2,0:6:6-0:10:10",
+                    "range": "TestCompile/edges/nested.d2,0:7:7-0:10:10",
                     "path": [
                       {
                         "unquoted_string": {
@@ -363,7 +363,7 @@
                   ]
                 },
                 "key_path": {
-                  "range": "TestCompile/edges/nested.d2,0:6:6-0:10:10",
+                  "range": "TestCompile/edges/nested.d2,0:7:7-0:10:10",
                   "path": [
                     {
                       "unquoted_string": {
@@ -393,7 +393,7 @@
                   "edge": {
                     "range": "TestCompile/edges/nested.d2,0:0:0-0:10:10",
                     "src": {
-                      "range": "TestCompile/edges/nested.d2,0:0:0-0:4:4",
+                      "range": "TestCompile/edges/nested.d2,0:0:0-0:3:3",
                       "path": [
                         {
                           "unquoted_string": {
@@ -421,7 +421,7 @@
                     },
                     "src_arrow": "",
                     "dst": {
-                      "range": "TestCompile/edges/nested.d2,0:6:6-0:10:10",
+                      "range": "TestCompile/edges/nested.d2,0:7:7-0:10:10",
                       "path": [
                         {
                           "unquoted_string": {
@@ -455,7 +455,7 @@
                       {
                         "range": "TestCompile/edges/nested.d2,0:0:0-0:10:10",
                         "src": {
-                          "range": "TestCompile/edges/nested.d2,0:0:0-0:4:4",
+                          "range": "TestCompile/edges/nested.d2,0:0:0-0:3:3",
                           "path": [
                             {
                               "unquoted_string": {
@@ -483,7 +483,7 @@
                         },
                         "src_arrow": "",
                         "dst": {
-                          "range": "TestCompile/edges/nested.d2,0:6:6-0:10:10",
+                          "range": "TestCompile/edges/nested.d2,0:7:7-0:10:10",
                           "path": [
                             {
                               "unquoted_string": {
@@ -534,7 +534,7 @@
             ]
           },
           "key_path": {
-            "range": "TestCompile/edges/nested.d2,0:6:6-0:10:10",
+            "range": "TestCompile/edges/nested.d2,0:7:7-0:10:10",
             "path": [
               {
                 "unquoted_string": {
@@ -564,7 +564,7 @@
             "edge": {
               "range": "TestCompile/edges/nested.d2,0:0:0-0:10:10",
               "src": {
-                "range": "TestCompile/edges/nested.d2,0:0:0-0:4:4",
+                "range": "TestCompile/edges/nested.d2,0:0:0-0:3:3",
                 "path": [
                   {
                     "unquoted_string": {
@@ -592,7 +592,7 @@
               },
               "src_arrow": "",
               "dst": {
-                "range": "TestCompile/edges/nested.d2,0:6:6-0:10:10",
+                "range": "TestCompile/edges/nested.d2,0:7:7-0:10:10",
                 "path": [
                   {
                     "unquoted_string": {
@@ -626,7 +626,7 @@
                 {
                   "range": "TestCompile/edges/nested.d2,0:0:0-0:10:10",
                   "src": {
-                    "range": "TestCompile/edges/nested.d2,0:0:0-0:4:4",
+                    "range": "TestCompile/edges/nested.d2,0:0:0-0:3:3",
                     "path": [
                       {
                         "unquoted_string": {
@@ -654,7 +654,7 @@
                   },
                   "src_arrow": "",
                   "dst": {
-                    "range": "TestCompile/edges/nested.d2,0:6:6-0:10:10",
+                    "range": "TestCompile/edges/nested.d2,0:7:7-0:10:10",
                     "path": [
                       {
                         "unquoted_string": {
@@ -712,7 +712,7 @@
             "edge": {
               "range": "TestCompile/edges/nested.d2,0:0:0-0:10:10",
               "src": {
-                "range": "TestCompile/edges/nested.d2,0:0:0-0:4:4",
+                "range": "TestCompile/edges/nested.d2,0:0:0-0:3:3",
                 "path": [
                   {
                     "unquoted_string": {
@@ -740,7 +740,7 @@
               },
               "src_arrow": "",
               "dst": {
-                "range": "TestCompile/edges/nested.d2,0:6:6-0:10:10",
+                "range": "TestCompile/edges/nested.d2,0:7:7-0:10:10",
                 "path": [
                   {
                     "unquoted_string": {
@@ -774,7 +774,7 @@
                 {
                   "range": "TestCompile/edges/nested.d2,0:0:0-0:10:10",
                   "src": {
-                    "range": "TestCompile/edges/nested.d2,0:0:0-0:4:4",
+                    "range": "TestCompile/edges/nested.d2,0:0:0-0:3:3",
                     "path": [
                       {
                         "unquoted_string": {
@@ -802,7 +802,7 @@
                   },
                   "src_arrow": "",
                   "dst": {
-                    "range": "TestCompile/edges/nested.d2,0:6:6-0:10:10",
+                    "range": "TestCompile/edges/nested.d2,0:7:7-0:10:10",
                     "path": [
                       {
                         "unquoted_string": {

@@ -9,7 +9,7 @@
           "map_key": {
             "range": "d2/testdata/d2compiler/TestCompile/stroke-width.d2,0:0:0-2:1:31",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/stroke-width.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2compiler/TestCompile/stroke-width.d2,0:0:0-0:3:3",
               "path": [
                 {
                   "unquoted_string": {
@@ -109,7 +109,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/stroke-width.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2compiler/TestCompile/stroke-width.d2,0:0:0-0:3:3",
               "path": [
                 {
                   "unquoted_string": {

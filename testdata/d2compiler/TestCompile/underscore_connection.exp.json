@@ -36,7 +36,7 @@
                         {
                           "range": "d2/testdata/d2compiler/TestCompile/underscore_connection.d2,1:2:7-1:16:21",
                           "src": {
-                            "range": "d2/testdata/d2compiler/TestCompile/underscore_connection.d2,1:2:7-1:8:13",
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_connection.d2,1:2:7-1:7:12",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -75,7 +75,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2compiler/TestCompile/underscore_connection.d2,1:10:15-1:16:21",
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_connection.d2,1:11:16-1:16:21",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -239,7 +239,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_connection.d2,1:2:7-1:8:13",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_connection.d2,1:2:7-1:7:12",
               "path": [
                 {
                   "unquoted_string": {
@@ -281,7 +281,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_connection.d2,1:10:15-1:16:21",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_connection.d2,1:11:16-1:16:21",
               "path": [
                 {
                   "unquoted_string": {
@@ -350,7 +350,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_connection.d2,1:2:7-1:8:13",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_connection.d2,1:2:7-1:7:12",
               "path": [
                 {
                   "unquoted_string": {
@@ -419,7 +419,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_connection.d2,1:10:15-1:16:21",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_connection.d2,1:11:16-1:16:21",
               "path": [
                 {
                   "unquoted_string": {

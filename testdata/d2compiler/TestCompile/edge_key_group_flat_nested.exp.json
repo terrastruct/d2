@@ -36,7 +36,7 @@
                         {
                           "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:2:8-2:8:14",
                           "src": {
-                            "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:2:8-2:4:10",
+                            "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:2:8-2:3:9",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -53,7 +53,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:6:12-2:8:14",
+                            "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:7:13-2:8:14",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -84,7 +84,7 @@
           "map_key": {
             "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:0:17-4:32:49",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:0:17-4:2:19",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:0:17-4:1:18",
               "path": [
                 {
                   "unquoted_string": {
@@ -103,7 +103,7 @@
               {
                 "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:3:20-4:9:26",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:3:20-4:5:22",
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:3:20-4:4:21",
                   "path": [
                     {
                       "unquoted_string": {
@@ -120,7 +120,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:7:24-4:9:26",
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:8:25-4:9:26",
                   "path": [
                     {
                       "unquoted_string": {
@@ -275,7 +275,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:0:17-4:2:19",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:0:17-4:1:18",
               "path": [
                 {
                   "unquoted_string": {
@@ -322,7 +322,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:2:8-2:4:10",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:2:8-2:3:9",
               "path": [
                 {
                   "unquoted_string": {
@@ -342,7 +342,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:3:20-4:5:22",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:3:20-4:4:21",
               "path": [
                 {
                   "unquoted_string": {
@@ -389,7 +389,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:6:12-2:8:14",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:7:13-2:8:14",
               "path": [
                 {
                   "unquoted_string": {
@@ -409,7 +409,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:7:24-4:9:26",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:8:25-4:9:26",
               "path": [
                 {
                   "unquoted_string": {

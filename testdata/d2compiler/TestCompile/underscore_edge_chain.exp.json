@@ -34,9 +34,9 @@
                       "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:2:8-2:19:25",
                       "edges": [
                         {
-                          "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:2:8-2:13:19",
+                          "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:2:8-2:12:18",
                           "src": {
-                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:2:8-2:6:12",
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:2:8-2:5:11",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -64,7 +64,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:8:14-2:13:19",
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:9:15-2:12:18",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -93,9 +93,9 @@
                           "dst_arrow": ">"
                         },
                         {
-                          "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:8:14-2:19:25",
+                          "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:9:15-2:19:25",
                           "src": {
-                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:8:14-2:13:19",
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:9:15-2:12:18",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -123,7 +123,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:15:21-2:19:25",
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:16:22-2:19:25",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -281,7 +281,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:8:14-2:13:19",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:9:15-2:12:18",
               "path": [
                 {
                   "unquoted_string": {
@@ -312,7 +312,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:8:14-2:13:19",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:9:15-2:12:18",
               "path": [
                 {
                   "unquoted_string": {
@@ -370,7 +370,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:2:8-2:6:12",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:2:8-2:5:11",
               "path": [
                 {
                   "unquoted_string": {
@@ -428,7 +428,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:15:21-2:19:25",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_chain.d2,2:16:22-2:19:25",
               "path": [
                 {
                   "unquoted_string": {

@@ -58,7 +58,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestDelete/only_delete_obj_reserved.d2,2:0:4-2:6:10",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestDelete/only_delete_obj_reserved.d2,2:0:4-2:2:6",
+                  "range": "d2/testdata/d2oracle/TestDelete/only_delete_obj_reserved.d2,2:0:4-2:1:5",
                   "path": [
                     {
                       "unquoted_string": {
@@ -75,7 +75,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestDelete/only_delete_obj_reserved.d2,2:4:8-2:6:10",
+                  "range": "d2/testdata/d2oracle/TestDelete/only_delete_obj_reserved.d2,2:5:9-2:6:10",
                   "path": [
                     {
                       "unquoted_string": {
@@ -239,7 +239,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/only_delete_obj_reserved.d2,2:0:4-2:2:6",
+              "range": "d2/testdata/d2oracle/TestDelete/only_delete_obj_reserved.d2,2:0:4-2:1:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -306,7 +306,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/only_delete_obj_reserved.d2,2:4:8-2:6:10",
+              "range": "d2/testdata/d2oracle/TestDelete/only_delete_obj_reserved.d2,2:5:9-2:6:10",
               "path": [
                 {
                   "unquoted_string": {

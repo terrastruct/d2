@@ -139,7 +139,7 @@
                                   {
                                     "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:4:51-4:10:57",
                                     "src": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:4:51-4:6:53",
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:4:51-4:5:52",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -156,7 +156,7 @@
                                     },
                                     "src_arrow": "",
                                     "dst": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:8:55-4:10:57",
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:9:56-4:10:57",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -185,7 +185,7 @@
                                   {
                                     "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:16:74",
                                     "src": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:9:67",
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:8:66",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -213,7 +213,7 @@
                                     },
                                     "src_arrow": "",
                                     "dst": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:11:69-5:16:74",
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:12:70-5:16:74",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -253,7 +253,7 @@
                                   {
                                     "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:19:94",
                                     "src": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:12:87",
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:11:86",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -292,7 +292,7 @@
                                     },
                                     "src_arrow": "",
                                     "dst": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:14:89-6:19:94",
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:15:90-6:19:94",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -534,7 +534,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:4:51-4:6:53",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:4:51-4:5:52",
               "path": [
                 {
                   "unquoted_string": {
@@ -554,7 +554,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:9:67",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:8:66",
               "path": [
                 {
                   "unquoted_string": {
@@ -632,7 +632,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:8:55-4:10:57",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:9:56-4:10:57",
               "path": [
                 {
                   "unquoted_string": {
@@ -652,7 +652,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:11:69-5:16:74",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:12:70-5:16:74",
               "path": [
                 {
                   "unquoted_string": {
@@ -683,7 +683,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:12:87",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:11:86",
               "path": [
                 {
                   "unquoted_string": {
@@ -725,7 +725,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:14:89-6:19:94",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:15:90-6:19:94",
               "path": [
                 {
                   "unquoted_string": {
@@ -830,7 +830,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:9:67",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:8:66",
               "path": [
                 {
                   "unquoted_string": {
@@ -888,7 +888,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:11:69-5:16:74",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:12:70-5:16:74",
               "path": [
                 {
                   "unquoted_string": {
@@ -919,7 +919,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:12:87",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:11:86",
               "path": [
                 {
                   "unquoted_string": {
@@ -961,7 +961,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:14:89-6:19:94",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:15:90-6:19:94",
               "path": [
                 {
                   "unquoted_string": {
@@ -1019,7 +1019,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:12:87",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:11:86",
               "path": [
                 {
                   "unquoted_string": {

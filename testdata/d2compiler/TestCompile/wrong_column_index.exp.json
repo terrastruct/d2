@@ -628,7 +628,7 @@
               {
                 "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,17:0:353-17:53:406",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,17:0:353-17:36:389",
+                  "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,17:0:353-17:35:388",
                   "path": [
                     {
                       "unquoted_string": {
@@ -656,7 +656,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,17:38:391-17:53:406",
+                  "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,17:39:392-17:53:406",
                   "path": [
                     {
                       "unquoted_string": {
@@ -779,7 +779,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,17:38:391-17:53:406",
+              "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,17:39:392-17:53:406",
               "path": [
                 {
                   "unquoted_string": {
@@ -1029,7 +1029,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,17:0:353-17:36:389",
+              "range": "d2/testdata/d2compiler/TestCompile/wrong_column_index.d2,17:0:353-17:35:388",
               "path": [
                 {
                   "unquoted_string": {

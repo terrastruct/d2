@@ -9,7 +9,7 @@
             {
               "range": "d2/testdata/d2parser/TestParse/less_than_edge#955.d2,1:0:1-1:6:7",
               "src": {
-                "range": "d2/testdata/d2parser/TestParse/less_than_edge#955.d2,1:0:1-1:2:3",
+                "range": "d2/testdata/d2parser/TestParse/less_than_edge#955.d2,1:0:1-1:1:2",
                 "path": [
                   {
                     "unquoted_string": {

@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:14:14",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:6:6",
+                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:5:5",
                   "path": [
                     {
                       "unquoted_string": {
@@ -51,7 +51,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:8:8-0:14:14",
+                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:9:9-0:14:14",
                   "path": [
                     {
                       "unquoted_string": {
@@ -220,7 +220,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:0:43-6:10:53",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:0:43-6:4:47",
+                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:0:43-6:3:46",
                   "path": [
                     {
                       "unquoted_string": {
@@ -248,7 +248,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:6:49-6:10:53",
+                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:7:50-6:10:53",
                   "path": [
                     {
                       "unquoted_string": {
@@ -288,7 +288,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:0:55-8:8:63",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:0:55-8:4:59",
+                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:0:55-8:3:58",
                   "path": [
                     {
                       "unquoted_string": {
@@ -316,7 +316,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:6:61-8:8:63",
+                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:7:62-8:8:63",
                   "path": [
                     {
                       "unquoted_string": {
@@ -470,7 +470,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:6:6",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:5:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -539,7 +539,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:6:6",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:5:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -608,7 +608,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:6:6",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:5:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -677,7 +677,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:8:8-0:14:14",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:9:9-0:14:14",
               "path": [
                 {
                   "unquoted_string": {
@@ -739,7 +739,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:6:61-8:8:63",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:7:62-8:8:63",
               "path": [
                 {
                   "unquoted_string": {
@@ -786,7 +786,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:8:8-0:14:14",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:9:9-0:14:14",
               "path": [
                 {
                   "unquoted_string": {
@@ -855,7 +855,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:8:8-0:14:14",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:9:9-0:14:14",
               "path": [
                 {
                   "unquoted_string": {
@@ -991,7 +991,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:0:43-6:4:47",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:0:43-6:3:46",
               "path": [
                 {
                   "unquoted_string": {
@@ -1022,7 +1022,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:0:55-8:4:59",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:0:55-8:3:58",
               "path": [
                 {
                   "unquoted_string": {
@@ -1100,7 +1100,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:6:49-6:10:53",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:7:50-6:10:53",
               "path": [
                 {
                   "unquoted_string": {
@@ -1158,7 +1158,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:0:43-6:4:47",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:0:43-6:3:46",
               "path": [
                 {
                   "unquoted_string": {
@@ -1216,7 +1216,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:6:49-6:10:53",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:7:50-6:10:53",
               "path": [
                 {
                   "unquoted_string": {
@@ -1274,7 +1274,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:0:55-8:4:59",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:0:55-8:3:58",
               "path": [
                 {
                   "unquoted_string": {

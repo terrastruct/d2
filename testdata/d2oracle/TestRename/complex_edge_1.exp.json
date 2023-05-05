@@ -9,7 +9,7 @@
           "map_key": {
             "range": "d2/testdata/d2oracle/TestRename/complex_edge_1.d2,0:0:0-0:29:29",
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/complex_edge_1.d2,0:0:0-0:6:6",
+              "range": "d2/testdata/d2oracle/TestRename/complex_edge_1.d2,0:0:0-0:5:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -39,7 +39,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestRename/complex_edge_1.d2,0:7:7-0:13:13",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestRename/complex_edge_1.d2,0:7:7-0:9:9",
+                  "range": "d2/testdata/d2oracle/TestRename/complex_edge_1.d2,0:7:7-0:8:8",
                   "path": [
                     {
                       "unquoted_string": {
@@ -56,7 +56,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestRename/complex_edge_1.d2,0:11:11-0:13:13",
+                  "range": "d2/testdata/d2oracle/TestRename/complex_edge_1.d2,0:12:12-0:13:13",
                   "path": [
                     {
                       "unquoted_string": {
@@ -173,7 +173,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/complex_edge_1.d2,0:0:0-0:6:6",
+              "range": "d2/testdata/d2oracle/TestRename/complex_edge_1.d2,0:0:0-0:5:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -231,7 +231,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/complex_edge_1.d2,0:0:0-0:6:6",
+              "range": "d2/testdata/d2oracle/TestRename/complex_edge_1.d2,0:0:0-0:5:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -289,7 +289,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/complex_edge_1.d2,0:7:7-0:9:9",
+              "range": "d2/testdata/d2oracle/TestRename/complex_edge_1.d2,0:7:7-0:8:8",
               "path": [
                 {
                   "unquoted_string": {
@@ -336,7 +336,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/complex_edge_1.d2,0:11:11-0:13:13",
+              "range": "d2/testdata/d2oracle/TestRename/complex_edge_1.d2,0:12:12-0:13:13",
               "path": [
                 {
                   "unquoted_string": {
