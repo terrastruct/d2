@@ -5,10 +5,13 @@ import (
 	"fmt"
 	"math"
 	"sort"
+	"strings"
 
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
+	"oss.terrastruct.com/d2/lib/shape"
 	"oss.terrastruct.com/util-go/go2"
 )
 
@@ -70,26 +73,37 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph) (gridDiagrams ma
 			obj.Children = make(map[string]*d2graph.Object)
 			obj.ChildrenArray = nil
 
-			var dx, dy float64
-			width := gd.width + 2*CONTAINER_PADDING
-			labelWidth := float64(obj.LabelDimensions.Width) + 2*label.PADDING
-			if labelWidth > width {
-				dx = (labelWidth - width) / 2
-				width = labelWidth
+			if obj.Box != nil {
+				// size shape according to grid
+				obj.SizeToContent(float64(gd.width), float64(gd.height), 2*CONTAINER_PADDING, 2*CONTAINER_PADDING)
+
+				// compute where the grid should be placed inside shape
+				dslShape := strings.ToLower(obj.Shape.Value)
+				shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
+				s := shape.NewShape(shapeType, geo.NewBox(geo.NewPoint(0, 0), obj.Width, obj.Height))
+				innerBox := s.GetInnerBox()
+				if innerBox.TopLeft.X != 0 || innerBox.TopLeft.Y != 0 {
+					gd.shift(innerBox.TopLeft.X, innerBox.TopLeft.Y)
+				}
+
+				var dx, dy float64
+				labelWidth := float64(obj.LabelDimensions.Width) + 2*label.PADDING
+				if labelWidth > obj.Width {
+					dx = (labelWidth - obj.Width) / 2
+					obj.Width = labelWidth
+				}
+				labelHeight := float64(obj.LabelDimensions.Height) + 2*label.PADDING
+				if labelHeight > CONTAINER_PADDING {
+					// if the label doesn't fit within the padding, we need to add more
+					grow := labelHeight - CONTAINER_PADDING
+					dy = grow / 2
+					obj.Height += grow
+				}
+				// we need to center children if we have to expand to fit the container label
+				if dx != 0 || dy != 0 {
+					gd.shift(dx, dy)
+				}
 			}
-			height := gd.height + 2*CONTAINER_PADDING
-			labelHeight := float64(obj.LabelDimensions.Height) + 2*label.PADDING
-			if labelHeight > CONTAINER_PADDING {
-				// if the label doesn't fit within the padding, we need to add more
-				grow := labelHeight - CONTAINER_PADDING
-				dy = grow / 2
-				height += grow
-			}
-			// we need to center children if we have to expand to fit the container label
-			if dx != 0 || dy != 0 {
-				gd.shift(dx, dy)
-			}
-			obj.Box = geo.NewBox(nil, width, height)
 
 			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 			gridDiagrams[obj.AbsID()] = gd
