@@ -81,7 +81,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestReconnectEdge/both.d2,3:0:6-3:6:12",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestReconnectEdge/both.d2,3:0:6-3:2:8",
+                  "range": "d2/testdata/d2oracle/TestReconnectEdge/both.d2,3:0:6-3:1:7",
                   "path": [
                     {
                       "unquoted_string": {
@@ -98,7 +98,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestReconnectEdge/both.d2,3:4:10-3:6:12",
+                  "range": "d2/testdata/d2oracle/TestReconnectEdge/both.d2,3:5:11-3:6:12",
                   "path": [
                     {
                       "unquoted_string": {
@@ -208,7 +208,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestReconnectEdge/both.d2,3:4:10-3:6:12",
+              "range": "d2/testdata/d2oracle/TestReconnectEdge/both.d2,3:5:11-3:6:12",
               "path": [
                 {
                   "unquoted_string": {
@@ -275,7 +275,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestReconnectEdge/both.d2,3:0:6-3:2:8",
+              "range": "d2/testdata/d2oracle/TestReconnectEdge/both.d2,3:0:6-3:1:7",
               "path": [
                 {
                   "unquoted_string": {

@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,0:0:0-0:6:6",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,0:0:0-0:2:2",
+                  "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,0:0:0-0:1:1",
                   "path": [
                     {
                       "unquoted_string": {
@@ -29,7 +29,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,0:4:4-0:6:6",
+                  "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,0:5:5-0:6:6",
                   "path": [
                     {
                       "unquoted_string": {
@@ -81,7 +81,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,2:1:10-2:7:16",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,2:1:10-2:3:12",
+                  "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,2:1:10-2:2:11",
                   "path": [
                     {
                       "unquoted_string": {
@@ -98,7 +98,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,2:5:14-2:7:16",
+                  "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,2:6:15-2:7:16",
                   "path": [
                     {
                       "unquoted_string": {
@@ -260,7 +260,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,0:0:0-0:2:2",
+              "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,0:0:0-0:1:1",
               "path": [
                 {
                   "unquoted_string": {
@@ -280,7 +280,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,2:1:10-2:3:12",
+              "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,2:1:10-2:2:11",
               "path": [
                 {
                   "unquoted_string": {
@@ -327,7 +327,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,0:4:4-0:6:6",
+              "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,0:5:5-0:6:6",
               "path": [
                 {
                   "unquoted_string": {
@@ -347,7 +347,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,2:5:14-2:7:16",
+              "range": "d2/testdata/d2oracle/TestReconnectEdge/preserve_old_obj.d2,2:6:15-2:7:16",
               "path": [
                 {
                   "unquoted_string": {
