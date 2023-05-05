@@ -60,7 +60,7 @@
                                   {
                                     "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_nested.d2,3:2:14-3:14:26",
                                     "src": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_nested.d2,3:2:14-3:8:20",
+                                      "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_nested.d2,3:2:14-3:7:19",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -99,7 +99,7 @@
                                     },
                                     "src_arrow": "",
                                     "dst": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_nested.d2,3:10:22-3:14:26",
+                                      "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_nested.d2,3:11:23-3:14:26",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -277,7 +277,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_nested.d2,3:10:22-3:14:26",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_nested.d2,3:11:23-3:14:26",
               "path": [
                 {
                   "unquoted_string": {
@@ -335,7 +335,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_nested.d2,3:2:14-3:8:20",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_nested.d2,3:2:14-3:7:19",
               "path": [
                 {
                   "unquoted_string": {

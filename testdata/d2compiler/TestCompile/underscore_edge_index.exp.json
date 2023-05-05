@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_index.d2,1:0:1-1:6:7",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_index.d2,1:0:1-1:2:3",
+                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_index.d2,1:0:1-1:1:2",
                   "path": [
                     {
                       "unquoted_string": {
@@ -29,7 +29,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_index.d2,1:4:5-1:6:7",
+                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_index.d2,1:5:6-1:6:7",
                   "path": [
                     {
                       "unquoted_string": {
@@ -92,7 +92,7 @@
                         {
                           "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_index.d2,3:2:86-3:12:96",
                           "src": {
-                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_index.d2,3:2:86-3:6:90",
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_index.d2,3:2:86-3:5:89",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -120,7 +120,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_index.d2,3:8:92-3:12:96",
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_index.d2,3:9:93-3:12:96",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -244,7 +244,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_index.d2,1:0:1-1:2:3",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_index.d2,1:0:1-1:1:2",
               "path": [
                 {
                   "unquoted_string": {
@@ -291,7 +291,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_index.d2,1:4:5-1:6:7",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_index.d2,1:5:6-1:6:7",
               "path": [
                 {
                   "unquoted_string": {

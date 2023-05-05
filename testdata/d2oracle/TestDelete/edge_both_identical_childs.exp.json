@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:12:12",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:6:6",
+                  "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:5:5",
                   "path": [
                     {
                       "unquoted_string": {
@@ -51,7 +51,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:8:8-0:12:12",
+                  "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:9:9-0:12:12",
                   "path": [
                     {
                       "unquoted_string": {
@@ -152,7 +152,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:6:6",
+              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:5:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -194,7 +194,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:8:8-0:12:12",
+              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:9:9-0:12:12",
               "path": [
                 {
                   "unquoted_string": {
@@ -252,7 +252,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:6:6",
+              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:5:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -321,7 +321,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:6:6",
+              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:5:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -390,7 +390,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:8:8-0:12:12",
+              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:9:9-0:12:12",
               "path": [
                 {
                   "unquoted_string": {

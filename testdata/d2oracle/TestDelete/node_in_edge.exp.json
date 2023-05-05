@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:0:0-0:6:6",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:0:0-0:2:2",
+                  "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:0:0-0:1:1",
                   "path": [
                     {
                       "unquoted_string": {
@@ -29,7 +29,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:4:4-0:6:6",
+                  "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:5:5-0:6:6",
                   "path": [
                     {
                       "unquoted_string": {
@@ -58,7 +58,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:0:7-1:6:13",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:0:7-1:2:9",
+                  "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:0:7-1:1:8",
                   "path": [
                     {
                       "unquoted_string": {
@@ -75,7 +75,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:4:11-1:6:13",
+                  "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:5:12-1:6:13",
                   "path": [
                     {
                       "unquoted_string": {
@@ -249,7 +249,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:0:0-0:2:2",
+              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:0:0-0:1:1",
               "path": [
                 {
                   "unquoted_string": {
@@ -296,7 +296,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:4:4-0:6:6",
+              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,0:5:5-0:6:6",
               "path": [
                 {
                   "unquoted_string": {
@@ -343,7 +343,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:0:7-1:2:9",
+              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:0:7-1:1:8",
               "path": [
                 {
                   "unquoted_string": {
@@ -390,7 +390,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:4:11-1:6:13",
+              "range": "d2/testdata/d2oracle/TestDelete/node_in_edge.d2,1:5:12-1:6:13",
               "path": [
                 {
                   "unquoted_string": {

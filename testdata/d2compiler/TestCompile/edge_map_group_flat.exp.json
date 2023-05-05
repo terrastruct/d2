@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,1:0:1-1:6:7",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,1:0:1-1:2:3",
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,1:0:1-1:1:2",
                   "path": [
                     {
                       "unquoted_string": {
@@ -29,7 +29,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,1:4:5-1:6:7",
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,1:5:6-1:6:7",
                   "path": [
                     {
                       "unquoted_string": {
@@ -58,7 +58,7 @@
               {
                 "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,2:1:9-2:7:15",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,2:1:9-2:3:11",
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,2:1:9-2:2:10",
                   "path": [
                     {
                       "unquoted_string": {
@@ -75,7 +75,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,2:5:13-2:7:15",
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,2:6:14-2:7:15",
                   "path": [
                     {
                       "unquoted_string": {
@@ -210,7 +210,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,1:0:1-1:2:3",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,1:0:1-1:1:2",
               "path": [
                 {
                   "unquoted_string": {
@@ -230,7 +230,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,2:1:9-2:3:11",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,2:1:9-2:2:10",
               "path": [
                 {
                   "unquoted_string": {
@@ -277,7 +277,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,1:4:5-1:6:7",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,1:5:6-1:6:7",
               "path": [
                 {
                   "unquoted_string": {
@@ -297,7 +297,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,2:5:13-2:7:15",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_map_group_flat.d2,2:6:14-2:7:15",
               "path": [
                 {
                   "unquoted_string": {

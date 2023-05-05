@@ -36,7 +36,7 @@
                         {
                           "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:2:8-2:12:18",
                           "src": {
-                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:2:8-2:6:12",
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:2:8-2:5:11",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -64,7 +64,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:8:14-2:12:18",
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:9:15-2:12:18",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -190,7 +190,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:8:14-2:12:18",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:9:15-2:12:18",
               "path": [
                 {
                   "unquoted_string": {
@@ -248,7 +248,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:2:8-2:6:12",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:2:8-2:5:11",
               "path": [
                 {
                   "unquoted_string": {

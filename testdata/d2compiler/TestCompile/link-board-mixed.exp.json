@@ -136,7 +136,7 @@
                                   {
                                     "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:24:101",
                                     "src": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:12:89",
+                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:11:88",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -153,7 +153,7 @@
                                     },
                                     "src_arrow": "",
                                     "dst": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:14:91-5:24:101",
+                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:15:92-5:24:101",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -557,7 +557,7 @@
                                       {
                                         "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:24:101",
                                         "src": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:12:89",
+                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:11:88",
                                           "path": [
                                             {
                                               "unquoted_string": {
@@ -574,7 +574,7 @@
                                         },
                                         "src_arrow": "",
                                         "dst": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:14:91-5:24:101",
+                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:15:92-5:24:101",
                                           "path": [
                                             {
                                               "unquoted_string": {
@@ -797,7 +797,7 @@
             "references": [
               {
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:12:89",
+                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:11:88",
                   "path": [
                     {
                       "unquoted_string": {
@@ -844,7 +844,7 @@
             "references": [
               {
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:14:91-5:24:101",
+                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:15:92-5:24:101",
                   "path": [
                     {
                       "unquoted_string": {
@@ -1026,7 +1026,7 @@
                                       {
                                         "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:24:101",
                                         "src": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:12:89",
+                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:11:88",
                                           "path": [
                                             {
                                               "unquoted_string": {
@@ -1043,7 +1043,7 @@
                                         },
                                         "src_arrow": "",
                                         "dst": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:14:91-5:24:101",
+                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:15:92-5:24:101",
                                           "path": [
                                             {
                                               "unquoted_string": {

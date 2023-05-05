@@ -9,7 +9,7 @@
           "map_key": {
             "range": "d2/testdata/d2oracle/TestRename/arrows_complex.d2,0:0:0-0:28:28",
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/arrows_complex.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2oracle/TestRename/arrows_complex.d2,0:0:0-0:3:3",
               "path": [
                 {
                   "unquoted_string": {
@@ -39,7 +39,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestRename/arrows_complex.d2,0:5:5-0:12:12",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestRename/arrows_complex.d2,0:5:5-0:7:7",
+                  "range": "d2/testdata/d2oracle/TestRename/arrows_complex.d2,0:5:5-0:6:6",
                   "path": [
                     {
                       "unquoted_string": {
@@ -56,7 +56,7 @@
                 },
                 "src_arrow": "<",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestRename/arrows_complex.d2,0:10:10-0:12:12",
+                  "range": "d2/testdata/d2oracle/TestRename/arrows_complex.d2,0:11:11-0:12:12",
                   "path": [
                     {
                       "unquoted_string": {
@@ -173,7 +173,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/arrows_complex.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2oracle/TestRename/arrows_complex.d2,0:0:0-0:3:3",
               "path": [
                 {
                   "unquoted_string": {
@@ -231,7 +231,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/arrows_complex.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2oracle/TestRename/arrows_complex.d2,0:0:0-0:3:3",
               "path": [
                 {
                   "unquoted_string": {
@@ -289,7 +289,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/arrows_complex.d2,0:5:5-0:7:7",
+              "range": "d2/testdata/d2oracle/TestRename/arrows_complex.d2,0:5:5-0:6:6",
               "path": [
                 {
                   "unquoted_string": {
@@ -336,7 +336,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/arrows_complex.d2,0:10:10-0:12:12",
+              "range": "d2/testdata/d2oracle/TestRename/arrows_complex.d2,0:11:11-0:12:12",
               "path": [
                 {
                   "unquoted_string": {

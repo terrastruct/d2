@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,0:0:0-0:20:20",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,0:0:0-0:9:9",
+                  "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,0:0:0-0:8:8",
                   "path": [
                     {
                       "unquoted_string": {
@@ -40,7 +40,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,0:11:11-0:20:20",
+                  "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,0:12:12-0:20:20",
                   "path": [
                     {
                       "unquoted_string": {
@@ -80,7 +80,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,2:0:22-2:16:38",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,2:0:22-2:7:29",
+                  "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,2:0:22-2:6:28",
                   "path": [
                     {
                       "unquoted_string": {
@@ -97,7 +97,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,2:9:31-2:16:38",
+                  "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,2:10:32-2:16:38",
                   "path": [
                     {
                       "unquoted_string": {
@@ -374,7 +374,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,0:0:0-0:9:9",
+              "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,0:0:0-0:8:8",
               "path": [
                 {
                   "unquoted_string": {
@@ -405,7 +405,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,0:11:11-0:20:20",
+              "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,0:12:12-0:20:20",
               "path": [
                 {
                   "unquoted_string": {
@@ -436,7 +436,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,2:9:31-2:16:38",
+              "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,2:10:32-2:16:38",
               "path": [
                 {
                   "unquoted_string": {
@@ -514,7 +514,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,0:0:0-0:9:9",
+              "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,0:0:0-0:8:8",
               "path": [
                 {
                   "unquoted_string": {
@@ -592,7 +592,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,0:11:11-0:20:20",
+              "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,0:12:12-0:20:20",
               "path": [
                 {
                   "unquoted_string": {
@@ -670,7 +670,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,2:0:22-2:7:29",
+              "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,2:0:22-2:6:28",
               "path": [
                 {
                   "unquoted_string": {
@@ -737,7 +737,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,2:9:31-2:16:38",
+              "range": "d2/testdata/d2oracle/TestMove/middle_container_generated_conflict.d2,2:10:32-2:16:38",
               "path": [
                 {
                   "unquoted_string": {

@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:0:0-0:12:12",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:0:0-0:4:4",
+                  "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:0:0-0:3:3",
                   "path": [
                     {
                       "unquoted_string": {
@@ -40,7 +40,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:6:6-0:12:12",
+                  "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:7:7-0:12:12",
                   "path": [
                     {
                       "unquoted_string": {
@@ -215,7 +215,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:0:0-0:3:3",
               "path": [
                 {
                   "unquoted_string": {
@@ -273,7 +273,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:0:0-0:3:3",
               "path": [
                 {
                   "unquoted_string": {
@@ -331,7 +331,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:6:6-0:12:12",
+              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:7:7-0:12:12",
               "path": [
                 {
                   "unquoted_string": {
@@ -431,7 +431,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:6:6-0:12:12",
+              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:7:7-0:12:12",
               "path": [
                 {
                   "unquoted_string": {
@@ -531,7 +531,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:6:6-0:12:12",
+              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:7:7-0:12:12",
               "path": [
                 {
                   "unquoted_string": {
