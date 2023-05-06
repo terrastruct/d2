@@ -76,16 +76,6 @@ function init(reconnectDelay) {
 }
 
 const changeFavicon = function (iconURL) {
-  const head = document.getElementsByTagName("head")[0];
-  const newLink = document.createElement("link");
-  newLink.rel = "icon";
-  newLink.href = iconURL;
-  removeExistingFavicons();
-  head.appendChild(newLink);
-};
-const removeExistingFavicons = function () {
-  const links = document.getElementsByTagName("link");
-  Array.from(links)
-    .filter((link) => /\bicon\b/i.test(link.getAttribute("rel")))
-    .forEach((link) => link.remove());
+  const faviconLink = document.getElementById("favicon-link");
+  faviconLink.href = iconURL;
 };
