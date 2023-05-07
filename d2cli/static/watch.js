@@ -28,7 +28,7 @@ function init(reconnectDelay) {
       // we can't just set `d2SVG.innerHTML = msg.svg` need to parse this as xml not html
       const parsedXML = new DOMParser().parseFromString(msg.svg, "text/xml");
       d2SVG.replaceChildren(parsedXML.documentElement);
-
+      changeFavicon("./static/favicon.ico");
       const svgEl = d2SVG.querySelector("#d2-svg");
       // just use inner SVG in watch mode
       svgEl.parentElement.replaceWith(svgEl);
@@ -56,6 +56,7 @@ function init(reconnectDelay) {
     if (msg.err) {
       d2ErrDiv.innerText = msg.err;
       d2ErrDiv.style.display = "block";
+      changeFavicon("./static/favicon-err.ico");
       d2ErrDiv.scrollIntoView();
     }
   };
@@ -73,3 +74,8 @@ function init(reconnectDelay) {
     }, reconnectDelay);
   };
 }
+
+const changeFavicon = function (iconURL) {
+  const faviconLink = document.getElementById("favicon");
+  faviconLink.href = iconURL;
+};
