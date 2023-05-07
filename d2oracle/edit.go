@@ -768,7 +768,7 @@ func Delete(g *d2graph.Graph, key string) (_ *d2graph.Graph, err error) {
 		return nil, err
 	}
 
-	if err := updateNear(prevG, g, &key, nil); err != nil {
+	if err := updateNear(prevG, g, &key, nil, false); err != nil {
 		return nil, err
 	}
 
@@ -951,7 +951,7 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 		}
 		for _, k := range renameOrder {
 			var err error
-			g, err = move(g, k, renames[k])
+			g, err = move(g, k, renames[k], false)
 			if err != nil {
 				return nil, err
 			}
@@ -1312,7 +1312,7 @@ func Rename(g *d2graph.Graph, key, newName string) (_ *d2graph.Graph, err error)
 		mk.Key.Path[len(mk.Key.Path)-1] = d2ast.MakeValueBox(d2ast.RawString(newName, true)).StringBox()
 	}
 
-	return move(g, key, d2format.Format(mk))
+	return move(g, key, d2format.Format(mk), false)
 }
 
 func trimReservedSuffix(path []*d2ast.StringBox) []*d2ast.StringBox {
@@ -1325,12 +1325,12 @@ func trimReservedSuffix(path []*d2ast.StringBox) []*d2ast.StringBox {
 }
 
 // Does not handle edge keys, on account of edge keys can only be reserved, e.g. (a->b).style.color: red
-func Move(g *d2graph.Graph, key, newKey string) (_ *d2graph.Graph, err error) {
+func Move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (_ *d2graph.Graph, err error) {
 	defer xdefer.Errorf(&err, "failed to move: %#v to %#v", key, newKey)
-	return move(g, key, newKey)
+	return move(g, key, newKey, includeDescendants)
 }
 
-func move(g *d2graph.Graph, key, newKey string) (*d2graph.Graph, error) {
+func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2graph.Graph, error) {
 	if key == newKey {
 		return g, nil
 	}
@@ -1387,7 +1387,7 @@ func move(g *d2graph.Graph, key, newKey string) (*d2graph.Graph, error) {
 
 	isCrossScope := strings.Join(ak[:len(ak)-1], ".") != strings.Join(ak2[:len(ak2)-1], ".")
 
-	if isCrossScope {
+	if isCrossScope && !includeDescendants {
 		g, err = renameConflictsToParent(g, mk.Key)
 		if err != nil {
 			return nil, err
@@ -1546,21 +1546,23 @@ func move(g *d2graph.Graph, key, newKey string) (*d2graph.Graph, error) {
 		// 4. Slice.
 		// -- The key is moving from its current scope out to a less nested scope
 		if isCrossScope {
-			if len(ida) == 1 {
+			if len(ida) == 1 || includeDescendants {
 				// 1. Transplant
 				absKey, err := d2parser.ParseKey(ref.ScopeObj.AbsID())
 				if err != nil {
 					absKey = &d2ast.KeyPath{}
 				}
 				absKey.Path = append(absKey.Path, ref.Key.Path...)
-				hoistRefChildren(g, absKey, ref)
+				if !includeDescendants {
+					hoistRefChildren(g, absKey, ref)
+				}
 				deleteFromMap(ref.Scope, ref.MapKey)
 				detachedMK := &d2ast.Key{Primary: ref.MapKey.Primary, Key: cloneKey(ref.MapKey.Key)}
 				detachedMK.Key.Path = go2.Filter(detachedMK.Key.Path, func(x *d2ast.StringBox) bool {
 					return x.Unbox().ScalarString() != "_"
 				})
 				detachedMK.Value = ref.MapKey.Value
-				if ref.MapKey != nil && ref.MapKey.Value.Map != nil {
+				if ref.MapKey != nil && ref.MapKey.Value.Map != nil && !includeDescendants {
 					detachedMK.Value.Map = &d2ast.Map{
 						Range: ref.MapKey.Value.Map.Range,
 					}
@@ -1638,9 +1640,11 @@ func move(g *d2graph.Graph, key, newKey string) (*d2graph.Graph, error) {
 			continue
 		}
 
-		// When moving a node out of an edge, e.g. the `b` out of `a.b.c -> ...`,
-		// The edge needs to continue targeting the same thing (c)
-		if ref.KeyPathIndex != len(ref.Key.Path)-1 {
+		if includeDescendants {
+			ref.Key.Path = append(ref.Key.Path[:ref.KeyPathIndex], append(mk2.Key.Path, ref.Key.Path[ref.KeyPathIndex+1:]...)...)
+		} else if ref.KeyPathIndex != len(ref.Key.Path)-1 {
+			// When moving a node out of an edge, e.g. the `b` out of `a.b.c -> ...`,
+			// The edge needs to continue targeting the same thing (c)
 			// Split
 			detachedMK := &d2ast.Key{
 				Key: cloneKey(ref.Key),
@@ -1667,7 +1671,7 @@ func move(g *d2graph.Graph, key, newKey string) (*d2graph.Graph, error) {
 		}
 	}
 
-	if err := updateNear(prevG, g, &key, &newKey); err != nil {
+	if err := updateNear(prevG, g, &key, &newKey, includeDescendants); err != nil {
 		return nil, err
 	}
 
@@ -1742,7 +1746,7 @@ func filterReserved(value d2ast.ValueBox) (with, without d2ast.ValueBox) {
 
 // updateNear updates all the Near fields
 // prevG is the graph before the update (i.e. deletion, rename, move)
-func updateNear(prevG, g *d2graph.Graph, from, to *string) error {
+func updateNear(prevG, g *d2graph.Graph, from, to *string, includeDescendants bool) error {
 	mk, _ := d2parser.ParseMapKey(*from)
 	if len(mk.Edges) > 0 {
 		return nil
@@ -1753,6 +1757,13 @@ func updateNear(prevG, g *d2graph.Graph, from, to *string) error {
 	if len(mk.Key.Path) == 0 {
 		return nil
 	}
+
+	// TODO get rid of repetition
+
+	// Update all the `near` keys that are one level nested
+	// x: {
+	//   near: z
+	// }
 	for _, obj := range g.Objects {
 		if obj.Map == nil {
 			continue
@@ -1787,7 +1798,7 @@ func updateNear(prevG, g *d2graph.Graph, from, to *string) error {
 							n.MapKey.Value = d2ast.MakeValueBox(d2ast.RawString(v, false))
 						}
 					} else {
-						deltas, err := MoveIDDeltas(tmpG, *from, *to)
+						deltas, err := MoveIDDeltas(tmpG, *from, *to, includeDescendants)
 						if err != nil {
 							return err
 						}
@@ -1799,6 +1810,52 @@ func updateNear(prevG, g *d2graph.Graph, from, to *string) error {
 			}
 		}
 	}
+
+	// Update all the `near` keys that are flat (x.near: z)
+	for _, obj := range g.Objects {
+		for _, ref := range obj.References {
+			if ref.MapKey == nil {
+				continue
+			}
+			if ref.MapKey.Key == nil {
+				continue
+			}
+			if len(ref.MapKey.Key.Path) == 0 {
+				continue
+			}
+			if ref.MapKey.Key.Path[len(ref.MapKey.Key.Path)-1].Unbox().ScalarString() == "near" {
+				k := ref.MapKey.Value.ScalarBox().Unbox().ScalarString()
+				if strings.EqualFold(k, *from) && to == nil {
+					deleteFromMap(obj.Map, ref.MapKey)
+				} else {
+					valueMK, err := d2parser.ParseMapKey(k)
+					if err != nil {
+						return err
+					}
+					tmpG, _ := recompile(prevG)
+					appendMapKey(tmpG.AST, valueMK)
+					if to == nil {
+						deltas, err := DeleteIDDeltas(tmpG, *from)
+						if err != nil {
+							return err
+						}
+						if v, ok := deltas[k]; ok {
+							ref.MapKey.Value = d2ast.MakeValueBox(d2ast.RawString(v, false))
+						}
+					} else {
+						deltas, err := MoveIDDeltas(tmpG, *from, *to, includeDescendants)
+						if err != nil {
+							return err
+						}
+						if v, ok := deltas[k]; ok {
+							ref.MapKey.Value = d2ast.MakeValueBox(d2ast.RawString(v, false))
+						}
+					}
+				}
+			}
+		}
+	}
+
 	return nil
 }
 
@@ -2094,7 +2151,7 @@ func edgeTrimCommon(mk *d2ast.Key) {
 	}
 }
 
-func MoveIDDeltas(g *d2graph.Graph, key, newKey string) (deltas map[string]string, err error) {
+func MoveIDDeltas(g *d2graph.Graph, key, newKey string, includeDescendants bool) (deltas map[string]string, err error) {
 	defer xdefer.Errorf(&err, "failed to get deltas for move from %#v to %#v", key, newKey)
 	deltas = make(map[string]string)
 
@@ -2143,48 +2200,50 @@ func MoveIDDeltas(g *d2graph.Graph, key, newKey string) (deltas map[string]strin
 			}
 		}
 
-		for _, ch := range obj.ChildrenArray {
-			chMK, err := d2parser.ParseMapKey(ch.AbsID())
-			if err != nil {
-				return nil, err
-			}
-			ida := d2graph.Key(chMK.Key)
-			if ida[len(ida)-1] == ida[len(ida)-2] {
-				continue
-			}
-
-			hoistedAbsID := ch.ID
-			if obj.Parent != g.Root {
-				hoistedAbsID = obj.Parent.AbsID() + "." + ch.ID
-			}
-			hoistedMK, err := d2parser.ParseMapKey(hoistedAbsID)
-			if err != nil {
-				return nil, err
-			}
-
-			conflictsWithNewID := false
-			for _, id := range newIDs {
-				if id == d2format.Format(hoistedMK.Key) {
-					conflictsWithNewID = true
-					break
-				}
-			}
-
-			if _, ok := g.Root.HasChild(d2graph.Key(hoistedMK.Key)); ok || conflictsWithNewID {
-				newKey, _, err := generateUniqueKey(g, hoistedAbsID, ignored, newIDs)
+		if !includeDescendants {
+			for _, ch := range obj.ChildrenArray {
+				chMK, err := d2parser.ParseMapKey(ch.AbsID())
 				if err != nil {
 					return nil, err
 				}
-				newMK, err := d2parser.ParseMapKey(newKey)
+				ida := d2graph.Key(chMK.Key)
+				if ida[len(ida)-1] == ida[len(ida)-2] {
+					continue
+				}
+
+				hoistedAbsID := ch.ID
+				if obj.Parent != g.Root {
+					hoistedAbsID = obj.Parent.AbsID() + "." + ch.ID
+				}
+				hoistedMK, err := d2parser.ParseMapKey(hoistedAbsID)
 				if err != nil {
 					return nil, err
 				}
-				newAK := d2graph.Key(newMK.Key)
-				conflictOldIDs[ch] = ch.ID
-				conflictNewIDs[ch] = newAK[len(newAK)-1]
-				newIDs = append(newIDs, d2format.Format(newMK.Key))
-			} else {
-				newIDs = append(newIDs, d2format.Format(hoistedMK.Key))
+
+				conflictsWithNewID := false
+				for _, id := range newIDs {
+					if id == d2format.Format(hoistedMK.Key) {
+						conflictsWithNewID = true
+						break
+					}
+				}
+
+				if _, ok := g.Root.HasChild(d2graph.Key(hoistedMK.Key)); ok || conflictsWithNewID {
+					newKey, _, err := generateUniqueKey(g, hoistedAbsID, ignored, newIDs)
+					if err != nil {
+						return nil, err
+					}
+					newMK, err := d2parser.ParseMapKey(newKey)
+					if err != nil {
+						return nil, err
+					}
+					newAK := d2graph.Key(newMK.Key)
+					conflictOldIDs[ch] = ch.ID
+					conflictNewIDs[ch] = newAK[len(newAK)-1]
+					newIDs = append(newIDs, d2format.Format(newMK.Key))
+				} else {
+					newIDs = append(newIDs, d2format.Format(hoistedMK.Key))
+				}
 			}
 		}
 	}
@@ -2226,7 +2285,7 @@ func MoveIDDeltas(g *d2graph.Graph, key, newKey string) (deltas map[string]strin
 	id := ak2[len(ak2)-1]
 
 	tmpRenames := func() func() {
-		if isCrossScope {
+		if isCrossScope && !includeDescendants {
 			for _, ch := range obj.ChildrenArray {
 				ch.Parent = obj.Parent
 			}
@@ -2246,7 +2305,7 @@ func MoveIDDeltas(g *d2graph.Graph, key, newKey string) (deltas map[string]strin
 			obj.ID = beforeObjID
 			obj.Parent = prevParent
 
-			if isCrossScope {
+			if isCrossScope && !includeDescendants {
 				for _, ch := range obj.ChildrenArray {
 					ch.Parent = obj
 				}
