@@ -2234,9 +2234,10 @@ func TestMove(t *testing.T) {
 		skip bool
 		name string
 
-		text   string
-		key    string
-		newKey string
+		text               string
+		key                string
+		newKey             string
+		includeDescendants bool
 
 		expErr     string
 		exp        string
@@ -2958,7 +2959,7 @@ y
 			newKey: `x.y`,
 
 			exp: `x: {
-  near: x.y
+  near: y
   y
 }
 `,
@@ -2985,6 +2986,22 @@ y
 			exp: `x: {
   near: a.y
 }
+a: {
+  y
+}
+`,
+		},
+		{
+			name: "flat_near",
+
+			text: `x.near: y
+a
+y
+`,
+			key:    `y`,
+			newKey: `a.y`,
+
+			exp: `x.near: a.y
 a: {
   y
 }
@@ -3853,6 +3870,186 @@ Square 3: {
 }
 `,
 		},
+		{
+			name: "include_descendants_flat",
+			text: `x.y
+z
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x.y
+}
+`,
+		},
+		{
+			name: "include_descendants_map",
+			text: `x: {
+  y
+}
+z
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x: {
+    y
+  }
+}
+`,
+		},
+		{
+			name: "include_descendants_grandchild",
+			text: `x: {
+  y.a
+  y: {
+    b
+  }
+}
+z
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x: {
+    y.a
+    y: {
+      b
+    }
+  }
+}
+`,
+		},
+		{
+			name: "include_descendants_sql",
+			text: `x: {
+  shape: sql_table
+	a: b
+}
+z
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x: {
+    shape: sql_table
+    a: b
+  }
+}
+`,
+		},
+		{
+			name: "include_descendants_edge_child",
+			text: `x: {
+  a -> b
+}
+z
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x: {
+    a -> b
+  }
+}
+`,
+		},
+		{
+			name: "include_descendants_edge_ref",
+			text: `x
+z
+x.a -> x.b
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x
+}
+z.x.a -> z.x.b
+`,
+		},
+		{
+			name: "include_descendants_edge_ref_underscore",
+			text: `x
+z
+x.a -> x.b
+b: {
+  _.x.a -> _.x.b
+}
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x
+}
+z.x.a -> z.x.b
+b: {
+  _.z.x.a -> _.z.x.b
+}
+`,
+		},
+		{
+			name: "include_descendants_near",
+			text: `x.y
+z
+a.near: x.y
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x.y
+}
+a.near: z.x.y
+`,
+		},
+		{
+			name: "include_descendants_conflict",
+			text: `x.y
+z.x
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x
+  x 2.y
+}
+`,
+		},
+		{
+			name: "include_descendants_non_conflict",
+			text: `x.y
+z.x
+y
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x
+  x 2.y
+}
+y
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -3868,7 +4065,7 @@ Square 3: {
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
 					objectsBefore := len(g.Objects)
 					var err error
-					g, err = d2oracle.Move(g, tc.key, tc.newKey)
+					g, err = d2oracle.Move(g, tc.key, tc.newKey, tc.includeDescendants)
 					if err == nil {
 						objectsAfter := len(g.Objects)
 						if objectsBefore != objectsAfter {
@@ -5832,9 +6029,10 @@ func TestMoveIDDeltas(t *testing.T) {
 	testCases := []struct {
 		name string
 
-		text   string
-		key    string
-		newKey string
+		text               string
+		key                string
+		newKey             string
+		includeDescendants bool
 
 		exp    string
 		expErr string
@@ -6041,6 +6239,86 @@ y
   "x 3.x 4": "x 5"
 }`,
 		},
+		{
+			name: "include_descendants_flat",
+
+			text: `x.y
+z
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `{
+  "x": "z.x",
+  "x.y": "z.x.y"
+}`,
+		},
+		{
+			name: "include_descendants_map",
+
+			text: `x: {
+  y
+}
+z
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `{
+  "x": "z.x",
+  "x.y": "z.x.y"
+}`,
+		},
+		{
+			name: "include_descendants_conflict",
+
+			text: `x.y
+z.x
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `{
+  "x": "z.x 2",
+  "x.y": "z.x 2.y"
+}`,
+		},
+		{
+			name: "include_descendants_non_conflict",
+
+			text: `x.y
+z.x
+y
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `{
+  "x": "z.x 2",
+  "x.y": "z.x 2.y"
+}`,
+		},
+		{
+			name: "include_descendants_sql_table",
+
+			text: `x: {
+  shape: sql_table
+  a: b
+}
+z
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `{
+  "x": "z.x"
+}`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -6054,7 +6332,7 @@ y
 				t.Fatal(err)
 			}
 
-			deltas, err := d2oracle.MoveIDDeltas(g, tc.key, tc.newKey)
+			deltas, err := d2oracle.MoveIDDeltas(g, tc.key, tc.newKey, tc.includeDescendants)
 			if tc.expErr != "" {
 				if err == nil {
 					t.Fatalf("expected error with: %q", tc.expErr)

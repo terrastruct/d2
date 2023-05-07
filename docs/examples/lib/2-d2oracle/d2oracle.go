@@ -28,7 +28,7 @@ func main() {
 	// Create a shape with the ID, "cat"
 	graph, _, _ = d2oracle.Create(graph, "cat")
 	// Move the shape "meow" inside the container "cat"
-	graph, _ = d2oracle.Move(graph, "meow", "cat.meow")
+	graph, _ = d2oracle.Move(graph, "meow", "cat.meow", false)
 	// Prints formatted D2 script
 	fmt.Print(d2format.Format(graph.AST))
 }
