@@ -429,7 +429,7 @@ func (w *watcher) handleRoot(hw http.ResponseWriter, r *http.Request) {
 	<title>%s</title>
 	<script src="./static/watch.js"></script>
 	<link rel="stylesheet" href="./static/watch.css">
-	<link id="favicon-link" rel="icon" href="./static/favicon.ico">
+	<link id="favicon" rel="icon" href="./static/favicon.ico">
 </head>
 <body data-d2-dev-mode=%t>
 	<div id="d2-err" style="display: none"></div>

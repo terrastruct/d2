@@ -76,6 +76,6 @@ function init(reconnectDelay) {
 }
 
 const changeFavicon = function (iconURL) {
-  const faviconLink = document.getElementById("favicon-link");
+  const faviconLink = document.getElementById("favicon");
   faviconLink.href = iconURL;
 };
