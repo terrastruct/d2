@@ -100,8 +100,7 @@ func newGridDiagram(root *d2graph.Object) *gridDiagram {
 
 func (gd *gridDiagram) shift(dx, dy float64) {
 	for _, obj := range gd.objects {
-		obj.TopLeft.X += dx
-		obj.TopLeft.Y += dy
+		obj.MoveWithDescendants(dx, dy)
 	}
 }
 

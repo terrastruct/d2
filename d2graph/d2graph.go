@@ -1815,3 +1815,11 @@ func (g *Graph) ApplyTheme(themeID int64) error {
 	g.Theme = &theme
 	return nil
 }
+
+func (obj *Object) MoveWithDescendants(dx, dy float64) {
+	obj.TopLeft.X += dx
+	obj.TopLeft.Y += dy
+	for _, child := range obj.ChildrenArray {
+		child.MoveWithDescendants(dx, dy)
+	}
+}

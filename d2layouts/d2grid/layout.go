@@ -53,6 +53,65 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph) (gridDiagrams ma
 	toRemove := make(map[*d2graph.Object]struct{})
 	gridDiagrams = make(map[string]*gridDiagram)
 
+	var processGrid func(obj *d2graph.Object) error
+	processGrid = func(obj *d2graph.Object) error {
+		// layout any nested grids first
+		for _, child := range obj.ChildrenArray {
+			if child.IsGridDiagram() {
+				if err := processGrid(child); err != nil {
+					return err
+				}
+			}
+		}
+
+		gd, err := layoutGrid(g, obj)
+		if err != nil {
+			return err
+		}
+		obj.Children = make(map[string]*d2graph.Object)
+		obj.ChildrenArray = nil
+
+		if obj.Box != nil {
+			// size shape according to grid
+			obj.SizeToContent(float64(gd.width), float64(gd.height), 2*CONTAINER_PADDING, 2*CONTAINER_PADDING)
+
+			// compute where the grid should be placed inside shape
+			dslShape := strings.ToLower(obj.Shape.Value)
+			shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
+			s := shape.NewShape(shapeType, geo.NewBox(geo.NewPoint(0, 0), obj.Width, obj.Height))
+			innerBox := s.GetInnerBox()
+			if innerBox.TopLeft.X != 0 || innerBox.TopLeft.Y != 0 {
+				gd.shift(innerBox.TopLeft.X, innerBox.TopLeft.Y)
+			}
+
+			var dx, dy float64
+			labelWidth := float64(obj.LabelDimensions.Width) + 2*label.PADDING
+			if labelWidth > obj.Width {
+				dx = (labelWidth - obj.Width) / 2
+				obj.Width = labelWidth
+			}
+			labelHeight := float64(obj.LabelDimensions.Height) + 2*label.PADDING
+			if labelHeight > CONTAINER_PADDING {
+				// if the label doesn't fit within the padding, we need to add more
+				grow := labelHeight - CONTAINER_PADDING
+				dy = grow / 2
+				obj.Height += grow
+			}
+			// we need to center children if we have to expand to fit the container label
+			if dx != 0 || dy != 0 {
+				gd.shift(dx, dy)
+			}
+		}
+
+		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+		gridDiagrams[obj.AbsID()] = gd
+
+		for _, o := range gd.objects {
+			toRemove[o] = struct{}{}
+		}
+		return nil
+	}
+
 	if len(g.Objects) > 0 {
 		queue := make([]*d2graph.Object, 1, len(g.Objects))
 		queue[0] = g.Root
@@ -67,50 +126,8 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph) (gridDiagrams ma
 				continue
 			}
 
-			gd, err := layoutGrid(g, obj)
-			if err != nil {
+			if err := processGrid(obj); err != nil {
 				return nil, nil, err
-			}
-			obj.Children = make(map[string]*d2graph.Object)
-			obj.ChildrenArray = nil
-
-			if obj.Box != nil {
-				// size shape according to grid
-				obj.SizeToContent(float64(gd.width), float64(gd.height), 2*CONTAINER_PADDING, 2*CONTAINER_PADDING)
-
-				// compute where the grid should be placed inside shape
-				dslShape := strings.ToLower(obj.Shape.Value)
-				shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
-				s := shape.NewShape(shapeType, geo.NewBox(geo.NewPoint(0, 0), obj.Width, obj.Height))
-				innerBox := s.GetInnerBox()
-				if innerBox.TopLeft.X != 0 || innerBox.TopLeft.Y != 0 {
-					gd.shift(innerBox.TopLeft.X, innerBox.TopLeft.Y)
-				}
-
-				var dx, dy float64
-				labelWidth := float64(obj.LabelDimensions.Width) + 2*label.PADDING
-				if labelWidth > obj.Width {
-					dx = (labelWidth - obj.Width) / 2
-					obj.Width = labelWidth
-				}
-				labelHeight := float64(obj.LabelDimensions.Height) + 2*label.PADDING
-				if labelHeight > CONTAINER_PADDING {
-					// if the label doesn't fit within the padding, we need to add more
-					grow := labelHeight - CONTAINER_PADDING
-					dy = grow / 2
-					obj.Height += grow
-				}
-				// we need to center children if we have to expand to fit the container label
-				if dx != 0 || dy != 0 {
-					gd.shift(dx, dy)
-				}
-			}
-
-			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-			gridDiagrams[obj.AbsID()] = gd
-
-			for _, o := range gd.objects {
-				toRemove[o] = struct{}{}
 			}
 		}
 	}
@@ -821,7 +838,7 @@ func cleanup(graph *d2graph.Graph, gridDiagrams map[string]*gridDiagram, objects
 		gd, exists := gridDiagrams[graph.Root.AbsID()]
 		if exists {
 			gd.cleanup(graph.Root, graph)
-			return
+			// return
 		}
 	}
 
