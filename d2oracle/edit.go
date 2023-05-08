@@ -1546,7 +1546,7 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 		// 4. Slice.
 		// -- The key is moving from its current scope out to a less nested scope
 		if isCrossScope {
-			if len(ida) == 1 || includeDescendants {
+			if (!includeDescendants && len(ida) == 1) || (includeDescendants && ref.KeyPathIndex == 0) {
 				// 1. Transplant
 				absKey, err := d2parser.ParseKey(ref.ScopeObj.AbsID())
 				if err != nil {
@@ -1583,19 +1583,28 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 				}
 
 				appendUniqueMapKey(toScope, detachedMK)
-			} else if len(ida) > 1 && (!isExplicit || go2.Contains(mostNestedRefs, ref)) {
+			} else if ((!includeDescendants && len(ida) > 1) || (includeDescendants && ref.KeyPathIndex > 0)) && (!isExplicit || go2.Contains(mostNestedRefs, ref)) {
 				// 2. Split
 				detachedMK := &d2ast.Key{Key: cloneKey(ref.MapKey.Key)}
-				detachedMK.Key.Path = []*d2ast.StringBox{ref.Key.Path[ref.KeyPathIndex]}
+				if includeDescendants {
+					detachedMK.Key.Path = append([]*d2ast.StringBox{}, ref.Key.Path[ref.KeyPathIndex:]...)
+				} else {
+					detachedMK.Key.Path = []*d2ast.StringBox{ref.Key.Path[ref.KeyPathIndex]}
+				}
 				if ref.KeyPathIndex == len(ref.Key.Path)-1 {
 					withReserved, withoutReserved := filterReserved(ref.MapKey.Value)
 					detachedMK.Value = withReserved
 					ref.MapKey.Value = withoutReserved
 				}
-				ref.Key.Path = append(ref.Key.Path[:ref.KeyPathIndex], ref.Key.Path[ref.KeyPathIndex+1:]...)
+				if includeDescendants {
+					ref.Key.Path = ref.Key.Path[:ref.KeyPathIndex]
+				} else {
+					ref.Key.Path = append(ref.Key.Path[:ref.KeyPathIndex], ref.Key.Path[ref.KeyPathIndex+1:]...)
+				}
 				appendUniqueMapKey(toScope, detachedMK)
 			} else if len(getCommonPath(ak, ak2)) > 0 {
 				// 3. Extend
+				// This case does not make sense for includeDescendants
 				newKeyPath := ref.Key.Path[:ref.KeyPathIndex]
 				newKeyPath = append(newKeyPath, mk2.Key.Path[len(getCommonPath(ak, ak2)):]...)
 				ref.Key.Path = append(newKeyPath, ref.Key.Path[ref.KeyPathIndex+1:]...)
@@ -1640,34 +1649,67 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 			continue
 		}
 
-		if includeDescendants {
-			ref.Key.Path = append(ref.Key.Path[:ref.KeyPathIndex], append(mk2.Key.Path, ref.Key.Path[ref.KeyPathIndex+1:]...)...)
-		} else if ref.KeyPathIndex != len(ref.Key.Path)-1 {
+		if ref.KeyPathIndex != len(ref.Key.Path)-1 {
 			// When moving a node out of an edge, e.g. the `b` out of `a.b.c -> ...`,
 			// The edge needs to continue targeting the same thing (c)
 			// Split
 			detachedMK := &d2ast.Key{
 				Key: cloneKey(ref.Key),
 			}
-			detachedMK.Key.Path = []*d2ast.StringBox{ref.Key.Path[ref.KeyPathIndex]}
-			appendUniqueMapKey(toScope, detachedMK)
-
-			ref.Key.Path = append(ref.Key.Path[:ref.KeyPathIndex], ref.Key.Path[ref.KeyPathIndex+1:]...)
-		} else {
-			// When moving a node connected to an edge, we have to ensure parents continue to exist
-			// e.g. the `c` out of `a.b.c -> ...`
-			// `a.b` needs to exist
-			if len(go2.Filter(ref.Key.Path, func(x *d2ast.StringBox) bool { return x.Unbox().ScalarString() != "_" })) > 1 {
-				detachedK := cloneKey(ref.Key)
-				detachedK.Path = detachedK.Path[:len(detachedK.Path)-1]
-				ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, detachedK, false)
+			oldPath, err := pathFromScope(g, mk, ref.ScopeObj)
+			if err != nil {
+				return nil, err
 			}
-
 			newPath, err := pathFromScope(g, mk2, ref.ScopeObj)
 			if err != nil {
 				return nil, err
 			}
-			ref.Key.Path = newPath
+			if includeDescendants {
+				// When including descendants, the only thing that gets dropped, if any, is the uncommon leading path of new key and key
+				// E.g. when moving `a.b` to `x.b` with edge ref key of `a.b.c`, then changing it to `x.b.c` will drop `a`
+				diff := len(oldPath) - len(newPath)
+				// Only need to check uncommon path if the lengths are the same
+				if diff == 0 {
+					diff = len(getUncommonPath(d2graph.Key(&d2ast.KeyPath{Path: oldPath}), d2graph.Key(&d2ast.KeyPath{Path: newPath})))
+				}
+				// If the old key is longer than the new key, we already know all the diff would be dropped
+				if diff > 0 {
+					detachedMK.Key.Path = append([]*d2ast.StringBox{}, ref.Key.Path[ref.KeyPathIndex-diff:ref.KeyPathIndex]...)
+					appendUniqueMapKey(ref.Scope, detachedMK)
+				}
+			} else {
+				detachedMK.Key.Path = []*d2ast.StringBox{ref.Key.Path[ref.KeyPathIndex]}
+				appendUniqueMapKey(toScope, detachedMK)
+			}
+
+			if includeDescendants {
+				ref.Key.Path = append(ref.Key.Path[:ref.KeyPathIndex-len(oldPath)+1], append(newPath, ref.Key.Path[ref.KeyPathIndex+1:]...)...)
+			} else {
+				ref.Key.Path = append(ref.Key.Path[:ref.KeyPathIndex], ref.Key.Path[ref.KeyPathIndex+1:]...)
+			}
+		} else {
+			// When moving a node connected to an edge, we have to ensure parents continue to exist
+			// e.g. the `c` out of `a.b.c -> ...`
+			// `a.b` needs to exist
+			newPath, err := pathFromScope(g, mk2, ref.ScopeObj)
+			if err != nil {
+				return nil, err
+			}
+			if len(go2.Filter(ref.Key.Path, func(x *d2ast.StringBox) bool { return x.Unbox().ScalarString() != "_" })) > 1 {
+				detachedK := cloneKey(ref.Key)
+				if includeDescendants {
+					detachedK.Path = detachedK.Path[:len(detachedK.Path)-len(newPath)]
+				} else {
+					detachedK.Path = detachedK.Path[:len(detachedK.Path)-1]
+				}
+				ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, detachedK, false)
+			}
+
+			if includeDescendants {
+				ref.Key.Path = append(ref.Key.Path[:ref.KeyPathIndex-1], append(newPath, ref.Key.Path[ref.KeyPathIndex+len(newPath):]...)...)
+			} else {
+				ref.Key.Path = newPath
+			}
 		}
 	}
 
@@ -2127,6 +2169,16 @@ func getCommonPath(a, b []string) []string {
 	var out []string
 	for i := 0; i < len(a) && i < len(b); i++ {
 		if a[i] == b[i] {
+			out = a[:i+1]
+		}
+	}
+	return out
+}
+
+func getUncommonPath(a, b []string) []string {
+	var out []string
+	for i := 0; i < len(a) && i < len(b); i++ {
+		if a[i] != b[i] {
 			out = a[:i+1]
 		}
 	}

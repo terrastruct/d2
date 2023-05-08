@@ -3871,7 +3871,7 @@ Square 3: {
 `,
 		},
 		{
-			name: "include_descendants_flat",
+			name: "include_descendants_flat_1",
 			text: `x.y
 z
 `,
@@ -3885,7 +3885,50 @@ z
 `,
 		},
 		{
-			name: "include_descendants_map",
+			name: "include_descendants_flat_2",
+			text: `a.x.y
+a.z
+`,
+			key:                `a.x`,
+			newKey:             `a.z.x`,
+			includeDescendants: true,
+
+			exp: `a
+a.z: {
+  x.y
+}
+`,
+		},
+		{
+			name: "include_descendants_flat_3",
+			text: `a.x.y
+a.z
+`,
+			key:                `a.x`,
+			newKey:             `x`,
+			includeDescendants: true,
+
+			exp: `a
+a.z
+x.y
+`,
+		},
+		{
+			name: "include_descendants_flat_4",
+			text: `a.x.y
+a.z
+`,
+			key:                `a.x.y`,
+			newKey:             `y`,
+			includeDescendants: true,
+
+			exp: `a.x
+a.z
+y
+`,
+		},
+		{
+			name: "include_descendants_map_1",
 			text: `x: {
   y
 }
@@ -3900,6 +3943,30 @@ z
     y
   }
 }
+`,
+		},
+		{
+			name: "include_descendants_map_2",
+			text: `x: {
+	y: {
+    c
+  }
+  y.b
+}
+x.y.b
+z
+`,
+			key:                `x.y`,
+			newKey:             `a`,
+			includeDescendants: true,
+
+			exp: `x
+x
+z
+a: {
+  c
+}
+a.b
 `,
 		},
 		{
@@ -3965,7 +4032,7 @@ z
 `,
 		},
 		{
-			name: "include_descendants_edge_ref",
+			name: "include_descendants_edge_ref_1",
 			text: `x
 z
 x.a -> x.b
@@ -3978,6 +4045,92 @@ x.a -> x.b
   x
 }
 z.x.a -> z.x.b
+`,
+		},
+		{
+			name: "include_descendants_edge_ref_2",
+			text: `x -> y.z
+`,
+			key:                `y.z`,
+			newKey:             `z`,
+			includeDescendants: true,
+
+			exp: `x -> z
+y
+`,
+		},
+		{
+			name: "include_descendants_edge_ref_3",
+			text: `x -> y.z.a
+`,
+			key:                `y.z`,
+			newKey:             `z`,
+			includeDescendants: true,
+
+			exp: `x -> z.a
+y
+`,
+		},
+		{
+			name: "include_descendants_edge_ref_4",
+			text: `x -> y.z.a
+b
+`,
+			key:                `y.z`,
+			newKey:             `b.z`,
+			includeDescendants: true,
+
+			exp: `x -> b.z.a
+b
+y
+`,
+		},
+		{
+			name: "include_descendants_edge_ref_5",
+			text: `foo: {
+  x -> y.z.a
+  b
+}
+`,
+			key:                `foo.y.z`,
+			newKey:             `foo.b.z`,
+			includeDescendants: true,
+
+			exp: `foo: {
+  x -> b.z.a
+  b
+  y
+}
+`,
+		},
+		{
+			name: "include_descendants_nested_1",
+			text: `y.z
+b
+`,
+			key:                `y.z`,
+			newKey:             `b.z`,
+			includeDescendants: true,
+
+			exp: `y
+b: {
+  z
+}
+`,
+		},
+		{
+			name: "include_descendants_nested_2",
+			text: `y.z
+y.b
+`,
+			key:                `y.z`,
+			newKey:             `y.b.z`,
+			includeDescendants: true,
+
+			exp: `y
+y.b: {
+  z
+}
 `,
 		},
 		{
@@ -6300,6 +6453,82 @@ y
 			exp: `{
   "x": "z.x 2",
   "x.y": "z.x 2.y"
+}`,
+		},
+		{
+			name: "include_descendants_edge_ref",
+			text: `x -> y.z
+`,
+			key:                `y.z`,
+			newKey:             `z`,
+			includeDescendants: true,
+
+			exp: `{
+  "(x -> y.z)[0]": "(x -> z)[0]",
+  "y.z": "z"
+}`,
+		},
+		{
+			name: "include_descendants_edge_ref_2",
+			text: `x -> y.z
+`,
+			key:                `y.z`,
+			newKey:             `z`,
+			includeDescendants: true,
+
+			exp: `{
+  "(x -> y.z)[0]": "(x -> z)[0]",
+  "y.z": "z"
+}`,
+		},
+		{
+			name: "include_descendants_edge_ref_3",
+			text: `x -> y.z.a
+`,
+			key:                `y.z`,
+			newKey:             `z`,
+			includeDescendants: true,
+
+			exp: `{
+  "(x -> y.z.a)[0]": "(x -> z.a)[0]",
+  "y.z": "z",
+  "y.z.a": "z.a"
+}`,
+		},
+		{
+			name: "include_descendants_edge_ref_4",
+			text: `x -> y.z.a
+b
+`,
+			key:                `y.z`,
+			newKey:             `b.z`,
+			includeDescendants: true,
+
+			exp: `{
+  "(x -> y.z.a)[0]": "(x -> b.z.a)[0]",
+  "y.z": "b.z",
+  "y.z.a": "b.z.a"
+}`,
+		},
+		{
+			name: "include_descendants_edge_ref_underscore",
+			text: `x
+z
+x.a -> x.b
+b: {
+  _.x.a -> _.x.b
+}
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `{
+  "x": "z.x",
+  "x.(a -> b)[0]": "z.x.(a -> b)[0]",
+  "x.(a -> b)[1]": "z.x.(a -> b)[1]",
+  "x.a": "z.x.a",
+  "x.b": "z.x.b"
 }`,
 		},
 		{
