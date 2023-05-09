@@ -1551,6 +1551,8 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 		if resolvedObj != obj {
 			ida = resolvedIDA
 		}
+		// e.g. "a.b.shape: circle"
+		_, endsWithReserved := d2graph.ReservedKeywords[ida[len(ida)-1]]
 		ida = go2.Filter(ida, func(x string) bool {
 			_, ok := d2graph.ReservedKeywords[x]
 			return !ok
@@ -1603,7 +1605,7 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 				}
 
 				appendUniqueMapKey(toScope, detachedMK)
-			} else if ((!includeDescendants && len(ida) > 1) || (includeDescendants && ref.KeyPathIndex > 0)) && (!isExplicit || go2.Contains(mostNestedRefs, ref)) {
+			} else if ((!includeDescendants && len(ida) > 1) || (includeDescendants && ref.KeyPathIndex > 0)) && (endsWithReserved || !isExplicit || go2.Contains(mostNestedRefs, ref)) {
 				// 2. Split
 				detachedMK := &d2ast.Key{Key: cloneKey(ref.MapKey.Key)}
 				if includeDescendants {
@@ -1611,10 +1613,12 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 				} else {
 					detachedMK.Key.Path = []*d2ast.StringBox{ref.Key.Path[ref.KeyPathIndex]}
 				}
-				if ref.KeyPathIndex == len(ref.Key.Path)-1 {
+				if includeDescendants || ref.KeyPathIndex == len(filterReservedPath(ref.Key.Path))-1 {
 					withReserved, withoutReserved := filterReserved(ref.MapKey.Value)
 					detachedMK.Value = withReserved
 					ref.MapKey.Value = withoutReserved
+					detachedMK.Key.Path = append([]*d2ast.StringBox{}, ref.Key.Path[ref.KeyPathIndex:]...)
+					ref.Key.Path = ref.Key.Path[:ref.KeyPathIndex+1]
 				}
 				if includeDescendants {
 					ref.Key.Path = ref.Key.Path[:ref.KeyPathIndex]
@@ -2745,4 +2749,14 @@ func getMostNestedRefs(obj *d2graph.Object) []d2graph.Reference {
 	}
 
 	return out
+}
+
+func filterReservedPath(path []*d2ast.StringBox) (filtered []*d2ast.StringBox) {
+	for _, box := range path {
+		if _, ok := d2graph.ReservedKeywords[strings.ToLower(box.Unbox().ScalarString())]; ok {
+			return
+		}
+		filtered = append(filtered, box)
+	}
+	return
 }

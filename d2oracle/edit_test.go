@@ -2582,8 +2582,9 @@ a.b.icon: https://icons.terrastruct.com/essentials/142-target.svg
 			newKey: `b`,
 
 			exp: `a
-b.icon: https://icons.terrastruct.com/essentials/142-target.svg
+a
 b
+b.icon: https://icons.terrastruct.com/essentials/142-target.svg
 `,
 		},
 		{
@@ -4226,6 +4227,61 @@ y
   x 2.y
 }
 y
+`,
+		},
+		{
+			name: "nested_reserved_2",
+			text: `A.B.C.shape: circle
+`,
+			key:    `A.B.C`,
+			newKey: `C`,
+
+			exp: `A.B
+C.shape: circle
+`,
+		},
+		{
+			name: "nested_reserved_3",
+			text: `A.B.C.shape: circle
+A.B: {
+  C
+  D
+}
+`,
+			key:    `A.B.C`,
+			newKey: `A.B.D.C`,
+
+			exp: `A.B
+A.B: {
+  D: {
+    C.shape: circle
+    C
+  }
+}
+`,
+		},
+		{
+			name: "include_descendants_nested_reserved_2",
+			text: `A.B.C.shape: circle
+`,
+			key:                `A.B.C`,
+			newKey:             `C`,
+			includeDescendants: true,
+
+			exp: `A.B
+C.shape: circle
+`,
+		},
+		{
+			name: "include_descendants_nested_reserved_3",
+			text: `A.B.C.shape: circle
+`,
+			key:                `A.B`,
+			newKey:             `C`,
+			includeDescendants: true,
+
+			exp: `A
+C.C.shape: circle
 `,
 		},
 	}
