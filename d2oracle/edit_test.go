@@ -6894,6 +6894,23 @@ Text 2
   "Text.Text 2": "Text"
 }`,
 		},
+		{
+			name: "conflicts_generated_3",
+			text: `x: {
+  Square 2
+  Square 3
+}
+
+Square 2
+Square
+`,
+			key: `x`,
+
+			exp: `{
+  "x.Square 2": "Square 4",
+  "x.Square 3": "Square 3"
+}`,
+		},
 	}
 
 	for _, tc := range testCases {
