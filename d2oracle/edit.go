@@ -1617,7 +1617,6 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 					withReserved, withoutReserved := filterReserved(ref.MapKey.Value)
 					detachedMK.Value = withReserved
 					ref.MapKey.Value = withoutReserved
-					println("\033[1;31m--- DEBUG:", "=======================", "\033[m")
 					detachedMK.Key.Path = append([]*d2ast.StringBox{}, ref.Key.Path[ref.KeyPathIndex:]...)
 					ref.Key.Path = ref.Key.Path[:ref.KeyPathIndex+1]
 				}
