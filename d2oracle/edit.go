@@ -1706,7 +1706,7 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 			}
 
 			if includeDescendants {
-				ref.Key.Path = append(ref.Key.Path[:ref.KeyPathIndex-1], append(newPath, ref.Key.Path[ref.KeyPathIndex+len(newPath):]...)...)
+				ref.Key.Path = append(ref.Key.Path[:go2.Max(0, ref.KeyPathIndex-1)], append(newPath, ref.Key.Path[go2.Min(len(ref.Key.Path), ref.KeyPathIndex+len(newPath)):]...)...)
 			} else {
 				ref.Key.Path = newPath
 			}
