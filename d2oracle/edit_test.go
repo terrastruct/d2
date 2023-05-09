@@ -4160,6 +4160,30 @@ y.b: {
 `,
 		},
 		{
+			name: "include_descendants_underscore",
+			text: `github.code -> local.dev
+
+github: {
+  _.local.dev -> _.aws.workflows
+  _.aws: {
+    workflows
+  }
+}
+`,
+			key:                `aws.workflows`,
+			newKey:             `github.workflows`,
+			includeDescendants: true,
+
+			exp: `github.code -> local.dev
+
+github: {
+  _.local.dev -> workflows
+  _.aws
+  workflows
+}
+`,
+		},
+		{
 			name: "include_descendants_edge_ref_underscore",
 			text: `x
 z
