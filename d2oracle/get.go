@@ -7,6 +7,23 @@ import (
 	"oss.terrastruct.com/d2/d2parser"
 )
 
+func GetChildrenIDs(g *d2graph.Graph, absID string) (ids []string, _ error) {
+	mk, err := d2parser.ParseMapKey(absID)
+	if err != nil {
+		return nil, err
+	}
+	obj, ok := g.Root.HasChild(d2graph.Key(mk.Key))
+	if !ok {
+		return nil, fmt.Errorf("%v not found", absID)
+	}
+
+	for _, ch := range obj.ChildrenArray {
+		ids = append(ids, ch.AbsID())
+	}
+
+	return ids, nil
+}
+
 func GetParentID(g *d2graph.Graph, absID string) (string, error) {
 	mk, err := d2parser.ParseMapKey(absID)
 	if err != nil {
