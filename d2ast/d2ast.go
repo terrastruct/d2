@@ -611,9 +611,13 @@ func (mk1 *Key) Equals(mk2 *Key) bool {
 		return false
 	}
 	if (mk1.Value.Map == nil) != (mk2.Value.Map == nil) {
-		return false
-	}
-	if (mk1.Value.Unbox() == nil) != (mk2.Value.Unbox() == nil) {
+		if mk1.Value.Map != nil && len(mk1.Value.Map.Nodes) > 0 {
+			return false
+		}
+		if mk2.Value.Map != nil && len(mk2.Value.Map.Nodes) > 0 {
+			return false
+		}
+	} else if (mk1.Value.Unbox() == nil) != (mk2.Value.Unbox() == nil) {
 		return false
 	}
 
@@ -638,7 +642,7 @@ func (mk1 *Key) Equals(mk2 *Key) bool {
 		}
 	}
 
-	if mk1.Value.Map != nil {
+	if mk1.Value.Map != nil && len(mk1.Value.Map.Nodes) > 0 {
 		if len(mk1.Value.Map.Nodes) != len(mk2.Value.Map.Nodes) {
 			return false
 		}
