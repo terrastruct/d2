@@ -4104,6 +4104,19 @@ y
 `,
 		},
 		{
+			name: "include_descendants_edge_ref_6",
+			text: `x -> y
+z
+`,
+			key:                `y`,
+			newKey:             `z.y`,
+			includeDescendants: true,
+
+			exp: `x -> z.y
+z
+`,
+		},
+		{
 			name: "include_descendants_nested_1",
 			text: `y.z
 b
