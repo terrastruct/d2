@@ -1697,16 +1697,12 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 			}
 			if len(go2.Filter(ref.Key.Path, func(x *d2ast.StringBox) bool { return x.Unbox().ScalarString() != "_" })) > 1 {
 				detachedK := cloneKey(ref.Key)
-				if includeDescendants {
-					detachedK.Path = detachedK.Path[:len(detachedK.Path)-len(newPath)]
-				} else {
-					detachedK.Path = detachedK.Path[:len(detachedK.Path)-1]
-				}
+				detachedK.Path = detachedK.Path[:len(detachedK.Path)-1]
 				ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, detachedK, false)
 			}
 
 			if includeDescendants {
-				ref.Key.Path = append(ref.Key.Path[:go2.Max(0, ref.KeyPathIndex-1)], append(newPath, ref.Key.Path[go2.Min(len(ref.Key.Path), ref.KeyPathIndex+len(newPath)):]...)...)
+				ref.Key.Path = append(ref.Key.Path[:go2.Max(0, ref.KeyPathIndex-len(newPath))], append(newPath, ref.Key.Path[go2.Min(len(ref.Key.Path), ref.KeyPathIndex+len(newPath)):]...)...)
 			} else {
 				ref.Key.Path = newPath
 			}
