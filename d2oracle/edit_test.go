@@ -4117,6 +4117,18 @@ z
 `,
 		},
 		{
+			name: "include_descendants_edge_ref_7",
+			text: `d.t -> d.np.s
+`,
+			key:                `d.np.s`,
+			newKey:             `d.s`,
+			includeDescendants: true,
+
+			exp: `d.t -> d.s
+d.np
+`,
+		},
+		{
 			name: "include_descendants_nested_1",
 			text: `y.z
 b
