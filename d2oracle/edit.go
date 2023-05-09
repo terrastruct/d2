@@ -915,7 +915,27 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 			hoistedAbsKey.Path = append(hoistedAbsKey.Path, ref.Key.Path[:ref.KeyPathIndex]...)
 			hoistedAbsKey.Path = append(hoistedAbsKey.Path, absKey.Path[len(absKey.Path)-1])
 
-			uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(hoistedAbsKey), "."), ignored, newIDs)
+			// Can't generate a key that'd conflict with sibling
+			var siblingHoistedIDs []string
+			for _, otherAbsKey := range absKeys {
+				if absKey == otherAbsKey {
+					continue
+				}
+				ida := d2graph.Key(otherAbsKey)
+				absKeyStr := strings.Join(ida, ".")
+				if _, ok := dedupedRenames[absKeyStr]; ok {
+					continue
+				}
+				hoistedAbsKey, err := d2parser.ParseKey(ref.ScopeObj.AbsID())
+				if err != nil {
+					hoistedAbsKey = &d2ast.KeyPath{}
+				}
+				hoistedAbsKey.Path = append(hoistedAbsKey.Path, ref.Key.Path[:ref.KeyPathIndex]...)
+				hoistedAbsKey.Path = append(hoistedAbsKey.Path, otherAbsKey.Path[len(otherAbsKey.Path)-1])
+				siblingHoistedIDs = append(siblingHoistedIDs, strings.Join(d2graph.Key(hoistedAbsKey), "."))
+			}
+
+			uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(hoistedAbsKey), "."), ignored, append(newIDs, siblingHoistedIDs...))
 			if err != nil {
 				return nil, err
 			}

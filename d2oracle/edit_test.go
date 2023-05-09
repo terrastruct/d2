@@ -5816,7 +5816,25 @@ Text
 Text 2
 `,
 		},
+		{
+			name: "conflicts_generated_3",
+			text: `x: {
+  Square 2
+  Square 3
+}
 
+Square 2
+Square
+`,
+			key: `x`,
+
+			exp: `Square 4
+Square 3
+
+Square 2
+Square
+`,
+		},
 		{
 			name: "drop_value",
 			text: `a.b.c: "c label"
