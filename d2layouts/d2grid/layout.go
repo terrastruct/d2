@@ -33,7 +33,7 @@ const (
 // 7. Put grid children back in correct location
 func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) d2graph.LayoutGraph {
 	return func(ctx context.Context, g *d2graph.Graph) error {
-		gridDiagrams, objectOrder, err := withoutGridDiagrams(ctx, g)
+		gridDiagrams, objectOrder, err := withoutGridDiagrams(ctx, g, layout)
 		if err != nil {
 			return err
 		}
@@ -49,17 +49,41 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) d
 	}
 }
 
-func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph) (gridDiagrams map[string]*gridDiagram, objectOrder map[string]int, err error) {
+func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) (gridDiagrams map[string]*gridDiagram, objectOrder map[string]int, err error) {
 	toRemove := make(map[*d2graph.Object]struct{})
 	gridDiagrams = make(map[string]*gridDiagram)
 
+	objectOrder = make(map[string]int)
+	for i, obj := range g.Objects {
+		objectOrder[obj.AbsID()] = i
+	}
+
 	var processGrid func(obj *d2graph.Object) error
 	processGrid = func(obj *d2graph.Object) error {
-		// layout any nested grids first
 		for _, child := range obj.ChildrenArray {
 			if child.IsGridDiagram() {
 				if err := processGrid(child); err != nil {
 					return err
+				}
+			} else if len(child.ChildrenArray) > 0 {
+				tempGraph := g.ExtractAsNestedGraph(child)
+				if err := layout(ctx, tempGraph); err != nil {
+					return err
+				}
+				g.InjectNestedGraph(tempGraph, obj)
+
+				sort.SliceStable(g.Objects, func(i, j int) bool {
+					return objectOrder[g.Objects[i].AbsID()] < objectOrder[g.Objects[j].AbsID()]
+				})
+				sort.SliceStable(child.ChildrenArray, func(i, j int) bool {
+					return objectOrder[child.ChildrenArray[i].AbsID()] < objectOrder[child.ChildrenArray[j].AbsID()]
+				})
+				sort.SliceStable(obj.ChildrenArray, func(i, j int) bool {
+					return objectOrder[obj.ChildrenArray[i].AbsID()] < objectOrder[obj.ChildrenArray[j].AbsID()]
+				})
+
+				for _, o := range tempGraph.Objects {
+					toRemove[o] = struct{}{}
 				}
 			}
 		}
@@ -132,10 +156,8 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph) (gridDiagrams ma
 		}
 	}
 
-	objectOrder = make(map[string]int)
 	layoutObjects := make([]*d2graph.Object, 0, len(toRemove))
-	for i, obj := range g.Objects {
-		objectOrder[obj.AbsID()] = i
+	for _, obj := range g.Objects {
 		if _, exists := toRemove[obj]; !exists {
 			layoutObjects = append(layoutObjects, obj)
 		}
@@ -223,7 +245,7 @@ func (gd *gridDiagram) layoutEvenly(g *d2graph.Graph, obj *d2graph.Object) {
 				}
 				o.Width = colWidths[j]
 				o.Height = rowHeights[i]
-				o.TopLeft = cursor.Copy()
+				o.MoveWithDescendantsTo(cursor.X, cursor.Y)
 				cursor.X += o.Width + horizontalGap
 			}
 			cursor.X = 0
@@ -238,7 +260,7 @@ func (gd *gridDiagram) layoutEvenly(g *d2graph.Graph, obj *d2graph.Object) {
 				}
 				o.Width = colWidths[j]
 				o.Height = rowHeights[i]
-				o.TopLeft = cursor.Copy()
+				o.MoveWithDescendantsTo(cursor.X, cursor.Y)
 				cursor.Y += o.Height + verticalGap
 			}
 			cursor.X += colWidths[j] + horizontalGap
@@ -374,7 +396,7 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 		for _, row := range layout {
 			rowHeight := 0.
 			for _, o := range row {
-				o.TopLeft = cursor.Copy()
+				o.MoveWithDescendantsTo(cursor.X, cursor.Y)
 				cursor.X += o.Width + horizontalGap
 				rowHeight = math.Max(rowHeight, o.Height)
 			}
@@ -462,7 +484,7 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 		for _, column := range layout {
 			colWidth := 0.
 			for _, o := range column {
-				o.TopLeft = cursor.Copy()
+				o.MoveWithDescendantsTo(cursor.X, cursor.Y)
 				cursor.Y += o.Height + verticalGap
 				colWidth = math.Max(colWidth, o.Width)
 			}
@@ -834,18 +856,11 @@ func cleanup(graph *d2graph.Graph, gridDiagrams map[string]*gridDiagram, objects
 		})
 	}()
 
-	if graph.Root.IsGridDiagram() {
-		gd, exists := gridDiagrams[graph.Root.AbsID()]
-		if exists {
-			gd.cleanup(graph.Root, graph)
-			// return
-		}
-	}
-
-	for _, obj := range graph.Objects {
+	var restore func(obj *d2graph.Object)
+	restore = func(obj *d2graph.Object) {
 		gd, exists := gridDiagrams[obj.AbsID()]
 		if !exists {
-			continue
+			return
 		}
 		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 		// shift the grid from (0, 0)
@@ -854,5 +869,20 @@ func cleanup(graph *d2graph.Graph, gridDiagrams map[string]*gridDiagram, objects
 			obj.TopLeft.Y+CONTAINER_PADDING,
 		)
 		gd.cleanup(obj, graph)
+
+		for _, child := range obj.ChildrenArray {
+			restore(child)
+		}
+	}
+
+	if graph.Root.IsGridDiagram() {
+		gd, exists := gridDiagrams[graph.Root.AbsID()]
+		if exists {
+			gd.cleanup(graph.Root, graph)
+		}
+	}
+
+	for _, obj := range graph.Objects {
+		restore(obj)
 	}
 }
