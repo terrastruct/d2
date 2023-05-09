@@ -2720,6 +2720,7 @@ scenarios: {
 		loadFromFile(t, "grid_even"),
 		loadFromFile(t, "ent2d2_basic"),
 		loadFromFile(t, "ent2d2_right"),
+		loadFromFile(t, "grid_large_checkered"),
 	}
 
 	runa(t, tcs)
