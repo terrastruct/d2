@@ -1605,7 +1605,7 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 				}
 
 				appendUniqueMapKey(toScope, detachedMK)
-			} else if ((!includeDescendants && len(ida) > 1) || (includeDescendants && ref.KeyPathIndex > 0)) && (endsWithReserved || !isExplicit || go2.Contains(mostNestedRefs, ref)) {
+			} else if len(ida) > 1 && (endsWithReserved || !isExplicit || go2.Contains(mostNestedRefs, ref)) {
 				// 2. Split
 				detachedMK := &d2ast.Key{Key: cloneKey(ref.MapKey.Key)}
 				if includeDescendants {
