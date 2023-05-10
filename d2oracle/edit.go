@@ -1613,7 +1613,10 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 				} else {
 					detachedMK.Key.Path = []*d2ast.StringBox{ref.Key.Path[ref.KeyPathIndex]}
 				}
-				if includeDescendants || ref.KeyPathIndex == len(filterReservedPath(ref.Key.Path))-1 {
+				if includeDescendants {
+					detachedMK.Value = ref.MapKey.Value
+					ref.MapKey.Value = d2ast.ValueBox{}
+				} else if ref.KeyPathIndex == len(filterReservedPath(ref.Key.Path))-1 {
 					withReserved, withoutReserved := filterReserved(ref.MapKey.Value)
 					detachedMK.Value = withReserved
 					ref.MapKey.Value = withoutReserved

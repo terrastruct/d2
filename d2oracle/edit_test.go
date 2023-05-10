@@ -4308,6 +4308,26 @@ C.shape: circle
 C.C.shape: circle
 `,
 		},
+		{
+			name: "include_descendants_move_out",
+			text: `a.b: {
+  c: {
+    d
+  }
+}
+`,
+			key:                `a.b`,
+			newKey:             `b`,
+			includeDescendants: true,
+
+			exp: `a
+b: {
+  c: {
+    d
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
