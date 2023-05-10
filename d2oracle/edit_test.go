@@ -4328,6 +4328,22 @@ b: {
 }
 `,
 		},
+		{
+			name: "include_descendants_underscore_regression",
+			text: `x: {
+  _.a
+}
+a
+`,
+			key:                `a`,
+			newKey:             `x.a`,
+			includeDescendants: true,
+
+			exp: `x: {
+  a
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
