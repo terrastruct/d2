@@ -1543,7 +1543,14 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 			continue
 		}
 
+		firstNonUnderscoreIndex := 0
 		ida := d2graph.Key(ref.Key)
+		for i, id := range ida {
+			if id != "_" {
+				firstNonUnderscoreIndex = i
+				break
+			}
+		}
 		resolvedObj, resolvedIDA, err := d2graph.ResolveUnderscoreKey(ida, ref.ScopeObj)
 		if err != nil {
 			return nil, err
@@ -1568,7 +1575,7 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 		// 4. Slice.
 		// -- The key is moving from its current scope out to a less nested scope
 		if isCrossScope {
-			if (!includeDescendants && len(ida) == 1) || (includeDescendants && ref.KeyPathIndex == 0) {
+			if (!includeDescendants && len(ida) == 1) || (includeDescendants && ref.KeyPathIndex == firstNonUnderscoreIndex) {
 				// 1. Transplant
 				absKey, err := d2parser.ParseKey(ref.ScopeObj.AbsID())
 				if err != nil {
