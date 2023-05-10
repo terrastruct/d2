@@ -52,6 +52,22 @@ func GetEdge(g *d2graph.Graph, absID string) *d2graph.Edge {
 	return nil
 }
 
+func GetObjOrder(g *d2graph.Graph) []string {
+	var order []string
+
+	queue := []*d2graph.Object{g.Root}
+	for len(queue) > 0 {
+		curr := queue[0]
+		queue = queue[1:]
+		order = append(order, curr.AbsID())
+		for _, ch := range curr.ChildrenArray {
+			queue = append(queue, ch)
+		}
+	}
+
+	return order
+}
+
 func IsLabelKeyID(key, label string) bool {
 	mk, err := d2parser.ParseMapKey(key)
 	if err != nil {
