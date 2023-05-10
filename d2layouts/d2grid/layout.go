@@ -1,6 +1,7 @@
 package d2grid
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"math"
@@ -466,6 +467,7 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 // generate the best layout of objects aiming for each row to be the targetSize width
 // if columns is true, each column aims to have the targetSize height
 func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2graph.Object {
+	debug := false
 	var nCuts int
 	if columns {
 		nCuts = gd.columns - 1
@@ -474,6 +476,23 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 	}
 	if nCuts == 0 {
 		return genLayout(gd.objects, nil)
+	}
+
+	var bestLayout [][]*d2graph.Object
+	bestDist := math.MaxFloat64
+	fastIsBest := false
+	// try fast layout algorithm as a baseline
+	if fastLayout := gd.fastLayout(targetSize, nCuts, columns); fastLayout != nil {
+		dist := getDistToTarget(fastLayout, targetSize, float64(gd.horizontalGap), float64(gd.verticalGap), columns)
+		if debug {
+			fmt.Printf("fast dist %v dist per row %v\n", dist, dist/(float64(nCuts)+1))
+		}
+		if dist == 0 {
+			return fastLayout
+		}
+		bestDist = dist
+		bestLayout = fastLayout
+		fastIsBest = true
 	}
 
 	var gap float64
@@ -490,17 +509,24 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 		}
 	}
 
-	debug := false
+	sizes := []float64{}
+	for _, obj := range gd.objects {
+		size := getSize(obj)
+		sizes = append(sizes, size)
+	}
+	sd := stddev(sizes)
+	if debug {
+		fmt.Printf("sizes (%d): %v\n", len(sizes), sizes)
+		fmt.Printf("std dev: %v; targetSize %v\n", sd, targetSize)
+	}
+
 	skipCount := 0
+	count := 0
 	// quickly eliminate bad row groupings
 	startingCache := make(map[int]bool)
-	// try to find a layout with all rows within 1.2*targetSize
-	// skip options with a row that is 1.2*longer or shorter
 	// Note: we want a low threshold to explore good options within attemptLimit,
 	// but the best option may require a few rows that are far from the target size.
-	okThreshold := 1.2
-	// if we don't find a layout try 25% larger threshold
-	thresholdStep := 0.25
+	okThreshold := STARTING_THRESHOLD
 	rowOk := func(row []*d2graph.Object, starting bool) (ok bool) {
 		if starting {
 			// we can cache results from starting positions since they repeat and don't change
@@ -523,21 +549,24 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 			// if multiple nodes are too big, it isn't ok. but a single node can't shrink so only check here
 			if rowSize > okThreshold*targetSize {
 				skipCount++
+				if skipCount >= SKIP_LIMIT {
+					// there may even be too many to skip
+					return true
+				}
 				return false
 			}
 		}
 		// row is too small to be good overall
 		if rowSize < targetSize/okThreshold {
 			skipCount++
+			if skipCount >= SKIP_LIMIT {
+				return true
+			}
 			return false
 		}
 		return true
 	}
 
-	var bestLayout [][]*d2graph.Object
-	bestDist := math.MaxFloat64
-	count := 0
-	attemptLimit := 100_000
 	// get all options for where to place these cuts, preferring later cuts over earlier cuts
 	// with 5 objects and 2 cuts we have these options:
 	// .       A   B   C │ D │ E     <- these cuts would produce: ┌A─┐ ┌B─┐ ┌C─┐
@@ -553,33 +582,94 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 		if dist < bestDist {
 			bestLayout = layout
 			bestDist = dist
+			fastIsBest = false
+		} else if fastIsBest && dist == bestDist {
+			// prefer ordered search solution to fast layout solution
+			bestLayout = layout
+			fastIsBest = false
 		}
 		count++
 		// with few objects we can try all options to get best result but this won't scale, so only try up to 100k options
-		return count >= attemptLimit
+		return count >= ATTEMPT_LIMIT || skipCount >= SKIP_LIMIT
 	}
 
-	// try at least 3 different okThresholds
-	for i := 0; i < 3 || bestLayout == nil; i++ {
+	// try number of different okThresholds depending on std deviation of sizes
+	thresholdAttempts := int(math.Ceil(sd))
+	if thresholdAttempts < MIN_THRESHOLD_ATTEMPTS {
+		thresholdAttempts = MIN_THRESHOLD_ATTEMPTS
+	} else if thresholdAttempts > MAX_THRESHOLD_ATTEMPTS {
+		thresholdAttempts = MAX_THRESHOLD_ATTEMPTS
+	}
+	for i := 0; i < thresholdAttempts || bestLayout == nil; i++ {
+		count = 0.
+		skipCount = 0.
 		iterDivisions(gd.objects, nCuts, tryDivision, rowOk)
-		okThreshold += thresholdStep
+		okThreshold += THRESHOLD_STEP_SIZE
 		if debug {
-			fmt.Printf("increasing ok threshold to %v\n", okThreshold)
+			fmt.Printf("count %d, skip count %d, bestDist %v increasing ok threshold to %v\n", count, skipCount, bestDist, okThreshold)
 		}
 		startingCache = make(map[int]bool)
-		count = 0.
-	}
-	if debug {
-		fmt.Printf("final count %d, skip count %d\n", count, skipCount)
+		if skipCount == 0 {
+			// threshold isn't skipping anything so increasing it won't help
+			break
+		}
+		// okThreshold isn't high enough yet, we skipped every option so don't count it
+		if count == 0 && thresholdAttempts < MAX_THRESHOLD_ATTEMPTS {
+			thresholdAttempts++
+		}
 	}
 
-	// try fast layout algorithm, see if it is better than first 1mil attempts
+	if debug {
+		fmt.Printf("best layout: %v\n", layoutString(bestLayout, sizes))
+	}
+	return bestLayout
+}
+
+func sum(values []float64) float64 {
+	s := 0.
+	for _, v := range values {
+		s += v
+	}
+	return s
+}
+
+func avg(values []float64) float64 {
+	return sum(values) / float64(len(values))
+}
+
+func variance(values []float64) float64 {
+	mean := avg(values)
+	total := 0.
+	for _, value := range values {
+		dev := mean - value
+		total += dev * dev
+	}
+	return total / float64(len(values))
+}
+
+func stddev(values []float64) float64 {
+	return math.Sqrt(variance(values))
+}
+
+func (gd *gridDiagram) fastLayout(targetSize float64, nCuts int, columns bool) (layout [][]*d2graph.Object) {
+	var gap float64
+	if columns {
+		gap = float64(gd.verticalGap)
+	} else {
+		gap = float64(gd.horizontalGap)
+	}
+
 	debt := 0.
 	fastDivision := make([]int, 0, nCuts)
 	rowSize := 0.
 	for i := 0; i < len(gd.objects); i++ {
 		o := gd.objects[i]
-		size := getSize(o)
+		var size float64
+		if columns {
+			size = o.Height
+		} else {
+			size = o.Width
+		}
 		if rowSize == 0 {
 			if size > targetSize-debt {
 				fastDivision = append(fastDivision, i-1)
@@ -602,14 +692,23 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 		}
 	}
 	if len(fastDivision) == nCuts {
-		layout := genLayout(gd.objects, fastDivision)
-		dist := getDistToTarget(layout, targetSize, float64(gd.horizontalGap), float64(gd.verticalGap), columns)
-		if dist < bestDist {
-			bestLayout = layout
-			bestDist = dist
-		}
+		layout = genLayout(gd.objects, fastDivision)
 	}
-	return bestLayout
+
+	return layout
+}
+
+func layoutString(layout [][]*d2graph.Object, sizes []float64) string {
+	buf := &bytes.Buffer{}
+	i := 0
+	fmt.Fprintf(buf, "[\n")
+	for _, r := range layout {
+		vals := sizes[i : i+len(r)]
+		fmt.Fprintf(buf, "%v:\t%v\n", sum(vals), vals)
+		i += len(r)
+	}
+	fmt.Fprintf(buf, "]\n")
+	return buf.String()
 }
 
 // process current division, return true to stop iterating
