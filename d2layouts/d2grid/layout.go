@@ -96,8 +96,16 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.L
 		obj.ChildrenArray = nil
 
 		if obj.Box != nil {
+			// CONTAINER_PADDING is default, but use gap value if set
+			horizontalPadding, verticalPadding := CONTAINER_PADDING, CONTAINER_PADDING
+			if obj.GridGap != nil || obj.HorizontalGap != nil {
+				horizontalPadding = gd.horizontalGap
+			}
+			if obj.GridGap != nil || obj.VerticalGap != nil {
+				verticalPadding = gd.verticalGap
+			}
 			// size shape according to grid
-			obj.SizeToContent(float64(gd.width), float64(gd.height), 2*CONTAINER_PADDING, 2*CONTAINER_PADDING)
+			obj.SizeToContent(float64(gd.width), float64(gd.height), float64(2*horizontalPadding), float64(2*verticalPadding))
 
 			// compute where the grid should be placed inside shape
 			dslShape := strings.ToLower(obj.Shape.Value)
@@ -109,17 +117,21 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.L
 			}
 
 			var dx, dy float64
-			labelWidth := float64(obj.LabelDimensions.Width) + 2*label.PADDING
-			if labelWidth > obj.Width {
-				dx = (labelWidth - obj.Width) / 2
-				obj.Width = labelWidth
+			if obj.LabelDimensions.Width != 0 {
+				labelWidth := float64(obj.LabelDimensions.Width) + 2*label.PADDING
+				if labelWidth > obj.Width {
+					dx = (labelWidth - obj.Width) / 2
+					obj.Width = labelWidth
+				}
 			}
-			labelHeight := float64(obj.LabelDimensions.Height) + 2*label.PADDING
-			if labelHeight > CONTAINER_PADDING {
-				// if the label doesn't fit within the padding, we need to add more
-				grow := labelHeight - CONTAINER_PADDING
-				dy = grow / 2
-				obj.Height += grow
+			if obj.LabelDimensions.Height != 0 {
+				labelHeight := float64(obj.LabelDimensions.Height) + 2*label.PADDING
+				if labelHeight > float64(verticalPadding) {
+					// if the label doesn't fit within the padding, we need to add more
+					grow := labelHeight - float64(verticalPadding)
+					dy = grow
+					obj.Height += grow
+				}
 			}
 			// we need to center children if we have to expand to fit the container label
 			if dx != 0 || dy != 0 {
@@ -332,6 +344,8 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			rowWidths = append(rowWidths, rowWidth)
 			maxX = math.Max(maxX, rowWidth)
 		}
+
+		// TODO if object is a nested grid, consider growing descendants according to the inner grid layout
 
 		// then expand thinnest objects to make each row the same width
 		// . ┌A─────────────┐  ┌B──┐  ┌C─────────┐ ┬ maxHeight(A,B,C)
@@ -863,10 +877,19 @@ func cleanup(graph *d2graph.Graph, gridDiagrams map[string]*gridDiagram, objects
 			return
 		}
 		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+
+		horizontalPadding, verticalPadding := CONTAINER_PADDING, CONTAINER_PADDING
+		if obj.GridGap != nil || obj.HorizontalGap != nil {
+			horizontalPadding = gd.horizontalGap
+		}
+		if obj.GridGap != nil || obj.VerticalGap != nil {
+			verticalPadding = gd.verticalGap
+		}
+
 		// shift the grid from (0, 0)
 		gd.shift(
-			obj.TopLeft.X+CONTAINER_PADDING,
-			obj.TopLeft.Y+CONTAINER_PADDING,
+			obj.TopLeft.X+float64(horizontalPadding),
+			obj.TopLeft.Y+float64(verticalPadding),
 		)
 		gd.cleanup(obj, graph)
 
