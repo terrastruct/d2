@@ -114,7 +114,6 @@ func (gd *gridDiagram) cleanup(obj *d2graph.Object, graph *d2graph.Graph) {
 	obj.ChildrenArray = make([]*d2graph.Object, 0)
 
 	restore := func(parent, child *d2graph.Object) {
-		// fmt.Printf("restore %v's %v\n", parent.AbsID(), child.AbsID())
 		parent.Children[strings.ToLower(child.ID)] = child
 		parent.ChildrenArray = append(parent.ChildrenArray, child)
 		graph.Objects = append(graph.Objects, child)
