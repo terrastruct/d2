@@ -59,7 +59,9 @@ func GetObjOrder(g *d2graph.Graph) []string {
 	for len(queue) > 0 {
 		curr := queue[0]
 		queue = queue[1:]
-		order = append(order, curr.AbsID())
+		if curr != g.Root {
+			order = append(order, curr.AbsID())
+		}
 		for _, ch := range curr.ChildrenArray {
 			queue = append(queue, ch)
 		}
