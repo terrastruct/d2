@@ -2373,11 +2373,17 @@ d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edges in grid diagrams are 
 	a
 	b
 	c
-	d.invalid descendant
+	d.valid descendant
+	e: {
+		grid-rows: 1
+		grid-columns: 2
+
+		a
+		b
+	}
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/grid_nested.d2:2:2: "grid-rows" can only be used on containers with one level of nesting right now. ("hey.d" has nested "invalid descendant")
-d2/testdata/d2compiler/TestCompile/grid_nested.d2:3:2: "grid-columns" can only be used on containers with one level of nesting right now. ("hey.d" has nested "invalid descendant")`,
+			expErr: ``,
 		},
 		{
 			name: "classes",

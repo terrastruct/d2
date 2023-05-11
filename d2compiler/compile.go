@@ -841,13 +841,6 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 			if !in && arrowheadIn {
 				c.errorf(f.LastPrimaryKey(), fmt.Sprintf(`invalid shape, can only set "%s" for arrowheads`, obj.Shape.Value))
 			}
-		case "grid-rows", "grid-columns", "grid-gap", "vertical-gap", "horizontal-gap":
-			for _, child := range obj.ChildrenArray {
-				if child.IsContainer() {
-					c.errorf(f.LastPrimaryKey(),
-						fmt.Sprintf(`%#v can only be used on containers with one level of nesting right now. (%#v has nested %#v)`, keyword, child.AbsID(), child.ChildrenArray[0].ID))
-				}
-			}
 		}
 		return
 	}

@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/lib/geo"
 )
 
 type gridDiagram struct {
@@ -95,22 +96,30 @@ func newGridDiagram(root *d2graph.Object) *gridDiagram {
 		gd.horizontalGap, _ = strconv.Atoi(root.HorizontalGap.Value)
 	}
 
+	for _, o := range gd.objects {
+		o.TopLeft = geo.NewPoint(0, 0)
+	}
+
 	return &gd
 }
 
 func (gd *gridDiagram) shift(dx, dy float64) {
 	for _, obj := range gd.objects {
-		obj.TopLeft.X += dx
-		obj.TopLeft.Y += dy
+		obj.MoveWithDescendants(dx, dy)
 	}
 }
 
 func (gd *gridDiagram) cleanup(obj *d2graph.Object, graph *d2graph.Graph) {
 	obj.Children = make(map[string]*d2graph.Object)
 	obj.ChildrenArray = make([]*d2graph.Object, 0)
-	for _, child := range gd.objects {
-		obj.Children[strings.ToLower(child.ID)] = child
-		obj.ChildrenArray = append(obj.ChildrenArray, child)
+
+	restore := func(parent, child *d2graph.Object) {
+		parent.Children[strings.ToLower(child.ID)] = child
+		parent.ChildrenArray = append(parent.ChildrenArray, child)
+		graph.Objects = append(graph.Objects, child)
 	}
-	graph.Objects = append(graph.Objects, gd.objects...)
+	for _, child := range gd.objects {
+		restore(obj, child)
+		child.IterDescendants(restore)
+	}
 }

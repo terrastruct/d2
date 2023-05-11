@@ -1,6 +1,7 @@
 package d2graph
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -1814,4 +1815,105 @@ func (g *Graph) ApplyTheme(themeID int64) error {
 	}
 	g.Theme = &theme
 	return nil
+}
+
+func (obj *Object) MoveWithDescendants(dx, dy float64) {
+	obj.TopLeft.X += dx
+	obj.TopLeft.Y += dy
+	for _, child := range obj.ChildrenArray {
+		child.MoveWithDescendants(dx, dy)
+	}
+}
+
+func (obj *Object) MoveWithDescendantsTo(x, y float64) {
+	dx := x - obj.TopLeft.X
+	dy := y - obj.TopLeft.Y
+	obj.MoveWithDescendants(dx, dy)
+}
+
+func (parent *Object) removeChild(child *Object) {
+	delete(parent.Children, strings.ToLower(child.ID))
+	for i := 0; i < len(parent.ChildrenArray); i++ {
+		if parent.ChildrenArray[i] == child {
+			parent.ChildrenArray = append(parent.ChildrenArray[:i], parent.ChildrenArray[i+1:]...)
+			break
+		}
+	}
+}
+
+// remove obj and all descendants from graph, as a new Graph
+func (g *Graph) ExtractAsNestedGraph(obj *Object) *Graph {
+	descendantObjects, edges := pluckObjAndEdges(g, obj)
+
+	tempGraph := NewGraph()
+	tempGraph.Root.ChildrenArray = []*Object{obj}
+	tempGraph.Root.Children[strings.ToLower(obj.ID)] = obj
+
+	for _, descendantObj := range descendantObjects {
+		descendantObj.Graph = tempGraph
+	}
+	tempGraph.Objects = descendantObjects
+	tempGraph.Edges = edges
+
+	obj.Parent.removeChild(obj)
+	obj.Parent = tempGraph.Root
+
+	return tempGraph
+}
+
+func pluckObjAndEdges(g *Graph, obj *Object) (descendantsObjects []*Object, edges []*Edge) {
+	for i := 0; i < len(g.Edges); i++ {
+		edge := g.Edges[i]
+		if edge.Src == obj || edge.Dst == obj {
+			edges = append(edges, edge)
+			g.Edges = append(g.Edges[:i], g.Edges[i+1:]...)
+			i--
+		}
+	}
+
+	for i := 0; i < len(g.Objects); i++ {
+		temp := g.Objects[i]
+		if temp.AbsID() == obj.AbsID() {
+			descendantsObjects = append(descendantsObjects, obj)
+			g.Objects = append(g.Objects[:i], g.Objects[i+1:]...)
+			for _, child := range obj.ChildrenArray {
+				subObjects, subEdges := pluckObjAndEdges(g, child)
+				descendantsObjects = append(descendantsObjects, subObjects...)
+				edges = append(edges, subEdges...)
+			}
+			break
+		}
+	}
+
+	return descendantsObjects, edges
+}
+
+func (g *Graph) InjectNestedGraph(tempGraph *Graph, parent *Object) {
+	obj := tempGraph.Root.ChildrenArray[0]
+	obj.MoveWithDescendantsTo(0, 0)
+	obj.Parent = parent
+	for _, obj := range tempGraph.Objects {
+		obj.Graph = g
+	}
+	g.Objects = append(g.Objects, tempGraph.Objects...)
+	parent.Children[strings.ToLower(obj.ID)] = obj
+	parent.ChildrenArray = append(parent.ChildrenArray, obj)
+	g.Edges = append(g.Edges, tempGraph.Edges...)
+}
+
+func (g *Graph) PrintString() string {
+	buf := &bytes.Buffer{}
+	fmt.Fprint(buf, "Objects: [")
+	for _, obj := range g.Objects {
+		fmt.Fprintf(buf, "%#v @(%v)", obj.AbsID(), obj.TopLeft.ToString())
+	}
+	fmt.Fprint(buf, "]")
+	return buf.String()
+}
+
+func (obj *Object) IterDescendants(apply func(parent, child *Object)) {
+	for _, c := range obj.ChildrenArray {
+		apply(obj, c)
+		c.IterDescendants(apply)
+	}
 }
