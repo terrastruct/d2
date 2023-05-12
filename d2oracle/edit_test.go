@@ -3318,6 +3318,22 @@ c
 `,
 		},
 		{
+			name: "underscore_edge_container_6",
+
+			text: `x: {
+  _.y.a -> _.y.b
+}
+`,
+			key:                `y`,
+			newKey:             `x.y`,
+			includeDescendants: true,
+
+			exp: `x: {
+  y.a -> y.b
+}
+`,
+		},
+		{
 			name: "underscore_edge_split",
 
 			text: `a: {
