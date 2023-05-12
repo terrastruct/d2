@@ -1683,6 +1683,15 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 			continue
 		}
 
+		firstNonUnderscoreIndex := 0
+		ida := d2graph.Key(ref.Key)
+		for i, id := range ida {
+			if id != "_" {
+				firstNonUnderscoreIndex = i
+				break
+			}
+		}
+
 		if ref.KeyPathIndex != len(ref.Key.Path)-1 {
 			// When moving a node out of an edge, e.g. the `b` out of `a.b.c -> ...`,
 			// The edge needs to continue targeting the same thing (c)
@@ -1707,7 +1716,7 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 					diff = len(getUncommonPath(d2graph.Key(&d2ast.KeyPath{Path: oldPath}), d2graph.Key(&d2ast.KeyPath{Path: newPath})))
 				}
 				// If the old key is longer than the new key, we already know all the diff would be dropped
-				if diff > 0 {
+				if diff > 0 && ref.KeyPathIndex != firstNonUnderscoreIndex {
 					detachedMK.Key.Path = append([]*d2ast.StringBox{}, ref.Key.Path[ref.KeyPathIndex-diff:ref.KeyPathIndex]...)
 					appendUniqueMapKey(ref.Scope, detachedMK)
 				}
