@@ -1489,6 +1489,7 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 		}
 	}
 
+	println(d2format.Format(g.AST))
 	// 2. Ensure parent node Key has a map to accept moved node.
 	// This map will be what MOVE will append the new key to
 	toScope := g.AST
