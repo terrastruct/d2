@@ -10,4 +10,4 @@
 
 #### Bugfixes ⛑️
 
-- Shadow is cut off when `--pad` is 0 [#1326](https://github.com/terrastruct/d2/pull/1326)
+- Shadow is cut off when `--pad` is 0. Thank you @LeonardsonCC ! [#1326](https://github.com/terrastruct/d2/pull/1326)
