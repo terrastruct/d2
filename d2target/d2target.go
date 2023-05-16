@@ -22,6 +22,8 @@ const (
 	DEFAULT_ICON_SIZE = 32
 	MAX_ICON_SIZE     = 64
 
+	SHADOW_SIZE_X    = 3
+	SHADOW_SIZE_Y    = 5
 	THREE_DEE_OFFSET = 15
 	MULTIPLE_OFFSET  = 10
 
@@ -170,6 +172,10 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			// 16 is the icon radius
 			y1 = go2.Min(y1, targetShape.Pos.Y-targetShape.StrokeWidth-16)
 			x2 = go2.Max(x2, targetShape.Pos.X+targetShape.StrokeWidth+targetShape.Width+16)
+		}
+		if targetShape.Shadow {
+			y2 = go2.Max(y2, targetShape.Pos.Y+targetShape.Height+int(math.Ceil(float64(targetShape.StrokeWidth)/2.))+SHADOW_SIZE_Y)
+			x2 = go2.Max(x2, targetShape.Pos.X+targetShape.Width+int(math.Ceil(float64(targetShape.StrokeWidth)/2.))+SHADOW_SIZE_X)
 		}
 
 		if targetShape.ThreeDee {
