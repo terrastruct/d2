@@ -175,7 +175,7 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 		}
 		if targetShape.Shadow {
 			y2 = go2.Max(y2, targetShape.Pos.Y+targetShape.Height+int(math.Ceil(float64(targetShape.StrokeWidth)/2.))+SHADOW_SIZE_Y)
-			x2 = go2.Max(x2, targetShape.Pos.X+targetShape.StrokeWidth+targetShape.Width+SHADOW_SIZE_X)
+			x2 = go2.Max(x2, targetShape.Pos.X+targetShape.Width+int(math.Ceil(float64(targetShape.StrokeWidth)/2.))+SHADOW_SIZE_X)
 		}
 
 		if targetShape.ThreeDee {
