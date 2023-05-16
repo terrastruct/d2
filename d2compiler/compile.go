@@ -210,8 +210,8 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 		c.compileReserved(&obj.Attributes, f)
 		return
 	} else if f.Name == "style" {
-		if f.Map() == nil {
-			c.errorf(f.LastRef().AST(), `"style" expected to be set to a map, or contain an additional keyword like "style.opacity: 0.4"`)
+		if f.Map() == nil || len(f.Map().Fields) == 0 {
+			c.errorf(f.LastRef().AST(), `"style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`)
 			return
 		}
 		c.compileStyle(&obj.Attributes, f.Map())
