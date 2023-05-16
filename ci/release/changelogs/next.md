@@ -9,3 +9,5 @@
 - Improves grid layout performance when there are many similarly sized shapes. [#1315](https://github.com/terrastruct/d2/pull/1315)
 
 #### Bugfixes ⛑️
+
+- Shadow is cut off when `--pad` is 0 [#1326](https://github.com/terrastruct/d2/pull/1326)
