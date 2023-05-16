@@ -1700,7 +1700,13 @@ x.a.b`,
 			name: "tail-style",
 
 			text:   `myobj.style: 3`,
-			expErr: `d2/testdata/d2compiler/TestCompile/tail-style.d2:1:7: "style" expected to be set to a map, or contain an additional keyword like "style.opacity: 0.4"`,
+			expErr: `d2/testdata/d2compiler/TestCompile/tail-style.d2:1:7: "style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`,
+		},
+		{
+			name: "tail-style-map",
+
+			text:   `myobj.style: {}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/tail-style-map.d2:1:7: "style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`,
 		},
 		{
 			name: "bad-style-nesting",
