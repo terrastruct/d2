@@ -84,3 +84,18 @@ func IsLabelKeyID(key, label string) bool {
 
 	return mk.Key.Path[len(mk.Key.Path)-1].Unbox().ScalarString() == label
 }
+
+func GetID(key string) string {
+	mk, err := d2parser.ParseMapKey(key)
+	if err != nil {
+		return ""
+	}
+	if len(mk.Edges) > 0 {
+		return ""
+	}
+	if mk.Key == nil {
+		return ""
+	}
+
+	return mk.Key.Path[len(mk.Key.Path)-1].Unbox().ScalarString()
+}
