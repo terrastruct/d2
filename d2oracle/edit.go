@@ -185,7 +185,7 @@ func ReconnectEdge(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (_ 
 		if src != nil {
 			srcmk, _ := d2parser.ParseMapKey(*srcKey)
 			ref.Edge.Src = srcmk.Key
-			newPath, err := pathFromScope(g, srcmk, ref.ScopeObj)
+			newPath, err := pathFromScopeObj(g, srcmk, ref.ScopeObj)
 			if err != nil {
 				return nil, err
 			}
@@ -194,7 +194,7 @@ func ReconnectEdge(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (_ 
 		if dst != nil {
 			dstmk, _ := d2parser.ParseMapKey(*dstKey)
 			ref.Edge.Dst = dstmk.Key
-			newPath, err := pathFromScope(g, dstmk, ref.ScopeObj)
+			newPath, err := pathFromScopeObj(g, dstmk, ref.ScopeObj)
 			if err != nil {
 				return nil, err
 			}
@@ -221,7 +221,7 @@ func pathFromScopeKey(g *d2graph.Graph, key *d2ast.Key, scopeak []string) ([]*d2
 	return newPath, nil
 }
 
-func pathFromScope(g *d2graph.Graph, key *d2ast.Key, fromScope *d2graph.Object) ([]*d2ast.StringBox, error) {
+func pathFromScopeObj(g *d2graph.Graph, key *d2ast.Key, fromScope *d2graph.Object) ([]*d2ast.StringBox, error) {
 	// We don't want this to be underscore-resolved scope. We want to ignore underscores
 	var scopeak []string
 	if fromScope != g.Root {
@@ -1753,11 +1753,11 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 			detachedMK := &d2ast.Key{
 				Key: cloneKey(ref.Key),
 			}
-			oldPath, err := pathFromScope(g, mk, ref.ScopeObj)
+			oldPath, err := pathFromScopeObj(g, mk, ref.ScopeObj)
 			if err != nil {
 				return nil, err
 			}
-			newPath, err := pathFromScope(g, mk2, ref.ScopeObj)
+			newPath, err := pathFromScopeObj(g, mk2, ref.ScopeObj)
 			if err != nil {
 				return nil, err
 			}
@@ -1788,7 +1788,7 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 			// When moving a node connected to an edge, we have to ensure parents continue to exist
 			// e.g. the `c` out of `a.b.c -> ...`
 			// `a.b` needs to exist
-			newPath, err := pathFromScope(g, mk2, ref.ScopeObj)
+			newPath, err := pathFromScopeObj(g, mk2, ref.ScopeObj)
 			if err != nil {
 				return nil, err
 			}
