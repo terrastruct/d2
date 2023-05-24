@@ -1917,3 +1917,49 @@ func (obj *Object) IterDescendants(apply func(parent, child *Object)) {
 		c.IterDescendants(apply)
 	}
 }
+
+func (obj *Object) ShiftDescendants(dx, dy float64) {
+	// also need to shift edges of descendants that are shifted
+	movedEdges := make(map[*Edge]struct{})
+	for _, e := range obj.Graph.Edges {
+		isSrcDesc := e.Src.IsDescendantOf(obj)
+		isDstDesc := e.Dst.IsDescendantOf(obj)
+
+		if isSrcDesc && isDstDesc {
+			movedEdges[e] = struct{}{}
+			for _, p := range e.Route {
+				p.X += dx
+				p.Y += dy
+			}
+		}
+	}
+
+	obj.IterDescendants(func(_, curr *Object) {
+		curr.TopLeft.X += dx
+		curr.TopLeft.Y += dy
+		for _, e := range obj.Graph.Edges {
+			if _, ok := movedEdges[e]; ok {
+				continue
+			}
+			isSrc := e.Src == curr
+			isDst := e.Dst == curr
+
+			if isSrc && isDst {
+				for _, p := range e.Route {
+					p.X += dx
+					p.Y += dy
+				}
+			} else if isSrc {
+				e.Route[0].X += dx
+				e.Route[0].Y += dy
+			} else if isDst {
+				e.Route[len(e.Route)-1].X += dx
+				e.Route[len(e.Route)-1].Y += dy
+			}
+
+			if isSrc || isDst {
+				movedEdges[e] = struct{}{}
+			}
+		}
+	})
+}

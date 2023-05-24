@@ -265,29 +265,6 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 	}
 
-	// separate loop so all descendants are placed
-	for _, obj := range g.Objects {
-		if obj.Style.ThreeDee != nil && obj.Style.ThreeDee.Value == "true" {
-			// obj.TopLeft.Y += d2target.THREE_DEE_OFFSET
-			obj.IterDescendants(func(_, child *d2graph.Object) {
-				child.TopLeft.Y += d2target.THREE_DEE_OFFSET
-			})
-			if !obj.IsContainer() {
-				obj.Height -= d2target.THREE_DEE_OFFSET
-				obj.Width -= d2target.THREE_DEE_OFFSET
-			}
-		} else if obj.Style.Multiple != nil && obj.Style.Multiple.Value == "true" {
-			// obj.TopLeft.Y += d2target.MULTIPLE_OFFSET
-			obj.IterDescendants(func(_, child *d2graph.Object) {
-				child.TopLeft.Y += d2target.MULTIPLE_OFFSET
-			})
-			if !obj.IsContainer() {
-				obj.Height -= d2target.MULTIPLE_OFFSET
-				obj.Width -= d2target.MULTIPLE_OFFSET
-			}
-		}
-	}
-
 	for i, edge := range g.Edges {
 		val, err := vm.RunString(fmt.Sprintf("JSON.stringify(g.edge(g.edges()[%d]))", i))
 		if err != nil {
@@ -546,6 +523,24 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		// compile needs to assign edge label positions
 		if edge.Label.Value != "" {
 			edge.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+		}
+	}
+
+	// separate loop so all descendants have initial placements
+	for _, obj := range g.Objects {
+		var offset float64
+		if obj.Style.ThreeDee != nil && obj.Style.ThreeDee.Value == "true" {
+			offset = d2target.THREE_DEE_OFFSET
+		} else if obj.Style.Multiple != nil && obj.Style.Multiple.Value == "true" {
+			offset = d2target.MULTIPLE_OFFSET
+		}
+		if offset != 0 {
+			obj.TopLeft.Y += offset
+			obj.ShiftDescendants(0, offset)
+			if !obj.IsContainer() {
+				obj.Height -= offset
+				obj.Width -= offset
+			}
 		}
 	}
 
