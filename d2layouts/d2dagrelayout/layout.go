@@ -159,7 +159,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		id := obj.AbsID()
 		idToObj[id] = obj
 
-		height := obj.Height
+		width, height := obj.Width, obj.Height
 		if obj.HasLabel() {
 			if obj.HasOutsideBottomLabel() || obj.Icon != nil {
 				height += float64(obj.LabelDimensions.Height) + label.PADDING
@@ -168,7 +168,14 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				height += float64(obj.LabelDimensions.Height) + label.PADDING
 			}
 		}
-		loadScript += generateAddNodeLine(id, int(obj.Width), int(height))
+		if obj.Style.ThreeDee != nil && obj.Style.ThreeDee.Value == "true" {
+			height += d2target.THREE_DEE_OFFSET
+			width += d2target.THREE_DEE_OFFSET
+		} else if obj.Style.Multiple != nil && obj.Style.Multiple.Value == "true" {
+			height += d2target.MULTIPLE_OFFSET
+			width += d2target.MULTIPLE_OFFSET
+		}
+		loadScript += generateAddNodeLine(id, int(width), int(height))
 		if obj.Parent != g.Root {
 			loadScript += generateAddParentLine(id, obj.Parent.AbsID())
 		}
@@ -254,6 +261,29 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				obj.LabelPosition = go2.Pointer(string(label.OutsideTopRight))
 			} else {
 				obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
+		}
+	}
+
+	// separate loop so all descendants are placed
+	for _, obj := range g.Objects {
+		if obj.Style.ThreeDee != nil && obj.Style.ThreeDee.Value == "true" {
+			// obj.TopLeft.Y += d2target.THREE_DEE_OFFSET
+			obj.IterDescendants(func(_, child *d2graph.Object) {
+				child.TopLeft.Y += d2target.THREE_DEE_OFFSET
+			})
+			if !obj.IsContainer() {
+				obj.Height -= d2target.THREE_DEE_OFFSET
+				obj.Width -= d2target.THREE_DEE_OFFSET
+			}
+		} else if obj.Style.Multiple != nil && obj.Style.Multiple.Value == "true" {
+			// obj.TopLeft.Y += d2target.MULTIPLE_OFFSET
+			obj.IterDescendants(func(_, child *d2graph.Object) {
+				child.TopLeft.Y += d2target.MULTIPLE_OFFSET
+			})
+			if !obj.IsContainer() {
+				obj.Height -= d2target.MULTIPLE_OFFSET
+				obj.Width -= d2target.MULTIPLE_OFFSET
 			}
 		}
 	}

@@ -1187,6 +1187,13 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 		var box *geo.Box
 		if labelPosition.IsOutside() {
 			box = s.GetBox()
+			if targetShape.ThreeDee {
+				box.TopLeft.Y -= d2target.THREE_DEE_OFFSET
+				box.Width += d2target.THREE_DEE_OFFSET
+			} else if targetShape.Multiple {
+				box.TopLeft.Y -= d2target.MULTIPLE_OFFSET
+				box.Width += d2target.MULTIPLE_OFFSET
+			}
 		} else {
 			box = s.GetInnerBox()
 		}
