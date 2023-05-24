@@ -13,20 +13,19 @@ import (
 	"oss.terrastruct.com/d2/d2parser"
 )
 
+type testCase struct {
+	name   string
+	text   string
+	assert func(t testing.TB, ast *d2ast.Map, err error)
+}
+
 // TODO: next step for parser is writing as many tests and grouping them nicely
 // TODO: add assertions
 // to layout *all* expected behavior.
 func TestParse(t *testing.T) {
 	t.Parallel()
 
-	testCases := []struct {
-		name   string
-		text   string
-		assert func(t testing.TB, ast *d2ast.Map, err error)
-
-		// exp is in testdata/d2parser/TestParse/${name}.json
-	}{
-
+	var testCases = []testCase{
 		{
 			name: "empty",
 			text: ``,
@@ -394,7 +393,53 @@ c-
 		},
 	}
 
-	for _, tc := range testCases {
+	t.Run("import", testImport)
+
+	runa(t, testCases)
+}
+
+func testImport(t *testing.T) {
+	t.Parallel()
+
+	tca := []testCase{
+		{
+			text: "x: @file",
+			assert: func(t testing.TB, ast *d2ast.Map, err error) {
+				assert.Success(t, err)
+				assert.Equal(t, "file", ast.Nodes[0].MapKey.Value.Import.Path[0].Unbox().ScalarString())
+			},
+		},
+		{
+			text: "x: @file.d2",
+			assert: func(t testing.TB, ast *d2ast.Map, err error) {
+				assert.Success(t, err)
+				assert.Equal(t, "file", ast.Nodes[0].MapKey.Value.Import.Path[0].Unbox().ScalarString())
+			},
+		},
+		{
+			text: "...@file.d2",
+			assert: func(t testing.TB, ast *d2ast.Map, err error) {
+				assert.Success(t, err)
+				assert.True(t, ast.Nodes[0].Import.Spread)
+				assert.Equal(t, "file", ast.Nodes[0].Import.Path[0].Unbox().ScalarString())
+			},
+		},
+		{
+			text: "x: [...@file.d2]",
+			assert: func(t testing.TB, ast *d2ast.Map, err error) {
+				assert.Success(t, err)
+				imp := ast.Nodes[0].MapKey.Value.Array.Nodes[0].Import
+				assert.True(t, imp.Spread)
+				assert.Equal(t, "file", imp.Path[0].Unbox().ScalarString())
+			},
+		},
+	}
+
+	runa(t, tca)
+}
+
+func runa(t *testing.T, tca []testCase) {
+	for _, tc := range tca {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()

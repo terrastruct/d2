@@ -63,6 +63,7 @@ var _ Node = &DoubleQuotedString{}
 var _ Node = &SingleQuotedString{}
 var _ Node = &BlockString{}
 var _ Node = &Substitution{}
+var _ Node = &Import{}
 
 var _ Node = &Array{}
 var _ Node = &Map{}
@@ -277,6 +278,7 @@ var _ MapNode = &Comment{}
 var _ MapNode = &BlockComment{}
 var _ MapNode = &Key{}
 var _ MapNode = &Substitution{}
+var _ MapNode = &Import{}
 
 // ArrayNode is implemented by nodes that may be children of Arrays.
 type ArrayNode interface {
@@ -288,6 +290,7 @@ type ArrayNode interface {
 var _ ArrayNode = &Comment{}
 var _ ArrayNode = &BlockComment{}
 var _ ArrayNode = &Substitution{}
+var _ ArrayNode = &Import{}
 
 // Value is implemented by nodes that may be values of a key.
 type Value interface {
@@ -334,6 +337,7 @@ func (s *DoubleQuotedString) node() {}
 func (s *SingleQuotedString) node() {}
 func (s *BlockString) node()        {}
 func (s *Substitution) node()       {}
+func (i *Import) node()             {}
 func (a *Array) node()              {}
 func (m *Map) node()                {}
 func (k *Key) node()                {}
@@ -351,6 +355,7 @@ func (s *DoubleQuotedString) Type() string { return "double quoted string" }
 func (s *SingleQuotedString) Type() string { return "single quoted string" }
 func (s *BlockString) Type() string        { return s.Tag + " block string" }
 func (s *Substitution) Type() string       { return "substitution" }
+func (i *Import) Type() string             { return "import" }
 func (a *Array) Type() string              { return "array" }
 func (m *Map) Type() string                { return "map" }
 func (k *Key) Type() string                { return "map key" }
@@ -368,6 +373,7 @@ func (s *DoubleQuotedString) GetRange() Range { return s.Range }
 func (s *SingleQuotedString) GetRange() Range { return s.Range }
 func (s *BlockString) GetRange() Range        { return s.Range }
 func (s *Substitution) GetRange() Range       { return s.Range }
+func (i *Import) GetRange() Range             { return i.Range }
 func (a *Array) GetRange() Range              { return a.Range }
 func (m *Map) GetRange() Range                { return m.Range }
 func (k *Key) GetRange() Range                { return k.Range }
@@ -379,6 +385,7 @@ func (c *Comment) mapNode()      {}
 func (c *BlockComment) mapNode() {}
 func (k *Key) mapNode()          {}
 func (s *Substitution) mapNode() {}
+func (i *Import) mapNode()       {}
 
 func (c *Comment) arrayNode()            {}
 func (c *BlockComment) arrayNode()       {}
@@ -390,6 +397,7 @@ func (s *DoubleQuotedString) arrayNode() {}
 func (s *SingleQuotedString) arrayNode() {}
 func (s *BlockString) arrayNode()        {}
 func (s *Substitution) arrayNode()       {}
+func (i *Import) arrayNode()             {}
 func (a *Array) arrayNode()              {}
 func (m *Map) arrayNode()                {}
 
@@ -402,6 +410,7 @@ func (s *SingleQuotedString) value() {}
 func (s *BlockString) value()        {}
 func (a *Array) value()              {}
 func (m *Map) value()                {}
+func (i *Import) value()             {}
 
 func (n *Null) scalar()               {}
 func (b *Boolean) scalar()            {}
@@ -722,11 +731,19 @@ type Substitution struct {
 	Path   []*StringBox `json:"path"`
 }
 
+type Import struct {
+	Range Range `json:"range"`
+
+	Spread bool         `json:"spread"`
+	Path   []*StringBox `json:"path"`
+}
+
 // MapNodeBox is used to box MapNode for JSON persistence.
 type MapNodeBox struct {
 	Comment      *Comment      `json:"comment,omitempty"`
 	BlockComment *BlockComment `json:"block_comment,omitempty"`
 	Substitution *Substitution `json:"substitution,omitempty"`
+	Import       *Import       `json:"import,omitempty"`
 	MapKey       *Key          `json:"map_key,omitempty"`
 }
 
@@ -739,6 +756,8 @@ func MakeMapNodeBox(n MapNode) MapNodeBox {
 		box.BlockComment = n
 	case *Substitution:
 		box.Substitution = n
+	case *Import:
+		box.Import = n
 	case *Key:
 		box.MapKey = n
 	}
@@ -753,6 +772,8 @@ func (mb MapNodeBox) Unbox() MapNode {
 		return mb.BlockComment
 	case mb.Substitution != nil:
 		return mb.Substitution
+	case mb.Import != nil:
+		return mb.Import
 	case mb.MapKey != nil:
 		return mb.MapKey
 	default:
@@ -765,6 +786,7 @@ type ArrayNodeBox struct {
 	Comment            *Comment            `json:"comment,omitempty"`
 	BlockComment       *BlockComment       `json:"block_comment,omitempty"`
 	Substitution       *Substitution       `json:"substitution,omitempty"`
+	Import             *Import             `json:"import,omitempty"`
 	Null               *Null               `json:"null,omitempty"`
 	Boolean            *Boolean            `json:"boolean,omitempty"`
 	Number             *Number             `json:"number,omitempty"`
@@ -785,6 +807,8 @@ func MakeArrayNodeBox(an ArrayNode) ArrayNodeBox {
 		ab.BlockComment = an
 	case *Substitution:
 		ab.Substitution = an
+	case *Import:
+		ab.Import = an
 	case *Null:
 		ab.Null = an
 	case *Boolean:
@@ -815,6 +839,8 @@ func (ab ArrayNodeBox) Unbox() ArrayNode {
 		return ab.BlockComment
 	case ab.Substitution != nil:
 		return ab.Substitution
+	case ab.Import != nil:
+		return ab.Import
 	case ab.Null != nil:
 		return ab.Null
 	case ab.Boolean != nil:
@@ -849,6 +875,7 @@ type ValueBox struct {
 	BlockString        *BlockString        `json:"block_string,omitempty"`
 	Array              *Array              `json:"array,omitempty"`
 	Map                *Map                `json:"map,omitempty"`
+	Import             *Import             `json:"import,omitempty"`
 }
 
 func (vb ValueBox) Unbox() Value {
@@ -871,6 +898,8 @@ func (vb ValueBox) Unbox() Value {
 		return vb.Array
 	case vb.Map != nil:
 		return vb.Map
+	case vb.Import != nil:
+		return vb.Import
 	default:
 		return nil
 	}
@@ -897,6 +926,8 @@ func MakeValueBox(v Value) ValueBox {
 		vb.Array = v
 	case *Map:
 		vb.Map = v
+	case *Import:
+		vb.Import = v
 	}
 	return vb
 }

@@ -448,17 +448,30 @@ func (p *parser) parseMapNode(r rune) d2ast.MapNodeBox {
 		box.BlockComment = p.parseBlockComment()
 		return box
 	case '.':
-		s, eof := p.peekn(3)
+		s, eof := p.peekn(2)
 		if eof {
 			break
 		}
-		if s != "..$" {
+		if s != ".." {
 			p.rewind()
 			break
 		}
-		p.commit()
-		box.Substitution = p.parseSubstitution(true)
-		return box
+		r, eof := p.peek()
+		if eof {
+			break
+		}
+		if r == '$' {
+			p.commit()
+			box.Substitution = p.parseSubstitution(true)
+			return box
+		}
+		if r == '@' {
+			p.commit()
+			box.Import = p.parseImport(true)
+			return box
+		}
+		p.rewind()
+		break
 	}
 
 	p.replay(r)
@@ -1502,17 +1515,30 @@ func (p *parser) parseArrayNode(r rune) d2ast.ArrayNodeBox {
 		box.BlockComment = p.parseBlockComment()
 		return box
 	case '.':
-		s, eof := p.peekn(3)
+		s, eof := p.peekn(2)
 		if eof {
 			break
 		}
-		if s != "..$" {
+		if s != ".." {
 			p.rewind()
 			break
 		}
-		p.commit()
-		box.Substitution = p.parseSubstitution(true)
-		return box
+		r, eof := p.peek()
+		if eof {
+			break
+		}
+		if r == '$' {
+			p.commit()
+			box.Substitution = p.parseSubstitution(true)
+			return box
+		}
+		if r == '@' {
+			p.commit()
+			box.Import = p.parseImport(true)
+			return box
+		}
+		p.rewind()
+		break
 	}
 
 	p.replay(r)
@@ -1529,6 +1555,7 @@ func (p *parser) parseArrayNode(r rune) d2ast.ArrayNodeBox {
 	box.BlockString = vbox.BlockString
 	box.Array = vbox.Array
 	box.Map = vbox.Map
+	box.Import = vbox.Import
 	return box
 }
 
@@ -1548,6 +1575,9 @@ func (p *parser) parseValue() d2ast.ValueBox {
 		return box
 	case '{':
 		box.Map = p.parseMap(false)
+		return box
+	case '@':
+		box.Import = p.parseImport(false)
 		return box
 	}
 
@@ -1657,6 +1687,30 @@ func (p *parser) parseSubstitution(spread bool) *d2ast.Substitution {
 	p.commit()
 
 	return subst
+}
+
+func (p *parser) parseImport(spread bool) *d2ast.Import {
+	imp := &d2ast.Import{
+		Range: d2ast.Range{
+			Path:  p.path,
+			Start: p.pos.SubtractString("$", p.utf16),
+		},
+		Spread: spread,
+	}
+	defer imp.Range.End.From(&p.pos)
+
+	if imp.Spread {
+		imp.Range.Start = imp.Range.Start.SubtractString("...", p.utf16)
+	}
+
+	k := p.parseKey()
+	if k.Path[0].UnquotedString != nil && len(k.Path) > 1 && k.Path[1].Unbox().ScalarString() == "d2" {
+		k.Path = append(k.Path[:1], k.Path[2:]...)
+	}
+	if k != nil {
+		imp.Path = k.Path
+	}
+	return imp
 }
 
 // func marshalKey(k *d2ast.Key) string {
