@@ -4200,6 +4200,44 @@ github: {
 `,
 		},
 		{
+			name: "include_descendants_underscore_2",
+			text: `a: {
+  b: {
+    _.c
+  }
+}
+`,
+			key:                `a.b`,
+			newKey:             `b`,
+			includeDescendants: true,
+
+			exp: `a
+b: {
+  _.a.c
+}
+`,
+		},
+		{
+			name: "include_descendants_underscore_3",
+			text: `a: {
+  b: {
+    _.c -> d
+		_.c -> _.d
+  }
+}
+`,
+			key:                `a.b`,
+			newKey:             `b`,
+			includeDescendants: true,
+
+			exp: `a
+b: {
+  _.a.c -> d
+  _.a.c -> _.a.d
+}
+`,
+		},
+		{
 			name: "include_descendants_edge_ref_underscore",
 			text: `x
 z
@@ -6698,6 +6736,41 @@ b
   "(x -> y.z.a)[0]": "(x -> b.z.a)[0]",
   "y.z": "b.z",
   "y.z.a": "b.z.a"
+}`,
+		},
+		{
+			name: "include_descendants_underscore_2",
+			text: `a: {
+  b: {
+    _.c
+  }
+}
+`,
+			key:                `a.b`,
+			newKey:             `b`,
+			includeDescendants: true,
+
+			exp: `{
+  "a.b": "b"
+}`,
+		},
+		{
+			name: "include_descendants_underscore_3",
+			text: `a: {
+  b: {
+    _.c -> d
+		_.c -> _.d
+  }
+}
+`,
+			key:                `a.b`,
+			newKey:             `b`,
+			includeDescendants: true,
+
+			exp: `{
+  "a.(c -> b.d)[0]": "(a.c -> b.d)[0]",
+  "a.b": "b",
+  "a.b.d": "b.d"
 }`,
 		},
 		{

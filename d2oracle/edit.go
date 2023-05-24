@@ -205,18 +205,9 @@ func ReconnectEdge(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (_ 
 	return recompile(g)
 }
 
-func pathFromScope(g *d2graph.Graph, key *d2ast.Key, fromScope *d2graph.Object) ([]*d2ast.StringBox, error) {
+func pathFromScopeKey(g *d2graph.Graph, key *d2ast.Key, scopeak []string) ([]*d2ast.StringBox, error) {
 	ak2 := d2graph.Key(key.Key)
 
-	// We don't want this to be underscore-resolved scope. We want to ignore underscores
-	var scopeak []string
-	if fromScope != g.Root {
-		scopek, err := d2parser.ParseKey(fromScope.AbsID())
-		if err != nil {
-			return nil, err
-		}
-		scopeak = d2graph.Key(scopek)
-	}
 	commonPath := getCommonPath(scopeak, ak2)
 
 	var newPath []*d2ast.StringBox
@@ -228,6 +219,19 @@ func pathFromScope(g *d2graph.Graph, key *d2ast.Key, fromScope *d2graph.Object) 
 	newPath = append(newPath, key.Key.Path[len(commonPath):]...)
 
 	return newPath, nil
+}
+
+func pathFromScope(g *d2graph.Graph, key *d2ast.Key, fromScope *d2graph.Object) ([]*d2ast.StringBox, error) {
+	// We don't want this to be underscore-resolved scope. We want to ignore underscores
+	var scopeak []string
+	if fromScope != g.Root {
+		scopek, err := d2parser.ParseKey(fromScope.AbsID())
+		if err != nil {
+			return nil, err
+		}
+		scopeak = d2graph.Key(scopek)
+	}
+	return pathFromScopeKey(g, key, scopeak)
 }
 
 func recompile(g *d2graph.Graph) (*d2graph.Graph, error) {
@@ -1591,26 +1595,89 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 					return x.Unbox().ScalarString() != "_"
 				})
 				detachedMK.Value = ref.MapKey.Value
-				if ref.MapKey != nil && ref.MapKey.Value.Map != nil && !includeDescendants {
-					detachedMK.Value.Map = &d2ast.Map{
-						Range: ref.MapKey.Value.Map.Range,
-					}
-					for _, n := range ref.MapKey.Value.Map.Nodes {
-						if n.MapKey == nil {
-							continue
+				if ref.MapKey != nil && ref.MapKey.Value.Map != nil {
+					// Without including descendants, just copy over the reserved
+					if !includeDescendants {
+						detachedMK.Value.Map = &d2ast.Map{
+							Range: ref.MapKey.Value.Map.Range,
 						}
-						if n.MapKey.Key != nil {
-							_, ok := d2graph.ReservedKeywords[n.MapKey.Key.Path[0].Unbox().ScalarString()]
-							if ok {
-								detachedMK.Value.Map.Nodes = append(detachedMK.Value.Map.Nodes, n)
+						for _, n := range ref.MapKey.Value.Map.Nodes {
+							if n.MapKey == nil {
+								continue
+							}
+							if n.MapKey.Key != nil {
+								_, ok := d2graph.ReservedKeywords[n.MapKey.Key.Path[0].Unbox().ScalarString()]
+								if ok {
+									detachedMK.Value.Map.Nodes = append(detachedMK.Value.Map.Nodes, n)
+								}
+							}
+						}
+						if len(detachedMK.Value.Map.Nodes) == 0 {
+							detachedMK.Value.Map = nil
+						}
+					} else {
+						// Usually copy everything as is when including descendants
+						// The exception is underscored keys, which need to be updated
+						for _, n := range ref.MapKey.Value.Map.Nodes {
+							if n.MapKey == nil {
+								continue
+							}
+							if n.MapKey.Key != nil {
+								if n.MapKey.Key.Path[0].Unbox().ScalarString() == "_" {
+									resolvedParent, resolvedScopeKey, err := d2graph.ResolveUnderscoreKey(d2graph.Key(n.MapKey.Key), obj)
+									if err != nil {
+										return nil, err
+									}
+
+									resolvedObj, ok := resolvedParent.HasChild(resolvedScopeKey)
+									if !ok {
+										return nil, errors.New("underscore key does not exist")
+									}
+
+									newPath, err := pathFromScopeKey(g, &d2ast.Key{Key: d2ast.MakeKeyPath(resolvedObj.AbsIDArray())}, ak2)
+									if err != nil {
+										return nil, err
+									}
+									n.MapKey.Key.Path = newPath
+								}
+							}
+							for _, e := range n.MapKey.Edges {
+								if e.Src.Path[0].Unbox().ScalarString() == "_" {
+									resolvedParent, resolvedScopeKey, err := d2graph.ResolveUnderscoreKey(d2graph.Key(e.Src), obj)
+									if err != nil {
+										return nil, err
+									}
+
+									resolvedObj, ok := resolvedParent.HasChild(resolvedScopeKey)
+									if !ok {
+										return nil, errors.New("underscore key does not exist")
+									}
+									newPath, err := pathFromScopeKey(g, &d2ast.Key{Key: d2ast.MakeKeyPath(resolvedObj.AbsIDArray())}, ak2)
+									if err != nil {
+										return nil, err
+									}
+									e.Src.Path = newPath
+								}
+								if e.Dst.Path[0].Unbox().ScalarString() == "_" {
+									resolvedParent, resolvedScopeKey, err := d2graph.ResolveUnderscoreKey(d2graph.Key(e.Dst), obj)
+									if err != nil {
+										return nil, err
+									}
+
+									resolvedObj, ok := resolvedParent.HasChild(resolvedScopeKey)
+									if !ok {
+										return nil, errors.New("underscore key does not exist")
+									}
+									newPath, err := pathFromScopeKey(g, &d2ast.Key{Key: d2ast.MakeKeyPath(resolvedObj.AbsIDArray())}, ak2)
+									if err != nil {
+										return nil, err
+									}
+									e.Dst.Path = newPath
+								}
 							}
 						}
 					}
-					if len(detachedMK.Value.Map.Nodes) == 0 {
-						detachedMK.Value.Map = nil
-					}
 				}
-
 				appendUniqueMapKey(toScope, detachedMK)
 			} else if len(ida) > 1 && (endsWithReserved || !isExplicit || go2.Contains(mostNestedRefs, ref)) {
 				// 2. Split
