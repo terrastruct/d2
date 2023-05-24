@@ -1629,12 +1629,7 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 										return nil, err
 									}
 
-									resolvedObj, ok := resolvedParent.HasChild(resolvedScopeKey)
-									if !ok {
-										return nil, errors.New("underscore key does not exist")
-									}
-
-									newPath, err := pathFromScopeKey(g, &d2ast.Key{Key: d2ast.MakeKeyPath(resolvedObj.AbsIDArray())}, ak2)
+									newPath, err := pathFromScopeKey(g, &d2ast.Key{Key: d2ast.MakeKeyPath(append(resolvedParent.AbsIDArray(), resolvedScopeKey...))}, ak2)
 									if err != nil {
 										return nil, err
 									}
@@ -1648,11 +1643,7 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 										return nil, err
 									}
 
-									resolvedObj, ok := resolvedParent.HasChild(resolvedScopeKey)
-									if !ok {
-										return nil, errors.New("underscore key does not exist")
-									}
-									newPath, err := pathFromScopeKey(g, &d2ast.Key{Key: d2ast.MakeKeyPath(resolvedObj.AbsIDArray())}, ak2)
+									newPath, err := pathFromScopeKey(g, &d2ast.Key{Key: d2ast.MakeKeyPath(append(resolvedParent.AbsIDArray(), resolvedScopeKey...))}, ak2)
 									if err != nil {
 										return nil, err
 									}
@@ -1664,11 +1655,7 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 										return nil, err
 									}
 
-									resolvedObj, ok := resolvedParent.HasChild(resolvedScopeKey)
-									if !ok {
-										return nil, errors.New("underscore key does not exist")
-									}
-									newPath, err := pathFromScopeKey(g, &d2ast.Key{Key: d2ast.MakeKeyPath(resolvedObj.AbsIDArray())}, ak2)
+									newPath, err := pathFromScopeKey(g, &d2ast.Key{Key: d2ast.MakeKeyPath(append(resolvedParent.AbsIDArray(), resolvedScopeKey...))}, ak2)
 									if err != nil {
 										return nil, err
 									}
