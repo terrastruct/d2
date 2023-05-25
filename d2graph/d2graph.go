@@ -1968,6 +1968,6 @@ func (obj *Object) IsMultiple() bool {
 	return obj.Style.Multiple != nil && obj.Style.Multiple.Value == "true"
 }
 
-func (obj *Object) IsThreeDee() bool {
+func (obj *Object) Is3d() bool {
 	return obj.Style.ThreeDee != nil && obj.Style.ThreeDee.Value == "true"
 }

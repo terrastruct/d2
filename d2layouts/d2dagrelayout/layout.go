@@ -168,10 +168,15 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				height += float64(obj.LabelDimensions.Height) + label.PADDING
 			}
 		}
-		if obj.Style.ThreeDee != nil && obj.Style.ThreeDee.Value == "true" {
-			height += d2target.THREE_DEE_OFFSET
+		// reserve extra space for 3d/multiple by padding dagre the larger dimensions
+		if obj.Is3d() {
+			if obj.Shape.Value == d2target.ShapeHexagon {
+				height += d2target.THREE_DEE_OFFSET / 2
+			} else {
+				height += d2target.THREE_DEE_OFFSET
+			}
 			width += d2target.THREE_DEE_OFFSET
-		} else if obj.Style.Multiple != nil && obj.Style.Multiple.Value == "true" {
+		} else if obj.IsMultiple() {
 			height += d2target.MULTIPLE_OFFSET
 			width += d2target.MULTIPLE_OFFSET
 		}
@@ -414,20 +419,27 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 	}
 
-	// separate loop so all descendants have initial placements
+	// remove the extra width/height we added for 3d/multiple after all objects have been placed
+	// and shift the shapes down accordingly
 	for _, obj := range g.Objects {
-		var offset float64
-		if obj.Style.ThreeDee != nil && obj.Style.ThreeDee.Value == "true" {
-			offset = d2target.THREE_DEE_OFFSET
-		} else if obj.Style.Multiple != nil && obj.Style.Multiple.Value == "true" {
-			offset = d2target.MULTIPLE_OFFSET
+		var offsetX, offsetY float64
+		if obj.Is3d() {
+			offsetX = d2target.THREE_DEE_OFFSET
+			offsetY = d2target.THREE_DEE_OFFSET
+			if obj.Shape.Value == d2target.ShapeHexagon {
+				offsetY = d2target.THREE_DEE_OFFSET / 2
+			}
+		} else if obj.IsMultiple() {
+			offsetX = d2target.MULTIPLE_OFFSET
+			offsetY = d2target.MULTIPLE_OFFSET
 		}
-		if offset != 0 {
-			obj.TopLeft.Y += offset
-			obj.ShiftDescendants(0, offset)
+
+		if offsetY != 0 {
+			obj.TopLeft.Y += offsetY
+			obj.ShiftDescendants(0, offsetY)
 			if !obj.IsContainer() {
-				obj.Width -= offset
-				obj.Height -= offset
+				obj.Width -= offsetX
+				obj.Height -= offsetY
 			}
 		}
 	}
@@ -481,9 +493,13 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		originalSrcTL := edge.Src.TopLeft.Copy()
 		originalDstTL := edge.Dst.TopLeft.Copy()
 		// if the edge passes through 3d/multiple, use the offset box for tracing to border
-		if edge.Src.IsThreeDee() {
+		if edge.Src.Is3d() {
+			offsetY := d2target.THREE_DEE_OFFSET
+			if edge.Src.Shape.Value == d2target.ShapeHexagon {
+				offsetY = d2target.THREE_DEE_OFFSET / 2
+			}
 			if start.X > edge.Src.TopLeft.X+d2target.THREE_DEE_OFFSET &&
-				start.Y < edge.Src.TopLeft.Y+edge.Src.Height-d2target.THREE_DEE_OFFSET {
+				start.Y < edge.Src.TopLeft.Y+edge.Src.Height-float64(offsetY) {
 				edge.Src.TopLeft.X += d2target.THREE_DEE_OFFSET
 				edge.Src.TopLeft.Y -= d2target.THREE_DEE_OFFSET
 			}
@@ -495,9 +511,13 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				edge.Src.TopLeft.Y -= d2target.MULTIPLE_OFFSET
 			}
 		}
-		if edge.Dst.IsThreeDee() {
+		if edge.Dst.Is3d() {
+			offsetY := d2target.THREE_DEE_OFFSET
+			if edge.Src.Shape.Value == d2target.ShapeHexagon {
+				offsetY = d2target.THREE_DEE_OFFSET / 2
+			}
 			if end.X > edge.Dst.TopLeft.X+d2target.THREE_DEE_OFFSET &&
-				end.Y < edge.Dst.TopLeft.Y+edge.Dst.Height-d2target.THREE_DEE_OFFSET {
+				end.Y < edge.Dst.TopLeft.Y+edge.Dst.Height-float64(offsetY) {
 				edge.Dst.TopLeft.X += d2target.THREE_DEE_OFFSET
 				edge.Dst.TopLeft.Y -= d2target.THREE_DEE_OFFSET
 			}

@@ -1186,9 +1186,14 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 		labelPosition := label.Position(targetShape.LabelPosition)
 		var box *geo.Box
 		if labelPosition.IsOutside() {
-			box = s.GetBox()
+			box = s.GetBox().Copy()
+			// if it is 3d/multiple, place label using box around those
 			if targetShape.ThreeDee {
-				box.TopLeft.Y -= d2target.THREE_DEE_OFFSET
+				offsetY := d2target.THREE_DEE_OFFSET
+				if targetShape.Type == d2target.ShapeHexagon {
+					offsetY /= 2
+				}
+				box.TopLeft.Y -= float64(offsetY)
 				box.Width += d2target.THREE_DEE_OFFSET
 			} else if targetShape.Multiple {
 				box.TopLeft.Y -= d2target.MULTIPLE_OFFSET
