@@ -244,8 +244,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		// dagre gives center of node
 		obj.TopLeft = geo.NewPoint(math.Round(dn.X-dn.Width/2), math.Round(dn.Y-dn.Height/2))
-		obj.Width = dn.Width
-		obj.Height = dn.Height
+		obj.Width = math.Ceil(dn.Width)
+		obj.Height = math.Ceil(dn.Height)
 
 		if obj.HasLabel() {
 			if len(obj.ChildrenArray) > 0 {
@@ -501,7 +501,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			if start.X > edge.Src.TopLeft.X+d2target.THREE_DEE_OFFSET &&
 				start.Y < edge.Src.TopLeft.Y+edge.Src.Height-float64(offsetY) {
 				edge.Src.TopLeft.X += d2target.THREE_DEE_OFFSET
-				edge.Src.TopLeft.Y -= d2target.THREE_DEE_OFFSET
+				edge.Src.TopLeft.Y -= float64(offsetY)
 			}
 		} else if edge.Src.IsMultiple() {
 			// if the edge is on the multiple part, use the multiple's box for tracing to border
@@ -519,7 +519,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			if end.X > edge.Dst.TopLeft.X+d2target.THREE_DEE_OFFSET &&
 				end.Y < edge.Dst.TopLeft.Y+edge.Dst.Height-float64(offsetY) {
 				edge.Dst.TopLeft.X += d2target.THREE_DEE_OFFSET
-				edge.Dst.TopLeft.Y -= d2target.THREE_DEE_OFFSET
+				edge.Dst.TopLeft.Y -= float64(offsetY)
 			}
 		} else if edge.Dst.IsMultiple() {
 			// if the edge is on the multiple part, use the multiple's box for tracing to border

@@ -296,7 +296,7 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 		connection.LabelPosition = *edge.LabelPosition
 	}
 	if edge.LabelPercentage != nil {
-		connection.LabelPercentage = *edge.LabelPercentage
+		connection.LabelPercentage = float64(float32(*edge.LabelPercentage))
 	}
 	connection.Route = make([]*geo.Point, 0, len(edge.Route))
 	for i := range edge.Route {
