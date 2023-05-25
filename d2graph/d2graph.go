@@ -1963,3 +1963,11 @@ func (obj *Object) ShiftDescendants(dx, dy float64) {
 		}
 	})
 }
+
+func (obj *Object) IsMultiple() bool {
+	return obj.Style.Multiple != nil && obj.Style.Multiple.Value == "true"
+}
+
+func (obj *Object) IsThreeDee() bool {
+	return obj.Style.ThreeDee != nil && obj.Style.ThreeDee.Value == "true"
+}

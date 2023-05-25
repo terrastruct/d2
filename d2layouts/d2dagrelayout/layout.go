@@ -414,6 +414,24 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 	}
 
+	// separate loop so all descendants have initial placements
+	for _, obj := range g.Objects {
+		var offset float64
+		if obj.Style.ThreeDee != nil && obj.Style.ThreeDee.Value == "true" {
+			offset = d2target.THREE_DEE_OFFSET
+		} else if obj.Style.Multiple != nil && obj.Style.Multiple.Value == "true" {
+			offset = d2target.MULTIPLE_OFFSET
+		}
+		if offset != 0 {
+			obj.TopLeft.Y += offset
+			obj.ShiftDescendants(0, offset)
+			if !obj.IsContainer() {
+				obj.Width -= offset
+				obj.Height -= offset
+			}
+		}
+	}
+
 	for _, edge := range g.Edges {
 		points := edge.Route
 		startIndex, endIndex := 0, len(points)-1
@@ -457,6 +475,38 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					end = intersections[0]
 					endIndex -= 1
 				}
+			}
+		}
+
+		originalSrcTL := edge.Src.TopLeft.Copy()
+		originalDstTL := edge.Dst.TopLeft.Copy()
+		// if the edge passes through 3d/multiple, use the offset box for tracing to border
+		if edge.Src.IsThreeDee() {
+			if start.X > edge.Src.TopLeft.X+d2target.THREE_DEE_OFFSET &&
+				start.Y < edge.Src.TopLeft.Y+edge.Src.Height-d2target.THREE_DEE_OFFSET {
+				edge.Src.TopLeft.X += d2target.THREE_DEE_OFFSET
+				edge.Src.TopLeft.Y -= d2target.THREE_DEE_OFFSET
+			}
+		} else if edge.Src.IsMultiple() {
+			// if the edge is on the multiple part, use the multiple's box for tracing to border
+			if start.X > edge.Src.TopLeft.X+d2target.MULTIPLE_OFFSET &&
+				start.Y < edge.Src.TopLeft.Y+edge.Src.Height-d2target.MULTIPLE_OFFSET {
+				edge.Src.TopLeft.X += d2target.MULTIPLE_OFFSET
+				edge.Src.TopLeft.Y -= d2target.MULTIPLE_OFFSET
+			}
+		}
+		if edge.Dst.IsThreeDee() {
+			if end.X > edge.Dst.TopLeft.X+d2target.THREE_DEE_OFFSET &&
+				end.Y < edge.Dst.TopLeft.Y+edge.Dst.Height-d2target.THREE_DEE_OFFSET {
+				edge.Dst.TopLeft.X += d2target.THREE_DEE_OFFSET
+				edge.Dst.TopLeft.Y -= d2target.THREE_DEE_OFFSET
+			}
+		} else if edge.Dst.IsMultiple() {
+			// if the edge is on the multiple part, use the multiple's box for tracing to border
+			if end.X > edge.Dst.TopLeft.X+d2target.MULTIPLE_OFFSET &&
+				end.Y < edge.Dst.TopLeft.Y+edge.Dst.Height-d2target.MULTIPLE_OFFSET {
+				edge.Dst.TopLeft.X += d2target.MULTIPLE_OFFSET
+				edge.Dst.TopLeft.Y -= d2target.MULTIPLE_OFFSET
 			}
 		}
 
@@ -524,24 +574,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		if edge.Label.Value != "" {
 			edge.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 		}
-	}
 
-	// separate loop so all descendants have initial placements
-	for _, obj := range g.Objects {
-		var offset float64
-		if obj.Style.ThreeDee != nil && obj.Style.ThreeDee.Value == "true" {
-			offset = d2target.THREE_DEE_OFFSET
-		} else if obj.Style.Multiple != nil && obj.Style.Multiple.Value == "true" {
-			offset = d2target.MULTIPLE_OFFSET
-		}
-		if offset != 0 {
-			obj.TopLeft.Y += offset
-			obj.ShiftDescendants(0, offset)
-			if !obj.IsContainer() {
-				obj.Height -= offset
-				obj.Width -= offset
-			}
-		}
+		// undo 3d/multiple offset
+		edge.Src.TopLeft.X = originalSrcTL.X
+		edge.Src.TopLeft.Y = originalSrcTL.Y
+		edge.Dst.TopLeft.X = originalDstTL.X
+		edge.Dst.TopLeft.Y = originalDstTL.Y
 	}
 
 	return nil
