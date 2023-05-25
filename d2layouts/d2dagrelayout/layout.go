@@ -168,7 +168,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				height += float64(obj.LabelDimensions.Height) + label.PADDING
 			}
 		}
-		// reserve extra space for 3d/multiple by padding dagre the larger dimensions
+		// reserve extra space for 3d/multiple by providing dagre the larger dimensions
 		if obj.Is3d() {
 			if obj.Shape.Value == d2target.ShapeHexagon {
 				height += d2target.THREE_DEE_OFFSET / 2
@@ -419,7 +419,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 	}
 
-	// remove the extra width/height we added for 3d/multiple after all objects have been placed
+	// remove the extra width/height we added for 3d/multiple after all objects/connections are placed
 	// and shift the shapes down accordingly
 	for _, obj := range g.Objects {
 		var offsetX, offsetY float64
