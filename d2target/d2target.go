@@ -179,7 +179,11 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 		}
 
 		if targetShape.ThreeDee {
-			y1 = go2.Min(y1, targetShape.Pos.Y-THREE_DEE_OFFSET-targetShape.StrokeWidth)
+			offsetY := THREE_DEE_OFFSET
+			if targetShape.Type == ShapeHexagon {
+				offsetY /= 2
+			}
+			y1 = go2.Min(y1, targetShape.Pos.Y-offsetY-targetShape.StrokeWidth)
 			x2 = go2.Max(x2, targetShape.Pos.X+THREE_DEE_OFFSET+targetShape.Width+targetShape.StrokeWidth)
 		}
 		if targetShape.Multiple {
