@@ -1971,3 +1971,19 @@ func (obj *Object) IsMultiple() bool {
 func (obj *Object) Is3d() bool {
 	return obj.Style.ThreeDee != nil && obj.Style.ThreeDee.Value == "true"
 }
+
+// return width/height adjustments to account for shapes with 3d or multiple
+func (obj *Object) GetDimensionAdjustments() (dx, dy float64) {
+	if obj.Is3d() {
+		if obj.Shape.Value == d2target.ShapeHexagon {
+			dy = d2target.THREE_DEE_OFFSET / 2
+		} else {
+			dy = d2target.THREE_DEE_OFFSET
+		}
+		dx = d2target.THREE_DEE_OFFSET
+	} else if obj.IsMultiple() {
+		dy = d2target.MULTIPLE_OFFSET
+		dx = d2target.MULTIPLE_OFFSET
+	}
+	return dx, dy
+}

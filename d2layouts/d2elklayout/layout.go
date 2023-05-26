@@ -223,17 +223,9 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			width = go2.Max(width, float64(obj.LabelDimensions.Width))
 		}
 		// reserve extra space for 3d/multiple by providing elk the larger dimensions
-		if obj.Is3d() {
-			if obj.Shape.Value == d2target.ShapeHexagon {
-				height += d2target.THREE_DEE_OFFSET / 2
-			} else {
-				height += d2target.THREE_DEE_OFFSET
-			}
-			width += d2target.THREE_DEE_OFFSET
-		} else if obj.IsMultiple() {
-			height += d2target.MULTIPLE_OFFSET
-			width += d2target.MULTIPLE_OFFSET
-		}
+		dx, dy := obj.GetDimensionAdjustments()
+		width += dx
+		height += dy
 
 		n := &ELKNode{
 			ID:     obj.AbsID(),
@@ -472,24 +464,13 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	// remove the extra width/height we added for 3d/multiple after all objects/connections are placed
 	// and shift the shapes down accordingly
 	for _, obj := range g.Objects {
-		var offsetX, offsetY float64
-		if obj.Is3d() {
-			offsetX = d2target.THREE_DEE_OFFSET
-			offsetY = d2target.THREE_DEE_OFFSET
-			if obj.Shape.Value == d2target.ShapeHexagon {
-				offsetY = d2target.THREE_DEE_OFFSET / 2
-			}
-		} else if obj.IsMultiple() {
-			offsetX = d2target.MULTIPLE_OFFSET
-			offsetY = d2target.MULTIPLE_OFFSET
-		}
-
-		if offsetY != 0 {
-			obj.TopLeft.Y += offsetY
-			obj.ShiftDescendants(0, offsetY)
+		dx, dy := obj.GetDimensionAdjustments()
+		if dx != 0 || dy != 0 {
+			obj.TopLeft.Y += dy
+			obj.ShiftDescendants(0, dy)
 			if !obj.IsContainer() {
-				obj.Width -= offsetX
-				obj.Height -= offsetY
+				obj.Width -= dx
+				obj.Height -= dy
 			}
 		}
 	}
@@ -501,43 +482,22 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		start := points[startIndex]
 		end := points[endIndex]
 
-		originalSrcTL := edge.Src.TopLeft.Copy()
-		originalDstTL := edge.Dst.TopLeft.Copy()
+		var originalSrcTL, originalDstTL *geo.Point
 		// if the edge passes through 3d/multiple, use the offset box for tracing to border
-		if edge.Src.Is3d() {
-			offsetY := d2target.THREE_DEE_OFFSET
-			if edge.Src.Shape.Value == d2target.ShapeHexagon {
-				offsetY = d2target.THREE_DEE_OFFSET / 2
-			}
-			if start.X > edge.Src.TopLeft.X+d2target.THREE_DEE_OFFSET &&
-				start.Y < edge.Src.TopLeft.Y+edge.Src.Height-float64(offsetY) {
-				edge.Src.TopLeft.X += d2target.THREE_DEE_OFFSET
-				edge.Src.TopLeft.Y -= float64(offsetY)
-			}
-		} else if edge.Src.IsMultiple() {
-			// if the edge is on the multiple part, use the multiple's box for tracing to border
-			if start.X > edge.Src.TopLeft.X+d2target.MULTIPLE_OFFSET &&
-				start.Y < edge.Src.TopLeft.Y+edge.Src.Height-d2target.MULTIPLE_OFFSET {
-				edge.Src.TopLeft.X += d2target.MULTIPLE_OFFSET
-				edge.Src.TopLeft.Y -= d2target.MULTIPLE_OFFSET
+		if srcDx, srcDy := edge.Src.GetDimensionAdjustments(); srcDx != 0 || srcDy != 0 {
+			if start.X > edge.Src.TopLeft.X+srcDx &&
+				start.Y < edge.Src.TopLeft.Y+edge.Src.Height-srcDy {
+				originalSrcTL = edge.Src.TopLeft.Copy()
+				edge.Src.TopLeft.X += srcDx
+				edge.Src.TopLeft.Y -= srcDy
 			}
 		}
-		if edge.Dst.Is3d() {
-			offsetY := d2target.THREE_DEE_OFFSET
-			if edge.Src.Shape.Value == d2target.ShapeHexagon {
-				offsetY = d2target.THREE_DEE_OFFSET / 2
-			}
-			if end.X > edge.Dst.TopLeft.X+d2target.THREE_DEE_OFFSET &&
-				end.Y < edge.Dst.TopLeft.Y+edge.Dst.Height-float64(offsetY) {
-				edge.Dst.TopLeft.X += d2target.THREE_DEE_OFFSET
-				edge.Dst.TopLeft.Y -= float64(offsetY)
-			}
-		} else if edge.Dst.IsMultiple() {
-			// if the edge is on the multiple part, use the multiple's box for tracing to border
-			if end.X > edge.Dst.TopLeft.X+d2target.MULTIPLE_OFFSET &&
-				end.Y < edge.Dst.TopLeft.Y+edge.Dst.Height-d2target.MULTIPLE_OFFSET {
-				edge.Dst.TopLeft.X += d2target.MULTIPLE_OFFSET
-				edge.Dst.TopLeft.Y -= d2target.MULTIPLE_OFFSET
+		if dstDx, dstDy := edge.Dst.GetDimensionAdjustments(); dstDx != 0 || dstDy != 0 {
+			if end.X > edge.Dst.TopLeft.X+dstDx &&
+				end.Y < edge.Dst.TopLeft.Y+edge.Dst.Height-dstDy {
+				originalDstTL = edge.Dst.TopLeft.Copy()
+				edge.Dst.TopLeft.X += dstDx
+				edge.Dst.TopLeft.Y -= dstDy
 			}
 		}
 
@@ -555,10 +515,14 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		edge.Route = points
 
 		// undo 3d/multiple offset
-		edge.Src.TopLeft.X = originalSrcTL.X
-		edge.Src.TopLeft.Y = originalSrcTL.Y
-		edge.Dst.TopLeft.X = originalDstTL.X
-		edge.Dst.TopLeft.Y = originalDstTL.Y
+		if originalSrcTL != nil {
+			edge.Src.TopLeft.X = originalSrcTL.X
+			edge.Src.TopLeft.Y = originalSrcTL.Y
+		}
+		if originalDstTL != nil {
+			edge.Dst.TopLeft.X = originalDstTL.X
+			edge.Dst.TopLeft.Y = originalDstTL.Y
+		}
 	}
 
 	deleteBends(g)
@@ -596,21 +560,12 @@ func deleteBends(g *d2graph.Graph) {
 				endpoint = e.Dst
 			}
 
-			var padding int
-			if endpoint.Is3d() {
-				padding = d2target.THREE_DEE_OFFSET
-				if endpoint.Shape.Value == d2target.ShapeHexagon {
-					padding /= 2
-				}
-			} else if endpoint.IsMultiple() {
-				padding = d2target.MULTIPLE_OFFSET
-			}
-
 			isHorizontal := math.Ceil(start.Y) == math.Ceil(corner.Y)
+			dx, dy := endpoint.GetDimensionAdjustments()
 
 			// Make sure it's still attached
 			if isHorizontal {
-				if end.Y <= endpoint.TopLeft.Y+10-float64(padding) {
+				if end.Y <= endpoint.TopLeft.Y+10-dy {
 					continue
 				}
 				if end.Y >= endpoint.TopLeft.Y+endpoint.Height-10 {
@@ -620,7 +575,7 @@ func deleteBends(g *d2graph.Graph) {
 				if end.X <= endpoint.TopLeft.X+10 {
 					continue
 				}
-				if end.X >= endpoint.TopLeft.X+endpoint.Width-10+float64(padding) {
+				if end.X >= endpoint.TopLeft.X+endpoint.Width-10+dx {
 					continue
 				}
 			}
