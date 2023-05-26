@@ -139,7 +139,9 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.L
 			}
 		}
 
-		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+		if obj.LabelPosition == nil {
+			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+		}
 		gridDiagrams[obj.AbsID()] = gd
 
 		for _, o := range gd.objects {
@@ -191,10 +193,17 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
 	// position labels and icons
 	for _, o := range gd.objects {
 		if o.Icon != nil {
-			o.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-			o.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			// don't overwrite position if nested graph layout positioned label/icon
+			if o.LabelPosition == nil {
+				o.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+			}
+			if o.IconPosition == nil {
+				o.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
 		} else {
-			o.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			if o.LabelPosition == nil {
+				o.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
 		}
 	}
 
