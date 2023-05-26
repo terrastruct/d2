@@ -206,6 +206,7 @@ let us know and we'll be happy to include it here!
 - **Obsidian plugin**: [https://github.com/terrastruct/d2-obsidian](https://github.com/terrastruct/d2-obsidian)
 - **Slack app**: [https://d2lang.com/tour/slack](https://d2lang.com/tour/slack)
 - **Discord plugin**: [https://d2lang.com/tour/discord](https://d2lang.com/tour/discord)
+- **Emacs D2 Mode**: [https://github.com/andorsk/d2-mode](https://github.com/andorsk/d2-mode)
 
 ### Community plugins
 
