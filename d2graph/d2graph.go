@@ -1918,6 +1918,8 @@ func (obj *Object) IterDescendants(apply func(parent, child *Object)) {
 	}
 }
 
+// ShiftDescendants moves Object's descendants (not including itself)
+// descendants' edges are also moved by the same dx and dy (the whole route is moved if both ends are a descendant)
 func (obj *Object) ShiftDescendants(dx, dy float64) {
 	// also need to shift edges of descendants that are shifted
 	movedEdges := make(map[*Edge]struct{})
@@ -1968,13 +1970,13 @@ func (obj *Object) IsMultiple() bool {
 	return obj.Style.Multiple != nil && obj.Style.Multiple.Value == "true"
 }
 
-func (obj *Object) Is3d() bool {
+func (obj *Object) Is3D() bool {
 	return obj.Style.ThreeDee != nil && obj.Style.ThreeDee.Value == "true"
 }
 
-// return width/height adjustments to account for shapes with 3d or multiple
-func (obj *Object) GetDimensionAdjustments() (dx, dy float64) {
-	if obj.Is3d() {
+// GetModifierElementAdjustments returns width/height adjustments to account for shapes with 3d or multiple
+func (obj *Object) GetModifierElementAdjustments() (dx, dy float64) {
+	if obj.Is3D() {
 		if obj.Shape.Value == d2target.ShapeHexagon {
 			dy = d2target.THREE_DEE_OFFSET / 2
 		} else {

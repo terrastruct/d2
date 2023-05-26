@@ -169,7 +169,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 		// reserve extra space for 3d/multiple by providing dagre the larger dimensions
-		dx, dy := obj.GetDimensionAdjustments()
+		dx, dy := obj.GetModifierElementAdjustments()
 		width += dx
 		height += dy
 
@@ -415,7 +415,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	// remove the extra width/height we added for 3d/multiple after all objects/connections are placed
 	// and shift the shapes down accordingly
 	for _, obj := range g.Objects {
-		dx, dy := obj.GetDimensionAdjustments()
+		dx, dy := obj.GetModifierElementAdjustments()
 		if dx != 0 || dy != 0 {
 			obj.TopLeft.Y += dy
 			obj.ShiftDescendants(0, dy)
@@ -474,7 +474,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		var originalSrcTL, originalDstTL *geo.Point
 		// if the edge passes through 3d/multiple, use the offset box for tracing to border
-		if srcDx, srcDy := edge.Src.GetDimensionAdjustments(); srcDx != 0 || srcDy != 0 {
+		if srcDx, srcDy := edge.Src.GetModifierElementAdjustments(); srcDx != 0 || srcDy != 0 {
 			if start.X > edge.Src.TopLeft.X+srcDx &&
 				start.Y < edge.Src.TopLeft.Y+edge.Src.Height-srcDy {
 				originalSrcTL = edge.Src.TopLeft.Copy()
@@ -482,7 +482,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				edge.Src.TopLeft.Y -= srcDy
 			}
 		}
-		if dstDx, dstDy := edge.Dst.GetDimensionAdjustments(); dstDx != 0 || dstDy != 0 {
+		if dstDx, dstDy := edge.Dst.GetModifierElementAdjustments(); dstDx != 0 || dstDy != 0 {
 			if end.X > edge.Dst.TopLeft.X+dstDx &&
 				end.Y < edge.Dst.TopLeft.Y+edge.Dst.Height-dstDy {
 				originalDstTL = edge.Dst.TopLeft.Copy()
