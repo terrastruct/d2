@@ -83,8 +83,9 @@ type watcher struct {
 }
 
 type compileResult struct {
-	SVG string `json:"svg"`
-	Err string `json:"err"`
+	SVG   string `json:"svg"`
+	NoFit bool   `json:"noFit"`
+	Err   string `json:"err"`
 }
 
 func newWatcher(ctx context.Context, ms *xmain.State, opts watcherOpts) (*watcher, error) {
@@ -372,8 +373,9 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.ms.Log.Error.Print(errs)
 		}
 		w.broadcast(&compileResult{
-			SVG: string(svg),
-			Err: errs,
+			SVG:   string(svg),
+			NoFit: w.renderOpts.SetDimensions,
+			Err:   errs,
 		})
 
 		if firstCompile {

@@ -35,12 +35,14 @@ function init(reconnectDelay) {
       let width = parseInt(svgEl.getAttribute("width"), 10);
       let height = parseInt(svgEl.getAttribute("height"), 10);
       if (isInit) {
-        if (width > height) {
-          if (width > window.innerWidth) {
-            ratio = window.innerWidth / width;
+        if (!msg.noFit) {
+          if (width > height) {
+            if (width > window.innerWidth) {
+              ratio = window.innerWidth / width;
+            }
+          } else if (height > window.innerHeight) {
+            ratio = window.innerHeight / height;
           }
-        } else if (height > window.innerHeight) {
-          ratio = window.innerHeight / height;
         }
         // Scale svg fit to zoom
         isInit = false;
