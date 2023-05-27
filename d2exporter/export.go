@@ -11,6 +11,7 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/lib/color"
+	"oss.terrastruct.com/d2/lib/geo"
 )
 
 func Export(ctx context.Context, g *d2graph.Graph, fontFamily *d2fonts.FontFamily) (*d2target.Diagram, error) {
@@ -295,9 +296,16 @@ func toConnection(edge *d2graph.Edge, theme *d2themes.Theme) d2target.Connection
 		connection.LabelPosition = *edge.LabelPosition
 	}
 	if edge.LabelPercentage != nil {
-		connection.LabelPercentage = *edge.LabelPercentage
+		connection.LabelPercentage = float64(float32(*edge.LabelPercentage))
 	}
-	connection.Route = edge.Route
+	connection.Route = make([]*geo.Point, 0, len(edge.Route))
+	for i := range edge.Route {
+		p := edge.Route[i].Copy()
+		p.TruncateDecimals()
+		p.TruncateFloat32()
+		connection.Route = append(connection.Route, p)
+	}
+
 	connection.IsCurve = edge.IsCurve
 
 	connection.Src = edge.Src.AbsID()

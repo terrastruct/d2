@@ -8,7 +8,7 @@
       "type": "hexagon",
       "pos": {
         "x": 12,
-        "y": 12
+        "y": 19
       },
       "width": 128,
       "height": 69,
@@ -49,7 +49,7 @@
       "type": "rectangle",
       "pos": {
         "x": 39,
-        "y": 315
+        "y": 352
       },
       "width": 73,
       "height": 66,
@@ -90,7 +90,7 @@
       "type": "rectangle",
       "pos": {
         "x": 29,
-        "y": 151
+        "y": 173
       },
       "width": 94,
       "height": 94,
@@ -153,12 +153,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 76,
-          "y": 81
+          "x": 84,
+          "y": 88
         },
         {
-          "x": 76,
-          "y": 151
+          "x": 83.5,
+          "y": 158
         }
       ],
       "animated": false,
@@ -191,12 +191,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 76,
-          "y": 245
+          "x": 83.5,
+          "y": 267
         },
         {
-          "x": 76,
-          "y": 315
+          "x": 83.5,
+          "y": 337
         }
       ],
       "animated": false,

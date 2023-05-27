@@ -159,7 +159,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		id := obj.AbsID()
 		idToObj[id] = obj
 
-		height := obj.Height
+		width, height := obj.Width, obj.Height
 		if obj.HasLabel() {
 			if obj.HasOutsideBottomLabel() || obj.Icon != nil {
 				height += float64(obj.LabelDimensions.Height) + label.PADDING
@@ -168,7 +168,12 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				height += float64(obj.LabelDimensions.Height) + label.PADDING
 			}
 		}
-		loadScript += generateAddNodeLine(id, int(obj.Width), int(height))
+		// reserve extra space for 3d/multiple by providing dagre the larger dimensions
+		dx, dy := obj.GetModifierElementAdjustments()
+		width += dx
+		height += dy
+
+		loadScript += generateAddNodeLine(id, int(width), int(height))
 		if obj.Parent != g.Root {
 			loadScript += generateAddParentLine(id, obj.Parent.AbsID())
 		}
@@ -232,8 +237,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		// dagre gives center of node
 		obj.TopLeft = geo.NewPoint(math.Round(dn.X-dn.Width/2), math.Round(dn.Y-dn.Height/2))
-		obj.Width = dn.Width
-		obj.Height = dn.Height
+		obj.Width = math.Ceil(dn.Width)
+		obj.Height = math.Ceil(dn.Height)
 
 		if obj.HasLabel() {
 			if len(obj.ChildrenArray) > 0 {
@@ -407,6 +412,20 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 	}
 
+	// remove the extra width/height we added for 3d/multiple after all objects/connections are placed
+	// and shift the shapes down accordingly
+	for _, obj := range g.Objects {
+		dx, dy := obj.GetModifierElementAdjustments()
+		if dx != 0 || dy != 0 {
+			obj.TopLeft.Y += dy
+			obj.ShiftDescendants(0, dy)
+			if !obj.IsContainer() {
+				obj.Width -= dx
+				obj.Height -= dy
+			}
+		}
+	}
+
 	for _, edge := range g.Edges {
 		points := edge.Route
 		startIndex, endIndex := 0, len(points)-1
@@ -450,6 +469,25 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 					end = intersections[0]
 					endIndex -= 1
 				}
+			}
+		}
+
+		var originalSrcTL, originalDstTL *geo.Point
+		// if the edge passes through 3d/multiple, use the offset box for tracing to border
+		if srcDx, srcDy := edge.Src.GetModifierElementAdjustments(); srcDx != 0 || srcDy != 0 {
+			if start.X > edge.Src.TopLeft.X+srcDx &&
+				start.Y < edge.Src.TopLeft.Y+edge.Src.Height-srcDy {
+				originalSrcTL = edge.Src.TopLeft.Copy()
+				edge.Src.TopLeft.X += srcDx
+				edge.Src.TopLeft.Y -= srcDy
+			}
+		}
+		if dstDx, dstDy := edge.Dst.GetModifierElementAdjustments(); dstDx != 0 || dstDy != 0 {
+			if end.X > edge.Dst.TopLeft.X+dstDx &&
+				end.Y < edge.Dst.TopLeft.Y+edge.Dst.Height-dstDy {
+				originalDstTL = edge.Dst.TopLeft.Copy()
+				edge.Dst.TopLeft.X += dstDx
+				edge.Dst.TopLeft.Y -= dstDy
 			}
 		}
 
@@ -516,6 +554,16 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		// compile needs to assign edge label positions
 		if edge.Label.Value != "" {
 			edge.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+		}
+
+		// undo 3d/multiple offset
+		if originalSrcTL != nil {
+			edge.Src.TopLeft.X = originalSrcTL.X
+			edge.Src.TopLeft.Y = originalSrcTL.Y
+		}
+		if originalDstTL != nil {
+			edge.Dst.TopLeft.X = originalDstTL.X
+			edge.Dst.TopLeft.Y = originalDstTL.Y
 		}
 	}
 

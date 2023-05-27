@@ -295,3 +295,13 @@ func (a *Point) Interpolate(b *Point, t float64) *Point {
 		a.Y*(1.0-t)+b.Y*t,
 	)
 }
+
+func (p *Point) TruncateFloat32() {
+	p.X = float64(float32(p.X))
+	p.Y = float64(float32(p.Y))
+}
+
+func (p *Point) TruncateDecimals() {
+	p.X = TruncateDecimals(p.X)
+	p.Y = TruncateDecimals(p.Y)
+}

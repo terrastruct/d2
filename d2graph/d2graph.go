@@ -1917,3 +1917,75 @@ func (obj *Object) IterDescendants(apply func(parent, child *Object)) {
 		c.IterDescendants(apply)
 	}
 }
+
+// ShiftDescendants moves Object's descendants (not including itself)
+// descendants' edges are also moved by the same dx and dy (the whole route is moved if both ends are a descendant)
+func (obj *Object) ShiftDescendants(dx, dy float64) {
+	// also need to shift edges of descendants that are shifted
+	movedEdges := make(map[*Edge]struct{})
+	for _, e := range obj.Graph.Edges {
+		isSrcDesc := e.Src.IsDescendantOf(obj)
+		isDstDesc := e.Dst.IsDescendantOf(obj)
+
+		if isSrcDesc && isDstDesc {
+			movedEdges[e] = struct{}{}
+			for _, p := range e.Route {
+				p.X += dx
+				p.Y += dy
+			}
+		}
+	}
+
+	obj.IterDescendants(func(_, curr *Object) {
+		curr.TopLeft.X += dx
+		curr.TopLeft.Y += dy
+		for _, e := range obj.Graph.Edges {
+			if _, ok := movedEdges[e]; ok {
+				continue
+			}
+			isSrc := e.Src == curr
+			isDst := e.Dst == curr
+
+			if isSrc && isDst {
+				for _, p := range e.Route {
+					p.X += dx
+					p.Y += dy
+				}
+			} else if isSrc {
+				e.Route[0].X += dx
+				e.Route[0].Y += dy
+			} else if isDst {
+				e.Route[len(e.Route)-1].X += dx
+				e.Route[len(e.Route)-1].Y += dy
+			}
+
+			if isSrc || isDst {
+				movedEdges[e] = struct{}{}
+			}
+		}
+	})
+}
+
+func (obj *Object) IsMultiple() bool {
+	return obj.Style.Multiple != nil && obj.Style.Multiple.Value == "true"
+}
+
+func (obj *Object) Is3D() bool {
+	return obj.Style.ThreeDee != nil && obj.Style.ThreeDee.Value == "true"
+}
+
+// GetModifierElementAdjustments returns width/height adjustments to account for shapes with 3d or multiple
+func (obj *Object) GetModifierElementAdjustments() (dx, dy float64) {
+	if obj.Is3D() {
+		if obj.Shape.Value == d2target.ShapeHexagon {
+			dy = d2target.THREE_DEE_OFFSET / 2
+		} else {
+			dy = d2target.THREE_DEE_OFFSET
+		}
+		dx = d2target.THREE_DEE_OFFSET
+	} else if obj.IsMultiple() {
+		dy = d2target.MULTIPLE_OFFSET
+		dx = d2target.MULTIPLE_OFFSET
+	}
+	return dx, dy
+}

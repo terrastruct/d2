@@ -2723,6 +2723,8 @@ scenarios: {
 		loadFromFile(t, "grid_large_checkered"),
 		loadFromFile(t, "grid_nested"),
 		loadFromFile(t, "grid_nested_gap0"),
+		loadFromFile(t, "multiple_offset"),
+		loadFromFile(t, "multiple_offset_left"),
 	}
 
 	runa(t, tcs)
