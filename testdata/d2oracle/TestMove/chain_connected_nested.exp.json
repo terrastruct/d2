@@ -10,9 +10,9 @@
             "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:0:0-0:11:11",
             "edges": [
               {
-                "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:0:0-0:7:7",
+                "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:0:0-0:6:6",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:0:0-0:2:2",
+                  "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:0:0-0:1:1",
                   "path": [
                     {
                       "unquoted_string": {
@@ -29,7 +29,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:4:4-0:7:7",
+                  "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:5:5-0:6:6",
                   "path": [
                     {
                       "unquoted_string": {
@@ -47,9 +47,9 @@
                 "dst_arrow": ">"
               },
               {
-                "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:4:4-0:11:11",
+                "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:5:5-0:11:11",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:4:4-0:7:7",
+                  "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:5:5-0:6:6",
                   "path": [
                     {
                       "unquoted_string": {
@@ -66,7 +66,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:9:9-0:11:11",
+                  "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:10:10-0:11:11",
                   "path": [
                     {
                       "unquoted_string": {
@@ -116,13 +116,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -141,12 +141,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -158,6 +152,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -175,12 +173,6 @@
       },
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -192,6 +184,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -212,14 +208,10 @@
       {
         "id": "z",
         "id_val": "z",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:0:0-0:2:2",
+              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:0:0-0:1:1",
               "path": [
                 {
                   "unquoted_string": {
@@ -239,7 +231,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:9:9-0:11:11",
+              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:10:10-0:11:11",
               "path": [
                 {
                   "unquoted_string": {
@@ -262,6 +254,10 @@
           "label": {
             "value": "z"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -279,14 +275,10 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:4:4-0:7:7",
+              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:5:5-0:6:6",
               "path": [
                 {
                   "unquoted_string": {
@@ -306,7 +298,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:4:4-0:7:7",
+              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested.d2,0:5:5-0:6:6",
               "path": [
                 {
                   "unquoted_string": {
@@ -329,6 +321,10 @@
           "label": {
             "value": "x"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -346,10 +342,6 @@
       {
         "id": "y",
         "id_val": "y",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -375,6 +367,10 @@
         "attributes": {
           "label": {
             "value": "y"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

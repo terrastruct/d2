@@ -18,6 +18,8 @@ type SpecialRules struct {
 	OuterContainerDoubleBorder bool `json:"outerContainerDoubleBorder"`
 	ContainerDots              bool `json:"containerDots"`
 	CapsLock                   bool `json:"capsLock"`
+
+	AllPaper bool `json:"allPaper"`
 }
 
 func (t *Theme) IsDark() bool {
@@ -76,6 +78,16 @@ var WarmNeutral = Neutral{
 }
 
 var DarkNeutral = Neutral{
+	N1: "#F4F6FA",
+	N2: "#BBBEC9",
+	N3: "#868A96",
+	N4: "#676D7D",
+	N5: "#3A3D49",
+	N6: "#191C28",
+	N7: "#000410",
+}
+
+var DarkMauveNeutral = Neutral{
 	N1: "#CDD6F4",
 	N2: "#BAC2DE",
 	N3: "#A6ADC8",

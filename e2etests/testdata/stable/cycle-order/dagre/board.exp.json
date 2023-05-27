@@ -1,0 +1,1696 @@
+{
+  "name": "",
+  "isFolderOnly": false,
+  "fontFamily": "SourceSansPro",
+  "shapes": [
+    {
+      "id": "Plan",
+      "type": "rectangle",
+      "classes": [
+        "group"
+      ],
+      "pos": {
+        "x": 0,
+        "y": 41
+      },
+      "width": 170,
+      "height": 216,
+      "opacity": 1,
+      "strokeDash": 5,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "transparent",
+      "stroke": "B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Plan",
+      "fontSize": 28,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 50,
+      "labelHeight": 36,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "Code",
+      "type": "rectangle",
+      "classes": [
+        "group"
+      ],
+      "pos": {
+        "x": 270,
+        "y": 41
+      },
+      "width": 170,
+      "height": 117,
+      "opacity": 1,
+      "strokeDash": 5,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "transparent",
+      "stroke": "B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Code",
+      "fontSize": 28,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 59,
+      "labelHeight": 36,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "Build",
+      "type": "rectangle",
+      "classes": [
+        "group"
+      ],
+      "pos": {
+        "x": 540,
+        "y": 41
+      },
+      "width": 170,
+      "height": 117,
+      "opacity": 1,
+      "strokeDash": 5,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "transparent",
+      "stroke": "B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Build",
+      "fontSize": 28,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 58,
+      "labelHeight": 36,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "Test",
+      "type": "rectangle",
+      "classes": [
+        "group"
+      ],
+      "pos": {
+        "x": 810,
+        "y": 41
+      },
+      "width": 170,
+      "height": 117,
+      "opacity": 1,
+      "strokeDash": 5,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "transparent",
+      "stroke": "B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Test",
+      "fontSize": 28,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 51,
+      "labelHeight": 36,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "Check",
+      "type": "rectangle",
+      "classes": [
+        "group"
+      ],
+      "pos": {
+        "x": 1080,
+        "y": 41
+      },
+      "width": 170,
+      "height": 117,
+      "opacity": 1,
+      "strokeDash": 5,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "transparent",
+      "stroke": "B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Check",
+      "fontSize": 28,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 71,
+      "labelHeight": 36,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "Release",
+      "type": "rectangle",
+      "classes": [
+        "group"
+      ],
+      "pos": {
+        "x": 1350,
+        "y": 41
+      },
+      "width": 170,
+      "height": 117,
+      "opacity": 1,
+      "strokeDash": 5,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "transparent",
+      "stroke": "B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Release",
+      "fontSize": 28,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 88,
+      "labelHeight": 36,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "Deploy",
+      "type": "rectangle",
+      "classes": [
+        "group"
+      ],
+      "pos": {
+        "x": 1620,
+        "y": 41
+      },
+      "width": 170,
+      "height": 117,
+      "opacity": 1,
+      "strokeDash": 5,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "transparent",
+      "stroke": "B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Deploy",
+      "fontSize": 28,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 80,
+      "labelHeight": 36,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "Operate",
+      "type": "rectangle",
+      "classes": [
+        "group"
+      ],
+      "pos": {
+        "x": 1890,
+        "y": 41
+      },
+      "width": 170,
+      "height": 117,
+      "opacity": 1,
+      "strokeDash": 5,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "transparent",
+      "stroke": "B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Operate",
+      "fontSize": 28,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 94,
+      "labelHeight": 36,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "Monitor",
+      "type": "rectangle",
+      "classes": [
+        "group"
+      ],
+      "pos": {
+        "x": 2160,
+        "y": 41
+      },
+      "width": 170,
+      "height": 216,
+      "opacity": 1,
+      "strokeDash": 5,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "transparent",
+      "stroke": "B2",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Monitor",
+      "fontSize": 28,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 91,
+      "labelHeight": 36,
+      "labelPosition": "OUTSIDE_TOP_CENTER",
+      "zIndex": 0,
+      "level": 1
+    },
+    {
+      "id": "Plan.ClickUp",
+      "type": "image",
+      "classes": [
+        "icon"
+      ],
+      "pos": {
+        "x": 50,
+        "y": 111
+      },
+      "width": 70,
+      "height": 70,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N7",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": {
+        "Scheme": "https",
+        "Opaque": "",
+        "User": null,
+        "Host": "avatars.githubusercontent.com",
+        "Path": "/u/27873294",
+        "RawPath": "",
+        "OmitHost": false,
+        "ForceQuery": false,
+        "RawQuery": "s=200&v=4",
+        "Fragment": "",
+        "RawFragment": ""
+      },
+      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "ClickUp",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 55,
+      "labelHeight": 21,
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "Code.Git",
+      "type": "image",
+      "classes": [
+        "icon"
+      ],
+      "pos": {
+        "x": 320,
+        "y": 52
+      },
+      "width": 70,
+      "height": 70,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N7",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": {
+        "Scheme": "https",
+        "Opaque": "",
+        "User": null,
+        "Host": "icons.terrastruct.com",
+        "Path": "/dev/git.svg",
+        "RawPath": "/dev%2Fgit.svg",
+        "OmitHost": false,
+        "ForceQuery": false,
+        "RawQuery": "",
+        "Fragment": "",
+        "RawFragment": ""
+      },
+      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Git",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 21,
+      "labelHeight": 21,
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "Build.Docker",
+      "type": "image",
+      "classes": [
+        "icon"
+      ],
+      "pos": {
+        "x": 590,
+        "y": 52
+      },
+      "width": 70,
+      "height": 70,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N7",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": {
+        "Scheme": "https",
+        "Opaque": "",
+        "User": null,
+        "Host": "icons.terrastruct.com",
+        "Path": "/dev/docker.svg",
+        "RawPath": "/dev%2Fdocker.svg",
+        "OmitHost": false,
+        "ForceQuery": false,
+        "RawQuery": "",
+        "Fragment": "",
+        "RawFragment": ""
+      },
+      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Docker",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 50,
+      "labelHeight": 21,
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "Test.Playwright",
+      "type": "image",
+      "classes": [
+        "icon"
+      ],
+      "pos": {
+        "x": 860,
+        "y": 52
+      },
+      "width": 70,
+      "height": 70,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N7",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": {
+        "Scheme": "https",
+        "Opaque": "",
+        "User": null,
+        "Host": "playwright.dev",
+        "Path": "/img/playwright-logo.svg",
+        "RawPath": "",
+        "OmitHost": false,
+        "ForceQuery": false,
+        "RawQuery": "",
+        "Fragment": "",
+        "RawFragment": ""
+      },
+      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Playwright",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 77,
+      "labelHeight": 21,
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "Check.TruffleHog",
+      "type": "image",
+      "classes": [
+        "icon"
+      ],
+      "pos": {
+        "x": 1130,
+        "y": 52
+      },
+      "width": 70,
+      "height": 70,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N7",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": {
+        "Scheme": "https",
+        "Opaque": "",
+        "User": null,
+        "Host": "avatars.githubusercontent.com",
+        "Path": "/u/79229934",
+        "RawPath": "",
+        "OmitHost": false,
+        "ForceQuery": false,
+        "RawQuery": "s=200&v=4",
+        "Fragment": "",
+        "RawFragment": ""
+      },
+      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "TruffleHog",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 77,
+      "labelHeight": 21,
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "Release.Github Action",
+      "type": "image",
+      "classes": [
+        "icon"
+      ],
+      "pos": {
+        "x": 1400,
+        "y": 52
+      },
+      "width": 70,
+      "height": 70,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N7",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": {
+        "Scheme": "https",
+        "Opaque": "",
+        "User": null,
+        "Host": "icons.terrastruct.com",
+        "Path": "/dev/github.svg",
+        "RawPath": "/dev%2Fgithub.svg",
+        "OmitHost": false,
+        "ForceQuery": false,
+        "RawQuery": "",
+        "Fragment": "",
+        "RawFragment": ""
+      },
+      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Github Action",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 97,
+      "labelHeight": 21,
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "Deploy.AWS Copilot",
+      "type": "image",
+      "classes": [
+        "icon"
+      ],
+      "pos": {
+        "x": 1670,
+        "y": 52
+      },
+      "width": 70,
+      "height": 70,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N7",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": {
+        "Scheme": "https",
+        "Opaque": "",
+        "User": null,
+        "Host": "icons.terrastruct.com",
+        "Path": "/aws/Developer Tools/AWS-CodeDeploy.svg",
+        "RawPath": "/aws%2FDeveloper%20Tools%2FAWS-CodeDeploy.svg",
+        "OmitHost": false,
+        "ForceQuery": false,
+        "RawQuery": "",
+        "Fragment": "",
+        "RawFragment": ""
+      },
+      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "AWS Copilot",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 87,
+      "labelHeight": 21,
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "Operate.AWS ECS",
+      "type": "image",
+      "classes": [
+        "icon"
+      ],
+      "pos": {
+        "x": 1940,
+        "y": 52
+      },
+      "width": 70,
+      "height": 70,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N7",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": {
+        "Scheme": "https",
+        "Opaque": "",
+        "User": null,
+        "Host": "icons.terrastruct.com",
+        "Path": "/aws/Compute/AWS-Fargate.svg",
+        "RawPath": "/aws%2FCompute%2FAWS-Fargate.svg",
+        "OmitHost": false,
+        "ForceQuery": false,
+        "RawQuery": "",
+        "Fragment": "",
+        "RawFragment": ""
+      },
+      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "AWS ECS",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 63,
+      "labelHeight": 21,
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "zIndex": 0,
+      "level": 2
+    },
+    {
+      "id": "Monitor.Grafana",
+      "type": "image",
+      "classes": [
+        "icon"
+      ],
+      "pos": {
+        "x": 2210,
+        "y": 111
+      },
+      "width": 70,
+      "height": 70,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N7",
+      "stroke": "B1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": {
+        "Scheme": "https",
+        "Opaque": "",
+        "User": null,
+        "Host": "avatars.githubusercontent.com",
+        "Path": "/u/7195757",
+        "RawPath": "",
+        "OmitHost": false,
+        "ForceQuery": false,
+        "RawQuery": "s=200&v=4",
+        "Fragment": "",
+        "RawFragment": ""
+      },
+      "iconPosition": "INSIDE_MIDDLE_CENTER",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "Grafana",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 57,
+      "labelHeight": 21,
+      "labelPosition": "OUTSIDE_BOTTOM_CENTER",
+      "zIndex": 0,
+      "level": 2
+    }
+  ],
+  "connections": [
+    {
+      "id": "(Plan -> Code)[0]",
+      "src": "Plan",
+      "srcArrow": "none",
+      "dst": "Code",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 170,
+          "y": 80
+        },
+        {
+          "x": 210,
+          "y": 80
+        },
+        {
+          "x": 230,
+          "y": 80
+        },
+        {
+          "x": 270,
+          "y": 80
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(Code -> Build)[0]",
+      "src": "Code",
+      "srcArrow": "none",
+      "dst": "Build",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 440,
+          "y": 80
+        },
+        {
+          "x": 480,
+          "y": 80
+        },
+        {
+          "x": 500,
+          "y": 80
+        },
+        {
+          "x": 540,
+          "y": 80
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(Build -> Test)[0]",
+      "src": "Build",
+      "srcArrow": "none",
+      "dst": "Test",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 710,
+          "y": 80
+        },
+        {
+          "x": 750,
+          "y": 80
+        },
+        {
+          "x": 770,
+          "y": 80
+        },
+        {
+          "x": 810,
+          "y": 80
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(Test -> Check)[0]",
+      "src": "Test",
+      "srcArrow": "none",
+      "dst": "Check",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 980,
+          "y": 80
+        },
+        {
+          "x": 1020,
+          "y": 80
+        },
+        {
+          "x": 1040,
+          "y": 80
+        },
+        {
+          "x": 1080,
+          "y": 80
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(Check -> Release)[0]",
+      "src": "Check",
+      "srcArrow": "none",
+      "dst": "Release",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1250,
+          "y": 80
+        },
+        {
+          "x": 1290,
+          "y": 80
+        },
+        {
+          "x": 1310,
+          "y": 80
+        },
+        {
+          "x": 1350,
+          "y": 80
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(Release -> Deploy)[0]",
+      "src": "Release",
+      "srcArrow": "none",
+      "dst": "Deploy",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1520,
+          "y": 80
+        },
+        {
+          "x": 1560,
+          "y": 80
+        },
+        {
+          "x": 1580,
+          "y": 80
+        },
+        {
+          "x": 1620,
+          "y": 80
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(Deploy -> Operate)[0]",
+      "src": "Deploy",
+      "srcArrow": "none",
+      "dst": "Operate",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1790,
+          "y": 80
+        },
+        {
+          "x": 1830,
+          "y": 80
+        },
+        {
+          "x": 1850,
+          "y": 80
+        },
+        {
+          "x": 1890,
+          "y": 80
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(Operate -> Monitor)[0]",
+      "src": "Operate",
+      "srcArrow": "none",
+      "dst": "Monitor",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 2060,
+          "y": 80
+        },
+        {
+          "x": 2100,
+          "y": 80
+        },
+        {
+          "x": 2120,
+          "y": 80
+        },
+        {
+          "x": 2160,
+          "y": 80
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(Monitor -> Plan)[0]",
+      "src": "Monitor",
+      "srcArrow": "none",
+      "dst": "Plan",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "borderRadius": 10,
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 2160,
+          "y": 198
+        },
+        {
+          "x": 2120,
+          "y": 198
+        },
+        {
+          "x": 2100,
+          "y": 198
+        },
+        {
+          "x": 2085,
+          "y": 198
+        },
+        {
+          "x": 2070,
+          "y": 198
+        },
+        {
+          "x": 2043,
+          "y": 198
+        },
+        {
+          "x": 2017.5,
+          "y": 198
+        },
+        {
+          "x": 1992,
+          "y": 198
+        },
+        {
+          "x": 1958,
+          "y": 198
+        },
+        {
+          "x": 1932.5,
+          "y": 198
+        },
+        {
+          "x": 1907,
+          "y": 198
+        },
+        {
+          "x": 1880,
+          "y": 198
+        },
+        {
+          "x": 1865,
+          "y": 198
+        },
+        {
+          "x": 1850,
+          "y": 198
+        },
+        {
+          "x": 1830,
+          "y": 198
+        },
+        {
+          "x": 1815,
+          "y": 198
+        },
+        {
+          "x": 1800,
+          "y": 198
+        },
+        {
+          "x": 1773,
+          "y": 198
+        },
+        {
+          "x": 1747.5,
+          "y": 198
+        },
+        {
+          "x": 1722,
+          "y": 198
+        },
+        {
+          "x": 1688,
+          "y": 198
+        },
+        {
+          "x": 1662.5,
+          "y": 198
+        },
+        {
+          "x": 1637,
+          "y": 198
+        },
+        {
+          "x": 1610,
+          "y": 198
+        },
+        {
+          "x": 1595,
+          "y": 198
+        },
+        {
+          "x": 1580,
+          "y": 198
+        },
+        {
+          "x": 1560,
+          "y": 198
+        },
+        {
+          "x": 1545,
+          "y": 198
+        },
+        {
+          "x": 1530,
+          "y": 198
+        },
+        {
+          "x": 1503,
+          "y": 198
+        },
+        {
+          "x": 1477.5,
+          "y": 198
+        },
+        {
+          "x": 1452,
+          "y": 198
+        },
+        {
+          "x": 1418,
+          "y": 198
+        },
+        {
+          "x": 1392.5,
+          "y": 198
+        },
+        {
+          "x": 1367,
+          "y": 198
+        },
+        {
+          "x": 1340,
+          "y": 198
+        },
+        {
+          "x": 1325,
+          "y": 198
+        },
+        {
+          "x": 1310,
+          "y": 198
+        },
+        {
+          "x": 1290,
+          "y": 198
+        },
+        {
+          "x": 1275,
+          "y": 198
+        },
+        {
+          "x": 1260,
+          "y": 198
+        },
+        {
+          "x": 1233,
+          "y": 198
+        },
+        {
+          "x": 1207.5,
+          "y": 198
+        },
+        {
+          "x": 1182,
+          "y": 198
+        },
+        {
+          "x": 1148,
+          "y": 198
+        },
+        {
+          "x": 1122.5,
+          "y": 198
+        },
+        {
+          "x": 1097,
+          "y": 198
+        },
+        {
+          "x": 1070,
+          "y": 198
+        },
+        {
+          "x": 1055,
+          "y": 198
+        },
+        {
+          "x": 1040,
+          "y": 198
+        },
+        {
+          "x": 1020,
+          "y": 198
+        },
+        {
+          "x": 1005,
+          "y": 198
+        },
+        {
+          "x": 990,
+          "y": 198
+        },
+        {
+          "x": 963,
+          "y": 198
+        },
+        {
+          "x": 937.5,
+          "y": 198
+        },
+        {
+          "x": 912,
+          "y": 198
+        },
+        {
+          "x": 878,
+          "y": 198
+        },
+        {
+          "x": 852.5,
+          "y": 198
+        },
+        {
+          "x": 827,
+          "y": 198
+        },
+        {
+          "x": 800,
+          "y": 198
+        },
+        {
+          "x": 785,
+          "y": 198
+        },
+        {
+          "x": 770,
+          "y": 198
+        },
+        {
+          "x": 750,
+          "y": 198
+        },
+        {
+          "x": 735,
+          "y": 198
+        },
+        {
+          "x": 720,
+          "y": 198
+        },
+        {
+          "x": 693,
+          "y": 198
+        },
+        {
+          "x": 667.5,
+          "y": 198
+        },
+        {
+          "x": 642,
+          "y": 198
+        },
+        {
+          "x": 608,
+          "y": 198
+        },
+        {
+          "x": 582.5,
+          "y": 198
+        },
+        {
+          "x": 557,
+          "y": 198
+        },
+        {
+          "x": 530,
+          "y": 198
+        },
+        {
+          "x": 515,
+          "y": 198
+        },
+        {
+          "x": 500,
+          "y": 198
+        },
+        {
+          "x": 480,
+          "y": 198
+        },
+        {
+          "x": 465,
+          "y": 198
+        },
+        {
+          "x": 450,
+          "y": 198
+        },
+        {
+          "x": 423,
+          "y": 198
+        },
+        {
+          "x": 397.5,
+          "y": 198
+        },
+        {
+          "x": 372,
+          "y": 198
+        },
+        {
+          "x": 338,
+          "y": 198
+        },
+        {
+          "x": 312.5,
+          "y": 198
+        },
+        {
+          "x": 287,
+          "y": 198
+        },
+        {
+          "x": 210,
+          "y": 198
+        },
+        {
+          "x": 170,
+          "y": 198
+        }
+      ],
+      "isCurve": true,
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    }
+  ],
+  "root": {
+    "id": "",
+    "type": "",
+    "pos": {
+      "x": 0,
+      "y": 0
+    },
+    "width": 0,
+    "height": 0,
+    "opacity": 0,
+    "strokeDash": 0,
+    "strokeWidth": 0,
+    "borderRadius": 0,
+    "fill": "N7",
+    "stroke": "",
+    "shadow": false,
+    "3d": false,
+    "multiple": false,
+    "double-border": false,
+    "tooltip": "",
+    "link": "",
+    "icon": null,
+    "iconPosition": "",
+    "blend": false,
+    "fields": null,
+    "methods": null,
+    "columns": null,
+    "label": "",
+    "fontSize": 0,
+    "fontFamily": "",
+    "language": "",
+    "color": "",
+    "italic": false,
+    "bold": false,
+    "underline": false,
+    "labelWidth": 0,
+    "labelHeight": 0,
+    "zIndex": 0,
+    "level": 0
+  }
+}

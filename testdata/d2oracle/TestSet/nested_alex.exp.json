@@ -69,7 +69,7 @@
                         {
                           "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:2:22-2:14:34",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:2:22-2:7:27",
+                            "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:2:22-2:6:26",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -86,7 +86,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:9:29-2:14:34",
+                            "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:10:30-2:14:34",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -161,13 +161,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -186,12 +186,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -203,6 +197,10 @@
         "attributes": {
           "label": {
             "value": "asdf"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -223,10 +221,6 @@
       {
         "id": "this",
         "id_val": "this",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -253,6 +247,10 @@
           "label": {
             "value": "do"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -270,14 +268,10 @@
       {
         "id": "test",
         "id_val": "test",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:2:22-2:7:27",
+              "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:2:22-2:6:26",
               "path": [
                 {
                   "unquoted_string": {
@@ -300,6 +294,10 @@
           "label": {
             "value": "test"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -317,14 +315,10 @@
       {
         "id": "here",
         "id_val": "here",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:9:29-2:14:34",
+              "range": "d2/testdata/d2oracle/TestSet/nested_alex.d2,2:10:30-2:14:34",
               "path": [
                 {
                   "unquoted_string": {
@@ -366,6 +360,10 @@
         "attributes": {
           "label": {
             "value": "How much of their influence on you is a result of your influence on them?\nA conference is a gathering of important people who singly can do nothing"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

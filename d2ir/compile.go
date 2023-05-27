@@ -22,62 +22,58 @@ func Compile(ast *d2ast.Map) (*Map, error) {
 	m.initRoot()
 	m.parent.(*Field).References[0].Context.Scope = ast
 	c.compileMap(m, ast)
-	c.compileScenarios(m)
-	c.compileSteps(m)
+	c.compileClasses(m)
 	if !c.err.Empty() {
 		return nil, c.err
 	}
 	return m, nil
 }
 
-func (c *compiler) compileScenarios(m *Map) {
-	scenariosf := m.GetField("scenarios")
-	if scenariosf == nil {
-		return
-	}
-	scenarios := scenariosf.Map()
-	if scenarios == nil {
+func (c *compiler) compileClasses(m *Map) {
+	classes := m.GetField("classes")
+	if classes == nil || classes.Map() == nil {
 		return
 	}
 
-	for _, sf := range scenarios.Fields {
-		if sf.Map() == nil || sf.Primary() != nil {
-			c.errorf(sf.References[0].Context.Key, "invalid scenario")
+	layersField := m.GetField("layers")
+	if layersField == nil {
+		return
+	}
+	layers := layersField.Map()
+	if layers == nil {
+		return
+	}
+
+	for _, lf := range layers.Fields {
+		if lf.Map() == nil || lf.Primary() != nil {
+			c.errorf(lf.References[0].Context.Key, "invalid layer")
 			continue
 		}
-		base := m.CopyBase(sf)
-		OverlayMap(base, sf.Map())
-		sf.Composite = base
-		c.compileScenarios(sf.Map())
-		c.compileSteps(sf.Map())
+		l := lf.Map()
+		lClasses := l.GetField("classes")
+
+		if lClasses == nil {
+			lClasses = classes.Copy(l).(*Field)
+			l.Fields = append(l.Fields, lClasses)
+		} else {
+			base := classes.Copy(l).(*Field)
+			OverlayMap(base.Map(), lClasses.Map())
+			l.DeleteField("classes")
+			l.Fields = append(l.Fields, base)
+		}
+
+		c.compileClasses(l)
 	}
 }
 
-func (c *compiler) compileSteps(m *Map) {
-	stepsf := m.GetField("steps")
-	if stepsf == nil {
+func (c *compiler) overlay(base *Map, f *Field) {
+	if f.Map() == nil || f.Primary() != nil {
+		c.errorf(f.References[0].Context.Key, "invalid %s", NodeBoardKind(f))
 		return
 	}
-	steps := stepsf.Map()
-	if steps == nil {
-		return
-	}
-	for i, sf := range steps.Fields {
-		if sf.Map() == nil || sf.Primary() != nil {
-			c.errorf(sf.References[0].Context.Key, "invalid step")
-			break
-		}
-		var base *Map
-		if i == 0 {
-			base = m.CopyBase(sf)
-		} else {
-			base = steps.Fields[i-1].Map().CopyBase(sf)
-		}
-		OverlayMap(base, sf.Map())
-		sf.Composite = base
-		c.compileScenarios(sf.Map())
-		c.compileSteps(sf.Map())
-	}
+	base = base.CopyBase(f)
+	OverlayMap(base, f.Map())
+	f.Composite = base
 }
 
 func (c *compiler) compileMap(dst *Map, ast *d2ast.Map) {
@@ -128,7 +124,27 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 				parent: f,
 			}
 		}
+		switch NodeBoardKind(f) {
+		case BoardScenario:
+			c.overlay(ParentBoard(f).Map(), f)
+		case BoardStep:
+			stepsMap := ParentMap(f)
+			for i := range stepsMap.Fields {
+				if stepsMap.Fields[i] == f {
+					if i == 0 {
+						c.overlay(ParentBoard(f).Map(), f)
+					} else {
+						c.overlay(stepsMap.Fields[i-1].Map(), f)
+					}
+					break
+				}
+			}
+		}
 		c.compileMap(f.Map(), refctx.Key.Value.Map)
+		switch NodeBoardKind(f) {
+		case BoardScenario, BoardStep:
+			c.compileClasses(f.Map())
+		}
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 		// If the link is a board, we need to transform it into an absolute path.
 		if f.Name == "link" {

@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,1:0:1-1:6:7",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,1:0:1-1:2:3",
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,1:0:1-1:1:2",
                   "path": [
                     {
                       "unquoted_string": {
@@ -29,7 +29,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,1:4:5-1:6:7",
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,1:5:6-1:6:7",
                   "path": [
                     {
                       "unquoted_string": {
@@ -68,7 +68,7 @@
               {
                 "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,2:1:14-2:7:20",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,2:1:14-2:3:16",
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,2:1:14-2:2:15",
                   "path": [
                     {
                       "unquoted_string": {
@@ -85,7 +85,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,2:5:18-2:7:20",
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,2:6:19-2:7:20",
                   "path": [
                     {
                       "unquoted_string": {
@@ -127,13 +127,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -152,12 +152,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -172,6 +166,10 @@
         "attributes": {
           "label": {
             "value": "two"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -192,14 +190,10 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,1:0:1-1:2:3",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,1:0:1-1:1:2",
               "path": [
                 {
                   "unquoted_string": {
@@ -219,7 +213,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,2:1:14-2:3:16",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,2:1:14-2:2:15",
               "path": [
                 {
                   "unquoted_string": {
@@ -242,6 +236,10 @@
           "label": {
             "value": "x"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -259,14 +257,10 @@
       {
         "id": "y",
         "id_val": "y",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,1:4:5-1:6:7",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,1:5:6-1:6:7",
               "path": [
                 {
                   "unquoted_string": {
@@ -286,7 +280,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,2:5:18-2:7:20",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_index.d2,2:6:19-2:7:20",
               "path": [
                 {
                   "unquoted_string": {
@@ -308,6 +302,10 @@
         "attributes": {
           "label": {
             "value": "y"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

@@ -13,6 +13,74 @@ var testMarkdown string
 func testStable(t *testing.T) {
 	tcs := []testCase{
 		{
+			name: "legend_with_near_key",
+			script: `
+				direction: right
+
+				x -> y: {
+					style.stroke: green
+				}
+
+				y -> z: {
+					style.stroke: red
+				}
+
+				legend: {
+					near: bottom-center
+					color1: foo {
+						shape: text
+						style.font-color: green
+					}
+
+					color2: bar {
+						shape: text
+						style.font-color: red
+					}
+				}
+			`,
+		},
+		{
+			name: "near_keys_for_container",
+			script: `title: |md
+  # Service-Cluster Provisioning ("Outside view")
+| {near: top-center}`,
+		},
+		{
+			name: "near_keys_for_container",
+			script: `
+				x: {
+					near: top-left
+					a -> b
+					c -> d
+				}
+				y: {
+					near: top-right
+					a -> b
+					c -> d
+				}
+				z: {
+					near: bottom-center
+					a -> b
+					c -> d
+				}
+
+				a: {
+					near: top-center
+					b: {
+						c
+					}
+				}
+				b: {
+					near: bottom-right
+					a: {
+						c: {
+							d
+						}
+					}
+				}
+			`,
+		},
+		{
 			name: "class_and_sqlTable_border_radius",
 			script: `
 				a: {
@@ -142,6 +210,12 @@ logs: { shape: page; style.multiple: true }
 
 network.data processor -> api server
 			`,
+		},
+		{
+			name: "edge-label-overflow",
+			script: `student -> committee chair: Apply for appeal
+student <- committee chair: Deny. Need more information
+committee chair -> committee: Accept appeal`,
 		},
 		{
 			name: "mono-edge",
@@ -649,7 +723,7 @@ eee.shape: document
 eee <- aaa.ccc
 (eee <- aaa.ccc)[0]: '222'
 `,
-			dagreFeatureError: `Connection "(aaa.ccc -- aaa)[0]" goes from a container to a descendant, but layout engine "dagre" does not support this.`,
+			dagreFeatureError: `Connection "(aaa.ccc -- aaa)[0]" goes from a container to a descendant, but layout engine "dagre" does not support this. See https://d2lang.com/tour/layouts/#layout-specific-functionality for more.`,
 		},
 		{
 			name: "chaos2",
@@ -808,6 +882,25 @@ ww -> ff.gg
 
 test ~~strikethrough~~ test
 |
+
+x -> hey -> y
+`,
+		},
+		{
+			name: "md_fontsize_10",
+			script: `hey: |md
+# Every frustum longs to be a cone
+
+- A continuing flow of paper is sufficient to continue the flow of paper
+- Please remain calm, it's no use both of us being hysterical at the same time
+- Visits always give pleasure: if not on arrival, then on the departure
+
+*Festivity Level 1*: Your guests are chatting amiably with each other.
+
+test ~~strikethrough~~ test
+|
+
+hey.style.font-size: 10
 
 x -> hey -> y
 `,
@@ -1481,8 +1574,13 @@ finally: {
     sequence: {
         shape: sequence_diagram
 		# items appear in this order
-        scorer
-        concept
+        scorer {
+					style.stroke: red
+					style.stroke-dash: 2
+				}
+        concept {
+					style.stroke-width: 6
+				}
         essayRubric
         item
         itemOutcome
@@ -1932,9 +2030,9 @@ x -> y
 			name: "unnamed_only_width",
 			script: `
 
-class -> users -> code -> package -> no width
+class2 -> users -> code -> package -> no width
 
-class: "" {
+class2: "" {
 	shape: class
 	-num: int
 	-timeout: int
@@ -1964,7 +2062,7 @@ package: "" { shape: package }
 no width: ""
 
 
-class.width: 512
+class2.width: 512
 users.width: 512
 code.width: 512
 package.width: 512
@@ -1974,9 +2072,9 @@ package.width: 512
 			name: "unnamed_only_height",
 			script: `
 
-class -> users -> code -> package -> no height
+class2 -> users -> code -> package -> no height
 
-class: "" {
+class2: "" {
 	shape: class
 	-num: int
 	-timeout: int
@@ -2006,7 +2104,7 @@ package: "" { shape: package }
 no height: ""
 
 
-class.height: 512
+class2.height: 512
 users.height: 512
 code.height: 512
 package.height: 512
@@ -2035,7 +2133,7 @@ c: {
   a
 }
 `,
-			dagreFeatureError: `Object "a" has attribute "width" and/or "height" set, but layout engine "dagre" does not support dimensions set on containers.`,
+			dagreFeatureError: `Object "a" has attribute "width" and/or "height" set, but layout engine "dagre" does not support dimensions set on containers. See https://d2lang.com/tour/layouts/#layout-specific-functionality for more.`,
 		},
 		{
 			name: "crow_foot_arrowhead",
@@ -2304,6 +2402,47 @@ z: {
 `,
 		},
 		{
+			name: "classes",
+			script: `classes: {
+  dragon_ball: {
+    label: ""
+    shape: circle
+    style.fill: orange
+		style.stroke-width: 0
+		width: 50
+  }
+  path: {
+    label: "then"
+    style.stroke-width: 4
+  }
+}
+nostar: { class: dragon_ball }
+1star: { label: "*"; class: dragon_ball }
+2star: { label: "**"; class: dragon_ball }
+
+nostar -> 1star: { class: path }
+1star -> 2star: { class: path }
+`,
+		},
+		{
+			name: "array-classes",
+			script: `classes: {
+  button: {
+	  style.border-radius: 999
+		style.stroke: black
+	}
+  success: {
+	  style.fill: "#90EE90"
+	}
+  error: {
+	  style.fill: "#EA9999"
+	}
+}
+yay: Successful { class: [button; success] }
+nay: Failure { class: [button; error] }
+`,
+		},
+		{
 			name: "border-radius",
 			script: `
 x: {
@@ -2323,6 +2462,113 @@ double: {
 three-dee: {
 	style.border-radius: 6
 	style.3d: true
+}
+`,
+		},
+		{
+			name: "border-radius-pill-shape",
+			script: `
+x: {
+	style.border-radius: 999
+}
+y: {
+	style.border-radius: 999
+}
+multiple2: {
+	style.border-radius: 999
+	style.multiple: true
+}
+double: {
+	style.border-radius: 999
+	style.double-border: true
+}
+three-dee: {
+	style.border-radius: 999
+	style.3d: true
+}
+`,
+		},
+		{
+			name: "cycle-order",
+			script: `direction: right
+classes: {
+  group: {
+    style: {
+      fill: transparent
+      stroke-dash: 5
+    }
+  }
+  icon: {
+    shape: image
+    height: 70
+    width: 70
+  }
+}
+
+Plan -> Code -> Build -> Test -> Check -> Release -> Deploy -> Operate -> Monitor -> Plan
+
+Plan: {
+  class: group
+  ClickUp: {
+    class: icon
+    icon: https://avatars.githubusercontent.com/u/27873294?s=200&v=4
+  }
+}
+Code: {
+  class: group
+  Git: {
+    class: icon
+    icon: https://icons.terrastruct.com/dev%2Fgit.svg
+  }
+}
+Build: {
+  class: group
+  Docker: {
+    class: icon
+    icon: https://icons.terrastruct.com/dev%2Fdocker.svg
+  }
+}
+Test: {
+  class: group
+  Playwright: {
+    class: icon
+    icon: https://playwright.dev/img/playwright-logo.svg
+  }
+}
+Check: {
+  class: group
+  TruffleHog: {
+    class: icon
+    icon: https://avatars.githubusercontent.com/u/79229934?s=200&v=4
+  }
+}
+Release: {
+  class: group
+  Github Action: {
+    class: icon
+    icon: https://icons.terrastruct.com/dev%2Fgithub.svg
+  }
+}
+Deploy: {
+  class: group
+  "AWS Copilot": {
+    class: icon
+    icon: https://icons.terrastruct.com/aws%2FDeveloper%20Tools%2FAWS-CodeDeploy.svg
+  }
+}
+Operate: {
+  class: group
+  "AWS ECS": {
+    class: icon
+    icon: https://icons.terrastruct.com/aws%2FCompute%2FAWS-Fargate.svg
+  }
+}
+Monitor: {
+  class: group
+  Grafana: {
+    class: icon
+    icon: https://avatars.githubusercontent.com/u/7195757?s=200&v=4
+  }
 }
 `,
 		},
@@ -2464,6 +2710,19 @@ scenarios: {
   }
 }`,
 		},
+		loadFromFile(t, "arrowhead_scaling"),
+		loadFromFile(t, "teleport_grid"),
+		loadFromFile(t, "dagger_grid"),
+		loadFromFile(t, "grid_tests"),
+		loadFromFile(t, "executive_grid"),
+		loadFromFile(t, "grid_animated"),
+		loadFromFile(t, "grid_gap"),
+		loadFromFile(t, "grid_even"),
+		loadFromFile(t, "ent2d2_basic"),
+		loadFromFile(t, "ent2d2_right"),
+		loadFromFile(t, "grid_large_checkered"),
+		loadFromFile(t, "grid_nested"),
+		loadFromFile(t, "grid_nested_gap0"),
 	}
 
 	runa(t, tcs)

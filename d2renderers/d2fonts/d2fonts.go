@@ -6,7 +6,13 @@ package d2fonts
 
 import (
 	"embed"
+	"encoding/base64"
+	"fmt"
 	"strings"
+
+	"github.com/jung-kurt/gofpdf"
+
+	fontlib "oss.terrastruct.com/d2/lib/font"
 )
 
 type FontFamily string
@@ -26,6 +32,29 @@ func (f FontFamily) Font(size int, style FontStyle) Font {
 	}
 }
 
+func (f Font) GetEncodedSubset(corpus string) string {
+	var uniqueChars string
+	uniqueMap := make(map[rune]bool)
+	for _, char := range corpus {
+		if _, exists := uniqueMap[char]; !exists {
+			uniqueMap[char] = true
+			uniqueChars = uniqueChars + string(char)
+		}
+	}
+
+	fontBuf := make([]byte, len(FontFaces[f]))
+	copy(fontBuf, FontFaces[f])
+	fontBuf = gofpdf.UTF8CutFont(fontBuf, uniqueChars)
+
+	fontBuf, err := fontlib.Sfnt2Woff(fontBuf)
+	if err != nil {
+		// If subset fails, return full encoding
+		return FontEncodings[f]
+	}
+
+	return fmt.Sprintf("data:application/font-woff;base64,%v", base64.StdEncoding.EncodeToString(fontBuf))
+}
+
 const (
 	FONT_SIZE_XS   = 13
 	FONT_SIZE_S    = 14
@@ -35,9 +64,10 @@ const (
 	FONT_SIZE_XXL  = 28
 	FONT_SIZE_XXXL = 32
 
-	FONT_STYLE_REGULAR FontStyle = "regular"
-	FONT_STYLE_BOLD    FontStyle = "bold"
-	FONT_STYLE_ITALIC  FontStyle = "italic"
+	FONT_STYLE_REGULAR  FontStyle = "regular"
+	FONT_STYLE_BOLD     FontStyle = "bold"
+	FONT_STYLE_SEMIBOLD FontStyle = "semibold"
+	FONT_STYLE_ITALIC   FontStyle = "italic"
 
 	SourceSansPro FontFamily = "SourceSansPro"
 	SourceCodePro FontFamily = "SourceCodePro"
@@ -57,6 +87,7 @@ var FontSizes = []int{
 var FontStyles = []FontStyle{
 	FONT_STYLE_REGULAR,
 	FONT_STYLE_BOLD,
+	FONT_STYLE_SEMIBOLD,
 	FONT_STYLE_ITALIC,
 }
 
@@ -72,6 +103,9 @@ var sourceSansProRegularBase64 string
 //go:embed encoded/SourceSansPro-Bold.txt
 var sourceSansProBoldBase64 string
 
+//go:embed encoded/SourceSansPro-Semibold.txt
+var sourceSansProSemiboldBase64 string
+
 //go:embed encoded/SourceSansPro-Italic.txt
 var sourceSansProItalicBase64 string
 
@@ -80,6 +114,9 @@ var sourceCodeProRegularBase64 string
 
 //go:embed encoded/SourceCodePro-Bold.txt
 var sourceCodeProBoldBase64 string
+
+//go:embed encoded/SourceCodePro-Semibold.txt
+var sourceCodeProSemiboldBase64 string
 
 //go:embed encoded/SourceCodePro-Italic.txt
 var sourceCodeProItalicBase64 string
@@ -108,6 +145,10 @@ func init() {
 		}: sourceSansProBoldBase64,
 		{
 			Family: SourceSansPro,
+			Style:  FONT_STYLE_SEMIBOLD,
+		}: sourceSansProSemiboldBase64,
+		{
+			Family: SourceSansPro,
 			Style:  FONT_STYLE_ITALIC,
 		}: sourceSansProItalicBase64,
 		{
@@ -118,6 +159,10 @@ func init() {
 			Family: SourceCodePro,
 			Style:  FONT_STYLE_BOLD,
 		}: sourceCodeProBoldBase64,
+		{
+			Family: SourceCodePro,
+			Style:  FONT_STYLE_SEMIBOLD,
+		}: sourceCodeProSemiboldBase64,
 		{
 			Family: SourceCodePro,
 			Style:  FONT_STYLE_ITALIC,
@@ -134,6 +179,11 @@ func init() {
 		{
 			Family: HandDrawn,
 			Style:  FONT_STYLE_BOLD,
+		}: fuzzyBubblesBoldBase64,
+		{
+			Family: HandDrawn,
+			Style:  FONT_STYLE_SEMIBOLD,
+			// This font has no semibold, so just reuse bold
 		}: fuzzyBubblesBoldBase64,
 	}
 
@@ -166,6 +216,14 @@ func init() {
 		Family: SourceCodePro,
 		Style:  FONT_STYLE_BOLD,
 	}] = b
+	b, err = fontFacesFS.ReadFile("ttf/SourceCodePro-Semibold.ttf")
+	if err != nil {
+		panic(err)
+	}
+	FontFaces[Font{
+		Family: SourceCodePro,
+		Style:  FONT_STYLE_SEMIBOLD,
+	}] = b
 	b, err = fontFacesFS.ReadFile("ttf/SourceCodePro-Italic.ttf")
 	if err != nil {
 		panic(err)
@@ -181,6 +239,14 @@ func init() {
 	FontFaces[Font{
 		Family: SourceSansPro,
 		Style:  FONT_STYLE_BOLD,
+	}] = b
+	b, err = fontFacesFS.ReadFile("ttf/SourceSansPro-Semibold.ttf")
+	if err != nil {
+		panic(err)
+	}
+	FontFaces[Font{
+		Family: SourceSansPro,
+		Style:  FONT_STYLE_SEMIBOLD,
 	}] = b
 	b, err = fontFacesFS.ReadFile("ttf/SourceSansPro-Italic.ttf")
 	if err != nil {
@@ -210,9 +276,106 @@ func init() {
 		Family: HandDrawn,
 		Style:  FONT_STYLE_BOLD,
 	}] = b
+	FontFaces[Font{
+		Family: HandDrawn,
+		Style:  FONT_STYLE_SEMIBOLD,
+	}] = b
 }
 
 var D2_FONT_TO_FAMILY = map[string]FontFamily{
 	"default": SourceSansPro,
 	"mono":    SourceCodePro,
+}
+
+func AddFontStyle(font Font, style FontStyle, ttf []byte) error {
+	FontFaces[font] = ttf
+
+	woff, err := fontlib.Sfnt2Woff(ttf)
+	if err != nil {
+		return fmt.Errorf("failed to encode ttf to woff: %v", err)
+	}
+	encodedWoff := fmt.Sprintf("data:application/font-woff;base64,%v", base64.StdEncoding.EncodeToString(woff))
+	FontEncodings[font] = encodedWoff
+
+	return nil
+}
+
+func AddFontFamily(name string, regularTTF, italicTTF, boldTTF, semiboldTTF []byte) (*FontFamily, error) {
+	customFontFamily := FontFamily(name)
+
+	regularFont := Font{
+		Family: customFontFamily,
+		Style:  FONT_STYLE_REGULAR,
+	}
+	if regularTTF != nil {
+		err := AddFontStyle(regularFont, FONT_STYLE_REGULAR, regularTTF)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		fallbackFont := Font{
+			Family: SourceSansPro,
+			Style:  FONT_STYLE_REGULAR,
+		}
+		FontFaces[regularFont] = FontFaces[fallbackFont]
+		FontEncodings[regularFont] = FontEncodings[fallbackFont]
+	}
+
+	italicFont := Font{
+		Family: customFontFamily,
+		Style:  FONT_STYLE_ITALIC,
+	}
+	if italicTTF != nil {
+		err := AddFontStyle(italicFont, FONT_STYLE_ITALIC, italicTTF)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		fallbackFont := Font{
+			Family: SourceSansPro,
+			Style:  FONT_STYLE_ITALIC,
+		}
+		FontFaces[italicFont] = FontFaces[fallbackFont]
+		FontEncodings[italicFont] = FontEncodings[fallbackFont]
+	}
+
+	boldFont := Font{
+		Family: customFontFamily,
+		Style:  FONT_STYLE_BOLD,
+	}
+	if boldTTF != nil {
+		err := AddFontStyle(boldFont, FONT_STYLE_BOLD, boldTTF)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		fallbackFont := Font{
+			Family: SourceSansPro,
+			Style:  FONT_STYLE_BOLD,
+		}
+		FontFaces[boldFont] = FontFaces[fallbackFont]
+		FontEncodings[boldFont] = FontEncodings[fallbackFont]
+	}
+
+	semiboldFont := Font{
+		Family: customFontFamily,
+		Style:  FONT_STYLE_SEMIBOLD,
+	}
+	if semiboldTTF != nil {
+		err := AddFontStyle(semiboldFont, FONT_STYLE_SEMIBOLD, semiboldTTF)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		fallbackFont := Font{
+			Family: SourceSansPro,
+			Style:  FONT_STYLE_SEMIBOLD,
+		}
+		FontFaces[semiboldFont] = FontFaces[fallbackFont]
+		FontEncodings[semiboldFont] = FontEncodings[fallbackFont]
+	}
+
+	FontFamilies = append(FontFamilies, customFontFamily)
+
+	return &customFontFamily, nil
 }

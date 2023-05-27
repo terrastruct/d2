@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:12:12",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:6:6",
+                  "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:5:5",
                   "path": [
                     {
                       "unquoted_string": {
@@ -51,7 +51,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:8:8-0:12:12",
+                  "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:9:9-0:12:12",
                   "path": [
                     {
                       "unquoted_string": {
@@ -89,13 +89,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -114,12 +114,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -131,6 +125,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -151,14 +149,10 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:6:6",
+              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:5:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -200,7 +194,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:8:8-0:12:12",
+              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:9:9-0:12:12",
               "path": [
                 {
                   "unquoted_string": {
@@ -234,6 +228,10 @@
           "label": {
             "value": "x"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -251,14 +249,10 @@
       {
         "id": "y",
         "id_val": "y",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:6:6",
+              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:5:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -303,6 +297,10 @@
           "label": {
             "value": "y"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -320,14 +318,10 @@
       {
         "id": "z",
         "id_val": "z",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:6:6",
+              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:0:0-0:5:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -372,6 +366,10 @@
           "label": {
             "value": "z"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -389,14 +387,10 @@
       {
         "id": "b",
         "id_val": "b",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:8:8-0:12:12",
+              "range": "d2/testdata/d2oracle/TestDelete/edge_both_identical_childs.d2,0:9:9-0:12:12",
               "path": [
                 {
                   "unquoted_string": {
@@ -429,6 +423,10 @@
         "attributes": {
           "label": {
             "value": "b"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

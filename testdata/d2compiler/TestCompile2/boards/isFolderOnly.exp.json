@@ -291,13 +291,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -608,13 +608,13 @@
         "root": {
           "id": "",
           "id_val": "",
-          "label_dimensions": {
-            "width": 0,
-            "height": 0
-          },
           "attributes": {
             "label": {
               "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
             },
             "style": {},
             "near_key": null,
@@ -635,10 +635,6 @@
           {
             "id": "santa",
             "id_val": "santa",
-            "label_dimensions": {
-              "width": 0,
-              "height": 0
-            },
             "references": [
               {
                 "key": {
@@ -664,6 +660,10 @@
             "attributes": {
               "label": {
                 "value": "santa"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
               },
               "style": {},
               "near_key": null,
@@ -973,13 +973,13 @@
         "root": {
           "id": "",
           "id_val": "",
-          "label_dimensions": {
-            "width": 0,
-            "height": 0
-          },
           "attributes": {
             "label": {
               "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
             },
             "style": {},
             "near_key": null,
@@ -1000,10 +1000,6 @@
           {
             "id": "clause",
             "id_val": "clause",
-            "label_dimensions": {
-              "width": 0,
-              "height": 0
-            },
             "references": [
               {
                 "key": {
@@ -1029,6 +1025,10 @@
             "attributes": {
               "label": {
                 "value": "clause"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
               },
               "style": {},
               "near_key": null,
@@ -1338,13 +1338,13 @@
             "root": {
               "id": "",
               "id_val": "",
-              "label_dimensions": {
-                "width": 0,
-                "height": 0
-              },
               "attributes": {
                 "label": {
                   "value": ""
+                },
+                "labelDimensions": {
+                  "width": 0,
+                  "height": 0
                 },
                 "style": {},
                 "near_key": null,
@@ -1361,7 +1361,55 @@
               "zIndex": 0
             },
             "edges": null,
-            "objects": null
+            "objects": [
+              {
+                "id": "clause",
+                "id_val": "clause",
+                "references": [
+                  {
+                    "key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
+                            "value": [
+                              {
+                                "string": "clause",
+                                "raw_string": "clause"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "key_path_index": 0,
+                    "map_key_edge_index": -1
+                  }
+                ],
+                "attributes": {
+                  "label": {
+                    "value": "clause"
+                  },
+                  "labelDimensions": {
+                    "width": 0,
+                    "height": 0
+                  },
+                  "style": {},
+                  "near_key": null,
+                  "shape": {
+                    "value": "rectangle"
+                  },
+                  "direction": {
+                    "value": ""
+                  },
+                  "constraint": {
+                    "value": ""
+                  }
+                },
+                "zIndex": 0
+              }
+            ]
           },
           {
             "name": "missoula",
@@ -1655,13 +1703,13 @@
             "root": {
               "id": "",
               "id_val": "",
-              "label_dimensions": {
-                "width": 0,
-                "height": 0
-              },
               "attributes": {
                 "label": {
                   "value": ""
+                },
+                "labelDimensions": {
+                  "width": 0,
+                  "height": 0
                 },
                 "style": {},
                 "near_key": null,
@@ -1678,7 +1726,55 @@
               "zIndex": 0
             },
             "edges": null,
-            "objects": null
+            "objects": [
+              {
+                "id": "clause",
+                "id_val": "clause",
+                "references": [
+                  {
+                    "key": {
+                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
+                            "value": [
+                              {
+                                "string": "clause",
+                                "raw_string": "clause"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "key_path_index": 0,
+                    "map_key_edge_index": -1
+                  }
+                ],
+                "attributes": {
+                  "label": {
+                    "value": "clause"
+                  },
+                  "labelDimensions": {
+                    "width": 0,
+                    "height": 0
+                  },
+                  "style": {},
+                  "near_key": null,
+                  "shape": {
+                    "value": "rectangle"
+                  },
+                  "direction": {
+                    "value": ""
+                  },
+                  "constraint": {
+                    "value": ""
+                  }
+                },
+                "zIndex": 0
+              }
+            ]
           }
         ]
       }

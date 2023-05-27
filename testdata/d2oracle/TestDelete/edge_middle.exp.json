@@ -56,9 +56,9 @@
                       "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:8:8-0:19:19",
                       "edges": [
                         {
-                          "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:8:8-0:15:15",
+                          "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:8:8-0:14:14",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:8:8-0:10:10",
+                            "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:8:8-0:9:9",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -75,7 +75,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:12:12-0:15:15",
+                            "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:13:13-0:14:14",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -93,9 +93,9 @@
                           "dst_arrow": ">"
                         },
                         {
-                          "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:12:12-0:19:19",
+                          "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:13:13-0:19:19",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:12:12-0:15:15",
+                            "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:13:13-0:14:14",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -112,7 +112,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:17:17-0:19:19",
+                            "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:18:18-0:19:19",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -141,7 +141,7 @@
                         {
                           "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:21:21-0:27:27",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:21:21-0:23:23",
+                            "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:21:21-0:22:22",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -158,7 +158,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:25:25-0:27:27",
+                            "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:26:26-0:27:27",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -190,13 +190,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -215,12 +215,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -232,6 +226,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -249,12 +247,6 @@
       },
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -267,6 +259,10 @@
           "label": {
             "value": ""
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -283,12 +279,6 @@
       },
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -300,6 +290,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -320,10 +314,6 @@
       {
         "id": "l",
         "id_val": "l",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -372,6 +362,10 @@
           "label": {
             "value": "l"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -389,10 +383,6 @@
       {
         "id": "p",
         "id_val": "p",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -441,6 +431,10 @@
           "label": {
             "value": "p"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -458,10 +452,6 @@
       {
         "id": "d",
         "id_val": "d",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -510,6 +500,10 @@
           "label": {
             "value": "d"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -527,14 +521,10 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:8:8-0:10:10",
+              "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:8:8-0:9:9",
               "path": [
                 {
                   "unquoted_string": {
@@ -557,6 +547,10 @@
           "label": {
             "value": "x"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -574,14 +568,10 @@
       {
         "id": "y",
         "id_val": "y",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:12:12-0:15:15",
+              "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:13:13-0:14:14",
               "path": [
                 {
                   "unquoted_string": {
@@ -601,7 +591,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:12:12-0:15:15",
+              "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:13:13-0:14:14",
               "path": [
                 {
                   "unquoted_string": {
@@ -624,6 +614,10 @@
           "label": {
             "value": "y"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -641,14 +635,10 @@
       {
         "id": "z",
         "id_val": "z",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:17:17-0:19:19",
+              "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:18:18-0:19:19",
               "path": [
                 {
                   "unquoted_string": {
@@ -671,6 +661,10 @@
           "label": {
             "value": "z"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -688,14 +682,10 @@
       {
         "id": "q",
         "id_val": "q",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:21:21-0:23:23",
+              "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:21:21-0:22:22",
               "path": [
                 {
                   "unquoted_string": {
@@ -718,6 +708,10 @@
           "label": {
             "value": "q"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -735,14 +729,10 @@
       {
         "id": "p",
         "id_val": "p",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:25:25-0:27:27",
+              "range": "d2/testdata/d2oracle/TestDelete/edge_middle.d2,0:26:26-0:27:27",
               "path": [
                 {
                   "unquoted_string": {
@@ -764,6 +754,10 @@
         "attributes": {
           "label": {
             "value": "p"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

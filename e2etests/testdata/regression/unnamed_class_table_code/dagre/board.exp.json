@@ -4,7 +4,7 @@
   "fontFamily": "SourceSansPro",
   "shapes": [
     {
-      "id": "class",
+      "id": "class2",
       "type": "class",
       "pos": {
         "x": 0,
@@ -305,13 +305,11 @@
   ],
   "connections": [
     {
-      "id": "(class -> users)[0]",
-      "src": "class",
+      "id": "(class2 -> users)[0]",
+      "src": "class2",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "users",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -357,10 +355,8 @@
       "id": "(users -> code)[0]",
       "src": "users",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "code",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,

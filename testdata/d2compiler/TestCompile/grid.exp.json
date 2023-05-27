@@ -1,0 +1,180 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/grid.d2,0:0:0-4:0:44",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/grid.d2,0:0:0-3:1:43",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/grid.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/grid.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "hey",
+                        "raw_string": "hey"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/grid.d2,0:5:5-3:0:42",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/grid.d2,1:1:8-1:15:22",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/grid.d2,1:1:8-1:10:17",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/grid.d2,1:1:8-1:10:17",
+                              "value": [
+                                {
+                                  "string": "grid-rows",
+                                  "raw_string": "grid-rows"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "number": {
+                          "range": "d2/testdata/d2compiler/TestCompile/grid.d2,1:12:19-1:15:22",
+                          "raw": "200",
+                          "value": "200"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/grid.d2,2:1:24-2:18:41",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/grid.d2,2:1:24-2:13:36",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/grid.d2,2:1:24-2:13:36",
+                              "value": [
+                                {
+                                  "string": "grid-columns",
+                                  "raw_string": "grid-columns"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "number": {
+                          "range": "d2/testdata/d2compiler/TestCompile/grid.d2,2:15:38-2:18:41",
+                          "raw": "230",
+                          "value": "230"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "hey",
+        "id_val": "hey",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/grid.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/grid.d2,0:0:0-0:3:3",
+                    "value": [
+                      {
+                        "string": "hey",
+                        "raw_string": "hey"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "hey"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          },
+          "gridRows": {
+            "value": "200"
+          },
+          "gridColumns": {
+            "value": "230"
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

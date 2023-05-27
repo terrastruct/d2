@@ -265,57 +265,67 @@ func CompareSerializedObject(obj, other *Object) error {
 		}
 	}
 
-	if obj.Attributes != nil && other.Attributes == nil {
-		return fmt.Errorf("other should have attributes")
-	} else if obj.Attributes == nil && other.Attributes != nil {
-		return fmt.Errorf("other should not have attributes")
-	} else if obj.Attributes != nil {
-		if d2target.IsShape(obj.Attributes.Shape.Value) != d2target.IsShape(other.Attributes.Shape.Value) {
+	if d2target.IsShape(obj.Shape.Value) != d2target.IsShape(other.Shape.Value) {
+		return fmt.Errorf(
+			"shapes differ: obj=%s, other=%s",
+			obj.Shape.Value,
+			other.Shape.Value,
+		)
+	}
+
+	if obj.Icon == nil && other.Icon != nil {
+		return fmt.Errorf("other does not have an icon")
+	} else if obj.Icon != nil && other.Icon == nil {
+		return fmt.Errorf("obj does not have an icon")
+	}
+
+	if obj.Direction.Value != other.Direction.Value {
+		return fmt.Errorf(
+			"directions differ: obj=%s, other=%s",
+			obj.Direction.Value,
+			other.Direction.Value,
+		)
+	}
+
+	if obj.Label.Value != other.Label.Value {
+		return fmt.Errorf(
+			"labels differ: obj=%s, other=%s",
+			obj.Label.Value,
+			other.Label.Value,
+		)
+	}
+
+	if obj.NearKey != nil {
+		if other.NearKey == nil {
+			return fmt.Errorf("other does not have near")
+		}
+		objKey := strings.Join(Key(obj.NearKey), ".")
+		deserKey := strings.Join(Key(other.NearKey), ".")
+		if objKey != deserKey {
 			return fmt.Errorf(
-				"shapes differ: obj=%s, other=%s",
-				obj.Attributes.Shape.Value,
-				other.Attributes.Shape.Value,
+				"near differs: obj=%s, other=%s",
+				objKey,
+				deserKey,
 			)
 		}
+	} else if other.NearKey != nil {
+		return fmt.Errorf("other should not have near")
+	}
 
-		if obj.Attributes.Icon == nil && other.Attributes.Icon != nil {
-			return fmt.Errorf("other does not have an icon")
-		} else if obj.Attributes.Icon != nil && other.Attributes.Icon == nil {
-			return fmt.Errorf("obj does not have an icon")
-		}
+	if obj.LabelDimensions.Width != other.LabelDimensions.Width {
+		return fmt.Errorf(
+			"label width differs: obj=%d, other=%d",
+			obj.LabelDimensions.Width,
+			other.LabelDimensions.Width,
+		)
+	}
 
-		if obj.Attributes.Direction.Value != other.Attributes.Direction.Value {
-			return fmt.Errorf(
-				"directions differ: obj=%s, other=%s",
-				obj.Attributes.Direction.Value,
-				other.Attributes.Direction.Value,
-			)
-		}
-
-		if obj.Attributes.Label.Value != other.Attributes.Label.Value {
-			return fmt.Errorf(
-				"labels differ: obj=%s, other=%s",
-				obj.Attributes.Label.Value,
-				other.Attributes.Label.Value,
-			)
-		}
-
-		if obj.Attributes.NearKey != nil {
-			if other.Attributes.NearKey == nil {
-				return fmt.Errorf("other does not have near")
-			}
-			objKey := strings.Join(Key(obj.Attributes.NearKey), ".")
-			deserKey := strings.Join(Key(other.Attributes.NearKey), ".")
-			if objKey != deserKey {
-				return fmt.Errorf(
-					"near differs: obj=%s, other=%s",
-					objKey,
-					deserKey,
-				)
-			}
-		} else if other.Attributes.NearKey != nil {
-			return fmt.Errorf("other should not have near")
-		}
+	if obj.LabelDimensions.Height != other.LabelDimensions.Height {
+		return fmt.Errorf(
+			"label height differs: obj=%d, other=%d",
+			obj.LabelDimensions.Height,
+			other.LabelDimensions.Height,
+		)
 	}
 
 	if obj.SQLTable == nil && other.SQLTable != nil {
@@ -332,36 +342,6 @@ func CompareSerializedObject(obj, other *Object) error {
 				len(other.SQLTable.Columns),
 			)
 		}
-	}
-
-	if obj.LabelWidth != nil {
-		if other.LabelWidth == nil {
-			return fmt.Errorf("other does not have a label width")
-		}
-		if *obj.LabelWidth != *other.LabelWidth {
-			return fmt.Errorf(
-				"label widths differ: obj=%d, other=%d",
-				*obj.LabelWidth,
-				*other.LabelWidth,
-			)
-		}
-	} else if other.LabelWidth != nil {
-		return fmt.Errorf("other should not have label width")
-	}
-
-	if obj.LabelHeight != nil {
-		if other.LabelHeight == nil {
-			return fmt.Errorf("other does not have a label height")
-		}
-		if *obj.LabelHeight != *other.LabelHeight {
-			return fmt.Errorf(
-				"label heights differ: obj=%d, other=%d",
-				*obj.LabelHeight,
-				*other.LabelHeight,
-			)
-		}
-	} else if other.LabelHeight != nil {
-		return fmt.Errorf("other should not have label height")
 	}
 
 	return nil
@@ -408,27 +388,11 @@ func CompareSerializedEdge(edge, other *Edge) error {
 		)
 	}
 
-	if edge.MinWidth != other.MinWidth {
-		return fmt.Errorf(
-			"min width differs: edge=%d, other=%d",
-			edge.MinWidth,
-			other.MinWidth,
-		)
-	}
-
-	if edge.MinHeight != other.MinHeight {
-		return fmt.Errorf(
-			"min height differs: edge=%d, other=%d",
-			edge.MinHeight,
-			other.MinHeight,
-		)
-	}
-
-	if edge.Attributes.Label.Value != other.Attributes.Label.Value {
+	if edge.Label.Value != other.Label.Value {
 		return fmt.Errorf(
 			"labels differ: edge=%s, other=%s",
-			edge.Attributes.Label.Value,
-			other.Attributes.Label.Value,
+			edge.Label.Value,
+			other.Label.Value,
 		)
 	}
 
@@ -442,7 +406,7 @@ func CompareSerializedEdge(edge, other *Edge) error {
 
 	if edge.LabelDimensions.Height != other.LabelDimensions.Height {
 		return fmt.Errorf(
-			"label hieght differs: edge=%d, other=%d",
+			"label height differs: edge=%d, other=%d",
 			edge.LabelDimensions.Height,
 			other.LabelDimensions.Height,
 		)

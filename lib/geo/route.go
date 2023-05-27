@@ -20,22 +20,23 @@ func (route Route) Length() float64 {
 // return the point at _distance_ along the route, and the index of the segment it's on
 func (route Route) GetPointAtDistance(distance float64) (*Point, int) {
 	remaining := distance
+	var curr, next *Point
+	var length float64
 	for i := 0; i < len(route)-1; i++ {
-		curr, next := route[i], route[i+1]
-		length := EuclideanDistance(curr.X, curr.Y, next.X, next.Y)
+		curr, next = route[i], route[i+1]
+		length = EuclideanDistance(curr.X, curr.Y, next.X, next.Y)
 
 		if remaining <= length {
 			t := remaining / length
 			// point t% of the way between curr and next
-			return NewPoint(
-				curr.X*(1.0-t)+next.X*t,
-				curr.Y*(1.0-t)+next.Y*t,
-			), i
+			return curr.Interpolate(next, t), i
 		}
 		remaining -= length
 	}
 
-	return nil, -1
+	// distance > length, so continue with last segment
+	// Note: distance < 0 handled above with first segment
+	return curr.Interpolate(next, 1+remaining/length), len(route) - 2
 }
 
 func (route Route) GetBoundingBox() (tl, br *Point) {

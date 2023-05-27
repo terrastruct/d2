@@ -26,6 +26,8 @@ import (
 	"oss.terrastruct.com/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2plugin"
+	"oss.terrastruct.com/d2/d2renderers/d2fonts"
+	"oss.terrastruct.com/d2/d2renderers/d2svg"
 	"oss.terrastruct.com/d2/lib/png"
 )
 
@@ -39,21 +41,18 @@ var devMode = false
 var staticFS embed.FS
 
 type watcherOpts struct {
-	layoutPlugin  d2plugin.Plugin
-	themeID       int64
-	darkThemeID   *int64
-	pad           int64
-	sketch        bool
-	center        bool
-	host          string
-	port          string
-	inputPath     string
-	outputPath    string
-	pwd           string
-	bundle        bool
-	forceAppendix bool
-	noFit         bool
-	pw            png.Playwright
+	layoutPlugin    d2plugin.Plugin
+	renderOpts      d2svg.RenderOpts
+	animateInterval int64
+	host            string
+	port            string
+	inputPath       string
+	outputPath      string
+	pwd             string
+	bundle          bool
+	forceAppendix   bool
+	pw              png.Playwright
+	fontFamily      *d2fonts.FontFamily
 }
 
 type watcher struct {
@@ -361,7 +360,7 @@ func (w *watcher) compileLoop(ctx context.Context) error {
 			w.pw = newPW
 		}
 
-		svg, _, err := compile(ctx, w.ms, w.layoutPlugin, w.sketch, w.center, w.pad, w.themeID, w.darkThemeID, w.inputPath, w.outputPath, w.bundle, w.forceAppendix, w.noFit, w.pw.Page)
+		svg, _, err := compile(ctx, w.ms, w.layoutPlugin, w.renderOpts, w.fontFamily, w.animateInterval, w.inputPath, w.outputPath, w.bundle, w.forceAppendix, w.pw.Page)
 		errs := ""
 		if err != nil {
 			if len(svg) > 0 {
@@ -430,6 +429,7 @@ func (w *watcher) handleRoot(hw http.ResponseWriter, r *http.Request) {
 	<title>%s</title>
 	<script src="./static/watch.js"></script>
 	<link rel="stylesheet" href="./static/watch.css">
+	<link id="favicon" rel="icon" href="./static/favicon.ico">
 </head>
 <body data-d2-dev-mode=%t>
 	<div id="d2-err" style="display: none"></div>

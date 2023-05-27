@@ -1,0 +1,16 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/md_block_string_err.d2,3:18:50-3:24:56",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/md_block_string_err.d2:4:19: unexpected text after md block string. See https://d2lang.com/tour/text#advanced-block-strings."
+      },
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/md_block_string_err.d2,4:0:57-5:0:59",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/md_block_string_err.d2:5:1: block string must be terminated with |"
+      }
+    ]
+  }
+}

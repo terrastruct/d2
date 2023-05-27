@@ -10,9 +10,9 @@
             "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:0:0-0:13:13",
             "edges": [
               {
-                "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:0:0-0:9:9",
+                "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:0:0-0:8:8",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:0:0-0:4:4",
+                  "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:0:0-0:3:3",
                   "path": [
                     {
                       "unquoted_string": {
@@ -40,7 +40,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:6:6-0:9:9",
+                  "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:7:7-0:8:8",
                   "path": [
                     {
                       "unquoted_string": {
@@ -58,9 +58,9 @@
                 "dst_arrow": ">"
               },
               {
-                "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:6:6-0:13:13",
+                "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:7:7-0:13:13",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:6:6-0:9:9",
+                  "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:7:7-0:8:8",
                   "path": [
                     {
                       "unquoted_string": {
@@ -77,7 +77,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:11:11-0:13:13",
+                  "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:12:12-0:13:13",
                   "path": [
                     {
                       "unquoted_string": {
@@ -104,13 +104,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -129,12 +129,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -146,6 +140,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -163,12 +161,6 @@
       },
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -180,6 +172,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -200,14 +196,10 @@
       {
         "id": "y",
         "id_val": "y",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:0:0-0:3:3",
               "path": [
                 {
                   "unquoted_string": {
@@ -241,6 +233,10 @@
           "label": {
             "value": "y"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -258,14 +254,10 @@
       {
         "id": "b",
         "id_val": "b",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:0:0-0:3:3",
               "path": [
                 {
                   "unquoted_string": {
@@ -299,6 +291,10 @@
           "label": {
             "value": "b"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -316,14 +312,10 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:6:6-0:9:9",
+              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:7:7-0:8:8",
               "path": [
                 {
                   "unquoted_string": {
@@ -343,7 +335,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:6:6-0:9:9",
+              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:7:7-0:8:8",
               "path": [
                 {
                   "unquoted_string": {
@@ -366,6 +358,10 @@
           "label": {
             "value": "x"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -383,14 +379,10 @@
       {
         "id": "z",
         "id_val": "z",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:11:11-0:13:13",
+              "range": "d2/testdata/d2oracle/TestMove/chain_connected_nested_no_extra_create.d2,0:12:12-0:13:13",
               "path": [
                 {
                   "unquoted_string": {
@@ -412,6 +404,10 @@
         "attributes": {
           "label": {
             "value": "z"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

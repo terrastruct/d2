@@ -3,7 +3,7 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,0:0:0-3:0:68",
+      "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,0:0:0-4:0:70",
       "nodes": [
         {
           "map_key": {
@@ -30,28 +30,17 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,1:0:2-1:63:65",
+            "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,1:0:2-1:1:3",
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,1:0:2-1:6:8",
+              "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,1:0:2-1:1:3",
               "path": [
                 {
                   "unquoted_string": {
                     "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,1:0:2-1:1:3",
                     "value": [
                       {
-                        "string": "b",
-                        "raw_string": "b"
-                      }
-                    ]
-                  }
-                },
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,1:2:4-1:6:8",
-                    "value": [
-                      {
-                        "string": "icon",
-                        "raw_string": "icon"
+                        "string": "a",
+                        "raw_string": "a"
                       }
                     ]
                   }
@@ -59,28 +48,18 @@
               ]
             },
             "primary": {},
-            "value": {
-              "unquoted_string": {
-                "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,1:8:10-1:63:65",
-                "value": [
-                  {
-                    "string": "https://icons.terrastruct.com/essentials/142-target.svg",
-                    "raw_string": "https://icons.terrastruct.com/essentials/142-target.svg"
-                  }
-                ]
-              }
-            }
+            "value": {}
           }
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,2:0:66-2:1:67",
+            "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,2:0:4-2:1:5",
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,2:0:66-2:1:67",
+              "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,2:0:4-2:1:5",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,2:0:66-2:1:67",
+                    "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,2:0:4-2:1:5",
                     "value": [
                       {
                         "string": "b",
@@ -94,19 +73,63 @@
             "primary": {},
             "value": {}
           }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,3:0:6-3:63:69",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,3:0:6-3:6:12",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,3:0:6-3:1:7",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,3:2:8-3:6:12",
+                    "value": [
+                      {
+                        "string": "icon",
+                        "raw_string": "icon"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,3:8:14-3:63:69",
+                "value": [
+                  {
+                    "string": "https://icons.terrastruct.com/essentials/142-target.svg",
+                    "raw_string": "https://icons.terrastruct.com/essentials/142-target.svg"
+                  }
+                ]
+              }
+            }
+          }
         }
       ]
     },
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -127,10 +150,6 @@
       {
         "id": "a",
         "id_val": "a",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -151,11 +170,35 @@
             },
             "key_path_index": 0,
             "map_key_edge_index": -1
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,1:0:2-1:1:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,1:0:2-1:1:3",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
           "label": {
             "value": "a"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -174,33 +217,18 @@
       {
         "id": "b",
         "id_val": "b",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,1:0:2-1:6:8",
+              "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,2:0:4-2:1:5",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,1:0:2-1:1:3",
+                    "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,2:0:4-2:1:5",
                     "value": [
                       {
                         "string": "b",
                         "raw_string": "b"
-                      }
-                    ]
-                  }
-                },
-                {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,1:2:4-1:6:8",
-                    "value": [
-                      {
-                        "string": "icon",
-                        "raw_string": "icon"
                       }
                     ]
                   }
@@ -212,15 +240,26 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,2:0:66-2:1:67",
+              "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,3:0:6-3:6:12",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,2:0:66-2:1:67",
+                    "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,3:0:6-3:1:7",
                     "value": [
                       {
                         "string": "b",
                         "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/slice_style.d2,3:2:8-3:6:12",
+                    "value": [
+                      {
+                        "string": "icon",
+                        "raw_string": "icon"
                       }
                     ]
                   }
@@ -234,6 +273,10 @@
         "attributes": {
           "label": {
             "value": "b"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "icon": {

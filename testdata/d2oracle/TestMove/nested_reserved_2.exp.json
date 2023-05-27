@@ -1,0 +1,292 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,0:0:0-2:0:20",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,0:0:0-0:3:3",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "A",
+                        "raw_string": "A"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "B",
+                        "raw_string": "B"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,1:0:4-1:15:19",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,1:0:4-1:7:11",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,1:0:4-1:1:5",
+                    "value": [
+                      {
+                        "string": "C",
+                        "raw_string": "C"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,1:2:6-1:7:11",
+                    "value": [
+                      {
+                        "string": "shape",
+                        "raw_string": "shape"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,1:9:13-1:15:19",
+                "value": [
+                  {
+                    "string": "circle",
+                    "raw_string": "circle"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "A",
+        "id_val": "A",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "A",
+                        "raw_string": "A"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "B",
+                        "raw_string": "B"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "A"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "B",
+        "id_val": "B",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "A",
+                        "raw_string": "A"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "B",
+                        "raw_string": "B"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 1,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "B"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "C",
+        "id_val": "C",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,1:0:4-1:7:11",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,1:0:4-1:1:5",
+                    "value": [
+                      {
+                        "string": "C",
+                        "raw_string": "C"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/nested_reserved_2.d2,1:2:6-1:7:11",
+                    "value": [
+                      {
+                        "string": "shape",
+                        "raw_string": "shape"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "C"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "circle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": "<nil>"
+}

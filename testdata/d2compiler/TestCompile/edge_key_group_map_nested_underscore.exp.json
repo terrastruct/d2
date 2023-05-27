@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,1:0:1-1:6:7",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,1:0:1-1:2:3",
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,1:0:1-1:1:2",
                   "path": [
                     {
                       "unquoted_string": {
@@ -29,7 +29,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,1:4:5-1:6:7",
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,1:5:6-1:6:7",
                   "path": [
                     {
                       "unquoted_string": {
@@ -82,7 +82,7 @@
                         {
                           "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,3:2:15-3:12:25",
                           "src": {
-                            "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,3:2:15-3:6:19",
+                            "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,3:2:15-3:5:18",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -110,7 +110,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,3:8:21-3:12:25",
+                            "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,3:9:22-3:12:25",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -222,13 +222,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -247,12 +247,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -267,6 +261,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {
             "opacity": {
@@ -291,14 +289,10 @@
       {
         "id": "a",
         "id_val": "a",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,1:0:1-1:2:3",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,1:0:1-1:1:2",
               "path": [
                 {
                   "unquoted_string": {
@@ -321,6 +315,10 @@
           "label": {
             "value": "a"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -338,14 +336,10 @@
       {
         "id": "b",
         "id_val": "b",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,1:4:5-1:6:7",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,1:5:6-1:6:7",
               "path": [
                 {
                   "unquoted_string": {
@@ -368,6 +362,10 @@
           "label": {
             "value": "b"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -385,10 +383,6 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -414,6 +408,10 @@
         "attributes": {
           "label": {
             "value": "x"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

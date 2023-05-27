@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:0:0-0:12:12",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:0:0-0:4:4",
+                  "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:0:0-0:3:3",
                   "path": [
                     {
                       "unquoted_string": {
@@ -40,7 +40,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:6:6-0:12:12",
+                  "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:7:7-0:12:12",
                   "path": [
                     {
                       "unquoted_string": {
@@ -152,13 +152,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -177,12 +177,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -194,6 +188,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -214,14 +212,10 @@
       {
         "id": "a",
         "id_val": "a",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:0:0-0:3:3",
               "path": [
                 {
                   "unquoted_string": {
@@ -255,6 +249,10 @@
           "label": {
             "value": "a"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -272,14 +270,10 @@
       {
         "id": "c",
         "id_val": "c",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:0:0-0:3:3",
               "path": [
                 {
                   "unquoted_string": {
@@ -313,6 +307,10 @@
           "label": {
             "value": "c"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -330,14 +328,10 @@
       {
         "id": "d",
         "id_val": "d",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:6:6-0:12:12",
+              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:7:7-0:12:12",
               "path": [
                 {
                   "unquoted_string": {
@@ -413,6 +407,10 @@
           "label": {
             "value": "d"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -430,14 +428,10 @@
       {
         "id": "e",
         "id_val": "e",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:6:6-0:12:12",
+              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:7:7-0:12:12",
               "path": [
                 {
                   "unquoted_string": {
@@ -513,6 +507,10 @@
           "label": {
             "value": "e"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -530,14 +528,10 @@
       {
         "id": "f",
         "id_val": "f",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:6:6-0:12:12",
+              "range": "d2/testdata/d2oracle/TestMove/move_out_of_nested_edge.d2,0:7:7-0:12:12",
               "path": [
                 {
                   "unquoted_string": {
@@ -582,6 +576,10 @@
           "label": {
             "value": "f"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -599,10 +597,6 @@
       {
         "id": "q",
         "id_val": "q",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -628,6 +622,10 @@
         "attributes": {
           "label": {
             "value": "q"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

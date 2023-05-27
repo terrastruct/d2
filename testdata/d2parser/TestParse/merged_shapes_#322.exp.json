@@ -4,17 +4,63 @@
     "nodes": [
       {
         "map_key": {
-          "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,1:0:1-4:0:10",
+          "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,1:0:1-1:2:3",
           "key": {
-            "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,1:0:1-4:0:10",
+            "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,1:0:1-1:1:2",
             "path": [
               {
                 "unquoted_string": {
-                  "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,1:0:1-3:1:8",
+                  "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,1:0:1-1:1:2",
                   "value": [
                     {
-                      "string": "a-\nb-\nc-",
-                      "raw_string": "a-\nb-\nc-"
+                      "string": "a-",
+                      "raw_string": "a-"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {}
+        }
+      },
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,2:0:4-2:2:6",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,2:0:4-2:1:5",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,2:0:4-2:1:5",
+                  "value": [
+                    {
+                      "string": "b-",
+                      "raw_string": "b-"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {}
+        }
+      },
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,3:0:7-3:2:9",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,3:0:7-3:1:8",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,3:0:7-3:1:8",
+                  "value": [
+                    {
+                      "string": "c-",
+                      "raw_string": "c-"
                     }
                   ]
                 }

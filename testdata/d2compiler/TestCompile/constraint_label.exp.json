@@ -9,7 +9,7 @@
           "map_key": {
             "range": "d2/testdata/d2compiler/TestCompile/constraint_label.d2,0:0:0-3:1:38",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/constraint_label.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2compiler/TestCompile/constraint_label.d2,0:0:0-0:3:3",
               "path": [
                 {
                   "unquoted_string": {
@@ -105,13 +105,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -132,14 +132,10 @@
       {
         "id": "foo",
         "id_val": "foo",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/constraint_label.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2compiler/TestCompile/constraint_label.d2,0:0:0-0:3:3",
               "path": [
                 {
                   "unquoted_string": {
@@ -161,6 +157,10 @@
         "attributes": {
           "label": {
             "value": "bar"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

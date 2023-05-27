@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,1:0:1-1:6:7",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,1:0:1-1:2:3",
+                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,1:0:1-1:1:2",
                   "path": [
                     {
                       "unquoted_string": {
@@ -29,7 +29,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,1:4:5-1:6:7",
+                  "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,1:5:6-1:6:7",
                   "path": [
                     {
                       "unquoted_string": {
@@ -92,7 +92,7 @@
                         {
                           "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,3:1:85-3:11:95",
                           "src": {
-                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,3:1:85-3:5:89",
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,3:1:85-3:4:88",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -120,7 +120,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,3:7:91-3:11:95",
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,3:8:92-3:11:95",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -173,13 +173,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -198,12 +198,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -215,6 +209,10 @@
         "attributes": {
           "label": {
             "value": "Can you imagine how life could be improved if we could do away with"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -232,12 +230,6 @@
       },
       {
         "index": 1,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -249,6 +241,10 @@
         "attributes": {
           "label": {
             "value": "Well, it's garish, ugly, and derelicts have used it for a toilet."
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -269,14 +265,10 @@
       {
         "id": "a",
         "id_val": "a",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,1:0:1-1:2:3",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,1:0:1-1:1:2",
               "path": [
                 {
                   "unquoted_string": {
@@ -296,7 +288,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,3:1:85-3:5:89",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,3:1:85-3:4:88",
               "path": [
                 {
                   "unquoted_string": {
@@ -330,6 +322,10 @@
           "label": {
             "value": "a"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -347,14 +343,10 @@
       {
         "id": "b",
         "id_val": "b",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,1:4:5-1:6:7",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,1:5:6-1:6:7",
               "path": [
                 {
                   "unquoted_string": {
@@ -374,7 +366,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,3:7:91-3:11:95",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_existing.d2,3:8:92-3:11:95",
               "path": [
                 {
                   "unquoted_string": {
@@ -408,6 +400,10 @@
           "label": {
             "value": "b"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -425,10 +421,6 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -454,6 +446,10 @@
         "attributes": {
           "label": {
             "value": "x"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

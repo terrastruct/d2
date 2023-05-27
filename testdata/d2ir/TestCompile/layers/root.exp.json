@@ -14,7 +14,7 @@
             ]
           },
           "key_path": {
-            "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
+            "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
             "path": [
               {
                 "unquoted_string": {
@@ -33,7 +33,7 @@
             "edge": {
               "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
               "src": {
-                "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
+                "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
                 "path": [
                   {
                     "unquoted_string": {
@@ -50,7 +50,7 @@
               },
               "src_arrow": "",
               "dst": {
-                "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
+                "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
                 "path": [
                   {
                     "unquoted_string": {
@@ -73,7 +73,7 @@
                 {
                   "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
                   "src": {
-                    "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
+                    "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
                     "path": [
                       {
                         "unquoted_string": {
@@ -90,7 +90,7 @@
                   },
                   "src_arrow": "",
                   "dst": {
-                    "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
+                    "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
                     "path": [
                       {
                         "unquoted_string": {
@@ -129,7 +129,7 @@
             ]
           },
           "key_path": {
-            "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
+            "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
             "path": [
               {
                 "unquoted_string": {
@@ -148,7 +148,7 @@
             "edge": {
               "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
               "src": {
-                "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
+                "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
                 "path": [
                   {
                     "unquoted_string": {
@@ -165,7 +165,7 @@
               },
               "src_arrow": "",
               "dst": {
-                "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
+                "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
                 "path": [
                   {
                     "unquoted_string": {
@@ -188,7 +188,7 @@
                 {
                   "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
                   "src": {
-                    "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
+                    "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
                     "path": [
                       {
                         "unquoted_string": {
@@ -205,7 +205,7 @@
                   },
                   "src_arrow": "",
                   "dst": {
-                    "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
+                    "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
                     "path": [
                       {
                         "unquoted_string": {
@@ -260,7 +260,7 @@
                                     ]
                                   },
                                   "key_path": {
-                                    "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                                    "range": "TestCompile/layers/root.d2,2:10:27-2:15:32",
                                     "path": [
                                       {
                                         "unquoted_string": {
@@ -302,7 +302,7 @@
                                     "key": {
                                       "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
                                       "key": {
-                                        "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                                        "range": "TestCompile/layers/root.d2,2:10:27-2:15:32",
                                         "path": [
                                           {
                                             "unquoted_string": {
@@ -361,7 +361,7 @@
                               ]
                             },
                             "key_path": {
-                              "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                              "range": "TestCompile/layers/root.d2,2:10:27-2:15:32",
                               "path": [
                                 {
                                   "unquoted_string": {
@@ -403,7 +403,7 @@
                               "key": {
                                 "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
                                 "key": {
-                                  "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                                  "range": "TestCompile/layers/root.d2,2:10:27-2:15:32",
                                   "path": [
                                     {
                                       "unquoted_string": {
@@ -462,7 +462,7 @@
                         ]
                       },
                       "key_path": {
-                        "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                        "range": "TestCompile/layers/root.d2,2:10:27-2:15:32",
                         "path": [
                           {
                             "unquoted_string": {
@@ -504,7 +504,7 @@
                         "key": {
                           "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
                           "key": {
-                            "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                            "range": "TestCompile/layers/root.d2,2:10:27-2:15:32",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -607,7 +607,7 @@
                             "map_key": {
                               "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
                               "key": {
-                                "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                                "range": "TestCompile/layers/root.d2,2:10:27-2:15:32",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -739,7 +739,7 @@
                                 "map_key": {
                                   "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
                                   "key": {
-                                    "range": "TestCompile/layers/root.d2,2:10:27-2:16:33",
+                                    "range": "TestCompile/layers/root.d2,2:10:27-2:15:32",
                                     "path": [
                                       {
                                         "unquoted_string": {
@@ -813,7 +813,7 @@
             "edge": {
               "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
               "src": {
-                "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
+                "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
                 "path": [
                   {
                     "unquoted_string": {
@@ -830,7 +830,7 @@
               },
               "src_arrow": "",
               "dst": {
-                "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
+                "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
                 "path": [
                   {
                     "unquoted_string": {
@@ -853,7 +853,7 @@
                 {
                   "range": "TestCompile/layers/root.d2,0:0:0-0:6:6",
                   "src": {
-                    "range": "TestCompile/layers/root.d2,0:0:0-0:2:2",
+                    "range": "TestCompile/layers/root.d2,0:0:0-0:1:1",
                     "path": [
                       {
                         "unquoted_string": {
@@ -870,7 +870,7 @@
                   },
                   "src_arrow": "",
                   "dst": {
-                    "range": "TestCompile/layers/root.d2,0:4:4-0:6:6",
+                    "range": "TestCompile/layers/root.d2,0:5:5-0:6:6",
                     "path": [
                       {
                         "unquoted_string": {

@@ -25,15 +25,10 @@ function init(reconnectDelay) {
       console.debug("watch websocket received data");
     }
     if (msg.svg) {
-      // We could turn d2SVG into an actual SVG element and use outerHTML to fully replace it
-      // with the result from the renderer but unfortunately that overwrites the #d2-svg ID.
-      // Even if you add another line to set it afterwards. The parsing/interpretation of outerHTML must be async.
-      //
-      // There's no way around that short of parsing out the top level svg tag in the msg and
-      // setting innerHTML to only the actual svg innards. However then you also need to parse
-      // out the width, height and viewbox out of the top level SVG tag and update those manually.
-      d2SVG.innerHTML = msg.svg;
-
+      // we can't just set `d2SVG.innerHTML = msg.svg` need to parse this as xml not html
+      const parsedXML = new DOMParser().parseFromString(msg.svg, "text/xml");
+      d2SVG.replaceChildren(parsedXML.documentElement);
+      changeFavicon("./static/favicon.ico");
       const svgEl = d2SVG.querySelector("#d2-svg");
       // just use inner SVG in watch mode
       svgEl.parentElement.replaceWith(svgEl);
@@ -61,6 +56,7 @@ function init(reconnectDelay) {
     if (msg.err) {
       d2ErrDiv.innerText = msg.err;
       d2ErrDiv.style.display = "block";
+      changeFavicon("./static/favicon-err.ico");
       d2ErrDiv.scrollIntoView();
     }
   };
@@ -78,3 +74,8 @@ function init(reconnectDelay) {
     }, reconnectDelay);
   };
 }
+
+const changeFavicon = function (iconURL) {
+  const faviconLink = document.getElementById("favicon");
+  faviconLink.href = iconURL;
+};

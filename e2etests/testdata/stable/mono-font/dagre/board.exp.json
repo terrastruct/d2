@@ -7,7 +7,7 @@
       "id": "satellites",
       "type": "stored_data",
       "pos": {
-        "x": 0,
+        "x": 27,
         "y": 0
       },
       "width": 161,
@@ -48,7 +48,7 @@
       "id": "transmitter",
       "type": "rectangle",
       "pos": {
-        "x": 5,
+        "x": 32,
         "y": 187
       },
       "width": 151,
@@ -91,10 +91,8 @@
       "id": "(satellites -> transmitter)[0]",
       "src": "satellites",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "transmitter",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -114,19 +112,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 60,
+          "x": 79,
           "y": 66
         },
         {
-          "x": 30,
+          "x": 39,
           "y": 114.4
         },
         {
-          "x": 30.1,
+          "x": 39,
           "y": 138.7
         },
         {
-          "x": 60.5,
+          "x": 79,
           "y": 187.5
         }
       ],
@@ -140,10 +138,8 @@
       "id": "(satellites -> transmitter)[1]",
       "src": "satellites",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "transmitter",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -163,19 +159,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 80,
+          "x": 107,
           "y": 66
         },
         {
-          "x": 80.4,
+          "x": 107,
           "y": 114.4
         },
         {
-          "x": 80.5,
+          "x": 107,
           "y": 138.7
         },
         {
-          "x": 80.5,
+          "x": 107,
           "y": 187.5
         }
       ],
@@ -189,10 +185,8 @@
       "id": "(satellites -> transmitter)[2]",
       "src": "satellites",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "transmitter",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -212,19 +206,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 101,
+          "x": 135,
           "y": 66
         },
         {
-          "x": 131,
+          "x": 175,
           "y": 114.4
         },
         {
-          "x": 130.9,
+          "x": 175,
           "y": 138.7
         },
         {
-          "x": 100.5,
+          "x": 135,
           "y": 187.5
         }
       ],

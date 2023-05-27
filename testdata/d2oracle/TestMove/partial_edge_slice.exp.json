@@ -35,7 +35,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestMove/partial_edge_slice.d2,1:0:2-1:6:8",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/partial_edge_slice.d2,1:0:2-1:2:4",
+                  "range": "d2/testdata/d2oracle/TestMove/partial_edge_slice.d2,1:0:2-1:1:3",
                   "path": [
                     {
                       "unquoted_string": {
@@ -52,7 +52,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/partial_edge_slice.d2,1:4:6-1:6:8",
+                  "range": "d2/testdata/d2oracle/TestMove/partial_edge_slice.d2,1:5:7-1:6:8",
                   "path": [
                     {
                       "unquoted_string": {
@@ -102,13 +102,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -127,12 +127,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -144,6 +138,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -164,10 +162,6 @@
       {
         "id": "a",
         "id_val": "a",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -194,6 +188,10 @@
           "label": {
             "value": "a"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -211,14 +209,10 @@
       {
         "id": "b",
         "id_val": "b",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/partial_edge_slice.d2,1:0:2-1:2:4",
+              "range": "d2/testdata/d2oracle/TestMove/partial_edge_slice.d2,1:0:2-1:1:3",
               "path": [
                 {
                   "unquoted_string": {
@@ -261,6 +255,10 @@
           "label": {
             "value": "b"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -278,14 +276,10 @@
       {
         "id": "c",
         "id_val": "c",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/partial_edge_slice.d2,1:4:6-1:6:8",
+              "range": "d2/testdata/d2oracle/TestMove/partial_edge_slice.d2,1:5:7-1:6:8",
               "path": [
                 {
                   "unquoted_string": {
@@ -307,6 +301,10 @@
         "attributes": {
           "label": {
             "value": "c"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

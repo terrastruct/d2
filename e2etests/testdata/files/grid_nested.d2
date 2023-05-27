@@ -1,0 +1,96 @@
+classes: {
+  2x2: {
+    grid-rows: 2
+    grid-columns: 2
+  }
+  gap0: {
+    vertical-gap: 0
+    horizontal-gap: 0
+  }
+}
+
+grid w/ container: {
+  class: 2x2
+
+  a
+  b: {
+    b child
+  }
+  c
+  d
+}
+
+grid w/ nested containers: {
+  class: 2x2
+
+  a
+  b: {
+    b 1: {
+      b 2: {
+        b 3: {
+          b 4
+        }
+      }
+      b 2a: {
+        b 3a: {
+          b 3a
+        }
+      }
+    }
+  }
+  c
+  d
+}
+
+grid in grid: {
+  class: 2x2
+
+  a
+  b: {
+    class: 2x2
+
+    a
+    b
+    c
+    d
+  }
+  c
+  d
+}
+
+grid w/ grid w/ grid: {
+  class: [2x2; gap0]
+
+  a
+  b: {
+    class: [2x2; gap0]
+
+    a
+    b
+    c: {
+      class: [2x2; gap0]
+
+      a
+      b
+      c
+      d: {
+        class: [2x2; gap0]
+
+        a: {
+          class: [2x2; gap0]
+
+          a
+          b
+          c
+          d
+        }
+        b
+        c
+        d
+      }
+    }
+    d
+  }
+  c
+  d
+}

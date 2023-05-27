@@ -204,7 +204,7 @@
                         {
                           "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:2:97-7:27:122",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:2:97-7:19:114",
+                            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:2:97-7:18:113",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -221,7 +221,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:21:116-7:27:122",
+                            "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:22:117-7:27:122",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -253,13 +253,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -278,12 +278,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -295,6 +289,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -315,10 +313,6 @@
       {
         "id": "cloud",
         "id_val": "cloud",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -345,6 +339,10 @@
           "label": {
             "value": "cloud"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -362,10 +360,6 @@
       {
         "id": "disks",
         "id_val": "disks",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -420,7 +414,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:21:116-7:27:122",
+              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:22:117-7:27:122",
               "path": [
                 {
                   "unquoted_string": {
@@ -475,6 +469,10 @@
           "label": {
             "value": "disks"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -492,14 +490,10 @@
       {
         "id": "AWS S3 Vancouver",
         "id_val": "AWS S3 Vancouver",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:2:97-7:19:114",
+              "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,7:2:97-7:18:113",
               "path": [
                 {
                   "unquoted_string": {
@@ -521,6 +515,10 @@
         "attributes": {
           "label": {
             "value": "AWS S3 Vancouver"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

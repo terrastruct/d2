@@ -22,6 +22,8 @@ const (
 	DEFAULT_ICON_SIZE = 32
 	MAX_ICON_SIZE     = 64
 
+	SHADOW_SIZE_X    = 3
+	SHADOW_SIZE_Y    = 5
 	THREE_DEE_OFFSET = 15
 	MULTIPLE_OFFSET  = 10
 
@@ -29,6 +31,9 @@ const (
 
 	BG_COLOR = color.N7
 	FG_COLOR = color.N1
+
+	MIN_ARROWHEAD_STROKE_WIDTH = 2
+	ARROWHEAD_PADDING          = 2.
 )
 
 var BorderOffset = geo.NewVector(5, 5)
@@ -51,18 +56,101 @@ type Diagram struct {
 	Steps     []*Diagram `json:"steps,omitempty"`
 }
 
-func (diagram Diagram) HashID() (string, error) {
+func (diagram Diagram) Bytes() ([]byte, error) {
 	b1, err := json.Marshal(diagram.Shapes)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	b2, err := json.Marshal(diagram.Connections)
+	if err != nil {
+		return nil, err
+	}
+	base := append(b1, b2...)
+
+	for _, d := range diagram.Layers {
+		slices, err := d.Bytes()
+		if err != nil {
+			return nil, err
+		}
+		base = append(base, slices...)
+	}
+	for _, d := range diagram.Scenarios {
+		slices, err := d.Bytes()
+		if err != nil {
+			return nil, err
+		}
+		base = append(base, slices...)
+	}
+	for _, d := range diagram.Steps {
+		slices, err := d.Bytes()
+		if err != nil {
+			return nil, err
+		}
+		base = append(base, slices...)
+	}
+
+	return base, nil
+}
+
+func (diagram Diagram) HasShape(condition func(Shape) bool) bool {
+	for _, d := range diagram.Layers {
+		if d.HasShape(condition) {
+			return true
+		}
+	}
+	for _, d := range diagram.Scenarios {
+		if d.HasShape(condition) {
+			return true
+		}
+	}
+	for _, d := range diagram.Steps {
+		if d.HasShape(condition) {
+			return true
+		}
+	}
+	for _, s := range diagram.Shapes {
+		if condition(s) {
+			return true
+		}
+	}
+	return false
+}
+
+func (diagram Diagram) HashID() (string, error) {
+	bytes, err := diagram.Bytes()
 	if err != nil {
 		return "", err
 	}
 	h := fnv.New32a()
-	h.Write(append(b1, b2...))
-	return fmt.Sprint(h.Sum32()), nil
+	h.Write(bytes)
+	// CSS names can't start with numbers, so prepend a little something
+	return fmt.Sprintf("d2-%d", h.Sum32()), nil
+}
+
+func (diagram Diagram) NestedBoundingBox() (topLeft, bottomRight Point) {
+	tl, br := diagram.BoundingBox()
+	for _, d := range diagram.Layers {
+		tl2, br2 := d.NestedBoundingBox()
+		tl.X = go2.Min(tl.X, tl2.X)
+		tl.Y = go2.Min(tl.Y, tl2.Y)
+		br.X = go2.Max(br.X, br2.X)
+		br.Y = go2.Max(br.Y, br2.Y)
+	}
+	for _, d := range diagram.Scenarios {
+		tl2, br2 := d.NestedBoundingBox()
+		tl.X = go2.Min(tl.X, tl2.X)
+		tl.Y = go2.Min(tl.Y, tl2.Y)
+		br.X = go2.Max(br.X, br2.X)
+		br.Y = go2.Max(br.Y, br2.Y)
+	}
+	for _, d := range diagram.Steps {
+		tl2, br2 := d.NestedBoundingBox()
+		tl.X = go2.Min(tl.X, tl2.X)
+		tl.Y = go2.Min(tl.Y, tl2.Y)
+		br.X = go2.Max(br.X, br2.X)
+		br.Y = go2.Max(br.Y, br2.Y)
+	}
+	return tl, br
 }
 
 func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
@@ -84,6 +172,10 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			// 16 is the icon radius
 			y1 = go2.Min(y1, targetShape.Pos.Y-targetShape.StrokeWidth-16)
 			x2 = go2.Max(x2, targetShape.Pos.X+targetShape.StrokeWidth+targetShape.Width+16)
+		}
+		if targetShape.Shadow {
+			y2 = go2.Max(y2, targetShape.Pos.Y+targetShape.Height+int(math.Ceil(float64(targetShape.StrokeWidth)/2.))+SHADOW_SIZE_Y)
+			x2 = go2.Max(x2, targetShape.Pos.X+targetShape.Width+int(math.Ceil(float64(targetShape.StrokeWidth)/2.))+SHADOW_SIZE_X)
 		}
 
 		if targetShape.ThreeDee {
@@ -149,9 +241,83 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			x2 = go2.Max(x2, int(labelTL.X)+connection.LabelWidth)
 			y2 = go2.Max(y2, int(labelTL.Y)+connection.LabelHeight)
 		}
+		if connection.SrcLabel != nil && connection.SrcLabel.Label != "" {
+			labelTL := connection.GetArrowheadLabelPosition(false)
+			x1 = go2.Min(x1, int(labelTL.X))
+			y1 = go2.Min(y1, int(labelTL.Y))
+			x2 = go2.Max(x2, int(labelTL.X)+connection.SrcLabel.LabelWidth)
+			y2 = go2.Max(y2, int(labelTL.Y)+connection.SrcLabel.LabelHeight)
+		}
+		if connection.DstLabel != nil && connection.DstLabel.Label != "" {
+			labelTL := connection.GetArrowheadLabelPosition(true)
+			x1 = go2.Min(x1, int(labelTL.X))
+			y1 = go2.Min(y1, int(labelTL.Y))
+			x2 = go2.Max(x2, int(labelTL.X)+connection.DstLabel.LabelWidth)
+			y2 = go2.Max(y2, int(labelTL.Y)+connection.DstLabel.LabelHeight)
+		}
 	}
 
 	return Point{x1, y1}, Point{x2, y2}
+}
+
+func (diagram Diagram) GetNestedCorpus() string {
+	corpus := diagram.GetCorpus()
+	for _, d := range diagram.Layers {
+		corpus += d.GetNestedCorpus()
+	}
+	for _, d := range diagram.Scenarios {
+		corpus += d.GetNestedCorpus()
+	}
+	for _, d := range diagram.Steps {
+		corpus += d.GetNestedCorpus()
+	}
+
+	return corpus
+}
+
+func (diagram Diagram) GetCorpus() string {
+	var corpus string
+	appendixCount := 0
+	for _, s := range diagram.Shapes {
+		corpus += s.Label
+		if s.Tooltip != "" {
+			corpus += s.Tooltip
+			appendixCount++
+			corpus += fmt.Sprint(appendixCount)
+		}
+		if s.Link != "" {
+			corpus += s.Link
+			appendixCount++
+			corpus += fmt.Sprint(appendixCount)
+		}
+		if s.Type == ShapeClass {
+			for _, cf := range s.Fields {
+				corpus += cf.Text(0).Text + cf.VisibilityToken()
+			}
+			for _, cm := range s.Methods {
+				corpus += cm.Text(0).Text + cm.VisibilityToken()
+			}
+		}
+		if s.Type == ShapeSQLTable {
+			for _, c := range s.Columns {
+				for _, t := range c.Texts(0) {
+					corpus += t.Text
+				}
+				corpus += c.ConstraintAbbr()
+			}
+		}
+	}
+	for _, c := range diagram.Connections {
+		corpus += c.Label
+		if c.SrcLabel != nil {
+			corpus += c.SrcLabel.Label
+		}
+		if c.DstLabel != nil {
+			corpus += c.DstLabel.Label
+		}
+	}
+
+	return corpus
 }
 
 func NewDiagram() *Diagram {
@@ -165,6 +331,8 @@ func NewDiagram() *Diagram {
 type Shape struct {
 	ID   string `json:"id"`
 	Type string `json:"type"`
+
+	Classes []string `json:"classes,omitempty"`
 
 	Pos    Point `json:"pos"`
 	Width  int   `json:"width"`
@@ -286,13 +454,15 @@ func BaseShape() *Shape {
 type Connection struct {
 	ID string `json:"id"`
 
+	Classes []string `json:"classes,omitempty"`
+
 	Src      string    `json:"src"`
 	SrcArrow Arrowhead `json:"srcArrow"`
-	SrcLabel string    `json:"srcLabel"`
+	SrcLabel *Text     `json:"srcLabel,omitempty"`
 
 	Dst      string    `json:"dst"`
 	DstArrow Arrowhead `json:"dstArrow"`
-	DstLabel string    `json:"dstLabel"`
+	DstLabel *Text     `json:"dstLabel,omitempty"`
 
 	Opacity      float64 `json:"opacity"`
 	StrokeDash   float64 `json:"strokeDash"`
@@ -363,13 +533,76 @@ func (c Connection) CSSStyle() string {
 }
 
 func (c *Connection) GetLabelTopLeft() *geo.Point {
-	return label.Position(c.LabelPosition).GetPointOnRoute(
+	point, _ := label.Position(c.LabelPosition).GetPointOnRoute(
 		c.Route,
 		float64(c.StrokeWidth),
 		c.LabelPercentage,
 		float64(c.LabelWidth),
 		float64(c.LabelHeight),
 	)
+	return point
+}
+
+func (connection *Connection) GetArrowheadLabelPosition(isDst bool) *geo.Point {
+	var width, height float64
+	if isDst {
+		width = float64(connection.DstLabel.LabelWidth)
+		height = float64(connection.DstLabel.LabelHeight)
+	} else {
+		width = float64(connection.SrcLabel.LabelWidth)
+		height = float64(connection.SrcLabel.LabelHeight)
+	}
+
+	// get the start/end points of edge segment with arrowhead
+	index := 0
+	if isDst {
+		index = len(connection.Route) - 2
+	}
+	start, end := connection.Route[index], connection.Route[index+1]
+	// Note: end to start to get normal towards unlocked top position
+	normalX, normalY := geo.GetUnitNormalVector(end.X, end.Y, start.X, start.Y)
+
+	// determine how much to move the label back from the very end of the edge
+	// e.g. if normal points up {x: 0, y:1}, shift width/2 + padding to fit
+	shift := math.Abs(normalX)*(height/2.+label.PADDING) +
+		math.Abs(normalY)*(width/2.+label.PADDING)
+
+	length := geo.Route(connection.Route).Length()
+	var position float64
+	if isDst {
+		position = 1.
+		if length > 0 {
+			position -= shift / length
+		}
+	} else {
+		position = 0.
+		if length > 0 {
+			position = shift / length
+		}
+	}
+
+	strokeWidth := float64(connection.StrokeWidth)
+
+	labelTL, _ := label.UnlockedTop.GetPointOnRoute(connection.Route, strokeWidth, position, width, height)
+
+	var arrowSize float64
+	if isDst && connection.DstArrow != NoArrowhead {
+		// Note: these dimensions are for rendering arrowheads on their side so we want the height
+		_, arrowSize = connection.DstArrow.Dimensions(strokeWidth)
+	} else if connection.SrcArrow != NoArrowhead {
+		_, arrowSize = connection.SrcArrow.Dimensions(strokeWidth)
+	}
+
+	if arrowSize > 0 {
+		// labelTL already accounts for strokeWidth and padding, we only want to shift further if the arrow is larger than this
+		offset := (arrowSize/2 + ARROWHEAD_PADDING) - strokeWidth/2 - label.PADDING
+		if offset > 0 {
+			labelTL.X += normalX * offset
+			labelTL.Y += normalY * offset
+		}
+	}
+
+	return labelTL
 }
 
 func (c Connection) GetZIndex() int {
@@ -399,6 +632,8 @@ const (
 	CfMany         Arrowhead = "cf-many"
 	CfOneRequired  Arrowhead = "cf-one-required"
 	CfManyRequired Arrowhead = "cf-many-required"
+
+	DefaultArrowhead Arrowhead = TriangleArrowhead
 )
 
 var Arrowheads = map[string]struct{}{
@@ -427,8 +662,12 @@ func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
 			return FilledCircleArrowhead
 		}
 		return CircleArrowhead
+	case string(NoArrowhead):
+		return NoArrowhead
 	case string(ArrowArrowhead):
 		return ArrowArrowhead
+	case string(TriangleArrowhead):
+		return TriangleArrowhead
 	case string(CfOne):
 		return CfOne
 	case string(CfMany):
@@ -438,8 +677,51 @@ func ToArrowhead(arrowheadType string, filled bool) Arrowhead {
 	case string(CfManyRequired):
 		return CfManyRequired
 	default:
-		return TriangleArrowhead
+		return DefaultArrowhead
 	}
+}
+
+func (arrowhead Arrowhead) Dimensions(strokeWidth float64) (width, height float64) {
+	var baseWidth, baseHeight float64
+	var widthMultiplier, heightMultiplier float64
+	switch arrowhead {
+	case ArrowArrowhead:
+		baseWidth = 4
+		baseHeight = 4
+		widthMultiplier = 4
+		heightMultiplier = 4
+	case TriangleArrowhead:
+		baseWidth = 4
+		baseHeight = 4
+		widthMultiplier = 3
+		heightMultiplier = 4
+	case LineArrowhead:
+		widthMultiplier = 5
+		heightMultiplier = 8
+	case FilledDiamondArrowhead:
+		baseWidth = 11
+		baseHeight = 7
+		widthMultiplier = 5.5
+		heightMultiplier = 3.5
+	case DiamondArrowhead:
+		baseWidth = 11
+		baseHeight = 9
+		widthMultiplier = 5.5
+		heightMultiplier = 4.5
+	case FilledCircleArrowhead, CircleArrowhead:
+		baseWidth = 8
+		baseHeight = 8
+		widthMultiplier = 5
+		heightMultiplier = 5
+	case CfOne, CfMany, CfOneRequired, CfManyRequired:
+		baseWidth = 9
+		baseHeight = 9
+		widthMultiplier = 4.5
+		heightMultiplier = 4.5
+	}
+
+	clippedStrokeWidth := go2.Max(MIN_ARROWHEAD_STROKE_WIDTH, strokeWidth)
+	return baseWidth + clippedStrokeWidth*widthMultiplier, baseHeight + clippedStrokeWidth*heightMultiplier
 }
 
 type Point struct {

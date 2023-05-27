@@ -110,7 +110,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*s
 		sd.objectRank[actor] = rank
 
 		if actor.Width < MIN_ACTOR_WIDTH {
-			dslShape := strings.ToLower(actor.Attributes.Shape.Value)
+			dslShape := strings.ToLower(actor.Shape.Value)
 			switch dslShape {
 			case d2target.ShapePerson, d2target.ShapeOval, d2target.ShapeSquare, d2target.ShapeCircle:
 				// scale shape up to min width uniformly
@@ -131,7 +131,7 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*s
 			// edge groups are children of actors with no edges and children edges
 			if child.IsSequenceDiagramNote() {
 				sd.verticalIndices[child.AbsID()] = getObjEarliestLineNum(child)
-				child.Attributes.Shape = d2graph.Scalar{Value: shape.PAGE_TYPE}
+				child.Shape = d2graph.Scalar{Value: shape.PAGE_TYPE}
 				sd.notes = append(sd.notes, child)
 				sd.objectRank[child] = rank
 				child.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
@@ -139,8 +139,8 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*s
 			} else {
 				// spans have no labels
 				// TODO why not? Spans should be able to
-				child.Attributes.Label = d2graph.Scalar{Value: ""}
-				child.Attributes.Shape = d2graph.Scalar{Value: shape.SQUARE_TYPE}
+				child.Label = d2graph.Scalar{Value: ""}
+				child.Shape = d2graph.Scalar{Value: shape.SQUARE_TYPE}
 				sd.spans = append(sd.spans, child)
 				sd.objectRank[child] = rank
 			}
@@ -186,8 +186,8 @@ func newSequenceDiagram(objects []*d2graph.Object, messages []*d2graph.Edge) (*s
 
 	sd.yStep += VERTICAL_PAD
 	sd.maxActorHeight += VERTICAL_PAD
-	if sd.root.LabelHeight != nil {
-		sd.maxActorHeight += float64(*sd.root.LabelHeight)
+	if sd.root.HasLabel() {
+		sd.maxActorHeight += float64(sd.root.LabelDimensions.Height)
 	}
 
 	return sd, nil
@@ -282,11 +282,11 @@ func (sd *sequenceDiagram) placeGroup(group *d2graph.Object) {
 }
 
 func (sd *sequenceDiagram) adjustGroupLabel(group *d2graph.Object) {
-	if group.LabelHeight == nil {
+	if !group.HasLabel() {
 		return
 	}
 
-	heightAdd := (*group.LabelHeight + EDGE_GROUP_LABEL_PADDING) - GROUP_CONTAINER_PADDING
+	heightAdd := (group.LabelDimensions.Height + EDGE_GROUP_LABEL_PADDING) - GROUP_CONTAINER_PADDING
 	if heightAdd < 0 {
 		return
 	}
@@ -339,8 +339,8 @@ func (sd *sequenceDiagram) placeActors() {
 		if actor.HasOutsideBottomLabel() {
 			actor.LabelPosition = go2.Pointer(string(label.OutsideBottomCenter))
 			yOffset = sd.maxActorHeight - actor.Height
-			if actor.LabelHeight != nil {
-				yOffset -= float64(*actor.LabelHeight)
+			if actor.HasLabel() {
+				yOffset -= float64(actor.LabelDimensions.Height)
 			}
 		} else {
 			actor.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
@@ -381,20 +381,26 @@ func (sd *sequenceDiagram) addLifelineEdges() {
 	for _, actor := range sd.actors {
 		actorBottom := actor.Center()
 		actorBottom.Y = actor.TopLeft.Y + actor.Height
-		if *actor.LabelPosition == string(label.OutsideBottomCenter) && actor.LabelHeight != nil {
-			actorBottom.Y += float64(*actor.LabelHeight) + LIFELINE_LABEL_PAD
+		if *actor.LabelPosition == string(label.OutsideBottomCenter) && actor.HasLabel() {
+			actorBottom.Y += float64(actor.LabelDimensions.Height) + LIFELINE_LABEL_PAD
 		}
 		actorLifelineEnd := actor.Center()
 		actorLifelineEnd.Y = endY
+		style := d2graph.Style{
+			StrokeDash:  &d2graph.Scalar{Value: fmt.Sprintf("%d", LIFELINE_STROKE_DASH)},
+			StrokeWidth: &d2graph.Scalar{Value: fmt.Sprintf("%d", LIFELINE_STROKE_WIDTH)},
+		}
+		if actor.Style.StrokeDash != nil {
+			style.StrokeDash = &d2graph.Scalar{Value: actor.Style.StrokeDash.Value}
+		}
+		if actor.Style.Stroke != nil {
+			style.Stroke = &d2graph.Scalar{Value: actor.Style.Stroke.Value}
+		}
+
 		sd.lifelines = append(sd.lifelines, &d2graph.Edge{
-			Attributes: &d2graph.Attributes{
-				Style: d2graph.Style{
-					StrokeDash:  &d2graph.Scalar{Value: fmt.Sprintf("%d", LIFELINE_STROKE_DASH)},
-					StrokeWidth: &d2graph.Scalar{Value: fmt.Sprintf("%d", LIFELINE_STROKE_WIDTH)},
-				},
-			},
-			Src:      actor,
-			SrcArrow: false,
+			Attributes: d2graph.Attributes{Style: style},
+			Src:        actor,
+			SrcArrow:   false,
 			Dst: &d2graph.Object{
 				ID: actor.ID + fmt.Sprintf("-lifeline-end-%d", go2.StringToIntHash(actor.ID+"-lifeline-end")),
 			},
@@ -575,7 +581,7 @@ func (sd *sequenceDiagram) routeMessages() error {
 		}
 		messageOffset += sd.yStep
 
-		if message.Attributes.Label.Value != "" {
+		if message.Label.Value != "" {
 			message.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 		}
 	}

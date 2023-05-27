@@ -941,13 +941,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -968,10 +968,6 @@
       {
         "id": "containers",
         "id_val": "containers",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -998,6 +994,10 @@
           "label": {
             "value": "containers"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -1015,10 +1015,6 @@
       {
         "id": "circle container",
         "id_val": "circle container",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1045,6 +1041,10 @@
           "label": {
             "value": "circle container"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "width": {
             "value": "512"
@@ -1065,10 +1065,6 @@
       {
         "id": "diamond",
         "id_val": "diamond",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1095,6 +1091,10 @@
           "label": {
             "value": "diamond"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "width": {
             "value": "128"
@@ -1118,10 +1118,6 @@
       {
         "id": "diamond container",
         "id_val": "diamond container",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1148,6 +1144,10 @@
           "label": {
             "value": "diamond container"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "width": {
             "value": "512"
@@ -1171,10 +1171,6 @@
       {
         "id": "circle",
         "id_val": "circle",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1201,6 +1197,10 @@
           "label": {
             "value": "circle"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "width": {
             "value": "128"
@@ -1221,10 +1221,6 @@
       {
         "id": "oval container",
         "id_val": "oval container",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1251,6 +1247,10 @@
           "label": {
             "value": "oval container"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "width": {
             "value": "512"
@@ -1274,10 +1274,6 @@
       {
         "id": "hexagon",
         "id_val": "hexagon",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1304,6 +1300,10 @@
           "label": {
             "value": "hexagon"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "width": {
             "value": "128"
@@ -1327,10 +1327,6 @@
       {
         "id": "hexagon container",
         "id_val": "hexagon container",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1357,6 +1353,10 @@
           "label": {
             "value": "hexagon container"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "width": {
             "value": "512"
@@ -1380,10 +1380,6 @@
       {
         "id": "oval",
         "id_val": "oval",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1409,6 +1405,10 @@
         "attributes": {
           "label": {
             "value": "oval"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "width": {

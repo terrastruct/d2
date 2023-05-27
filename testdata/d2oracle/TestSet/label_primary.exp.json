@@ -42,7 +42,7 @@
                         {
                           "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:2:54-1:8:60",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:2:54-1:4:56",
+                            "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:2:54-1:3:55",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -59,7 +59,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:6:58-1:8:60",
+                            "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:7:59-1:8:60",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -91,13 +91,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -116,12 +116,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -133,6 +127,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -153,10 +151,6 @@
       {
         "id": "oreo",
         "id_val": "oreo",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -183,6 +177,10 @@
           "label": {
             "value": "QOTD: \"It's been Monday all week today.\""
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -200,14 +198,10 @@
       {
         "id": "q",
         "id_val": "q",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:2:54-1:4:56",
+              "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:2:54-1:3:55",
               "path": [
                 {
                   "unquoted_string": {
@@ -230,6 +224,10 @@
           "label": {
             "value": "q"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -247,14 +245,10 @@
       {
         "id": "z",
         "id_val": "z",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:6:58-1:8:60",
+              "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:7:59-1:8:60",
               "path": [
                 {
                   "unquoted_string": {
@@ -276,6 +270,10 @@
         "attributes": {
           "label": {
             "value": "z"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

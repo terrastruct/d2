@@ -1,0 +1,99 @@
+direction: right
+# Edges
+User <-> User: "spouse\nspouse" {
+  # o2o optional
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-one
+  }
+}
+User <-> User: "children\nparent\nyo\nwhoa\nhey" {
+  # o2m optional
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+}
+User <-> Pet: "pets/owner" {
+  # o2m optional
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+}
+User <-> Card: "card/owner" {
+  # o2o optional
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-one
+  }
+}
+User <-> Post: "posts/author" {
+  # o2m optional
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+}
+User <-> Metadata: "metadata/user" {
+  # o2m optional
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+}
+User <-> Info: "info/user" {
+  # o2m optional
+  source-arrowhead: {
+    shape: cf-one-required
+  }
+  target-arrowhead: {
+    shape: cf-many
+  }
+}
+
+# Tables
+Card: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  owner_id: int {constraint: foreign_key}
+}
+Info: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  content: json.RawMessage
+}
+Metadata: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  age: int
+}
+Pet: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  owner_id: int {constraint: foreign_key}
+}
+Post: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  text: string
+  author_id: int {constraint: foreign_key}
+}
+User: {
+  shape: sql_table
+  id: int {constraint: primary_key}
+  parent_id: int {constraint: foreign_key}
+  spouse_id: int {constraint: foreign_key}
+}

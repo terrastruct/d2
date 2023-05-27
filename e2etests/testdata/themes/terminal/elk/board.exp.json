@@ -8,7 +8,7 @@
       "type": "rectangle",
       "pos": {
         "x": 12,
-        "y": 909
+        "y": 859
       },
       "width": 611,
       "height": 902,
@@ -50,7 +50,7 @@
       "type": "rectangle",
       "pos": {
         "x": 62,
-        "y": 959
+        "y": 909
       },
       "width": 261,
       "height": 413,
@@ -73,7 +73,7 @@
       "fields": null,
       "methods": null,
       "columns": null,
-      "label": "CELL TOWER",
+      "label": "Cell Tower",
       "fontSize": 24,
       "fontFamily": "mono",
       "language": "",
@@ -81,7 +81,7 @@
       "italic": false,
       "bold": false,
       "underline": false,
-      "labelWidth": 143,
+      "labelWidth": 142,
       "labelHeight": 31,
       "labelPosition": "INSIDE_TOP_CENTER",
       "zIndex": 0,
@@ -92,7 +92,7 @@
       "type": "stored_data",
       "pos": {
         "x": 112,
-        "y": 1009
+        "y": 959
       },
       "width": 161,
       "height": 66,
@@ -133,7 +133,7 @@
       "type": "rectangle",
       "pos": {
         "x": 117,
-        "y": 1256
+        "y": 1206
       },
       "width": 151,
       "height": 66,
@@ -174,7 +174,7 @@
       "type": "rectangle",
       "pos": {
         "x": 343,
-        "y": 964
+        "y": 914
       },
       "width": 230,
       "height": 169,
@@ -216,7 +216,7 @@
       "type": "hexagon",
       "pos": {
         "x": 418,
-        "y": 1014
+        "y": 964
       },
       "width": 80,
       "height": 69,
@@ -257,7 +257,7 @@
       "type": "rectangle",
       "pos": {
         "x": 70,
-        "y": 1543
+        "y": 1493
       },
       "width": 245,
       "height": 218,
@@ -299,7 +299,7 @@
       "type": "cylinder",
       "pos": {
         "x": 136,
-        "y": 1593
+        "y": 1543
       },
       "width": 112,
       "height": 118,
@@ -339,7 +339,7 @@
       "id": "user",
       "type": "person",
       "pos": {
-        "x": 257,
+        "x": 213,
         "y": 175
       },
       "width": 130,
@@ -380,8 +380,8 @@
       "id": "api server",
       "type": "rectangle",
       "pos": {
-        "x": 537,
-        "y": 222
+        "x": 426,
+        "y": 1916
       },
       "width": 142,
       "height": 66,
@@ -421,8 +421,8 @@
       "id": "logs",
       "type": "page",
       "pos": {
-        "x": 703,
-        "y": 909
+        "x": 456,
+        "y": 2143
       },
       "width": 82,
       "height": 87,
@@ -462,7 +462,7 @@
       "id": "users",
       "type": "sql_table",
       "pos": {
-        "x": 699,
+        "x": 363,
         "y": 42
       },
       "width": 262,
@@ -646,7 +646,7 @@
       "id": "products",
       "type": "class",
       "pos": {
-        "x": 981,
+        "x": 645,
         "y": 12
       },
       "width": 242,
@@ -710,7 +710,7 @@
       "id": "markdown",
       "type": "text",
       "pos": {
-        "x": 1243,
+        "x": 961,
         "y": 169
       },
       "width": 128,
@@ -750,8 +750,8 @@
       "id": "code",
       "type": "code",
       "pos": {
-        "x": 873,
-        "y": 418
+        "x": 591,
+        "y": 368
       },
       "width": 868,
       "height": 406,
@@ -785,6 +785,46 @@
       "labelHeight": 401,
       "zIndex": 0,
       "level": 1
+    },
+    {
+      "id": "ex",
+      "type": "text",
+      "pos": {
+        "x": 823,
+        "y": 859
+      },
+      "width": 404,
+      "height": 52,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "transparent",
+      "stroke": "N1",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": null,
+      "label": "\\\\displaylines{x = a + b \\\\\\\\ y = b + c}\n\\\\sum_{k=1}^{n} h_{k} \\\\int_{0}^{1} \\\\bigl(\\\\partial_{k} f(x_{k-1}+t h_{k} e_{k}) -\\\\partial_{k} f(a)\\\\bigr) \\\\,dt",
+      "fontSize": 16,
+      "fontFamily": "mono",
+      "language": "latex",
+      "color": "N1",
+      "italic": false,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 404,
+      "labelHeight": 52,
+      "zIndex": 0,
+      "level": 1
     }
   ],
   "connections": [
@@ -792,15 +832,13 @@
       "id": "network.cell tower.(satellites -> transmitter)[0]",
       "src": "network.cell tower.satellites",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "network.cell tower.transmitter",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
       "stroke": "B1",
-      "label": "SEND",
+      "label": "send",
       "fontSize": 16,
       "fontFamily": "mono",
       "language": "",
@@ -808,18 +846,18 @@
       "italic": true,
       "bold": false,
       "underline": false,
-      "labelWidth": 38,
+      "labelWidth": 39,
       "labelHeight": 21,
       "labelPosition": "INSIDE_MIDDLE_CENTER",
       "labelPercentage": 0,
       "route": [
         {
           "x": 143,
-          "y": 1075
+          "y": 1025
         },
         {
-          "x": 143.5,
-          "y": 1256
+          "x": 143.25,
+          "y": 1206
         }
       ],
       "animated": false,
@@ -831,10 +869,8 @@
       "id": "network.cell tower.(satellites -> transmitter)[1]",
       "src": "network.cell tower.satellites",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "network.cell tower.transmitter",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -853,12 +889,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 192,
-          "y": 1075
+          "x": 193,
+          "y": 1025
         },
         {
-          "x": 192.5,
-          "y": 1256
+          "x": 192.75,
+          "y": 1206
         }
       ],
       "animated": false,
@@ -870,10 +906,8 @@
       "id": "network.cell tower.(satellites -> transmitter)[2]",
       "src": "network.cell tower.satellites",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "network.cell tower.transmitter",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -892,12 +926,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 241,
-          "y": 1075
+          "x": 242,
+          "y": 1025
         },
         {
-          "x": 241.5,
-          "y": 1256
+          "x": 241.75,
+          "y": 1206
         }
       ],
       "animated": false,
@@ -909,10 +943,8 @@
       "id": "network.(cell tower.transmitter -> data processor.storage)[0]",
       "src": "network.cell tower.transmitter",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "network.data processor.storage",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -932,11 +964,11 @@
       "route": [
         {
           "x": 192.5,
-          "y": 1322
+          "y": 1272
         },
         {
           "x": 193,
-          "y": 1593
+          "y": 1543
         }
       ],
       "animated": false,
@@ -948,10 +980,8 @@
       "id": "(user -> network.cell tower)[0]",
       "src": "user",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "network.cell tower",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -970,20 +1000,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 300,
+          "x": 257,
           "y": 262
         },
         {
-          "x": 300.5,
+          "x": 256.66666666666663,
           "y": 328
         },
         {
-          "x": 214.08333333333337,
+          "x": 202.5,
           "y": 328
         },
         {
-          "x": 214.08333333333337,
-          "y": 959
+          "x": 202.5,
+          "y": 909
         }
       ],
       "animated": false,
@@ -995,10 +1025,8 @@
       "id": "(user -> network.online portal.ui)[0]",
       "src": "user",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "network.online portal.ui",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 3,
       "strokeWidth": 2,
@@ -1017,20 +1045,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 344,
+          "x": 300,
           "y": 262
         },
         {
-          "x": 343.83333333333337,
-          "y": 864
+          "x": 300,
+          "y": 814
         },
         {
           "x": 444.6666666666667,
-          "y": 864
+          "y": 814
         },
         {
           "x": 445,
-          "y": 1014
+          "y": 964
         }
       ],
       "animated": false,
@@ -1042,10 +1070,8 @@
       "id": "(api server -> network.online portal.ui)[0]",
       "src": "api server",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "network.online portal.ui",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1064,20 +1090,28 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 573.3333333333334,
-          "y": 288
+          "x": 521.1666666666667,
+          "y": 1916
         },
         {
-          "x": 573.3333333333334,
-          "y": 864
+          "x": 521.1666666666667,
+          "y": 1876
+        },
+        {
+          "x": 768,
+          "y": 1876
+        },
+        {
+          "x": 768,
+          "y": 814
         },
         {
           "x": 471.33333333333337,
-          "y": 864
+          "y": 814
         },
         {
           "x": 471,
-          "y": 1014
+          "y": 964
         }
       ],
       "animated": false,
@@ -1089,10 +1123,8 @@
       "id": "(api server -> logs)[0]",
       "src": "api server",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "logs",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1111,20 +1143,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 644.3333333333333,
-          "y": 288
+          "x": 497.5,
+          "y": 1982
         },
         {
-          "x": 644.3333333333333,
-          "y": 328
-        },
-        {
-          "x": 744,
-          "y": 328
-        },
-        {
-          "x": 744,
-          "y": 909
+          "x": 498,
+          "y": 2143
         }
       ],
       "animated": false,
@@ -1136,10 +1160,8 @@
       "id": "(network.data processor -> api server)[0]",
       "src": "network.data processor",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "api server",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1159,27 +1181,19 @@
       "route": [
         {
           "x": 136.5,
-          "y": 1761
+          "y": 1711
         },
         {
           "x": 136.5,
-          "y": 1856
+          "y": 1876
         },
         {
-          "x": 663,
-          "y": 1856
+          "x": 473.8333333333333,
+          "y": 1876
         },
         {
-          "x": 663,
-          "y": 378
-        },
-        {
-          "x": 608.8333333333334,
-          "y": 378
-        },
-        {
-          "x": 608.8333333333334,
-          "y": 288
+          "x": 473.8333333333333,
+          "y": 1916
         }
       ],
       "animated": false,
@@ -1191,10 +1205,8 @@
       "id": "(markdown -> code)[0]",
       "src": "markdown",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "code",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -1213,12 +1225,49 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1307.8333333333333,
+          "x": 1025.5,
           "y": 288
         },
         {
-          "x": 1307.8333333333333,
-          "y": 418
+          "x": 1025.5,
+          "y": 368
+        }
+      ],
+      "animated": false,
+      "tooltip": "",
+      "icon": null,
+      "zIndex": 0
+    },
+    {
+      "id": "(code -> ex)[0]",
+      "src": "code",
+      "srcArrow": "none",
+      "dst": "ex",
+      "dstArrow": "triangle",
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "stroke": "B1",
+      "label": "",
+      "fontSize": 16,
+      "fontFamily": "mono",
+      "language": "",
+      "color": "N2",
+      "italic": true,
+      "bold": false,
+      "underline": false,
+      "labelWidth": 0,
+      "labelHeight": 0,
+      "labelPosition": "",
+      "labelPercentage": 0,
+      "route": [
+        {
+          "x": 1025.5,
+          "y": 774
+        },
+        {
+          "x": 1025.5,
+          "y": 859
         }
       ],
       "animated": false,

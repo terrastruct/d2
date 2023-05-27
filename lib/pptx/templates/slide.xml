@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p:sld xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+    xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main"
+    xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+    <p:cSld>
+        <p:spTree>
+            <p:nvGrpSpPr>
+                <p:cNvPr id="1" name="" />
+                <p:cNvGrpSpPr />
+                <p:nvPr />
+            </p:nvGrpSpPr>
+            <p:grpSpPr>
+                <a:xfrm>
+                    <a:off x="0" y="0" />
+                    <a:ext cx="0" cy="0" />
+                    <a:chOff x="0" y="0" />
+                    <a:chExt cx="0" cy="0" />
+                </a:xfrm>
+            </p:grpSpPr>
+            <p:pic>
+                <p:nvPicPr>
+                    <p:cNvPr id="2" name="{{.Description}}" descr="{{.Description}}" />
+                    <p:cNvPicPr>
+                        <a:picLocks noChangeAspect="1" />
+                    </p:cNvPicPr>
+                    <p:nvPr />
+                </p:nvPicPr>
+                <p:blipFill>
+                    <a:blip r:embed="{{.ImageID}}" />
+                    <a:stretch>
+                        <a:fillRect />
+                    </a:stretch>
+                </p:blipFill>
+                <p:spPr>
+                    <a:xfrm>
+                        <a:off x="{{.ImageLeft}}" y="{{.ImageTop}}" />
+                        <a:ext cx="{{.ImageWidth}}" cy="{{.ImageHeight}}" />
+                    </a:xfrm>
+                    <a:prstGeom prst="rect">
+                        <a:avLst />
+                    </a:prstGeom>
+                </p:spPr>
+            </p:pic>
+            <p:sp>
+                <p:nvSpPr>
+                    <p:cNvPr id="95" name="{{.Description}}" />
+                    <p:cNvSpPr txBox="1" />
+                    <p:nvPr />
+                </p:nvSpPr>
+                <p:spPr>
+                    <a:xfrm>
+                        <a:off x="4001" y="6239" />
+                        <a:ext cx="9135998" cy="{{.HeaderHeight}}" />
+                    </a:xfrm>
+                    <a:prstGeom prst="rect">
+                        <a:avLst />
+                    </a:prstGeom>
+                    <a:ln w="12700">
+                        <a:miter lim="400000" />
+                    </a:ln>
+                    <a:extLst>
+                        <a:ext uri="{C572A759-6A51-4108-AA02-DFA0A04FC94B}">
+                            <ma14:wrappingTextBoxFlag
+                                xmlns:ma14="http://schemas.microsoft.com/office/mac/drawingml/2011/main"
+                                xmlns="" val="1" />
+                        </a:ext>
+                    </a:extLst>
+                </p:spPr>
+                <p:txBody>
+                    <a:bodyPr lIns="45719" rIns="45719">
+                        <a:spAutoFit />
+                    </a:bodyPr>
+                    <a:lstStyle>
+                        <a:lvl1pPr>
+                            <a:defRPr sz="2400" />
+                        </a:lvl1pPr>
+                    </a:lstStyle>
+                    <a:p>
+                        {{range .TitlePrefix}}
+                        <a:r>
+                            <a:rPr>
+                                <a:hlinkClick r:id="{{.RelationshipID}}" invalidUrl=""
+                                    action="ppaction://hlinksldjump" tgtFrame="" tooltip=""
+                                    history="1" highlightClick="0" endSnd="0" />
+                            </a:rPr>
+                            <a:t>{{.Name}}</a:t>
+                        </a:r>
+                        <a:r><a:t>  /  </a:t></a:r>
+                        {{end}}
+                        <a:r>
+                            <a:rPr b="1" />
+                            <a:t>{{.Title}}</a:t>
+                        </a:r>
+                    </a:p>
+                </p:txBody>
+            </p:sp>
+            {{range .Links}}
+            <p:sp>
+                <p:nvSpPr>
+                    <p:cNvPr id="{{.ID}}" name="{{.Name}}">
+                        <a:hlinkClick r:id="{{.RelationshipID}}" action="{{.Action}}" tooltip="{{.Name}}" history="1" invalidUrl=""
+                            tgtFrame="" highlightClick="0" endSnd="0" />
+                    </p:cNvPr>
+                    <p:cNvSpPr />
+                    <p:nvPr />
+                </p:nvSpPr>
+                <p:spPr>
+                    <a:xfrm>
+                        <a:off x="{{.Left}}" y="{{.Top}}" />
+                        <a:ext cx="{{.Width}}" cy="{{.Height}}" />
+                    </a:xfrm>
+                    <a:prstGeom prst="rect">
+                        <a:avLst />
+                    </a:prstGeom>
+                    <a:solidFill>
+                        <a:srgbClr val="FFFFFF">
+                            <a:alpha val="0" />
+                        </a:srgbClr>
+                    </a:solidFill>
+                    <a:ln w="12700">
+                        <a:miter lim="400000" />
+                    </a:ln>
+                </p:spPr>
+            </p:sp>
+            {{end}}
+        </p:spTree>
+    </p:cSld>
+    <p:clrMapOvr>
+        <a:masterClrMapping />
+    </p:clrMapOvr>
+</p:sld>

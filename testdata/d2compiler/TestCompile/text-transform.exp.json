@@ -1,0 +1,530 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,0:0:0-7:33:145",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,0:0:0-0:16:16",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,0:0:0-0:9:9",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,0:0:0-0:9:9",
+                    "value": [
+                      {
+                        "string": "direction",
+                        "raw_string": "direction"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,0:11:11-0:16:16",
+                "value": [
+                  {
+                    "string": "right",
+                    "raw_string": "right"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:0:17-5:1:77",
+            "edges": [
+              {
+                "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:0:17-1:6:23",
+                "src": {
+                  "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:0:17-1:1:18",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:0:17-1:1:18",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:5:22-1:6:23",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:5:22-1:6:23",
+                        "value": [
+                          {
+                            "string": "y",
+                            "raw_string": "y"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "primary": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:8:25-1:10:27",
+                "value": [
+                  {
+                    "string": "hi",
+                    "raw_string": "hi"
+                  }
+                ]
+              }
+            },
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:11:28-5:0:76",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,2:2:32-4:3:75",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,2:2:32-2:7:37",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,2:2:32-2:7:37",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,2:9:39-4:2:74",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,3:4:45-3:30:71",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,3:4:45-3:18:59",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,3:4:45-3:18:59",
+                                        "value": [
+                                          {
+                                            "string": "text-transform",
+                                            "raw_string": "text-transform"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,3:20:61-3:30:71",
+                                    "value": [
+                                      {
+                                        "string": "capitalize",
+                                        "raw_string": "capitalize"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,6:0:78-6:33:111",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,6:0:78-6:22:100",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,6:0:78-6:1:79",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,6:2:80-6:7:85",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,6:8:86-6:22:100",
+                    "value": [
+                      {
+                        "string": "text-transform",
+                        "raw_string": "text-transform"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,6:24:102-6:33:111",
+                "value": [
+                  {
+                    "string": "uppercase",
+                    "raw_string": "uppercase"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,7:0:112-7:33:145",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,7:0:112-7:22:134",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,7:0:112-7:1:113",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,7:2:114-7:7:119",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,7:8:120-7:22:134",
+                    "value": [
+                      {
+                        "string": "text-transform",
+                        "raw_string": "text-transform"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "unquoted_string": {
+                "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,7:24:136-7:33:145",
+                "value": [
+                  {
+                    "string": "lowercase",
+                    "raw_string": "lowercase"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": "right"
+        },
+        "constraint": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": [
+      {
+        "index": 0,
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "hi"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "textTransform": {
+              "value": "capitalize"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ],
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:0:17-1:1:18",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:0:17-1:1:18",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,6:0:78-6:22:100",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,6:0:78-6:1:79",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,6:2:80-6:7:85",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,6:8:86-6:22:100",
+                    "value": [
+                      {
+                        "string": "text-transform",
+                        "raw_string": "text-transform"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "textTransform": {
+              "value": "uppercase"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "y",
+        "id_val": "y",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:5:22-1:6:23",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:5:22-1:6:23",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,7:0:112-7:22:134",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,7:0:112-7:1:113",
+                    "value": [
+                      {
+                        "string": "y",
+                        "raw_string": "y"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,7:2:114-7:7:119",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,7:8:120-7:22:134",
+                    "value": [
+                      {
+                        "string": "text-transform",
+                        "raw_string": "text-transform"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "y"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "textTransform": {
+              "value": "lowercase"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

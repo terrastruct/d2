@@ -35,7 +35,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:0:2-1:10:12",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:0:2-1:4:6",
+                  "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:0:2-1:3:5",
                   "path": [
                     {
                       "unquoted_string": {
@@ -63,7 +63,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:6:8-1:10:12",
+                  "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:7:9-1:10:12",
                   "path": [
                     {
                       "unquoted_string": {
@@ -146,13 +146,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -171,12 +171,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -188,6 +182,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {
             "animated": {
@@ -212,10 +210,6 @@
       {
         "id": "a",
         "id_val": "a",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -239,7 +233,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:0:2-1:4:6",
+              "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:0:2-1:3:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -270,7 +264,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:6:8-1:10:12",
+              "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:7:9-1:10:12",
               "path": [
                 {
                   "unquoted_string": {
@@ -304,6 +298,10 @@
           "label": {
             "value": "a"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -321,14 +319,10 @@
       {
         "id": "b",
         "id_val": "b",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:0:2-1:4:6",
+              "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:0:2-1:3:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -362,6 +356,10 @@
           "label": {
             "value": "b"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -379,14 +377,10 @@
       {
         "id": "c",
         "id_val": "c",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:6:8-1:10:12",
+              "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:7:9-1:10:12",
               "path": [
                 {
                   "unquoted_string": {
@@ -419,6 +413,10 @@
         "attributes": {
           "label": {
             "value": "c"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

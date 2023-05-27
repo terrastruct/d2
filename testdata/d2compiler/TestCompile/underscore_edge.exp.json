@@ -36,7 +36,7 @@
                         {
                           "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:2:8-2:12:18",
                           "src": {
-                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:2:8-2:6:12",
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:2:8-2:5:11",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -64,7 +64,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:8:14-2:12:18",
+                            "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:9:15-2:12:18",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -107,13 +107,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -132,12 +132,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -149,6 +143,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -169,10 +167,6 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -196,7 +190,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:8:14-2:12:18",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:9:15-2:12:18",
               "path": [
                 {
                   "unquoted_string": {
@@ -230,6 +224,10 @@
           "label": {
             "value": "x"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -247,14 +245,10 @@
       {
         "id": "y",
         "id_val": "y",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:2:8-2:6:12",
+              "range": "d2/testdata/d2compiler/TestCompile/underscore_edge.d2,2:2:8-2:5:11",
               "path": [
                 {
                   "unquoted_string": {
@@ -287,6 +281,10 @@
         "attributes": {
           "label": {
             "value": "y"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

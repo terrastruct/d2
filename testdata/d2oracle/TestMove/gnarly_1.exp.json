@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:14:14",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:6:6",
+                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:5:5",
                   "path": [
                     {
                       "unquoted_string": {
@@ -51,7 +51,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:8:8-0:14:14",
+                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:9:9-0:14:14",
                   "path": [
                     {
                       "unquoted_string": {
@@ -220,7 +220,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:0:43-6:10:53",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:0:43-6:4:47",
+                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:0:43-6:3:46",
                   "path": [
                     {
                       "unquoted_string": {
@@ -248,7 +248,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:6:49-6:10:53",
+                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:7:50-6:10:53",
                   "path": [
                     {
                       "unquoted_string": {
@@ -288,7 +288,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:0:55-8:8:63",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:0:55-8:4:59",
+                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:0:55-8:3:58",
                   "path": [
                     {
                       "unquoted_string": {
@@ -316,7 +316,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:6:61-8:8:63",
+                  "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:7:62-8:8:63",
                   "path": [
                     {
                       "unquoted_string": {
@@ -343,13 +343,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -368,12 +368,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -385,6 +379,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -402,12 +400,6 @@
       },
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -419,6 +411,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -436,12 +432,6 @@
       },
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -453,6 +443,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -473,14 +467,10 @@
       {
         "id": "a",
         "id_val": "a",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:6:6",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:5:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -525,6 +515,10 @@
           "label": {
             "value": "a"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -542,14 +536,10 @@
       {
         "id": "b",
         "id_val": "b",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:6:6",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:5:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -594,6 +584,10 @@
           "label": {
             "value": "b"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -611,14 +605,10 @@
       {
         "id": "c",
         "id_val": "c",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:6:6",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:0:0-0:5:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -663,6 +653,10 @@
           "label": {
             "value": "c"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -680,14 +674,10 @@
       {
         "id": "d",
         "id_val": "d",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:8:8-0:14:14",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:9:9-0:14:14",
               "path": [
                 {
                   "unquoted_string": {
@@ -749,7 +739,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:6:61-8:8:63",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:7:62-8:8:63",
               "path": [
                 {
                   "unquoted_string": {
@@ -772,6 +762,10 @@
           "label": {
             "value": "d"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -789,14 +783,10 @@
       {
         "id": "e",
         "id_val": "e",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:8:8-0:14:14",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:9:9-0:14:14",
               "path": [
                 {
                   "unquoted_string": {
@@ -841,6 +831,10 @@
           "label": {
             "value": "e"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -858,14 +852,10 @@
       {
         "id": "f",
         "id_val": "f",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:8:8-0:14:14",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,0:9:9-0:14:14",
               "path": [
                 {
                   "unquoted_string": {
@@ -910,6 +900,10 @@
           "label": {
             "value": "f"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -927,10 +921,6 @@
       {
         "id": "b",
         "id_val": "b",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -957,6 +947,10 @@
           "label": {
             "value": "meow"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -974,10 +968,6 @@
       {
         "id": "p",
         "id_val": "p",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1001,7 +991,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:0:43-6:4:47",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:0:43-6:3:46",
               "path": [
                 {
                   "unquoted_string": {
@@ -1032,7 +1022,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:0:55-8:4:59",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:0:55-8:3:58",
               "path": [
                 {
                   "unquoted_string": {
@@ -1066,6 +1056,10 @@
           "label": {
             "value": "eyy"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -1083,10 +1077,6 @@
       {
         "id": "q",
         "id_val": "q",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -1110,7 +1100,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:6:49-6:10:53",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:7:50-6:10:53",
               "path": [
                 {
                   "unquoted_string": {
@@ -1144,6 +1134,10 @@
           "label": {
             "value": "q"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -1161,14 +1155,10 @@
       {
         "id": "p",
         "id_val": "p",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:0:43-6:4:47",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:0:43-6:3:46",
               "path": [
                 {
                   "unquoted_string": {
@@ -1202,6 +1192,10 @@
           "label": {
             "value": "p"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -1219,14 +1213,10 @@
       {
         "id": "q",
         "id_val": "q",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:6:49-6:10:53",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,6:7:50-6:10:53",
               "path": [
                 {
                   "unquoted_string": {
@@ -1260,6 +1250,10 @@
           "label": {
             "value": "q"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -1277,14 +1271,10 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:0:55-8:4:59",
+              "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,8:0:55-8:3:58",
               "path": [
                 {
                   "unquoted_string": {
@@ -1317,6 +1307,10 @@
         "attributes": {
           "label": {
             "value": "x"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

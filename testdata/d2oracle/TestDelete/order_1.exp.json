@@ -35,7 +35,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestDelete/order_1.d2,1:0:2-1:6:8",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestDelete/order_1.d2,1:0:2-1:2:4",
+                  "range": "d2/testdata/d2oracle/TestDelete/order_1.d2,1:0:2-1:1:3",
                   "path": [
                     {
                       "unquoted_string": {
@@ -52,7 +52,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestDelete/order_1.d2,1:4:6-1:6:8",
+                  "range": "d2/testdata/d2oracle/TestDelete/order_1.d2,1:5:7-1:6:8",
                   "path": [
                     {
                       "unquoted_string": {
@@ -79,13 +79,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -104,12 +104,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -121,6 +115,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -141,10 +139,6 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -171,6 +165,10 @@
           "label": {
             "value": "x"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -188,14 +186,10 @@
       {
         "id": "y",
         "id_val": "y",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/order_1.d2,1:0:2-1:2:4",
+              "range": "d2/testdata/d2oracle/TestDelete/order_1.d2,1:0:2-1:1:3",
               "path": [
                 {
                   "unquoted_string": {
@@ -218,6 +212,10 @@
           "label": {
             "value": "y"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -235,14 +233,10 @@
       {
         "id": "z",
         "id_val": "z",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/order_1.d2,1:4:6-1:6:8",
+              "range": "d2/testdata/d2oracle/TestDelete/order_1.d2,1:5:7-1:6:8",
               "path": [
                 {
                   "unquoted_string": {
@@ -264,6 +258,10 @@
         "attributes": {
           "label": {
             "value": "z"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

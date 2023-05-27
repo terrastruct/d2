@@ -244,7 +244,7 @@ Android: {
 
 web -> twitter fe
 timeline scorer: "Timeline\nScorer" {
-  style.fill "#ffdef1"
+	style.fill: "#ffdef1"
 }
 home ranker: Home Ranker
 
@@ -283,7 +283,7 @@ prediction service2: Prediction Service {
   icon: https://cdn-icons-png.flaticon.com/512/6461/6461819.png
 }
 home scorer: Home Scorer {
-  style.fill "#ffdef1"
+	style.fill: "#ffdef1"
 }
 manhattan: Manhattan
 memcache: Memcache {
@@ -766,7 +766,7 @@ Android: {
 
 web -> twitter fe
 timeline scorer: "Timeline\nScorer" {
-  style.fill "#ffdef1"
+	style.fill: "#ffdef1"
 }
 home ranker: Home Ranker
 
@@ -805,7 +805,7 @@ prediction service2: Prediction Service {
   icon: https://cdn-icons-png.flaticon.com/512/6461/6461819.png
 }
 home scorer: Home Scorer {
-  style.fill "#ffdef1"
+	style.fill: "#ffdef1"
 }
 manhattan: Manhattan
 memcache: Memcache {
@@ -1295,6 +1295,14 @@ diamond -> oval -> circle
 hexagon -> cloud
 `,
 		},
+		{
+			name: "long_arrowhead_label",
+			script: `
+a -> b: {
+	target-arrowhead: "a to b with unexpectedly long target arrowhead label"
+}
+`,
+		},
 	}
 	runa(t, tcs)
 }
@@ -1365,5 +1373,6 @@ func run(t *testing.T, tc testCase) {
 	assert.Success(t, err)
 
 	// We want the visual diffs to compare, but there's floating point precision differences between CI and user machines, so don't compare raw strings
-	diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
+	err = diff.Testdata(filepath.Join(dataPath, "sketch"), ".svg", svgBytes)
+	assert.Success(t, err)
 }

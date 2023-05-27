@@ -166,13 +166,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -193,10 +193,6 @@
       {
         "id": "base",
         "id_val": "base",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -222,6 +218,10 @@
         "attributes": {
           "label": {
             "value": "base"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -406,13 +406,13 @@
         "root": {
           "id": "",
           "id_val": "",
-          "label_dimensions": {
-            "width": 0,
-            "height": 0
-          },
           "attributes": {
             "label": {
               "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
             },
             "style": {},
             "near_key": null,
@@ -433,10 +433,6 @@
           {
             "id": "santa",
             "id_val": "santa",
-            "label_dimensions": {
-              "width": 0,
-              "height": 0
-            },
             "references": [
               {
                 "key": {
@@ -462,6 +458,10 @@
             "attributes": {
               "label": {
                 "value": "santa"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
               },
               "style": {},
               "near_key": null,
@@ -646,13 +646,13 @@
         "root": {
           "id": "",
           "id_val": "",
-          "label_dimensions": {
-            "width": 0,
-            "height": 0
-          },
           "attributes": {
             "label": {
               "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
             },
             "style": {},
             "near_key": null,
@@ -673,10 +673,6 @@
           {
             "id": "clause",
             "id_val": "clause",
-            "label_dimensions": {
-              "width": 0,
-              "height": 0
-            },
             "references": [
               {
                 "key": {
@@ -702,6 +698,10 @@
             "attributes": {
               "label": {
                 "value": "clause"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
               },
               "style": {},
               "near_key": null,

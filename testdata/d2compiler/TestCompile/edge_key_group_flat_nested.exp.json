@@ -36,7 +36,7 @@
                         {
                           "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:2:8-2:8:14",
                           "src": {
-                            "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:2:8-2:4:10",
+                            "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:2:8-2:3:9",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -53,7 +53,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:6:12-2:8:14",
+                            "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:7:13-2:8:14",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -84,7 +84,7 @@
           "map_key": {
             "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:0:17-4:32:49",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:0:17-4:2:19",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:0:17-4:1:18",
               "path": [
                 {
                   "unquoted_string": {
@@ -103,7 +103,7 @@
               {
                 "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:3:20-4:9:26",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:3:20-4:5:22",
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:3:20-4:4:21",
                   "path": [
                     {
                       "unquoted_string": {
@@ -120,7 +120,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:7:24-4:9:26",
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:8:25-4:9:26",
                   "path": [
                     {
                       "unquoted_string": {
@@ -185,13 +185,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -210,12 +210,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -230,6 +224,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {
             "opacity": {
@@ -254,10 +252,6 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -281,7 +275,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:0:17-4:2:19",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:0:17-4:1:18",
               "path": [
                 {
                   "unquoted_string": {
@@ -304,6 +298,10 @@
           "label": {
             "value": "x"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -321,14 +319,10 @@
       {
         "id": "a",
         "id_val": "a",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:2:8-2:4:10",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:2:8-2:3:9",
               "path": [
                 {
                   "unquoted_string": {
@@ -348,7 +342,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:3:20-4:5:22",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:3:20-4:4:21",
               "path": [
                 {
                   "unquoted_string": {
@@ -371,6 +365,10 @@
           "label": {
             "value": "a"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -388,14 +386,10 @@
       {
         "id": "b",
         "id_val": "b",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:6:12-2:8:14",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,2:7:13-2:8:14",
               "path": [
                 {
                   "unquoted_string": {
@@ -415,7 +409,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:7:24-4:9:26",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_flat_nested.d2,4:8:25-4:9:26",
               "path": [
                 {
                   "unquoted_string": {
@@ -437,6 +431,10 @@
         "attributes": {
           "label": {
             "value": "b"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

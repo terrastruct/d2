@@ -10,7 +10,7 @@
         "x": 0,
         "y": 41
       },
-      "width": 1200,
+      "width": 1220,
       "height": 125,
       "opacity": 1,
       "strokeDash": 0,
@@ -294,10 +294,10 @@
       "id": "osvc",
       "type": "rectangle",
       "pos": {
-        "x": 826,
+        "x": 796,
         "y": 328
       },
-      "width": 364,
+      "width": 414,
       "height": 125,
       "opacity": 1,
       "strokeDash": 0,
@@ -335,7 +335,7 @@
       "id": "osvc.vm1",
       "type": "rectangle",
       "pos": {
-        "x": 926,
+        "x": 916,
         "y": 357
       },
       "width": 76,
@@ -376,7 +376,7 @@
       "id": "osvc.vm2",
       "type": "rectangle",
       "pos": {
-        "x": 1074,
+        "x": 1094,
         "y": 357
       },
       "width": 76,
@@ -419,10 +419,8 @@
       "id": "(k8s -> osvc)[0]",
       "src": "k8s",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "osvc",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -442,19 +440,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 884.75,
+          "x": 854.75,
           "y": 166
         },
         {
-          "x": 884.75,
+          "x": 854.75,
           "y": 214.4
         },
         {
-          "x": 884.75,
+          "x": 854.75,
           "y": 246.9
         },
         {
-          "x": 884.75,
+          "x": 854.75,
           "y": 328.5
         }
       ],
@@ -468,10 +466,8 @@
       "id": "(k8s -> osvc)[1]",
       "src": "k8s",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "osvc",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -491,19 +487,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 966.75,
+          "x": 956.75,
           "y": 166
         },
         {
-          "x": 966.75,
+          "x": 956.75,
           "y": 214.4
         },
         {
-          "x": 966.75,
+          "x": 956.75,
           "y": 238.7
         },
         {
-          "x": 966.75,
+          "x": 956.75,
           "y": 287.5
         }
       ],
@@ -517,10 +513,8 @@
       "id": "(k8s -> osvc)[2]",
       "src": "k8s",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "osvc",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -540,19 +534,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1042.75,
+          "x": 1052.75,
           "y": 166
         },
         {
-          "x": 1042.75,
+          "x": 1052.75,
           "y": 214.4
         },
         {
-          "x": 1042.75,
+          "x": 1052.75,
           "y": 238.7
         },
         {
-          "x": 1042.75,
+          "x": 1052.75,
           "y": 287.5
         }
       ],
@@ -566,10 +560,8 @@
       "id": "(k8s -> osvc)[3]",
       "src": "k8s",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "osvc",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -589,19 +581,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 1137,
+          "x": 1157,
           "y": 166
         },
         {
-          "x": 1137,
+          "x": 1157,
           "y": 214.4
         },
         {
-          "x": 1137,
+          "x": 1157,
           "y": 246.9
         },
         {
-          "x": 1137,
+          "x": 1157,
           "y": 328.5
         }
       ],

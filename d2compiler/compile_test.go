@@ -43,8 +43,8 @@ x: {
 					t.Fatalf("expected g.Objects[0].ID to be x: %#v", g.Objects[0])
 				}
 
-				if g.Objects[0].Attributes.Shape.Value != d2target.ShapeCircle {
-					t.Fatalf("expected g.Objects[0].Attributes.Shape.Value to be circle: %#v", g.Objects[0].Attributes.Shape.Value)
+				if g.Objects[0].Shape.Value != d2target.ShapeCircle {
+					t.Fatalf("expected g.Objects[0].Shape.Value to be circle: %#v", g.Objects[0].Shape.Value)
 				}
 
 			},
@@ -65,8 +65,8 @@ x: {
 					t.Fatalf("expected g.Objects[0].ID to be x: %#v", g.Objects[0])
 				}
 
-				if g.Objects[0].Attributes.Style.Opacity.Value != "0.4" {
-					t.Fatalf("expected g.Objects[0].Attributes.Style.Opacity.Value to be 0.4: %#v", g.Objects[0].Attributes.Style.Opacity.Value)
+				if g.Objects[0].Style.Opacity.Value != "0.4" {
+					t.Fatalf("expected g.Objects[0].Style.Opacity.Value to be 0.4: %#v", g.Objects[0].Style.Opacity.Value)
 				}
 
 			},
@@ -102,14 +102,14 @@ x: {
 				if g.Objects[0].ID != "hey" {
 					t.Fatalf("expected g.Objects[0].ID to be 'hey': %#v", g.Objects[0])
 				}
-				if g.Objects[0].Attributes.Shape.Value != d2target.ShapeHexagon {
-					t.Fatalf("expected g.Objects[0].Attributes.Shape.Value to be hexagon: %#v", g.Objects[0].Attributes.Shape.Value)
+				if g.Objects[0].Shape.Value != d2target.ShapeHexagon {
+					t.Fatalf("expected g.Objects[0].Shape.Value to be hexagon: %#v", g.Objects[0].Shape.Value)
 				}
-				if g.Objects[0].Attributes.Width.Value != "200" {
-					t.Fatalf("expected g.Objects[0].Attributes.Width.Value to be 200: %#v", g.Objects[0].Attributes.Width.Value)
+				if g.Objects[0].WidthAttr.Value != "200" {
+					t.Fatalf("expected g.Objects[0].Width.Value to be 200: %#v", g.Objects[0].WidthAttr.Value)
 				}
-				if g.Objects[0].Attributes.Height.Value != "230" {
-					t.Fatalf("expected g.Objects[0].Attributes.Height.Value to be 230: %#v", g.Objects[0].Attributes.Height.Value)
+				if g.Objects[0].HeightAttr.Value != "230" {
+					t.Fatalf("expected g.Objects[0].Height.Value to be 230: %#v", g.Objects[0].HeightAttr.Value)
 				}
 			},
 		},
@@ -121,7 +121,7 @@ x: {
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				tassert.Equal(t, "200", g.Objects[0].Attributes.Top.Value)
+				tassert.Equal(t, "200", g.Objects[0].Top.Value)
 			},
 		},
 		{
@@ -160,13 +160,13 @@ d2/testdata/d2compiler/TestCompile/equal_dimensions_on_circle.d2:4:2: width and 
 				if g.Objects[0].ID != "hey" {
 					t.Fatalf("expected ID to be 'hey': %#v", g.Objects[0])
 				}
-				if g.Objects[0].Attributes.Shape.Value != d2target.ShapeCircle {
-					t.Fatalf("expected Attributes.Shape.Value to be circle: %#v", g.Objects[0].Attributes.Shape.Value)
+				if g.Objects[0].Shape.Value != d2target.ShapeCircle {
+					t.Fatalf("expected Attributes.Shape.Value to be circle: %#v", g.Objects[0].Shape.Value)
 				}
-				if g.Objects[0].Attributes.Width != nil {
-					t.Fatalf("expected Attributes.Width to be nil: %#v", g.Objects[0].Attributes.Width)
+				if g.Objects[0].WidthAttr != nil {
+					t.Fatalf("expected Attributes.Width to be nil: %#v", g.Objects[0].WidthAttr)
 				}
-				if g.Objects[0].Attributes.Height == nil {
+				if g.Objects[0].HeightAttr == nil {
 					t.Fatalf("Attributes.Height is nil")
 				}
 			},
@@ -237,7 +237,7 @@ containers: {
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				if g.Objects[0].Attributes.Icon == nil {
+				if g.Objects[0].Icon == nil {
 					t.Fatal("Attribute icon is nil")
 				}
 			},
@@ -326,7 +326,7 @@ containers: {
 				if len(g.Objects) != 1 {
 					t.Fatalf("expected 1 objects: %#v", g.Objects)
 				}
-				if g.Objects[0].Attributes.Style.StrokeWidth.Value != "0" {
+				if g.Objects[0].Style.StrokeWidth.Value != "0" {
 					t.Fatalf("unexpected")
 				}
 			},
@@ -442,8 +442,8 @@ y: "But it's real.  And if it's real it can be affected ...  we may not be able"
 				if len(g.Root.ChildrenArray) != 2 {
 					t.Fatalf("expected 2 objects at the root: %#v", len(g.Root.ChildrenArray))
 				}
-				if g.Objects[1].Attributes.Label.Value != "But it's real.  And if it's real it can be affected ...  we may not be able" {
-					t.Fatalf("expected g.Objects[1].Label.Value to be last value: %#v", g.Objects[1].Attributes.Label.Value)
+				if g.Objects[1].Label.Value != "But it's real.  And if it's real it can be affected ...  we may not be able" {
+					t.Fatalf("expected g.Objects[1].Label.Value to be last value: %#v", g.Objects[1].Label.Value)
 				}
 			},
 		},
@@ -470,8 +470,8 @@ x: {
 				if len(g.Root.ChildrenArray) != 2 {
 					t.Fatalf("expected 2 objects at the root: %#v", len(g.Root.ChildrenArray))
 				}
-				if g.Objects[0].Attributes.Label.Value != "All we are given is possibilities -- to make ourselves one thing or another." {
-					t.Fatalf("expected g.Objects[0].Label.Value to be last value: %#v", g.Objects[0].Attributes.Label.Value)
+				if g.Objects[0].Label.Value != "All we are given is possibilities -- to make ourselves one thing or another." {
+					t.Fatalf("expected g.Objects[0].Label.Value to be last value: %#v", g.Objects[0].Label.Value)
 				}
 			},
 		},
@@ -599,6 +599,18 @@ x: {
 			},
 		},
 		{
+			name: "md_block_string_err",
+
+			text: `test: |md
+  # What about pipes
+
+  Will escaping \| work?
+|
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/md_block_string_err.d2:4:19: unexpected text after md block string. See https://d2lang.com/tour/text#advanced-block-strings.
+d2/testdata/d2compiler/TestCompile/md_block_string_err.d2:5:1: block string must be terminated with |`,
+		},
+		{
 			name: "underscore_edge_existing",
 
 			text: `
@@ -626,11 +638,11 @@ x: {
 				if g.Edges[1].Dst.ID != "b" {
 					t.Fatalf("expected g.Edges[1].Dst.ID to be b: %#v", g.Edges[1])
 				}
-				if g.Edges[0].Attributes.Label.Value != "Can you imagine how life could be improved if we could do away with" {
-					t.Fatalf("unexpected g.Edges[0].Label: %#v", g.Edges[0].Attributes.Label)
+				if g.Edges[0].Label.Value != "Can you imagine how life could be improved if we could do away with" {
+					t.Fatalf("unexpected g.Edges[0].Label: %#v", g.Edges[0].Label)
 				}
-				if g.Edges[1].Attributes.Label.Value != "Well, it's garish, ugly, and derelicts have used it for a toilet." {
-					t.Fatalf("unexpected g.Edges[1].Label: %#v", g.Edges[1].Attributes.Label)
+				if g.Edges[1].Label.Value != "Well, it's garish, ugly, and derelicts have used it for a toilet." {
+					t.Fatalf("unexpected g.Edges[1].Label: %#v", g.Edges[1].Label)
 				}
 			},
 		},
@@ -656,8 +668,8 @@ x: {
 				if g.Edges[0].Dst.ID != "b" {
 					t.Fatalf("expected g.Edges[0].Dst.ID to be b: %#v", g.Edges[0])
 				}
-				if g.Edges[0].Attributes.Label.Value != "Well, it's garish, ugly, and derelicts have used it for a toilet." {
-					t.Fatalf("unexpected g.Edges[0].Label: %#v", g.Edges[0].Attributes.Label)
+				if g.Edges[0].Label.Value != "Well, it's garish, ugly, and derelicts have used it for a toilet." {
+					t.Fatalf("unexpected g.Edges[0].Label: %#v", g.Edges[0].Label)
 				}
 			},
 		},
@@ -756,11 +768,11 @@ x -> y -> z: "The kids will love our inflatable slides"
 					t.Fatalf("expected g.Edges[1].Dst.ID to be y: %#v", g.Edges[1])
 				}
 
-				if g.Edges[0].Attributes.Label.Value != "The kids will love our inflatable slides" {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Label: %#v", g.Edges[0].Attributes.Label.Value)
+				if g.Edges[0].Label.Value != "The kids will love our inflatable slides" {
+					t.Fatalf("unexpected g.Edges[0].Label: %#v", g.Edges[0].Label.Value)
 				}
-				if g.Edges[1].Attributes.Label.Value != "The kids will love our inflatable slides" {
-					t.Fatalf("unexpected g.Edges[1].Attributes.Label: %#v", g.Edges[1].Attributes.Label.Value)
+				if g.Edges[1].Label.Value != "The kids will love our inflatable slides" {
+					t.Fatalf("unexpected g.Edges[1].Label: %#v", g.Edges[1].Label.Value)
 				}
 			},
 		},
@@ -797,8 +809,8 @@ x -> y: one
 				if !g.Edges[0].DstArrow {
 					t.Fatalf("expected g.Edges[0].DstArrow to be true: %#v", g.Edges[0].DstArrow)
 				}
-				if g.Edges[0].Attributes.Label.Value != "two" {
-					t.Fatalf("expected g.Edges[0].Attributes.Label to be two: %#v", g.Edges[0].Attributes.Label)
+				if g.Edges[0].Label.Value != "two" {
+					t.Fatalf("expected g.Edges[0].Label to be two: %#v", g.Edges[0].Label)
 				}
 			},
 		},
@@ -840,8 +852,8 @@ b: {
 				if !g.Edges[0].DstArrow {
 					t.Fatalf("expected g.Edges[0].DstArrow to be true: %#v", g.Edges[0].DstArrow)
 				}
-				if g.Edges[0].Attributes.Label.Value != "two" {
-					t.Fatalf("expected g.Edges[0].Attributes.Label to be two: %#v", g.Edges[0].Attributes.Label)
+				if g.Edges[0].Label.Value != "two" {
+					t.Fatalf("expected g.Edges[0].Label to be two: %#v", g.Edges[0].Label)
 				}
 			},
 		},
@@ -883,8 +895,8 @@ b.(x -> y)[0]: two
 				if !g.Edges[0].DstArrow {
 					t.Fatalf("expected g.Edges[0].DstArrow to be true: %#v", g.Edges[0].DstArrow)
 				}
-				if g.Edges[0].Attributes.Label.Value != "two" {
-					t.Fatalf("expected g.Edges[0].Attributes.Label to be two: %#v", g.Edges[0].Attributes.Label)
+				if g.Edges[0].Label.Value != "two" {
+					t.Fatalf("expected g.Edges[0].Label to be two: %#v", g.Edges[0].Label)
 				}
 			},
 		},
@@ -936,8 +948,8 @@ x -> y: {
 				if g.Edges[0].Dst.ID != "y" {
 					t.Fatalf("expected g.Edges[0].Dst.ID to be y: %#v", g.Edges[0])
 				}
-				if g.Edges[0].Attributes.Label.Value != "Space: the final frontier.  These are the voyages of the starship Enterprise." {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Label.Value : %#v", g.Edges[0].Attributes.Label.Value)
+				if g.Edges[0].Label.Value != "Space: the final frontier.  These are the voyages of the starship Enterprise." {
+					t.Fatalf("unexpected g.Edges[0].Label.Value : %#v", g.Edges[0].Label.Value)
 				}
 			},
 		},
@@ -950,8 +962,8 @@ x -> y: {
 				if len(g.Edges) != 1 {
 					t.Fatalf("expected 1 edge: %#v", g.Edges)
 				}
-				if g.Edges[0].Attributes.Label.Value != "asdf" {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Label.Value : %#v", g.Edges[0].Attributes.Label.Value)
+				if g.Edges[0].Label.Value != "asdf" {
+					t.Fatalf("unexpected g.Edges[0].Label.Value : %#v", g.Edges[0].Label.Value)
 				}
 			},
 		},
@@ -972,7 +984,7 @@ x -> y: {
 					t.Fatalf("expected 2 objects: %#v", g.Objects)
 				}
 				assert.String(t, "diamond", g.Edges[0].SrcArrowhead.Shape.Value)
-				assert.String(t, "", g.Edges[0].Attributes.Shape.Value)
+				assert.String(t, "", g.Edges[0].Shape.Value)
 				// Make sure the DSL didn't change. this is a regression test where it did
 				exp := `x -> y: {
   source-arrowhead: {
@@ -1025,9 +1037,9 @@ x -> y: {
 				assert.String(t, "Reisner's Rule of Conceptual Inertia", g.Edges[0].SrcArrowhead.Label.Value)
 				assert.String(t, "QOTD", g.Edges[0].DstArrowhead.Label.Value)
 				assert.String(t, "true", g.Edges[0].DstArrowhead.Style.Filled.Value)
-				assert.String(t, "", g.Edges[0].Attributes.Shape.Value)
-				assert.String(t, "", g.Edges[0].Attributes.Label.Value)
-				assert.JSON(t, nil, g.Edges[0].Attributes.Style.Filled)
+				assert.String(t, "", g.Edges[0].Shape.Value)
+				assert.String(t, "", g.Edges[0].Label.Value)
+				assert.JSON(t, nil, g.Edges[0].Style.Filled)
 			},
 		},
 		{
@@ -1044,7 +1056,7 @@ x -> y: {
 					t.Fatalf("expected 2 objects: %#v", g.Objects)
 				}
 				assert.String(t, "diamond", g.Edges[0].SrcArrowhead.Shape.Value)
-				assert.String(t, "", g.Edges[0].Attributes.Shape.Value)
+				assert.String(t, "", g.Edges[0].Shape.Value)
 			},
 		},
 		{
@@ -1061,7 +1073,7 @@ x -> y: {
 					t.Fatalf("expected 2 objects: %#v", g.Objects)
 				}
 				assert.String(t, "triangle", g.Edges[0].SrcArrowhead.Shape.Value)
-				assert.String(t, "", g.Edges[0].Attributes.Shape.Value)
+				assert.String(t, "", g.Edges[0].Shape.Value)
 			},
 		},
 		{
@@ -1087,7 +1099,7 @@ x -> y: {
 					t.Fatalf("expected 2 objects: %#v", g.Objects)
 				}
 				assert.String(t, "yo", g.Edges[0].SrcArrowhead.Label.Value)
-				assert.String(t, "", g.Edges[0].Attributes.Label.Value)
+				assert.String(t, "", g.Edges[0].Label.Value)
 			},
 		},
 		{
@@ -1106,7 +1118,7 @@ x -> y: {
 					t.Fatalf("expected 2 objects: %#v", g.Objects)
 				}
 				assert.String(t, "diamond", g.Edges[0].SrcArrowhead.Shape.Value)
-				assert.String(t, "", g.Edges[0].Attributes.Shape.Value)
+				assert.String(t, "", g.Edges[0].Shape.Value)
 			},
 		},
 		{
@@ -1128,7 +1140,7 @@ x -> y: {
 				}
 				assert.String(t, "diamond", g.Edges[0].SrcArrowhead.Shape.Value)
 				assert.String(t, "diamond", g.Edges[0].DstArrowhead.Shape.Value)
-				assert.String(t, "", g.Edges[0].Attributes.Shape.Value)
+				assert.String(t, "", g.Edges[0].Shape.Value)
 			},
 		},
 		{
@@ -1143,8 +1155,8 @@ x -> y: {
 				if len(g.Edges) != 1 {
 					t.Fatalf("expected 1 edge: %#v", g.Edges)
 				}
-				if g.Edges[0].Attributes.Style.Animated.Value != "true" {
-					t.Fatalf("Edges[0].Attributes.Style.Animated.Value: %#v", g.Edges[0].Attributes.Style.Animated.Value)
+				if g.Edges[0].Style.Animated.Value != "true" {
+					t.Fatalf("Edges[0].Style.Animated.Value: %#v", g.Edges[0].Style.Animated.Value)
 				}
 			},
 		},
@@ -1201,11 +1213,11 @@ x -> y -> z: {
 				if len(g.Edges) != 2 {
 					t.Fatalf("expected 2 edge: %#v", g.Edges)
 				}
-				if g.Edges[0].Attributes.Label.Value != "Space: the final frontier.  These are the voyages of the starship Enterprise." {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Label.Value : %#v", g.Edges[0].Attributes.Label.Value)
+				if g.Edges[0].Label.Value != "Space: the final frontier.  These are the voyages of the starship Enterprise." {
+					t.Fatalf("unexpected g.Edges[0].Label.Value : %#v", g.Edges[0].Label.Value)
 				}
-				if g.Edges[1].Attributes.Label.Value != "Space: the final frontier.  These are the voyages of the starship Enterprise." {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Label.Value : %#v", g.Edges[1].Attributes.Label.Value)
+				if g.Edges[1].Label.Value != "Space: the final frontier.  These are the voyages of the starship Enterprise." {
+					t.Fatalf("unexpected g.Edges[0].Label.Value : %#v", g.Edges[1].Label.Value)
 				}
 			},
 		},
@@ -1226,8 +1238,8 @@ x -> y
 				if len(g.Edges) != 1 {
 					t.Fatalf("expected 1 edge: %#v", g.Edges)
 				}
-				if g.Edges[0].Attributes.Label.Value != "Space: the final frontier.  These are the voyages of the starship Enterprise." {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Label.Value : %#v", g.Edges[0].Attributes.Label.Value)
+				if g.Edges[0].Label.Value != "Space: the final frontier.  These are the voyages of the starship Enterprise." {
+					t.Fatalf("unexpected g.Edges[0].Label.Value : %#v", g.Edges[0].Label.Value)
 				}
 			},
 		},
@@ -1249,8 +1261,8 @@ x -> y: {
 				if len(g.Edges) != 1 {
 					t.Fatalf("expected 1 edge: %#v", g.Edges)
 				}
-				if g.Edges[0].Attributes.Style.Opacity.Value != "0.4" {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Style.Opacity.Value: %#v", g.Edges[0].Attributes.Style.Opacity.Value)
+				if g.Edges[0].Style.Opacity.Value != "0.4" {
+					t.Fatalf("unexpected g.Edges[0].Style.Opacity.Value: %#v", g.Edges[0].Style.Opacity.Value)
 				}
 			},
 		},
@@ -1270,11 +1282,11 @@ x -> y: {
 				if len(g.Edges) != 1 {
 					t.Fatalf("expected 1 edge: %#v", g.Edges)
 				}
-				if g.Edges[0].Attributes.Style.Opacity.Value != "0.4" {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Style.Opacity.Value: %#v", g.Edges[0].Attributes.Style.Opacity.Value)
+				if g.Edges[0].Style.Opacity.Value != "0.4" {
+					t.Fatalf("unexpected g.Edges[0].Style.Opacity.Value: %#v", g.Edges[0].Style.Opacity.Value)
 				}
-				if g.Edges[0].Attributes.Label.Value != "" {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Label.Value : %#v", g.Edges[0].Attributes.Label.Value)
+				if g.Edges[0].Label.Value != "" {
+					t.Fatalf("unexpected g.Edges[0].Label.Value : %#v", g.Edges[0].Label.Value)
 				}
 			},
 		},
@@ -1293,11 +1305,11 @@ x -> y
 				if len(g.Edges) != 1 {
 					t.Fatalf("expected 1 edge: %#v", g.Edges)
 				}
-				if g.Edges[0].Attributes.Style.Opacity.Value != "0.4" {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Style.Opacity.Value: %#v", g.Edges[0].Attributes.Style.Opacity.Value)
+				if g.Edges[0].Style.Opacity.Value != "0.4" {
+					t.Fatalf("unexpected g.Edges[0].Style.Opacity.Value: %#v", g.Edges[0].Style.Opacity.Value)
 				}
-				if g.Edges[0].Attributes.Label.Value != "" {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Label.Value : %#v", g.Edges[0].Attributes.Label.Value)
+				if g.Edges[0].Label.Value != "" {
+					t.Fatalf("unexpected g.Edges[0].Label.Value : %#v", g.Edges[0].Label.Value)
 				}
 			},
 		},
@@ -1317,11 +1329,11 @@ x -> y
 				if len(g.Edges) != 1 {
 					t.Fatalf("expected 1 edge: %#v", g.Edges)
 				}
-				if g.Edges[0].Attributes.Style.Opacity.Value != "0.4" {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Style.Opacity.Value: %#v", g.Edges[0].Attributes.Style.Opacity.Value)
+				if g.Edges[0].Style.Opacity.Value != "0.4" {
+					t.Fatalf("unexpected g.Edges[0].Style.Opacity.Value: %#v", g.Edges[0].Style.Opacity.Value)
 				}
-				if g.Edges[0].Attributes.Label.Value != "" {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Label.Value : %#v", g.Edges[0].Attributes.Label.Value)
+				if g.Edges[0].Label.Value != "" {
+					t.Fatalf("unexpected g.Edges[0].Label.Value : %#v", g.Edges[0].Label.Value)
 				}
 			},
 		},
@@ -1342,11 +1354,11 @@ x.(a -> b)[0].style.opacity: 0.4
 				if len(g.Edges) != 1 {
 					t.Fatalf("expected 1 edge: %#v", g.Edges)
 				}
-				if g.Edges[0].Attributes.Style.Opacity.Value != "0.4" {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Style.Opacity.Value: %#v", g.Edges[0].Attributes.Style.Opacity.Value)
+				if g.Edges[0].Style.Opacity.Value != "0.4" {
+					t.Fatalf("unexpected g.Edges[0].Style.Opacity.Value: %#v", g.Edges[0].Style.Opacity.Value)
 				}
-				if g.Edges[0].Attributes.Label.Value != "" {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Label.Value : %#v", g.Edges[0].Attributes.Label.Value)
+				if g.Edges[0].Label.Value != "" {
+					t.Fatalf("unexpected g.Edges[0].Label.Value : %#v", g.Edges[0].Label.Value)
 				}
 			},
 		},
@@ -1367,11 +1379,11 @@ x: {
 				if len(g.Edges) != 1 {
 					t.Fatalf("expected 1 edge: %#v", g.Edges)
 				}
-				if g.Edges[0].Attributes.Style.Opacity.Value != "0.4" {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Style.Opacity.Value: %#v", g.Edges[0].Attributes.Style.Opacity.Value)
+				if g.Edges[0].Style.Opacity.Value != "0.4" {
+					t.Fatalf("unexpected g.Edges[0].Style.Opacity.Value: %#v", g.Edges[0].Style.Opacity.Value)
 				}
-				if g.Edges[0].Attributes.Label.Value != "" {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Label.Value : %#v", g.Edges[0].Attributes.Label.Value)
+				if g.Edges[0].Label.Value != "" {
+					t.Fatalf("unexpected g.Edges[0].Label.Value : %#v", g.Edges[0].Label.Value)
 				}
 			},
 		},
@@ -1396,11 +1408,11 @@ x: {
 				if len(g.Edges) != 1 {
 					t.Fatalf("expected 1 edge: %#v", g.Edges)
 				}
-				if g.Edges[0].Attributes.Style.Opacity.Value != "0.4" {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Style.Opacity.Value: %#v", g.Edges[0].Attributes.Style.Opacity.Value)
+				if g.Edges[0].Style.Opacity.Value != "0.4" {
+					t.Fatalf("unexpected g.Edges[0].Style.Opacity.Value: %#v", g.Edges[0].Style.Opacity.Value)
 				}
-				if g.Edges[0].Attributes.Label.Value != "" {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Label.Value : %#v", g.Edges[0].Attributes.Label.Value)
+				if g.Edges[0].Label.Value != "" {
+					t.Fatalf("unexpected g.Edges[0].Label.Value : %#v", g.Edges[0].Label.Value)
 				}
 			},
 		},
@@ -1423,11 +1435,11 @@ x: {
 				if len(g.Edges) != 1 {
 					t.Fatalf("expected 1 edge: %#v", g.Edges)
 				}
-				if g.Edges[0].Attributes.Style.Opacity.Value != "0.4" {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Style.Opacity.Value: %#v", g.Edges[0].Attributes.Style.Opacity.Value)
+				if g.Edges[0].Style.Opacity.Value != "0.4" {
+					t.Fatalf("unexpected g.Edges[0].Style.Opacity.Value: %#v", g.Edges[0].Style.Opacity.Value)
 				}
-				if g.Edges[0].Attributes.Label.Value != "" {
-					t.Fatalf("unexpected g.Edges[0].Attributes.Label.Value : %#v", g.Edges[0].Attributes.Label.Value)
+				if g.Edges[0].Label.Value != "" {
+					t.Fatalf("unexpected g.Edges[0].Label.Value : %#v", g.Edges[0].Label.Value)
 				}
 			},
 		},
@@ -1452,8 +1464,42 @@ x -> y: {
 				if len(g.Objects) != 1 {
 					t.Fatal(g.Objects)
 				}
-				if g.Objects[0].Attributes.Link.Value != "https://google.com" {
-					t.Fatal(g.Objects[0].Attributes.Link.Value)
+				if g.Objects[0].Link.Value != "https://google.com" {
+					t.Fatal(g.Objects[0].Link.Value)
+				}
+			},
+		},
+		{
+			name: "url_tooltip",
+			text: `x: {tooltip: https://google.com}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatal(g.Objects)
+				}
+
+				if g.Objects[0].Tooltip.Value != "https://google.com" {
+					t.Fatal(g.Objects[0].Tooltip.Value)
+				}
+			},
+		},
+		{
+			name:   "no_url_link_and_url_tooltip_concurrently",
+			text:   `x: {link: https://not-google.com; tooltip: https://google.com}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_url_link_and_url_tooltip_concurrently.d2:1:44: Tooltip cannot be set to URL when link is also set (for security)`,
+		},
+		{
+			name: "url_link_and_not_url_tooltip_concurrently",
+			text: `x: {link: https://google.com; tooltip: hello world}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				if len(g.Objects) != 1 {
+					t.Fatal(g.Objects)
+				}
+				if g.Objects[0].Link.Value != "https://google.com" {
+					t.Fatal(g.Objects[0].Link.Value)
+				}
+
+				if g.Objects[0].Tooltip.Value != "hello world" {
+					t.Fatal(g.Objects[0].Tooltip.Value)
 				}
 			},
 		},
@@ -1483,8 +1529,8 @@ b: {
 				if len(g.Objects) != 1 {
 					t.Fatal(g.Objects)
 				}
-				if g.Objects[0].Attributes.Link.Value != "Overview.Untitled board 7.zzzzz" {
-					t.Fatal(g.Objects[0].Attributes.Link.Value)
+				if g.Objects[0].Link.Value != "Overview.Untitled board 7.zzzzz" {
+					t.Fatal(g.Objects[0].Link.Value)
 				}
 			},
 		},
@@ -1525,24 +1571,26 @@ d2/testdata/d2compiler/TestCompile/near-invalid.d2:14:9: near keys cannot be set
 			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_constant.d2:1:9: near key "txop-center" must be the absolute path to a shape or one of the following constants: top-left, top-center, top-right, center-left, center-right, bottom-left, bottom-center, bottom-right`,
 		},
 		{
-			name: "near_bad_container",
-
-			text: `x: {
-  near: top-center
-  y
-}
-`,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_container.d2:2:9: constant near keys cannot be set on shapes with children`,
-		},
-		{
 			name: "near_bad_connected",
 
-			text: `x: {
-  near: top-center
-}
-x -> y
-`,
-			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_connected.d2:2:9: constant near keys cannot be set on connected shapes`,
+			text: `
+				x: {
+					near: top-center
+				}
+				x -> y
+			`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_bad_connected.d2:5:5: cannot connect objects from within a container, that has near constant set, to objects outside that container`,
+		},
+		{
+			name: "near_descendant_connect_to_outside",
+			text: `
+				x: {
+					near: top-left
+					y
+				}
+				x.y -> z
+			`,
+			expErr: "d2/testdata/d2compiler/TestCompile/near_descendant_connect_to_outside.d2:6:5: cannot connect objects from within a container, that has near constant set, to objects outside that container",
 		},
 		{
 			name: "nested_near_constant",
@@ -1567,20 +1615,20 @@ y
 				if len(g.Objects) != 2 {
 					t.Fatal(g.Objects)
 				}
-				if g.Objects[0].Attributes.NearKey == nil {
+				if g.Objects[0].NearKey == nil {
 					t.Fatal("missing near key")
 				}
-				if g.Objects[0].Attributes.Icon.Path != "orange" {
-					t.Fatal(g.Objects[0].Attributes.Icon)
+				if g.Objects[0].Icon.Path != "orange" {
+					t.Fatal(g.Objects[0].Icon)
 				}
-				if g.Objects[0].Attributes.Style.Opacity.Value != "0.5" {
-					t.Fatal(g.Objects[0].Attributes.Style.Opacity)
+				if g.Objects[0].Style.Opacity.Value != "0.5" {
+					t.Fatal(g.Objects[0].Style.Opacity)
 				}
-				if g.Objects[0].Attributes.Style.Stroke.Value != "red" {
-					t.Fatal(g.Objects[0].Attributes.Style.Stroke)
+				if g.Objects[0].Style.Stroke.Value != "red" {
+					t.Fatal(g.Objects[0].Style.Stroke)
 				}
-				if g.Objects[0].Attributes.Style.Fill.Value != "green" {
-					t.Fatal(g.Objects[0].Attributes.Style.Fill)
+				if g.Objects[0].Style.Fill.Value != "green" {
+					t.Fatal(g.Objects[0].Style.Fill)
 				}
 			},
 		},
@@ -1643,6 +1691,30 @@ x.a.b`,
 			expErr: `d2/testdata/d2compiler/TestCompile/no-nested-columns-class.d2:3:5: class fields cannot have children`,
 		},
 		{
+			name: "improper-class-ref",
+
+			text:   `myobj.class.style.stroke-dash: 3`,
+			expErr: `d2/testdata/d2compiler/TestCompile/improper-class-ref.d2:1:7: "class" must be the last part of the key`,
+		},
+		{
+			name: "tail-style",
+
+			text:   `myobj.style: 3`,
+			expErr: `d2/testdata/d2compiler/TestCompile/tail-style.d2:1:7: "style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`,
+		},
+		{
+			name: "tail-style-map",
+
+			text:   `myobj.style: {}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/tail-style-map.d2:1:7: "style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`,
+		},
+		{
+			name: "bad-style-nesting",
+
+			text:   `myobj.style.style.stroke-dash: 3`,
+			expErr: `d2/testdata/d2compiler/TestCompile/bad-style-nesting.d2:1:13: invalid style keyword: "style"`,
+		},
+		{
 			name: "edge_to_style",
 
 			text: `x: {style.opacity: 0.4}
@@ -1660,7 +1732,7 @@ y -> x.style
 				}
 				assert.String(t, `"b\nb"`, g.Objects[0].ID)
 				assert.String(t, `b
-b`, g.Objects[0].Attributes.Label.Value)
+b`, g.Objects[0].Label.Value)
 			},
 		},
 		{
@@ -1672,7 +1744,7 @@ b`, g.Objects[0].Attributes.Label.Value)
 					t.Fatal(g.Objects)
 				}
 				assert.String(t, "b\rb", g.Objects[0].ID)
-				assert.String(t, "b\rb", g.Objects[0].Attributes.Label.Value)
+				assert.String(t, "b\rb", g.Objects[0].Label.Value)
 			},
 		},
 		{
@@ -1694,8 +1766,8 @@ b`, g.Objects[0].Attributes.Label.Value)
 				if len(g.Objects[0].Class.Methods) != 0 {
 					t.Fatal(len(g.Objects[0].Class.Methods))
 				}
-				if g.Objects[0].Attributes.Style.Opacity.Value != "0.4" {
-					t.Fatal(g.Objects[0].Attributes.Style.Opacity.Value)
+				if g.Objects[0].Style.Opacity.Value != "0.4" {
+					t.Fatal(g.Objects[0].Style.Opacity.Value)
 				}
 			},
 		},
@@ -1715,8 +1787,8 @@ b`, g.Objects[0].Attributes.Label.Value)
 				if len(g.Objects[0].SQLTable.Columns) != 1 {
 					t.Fatal(len(g.Objects[0].SQLTable.Columns))
 				}
-				if g.Objects[0].Attributes.Style.Opacity.Value != "0.4" {
-					t.Fatal(g.Objects[0].Attributes.Style.Opacity.Value)
+				if g.Objects[0].Style.Opacity.Value != "0.4" {
+					t.Fatal(g.Objects[0].Style.Opacity.Value)
 				}
 			},
 		},
@@ -1739,8 +1811,8 @@ b`, g.Objects[0].Attributes.Label.Value)
 				if len(g.Objects[0].SQLTable.Columns) != 1 {
 					t.Fatal(len(g.Objects[0].SQLTable.Columns))
 				}
-				if g.Objects[0].Attributes.Style.Opacity.Value != "0.4" {
-					t.Fatal(g.Objects[0].Attributes.Style.Opacity.Value)
+				if g.Objects[0].Style.Opacity.Value != "0.4" {
+					t.Fatal(g.Objects[0].Style.Opacity.Value)
 				}
 			},
 		},
@@ -1760,7 +1832,7 @@ x.y -> a.b: {
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				tassert.Equal(t, "true", g.Edges[0].Attributes.Style.Animated.Value)
+				tassert.Equal(t, "true", g.Edges[0].Style.Animated.Value)
 			},
 		},
 		{
@@ -1865,7 +1937,7 @@ dst.id <-> src.dst_id
 }
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.String(t, "sequence_diagram", g.Objects[0].Attributes.Shape.Value)
+				assert.String(t, "sequence_diagram", g.Objects[0].Shape.Value)
 			},
 		},
 		{
@@ -1912,7 +1984,7 @@ b
 			text: `shape: sequence_diagram
 `,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.String(t, "sequence_diagram", g.Root.Attributes.Shape.Value)
+				assert.String(t, "sequence_diagram", g.Root.Shape.Value)
 			},
 		},
 		{
@@ -1992,7 +2064,7 @@ ok: {
 
 			text: `direction: right`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.String(t, "right", g.Root.Attributes.Direction.Value)
+				assert.String(t, "right", g.Root.Direction.Value)
 			},
 		},
 		{
@@ -2000,7 +2072,7 @@ ok: {
 
 			text: `x`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.String(t, "", g.Objects[0].Attributes.Direction.Value)
+				assert.String(t, "", g.Objects[0].Direction.Value)
 			},
 		},
 		{
@@ -2010,7 +2082,7 @@ ok: {
   direction: left
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.String(t, "left", g.Objects[0].Attributes.Direction.Value)
+				assert.String(t, "left", g.Objects[0].Direction.Value)
 			},
 		},
 		{
@@ -2021,7 +2093,7 @@ ok: {
   constraint: BIZ
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.String(t, "bar", g.Objects[0].Attributes.Label.Value)
+				assert.String(t, "bar", g.Objects[0].Label.Value)
 			},
 		},
 		{
@@ -2115,7 +2187,7 @@ layers: {
 	}
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				tassert.Equal(t, "root.layers.x", g.Objects[0].Attributes.Link.Value)
+				tassert.Equal(t, "root.layers.x", g.Objects[0].Link.Value)
 			},
 		},
 		{
@@ -2135,8 +2207,8 @@ scenarios: {
   }
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				tassert.Equal(t, "root.layers.cat", g.Objects[0].Attributes.Link.Value)
-				tassert.Equal(t, "root.layers.cat", g.Scenarios[0].Objects[0].Attributes.Link.Value)
+				tassert.Equal(t, "root.layers.cat", g.Objects[0].Link.Value)
+				tassert.Equal(t, "root.layers.cat", g.Scenarios[0].Objects[0].Link.Value)
 			},
 		},
 		{
@@ -2169,7 +2241,7 @@ layers: {
   }
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				tassert.Equal(t, "root.layers.x.layers.x", g.Objects[0].Attributes.Link.Value)
+				tassert.Equal(t, "root.layers.x.layers.x", g.Objects[0].Link.Value)
 			},
 		},
 		{
@@ -2183,7 +2255,7 @@ layers: {
   }
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				tassert.Equal(t, "root.layers.x", g.Objects[1].Attributes.Link.Value)
+				tassert.Equal(t, "root.layers.x", g.Objects[1].Link.Value)
 			},
 		},
 		{
@@ -2201,9 +2273,9 @@ layers: {
   }
 }`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
-				tassert.NotNil(t, g.Layers[0].Layers[0].Objects[0].Attributes.Link.Value)
-				tassert.Equal(t, "root.layers.x", g.Layers[0].Layers[0].Objects[0].Attributes.Link.Value)
-				tassert.Equal(t, "root.layers.x", g.Layers[0].Layers[0].Objects[1].Attributes.Link.Value)
+				tassert.NotNil(t, g.Layers[0].Layers[0].Objects[0].Link.Value)
+				tassert.Equal(t, "root.layers.x", g.Layers[0].Layers[0].Objects[0].Link.Value)
+				tassert.Equal(t, "root.layers.x", g.Layers[0].Layers[0].Objects[1].Link.Value)
 			},
 		},
 		{
@@ -2220,6 +2292,241 @@ layers: {
   }
 }`,
 			expErr: `d2/testdata/d2compiler/TestCompile/link-board-underscore-not-found.d2:7:9: invalid underscore usage`,
+		},
+		{
+			name: "border-radius-negative",
+			text: `x
+x: {
+  style.border-radius: -1
+}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/border-radius-negative.d2:3:24: expected "border-radius" to be a number greater or equal to 0`,
+		},
+		{
+			name: "text-transform",
+			text: `direction: right
+x -> y: hi {
+  style: {
+    text-transform: capitalize
+  }
+}
+x.style.text-transform: uppercase
+y.style.text-transform: lowercase`,
+		},
+		{
+			name: "near_near_const",
+			text: `
+title: Title {
+	near: top-center
+}
+
+obj {
+	near: title
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/near_near_const.d2:7:8: near keys cannot be set to an object with a constant near key`,
+		},
+		{
+			name: "grid",
+			text: `hey: {
+	grid-rows: 200
+	grid-columns: 230
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "200", g.Objects[0].GridRows.Value)
+			},
+		},
+		{
+			name: "grid_negative",
+			text: `hey: {
+	grid-rows: 200
+	grid-columns: -200
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_negative.d2:3:16: grid-columns must be a positive integer: "-200"`,
+		},
+		{
+			name: "grid_gap_negative",
+			text: `hey: {
+	horizontal-gap: -200
+	vertical-gap: -30
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_gap_negative.d2:2:18: horizontal-gap must be a non-negative integer: "-200"
+d2/testdata/d2compiler/TestCompile/grid_gap_negative.d2:3:16: vertical-gap must be a non-negative integer: "-30"`,
+		},
+		{
+			name: "grid_edge",
+			text: `hey: {
+	grid-rows: 1
+	a -> b
+}
+	c -> hey.b
+	hey.a -> c
+
+	hey -> c: ok
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/grid_edge.d2:3:2: edges in grid diagrams are not supported yet
+d2/testdata/d2compiler/TestCompile/grid_edge.d2:5:2: edges in grid diagrams are not supported yet
+d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edges in grid diagrams are not supported yet`,
+		},
+		{
+			name: "grid_nested",
+			text: `hey: {
+	grid-rows: 200
+	grid-columns: 200
+
+	a
+	b
+	c
+	d.valid descendant
+	e: {
+		grid-rows: 1
+		grid-columns: 2
+
+		a
+		b
+	}
+}
+`,
+			expErr: ``,
+		},
+		{
+			name: "classes",
+			text: `classes: {
+  dragon_ball: {
+    label: ""
+    shape: circle
+    style.fill: orange
+  }
+  path: {
+    label: "then"
+    style.stroke-width: 4
+  }
+}
+nostar: { class: dragon_ball }
+1star: "*" { class: dragon_ball; style.fill: red }
+2star: { label: "**"; class: dragon_ball }
+
+nostar -> 1star: { class: path }
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 3, len(g.Objects))
+				tassert.Equal(t, "dragon_ball", g.Objects[0].Classes[0])
+				tassert.Equal(t, "", g.Objects[0].Label.Value)
+				// Class field overrides primary
+				tassert.Equal(t, "", g.Objects[1].Label.Value)
+				tassert.Equal(t, "**", g.Objects[2].Label.Value)
+				tassert.Equal(t, "orange", g.Objects[0].Style.Fill.Value)
+				tassert.Equal(t, "red", g.Objects[1].Style.Fill.Value)
+
+				tassert.Equal(t, "4", g.Edges[0].Style.StrokeWidth.Value)
+				tassert.Equal(t, "then", g.Edges[0].Label.Value)
+			},
+		},
+		{
+			name: "array-classes",
+			text: `classes: {
+  dragon_ball: {
+    label: ""
+    shape: circle
+    style.fill: orange
+  }
+  path: {
+    label: "then"
+    style.stroke-width: 4
+  }
+	path2: {
+    style.stroke-width: 2
+	}
+}
+nostar: { class: [dragon_ball; path] }
+1star: { class: [path; dragon_ball] }
+
+nostar -> 1star: { class: [path; path2] }
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "then", g.Objects[0].Label.Value)
+				tassert.Equal(t, "", g.Objects[1].Label.Value)
+				tassert.Equal(t, "circle", g.Objects[0].Shape.Value)
+				tassert.Equal(t, "circle", g.Objects[1].Shape.Value)
+				tassert.Equal(t, "2", g.Edges[0].Style.StrokeWidth.Value)
+			},
+		},
+		{
+			name: "reordered-classes",
+			text: `classes: {
+  x: {
+    shape: circle
+  }
+}
+a.class: x
+classes.x.shape: diamond
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 1, len(g.Objects))
+				tassert.Equal(t, "diamond", g.Objects[0].Shape.Value)
+			},
+		},
+		{
+			name: "class-shape-class",
+			text: `classes: {
+  classClass: {
+    shape: class
+  }
+}
+
+object: {
+  class: classClass
+  length(): int
+}
+`,
+		},
+		{
+			name: "no-class-primary",
+			text: `x.class
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no-class-primary.d2:1:3: class missing value`,
+		},
+		{
+			name: "no-class-inside-classes",
+			text: `classes: {
+  x: {
+    class: y
+  }
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no-class-inside-classes.d2:3:5: "class" cannot appear within "classes"`,
+		},
+		{
+			// This is okay
+			name: "missing-class",
+			text: `x.class: yo
+`,
+		},
+		{
+			name: "classes-unreserved",
+			text: `classes: {
+  mango: {
+    seed
+  }
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/classes-unreserved.d2:3:5: seed is an invalid class field, must be reserved keyword`,
+		},
+		{
+			name: "classes-internal-edge",
+			text: `classes: {
+  mango: {
+		width: 100
+  }
+  jango: {
+    height: 100
+  }
+  mango -> jango
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/classes-internal-edge.d2:8:3: classes cannot contain an edge`,
 		},
 	}
 
@@ -2355,6 +2662,19 @@ layers: {
 				assert.Equal(t, 2, len(g.Layers[1].Scenarios))
 				assert.False(t, g.Layers[1].Scenarios[0].IsFolderOnly)
 				assert.False(t, g.Layers[1].Scenarios[1].IsFolderOnly)
+			},
+		},
+		{
+			name: "scenarios_edge_index",
+			run: func(t *testing.T) {
+				assertCompile(t, `a -> x
+
+scenarios: {
+  1: {
+    (a -> x)[0].style.opacity: 0.1
+  }
+}
+`, "")
 			},
 		},
 		{

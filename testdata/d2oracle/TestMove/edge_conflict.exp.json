@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestMove/edge_conflict.d2,0:0:0-0:14:14",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/edge_conflict.d2,0:0:0-0:6:6",
+                  "range": "d2/testdata/d2oracle/TestMove/edge_conflict.d2,0:0:0-0:5:5",
                   "path": [
                     {
                       "unquoted_string": {
@@ -40,7 +40,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/edge_conflict.d2,0:8:8-0:14:14",
+                  "range": "d2/testdata/d2oracle/TestMove/edge_conflict.d2,0:9:9-0:14:14",
                   "path": [
                     {
                       "unquoted_string": {
@@ -130,13 +130,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -155,12 +155,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -172,6 +166,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -192,14 +190,10 @@
       {
         "id": "y 2",
         "id_val": "y 2",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/edge_conflict.d2,0:0:0-0:6:6",
+              "range": "d2/testdata/d2oracle/TestMove/edge_conflict.d2,0:0:0-0:5:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -230,7 +224,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/edge_conflict.d2,0:8:8-0:14:14",
+              "range": "d2/testdata/d2oracle/TestMove/edge_conflict.d2,0:9:9-0:14:14",
               "path": [
                 {
                   "unquoted_string": {
@@ -264,6 +258,10 @@
           "label": {
             "value": "y 2"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -281,14 +279,10 @@
       {
         "id": "a",
         "id_val": "a",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/edge_conflict.d2,0:0:0-0:6:6",
+              "range": "d2/testdata/d2oracle/TestMove/edge_conflict.d2,0:0:0-0:5:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -322,6 +316,10 @@
           "label": {
             "value": "a"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -339,14 +337,10 @@
       {
         "id": "b",
         "id_val": "b",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/edge_conflict.d2,0:8:8-0:14:14",
+              "range": "d2/testdata/d2oracle/TestMove/edge_conflict.d2,0:9:9-0:14:14",
               "path": [
                 {
                   "unquoted_string": {
@@ -380,6 +374,10 @@
           "label": {
             "value": "b"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -397,10 +395,6 @@
       {
         "id": "y",
         "id_val": "y",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -427,6 +421,10 @@
           "label": {
             "value": "y"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -444,10 +442,6 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -473,6 +467,10 @@
         "attributes": {
           "label": {
             "value": "x"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

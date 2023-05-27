@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:0:0-0:10:10",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:0:0-0:4:4",
+                  "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:0:0-0:3:3",
                   "path": [
                     {
                       "unquoted_string": {
@@ -29,7 +29,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:6:6-0:10:10",
+                  "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:7:7-0:10:10",
                   "path": [
                     {
                       "unquoted_string": {
@@ -181,13 +181,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -206,12 +206,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -223,6 +217,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -243,14 +241,10 @@
       {
         "id": "x 2",
         "id_val": "x 2",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:0:0-0:3:3",
               "path": [
                 {
                   "unquoted_string": {
@@ -313,6 +307,10 @@
           "label": {
             "value": "hi"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -330,14 +328,10 @@
       {
         "id": "y 2",
         "id_val": "y 2",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:6:6-0:10:10",
+              "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:7:7-0:10:10",
               "path": [
                 {
                   "unquoted_string": {
@@ -380,6 +374,10 @@
           "label": {
             "value": "y 2"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -397,10 +395,6 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -427,6 +421,10 @@
           "label": {
             "value": "x"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -444,10 +442,6 @@
       {
         "id": "y",
         "id_val": "y",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -473,6 +467,10 @@
         "attributes": {
           "label": {
             "value": "y"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

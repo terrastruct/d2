@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2compiler/TestCompile/edge_label_map.d2,0:0:0-0:14:14",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile/edge_label_map.d2,0:0:0-0:7:7",
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_label_map.d2,0:0:0-0:6:6",
                   "path": [
                     {
                       "unquoted_string": {
@@ -29,7 +29,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile/edge_label_map.d2,0:9:9-0:14:14",
+                  "range": "d2/testdata/d2compiler/TestCompile/edge_label_map.d2,0:10:10-0:14:14",
                   "path": [
                     {
                       "unquoted_string": {
@@ -112,13 +112,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -137,12 +137,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -154,6 +148,10 @@
         "attributes": {
           "label": {
             "value": "asdf"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {
             "opacity": {
@@ -178,14 +176,10 @@
       {
         "id": "hey y9",
         "id_val": "hey y9",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_label_map.d2,0:0:0-0:7:7",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_label_map.d2,0:0:0-0:6:6",
               "path": [
                 {
                   "unquoted_string": {
@@ -208,6 +202,10 @@
           "label": {
             "value": "hey y9"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -225,14 +223,10 @@
       {
         "id": "qwer",
         "id_val": "qwer",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/edge_label_map.d2,0:9:9-0:14:14",
+              "range": "d2/testdata/d2compiler/TestCompile/edge_label_map.d2,0:10:10-0:14:14",
               "path": [
                 {
                   "unquoted_string": {
@@ -254,6 +248,10 @@
         "attributes": {
           "label": {
             "value": "qwer"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

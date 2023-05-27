@@ -29,7 +29,7 @@
                   ]
                 },
                 "key_path": {
-                  "range": "TestCompile/fields/primary/root.d2,0:9:9-0:14:14",
+                  "range": "TestCompile/fields/primary/root.d2,0:9:9-0:13:13",
                   "path": [
                     {
                       "unquoted_string": {
@@ -49,7 +49,7 @@
                   "key": {
                     "range": "TestCompile/fields/primary/root.d2,0:9:9-0:14:14",
                     "key": {
-                      "range": "TestCompile/fields/primary/root.d2,0:9:9-0:14:14",
+                      "range": "TestCompile/fields/primary/root.d2,0:9:9-0:13:13",
                       "path": [
                         {
                           "unquoted_string": {
@@ -140,7 +140,7 @@
                       "map_key": {
                         "range": "TestCompile/fields/primary/root.d2,0:9:9-0:14:14",
                         "key": {
-                          "range": "TestCompile/fields/primary/root.d2,0:9:9-0:14:14",
+                          "range": "TestCompile/fields/primary/root.d2,0:9:9-0:13:13",
                           "path": [
                             {
                               "unquoted_string": {

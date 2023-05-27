@@ -36,7 +36,7 @@
                         {
                           "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:2:12-1:20:30",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:2:12-1:9:19",
+                            "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:2:12-1:8:18",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -53,7 +53,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:11:21-1:20:30",
+                            "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:12:22-1:20:30",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -121,7 +121,7 @@
                         {
                           "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:2:45-4:8:51",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:2:45-4:4:47",
+                            "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:2:45-4:3:46",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -138,7 +138,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:6:49-4:8:51",
+                            "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:7:50-4:8:51",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -170,13 +170,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -195,12 +195,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -212,6 +206,10 @@
         "attributes": {
           "label": {
             "value": "two"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -229,12 +227,6 @@
       },
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -246,6 +238,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -266,10 +262,6 @@
       {
         "id": "Square",
         "id_val": "Square",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -296,6 +288,10 @@
           "label": {
             "value": "Square"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -313,14 +309,10 @@
       {
         "id": "Square",
         "id_val": "Square",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:2:12-1:9:19",
+              "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:2:12-1:8:18",
               "path": [
                 {
                   "unquoted_string": {
@@ -343,6 +335,10 @@
           "label": {
             "value": "Square"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -360,14 +356,10 @@
       {
         "id": "Square 2",
         "id_val": "Square 2",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:11:21-1:20:30",
+              "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,1:12:22-1:20:30",
               "path": [
                 {
                   "unquoted_string": {
@@ -390,6 +382,10 @@
           "label": {
             "value": "Square 2"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -407,10 +403,6 @@
       {
         "id": "z",
         "id_val": "z",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -437,6 +429,10 @@
           "label": {
             "value": "z"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -454,14 +450,10 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:2:45-4:4:47",
+              "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:2:45-4:3:46",
               "path": [
                 {
                   "unquoted_string": {
@@ -484,6 +476,10 @@
           "label": {
             "value": "x"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -501,14 +497,10 @@
       {
         "id": "y",
         "id_val": "y",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:6:49-4:8:51",
+              "range": "d2/testdata/d2oracle/TestSet/edge_index_case.d2,4:7:50-4:8:51",
               "path": [
                 {
                   "unquoted_string": {
@@ -530,6 +522,10 @@
         "attributes": {
           "label": {
             "value": "y"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

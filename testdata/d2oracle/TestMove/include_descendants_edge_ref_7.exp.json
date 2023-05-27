@@ -1,0 +1,469 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:0:0-2:0:16",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:0:0-0:10:10",
+            "edges": [
+              {
+                "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:0:0-0:10:10",
+                "src": {
+                  "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:0:0-0:3:3",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "d",
+                            "raw_string": "d"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:2:2-0:3:3",
+                        "value": [
+                          {
+                            "string": "t",
+                            "raw_string": "t"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:7:7-0:10:10",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:7:7-0:8:8",
+                        "value": [
+                          {
+                            "string": "d",
+                            "raw_string": "d"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:9:9-0:10:10",
+                        "value": [
+                          {
+                            "string": "s",
+                            "raw_string": "s"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,1:0:11-1:4:15",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,1:0:11-1:4:15",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,1:0:11-1:1:12",
+                    "value": [
+                      {
+                        "string": "d",
+                        "raw_string": "d"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,1:2:13-1:4:15",
+                    "value": [
+                      {
+                        "string": "np",
+                        "raw_string": "np"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": [
+      {
+        "index": 0,
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ],
+    "objects": [
+      {
+        "id": "d",
+        "id_val": "d",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "d",
+                        "raw_string": "d"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "t",
+                        "raw_string": "t"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:7:7-0:10:10",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:7:7-0:8:8",
+                    "value": [
+                      {
+                        "string": "d",
+                        "raw_string": "d"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:9:9-0:10:10",
+                    "value": [
+                      {
+                        "string": "s",
+                        "raw_string": "s"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,1:0:11-1:4:15",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,1:0:11-1:1:12",
+                    "value": [
+                      {
+                        "string": "d",
+                        "raw_string": "d"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,1:2:13-1:4:15",
+                    "value": [
+                      {
+                        "string": "np",
+                        "raw_string": "np"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "d"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "t",
+        "id_val": "t",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:0:0-0:3:3",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "d",
+                        "raw_string": "d"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:2:2-0:3:3",
+                    "value": [
+                      {
+                        "string": "t",
+                        "raw_string": "t"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 1,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "t"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "s",
+        "id_val": "s",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:7:7-0:10:10",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:7:7-0:8:8",
+                    "value": [
+                      {
+                        "string": "d",
+                        "raw_string": "d"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,0:9:9-0:10:10",
+                    "value": [
+                      {
+                        "string": "s",
+                        "raw_string": "s"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 1,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "s"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "np",
+        "id_val": "np",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,1:0:11-1:4:15",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,1:0:11-1:1:12",
+                    "value": [
+                      {
+                        "string": "d",
+                        "raw_string": "d"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestMove/include_descendants_edge_ref_7.d2,1:2:13-1:4:15",
+                    "value": [
+                      {
+                        "string": "np",
+                        "raw_string": "np"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 1,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "np"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": "<nil>"
+}

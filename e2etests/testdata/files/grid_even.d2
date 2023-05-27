@@ -1,0 +1,69 @@
+row no growth: {
+  grid-rows: 2
+
+  # row 1
+  a.width: 620
+
+  # row 2 width equals row 1 (with 40 in-between each)
+  b.width: 200
+  c.width: 150
+  d.width: 100
+  e.width: 50
+}
+
+row 200 growth: {
+  grid-rows: 2
+
+  # row 1
+  a.width: 820
+
+  # row 2 needs to grow 200 to equal row 1
+  b.width: 200
+  # these 3 should grow proportionally until they reach b's width
+  c.width: 150
+  d.width: 100
+  e.width: 50
+}
+
+row big growth: {
+  grid-rows: 2
+
+  # row 1
+  a.width: 1420
+  # row 2 needs to grow 800
+  # these should all reach width 350
+  b.width: 200 # 0   + 150
+  c.width: 150 # 50  + 150
+  d.width: 100 # 100 + 150
+  e.width: 50 #  150 + 150
+}
+
+column no growth: {
+  grid-columns: 2
+
+  a.height: 620
+  b.height: 200
+  c.height: 150
+  d.height: 100
+  e.height: 50
+}
+
+column 200 growth: {
+  grid-columns: 2
+
+  a.height: 820
+  b.height: 200
+  c.height: 150
+  d.height: 100
+  e.height: 50
+}
+
+column big growth: {
+  grid-columns: 2
+
+  a.height: 1420
+  b.height: 200
+  c.height: 150
+  d.height: 100
+  e.height: 50
+}

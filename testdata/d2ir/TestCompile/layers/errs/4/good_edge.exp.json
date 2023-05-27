@@ -22,7 +22,7 @@
                         ]
                       },
                       "key_path": {
-                        "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:11:11",
+                        "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:10:10",
                         "path": [
                           {
                             "unquoted_string": {
@@ -63,7 +63,7 @@
                         "edge": {
                           "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:24:24",
                           "src": {
-                            "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:11:11",
+                            "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:10:10",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -102,7 +102,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "TestCompile/layers/errs/4/good_edge.d2,0:13:13-0:24:24",
+                            "range": "TestCompile/layers/errs/4/good_edge.d2,0:14:14-0:24:24",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -147,7 +147,7 @@
                             {
                               "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:24:24",
                               "src": {
-                                "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:11:11",
+                                "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:10:10",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -186,7 +186,7 @@
                               },
                               "src_arrow": "",
                               "dst": {
-                                "range": "TestCompile/layers/errs/4/good_edge.d2,0:13:13-0:24:24",
+                                "range": "TestCompile/layers/errs/4/good_edge.d2,0:14:14-0:24:24",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -242,7 +242,7 @@
                         ]
                       },
                       "key_path": {
-                        "range": "TestCompile/layers/errs/4/good_edge.d2,0:13:13-0:24:24",
+                        "range": "TestCompile/layers/errs/4/good_edge.d2,0:14:14-0:24:24",
                         "path": [
                           {
                             "unquoted_string": {
@@ -283,7 +283,7 @@
                         "edge": {
                           "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:24:24",
                           "src": {
-                            "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:11:11",
+                            "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:10:10",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -322,7 +322,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "TestCompile/layers/errs/4/good_edge.d2,0:13:13-0:24:24",
+                            "range": "TestCompile/layers/errs/4/good_edge.d2,0:14:14-0:24:24",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -367,7 +367,7 @@
                             {
                               "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:24:24",
                               "src": {
-                                "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:11:11",
+                                "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:10:10",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -406,7 +406,7 @@
                               },
                               "src_arrow": "",
                               "dst": {
-                                "range": "TestCompile/layers/errs/4/good_edge.d2,0:13:13-0:24:24",
+                                "range": "TestCompile/layers/errs/4/good_edge.d2,0:14:14-0:24:24",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -473,7 +473,7 @@
                         "edge": {
                           "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:24:24",
                           "src": {
-                            "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:11:11",
+                            "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:10:10",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -512,7 +512,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "TestCompile/layers/errs/4/good_edge.d2,0:13:13-0:24:24",
+                            "range": "TestCompile/layers/errs/4/good_edge.d2,0:14:14-0:24:24",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -557,7 +557,7 @@
                             {
                               "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:24:24",
                               "src": {
-                                "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:11:11",
+                                "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:10:10",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -596,7 +596,7 @@
                               },
                               "src_arrow": "",
                               "dst": {
-                                "range": "TestCompile/layers/errs/4/good_edge.d2,0:13:13-0:24:24",
+                                "range": "TestCompile/layers/errs/4/good_edge.d2,0:14:14-0:24:24",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -657,7 +657,7 @@
                   ]
                 },
                 "key_path": {
-                  "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:11:11",
+                  "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:10:10",
                   "path": [
                     {
                       "unquoted_string": {
@@ -698,7 +698,7 @@
                   "edge": {
                     "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:24:24",
                     "src": {
-                      "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:11:11",
+                      "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:10:10",
                       "path": [
                         {
                           "unquoted_string": {
@@ -737,7 +737,7 @@
                     },
                     "src_arrow": "",
                     "dst": {
-                      "range": "TestCompile/layers/errs/4/good_edge.d2,0:13:13-0:24:24",
+                      "range": "TestCompile/layers/errs/4/good_edge.d2,0:14:14-0:24:24",
                       "path": [
                         {
                           "unquoted_string": {
@@ -782,7 +782,7 @@
                       {
                         "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:24:24",
                         "src": {
-                          "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:11:11",
+                          "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:10:10",
                           "path": [
                             {
                               "unquoted_string": {
@@ -821,7 +821,7 @@
                         },
                         "src_arrow": "",
                         "dst": {
-                          "range": "TestCompile/layers/errs/4/good_edge.d2,0:13:13-0:24:24",
+                          "range": "TestCompile/layers/errs/4/good_edge.d2,0:14:14-0:24:24",
                           "path": [
                             {
                               "unquoted_string": {
@@ -877,7 +877,7 @@
                   ]
                 },
                 "key_path": {
-                  "range": "TestCompile/layers/errs/4/good_edge.d2,0:13:13-0:24:24",
+                  "range": "TestCompile/layers/errs/4/good_edge.d2,0:14:14-0:24:24",
                   "path": [
                     {
                       "unquoted_string": {
@@ -918,7 +918,7 @@
                   "edge": {
                     "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:24:24",
                     "src": {
-                      "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:11:11",
+                      "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:10:10",
                       "path": [
                         {
                           "unquoted_string": {
@@ -957,7 +957,7 @@
                     },
                     "src_arrow": "",
                     "dst": {
-                      "range": "TestCompile/layers/errs/4/good_edge.d2,0:13:13-0:24:24",
+                      "range": "TestCompile/layers/errs/4/good_edge.d2,0:14:14-0:24:24",
                       "path": [
                         {
                           "unquoted_string": {
@@ -1002,7 +1002,7 @@
                       {
                         "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:24:24",
                         "src": {
-                          "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:11:11",
+                          "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:10:10",
                           "path": [
                             {
                               "unquoted_string": {
@@ -1041,7 +1041,7 @@
                         },
                         "src_arrow": "",
                         "dst": {
-                          "range": "TestCompile/layers/errs/4/good_edge.d2,0:13:13-0:24:24",
+                          "range": "TestCompile/layers/errs/4/good_edge.d2,0:14:14-0:24:24",
                           "path": [
                             {
                               "unquoted_string": {
@@ -1103,7 +1103,7 @@
             ]
           },
           "key_path": {
-            "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:11:11",
+            "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:10:10",
             "path": [
               {
                 "unquoted_string": {
@@ -1144,7 +1144,7 @@
             "edge": {
               "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:24:24",
               "src": {
-                "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:11:11",
+                "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:10:10",
                 "path": [
                   {
                     "unquoted_string": {
@@ -1183,7 +1183,7 @@
               },
               "src_arrow": "",
               "dst": {
-                "range": "TestCompile/layers/errs/4/good_edge.d2,0:13:13-0:24:24",
+                "range": "TestCompile/layers/errs/4/good_edge.d2,0:14:14-0:24:24",
                 "path": [
                   {
                     "unquoted_string": {
@@ -1228,7 +1228,7 @@
                 {
                   "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:24:24",
                   "src": {
-                    "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:11:11",
+                    "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:10:10",
                     "path": [
                       {
                         "unquoted_string": {
@@ -1267,7 +1267,7 @@
                   },
                   "src_arrow": "",
                   "dst": {
-                    "range": "TestCompile/layers/errs/4/good_edge.d2,0:13:13-0:24:24",
+                    "range": "TestCompile/layers/errs/4/good_edge.d2,0:14:14-0:24:24",
                     "path": [
                       {
                         "unquoted_string": {
@@ -1323,7 +1323,7 @@
             ]
           },
           "key_path": {
-            "range": "TestCompile/layers/errs/4/good_edge.d2,0:13:13-0:24:24",
+            "range": "TestCompile/layers/errs/4/good_edge.d2,0:14:14-0:24:24",
             "path": [
               {
                 "unquoted_string": {
@@ -1364,7 +1364,7 @@
             "edge": {
               "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:24:24",
               "src": {
-                "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:11:11",
+                "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:10:10",
                 "path": [
                   {
                     "unquoted_string": {
@@ -1403,7 +1403,7 @@
               },
               "src_arrow": "",
               "dst": {
-                "range": "TestCompile/layers/errs/4/good_edge.d2,0:13:13-0:24:24",
+                "range": "TestCompile/layers/errs/4/good_edge.d2,0:14:14-0:24:24",
                 "path": [
                   {
                     "unquoted_string": {
@@ -1448,7 +1448,7 @@
                 {
                   "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:24:24",
                   "src": {
-                    "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:11:11",
+                    "range": "TestCompile/layers/errs/4/good_edge.d2,0:0:0-0:10:10",
                     "path": [
                       {
                         "unquoted_string": {
@@ -1487,7 +1487,7 @@
                   },
                   "src_arrow": "",
                   "dst": {
-                    "range": "TestCompile/layers/errs/4/good_edge.d2,0:13:13-0:24:24",
+                    "range": "TestCompile/layers/errs/4/good_edge.d2,0:14:14-0:24:24",
                     "path": [
                       {
                         "unquoted_string": {

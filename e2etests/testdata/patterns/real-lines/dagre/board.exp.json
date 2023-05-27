@@ -10,7 +10,7 @@
         "x": 0,
         "y": 41
       },
-      "width": 334,
+      "width": 360,
       "height": 640,
       "opacity": 1,
       "strokeDash": 0,
@@ -52,7 +52,7 @@
         "x": 20,
         "y": 106
       },
-      "width": 294,
+      "width": 320,
       "height": 545,
       "opacity": 1,
       "strokeDash": 0,
@@ -91,7 +91,7 @@
       "id": "NETWORK.CELL TOWER.satellites",
       "type": "stored_data",
       "pos": {
-        "x": 87,
+        "x": 100,
         "y": 195
       },
       "width": 161,
@@ -132,7 +132,7 @@
       "id": "NETWORK.CELL TOWER.transmitter",
       "type": "rectangle",
       "pos": {
-        "x": 92,
+        "x": 105,
         "y": 496
       },
       "width": 151,
@@ -173,7 +173,7 @@
       "id": "costumes",
       "type": "sql_table",
       "pos": {
-        "x": 374,
+        "x": 401,
         "y": 100
       },
       "width": 311,
@@ -330,7 +330,7 @@
       "id": "monsters",
       "type": "sql_table",
       "pos": {
-        "x": 374,
+        "x": 401,
         "y": 401
       },
       "width": 311,
@@ -489,10 +489,8 @@
       "id": "NETWORK.CELL TOWER.(satellites -> transmitter)[0]",
       "src": "NETWORK.CELL TOWER.satellites",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "NETWORK.CELL TOWER.transmitter",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -512,19 +510,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 151,
+          "x": 163,
           "y": 262
         },
         {
-          "x": 108,
+          "x": 114.4,
           "y": 355.6
         },
         {
-          "x": 108.05,
+          "x": 114.45,
           "y": 402.6
         },
         {
-          "x": 151.25,
+          "x": 163.25,
           "y": 497
         }
       ],
@@ -538,10 +536,8 @@
       "id": "NETWORK.CELL TOWER.(satellites -> transmitter)[1]",
       "src": "NETWORK.CELL TOWER.satellites",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "NETWORK.CELL TOWER.transmitter",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -561,19 +557,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 167,
+          "x": 180,
           "y": 262
         },
         {
-          "x": 167,
+          "x": 180.2,
           "y": 355.6
         },
         {
-          "x": 167,
+          "x": 180.25,
           "y": 402.6
         },
         {
-          "x": 167,
+          "x": 180.25,
           "y": 497
         }
       ],
@@ -587,10 +583,8 @@
       "id": "NETWORK.CELL TOWER.(satellites -> transmitter)[2]",
       "src": "NETWORK.CELL TOWER.satellites",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "NETWORK.CELL TOWER.transmitter",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -610,19 +604,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 183,
+          "x": 198,
           "y": 262
         },
         {
-          "x": 226,
+          "x": 246.2,
           "y": 355.6
         },
         {
-          "x": 225.95,
+          "x": 246.05,
           "y": 402.6
         },
         {
-          "x": 182.75,
+          "x": 197.25,
           "y": 497
         }
       ],
@@ -636,10 +630,8 @@
       "id": "(costumes -> monsters)[0]",
       "src": "costumes",
       "srcArrow": "none",
-      "srcLabel": "",
       "dst": "monsters",
       "dstArrow": "triangle",
-      "dstLabel": "",
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -659,19 +651,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 529.5,
+          "x": 556,
           "y": 280
         },
         {
-          "x": 529.5,
+          "x": 556,
           "y": 328.4
         },
         {
-          "x": 529.5,
+          "x": 556,
           "y": 352.7
         },
         {
-          "x": 529.5,
+          "x": 556,
           "y": 401.5
         }
       ],

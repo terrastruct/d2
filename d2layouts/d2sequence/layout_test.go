@@ -180,7 +180,7 @@ b -> a.t2`
 	g, err := d2compiler.Compile("", strings.NewReader(input), nil)
 	assert.Nil(t, err)
 
-	g.Root.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
+	g.Root.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
 
 	a, has := g.Root.HasChild([]string{"a"})
 	assert.True(t, has)
@@ -217,14 +217,14 @@ b -> a.t2`
 	})
 
 	// check properties
-	assert.Equal(t, strings.ToLower(shape.PERSON_TYPE), strings.ToLower(a.Attributes.Shape.Value))
+	assert.Equal(t, strings.ToLower(shape.PERSON_TYPE), strings.ToLower(a.Shape.Value))
 
-	if a_t1.Attributes.Label.Value != "" {
-		t.Fatalf("expected no label for span, got %s", a_t1.Attributes.Label.Value)
+	if a_t1.Label.Value != "" {
+		t.Fatalf("expected no label for span, got %s", a_t1.Label.Value)
 	}
 
-	if a_t1.Attributes.Shape.Value != shape.SQUARE_TYPE {
-		t.Fatalf("expected square shape for span, got %s", a_t1.Attributes.Shape.Value)
+	if a_t1.Shape.Value != shape.SQUARE_TYPE {
+		t.Fatalf("expected square shape for span, got %s", a_t1.Shape.Value)
 	}
 
 	if a_t1.Height != b_t1.Height {
@@ -323,7 +323,7 @@ container -> c: edge 1
 
 	c := g.Root.EnsureChild([]string{"c"})
 	c.Box = geo.NewBox(nil, 100, 100)
-	c.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSquare}
+	c.Shape = d2graph.Scalar{Value: d2target.ShapeSquare}
 
 	layoutFn := func(ctx context.Context, g *d2graph.Graph) error {
 		if len(g.Objects) != 2 {
@@ -378,7 +378,7 @@ container -> c: edge 1
 
 func TestSelfEdges(t *testing.T) {
 	g := d2graph.NewGraph()
-	g.Root.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
+	g.Root.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
 	n1 := g.Root.EnsureChild([]string{"n1"})
 	n1.Box = geo.NewBox(nil, 100, 100)
 
@@ -387,7 +387,7 @@ func TestSelfEdges(t *testing.T) {
 			Src:   n1,
 			Dst:   n1,
 			Index: 0,
-			Attributes: &d2graph.Attributes{
+			Attributes: d2graph.Attributes{
 				Label: d2graph.Scalar{Value: "left to right"},
 			},
 		},
@@ -414,10 +414,10 @@ func TestSelfEdges(t *testing.T) {
 
 func TestSequenceToDescendant(t *testing.T) {
 	g := d2graph.NewGraph()
-	g.Root.Attributes.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
+	g.Root.Shape = d2graph.Scalar{Value: d2target.ShapeSequenceDiagram}
 	a := g.Root.EnsureChild([]string{"a"})
 	a.Box = geo.NewBox(nil, 100, 100)
-	a.Attributes = &d2graph.Attributes{
+	a.Attributes = d2graph.Attributes{
 		Shape: d2graph.Scalar{Value: shape.PERSON_TYPE},
 	}
 	a_t1 := a.EnsureChild([]string{"t1"})
@@ -425,15 +425,13 @@ func TestSequenceToDescendant(t *testing.T) {
 
 	g.Edges = []*d2graph.Edge{
 		{
-			Src:        a,
-			Dst:        a_t1,
-			Index:      0,
-			Attributes: &d2graph.Attributes{},
+			Src:   a,
+			Dst:   a_t1,
+			Index: 0,
 		}, {
-			Src:        a_t1,
-			Dst:        a,
-			Index:      0,
-			Attributes: &d2graph.Attributes{},
+			Src:   a_t1,
+			Dst:   a,
+			Index: 0,
 		},
 	}
 

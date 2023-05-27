@@ -10,6 +10,7 @@ import (
 	"oss.terrastruct.com/d2/d2exporter"
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2layouts/d2dagrelayout"
+	"oss.terrastruct.com/d2/d2layouts/d2grid"
 	"oss.terrastruct.com/d2/d2layouts/d2near"
 	"oss.terrastruct.com/d2/d2layouts/d2sequence"
 	"oss.terrastruct.com/d2/d2renderers/d2fonts"
@@ -68,14 +69,23 @@ func compile(ctx context.Context, g *d2graph.Graph, opts *CompileOptions) (*d2ta
 			return nil, err
 		}
 
-		constantNears := d2near.WithoutConstantNears(ctx, g)
+		constantNearGraphs := d2near.WithoutConstantNears(ctx, g)
 
-		err = d2sequence.Layout(ctx, g, coreLayout)
+		layoutWithGrids := d2grid.Layout(ctx, g, coreLayout)
+
+		// run core layout for constantNears
+		for _, tempGraph := range constantNearGraphs {
+			if err = layoutWithGrids(ctx, tempGraph); err != nil {
+				return nil, err
+			}
+		}
+
+		err = d2sequence.Layout(ctx, g, layoutWithGrids)
 		if err != nil {
 			return nil, err
 		}
 
-		err = d2near.Layout(ctx, g, constantNears)
+		err = d2near.Layout(ctx, g, constantNearGraphs)
 		if err != nil {
 			return nil, err
 		}
@@ -110,7 +120,7 @@ func compile(ctx context.Context, g *d2graph.Graph, opts *CompileOptions) (*d2ta
 	return d, nil
 }
 
-func getLayout(opts *CompileOptions) (func(context.Context, *d2graph.Graph) error, error) {
+func getLayout(opts *CompileOptions) (d2graph.LayoutGraph, error) {
 	if opts.Layout != nil {
 		return opts.Layout, nil
 	} else if os.Getenv("D2_LAYOUT") == "dagre" {

@@ -28,10 +28,12 @@ only have to be in the form of pull requests. Your bug reports, plugins, example
 discussions of new ideas, help a great deal.
 
 If you'd like to get involved, we're also committed to helping you merge that first pull
-request. You should be able to freely pick up Issues tagged as "good first issue". If you
-need help getting started, please don't hesitate to pop into Discord -- as long as you
-want to help, we'll find the perfect task (complexity matches your appetite and
-programming experience, in an area you're interested in, etc).
+request. You should be able to freely pick up Issues tagged as "good first issue". Those
+will usually include notes on getting started, but if they're missing or insufficient,
+just leave a comment and we'll add more detail. If you need help getting started, please
+don't hesitate to pop into Discord -- as long as you want to help, we'll find the perfect
+task (complexity matches your appetite and programming experience, in an area you're
+interested in, etc).
 
 ## CI
 

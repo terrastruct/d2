@@ -47,7 +47,7 @@
                         {
                           "range": "d2/testdata/d2oracle/TestCreate/edge_scope_nested.d2,1:2:9-1:8:15",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestCreate/edge_scope_nested.d2,1:2:9-1:4:11",
+                            "range": "d2/testdata/d2oracle/TestCreate/edge_scope_nested.d2,1:2:9-1:3:10",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -64,7 +64,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestCreate/edge_scope_nested.d2,1:6:13-1:8:15",
+                            "range": "d2/testdata/d2oracle/TestCreate/edge_scope_nested.d2,1:7:14-1:8:15",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -96,13 +96,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -121,12 +121,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -138,6 +132,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -158,10 +156,6 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -199,6 +193,10 @@
           "label": {
             "value": "x"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -216,10 +214,6 @@
       {
         "id": "y",
         "id_val": "y",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -257,6 +251,10 @@
           "label": {
             "value": "y"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -274,14 +272,10 @@
       {
         "id": "z",
         "id_val": "z",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestCreate/edge_scope_nested.d2,1:2:9-1:4:11",
+              "range": "d2/testdata/d2oracle/TestCreate/edge_scope_nested.d2,1:2:9-1:3:10",
               "path": [
                 {
                   "unquoted_string": {
@@ -304,6 +298,10 @@
           "label": {
             "value": "z"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -321,14 +319,10 @@
       {
         "id": "q",
         "id_val": "q",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestCreate/edge_scope_nested.d2,1:6:13-1:8:15",
+              "range": "d2/testdata/d2oracle/TestCreate/edge_scope_nested.d2,1:7:14-1:8:15",
               "path": [
                 {
                   "unquoted_string": {
@@ -350,6 +344,10 @@
         "attributes": {
           "label": {
             "value": "q"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

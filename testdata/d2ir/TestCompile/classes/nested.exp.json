@@ -1,0 +1,1924 @@
+{
+  "fields": [
+    {
+      "name": "classes",
+      "composite": {
+        "fields": [
+          {
+            "name": "mango",
+            "composite": {
+              "fields": [
+                {
+                  "name": "style",
+                  "composite": {
+                    "fields": [
+                      {
+                        "name": "fill",
+                        "primary": {
+                          "value": {
+                            "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",
+                            "value": [
+                              {
+                                "string": "orange",
+                                "raw_string": "orange"
+                              }
+                            ]
+                          }
+                        },
+                        "references": [
+                          {
+                            "string": {
+                              "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  }
+                                },
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                    "value": [
+                                      {
+                                        "string": "fill",
+                                        "raw_string": "fill"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/classes/nested.d2,2:4:26-2:22:44",
+                                "key": {
+                                  "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                        "value": [
+                                          {
+                                            "string": "style",
+                                            "raw_string": "style"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                        "value": [
+                                          {
+                                            "string": "fill",
+                                            "raw_string": "fill"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",
+                                    "value": [
+                                      {
+                                        "string": "orange",
+                                        "raw_string": "orange"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "edges": null
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                        "value": [
+                          {
+                            "string": "style",
+                            "raw_string": "style"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                              "value": [
+                                {
+                                  "string": "fill",
+                                  "raw_string": "fill"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/classes/nested.d2,2:4:26-2:22:44",
+                          "key": {
+                            "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                  "value": [
+                                    {
+                                      "string": "style",
+                                      "raw_string": "style"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                  "value": [
+                                    {
+                                      "string": "fill",
+                                      "raw_string": "fill"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",
+                              "value": [
+                                {
+                                  "string": "orange",
+                                  "raw_string": "orange"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                  "value": [
+                    {
+                      "string": "mango",
+                      "raw_string": "mango"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                        "value": [
+                          {
+                            "string": "mango",
+                            "raw_string": "mango"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/classes/nested.d2,1:2:13-3:3:48",
+                    "key": {
+                      "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                            "value": [
+                              {
+                                "string": "mango",
+                                "raw_string": "mango"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/classes/nested.d2,1:9:20-3:2:47",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/classes/nested.d2,2:4:26-2:22:44",
+                              "key": {
+                                "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                      "value": [
+                                        {
+                                          "string": "style",
+                                          "raw_string": "style"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                      "value": [
+                                        {
+                                          "string": "fill",
+                                          "raw_string": "fill"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",
+                                  "value": [
+                                    {
+                                      "string": "orange",
+                                      "raw_string": "orange"
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+            "value": [
+              {
+                "string": "classes",
+                "raw_string": "classes"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+                  "value": [
+                    {
+                      "string": "classes",
+                      "raw_string": "classes"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/classes/nested.d2,0:0:0-4:1:50",
+              "key": {
+                "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+                      "value": [
+                        {
+                          "string": "classes",
+                          "raw_string": "classes"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/classes/nested.d2,0:9:9-4:0:49",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/classes/nested.d2,1:2:13-3:3:48",
+                        "key": {
+                          "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                                "value": [
+                                  {
+                                    "string": "mango",
+                                    "raw_string": "mango"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "map": {
+                            "range": "TestCompile/classes/nested.d2,1:9:20-3:2:47",
+                            "nodes": [
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/classes/nested.d2,2:4:26-2:22:44",
+                                  "key": {
+                                    "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                          "value": [
+                                            {
+                                              "string": "style",
+                                              "raw_string": "style"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                          "value": [
+                                            {
+                                              "string": "fill",
+                                              "raw_string": "fill"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",
+                                      "value": [
+                                        {
+                                          "string": "orange",
+                                          "raw_string": "orange"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "layers",
+      "composite": {
+        "fields": [
+          {
+            "name": "hawaii",
+            "composite": {
+              "fields": [
+                {
+                  "name": "layers",
+                  "composite": {
+                    "fields": [
+                      {
+                        "name": "maui",
+                        "composite": {
+                          "fields": [
+                            {
+                              "name": "x",
+                              "references": [
+                                {
+                                  "string": {
+                                    "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                    "value": [
+                                      {
+                                        "string": "x",
+                                        "raw_string": "x"
+                                      }
+                                    ]
+                                  },
+                                  "key_path": {
+                                    "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                          "value": [
+                                            {
+                                              "string": "x",
+                                              "raw_string": "x"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "context": {
+                                    "edge": null,
+                                    "key": {
+                                      "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                      "key": {
+                                        "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                              "value": [
+                                                {
+                                                  "string": "x",
+                                                  "raw_string": "x"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "primary": {},
+                                      "value": {}
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "name": "classes",
+                              "composite": {
+                                "fields": [
+                                  {
+                                    "name": "mango",
+                                    "composite": {
+                                      "fields": [
+                                        {
+                                          "name": "style",
+                                          "composite": {
+                                            "fields": [
+                                              {
+                                                "name": "fill",
+                                                "primary": {
+                                                  "value": {
+                                                    "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",
+                                                    "value": [
+                                                      {
+                                                        "string": "orange",
+                                                        "raw_string": "orange"
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                "references": [
+                                                  {
+                                                    "string": {
+                                                      "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                                      "value": [
+                                                        {
+                                                          "string": "fill",
+                                                          "raw_string": "fill"
+                                                        }
+                                                      ]
+                                                    },
+                                                    "key_path": {
+                                                      "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                                                      "path": [
+                                                        {
+                                                          "unquoted_string": {
+                                                            "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                                            "value": [
+                                                              {
+                                                                "string": "style",
+                                                                "raw_string": "style"
+                                                              }
+                                                            ]
+                                                          }
+                                                        },
+                                                        {
+                                                          "unquoted_string": {
+                                                            "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                                            "value": [
+                                                              {
+                                                                "string": "fill",
+                                                                "raw_string": "fill"
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      ]
+                                                    },
+                                                    "context": {
+                                                      "edge": null,
+                                                      "key": {
+                                                        "range": "TestCompile/classes/nested.d2,2:4:26-2:22:44",
+                                                        "key": {
+                                                          "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                                                          "path": [
+                                                            {
+                                                              "unquoted_string": {
+                                                                "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                                                "value": [
+                                                                  {
+                                                                    "string": "style",
+                                                                    "raw_string": "style"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            },
+                                                            {
+                                                              "unquoted_string": {
+                                                                "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                                                "value": [
+                                                                  {
+                                                                    "string": "fill",
+                                                                    "raw_string": "fill"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          ]
+                                                        },
+                                                        "primary": {},
+                                                        "value": {
+                                                          "unquoted_string": {
+                                                            "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",
+                                                            "value": [
+                                                              {
+                                                                "string": "orange",
+                                                                "raw_string": "orange"
+                                                              }
+                                                            ]
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            ],
+                                            "edges": null
+                                          },
+                                          "references": [
+                                            {
+                                              "string": {
+                                                "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                                "value": [
+                                                  {
+                                                    "string": "style",
+                                                    "raw_string": "style"
+                                                  }
+                                                ]
+                                              },
+                                              "key_path": {
+                                                "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                                                "path": [
+                                                  {
+                                                    "unquoted_string": {
+                                                      "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                                      "value": [
+                                                        {
+                                                          "string": "style",
+                                                          "raw_string": "style"
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  {
+                                                    "unquoted_string": {
+                                                      "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                                      "value": [
+                                                        {
+                                                          "string": "fill",
+                                                          "raw_string": "fill"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              },
+                                              "context": {
+                                                "edge": null,
+                                                "key": {
+                                                  "range": "TestCompile/classes/nested.d2,2:4:26-2:22:44",
+                                                  "key": {
+                                                    "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                                                    "path": [
+                                                      {
+                                                        "unquoted_string": {
+                                                          "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                                          "value": [
+                                                            {
+                                                              "string": "style",
+                                                              "raw_string": "style"
+                                                            }
+                                                          ]
+                                                        }
+                                                      },
+                                                      {
+                                                        "unquoted_string": {
+                                                          "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                                          "value": [
+                                                            {
+                                                              "string": "fill",
+                                                              "raw_string": "fill"
+                                                            }
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "primary": {},
+                                                  "value": {
+                                                    "unquoted_string": {
+                                                      "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",
+                                                      "value": [
+                                                        {
+                                                          "string": "orange",
+                                                          "raw_string": "orange"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      ],
+                                      "edges": null
+                                    },
+                                    "references": [
+                                      {
+                                        "string": {
+                                          "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                                          "value": [
+                                            {
+                                              "string": "mango",
+                                              "raw_string": "mango"
+                                            }
+                                          ]
+                                        },
+                                        "key_path": {
+                                          "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                                                "value": [
+                                                  {
+                                                    "string": "mango",
+                                                    "raw_string": "mango"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "context": {
+                                          "edge": null,
+                                          "key": {
+                                            "range": "TestCompile/classes/nested.d2,1:2:13-3:3:48",
+                                            "key": {
+                                              "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                                              "path": [
+                                                {
+                                                  "unquoted_string": {
+                                                    "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                                                    "value": [
+                                                      {
+                                                        "string": "mango",
+                                                        "raw_string": "mango"
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "primary": {},
+                                            "value": {
+                                              "map": {
+                                                "range": "TestCompile/classes/nested.d2,1:9:20-3:2:47",
+                                                "nodes": [
+                                                  {
+                                                    "map_key": {
+                                                      "range": "TestCompile/classes/nested.d2,2:4:26-2:22:44",
+                                                      "key": {
+                                                        "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                                                        "path": [
+                                                          {
+                                                            "unquoted_string": {
+                                                              "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                                              "value": [
+                                                                {
+                                                                  "string": "style",
+                                                                  "raw_string": "style"
+                                                                }
+                                                              ]
+                                                            }
+                                                          },
+                                                          {
+                                                            "unquoted_string": {
+                                                              "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                                              "value": [
+                                                                {
+                                                                  "string": "fill",
+                                                                  "raw_string": "fill"
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        ]
+                                                      },
+                                                      "primary": {},
+                                                      "value": {
+                                                        "unquoted_string": {
+                                                          "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",
+                                                          "value": [
+                                                            {
+                                                              "string": "orange",
+                                                              "raw_string": "orange"
+                                                            }
+                                                          ]
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                ],
+                                "edges": null
+                              },
+                              "references": [
+                                {
+                                  "string": {
+                                    "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+                                    "value": [
+                                      {
+                                        "string": "classes",
+                                        "raw_string": "classes"
+                                      }
+                                    ]
+                                  },
+                                  "key_path": {
+                                    "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+                                          "value": [
+                                            {
+                                              "string": "classes",
+                                              "raw_string": "classes"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "context": {
+                                    "edge": null,
+                                    "key": {
+                                      "range": "TestCompile/classes/nested.d2,0:0:0-4:1:50",
+                                      "key": {
+                                        "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+                                              "value": [
+                                                {
+                                                  "string": "classes",
+                                                  "raw_string": "classes"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "primary": {},
+                                      "value": {
+                                        "map": {
+                                          "range": "TestCompile/classes/nested.d2,0:9:9-4:0:49",
+                                          "nodes": [
+                                            {
+                                              "map_key": {
+                                                "range": "TestCompile/classes/nested.d2,1:2:13-3:3:48",
+                                                "key": {
+                                                  "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                                                  "path": [
+                                                    {
+                                                      "unquoted_string": {
+                                                        "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                                                        "value": [
+                                                          {
+                                                            "string": "mango",
+                                                            "raw_string": "mango"
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  ]
+                                                },
+                                                "primary": {},
+                                                "value": {
+                                                  "map": {
+                                                    "range": "TestCompile/classes/nested.d2,1:9:20-3:2:47",
+                                                    "nodes": [
+                                                      {
+                                                        "map_key": {
+                                                          "range": "TestCompile/classes/nested.d2,2:4:26-2:22:44",
+                                                          "key": {
+                                                            "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                                                            "path": [
+                                                              {
+                                                                "unquoted_string": {
+                                                                  "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                                                  "value": [
+                                                                    {
+                                                                      "string": "style",
+                                                                      "raw_string": "style"
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              },
+                                                              {
+                                                                "unquoted_string": {
+                                                                  "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                                                  "value": [
+                                                                    {
+                                                                      "string": "fill",
+                                                                      "raw_string": "fill"
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              }
+                                                            ]
+                                                          },
+                                                          "primary": {},
+                                                          "value": {
+                                                            "unquoted_string": {
+                                                              "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",
+                                                              "value": [
+                                                                {
+                                                                  "string": "orange",
+                                                                  "raw_string": "orange"
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "edges": null
+                        },
+                        "references": [
+                          {
+                            "string": {
+                              "range": "TestCompile/classes/nested.d2,8:6:91-8:10:95",
+                              "value": [
+                                {
+                                  "string": "maui",
+                                  "raw_string": "maui"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/classes/nested.d2,8:6:91-8:10:95",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/nested.d2,8:6:91-8:10:95",
+                                    "value": [
+                                      {
+                                        "string": "maui",
+                                        "raw_string": "maui"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/classes/nested.d2,8:6:91-10:7:116",
+                                "key": {
+                                  "range": "TestCompile/classes/nested.d2,8:6:91-8:10:95",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/classes/nested.d2,8:6:91-8:10:95",
+                                        "value": [
+                                          {
+                                            "string": "maui",
+                                            "raw_string": "maui"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "map": {
+                                    "range": "TestCompile/classes/nested.d2,8:12:97-10:6:115",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                          "key": {
+                                            "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                                  "value": [
+                                                    {
+                                                      "string": "x",
+                                                      "raw_string": "x"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {}
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "edges": null
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/classes/nested.d2,7:2:75-7:8:81",
+                        "value": [
+                          {
+                            "string": "layers",
+                            "raw_string": "layers"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/classes/nested.d2,7:2:75-7:8:81",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/classes/nested.d2,7:2:75-7:8:81",
+                              "value": [
+                                {
+                                  "string": "layers",
+                                  "raw_string": "layers"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/classes/nested.d2,7:2:75-11:5:122",
+                          "key": {
+                            "range": "TestCompile/classes/nested.d2,7:2:75-7:8:81",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/nested.d2,7:2:75-7:8:81",
+                                  "value": [
+                                    {
+                                      "string": "layers",
+                                      "raw_string": "layers"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": "TestCompile/classes/nested.d2,7:10:83-11:4:121",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": "TestCompile/classes/nested.d2,8:6:91-10:7:116",
+                                    "key": {
+                                      "range": "TestCompile/classes/nested.d2,8:6:91-8:10:95",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "TestCompile/classes/nested.d2,8:6:91-8:10:95",
+                                            "value": [
+                                              {
+                                                "string": "maui",
+                                                "raw_string": "maui"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {
+                                      "map": {
+                                        "range": "TestCompile/classes/nested.d2,8:12:97-10:6:115",
+                                        "nodes": [
+                                          {
+                                            "map_key": {
+                                              "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                              "key": {
+                                                "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                                "path": [
+                                                  {
+                                                    "unquoted_string": {
+                                                      "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                                      "value": [
+                                                        {
+                                                          "string": "x",
+                                                          "raw_string": "x"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              },
+                                              "primary": {},
+                                              "value": {}
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "classes",
+                  "composite": {
+                    "fields": [
+                      {
+                        "name": "mango",
+                        "composite": {
+                          "fields": [
+                            {
+                              "name": "style",
+                              "composite": {
+                                "fields": [
+                                  {
+                                    "name": "fill",
+                                    "primary": {
+                                      "value": {
+                                        "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",
+                                        "value": [
+                                          {
+                                            "string": "orange",
+                                            "raw_string": "orange"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    "references": [
+                                      {
+                                        "string": {
+                                          "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                          "value": [
+                                            {
+                                              "string": "fill",
+                                              "raw_string": "fill"
+                                            }
+                                          ]
+                                        },
+                                        "key_path": {
+                                          "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                                "value": [
+                                                  {
+                                                    "string": "style",
+                                                    "raw_string": "style"
+                                                  }
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "unquoted_string": {
+                                                "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                                "value": [
+                                                  {
+                                                    "string": "fill",
+                                                    "raw_string": "fill"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "context": {
+                                          "edge": null,
+                                          "key": {
+                                            "range": "TestCompile/classes/nested.d2,2:4:26-2:22:44",
+                                            "key": {
+                                              "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                                              "path": [
+                                                {
+                                                  "unquoted_string": {
+                                                    "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                                    "value": [
+                                                      {
+                                                        "string": "style",
+                                                        "raw_string": "style"
+                                                      }
+                                                    ]
+                                                  }
+                                                },
+                                                {
+                                                  "unquoted_string": {
+                                                    "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                                    "value": [
+                                                      {
+                                                        "string": "fill",
+                                                        "raw_string": "fill"
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "primary": {},
+                                            "value": {
+                                              "unquoted_string": {
+                                                "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",
+                                                "value": [
+                                                  {
+                                                    "string": "orange",
+                                                    "raw_string": "orange"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                ],
+                                "edges": null
+                              },
+                              "references": [
+                                {
+                                  "string": {
+                                    "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                    "value": [
+                                      {
+                                        "string": "style",
+                                        "raw_string": "style"
+                                      }
+                                    ]
+                                  },
+                                  "key_path": {
+                                    "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                          "value": [
+                                            {
+                                              "string": "style",
+                                              "raw_string": "style"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                          "value": [
+                                            {
+                                              "string": "fill",
+                                              "raw_string": "fill"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "context": {
+                                    "edge": null,
+                                    "key": {
+                                      "range": "TestCompile/classes/nested.d2,2:4:26-2:22:44",
+                                      "key": {
+                                        "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                                        "path": [
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                              "value": [
+                                                {
+                                                  "string": "style",
+                                                  "raw_string": "style"
+                                                }
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                              "value": [
+                                                {
+                                                  "string": "fill",
+                                                  "raw_string": "fill"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      "primary": {},
+                                      "value": {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",
+                                          "value": [
+                                            {
+                                              "string": "orange",
+                                              "raw_string": "orange"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          ],
+                          "edges": null
+                        },
+                        "references": [
+                          {
+                            "string": {
+                              "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                              "value": [
+                                {
+                                  "string": "mango",
+                                  "raw_string": "mango"
+                                }
+                              ]
+                            },
+                            "key_path": {
+                              "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                              "path": [
+                                {
+                                  "unquoted_string": {
+                                    "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                                    "value": [
+                                      {
+                                        "string": "mango",
+                                        "raw_string": "mango"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "context": {
+                              "edge": null,
+                              "key": {
+                                "range": "TestCompile/classes/nested.d2,1:2:13-3:3:48",
+                                "key": {
+                                  "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                                        "value": [
+                                          {
+                                            "string": "mango",
+                                            "raw_string": "mango"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "map": {
+                                    "range": "TestCompile/classes/nested.d2,1:9:20-3:2:47",
+                                    "nodes": [
+                                      {
+                                        "map_key": {
+                                          "range": "TestCompile/classes/nested.d2,2:4:26-2:22:44",
+                                          "key": {
+                                            "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                                            "path": [
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                                  "value": [
+                                                    {
+                                                      "string": "style",
+                                                      "raw_string": "style"
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "unquoted_string": {
+                                                  "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                                  "value": [
+                                                    {
+                                                      "string": "fill",
+                                                      "raw_string": "fill"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          "primary": {},
+                                          "value": {
+                                            "unquoted_string": {
+                                              "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",
+                                              "value": [
+                                                {
+                                                  "string": "orange",
+                                                  "raw_string": "orange"
+                                                }
+                                              ]
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    ],
+                    "edges": null
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+                        "value": [
+                          {
+                            "string": "classes",
+                            "raw_string": "classes"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+                              "value": [
+                                {
+                                  "string": "classes",
+                                  "raw_string": "classes"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/classes/nested.d2,0:0:0-4:1:50",
+                          "key": {
+                            "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/classes/nested.d2,0:0:0-0:7:7",
+                                  "value": [
+                                    {
+                                      "string": "classes",
+                                      "raw_string": "classes"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": "TestCompile/classes/nested.d2,0:9:9-4:0:49",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": "TestCompile/classes/nested.d2,1:2:13-3:3:48",
+                                    "key": {
+                                      "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": "TestCompile/classes/nested.d2,1:2:13-1:7:18",
+                                            "value": [
+                                              {
+                                                "string": "mango",
+                                                "raw_string": "mango"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {
+                                      "map": {
+                                        "range": "TestCompile/classes/nested.d2,1:9:20-3:2:47",
+                                        "nodes": [
+                                          {
+                                            "map_key": {
+                                              "range": "TestCompile/classes/nested.d2,2:4:26-2:22:44",
+                                              "key": {
+                                                "range": "TestCompile/classes/nested.d2,2:4:26-2:14:36",
+                                                "path": [
+                                                  {
+                                                    "unquoted_string": {
+                                                      "range": "TestCompile/classes/nested.d2,2:4:26-2:9:31",
+                                                      "value": [
+                                                        {
+                                                          "string": "style",
+                                                          "raw_string": "style"
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  {
+                                                    "unquoted_string": {
+                                                      "range": "TestCompile/classes/nested.d2,2:10:32-2:14:36",
+                                                      "value": [
+                                                        {
+                                                          "string": "fill",
+                                                          "raw_string": "fill"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              },
+                                              "primary": {},
+                                              "value": {
+                                                "unquoted_string": {
+                                                  "range": "TestCompile/classes/nested.d2,2:16:38-2:22:44",
+                                                  "value": [
+                                                    {
+                                                      "string": "orange",
+                                                      "raw_string": "orange"
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/classes/nested.d2,6:2:63-6:8:69",
+                  "value": [
+                    {
+                      "string": "hawaii",
+                      "raw_string": "hawaii"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/classes/nested.d2,6:2:63-6:8:69",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/classes/nested.d2,6:2:63-6:8:69",
+                        "value": [
+                          {
+                            "string": "hawaii",
+                            "raw_string": "hawaii"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/classes/nested.d2,6:2:63-12:3:126",
+                    "key": {
+                      "range": "TestCompile/classes/nested.d2,6:2:63-6:8:69",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/classes/nested.d2,6:2:63-6:8:69",
+                            "value": [
+                              {
+                                "string": "hawaii",
+                                "raw_string": "hawaii"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "map": {
+                        "range": "TestCompile/classes/nested.d2,6:10:71-12:2:125",
+                        "nodes": [
+                          {
+                            "map_key": {
+                              "range": "TestCompile/classes/nested.d2,7:2:75-11:5:122",
+                              "key": {
+                                "range": "TestCompile/classes/nested.d2,7:2:75-7:8:81",
+                                "path": [
+                                  {
+                                    "unquoted_string": {
+                                      "range": "TestCompile/classes/nested.d2,7:2:75-7:8:81",
+                                      "value": [
+                                        {
+                                          "string": "layers",
+                                          "raw_string": "layers"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              "primary": {},
+                              "value": {
+                                "map": {
+                                  "range": "TestCompile/classes/nested.d2,7:10:83-11:4:121",
+                                  "nodes": [
+                                    {
+                                      "map_key": {
+                                        "range": "TestCompile/classes/nested.d2,8:6:91-10:7:116",
+                                        "key": {
+                                          "range": "TestCompile/classes/nested.d2,8:6:91-8:10:95",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": "TestCompile/classes/nested.d2,8:6:91-8:10:95",
+                                                "value": [
+                                                  {
+                                                    "string": "maui",
+                                                    "raw_string": "maui"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {},
+                                        "value": {
+                                          "map": {
+                                            "range": "TestCompile/classes/nested.d2,8:12:97-10:6:115",
+                                            "nodes": [
+                                              {
+                                                "map_key": {
+                                                  "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                                  "key": {
+                                                    "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                                    "path": [
+                                                      {
+                                                        "unquoted_string": {
+                                                          "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                                          "value": [
+                                                            {
+                                                              "string": "x",
+                                                              "raw_string": "x"
+                                                            }
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "primary": {},
+                                                  "value": {}
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/classes/nested.d2,5:0:51-5:6:57",
+            "value": [
+              {
+                "string": "layers",
+                "raw_string": "layers"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/classes/nested.d2,5:0:51-5:6:57",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/classes/nested.d2,5:0:51-5:6:57",
+                  "value": [
+                    {
+                      "string": "layers",
+                      "raw_string": "layers"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/classes/nested.d2,5:0:51-13:1:128",
+              "key": {
+                "range": "TestCompile/classes/nested.d2,5:0:51-5:6:57",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/classes/nested.d2,5:0:51-5:6:57",
+                      "value": [
+                        {
+                          "string": "layers",
+                          "raw_string": "layers"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "TestCompile/classes/nested.d2,5:8:59-13:0:127",
+                  "nodes": [
+                    {
+                      "map_key": {
+                        "range": "TestCompile/classes/nested.d2,6:2:63-12:3:126",
+                        "key": {
+                          "range": "TestCompile/classes/nested.d2,6:2:63-6:8:69",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/classes/nested.d2,6:2:63-6:8:69",
+                                "value": [
+                                  {
+                                    "string": "hawaii",
+                                    "raw_string": "hawaii"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "primary": {},
+                        "value": {
+                          "map": {
+                            "range": "TestCompile/classes/nested.d2,6:10:71-12:2:125",
+                            "nodes": [
+                              {
+                                "map_key": {
+                                  "range": "TestCompile/classes/nested.d2,7:2:75-11:5:122",
+                                  "key": {
+                                    "range": "TestCompile/classes/nested.d2,7:2:75-7:8:81",
+                                    "path": [
+                                      {
+                                        "unquoted_string": {
+                                          "range": "TestCompile/classes/nested.d2,7:2:75-7:8:81",
+                                          "value": [
+                                            {
+                                              "string": "layers",
+                                              "raw_string": "layers"
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  "primary": {},
+                                  "value": {
+                                    "map": {
+                                      "range": "TestCompile/classes/nested.d2,7:10:83-11:4:121",
+                                      "nodes": [
+                                        {
+                                          "map_key": {
+                                            "range": "TestCompile/classes/nested.d2,8:6:91-10:7:116",
+                                            "key": {
+                                              "range": "TestCompile/classes/nested.d2,8:6:91-8:10:95",
+                                              "path": [
+                                                {
+                                                  "unquoted_string": {
+                                                    "range": "TestCompile/classes/nested.d2,8:6:91-8:10:95",
+                                                    "value": [
+                                                      {
+                                                        "string": "maui",
+                                                        "raw_string": "maui"
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ]
+                                            },
+                                            "primary": {},
+                                            "value": {
+                                              "map": {
+                                                "range": "TestCompile/classes/nested.d2,8:12:97-10:6:115",
+                                                "nodes": [
+                                                  {
+                                                    "map_key": {
+                                                      "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                                      "key": {
+                                                        "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                                        "path": [
+                                                          {
+                                                            "unquoted_string": {
+                                                              "range": "TestCompile/classes/nested.d2,9:8:107-9:9:108",
+                                                              "value": [
+                                                                {
+                                                                  "string": "x",
+                                                                  "raw_string": "x"
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        ]
+                                                      },
+                                                      "primary": {},
+                                                      "value": {}
+                                                    }
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

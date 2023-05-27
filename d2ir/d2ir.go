@@ -601,6 +601,18 @@ func (m *Map) EdgeCountRecursive() int {
 	return acc
 }
 
+func (m *Map) GetClassMap(name string) *Map {
+	root := RootMap(m)
+	classes := root.Map().GetField("classes")
+	if classes != nil && classes.Map() != nil {
+		class := classes.Map().GetField(name)
+		if class != nil && class.Map() != nil {
+			return class.Map()
+		}
+	}
+	return nil
+}
+
 func (m *Map) GetField(ida ...string) *Field {
 	for len(ida) > 0 && ida[0] == "_" {
 		m = ParentMap(m)
@@ -659,8 +671,16 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 		head = strings.ToLower(head)
 	}
 
+	if head == "class" && i < len(kp.Path)-1 {
+		return nil, d2parser.Errorf(kp.Path[i].Unbox(), `"class" must be the last part of the key`)
+	}
+
 	if head == "_" {
 		return nil, d2parser.Errorf(kp.Path[i].Unbox(), `parent "_" can only be used in the beginning of paths, e.g. "_.x"`)
+	}
+
+	if head == "classes" && NodeBoardKind(m) == "" {
+		return nil, d2parser.Errorf(kp.Path[i].Unbox(), "%s is only allowed at a board root", head)
 	}
 
 	if findBoardKeyword(head) != -1 && NodeBoardKind(m) == "" {
@@ -935,6 +955,13 @@ func (m *Map) appendFieldReferences(i int, kp *d2ast.KeyPath, refctx *RefContext
 	}
 }
 
+func RootMap(m *Map) *Map {
+	if m.Root() {
+		return m
+	}
+	return RootMap(ParentMap(m))
+}
+
 func ParentMap(n Node) *Map {
 	for {
 		n = n.Parent()
@@ -1153,4 +1180,46 @@ func (m *Map) Equal(n2 Node) bool {
 	}
 
 	return true
+}
+
+func (m *Map) InClass(key *d2ast.Key) bool {
+	classes := m.Map().GetField("classes")
+	if classes == nil || classes.Map() == nil {
+		return false
+	}
+
+	for _, class := range classes.Map().Fields {
+		if class.Map() == nil {
+			continue
+		}
+		classF := class.Map().GetField(key.Key.IDA()...)
+		if classF == nil {
+			continue
+		}
+
+		for _, ref := range classF.References {
+			if ref.Context.Key == key {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func (m *Map) IsClass() bool {
+	parentBoard := ParentBoard(m)
+	if parentBoard.Map() == nil {
+		return false
+	}
+	classes := parentBoard.Map().GetField("classes")
+	if classes == nil || classes.Map() == nil {
+		return false
+	}
+
+	for _, class := range classes.Map().Fields {
+		if class.Map() == m {
+			return true
+		}
+	}
+	return false
 }

@@ -139,7 +139,7 @@
                                   {
                                     "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:4:51-4:10:57",
                                     "src": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:4:51-4:6:53",
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:4:51-4:5:52",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -156,7 +156,7 @@
                                     },
                                     "src_arrow": "",
                                     "dst": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:8:55-4:10:57",
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:9:56-4:10:57",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -185,7 +185,7 @@
                                   {
                                     "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:16:74",
                                     "src": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:9:67",
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:8:66",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -213,7 +213,7 @@
                                     },
                                     "src_arrow": "",
                                     "dst": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:11:69-5:16:74",
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:12:70-5:16:74",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -253,7 +253,7 @@
                                   {
                                     "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:19:94",
                                     "src": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:12:87",
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:11:86",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -292,7 +292,7 @@
                                     },
                                     "src_arrow": "",
                                     "dst": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:14:89-6:19:94",
+                                      "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:15:90-6:19:94",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -340,13 +340,13 @@
     "root": {
       "id": "",
       "id_val": "",
-      "label_dimensions": {
-        "width": 0,
-        "height": 0
-      },
       "attributes": {
         "label": {
           "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
         },
         "style": {},
         "near_key": null,
@@ -365,12 +365,6 @@
     "edges": [
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -382,6 +376,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -399,12 +397,6 @@
       },
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -416,6 +408,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -433,12 +429,6 @@
       },
       {
         "index": 0,
-        "minWidth": 0,
-        "minHeight": 0,
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "isCurve": false,
         "src_arrow": false,
         "dst_arrow": true,
@@ -450,6 +440,10 @@
         "attributes": {
           "label": {
             "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,
@@ -470,10 +464,6 @@
       {
         "id": "x",
         "id_val": "x",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -500,6 +490,10 @@
           "label": {
             "value": "x"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -517,10 +511,6 @@
       {
         "id": "a",
         "id_val": "a",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -544,7 +534,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:4:51-4:6:53",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:4:51-4:5:52",
               "path": [
                 {
                   "unquoted_string": {
@@ -564,7 +554,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:9:67",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:8:66",
               "path": [
                 {
                   "unquoted_string": {
@@ -598,6 +588,10 @@
           "label": {
             "value": "a"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -615,10 +609,6 @@
       {
         "id": "b",
         "id_val": "b",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -642,7 +632,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:8:55-4:10:57",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,4:9:56-4:10:57",
               "path": [
                 {
                   "unquoted_string": {
@@ -662,7 +652,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:11:69-5:16:74",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:12:70-5:16:74",
               "path": [
                 {
                   "unquoted_string": {
@@ -693,7 +683,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:12:87",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:11:86",
               "path": [
                 {
                   "unquoted_string": {
@@ -735,7 +725,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:14:89-6:19:94",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:15:90-6:19:94",
               "path": [
                 {
                   "unquoted_string": {
@@ -769,6 +759,10 @@
           "label": {
             "value": "b"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -786,10 +780,6 @@
       {
         "id": "group",
         "id_val": "group",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
@@ -816,6 +806,10 @@
           "label": {
             "value": "group"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -833,14 +827,10 @@
       {
         "id": "t1",
         "id_val": "t1",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:9:67",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:4:62-5:8:66",
               "path": [
                 {
                   "unquoted_string": {
@@ -874,6 +864,10 @@
           "label": {
             "value": "t1"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -891,14 +885,10 @@
       {
         "id": "t1",
         "id_val": "t1",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:11:69-5:16:74",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,5:12:70-5:16:74",
               "path": [
                 {
                   "unquoted_string": {
@@ -929,7 +919,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:12:87",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:11:86",
               "path": [
                 {
                   "unquoted_string": {
@@ -971,7 +961,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:14:89-6:19:94",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:15:90-6:19:94",
               "path": [
                 {
                   "unquoted_string": {
@@ -1005,6 +995,10 @@
           "label": {
             "value": "t1"
           },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
           "style": {},
           "near_key": null,
           "shape": {
@@ -1022,14 +1016,10 @@
       {
         "id": "t2",
         "id_val": "t2",
-        "label_dimensions": {
-          "width": 0,
-          "height": 0
-        },
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:12:87",
+              "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,6:4:79-6:11:86",
               "path": [
                 {
                   "unquoted_string": {
@@ -1073,6 +1063,10 @@
         "attributes": {
           "label": {
             "value": "t2"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
           },
           "style": {},
           "near_key": null,

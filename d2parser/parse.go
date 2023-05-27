@@ -413,7 +413,11 @@ func (p *parser) parseMap(isFileMap bool) *d2ast.Map {
 		if after != p.pos {
 			if n.Unbox() != nil {
 				if n.MapKey != nil && n.MapKey.Value.Unbox() != nil {
-					p.errorf(after, p.pos, "unexpected text after %v", n.MapKey.Value.Unbox().Type())
+					ps := ""
+					if _, ok := n.MapKey.Value.Unbox().(*d2ast.BlockString); ok {
+						ps = ". See https://d2lang.com/tour/text#advanced-block-strings."
+					}
+					p.errorf(after, p.pos, "unexpected text after %v%s", n.MapKey.Value.Unbox().Type(), ps)
 				} else {
 					p.errorf(after, p.pos, "unexpected text after %v", n.Unbox().Type())
 				}
@@ -915,11 +919,12 @@ func (p *parser) parseKey() (k *d2ast.KeyPath) {
 			Start: p.pos,
 		},
 	}
-	defer k.Range.End.From(&p.pos)
 
 	defer func() {
 		if len(k.Path) == 0 {
 			k = nil
+		} else {
+			k.Range.End = k.Path[len(k.Path)-1].Unbox().GetRange().End
 		}
 	}()
 
@@ -944,6 +949,9 @@ func (p *parser) parseKey() (k *d2ast.KeyPath) {
 			return k
 		}
 
+		if len(k.Path) == 0 {
+			k.Range.Start = s.GetRange().Start
+		}
 		k.Path = append(k.Path, &sb)
 
 		r, newlines, eof = p.peekNotSpace()
@@ -1061,6 +1069,15 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 				// TODO: need a peekNotSpace across escaped newlines
 				r2, eof := p.peek()
 				if eof {
+					return s
+				}
+				switch r2 {
+				case '\n', ';', '#', '{', '}', '[', ']':
+					p.rewind()
+					p.peek()
+					p.commit()
+					sb.WriteRune(r)
+					rawb.WriteRune(r)
 					return s
 				}
 				if r2 == '-' || r2 == '>' || r2 == '*' {
