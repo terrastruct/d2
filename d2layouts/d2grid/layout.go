@@ -6,13 +6,10 @@ import (
 	"fmt"
 	"math"
 	"sort"
-	"strings"
 
 	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/d2/lib/shape"
 	"oss.terrastruct.com/util-go/go2"
 )
 
@@ -104,13 +101,12 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.L
 			if obj.GridGap != nil || obj.VerticalGap != nil {
 				verticalPadding = gd.verticalGap
 			}
+
 			// size shape according to grid
-			obj.SizeToContent(float64(gd.width), float64(gd.height), float64(2*horizontalPadding), float64(2*verticalPadding))
+			obj.SizeToContent(gd.width, gd.height, float64(2*horizontalPadding), float64(2*verticalPadding))
 
 			// compute where the grid should be placed inside shape
-			dslShape := strings.ToLower(obj.Shape.Value)
-			shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
-			s := shape.NewShape(shapeType, geo.NewBox(geo.NewPoint(0, 0), obj.Width, obj.Height))
+			s := obj.ToShape()
 			innerBox := s.GetInnerBox()
 			if innerBox.TopLeft.X != 0 || innerBox.TopLeft.Y != 0 {
 				gd.shift(innerBox.TopLeft.X, innerBox.TopLeft.Y)
@@ -126,6 +122,34 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.L
 			}
 			if obj.LabelDimensions.Height != 0 {
 				labelHeight := float64(obj.LabelDimensions.Height) + 2*label.PADDING
+
+				{
+					// also check for grid cells with outside top labels
+					topY := gd.objects[0].TopLeft.Y
+					highestLabel := topY
+					for _, o := range gd.objects {
+						if o.TopLeft.Y > topY {
+							if gd.rowDirected {
+								break
+							} else {
+								continue
+							}
+						}
+						if o.LabelPosition != nil {
+							labelPosition := label.Position(*o.LabelPosition)
+							if labelPosition.IsOutside() {
+								labelTL := o.GetLabelTopLeft()
+								if labelTL.Y < highestLabel {
+									highestLabel = labelTL.Y
+								}
+							}
+						}
+					}
+					if highestLabel < topY {
+						labelHeight += topY - highestLabel + 2*label.PADDING
+					}
+				}
+
 				if labelHeight > float64(verticalPadding) {
 					// if the label doesn't fit within the padding, we need to add more
 					grow := labelHeight - float64(verticalPadding)

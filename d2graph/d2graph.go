@@ -26,6 +26,7 @@ import (
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/shape"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
@@ -1988,4 +1989,37 @@ func (obj *Object) GetModifierElementAdjustments() (dx, dy float64) {
 		dx = d2target.MULTIPLE_OFFSET
 	}
 	return dx, dy
+}
+
+func (obj *Object) ToShape() shape.Shape {
+	tl := obj.TopLeft
+	if tl == nil {
+		tl = geo.NewPoint(0, 0)
+	}
+	dslShape := strings.ToLower(obj.Shape.Value)
+	shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
+	contentBox := geo.NewBox(tl, obj.Width, obj.Height)
+	return shape.NewShape(shapeType, contentBox)
+}
+
+func (obj *Object) GetLabelTopLeft() *geo.Point {
+	if obj.LabelPosition == nil {
+		return nil
+	}
+
+	s := obj.ToShape()
+	labelPosition := label.Position(*obj.LabelPosition)
+
+	var box *geo.Box
+	if labelPosition.IsOutside() {
+		box = s.GetBox()
+	} else {
+		box = s.GetInnerBox()
+	}
+
+	labelTL := labelPosition.GetPointOnBox(box, label.PADDING,
+		float64(obj.LabelDimensions.Width),
+		float64(obj.LabelDimensions.Height),
+	)
+	return labelTL
 }
