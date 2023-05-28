@@ -2193,7 +2193,7 @@ more.(ok.q.z -> p.k): "furbling, v.:"
 			key:     "1.2.3.4",
 			newName: "bic",
 
-			expErr: `failed to rename "1.2.3.4" to "bic": key referenced by from does not exist`,
+			expErr: `failed to rename "1.2.3.4" to "bic": key does not exist`,
 		},
 
 		{
@@ -2215,7 +2215,18 @@ more.(ok.q.z -> p.k): "furbling, v.:"
 			et := editTest{
 				text: tc.text,
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
-					return d2oracle.Rename(g, tc.key, tc.newName)
+					objectsBefore := len(g.Objects)
+					var err error
+					g, _, err = d2oracle.Rename(g, tc.key, tc.newName)
+					if err == nil {
+						objectsAfter := len(g.Objects)
+						if objectsBefore != objectsAfter {
+							t.Log(d2format.Format(g.AST))
+							return nil, fmt.Errorf("rename cannot destroy or create objects: found %d objects before and %d objects after", objectsBefore, objectsAfter)
+						}
+					}
+
+					return g, err
 				},
 
 				exp:        tc.exp,
