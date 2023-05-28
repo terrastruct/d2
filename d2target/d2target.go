@@ -863,6 +863,8 @@ func init() {
 	for k, v := range DSL_SHAPE_TO_SHAPE_TYPE {
 		SHAPE_TYPE_TO_DSL_SHAPE[v] = k
 	}
+	// SQUARE_TYPE is defined twice in the map, make sure it doesn't get set to the empty string one
+	SHAPE_TYPE_TO_DSL_SHAPE[shape.SQUARE_TYPE] = ShapeRectangle
 }
 
 func GetIconSize(box *geo.Box, position string) int {
