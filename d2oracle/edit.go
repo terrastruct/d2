@@ -1309,12 +1309,12 @@ func ensureNode(g *d2graph.Graph, excludedEdges []*d2ast.Edge, scopeObj *d2graph
 	}
 }
 
-func Rename(g *d2graph.Graph, key, newName string) (_ *d2graph.Graph, err error) {
+func Rename(g *d2graph.Graph, key, newName string) (_ *d2graph.Graph, newKey string, err error) {
 	defer xdefer.Errorf(&err, "failed to rename %#v to %#v", key, newName)
 
 	mk, err := d2parser.ParseMapKey(key)
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 
 	if len(mk.Edges) > 0 && mk.EdgeKey == nil {
@@ -1322,7 +1322,7 @@ func Rename(g *d2graph.Graph, key, newName string) (_ *d2graph.Graph, err error)
 		// Maybe we remove Rename and just have Move.
 		mk2, err := d2parser.ParseMapKey(newName)
 		if err != nil {
-			return nil, err
+			return nil, "", err
 		}
 
 		mk2.Key = mk.Key
@@ -1330,13 +1330,25 @@ func Rename(g *d2graph.Graph, key, newName string) (_ *d2graph.Graph, err error)
 	} else {
 		_, ok := d2graph.ReservedKeywords[newName]
 		if ok {
-			return nil, fmt.Errorf("cannot rename to reserved keyword: %#v", newName)
+			return nil, "", fmt.Errorf("cannot rename to reserved keyword: %#v", newName)
+		}
+		if mk.Key != nil {
+			obj, ok := g.Root.HasChild(d2graph.Key(mk.Key))
+			if !ok {
+				return nil, "", fmt.Errorf("key does not exist")
+			}
+			// If attempt to name something "x", but "x" already exists, rename it "x 2" instead
+			generatedName, _, err := generateUniqueKey(g, newName, obj, nil)
+			if err == nil {
+				newName = generatedName
+			}
 		}
 		// TODO: Handle mk.EdgeKey
 		mk.Key.Path[len(mk.Key.Path)-1] = d2ast.MakeValueBox(d2ast.RawString(newName, true)).StringBox()
 	}
 
-	return move(g, key, d2format.Format(mk), false)
+	g, err = move(g, key, d2format.Format(mk), false)
+	return g, newName, err
 }
 
 func trimReservedSuffix(path []*d2ast.StringBox) []*d2ast.StringBox {
