@@ -123,31 +123,33 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.L
 			if obj.LabelDimensions.Height != 0 {
 				labelHeight := float64(obj.LabelDimensions.Height) + 2*label.PADDING
 
-				{
-					// also check for grid cells with outside top labels
-					topY := gd.objects[0].TopLeft.Y
-					highestLabel := topY
-					for _, o := range gd.objects {
-						if o.TopLeft.Y > topY {
-							if gd.rowDirected {
-								break
-							} else {
-								continue
-							}
+				// also check for grid cells with outside top labels
+				// the first grid object is at the top (and always exists)
+				topY := gd.objects[0].TopLeft.Y
+				highestLabel := topY
+				for _, o := range gd.objects {
+					// we only want to compute label positions for objects at the top of the grid
+					if o.TopLeft.Y > topY {
+						if gd.rowDirected {
+							// if the grid is rowDirected (row1, row2, etc) we can stop after finishing the first row
+							break
+						} else {
+							// otherwise we continue until the next column
+							continue
 						}
-						if o.LabelPosition != nil {
-							labelPosition := label.Position(*o.LabelPosition)
-							if labelPosition.IsOutside() {
-								labelTL := o.GetLabelTopLeft()
-								if labelTL.Y < highestLabel {
-									highestLabel = labelTL.Y
-								}
+					}
+					if o.LabelPosition != nil {
+						labelPosition := label.Position(*o.LabelPosition)
+						if labelPosition.IsOutside() {
+							labelTL := o.GetLabelTopLeft()
+							if labelTL.Y < highestLabel {
+								highestLabel = labelTL.Y
 							}
 						}
 					}
-					if highestLabel < topY {
-						labelHeight += topY - highestLabel + 2*label.PADDING
-					}
+				}
+				if highestLabel < topY {
+					labelHeight += topY - highestLabel + 2*label.PADDING
 				}
 
 				if labelHeight > float64(verticalPadding) {
