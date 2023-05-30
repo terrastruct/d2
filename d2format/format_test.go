@@ -619,14 +619,22 @@ x <= y
 			exp: `x <- = y
 `,
 		},
-        {
-            name: "import",
-            in: `
+		{
+			name: "import/1",
+			in: `
 x: @file.d2
 `,
-            exp: `x: @file
+			exp: `x: @file
 `,
-        },
+		},
+		{
+			name: "import/2",
+			in: `
+x: @file."d2"
+`,
+			exp: `x: @file."d2"
+`,
+		},
 	}
 
 	for _, tc := range testCases {

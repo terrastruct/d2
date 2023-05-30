@@ -1,0 +1,38 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/import/#05.d2,0:0:0-0:13:13",
+    "nodes": [
+      {
+        "import": {
+          "range": "d2/testdata/d2parser/TestParse/import/#05.d2,0:0:0-0:13:13",
+          "spread": true,
+          "path": [
+            {
+              "unquoted_string": {
+                "range": "d2/testdata/d2parser/TestParse/import/#05.d2,0:4:4-0:8:8",
+                "value": [
+                  {
+                    "string": "file",
+                    "raw_string": "file"
+                  }
+                ]
+              }
+            },
+            {
+              "double_quoted_string": {
+                "range": "d2/testdata/d2parser/TestParse/import/#05.d2,0:9:9-0:13:13",
+                "value": [
+                  {
+                    "string": "d2",
+                    "raw_string": "d2"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "err": null
+}

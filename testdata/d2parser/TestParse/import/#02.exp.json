@@ -17,17 +17,6 @@
                   }
                 ]
               }
-            },
-            {
-              "unquoted_string": {
-                "range": "d2/testdata/d2parser/TestParse/import/#02.d2,0:9:9-0:11:11",
-                "value": [
-                  {
-                    "string": "d2",
-                    "raw_string": "d2"
-                  }
-                ]
-              }
             }
           ]
         }

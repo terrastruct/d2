@@ -433,6 +433,24 @@ func testImport(t *testing.T) {
 				assert.Equal(t, "file", imp.Path[0].Unbox().ScalarString())
 			},
 		},
+		{
+			text: "...@\"file\".d2",
+			assert: func(t testing.TB, ast *d2ast.Map, err error) {
+				assert.Success(t, err)
+				assert.True(t, ast.Nodes[0].Import.Spread)
+				assert.Equal(t, "file", ast.Nodes[0].Import.Path[0].Unbox().ScalarString())
+				assert.Equal(t, "d2", ast.Nodes[0].Import.Path[1].Unbox().ScalarString())
+			},
+		},
+		{
+			text: "...@file.\"d2\"",
+			assert: func(t testing.TB, ast *d2ast.Map, err error) {
+				assert.Success(t, err)
+				assert.True(t, ast.Nodes[0].Import.Spread)
+				assert.Equal(t, "file", ast.Nodes[0].Import.Path[0].Unbox().ScalarString())
+				assert.Equal(t, "d2", ast.Nodes[0].Import.Path[1].Unbox().ScalarString())
+			},
+		},
 	}
 
 	runa(t, tca)
