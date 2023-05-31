@@ -407,7 +407,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		obj.Width = math.Ceil(n.Width)
 		obj.Height = math.Ceil(n.Height)
 
-		if obj.HasLabel() {
+		if obj.HasLabel() && obj.LabelPosition == nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 			} else if obj.HasOutsideBottomLabel() {
@@ -419,7 +419,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			}
 		}
-		if obj.Icon != nil {
+		if obj.Icon != nil && obj.IconPosition == nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopRight))
@@ -501,8 +501,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
-		srcShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Src.Shape.Value)], edge.Src.Box)
-		dstShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Dst.Shape.Value)], edge.Dst.Box)
+		srcShape := edge.Src.ToShape()
+		dstShape := edge.Dst.ToShape()
 
 		// trace the edge to the specific shape's border
 		points[startIndex] = shape.TraceToShapeBorder(srcShape, points[startIndex], points[startIndex+1])

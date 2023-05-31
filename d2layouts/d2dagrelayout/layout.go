@@ -119,9 +119,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 
 		if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
-			contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(obj.Width), float64(obj.Height))
-			shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[obj.Shape.Value]
-			s := shape.NewShape(shapeType, contentBox)
+			s := obj.ToShape()
 			iconSize := d2target.GetIconSize(s.GetInnerBox(), string(label.InsideTopLeft))
 			// Since dagre container labels are pushed up, we don't want a child container to collide
 			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, (iconSize+label.PADDING*2)*2)
@@ -240,7 +238,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		obj.Width = math.Ceil(dn.Width)
 		obj.Height = math.Ceil(dn.Height)
 
-		if obj.HasLabel() {
+		if obj.HasLabel() && obj.LabelPosition == nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
 			} else if obj.HasOutsideBottomLabel() {
@@ -253,7 +251,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			}
 		}
-		if obj.Icon != nil {
+		if obj.Icon != nil && obj.IconPosition == nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.IconPosition = go2.Pointer(string(label.OutsideTopLeft))
 				obj.LabelPosition = go2.Pointer(string(label.OutsideTopRight))
@@ -491,8 +489,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
-		srcShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Src.Shape.Value)], edge.Src.Box)
-		dstShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Dst.Shape.Value)], edge.Dst.Box)
+		srcShape := edge.Src.ToShape()
+		dstShape := edge.Dst.ToShape()
 
 		// trace the edge to the specific shape's border
 		points[startIndex] = shape.TraceToShapeBorder(srcShape, start, points[startIndex+1])
