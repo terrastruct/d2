@@ -340,8 +340,10 @@ func (utf *utf8FontFile) generateCMAPTable(cidSymbolPairCollection map[int]int, 
 	}
 	searchRange = searchRange * 2
 	rangeShift := segCount*2 - searchRange
-	cmap := []int{0, 1, 3, 1, 0, 12, 4, -1, 0, segCount * 2, searchRange, entrySelector, rangeShift}
 
+	data := []int{0, 1, 3, 1, 0, 12, 4}
+
+	cmap := []int{segCount * 2, searchRange, entrySelector, rangeShift}
 	for _, start := range cidArrayKeys {
 		endCode := start + (len(cidArray[start]) - 1)
 		cmap = append(cmap, endCode)
@@ -367,12 +369,11 @@ func (utf *utf8FontFile) generateCMAPTable(cidSymbolPairCollection map[int]int, 
 	cmap = append(cmap, 0)
 
 	// Calculating cmap length based off of fpdf https://github.com/Setasign/FPDF/blob/f4104a04c9a3f95c4c26a0a0531abebcc980987a/makefont/ttfparser.php#L476
-	// length of cmap is the total byte size of the current cmap array - the first 9 bytes
-	// [version, numTables, platformID, encodingID, offset, format, length language]
-	cmap[7] = len(cmap)*2 - 9*2
+	data = append(data, len(cmap)*2, 0) // [version, numTables, platformID, encodingID, offset, format], length, language
+	data = append(data, cmap...)
 
 	cmapstr := make([]byte, 0)
-	for _, cm := range cmap {
+	for _, cm := range data {
 		cmapstr = append(cmapstr, packUint16(cm)...)
 	}
 
