@@ -1,5 +1,5 @@
 /*
- * The following code is part of from https://github.com/jung-kurt/gofpdf
+ * The following code is part of https://github.com/jung-kurt/gofpdf
  *
  * Copyright (c) 2019 Arteom Korotkiy (Gmail: arteomkorotkiy)
  *
