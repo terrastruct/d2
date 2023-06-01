@@ -13,4 +13,4 @@
 
 - Shadow is cut off when `--pad` is 0. Thank you @LeonardsonCC ! [#1326](https://github.com/terrastruct/d2/pull/1326)
 - Fixes grid layout overwriting label placements for nested objects. [#1345](https://github.com/terrastruct/d2/pull/1345)
-- Fixed an issue where fonts were not rendering correctly when svgs were embeded on certain platforms. [#1356](https://github.com/terrastruct/d2/pull/1356)
+- Fixes fonts not rendering correctly on certain platforms. Thanks @mikeday for identifying the solution. [#1356](https://github.com/terrastruct/d2/pull/1356)
