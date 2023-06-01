@@ -20,13 +20,7 @@ var compressionDict = "->" +
 
 func init() {
 	var common []string
-	for k := range d2graph.StyleKeywords {
-		common = append(common, k)
-	}
 	for k := range d2graph.ReservedKeywords {
-		common = append(common, k)
-	}
-	for k := range d2graph.ReservedKeywordHolders {
 		common = append(common, k)
 	}
 	sort.Strings(common)

@@ -1618,9 +1618,6 @@ func Key(k *d2ast.KeyPath) []string {
 // All reserved keywords. See init below.
 var ReservedKeywords map[string]struct{}
 
-// All reserved keywords not including style keywords.
-var ReservedKeywords2 map[string]struct{}
-
 // Non Style/Holder keywords.
 var SimpleReservedKeywords = map[string]struct{}{
 	"label":          {},
@@ -1642,14 +1639,18 @@ var SimpleReservedKeywords = map[string]struct{}{
 	"vertical-gap":   {},
 	"horizontal-gap": {},
 	"class":          {},
-	"classes":        {},
 }
 
-// ReservedKeywordHolders are reserved keywords that are meaningless on its own and exist solely to hold a set of reserved keywords
+// ReservedKeywordHolders are reserved keywords that are meaningless on its own and must hold composites
 var ReservedKeywordHolders = map[string]struct{}{
 	"style":            {},
 	"source-arrowhead": {},
 	"target-arrowhead": {},
+}
+
+// CompositeReservedKeywords are reserved keywords that can hold composites
+var CompositeReservedKeywords = map[string]struct{}{
+	"classes": {},
 }
 
 // StyleKeywords are reserved keywords which cannot exist outside of the "style" keyword
@@ -1725,21 +1726,13 @@ func init() {
 		ReservedKeywords[k] = v
 	}
 	for k, v := range ReservedKeywordHolders {
-		ReservedKeywords[k] = v
+		CompositeReservedKeywords[k] = v
 	}
 	for k, v := range BoardKeywords {
+		CompositeReservedKeywords[k] = v
+	}
+	for k, v := range CompositeReservedKeywords {
 		ReservedKeywords[k] = v
-	}
-
-	ReservedKeywords2 = make(map[string]struct{})
-	for k, v := range SimpleReservedKeywords {
-		ReservedKeywords2[k] = v
-	}
-	for k, v := range ReservedKeywordHolders {
-		ReservedKeywords2[k] = v
-	}
-	for k, v := range BoardKeywords {
-		ReservedKeywords2[k] = v
 	}
 
 	NearConstants = make(map[string]struct{}, len(NearConstantsArray))
