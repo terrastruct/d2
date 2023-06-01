@@ -669,7 +669,7 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 
 	if _, ok := d2graph.ReservedKeywords[strings.ToLower(head)]; ok {
 		head = strings.ToLower(head)
-		if _, ok := d2graph.ReservedKeywordHolders[head]; !ok && i < len(kp.Path)-1 {
+		if _, ok := d2graph.CompositeReservedKeywords[head]; !ok && i < len(kp.Path)-1 {
 			return nil, d2parser.Errorf(kp.Path[i].Unbox(), fmt.Sprintf(`"%s" must be the last part of the key`, head))
 		}
 	}
