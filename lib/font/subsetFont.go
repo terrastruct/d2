@@ -369,8 +369,10 @@ func (utf *utf8FontFile) generateCMAPTable(cidSymbolPairCollection map[int]int, 
 	cmap = append(cmap, 0)
 
 	// Calculating cmap length based off of fpdf https://github.com/Setasign/FPDF/blob/f4104a04c9a3f95c4c26a0a0531abebcc980987a/makefont/ttfparser.php#L476
-	length := (3 + len(cmap)) * 2  // the 3 extra bytes are for encodingID, offset, format, which are part of the cmap length
-	data = append(data, length, 0) // [version, numTables, platformID, encodingID, offset, format], length, language
+	// https://learn.microsoft.com/en-us/typography/opentype/spec/cmap#format-4-segment-mapping-to-delta-values
+	// The 3 extra bytes are for encodingID, offset, format, which are also part of the cmap
+	length := (3 + len(cmap)) * 2
+	data = append(data, length, 0)
 	data = append(data, cmap...)
 
 	cmapstr := make([]byte, 0)
