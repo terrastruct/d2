@@ -16,6 +16,10 @@ I just forgot my whole philosophy of life!!!: {
 	encoded, err := Encode(script)
 	assert.Success(t, err)
 
+	// Make it explicit in PRs when encoding changes
+	// Something we might want to know for playground compatability
+	assert.Testdata(t, ".txt", []byte(encoded))
+
 	decoded, err := Decode(encoded)
 	assert.Success(t, err)
 
