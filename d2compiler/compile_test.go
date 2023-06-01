@@ -1723,6 +1723,13 @@ y -> x.style
 			expErr: `d2/testdata/d2compiler/TestCompile/edge_to_style.d2:2:8: reserved keywords are prohibited in edges`,
 		},
 		{
+			name: "keyword-container",
+
+			text: `a.near.b
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/keyword-container.d2:1:3: "near" must be the last part of the key`,
+		},
+		{
 			name: "escaped_id",
 
 			text: `b\nb`,

@@ -1645,11 +1645,12 @@ var SimpleReservedKeywords = map[string]struct{}{
 	"classes":        {},
 }
 
-// ReservedKeywordHolders are reserved keywords that are meaningless on its own and exist solely to hold a set of reserved keywords
+// ReservedKeywordHolders are reserved keywords that can hold composites
 var ReservedKeywordHolders = map[string]struct{}{
 	"style":            {},
 	"source-arrowhead": {},
 	"target-arrowhead": {},
+	"classes":          {},
 }
 
 // StyleKeywords are reserved keywords which cannot exist outside of the "style" keyword
