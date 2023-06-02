@@ -3,6 +3,8 @@ package d2graph
 import (
 	"strings"
 
+	"oss.terrastruct.com/d2/d2ast"
+	"oss.terrastruct.com/d2/d2parser"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
@@ -188,4 +190,27 @@ func (obj *Object) GetLabelTopLeft() *geo.Point {
 		float64(obj.LabelDimensions.Height),
 	)
 	return labelTL
+}
+
+type LayoutError struct {
+	Errors []d2ast.Error `json:"errs"`
+}
+
+func (le LayoutError) Empty() bool {
+	return len(le.Errors) == 0
+}
+
+func (le LayoutError) Error() string {
+	var sb strings.Builder
+	for i, err := range le.Errors {
+		if i > 0 {
+			sb.WriteByte('\n')
+		}
+		sb.WriteString(err.Error())
+	}
+	return sb.String()
+}
+
+func (g *Graph) errorf(n d2ast.Node, f string, v ...interface{}) {
+	g.err.Errors = append(g.err.Errors, d2parser.Errorf(n, f, v...).(d2ast.Error))
 }
