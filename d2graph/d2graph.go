@@ -1557,48 +1557,52 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 }
 
 func (g *Graph) validateTopLeft() {
+	g.Root.validateTopLeft()
 	g.Root.IterDescendants(func(_, obj *Object) {
 		if !obj.IsContainer() {
 			return
 		}
+		obj.validateTopLeft()
+	})
+}
 
-		var fixedChildren []*Object
-		for _, child := range obj.ChildrenArray {
-			if child.Top == nil || child.Left == nil {
+func (obj *Object) validateTopLeft() {
+	var fixedChildren []*Object
+	for _, child := range obj.ChildrenArray {
+		if child.Top == nil || child.Left == nil {
+			continue
+		}
+		fixedChildren = append(fixedChildren, child)
+	}
+	if len(fixedChildren) < 2 {
+		return
+	}
+
+	for i, childI := range fixedChildren {
+		iTop, _ := strconv.Atoi(childI.Top.Value)
+		iLeft, _ := strconv.Atoi(childI.Left.Value)
+		iRight := iLeft + int(math.Ceil(childI.Width))
+		iBottom := iTop + int(math.Ceil(childI.Height))
+
+		for j := i + 1; j < len(fixedChildren); j++ {
+			childJ := fixedChildren[j]
+			jTop, _ := strconv.Atoi(childJ.Top.Value)
+			jLeft, _ := strconv.Atoi(childJ.Left.Value)
+			jRight := jLeft + int(math.Ceil(childJ.Width))
+			jBottom := jTop + int(math.Ceil(childJ.Height))
+
+			overlapsHorizontally := (iLeft <= jLeft && jLeft <= iRight) ||
+				(iLeft <= jRight && jRight <= iRight)
+			overlapsVertically := (iTop <= jTop && jTop <= iBottom) ||
+				(iTop <= jBottom && jBottom <= iBottom)
+
+			if overlapsHorizontally && overlapsVertically {
+				obj.Graph.errorf(childI.Top.MapKey, "invalid top/left overlapping with %#v", childJ.ID)
+				obj.Graph.errorf(childJ.Top.MapKey, "invalid top/left overlapping with %#v", childI.ID)
 				continue
 			}
-			fixedChildren = append(fixedChildren, child)
 		}
-		if len(fixedChildren) < 2 {
-			return
-		}
-
-		for i, childI := range fixedChildren {
-			iTop, _ := strconv.Atoi(childI.Top.Value)
-			iLeft, _ := strconv.Atoi(childI.Left.Value)
-			iRight := iLeft + int(math.Ceil(childI.Width))
-			iBottom := iTop + int(math.Ceil(childI.Height))
-
-			for j := i + 1; j < len(fixedChildren); j++ {
-				childJ := fixedChildren[j]
-				jTop, _ := strconv.Atoi(childJ.Top.Value)
-				jLeft, _ := strconv.Atoi(childJ.Left.Value)
-				jRight := jLeft + int(math.Ceil(childJ.Width))
-				jBottom := jTop + int(math.Ceil(childJ.Height))
-
-				overlapsHorizontally := (iLeft <= jLeft && jLeft <= iRight) ||
-					(iLeft <= jRight && jRight <= iRight)
-				overlapsVertically := (iTop <= jTop && jTop <= iBottom) ||
-					(iTop <= jBottom && jBottom <= iBottom)
-
-				if overlapsHorizontally && overlapsVertically {
-					g.errorf(childI.Top.MapKey, "invalid top/left overlapping with %#v", childJ.ID)
-					g.errorf(childJ.Top.MapKey, "invalid top/left overlapping with %#v", childI.ID)
-					continue
-				}
-			}
-		}
-	})
+	}
 }
 
 func (g *Graph) Texts() []*d2target.MText {
