@@ -611,6 +611,24 @@ x: {
 d2/testdata/d2compiler/TestCompile/md_block_string_err.d2:5:1: block string must be terminated with |`,
 		},
 		{
+			name:   "no_empty_block_string",
+			text:   `Text: |md |`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_empty_block_string.d2:1:1: block string cannot be empty`,
+		},
+		{
+			name:   "no_white_spaces_only_block_string",
+			text:   `Text: |md      |`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_white_spaces_only_block_string.d2:1:1: block string cannot be empty`,
+		},
+		{
+			name: "no_new_lines_only_block_string",
+			text: `Text: |md
+
+
+|`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_new_lines_only_block_string.d2:1:1: block string cannot be empty`,
+		},
+		{
 			name: "underscore_edge_existing",
 
 			text: `
