@@ -384,7 +384,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 						if isHorizontal && e.Src.Parent != g.Root && e.Dst.Parent != g.Root {
 							moveWholeEdge = true
 						} else {
-							e.Route[0].Y += stepSize
+							e.ShiftStart(stepSize, false)
 						}
 					}
 				}
@@ -393,7 +393,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 						if isHorizontal && e.Dst.Parent != g.Root && e.Src.Parent != g.Root {
 							moveWholeEdge = true
 						} else {
-							e.Route[len(e.Route)-1].Y += stepSize
+							e.ShiftEnd(stepSize, false)
 						}
 					}
 				}
