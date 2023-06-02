@@ -16,3 +16,5 @@
 - Fixes fonts not rendering correctly on certain platforms. Thanks @mikeday for identifying the solution. [#1356](https://github.com/terrastruct/d2/pull/1356)
 - Fixes folders not rendering in animations (`--animate-interval`) [#1357](https://github.com/terrastruct/d2/pull/1357)
 - Fixes panic using reserved keywords as containers [#1358](https://github.com/terrastruct/d2/pull/1358)
+- When multiple classes are applied changing different attributes of arrowheads, they are
+  all applied instead of only the last one [#1362](https://github.com/terrastruct/d2/pull/1362)

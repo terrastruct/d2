@@ -667,10 +667,14 @@ func (c *compiler) compileEdgeField(edge *d2graph.Edge, f *d2ir.Field) {
 func (c *compiler) compileArrowheads(edge *d2graph.Edge, f *d2ir.Field) {
 	var attrs *d2graph.Attributes
 	if f.Name == "source-arrowhead" {
-		edge.SrcArrowhead = &d2graph.Attributes{}
+		if edge.SrcArrowhead == nil {
+			edge.SrcArrowhead = &d2graph.Attributes{}
+		}
 		attrs = edge.SrcArrowhead
 	} else {
-		edge.DstArrowhead = &d2graph.Attributes{}
+		if edge.DstArrowhead == nil {
+			edge.DstArrowhead = &d2graph.Attributes{}
+		}
 		attrs = edge.DstArrowhead
 	}
 
