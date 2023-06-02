@@ -18,4 +18,4 @@
 - Fixes panic using reserved keywords as containers [#1358](https://github.com/terrastruct/d2/pull/1358)
 - When multiple classes are applied changing different attributes of arrowheads, they are
   all applied instead of only the last one [#1362](https://github.com/terrastruct/d2/pull/1362)
-- Prevent empty blocks strings [#1364](https://github.com/terrastruct/d2/pull/1364)
+- Prevent empty block strings [#1364](https://github.com/terrastruct/d2/pull/1364)
