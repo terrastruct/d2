@@ -127,11 +127,23 @@ func (obj *Object) ShiftDescendants(dx, dy float64) {
 					p.Y += dy
 				}
 			} else if isSrc {
-				e.Route[0].X += dx
-				e.Route[0].Y += dy
+				if dx == 0 {
+					e.ShiftStart(dy, false)
+				} else if dy == 0 {
+					e.ShiftStart(dx, true)
+				} else {
+					e.Route[0].X += dx
+					e.Route[0].Y += dy
+				}
 			} else if isDst {
-				e.Route[len(e.Route)-1].X += dx
-				e.Route[len(e.Route)-1].Y += dy
+				if dx == 0 {
+					e.ShiftEnd(dy, false)
+				} else if dy == 0 {
+					e.ShiftEnd(dx, true)
+				} else {
+					e.Route[len(e.Route)-1].X += dx
+					e.Route[len(e.Route)-1].Y += dy
+				}
 			}
 
 			if isSrc || isDst {
