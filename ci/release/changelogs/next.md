@@ -19,3 +19,4 @@
 - When multiple classes are applied changing different attributes of arrowheads, they are
   all applied instead of only the last one [#1362](https://github.com/terrastruct/d2/pull/1362)
 - Prevent empty block strings [#1364](https://github.com/terrastruct/d2/pull/1364)
+- Fixes dagre mis-aligning a nested shape's connection. [#1370](https://github.com/terrastruct/d2/pull/1370)
