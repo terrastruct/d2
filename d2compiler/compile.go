@@ -270,7 +270,7 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 		// TODO: Delete instead.
 		attrs.Label.Value = scalar.ScalarString()
 	case *d2ast.BlockString:
-		if scalar.ScalarString() == "" {
+		if strings.TrimSpace(scalar.ScalarString()) == "" {
 			c.errorf(f.LastPrimaryKey(), "block string cannot be empty")
 		}
 		attrs.Language = scalar.Tag
