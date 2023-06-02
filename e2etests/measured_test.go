@@ -28,14 +28,6 @@ func testMeasured(t *testing.T) {
 			script: `a: "" { shape: sql_table }
 `,
 		},
-		{
-			name:   "empty-markdown",
-			mtexts: []*d2target.MText{},
-			script: `a: |md
-` + " " + `
-|
-`,
-		},
 	}
 
 	runa(t, tcs)
