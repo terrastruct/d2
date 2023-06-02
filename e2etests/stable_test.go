@@ -2726,6 +2726,7 @@ scenarios: {
 		loadFromFile(t, "grid_icon"),
 		loadFromFile(t, "multiple_offset"),
 		loadFromFile(t, "multiple_offset_left"),
+		loadFromFile(t, "multiple_box_selection"),
 	}
 
 	runa(t, tcs)

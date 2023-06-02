@@ -127,11 +127,23 @@ func (obj *Object) ShiftDescendants(dx, dy float64) {
 					p.Y += dy
 				}
 			} else if isSrc {
-				e.Route[0].X += dx
-				e.Route[0].Y += dy
+				if dx == 0 {
+					e.ShiftStart(dy, false)
+				} else if dy == 0 {
+					e.ShiftStart(dx, true)
+				} else {
+					e.Route[0].X += dx
+					e.Route[0].Y += dy
+				}
 			} else if isDst {
-				e.Route[len(e.Route)-1].X += dx
-				e.Route[len(e.Route)-1].Y += dy
+				if dx == 0 {
+					e.ShiftEnd(dy, false)
+				} else if dy == 0 {
+					e.ShiftEnd(dx, true)
+				} else {
+					e.Route[len(e.Route)-1].X += dx
+					e.Route[len(e.Route)-1].Y += dy
+				}
 			}
 
 			if isSrc || isDst {
@@ -139,6 +151,118 @@ func (obj *Object) ShiftDescendants(dx, dy float64) {
 			}
 		}
 	})
+}
+
+// ShiftStart moves the starting point of the route by delta either horizontally or vertically
+// if subsequent points are in line with the movement, they will be removed (unless it is the last point)
+// start                   end
+// . ├────┼────┼───┼────┼───┤   before
+// . ├──dx──►
+// .        ├──┼───┼────┼───┤   after
+func (edge *Edge) ShiftStart(delta float64, isHorizontal bool) {
+	position := func(p *geo.Point) float64 {
+		if isHorizontal {
+			return p.X
+		}
+		return p.Y
+	}
+
+	start := edge.Route[0]
+	next := edge.Route[1]
+	isIncreasing := position(start) < position(next)
+	if isHorizontal {
+		start.X += delta
+	} else {
+		start.Y += delta
+	}
+
+	if isIncreasing == (delta < 0) {
+		// nothing more to do when moving away from the next point
+		return
+	}
+
+	isAligned := func(p *geo.Point) bool {
+		if isHorizontal {
+			return p.Y == start.Y
+		}
+		return p.X == start.X
+	}
+	isPastStart := func(p *geo.Point) bool {
+		if delta > 0 {
+			return position(p) < position(start)
+		} else {
+			return position(p) > position(start)
+		}
+	}
+
+	needsRemoval := false
+	toRemove := make([]bool, len(edge.Route))
+	for i := 1; i < len(edge.Route)-1; i++ {
+		if !isAligned(edge.Route[i]) {
+			break
+		}
+		if isPastStart(edge.Route[i]) {
+			toRemove[i] = true
+			needsRemoval = true
+		}
+	}
+	if needsRemoval {
+		edge.Route = geo.RemovePoints(edge.Route, toRemove)
+	}
+}
+
+// ShiftEnd moves the ending point of the route by delta either horizontally or vertically
+// if prior points are in line with the movement, they will be removed (unless it is the first point)
+func (edge *Edge) ShiftEnd(delta float64, isHorizontal bool) {
+	position := func(p *geo.Point) float64 {
+		if isHorizontal {
+			return p.X
+		}
+		return p.Y
+	}
+
+	end := edge.Route[len(edge.Route)-1]
+	prev := edge.Route[len(edge.Route)-2]
+	isIncreasing := position(prev) < position(end)
+	if isHorizontal {
+		end.X += delta
+	} else {
+		end.Y += delta
+	}
+
+	if isIncreasing == (delta > 0) {
+		// nothing more to do when moving away from the next point
+		return
+	}
+
+	isAligned := func(p *geo.Point) bool {
+		if isHorizontal {
+			return p.Y == end.Y
+		}
+		return p.X == end.X
+	}
+	isPastEnd := func(p *geo.Point) bool {
+		if delta > 0 {
+			return position(p) < position(end)
+		} else {
+			return position(p) > position(end)
+		}
+	}
+
+	needsRemoval := false
+	toRemove := make([]bool, len(edge.Route))
+	for i := len(edge.Route) - 2; i > 0; i-- {
+		if !isAligned(edge.Route[i]) {
+			break
+		}
+		if isPastEnd(edge.Route[i]) {
+			toRemove[i] = true
+			needsRemoval = true
+		}
+	}
+	if needsRemoval {
+		edge.Route = geo.RemovePoints(edge.Route, toRemove)
+	}
 }
 
 // GetModifierElementAdjustments returns width/height adjustments to account for shapes with 3d or multiple
