@@ -2476,6 +2476,29 @@ classes.x.shape: diamond
 			},
 		},
 		{
+			name: "nested-array-classes",
+			text: `classes: {
+  one target: {
+		target-arrowhead.label: 1
+  }
+	association: {
+		target-arrowhead.shape: arrow
+	}
+}
+
+a -> b: { class: [one target; association] }
+a -> b: { class: [association; one target] }
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				// They have the same, regardless of order of class application
+				// since the classes modify attributes exclusive of each other
+				tassert.Equal(t, "1", g.Edges[0].DstArrowhead.Label.Value)
+				tassert.Equal(t, "1", g.Edges[1].DstArrowhead.Label.Value)
+				tassert.Equal(t, "arrow", g.Edges[0].DstArrowhead.Shape.Value)
+				tassert.Equal(t, "arrow", g.Edges[1].DstArrowhead.Shape.Value)
+			},
+		},
+		{
 			name: "class-shape-class",
 			text: `classes: {
   classClass: {
