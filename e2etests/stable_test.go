@@ -2388,6 +2388,30 @@ manager2: BatchManager {
 `,
 		},
 		{
+			name: "sql_table_constraints_width",
+			script: `
+a: {
+	shape: sql_table
+	x: INT {constraint: unique}
+}
+
+b: {
+	shape: sql_table
+	x: INT {constraint: [primary_key; foreign_key]}
+}
+
+c: {
+	shape: sql_table
+	x: INT {constraint: [foreign_key; unique]}
+}
+
+d: {
+	shape: sql_table
+	x: INT {constraint: [primary_key; foreign_key; unique]}
+}
+`,
+		},
+		{
 			name: "near-alone",
 			script: `
 x: {

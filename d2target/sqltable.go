@@ -1,5 +1,7 @@
 package d2target
 
+import "strings"
+
 const (
 	NamePadding   = 10
 	TypePadding   = 20
@@ -15,10 +17,10 @@ type SQLTable struct {
 }
 
 type SQLColumn struct {
-	Name       Text   `json:"name"`
-	Type       Text   `json:"type"`
-	Constraint string `json:"constraint"`
-	Reference  string `json:"reference"`
+	Name       Text     `json:"name"`
+	Type       Text     `json:"type"`
+	Constraint []string `json:"constraint"`
+	Reference  string   `json:"reference"`
 }
 
 func (c SQLColumn) Texts(fontSize int) []*MText {
@@ -41,14 +43,22 @@ func (c SQLColumn) Texts(fontSize int) []*MText {
 }
 
 func (c SQLColumn) ConstraintAbbr() string {
-	switch c.Constraint {
-	case "primary_key":
-		return "PK"
-	case "foreign_key":
-		return "FK"
-	case "unique":
-		return "UNQ"
-	default:
-		return ""
+	var abbrs []string
+
+	for _, constraint := range c.Constraint {
+		var abbr string
+
+		switch constraint {
+		case "primary_key":
+			abbr = "PK"
+		case "foreign_key":
+			abbr = "FK"
+		case "unique":
+			abbr = "UNQ"
+		}
+
+		abbrs = append(abbrs, abbr)
 	}
+
+	return strings.Join(abbrs, ", ")
 }

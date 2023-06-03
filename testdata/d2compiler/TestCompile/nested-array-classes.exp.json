@@ -403,9 +403,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -431,9 +429,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "references": [
           {
@@ -456,9 +452,11 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null,
+          "classes": [
+            "one target",
+            "association"
+          ]
         },
         "zIndex": 0
       },
@@ -483,9 +481,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "references": [
           {
@@ -508,9 +504,11 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null,
+          "classes": [
+            "association",
+            "one target"
+          ]
         },
         "zIndex": 0
       }
@@ -577,9 +575,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -644,9 +640,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

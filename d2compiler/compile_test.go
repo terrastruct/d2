@@ -2170,13 +2170,17 @@ ok: {
 			},
 		},
 		{
-			name: "sql-panic",
-			text: `test {
-    shape: sql_table
-    test_id: varchar(64) {constraint: [primary_key, foreign_key]}
-}
-`,
-			expErr: `d2/testdata/d2compiler/TestCompile/sql-panic.d2:3:27: reserved field constraint does not accept composite`,
+			name: "sql-constraints",
+			text: `x: {
+  shape: sql_table
+  a: int {constraint: primary_key}
+  b: int {constraint: [primary_key; foreign_key]}
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				table := g.Objects[0].SQLTable
+				tassert.Equal(t, []string{"primary_key"}, table.Columns[0].Constraint)
+				tassert.Equal(t, []string{"primary_key", "foreign_key"}, table.Columns[1].Constraint)
+			},
 		},
 		{
 			name: "wrong_column_index",

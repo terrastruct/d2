@@ -8,6 +8,7 @@
 - Watch mode browser uses an error favicon to easily indicate compiler errors. Thanks @sinyo-matu ! [#1240](https://github.com/terrastruct/d2/pull/1240)
 - Improves grid layout performance when there are many similarly sized shapes. [#1315](https://github.com/terrastruct/d2/pull/1315)
 - Connections and labels now are adjusted for shapes with `3d` or `multiple`. [#1340](https://github.com/terrastruct/d2/pull/1340)
+- `sql_table` now alternatively takes an array of constraints instead of being limited to a single one. [#1245](https://github.com/terrastruct/d2/pull/1245)
 
 #### Bugfixes ⛑️
 

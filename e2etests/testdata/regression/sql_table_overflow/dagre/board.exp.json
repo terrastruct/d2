@@ -55,7 +55,7 @@
             "labelWidth": 242,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -83,7 +83,7 @@
             "labelWidth": 45,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         }
       ],
@@ -155,7 +155,9 @@
             "labelWidth": 242,
             "labelHeight": 26
           },
-          "constraint": "unique",
+          "constraint": [
+            "unique"
+          ],
           "reference": ""
         },
         {
@@ -183,7 +185,9 @@
             "labelWidth": 45,
             "labelHeight": 26
           },
-          "constraint": "foreign_key",
+          "constraint": [
+            "foreign_key"
+          ],
           "reference": ""
         }
       ],

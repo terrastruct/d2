@@ -1125,6 +1125,10 @@
     {
       "id": "grid w/ grid w/ grid",
       "type": "rectangle",
+      "classes": [
+        "2x2",
+        "gap0"
+      ],
       "pos": {
         "x": 1736,
         "y": 54
@@ -1207,6 +1211,10 @@
     {
       "id": "grid w/ grid w/ grid.b",
       "type": "rectangle",
+      "classes": [
+        "2x2",
+        "gap0"
+      ],
       "pos": {
         "x": 1789,
         "y": 100
@@ -1330,6 +1338,10 @@
     {
       "id": "grid w/ grid w/ grid.b.c",
       "type": "rectangle",
+      "classes": [
+        "2x2",
+        "gap0"
+      ],
       "pos": {
         "x": 1789,
         "y": 207
@@ -1494,6 +1506,10 @@
     {
       "id": "grid w/ grid w/ grid.b.c.d",
       "type": "rectangle",
+      "classes": [
+        "2x2",
+        "gap0"
+      ],
       "pos": {
         "x": 1842,
         "y": 309
@@ -1535,6 +1551,10 @@
     {
       "id": "grid w/ grid w/ grid.b.c.d.a",
       "type": "rectangle",
+      "classes": [
+        "2x2",
+        "gap0"
+      ],
       "pos": {
         "x": 1842,
         "y": 340
