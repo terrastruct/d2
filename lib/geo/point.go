@@ -287,3 +287,40 @@ func (p *Point) Transpose() {
 	}
 	p.X, p.Y = p.Y, p.X
 }
+
+// point t% of the way between a and b
+func (a *Point) Interpolate(b *Point, t float64) *Point {
+	return NewPoint(
+		a.X*(1.0-t)+b.X*t,
+		a.Y*(1.0-t)+b.Y*t,
+	)
+}
+
+func (p *Point) TruncateFloat32() {
+	p.X = float64(float32(p.X))
+	p.Y = float64(float32(p.Y))
+}
+
+func (p *Point) TruncateDecimals() {
+	p.X = TruncateDecimals(p.X)
+	p.Y = TruncateDecimals(p.Y)
+}
+
+// RemovePoints returns a new Points slice without the points in toRemove
+func RemovePoints(points Points, toRemove []bool) Points {
+	newLen := len(points)
+	for _, should := range toRemove {
+		if should {
+			newLen--
+		}
+	}
+
+	without := make([]*Point, 0, newLen)
+	for i := 0; i < len(points); i++ {
+		if toRemove[i] {
+			continue
+		}
+		without = append(without, points[i])
+	}
+	return without
+}

@@ -10,9 +10,9 @@
             "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:0:0-0:17:17",
             "edges": [
               {
-                "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:0:0-0:8:8",
+                "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:0:0-0:7:7",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:0:0-0:2:2",
+                  "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:0:0-0:1:1",
                   "path": [
                     {
                       "unquoted_string": {
@@ -29,7 +29,7 @@
                 },
                 "src_arrow": "<",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:5:5-0:8:8",
+                  "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:6:6-0:7:7",
                   "path": [
                     {
                       "unquoted_string": {
@@ -47,9 +47,9 @@
                 "dst_arrow": ">"
               },
               {
-                "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:5:5-0:13:13",
+                "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:6:6-0:12:12",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:5:5-0:8:8",
+                  "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:6:6-0:7:7",
                   "path": [
                     {
                       "unquoted_string": {
@@ -66,7 +66,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:10:10-0:13:13",
+                  "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:11:11-0:12:12",
                   "path": [
                     {
                       "unquoted_string": {
@@ -84,9 +84,9 @@
                 "dst_arrow": ">"
               },
               {
-                "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:10:10-0:17:17",
+                "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:11:11-0:17:17",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:10:10-0:13:13",
+                  "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:11:11-0:12:12",
                   "path": [
                     {
                       "unquoted_string": {
@@ -103,7 +103,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:15:15-0:17:17",
+                  "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:16:16-0:17:17",
                   "path": [
                     {
                       "unquoted_string": {
@@ -257,7 +257,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:0:0-0:2:2",
+              "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:0:0-0:1:1",
               "path": [
                 {
                   "unquoted_string": {
@@ -304,7 +304,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:5:5-0:8:8",
+              "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:6:6-0:7:7",
               "path": [
                 {
                   "unquoted_string": {
@@ -324,7 +324,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:5:5-0:8:8",
+              "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:6:6-0:7:7",
               "path": [
                 {
                   "unquoted_string": {
@@ -371,7 +371,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:10:10-0:13:13",
+              "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:11:11-0:12:12",
               "path": [
                 {
                   "unquoted_string": {
@@ -391,7 +391,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:10:10-0:13:13",
+              "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:11:11-0:12:12",
               "path": [
                 {
                   "unquoted_string": {
@@ -438,7 +438,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:15:15-0:17:17",
+              "range": "d2/testdata/d2oracle/TestRename/arrows_chain.d2,0:16:16-0:17:17",
               "path": [
                 {
                   "unquoted_string": {

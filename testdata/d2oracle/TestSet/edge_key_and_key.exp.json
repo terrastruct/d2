@@ -35,7 +35,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:0:2-1:10:12",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:0:2-1:4:6",
+                  "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:0:2-1:3:5",
                   "path": [
                     {
                       "unquoted_string": {
@@ -63,7 +63,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:6:8-1:10:12",
+                  "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:7:9-1:10:12",
                   "path": [
                     {
                       "unquoted_string": {
@@ -233,7 +233,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:0:2-1:4:6",
+              "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:0:2-1:3:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -264,7 +264,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:6:8-1:10:12",
+              "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:7:9-1:10:12",
               "path": [
                 {
                   "unquoted_string": {
@@ -322,7 +322,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:0:2-1:4:6",
+              "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:0:2-1:3:5",
               "path": [
                 {
                   "unquoted_string": {
@@ -380,7 +380,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:6:8-1:10:12",
+              "range": "d2/testdata/d2oracle/TestSet/edge_key_and_key.d2,1:7:9-1:10:12",
               "path": [
                 {
                   "unquoted_string": {

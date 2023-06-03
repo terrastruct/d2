@@ -218,6 +218,7 @@ func TraceToShapeBorder(shape Shape, rectBorderPoint, prevPoint *geo.Point) *geo
 		}
 	}
 
+	closestPoint.TruncateFloat32()
 	return geo.NewPoint(math.Round(closestPoint.X), math.Round(closestPoint.Y))
 }
 

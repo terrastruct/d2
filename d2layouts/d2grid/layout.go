@@ -1,12 +1,14 @@
 package d2grid
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"math"
 	"sort"
 
 	"oss.terrastruct.com/d2/d2graph"
+	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/util-go/go2"
@@ -29,7 +31,7 @@ const (
 // 7. Put grid children back in correct location
 func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) d2graph.LayoutGraph {
 	return func(ctx context.Context, g *d2graph.Graph) error {
-		gridDiagrams, objectOrder, err := withoutGridDiagrams(ctx, g)
+		gridDiagrams, objectOrder, err := withoutGridDiagrams(ctx, g, layout)
 		if err != nil {
 			return err
 		}
@@ -45,9 +47,161 @@ func Layout(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) d
 	}
 }
 
-func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph) (gridDiagrams map[string]*gridDiagram, objectOrder map[string]int, err error) {
+func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.LayoutGraph) (gridDiagrams map[string]*gridDiagram, objectOrder map[string]int, err error) {
 	toRemove := make(map[*d2graph.Object]struct{})
 	gridDiagrams = make(map[string]*gridDiagram)
+
+	objectOrder = make(map[string]int)
+	for i, obj := range g.Objects {
+		objectOrder[obj.AbsID()] = i
+	}
+
+	var processGrid func(obj *d2graph.Object) error
+	processGrid = func(obj *d2graph.Object) error {
+		for _, child := range obj.ChildrenArray {
+			if child.IsGridDiagram() {
+				if err := processGrid(child); err != nil {
+					return err
+				}
+			} else if len(child.ChildrenArray) > 0 {
+				tempGraph := g.ExtractAsNestedGraph(child)
+				if err := layout(ctx, tempGraph); err != nil {
+					return err
+				}
+				g.InjectNestedGraph(tempGraph, obj)
+
+				sort.SliceStable(g.Objects, func(i, j int) bool {
+					return objectOrder[g.Objects[i].AbsID()] < objectOrder[g.Objects[j].AbsID()]
+				})
+				sort.SliceStable(child.ChildrenArray, func(i, j int) bool {
+					return objectOrder[child.ChildrenArray[i].AbsID()] < objectOrder[child.ChildrenArray[j].AbsID()]
+				})
+				sort.SliceStable(obj.ChildrenArray, func(i, j int) bool {
+					return objectOrder[obj.ChildrenArray[i].AbsID()] < objectOrder[obj.ChildrenArray[j].AbsID()]
+				})
+
+				for _, o := range tempGraph.Objects {
+					toRemove[o] = struct{}{}
+				}
+			}
+		}
+
+		gd, err := layoutGrid(g, obj)
+		if err != nil {
+			return err
+		}
+		obj.Children = make(map[string]*d2graph.Object)
+		obj.ChildrenArray = nil
+
+		if obj.Box != nil {
+			// CONTAINER_PADDING is default, but use gap value if set
+			horizontalPadding, verticalPadding := CONTAINER_PADDING, CONTAINER_PADDING
+			if obj.GridGap != nil || obj.HorizontalGap != nil {
+				horizontalPadding = gd.horizontalGap
+			}
+			if obj.GridGap != nil || obj.VerticalGap != nil {
+				verticalPadding = gd.verticalGap
+			}
+
+			// size shape according to grid
+			obj.SizeToContent(gd.width, gd.height, float64(2*horizontalPadding), float64(2*verticalPadding))
+
+			// compute where the grid should be placed inside shape
+			s := obj.ToShape()
+			innerBox := s.GetInnerBox()
+			if innerBox.TopLeft.X != 0 || innerBox.TopLeft.Y != 0 {
+				gd.shift(innerBox.TopLeft.X, innerBox.TopLeft.Y)
+			}
+
+			// compute how much space the label and icon occupy
+			var occupiedWidth, occupiedHeight float64
+			if obj.Icon != nil {
+				iconSpace := float64(d2target.MAX_ICON_SIZE + 2*label.PADDING)
+				occupiedWidth = iconSpace
+				occupiedHeight = iconSpace
+			}
+
+			var dx, dy float64
+			if obj.LabelDimensions.Height != 0 {
+				occupiedHeight = math.Max(
+					occupiedHeight,
+					float64(obj.LabelDimensions.Height)+2*label.PADDING,
+				)
+			}
+			if obj.LabelDimensions.Width != 0 {
+				// . ├────┤───────├────┤
+				// .  icon  label  icon
+				// with an icon in top left we need 2x the space to fit the label in the center
+				occupiedWidth *= 2
+				occupiedWidth += float64(obj.LabelDimensions.Width) + 2*label.PADDING
+				if occupiedWidth > obj.Width {
+					dx = (occupiedWidth - obj.Width) / 2
+					obj.Width = occupiedWidth
+				}
+			}
+
+			// also check for grid cells with outside top labels or icons
+			// the first grid object is at the top (and always exists)
+			topY := gd.objects[0].TopLeft.Y
+			highestOutside := topY
+			for _, o := range gd.objects {
+				// we only want to compute label positions for objects at the top of the grid
+				if o.TopLeft.Y > topY {
+					if gd.rowDirected {
+						// if the grid is rowDirected (row1, row2, etc) we can stop after finishing the first row
+						break
+					} else {
+						// otherwise we continue until the next column
+						continue
+					}
+				}
+				if o.LabelPosition != nil {
+					labelPosition := label.Position(*o.LabelPosition)
+					if labelPosition.IsOutside() {
+						labelTL := o.GetLabelTopLeft()
+						if labelTL.Y < highestOutside {
+							highestOutside = labelTL.Y
+						}
+					}
+				}
+				if o.IconPosition != nil {
+					switch label.Position(*o.IconPosition) {
+					case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+						iconSpace := float64(d2target.MAX_ICON_SIZE + label.PADDING)
+						if topY-iconSpace < highestOutside {
+							highestOutside = topY - iconSpace
+						}
+					}
+				}
+			}
+			if highestOutside < topY {
+				occupiedHeight += topY - highestOutside + 2*label.PADDING
+			}
+			if occupiedHeight > float64(verticalPadding) {
+				// if the label doesn't fit within the padding, we need to add more
+				dy = occupiedHeight - float64(verticalPadding)
+				obj.Height += dy
+			}
+
+			// we need to center children if we have to expand to fit the container label
+			if dx != 0 || dy != 0 {
+				gd.shift(dx, dy)
+			}
+		}
+
+		if obj.HasLabel() {
+			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+		}
+		if obj.Icon != nil {
+			obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
+		}
+		gridDiagrams[obj.AbsID()] = gd
+
+		for _, o := range gd.objects {
+			toRemove[o] = struct{}{}
+		}
+		return nil
+	}
 
 	if len(g.Objects) > 0 {
 		queue := make([]*d2graph.Object, 1, len(g.Objects))
@@ -63,47 +217,14 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph) (gridDiagrams ma
 				continue
 			}
 
-			gd, err := layoutGrid(g, obj)
-			if err != nil {
+			if err := processGrid(obj); err != nil {
 				return nil, nil, err
-			}
-			obj.Children = make(map[string]*d2graph.Object)
-			obj.ChildrenArray = nil
-
-			var dx, dy float64
-			width := gd.width + 2*CONTAINER_PADDING
-			labelWidth := float64(obj.LabelDimensions.Width) + 2*label.PADDING
-			if labelWidth > width {
-				dx = (labelWidth - width) / 2
-				width = labelWidth
-			}
-			height := gd.height + 2*CONTAINER_PADDING
-			labelHeight := float64(obj.LabelDimensions.Height) + 2*label.PADDING
-			if labelHeight > CONTAINER_PADDING {
-				// if the label doesn't fit within the padding, we need to add more
-				grow := labelHeight - CONTAINER_PADDING
-				dy = grow / 2
-				height += grow
-			}
-			// we need to center children if we have to expand to fit the container label
-			if dx != 0 || dy != 0 {
-				gd.shift(dx, dy)
-			}
-			obj.Box = geo.NewBox(nil, width, height)
-
-			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-			gridDiagrams[obj.AbsID()] = gd
-
-			for _, o := range gd.objects {
-				toRemove[o] = struct{}{}
 			}
 		}
 	}
 
-	objectOrder = make(map[string]int)
 	layoutObjects := make([]*d2graph.Object, 0, len(toRemove))
-	for i, obj := range g.Objects {
-		objectOrder[obj.AbsID()] = i
+	for _, obj := range g.Objects {
 		if _, exists := toRemove[obj]; !exists {
 			layoutObjects = append(layoutObjects, obj)
 		}
@@ -125,10 +246,17 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
 	// position labels and icons
 	for _, o := range gd.objects {
 		if o.Icon != nil {
-			o.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-			o.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			// don't overwrite position if nested graph layout positioned label/icon
+			if o.LabelPosition == nil {
+				o.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+			}
+			if o.IconPosition == nil {
+				o.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
 		} else {
-			o.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			if o.LabelPosition == nil {
+				o.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
 		}
 	}
 
@@ -191,7 +319,7 @@ func (gd *gridDiagram) layoutEvenly(g *d2graph.Graph, obj *d2graph.Object) {
 				}
 				o.Width = colWidths[j]
 				o.Height = rowHeights[i]
-				o.TopLeft = cursor.Copy()
+				o.MoveWithDescendantsTo(cursor.X, cursor.Y)
 				cursor.X += o.Width + horizontalGap
 			}
 			cursor.X = 0
@@ -206,7 +334,7 @@ func (gd *gridDiagram) layoutEvenly(g *d2graph.Graph, obj *d2graph.Object) {
 				}
 				o.Width = colWidths[j]
 				o.Height = rowHeights[i]
-				o.TopLeft = cursor.Copy()
+				o.MoveWithDescendantsTo(cursor.X, cursor.Y)
 				cursor.Y += o.Height + verticalGap
 			}
 			cursor.X += colWidths[j] + horizontalGap
@@ -279,6 +407,8 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 			maxX = math.Max(maxX, rowWidth)
 		}
 
+		// TODO if object is a nested grid, consider growing descendants according to the inner grid layout
+
 		// then expand thinnest objects to make each row the same width
 		// . ┌A─────────────┐  ┌B──┐  ┌C─────────┐ ┬ maxHeight(A,B,C)
 		// . │              │  │   │  │          │ │
@@ -342,7 +472,7 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 		for _, row := range layout {
 			rowHeight := 0.
 			for _, o := range row {
-				o.TopLeft = cursor.Copy()
+				o.MoveWithDescendantsTo(cursor.X, cursor.Y)
 				cursor.X += o.Width + horizontalGap
 				rowHeight = math.Max(rowHeight, o.Height)
 			}
@@ -430,7 +560,7 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 		for _, column := range layout {
 			colWidth := 0.
 			for _, o := range column {
-				o.TopLeft = cursor.Copy()
+				o.MoveWithDescendantsTo(cursor.X, cursor.Y)
 				cursor.Y += o.Height + verticalGap
 				colWidth = math.Max(colWidth, o.Width)
 			}
@@ -452,6 +582,7 @@ func (gd *gridDiagram) layoutDynamic(g *d2graph.Graph, obj *d2graph.Object) {
 // generate the best layout of objects aiming for each row to be the targetSize width
 // if columns is true, each column aims to have the targetSize height
 func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2graph.Object {
+	debug := false
 	var nCuts int
 	if columns {
 		nCuts = gd.columns - 1
@@ -460,6 +591,23 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 	}
 	if nCuts == 0 {
 		return genLayout(gd.objects, nil)
+	}
+
+	var bestLayout [][]*d2graph.Object
+	bestDist := math.MaxFloat64
+	fastIsBest := false
+	// try fast layout algorithm as a baseline
+	if fastLayout := gd.fastLayout(targetSize, nCuts, columns); fastLayout != nil {
+		dist := getDistToTarget(fastLayout, targetSize, float64(gd.horizontalGap), float64(gd.verticalGap), columns)
+		if debug {
+			fmt.Printf("fast dist %v dist per row %v\n", dist, dist/(float64(nCuts)+1))
+		}
+		if dist == 0 {
+			return fastLayout
+		}
+		bestDist = dist
+		bestLayout = fastLayout
+		fastIsBest = true
 	}
 
 	var gap float64
@@ -476,17 +624,24 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 		}
 	}
 
-	debug := false
+	sizes := []float64{}
+	for _, obj := range gd.objects {
+		size := getSize(obj)
+		sizes = append(sizes, size)
+	}
+	sd := stddev(sizes)
+	if debug {
+		fmt.Printf("sizes (%d): %v\n", len(sizes), sizes)
+		fmt.Printf("std dev: %v; targetSize %v\n", sd, targetSize)
+	}
+
 	skipCount := 0
+	count := 0
 	// quickly eliminate bad row groupings
 	startingCache := make(map[int]bool)
-	// try to find a layout with all rows within 1.2*targetSize
-	// skip options with a row that is 1.2*longer or shorter
 	// Note: we want a low threshold to explore good options within attemptLimit,
 	// but the best option may require a few rows that are far from the target size.
-	okThreshold := 1.2
-	// if we don't find a layout try 25% larger threshold
-	thresholdStep := 0.25
+	okThreshold := STARTING_THRESHOLD
 	rowOk := func(row []*d2graph.Object, starting bool) (ok bool) {
 		if starting {
 			// we can cache results from starting positions since they repeat and don't change
@@ -509,21 +664,24 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 			// if multiple nodes are too big, it isn't ok. but a single node can't shrink so only check here
 			if rowSize > okThreshold*targetSize {
 				skipCount++
+				if skipCount >= SKIP_LIMIT {
+					// there may even be too many to skip
+					return true
+				}
 				return false
 			}
 		}
 		// row is too small to be good overall
 		if rowSize < targetSize/okThreshold {
 			skipCount++
+			if skipCount >= SKIP_LIMIT {
+				return true
+			}
 			return false
 		}
 		return true
 	}
 
-	var bestLayout [][]*d2graph.Object
-	bestDist := math.MaxFloat64
-	count := 0
-	attemptLimit := 100_000
 	// get all options for where to place these cuts, preferring later cuts over earlier cuts
 	// with 5 objects and 2 cuts we have these options:
 	// .       A   B   C │ D │ E     <- these cuts would produce: ┌A─┐ ┌B─┐ ┌C─┐
@@ -539,33 +697,94 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 		if dist < bestDist {
 			bestLayout = layout
 			bestDist = dist
+			fastIsBest = false
+		} else if fastIsBest && dist == bestDist {
+			// prefer ordered search solution to fast layout solution
+			bestLayout = layout
+			fastIsBest = false
 		}
 		count++
 		// with few objects we can try all options to get best result but this won't scale, so only try up to 100k options
-		return count >= attemptLimit
+		return count >= ATTEMPT_LIMIT || skipCount >= SKIP_LIMIT
 	}
 
-	// try at least 3 different okThresholds
-	for i := 0; i < 3 || bestLayout == nil; i++ {
+	// try number of different okThresholds depending on std deviation of sizes
+	thresholdAttempts := int(math.Ceil(sd))
+	if thresholdAttempts < MIN_THRESHOLD_ATTEMPTS {
+		thresholdAttempts = MIN_THRESHOLD_ATTEMPTS
+	} else if thresholdAttempts > MAX_THRESHOLD_ATTEMPTS {
+		thresholdAttempts = MAX_THRESHOLD_ATTEMPTS
+	}
+	for i := 0; i < thresholdAttempts || bestLayout == nil; i++ {
+		count = 0.
+		skipCount = 0.
 		iterDivisions(gd.objects, nCuts, tryDivision, rowOk)
-		okThreshold += thresholdStep
+		okThreshold += THRESHOLD_STEP_SIZE
 		if debug {
-			fmt.Printf("increasing ok threshold to %v\n", okThreshold)
+			fmt.Printf("count %d, skip count %d, bestDist %v increasing ok threshold to %v\n", count, skipCount, bestDist, okThreshold)
 		}
 		startingCache = make(map[int]bool)
-		count = 0.
-	}
-	if debug {
-		fmt.Printf("final count %d, skip count %d\n", count, skipCount)
+		if skipCount == 0 {
+			// threshold isn't skipping anything so increasing it won't help
+			break
+		}
+		// okThreshold isn't high enough yet, we skipped every option so don't count it
+		if count == 0 && thresholdAttempts < MAX_THRESHOLD_ATTEMPTS {
+			thresholdAttempts++
+		}
 	}
 
-	// try fast layout algorithm, see if it is better than first 1mil attempts
+	if debug {
+		fmt.Printf("best layout: %v\n", layoutString(bestLayout, sizes))
+	}
+	return bestLayout
+}
+
+func sum(values []float64) float64 {
+	s := 0.
+	for _, v := range values {
+		s += v
+	}
+	return s
+}
+
+func avg(values []float64) float64 {
+	return sum(values) / float64(len(values))
+}
+
+func variance(values []float64) float64 {
+	mean := avg(values)
+	total := 0.
+	for _, value := range values {
+		dev := mean - value
+		total += dev * dev
+	}
+	return total / float64(len(values))
+}
+
+func stddev(values []float64) float64 {
+	return math.Sqrt(variance(values))
+}
+
+func (gd *gridDiagram) fastLayout(targetSize float64, nCuts int, columns bool) (layout [][]*d2graph.Object) {
+	var gap float64
+	if columns {
+		gap = float64(gd.verticalGap)
+	} else {
+		gap = float64(gd.horizontalGap)
+	}
+
 	debt := 0.
 	fastDivision := make([]int, 0, nCuts)
 	rowSize := 0.
 	for i := 0; i < len(gd.objects); i++ {
 		o := gd.objects[i]
-		size := getSize(o)
+		var size float64
+		if columns {
+			size = o.Height
+		} else {
+			size = o.Width
+		}
 		if rowSize == 0 {
 			if size > targetSize-debt {
 				fastDivision = append(fastDivision, i-1)
@@ -588,14 +807,23 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 		}
 	}
 	if len(fastDivision) == nCuts {
-		layout := genLayout(gd.objects, fastDivision)
-		dist := getDistToTarget(layout, targetSize, float64(gd.horizontalGap), float64(gd.verticalGap), columns)
-		if dist < bestDist {
-			bestLayout = layout
-			bestDist = dist
-		}
+		layout = genLayout(gd.objects, fastDivision)
 	}
-	return bestLayout
+
+	return layout
+}
+
+func layoutString(layout [][]*d2graph.Object, sizes []float64) string {
+	buf := &bytes.Buffer{}
+	i := 0
+	fmt.Fprintf(buf, "[\n")
+	for _, r := range layout {
+		vals := sizes[i : i+len(r)]
+		fmt.Fprintf(buf, "%v:\t%v\n", sum(vals), vals)
+		i += len(r)
+	}
+	fmt.Fprintf(buf, "]\n")
+	return buf.String()
 }
 
 // process current division, return true to stop iterating
@@ -704,25 +932,42 @@ func cleanup(graph *d2graph.Graph, gridDiagrams map[string]*gridDiagram, objects
 		})
 	}()
 
+	var restore func(obj *d2graph.Object)
+	restore = func(obj *d2graph.Object) {
+		gd, exists := gridDiagrams[obj.AbsID()]
+		if !exists {
+			return
+		}
+		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+
+		horizontalPadding, verticalPadding := CONTAINER_PADDING, CONTAINER_PADDING
+		if obj.GridGap != nil || obj.HorizontalGap != nil {
+			horizontalPadding = gd.horizontalGap
+		}
+		if obj.GridGap != nil || obj.VerticalGap != nil {
+			verticalPadding = gd.verticalGap
+		}
+
+		// shift the grid from (0, 0)
+		gd.shift(
+			obj.TopLeft.X+float64(horizontalPadding),
+			obj.TopLeft.Y+float64(verticalPadding),
+		)
+		gd.cleanup(obj, graph)
+
+		for _, child := range obj.ChildrenArray {
+			restore(child)
+		}
+	}
+
 	if graph.Root.IsGridDiagram() {
 		gd, exists := gridDiagrams[graph.Root.AbsID()]
 		if exists {
 			gd.cleanup(graph.Root, graph)
-			return
 		}
 	}
 
 	for _, obj := range graph.Objects {
-		gd, exists := gridDiagrams[obj.AbsID()]
-		if !exists {
-			continue
-		}
-		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-		// shift the grid from (0, 0)
-		gd.shift(
-			obj.TopLeft.X+CONTAINER_PADDING,
-			obj.TopLeft.Y+CONTAINER_PADDING,
-		)
-		gd.cleanup(obj, graph)
+		restore(obj)
 	}
 }

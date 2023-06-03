@@ -34,9 +34,9 @@
                       "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:2:7-1:17:22",
                       "edges": [
                         {
-                          "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:2:7-1:11:16",
+                          "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:2:7-1:10:15",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:2:7-1:6:11",
+                            "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:2:7-1:5:10",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -64,7 +64,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:8:13-1:11:16",
+                            "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:9:14-1:10:15",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -82,9 +82,9 @@
                           "dst_arrow": ">"
                         },
                         {
-                          "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:8:13-1:17:22",
+                          "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:9:14-1:17:22",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:8:13-1:11:16",
+                            "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:9:14-1:10:15",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -101,7 +101,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:13:18-1:17:22",
+                            "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:14:19-1:17:22",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -286,7 +286,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:2:7-1:6:11",
+              "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:2:7-1:5:10",
               "path": [
                 {
                   "unquoted_string": {
@@ -317,7 +317,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:13:18-1:17:22",
+              "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:14:19-1:17:22",
               "path": [
                 {
                   "unquoted_string": {
@@ -375,7 +375,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:8:13-1:11:16",
+              "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:9:14-1:10:15",
               "path": [
                 {
                   "unquoted_string": {
@@ -395,7 +395,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:8:13-1:11:16",
+              "range": "d2/testdata/d2oracle/TestMove/edge_chain_circular.d2,1:9:14-1:10:15",
               "path": [
                 {
                   "unquoted_string": {

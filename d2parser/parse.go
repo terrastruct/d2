@@ -919,11 +919,12 @@ func (p *parser) parseKey() (k *d2ast.KeyPath) {
 			Start: p.pos,
 		},
 	}
-	defer k.Range.End.From(&p.pos)
 
 	defer func() {
 		if len(k.Path) == 0 {
 			k = nil
+		} else {
+			k.Range.End = k.Path[len(k.Path)-1].Unbox().GetRange().End
 		}
 	}()
 
@@ -948,6 +949,9 @@ func (p *parser) parseKey() (k *d2ast.KeyPath) {
 			return k
 		}
 
+		if len(k.Path) == 0 {
+			k.Range.Start = s.GetRange().Start
+		}
 		k.Path = append(k.Path, &sb)
 
 		r, newlines, eof = p.peekNotSpace()

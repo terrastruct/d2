@@ -2744,6 +2744,13 @@ scenarios: {
 		loadFromFile(t, "grid_even"),
 		loadFromFile(t, "ent2d2_basic"),
 		loadFromFile(t, "ent2d2_right"),
+		loadFromFile(t, "grid_large_checkered"),
+		loadFromFile(t, "grid_nested"),
+		loadFromFile(t, "grid_nested_gap0"),
+		loadFromFile(t, "grid_icon"),
+		loadFromFile(t, "multiple_offset"),
+		loadFromFile(t, "multiple_offset_left"),
+		loadFromFile(t, "multiple_box_selection"),
 	}
 
 	runa(t, tcs)

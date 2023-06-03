@@ -1,22 +1,22 @@
 #### Features 🚀
 
-- `class` field now accepts arrays. See [docs](TODO). [#1256](https://github.com/terrastruct/d2/pull/1256)
-- Pill shape is implemented with rectangles of large border radius. Thanks @Poivey ! [#1006](https://github.com/terrastruct/d2/pull/1006)
-
 #### Improvements 🧹
 
-- ELK self loops get distributed around the object instead of stacking [#1232](https://github.com/terrastruct/d2/pull/1232)
-- ELK preserves order of objects in cycles [#1235](https://github.com/terrastruct/d2/pull/1235)
-- Improper usages of `class` and `style` get error messages [#1254](https://github.com/terrastruct/d2/pull/1254)
-- Improves scaling of object widths/heights in grid diagrams [#1263](https://github.com/terrastruct/d2/pull/1263)
-- Enhance Markdown parsing error message by appending link to docs [#1269](https://github.com/terrastruct/d2/pull/1269)
+- Use shape specific sizing for grid containers [#1294](https://github.com/terrastruct/d2/pull/1294)
+- Grid diagrams now support nested shapes or grid diagrams [#1309](https://github.com/terrastruct/d2/pull/1309)
+- Grid diagrams will now also use `grid-gap`, `vertical-gap`, and `horizontal-gap` for padding [#1309](https://github.com/terrastruct/d2/pull/1309)
+- Watch mode browser uses an error favicon to easily indicate compiler errors. Thanks @sinyo-matu ! [#1240](https://github.com/terrastruct/d2/pull/1240)
+- Improves grid layout performance when there are many similarly sized shapes. [#1315](https://github.com/terrastruct/d2/pull/1315)
+- Connections and labels now are adjusted for shapes with `3d` or `multiple`. [#1340](https://github.com/terrastruct/d2/pull/1340)
 
 #### Bugfixes ⛑️
 
-- Fixes an issue with markdown labels that are empty when rendered [#1223](https://github.com/terrastruct/d2/issues/1223)
-- ELK self loops always have enough space for long labels [#1232](https://github.com/terrastruct/d2/pull/1232)
-- Fixes panic when setting `shape` to be `class` or `sql_table` within a class [#1251](https://github.com/terrastruct/d2/pull/1251)
-- Fixes rare panic exporting to gifs [#1257](https://github.com/terrastruct/d2/pull/1257)
-- Fixes bad performance in large grid diagrams [#1263](https://github.com/terrastruct/d2/pull/1263)
-- Fixes bug in ELK when container has ID "root" [#1268](https://github.com/terrastruct/d2/pull/1268)
-- Fixes edge case panic with invalid CLI arguments [#1271](https://github.com/terrastruct/d2/pull/1271)
+- Shadow is cut off when `--pad` is 0. Thank you @LeonardsonCC ! [#1326](https://github.com/terrastruct/d2/pull/1326)
+- Fixes grid layout overwriting label placements for nested objects. [#1345](https://github.com/terrastruct/d2/pull/1345)
+- Fixes fonts not rendering correctly on certain platforms. Thanks @mikeday for identifying the solution. [#1356](https://github.com/terrastruct/d2/pull/1356)
+- Fixes folders not rendering in animations (`--animate-interval`) [#1357](https://github.com/terrastruct/d2/pull/1357)
+- Fixes panic using reserved keywords as containers [#1358](https://github.com/terrastruct/d2/pull/1358)
+- When multiple classes are applied changing different attributes of arrowheads, they are
+  all applied instead of only the last one [#1362](https://github.com/terrastruct/d2/pull/1362)
+- Prevent empty block strings [#1364](https://github.com/terrastruct/d2/pull/1364)
+- Fixes dagre mis-aligning a nested shape's connection. [#1370](https://github.com/terrastruct/d2/pull/1370)

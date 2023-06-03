@@ -611,6 +611,24 @@ x: {
 d2/testdata/d2compiler/TestCompile/md_block_string_err.d2:5:1: block string must be terminated with |`,
 		},
 		{
+			name:   "no_empty_block_string",
+			text:   `Text: |md |`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_empty_block_string.d2:1:1: block string cannot be empty`,
+		},
+		{
+			name:   "no_white_spaces_only_block_string",
+			text:   `Text: |md      |`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_white_spaces_only_block_string.d2:1:1: block string cannot be empty`,
+		},
+		{
+			name: "no_new_lines_only_block_string",
+			text: `Text: |md
+
+
+|`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_new_lines_only_block_string.d2:1:1: block string cannot be empty`,
+		},
+		{
 			name: "underscore_edge_existing",
 
 			text: `
@@ -1700,7 +1718,13 @@ x.a.b`,
 			name: "tail-style",
 
 			text:   `myobj.style: 3`,
-			expErr: `d2/testdata/d2compiler/TestCompile/tail-style.d2:1:7: "style" expected to be set to a map, or contain an additional keyword like "style.opacity: 0.4"`,
+			expErr: `d2/testdata/d2compiler/TestCompile/tail-style.d2:1:7: "style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`,
+		},
+		{
+			name: "tail-style-map",
+
+			text:   `myobj.style: {}`,
+			expErr: `d2/testdata/d2compiler/TestCompile/tail-style-map.d2:1:7: "style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`,
 		},
 		{
 			name: "bad-style-nesting",
@@ -1715,6 +1739,13 @@ x.a.b`,
 y -> x.style
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/edge_to_style.d2:2:8: reserved keywords are prohibited in edges`,
+		},
+		{
+			name: "keyword-container",
+
+			text: `a.near.b
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/keyword-container.d2:1:3: "near" must be the last part of the key`,
 		},
 		{
 			name: "escaped_id",
@@ -2377,11 +2408,17 @@ d2/testdata/d2compiler/TestCompile/grid_edge.d2:6:2: edges in grid diagrams are 
 	a
 	b
 	c
-	d.invalid descendant
+	d.valid descendant
+	e: {
+		grid-rows: 1
+		grid-columns: 2
+
+		a
+		b
+	}
 }
 `,
-			expErr: `d2/testdata/d2compiler/TestCompile/grid_nested.d2:2:2: "grid-rows" can only be used on containers with one level of nesting right now. ("hey.d" has nested "invalid descendant")
-d2/testdata/d2compiler/TestCompile/grid_nested.d2:3:2: "grid-columns" can only be used on containers with one level of nesting right now. ("hey.d" has nested "invalid descendant")`,
+			expErr: ``,
 		},
 		{
 			name: "classes",
@@ -2458,6 +2495,29 @@ classes.x.shape: diamond
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				tassert.Equal(t, 1, len(g.Objects))
 				tassert.Equal(t, "diamond", g.Objects[0].Shape.Value)
+			},
+		},
+		{
+			name: "nested-array-classes",
+			text: `classes: {
+  one target: {
+		target-arrowhead.label: 1
+  }
+	association: {
+		target-arrowhead.shape: arrow
+	}
+}
+
+a -> b: { class: [one target; association] }
+a -> b: { class: [association; one target] }
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				// They have the same, regardless of order of class application
+				// since the classes modify attributes exclusive of each other
+				tassert.Equal(t, "1", g.Edges[0].DstArrowhead.Label.Value)
+				tassert.Equal(t, "1", g.Edges[1].DstArrowhead.Label.Value)
+				tassert.Equal(t, "arrow", g.Edges[0].DstArrowhead.Shape.Value)
+				tassert.Equal(t, "arrow", g.Edges[1].DstArrowhead.Shape.Value)
 			},
 		},
 		{

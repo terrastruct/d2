@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestDelete/children_edge_conflicts.d2,0:0:0-0:8:8",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestDelete/children_edge_conflicts.d2,0:0:0-0:4:4",
+                  "range": "d2/testdata/d2oracle/TestDelete/children_edge_conflicts.d2,0:0:0-0:3:3",
                   "path": [
                     {
                       "unquoted_string": {
@@ -29,7 +29,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestDelete/children_edge_conflicts.d2,0:6:6-0:8:8",
+                  "range": "d2/testdata/d2oracle/TestDelete/children_edge_conflicts.d2,0:7:7-0:8:8",
                   "path": [
                     {
                       "unquoted_string": {
@@ -175,7 +175,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/children_edge_conflicts.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2oracle/TestDelete/children_edge_conflicts.d2,0:0:0-0:3:3",
               "path": [
                 {
                   "unquoted_string": {
@@ -242,7 +242,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/children_edge_conflicts.d2,0:6:6-0:8:8",
+              "range": "d2/testdata/d2oracle/TestDelete/children_edge_conflicts.d2,0:7:7-0:8:8",
               "path": [
                 {
                   "unquoted_string": {

@@ -6,7 +6,7 @@
         "map_key": {
           "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,1:0:1-1:2:3",
           "key": {
-            "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,1:0:1-1:2:3",
+            "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,1:0:1-1:1:2",
             "path": [
               {
                 "unquoted_string": {
@@ -29,7 +29,7 @@
         "map_key": {
           "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,2:0:4-2:2:6",
           "key": {
-            "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,2:0:4-2:2:6",
+            "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,2:0:4-2:1:5",
             "path": [
               {
                 "unquoted_string": {
@@ -52,7 +52,7 @@
         "map_key": {
           "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,3:0:7-3:2:9",
           "key": {
-            "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,3:0:7-3:2:9",
+            "range": "d2/testdata/d2parser/TestParse/merged_shapes_#322.d2,3:0:7-3:1:8",
             "path": [
               {
                 "unquoted_string": {

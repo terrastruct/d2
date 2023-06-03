@@ -14,7 +14,7 @@
             ]
           },
           "key_path": {
-            "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+            "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
             "path": [
               {
                 "unquoted_string": {
@@ -33,7 +33,7 @@
             "edge": {
               "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
               "src": {
-                "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                 "path": [
                   {
                     "unquoted_string": {
@@ -50,7 +50,7 @@
               },
               "src_arrow": "",
               "dst": {
-                "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                 "path": [
                   {
                     "unquoted_string": {
@@ -73,7 +73,7 @@
                 {
                   "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
                   "src": {
-                    "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                    "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                     "path": [
                       {
                         "unquoted_string": {
@@ -90,7 +90,7 @@
                   },
                   "src_arrow": "",
                   "dst": {
-                    "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                    "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                     "path": [
                       {
                         "unquoted_string": {
@@ -129,7 +129,7 @@
             ]
           },
           "key_path": {
-            "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+            "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
             "path": [
               {
                 "unquoted_string": {
@@ -148,7 +148,7 @@
             "edge": {
               "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
               "src": {
-                "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                 "path": [
                   {
                     "unquoted_string": {
@@ -165,7 +165,7 @@
               },
               "src_arrow": "",
               "dst": {
-                "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                 "path": [
                   {
                     "unquoted_string": {
@@ -188,7 +188,7 @@
                 {
                   "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
                   "src": {
-                    "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                    "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                     "path": [
                       {
                         "unquoted_string": {
@@ -205,7 +205,7 @@
                   },
                   "src_arrow": "",
                   "dst": {
-                    "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                    "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                     "path": [
                       {
                         "unquoted_string": {
@@ -252,7 +252,7 @@
                         ]
                       },
                       "key_path": {
-                        "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                        "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                         "path": [
                           {
                             "unquoted_string": {
@@ -271,7 +271,7 @@
                         "edge": {
                           "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
                           "src": {
-                            "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                            "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -288,7 +288,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                            "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -311,7 +311,7 @@
                             {
                               "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
                               "src": {
-                                "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                                "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -328,7 +328,7 @@
                               },
                               "src_arrow": "",
                               "dst": {
-                                "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                                "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -367,7 +367,7 @@
                         ]
                       },
                       "key_path": {
-                        "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                        "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                         "path": [
                           {
                             "unquoted_string": {
@@ -386,7 +386,7 @@
                         "edge": {
                           "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
                           "src": {
-                            "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                            "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -403,7 +403,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                            "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -426,7 +426,7 @@
                             {
                               "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
                               "src": {
-                                "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                                "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -443,7 +443,7 @@
                               },
                               "src_arrow": "",
                               "dst": {
-                                "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                                "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -490,7 +490,7 @@
                                     ]
                                   },
                                   "key_path": {
-                                    "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
+                                    "range": "TestCompile/steps/root.d2,2:10:26-2:15:31",
                                     "path": [
                                       {
                                         "unquoted_string": {
@@ -532,7 +532,7 @@
                                     "key": {
                                       "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
                                       "key": {
-                                        "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
+                                        "range": "TestCompile/steps/root.d2,2:10:26-2:15:31",
                                         "path": [
                                           {
                                             "unquoted_string": {
@@ -591,7 +591,7 @@
                               ]
                             },
                             "key_path": {
-                              "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
+                              "range": "TestCompile/steps/root.d2,2:10:26-2:15:31",
                               "path": [
                                 {
                                   "unquoted_string": {
@@ -633,7 +633,7 @@
                               "key": {
                                 "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
                                 "key": {
-                                  "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
+                                  "range": "TestCompile/steps/root.d2,2:10:26-2:15:31",
                                   "path": [
                                     {
                                       "unquoted_string": {
@@ -692,7 +692,7 @@
                         ]
                       },
                       "key_path": {
-                        "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
+                        "range": "TestCompile/steps/root.d2,2:10:26-2:15:31",
                         "path": [
                           {
                             "unquoted_string": {
@@ -734,7 +734,7 @@
                         "key": {
                           "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
                           "key": {
-                            "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
+                            "range": "TestCompile/steps/root.d2,2:10:26-2:15:31",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -798,7 +798,7 @@
                         "edge": {
                           "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
                           "src": {
-                            "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                            "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -815,7 +815,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                            "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -838,7 +838,7 @@
                             {
                               "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
                               "src": {
-                                "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                                "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -855,7 +855,7 @@
                               },
                               "src_arrow": "",
                               "dst": {
-                                "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                                "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -938,7 +938,7 @@
                             "map_key": {
                               "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
                               "key": {
-                                "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
+                                "range": "TestCompile/steps/root.d2,2:10:26-2:15:31",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -1005,7 +1005,7 @@
                         ]
                       },
                       "key_path": {
-                        "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                        "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                         "path": [
                           {
                             "unquoted_string": {
@@ -1024,7 +1024,7 @@
                         "edge": {
                           "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
                           "src": {
-                            "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                            "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -1041,7 +1041,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                            "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -1064,7 +1064,7 @@
                             {
                               "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
                               "src": {
-                                "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                                "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -1081,7 +1081,7 @@
                               },
                               "src_arrow": "",
                               "dst": {
-                                "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                                "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -1120,7 +1120,7 @@
                         ]
                       },
                       "key_path": {
-                        "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                        "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                         "path": [
                           {
                             "unquoted_string": {
@@ -1139,7 +1139,7 @@
                         "edge": {
                           "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
                           "src": {
-                            "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                            "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -1156,7 +1156,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                            "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -1179,7 +1179,7 @@
                             {
                               "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
                               "src": {
-                                "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                                "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -1196,7 +1196,7 @@
                               },
                               "src_arrow": "",
                               "dst": {
-                                "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                                "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -1243,7 +1243,7 @@
                                     ]
                                   },
                                   "key_path": {
-                                    "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
+                                    "range": "TestCompile/steps/root.d2,2:10:26-2:15:31",
                                     "path": [
                                       {
                                         "unquoted_string": {
@@ -1285,7 +1285,7 @@
                                     "key": {
                                       "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
                                       "key": {
-                                        "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
+                                        "range": "TestCompile/steps/root.d2,2:10:26-2:15:31",
                                         "path": [
                                           {
                                             "unquoted_string": {
@@ -1344,7 +1344,7 @@
                               ]
                             },
                             "key_path": {
-                              "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
+                              "range": "TestCompile/steps/root.d2,2:10:26-2:15:31",
                               "path": [
                                 {
                                   "unquoted_string": {
@@ -1386,7 +1386,7 @@
                               "key": {
                                 "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
                                 "key": {
-                                  "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
+                                  "range": "TestCompile/steps/root.d2,2:10:26-2:15:31",
                                   "path": [
                                     {
                                       "unquoted_string": {
@@ -1445,7 +1445,7 @@
                         ]
                       },
                       "key_path": {
-                        "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
+                        "range": "TestCompile/steps/root.d2,2:10:26-2:15:31",
                         "path": [
                           {
                             "unquoted_string": {
@@ -1487,7 +1487,7 @@
                         "key": {
                           "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
                           "key": {
-                            "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
+                            "range": "TestCompile/steps/root.d2,2:10:26-2:15:31",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -1545,7 +1545,7 @@
                         ]
                       },
                       "key_path": {
-                        "range": "TestCompile/steps/root.d2,3:12:46-3:19:53",
+                        "range": "TestCompile/steps/root.d2,3:12:46-3:18:52",
                         "path": [
                           {
                             "unquoted_string": {
@@ -1565,7 +1565,7 @@
                         "key": {
                           "range": "TestCompile/steps/root.d2,3:12:46-3:19:53",
                           "key": {
-                            "range": "TestCompile/steps/root.d2,3:12:46-3:19:53",
+                            "range": "TestCompile/steps/root.d2,3:12:46-3:18:52",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -1607,7 +1607,7 @@
                         "edge": {
                           "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
                           "src": {
-                            "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                            "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -1624,7 +1624,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                            "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -1647,7 +1647,7 @@
                             {
                               "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
                               "src": {
-                                "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                                "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -1664,7 +1664,7 @@
                               },
                               "src_arrow": "",
                               "dst": {
-                                "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                                "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -1747,7 +1747,7 @@
                             "map_key": {
                               "range": "TestCompile/steps/root.d2,3:12:46-3:19:53",
                               "key": {
-                                "range": "TestCompile/steps/root.d2,3:12:46-3:19:53",
+                                "range": "TestCompile/steps/root.d2,3:12:46-3:18:52",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -1857,7 +1857,7 @@
                                 "map_key": {
                                   "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
                                   "key": {
-                                    "range": "TestCompile/steps/root.d2,2:10:26-2:16:32",
+                                    "range": "TestCompile/steps/root.d2,2:10:26-2:15:31",
                                     "path": [
                                       {
                                         "unquoted_string": {
@@ -1931,7 +1931,7 @@
                                 "map_key": {
                                   "range": "TestCompile/steps/root.d2,3:12:46-3:19:53",
                                   "key": {
-                                    "range": "TestCompile/steps/root.d2,3:12:46-3:19:53",
+                                    "range": "TestCompile/steps/root.d2,3:12:46-3:18:52",
                                     "path": [
                                       {
                                         "unquoted_string": {
@@ -1983,7 +1983,7 @@
             "edge": {
               "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
               "src": {
-                "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                 "path": [
                   {
                     "unquoted_string": {
@@ -2000,7 +2000,7 @@
               },
               "src_arrow": "",
               "dst": {
-                "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                 "path": [
                   {
                     "unquoted_string": {
@@ -2023,7 +2023,7 @@
                 {
                   "range": "TestCompile/steps/root.d2,0:0:0-0:6:6",
                   "src": {
-                    "range": "TestCompile/steps/root.d2,0:0:0-0:2:2",
+                    "range": "TestCompile/steps/root.d2,0:0:0-0:1:1",
                     "path": [
                       {
                         "unquoted_string": {
@@ -2040,7 +2040,7 @@
                   },
                   "src_arrow": "",
                   "dst": {
-                    "range": "TestCompile/steps/root.d2,0:4:4-0:6:6",
+                    "range": "TestCompile/steps/root.d2,0:5:5-0:6:6",
                     "path": [
                       {
                         "unquoted_string": {

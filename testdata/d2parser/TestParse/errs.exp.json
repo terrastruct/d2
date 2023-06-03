@@ -272,7 +272,7 @@
         "map_key": {
           "range": "d2/testdata/d2parser/TestParse/errs.d2,23:0:167-23:12:179",
           "key": {
-            "range": "d2/testdata/d2parser/TestParse/errs.d2,23:0:167-23:5:172",
+            "range": "d2/testdata/d2parser/TestParse/errs.d2,23:0:167-23:4:171",
             "path": [
               {
                 "unquoted_string": {
@@ -327,7 +327,7 @@
             {
               "range": "d2/testdata/d2parser/TestParse/errs.d2,24:0:180-24:6:186",
               "src": {
-                "range": "d2/testdata/d2parser/TestParse/errs.d2,24:0:180-24:2:182",
+                "range": "d2/testdata/d2parser/TestParse/errs.d2,24:0:180-24:1:181",
                 "path": [
                   {
                     "unquoted_string": {
@@ -344,7 +344,7 @@
               },
               "src_arrow": "",
               "dst": {
-                "range": "d2/testdata/d2parser/TestParse/errs.d2,24:4:184-24:6:186",
+                "range": "d2/testdata/d2parser/TestParse/errs.d2,24:5:185-24:6:186",
                 "path": [
                   {
                     "unquoted_string": {

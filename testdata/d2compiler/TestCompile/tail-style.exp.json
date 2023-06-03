@@ -5,7 +5,7 @@
     "errs": [
       {
         "range": "d2/testdata/d2compiler/TestCompile/tail-style.d2,0:6:6-0:11:11",
-        "errmsg": "d2/testdata/d2compiler/TestCompile/tail-style.d2:1:7: \"style\" expected to be set to a map, or contain an additional keyword like \"style.opacity: 0.4\""
+        "errmsg": "d2/testdata/d2compiler/TestCompile/tail-style.d2:1:7: \"style\" expected to be set to a map of key-values, or contain an additional keyword like \"style.opacity: 0.4\""
       }
     ]
   }

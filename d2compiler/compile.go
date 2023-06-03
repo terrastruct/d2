@@ -210,8 +210,8 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 		c.compileReserved(&obj.Attributes, f)
 		return
 	} else if f.Name == "style" {
-		if f.Map() == nil {
-			c.errorf(f.LastRef().AST(), `"style" expected to be set to a map, or contain an additional keyword like "style.opacity: 0.4"`)
+		if f.Map() == nil || len(f.Map().Fields) == 0 {
+			c.errorf(f.LastRef().AST(), `"style" expected to be set to a map of key-values, or contain an additional keyword like "style.opacity: 0.4"`)
 			return
 		}
 		c.compileStyle(&obj.Attributes, f.Map())
@@ -270,6 +270,9 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 		// TODO: Delete instead.
 		attrs.Label.Value = scalar.ScalarString()
 	case *d2ast.BlockString:
+		if strings.TrimSpace(scalar.ScalarString()) == "" {
+			c.errorf(f.LastPrimaryKey(), "block string cannot be empty")
+		}
 		attrs.Language = scalar.Tag
 		fullTag, ok := ShortToFullLanguageAliases[scalar.Tag]
 		if ok {
@@ -675,10 +678,14 @@ func (c *compiler) compileEdgeField(edge *d2graph.Edge, f *d2ir.Field) {
 func (c *compiler) compileArrowheads(edge *d2graph.Edge, f *d2ir.Field) {
 	var attrs *d2graph.Attributes
 	if f.Name == "source-arrowhead" {
-		edge.SrcArrowhead = &d2graph.Attributes{}
+		if edge.SrcArrowhead == nil {
+			edge.SrcArrowhead = &d2graph.Attributes{}
+		}
 		attrs = edge.SrcArrowhead
 	} else {
-		edge.DstArrowhead = &d2graph.Attributes{}
+		if edge.DstArrowhead == nil {
+			edge.DstArrowhead = &d2graph.Attributes{}
+		}
 		attrs = edge.DstArrowhead
 	}
 
@@ -846,13 +853,6 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 			_, arrowheadIn := d2target.Arrowheads[obj.Shape.Value]
 			if !in && arrowheadIn {
 				c.errorf(f.LastPrimaryKey(), fmt.Sprintf(`invalid shape, can only set "%s" for arrowheads`, obj.Shape.Value))
-			}
-		case "grid-rows", "grid-columns", "grid-gap", "vertical-gap", "horizontal-gap":
-			for _, child := range obj.ChildrenArray {
-				if child.IsContainer() {
-					c.errorf(f.LastPrimaryKey(),
-						fmt.Sprintf(`%#v can only be used on containers with one level of nesting right now. (%#v has nested %#v)`, keyword, child.AbsID(), child.ChildrenArray[0].ID))
-				}
 			}
 		}
 		return

@@ -12,7 +12,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:0:0-0:10:10",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:0:0-0:4:4",
+                  "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:0:0-0:3:3",
                   "path": [
                     {
                       "unquoted_string": {
@@ -29,7 +29,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:6:6-0:10:10",
+                  "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:7:7-0:10:10",
                   "path": [
                     {
                       "unquoted_string": {
@@ -244,7 +244,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:0:0-0:4:4",
+              "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:0:0-0:3:3",
               "path": [
                 {
                   "unquoted_string": {
@@ -331,7 +331,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:6:6-0:10:10",
+              "range": "d2/testdata/d2oracle/TestDelete/children_multiple_conflicts.d2,0:7:7-0:10:10",
               "path": [
                 {
                   "unquoted_string": {

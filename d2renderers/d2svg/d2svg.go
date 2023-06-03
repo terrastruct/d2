@@ -642,7 +642,7 @@ func defineShadowFilter(writer io.Writer) {
 </defs>`)
 }
 
-func render3dRect(targetShape d2target.Shape) string {
+func render3DRect(targetShape d2target.Shape) string {
 	moveTo := func(p d2target.Point) string {
 		return fmt.Sprintf("M%d,%d", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
 	}
@@ -738,7 +738,7 @@ func render3dRect(targetShape d2target.Shape) string {
 	return borderMask + mainShapeRendered + renderedSides + renderedBorder
 }
 
-func render3dHexagon(targetShape d2target.Shape) string {
+func render3DHexagon(targetShape d2target.Shape) string {
 	moveTo := func(p d2target.Point) string {
 		return fmt.Sprintf("M%d,%d", p.X+targetShape.Pos.X, p.Y+targetShape.Pos.Y)
 	}
@@ -995,7 +995,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 			borderRadius = float64(targetShape.BorderRadius)
 		}
 		if targetShape.ThreeDee {
-			fmt.Fprint(writer, render3dRect(targetShape))
+			fmt.Fprint(writer, render3DRect(targetShape))
 		} else {
 			if !targetShape.DoubleBorder {
 				if targetShape.Multiple {
@@ -1088,7 +1088,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 		}
 	case d2target.ShapeHexagon:
 		if targetShape.ThreeDee {
-			fmt.Fprint(writer, render3dHexagon(targetShape))
+			fmt.Fprint(writer, render3DHexagon(targetShape))
 		} else {
 			if targetShape.Multiple {
 				multiplePathData := shape.NewShape(shapeType, geo.NewBox(multipleTL, width, height)).GetSVGPathData()
@@ -1186,7 +1186,19 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 		labelPosition := label.Position(targetShape.LabelPosition)
 		var box *geo.Box
 		if labelPosition.IsOutside() {
-			box = s.GetBox()
+			box = s.GetBox().Copy()
+			// if it is 3d/multiple, place label using box around those
+			if targetShape.ThreeDee {
+				offsetY := d2target.THREE_DEE_OFFSET
+				if targetShape.Type == d2target.ShapeHexagon {
+					offsetY /= 2
+				}
+				box.TopLeft.Y -= float64(offsetY)
+				box.Width += d2target.THREE_DEE_OFFSET
+			} else if targetShape.Multiple {
+				box.TopLeft.Y -= d2target.MULTIPLE_OFFSET
+				box.Width += d2target.MULTIPLE_OFFSET
+			}
 		} else {
 			box = s.GetInnerBox()
 		}

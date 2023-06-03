@@ -18,3 +18,9 @@ func TestIsLabelKeyID(t *testing.T) {
 	assert.Equal(t, false, d2oracle.IsLabelKeyID("x", "y"))
 	assert.Equal(t, false, d2oracle.IsLabelKeyID("x->y", "y"))
 }
+
+func TestGetID(t *testing.T) {
+	t.Parallel()
+
+	assert.Equal(t, `"y (z)"`, d2oracle.GetID(`y (z)`))
+}

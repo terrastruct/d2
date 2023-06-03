@@ -459,7 +459,7 @@
                       {
                         "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,14:2:327-14:30:355",
                         "src": {
-                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,14:2:327-14:16:341",
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,14:2:327-14:15:340",
                           "path": [
                             {
                               "unquoted_string": {
@@ -487,7 +487,7 @@
                         },
                         "src_arrow": "",
                         "dst": {
-                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,14:18:343-14:30:355",
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,14:19:344-14:30:355",
                           "path": [
                             {
                               "unquoted_string": {
@@ -533,7 +533,7 @@
                       {
                         "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,17:2:381-17:40:419",
                         "src": {
-                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,17:2:381-17:14:393",
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,17:2:381-17:13:392",
                           "path": [
                             {
                               "unquoted_string": {
@@ -561,7 +561,7 @@
                         },
                         "src_arrow": "",
                         "dst": {
-                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,17:16:395-17:40:419",
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,17:17:396-17:40:419",
                           "path": [
                             {
                               "unquoted_string": {
@@ -607,7 +607,7 @@
                       {
                         "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,20:2:442-20:30:470",
                         "src": {
-                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,20:2:442-20:14:454",
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,20:2:442-20:13:453",
                           "path": [
                             {
                               "unquoted_string": {
@@ -635,7 +635,7 @@
                         },
                         "src_arrow": "<",
                         "dst": {
-                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,20:16:456-20:30:470",
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,20:17:457-20:30:470",
                           "path": [
                             {
                               "unquoted_string": {
@@ -675,7 +675,7 @@
                       {
                         "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,21:2:473-21:31:502",
                         "src": {
-                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,21:2:473-21:14:485",
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,21:2:473-21:13:484",
                           "path": [
                             {
                               "unquoted_string": {
@@ -703,7 +703,7 @@
                         },
                         "src_arrow": "<",
                         "dst": {
-                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,21:17:488-21:31:502",
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,21:18:489-21:31:502",
                           "path": [
                             {
                               "unquoted_string": {
@@ -1193,7 +1193,7 @@
                       {
                         "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,43:2:986-43:21:1005",
                         "src": {
-                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,43:2:986-43:7:991",
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,43:2:986-43:6:990",
                           "path": [
                             {
                               "unquoted_string": {
@@ -1210,7 +1210,7 @@
                         },
                         "src_arrow": "<",
                         "dst": {
-                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,43:9:993-43:21:1005",
+                          "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,43:10:994-43:21:1005",
                           "path": [
                             {
                               "unquoted_string": {

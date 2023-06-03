@@ -1493,6 +1493,311 @@ six
 	}
 }
 
+func TestReconnectEdge(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name    string
+		text    string
+		edgeKey string
+		newSrc  string
+		newDst  string
+
+		expErr     string
+		exp        string
+		assertions func(t *testing.T, g *d2graph.Graph)
+	}{
+		{
+			name: "basic",
+			text: `a
+b
+c
+a -> b
+`,
+			edgeKey: `(a -> b)[0]`,
+			newDst:  "c",
+			exp: `a
+b
+c
+a -> c
+`,
+		},
+		{
+			name: "src",
+			text: `a
+b
+c
+a -> b
+`,
+			edgeKey: `(a -> b)[0]`,
+			newSrc:  "c",
+			exp: `a
+b
+c
+c -> b
+`,
+		},
+		{
+			name: "both",
+			text: `a
+b
+c
+a -> b
+`,
+			edgeKey: `(a -> b)[0]`,
+			newSrc:  "b",
+			newDst:  "a",
+			exp: `a
+b
+c
+b -> a
+`,
+		},
+		{
+			name: "contained",
+			text: `a.x -> a.y
+a.z`,
+			edgeKey: `a.(x -> y)[0]`,
+			newDst:  "a.z",
+			exp: `a.x -> a.z
+a.y
+a.z
+`,
+		},
+		{
+			name: "scope_outer",
+			text: `a: {
+  x -> y
+}
+b`,
+			edgeKey: `(a.x -> a.y)[0]`,
+			newDst:  "b",
+			exp: `a: {
+  x -> _.b
+  y
+}
+b
+`,
+		},
+		{
+			name: "scope_inner",
+			text: `a: {
+  x -> y
+	z: {
+    b
+  }
+}`,
+			edgeKey: `(a.x -> a.y)[0]`,
+			newDst:  "a.z.b",
+			exp: `a: {
+  x -> z.b
+  y
+
+  z: {
+    b
+  }
+}
+`,
+		},
+		{
+			name: "loop",
+			text: `a -> a
+b`,
+			edgeKey: `(a -> a)[0]`,
+			newDst:  "b",
+			exp: `a -> b
+b
+`,
+		},
+		{
+			name: "preserve_old_obj",
+			text: `a -> b
+(a -> b)[0].style.stroke: red
+c`,
+			edgeKey: `(a -> b)[0]`,
+			newSrc:  "a",
+			newDst:  "c",
+			exp: `a -> c
+b
+(a -> c)[0].style.stroke: red
+c
+`,
+		},
+		{
+			name: "middle_chain",
+			text: `a -> b -> c
+x`,
+			edgeKey: `(a -> b)[0]`,
+			newDst:  "x",
+			exp: `b -> c
+a -> x
+x
+`,
+		},
+		{
+			name: "middle_chain_src",
+			text: `a -> b -> c
+x`,
+			edgeKey: `(b -> c)[0]`,
+			newSrc:  "x",
+			exp: `a -> b
+x -> c
+x
+`,
+		},
+		{
+			name: "middle_chain_both",
+			text: `a -> b -> c -> d
+x`,
+			edgeKey: `(b -> c)[0]`,
+			newSrc:  "x",
+			newDst:  "x",
+			exp: `a -> b
+c -> d
+x -> x
+x
+`,
+		},
+		{
+			name: "middle_chain_first",
+			text: `a -> b -> c -> d
+x`,
+			edgeKey: `(a -> b)[0]`,
+			newSrc:  "x",
+			exp: `a
+x -> b -> c -> d
+x
+`,
+		},
+		{
+			name: "middle_chain_last",
+			text: `a -> b -> c -> d
+x`,
+			edgeKey: `(c -> d)[0]`,
+			newDst:  "x",
+			exp: `a -> b -> c -> x
+d
+x
+`,
+		},
+		// These _3 and _4 match the delta tests
+		{
+			name: "in_chain_3",
+
+			text: `a -> b -> a -> c
+`,
+			edgeKey: "(a -> b)[0]",
+			newDst:  "c",
+
+			exp: `b -> a -> c
+a -> c
+`,
+		},
+		{
+			name: "in_chain_4",
+
+			text: `a -> c -> a -> c
+b
+`,
+			edgeKey: "(a -> c)[0]",
+			newDst:  "b",
+
+			exp: `c -> a -> c
+a -> b
+b
+`,
+		},
+		{
+			name: "indexed_ref",
+			text: `a -> b
+x
+(a -> b)[0].style.stroke: red
+`,
+			edgeKey: `(a -> b)[0]`,
+			newDst:  "x",
+			exp: `a -> x
+b
+x
+(a -> x)[0].style.stroke: red
+`,
+		},
+		{
+			name: "reverse",
+			text: `a -> b
+`,
+			edgeKey: `(a -> b)[0]`,
+			newSrc:  "b",
+			newDst:  "a",
+			exp: `b -> a
+`,
+		},
+		{
+			name: "second_index",
+			text: `a -> b: {
+  style.stroke: blue
+}
+a -> b: {
+  style.stroke: red
+}
+x
+`,
+			edgeKey: `(a -> b)[1]`,
+			newDst:  "x",
+			exp: `a -> b: {
+  style.stroke: blue
+}
+a -> x: {
+  style.stroke: red
+}
+x
+`,
+		},
+		{
+			name: "nonexistant_edge",
+			text: `a -> b
+`,
+			edgeKey: `(b -> a)[0]`,
+			newDst:  "a",
+			expErr:  "edge not found",
+		},
+		{
+			name: "nonexistant_obj",
+			text: `a -> b
+`,
+			edgeKey: `(a -> b)[0]`,
+			newDst:  "x",
+			expErr:  "newDst not found",
+		},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			et := editTest{
+				text: tc.text,
+				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
+					var newSrc *string
+					var newDst *string
+					if tc.newSrc != "" {
+						newSrc = &tc.newSrc
+					}
+					if tc.newDst != "" {
+						newDst = &tc.newDst
+					}
+					return d2oracle.ReconnectEdge(g, tc.edgeKey, newSrc, newDst)
+				},
+
+				exp:        tc.exp,
+				expErr:     tc.expErr,
+				assertions: tc.assertions,
+			}
+			et.run(t)
+		})
+	}
+}
+
 func TestRename(t *testing.T) {
 	t.Parallel()
 
@@ -1535,6 +1840,19 @@ func TestRename(t *testing.T) {
 			newName: `Square`,
 
 			exp: `Square
+`,
+		},
+		{
+			name: "generated-conflict",
+
+			text: `Square
+Square 2
+`,
+			key:     `Square 2`,
+			newName: `Square`,
+
+			exp: `Square
+Square 2
 `,
 		},
 		{
@@ -1888,7 +2206,7 @@ more.(ok.q.z -> p.k): "furbling, v.:"
 			key:     "1.2.3.4",
 			newName: "bic",
 
-			expErr: `failed to rename "1.2.3.4" to "bic": key referenced by from does not exist`,
+			expErr: `failed to rename "1.2.3.4" to "bic": key does not exist`,
 		},
 
 		{
@@ -1910,7 +2228,18 @@ more.(ok.q.z -> p.k): "furbling, v.:"
 			et := editTest{
 				text: tc.text,
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
-					return d2oracle.Rename(g, tc.key, tc.newName)
+					objectsBefore := len(g.Objects)
+					var err error
+					g, _, err = d2oracle.Rename(g, tc.key, tc.newName)
+					if err == nil {
+						objectsAfter := len(g.Objects)
+						if objectsBefore != objectsAfter {
+							t.Log(d2format.Format(g.AST))
+							return nil, fmt.Errorf("rename cannot destroy or create objects: found %d objects before and %d objects after", objectsBefore, objectsAfter)
+						}
+					}
+
+					return g, err
 				},
 
 				exp:        tc.exp,
@@ -1929,9 +2258,10 @@ func TestMove(t *testing.T) {
 		skip bool
 		name string
 
-		text   string
-		key    string
-		newKey string
+		text               string
+		key                string
+		newKey             string
+		includeDescendants bool
 
 		expErr     string
 		exp        string
@@ -2276,8 +2606,9 @@ a.b.icon: https://icons.terrastruct.com/essentials/142-target.svg
 			newKey: `b`,
 
 			exp: `a
-b.icon: https://icons.terrastruct.com/essentials/142-target.svg
+a
 b
+b.icon: https://icons.terrastruct.com/essentials/142-target.svg
 `,
 		},
 		{
@@ -2653,7 +2984,7 @@ y
 			newKey: `x.y`,
 
 			exp: `x: {
-  near: x.y
+  near: y
   y
 }
 `,
@@ -2680,6 +3011,22 @@ y
 			exp: `x: {
   near: a.y
 }
+a: {
+  y
+}
+`,
+		},
+		{
+			name: "flat_near",
+
+			text: `x.near: y
+a
+y
+`,
+			key:    `y`,
+			newKey: `a.y`,
+
+			exp: `x.near: a.y
 a: {
   y
 }
@@ -2991,6 +3338,22 @@ c
 
 			exp: `a: {
   _.c.b -> _.c
+}
+`,
+		},
+		{
+			name: "underscore_edge_container_6",
+
+			text: `x: {
+  _.y.a -> _.y.b
+}
+`,
+			key:                `y`,
+			newKey:             `x.y`,
+			includeDescendants: true,
+
+			exp: `x: {
+  y.a -> y.b
 }
 `,
 		},
@@ -3548,6 +3911,532 @@ Square 3: {
 }
 `,
 		},
+		{
+			name: "include_descendants_flat_1",
+			text: `x.y
+z
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x.y
+}
+`,
+		},
+		{
+			name: "include_descendants_flat_2",
+			text: `a.x.y
+a.z
+`,
+			key:                `a.x`,
+			newKey:             `a.z.x`,
+			includeDescendants: true,
+
+			exp: `a
+a.z: {
+  x.y
+}
+`,
+		},
+		{
+			name: "include_descendants_flat_3",
+			text: `a.x.y
+a.z
+`,
+			key:                `a.x`,
+			newKey:             `x`,
+			includeDescendants: true,
+
+			exp: `a
+a.z
+x.y
+`,
+		},
+		{
+			name: "include_descendants_flat_4",
+			text: `a.x.y
+a.z
+`,
+			key:                `a.x.y`,
+			newKey:             `y`,
+			includeDescendants: true,
+
+			exp: `a.x
+a.z
+y
+`,
+		},
+		{
+			name: "include_descendants_map_1",
+			text: `x: {
+  y
+}
+z
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x: {
+    y
+  }
+}
+`,
+		},
+		{
+			name: "include_descendants_map_2",
+			text: `x: {
+	y: {
+    c
+  }
+  y.b
+}
+x.y.b
+z
+`,
+			key:                `x.y`,
+			newKey:             `a`,
+			includeDescendants: true,
+
+			exp: `x
+x
+z
+a: {
+  c
+}
+a.b
+`,
+		},
+		{
+			name: "include_descendants_grandchild",
+			text: `x: {
+  y.a
+  y: {
+    b
+  }
+}
+z
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x: {
+    y.a
+    y: {
+      b
+    }
+  }
+}
+`,
+		},
+		{
+			name: "include_descendants_sql",
+			text: `x: {
+  shape: sql_table
+	a: b
+}
+z
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x: {
+    shape: sql_table
+    a: b
+  }
+}
+`,
+		},
+		{
+			name: "include_descendants_edge_child",
+			text: `x: {
+  a -> b
+}
+z
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x: {
+    a -> b
+  }
+}
+`,
+		},
+		{
+			name: "include_descendants_edge_ref_1",
+			text: `x
+z
+x.a -> x.b
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x
+}
+z.x.a -> z.x.b
+`,
+		},
+		{
+			name: "include_descendants_edge_ref_2",
+			text: `x -> y.z
+`,
+			key:                `y.z`,
+			newKey:             `z`,
+			includeDescendants: true,
+
+			exp: `x -> z
+y
+`,
+		},
+		{
+			name: "include_descendants_edge_ref_3",
+			text: `x -> y.z.a
+`,
+			key:                `y.z`,
+			newKey:             `z`,
+			includeDescendants: true,
+
+			exp: `x -> z.a
+y
+`,
+		},
+		{
+			name: "include_descendants_edge_ref_4",
+			text: `x -> y.z.a
+b
+`,
+			key:                `y.z`,
+			newKey:             `b.z`,
+			includeDescendants: true,
+
+			exp: `x -> b.z.a
+b
+y
+`,
+		},
+		{
+			name: "include_descendants_edge_ref_5",
+			text: `foo: {
+  x -> y.z.a
+  b
+}
+`,
+			key:                `foo.y.z`,
+			newKey:             `foo.b.z`,
+			includeDescendants: true,
+
+			exp: `foo: {
+  x -> b.z.a
+  b
+  y
+}
+`,
+		},
+		{
+			name: "include_descendants_edge_ref_6",
+			text: `x -> y
+z
+`,
+			key:                `y`,
+			newKey:             `z.y`,
+			includeDescendants: true,
+
+			exp: `x -> z.y
+z
+`,
+		},
+		{
+			name: "include_descendants_edge_ref_7",
+			text: `d.t -> d.np.s
+`,
+			key:                `d.np.s`,
+			newKey:             `d.s`,
+			includeDescendants: true,
+
+			exp: `d.t -> d.s
+d.np
+`,
+		},
+		{
+			name: "include_descendants_nested_1",
+			text: `y.z
+b
+`,
+			key:                `y.z`,
+			newKey:             `b.z`,
+			includeDescendants: true,
+
+			exp: `y
+b: {
+  z
+}
+`,
+		},
+		{
+			name: "include_descendants_nested_2",
+			text: `y.z
+y.b
+`,
+			key:                `y.z`,
+			newKey:             `y.b.z`,
+			includeDescendants: true,
+
+			exp: `y
+y.b: {
+  z
+}
+`,
+		},
+		{
+			name: "include_descendants_underscore",
+			text: `github.code -> local.dev
+
+github: {
+  _.local.dev -> _.aws.workflows
+  _.aws: {
+    workflows
+  }
+}
+`,
+			key:                `aws.workflows`,
+			newKey:             `github.workflows`,
+			includeDescendants: true,
+
+			exp: `github.code -> local.dev
+
+github: {
+  _.local.dev -> workflows
+  _.aws
+  workflows
+}
+`,
+		},
+		{
+			name: "include_descendants_underscore_2",
+			text: `a: {
+  b: {
+    _.c
+  }
+}
+`,
+			key:                `a.b`,
+			newKey:             `b`,
+			includeDescendants: true,
+
+			exp: `a
+b: {
+  _.a.c
+}
+`,
+		},
+		{
+			name: "include_descendants_underscore_3",
+			text: `a: {
+  b: {
+    _.c -> d
+		_.c -> _.d
+  }
+}
+`,
+			key:                `a.b`,
+			newKey:             `b`,
+			includeDescendants: true,
+
+			exp: `a
+b: {
+  _.a.c -> d
+  _.a.c -> _.a.d
+}
+`,
+		},
+		{
+			name: "include_descendants_edge_ref_underscore",
+			text: `x
+z
+x.a -> x.b
+b: {
+  _.x.a -> _.x.b
+}
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x
+}
+z.x.a -> z.x.b
+b: {
+  _.z.x.a -> _.z.x.b
+}
+`,
+		},
+		{
+			name: "include_descendants_near",
+			text: `x.y
+z
+a.near: x.y
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x.y
+}
+a.near: z.x.y
+`,
+		},
+		{
+			name: "include_descendants_conflict",
+			text: `x.y
+z.x
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x
+  x 2.y
+}
+`,
+		},
+		{
+			name: "include_descendants_non_conflict",
+			text: `x.y
+z.x
+y
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `z: {
+  x
+  x 2.y
+}
+y
+`,
+		},
+		{
+			name: "nested_reserved_2",
+			text: `A.B.C.shape: circle
+`,
+			key:    `A.B.C`,
+			newKey: `C`,
+
+			exp: `A.B
+C.shape: circle
+`,
+		},
+		{
+			name: "nested_reserved_3",
+			text: `A.B.C.shape: circle
+A.B: {
+  C
+  D
+}
+`,
+			key:    `A.B.C`,
+			newKey: `A.B.D.C`,
+
+			exp: `A.B
+A.B: {
+  D: {
+    C.shape: circle
+    C
+  }
+}
+`,
+		},
+		{
+			name: "include_descendants_nested_reserved_2",
+			text: `A.B.C.shape: circle
+`,
+			key:                `A.B.C`,
+			newKey:             `C`,
+			includeDescendants: true,
+
+			exp: `A.B
+C.shape: circle
+`,
+		},
+		{
+			name: "include_descendants_nested_reserved_3",
+			text: `A.B.C.shape: circle
+`,
+			key:                `A.B`,
+			newKey:             `C`,
+			includeDescendants: true,
+
+			exp: `A
+C.C.shape: circle
+`,
+		},
+		{
+			name: "include_descendants_move_out",
+			text: `a.b: {
+  c: {
+    d
+  }
+}
+`,
+			key:                `a.b`,
+			newKey:             `b`,
+			includeDescendants: true,
+
+			exp: `a
+b: {
+  c: {
+    d
+  }
+}
+`,
+		},
+		{
+			name: "include_descendants_underscore_regression",
+			text: `x: {
+  _.a
+}
+a
+`,
+			key:                `a`,
+			newKey:             `x.a`,
+			includeDescendants: true,
+
+			exp: `x: {
+  a
+}
+`,
+		},
+		{
+			name: "include_descendants_underscore_regression_2",
+			text: `x: {
+  _.a.b
+}
+`,
+			key:                `a`,
+			newKey:             `x.a`,
+			includeDescendants: true,
+
+			exp: `x: {
+  a.b
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -3563,7 +4452,7 @@ Square 3: {
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
 					objectsBefore := len(g.Objects)
 					var err error
-					g, err = d2oracle.Move(g, tc.key, tc.newKey)
+					g, err = d2oracle.Move(g, tc.key, tc.newKey, tc.includeDescendants)
 					if err == nil {
 						objectsAfter := len(g.Objects)
 						if objectsBefore != objectsAfter {
@@ -5136,7 +6025,25 @@ Text
 Text 2
 `,
 		},
+		{
+			name: "conflicts_generated_3",
+			text: `x: {
+  Square 2
+  Square 3
+}
 
+Square 2
+Square
+`,
+			key: `x`,
+
+			exp: `Square 4
+Square 3
+
+Square 2
+Square
+`,
+		},
 		{
 			name: "drop_value",
 			text: `a.b.c: "c label"
@@ -5300,15 +6207,237 @@ func (tc editTest) run(t *testing.T) {
 	assert.Success(t, err)
 }
 
-func TestMoveIDDeltas(t *testing.T) {
+func TestReconnectEdgeIDDeltas(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
 		name string
 
 		text   string
-		key    string
-		newKey string
+		edge   string
+		newSrc string
+		newDst string
+
+		exp    string
+		expErr string
+	}{
+		{
+			name: "basic",
+
+			text: `a -> b
+x
+`,
+			edge:   "(a -> b)[0]",
+			newDst: "x",
+
+			exp: `{
+  "(a -> b)[0]": "(a -> x)[0]"
+}`,
+		},
+		{
+			name: "both",
+			text: `a
+b
+c
+a -> b
+`,
+			edge:   `(a -> b)[0]`,
+			newSrc: "b",
+			newDst: "a",
+			exp: `{
+  "(a -> b)[0]": "(b -> a)[0]"
+}`,
+		},
+		{
+			name: "contained",
+
+			text: `a.x -> a.y
+a.z
+`,
+			edge:   "a.(x -> y)[0]",
+			newDst: "a.z",
+
+			exp: `{
+  "a.(x -> y)[0]": "a.(x -> z)[0]"
+}`,
+		},
+		{
+			name: "second_index",
+
+			text: `a -> b
+a -> b
+c
+`,
+			edge:   "(a -> b)[1]",
+			newDst: "c",
+
+			exp: `{
+  "(a -> b)[1]": "(a -> c)[0]"
+}`,
+		},
+		{
+			name: "old_sibling_decrement",
+
+			text: `a -> b
+a -> b
+c
+`,
+			edge:   "(a -> b)[0]",
+			newDst: "c",
+
+			exp: `{
+  "(a -> b)[0]": "(a -> c)[0]",
+  "(a -> b)[1]": "(a -> b)[0]"
+}`,
+		},
+		{
+			name: "new_sibling_increment",
+
+			text: `a -> b
+c -> b
+a -> b
+`,
+			edge:   "(c -> b)[0]",
+			newSrc: "a",
+
+			exp: `{
+  "(a -> b)[1]": "(a -> b)[2]",
+  "(c -> b)[0]": "(a -> b)[1]"
+}`,
+		},
+		{
+			name: "increment_and_decrement",
+
+			text: `a -> b
+c -> b
+c -> b
+a -> b
+`,
+			edge:   "(c -> b)[0]",
+			newSrc: "a",
+
+			exp: `{
+  "(a -> b)[1]": "(a -> b)[2]",
+  "(c -> b)[0]": "(a -> b)[1]",
+  "(c -> b)[1]": "(c -> b)[0]"
+}`,
+		},
+		{
+			name: "in_chain",
+
+			text: `a -> b -> a -> b
+c
+`,
+			edge:   "(a -> b)[0]",
+			newDst: "c",
+
+			exp: `{
+  "(a -> b)[0]": "(a -> c)[0]",
+  "(a -> b)[1]": "(a -> b)[0]"
+}`,
+		},
+		{
+			name: "in_chain_2",
+
+			text: `a -> b -> a -> b
+c
+`,
+			edge:   "(a -> b)[1]",
+			newDst: "c",
+
+			exp: `{
+  "(a -> b)[1]": "(a -> c)[0]"
+}`,
+		},
+		{
+			name: "in_chain_3",
+
+			text: `a -> b -> a -> c
+`,
+			edge:   "(a -> b)[0]",
+			newDst: "c",
+
+			exp: `{
+  "(a -> b)[0]": "(a -> c)[1]"
+}`,
+		},
+		{
+			name: "in_chain_4",
+
+			text: `a -> c -> a -> c
+b
+`,
+			edge:   "(a -> c)[0]",
+			newDst: "b",
+
+			exp: `{
+  "(a -> c)[0]": "(a -> b)[0]",
+  "(a -> c)[1]": "(a -> c)[0]"
+}`,
+		},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			d2Path := fmt.Sprintf("d2/testdata/d2oracle/%v.d2", t.Name())
+			g, err := d2compiler.Compile(d2Path, strings.NewReader(tc.text), nil)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			var newSrc *string
+			var newDst *string
+			if tc.newSrc != "" {
+				newSrc = &tc.newSrc
+			}
+			if tc.newDst != "" {
+				newDst = &tc.newDst
+			}
+
+			deltas, err := d2oracle.ReconnectEdgeIDDeltas(g, tc.edge, newSrc, newDst)
+			if tc.expErr != "" {
+				if err == nil {
+					t.Fatalf("expected error with: %q", tc.expErr)
+				}
+				ds, err := diff.Strings(tc.expErr, err.Error())
+				if err != nil {
+					t.Fatal(err)
+				}
+				if ds != "" {
+					t.Fatalf("unexpected error: %s", ds)
+				}
+			} else if err != nil {
+				t.Fatal(err)
+			}
+
+			if hasRepeatedValue(deltas) {
+				t.Fatalf("deltas set more than one value equal to another: %s", string(xjson.Marshal(deltas)))
+			}
+
+			ds, err := diff.Strings(tc.exp, string(xjson.Marshal(deltas)))
+			if err != nil {
+				t.Fatal(err)
+			}
+			if ds != "" {
+				t.Fatalf("unexpected deltas: %s", ds)
+			}
+		})
+	}
+}
+
+func TestMoveIDDeltas(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name string
+
+		text               string
+		key                string
+		newKey             string
+		includeDescendants bool
 
 		exp    string
 		expErr string
@@ -5515,6 +6644,197 @@ y
   "x 3.x 4": "x 5"
 }`,
 		},
+		{
+			name: "include_descendants_flat",
+
+			text: `x.y
+z
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `{
+  "x": "z.x",
+  "x.y": "z.x.y"
+}`,
+		},
+		{
+			name: "include_descendants_map",
+
+			text: `x: {
+  y
+}
+z
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `{
+  "x": "z.x",
+  "x.y": "z.x.y"
+}`,
+		},
+		{
+			name: "include_descendants_conflict",
+
+			text: `x.y
+z.x
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `{
+  "x": "z.x 2",
+  "x.y": "z.x 2.y"
+}`,
+		},
+		{
+			name: "include_descendants_non_conflict",
+
+			text: `x.y
+z.x
+y
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `{
+  "x": "z.x 2",
+  "x.y": "z.x 2.y"
+}`,
+		},
+		{
+			name: "include_descendants_edge_ref",
+			text: `x -> y.z
+`,
+			key:                `y.z`,
+			newKey:             `z`,
+			includeDescendants: true,
+
+			exp: `{
+  "(x -> y.z)[0]": "(x -> z)[0]",
+  "y.z": "z"
+}`,
+		},
+		{
+			name: "include_descendants_edge_ref_2",
+			text: `x -> y.z
+`,
+			key:                `y.z`,
+			newKey:             `z`,
+			includeDescendants: true,
+
+			exp: `{
+  "(x -> y.z)[0]": "(x -> z)[0]",
+  "y.z": "z"
+}`,
+		},
+		{
+			name: "include_descendants_edge_ref_3",
+			text: `x -> y.z.a
+`,
+			key:                `y.z`,
+			newKey:             `z`,
+			includeDescendants: true,
+
+			exp: `{
+  "(x -> y.z.a)[0]": "(x -> z.a)[0]",
+  "y.z": "z",
+  "y.z.a": "z.a"
+}`,
+		},
+		{
+			name: "include_descendants_edge_ref_4",
+			text: `x -> y.z.a
+b
+`,
+			key:                `y.z`,
+			newKey:             `b.z`,
+			includeDescendants: true,
+
+			exp: `{
+  "(x -> y.z.a)[0]": "(x -> b.z.a)[0]",
+  "y.z": "b.z",
+  "y.z.a": "b.z.a"
+}`,
+		},
+		{
+			name: "include_descendants_underscore_2",
+			text: `a: {
+  b: {
+    _.c
+  }
+}
+`,
+			key:                `a.b`,
+			newKey:             `b`,
+			includeDescendants: true,
+
+			exp: `{
+  "a.b": "b"
+}`,
+		},
+		{
+			name: "include_descendants_underscore_3",
+			text: `a: {
+  b: {
+    _.c -> d
+		_.c -> _.d
+  }
+}
+`,
+			key:                `a.b`,
+			newKey:             `b`,
+			includeDescendants: true,
+
+			exp: `{
+  "a.(c -> b.d)[0]": "(a.c -> b.d)[0]",
+  "a.b": "b",
+  "a.b.d": "b.d"
+}`,
+		},
+		{
+			name: "include_descendants_edge_ref_underscore",
+			text: `x
+z
+x.a -> x.b
+b: {
+  _.x.a -> _.x.b
+}
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `{
+  "x": "z.x",
+  "x.(a -> b)[0]": "z.x.(a -> b)[0]",
+  "x.(a -> b)[1]": "z.x.(a -> b)[1]",
+  "x.a": "z.x.a",
+  "x.b": "z.x.b"
+}`,
+		},
+		{
+			name: "include_descendants_sql_table",
+
+			text: `x: {
+  shape: sql_table
+  a: b
+}
+z
+`,
+			key:                `x`,
+			newKey:             `z.x`,
+			includeDescendants: true,
+
+			exp: `{
+  "x": "z.x"
+}`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -5528,7 +6848,7 @@ y
 				t.Fatal(err)
 			}
 
-			deltas, err := d2oracle.MoveIDDeltas(g, tc.key, tc.newKey)
+			deltas, err := d2oracle.MoveIDDeltas(g, tc.key, tc.newKey, tc.includeDescendants)
 			if tc.expErr != "" {
 				if err == nil {
 					t.Fatalf("expected error with: %q", tc.expErr)
@@ -5818,6 +7138,23 @@ Text 2
   "Text.Text 2": "Text"
 }`,
 		},
+		{
+			name: "conflicts_generated_3",
+			text: `x: {
+  Square 2
+  Square 3
+}
+
+Square 2
+Square
+`,
+			key: `x`,
+
+			exp: `{
+  "x.Square 2": "Square 4",
+  "x.Square 3": "Square 3"
+}`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -5936,6 +7273,17 @@ y
 			exp: `{
   "x": "y 2"
 }`,
+		},
+		{
+			name: "generated-conflict",
+
+			text: `Square
+Square 2
+`,
+			key:     `Square 2`,
+			newName: `Square`,
+
+			exp: `{}`,
 		},
 		{
 			name: "rename_conflict_with_dots",

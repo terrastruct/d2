@@ -7,7 +7,7 @@
       "id": "x",
       "type": "rectangle",
       "pos": {
-        "x": 12,
+        "x": 20,
         "y": 12
       },
       "width": 53,
@@ -49,7 +49,7 @@
       "type": "rectangle",
       "pos": {
         "x": 12,
-        "y": 239
+        "y": 254
       },
       "width": 54,
       "height": 66,
@@ -113,11 +113,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 39,
+          "x": 46.5,
           "y": 78
         },
         {
-          "x": 39,
+          "x": 46.5,
           "y": 239
         }
       ],

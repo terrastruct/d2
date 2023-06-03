@@ -1,0 +1,656 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,0:0:0-11:0:203",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,0:0:0-7:1:111",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,0:0:0-0:7:7",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,0:0:0-0:7:7",
+                    "value": [
+                      {
+                        "string": "classes",
+                        "raw_string": "classes"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,0:9:9-7:0:110",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,1:2:13-3:3:58",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,1:2:13-1:12:23",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,1:2:13-1:12:23",
+                              "value": [
+                                {
+                                  "string": "one target",
+                                  "raw_string": "one target"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,1:14:25-3:2:57",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,2:2:29-2:27:54",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,2:2:29-2:24:51",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,2:2:29-2:18:45",
+                                        "value": [
+                                          {
+                                            "string": "target-arrowhead",
+                                            "raw_string": "target-arrowhead"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,2:19:46-2:24:51",
+                                        "value": [
+                                          {
+                                            "string": "label",
+                                            "raw_string": "label"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "number": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,2:26:53-2:27:54",
+                                    "raw": "1",
+                                    "value": "1"
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,4:1:60-6:2:109",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,4:1:60-4:12:71",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,4:1:60-4:12:71",
+                              "value": [
+                                {
+                                  "string": "association",
+                                  "raw_string": "association"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,4:14:73-6:1:108",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,5:2:77-5:31:106",
+                                "key": {
+                                  "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,5:2:77-5:24:99",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,5:2:77-5:18:93",
+                                        "value": [
+                                          {
+                                            "string": "target-arrowhead",
+                                            "raw_string": "target-arrowhead"
+                                          }
+                                        ]
+                                      }
+                                    },
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,5:19:94-5:24:99",
+                                        "value": [
+                                          {
+                                            "string": "shape",
+                                            "raw_string": "shape"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,5:26:101-5:31:106",
+                                    "value": [
+                                      {
+                                        "string": "arrow",
+                                        "raw_string": "arrow"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:0:113-9:44:157",
+            "edges": [
+              {
+                "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:0:113-9:6:119",
+                "src": {
+                  "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:0:113-9:1:114",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:0:113-9:1:114",
+                        "value": [
+                          {
+                            "string": "a",
+                            "raw_string": "a"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:5:118-9:6:119",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:5:118-9:6:119",
+                        "value": [
+                          {
+                            "string": "b",
+                            "raw_string": "b"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:8:121-9:43:156",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:10:123-9:42:155",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:10:123-9:15:128",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:10:123-9:15:128",
+                              "value": [
+                                {
+                                  "string": "class",
+                                  "raw_string": "class"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "array": {
+                          "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:17:130-9:41:154",
+                          "nodes": [
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:18:131-9:28:141",
+                                "value": [
+                                  {
+                                    "string": "one target",
+                                    "raw_string": "one target"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:30:143-9:41:154",
+                                "value": [
+                                  {
+                                    "string": "association",
+                                    "raw_string": "association"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:0:158-10:44:202",
+            "edges": [
+              {
+                "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:0:158-10:6:164",
+                "src": {
+                  "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:0:158-10:1:159",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:0:158-10:1:159",
+                        "value": [
+                          {
+                            "string": "a",
+                            "raw_string": "a"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "src_arrow": "",
+                "dst": {
+                  "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:5:163-10:6:164",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:5:163-10:6:164",
+                        "value": [
+                          {
+                            "string": "b",
+                            "raw_string": "b"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "dst_arrow": ">"
+              }
+            ],
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:8:166-10:43:201",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:10:168-10:42:200",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:10:168-10:15:173",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:10:168-10:15:173",
+                              "value": [
+                                {
+                                  "string": "class",
+                                  "raw_string": "class"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "array": {
+                          "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:17:175-10:41:199",
+                          "nodes": [
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:18:176-10:29:187",
+                                "value": [
+                                  {
+                                    "string": "association",
+                                    "raw_string": "association"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:31:189-10:41:199",
+                                "value": [
+                                  {
+                                    "string": "one target",
+                                    "raw_string": "one target"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": [
+      {
+        "index": 0,
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "dstArrowhead": {
+          "label": {
+            "value": "1"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "arrow"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "index": 1,
+        "isCurve": false,
+        "src_arrow": false,
+        "dst_arrow": true,
+        "dstArrowhead": {
+          "label": {
+            "value": "1"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "arrow"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "references": [
+          {
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": ""
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": ""
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ],
+    "objects": [
+      {
+        "id": "a",
+        "id_val": "a",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:0:113-9:1:114",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:0:113-9:1:114",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:0:158-10:1:159",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:0:158-10:1:159",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "a"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "b",
+        "id_val": "b",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:5:118-9:6:119",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:5:118-9:6:119",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          },
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:5:163-10:6:164",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:5:163-10:6:164",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": 0
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "b"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}

@@ -14,7 +14,7 @@
             ]
           },
           "key_path": {
-            "range": "TestCompile/scenarios/edge.d2,0:0:0-0:2:2",
+            "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
             "path": [
               {
                 "unquoted_string": {
@@ -33,7 +33,7 @@
             "edge": {
               "range": "TestCompile/scenarios/edge.d2,0:0:0-0:6:6",
               "src": {
-                "range": "TestCompile/scenarios/edge.d2,0:0:0-0:2:2",
+                "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
                 "path": [
                   {
                     "unquoted_string": {
@@ -50,7 +50,7 @@
               },
               "src_arrow": "",
               "dst": {
-                "range": "TestCompile/scenarios/edge.d2,0:4:4-0:6:6",
+                "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
                 "path": [
                   {
                     "unquoted_string": {
@@ -73,7 +73,7 @@
                 {
                   "range": "TestCompile/scenarios/edge.d2,0:0:0-0:6:6",
                   "src": {
-                    "range": "TestCompile/scenarios/edge.d2,0:0:0-0:2:2",
+                    "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
                     "path": [
                       {
                         "unquoted_string": {
@@ -90,7 +90,7 @@
                   },
                   "src_arrow": "",
                   "dst": {
-                    "range": "TestCompile/scenarios/edge.d2,0:4:4-0:6:6",
+                    "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
                     "path": [
                       {
                         "unquoted_string": {
@@ -129,7 +129,7 @@
             ]
           },
           "key_path": {
-            "range": "TestCompile/scenarios/edge.d2,0:4:4-0:6:6",
+            "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
             "path": [
               {
                 "unquoted_string": {
@@ -148,7 +148,7 @@
             "edge": {
               "range": "TestCompile/scenarios/edge.d2,0:0:0-0:6:6",
               "src": {
-                "range": "TestCompile/scenarios/edge.d2,0:0:0-0:2:2",
+                "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
                 "path": [
                   {
                     "unquoted_string": {
@@ -165,7 +165,7 @@
               },
               "src_arrow": "",
               "dst": {
-                "range": "TestCompile/scenarios/edge.d2,0:4:4-0:6:6",
+                "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
                 "path": [
                   {
                     "unquoted_string": {
@@ -188,7 +188,7 @@
                 {
                   "range": "TestCompile/scenarios/edge.d2,0:0:0-0:6:6",
                   "src": {
-                    "range": "TestCompile/scenarios/edge.d2,0:0:0-0:2:2",
+                    "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
                     "path": [
                       {
                         "unquoted_string": {
@@ -205,7 +205,7 @@
                   },
                   "src_arrow": "",
                   "dst": {
-                    "range": "TestCompile/scenarios/edge.d2,0:4:4-0:6:6",
+                    "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
                     "path": [
                       {
                         "unquoted_string": {
@@ -252,7 +252,7 @@
                         ]
                       },
                       "key_path": {
-                        "range": "TestCompile/scenarios/edge.d2,0:0:0-0:2:2",
+                        "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
                         "path": [
                           {
                             "unquoted_string": {
@@ -271,7 +271,7 @@
                         "edge": {
                           "range": "TestCompile/scenarios/edge.d2,0:0:0-0:6:6",
                           "src": {
-                            "range": "TestCompile/scenarios/edge.d2,0:0:0-0:2:2",
+                            "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -288,7 +288,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "TestCompile/scenarios/edge.d2,0:4:4-0:6:6",
+                            "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -311,7 +311,7 @@
                             {
                               "range": "TestCompile/scenarios/edge.d2,0:0:0-0:6:6",
                               "src": {
-                                "range": "TestCompile/scenarios/edge.d2,0:0:0-0:2:2",
+                                "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -328,7 +328,7 @@
                               },
                               "src_arrow": "",
                               "dst": {
-                                "range": "TestCompile/scenarios/edge.d2,0:4:4-0:6:6",
+                                "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -362,7 +362,7 @@
                         ]
                       },
                       "key_path": {
-                        "range": "TestCompile/scenarios/edge.d2,3:5:32-3:7:34",
+                        "range": "TestCompile/scenarios/edge.d2,3:5:32-3:6:33",
                         "path": [
                           {
                             "unquoted_string": {
@@ -381,7 +381,7 @@
                         "edge": {
                           "range": "TestCompile/scenarios/edge.d2,3:5:32-3:11:38",
                           "src": {
-                            "range": "TestCompile/scenarios/edge.d2,3:5:32-3:7:34",
+                            "range": "TestCompile/scenarios/edge.d2,3:5:32-3:6:33",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -398,7 +398,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "TestCompile/scenarios/edge.d2,3:9:36-3:11:38",
+                            "range": "TestCompile/scenarios/edge.d2,3:10:37-3:11:38",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -421,7 +421,7 @@
                             {
                               "range": "TestCompile/scenarios/edge.d2,3:5:32-3:11:38",
                               "src": {
-                                "range": "TestCompile/scenarios/edge.d2,3:5:32-3:7:34",
+                                "range": "TestCompile/scenarios/edge.d2,3:5:32-3:6:33",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -438,7 +438,7 @@
                               },
                               "src_arrow": "",
                               "dst": {
-                                "range": "TestCompile/scenarios/edge.d2,3:9:36-3:11:38",
+                                "range": "TestCompile/scenarios/edge.d2,3:10:37-3:11:38",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -515,7 +515,7 @@
                         ]
                       },
                       "key_path": {
-                        "range": "TestCompile/scenarios/edge.d2,0:4:4-0:6:6",
+                        "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
                         "path": [
                           {
                             "unquoted_string": {
@@ -534,7 +534,7 @@
                         "edge": {
                           "range": "TestCompile/scenarios/edge.d2,0:0:0-0:6:6",
                           "src": {
-                            "range": "TestCompile/scenarios/edge.d2,0:0:0-0:2:2",
+                            "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -551,7 +551,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "TestCompile/scenarios/edge.d2,0:4:4-0:6:6",
+                            "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -574,7 +574,7 @@
                             {
                               "range": "TestCompile/scenarios/edge.d2,0:0:0-0:6:6",
                               "src": {
-                                "range": "TestCompile/scenarios/edge.d2,0:0:0-0:2:2",
+                                "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -591,7 +591,7 @@
                               },
                               "src_arrow": "",
                               "dst": {
-                                "range": "TestCompile/scenarios/edge.d2,0:4:4-0:6:6",
+                                "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -625,7 +625,7 @@
                         ]
                       },
                       "key_path": {
-                        "range": "TestCompile/scenarios/edge.d2,3:9:36-3:11:38",
+                        "range": "TestCompile/scenarios/edge.d2,3:10:37-3:11:38",
                         "path": [
                           {
                             "unquoted_string": {
@@ -644,7 +644,7 @@
                         "edge": {
                           "range": "TestCompile/scenarios/edge.d2,3:5:32-3:11:38",
                           "src": {
-                            "range": "TestCompile/scenarios/edge.d2,3:5:32-3:7:34",
+                            "range": "TestCompile/scenarios/edge.d2,3:5:32-3:6:33",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -661,7 +661,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "TestCompile/scenarios/edge.d2,3:9:36-3:11:38",
+                            "range": "TestCompile/scenarios/edge.d2,3:10:37-3:11:38",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -684,7 +684,7 @@
                             {
                               "range": "TestCompile/scenarios/edge.d2,3:5:32-3:11:38",
                               "src": {
-                                "range": "TestCompile/scenarios/edge.d2,3:5:32-3:7:34",
+                                "range": "TestCompile/scenarios/edge.d2,3:5:32-3:6:33",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -701,7 +701,7 @@
                               },
                               "src_arrow": "",
                               "dst": {
-                                "range": "TestCompile/scenarios/edge.d2,3:9:36-3:11:38",
+                                "range": "TestCompile/scenarios/edge.d2,3:10:37-3:11:38",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -835,7 +835,7 @@
                                     "edge": {
                                       "range": "TestCompile/scenarios/edge.d2,3:5:32-3:11:38",
                                       "src": {
-                                        "range": "TestCompile/scenarios/edge.d2,3:5:32-3:7:34",
+                                        "range": "TestCompile/scenarios/edge.d2,3:5:32-3:6:33",
                                         "path": [
                                           {
                                             "unquoted_string": {
@@ -852,7 +852,7 @@
                                       },
                                       "src_arrow": "",
                                       "dst": {
-                                        "range": "TestCompile/scenarios/edge.d2,3:9:36-3:11:38",
+                                        "range": "TestCompile/scenarios/edge.d2,3:10:37-3:11:38",
                                         "path": [
                                           {
                                             "unquoted_string": {
@@ -875,7 +875,7 @@
                                         {
                                           "range": "TestCompile/scenarios/edge.d2,3:5:32-3:11:38",
                                           "src": {
-                                            "range": "TestCompile/scenarios/edge.d2,3:5:32-3:7:34",
+                                            "range": "TestCompile/scenarios/edge.d2,3:5:32-3:6:33",
                                             "path": [
                                               {
                                                 "unquoted_string": {
@@ -892,7 +892,7 @@
                                           },
                                           "src_arrow": "",
                                           "dst": {
-                                            "range": "TestCompile/scenarios/edge.d2,3:9:36-3:11:38",
+                                            "range": "TestCompile/scenarios/edge.d2,3:10:37-3:11:38",
                                             "path": [
                                               {
                                                 "unquoted_string": {
@@ -1000,7 +1000,7 @@
                               "edge": {
                                 "range": "TestCompile/scenarios/edge.d2,3:5:32-3:11:38",
                                 "src": {
-                                  "range": "TestCompile/scenarios/edge.d2,3:5:32-3:7:34",
+                                  "range": "TestCompile/scenarios/edge.d2,3:5:32-3:6:33",
                                   "path": [
                                     {
                                       "unquoted_string": {
@@ -1017,7 +1017,7 @@
                                 },
                                 "src_arrow": "",
                                 "dst": {
-                                  "range": "TestCompile/scenarios/edge.d2,3:9:36-3:11:38",
+                                  "range": "TestCompile/scenarios/edge.d2,3:10:37-3:11:38",
                                   "path": [
                                     {
                                       "unquoted_string": {
@@ -1040,7 +1040,7 @@
                                   {
                                     "range": "TestCompile/scenarios/edge.d2,3:5:32-3:11:38",
                                     "src": {
-                                      "range": "TestCompile/scenarios/edge.d2,3:5:32-3:7:34",
+                                      "range": "TestCompile/scenarios/edge.d2,3:5:32-3:6:33",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -1057,7 +1057,7 @@
                                     },
                                     "src_arrow": "",
                                     "dst": {
-                                      "range": "TestCompile/scenarios/edge.d2,3:9:36-3:11:38",
+                                      "range": "TestCompile/scenarios/edge.d2,3:10:37-3:11:38",
                                       "path": [
                                         {
                                           "unquoted_string": {
@@ -1129,7 +1129,7 @@
                         "edge": {
                           "range": "TestCompile/scenarios/edge.d2,0:0:0-0:6:6",
                           "src": {
-                            "range": "TestCompile/scenarios/edge.d2,0:0:0-0:2:2",
+                            "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -1146,7 +1146,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "TestCompile/scenarios/edge.d2,0:4:4-0:6:6",
+                            "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -1169,7 +1169,7 @@
                             {
                               "range": "TestCompile/scenarios/edge.d2,0:0:0-0:6:6",
                               "src": {
-                                "range": "TestCompile/scenarios/edge.d2,0:0:0-0:2:2",
+                                "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -1186,7 +1186,7 @@
                               },
                               "src_arrow": "",
                               "dst": {
-                                "range": "TestCompile/scenarios/edge.d2,0:4:4-0:6:6",
+                                "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -1214,7 +1214,7 @@
                         "edge": {
                           "range": "TestCompile/scenarios/edge.d2,3:5:32-3:11:38",
                           "src": {
-                            "range": "TestCompile/scenarios/edge.d2,3:5:32-3:7:34",
+                            "range": "TestCompile/scenarios/edge.d2,3:5:32-3:6:33",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -1231,7 +1231,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "TestCompile/scenarios/edge.d2,3:9:36-3:11:38",
+                            "range": "TestCompile/scenarios/edge.d2,3:10:37-3:11:38",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -1254,7 +1254,7 @@
                             {
                               "range": "TestCompile/scenarios/edge.d2,3:5:32-3:11:38",
                               "src": {
-                                "range": "TestCompile/scenarios/edge.d2,3:5:32-3:7:34",
+                                "range": "TestCompile/scenarios/edge.d2,3:5:32-3:6:33",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -1271,7 +1271,7 @@
                               },
                               "src_arrow": "",
                               "dst": {
-                                "range": "TestCompile/scenarios/edge.d2,3:9:36-3:11:38",
+                                "range": "TestCompile/scenarios/edge.d2,3:10:37-3:11:38",
                                 "path": [
                                   {
                                     "unquoted_string": {
@@ -1395,7 +1395,7 @@
                                 {
                                   "range": "TestCompile/scenarios/edge.d2,3:5:32-3:11:38",
                                   "src": {
-                                    "range": "TestCompile/scenarios/edge.d2,3:5:32-3:7:34",
+                                    "range": "TestCompile/scenarios/edge.d2,3:5:32-3:6:33",
                                     "path": [
                                       {
                                         "unquoted_string": {
@@ -1412,7 +1412,7 @@
                                   },
                                   "src_arrow": "",
                                   "dst": {
-                                    "range": "TestCompile/scenarios/edge.d2,3:9:36-3:11:38",
+                                    "range": "TestCompile/scenarios/edge.d2,3:10:37-3:11:38",
                                     "path": [
                                       {
                                         "unquoted_string": {
@@ -1566,7 +1566,7 @@
                                     {
                                       "range": "TestCompile/scenarios/edge.d2,3:5:32-3:11:38",
                                       "src": {
-                                        "range": "TestCompile/scenarios/edge.d2,3:5:32-3:7:34",
+                                        "range": "TestCompile/scenarios/edge.d2,3:5:32-3:6:33",
                                         "path": [
                                           {
                                             "unquoted_string": {
@@ -1583,7 +1583,7 @@
                                       },
                                       "src_arrow": "",
                                       "dst": {
-                                        "range": "TestCompile/scenarios/edge.d2,3:9:36-3:11:38",
+                                        "range": "TestCompile/scenarios/edge.d2,3:10:37-3:11:38",
                                         "path": [
                                           {
                                             "unquoted_string": {
@@ -1676,7 +1676,7 @@
             "edge": {
               "range": "TestCompile/scenarios/edge.d2,0:0:0-0:6:6",
               "src": {
-                "range": "TestCompile/scenarios/edge.d2,0:0:0-0:2:2",
+                "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
                 "path": [
                   {
                     "unquoted_string": {
@@ -1693,7 +1693,7 @@
               },
               "src_arrow": "",
               "dst": {
-                "range": "TestCompile/scenarios/edge.d2,0:4:4-0:6:6",
+                "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
                 "path": [
                   {
                     "unquoted_string": {
@@ -1716,7 +1716,7 @@
                 {
                   "range": "TestCompile/scenarios/edge.d2,0:0:0-0:6:6",
                   "src": {
-                    "range": "TestCompile/scenarios/edge.d2,0:0:0-0:2:2",
+                    "range": "TestCompile/scenarios/edge.d2,0:0:0-0:1:1",
                     "path": [
                       {
                         "unquoted_string": {
@@ -1733,7 +1733,7 @@
                   },
                   "src_arrow": "",
                   "dst": {
-                    "range": "TestCompile/scenarios/edge.d2,0:4:4-0:6:6",
+                    "range": "TestCompile/scenarios/edge.d2,0:5:5-0:6:6",
                     "path": [
                       {
                         "unquoted_string": {

@@ -1,6 +1,7 @@
 package d2graph
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -1054,6 +1055,45 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 	return &dims, nil
 }
 
+// resizes the object to fit content of the given width and height in its inner box with the given padding.
+// this accounts for the shape of the object, and if there is a desired width or height set for the object
+func (obj *Object) SizeToContent(contentWidth, contentHeight, paddingX, paddingY float64) {
+	var desiredWidth int
+	var desiredHeight int
+	if obj.WidthAttr != nil {
+		desiredWidth, _ = strconv.Atoi(obj.WidthAttr.Value)
+	}
+	if obj.HeightAttr != nil {
+		desiredHeight, _ = strconv.Atoi(obj.HeightAttr.Value)
+	}
+
+	dslShape := strings.ToLower(obj.Shape.Value)
+	shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
+	s := shape.NewShape(shapeType, geo.NewBox(geo.NewPoint(0, 0), contentWidth, contentHeight))
+
+	var fitWidth, fitHeight float64
+	if shapeType == shape.PERSON_TYPE {
+		fitWidth = contentWidth + paddingX
+		fitHeight = contentHeight + paddingY
+	} else {
+		fitWidth, fitHeight = s.GetDimensionsToFit(contentWidth, contentHeight, paddingX, paddingY)
+	}
+	obj.Width = math.Max(float64(desiredWidth), fitWidth)
+	obj.Height = math.Max(float64(desiredHeight), fitHeight)
+	if s.AspectRatio1() {
+		sideLength := math.Max(obj.Width, obj.Height)
+		obj.Width = sideLength
+		obj.Height = sideLength
+	} else if desiredHeight == 0 || desiredWidth == 0 {
+		switch s.GetType() {
+		case shape.PERSON_TYPE:
+			obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.PERSON_AR_LIMIT)
+		case shape.OVAL_TYPE:
+			obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.OVAL_AR_LIMIT)
+		}
+	}
+}
+
 func (obj *Object) OuterNearContainer() *Object {
 	for obj != nil {
 		if obj.NearKey != nil {
@@ -1437,7 +1477,6 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 		contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(defaultDims.Width), float64(defaultDims.Height))
 		shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
 		s := shape.NewShape(shapeType, contentBox)
-
 		paddingX, paddingY := s.GetDefaultPadding()
 		if desiredWidth != 0 {
 			paddingX = 0.
@@ -1470,27 +1509,7 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 			}
 		}
 
-		var fitWidth, fitHeight float64
-		if shapeType == shape.PERSON_TYPE {
-			fitWidth = contentBox.Width + paddingX
-			fitHeight = contentBox.Height + paddingY
-		} else {
-			fitWidth, fitHeight = s.GetDimensionsToFit(contentBox.Width, contentBox.Height, paddingX, paddingY)
-		}
-		obj.Width = math.Max(float64(desiredWidth), fitWidth)
-		obj.Height = math.Max(float64(desiredHeight), fitHeight)
-		if s.AspectRatio1() {
-			sideLength := math.Max(obj.Width, obj.Height)
-			obj.Width = sideLength
-			obj.Height = sideLength
-		} else if desiredHeight == 0 || desiredWidth == 0 {
-			switch s.GetType() {
-			case shape.PERSON_TYPE:
-				obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.PERSON_AR_LIMIT)
-			case shape.OVAL_TYPE:
-				obj.Width, obj.Height = shape.LimitAR(obj.Width, obj.Height, shape.OVAL_AR_LIMIT)
-			}
-		}
+		obj.SizeToContent(contentBox.Width, contentBox.Height, paddingX, paddingY)
 	}
 	for _, edge := range g.Edges {
 		usedFont := fontFamily
@@ -1601,9 +1620,6 @@ func Key(k *d2ast.KeyPath) []string {
 // All reserved keywords. See init below.
 var ReservedKeywords map[string]struct{}
 
-// All reserved keywords not including style keywords.
-var ReservedKeywords2 map[string]struct{}
-
 // Non Style/Holder keywords.
 var SimpleReservedKeywords = map[string]struct{}{
 	"label":          {},
@@ -1625,14 +1641,18 @@ var SimpleReservedKeywords = map[string]struct{}{
 	"vertical-gap":   {},
 	"horizontal-gap": {},
 	"class":          {},
-	"classes":        {},
 }
 
-// ReservedKeywordHolders are reserved keywords that are meaningless on its own and exist solely to hold a set of reserved keywords
+// ReservedKeywordHolders are reserved keywords that are meaningless on its own and must hold composites
 var ReservedKeywordHolders = map[string]struct{}{
 	"style":            {},
 	"source-arrowhead": {},
 	"target-arrowhead": {},
+}
+
+// CompositeReservedKeywords are reserved keywords that can hold composites
+var CompositeReservedKeywords = map[string]struct{}{
+	"classes": {},
 }
 
 // StyleKeywords are reserved keywords which cannot exist outside of the "style" keyword
@@ -1708,21 +1728,13 @@ func init() {
 		ReservedKeywords[k] = v
 	}
 	for k, v := range ReservedKeywordHolders {
-		ReservedKeywords[k] = v
+		CompositeReservedKeywords[k] = v
 	}
 	for k, v := range BoardKeywords {
+		CompositeReservedKeywords[k] = v
+	}
+	for k, v := range CompositeReservedKeywords {
 		ReservedKeywords[k] = v
-	}
-
-	ReservedKeywords2 = make(map[string]struct{})
-	for k, v := range SimpleReservedKeywords {
-		ReservedKeywords2[k] = v
-	}
-	for k, v := range ReservedKeywordHolders {
-		ReservedKeywords2[k] = v
-	}
-	for k, v := range BoardKeywords {
-		ReservedKeywords2[k] = v
 	}
 
 	NearConstants = make(map[string]struct{}, len(NearConstantsArray))
@@ -1798,4 +1810,29 @@ func (g *Graph) ApplyTheme(themeID int64) error {
 	}
 	g.Theme = &theme
 	return nil
+}
+
+func (g *Graph) PrintString() string {
+	buf := &bytes.Buffer{}
+	fmt.Fprint(buf, "Objects: [")
+	for _, obj := range g.Objects {
+		fmt.Fprintf(buf, "%#v @(%v)", obj.AbsID(), obj.TopLeft.ToString())
+	}
+	fmt.Fprint(buf, "]")
+	return buf.String()
+}
+
+func (obj *Object) IterDescendants(apply func(parent, child *Object)) {
+	for _, c := range obj.ChildrenArray {
+		apply(obj, c)
+		c.IterDescendants(apply)
+	}
+}
+
+func (obj *Object) IsMultiple() bool {
+	return obj.Style.Multiple != nil && obj.Style.Multiple.Value == "true"
+}
+
+func (obj *Object) Is3D() bool {
+	return obj.Style.ThreeDee != nil && obj.Style.ThreeDee.Value == "true"
 }

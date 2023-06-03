@@ -64,7 +64,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestMove/edge_into_container.d2,3:0:11-3:8:19",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/edge_into_container.d2,3:0:11-3:4:15",
+                  "range": "d2/testdata/d2oracle/TestMove/edge_into_container.d2,3:0:11-3:3:14",
                   "path": [
                     {
                       "unquoted_string": {
@@ -92,7 +92,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/edge_into_container.d2,3:6:17-3:8:19",
+                  "range": "d2/testdata/d2oracle/TestMove/edge_into_container.d2,3:7:18-3:8:19",
                   "path": [
                     {
                       "unquoted_string": {
@@ -202,7 +202,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/edge_into_container.d2,3:0:11-3:4:15",
+              "range": "d2/testdata/d2oracle/TestMove/edge_into_container.d2,3:0:11-3:3:14",
               "path": [
                 {
                   "unquoted_string": {
@@ -307,7 +307,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/edge_into_container.d2,3:0:11-3:4:15",
+              "range": "d2/testdata/d2oracle/TestMove/edge_into_container.d2,3:0:11-3:3:14",
               "path": [
                 {
                   "unquoted_string": {
@@ -365,7 +365,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/edge_into_container.d2,3:6:17-3:8:19",
+              "range": "d2/testdata/d2oracle/TestMove/edge_into_container.d2,3:7:18-3:8:19",
               "path": [
                 {
                   "unquoted_string": {

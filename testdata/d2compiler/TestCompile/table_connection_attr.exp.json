@@ -182,7 +182,7 @@
               {
                 "range": "d2/testdata/d2compiler/TestCompile/table_connection_attr.d2,8:0:60-8:10:70",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile/table_connection_attr.d2,8:0:60-8:4:64",
+                  "range": "d2/testdata/d2compiler/TestCompile/table_connection_attr.d2,8:0:60-8:3:63",
                   "path": [
                     {
                       "unquoted_string": {
@@ -210,7 +210,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile/table_connection_attr.d2,8:6:66-8:10:70",
+                  "range": "d2/testdata/d2compiler/TestCompile/table_connection_attr.d2,8:7:67-8:10:70",
                   "path": [
                     {
                       "unquoted_string": {
@@ -382,7 +382,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/table_connection_attr.d2,8:0:60-8:4:64",
+              "range": "d2/testdata/d2compiler/TestCompile/table_connection_attr.d2,8:0:60-8:3:63",
               "path": [
                 {
                   "unquoted_string": {
@@ -492,7 +492,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/table_connection_attr.d2,8:6:66-8:10:70",
+              "range": "d2/testdata/d2compiler/TestCompile/table_connection_attr.d2,8:7:67-8:10:70",
               "path": [
                 {
                   "unquoted_string": {

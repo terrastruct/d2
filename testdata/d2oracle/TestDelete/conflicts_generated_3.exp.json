@@ -1,0 +1,320 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,0:0:0-5:0:35",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,0:0:0-0:8:8",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,0:0:0-0:8:8",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,0:0:0-0:8:8",
+                    "value": [
+                      {
+                        "string": "Square 4",
+                        "raw_string": "Square 4"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,1:0:9-1:8:17",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,1:0:9-1:8:17",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,1:0:9-1:8:17",
+                    "value": [
+                      {
+                        "string": "Square 3",
+                        "raw_string": "Square 3"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,3:0:19-3:8:27",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,3:0:19-3:8:27",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,3:0:19-3:8:27",
+                    "value": [
+                      {
+                        "string": "Square 2",
+                        "raw_string": "Square 2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,4:0:28-4:6:34",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,4:0:28-4:6:34",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,4:0:28-4:6:34",
+                    "value": [
+                      {
+                        "string": "Square",
+                        "raw_string": "Square"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": {
+          "value": ""
+        }
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "Square 4",
+        "id_val": "Square 4",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,0:0:0-0:8:8",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,0:0:0-0:8:8",
+                    "value": [
+                      {
+                        "string": "Square 4",
+                        "raw_string": "Square 4"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Square 4"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "Square 3",
+        "id_val": "Square 3",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,1:0:9-1:8:17",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,1:0:9-1:8:17",
+                    "value": [
+                      {
+                        "string": "Square 3",
+                        "raw_string": "Square 3"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Square 3"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "Square 2",
+        "id_val": "Square 2",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,3:0:19-3:8:27",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,3:0:19-3:8:27",
+                    "value": [
+                      {
+                        "string": "Square 2",
+                        "raw_string": "Square 2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Square 2"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "Square",
+        "id_val": "Square",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,4:0:28-4:6:34",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestDelete/conflicts_generated_3.d2,4:0:28-4:6:34",
+                    "value": [
+                      {
+                        "string": "Square",
+                        "raw_string": "Square"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Square"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": {
+            "value": ""
+          }
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": "<nil>"
+}

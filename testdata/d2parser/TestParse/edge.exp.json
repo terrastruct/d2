@@ -9,7 +9,7 @@
             {
               "range": "d2/testdata/d2parser/TestParse/edge.d2,1:0:1-1:6:7",
               "src": {
-                "range": "d2/testdata/d2parser/TestParse/edge.d2,1:0:1-1:2:3",
+                "range": "d2/testdata/d2parser/TestParse/edge.d2,1:0:1-1:1:2",
                 "path": [
                   {
                     "unquoted_string": {
@@ -26,7 +26,7 @@
               },
               "src_arrow": "",
               "dst": {
-                "range": "d2/testdata/d2parser/TestParse/edge.d2,1:4:5-1:6:7",
+                "range": "d2/testdata/d2parser/TestParse/edge.d2,1:5:6-1:6:7",
                 "path": [
                   {
                     "unquoted_string": {

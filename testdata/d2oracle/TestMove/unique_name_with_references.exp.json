@@ -87,7 +87,7 @@
               {
                 "range": "d2/testdata/d2oracle/TestMove/unique_name_with_references.d2,4:0:17-4:10:27",
                 "src": {
-                  "range": "d2/testdata/d2oracle/TestMove/unique_name_with_references.d2,4:0:17-4:2:19",
+                  "range": "d2/testdata/d2oracle/TestMove/unique_name_with_references.d2,4:0:17-4:1:18",
                   "path": [
                     {
                       "unquoted_string": {
@@ -104,7 +104,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2oracle/TestMove/unique_name_with_references.d2,4:4:21-4:10:27",
+                  "range": "d2/testdata/d2oracle/TestMove/unique_name_with_references.d2,4:5:22-4:10:27",
                   "path": [
                     {
                       "unquoted_string": {
@@ -248,7 +248,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/unique_name_with_references.d2,4:4:21-4:10:27",
+              "range": "d2/testdata/d2oracle/TestMove/unique_name_with_references.d2,4:5:22-4:10:27",
               "path": [
                 {
                   "unquoted_string": {
@@ -373,7 +373,7 @@
           },
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/unique_name_with_references.d2,4:4:21-4:10:27",
+              "range": "d2/testdata/d2oracle/TestMove/unique_name_with_references.d2,4:5:22-4:10:27",
               "path": [
                 {
                   "unquoted_string": {
@@ -431,7 +431,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestMove/unique_name_with_references.d2,4:0:17-4:2:19",
+              "range": "d2/testdata/d2oracle/TestMove/unique_name_with_references.d2,4:0:17-4:1:18",
               "path": [
                 {
                   "unquoted_string": {

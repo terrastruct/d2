@@ -45,7 +45,7 @@
               {
                 "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:0:17-1:6:23",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:0:17-1:2:19",
+                  "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:0:17-1:1:18",
                   "path": [
                     {
                       "unquoted_string": {
@@ -62,7 +62,7 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:4:21-1:6:23",
+                  "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:5:22-1:6:23",
                   "path": [
                     {
                       "unquoted_string": {
@@ -344,7 +344,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:0:17-1:2:19",
+              "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:0:17-1:1:18",
               "path": [
                 {
                   "unquoted_string": {
@@ -437,7 +437,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:4:21-1:6:23",
+              "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:5:22-1:6:23",
               "path": [
                 {
                   "unquoted_string": {

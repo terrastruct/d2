@@ -641,10 +641,9 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 			ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(boardOutputPath), dur)
 		}
 		boards = append([][]byte{out}, boards...)
-		return boards, nil
 	}
 
-	return nil, nil
+	return boards, nil
 }
 
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {

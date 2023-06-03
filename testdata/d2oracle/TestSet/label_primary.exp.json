@@ -42,7 +42,7 @@
                         {
                           "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:2:54-1:8:60",
                           "src": {
-                            "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:2:54-1:4:56",
+                            "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:2:54-1:3:55",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -59,7 +59,7 @@
                           },
                           "src_arrow": "",
                           "dst": {
-                            "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:6:58-1:8:60",
+                            "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:7:59-1:8:60",
                             "path": [
                               {
                                 "unquoted_string": {
@@ -201,7 +201,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:2:54-1:4:56",
+              "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:2:54-1:3:55",
               "path": [
                 {
                   "unquoted_string": {
@@ -248,7 +248,7 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:6:58-1:8:60",
+              "range": "d2/testdata/d2oracle/TestSet/label_primary.d2,1:7:59-1:8:60",
               "path": [
                 {
                   "unquoted_string": {

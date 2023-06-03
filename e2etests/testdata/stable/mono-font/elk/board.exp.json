@@ -8,7 +8,7 @@
       "type": "stored_data",
       "pos": {
         "x": 12,
-        "y": 12
+        "y": 22
       },
       "width": 161,
       "height": 66,
@@ -48,8 +48,8 @@
       "id": "transmitter",
       "type": "rectangle",
       "pos": {
-        "x": 17,
-        "y": 259
+        "x": 22,
+        "y": 269
       },
       "width": 151,
       "height": 66,
@@ -112,12 +112,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 43,
-          "y": 78
+          "x": 48,
+          "y": 88
         },
         {
-          "x": 43.5,
-          "y": 259
+          "x": 48.5,
+          "y": 269
         }
       ],
       "animated": false,
@@ -150,12 +150,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 92,
-          "y": 78
+          "x": 97,
+          "y": 88
         },
         {
-          "x": 92.5,
-          "y": 259
+          "x": 97.5,
+          "y": 269
         }
       ],
       "animated": false,
@@ -188,12 +188,12 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 141,
-          "y": 78
+          "x": 146,
+          "y": 88
         },
         {
-          "x": 141.5,
-          "y": 259
+          "x": 146.5,
+          "y": 269
         }
       ],
       "animated": false,

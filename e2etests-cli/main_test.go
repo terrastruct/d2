@@ -5,6 +5,7 @@ import (
 	"context"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -74,6 +75,30 @@ func TestCLI_E2E(t *testing.T) {
 				assert.Success(t, err)
 
 				assert.TestdataDir(t, filepath.Join(dir, "empty-layer"))
+			},
+		},
+		{
+			// Skip the empty base board so the animation doesn't show blank for 1400ms
+			name: "empty-base",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "empty-base.d2", `steps: {
+  1: {
+    a -> b
+  }
+  2: {
+    b -> d
+    c -> d
+  }
+  3: {
+    d -> e
+  }
+}`)
+
+				err := runTestMain(t, ctx, dir, env, "--animate-interval=1400", "empty-base.d2")
+				assert.Success(t, err)
+				svg := readFile(t, dir, "empty-base.svg")
+				assert.Testdata(t, ".svg", svg)
+				assert.Equal(t, 3, getNumBoards(string(svg)))
 			},
 		},
 		{
@@ -446,4 +471,10 @@ func removeD2Files(tb testing.TB, dir string) {
 
 func testdataIgnoreDiff(tb testing.TB, ext string, got []byte) {
 	_ = diff.Testdata(filepath.Join("testdata", tb.Name()), ext, got)
+}
+
+// getNumBoards gets the number of boards in an SVG file through a non-robust pattern search
+// If the renderer changes, this must change
+func getNumBoards(svg string) int {
+	return strings.Count(svg, `class="d2`)
 }

@@ -148,60 +148,12 @@ func WithoutConstantNears(ctx context.Context, g *d2graph.Graph) (constantNearGr
 		}
 		_, isConst := d2graph.NearConstants[d2graph.Key(obj.NearKey)[0]]
 		if isConst {
-			descendantObjects, edges := pluckObjAndEdges(g, obj)
-
-			tempGraph := d2graph.NewGraph()
-			tempGraph.Root.ChildrenArray = []*d2graph.Object{obj}
-			tempGraph.Root.Children[strings.ToLower(obj.ID)] = obj
-
-			for _, descendantObj := range descendantObjects {
-				descendantObj.Graph = tempGraph
-			}
-			tempGraph.Objects = descendantObjects
-			tempGraph.Edges = edges
-
+			tempGraph := g.ExtractAsNestedGraph(obj)
 			constantNearGraphs = append(constantNearGraphs, tempGraph)
-
 			i--
-			delete(obj.Parent.Children, strings.ToLower(obj.ID))
-			for i := 0; i < len(obj.Parent.ChildrenArray); i++ {
-				if obj.Parent.ChildrenArray[i] == obj {
-					obj.Parent.ChildrenArray = append(obj.Parent.ChildrenArray[:i], obj.Parent.ChildrenArray[i+1:]...)
-					break
-				}
-			}
-
-			obj.Parent = tempGraph.Root
 		}
 	}
 	return constantNearGraphs
-}
-
-func pluckObjAndEdges(g *d2graph.Graph, obj *d2graph.Object) (descendantsObjects []*d2graph.Object, edges []*d2graph.Edge) {
-	for i := 0; i < len(g.Edges); i++ {
-		edge := g.Edges[i]
-		if edge.Src == obj || edge.Dst == obj {
-			edges = append(edges, edge)
-			g.Edges = append(g.Edges[:i], g.Edges[i+1:]...)
-			i--
-		}
-	}
-
-	for i := 0; i < len(g.Objects); i++ {
-		temp := g.Objects[i]
-		if temp.AbsID() == obj.AbsID() {
-			descendantsObjects = append(descendantsObjects, obj)
-			g.Objects = append(g.Objects[:i], g.Objects[i+1:]...)
-			for _, child := range obj.ChildrenArray {
-				subObjects, subEdges := pluckObjAndEdges(g, child)
-				descendantsObjects = append(descendantsObjects, subObjects...)
-				edges = append(edges, subEdges...)
-			}
-			break
-		}
-	}
-
-	return descendantsObjects, edges
 }
 
 // boundingBox gets the center of the graph as defined by shapes

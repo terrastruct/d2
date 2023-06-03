@@ -222,6 +222,10 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 			width = go2.Max(width, float64(obj.LabelDimensions.Width))
 		}
+		// reserve extra space for 3d/multiple by providing elk the larger dimensions
+		dx, dy := obj.GetModifierElementAdjustments()
+		width += dx
+		height += dy
 
 		n := &ELKNode{
 			ID:     obj.AbsID(),
@@ -400,10 +404,10 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			parentY = parent.TopLeft.Y
 		}
 		obj.TopLeft = geo.NewPoint(parentX+n.X, parentY+n.Y)
-		obj.Width = n.Width
-		obj.Height = n.Height
+		obj.Width = math.Ceil(n.Width)
+		obj.Height = math.Ceil(n.Height)
 
-		if obj.HasLabel() {
+		if obj.HasLabel() && obj.LabelPosition == nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 			} else if obj.HasOutsideBottomLabel() {
@@ -415,7 +419,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			}
 		}
-		if obj.Icon != nil {
+		if obj.Icon != nil && obj.IconPosition == nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopRight))
@@ -454,10 +458,51 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				Y: parentY + s.End.Y,
 			})
 		}
+		edge.Route = points
+	}
+
+	// remove the extra width/height we added for 3d/multiple after all objects/connections are placed
+	// and shift the shapes down accordingly
+	for _, obj := range g.Objects {
+		dx, dy := obj.GetModifierElementAdjustments()
+		if dx != 0 || dy != 0 {
+			obj.TopLeft.Y += dy
+			obj.ShiftDescendants(0, dy)
+			if !obj.IsContainer() {
+				obj.Width -= dx
+				obj.Height -= dy
+			}
+		}
+	}
+
+	for _, edge := range g.Edges {
+		points := edge.Route
 
 		startIndex, endIndex := 0, len(points)-1
-		srcShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Src.Shape.Value)], edge.Src.Box)
-		dstShape := shape.NewShape(d2target.DSL_SHAPE_TO_SHAPE_TYPE[strings.ToLower(edge.Dst.Shape.Value)], edge.Dst.Box)
+		start := points[startIndex]
+		end := points[endIndex]
+
+		var originalSrcTL, originalDstTL *geo.Point
+		// if the edge passes through 3d/multiple, use the offset box for tracing to border
+		if srcDx, srcDy := edge.Src.GetModifierElementAdjustments(); srcDx != 0 || srcDy != 0 {
+			if start.X > edge.Src.TopLeft.X+srcDx &&
+				start.Y < edge.Src.TopLeft.Y+edge.Src.Height-srcDy {
+				originalSrcTL = edge.Src.TopLeft.Copy()
+				edge.Src.TopLeft.X += srcDx
+				edge.Src.TopLeft.Y -= srcDy
+			}
+		}
+		if dstDx, dstDy := edge.Dst.GetModifierElementAdjustments(); dstDx != 0 || dstDy != 0 {
+			if end.X > edge.Dst.TopLeft.X+dstDx &&
+				end.Y < edge.Dst.TopLeft.Y+edge.Dst.Height-dstDy {
+				originalDstTL = edge.Dst.TopLeft.Copy()
+				edge.Dst.TopLeft.X += dstDx
+				edge.Dst.TopLeft.Y -= dstDy
+			}
+		}
+
+		srcShape := edge.Src.ToShape()
+		dstShape := edge.Dst.ToShape()
 
 		// trace the edge to the specific shape's border
 		points[startIndex] = shape.TraceToShapeBorder(srcShape, points[startIndex], points[startIndex+1])
@@ -468,6 +513,16 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 
 		edge.Route = points
+
+		// undo 3d/multiple offset
+		if originalSrcTL != nil {
+			edge.Src.TopLeft.X = originalSrcTL.X
+			edge.Src.TopLeft.Y = originalSrcTL.Y
+		}
+		if originalDstTL != nil {
+			edge.Dst.TopLeft.X = originalDstTL.X
+			edge.Dst.TopLeft.Y = originalDstTL.Y
+		}
 	}
 
 	deleteBends(g)
@@ -506,10 +561,11 @@ func deleteBends(g *d2graph.Graph) {
 			}
 
 			isHorizontal := math.Ceil(start.Y) == math.Ceil(corner.Y)
+			dx, dy := endpoint.GetModifierElementAdjustments()
 
 			// Make sure it's still attached
 			if isHorizontal {
-				if end.Y <= endpoint.TopLeft.Y+10 {
+				if end.Y <= endpoint.TopLeft.Y+10-dy {
 					continue
 				}
 				if end.Y >= endpoint.TopLeft.Y+endpoint.Height-10 {
@@ -519,7 +575,7 @@ func deleteBends(g *d2graph.Graph) {
 				if end.X <= endpoint.TopLeft.X+10 {
 					continue
 				}
-				if end.X >= endpoint.TopLeft.X+endpoint.Width-10 {
+				if end.X >= endpoint.TopLeft.X+endpoint.Width-10+dx {
 					continue
 				}
 			}

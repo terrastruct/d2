@@ -22,6 +22,8 @@ const (
 	DEFAULT_ICON_SIZE = 32
 	MAX_ICON_SIZE     = 64
 
+	SHADOW_SIZE_X    = 3
+	SHADOW_SIZE_Y    = 5
 	THREE_DEE_OFFSET = 15
 	MULTIPLE_OFFSET  = 10
 
@@ -171,9 +173,17 @@ func (diagram Diagram) BoundingBox() (topLeft, bottomRight Point) {
 			y1 = go2.Min(y1, targetShape.Pos.Y-targetShape.StrokeWidth-16)
 			x2 = go2.Max(x2, targetShape.Pos.X+targetShape.StrokeWidth+targetShape.Width+16)
 		}
+		if targetShape.Shadow {
+			y2 = go2.Max(y2, targetShape.Pos.Y+targetShape.Height+int(math.Ceil(float64(targetShape.StrokeWidth)/2.))+SHADOW_SIZE_Y)
+			x2 = go2.Max(x2, targetShape.Pos.X+targetShape.Width+int(math.Ceil(float64(targetShape.StrokeWidth)/2.))+SHADOW_SIZE_X)
+		}
 
 		if targetShape.ThreeDee {
-			y1 = go2.Min(y1, targetShape.Pos.Y-THREE_DEE_OFFSET-targetShape.StrokeWidth)
+			offsetY := THREE_DEE_OFFSET
+			if targetShape.Type == ShapeHexagon {
+				offsetY /= 2
+			}
+			y1 = go2.Min(y1, targetShape.Pos.Y-offsetY-targetShape.StrokeWidth)
 			x2 = go2.Max(x2, targetShape.Pos.X+THREE_DEE_OFFSET+targetShape.Width+targetShape.StrokeWidth)
 		}
 		if targetShape.Multiple {
@@ -853,6 +863,8 @@ func init() {
 	for k, v := range DSL_SHAPE_TO_SHAPE_TYPE {
 		SHAPE_TYPE_TO_DSL_SHAPE[v] = k
 	}
+	// SQUARE_TYPE is defined twice in the map, make sure it doesn't get set to the empty string one
+	SHAPE_TYPE_TO_DSL_SHAPE[shape.SQUARE_TYPE] = ShapeRectangle
 }
 
 func GetIconSize(box *geo.Box, position string) int {

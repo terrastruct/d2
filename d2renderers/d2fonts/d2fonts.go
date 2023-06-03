@@ -10,8 +10,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/jung-kurt/gofpdf"
-
+	"oss.terrastruct.com/d2/lib/font"
 	fontlib "oss.terrastruct.com/d2/lib/font"
 )
 
@@ -44,7 +43,7 @@ func (f Font) GetEncodedSubset(corpus string) string {
 
 	fontBuf := make([]byte, len(FontFaces[f]))
 	copy(fontBuf, FontFaces[f])
-	fontBuf = gofpdf.UTF8CutFont(fontBuf, uniqueChars)
+	fontBuf = font.UTF8CutFont(fontBuf, uniqueChars)
 
 	fontBuf, err := fontlib.Sfnt2Woff(fontBuf)
 	if err != nil {
