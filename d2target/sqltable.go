@@ -60,5 +60,5 @@ func (c SQLColumn) ConstraintAbbr() string {
 		abbrs = append(abbrs, abbr)
 	}
 
-	return strings.Join(abbrs, " ")
+	return strings.Join(abbrs, ", ")
 }
