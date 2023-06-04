@@ -4,7 +4,9 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io"
+	"io/fs"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 
@@ -21,11 +23,17 @@ import (
 
 type CompileOptions struct {
 	UTF16 bool
+	// FS is the file system used for resolving imports in the d2 text.
+	// It should correspond to the root path.
+	FS fs.FS
 }
 
 func Compile(path string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph, error) {
 	if opts == nil {
 		opts = &CompileOptions{}
+	}
+	if opts.FS == nil {
+		opts.FS = os.DirFS("/")
 	}
 
 	ast, err := d2parser.Parse(path, r, &d2parser.ParseOptions{
@@ -35,7 +43,10 @@ func Compile(path string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph
 		return nil, err
 	}
 
-	ir, err := d2ir.Compile(ast)
+	ir, err := d2ir.Compile(ast, &d2ir.CompileOptions{
+		UTF16: opts.UTF16,
+		FS:    opts.FS,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +61,9 @@ func Compile(path string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph
 }
 
 func compileIR(ast *d2ast.Map, m *d2ir.Map) (*d2graph.Graph, error) {
-	c := &compiler{}
+	c := &compiler{
+		err: &d2parser.ParseError{},
+	}
 
 	g := d2graph.NewGraph()
 	g.AST = ast
@@ -116,7 +129,7 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 }
 
 type compiler struct {
-	err d2parser.ParseError
+	err *d2parser.ParseError
 }
 
 func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {

@@ -1021,8 +1021,8 @@ type InterpolationBox struct {
 // & is only special if it begins a key.
 // - is only special if followed by another - in a key.
 // ' " and | are only special if they begin an unquoted key or value.
-var UnquotedKeySpecials = string([]rune{'#', ';', '\n', '\\', '{', '}', '[', ']', '\'', '"', '|', ':', '.', '-', '<', '>', '*', '&', '(', ')'})
-var UnquotedValueSpecials = string([]rune{'#', ';', '\n', '\\', '{', '}', '[', ']', '\'', '"', '|', '$'})
+var UnquotedKeySpecials = string([]rune{'#', ';', '\n', '\\', '{', '}', '[', ']', '\'', '"', '|', ':', '.', '-', '<', '>', '*', '&', '(', ')', '@'})
+var UnquotedValueSpecials = string([]rune{'#', ';', '\n', '\\', '{', '}', '[', ']', '\'', '"', '|', '$', '@'})
 
 // RawString returns s in a AST String node that can format s in the most aesthetically
 // pleasing way.
@@ -1071,8 +1071,26 @@ func RawString(s string, inKey bool) String {
 	return FlatUnquotedString(s)
 }
 
+func RawStringBox(s string, inKey bool) *StringBox {
+	return MakeValueBox(RawString(s, inKey)).StringBox()
+}
+
 func hasSurroundingWhitespace(s string) bool {
 	r, _ := utf8.DecodeRuneInString(s)
 	r2, _ := utf8.DecodeLastRuneInString(s)
 	return unicode.IsSpace(r) || unicode.IsSpace(r2)
+}
+
+func (s *Substitution) IDA() (ida []string) {
+	for _, el := range s.Path {
+		ida = append(ida, el.Unbox().ScalarString())
+	}
+	return ida
+}
+
+func (i *Import) IDA() (ida []string) {
+	for _, el := range i.Path[1:] {
+		ida = append(ida, el.Unbox().ScalarString())
+	}
+	return ida
 }

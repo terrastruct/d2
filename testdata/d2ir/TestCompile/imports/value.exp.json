@@ -1,0 +1,238 @@
+{
+  "fields": [
+    {
+      "name": "x",
+      "composite": {
+        "fields": [
+          {
+            "name": "shape",
+            "primary": {
+              "value": {
+                "range": "x.d2,0:7:7-0:13:13",
+                "value": [
+                  {
+                    "string": "circle",
+                    "raw_string": "circle"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "x.d2,0:0:0-0:5:5",
+                  "value": [
+                    {
+                      "string": "shape",
+                      "raw_string": "shape"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "x.d2,0:0:0-0:5:5",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "x.d2,0:0:0-0:5:5",
+                        "value": [
+                          {
+                            "string": "shape",
+                            "raw_string": "shape"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "x.d2,0:0:0-0:13:13",
+                    "key": {
+                      "range": "x.d2,0:0:0-0:5:5",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "x.d2,0:0:0-0:5:5",
+                            "value": [
+                              {
+                                "string": "shape",
+                                "raw_string": "shape"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "x.d2,0:7:7-0:13:13",
+                        "value": [
+                          {
+                            "string": "circle",
+                            "raw_string": "circle"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "label",
+            "primary": {
+              "value": {
+                "range": "x.d2,1:7:21-1:11:25",
+                "value": [
+                  {
+                    "string": "meow",
+                    "raw_string": "meow"
+                  }
+                ]
+              }
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "x.d2,1:0:14-1:5:19",
+                  "value": [
+                    {
+                      "string": "label",
+                      "raw_string": "label"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "x.d2,1:0:14-1:5:19",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "x.d2,1:0:14-1:5:19",
+                        "value": [
+                          {
+                            "string": "label",
+                            "raw_string": "label"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "x.d2,1:0:14-1:11:25",
+                    "key": {
+                      "range": "x.d2,1:0:14-1:5:19",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "x.d2,1:0:14-1:5:19",
+                            "value": [
+                              {
+                                "string": "label",
+                                "raw_string": "label"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "x.d2,1:7:21-1:11:25",
+                        "value": [
+                          {
+                            "string": "meow",
+                            "raw_string": "meow"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "index.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "index.d2,0:0:0-0:1:1",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "index.d2,0:0:0-0:1:1",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "index.d2,0:0:0-0:8:8",
+              "key": {
+                "range": "index.d2,0:0:0-0:1:1",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "index.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "import": {
+                  "range": "index.d2,0:3:3-0:8:8",
+                  "spread": false,
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "index.d2,0:4:4-0:5:5",
+                        "value": [
+                          {
+                            "string": "x",
+                            "raw_string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

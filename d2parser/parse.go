@@ -59,6 +59,7 @@ func Parse(path string, r io.RuneReader, opts *ParseOptions) (*d2ast.Map, error)
 func ParseKey(key string) (*d2ast.KeyPath, error) {
 	p := &parser{
 		reader: strings.NewReader(key),
+		err: &ParseError{},
 	}
 
 	k := p.parseKey()
@@ -74,6 +75,7 @@ func ParseKey(key string) (*d2ast.KeyPath, error) {
 func ParseMapKey(mapKey string) (*d2ast.Key, error) {
 	p := &parser{
 		reader: strings.NewReader(mapKey),
+		err: &ParseError{},
 	}
 
 	mk := p.parseMapKey()
@@ -89,6 +91,7 @@ func ParseMapKey(mapKey string) (*d2ast.Key, error) {
 func ParseValue(value string) (d2ast.Value, error) {
 	p := &parser{
 		reader: strings.NewReader(value),
+		err: &ParseError{},
 	}
 
 	v := p.parseValue()

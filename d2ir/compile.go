@@ -1,6 +1,7 @@
 package d2ir
 
 import (
+	"io/fs"
 	"strings"
 
 	"oss.terrastruct.com/d2/d2ast"
@@ -9,18 +10,46 @@ import (
 )
 
 type compiler struct {
-	err d2parser.ParseError
+	err *d2parser.ParseError
+
+	fs fs.FS
+	// importStack is used to detect cyclic imports.
+	importStack []string
+	// importCache enables reuse of files imported multiple times.
+	importCache map[string]*Map
+	utf16       bool
+}
+
+type CompileOptions struct {
+	UTF16 bool
+	// Pass nil to disable imports.
+	FS fs.FS
 }
 
 func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 	c.err.Errors = append(c.err.Errors, d2parser.Errorf(n, f, v...).(d2ast.Error))
 }
 
-func Compile(ast *d2ast.Map) (*Map, error) {
-	c := &compiler{}
+func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, error) {
+	if opts == nil {
+		opts = &CompileOptions{}
+	}
+	c := &compiler{
+		err: &d2parser.ParseError{},
+		fs:  opts.FS,
+
+		importCache: make(map[string]*Map),
+		utf16:       opts.UTF16,
+	}
 	m := &Map{}
 	m.initRoot()
 	m.parent.(*Field).References[0].Context.Scope = ast
+
+	c.pushImportStack(&d2ast.Import{
+		Path: []*d2ast.StringBox{d2ast.RawStringBox(ast.GetRange().Path, true)},
+	})
+	defer c.popImportStack()
+
 	c.compileMap(m, ast)
 	c.compileClasses(m)
 	if !c.err.Empty() {
@@ -85,6 +114,16 @@ func (c *compiler) compileMap(dst *Map, ast *d2ast.Map) {
 				Scope:    ast,
 				ScopeMap: dst,
 			})
+		case n.Import != nil:
+			impn, ok := c._import(n.Import)
+			if !ok {
+				continue
+			}
+			if impn.Map() == nil {
+				c.errorf(n.Import, "cannot spread import non map into map")
+				continue
+			}
+			OverlayMap(dst, impn.Map())
 		case n.Substitution != nil:
 			panic("TODO")
 		}
@@ -144,6 +183,22 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		switch NodeBoardKind(f) {
 		case BoardScenario, BoardStep:
 			c.compileClasses(f.Map())
+		}
+	} else if refctx.Key.Value.Import != nil {
+		n, ok := c._import(refctx.Key.Value.Import)
+		if !ok {
+			return
+		}
+		switch n := n.(type) {
+		case *Field:
+			if n.Primary_ != nil {
+				f.Primary_ = n.Primary_.Copy(f).(*Scalar)
+			}
+			if n.Composite != nil {
+				f.Composite = n.Composite.Copy(f).(Composite)
+			}
+		case *Map:
+			f.Composite = n.Copy(f).(Composite)
 		}
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 		// If the link is a board, we need to transform it into an absolute path.
@@ -329,6 +384,34 @@ func (c *compiler) compileArray(dst *Array, a *d2ast.Array) {
 			irv = &Scalar{
 				parent: dst,
 				Value:  v,
+			}
+		case *d2ast.Import:
+			n, ok := c._import(v)
+			if !ok {
+				continue
+			}
+			switch n := n.(type) {
+			case *Field:
+				if v.Spread {
+					a, ok := n.Composite.(*Array)
+					if !ok {
+						c.errorf(v, "can only spread import array into array")
+						continue
+					}
+					dst.Values = append(dst.Values, a.Values...)
+					continue
+				}
+				if n.Composite != nil {
+					irv = n.Composite
+				} else {
+					irv = n.Primary_
+				}
+			case *Map:
+				if v.Spread {
+					c.errorf(v, "cannot spread import map into array")
+					continue
+				}
+				irv = n
 			}
 		case *d2ast.Substitution:
 			// panic("TODO")
