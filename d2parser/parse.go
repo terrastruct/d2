@@ -15,7 +15,8 @@ import (
 )
 
 type ParseOptions struct {
-	UTF16 bool
+	UTF16      bool
+	ParseError *ParseError
 }
 
 // Parse parses a .d2 Map in r.
@@ -42,6 +43,10 @@ func Parse(path string, r io.RuneReader, opts *ParseOptions) (*d2ast.Map, error)
 		reader: r,
 
 		utf16: opts.UTF16,
+		err:   opts.ParseError,
+	}
+	if p.err == nil {
+		p.err = &ParseError{}
 	}
 
 	m := p.parseMap(true)
@@ -117,18 +122,16 @@ type parser struct {
 	lookaheadPos d2ast.Position
 
 	ioerr bool
-	err   ParseError
+	err   *ParseError
 
 	inEdgeGroup bool
 
 	depth int
 }
 
-// TODO: remove ioerr, just sort (with Append) should be fine but filter non ast errors in API
 // TODO: rename to Error and make existing Error a private type errorWithRange
 type ParseError struct {
-	IOError *d2ast.Error  `json:"ioerr"`
-	Errors  []d2ast.Error `json:"errs"`
+	Errors []d2ast.Error `json:"errs"`
 }
 
 func Errorf(n d2ast.Node, f string, v ...interface{}) error {
@@ -140,17 +143,17 @@ func Errorf(n d2ast.Node, f string, v ...interface{}) error {
 	}
 }
 
-func (pe ParseError) Empty() bool {
-	return pe.IOError == nil && len(pe.Errors) == 0
+func (pe *ParseError) Empty() bool {
+	if pe == nil {
+		return true
+	}
+	return len(pe.Errors) == 0
 }
 
-func (pe ParseError) Error() string {
+func (pe *ParseError) Error() string {
 	var sb strings.Builder
-	if pe.IOError != nil {
-		sb.WriteString(pe.IOError.Error())
-	}
 	for i, err := range pe.Errors {
-		if pe.IOError != nil || i > 0 {
+		if i > 0 {
 			sb.WriteByte('\n')
 		}
 		sb.WriteString(err.Error())
@@ -191,14 +194,14 @@ func (p *parser) _readRune() (r rune, eof bool) {
 	if err != nil {
 		p.ioerr = true
 		if err != io.EOF {
-			p.err.IOError = &d2ast.Error{
+			p.err.Errors = append(p.err.Errors, d2ast.Error{
 				Range: d2ast.Range{
 					Path:  p.path,
 					Start: p.readerPos,
 					End:   p.readerPos,
 				},
 				Message: fmt.Sprintf("io error: %v", err),
-			}
+			})
 		}
 		p.rewind()
 		return 0, true
