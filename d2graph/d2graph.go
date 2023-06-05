@@ -1005,7 +1005,7 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 	case d2target.ShapeSQLTable:
 		maxNameWidth := 0
 		maxTypeWidth := 0
-		constraintWidth := 0
+		maxConstraintWidth := 0
 
 		colFontSize := d2fonts.FONT_SIZE_L
 		if obj.Style.FontSize != nil {
@@ -1032,23 +1032,24 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 			}
 			c.Type.LabelWidth = typeDims.Width
 			c.Type.LabelHeight = typeDims.Height
-			if maxTypeWidth < typeDims.Width {
-				maxTypeWidth = typeDims.Width
-			}
 			maxTypeWidth = go2.Max(maxTypeWidth, typeDims.Width)
 
 			if l := len(c.Constraint); l > 0 {
-				// 60 covers UNQ constraint with padding, 40 for further constraints covers UNQ + comma + space
-				if newWidth := 60 + 40*(l-1); newWidth > constraintWidth {
-					constraintWidth = newWidth
+				constraintDims := GetTextDimensions(mtexts, ruler, ctexts[2], fontFamily)
+				if typeDims == nil {
+					return nil, fmt.Errorf("dimensions for sql_table constraint %#v not found", ctexts[2].Text)
 				}
+				maxConstraintWidth = go2.Max(maxConstraintWidth, constraintDims.Width)
 			}
 		}
 
 		// The rows get padded a little due to header font being larger than row font
 		dims.Height = go2.Max(12, labelDims.Height*(len(obj.SQLTable.Columns)+1))
 		headerWidth := d2target.HeaderPadding + labelDims.Width + d2target.HeaderPadding
-		rowsWidth := d2target.NamePadding + maxNameWidth + d2target.TypePadding + maxTypeWidth + d2target.TypePadding + constraintWidth
+		rowsWidth := d2target.NamePadding + maxNameWidth + d2target.TypePadding + maxTypeWidth + d2target.TypePadding + maxConstraintWidth
+		if maxConstraintWidth != 0 {
+			rowsWidth += d2target.ConstraintPadding
+		}
 		dims.Width = go2.Max(12, go2.Max(headerWidth, rowsWidth))
 	}
 
