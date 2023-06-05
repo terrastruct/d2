@@ -1036,7 +1036,7 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 
 			if l := len(c.Constraint); l > 0 {
 				constraintDims := GetTextDimensions(mtexts, ruler, ctexts[2], fontFamily)
-				if typeDims == nil {
+				if constraintDims == nil {
 					return nil, fmt.Errorf("dimensions for sql_table constraint %#v not found", ctexts[2].Text)
 				}
 				maxConstraintWidth = go2.Max(maxConstraintWidth, constraintDims.Width)
