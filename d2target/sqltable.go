@@ -3,9 +3,10 @@ package d2target
 import "strings"
 
 const (
-	NamePadding   = 10
-	TypePadding   = 20
-	HeaderPadding = 10
+	NamePadding       = 10
+	TypePadding       = 20
+	ConstraintPadding = 20
+	HeaderPadding     = 10
 
 	// Setting table font size sets it for columns
 	// The header needs to be a little larger for visual hierarchy
@@ -39,26 +40,31 @@ func (c SQLColumn) Texts(fontSize int) []*MText {
 			IsItalic: false,
 			Shape:    "sql_table",
 		},
+		{
+			Text:     c.ConstraintAbbr(),
+			FontSize: fontSize,
+			IsBold:   false,
+			IsItalic: false,
+			Shape:    "sql_table",
+		},
 	}
 }
 
 func (c SQLColumn) ConstraintAbbr() string {
-	var abbrs []string
+	constraints := make([]string, len(c.Constraint))
 
-	for _, constraint := range c.Constraint {
-		var abbr string
-
+	for i, constraint := range c.Constraint {
 		switch constraint {
 		case "primary_key":
-			abbr = "PK"
+			constraint = "PK"
 		case "foreign_key":
-			abbr = "FK"
+			constraint = "FK"
 		case "unique":
-			abbr = "UNQ"
+			constraint = "UNQ"
 		}
 
-		abbrs = append(abbrs, abbr)
+		constraints[i] = constraint
 	}
 
-	return strings.Join(abbrs, ", ")
+	return strings.Join(constraints, ", ")
 }

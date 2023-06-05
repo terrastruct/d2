@@ -8,9 +8,9 @@
       "type": "sql_table",
       "pos": {
         "x": 12,
-        "y": 12
+        "y": 48
       },
-      "width": 148,
+      "width": 146,
       "height": 72,
       "opacity": 1,
       "strokeDash": 0,
@@ -81,10 +81,10 @@
       "id": "b",
       "type": "sql_table",
       "pos": {
-        "x": 180,
-        "y": 12
+        "x": 178,
+        "y": 48
       },
-      "width": 188,
+      "width": 161,
       "height": 72,
       "opacity": 1,
       "strokeDash": 0,
@@ -156,10 +156,10 @@
       "id": "c",
       "type": "sql_table",
       "pos": {
-        "x": 388,
-        "y": 12
+        "x": 359,
+        "y": 48
       },
-      "width": 188,
+      "width": 177,
       "height": 72,
       "opacity": 1,
       "strokeDash": 0,
@@ -231,10 +231,10 @@
       "id": "d",
       "type": "sql_table",
       "pos": {
-        "x": 596,
-        "y": 12
+        "x": 556,
+        "y": 48
       },
-      "width": 228,
+      "width": 209,
       "height": 72,
       "opacity": 1,
       "strokeDash": 0,
@@ -296,6 +296,212 @@
       "bold": true,
       "underline": false,
       "labelWidth": 13,
+      "labelHeight": 31,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
+    },
+    {
+      "id": "e",
+      "type": "sql_table",
+      "pos": {
+        "x": 785,
+        "y": 12
+      },
+      "width": 312,
+      "height": 144,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N1",
+      "stroke": "N7",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": [
+        {
+          "name": {
+            "label": "x",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 9,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "INT",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 29,
+            "labelHeight": 26
+          },
+          "constraint": [
+            "no_abbrev",
+            "foreign_key",
+            "hello"
+          ],
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "y",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 10,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "string",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 48,
+            "labelHeight": 26
+          },
+          "constraint": null,
+          "reference": ""
+        },
+        {
+          "name": {
+            "label": "z",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 8,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "STRING",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 62,
+            "labelHeight": 26
+          },
+          "constraint": [
+            "yo"
+          ],
+          "reference": ""
+        }
+      ],
+      "label": "e",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 12,
+      "labelHeight": 31,
+      "zIndex": 0,
+      "level": 1,
+      "primaryAccentColor": "B2",
+      "secondaryAccentColor": "AA2",
+      "neutralAccentColor": "N2"
+    },
+    {
+      "id": "f",
+      "type": "sql_table",
+      "pos": {
+        "x": 1117,
+        "y": 48
+      },
+      "width": 88,
+      "height": 72,
+      "opacity": 1,
+      "strokeDash": 0,
+      "strokeWidth": 2,
+      "borderRadius": 0,
+      "fill": "N1",
+      "stroke": "N7",
+      "shadow": false,
+      "3d": false,
+      "multiple": false,
+      "double-border": false,
+      "tooltip": "",
+      "link": "",
+      "icon": null,
+      "iconPosition": "",
+      "blend": false,
+      "fields": null,
+      "methods": null,
+      "columns": [
+        {
+          "name": {
+            "label": "x",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 9,
+            "labelHeight": 26
+          },
+          "type": {
+            "label": "INT",
+            "fontSize": 0,
+            "fontFamily": "",
+            "language": "",
+            "color": "",
+            "italic": false,
+            "bold": false,
+            "underline": false,
+            "labelWidth": 29,
+            "labelHeight": 26
+          },
+          "constraint": null,
+          "reference": ""
+        }
+      ],
+      "label": "f",
+      "fontSize": 20,
+      "fontFamily": "DEFAULT",
+      "language": "",
+      "color": "N1",
+      "italic": false,
+      "bold": true,
+      "underline": false,
+      "labelWidth": 9,
       "labelHeight": 31,
       "zIndex": 0,
       "level": 1,

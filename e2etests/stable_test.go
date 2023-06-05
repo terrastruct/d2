@@ -2409,6 +2409,16 @@ d: {
 	shape: sql_table
 	x: INT {constraint: [primary_key; foreign_key; unique]}
 }
+e: {
+	shape: sql_table
+	x: INT {constraint: [no_abbrev; foreign_key; hello]}
+	y: string
+	z: STRING {constraint: yo}
+}
+f: {
+	shape: sql_table
+	x: INT
+}
 `,
 		},
 		{
