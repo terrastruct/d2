@@ -635,6 +635,14 @@ x: @file."d2"
 			exp: `x: @file."d2"
 `,
 		},
+		{
+			name: "import/3",
+			in: `
+x: @./file
+`,
+			exp: `x: @file
+`,
+		},
 	}
 
 	for _, tc := range testCases {

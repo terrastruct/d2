@@ -1720,6 +1720,13 @@ func (p *parser) parseImport(spread bool) *d2ast.Import {
 		imp.Range.Start = imp.Range.Start.SubtractString("...", p.utf16)
 	}
 
+	s, eof := p.peekn(2)
+	if eof || s != "./" {
+		p.rewind()
+	} else {
+		p.commit()
+	}
+
 	k := p.parseKey()
 	if k == nil {
 		return imp
