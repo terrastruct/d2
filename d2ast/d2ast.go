@@ -257,6 +257,13 @@ func (p Position) Subtract(r rune, byUTF16 bool) Position {
 	return p
 }
 
+func (p Position) AdvanceString(s string, byUTF16 bool) Position {
+	for _, r := range s {
+		p = p.Advance(r, byUTF16)
+	}
+	return p
+}
+
 func (p Position) SubtractString(s string, byUTF16 bool) Position {
 	for _, r := range s {
 		p = p.Subtract(r, byUTF16)

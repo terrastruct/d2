@@ -1046,6 +1046,14 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 		s.Value = append(s.Value, d2ast.InterpolationBox{String: &sv, StringRaw: &rawv})
 	}()
 
+	_s, eof := p.peekn(4)
+	p.rewind()
+	if !eof {
+		if _s == "...@" {
+			p.errorf(p.readerPos, p.pos.AdvanceString("...@", p.utf16), "unquoted strings cannot begin with ...@ as that's import spread syntax")
+		}
+	}
+
 	for {
 		r, eof := p.peek()
 		if eof {
