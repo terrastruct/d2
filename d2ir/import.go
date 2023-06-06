@@ -10,22 +10,35 @@ import (
 	"oss.terrastruct.com/d2/d2parser"
 )
 
-func (c *compiler) pushImportStack(imp *d2ast.Import) bool {
-	if imp.PathWithPre() == "" && imp.Range.Path != "" {
+func (c *compiler) pushImportStack(imp *d2ast.Import) (string, bool) {
+	impPath := imp.PathWithPre()
+	if impPath == "" && imp.Range.Path != "" {
 		c.errorf(imp, "imports must specify a path to import")
-		return false
+		return "", false
+	}
+	if len(c.importStack) > 0 {
+		if path.IsAbs(impPath) {
+			c.errorf(imp, "import paths must be relative")
+			return "", false
+		}
+
+		if path.Ext(impPath) != ".d2" {
+			impPath += ".d2"
+		}
+
+		// Imports are always relative to the importing file.
+		impPath = path.Join(path.Dir(c.importStack[len(c.importStack)-1]), impPath)
 	}
 
-	newPath := imp.PathWithPre()
 	for i, p := range c.importStack {
-		if newPath == p {
+		if impPath == p {
 			c.errorf(imp, "detected cyclic import chain: %s", formatCyclicChain(c.importStack[i:]))
-			return false
+			return "", false
 		}
 	}
 
-	c.importStack = append(c.importStack, newPath)
-	return true
+	c.importStack = append(c.importStack, impPath)
+	return impPath, true
 }
 
 func (c *compiler) popImportStack() {
@@ -61,20 +74,8 @@ func (c *compiler) _import(imp *d2ast.Import) (Node, bool) {
 }
 
 func (c *compiler) __import(imp *d2ast.Import) (*Map, bool) {
-	impPath := imp.PathWithPre()
-	if path.IsAbs(impPath) {
-		c.errorf(imp, "import paths must be relative")
-		return nil, false
-	}
-
-	if path.Ext(impPath) != ".d2" {
-		impPath += ".d2"
-	}
-
-	// Imports are always relative to the importing file.
-	impPath = path.Join(path.Dir(c.importStack[len(c.importStack)-1]), impPath)
-
-	if !c.pushImportStack(imp) {
+	impPath, ok := c.pushImportStack(imp)
+	if !ok {
 		return nil, false
 	}
 	defer c.popImportStack()
