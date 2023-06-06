@@ -99,6 +99,15 @@ label: meow`,
 				},
 			},
 			{
+				name: "escape",
+				run: func(t testing.TB) {
+					_, err := compileFS(t, "index.d2", map[string]string{
+						"index.d2": "...@'./../x.d2'",
+					})
+					assert.ErrorString(t, err, `index.d2:1:1: failed to import "../x.d2": stat ../x.d2: invalid argument`)
+				},
+			},
+			{
 				name: "absolute",
 				run: func(t testing.TB) {
 					_, err := compileFS(t, "index.d2", map[string]string{

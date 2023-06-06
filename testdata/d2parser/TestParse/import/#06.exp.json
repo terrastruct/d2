@@ -1,0 +1,22 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/import/#06.d2,0:0:0-0:11:11",
+    "nodes": [
+      {
+        "import": {
+          "range": "d2/testdata/d2parser/TestParse/import/#06.d2,0:0:0-0:4:4",
+          "spread": true,
+          "path": null
+        }
+      }
+    ]
+  },
+  "err": {
+    "errs": [
+      {
+        "range": "d2/testdata/d2parser/TestParse/import/#06.d2,0:4:4-0:11:11",
+        "errmsg": "d2/testdata/d2parser/TestParse/import/#06.d2:1:5: unexpected text after import"
+      }
+    ]
+  }
+}

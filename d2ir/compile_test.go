@@ -54,10 +54,16 @@ func compileFS(t testing.TB, path string, mfs map[string]string) (*d2ir.Map, err
 	t.Helper()
 
 	ast, err := d2parser.Parse(path, strings.NewReader(mfs[path]), nil)
-	assert.Success(t, err)
+	if err != nil {
+		return nil, err
+	}
 
 	fs, err := mapfs.New(mfs)
 	assert.Success(t, err)
+	t.Cleanup(func() {
+		err = fs.Close()
+		assert.Success(t, err)
+	})
 	m, err := d2ir.Compile(ast, &d2ir.CompileOptions{
 		FS: fs,
 	})

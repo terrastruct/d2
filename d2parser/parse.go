@@ -1710,6 +1710,9 @@ func (p *parser) parseImport(spread bool) *d2ast.Import {
 	}
 
 	k := p.parseKey()
+	if k == nil {
+		return imp
+	}
 	if k.Path[0].UnquotedString != nil && len(k.Path) > 1 && k.Path[1].UnquotedString != nil && k.Path[1].Unbox().ScalarString() == "d2" {
 		k.Path = append(k.Path[:1], k.Path[2:]...)
 	}
