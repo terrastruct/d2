@@ -23,6 +23,8 @@ import (
 	"oss.terrastruct.com/util-go/xmain"
 )
 
+var imgCache sync.Map
+
 const maxImageSize int64 = 1 << 25 // 33_554_432
 
 var imageRegex = regexp.MustCompile(`<image href="([^"]+)"`)
@@ -55,12 +57,17 @@ func bundle(ctx context.Context, ms *xmain.State, svg []byte, isRemote bool) (_ 
 	return runWorkers(ctx, ms, svg, imgs, isRemote)
 }
 
-// filterImageElements finds all image elements in imgs that are eligible
-// for bundling in the current context.
+// filterImageElements finds all unique image elements in imgs that are
+// eligible for bundling in the current context.
 func filterImageElements(imgs [][][]byte, isRemote bool) [][][]byte {
+	unq := make(map[string]struct{})
 	imgs2 := imgs[:0]
 	for _, img := range imgs {
 		href := string(img[1])
+		if _, ok := unq[href]; ok {
+			continue
+		}
+		unq[href] = struct{}{}
 
 		// Skip already bundled images.
 		if strings.HasPrefix(href, "data:") {
@@ -104,7 +111,7 @@ func runWorkers(ctx context.Context, ms *xmain.State, svg []byte, imgs [][][]byt
 					<-sema
 				}()
 
-				bundledImage, err := worker(ctx, img[1], isRemote)
+				bundledImage, err := worker(ctx, &imgCache, img[1], isRemote)
 				if err != nil {
 					ms.Log.Error.Printf("failed to bundle %s: %v", img[1], err)
 					errhrefsMu.Lock()
@@ -138,12 +145,15 @@ func runWorkers(ctx context.Context, ms *xmain.State, svg []byte, imgs [][][]byt
 				}
 				return svg, nil
 			}
-			svg = bytes.Replace(svg, repl.from, repl.to, 1)
+			svg = bytes.Replace(svg, repl.from, repl.to, -1)
 		}
 	}
 }
 
-func worker(ctx context.Context, href []byte, isRemote bool) ([]byte, error) {
+func worker(ctx context.Context, cache *sync.Map, href []byte, isRemote bool) ([]byte, error) {
+	if hit, ok := cache.Load(string(href)); ok {
+		return hit.([]byte), nil
+	}
 	var buf []byte
 	var mimeType string
 	var err error
@@ -161,7 +171,10 @@ func worker(ctx context.Context, href []byte, isRemote bool) ([]byte, error) {
 	}
 	mimeType = strings.Replace(mimeType, "text/xml", "image/svg+xml", 1)
 	b64 := base64.StdEncoding.EncodeToString(buf)
-	return []byte(fmt.Sprintf(`<image href="data:%s;base64,%s"`, mimeType, b64)), nil
+
+	out := []byte(fmt.Sprintf(`<image href="data:%s;base64,%s"`, mimeType, b64))
+	cache.Store(string(href), out)
+	return out, nil
 }
 
 var httpClient = &http.Client{}
