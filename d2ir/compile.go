@@ -124,6 +124,15 @@ func (c *compiler) compileMap(dst *Map, ast *d2ast.Map) {
 				continue
 			}
 			OverlayMap(dst, impn.Map())
+
+			if impnf, ok := impn.(*Field); ok {
+				if impnf.Primary_ != nil {
+					dstf := ParentField(dst)
+					if dstf != nil {
+						dstf.Primary_ = impnf.Primary_
+					}
+				}
+			}
 		case n.Substitution != nil:
 			panic("TODO")
 		}
@@ -192,13 +201,47 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		switch n := n.(type) {
 		case *Field:
 			if n.Primary_ != nil {
-				f.Primary_ = n.Primary_.Copy(f).(*Scalar)
+				refctx2 := refctx.Copy()
+				key2 := *refctx.Key
+				refctx.Key = &key2
+				refctx2.Key.Value = d2ast.MakeValueBox(n.Primary_.Value)
+				// If the link is a board, we need to transform it into an absolute path.
+				if f.Name == "link" {
+					c.compileLink(refctx2)
+				}
+				f.Primary_ = &Scalar{
+					parent: f,
+					Value:  refctx2.Key.Value.ScalarBox().Unbox(),
+				}
 			}
 			if n.Composite != nil {
 				f.Composite = n.Composite.Copy(f).(Composite)
 			}
 		case *Map:
-			f.Composite = n.Copy(f).(Composite)
+			f.Composite = &Map{
+				parent: f,
+			}
+			switch NodeBoardKind(f) {
+			case BoardScenario:
+				c.overlay(ParentBoard(f).Map(), f)
+			case BoardStep:
+				stepsMap := ParentMap(f)
+				for i := range stepsMap.Fields {
+					if stepsMap.Fields[i] == f {
+						if i == 0 {
+							c.overlay(ParentBoard(f).Map(), f)
+						} else {
+							c.overlay(stepsMap.Fields[i-1].Map(), f)
+						}
+						break
+					}
+				}
+			}
+			OverlayMap(f.Map(), n)
+			switch NodeBoardKind(f) {
+			case BoardScenario, BoardStep:
+				c.compileClasses(f.Map())
+			}
 		}
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 		// If the link is a board, we need to transform it into an absolute path.
@@ -408,7 +451,7 @@ func (c *compiler) compileArray(dst *Array, a *d2ast.Array) {
 				}
 			case *Map:
 				if v.Spread {
-					c.errorf(v, "cannot spread import map into array")
+					c.errorf(v, "can only spread import array into array")
 					continue
 				}
 				irv = n

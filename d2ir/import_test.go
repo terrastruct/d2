@@ -96,6 +96,20 @@ label: meow`,
 				assertQuery(t, m, 0, 0, nil, "jon")
 			},
 		},
+		{
+			name: "nested/spread_primary",
+			run: func(t testing.TB) {
+				m, err := compileFS(t, "index.d2", map[string]string{
+					"index.d2": "q: { ...@x.y }",
+					"x.d2":     "y: meow { jon; jan }",
+				})
+				assert.Success(t, err)
+				assertQuery(t, m, 3, 0, nil, "")
+				assertQuery(t, m, 2, 0, "meow", "q")
+				assertQuery(t, m, 0, 0, nil, "q.jan")
+				assertQuery(t, m, 0, 0, nil, "q.jon")
+			},
+		},
 	}
 
 	runa(t, tca)
@@ -154,6 +168,16 @@ x.d2:1:7: connection missing source`)
 						"q.d2":     "...@x",
 					})
 					assert.ErrorString(t, err, `q.d2:1:1: detected cyclic import chain: x -> y -> q -> x`)
+				},
+			},
+			{
+				name: "spread_non_map",
+				run: func(t testing.TB) {
+					_, err := compileFS(t, "index.d2", map[string]string{
+						"index.d2": "...@x.y",
+						"x.d2":     "y: meow",
+					})
+					assert.ErrorString(t, err, `index.d2:1:1: cannot spread import non map into map`)
 				},
 			},
 		}
