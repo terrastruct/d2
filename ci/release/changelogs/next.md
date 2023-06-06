@@ -11,6 +11,8 @@
 - `sql_table` now alternatively takes an array of constraints instead of being limited to a single one. Thanks @satoqz ! [#1245](https://github.com/terrastruct/d2/pull/1245)
 - Constraints in `sql_table` render even if they have no matching abbreviation [#1372](https://github.com/terrastruct/d2/pull/1372)
 - Constraints in `sql_table` sheds their excessive letter-spacing and is padded from the end consistently [#1372](https://github.com/terrastruct/d2/pull/1372)
+- Duplicate image URLs in icons are only fetched once [#1373](https://github.com/terrastruct/d2/pull/1373)
+- In watch mode, images are cached by default across compiles. Can be disabled with flag `--img-cache=0`. [#1373](https://github.com/terrastruct/d2/pull/1373)
 
 #### Bugfixes ⛑️
 
