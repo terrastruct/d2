@@ -3,6 +3,7 @@ package d2ir_test
 import (
 	"testing"
 
+	"oss.terrastruct.com/d2/d2ir"
 	"oss.terrastruct.com/util-go/assert"
 )
 
@@ -26,7 +27,7 @@ label: meow`,
 			},
 		},
 		{
-			name: "nested",
+			name: "nested/map",
 			run: func(t testing.TB) {
 				m, err := compileFS(t, "index.d2", map[string]string{
 					"index.d2": "x: @x.y",
@@ -40,6 +41,33 @@ label: meow`,
 				assertQuery(t, m, 2, 0, nil, "x")
 				assertQuery(t, m, 0, 0, "circle", "x.shape")
 				assertQuery(t, m, 0, 0, "meow", "x.label")
+			},
+		},
+		{
+			name: "nested/array",
+			run: func(t testing.TB) {
+				m, err := compileFS(t, "index.d2", map[string]string{
+					"index.d2": "x: @x.y",
+					"x.d2":     `y: [1, 2]`,
+				})
+				assert.Success(t, err)
+				assertQuery(t, m, 1, 0, nil, "")
+				x := assertQuery(t, m, 0, 0, nil, "x")
+				xf, ok := x.(*d2ir.Field)
+				assert.True(t, ok)
+				assert.Equal(t, `[1, 2]`, xf.Composite.String())
+			},
+		},
+		{
+			name: "nested/scalar",
+			run: func(t testing.TB) {
+				m, err := compileFS(t, "index.d2", map[string]string{
+					"index.d2": "x: @x.y",
+					"x.d2":     `y: meow`,
+				})
+				assert.Success(t, err)
+				assertQuery(t, m, 1, 0, nil, "")
+				assertQuery(t, m, 0, 0, "meow", "x")
 			},
 		},
 		{
