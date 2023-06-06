@@ -1,0 +1,38 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/import/#07.d2,0:0:0-0:5:5",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/import/#07.d2,0:0:0-0:5:5",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/import/#07.d2,0:0:0-0:5:5",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/import/#07.d2,0:0:0-0:5:5",
+                  "value": [
+                    {
+                      "string": "@file",
+                      "raw_string": "@file"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {}
+        }
+      }
+    ]
+  },
+  "err": {
+    "errs": [
+      {
+        "range": "d2/testdata/d2parser/TestParse/import/#07.d2,0:0:0-0:5:5",
+        "errmsg": "d2/testdata/d2parser/TestParse/import/#07.d2:1:1: @file is not a valid import, did you mean ...@file?"
+      }
+    ]
+  }
+}

@@ -460,7 +460,7 @@ func testImport(t *testing.T) {
 		{
 			text: "@file",
 			assert: func(t testing.TB, ast *d2ast.Map, err error) {
-				assert.ErrorString(t, err, "d2/testdata/d2parser/TestParse/import/#06.d2:1:5: unexpected text after import")
+				assert.ErrorString(t, err, "d2/testdata/d2parser/TestParse/import/#07.d2:1:1: @file is not a valid import, did you mean ...@file?")
 			},
 		},
 	}

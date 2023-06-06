@@ -633,7 +633,7 @@ func (p *parser) parseMapKey() (mk *d2ast.Key) {
 		}
 	}()
 
-	// Check for ampersand.
+	// Check for ampersand/@.
 	r, eof := p.peek()
 	if eof {
 		return mk
@@ -966,6 +966,9 @@ func (p *parser) parseKey() (k *d2ast.KeyPath) {
 		s := sb.Unbox()
 		if s == nil {
 			return k
+		}
+		if strings.HasPrefix(s.ScalarString(), "@") {
+			p.errorf(s.GetRange().Start, s.GetRange().End, "%s is not a valid import, did you mean ...%[2]s?", s.ScalarString())
 		}
 
 		if len(k.Path) == 0 {
