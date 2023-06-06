@@ -151,8 +151,10 @@ func runWorkers(ctx context.Context, ms *xmain.State, svg []byte, imgs [][][]byt
 }
 
 func worker(ctx context.Context, ms *xmain.State, href []byte, isRemote bool) ([]byte, error) {
-	if hit, ok := imgCache.Load(string(href)); ok {
-		return hit.([]byte), nil
+	if ms.Env.Getenv("IMG_CACHE") == "1" {
+		if hit, ok := imgCache.Load(string(href)); ok {
+			return hit.([]byte), nil
+		}
 	}
 	var buf []byte
 	var mimeType string
@@ -175,7 +177,9 @@ func worker(ctx context.Context, ms *xmain.State, href []byte, isRemote bool) ([
 	b64 := base64.StdEncoding.EncodeToString(buf)
 
 	out := []byte(fmt.Sprintf(`<image href="data:%s;base64,%s"`, mimeType, b64))
-	imgCache.Store(string(href), out)
+	if ms.Env.Getenv("IMG_CACHE") == "1" {
+		imgCache.Store(string(href), out)
+	}
 	return out, nil
 }
 
