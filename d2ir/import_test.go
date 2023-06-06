@@ -83,6 +83,19 @@ label: meow`,
 				assertQuery(t, m, 0, 0, "wowa", "x")
 			},
 		},
+		{
+			name: "nested/spread",
+			run: func(t testing.TB) {
+				m, err := compileFS(t, "index.d2", map[string]string{
+					"index.d2": "...@x.y",
+					"x.d2":     "y: { jon; jan }",
+				})
+				assert.Success(t, err)
+				assertQuery(t, m, 2, 0, nil, "")
+				assertQuery(t, m, 0, 0, nil, "jan")
+				assertQuery(t, m, 0, 0, nil, "jon")
+			},
+		},
 	}
 
 	runa(t, tca)

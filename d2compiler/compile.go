@@ -262,17 +262,19 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 				obj.Map = fr.Context.Key.Value.Map
 			}
 		}
-		scopeObjIDA := d2ir.BoardIDA(fr.Context.ScopeMap)
-		scopeObj := obj.Graph.Root.EnsureChildIDVal(scopeObjIDA)
-		obj.References = append(obj.References, d2graph.Reference{
+		r := d2graph.Reference{
 			Key:          fr.KeyPath,
 			KeyPathIndex: fr.KeyPathIndex(),
 
 			MapKey:          fr.Context.Key,
 			MapKeyEdgeIndex: fr.Context.EdgeIndex(),
 			Scope:           fr.Context.Scope,
-			ScopeObj:        scopeObj,
-		})
+		}
+		if fr.Context.ScopeMap != nil {
+			scopeObjIDA := d2ir.BoardIDA(fr.Context.ScopeMap)
+			r.ScopeObj = obj.Graph.Root.EnsureChildIDVal(scopeObjIDA)
+		}
+		obj.References = append(obj.References, r)
 	}
 }
 
@@ -604,15 +606,17 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 
 	edge.Label.MapKey = e.LastPrimaryKey()
 	for _, er := range e.References {
-		scopeObjIDA := d2ir.BoardIDA(er.Context.ScopeMap)
-		scopeObj := edge.Src.Graph.Root.EnsureChildIDVal(scopeObjIDA)
-		edge.References = append(edge.References, d2graph.EdgeReference{
+		r := d2graph.EdgeReference{
 			Edge:            er.Context.Edge,
 			MapKey:          er.Context.Key,
 			MapKeyEdgeIndex: er.Context.EdgeIndex(),
 			Scope:           er.Context.Scope,
-			ScopeObj:        scopeObj,
-		})
+		}
+		if er.Context.ScopeMap != nil {
+			scopeObjIDA := d2ir.BoardIDA(er.Context.ScopeMap)
+			r.ScopeObj = edge.Src.Graph.Root.EnsureChildIDVal(scopeObjIDA)
+		}
+		edge.References = append(edge.References, r)
 	}
 }
 

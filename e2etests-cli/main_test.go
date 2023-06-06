@@ -378,6 +378,17 @@ steps: {
 				assert.Testdata(t, ".svg", svg)
 			},
 		},
+		{
+			name: "import_spread_nested",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `...@x.y`)
+				writeFile(t, dir, "x.d2", `y: { jon; jan }`)
+				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
+				assert.Success(t, err)
+				svg := readFile(t, dir, "hello-world.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
 	}
 
 	ctx := context.Background()

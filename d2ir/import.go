@@ -48,6 +48,7 @@ func (c *compiler) _import(imp *d2ast.Import) (Node, bool) {
 	if !ok {
 		return nil, false
 	}
+	nilScopeMap(ir)
 	if len(imp.IDA()) > 0 {
 		f := ir.GetField(imp.IDA()...)
 		if f == nil {
@@ -125,4 +126,30 @@ func (c *compiler) __import(imp *d2ast.Import) (*Map, bool) {
 	c.importCache[impPath] = ir
 
 	return ir, true
+}
+
+func nilScopeMap(n Node) {
+	switch n := n.(type) {
+	case *Map:
+		for _, f := range n.Fields {
+			nilScopeMap(f)
+		}
+		for _, e := range n.Edges {
+			nilScopeMap(e)
+		}
+	case *Edge:
+		for _, r := range n.References {
+			r.Context.ScopeMap = nil
+		}
+		if n.Map() != nil {
+			nilScopeMap(n.Map())
+		}
+	case *Field:
+		for _, r := range n.References {
+			r.Context.ScopeMap = nil
+		}
+		if n.Map() != nil {
+			nilScopeMap(n.Map())
+		}
+	}
 }
