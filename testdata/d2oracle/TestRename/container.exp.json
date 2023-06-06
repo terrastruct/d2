@@ -327,7 +327,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestRename/container.d2,1:16:87-4:0:114",
+                "range": "d2/testdata/d2oracle/TestRename/container.d2,1:16:87-4:1:115",
                 "nodes": [
                   {
                     "map_key": {
@@ -472,7 +472,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestRename/container.d2,5:4:120-9:0:149",
+                "range": "d2/testdata/d2oracle/TestRename/container.d2,5:4:120-9:1:150",
                 "nodes": [
                   {
                     "map_key": {
@@ -496,7 +496,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestRename/container.d2,6:15:137-8:2:147",
+                          "range": "d2/testdata/d2oracle/TestRename/container.d2,6:15:137-8:3:148",
                           "nodes": [
                             {
                               "map_key": {

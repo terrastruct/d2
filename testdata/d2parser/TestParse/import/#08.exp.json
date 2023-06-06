@@ -40,8 +40,8 @@
   "err": {
     "errs": [
       {
-        "range": "d2/testdata/d2parser/TestParse/import/#08.d2,0:9:9-0:10:10",
-        "errmsg": "d2/testdata/d2parser/TestParse/import/#08.d2:1:10: unquoted strings cannot begin with ...@ as that's import spread syntax"
+        "range": "d2/testdata/d2parser/TestParse/import/#08.d2,0:6:6-0:10:10",
+        "errmsg": "d2/testdata/d2parser/TestParse/import/#08.d2:1:7: unquoted strings cannot begin with ...@ as that's import spread syntax"
       }
     ]
   }

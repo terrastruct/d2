@@ -50,7 +50,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestSet/replace_arrowhead_map.d2,0:8:8-4:0:54",
+                "range": "d2/testdata/d2oracle/TestSet/replace_arrowhead_map.d2,0:8:8-4:1:55",
                 "nodes": [
                   {
                     "map_key": {
@@ -74,7 +74,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestSet/replace_arrowhead_map.d2,1:20:30-3:2:52",
+                          "range": "d2/testdata/d2oracle/TestSet/replace_arrowhead_map.d2,1:20:30-3:3:53",
                           "nodes": [
                             {
                               "map_key": {

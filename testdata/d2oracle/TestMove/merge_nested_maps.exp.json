@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestMove/merge_nested_maps.d2,0:3:3-10:0:65",
+                "range": "d2/testdata/d2oracle/TestMove/merge_nested_maps.d2,0:3:3-10:1:66",
                 "nodes": [
                   {
                     "map_key": {
@@ -164,7 +164,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestMove/merge_nested_maps.d2,4:5:30-9:2:63",
+                          "range": "d2/testdata/d2oracle/TestMove/merge_nested_maps.d2,4:5:30-9:3:64",
                           "nodes": [
                             {
                               "map_key": {
@@ -188,7 +188,7 @@
                                 "primary": {},
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2oracle/TestMove/merge_nested_maps.d2,5:7:39-7:4:53",
+                                    "range": "d2/testdata/d2oracle/TestMove/merge_nested_maps.d2,5:7:39-7:5:54",
                                     "nodes": [
                                       {
                                         "map_key": {

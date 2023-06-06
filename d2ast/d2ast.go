@@ -180,6 +180,10 @@ func (p Position) String() string {
 	return fmt.Sprintf("%d:%d", p.Line+1, p.Column+1)
 }
 
+func (p Position) Debug() string {
+	return fmt.Sprintf("%d:%d:%d", p.Line, p.Column, p.Byte)
+}
+
 // See docs on Range.
 func (p Position) MarshalText() ([]byte, error) {
 	return []byte(fmt.Sprintf("%d:%d:%d", p.Line, p.Column, p.Byte)), nil

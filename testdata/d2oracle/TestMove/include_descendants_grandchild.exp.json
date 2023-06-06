@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestMove/include_descendants_grandchild.d2,0:3:3-7:0:47",
+                "range": "d2/testdata/d2oracle/TestMove/include_descendants_grandchild.d2,0:3:3-7:1:48",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestMove/include_descendants_grandchild.d2,1:5:10-6:2:45",
+                          "range": "d2/testdata/d2oracle/TestMove/include_descendants_grandchild.d2,1:5:10-6:3:46",
                           "nodes": [
                             {
                               "map_key": {
@@ -109,7 +109,7 @@
                                 "primary": {},
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2oracle/TestMove/include_descendants_grandchild.d2,3:7:27-5:4:41",
+                                    "range": "d2/testdata/d2oracle/TestMove/include_descendants_grandchild.d2,3:7:27-5:5:42",
                                     "nodes": [
                                       {
                                         "map_key": {

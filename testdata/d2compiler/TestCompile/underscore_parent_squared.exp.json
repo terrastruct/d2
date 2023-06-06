@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_squared.d2,1:3:4-5:0:27",
+                "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_squared.d2,1:3:4-5:1:28",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_squared.d2,2:5:11-4:2:25",
+                          "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_squared.d2,2:5:11-4:3:26",
                           "nodes": [
                             {
                               "map_key": {

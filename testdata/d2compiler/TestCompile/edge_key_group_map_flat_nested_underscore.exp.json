@@ -73,7 +73,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_flat_nested_underscore.d2,2:3:11-6:0:57",
+                "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_flat_nested_underscore.d2,2:3:11-6:1:58",
                 "nodes": [
                   {
                     "map_key": {
@@ -147,7 +147,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_flat_nested_underscore.d2,3:18:31-5:1:55",
+                          "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_flat_nested_underscore.d2,3:18:31-5:2:56",
                           "nodes": [
                             {
                               "map_key": {

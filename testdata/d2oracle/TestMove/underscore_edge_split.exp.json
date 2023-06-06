@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestMove/underscore_edge_split.d2,0:3:3-4:0:30",
+                "range": "d2/testdata/d2oracle/TestMove/underscore_edge_split.d2,0:3:3-4:1:31",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestMove/underscore_edge_split.d2,1:5:10-3:2:28",
+                          "range": "d2/testdata/d2oracle/TestMove/underscore_edge_split.d2,1:5:10-3:3:29",
                           "nodes": [
                             {
                               "map_key": {

@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestReconnectEdge/scope_inner.d2,0:3:3-7:0:38",
+                "range": "d2/testdata/d2oracle/TestReconnectEdge/scope_inner.d2,0:3:3-7:1:39",
                 "nodes": [
                   {
                     "map_key": {
@@ -131,7 +131,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestReconnectEdge/scope_inner.d2,4:5:26-6:2:36",
+                          "range": "d2/testdata/d2oracle/TestReconnectEdge/scope_inner.d2,4:5:26-6:3:37",
                           "nodes": [
                             {
                               "map_key": {

@@ -361,7 +361,7 @@ func (p *parser) parseMap(isFileMap bool) *d2ast.Map {
 			Start: p.pos,
 		},
 	}
-	defer m.Range.End.From(&p.readerPos)
+	defer m.Range.End.From(&p.pos)
 
 	if !isFileMap {
 		m.Range.Start = m.Range.Start.Subtract('{', p.utf16)
@@ -967,7 +967,7 @@ func (p *parser) parseKey() (k *d2ast.KeyPath) {
 		if s == nil {
 			return k
 		}
-		if strings.HasPrefix(s.ScalarString(), "@") {
+		if sb.UnquotedString != nil && strings.HasPrefix(s.ScalarString(), "@") {
 			p.errorf(s.GetRange().Start, s.GetRange().End, "%s is not a valid import, did you mean ...%[2]s?", s.ScalarString())
 		}
 
@@ -1050,7 +1050,7 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 	p.rewind()
 	if !eof {
 		if _s == "...@" {
-			p.errorf(p.readerPos, p.pos.AdvanceString("...@", p.utf16), "unquoted strings cannot begin with ...@ as that's import spread syntax")
+			p.errorf(p.pos, p.pos.AdvanceString("...@", p.utf16), "unquoted strings cannot begin with ...@ as that's import spread syntax")
 		}
 	}
 

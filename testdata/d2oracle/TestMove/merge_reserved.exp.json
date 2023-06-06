@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestMove/merge_reserved.d2,0:3:3-8:0:68",
+                "range": "d2/testdata/d2oracle/TestMove/merge_reserved.d2,0:3:3-8:1:69",
                 "nodes": [
                   {
                     "map_key": {
@@ -173,7 +173,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestMove/merge_reserved.d2,4:5:48-7:2:66",
+                          "range": "d2/testdata/d2oracle/TestMove/merge_reserved.d2,4:5:48-7:3:67",
                           "nodes": [
                             {
                               "map_key": {

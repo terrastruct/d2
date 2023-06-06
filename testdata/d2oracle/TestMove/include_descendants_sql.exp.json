@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestMove/include_descendants_sql.d2,0:3:3-5:0:46",
+                "range": "d2/testdata/d2oracle/TestMove/include_descendants_sql.d2,0:3:3-5:1:47",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestMove/include_descendants_sql.d2,1:5:10-4:2:44",
+                          "range": "d2/testdata/d2oracle/TestMove/include_descendants_sql.d2,1:5:10-4:3:45",
                           "nodes": [
                             {
                               "map_key": {

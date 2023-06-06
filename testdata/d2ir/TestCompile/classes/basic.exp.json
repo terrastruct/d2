@@ -309,7 +309,7 @@
                     "primary": {},
                     "value": {
                       "map": {
-                        "range": "TestCompile/classes/basic.d2,2:9:22-4:2:49",
+                        "range": "TestCompile/classes/basic.d2,2:9:22-4:3:50",
                         "nodes": [
                           {
                             "map_key": {
@@ -416,7 +416,7 @@
               "primary": {},
               "value": {
                 "map": {
-                  "range": "TestCompile/classes/basic.d2,1:9:11-5:0:51",
+                  "range": "TestCompile/classes/basic.d2,1:9:11-5:1:52",
                   "nodes": [
                     {
                       "map_key": {
@@ -440,7 +440,7 @@
                         "primary": {},
                         "value": {
                           "map": {
-                            "range": "TestCompile/classes/basic.d2,2:9:22-4:2:49",
+                            "range": "TestCompile/classes/basic.d2,2:9:22-4:3:50",
                             "nodes": [
                               {
                                 "map_key": {

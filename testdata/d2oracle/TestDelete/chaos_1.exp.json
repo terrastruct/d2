@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,0:4:4-0:20:20",
+                "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,0:4:4-0:21:21",
                 "nodes": [
                   {
                     "map_key": {
@@ -112,7 +112,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,1:11:33-1:51:73",
+                "range": "d2/testdata/d2oracle/TestDelete/chaos_1.d2,1:11:33-1:52:74",
                 "nodes": [
                   {
                     "map_key": {
