@@ -3,8 +3,9 @@ package d2ir_test
 import (
 	"testing"
 
-	"oss.terrastruct.com/d2/d2ir"
 	"oss.terrastruct.com/util-go/assert"
+
+	"oss.terrastruct.com/d2/d2ir"
 )
 
 func testCompileImports(t *testing.T) {
@@ -89,7 +90,25 @@ label: meow`,
 	t.Run("errors", func(t *testing.T) {
 		tca := []testCase{
 			{
-				name: "parse_error",
+				name: "not_exist",
+				run: func(t testing.TB) {
+					_, err := compileFS(t, "index.d2", map[string]string{
+						"index.d2": "...@x.d2",
+					})
+					assert.ErrorString(t, err, `index.d2:1:1: failed to import "x.d2": open x.d2: no such file or directory`)
+				},
+			},
+			{
+				name: "absolute",
+				run: func(t testing.TB) {
+					_, err := compileFS(t, "index.d2", map[string]string{
+						"index.d2": "...@/x.d2",
+					})
+					assert.ErrorString(t, err, `index.d2:1:1: import paths must be relative`)
+				},
+			},
+			{
+				name: "parse",
 				run: func(t testing.TB) {
 					_, err := compileFS(t, "index.d2", map[string]string{
 						"index.d2": "...@x.d2",
@@ -101,6 +120,18 @@ x.d2:1:4: connection missing destination
 x.d2:1:6: connection missing source
 x.d2:1:6: connection missing destination
 x.d2:1:7: connection missing source`)
+				},
+			},
+			{
+				name: "cyclic",
+				run: func(t testing.TB) {
+					_, err := compileFS(t, "index.d2", map[string]string{
+						"index.d2": "...@x",
+						"x.d2":     "...@y",
+						"y.d2":     "...@q",
+						"q.d2":     "...@x",
+					})
+					assert.ErrorString(t, err, `q.d2:1:1: detected cyclic import chain: x -> y -> q -> x`)
 				},
 			},
 		}

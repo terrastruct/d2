@@ -3,6 +3,7 @@ package d2ir
 import (
 	"bufio"
 	"path"
+	"strings"
 
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2parser"
@@ -15,9 +16,9 @@ func (c *compiler) pushImportStack(imp *d2ast.Import) bool {
 	}
 
 	newPath := imp.Path[0].Unbox().ScalarString()
-	for _, p := range c.importStack {
+	for i, p := range c.importStack {
 		if newPath == p {
-			c.errorf(imp, "detected cyclic import of %q", newPath)
+			c.errorf(imp, "detected cyclic import chain: %s", formatCyclicChain(c.importStack[i:]))
 			return false
 		}
 	}
@@ -28,6 +29,16 @@ func (c *compiler) pushImportStack(imp *d2ast.Import) bool {
 
 func (c *compiler) popImportStack() {
 	c.importStack = c.importStack[:len(c.importStack)-1]
+}
+
+func formatCyclicChain(cyclicChain []string) string {
+	var b strings.Builder
+	for _, p := range cyclicChain {
+		b.WriteString(p)
+		b.WriteString(" -> ")
+	}
+	b.WriteString(cyclicChain[0])
+	return b.String()
 }
 
 // Returns either *Map or *Field.
