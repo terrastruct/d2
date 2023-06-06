@@ -111,7 +111,7 @@ func runWorkers(ctx context.Context, ms *xmain.State, svg []byte, imgs [][][]byt
 					<-sema
 				}()
 
-				bundledImage, err := worker(ctx, &imgCache, img[1], isRemote)
+				bundledImage, err := worker(ctx, ms, img[1], isRemote)
 				if err != nil {
 					ms.Log.Error.Printf("failed to bundle %s: %v", img[1], err)
 					errhrefsMu.Lock()
@@ -150,16 +150,18 @@ func runWorkers(ctx context.Context, ms *xmain.State, svg []byte, imgs [][][]byt
 	}
 }
 
-func worker(ctx context.Context, cache *sync.Map, href []byte, isRemote bool) ([]byte, error) {
-	if hit, ok := cache.Load(string(href)); ok {
+func worker(ctx context.Context, ms *xmain.State, href []byte, isRemote bool) ([]byte, error) {
+	if hit, ok := imgCache.Load(string(href)); ok {
 		return hit.([]byte), nil
 	}
 	var buf []byte
 	var mimeType string
 	var err error
 	if isRemote {
+		ms.Log.Debug.Printf("fetching %s remotely", string(href))
 		buf, mimeType, err = httpGet(ctx, html.UnescapeString(string(href)))
 	} else {
+		ms.Log.Debug.Printf("reading %s from disk", string(href))
 		buf, err = os.ReadFile(html.UnescapeString(string(href)))
 	}
 	if err != nil {
@@ -173,7 +175,7 @@ func worker(ctx context.Context, cache *sync.Map, href []byte, isRemote bool) ([
 	b64 := base64.StdEncoding.EncodeToString(buf)
 
 	out := []byte(fmt.Sprintf(`<image href="data:%s;base64,%s"`, mimeType, b64))
-	cache.Store(string(href), out)
+	imgCache.Store(string(href), out)
 	return out, nil
 }
 
