@@ -4,19 +4,25 @@
     "nodes": [
       {
         "import": {
-          "range": "d2/testdata/d2parser/TestParse/import/#06.d2,0:0:0-0:4:4",
+          "range": "d2/testdata/d2parser/TestParse/import/#06.d2,0:0:0-0:11:11",
           "spread": true,
-          "path": null
+          "pre": "../",
+          "path": [
+            {
+              "unquoted_string": {
+                "range": "d2/testdata/d2parser/TestParse/import/#06.d2,0:7:7-0:11:11",
+                "value": [
+                  {
+                    "string": "file",
+                    "raw_string": "file"
+                  }
+                ]
+              }
+            }
+          ]
         }
       }
     ]
   },
-  "err": {
-    "errs": [
-      {
-        "range": "d2/testdata/d2parser/TestParse/import/#06.d2,0:4:4-0:11:11",
-        "errmsg": "d2/testdata/d2parser/TestParse/import/#06.d2:1:5: unexpected text after import"
-      }
-    ]
-  }
+  "err": null
 }

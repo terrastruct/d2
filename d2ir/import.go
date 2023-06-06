@@ -11,12 +11,12 @@ import (
 )
 
 func (c *compiler) pushImportStack(imp *d2ast.Import) bool {
-	if len(imp.Path) == 0 {
+	if imp.PathWithPre() == "" && imp.Range.Path != "" {
 		c.errorf(imp, "imports must specify a path to import")
 		return false
 	}
 
-	newPath := imp.Path[0].Unbox().ScalarString()
+	newPath := imp.PathWithPre()
 	for i, p := range c.importStack {
 		if newPath == p {
 			c.errorf(imp, "detected cyclic import chain: %s", formatCyclicChain(c.importStack[i:]))
@@ -61,7 +61,7 @@ func (c *compiler) _import(imp *d2ast.Import) (Node, bool) {
 }
 
 func (c *compiler) __import(imp *d2ast.Import) (*Map, bool) {
-	impPath := imp.Path[0].Unbox().ScalarString()
+	impPath := imp.PathWithPre()
 	if path.IsAbs(impPath) {
 		c.errorf(imp, "import paths must be relative")
 		return nil, false

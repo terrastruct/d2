@@ -1,48 +1,28 @@
 {
   "ast": {
-    "range": "d2/testdata/d2parser/TestParse/import/#08.d2,0:0:0-0:14:14",
+    "range": "d2/testdata/d2parser/TestParse/import/#08.d2,0:0:0-0:18:18",
     "nodes": [
       {
-        "map_key": {
-          "range": "d2/testdata/d2parser/TestParse/import/#08.d2,0:0:0-0:14:14",
-          "key": {
-            "range": "d2/testdata/d2parser/TestParse/import/#08.d2,0:0:0-0:4:4",
-            "path": [
-              {
-                "unquoted_string": {
-                  "range": "d2/testdata/d2parser/TestParse/import/#08.d2,0:0:0-0:4:4",
-                  "value": [
-                    {
-                      "string": "meow",
-                      "raw_string": "meow"
-                    }
-                  ]
-                }
+        "import": {
+          "range": "d2/testdata/d2parser/TestParse/import/#08.d2,0:0:0-0:18:18",
+          "spread": true,
+          "pre": "./../.././",
+          "path": [
+            {
+              "unquoted_string": {
+                "range": "d2/testdata/d2parser/TestParse/import/#08.d2,0:14:14-0:18:18",
+                "value": [
+                  {
+                    "string": "file",
+                    "raw_string": "file"
+                  }
+                ]
               }
-            ]
-          },
-          "primary": {},
-          "value": {
-            "unquoted_string": {
-              "range": "d2/testdata/d2parser/TestParse/import/#08.d2,0:6:6-0:14:14",
-              "value": [
-                {
-                  "string": "...@file",
-                  "raw_string": "...@file"
-                }
-              ]
             }
-          }
+          ]
         }
       }
     ]
   },
-  "err": {
-    "errs": [
-      {
-        "range": "d2/testdata/d2parser/TestParse/import/#08.d2,0:6:6-0:10:10",
-        "errmsg": "d2/testdata/d2parser/TestParse/import/#08.d2:1:7: unquoted strings cannot begin with ...@ as that's import spread syntax"
-      }
-    ]
-  }
+  "err": null
 }

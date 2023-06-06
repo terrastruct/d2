@@ -454,7 +454,9 @@ func testImport(t *testing.T) {
 		{
 			text: "...@../file",
 			assert: func(t testing.TB, ast *d2ast.Map, err error) {
-				assert.ErrorString(t, err, "d2/testdata/d2parser/TestParse/import/#06.d2:1:5: unexpected text after import")
+				assert.Success(t, err)
+				assert.True(t, ast.Nodes[0].Import.Spread)
+				assert.Equal(t, "../file", ast.Nodes[0].Import.PathWithPre())
 			},
 		},
 		{
@@ -464,9 +466,17 @@ func testImport(t *testing.T) {
 			},
 		},
 		{
+			text: "...@./../.././file",
+			assert: func(t testing.TB, ast *d2ast.Map, err error) {
+				assert.Success(t, err)
+				assert.True(t, ast.Nodes[0].Import.Spread)
+				assert.Equal(t, "../../file", ast.Nodes[0].Import.PathWithPre())
+			},
+		},
+		{
 			text: "meow: ...@file",
 			assert: func(t testing.TB, ast *d2ast.Map, err error) {
-				assert.ErrorString(t, err, "d2/testdata/d2parser/TestParse/import/#08.d2:1:7: unquoted strings cannot begin with ...@ as that's import spread syntax")
+				assert.ErrorString(t, err, "d2/testdata/d2parser/TestParse/import/#09.d2:1:7: unquoted strings cannot begin with ...@ as that's import spread syntax")
 			},
 		},
 	}

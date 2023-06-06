@@ -28,6 +28,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"path"
 	"strconv"
 	"strings"
 	"unicode"
@@ -746,6 +747,7 @@ type Import struct {
 	Range Range `json:"range"`
 
 	Spread bool         `json:"spread"`
+	Pre    string       `json:"pre"`
 	Path   []*StringBox `json:"path"`
 }
 
@@ -1104,4 +1106,11 @@ func (i *Import) IDA() (ida []string) {
 		ida = append(ida, el.Unbox().ScalarString())
 	}
 	return ida
+}
+
+func (i *Import) PathWithPre() string {
+	if len(i.Path) == 0 {
+		return ""
+	}
+	return path.Join(i.Pre, i.Path[0].Unbox().ScalarString())
 }

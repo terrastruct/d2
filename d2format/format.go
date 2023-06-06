@@ -1,6 +1,7 @@
 package d2format
 
 import (
+	"path"
 	"strconv"
 	"strings"
 
@@ -210,6 +211,11 @@ func (p *printer) _import(i *d2ast.Import) {
 		p.sb.WriteString("...")
 	}
 	p.sb.WriteString("@")
+	pre := path.Clean(i.Pre)
+	if pre != "." {
+		p.sb.WriteString(pre)
+		p.sb.WriteRune('/')
+	}
 	p.path(i.Path)
 }
 

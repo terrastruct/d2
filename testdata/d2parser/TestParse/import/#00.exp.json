@@ -26,6 +26,7 @@
             "import": {
               "range": "d2/testdata/d2parser/TestParse/import/#00.d2,0:3:3-0:8:8",
               "spread": false,
+              "pre": "",
               "path": [
                 {
                   "unquoted_string": {
