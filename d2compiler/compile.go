@@ -28,7 +28,7 @@ type CompileOptions struct {
 	FS fs.FS
 }
 
-func Compile(path string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph, error) {
+func Compile(p string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph, error) {
 	if opts == nil {
 		opts = &CompileOptions{}
 	}
@@ -36,7 +36,7 @@ func Compile(path string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph
 		opts.FS = os.DirFS("/")
 	}
 
-	ast, err := d2parser.Parse(path, r, &d2parser.ParseOptions{
+	ast, err := d2parser.Parse(p, r, &d2parser.ParseOptions{
 		UTF16: opts.UTF16,
 	})
 	if err != nil {

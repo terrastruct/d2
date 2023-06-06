@@ -31,6 +31,8 @@ type CompileOptions struct {
 	// - pre-measured (web setting)
 	// TODO maybe some will want to configure code font too, but that's much lower priority
 	FontFamily *d2fonts.FontFamily
+
+	InputPath string
 }
 
 func Compile(ctx context.Context, input string, opts *CompileOptions) (*d2target.Diagram, *d2graph.Graph, error) {
@@ -38,7 +40,7 @@ func Compile(ctx context.Context, input string, opts *CompileOptions) (*d2target
 		opts = &CompileOptions{}
 	}
 
-	g, err := d2compiler.Compile("", strings.NewReader(input), &d2compiler.CompileOptions{
+	g, err := d2compiler.Compile(opts.InputPath, strings.NewReader(input), &d2compiler.CompileOptions{
 		UTF16: opts.UTF16,
 	})
 	if err != nil {
