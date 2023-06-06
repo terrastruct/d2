@@ -365,6 +365,19 @@ steps: {
 				assert.Testdata(t, ".svg", svg)
 			},
 		},
+		{
+			name: "import",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `x: @x; y: @y; ...@p`)
+				writeFile(t, dir, "x.d2", `shape: circle`)
+				writeFile(t, dir, "y.d2", `shape: square`)
+				writeFile(t, dir, "p.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
+				assert.Success(t, err)
+				svg := readFile(t, dir, "hello-world.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
 	}
 
 	ctx := context.Background()
