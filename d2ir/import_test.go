@@ -85,6 +85,21 @@ label: meow`,
 			},
 		},
 		{
+			name: "steps-inheritence",
+			run: func(t testing.TB) {
+				m, err := compileFS(t, "index.d2", map[string]string{
+					"index.d2": `z; steps: { 1: @x; 2: @y }; scenarios: { x: @x; y: @y }`,
+					"x.d2":     `a`,
+					"y.d2":     `b`,
+				})
+				assert.Success(t, err)
+				assertQuery(t, m, 2, 0, nil, "scenarios.x")
+				assertQuery(t, m, 2, 0, nil, "scenarios.y")
+				assertQuery(t, m, 2, 0, nil, "steps.1")
+				assertQuery(t, m, 3, 0, nil, "steps.2")
+			},
+		},
+		{
 			name: "spread",
 			run: func(t testing.TB) {
 				m, err := compileFS(t, "index.d2", map[string]string{
