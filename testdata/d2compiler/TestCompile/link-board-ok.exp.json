@@ -37,7 +37,7 @@
             },
             "primary": {},
             "value": {
-              "double_quoted_string": {
+              "unquoted_string": {
                 "range": ",0:0:0-0:0:0",
                 "value": [
                   {
@@ -259,7 +259,7 @@
                 },
                 "primary": {},
                 "value": {
-                  "double_quoted_string": {
+                  "unquoted_string": {
                     "range": ",0:0:0-0:0:0",
                     "value": [
                       {

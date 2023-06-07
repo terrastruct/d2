@@ -253,8 +253,8 @@ func (c *compiler) updateLinks(m *Map) {
 			if len(bida) != len(aida) {
 				prependIDA := aida[:len(aida)-len(bida)]
 				kp := d2ast.MakeKeyPath(prependIDA)
-				s := d2format.Format(kp) + "." + f.Primary_.Value.ScalarString()
-				f.Primary_.Value = d2ast.MakeValueBox(d2ast.RawString(s, true)).ScalarBox().Unbox()
+				s := d2format.Format(kp) + strings.TrimPrefix(f.Primary_.Value.ScalarString(), "root")
+				f.Primary_.Value = d2ast.MakeValueBox(d2ast.FlatUnquotedString(s)).ScalarBox().Unbox()
 			}
 		}
 		if f.Map() != nil {
@@ -322,7 +322,7 @@ func (c *compiler) compileLink(refctx *RefContext) {
 	// Create the absolute path by appending scope path with value specified
 	scopeIDA = append(scopeIDA, linkIDA...)
 	kp := d2ast.MakeKeyPath(scopeIDA)
-	refctx.Key.Value = d2ast.MakeValueBox(d2ast.RawString(d2format.Format(kp), true))
+	refctx.Key.Value = d2ast.MakeValueBox(d2ast.FlatUnquotedString(d2format.Format(kp)))
 }
 
 func (c *compiler) compileEdges(refctx *RefContext) {
