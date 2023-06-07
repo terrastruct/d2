@@ -167,7 +167,7 @@ x.d2:1:7: connection missing source`)
 						"y.d2":     "...@q",
 						"q.d2":     "...@x",
 					})
-					assert.ErrorString(t, err, `q.d2:1:1: detected cyclic import chain: x -> y -> q -> x`)
+					assert.ErrorString(t, err, `q.d2:1:1: detected cyclic import chain: x.d2 -> y.d2 -> q.d2 -> x.d2`)
 				},
 			},
 			{
