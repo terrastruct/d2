@@ -13,6 +13,7 @@
 - Constraints in `sql_table` sheds their excessive letter-spacing and is padded from the end consistently [#1372](https://github.com/terrastruct/d2/pull/1372)
 - Duplicate image URLs in icons are only fetched once [#1373](https://github.com/terrastruct/d2/pull/1373)
 - In watch mode, images are cached by default across compiles. Can be disabled with flag `--img-cache=0`. [#1373](https://github.com/terrastruct/d2/pull/1373)
+- Common invalid array separator `,` usage in class arrays returns a helpful error message [#1376](https://github.com/terrastruct/d2/pull/1376)
 
 #### Bugfixes ⛑️
 
