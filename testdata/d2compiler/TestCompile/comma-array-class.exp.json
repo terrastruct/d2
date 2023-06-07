@@ -1,0 +1,12 @@
+{
+  "graph": null,
+  "err": {
+    "ioerr": null,
+    "errs": [
+      {
+        "range": "d2/testdata/d2compiler/TestCompile/comma-array-class.d2,11:10:157-11:15:162",
+        "errmsg": "d2/testdata/d2compiler/TestCompile/comma-array-class.d2:12:11: class \"dragon_ball, path\" not found. Did you mean to use \";\" to separate array items?"
+      }
+    ]
+  }
+}

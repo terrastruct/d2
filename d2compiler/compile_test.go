@@ -2483,6 +2483,23 @@ nostar -> 1star: { class: [path; path2] }
 			},
 		},
 		{
+			name: "comma-array-class",
+
+			text: `classes: {
+  dragon_ball: {
+    label: ""
+    shape: circle
+    style.fill: orange
+  }
+  path: {
+    label: "then"
+    style.stroke-width: 4
+  }
+}
+nostar: { class: [dragon_ball, path] }`,
+			expErr: `d2/testdata/d2compiler/TestCompile/comma-array-class.d2:12:11: class "dragon_ball, path" not found. Did you mean to use ";" to separate array items?`,
+		},
+		{
 			name: "reordered-classes",
 			text: `classes: {
   x: {
