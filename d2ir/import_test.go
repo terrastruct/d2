@@ -72,6 +72,19 @@ label: meow`,
 			},
 		},
 		{
+			name: "boards",
+			run: func(t testing.TB) {
+				m, err := compileFS(t, "index.d2", map[string]string{
+					"index.d2": `x.link: layers.x; layers: { x: @x }`,
+					"x.d2":     `y.link: layers.y; layers: { y: @y }`,
+					"y.d2":     `meow`,
+				})
+				assert.Success(t, err)
+				assertQuery(t, m, 0, 0, "root.layers.x", "x.link")
+				assertQuery(t, m, 0, 0, "root.layers.x.layers.y", "layers.x.y.link")
+			},
+		},
+		{
 			name: "spread",
 			run: func(t testing.TB) {
 				m, err := compileFS(t, "index.d2", map[string]string{
