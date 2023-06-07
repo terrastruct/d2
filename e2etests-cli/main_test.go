@@ -402,6 +402,18 @@ steps: {
 				assert.Testdata(t, ".svg", svg)
 			},
 		},
+		{
+			name: "board_import",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `x.link: layers.x; layers: { x: @x }`)
+				writeFile(t, dir, "x.d2", `y.link: layers.y; layers: { y: @y }`)
+				writeFile(t, dir, "y.d2", `meow`)
+				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
+				assert.Success(t, err)
+				svg := readFile(t, dir, "hello-world.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
 	}
 
 	ctx := context.Background()
