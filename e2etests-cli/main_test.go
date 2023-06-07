@@ -410,7 +410,11 @@ steps: {
 				writeFile(t, dir, "y.d2", `meow`)
 				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
 				assert.Success(t, err)
-				svg := readFile(t, dir, "hello-world.svg")
+				svg := readFile(t, dir, "hello-world/x/y.svg")
+				assert.Testdata(t, ".svg", svg)
+				svg = readFile(t, dir, "hello-world/x/index.svg")
+				assert.Testdata(t, ".svg", svg)
+				svg = readFile(t, dir, "hello-world/index.svg")
 				assert.Testdata(t, ".svg", svg)
 			},
 		},

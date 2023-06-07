@@ -201,18 +201,7 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		switch n := n.(type) {
 		case *Field:
 			if n.Primary_ != nil {
-				refctx2 := refctx.Copy()
-				key2 := *refctx.Key
-				refctx.Key = &key2
-				refctx2.Key.Value = d2ast.MakeValueBox(n.Primary_.Value)
-				// If the link is a board, we need to transform it into an absolute path.
-				if f.Name == "link" {
-					c.compileLink(refctx2)
-				}
-				f.Primary_ = &Scalar{
-					parent: f,
-					Value:  refctx2.Key.Value.ScalarBox().Unbox(),
-				}
+				f.Primary_ = n.Primary_.Copy(f).(*Scalar)
 			}
 			if n.Composite != nil {
 				f.Composite = n.Composite.Copy(f).(Composite)
@@ -238,6 +227,7 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 				}
 			}
 			OverlayMap(f.Map(), n)
+			c.updateLinks(f.Map())
 			switch NodeBoardKind(f) {
 			case BoardScenario, BoardStep:
 				c.compileClasses(f.Map())
@@ -251,6 +241,24 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		f.Primary_ = &Scalar{
 			parent: f,
 			Value:  refctx.Key.Value.ScalarBox().Unbox(),
+		}
+	}
+}
+
+func (c *compiler) updateLinks(m *Map) {
+	for _, f := range m.Fields {
+		if f.Name == "link" {
+			bida := BoardIDA(f)
+			aida := IDA(f)
+			if len(bida) != len(aida) {
+				prependIDA := aida[:len(aida)-len(bida)]
+				kp := d2ast.MakeKeyPath(prependIDA)
+				s := d2format.Format(kp) + "." + f.Primary_.Value.ScalarString()
+				f.Primary_.Value = d2ast.MakeValueBox(d2ast.RawString(s, true)).ScalarBox().Unbox()
+			}
+		}
+		if f.Map() != nil {
+			c.updateLinks(f.Map())
 		}
 	}
 }
