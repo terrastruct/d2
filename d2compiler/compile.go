@@ -147,6 +147,21 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 			classMap := m.GetClassMap(className)
 			if classMap != nil {
 				c.compileMap(obj, classMap)
+			} else {
+				if strings.Contains(className, ",") {
+					split := strings.Split(className, ",")
+					allFound := true
+					for _, maybeClassName := range split {
+						maybeClassName = strings.TrimSpace(maybeClassName)
+						if m.GetClassMap(maybeClassName) == nil {
+							allFound = false
+							break
+						}
+					}
+					if allFound {
+						c.errorf(class.LastRef().AST(), `class "%s" not found. Did you mean to use ";" to separate array items?`, className)
+					}
+				}
 			}
 		}
 	}
