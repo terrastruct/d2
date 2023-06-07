@@ -160,6 +160,21 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 			classMap := m.GetClassMap(className)
 			if classMap != nil {
 				c.compileMap(obj, classMap)
+			} else {
+				if strings.Contains(className, ",") {
+					split := strings.Split(className, ",")
+					allFound := true
+					for _, maybeClassName := range split {
+						maybeClassName = strings.TrimSpace(maybeClassName)
+						if m.GetClassMap(maybeClassName) == nil {
+							allFound = false
+							break
+						}
+					}
+					if allFound {
+						c.errorf(class.LastRef().AST(), `class "%s" not found. Did you mean to use ";" to separate array items?`, className)
+					}
+				}
 			}
 		}
 	}
@@ -285,6 +300,9 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 		// TODO: Delete instead.
 		attrs.Label.Value = scalar.ScalarString()
 	case *d2ast.BlockString:
+		if strings.TrimSpace(scalar.ScalarString()) == "" {
+			c.errorf(f.LastPrimaryKey(), "block string cannot be empty")
+		}
 		attrs.Language = scalar.Tag
 		fullTag, ok := ShortToFullLanguageAliases[scalar.Tag]
 		if ok {
@@ -322,8 +340,27 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 
 func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 	if f.Primary() == nil {
-		if f.Composite != nil && !strings.EqualFold(f.Name, "class") {
-			c.errorf(f.LastPrimaryKey(), "reserved field %v does not accept composite", f.Name)
+		if f.Composite != nil {
+			switch f.Name {
+			case "class":
+				if arr, ok := f.Composite.(*d2ir.Array); ok {
+					for _, class := range arr.Values {
+						if scalar, ok := class.(*d2ir.Scalar); ok {
+							attrs.Classes = append(attrs.Classes, scalar.Value.ScalarString())
+						}
+					}
+				}
+			case "constraint":
+				if arr, ok := f.Composite.(*d2ir.Array); ok {
+					for _, constraint := range arr.Values {
+						if scalar, ok := constraint.(*d2ir.Scalar); ok {
+							attrs.Constraint = append(attrs.Constraint, scalar.Value.ScalarString())
+						}
+					}
+				}
+			default:
+				c.errorf(f.LastPrimaryKey(), "reserved field %v does not accept composite", f.Name)
+			}
 		}
 		return
 	}
@@ -424,8 +461,7 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 			c.errorf(f.LastPrimaryKey(), "constraint value must be a string")
 			return
 		}
-		attrs.Constraint.Value = scalar.ScalarString()
-		attrs.Constraint.MapKey = f.LastPrimaryKey()
+		attrs.Constraint = append(attrs.Constraint, scalar.ScalarString())
 	case "grid-rows":
 		v, err := strconv.Atoi(scalar.ScalarString())
 		if err != nil {
@@ -492,17 +528,7 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.HorizontalGap.Value = scalar.ScalarString()
 		attrs.HorizontalGap.MapKey = f.LastPrimaryKey()
 	case "class":
-		if f.Primary() != nil {
-			attrs.Classes = append(attrs.Classes, scalar.ScalarString())
-		} else if f.Composite != nil {
-			if arr, ok := f.Composite.(*d2ir.Array); ok {
-				for _, class := range arr.Values {
-					if scalar, ok := class.(*d2ir.Scalar); ok {
-						attrs.Classes = append(attrs.Classes, scalar.Value.ScalarString())
-					}
-				}
-			}
-		}
+		attrs.Classes = append(attrs.Classes, scalar.ScalarString())
 	case "classes":
 	}
 
@@ -684,10 +710,14 @@ func (c *compiler) compileEdgeField(edge *d2graph.Edge, f *d2ir.Field) {
 func (c *compiler) compileArrowheads(edge *d2graph.Edge, f *d2ir.Field) {
 	var attrs *d2graph.Attributes
 	if f.Name == "source-arrowhead" {
-		edge.SrcArrowhead = &d2graph.Attributes{}
+		if edge.SrcArrowhead == nil {
+			edge.SrcArrowhead = &d2graph.Attributes{}
+		}
 		attrs = edge.SrcArrowhead
 	} else {
-		edge.DstArrowhead = &d2graph.Attributes{}
+		if edge.DstArrowhead == nil {
+			edge.DstArrowhead = &d2graph.Attributes{}
+		}
 		attrs = edge.DstArrowhead
 	}
 
@@ -794,11 +824,9 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 			typ = ""
 		}
 		d2Col := d2target.SQLColumn{
-			Name: d2target.Text{Label: col.IDVal},
-			Type: d2target.Text{Label: typ},
-		}
-		if col.Constraint.Value != "" {
-			d2Col.Constraint = col.Constraint.Value
+			Name:       d2target.Text{Label: col.IDVal},
+			Type:       d2target.Text{Label: typ},
+			Constraint: col.Constraint,
 		}
 		obj.SQLTable.Columns = append(obj.SQLTable.Columns, d2Col)
 	}

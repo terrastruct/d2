@@ -67,6 +67,10 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	imgCacheFlag, err := ms.Opts.Bool("IMG_CACHE", "img-cache", "", true, "in watch mode, images used in icons are cached for subsequent compilations. This should be disabled if images might change.")
+	if err != nil {
+		return err
+	}
 	layoutFlag := ms.Opts.String("D2_LAYOUT", "layout", "l", "dagre", `the layout engine used`)
 	themeFlag, err := ms.Opts.Int64("D2_THEME", "theme", "t", 0, "the diagram theme ID")
 	if err != nil {
@@ -149,6 +153,9 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 
 	if *debugFlag {
 		ms.Env.Setenv("DEBUG", "1")
+	}
+	if *imgCacheFlag {
+		ms.Env.Setenv("IMG_CACHE", "1")
 	}
 	if *browserFlag != "" {
 		ms.Env.Setenv("BROWSER", *browserFlag)
@@ -642,10 +649,9 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 			ms.Log.Success.Printf("successfully compiled %s to %s in %s", ms.HumanPath(inputPath), ms.HumanPath(boardOutputPath), dur)
 		}
 		boards = append([][]byte{out}, boards...)
-		return boards, nil
 	}
 
-	return nil, nil
+	return boards, nil
 }
 
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {

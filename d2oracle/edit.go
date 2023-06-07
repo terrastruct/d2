@@ -2735,7 +2735,7 @@ func RenameIDDeltas(g *d2graph.Graph, key, newName string) (deltas map[string]st
 	}
 
 	mk.Key.Path[len(mk.Key.Path)-1].Unbox().SetString(newName)
-	uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(mk.Key), "."), nil, nil)
+	uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(mk.Key), "."), obj, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2749,19 +2749,23 @@ func RenameIDDeltas(g *d2graph.Graph, key, newName string) (deltas map[string]st
 	beforeObjID := obj.ID
 
 	appendNodeDelta := func(ch *d2graph.Object) {
-		beforeID := ch.AbsID()
-		obj.ID = newNameKey
-		deltas[beforeID] = ch.AbsID()
-		obj.ID = beforeObjID
+		if obj.ID != newNameKey {
+			beforeID := ch.AbsID()
+			obj.ID = newNameKey
+			deltas[beforeID] = ch.AbsID()
+			obj.ID = beforeObjID
+		}
 	}
 
 	appendEdgeDelta := func(ch *d2graph.Object) {
 		for _, e := range obj.Graph.Edges {
 			if e.Src == ch || e.Dst == ch {
-				beforeID := e.AbsID()
-				obj.ID = newNameKey
-				deltas[beforeID] = e.AbsID()
-				obj.ID = beforeObjID
+				if obj.ID != newNameKey {
+					beforeID := e.AbsID()
+					obj.ID = newNameKey
+					deltas[beforeID] = e.AbsID()
+					obj.ID = beforeObjID
+				}
 			}
 		}
 	}

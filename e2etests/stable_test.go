@@ -2388,6 +2388,40 @@ manager2: BatchManager {
 `,
 		},
 		{
+			name: "sql_table_constraints_width",
+			script: `
+a: {
+	shape: sql_table
+	x: INT {constraint: unique}
+}
+
+b: {
+	shape: sql_table
+	x: INT {constraint: [primary_key; foreign_key]}
+}
+
+c: {
+	shape: sql_table
+	x: INT {constraint: [foreign_key; unique]}
+}
+
+d: {
+	shape: sql_table
+	x: INT {constraint: [primary_key; foreign_key; unique]}
+}
+e: {
+	shape: sql_table
+	x: INT {constraint: [no_abbrev; foreign_key; hello]}
+	y: string
+	z: STRING {constraint: yo}
+}
+f: {
+	shape: sql_table
+	x: INT
+}
+`,
+		},
+		{
 			name: "near-alone",
 			script: `
 x: {
@@ -2723,8 +2757,10 @@ scenarios: {
 		loadFromFile(t, "grid_large_checkered"),
 		loadFromFile(t, "grid_nested"),
 		loadFromFile(t, "grid_nested_gap0"),
+		loadFromFile(t, "grid_icon"),
 		loadFromFile(t, "multiple_offset"),
 		loadFromFile(t, "multiple_offset_left"),
+		loadFromFile(t, "multiple_box_selection"),
 	}
 
 	runa(t, tcs)

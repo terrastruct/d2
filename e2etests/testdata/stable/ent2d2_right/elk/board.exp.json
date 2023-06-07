@@ -10,7 +10,7 @@
         "x": 12,
         "y": 200
       },
-      "width": 218,
+      "width": 201,
       "height": 280,
       "opacity": 1,
       "strokeDash": 0,
@@ -55,7 +55,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "primary_key",
+          "constraint": [
+            "primary_key"
+          ],
           "reference": ""
         },
         {
@@ -83,7 +85,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "foreign_key",
+          "constraint": [
+            "foreign_key"
+          ],
           "reference": ""
         },
         {
@@ -111,7 +115,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "foreign_key",
+          "constraint": [
+            "foreign_key"
+          ],
           "reference": ""
         }
       ],
@@ -135,10 +141,10 @@
       "id": "Pet",
       "type": "sql_table",
       "pos": {
-        "x": 531,
+        "x": 514,
         "y": 12
       },
-      "width": 211,
+      "width": 194,
       "height": 108,
       "opacity": 1,
       "strokeDash": 0,
@@ -183,7 +189,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "primary_key",
+          "constraint": [
+            "primary_key"
+          ],
           "reference": ""
         },
         {
@@ -211,7 +219,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "foreign_key",
+          "constraint": [
+            "foreign_key"
+          ],
           "reference": ""
         }
       ],
@@ -235,10 +245,10 @@
       "id": "Card",
       "type": "sql_table",
       "pos": {
-        "x": 531,
+        "x": 514,
         "y": 140
       },
-      "width": 211,
+      "width": 194,
       "height": 108,
       "opacity": 1,
       "strokeDash": 0,
@@ -283,7 +293,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "primary_key",
+          "constraint": [
+            "primary_key"
+          ],
           "reference": ""
         },
         {
@@ -311,7 +323,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "foreign_key",
+          "constraint": [
+            "foreign_key"
+          ],
           "reference": ""
         }
       ],
@@ -335,10 +349,10 @@
       "id": "Post",
       "type": "sql_table",
       "pos": {
-        "x": 531,
+        "x": 514,
         "y": 268
       },
-      "width": 239,
+      "width": 222,
       "height": 144,
       "opacity": 1,
       "strokeDash": 0,
@@ -383,7 +397,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "primary_key",
+          "constraint": [
+            "primary_key"
+          ],
           "reference": ""
         },
         {
@@ -411,7 +427,7 @@
             "labelWidth": 48,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -439,7 +455,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "foreign_key",
+          "constraint": [
+            "foreign_key"
+          ],
           "reference": ""
         }
       ],
@@ -463,10 +481,10 @@
       "id": "Metadata",
       "type": "sql_table",
       "pos": {
-        "x": 531,
+        "x": 514,
         "y": 432
       },
-      "width": 163,
+      "width": 146,
       "height": 108,
       "opacity": 1,
       "strokeDash": 0,
@@ -511,7 +529,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "primary_key",
+          "constraint": [
+            "primary_key"
+          ],
           "reference": ""
         },
         {
@@ -539,7 +559,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         }
       ],
@@ -563,10 +583,10 @@
       "id": "Info",
       "type": "sql_table",
       "pos": {
-        "x": 531,
+        "x": 514,
         "y": 560
       },
-      "width": 325,
+      "width": 308,
       "height": 108,
       "opacity": 1,
       "strokeDash": 0,
@@ -611,7 +631,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "primary_key",
+          "constraint": [
+            "primary_key"
+          ],
           "reference": ""
         },
         {
@@ -639,7 +661,7 @@
             "labelWidth": 149,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         }
       ],
@@ -686,19 +708,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 84.66600036621094,
+          "x": 79,
           "y": 200
         },
         {
-          "x": 84.66600036621094,
+          "x": 79,
           "y": 150
         },
         {
-          "x": 157.33299255371094,
+          "x": 146,
           "y": 150
         },
         {
-          "x": 157.33299255371094,
+          "x": 146,
           "y": 200
         }
       ],
@@ -732,19 +754,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 157.33299255371094,
+          "x": 146,
           "y": 480
         },
         {
-          "x": 157.33299255371094,
+          "x": 146,
           "y": 530
         },
         {
-          "x": 84.66600036621094,
+          "x": 79,
           "y": 530
         },
         {
-          "x": 84.66600036621094,
+          "x": 79,
           "y": 480
         }
       ],
@@ -778,19 +800,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 230,
+          "x": 213,
           "y": 246.66600036621094
         },
         {
-          "x": 270,
+          "x": 253,
           "y": 246.66600036621094
         },
         {
-          "x": 270,
+          "x": 253,
           "y": 66
         },
         {
-          "x": 531,
+          "x": 514,
           "y": 66
         }
       ],
@@ -824,19 +846,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 230,
+          "x": 213,
           "y": 293.3330078125
         },
         {
-          "x": 320,
+          "x": 303,
           "y": 293.3330078125
         },
         {
-          "x": 320,
+          "x": 303,
           "y": 194
         },
         {
-          "x": 531,
+          "x": 514,
           "y": 194
         }
       ],
@@ -870,11 +892,11 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 230,
+          "x": 213,
           "y": 340
         },
         {
-          "x": 531,
+          "x": 514,
           "y": 340
         }
       ],
@@ -908,19 +930,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 230,
+          "x": 213,
           "y": 386.6659851074219
         },
         {
-          "x": 320,
+          "x": 303,
           "y": 386.6659851074219
         },
         {
-          "x": 320,
+          "x": 303,
           "y": 486
         },
         {
-          "x": 531,
+          "x": 514,
           "y": 486
         }
       ],
@@ -954,19 +976,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 230,
+          "x": 213,
           "y": 433.3330078125
         },
         {
-          "x": 270,
+          "x": 253,
           "y": 433.3330078125
         },
         {
-          "x": 270,
+          "x": 253,
           "y": 614
         },
         {
-          "x": 531,
+          "x": 514,
           "y": 614
         }
       ],

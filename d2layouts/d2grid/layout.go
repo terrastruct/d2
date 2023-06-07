@@ -6,13 +6,11 @@ import (
 	"fmt"
 	"math"
 	"sort"
-	"strings"
 
 	"oss.terrastruct.com/d2/d2graph"
 	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
-	"oss.terrastruct.com/d2/lib/shape"
 	"oss.terrastruct.com/util-go/go2"
 )
 
@@ -104,42 +102,99 @@ func withoutGridDiagrams(ctx context.Context, g *d2graph.Graph, layout d2graph.L
 			if obj.GridGap != nil || obj.VerticalGap != nil {
 				verticalPadding = gd.verticalGap
 			}
+
 			// size shape according to grid
-			obj.SizeToContent(float64(gd.width), float64(gd.height), float64(2*horizontalPadding), float64(2*verticalPadding))
+			obj.SizeToContent(gd.width, gd.height, float64(2*horizontalPadding), float64(2*verticalPadding))
 
 			// compute where the grid should be placed inside shape
-			dslShape := strings.ToLower(obj.Shape.Value)
-			shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[dslShape]
-			s := shape.NewShape(shapeType, geo.NewBox(geo.NewPoint(0, 0), obj.Width, obj.Height))
+			s := obj.ToShape()
 			innerBox := s.GetInnerBox()
 			if innerBox.TopLeft.X != 0 || innerBox.TopLeft.Y != 0 {
 				gd.shift(innerBox.TopLeft.X, innerBox.TopLeft.Y)
 			}
 
+			// compute how much space the label and icon occupy
+			var occupiedWidth, occupiedHeight float64
+			if obj.Icon != nil {
+				iconSpace := float64(d2target.MAX_ICON_SIZE + 2*label.PADDING)
+				occupiedWidth = iconSpace
+				occupiedHeight = iconSpace
+			}
+
 			var dx, dy float64
-			if obj.LabelDimensions.Width != 0 {
-				labelWidth := float64(obj.LabelDimensions.Width) + 2*label.PADDING
-				if labelWidth > obj.Width {
-					dx = (labelWidth - obj.Width) / 2
-					obj.Width = labelWidth
-				}
-			}
 			if obj.LabelDimensions.Height != 0 {
-				labelHeight := float64(obj.LabelDimensions.Height) + 2*label.PADDING
-				if labelHeight > float64(verticalPadding) {
-					// if the label doesn't fit within the padding, we need to add more
-					grow := labelHeight - float64(verticalPadding)
-					dy = grow
-					obj.Height += grow
+				occupiedHeight = math.Max(
+					occupiedHeight,
+					float64(obj.LabelDimensions.Height)+2*label.PADDING,
+				)
+			}
+			if obj.LabelDimensions.Width != 0 {
+				// . ├────┤───────├────┤
+				// .  icon  label  icon
+				// with an icon in top left we need 2x the space to fit the label in the center
+				occupiedWidth *= 2
+				occupiedWidth += float64(obj.LabelDimensions.Width) + 2*label.PADDING
+				if occupiedWidth > obj.Width {
+					dx = (occupiedWidth - obj.Width) / 2
+					obj.Width = occupiedWidth
 				}
 			}
+
+			// also check for grid cells with outside top labels or icons
+			// the first grid object is at the top (and always exists)
+			topY := gd.objects[0].TopLeft.Y
+			highestOutside := topY
+			for _, o := range gd.objects {
+				// we only want to compute label positions for objects at the top of the grid
+				if o.TopLeft.Y > topY {
+					if gd.rowDirected {
+						// if the grid is rowDirected (row1, row2, etc) we can stop after finishing the first row
+						break
+					} else {
+						// otherwise we continue until the next column
+						continue
+					}
+				}
+				if o.LabelPosition != nil {
+					labelPosition := label.Position(*o.LabelPosition)
+					if labelPosition.IsOutside() {
+						labelTL := o.GetLabelTopLeft()
+						if labelTL.Y < highestOutside {
+							highestOutside = labelTL.Y
+						}
+					}
+				}
+				if o.IconPosition != nil {
+					switch label.Position(*o.IconPosition) {
+					case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+						iconSpace := float64(d2target.MAX_ICON_SIZE + label.PADDING)
+						if topY-iconSpace < highestOutside {
+							highestOutside = topY - iconSpace
+						}
+					}
+				}
+			}
+			if highestOutside < topY {
+				occupiedHeight += topY - highestOutside + 2*label.PADDING
+			}
+			if occupiedHeight > float64(verticalPadding) {
+				// if the label doesn't fit within the padding, we need to add more
+				dy = occupiedHeight - float64(verticalPadding)
+				obj.Height += dy
+			}
+
 			// we need to center children if we have to expand to fit the container label
 			if dx != 0 || dy != 0 {
 				gd.shift(dx, dy)
 			}
 		}
 
-		obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+		if obj.HasLabel() {
+			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+		}
+		if obj.Icon != nil {
+			obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
+		}
 		gridDiagrams[obj.AbsID()] = gd
 
 		for _, o := range gd.objects {
@@ -191,10 +246,17 @@ func layoutGrid(g *d2graph.Graph, obj *d2graph.Object) (*gridDiagram, error) {
 	// position labels and icons
 	for _, o := range gd.objects {
 		if o.Icon != nil {
-			o.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
-			o.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			// don't overwrite position if nested graph layout positioned label/icon
+			if o.LabelPosition == nil {
+				o.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
+			}
+			if o.IconPosition == nil {
+				o.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
 		} else {
-			o.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			if o.LabelPosition == nil {
+				o.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
 		}
 	}
 

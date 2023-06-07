@@ -611,6 +611,24 @@ x: {
 d2/testdata/d2compiler/TestCompile/md_block_string_err.d2:5:1: block string must be terminated with |`,
 		},
 		{
+			name:   "no_empty_block_string",
+			text:   `Text: |md |`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_empty_block_string.d2:1:1: block string cannot be empty`,
+		},
+		{
+			name:   "no_white_spaces_only_block_string",
+			text:   `Text: |md      |`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_white_spaces_only_block_string.d2:1:1: block string cannot be empty`,
+		},
+		{
+			name: "no_new_lines_only_block_string",
+			text: `Text: |md
+
+
+|`,
+			expErr: `d2/testdata/d2compiler/TestCompile/no_new_lines_only_block_string.d2:1:1: block string cannot be empty`,
+		},
+		{
 			name: "underscore_edge_existing",
 
 			text: `
@@ -1723,6 +1741,13 @@ y -> x.style
 			expErr: `d2/testdata/d2compiler/TestCompile/edge_to_style.d2:2:8: reserved keywords are prohibited in edges`,
 		},
 		{
+			name: "keyword-container",
+
+			text: `a.near.b
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/keyword-container.d2:1:3: "near" must be the last part of the key`,
+		},
+		{
 			name: "escaped_id",
 
 			text: `b\nb`,
@@ -2145,13 +2170,17 @@ ok: {
 			},
 		},
 		{
-			name: "sql-panic",
-			text: `test {
-    shape: sql_table
-    test_id: varchar(64) {constraint: [primary_key, foreign_key]}
-}
-`,
-			expErr: `d2/testdata/d2compiler/TestCompile/sql-panic.d2:3:27: reserved field constraint does not accept composite`,
+			name: "sql-constraints",
+			text: `x: {
+  shape: sql_table
+  a: int {constraint: primary_key}
+  b: int {constraint: [primary_key; foreign_key]}
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				table := g.Objects[0].SQLTable
+				tassert.Equal(t, []string{"primary_key"}, table.Columns[0].Constraint)
+				tassert.Equal(t, []string{"primary_key", "foreign_key"}, table.Columns[1].Constraint)
+			},
 		},
 		{
 			name: "wrong_column_index",
@@ -2454,6 +2483,23 @@ nostar -> 1star: { class: [path; path2] }
 			},
 		},
 		{
+			name: "comma-array-class",
+
+			text: `classes: {
+  dragon_ball: {
+    label: ""
+    shape: circle
+    style.fill: orange
+  }
+  path: {
+    label: "then"
+    style.stroke-width: 4
+  }
+}
+nostar: { class: [dragon_ball, path] }`,
+			expErr: `d2/testdata/d2compiler/TestCompile/comma-array-class.d2:12:11: class "dragon_ball, path" not found. Did you mean to use ";" to separate array items?`,
+		},
+		{
 			name: "reordered-classes",
 			text: `classes: {
   x: {
@@ -2466,6 +2512,29 @@ classes.x.shape: diamond
 			assertions: func(t *testing.T, g *d2graph.Graph) {
 				tassert.Equal(t, 1, len(g.Objects))
 				tassert.Equal(t, "diamond", g.Objects[0].Shape.Value)
+			},
+		},
+		{
+			name: "nested-array-classes",
+			text: `classes: {
+  one target: {
+		target-arrowhead.label: 1
+  }
+	association: {
+		target-arrowhead.shape: arrow
+	}
+}
+
+a -> b: { class: [one target; association] }
+a -> b: { class: [association; one target] }
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				// They have the same, regardless of order of class application
+				// since the classes modify attributes exclusive of each other
+				tassert.Equal(t, "1", g.Edges[0].DstArrowhead.Label.Value)
+				tassert.Equal(t, "1", g.Edges[1].DstArrowhead.Label.Value)
+				tassert.Equal(t, "arrow", g.Edges[0].DstArrowhead.Shape.Value)
+				tassert.Equal(t, "arrow", g.Edges[1].DstArrowhead.Shape.Value)
 			},
 		},
 		{

@@ -10,7 +10,7 @@
         "x": 0,
         "y": 0
       },
-      "width": 268,
+      "width": 251,
       "height": 216,
       "opacity": 1,
       "strokeDash": 0,
@@ -55,7 +55,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -83,7 +83,7 @@
             "labelWidth": 48,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -111,7 +111,7 @@
             "labelWidth": 48,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -139,7 +139,7 @@
             "labelWidth": 48,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -167,7 +167,9 @@
             "labelWidth": 77,
             "labelHeight": 26
           },
-          "constraint": "primary_key",
+          "constraint": [
+            "primary_key"
+          ],
           "reference": ""
         }
       ],
@@ -191,7 +193,7 @@
       "id": "products",
       "type": "sql_table",
       "pos": {
-        "x": 328,
+        "x": 311,
         "y": 18
       },
       "width": 164,
@@ -239,7 +241,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -267,7 +269,7 @@
             "labelWidth": 67,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -295,7 +297,7 @@
             "labelWidth": 48,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -323,7 +325,7 @@
             "labelWidth": 48,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         }
       ],
@@ -347,7 +349,7 @@
       "id": "orders",
       "type": "sql_table",
       "pos": {
-        "x": 328,
+        "x": 311,
         "y": 316
       },
       "width": 164,
@@ -395,7 +397,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -423,7 +425,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -451,7 +453,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         }
       ],
@@ -475,7 +477,7 @@
       "id": "shipments",
       "type": "sql_table",
       "pos": {
-        "x": 552,
+        "x": 535,
         "y": 18
       },
       "width": 244,
@@ -523,7 +525,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -551,7 +553,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -579,7 +581,7 @@
             "labelWidth": 48,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -607,7 +609,7 @@
             "labelWidth": 48,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         }
       ],
@@ -654,20 +656,20 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 134,
+          "x": 125.5,
           "y": 216
         },
         {
-          "x": 134,
+          "x": 125.5,
           "y": 256
         },
         {
-          "x": 172.8000030517578,
-          "y": 283.20001220703125
+          "x": 162.6999969482422,
+          "y": 283
         },
         {
-          "x": 328,
-          "y": 352
+          "x": 311.5,
+          "y": 351
         }
       ],
       "isCurve": true,
@@ -701,19 +703,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 410,
+          "x": 393,
           "y": 198
         },
         {
-          "x": 410,
+          "x": 393,
           "y": 252.39999389648438
         },
         {
-          "x": 410,
+          "x": 393,
           "y": 276
         },
         {
-          "x": 410,
+          "x": 393,
           "y": 316
         }
       ],
@@ -748,19 +750,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 674,
+          "x": 657,
           "y": 198
         },
         {
-          "x": 674,
+          "x": 657,
           "y": 252.39999389648438
         },
         {
-          "x": 637.5999755859375,
+          "x": 620.5999755859375,
           "y": 282.79998779296875
         },
         {
-          "x": 492,
+          "x": 475,
           "y": 350
         }
       ],

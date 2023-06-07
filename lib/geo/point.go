@@ -305,3 +305,22 @@ func (p *Point) TruncateDecimals() {
 	p.X = TruncateDecimals(p.X)
 	p.Y = TruncateDecimals(p.Y)
 }
+
+// RemovePoints returns a new Points slice without the points in toRemove
+func RemovePoints(points Points, toRemove []bool) Points {
+	newLen := len(points)
+	for _, should := range toRemove {
+		if should {
+			newLen--
+		}
+	}
+
+	without := make([]*Point, 0, newLen)
+	for i := 0; i < len(points); i++ {
+		if toRemove[i] {
+			continue
+		}
+		without = append(without, points[i])
+	}
+	return without
+}

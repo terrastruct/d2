@@ -1843,6 +1843,19 @@ func TestRename(t *testing.T) {
 `,
 		},
 		{
+			name: "generated-conflict",
+
+			text: `Square
+Square 2
+`,
+			key:     `Square 2`,
+			newName: `Square`,
+
+			exp: `Square
+Square 2
+`,
+		},
+		{
 			name: "near",
 
 			text: `x: {
@@ -7260,6 +7273,17 @@ y
 			exp: `{
   "x": "y 2"
 }`,
+		},
+		{
+			name: "generated-conflict",
+
+			text: `Square
+Square 2
+`,
+			key:     `Square 2`,
+			newName: `Square`,
+
+			exp: `{}`,
 		},
 		{
 			name: "rename_conflict_with_dots",

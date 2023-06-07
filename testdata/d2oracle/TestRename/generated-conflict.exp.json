@@ -1,0 +1,174 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestRename/generated-conflict.d2,0:0:0-2:0:16",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestRename/generated-conflict.d2,0:0:0-0:6:6",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/generated-conflict.d2,0:0:0-0:6:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/generated-conflict.d2,0:0:0-0:6:6",
+                    "value": [
+                      {
+                        "string": "Square",
+                        "raw_string": "Square"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestRename/generated-conflict.d2,1:0:7-1:8:15",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/generated-conflict.d2,1:0:7-1:8:15",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/generated-conflict.d2,1:0:7-1:8:15",
+                    "value": [
+                      {
+                        "string": "Square 2",
+                        "raw_string": "Square 2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "Square",
+        "id_val": "Square",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/generated-conflict.d2,0:0:0-0:6:6",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/generated-conflict.d2,0:0:0-0:6:6",
+                    "value": [
+                      {
+                        "string": "Square",
+                        "raw_string": "Square"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Square"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      },
+      {
+        "id": "Square 2",
+        "id_val": "Square 2",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestRename/generated-conflict.d2,1:0:7-1:8:15",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestRename/generated-conflict.d2,1:0:7-1:8:15",
+                    "value": [
+                      {
+                        "string": "Square 2",
+                        "raw_string": "Square 2"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "Square 2"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": "<nil>"
+}
