@@ -50,7 +50,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:8:14-17:0:143",
+                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:8:14-17:1:144",
                 "nodes": [
                   {
                     "map_key": {
@@ -74,7 +74,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:7:23-5:2:37",
+                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:7:23-5:3:38",
                           "nodes": [
                             {
                               "map_key": {
@@ -126,7 +126,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:7:46-16:2:141",
+                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:7:46-16:3:142",
                           "nodes": [
                             {
                               "map_key": {
@@ -173,7 +173,7 @@
                                 "primary": {},
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:9:68-15:2:137",
+                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:9:68-15:3:138",
                                     "nodes": [
                                       {
                                         "map_key": {
@@ -197,7 +197,7 @@
                                           "primary": {},
                                           "value": {
                                             "map": {
-                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:13:83-11:3:101",
+                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:13:83-11:4:102",
                                               "nodes": [
                                                 {
                                                   "map_key": {
@@ -249,7 +249,7 @@
                                           "primary": {},
                                           "value": {
                                             "map": {
-                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:13:116-14:3:133",
+                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:13:116-14:4:134",
                                               "nodes": [
                                                 {
                                                   "map_key": {
@@ -419,7 +419,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:8:14-17:0:143",
+                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:8:14-17:1:144",
                     "nodes": [
                       {
                         "map_key": {
@@ -443,7 +443,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:7:23-5:2:37",
+                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:7:23-5:3:38",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -495,7 +495,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:7:46-16:2:141",
+                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:7:46-16:3:142",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -542,7 +542,7 @@
                                     "primary": {},
                                     "value": {
                                       "map": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:9:68-15:2:137",
+                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:9:68-15:3:138",
                                         "nodes": [
                                           {
                                             "map_key": {
@@ -566,7 +566,7 @@
                                               "primary": {},
                                               "value": {
                                                 "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:13:83-11:3:101",
+                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:13:83-11:4:102",
                                                   "nodes": [
                                                     {
                                                       "map_key": {
@@ -618,7 +618,7 @@
                                               "primary": {},
                                               "value": {
                                                 "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:13:116-14:3:133",
+                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:13:116-14:4:134",
                                                   "nodes": [
                                                     {
                                                       "map_key": {
@@ -788,7 +788,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:8:14-17:0:143",
+                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:8:14-17:1:144",
                     "nodes": [
                       {
                         "map_key": {
@@ -812,7 +812,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:7:23-5:2:37",
+                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:7:23-5:3:38",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -864,7 +864,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:7:46-16:2:141",
+                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:7:46-16:3:142",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -911,7 +911,7 @@
                                     "primary": {},
                                     "value": {
                                       "map": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:9:68-15:2:137",
+                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:9:68-15:3:138",
                                         "nodes": [
                                           {
                                             "map_key": {
@@ -935,7 +935,7 @@
                                               "primary": {},
                                               "value": {
                                                 "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:13:83-11:3:101",
+                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:13:83-11:4:102",
                                                   "nodes": [
                                                     {
                                                       "map_key": {
@@ -987,7 +987,7 @@
                                               "primary": {},
                                               "value": {
                                                 "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:13:116-14:3:133",
+                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:13:116-14:4:134",
                                                   "nodes": [
                                                     {
                                                       "map_key": {
@@ -1157,7 +1157,7 @@
                     "primary": {},
                     "value": {
                       "map": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:8:14-17:0:143",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:8:14-17:1:144",
                         "nodes": [
                           {
                             "map_key": {
@@ -1181,7 +1181,7 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:7:23-5:2:37",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:7:23-5:3:38",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -1233,7 +1233,7 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:7:46-16:2:141",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:7:46-16:3:142",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -1280,7 +1280,7 @@
                                         "primary": {},
                                         "value": {
                                           "map": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:9:68-15:2:137",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:9:68-15:3:138",
                                             "nodes": [
                                               {
                                                 "map_key": {
@@ -1304,7 +1304,7 @@
                                                   "primary": {},
                                                   "value": {
                                                     "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:13:83-11:3:101",
+                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:13:83-11:4:102",
                                                       "nodes": [
                                                         {
                                                           "map_key": {
@@ -1356,7 +1356,7 @@
                                                   "primary": {},
                                                   "value": {
                                                     "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:13:116-14:3:133",
+                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:13:116-14:4:134",
                                                       "nodes": [
                                                         {
                                                           "map_key": {
@@ -1571,7 +1571,7 @@
                     "primary": {},
                     "value": {
                       "map": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:8:14-17:0:143",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:8:14-17:1:144",
                         "nodes": [
                           {
                             "map_key": {
@@ -1595,7 +1595,7 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:7:23-5:2:37",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:7:23-5:3:38",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -1647,7 +1647,7 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:7:46-16:2:141",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:7:46-16:3:142",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -1694,7 +1694,7 @@
                                         "primary": {},
                                         "value": {
                                           "map": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:9:68-15:2:137",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:9:68-15:3:138",
                                             "nodes": [
                                               {
                                                 "map_key": {
@@ -1718,7 +1718,7 @@
                                                   "primary": {},
                                                   "value": {
                                                     "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:13:83-11:3:101",
+                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:13:83-11:4:102",
                                                       "nodes": [
                                                         {
                                                           "map_key": {
@@ -1770,7 +1770,7 @@
                                                   "primary": {},
                                                   "value": {
                                                     "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:13:116-14:3:133",
+                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:13:116-14:4:134",
                                                       "nodes": [
                                                         {
                                                           "map_key": {

@@ -1,7 +1,6 @@
 {
   "graph": null,
   "err": {
-    "ioerr": null,
     "errs": [
       {
         "range": "d2/testdata/d2compiler/TestCompile/invalid-fill-pattern.d2,2:18:33-2:23:38",

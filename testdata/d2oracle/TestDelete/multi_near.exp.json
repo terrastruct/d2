@@ -50,7 +50,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,1:10:14-3:0:28",
+                "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,1:10:14-3:1:29",
                 "nodes": [
                   {
                     "map_key": {
@@ -112,7 +112,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,4:4:34-6:0:49",
+                "range": "d2/testdata/d2oracle/TestDelete/multi_near.d2,4:4:34-6:1:50",
                 "nodes": [
                   {
                     "map_key": {

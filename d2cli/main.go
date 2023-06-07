@@ -329,6 +329,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		Ruler:      ruler,
 		ThemeID:    renderOpts.ThemeID,
 		FontFamily: fontFamily,
+		InputPath:  inputPath,
 	}
 	if renderOpts.Sketch {
 		opts.FontFamily = go2.Pointer(d2fonts.HandDrawn)

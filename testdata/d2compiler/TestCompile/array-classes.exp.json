@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,0:9:9-13:0:184",
+                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,0:9:9-13:1:185",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,1:15:26-5:2:85",
+                          "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,1:15:26-5:3:86",
                           "nodes": [
                             {
                               "map_key": {
@@ -185,7 +185,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,6:8:95-9:2:143",
+                          "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,6:8:95-9:3:144",
                           "nodes": [
                             {
                               "map_key": {
@@ -287,7 +287,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,10:8:153-12:1:182",
+                          "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,10:8:153-12:2:183",
                           "nodes": [
                             {
                               "map_key": {
@@ -361,7 +361,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,14:8:194-14:37:223",
+                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,14:8:194-14:38:224",
                 "nodes": [
                   {
                     "map_key": {
@@ -441,7 +441,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,15:7:232-15:36:261",
+                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,15:7:232-15:37:262",
                 "nodes": [
                   {
                     "map_key": {
@@ -544,7 +544,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:17:281-17:40:304",
+                "range": "d2/testdata/d2compiler/TestCompile/array-classes.d2,17:17:281-17:41:305",
                 "nodes": [
                   {
                     "map_key": {

@@ -1386,7 +1386,7 @@
                     "primary": {},
                     "value": {
                       "map": {
-                        "range": "TestCompile/scenarios/edge.d2,2:5:25-4:2:64",
+                        "range": "TestCompile/scenarios/edge.d2,2:5:25-4:3:65",
                         "nodes": [
                           {
                             "map_key": {
@@ -1533,7 +1533,7 @@
               "primary": {},
               "value": {
                 "map": {
-                  "range": "TestCompile/scenarios/edge.d2,1:11:18-5:0:66",
+                  "range": "TestCompile/scenarios/edge.d2,1:11:18-5:1:67",
                   "nodes": [
                     {
                       "map_key": {
@@ -1557,7 +1557,7 @@
                         "primary": {},
                         "value": {
                           "map": {
-                            "range": "TestCompile/scenarios/edge.d2,2:5:25-4:2:64",
+                            "range": "TestCompile/scenarios/edge.d2,2:5:25-4:3:65",
                             "nodes": [
                               {
                                 "map_key": {

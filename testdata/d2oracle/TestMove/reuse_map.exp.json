@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestMove/reuse_map.d2,0:3:3-6:0:37",
+                "range": "d2/testdata/d2oracle/TestMove/reuse_map.d2,0:3:3-6:1:38",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestMove/reuse_map.d2,1:5:10-4:2:28",
+                          "range": "d2/testdata/d2oracle/TestMove/reuse_map.d2,1:5:10-4:3:29",
                           "nodes": [
                             {
                               "map_key": {

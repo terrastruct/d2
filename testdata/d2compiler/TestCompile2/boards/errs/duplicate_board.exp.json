@@ -1,7 +1,6 @@
 {
   "graph": null,
   "err": {
-    "ioerr": null,
     "errs": [
       {
         "range": "d2/testdata/d2compiler/TestCompile2/boards/errs/duplicate_board.d2,8:1:51-8:4:54",

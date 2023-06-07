@@ -50,7 +50,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/edge_map_nested.d2,1:8:9-5:0:43",
+                "range": "d2/testdata/d2compiler/TestCompile/edge_map_nested.d2,1:8:9-5:1:44",
                 "nodes": [
                   {
                     "map_key": {
@@ -74,7 +74,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/edge_map_nested.d2,2:9:20-4:2:41",
+                          "range": "d2/testdata/d2compiler/TestCompile/edge_map_nested.d2,2:9:20-4:3:42",
                           "nodes": [
                             {
                               "map_key": {

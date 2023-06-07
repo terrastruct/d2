@@ -1,6 +1,7 @@
 package d2ir
 
 import (
+	"io/fs"
 	"strings"
 
 	"oss.terrastruct.com/d2/d2ast"
@@ -9,18 +10,46 @@ import (
 )
 
 type compiler struct {
-	err d2parser.ParseError
+	err *d2parser.ParseError
+
+	fs fs.FS
+	// importStack is used to detect cyclic imports.
+	importStack []string
+	// importCache enables reuse of files imported multiple times.
+	importCache map[string]*Map
+	utf16       bool
+}
+
+type CompileOptions struct {
+	UTF16 bool
+	// Pass nil to disable imports.
+	FS fs.FS
 }
 
 func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
 	c.err.Errors = append(c.err.Errors, d2parser.Errorf(n, f, v...).(d2ast.Error))
 }
 
-func Compile(ast *d2ast.Map) (*Map, error) {
-	c := &compiler{}
+func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, error) {
+	if opts == nil {
+		opts = &CompileOptions{}
+	}
+	c := &compiler{
+		err: &d2parser.ParseError{},
+		fs:  opts.FS,
+
+		importCache: make(map[string]*Map),
+		utf16:       opts.UTF16,
+	}
 	m := &Map{}
 	m.initRoot()
 	m.parent.(*Field).References[0].Context.Scope = ast
+
+	c.pushImportStack(&d2ast.Import{
+		Path: []*d2ast.StringBox{d2ast.RawStringBox(ast.GetRange().Path, true)},
+	})
+	defer c.popImportStack()
+
 	c.compileMap(m, ast)
 	c.compileClasses(m)
 	if !c.err.Empty() {
@@ -85,6 +114,25 @@ func (c *compiler) compileMap(dst *Map, ast *d2ast.Map) {
 				Scope:    ast,
 				ScopeMap: dst,
 			})
+		case n.Import != nil:
+			impn, ok := c._import(n.Import)
+			if !ok {
+				continue
+			}
+			if impn.Map() == nil {
+				c.errorf(n.Import, "cannot spread import non map into map")
+				continue
+			}
+			OverlayMap(dst, impn.Map())
+
+			if impnf, ok := impn.(*Field); ok {
+				if impnf.Primary_ != nil {
+					dstf := ParentField(dst)
+					if dstf != nil {
+						dstf.Primary_ = impnf.Primary_
+					}
+				}
+			}
 		case n.Substitution != nil:
 			panic("TODO")
 		}
@@ -145,6 +193,46 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		case BoardScenario, BoardStep:
 			c.compileClasses(f.Map())
 		}
+	} else if refctx.Key.Value.Import != nil {
+		n, ok := c._import(refctx.Key.Value.Import)
+		if !ok {
+			return
+		}
+		switch n := n.(type) {
+		case *Field:
+			if n.Primary_ != nil {
+				f.Primary_ = n.Primary_.Copy(f).(*Scalar)
+			}
+			if n.Composite != nil {
+				f.Composite = n.Composite.Copy(f).(Composite)
+			}
+		case *Map:
+			f.Composite = &Map{
+				parent: f,
+			}
+			switch NodeBoardKind(f) {
+			case BoardScenario:
+				c.overlay(ParentBoard(f).Map(), f)
+			case BoardStep:
+				stepsMap := ParentMap(f)
+				for i := range stepsMap.Fields {
+					if stepsMap.Fields[i] == f {
+						if i == 0 {
+							c.overlay(ParentBoard(f).Map(), f)
+						} else {
+							c.overlay(stepsMap.Fields[i-1].Map(), f)
+						}
+						break
+					}
+				}
+			}
+			OverlayMap(f.Map(), n)
+			c.updateLinks(f.Map())
+			switch NodeBoardKind(f) {
+			case BoardScenario, BoardStep:
+				c.compileClasses(f.Map())
+			}
+		}
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 		// If the link is a board, we need to transform it into an absolute path.
 		if f.Name == "link" {
@@ -153,6 +241,24 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		f.Primary_ = &Scalar{
 			parent: f,
 			Value:  refctx.Key.Value.ScalarBox().Unbox(),
+		}
+	}
+}
+
+func (c *compiler) updateLinks(m *Map) {
+	for _, f := range m.Fields {
+		if f.Name == "link" {
+			bida := BoardIDA(f)
+			aida := IDA(f)
+			if len(bida) != len(aida) {
+				prependIDA := aida[:len(aida)-len(bida)]
+				kp := d2ast.MakeKeyPath(prependIDA)
+				s := d2format.Format(kp) + strings.TrimPrefix(f.Primary_.Value.ScalarString(), "root")
+				f.Primary_.Value = d2ast.MakeValueBox(d2ast.FlatUnquotedString(s)).ScalarBox().Unbox()
+			}
+		}
+		if f.Map() != nil {
+			c.updateLinks(f.Map())
 		}
 	}
 }
@@ -216,7 +322,7 @@ func (c *compiler) compileLink(refctx *RefContext) {
 	// Create the absolute path by appending scope path with value specified
 	scopeIDA = append(scopeIDA, linkIDA...)
 	kp := d2ast.MakeKeyPath(scopeIDA)
-	refctx.Key.Value = d2ast.MakeValueBox(d2ast.RawString(d2format.Format(kp), true))
+	refctx.Key.Value = d2ast.MakeValueBox(d2ast.FlatUnquotedString(d2format.Format(kp)))
 }
 
 func (c *compiler) compileEdges(refctx *RefContext) {
@@ -329,6 +435,34 @@ func (c *compiler) compileArray(dst *Array, a *d2ast.Array) {
 			irv = &Scalar{
 				parent: dst,
 				Value:  v,
+			}
+		case *d2ast.Import:
+			n, ok := c._import(v)
+			if !ok {
+				continue
+			}
+			switch n := n.(type) {
+			case *Field:
+				if v.Spread {
+					a, ok := n.Composite.(*Array)
+					if !ok {
+						c.errorf(v, "can only spread import array into array")
+						continue
+					}
+					dst.Values = append(dst.Values, a.Values...)
+					continue
+				}
+				if n.Composite != nil {
+					irv = n.Composite
+				} else {
+					irv = n.Primary_
+				}
+			case *Map:
+				if v.Spread {
+					c.errorf(v, "can only spread import array into array")
+					continue
+				}
+				irv = n
 			}
 		case *d2ast.Substitution:
 			// panic("TODO")

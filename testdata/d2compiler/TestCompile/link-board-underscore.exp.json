@@ -50,7 +50,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:8:10-11:0:120",
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:8:10-11:1:121",
                 "nodes": [
                   {
                     "map_key": {
@@ -74,7 +74,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:4:16-10:2:118",
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:4:16-10:3:119",
                           "nodes": [
                             {
                               "map_key": {
@@ -121,7 +121,7 @@
                                 "primary": {},
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:12:36-9:4:114",
+                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:12:36-9:5:115",
                                     "nodes": [
                                       {
                                         "map_key": {
@@ -145,7 +145,7 @@
                                           "primary": {},
                                           "value": {
                                             "map": {
-                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:9:47-8:6:108",
+                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:9:47-8:7:109",
                                               "nodes": [
                                                 {
                                                   "map_key": {
@@ -179,7 +179,7 @@
                                                     },
                                                     "primary": {},
                                                     "value": {
-                                                      "double_quoted_string": {
+                                                      "unquoted_string": {
                                                         "range": ",0:0:0-0:0:0",
                                                         "value": [
                                                           {
@@ -222,7 +222,7 @@
                                                     },
                                                     "primary": {},
                                                     "value": {
-                                                      "double_quoted_string": {
+                                                      "unquoted_string": {
                                                         "range": ",0:0:0-0:0:0",
                                                         "value": [
                                                           {
@@ -378,7 +378,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:8:10-11:0:120",
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:8:10-11:1:121",
                     "nodes": [
                       {
                         "map_key": {
@@ -402,7 +402,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:4:16-10:2:118",
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:4:16-10:3:119",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -449,7 +449,7 @@
                                     "primary": {},
                                     "value": {
                                       "map": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:12:36-9:4:114",
+                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:12:36-9:5:115",
                                         "nodes": [
                                           {
                                             "map_key": {
@@ -473,7 +473,7 @@
                                               "primary": {},
                                               "value": {
                                                 "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:9:47-8:6:108",
+                                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:9:47-8:7:109",
                                                   "nodes": [
                                                     {
                                                       "map_key": {
@@ -507,7 +507,7 @@
                                                         },
                                                         "primary": {},
                                                         "value": {
-                                                          "double_quoted_string": {
+                                                          "unquoted_string": {
                                                             "range": ",0:0:0-0:0:0",
                                                             "value": [
                                                               {
@@ -550,7 +550,7 @@
                                                         },
                                                         "primary": {},
                                                         "value": {
-                                                          "double_quoted_string": {
+                                                          "unquoted_string": {
                                                             "range": ",0:0:0-0:0:0",
                                                             "value": [
                                                               {
@@ -706,7 +706,7 @@
                     "primary": {},
                     "value": {
                       "map": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:8:10-11:0:120",
+                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:8:10-11:1:121",
                         "nodes": [
                           {
                             "map_key": {
@@ -730,7 +730,7 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:4:16-10:2:118",
+                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:4:16-10:3:119",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -777,7 +777,7 @@
                                         "primary": {},
                                         "value": {
                                           "map": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:12:36-9:4:114",
+                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:12:36-9:5:115",
                                             "nodes": [
                                               {
                                                 "map_key": {
@@ -801,7 +801,7 @@
                                                   "primary": {},
                                                   "value": {
                                                     "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:9:47-8:6:108",
+                                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:9:47-8:7:109",
                                                       "nodes": [
                                                         {
                                                           "map_key": {
@@ -835,7 +835,7 @@
                                                             },
                                                             "primary": {},
                                                             "value": {
-                                                              "double_quoted_string": {
+                                                              "unquoted_string": {
                                                                 "range": ",0:0:0-0:0:0",
                                                                 "value": [
                                                                   {
@@ -878,7 +878,7 @@
                                                             },
                                                             "primary": {},
                                                             "value": {
-                                                              "double_quoted_string": {
+                                                              "unquoted_string": {
                                                                 "range": ",0:0:0-0:0:0",
                                                                 "value": [
                                                                   {

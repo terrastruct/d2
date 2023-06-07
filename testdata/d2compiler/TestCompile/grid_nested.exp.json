@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/grid_nested.d2,0:5:5-15:0:123",
+                "range": "d2/testdata/d2compiler/TestCompile/grid_nested.d2,0:5:5-15:1:124",
                 "nodes": [
                   {
                     "map_key": {
@@ -212,7 +212,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/grid_nested.d2,8:4:76-14:1:121",
+                          "range": "d2/testdata/d2compiler/TestCompile/grid_nested.d2,8:4:76-14:2:122",
                           "nodes": [
                             {
                               "map_key": {

@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestMove/container_near.d2,0:3:3-5:0:38",
+                "range": "d2/testdata/d2oracle/TestMove/container_near.d2,0:3:3-5:1:39",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestMove/container_near.d2,1:5:10-3:2:30",
+                          "range": "d2/testdata/d2oracle/TestMove/container_near.d2,1:5:10-3:3:31",
                           "nodes": [
                             {
                               "map_key": {
@@ -152,7 +152,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestMove/container_near.d2,6:3:43-8:0:49",
+                "range": "d2/testdata/d2oracle/TestMove/container_near.d2,6:3:43-8:1:50",
                 "nodes": [
                   {
                     "map_key": {

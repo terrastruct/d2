@@ -347,7 +347,7 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 		}
 	}
 
-	ir, err := d2ir.Compile(g.AST)
+	ir, err := d2ir.Compile(g.AST, nil)
 	if err != nil {
 		return err
 	}

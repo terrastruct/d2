@@ -1,0 +1,117 @@
+{
+  "fields": [
+    {
+      "name": "jon",
+      "references": [
+        {
+          "string": {
+            "range": "x.d2,0:5:5-0:8:8",
+            "value": [
+              {
+                "string": "jon",
+                "raw_string": "jon"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "x.d2,0:5:5-0:8:8",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "x.d2,0:5:5-0:8:8",
+                  "value": [
+                    {
+                      "string": "jon",
+                      "raw_string": "jon"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "x.d2,0:5:5-0:8:8",
+              "key": {
+                "range": "x.d2,0:5:5-0:8:8",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "x.d2,0:5:5-0:8:8",
+                      "value": [
+                        {
+                          "string": "jon",
+                          "raw_string": "jon"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "jan",
+      "references": [
+        {
+          "string": {
+            "range": "x.d2,0:10:10-0:13:13",
+            "value": [
+              {
+                "string": "jan",
+                "raw_string": "jan"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "x.d2,0:10:10-0:13:13",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "x.d2,0:10:10-0:13:13",
+                  "value": [
+                    {
+                      "string": "jan",
+                      "raw_string": "jan"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "x.d2,0:10:10-0:14:14",
+              "key": {
+                "range": "x.d2,0:10:10-0:13:13",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "x.d2,0:10:10-0:13:13",
+                      "value": [
+                        {
+                          "string": "jan",
+                          "raw_string": "jan"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

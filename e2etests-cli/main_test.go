@@ -9,13 +9,14 @@ import (
 	"testing"
 	"time"
 
-	"oss.terrastruct.com/d2/d2cli"
-	"oss.terrastruct.com/d2/lib/pptx"
-	"oss.terrastruct.com/d2/lib/xgif"
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
 	"oss.terrastruct.com/util-go/xmain"
 	"oss.terrastruct.com/util-go/xos"
+
+	"oss.terrastruct.com/d2/d2cli"
+	"oss.terrastruct.com/d2/lib/pptx"
+	"oss.terrastruct.com/d2/lib/xgif"
 )
 
 func TestCLI_E2E(t *testing.T) {
@@ -388,6 +389,64 @@ steps: {
 				assert.Success(t, err)
 				svg := readFile(t, dir, "hello-world.svg")
 				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "import",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `x: @x; y: @y; ...@p`)
+				writeFile(t, dir, "x.d2", `shape: circle`)
+				writeFile(t, dir, "y.d2", `shape: square`)
+				writeFile(t, dir, "p.d2", `x -> y`)
+				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
+				assert.Success(t, err)
+				svg := readFile(t, dir, "hello-world.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "import_spread_nested",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `...@x.y`)
+				writeFile(t, dir, "x.d2", `y: { jon; jan }`)
+				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
+				assert.Success(t, err)
+				svg := readFile(t, dir, "hello-world.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "chain_import",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `...@x`)
+				writeFile(t, dir, "x.d2", `...@y`)
+				writeFile(t, dir, "y.d2", `meow`)
+				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
+				assert.Success(t, err)
+				svg := readFile(t, dir, "hello-world.svg")
+				assert.Testdata(t, ".svg", svg)
+			},
+		},
+		{
+			name: "board_import",
+			run: func(t *testing.T, ctx context.Context, dir string, env *xos.Env) {
+				writeFile(t, dir, "hello-world.d2", `x.link: layers.x; layers: { x: @x }`)
+				writeFile(t, dir, "x.d2", `y.link: layers.y; layers: { y: @y }`)
+				writeFile(t, dir, "y.d2", `meow`)
+				err := runTestMain(t, ctx, dir, env, filepath.Join(dir, "hello-world.d2"))
+				assert.Success(t, err)
+				t.Run("hello-world-x-y", func(t *testing.T) {
+					svg := readFile(t, dir, "hello-world/x/y.svg")
+					assert.Testdata(t, ".svg", svg)
+				})
+				t.Run("hello-world-x", func(t *testing.T) {
+					svg := readFile(t, dir, "hello-world/x/index.svg")
+					assert.Testdata(t, ".svg", svg)
+				})
+				t.Run("hello-world", func(t *testing.T) {
+					svg := readFile(t, dir, "hello-world/index.svg")
+					assert.Testdata(t, ".svg", svg)
+				})
 			},
 		},
 	}

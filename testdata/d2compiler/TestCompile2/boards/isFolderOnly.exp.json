@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:8:9-17:0:163",
+                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:8:9-17:1:164",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:7:18-4:2:32",
+                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:7:18-4:3:33",
                           "nodes": [
                             {
                               "map_key": {
@@ -103,7 +103,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:7:41-16:2:161",
+                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:7:41-16:3:162",
                           "nodes": [
                             {
                               "map_key": {
@@ -150,7 +150,7 @@
                                 "primary": {},
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:13:67-15:2:157",
+                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:13:67-15:3:158",
                                     "nodes": [
                                       {
                                         "map_key": {
@@ -174,7 +174,7 @@
                                           "primary": {},
                                           "value": {
                                             "map": {
-                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:13:82-9:3:87",
+                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:13:82-9:4:88",
                                               "nodes": null
                                             }
                                           }
@@ -202,7 +202,7 @@
                                           "primary": {},
                                           "value": {
                                             "map": {
-                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:13:102-14:3:153",
+                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:13:102-14:4:154",
                                               "nodes": [
                                                 {
                                                   "map_key": {
@@ -226,7 +226,7 @@
                                                     "primary": {},
                                                     "value": {
                                                       "map": {
-                                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:11:115-13:4:148",
+                                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:11:115-13:5:149",
                                                         "nodes": [
                                                           {
                                                             "map_key": {
@@ -342,7 +342,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:8:9-17:0:163",
+                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:8:9-17:1:164",
                     "nodes": [
                       {
                         "map_key": {
@@ -366,7 +366,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:7:18-4:2:32",
+                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:7:18-4:3:33",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -418,7 +418,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:7:41-16:2:161",
+                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:7:41-16:3:162",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -465,7 +465,7 @@
                                     "primary": {},
                                     "value": {
                                       "map": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:13:67-15:2:157",
+                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:13:67-15:3:158",
                                         "nodes": [
                                           {
                                             "map_key": {
@@ -489,7 +489,7 @@
                                               "primary": {},
                                               "value": {
                                                 "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:13:82-9:3:87",
+                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:13:82-9:4:88",
                                                   "nodes": null
                                                 }
                                               }
@@ -517,7 +517,7 @@
                                               "primary": {},
                                               "value": {
                                                 "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:13:102-14:3:153",
+                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:13:102-14:4:154",
                                                   "nodes": [
                                                     {
                                                       "map_key": {
@@ -541,7 +541,7 @@
                                                         "primary": {},
                                                         "value": {
                                                           "map": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:11:115-13:4:148",
+                                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:11:115-13:5:149",
                                                             "nodes": [
                                                               {
                                                                 "map_key": {
@@ -703,7 +703,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:8:9-17:0:163",
+                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:8:9-17:1:164",
                     "nodes": [
                       {
                         "map_key": {
@@ -727,7 +727,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:7:18-4:2:32",
+                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:7:18-4:3:33",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -779,7 +779,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:7:41-16:2:161",
+                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:7:41-16:3:162",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -826,7 +826,7 @@
                                     "primary": {},
                                     "value": {
                                       "map": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:13:67-15:2:157",
+                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:13:67-15:3:158",
                                         "nodes": [
                                           {
                                             "map_key": {
@@ -850,7 +850,7 @@
                                               "primary": {},
                                               "value": {
                                                 "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:13:82-9:3:87",
+                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:13:82-9:4:88",
                                                   "nodes": null
                                                 }
                                               }
@@ -878,7 +878,7 @@
                                               "primary": {},
                                               "value": {
                                                 "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:13:102-14:3:153",
+                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:13:102-14:4:154",
                                                   "nodes": [
                                                     {
                                                       "map_key": {
@@ -902,7 +902,7 @@
                                                         "primary": {},
                                                         "value": {
                                                           "map": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:11:115-13:4:148",
+                                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:11:115-13:5:149",
                                                             "nodes": [
                                                               {
                                                                 "map_key": {
@@ -1064,7 +1064,7 @@
                     "primary": {},
                     "value": {
                       "map": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:8:9-17:0:163",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:8:9-17:1:164",
                         "nodes": [
                           {
                             "map_key": {
@@ -1088,7 +1088,7 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:7:18-4:2:32",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:7:18-4:3:33",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -1140,7 +1140,7 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:7:41-16:2:161",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:7:41-16:3:162",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -1187,7 +1187,7 @@
                                         "primary": {},
                                         "value": {
                                           "map": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:13:67-15:2:157",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:13:67-15:3:158",
                                             "nodes": [
                                               {
                                                 "map_key": {
@@ -1211,7 +1211,7 @@
                                                   "primary": {},
                                                   "value": {
                                                     "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:13:82-9:3:87",
+                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:13:82-9:4:88",
                                                       "nodes": null
                                                     }
                                                   }
@@ -1239,7 +1239,7 @@
                                                   "primary": {},
                                                   "value": {
                                                     "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:13:102-14:3:153",
+                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:13:102-14:4:154",
                                                       "nodes": [
                                                         {
                                                           "map_key": {
@@ -1263,7 +1263,7 @@
                                                             "primary": {},
                                                             "value": {
                                                               "map": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:11:115-13:4:148",
+                                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:11:115-13:5:149",
                                                                 "nodes": [
                                                                   {
                                                                     "map_key": {
@@ -1425,7 +1425,7 @@
                     "primary": {},
                     "value": {
                       "map": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:8:9-17:0:163",
+                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:8:9-17:1:164",
                         "nodes": [
                           {
                             "map_key": {
@@ -1449,7 +1449,7 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:7:18-4:2:32",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:7:18-4:3:33",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -1501,7 +1501,7 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:7:41-16:2:161",
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:7:41-16:3:162",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -1548,7 +1548,7 @@
                                         "primary": {},
                                         "value": {
                                           "map": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:13:67-15:2:157",
+                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:13:67-15:3:158",
                                             "nodes": [
                                               {
                                                 "map_key": {
@@ -1572,7 +1572,7 @@
                                                   "primary": {},
                                                   "value": {
                                                     "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:13:82-9:3:87",
+                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:13:82-9:4:88",
                                                       "nodes": null
                                                     }
                                                   }
@@ -1600,7 +1600,7 @@
                                                   "primary": {},
                                                   "value": {
                                                     "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:13:102-14:3:153",
+                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:13:102-14:4:154",
                                                       "nodes": [
                                                         {
                                                           "map_key": {
@@ -1624,7 +1624,7 @@
                                                             "primary": {},
                                                             "value": {
                                                               "map": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:11:115-13:4:148",
+                                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:11:115-13:5:149",
                                                                 "nodes": [
                                                                   {
                                                                     "map_key": {

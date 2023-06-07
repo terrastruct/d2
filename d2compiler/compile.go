@@ -4,7 +4,9 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io"
+	"io/fs"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 
@@ -21,21 +23,30 @@ import (
 
 type CompileOptions struct {
 	UTF16 bool
+	// FS is the file system used for resolving imports in the d2 text.
+	// It should correspond to the root path.
+	FS fs.FS
 }
 
-func Compile(path string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph, error) {
+func Compile(p string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph, error) {
 	if opts == nil {
 		opts = &CompileOptions{}
 	}
+	if opts.FS == nil {
+		opts.FS = os.DirFS("/")
+	}
 
-	ast, err := d2parser.Parse(path, r, &d2parser.ParseOptions{
+	ast, err := d2parser.Parse(p, r, &d2parser.ParseOptions{
 		UTF16: opts.UTF16,
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	ir, err := d2ir.Compile(ast)
+	ir, err := d2ir.Compile(ast, &d2ir.CompileOptions{
+		UTF16: opts.UTF16,
+		FS:    opts.FS,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +61,9 @@ func Compile(path string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph
 }
 
 func compileIR(ast *d2ast.Map, m *d2ir.Map) (*d2graph.Graph, error) {
-	c := &compiler{}
+	c := &compiler{
+		err: &d2parser.ParseError{},
+	}
 
 	g := d2graph.NewGraph()
 	g.AST = ast
@@ -116,7 +129,7 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 }
 
 type compiler struct {
-	err d2parser.ParseError
+	err *d2parser.ParseError
 }
 
 func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
@@ -264,17 +277,19 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 				obj.Map = fr.Context.Key.Value.Map
 			}
 		}
-		scopeObjIDA := d2ir.BoardIDA(fr.Context.ScopeMap)
-		scopeObj := obj.Graph.Root.EnsureChildIDVal(scopeObjIDA)
-		obj.References = append(obj.References, d2graph.Reference{
+		r := d2graph.Reference{
 			Key:          fr.KeyPath,
 			KeyPathIndex: fr.KeyPathIndex(),
 
 			MapKey:          fr.Context.Key,
 			MapKeyEdgeIndex: fr.Context.EdgeIndex(),
 			Scope:           fr.Context.Scope,
-			ScopeObj:        scopeObj,
-		})
+		}
+		if fr.Context.ScopeMap != nil {
+			scopeObjIDA := d2ir.BoardIDA(fr.Context.ScopeMap)
+			r.ScopeObj = obj.Graph.Root.EnsureChildIDVal(scopeObjIDA)
+		}
+		obj.References = append(obj.References, r)
 	}
 }
 
@@ -617,15 +632,17 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 
 	edge.Label.MapKey = e.LastPrimaryKey()
 	for _, er := range e.References {
-		scopeObjIDA := d2ir.BoardIDA(er.Context.ScopeMap)
-		scopeObj := edge.Src.Graph.Root.EnsureChildIDVal(scopeObjIDA)
-		edge.References = append(edge.References, d2graph.EdgeReference{
+		r := d2graph.EdgeReference{
 			Edge:            er.Context.Edge,
 			MapKey:          er.Context.Key,
 			MapKeyEdgeIndex: er.Context.EdgeIndex(),
 			Scope:           er.Context.Scope,
-			ScopeObj:        scopeObj,
-		})
+		}
+		if er.Context.ScopeMap != nil {
+			scopeObjIDA := d2ir.BoardIDA(er.Context.ScopeMap)
+			r.ScopeObj = edge.Src.Graph.Root.EnsureChildIDVal(scopeObjIDA)
+		}
+		edge.References = append(edge.References, r)
 	}
 }
 

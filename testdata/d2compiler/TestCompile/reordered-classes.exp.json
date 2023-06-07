@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/reordered-classes.d2,0:9:9-4:0:40",
+                "range": "d2/testdata/d2compiler/TestCompile/reordered-classes.d2,0:9:9-4:1:41",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/reordered-classes.d2,1:5:16-3:2:38",
+                          "range": "d2/testdata/d2compiler/TestCompile/reordered-classes.d2,1:5:16-3:3:39",
                           "nodes": [
                             {
                               "map_key": {

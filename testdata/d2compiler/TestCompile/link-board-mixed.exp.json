@@ -70,7 +70,7 @@
             },
             "primary": {},
             "value": {
-              "double_quoted_string": {
+              "unquoted_string": {
                 "range": ",0:0:0-0:0:0",
                 "value": [
                   {
@@ -103,7 +103,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:8:66-7:0:112",
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:8:66-7:1:113",
                 "nodes": [
                   {
                     "map_key": {
@@ -127,7 +127,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:7:75-6:2:110",
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:7:75-6:3:111",
                           "nodes": [
                             {
                               "map_key": {
@@ -217,7 +217,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:11:126-13:0:174",
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:11:126-13:1:175",
                 "nodes": [
                   {
                     "map_key": {
@@ -241,7 +241,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:9:137-12:2:172",
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:9:137-12:3:173",
                           "nodes": [
                             {
                               "map_key": {
@@ -487,7 +487,7 @@
                 },
                 "primary": {},
                 "value": {
-                  "double_quoted_string": {
+                  "unquoted_string": {
                     "range": ",0:0:0-0:0:0",
                     "value": [
                       {
@@ -520,7 +520,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:8:66-7:0:112",
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:8:66-7:1:113",
                     "nodes": [
                       {
                         "map_key": {
@@ -544,7 +544,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:7:75-6:2:110",
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:7:75-6:3:111",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -634,7 +634,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:11:126-13:0:174",
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:11:126-13:1:175",
                     "nodes": [
                       {
                         "map_key": {
@@ -658,7 +658,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:9:137-12:2:172",
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:9:137-12:3:173",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -948,7 +948,7 @@
                 },
                 "primary": {},
                 "value": {
-                  "double_quoted_string": {
+                  "unquoted_string": {
                     "range": ",0:0:0-0:0:0",
                     "value": [
                       {
@@ -981,7 +981,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:8:66-7:0:112",
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:8:66-7:1:113",
                     "nodes": [
                       {
                         "map_key": {
@@ -1005,7 +1005,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:7:75-6:2:110",
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:7:75-6:3:111",
                               "nodes": [
                                 {
                                   "map_key": {
@@ -1095,7 +1095,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:11:126-13:0:174",
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:11:126-13:1:175",
                     "nodes": [
                       {
                         "map_key": {
@@ -1119,7 +1119,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:9:137-12:2:172",
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:9:137-12:3:173",
                               "nodes": [
                                 {
                                   "map_key": {

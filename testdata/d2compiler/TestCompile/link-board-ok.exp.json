@@ -37,7 +37,7 @@
             },
             "primary": {},
             "value": {
-              "double_quoted_string": {
+              "unquoted_string": {
                 "range": ",0:0:0-0:0:0",
                 "value": [
                   {
@@ -70,7 +70,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,1:8:25-5:0:41",
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,1:8:25-5:1:42",
                 "nodes": [
                   {
                     "map_key": {
@@ -94,7 +94,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,2:4:31-4:1:39",
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,2:4:31-4:2:40",
                           "nodes": [
                             {
                               "map_key": {
@@ -255,7 +255,7 @@
                 },
                 "primary": {},
                 "value": {
-                  "double_quoted_string": {
+                  "unquoted_string": {
                     "range": ",0:0:0-0:0:0",
                     "value": [
                       {
@@ -288,7 +288,7 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,1:8:25-5:0:41",
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,1:8:25-5:1:42",
                     "nodes": [
                       {
                         "map_key": {
@@ -312,7 +312,7 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,2:4:31-4:1:39",
+                              "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,2:4:31-4:2:40",
                               "nodes": [
                                 {
                                   "map_key": {

@@ -1,0 +1,226 @@
+{
+  "fields": [
+    {
+      "name": "q",
+      "primary": {
+        "value": {
+          "range": "x.d2,0:3:3-0:7:7",
+          "value": [
+            {
+              "string": "meow",
+              "raw_string": "meow"
+            }
+          ]
+        }
+      },
+      "composite": {
+        "fields": [
+          {
+            "name": "jon",
+            "references": [
+              {
+                "string": {
+                  "range": "x.d2,0:10:10-0:13:13",
+                  "value": [
+                    {
+                      "string": "jon",
+                      "raw_string": "jon"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "x.d2,0:10:10-0:13:13",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "x.d2,0:10:10-0:13:13",
+                        "value": [
+                          {
+                            "string": "jon",
+                            "raw_string": "jon"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "x.d2,0:10:10-0:13:13",
+                    "key": {
+                      "range": "x.d2,0:10:10-0:13:13",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "x.d2,0:10:10-0:13:13",
+                            "value": [
+                              {
+                                "string": "jon",
+                                "raw_string": "jon"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {}
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "jan",
+            "references": [
+              {
+                "string": {
+                  "range": "x.d2,0:15:15-0:18:18",
+                  "value": [
+                    {
+                      "string": "jan",
+                      "raw_string": "jan"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "x.d2,0:15:15-0:18:18",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "x.d2,0:15:15-0:18:18",
+                        "value": [
+                          {
+                            "string": "jan",
+                            "raw_string": "jan"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "x.d2,0:15:15-0:19:19",
+                    "key": {
+                      "range": "x.d2,0:15:15-0:18:18",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "x.d2,0:15:15-0:18:18",
+                            "value": [
+                              {
+                                "string": "jan",
+                                "raw_string": "jan"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {}
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "index.d2,0:0:0-0:1:1",
+            "value": [
+              {
+                "string": "q",
+                "raw_string": "q"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "index.d2,0:0:0-0:1:1",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "index.d2,0:0:0-0:1:1",
+                  "value": [
+                    {
+                      "string": "q",
+                      "raw_string": "q"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "index.d2,0:0:0-0:14:14",
+              "key": {
+                "range": "index.d2,0:0:0-0:1:1",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "index.d2,0:0:0-0:1:1",
+                      "value": [
+                        {
+                          "string": "q",
+                          "raw_string": "q"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "map": {
+                  "range": "index.d2,0:3:3-0:14:14",
+                  "nodes": [
+                    {
+                      "import": {
+                        "range": "index.d2,0:5:5-0:13:13",
+                        "spread": true,
+                        "pre": "",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "index.d2,0:9:9-0:10:10",
+                              "value": [
+                                {
+                                  "string": "x",
+                                  "raw_string": "x"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "index.d2,0:11:11-0:12:12",
+                              "value": [
+                                {
+                                  "string": "y",
+                                  "raw_string": "y"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

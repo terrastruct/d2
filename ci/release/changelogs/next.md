@@ -1,5 +1,7 @@
 #### Features 🚀
 
+- D2 files have the ability to import from other D2 files. See [docs](https://d2lang.com/tour/imports). [#1371](https://github.com/terrastruct/d2/pull/1371)
+
 #### Improvements 🧹
 
 - Use shape specific sizing for grid containers [#1294](https://github.com/terrastruct/d2/pull/1294)

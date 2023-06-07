@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,0:3:3-8:0:99",
+                "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,0:3:3-8:1:100",
                 "nodes": [
                   {
                     "map_key": {
@@ -130,7 +130,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,3:9:45-7:2:97",
+                          "range": "d2/testdata/d2compiler/TestCompile/sequence_scoping.d2,3:9:45-7:3:98",
                           "nodes": [
                             {
                               "map_key": {

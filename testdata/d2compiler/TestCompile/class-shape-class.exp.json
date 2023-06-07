@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,0:9:9-4:0:48",
+                "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,0:9:9-4:1:49",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,1:14:25-3:2:46",
+                          "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,1:14:25-3:3:47",
                           "nodes": [
                             {
                               "map_key": {
@@ -118,7 +118,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,6:8:59-9:0:97",
+                "range": "d2/testdata/d2compiler/TestCompile/class-shape-class.d2,6:8:59-9:1:98",
                 "nodes": [
                   {
                     "map_key": {

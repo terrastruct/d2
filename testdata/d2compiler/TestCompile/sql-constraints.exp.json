@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/sql-constraints.d2,0:3:3-4:0:109",
+                "range": "d2/testdata/d2compiler/TestCompile/sql-constraints.d2,0:3:3-4:1:110",
                 "nodes": [
                   {
                     "map_key": {
@@ -94,7 +94,7 @@
                       },
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/sql-constraints.d2,2:9:33-2:33:57",
+                          "range": "d2/testdata/d2compiler/TestCompile/sql-constraints.d2,2:9:33-2:34:58",
                           "nodes": [
                             {
                               "map_key": {
@@ -166,7 +166,7 @@
                       },
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/sql-constraints.d2,3:9:68-3:48:107",
+                          "range": "d2/testdata/d2compiler/TestCompile/sql-constraints.d2,3:9:68-3:49:108",
                           "nodes": [
                             {
                               "map_key": {

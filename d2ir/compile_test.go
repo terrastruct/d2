@@ -9,6 +9,7 @@ import (
 
 	"oss.terrastruct.com/util-go/assert"
 	"oss.terrastruct.com/util-go/diff"
+	"oss.terrastruct.com/util-go/mapfs"
 
 	"oss.terrastruct.com/d2/d2ast"
 	"oss.terrastruct.com/d2/d2ir"
@@ -24,6 +25,7 @@ func TestCompile(t *testing.T) {
 	t.Run("layers", testCompileLayers)
 	t.Run("scenarios", testCompileScenarios)
 	t.Run("steps", testCompileSteps)
+	t.Run("imports", testCompileImports)
 }
 
 type testCase struct {
@@ -45,10 +47,26 @@ func compile(t testing.TB, text string) (*d2ir.Map, error) {
 	t.Helper()
 
 	d2Path := fmt.Sprintf("%v.d2", t.Name())
-	ast, err := d2parser.Parse(d2Path, strings.NewReader(text), nil)
-	assert.Success(t, err)
+	return compileFS(t, d2Path, map[string]string{d2Path: text})
+}
 
-	m, err := d2ir.Compile(ast)
+func compileFS(t testing.TB, path string, mfs map[string]string) (*d2ir.Map, error) {
+	t.Helper()
+
+	ast, err := d2parser.Parse(path, strings.NewReader(mfs[path]), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	fs, err := mapfs.New(mfs)
+	assert.Success(t, err)
+	t.Cleanup(func() {
+		err = fs.Close()
+		assert.Success(t, err)
+	})
+	m, err := d2ir.Compile(ast, &d2ir.CompileOptions{
+		FS: fs,
+	})
 	if err != nil {
 		return nil, err
 	}

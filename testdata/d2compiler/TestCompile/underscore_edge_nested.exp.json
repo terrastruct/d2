@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_nested.d2,1:3:4-5:0:30",
+                "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_nested.d2,1:3:4-5:1:31",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_nested.d2,2:4:10-4:1:28",
+                          "range": "d2/testdata/d2compiler/TestCompile/underscore_edge_nested.d2,2:4:10-4:2:29",
                           "nodes": [
                             {
                               "map_key": {

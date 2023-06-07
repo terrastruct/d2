@@ -72,7 +72,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestMove/nested_reserved_3.d2,1:5:9-6:0:48",
+                "range": "d2/testdata/d2oracle/TestMove/nested_reserved_3.d2,1:5:9-6:1:49",
                 "nodes": [
                   {
                     "map_key": {
@@ -96,7 +96,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestMove/nested_reserved_3.d2,2:5:16-5:2:46",
+                          "range": "d2/testdata/d2oracle/TestMove/nested_reserved_3.d2,2:5:16-5:3:47",
                           "nodes": [
                             {
                               "map_key": {
