@@ -590,7 +590,7 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 		nCuts = gd.rows - 1
 	}
 	if nCuts == 0 {
-		return genLayout(gd.objects, nil)
+		return GenLayout(gd.objects, nil)
 	}
 
 	var bestLayout [][]*d2graph.Object
@@ -692,7 +692,7 @@ func (gd *gridDiagram) getBestLayout(targetSize float64, columns bool) [][]*d2gr
 	// .       A │ B │ C   D   E                                  └────────────┘
 	// of these divisions, find the layout with rows closest to the targetSize
 	tryDivision := func(division []int) bool {
-		layout := genLayout(gd.objects, division)
+		layout := GenLayout(gd.objects, division)
 		dist := getDistToTarget(layout, targetSize, float64(gd.horizontalGap), float64(gd.verticalGap), columns)
 		if dist < bestDist {
 			bestLayout = layout
@@ -786,7 +786,9 @@ func (gd *gridDiagram) fastLayout(targetSize float64, nCuts int, columns bool) (
 			size = o.Width
 		}
 		if rowSize == 0 {
+			// if a single object meets the target size, end the row here
 			if size > targetSize-debt {
+				// cut row with just this object
 				fastDivision = append(fastDivision, i)
 				// we build up a debt of distance past the target size across rows
 				newDebt := size - targetSize
@@ -797,7 +799,11 @@ func (gd *gridDiagram) fastLayout(targetSize float64, nCuts int, columns bool) (
 			continue
 		}
 		// debt is paid by decreasing threshold to start new row and ending below targetSize
-		if rowSize+(gap+size)/2. > targetSize-debt {
+		if rowSize+gap+(size)/2. > targetSize-debt {
+			// start a new row before this object since it is mostly past the target size
+			// .              size
+			// ├...row─┼gap┼───┼───┤
+			// ├──targetSize──┤ (debt=0)
 			fastDivision = append(fastDivision, i-1)
 			newDebt := rowSize - targetSize
 			debt += newDebt
@@ -807,7 +813,7 @@ func (gd *gridDiagram) fastLayout(targetSize float64, nCuts int, columns bool) (
 		}
 	}
 	if len(fastDivision) == nCuts {
-		layout = genLayout(gd.objects, fastDivision)
+		layout = GenLayout(gd.objects, fastDivision)
 	}
 
 	return layout
@@ -885,7 +891,9 @@ func iterDivisions(objects []*d2graph.Object, nCuts int, f iterDivision, check c
 }
 
 // generate a grid of objects from the given cut indices
-func genLayout(objects []*d2graph.Object, cutIndices []int) [][]*d2graph.Object {
+// each cut index applies after the object at that index
+// e.g. [0 1 2 3 4 5 6 7] with cutIndices [0, 2, 6] => [[0], [1, 2], [3,4,5,6], [7]]
+func GenLayout(objects []*d2graph.Object, cutIndices []int) [][]*d2graph.Object {
 	layout := make([][]*d2graph.Object, len(cutIndices)+1)
 	objIndex := 0
 	for i := 0; i <= len(cutIndices); i++ {
