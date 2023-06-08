@@ -228,7 +228,7 @@ let us know and we'll be happy to include it here!
 - **Mongo to D2**: [https://github.com/novuhq/mongo-to-D2](https://github.com/novuhq/mongo-to-D2)
 - **Pandoc filter**: [https://github.com/ram02z/d2-filter](https://github.com/ram02z/d2-filter)
 - **Logseq-D2**: [https://github.com/b-yp/logseq-d2](https://github.com/b-yp/logseq-d2)
-- **ent2d2**: [https://github.com/tmc/ent2d2](https://github.com/b-yp/logseq-d2)
+- **ent2d2**: [https://github.com/tmc/ent2d2](https://github.com/tmc/ent2d2)
 
 ### Misc
 
