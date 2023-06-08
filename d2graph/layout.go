@@ -9,6 +9,8 @@ import (
 	"oss.terrastruct.com/d2/lib/shape"
 )
 
+const MIN_SEGMENT_LEN = 10
+
 func (obj *Object) MoveWithDescendants(dx, dy float64) {
 	obj.TopLeft.X += dx
 	obj.TopLeft.Y += dy
@@ -312,4 +314,73 @@ func (obj *Object) GetLabelTopLeft() *geo.Point {
 		float64(obj.LabelDimensions.Height),
 	)
 	return labelTL
+}
+
+func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (newStart, newEnd int) {
+	srcShape := edge.Src.ToShape()
+	dstShape := edge.Dst.ToShape()
+
+	// if an edge runs into an outside label, stop the edge at the label instead
+	overlapsOutsideLabel := false
+	if edge.Src.HasLabel() {
+		// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
+		labelPosition := label.Position(*edge.Src.LabelPosition)
+		if labelPosition.IsOutside() {
+			labelWidth := float64(edge.Src.LabelDimensions.Width)
+			labelHeight := float64(edge.Src.LabelDimensions.Height)
+			labelTL := labelPosition.GetPointOnBox(edge.Src.Box, label.PADDING, labelWidth, labelHeight)
+
+			startingSegment := geo.Segment{Start: points[startIndex+1], End: points[startIndex]}
+			labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
+			// add left/right padding to box
+			labelBox.TopLeft.X -= label.PADDING
+			labelBox.Width += 2 * label.PADDING
+			if intersections := labelBox.Intersections(startingSegment); len(intersections) > 0 {
+				overlapsOutsideLabel = true
+				// move starting segment to label intersection point
+				points[startIndex] = intersections[0]
+				startingSegment.End = intersections[0]
+				// if the segment becomes too short, just merge it with the next segment
+				if startIndex < len(points) && startingSegment.Length() < MIN_SEGMENT_LEN {
+					points[startIndex+1] = points[startIndex]
+					startIndex++
+				}
+			}
+		}
+	}
+	if !overlapsOutsideLabel {
+		// trace the edge to the specific shape's border
+		points[startIndex] = shape.TraceToShapeBorder(srcShape, points[startIndex], points[startIndex+1])
+	}
+	overlapsOutsideLabel = false
+	if edge.Dst.HasLabel() {
+		// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
+		labelPosition := label.Position(*edge.Dst.LabelPosition)
+		if labelPosition.IsOutside() {
+			labelWidth := float64(edge.Dst.LabelDimensions.Width)
+			labelHeight := float64(edge.Dst.LabelDimensions.Height)
+			labelTL := labelPosition.GetPointOnBox(edge.Dst.Box, label.PADDING, labelWidth, labelHeight)
+
+			endingSegment := geo.Segment{Start: points[endIndex-1], End: points[endIndex]}
+			labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
+			// add left/right padding to box
+			labelBox.TopLeft.X -= label.PADDING
+			labelBox.Width += 2 * label.PADDING
+			if intersections := labelBox.Intersections(endingSegment); len(intersections) > 0 {
+				overlapsOutsideLabel = true
+				// move ending segment to label intersection point
+				points[endIndex] = intersections[0]
+				endingSegment.End = intersections[0]
+				// if the segment becomes too short, just merge it with the previous segment
+				if endIndex-1 > 0 && endingSegment.Length() < MIN_SEGMENT_LEN {
+					points[endIndex-1] = points[endIndex]
+					endIndex--
+				}
+			}
+		}
+	}
+	if !overlapsOutsideLabel {
+		points[endIndex] = shape.TraceToShapeBorder(dstShape, points[endIndex], points[endIndex-1])
+	}
+	return startIndex, endIndex
 }
