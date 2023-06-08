@@ -886,6 +886,10 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 			if !in && arrowheadIn {
 				c.errorf(f.LastPrimaryKey(), fmt.Sprintf(`invalid shape, can only set "%s" for arrowheads`, obj.Shape.Value))
 			}
+		case "constraint":
+			if obj.Shape.Value != d2target.ShapeSQLTable {
+				c.errorf(f.LastPrimaryKey(), `"constraint" keyword can only be used in "sql_table" shapes`)
+			}
 		}
 		return
 	}
