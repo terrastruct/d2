@@ -2761,6 +2761,7 @@ scenarios: {
 		loadFromFile(t, "multiple_offset"),
 		loadFromFile(t, "multiple_offset_left"),
 		loadFromFile(t, "multiple_box_selection"),
+		loadFromFile(t, "outside_bottom_labels"),
 	}
 
 	runa(t, tcs)
