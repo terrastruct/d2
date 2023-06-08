@@ -787,7 +787,7 @@ func (gd *gridDiagram) fastLayout(targetSize float64, nCuts int, columns bool) (
 		}
 		if rowSize == 0 {
 			if size > targetSize-debt {
-				fastDivision = append(fastDivision, i-1)
+				fastDivision = append(fastDivision, i)
 				// we build up a debt of distance past the target size across rows
 				newDebt := size - targetSize
 				debt += newDebt
@@ -914,6 +914,13 @@ func getDistToTarget(layout [][]*d2graph.Object, targetSize float64, horizontalG
 				rowSize += o.Height + verticalGap
 			} else {
 				rowSize += o.Width + horizontalGap
+			}
+		}
+		if len(row) > 0 {
+			if columns {
+				rowSize -= verticalGap
+			} else {
+				rowSize -= horizontalGap
 			}
 		}
 		totalDelta += math.Abs(rowSize - targetSize)
