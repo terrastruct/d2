@@ -2117,9 +2117,7 @@ ok: {
   label: bar
   constraint: BIZ
 }`,
-			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.String(t, "bar", g.Objects[0].Label.Value)
-			},
+			expErr: `d2/testdata/d2compiler/TestCompile/constraint_label.d2:3:3: "constraint" keyword can only be used in "sql_table" shapes`,
 		},
 		{
 			name: "invalid_direction",
