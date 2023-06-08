@@ -934,6 +934,7 @@ cf many required: {
 		loadFromFile(t, "slow_grid"),
 		loadFromFile(t, "grid_oom"),
 		loadFromFile(t, "cylinder_grid_label"),
+		loadFromFile(t, "grid_with_latex"),
 	}
 
 	runa(t, tcs)
