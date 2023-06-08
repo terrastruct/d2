@@ -492,11 +492,40 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		srcShape := edge.Src.ToShape()
 		dstShape := edge.Dst.ToShape()
 
-		// trace the edge to the specific shape's border
-		points[startIndex] = shape.TraceToShapeBorder(srcShape, start, points[startIndex+1])
-
 		// if an edge runs into an outside label, stop the edge at the label instead
 		overlapsOutsideLabel := false
+		if edge.Src.Label.Value != "" && !srcShape.Is(shape.TEXT_TYPE) {
+			// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
+			labelPosition := label.Position(*edge.Src.LabelPosition)
+			if labelPosition.IsOutside() {
+				labelWidth := float64(edge.Src.LabelDimensions.Width)
+				labelHeight := float64(edge.Src.LabelDimensions.Height)
+				labelTL := labelPosition.GetPointOnBox(edge.Src.Box, label.PADDING, labelWidth, labelHeight)
+
+				startingSegment := geo.Segment{Start: points[startIndex+1], End: points[startIndex]}
+				labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
+				// add left/right padding to box
+				labelBox.TopLeft.X -= label.PADDING
+				labelBox.Width += 2 * label.PADDING
+				if intersections := labelBox.Intersections(startingSegment); len(intersections) > 0 {
+					overlapsOutsideLabel = true
+					// move starting segment to label intersection point
+					points[startIndex] = intersections[0]
+					startingSegment.End = intersections[0]
+					// if the segment becomes too short, just merge it with the next segment
+					if startIndex < len(points) && startingSegment.Length() < MIN_SEGMENT_LEN {
+						points[startIndex+1] = points[startIndex]
+						startIndex++
+					}
+				}
+			}
+		}
+		if !overlapsOutsideLabel {
+			// trace the edge to the specific shape's border
+			points[startIndex] = shape.TraceToShapeBorder(srcShape, start, points[startIndex+1])
+		}
+
+		overlapsOutsideLabel = false
 		if edge.Dst.Label.Value != "" && !dstShape.Is(shape.TEXT_TYPE) {
 			// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
 			labelPosition := label.Position(*edge.Dst.LabelPosition)
