@@ -494,33 +494,28 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		// if an edge runs into an outside label, stop the edge at the label instead
 		overlapsOutsideLabel := false
-		switch srcShape.GetType() {
-		case shape.TEXT_TYPE, shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE:
-			// labels aren't actually labels
-		default:
-			if edge.Src.Label.Value != "" {
-				// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
-				labelPosition := label.Position(*edge.Src.LabelPosition)
-				if labelPosition.IsOutside() {
-					labelWidth := float64(edge.Src.LabelDimensions.Width)
-					labelHeight := float64(edge.Src.LabelDimensions.Height)
-					labelTL := labelPosition.GetPointOnBox(edge.Src.Box, label.PADDING, labelWidth, labelHeight)
+		if edge.Src.HasLabel() {
+			// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
+			labelPosition := label.Position(*edge.Src.LabelPosition)
+			if labelPosition.IsOutside() {
+				labelWidth := float64(edge.Src.LabelDimensions.Width)
+				labelHeight := float64(edge.Src.LabelDimensions.Height)
+				labelTL := labelPosition.GetPointOnBox(edge.Src.Box, label.PADDING, labelWidth, labelHeight)
 
-					startingSegment := geo.Segment{Start: points[startIndex+1], End: points[startIndex]}
-					labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
-					// add left/right padding to box
-					labelBox.TopLeft.X -= label.PADDING
-					labelBox.Width += 2 * label.PADDING
-					if intersections := labelBox.Intersections(startingSegment); len(intersections) > 0 {
-						overlapsOutsideLabel = true
-						// move starting segment to label intersection point
-						points[startIndex] = intersections[0]
-						startingSegment.End = intersections[0]
-						// if the segment becomes too short, just merge it with the next segment
-						if startIndex < len(points) && startingSegment.Length() < MIN_SEGMENT_LEN {
-							points[startIndex+1] = points[startIndex]
-							startIndex++
-						}
+				startingSegment := geo.Segment{Start: points[startIndex+1], End: points[startIndex]}
+				labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
+				// add left/right padding to box
+				labelBox.TopLeft.X -= label.PADDING
+				labelBox.Width += 2 * label.PADDING
+				if intersections := labelBox.Intersections(startingSegment); len(intersections) > 0 {
+					overlapsOutsideLabel = true
+					// move starting segment to label intersection point
+					points[startIndex] = intersections[0]
+					startingSegment.End = intersections[0]
+					// if the segment becomes too short, just merge it with the next segment
+					if startIndex < len(points) && startingSegment.Length() < MIN_SEGMENT_LEN {
+						points[startIndex+1] = points[startIndex]
+						startIndex++
 					}
 				}
 			}
@@ -531,33 +526,28 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 
 		overlapsOutsideLabel = false
-		switch dstShape.GetType() {
-		case shape.TEXT_TYPE, shape.TABLE_TYPE, shape.CLASS_TYPE, shape.CODE_TYPE:
-			// labels aren't actually labels
-		default:
-			if edge.Dst.Label.Value != "" {
-				// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
-				labelPosition := label.Position(*edge.Dst.LabelPosition)
-				if labelPosition.IsOutside() {
-					labelWidth := float64(edge.Dst.LabelDimensions.Width)
-					labelHeight := float64(edge.Dst.LabelDimensions.Height)
-					labelTL := labelPosition.GetPointOnBox(edge.Dst.Box, label.PADDING, labelWidth, labelHeight)
+		if edge.Dst.HasLabel() {
+			// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
+			labelPosition := label.Position(*edge.Dst.LabelPosition)
+			if labelPosition.IsOutside() {
+				labelWidth := float64(edge.Dst.LabelDimensions.Width)
+				labelHeight := float64(edge.Dst.LabelDimensions.Height)
+				labelTL := labelPosition.GetPointOnBox(edge.Dst.Box, label.PADDING, labelWidth, labelHeight)
 
-					endingSegment := geo.Segment{Start: points[endIndex-1], End: points[endIndex]}
-					labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
-					// add left/right padding to box
-					labelBox.TopLeft.X -= label.PADDING
-					labelBox.Width += 2 * label.PADDING
-					if intersections := labelBox.Intersections(endingSegment); len(intersections) > 0 {
-						overlapsOutsideLabel = true
-						// move ending segment to label intersection point
-						points[endIndex] = intersections[0]
-						endingSegment.End = intersections[0]
-						// if the segment becomes too short, just merge it with the previous segment
-						if endIndex-1 > 0 && endingSegment.Length() < MIN_SEGMENT_LEN {
-							points[endIndex-1] = points[endIndex]
-							endIndex--
-						}
+				endingSegment := geo.Segment{Start: points[endIndex-1], End: points[endIndex]}
+				labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
+				// add left/right padding to box
+				labelBox.TopLeft.X -= label.PADDING
+				labelBox.Width += 2 * label.PADDING
+				if intersections := labelBox.Intersections(endingSegment); len(intersections) > 0 {
+					overlapsOutsideLabel = true
+					// move ending segment to label intersection point
+					points[endIndex] = intersections[0]
+					endingSegment.End = intersections[0]
+					// if the segment becomes too short, just merge it with the previous segment
+					if endIndex-1 > 0 && endingSegment.Length() < MIN_SEGMENT_LEN {
+						points[endIndex-1] = points[endIndex]
+						endIndex--
 					}
 				}
 			}
