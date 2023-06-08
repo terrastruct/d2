@@ -29,3 +29,4 @@
   all applied instead of only the last one [#1362](https://github.com/terrastruct/d2/pull/1362)
 - Prevent empty block strings [#1364](https://github.com/terrastruct/d2/pull/1364)
 - Fixes dagre mis-aligning a nested shape's connection. [#1370](https://github.com/terrastruct/d2/pull/1370)
+- Fixes a bug in grids sometimes putting a shape on the next row/column. [#1380](https://github.com/terrastruct/d2/pull/1380)
