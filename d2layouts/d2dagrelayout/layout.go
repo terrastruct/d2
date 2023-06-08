@@ -544,22 +544,7 @@ func getEdgeEndpoints(g *d2graph.Graph, edge *d2graph.Edge) (*d2graph.Object, *d
 	}
 	dst := edge.Dst
 	for len(dst.Children) > 0 && dst.Class == nil && dst.SQLTable == nil {
-		dst = dst.ChildrenArray[0]
-
-		// We want to get the top node of destinations
-		for _, child := range dst.ChildrenArray {
-			isHead := true
-			for _, e := range g.Edges {
-				if inContainer(e.Src, child) != nil && inContainer(e.Dst, dst) != nil {
-					isHead = false
-					break
-				}
-			}
-			if isHead {
-				dst = child
-				break
-			}
-		}
+		dst = getLongestEdgeChainHead(g, dst)
 	}
 	if edge.SrcArrow && !edge.DstArrow {
 		// for `b <- a`, edge.Edge is `a -> b` and we expect this routing result
@@ -607,8 +592,73 @@ func generateAddEdgeLine(fromID, toID, edgeID string, width, height int) string 
 	return fmt.Sprintf("g.setEdge({v:`%s`, w:`%s`, name:`%s`}, { width:%d, height:%d, labelpos: `c` });\n", escapeID(fromID), escapeID(toID), escapeID(edgeID), width, height)
 }
 
+// getLongestEdgeChainHead finds the longest chain in a container and gets its head
+// If there are multiple chains of the same length, get the head closest to the center
+func getLongestEdgeChainHead(g *d2graph.Graph, container *d2graph.Object) *d2graph.Object {
+	rank := make(map[*d2graph.Object]int)
+	chainLength := make(map[*d2graph.Object]int)
+
+	for _, obj := range container.ChildrenArray {
+		isHead := true
+		for _, e := range g.Edges {
+			if inContainer(e.Src, container) != nil && inContainer(e.Dst, obj) != nil {
+				isHead = false
+				break
+			}
+		}
+		if !isHead {
+			continue
+		}
+		rank[obj] = 1
+		chainLength[obj] = 1
+		// BFS
+		queue := []*d2graph.Object{obj}
+		visited := make(map[*d2graph.Object]struct{})
+		for len(queue) > 0 {
+			curr := queue[0]
+			queue = queue[1:]
+			if _, ok := visited[curr]; ok {
+				continue
+			}
+			visited[curr] = struct{}{}
+			for _, e := range g.Edges {
+				child := inContainer(e.Dst, container)
+				if child == curr {
+					continue
+				}
+				if child != nil && inContainer(e.Src, curr) != nil {
+					if rank[curr]+1 > rank[child] {
+						rank[child] = rank[curr] + 1
+						chainLength[obj] = go2.Max(chainLength[obj], rank[child])
+					}
+					queue = append(queue, child)
+				}
+			}
+		}
+	}
+	max := int(math.MinInt32)
+	for _, obj := range container.ChildrenArray {
+		if chainLength[obj] > max {
+			max = chainLength[obj]
+		}
+	}
+
+	var heads []*d2graph.Object
+	for i, obj := range container.ChildrenArray {
+		if rank[obj] == 1 && chainLength[obj] == max {
+			heads = append(heads, container.ChildrenArray[i])
+		}
+	}
+
+	if len(heads) > 0 {
+		return heads[int(math.Floor(float64(len(heads))/2.0))]
+	}
+	return container.ChildrenArray[0]
+}
+
 // getLongestEdgeChainTail gets the node at the end of the longest edge chain, because that will be the end of the container
-// and is what external connections should connect with
+// and is what external connections should connect with.
+// If there are multiple of same length, get the one closest to the middle
 func getLongestEdgeChainTail(g *d2graph.Graph, container *d2graph.Object) *d2graph.Object {
 	rank := make(map[*d2graph.Object]int)
 
@@ -647,14 +697,20 @@ func getLongestEdgeChainTail(g *d2graph.Graph, container *d2graph.Object) *d2gra
 		}
 	}
 	max := int(math.MinInt32)
-	var tail *d2graph.Object
 	for _, obj := range container.ChildrenArray {
-		if rank[obj] >= max {
+		if rank[obj] > max {
 			max = rank[obj]
-			tail = obj
 		}
 	}
-	return tail
+
+	var tails []*d2graph.Object
+	for i, obj := range container.ChildrenArray {
+		if rank[obj] == max {
+			tails = append(tails, container.ChildrenArray[i])
+		}
+	}
+
+	return tails[int(math.Floor(float64(len(tails))/2.0))]
 }
 
 func inContainer(obj, container *d2graph.Object) *d2graph.Object {

@@ -2319,6 +2319,23 @@ Listen <-> Talk: {
 `,
 		},
 		{
+			name: "dagre-container",
+			script: `a: {
+  a
+  b
+  c
+}
+
+b: {
+  a
+  b
+  c
+}
+
+a -> b
+`,
+		},
+		{
 			name: "sql_table_tooltip_animated",
 			script: `
 x: {
