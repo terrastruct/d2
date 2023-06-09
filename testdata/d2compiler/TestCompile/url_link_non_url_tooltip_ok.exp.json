@@ -1,0 +1,184 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2compiler/TestCompile/url_link_non_url_tooltip_ok.d2,0:0:0-0:93:93",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile/url_link_non_url_tooltip_ok.d2,0:0:0-0:93:93",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/url_link_non_url_tooltip_ok.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/url_link_non_url_tooltip_ok.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2compiler/TestCompile/url_link_non_url_tooltip_ok.d2,0:3:3-0:93:93",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/url_link_non_url_tooltip_ok.d2,0:4:4-0:32:32",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/url_link_non_url_tooltip_ok.d2,0:4:4-0:8:8",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/url_link_non_url_tooltip_ok.d2,0:4:4-0:8:8",
+                              "value": [
+                                {
+                                  "string": "link",
+                                  "raw_string": "link"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/url_link_non_url_tooltip_ok.d2,0:10:10-0:32:32",
+                          "value": [
+                            {
+                              "string": "https://not-google.com",
+                              "raw_string": "https://not-google.com"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2compiler/TestCompile/url_link_non_url_tooltip_ok.d2,0:34:34-0:92:92",
+                      "key": {
+                        "range": "d2/testdata/d2compiler/TestCompile/url_link_non_url_tooltip_ok.d2,0:34:34-0:41:41",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2compiler/TestCompile/url_link_non_url_tooltip_ok.d2,0:34:34-0:41:41",
+                              "value": [
+                                {
+                                  "string": "tooltip",
+                                  "raw_string": "tooltip"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile/url_link_non_url_tooltip_ok.d2,0:43:43-0:92:92",
+                          "value": [
+                            {
+                              "string": "note: url.ParseRequestURI might see this as a URL",
+                              "raw_string": "note: url.ParseRequestURI might see this as a URL"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "x",
+        "id_val": "x",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile/url_link_non_url_tooltip_ok.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/url_link_non_url_tooltip_ok.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "x",
+                        "raw_string": "x"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "x"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {},
+          "tooltip": {
+            "value": "note: url.ParseRequestURI might see this as a URL"
+          },
+          "link": {
+            "value": "https://not-google.com"
+          },
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ]
+  },
+  "err": null
+}
