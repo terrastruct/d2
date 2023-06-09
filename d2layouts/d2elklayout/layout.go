@@ -501,12 +501,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
-		srcShape := edge.Src.ToShape()
-		dstShape := edge.Dst.ToShape()
-
-		// trace the edge to the specific shape's border
-		points[startIndex] = shape.TraceToShapeBorder(srcShape, points[startIndex], points[startIndex+1])
-		points[endIndex] = shape.TraceToShapeBorder(dstShape, points[endIndex], points[endIndex-1])
+		startIndex, endIndex = edge.TraceToShape(points, startIndex, endIndex)
+		points = points[startIndex : endIndex+1]
 
 		if edge.Label.Value != "" {
 			edge.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))

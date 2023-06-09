@@ -21,7 +21,6 @@ import (
 	"oss.terrastruct.com/d2/lib/geo"
 	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/log"
-	"oss.terrastruct.com/d2/lib/shape"
 )
 
 //go:embed setup.js
@@ -31,9 +30,8 @@ var setupJS string
 var dagreJS string
 
 const (
-	MIN_SEGMENT_LEN = 10
-	MIN_RANK_SEP    = 60
-	EDGE_LABEL_GAP  = 20
+	MIN_RANK_SEP   = 60
+	EDGE_LABEL_GAP = 20
 )
 
 type ConfigurableOpts struct {
@@ -433,7 +431,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		// to fix this, we try extending the previous segment into the shape instead of having a very short segment
 		if !start.Equals(points[0]) && startIndex+2 < len(points) {
 			newStartingSegment := *geo.NewSegment(start, points[startIndex+1])
-			if newStartingSegment.Length() < MIN_SEGMENT_LEN {
+			if newStartingSegment.Length() < d2graph.MIN_SEGMENT_LEN {
 				// we don't want a very short segment right next to the source because it will mess up the arrowhead
 				// instead we want to extend the next segment into the shape border if possible
 				nextStart := points[startIndex+1]
@@ -442,30 +440,32 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				// Note: in other direction to extend towards source
 				nextSegment := *geo.NewSegment(nextStart, nextEnd)
 				v := nextSegment.ToVector()
-				extendedStart := nextEnd.ToVector().Add(v.AddLength(MIN_SEGMENT_LEN)).ToPoint()
+				extendedStart := nextEnd.ToVector().Add(v.AddLength(d2graph.MIN_SEGMENT_LEN)).ToPoint()
 				extended := *geo.NewSegment(nextEnd, extendedStart)
 
 				if intersections := edge.Src.Box.Intersections(extended); len(intersections) > 0 {
-					start = intersections[0]
-					startIndex += 1
+					startIndex++
+					points[startIndex] = intersections[0]
+					start = points[startIndex]
 				}
 			}
 		}
 		if !end.Equals(points[len(points)-1]) && endIndex-2 >= 0 {
 			newEndingSegment := *geo.NewSegment(end, points[endIndex-1])
-			if newEndingSegment.Length() < MIN_SEGMENT_LEN {
+			if newEndingSegment.Length() < d2graph.MIN_SEGMENT_LEN {
 				// extend the prev segment into the shape border if possible
 				prevStart := points[endIndex-2]
 				prevEnd := points[endIndex-1]
 
 				prevSegment := *geo.NewSegment(prevStart, prevEnd)
 				v := prevSegment.ToVector()
-				extendedEnd := prevStart.ToVector().Add(v.AddLength(MIN_SEGMENT_LEN)).ToPoint()
+				extendedEnd := prevStart.ToVector().Add(v.AddLength(d2graph.MIN_SEGMENT_LEN)).ToPoint()
 				extended := *geo.NewSegment(prevStart, extendedEnd)
 
 				if intersections := edge.Dst.Box.Intersections(extended); len(intersections) > 0 {
-					end = intersections[0]
-					endIndex -= 1
+					endIndex--
+					points[endIndex] = intersections[0]
+					end = points[endIndex]
 				}
 			}
 		}
@@ -489,41 +489,7 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
-		srcShape := edge.Src.ToShape()
-		dstShape := edge.Dst.ToShape()
-
-		// trace the edge to the specific shape's border
-		points[startIndex] = shape.TraceToShapeBorder(srcShape, start, points[startIndex+1])
-
-		// if an edge to a container runs into its label, stop the edge at the label instead
-		overlapsContainerLabel := false
-		if edge.Dst.IsContainer() && edge.Dst.Label.Value != "" && !dstShape.Is(shape.TEXT_TYPE) {
-			// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
-			labelWidth := float64(edge.Dst.LabelDimensions.Width)
-			labelHeight := float64(edge.Dst.LabelDimensions.Height)
-			labelTL := label.Position(*edge.Dst.LabelPosition).
-				GetPointOnBox(edge.Dst.Box, label.PADDING, labelWidth, labelHeight)
-
-			endingSegment := geo.Segment{Start: points[endIndex-1], End: points[endIndex]}
-			labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
-			// add left/right padding to box
-			labelBox.TopLeft.X -= label.PADDING
-			labelBox.Width += 2 * label.PADDING
-			if intersections := labelBox.Intersections(endingSegment); len(intersections) > 0 {
-				overlapsContainerLabel = true
-				// move ending segment to label intersection point
-				points[endIndex] = intersections[0]
-				endingSegment.End = intersections[0]
-				// if the segment becomes too short, just merge it with the previous segment
-				if endIndex-1 > 0 && endingSegment.Length() < MIN_SEGMENT_LEN {
-					points[endIndex-1] = points[endIndex]
-					endIndex--
-				}
-			}
-		}
-		if !overlapsContainerLabel {
-			points[endIndex] = shape.TraceToShapeBorder(dstShape, end, points[endIndex-1])
-		}
+		startIndex, endIndex = edge.TraceToShape(points, startIndex, endIndex)
 		points = points[startIndex : endIndex+1]
 
 		// build a curved path from the dagre route

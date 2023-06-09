@@ -17,6 +17,7 @@
 - In watch mode, images are cached by default across compiles. Can be disabled with flag `--img-cache=0`. [#1373](https://github.com/terrastruct/d2/pull/1373)
 - Common invalid array separator `,` usage in class arrays returns a helpful error message [#1376](https://github.com/terrastruct/d2/pull/1376)
 - Invalid `constraint` usage is met with an error message, preventing a common mistake of omitting `shape: sql_table` [#1379](https://github.com/terrastruct/d2/pull/1379)
+- Connections now stop at all outside labels. [#1381](https://github.com/terrastruct/d2/pull/1381)
 
 #### Bugfixes ⛑️
 
