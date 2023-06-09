@@ -1506,6 +1506,11 @@ x -> y: {
 			expErr: `d2/testdata/d2compiler/TestCompile/no_url_link_and_url_tooltip_concurrently.d2:1:44: Tooltip cannot be set to URL when link is also set (for security)`,
 		},
 		{
+			name:   "url_link_non_url_tooltip_ok",
+			text:   `x: {link: https://not-google.com; tooltip: note: url.ParseRequestURI might see this as a URL}`,
+			expErr: ``,
+		},
+		{
 			name: "url_link_and_not_url_tooltip_concurrently",
 			text: `x: {link: https://google.com; tooltip: hello world}`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
