@@ -456,11 +456,16 @@ func pathData(connection d2target.Connection, srcAdj, dstAdj *geo.Point) string 
 	return strings.Join(path, " ")
 }
 
-func makeLabelMask(labelTL *geo.Point, width, height int) string {
-	return fmt.Sprintf(`<rect x="%f" y="%f" width="%d" height="%d" fill="black"></rect>`,
+func makeLabelMask(labelTL *geo.Point, width, height int, opacity float64) string {
+	fill := "black"
+	if opacity != 1 {
+		fill = fmt.Sprintf("rgba(0,0,0,%.2f)", opacity)
+	}
+	return fmt.Sprintf(`<rect x="%f" y="%f" width="%d" height="%d" fill="%s"></rect>`,
 		labelTL.X, labelTL.Y,
 		width,
 		height,
+		fill,
 	)
 }
 
@@ -510,7 +515,7 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 		labelTL.Y = math.Round(labelTL.Y)
 
 		if label.Position(connection.LabelPosition).IsOnEdge() {
-			labelMask = makeLabelMask(labelTL, connection.LabelWidth, connection.LabelHeight)
+			labelMask = makeLabelMask(labelTL, connection.LabelWidth, connection.LabelHeight, 1)
 		}
 	}
 
@@ -1206,6 +1211,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 			float64(targetShape.LabelWidth),
 			float64(targetShape.LabelHeight),
 		)
+		labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight, 0.75)
 
 		fontClass := "text"
 		if targetShape.FontFamily == "mono" {
@@ -1324,7 +1330,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 			textEl.Content = RenderText(targetShape.Label, textEl.X, float64(targetShape.LabelHeight))
 			fmt.Fprint(writer, textEl.Render())
 			if targetShape.Blend {
-				labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight-d2graph.INNER_LABEL_PADDING)
+				labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight-d2graph.INNER_LABEL_PADDING, 1)
 			}
 		}
 	}
