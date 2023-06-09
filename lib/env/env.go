@@ -2,6 +2,7 @@ package env
 
 import (
 	"os"
+	"strconv"
 )
 
 func Test() bool {
@@ -24,4 +25,14 @@ func DevOnly() bool {
 
 func SkipGraphDiffTests() bool {
 	return os.Getenv("SKIP_GRAPH_DIFF_TESTS") != ""
+}
+
+func Timeout() (int, bool) {
+	if s := os.Getenv("D2_TIMEOUT"); s != "" {
+		i, err := strconv.ParseInt(s, 10, 64)
+		if err == nil {
+			return int(i), true
+		}
+	}
+	return -1, false
 }
