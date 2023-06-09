@@ -1211,7 +1211,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 			float64(targetShape.LabelWidth),
 			float64(targetShape.LabelHeight),
 		)
-		labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight, 0.95)
+		labelMask = makeLabelMask(labelTL, targetShape.LabelWidth, targetShape.LabelHeight, 0.75)
 
 		fontClass := "text"
 		if targetShape.FontFamily == "mono" {
