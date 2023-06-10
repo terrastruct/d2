@@ -6,7 +6,6 @@ import (
 	"io"
 	"io/fs"
 	"net/url"
-	"os"
 	"strconv"
 	"strings"
 
@@ -31,9 +30,6 @@ type CompileOptions struct {
 func Compile(p string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph, error) {
 	if opts == nil {
 		opts = &CompileOptions{}
-	}
-	if opts.FS == nil {
-		opts.FS = os.DirFS("/")
 	}
 
 	ast, err := d2parser.Parse(p, r, &d2parser.ParseOptions{

@@ -2,6 +2,7 @@ package d2ir
 
 import (
 	"bufio"
+	"io/fs"
 	"os"
 	"path"
 	"strings"
@@ -85,25 +86,13 @@ func (c *compiler) __import(imp *d2ast.Import) (*Map, bool) {
 		return ir, true
 	}
 
-	p := path.Clean(impPath)
-	if path.IsAbs(p) {
-		// Path cannot be absolute. DirFS does not accept absolute paths. We strip off the leading
-		// slash to make it relative to the root.
-		p = p[1:]
-	} else if c.fs == os.DirFS("/") {
-		wd, err := os.Getwd()
-		if err != nil {
-			c.errorf(imp, "failed to import %q: %v", impPath, err)
-			return nil, false
-		}
-		p = path.Join(wd, p)
-		// See above explanation.
-		if path.IsAbs(p) {
-			p = p[1:]
-		}
+	var f fs.File
+	var err error
+	if c.fs == nil {
+		f, err = os.Open(impPath)
+	} else {
+		f, err = c.fs.Open(impPath)
 	}
-
-	f, err := c.fs.Open(p)
 	if err != nil {
 		c.errorf(imp, "failed to import %q: %v", impPath, err)
 		return nil, false
