@@ -1742,9 +1742,7 @@ func (p *parser) parseImport(spread bool) *d2ast.Import {
 	if k.Path[0].UnquotedString != nil && len(k.Path) > 1 && k.Path[1].UnquotedString != nil && k.Path[1].Unbox().ScalarString() == "d2" {
 		k.Path = append(k.Path[:1], k.Path[2:]...)
 	}
-	if k != nil {
-		imp.Path = k.Path
-	}
+	imp.Path = k.Path
 	return imp
 }
 
