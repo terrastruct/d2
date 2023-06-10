@@ -216,6 +216,12 @@ func (p *printer) _import(i *d2ast.Import) {
 		p.sb.WriteString(pre)
 		p.sb.WriteRune('/')
 	}
+	if len(i.Path) > 0 {
+		i2 := *i
+		i2.Path = append([]*d2ast.StringBox{}, i.Path...)
+		i2.Path[0] = d2ast.RawStringBox(path.Clean(i.Path[0].Unbox().ScalarString()), true)
+		i = &i2
+	}
 	p.path(i.Path)
 }
 
