@@ -162,12 +162,6 @@ func jsParse(this js.Value, args []js.Value) interface{} {
 		return string(str)
 	}
 
-	if len(g.Layers) > 0 || len(g.Scenarios) > 0 || len(g.Steps) > 0 {
-		ret := jsParseResponse{UserError: "layers, scenarios, and steps are not yet supported. Coming soon."}
-		str, _ := json.Marshal(ret)
-		return string(str)
-	}
-
 	for _, o := range g.Objects {
 		if (o.Attributes.Top == nil) != (o.Attributes.Left == nil) {
 			ret := jsParseResponse{UserError: `keywords "top" and "left" currently must be used together`}
