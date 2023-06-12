@@ -671,38 +671,6 @@ func (obj *Object) HasChild(ids []string) (*Object, bool) {
 	return child, true
 }
 
-// Keep in sync with EnsureChild.
-func (obj *Object) EnsureChildIDVal(ids []string) *Object {
-	if len(ids) == 0 {
-		return obj
-	}
-	if len(ids) == 1 && ids[0] != "style" {
-		_, ok := ReservedKeywords[ids[0]]
-		if ok {
-			return obj
-		}
-	}
-
-	id := ids[0]
-	ids = ids[1:]
-
-	var child *Object
-	for _, ch2 := range obj.ChildrenArray {
-		if ch2.IDVal == id {
-			child = ch2
-			break
-		}
-	}
-	if child == nil {
-		child = obj.newObject(id)
-	}
-
-	if len(ids) >= 1 {
-		return child.EnsureChildIDVal(ids)
-	}
-	return child
-}
-
 func (obj *Object) HasEdge(mk *d2ast.Key) (*Edge, bool) {
 	ea, ok := obj.FindEdges(mk)
 	if !ok {
