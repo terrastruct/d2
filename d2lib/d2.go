@@ -3,6 +3,7 @@ package d2lib
 import (
 	"context"
 	"errors"
+	"io/fs"
 	"os"
 	"strings"
 
@@ -20,6 +21,7 @@ import (
 
 type CompileOptions struct {
 	UTF16         bool
+	FS            fs.FS
 	MeasuredTexts []*d2target.MText
 	Ruler         *textmeasure.Ruler
 	Layout        func(context.Context, *d2graph.Graph) error
@@ -42,6 +44,7 @@ func Compile(ctx context.Context, input string, opts *CompileOptions) (*d2target
 
 	g, err := d2compiler.Compile(opts.InputPath, strings.NewReader(input), &d2compiler.CompileOptions{
 		UTF16: opts.UTF16,
+		FS:    opts.FS,
 	})
 	if err != nil {
 		return nil, nil, err
