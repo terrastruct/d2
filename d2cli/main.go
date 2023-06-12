@@ -31,7 +31,6 @@ import (
 	"oss.terrastruct.com/d2/d2themes"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/background"
-	"oss.terrastruct.com/d2/lib/env"
 	"oss.terrastruct.com/d2/lib/imgbundler"
 	ctxlog "oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/pdf"
@@ -89,6 +88,11 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	timeoutFlag, err := ms.Opts.Int64("D2_TIMEOUT", "timeout", "", 0, "the number of seconds before d2 will timeout. default is 60s.")
+	if err != nil {
+		return err
+	}
+
 	versionFlag, err := ms.Opts.Bool("", "version", "v", false, "get the version")
 	if err != nil {
 		return err
@@ -160,6 +164,9 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 	if *browserFlag != "" {
 		ms.Env.Setenv("BROWSER", *browserFlag)
+	}
+	if timeoutFlag != nil {
+		os.Setenv("D2_TIMEOUT", fmt.Sprintf("%d", *timeoutFlag))
 	}
 
 	var inputPath string
@@ -300,10 +307,9 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	}
 
 	timeout := time.Minute * 2
-	if seconds, has := env.Timeout(); has {
-		timeout = time.Duration(seconds) * time.Second
+	if timeoutFlag != nil {
+		timeout = time.Duration(*timeoutFlag) * time.Second
 	}
-
 	if timeout > 0 {
 		var cancel func()
 		ctx, cancel = context.WithTimeout(ctx, timeout)
