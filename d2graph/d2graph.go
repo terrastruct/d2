@@ -1611,6 +1611,24 @@ func (g *Graph) Texts() []*d2target.MText {
 		}
 	}
 
+	for _, board := range g.Layers {
+		for _, t := range board.Texts() {
+			texts = appendTextDedup(texts, t)
+		}
+	}
+
+	for _, board := range g.Scenarios {
+		for _, t := range board.Texts() {
+			texts = appendTextDedup(texts, t)
+		}
+	}
+
+	for _, board := range g.Steps {
+		for _, t := range board.Texts() {
+			texts = appendTextDedup(texts, t)
+		}
+	}
+
 	return texts
 }
 
