@@ -13,10 +13,12 @@ import (
 
 	"oss.terrastruct.com/d2/d2plugin"
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
+	"oss.terrastruct.com/d2/lib/version"
 )
 
 func help(ms *xmain.State) {
-	fmt.Fprintf(ms.Stdout, `Usage:
+	fmt.Fprintf(ms.Stdout, `%[1]s %[2]s
+Usage:
   %[1]s [--watch=false] [--theme=0] file.d2 [file.svg | file.png]
   %[1]s layout [name]
   %[1]s fmt file.d2 ...
@@ -29,7 +31,7 @@ Use - to have d2 read from stdin or write to stdout.
 See man d2 for more detailed docs.
 
 Flags:
-%s
+%[3]s
 
 Subcommands:
   %[1]s layout - Lists available layout engine options with short help
@@ -40,7 +42,7 @@ Subcommands:
 See more docs and the source code at https://oss.terrastruct.com/d2.
 Hosted icons at https://icons.terrastruct.com.
 Playground runner at https://play.d2lang.com.
-`, filepath.Base(ms.Name), ms.Opts.Defaults())
+`, filepath.Base(ms.Name), version.Version, ms.Opts.Defaults())
 }
 
 func layoutCmd(ctx context.Context, ms *xmain.State, ps []d2plugin.Plugin) error {
