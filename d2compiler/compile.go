@@ -282,8 +282,8 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			Scope:           fr.Context.Scope,
 		}
 		if fr.Context.ScopeMap != nil {
-			scopeObjIDA := d2ir.BoardIDA(fr.Context.ScopeMap)
-			r.ScopeObj = obj.Graph.Root.EnsureChildIDVal(scopeObjIDA)
+			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(fr.Context.ScopeMap))
+			r.ScopeObj = obj.Graph.Root.EnsureChild(scopeObjIDA)
 		}
 		obj.References = append(obj.References, r)
 	}
@@ -635,8 +635,8 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 			Scope:           er.Context.Scope,
 		}
 		if er.Context.ScopeMap != nil {
-			scopeObjIDA := d2ir.BoardIDA(er.Context.ScopeMap)
-			r.ScopeObj = edge.Src.Graph.Root.EnsureChildIDVal(scopeObjIDA)
+			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(er.Context.ScopeMap))
+			r.ScopeObj = edge.Src.Graph.Root.EnsureChild(scopeObjIDA)
 		}
 		edge.References = append(edge.References, r)
 	}

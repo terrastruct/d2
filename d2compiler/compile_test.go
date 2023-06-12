@@ -316,6 +316,20 @@ containers: {
 			expErr: `d2/testdata/d2compiler/TestCompile/image_children_Steps.d2:4:3: steps is only allowed at a board root`,
 		},
 		{
+			name: "name-with-dot-underscore",
+			text: `A: {
+  _.C
+}
+
+"D.E": {
+  _.C
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 3, len(g.Objects))
+			},
+		},
+		{
 			name: "stroke-width",
 
 			text: `hey {
