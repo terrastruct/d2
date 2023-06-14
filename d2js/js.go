@@ -14,7 +14,6 @@ import (
 	"oss.terrastruct.com/d2/d2format"
 	"oss.terrastruct.com/d2/d2oracle"
 	"oss.terrastruct.com/d2/d2parser"
-	"oss.terrastruct.com/d2/d2target"
 	"oss.terrastruct.com/d2/lib/urlenc"
 )
 
@@ -128,11 +127,10 @@ type jsObject struct {
 }
 
 type jsParseResponse struct {
-	DSL        string            `json:"dsl"`
-	Texts      []*d2target.MText `json:"texts"`
-	ParseError string            `json:"parseError"`
-	UserError  string            `json:"userError"`
-	D2Error    string            `json:"d2Error"`
+	DSL        string `json:"dsl"`
+	ParseError string `json:"parseError"`
+	UserError  string `json:"userError"`
+	D2Error    string `json:"d2Error"`
 }
 
 type blockFS struct{}
@@ -177,11 +175,14 @@ func jsParse(this js.Value, args []js.Value) interface{} {
 		return string(str)
 	}
 
-	resp := jsParseResponse{
-		Texts: g.Texts(),
+	m, err := d2parser.Parse("", strings.NewReader(dsl), nil)
+	if err != nil {
+		return err
 	}
 
-	newDSL := d2format.Format(g.AST)
+	resp := jsParseResponse{}
+
+	newDSL := d2format.Format(m)
 	if dsl != newDSL {
 		resp.DSL = newDSL
 	}
