@@ -148,7 +148,7 @@ func (p *execPlugin) Info(ctx context.Context) (_ *PluginInfo, err error) {
 }
 
 func (p *execPlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
-	ctx, cancel := timelib.WithTimeout(ctx, time.Minute)
+	ctx, cancel := timelib.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
 	graphBytes, err := d2graph.SerializeGraph(g)
