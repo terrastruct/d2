@@ -89,7 +89,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
-	timeoutFlag, err := ms.Opts.Int64("D2_TIMEOUT", "timeout", "", 0, "the number of seconds before d2 will timeout. default is 60s.")
+	timeoutFlag, err := ms.Opts.Int64("D2_TIMEOUT", "timeout", "", 0, "the number of seconds before d2 will timeout. (default=120)")
 	if err != nil {
 		return err
 	}
