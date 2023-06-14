@@ -32,12 +32,12 @@ import (
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/background"
 	"oss.terrastruct.com/d2/lib/imgbundler"
-	"oss.terrastruct.com/d2/lib/log"
 	ctxlog "oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/pdf"
 	"oss.terrastruct.com/d2/lib/png"
 	"oss.terrastruct.com/d2/lib/pptx"
 	"oss.terrastruct.com/d2/lib/textmeasure"
+	timelib "oss.terrastruct.com/d2/lib/time"
 	"oss.terrastruct.com/d2/lib/version"
 	"oss.terrastruct.com/d2/lib/xgif"
 
@@ -307,7 +307,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		return w.run()
 	}
 
-	ctx, cancel := log.WithTimeout(ctx, time.Minute*2)
+	ctx, cancel := timelib.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
 	_, written, err := compile(ctx, ms, plugin, renderOpts, fontFamily, *animateIntervalFlag, inputPath, outputPath, *bundleFlag, *forceAppendixFlag, pw.Page)
