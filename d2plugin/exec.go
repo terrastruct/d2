@@ -15,7 +15,7 @@ import (
 	"oss.terrastruct.com/util-go/xmain"
 
 	"oss.terrastruct.com/d2/d2graph"
-	"oss.terrastruct.com/d2/lib/env"
+	"oss.terrastruct.com/d2/lib/log"
 )
 
 // execPlugin uses the binary at pathname with the plugin protocol to implement
@@ -148,15 +148,8 @@ func (p *execPlugin) Info(ctx context.Context) (_ *PluginInfo, err error) {
 }
 
 func (p *execPlugin) Layout(ctx context.Context, g *d2graph.Graph) error {
-	timeout := time.Minute
-	if seconds, has := env.Timeout(); has {
-		timeout = time.Duration(seconds) * time.Second
-	}
-	if timeout > 0 {
-		var cancel func()
-		ctx, cancel = context.WithTimeout(ctx, timeout)
-		defer cancel()
-	}
+	ctx, cancel := log.WithTimeout(ctx, time.Minute)
+	defer cancel()
 
 	graphBytes, err := d2graph.SerializeGraph(g)
 	if err != nil {

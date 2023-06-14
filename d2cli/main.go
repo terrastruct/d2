@@ -32,6 +32,7 @@ import (
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/background"
 	"oss.terrastruct.com/d2/lib/imgbundler"
+	"oss.terrastruct.com/d2/lib/log"
 	ctxlog "oss.terrastruct.com/d2/lib/log"
 	"oss.terrastruct.com/d2/lib/pdf"
 	"oss.terrastruct.com/d2/lib/png"
@@ -306,15 +307,8 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		return w.run()
 	}
 
-	timeout := time.Minute * 2
-	if timeoutFlag != nil {
-		timeout = time.Duration(*timeoutFlag) * time.Second
-	}
-	if timeout > 0 {
-		var cancel func()
-		ctx, cancel = context.WithTimeout(ctx, timeout)
-		defer cancel()
-	}
+	ctx, cancel := log.WithTimeout(ctx, time.Minute*2)
+	defer cancel()
 
 	_, written, err := compile(ctx, ms, plugin, renderOpts, fontFamily, *animateIntervalFlag, inputPath, outputPath, *bundleFlag, *forceAppendixFlag, pw.Page)
 	if err != nil {

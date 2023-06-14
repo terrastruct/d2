@@ -15,7 +15,6 @@ import (
 	"text/template"
 	"time"
 
-	"oss.terrastruct.com/d2/lib/env"
 	"oss.terrastruct.com/d2/lib/log"
 )
 
@@ -71,15 +70,8 @@ func main() {
 	if !*skipTests {
 		ctx := log.Stderr(context.Background())
 
-		timeout := 2 * time.Minute
-		if seconds, has := env.Timeout(); has {
-			timeout = time.Duration(seconds) * time.Second
-		}
-		if timeout > 0 {
-			var cancel func()
-			ctx, cancel = context.WithTimeout(ctx, timeout)
-			defer cancel()
-		}
+		ctx, cancel := log.WithTimeout(ctx, 2*time.Minute)
+		defer cancel()
 
 		// don't want to pass empty args to CommandContext
 		args := []string{"test", testDir, testMatchString}
