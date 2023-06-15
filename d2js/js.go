@@ -5,7 +5,9 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"io"
 	"io/fs"
+	"os"
 	"strings"
 	"syscall/js"
 
@@ -133,46 +135,69 @@ type jsParseResponse struct {
 	D2Error    string `json:"d2Error"`
 }
 
-type blockFS struct{}
+type emptyFile struct{}
 
-func (blockFS blockFS) Open(name string) (fs.File, error) {
-	return nil, errors.New("import statements not currently implemented")
+func (f *emptyFile) Stat() (os.FileInfo, error) {
+	return nil, nil
+}
+
+func (f *emptyFile) Read(p []byte) (int, error) {
+	return 0, io.EOF
+}
+
+func (f *emptyFile) Close() error {
+	return nil
+}
+
+type detectFS struct {
+	importUsed bool
+}
+
+func (detectFS detectFS) Open(name string) (fs.File, error) {
+	detectFS.importUsed = true
+	return &emptyFile{}, nil
 }
 
 func jsParse(this js.Value, args []js.Value) interface{} {
 	dsl := args[0].String()
 	themeID := args[1].Int()
 
+	detectFS := detectFS{}
+
 	g, err := d2compiler.Compile("", strings.NewReader(dsl), &d2compiler.CompileOptions{
 		UTF16: true,
-		FS:    blockFS{},
+		FS:    detectFS,
 	})
-	var pe *d2parser.ParseError
-	if err != nil {
-		if errors.As(err, &pe) {
-			serialized, _ := json.Marshal(err)
-			ret := jsParseResponse{ParseError: string(serialized)}
+	// If an import was used, client side D2 cannot reliably compile
+	// Defer to backend compilation
+	if !detectFS.importUsed {
+		var pe *d2parser.ParseError
+		if err != nil {
+			if errors.As(err, &pe) {
+				serialized, _ := json.Marshal(err)
+				ret := jsParseResponse{ParseError: string(serialized)}
+				str, _ := json.Marshal(ret)
+				return string(str)
+			}
+			ret := jsParseResponse{D2Error: err.Error()}
 			str, _ := json.Marshal(ret)
 			return string(str)
 		}
-		ret := jsParseResponse{D2Error: err.Error()}
-		str, _ := json.Marshal(ret)
-		return string(str)
-	}
 
-	for _, o := range g.Objects {
-		if (o.Attributes.Top == nil) != (o.Attributes.Left == nil) {
-			ret := jsParseResponse{UserError: `keywords "top" and "left" currently must be used together`}
+		for _, o := range g.Objects {
+			if (o.Attributes.Top == nil) != (o.Attributes.Left == nil) {
+				ret := jsParseResponse{UserError: `keywords "top" and "left" currently must be used together`}
+				str, _ := json.Marshal(ret)
+				return string(str)
+			}
+		}
+
+		err = g.ApplyTheme(int64(themeID))
+		if err != nil {
+			ret := jsParseResponse{D2Error: err.Error()}
 			str, _ := json.Marshal(ret)
 			return string(str)
 		}
-	}
-
-	err = g.ApplyTheme(int64(themeID))
-	if err != nil {
-		ret := jsParseResponse{D2Error: err.Error()}
-		str, _ := json.Marshal(ret)
-		return string(str)
 	}
 
 	m, err := d2parser.Parse("", strings.NewReader(dsl), nil)
