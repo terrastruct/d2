@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"oss.terrastruct.com/d2/lib/log"
+	timelib "oss.terrastruct.com/d2/lib/time"
 )
 
 //go:embed template.html
@@ -69,8 +70,10 @@ func main() {
 
 	if !*skipTests {
 		ctx := log.Stderr(context.Background())
-		ctx, cancel := context.WithTimeout(ctx, 2*time.Minute)
+
+		ctx, cancel := timelib.WithTimeout(ctx, 2*time.Minute)
 		defer cancel()
+
 		// don't want to pass empty args to CommandContext
 		args := []string{"test", testDir, testMatchString}
 		if cpuProfileStr != "" {
