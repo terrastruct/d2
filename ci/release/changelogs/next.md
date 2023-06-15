@@ -9,3 +9,4 @@
 #### Bugfixes ⛑️
 
 - Fixes edge case in compiler using dots in quotes [#1401](https://github.com/terrastruct/d2/pull/1401)
+- Fixes grid label font size for TALA [#1412](https://github.com/terrastruct/d2/pull/1412)
