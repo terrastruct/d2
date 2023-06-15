@@ -75,8 +75,8 @@ type RenderOpts struct {
 	ThemeID     int64
 	DarkThemeID *int64
 	Font        string
-	// disables the fit to screen behavior and ensures the exported svg has the exact dimensions
-	SetDimensions bool
+	// the svg will be scaled by this factor, if unset the svg will fit to screen
+	Scale *float64
 
 	// MasterID is passed when the diagram should use something other than its own hash for unique targeting
 	// Currently, that's when multi-boards are collapsed
@@ -1648,7 +1648,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	pad := DEFAULT_PADDING
 	themeID := DEFAULT_THEME
 	darkThemeID := DEFAULT_DARK_THEME
-	setDimensions := false
+	var scale *float64
 	if opts != nil {
 		pad = opts.Pad
 		if opts.Sketch {
@@ -1660,7 +1660,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 		}
 		themeID = opts.ThemeID
 		darkThemeID = opts.DarkThemeID
-		setDimensions = opts.SetDimensions
+		scale = opts.Scale
 	}
 
 	buf := &bytes.Buffer{}
@@ -1851,8 +1851,11 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	}
 
 	var dimensions string
-	if setDimensions {
-		dimensions = fmt.Sprintf(` width="%d" height="%d"`, w, h)
+	if scale != nil {
+		dimensions = fmt.Sprintf(` width="%d" height="%d"`,
+			int(math.Ceil((*scale)*float64(w))),
+			int(math.Ceil((*scale)*float64(h))),
+		)
 	}
 
 	alignment := "xMinYMin"

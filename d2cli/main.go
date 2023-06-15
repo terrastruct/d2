@@ -107,6 +107,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	scaleFlag := ms.Opts.String("SCALE", "scale", "", "fit", "set a fixed render scale (e.g. 0.5 to halve rendered size). If none provided, SVG will fit to screen.")
 
 	fontRegularFlag := ms.Opts.String("D2_FONT_REGULAR", "font-regular", "", "", "path to .ttf file to use for the regular font. If none provided, Source Sans Pro Regular is used.")
 	fontItalicFlag := ms.Opts.String("D2_FONT_ITALIC", "font-italic", "", "", "path to .ttf file to use for the italic font. If none provided, Source Sans Pro Regular-Italic is used.")
@@ -232,6 +233,14 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		}
 		ms.Log.Debug.Printf("using dark theme %s (ID: %d)", match.Name, *darkThemeFlag)
 	}
+	var scale *float64
+	if scaleFlag != nil && *scaleFlag != "fit" {
+		f, err := strconv.ParseFloat(*scaleFlag, 64)
+		if err != nil || f <= 0. {
+			return xmain.UsageErrorf("-scale must a positive floating point number or \"fit\".")
+		}
+		scale = &f
+	}
 
 	plugin, err := d2plugin.FindPlugin(ctx, ps, *layoutFlag)
 	if err != nil {
@@ -282,6 +291,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		Center:      *centerFlag,
 		ThemeID:     *themeFlag,
 		DarkThemeID: darkThemeFlag,
+		Scale:       scale,
 	}
 
 	if *watchFlag {
@@ -665,14 +675,20 @@ func render(ctx context.Context, ms *xmain.State, compileDur time.Duration, plug
 
 func _render(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, outputPath string, bundle, forceAppendix bool, page playwright.Page, ruler *textmeasure.Ruler, diagram *d2target.Diagram) ([]byte, error) {
 	toPNG := getExportExtension(outputPath) == PNG
+	var scale *float64
+	if opts.Scale != nil {
+		scale = opts.Scale
+	} else if toPNG {
+		scale = go2.Pointer(1.)
+	}
 	svg, err := d2svg.Render(diagram, &d2svg.RenderOpts{
-		Pad:           opts.Pad,
-		Sketch:        opts.Sketch,
-		Center:        opts.Center,
-		ThemeID:       opts.ThemeID,
-		DarkThemeID:   opts.DarkThemeID,
-		MasterID:      opts.MasterID,
-		SetDimensions: toPNG,
+		Pad:         opts.Pad,
+		Sketch:      opts.Sketch,
+		Center:      opts.Center,
+		ThemeID:     opts.ThemeID,
+		DarkThemeID: opts.DarkThemeID,
+		MasterID:    opts.MasterID,
+		Scale:       scale,
 	})
 	if err != nil {
 		return nil, err
@@ -746,11 +762,18 @@ func renderPDF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opt
 		// make the bg fill within the png transparent so that the pdf bg fill is the only bg color present
 		diagram.Root.Fill = "transparent"
 
+		var scale *float64
+		if opts.Scale != nil {
+			scale = opts.Scale
+		} else {
+			scale = go2.Pointer(1.)
+		}
+
 		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
-			Pad:           opts.Pad,
-			Sketch:        opts.Sketch,
-			Center:        opts.Center,
-			SetDimensions: true,
+			Pad:    opts.Pad,
+			Sketch: opts.Sketch,
+			Center: opts.Center,
+			Scale:  scale,
 		})
 		if err != nil {
 			return nil, err
@@ -837,12 +860,20 @@ func renderPPTX(ctx context.Context, ms *xmain.State, presentation *pptx.Present
 		// make the bg fill within the png transparent so that the pdf bg fill is the only bg color present
 		diagram.Root.Fill = "transparent"
 
+		var scale *float64
+		if opts.Scale != nil {
+			scale = opts.Scale
+		} else {
+			scale = go2.Pointer(1.)
+		}
+
 		var err error
+
 		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
-			Pad:           opts.Pad,
-			Sketch:        opts.Sketch,
-			Center:        opts.Center,
-			SetDimensions: true,
+			Pad:    opts.Pad,
+			Sketch: opts.Sketch,
+			Center: opts.Center,
+			Scale:  scale,
 		})
 		if err != nil {
 			return nil, err
@@ -1076,11 +1107,18 @@ func buildBoardIDToIndex(diagram *d2target.Diagram, dictionary map[string]int, p
 
 func renderPNGsForGIF(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, opts d2svg.RenderOpts, ruler *textmeasure.Ruler, page playwright.Page, diagram *d2target.Diagram) (svg []byte, pngs [][]byte, err error) {
 	if !diagram.IsFolderOnly {
+
+		var scale *float64
+		if opts.Scale != nil {
+			scale = opts.Scale
+		} else {
+			scale = go2.Pointer(1.)
+		}
 		svg, err = d2svg.Render(diagram, &d2svg.RenderOpts{
-			Pad:           opts.Pad,
-			Sketch:        opts.Sketch,
-			Center:        opts.Center,
-			SetDimensions: true,
+			Pad:    opts.Pad,
+			Sketch: opts.Sketch,
+			Center: opts.Center,
+			Scale:  scale,
 		})
 		if err != nil {
 			return nil, nil, err
