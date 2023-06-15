@@ -584,7 +584,8 @@ func (obj *Object) Text() *d2target.MText {
 	}
 
 	if obj.OuterSequenceDiagram() == nil {
-		if obj.IsContainer() && obj.Shape.Value != "text" {
+		// Note: during grid layout when children are temporarily removed `IsContainer` is false
+		if (obj.IsContainer() || obj.IsGridDiagram()) && obj.Shape.Value != "text" {
 			fontSize = obj.Level().LabelSize()
 		}
 	} else {
