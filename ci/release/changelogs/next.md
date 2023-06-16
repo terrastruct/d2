@@ -6,6 +6,7 @@
 
 - Display version on CLI help invocation [#1400](https://github.com/terrastruct/d2/pull/1400)
 - Improved readability of connection labels when they overlap another connection. [#447](https://github.com/terrastruct/d2/pull/447)
+- Error message when `shape` is given a composite [#1415](https://github.com/terrastruct/d2/pull/1415)
 
 #### Bugfixes ⛑️
 
