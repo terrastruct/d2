@@ -176,7 +176,11 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 	}
 	shape := m.GetField("shape")
 	if shape != nil {
-		c.compileField(obj, shape)
+		if shape.Composite != nil {
+			c.errorf(shape.LastPrimaryKey(), "reserved field shape does not accept composite")
+		} else {
+			c.compileField(obj, shape)
+		}
 	}
 	for _, f := range m.Fields {
 		if f.Name == "shape" {

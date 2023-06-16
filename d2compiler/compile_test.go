@@ -2614,6 +2614,15 @@ object: {
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/classes-internal-edge.d2:8:3: classes cannot contain an edge`,
 		},
+		{
+			name: "reserved-composite",
+			text: `shape: sequence_diagram {
+  alice -> bob: What does it mean\nto be well-adjusted?
+  bob -> alice: The ability to play bridge or\ngolf as if they were games.
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/reserved-composite.d2:1:1: reserved field shape does not accept composite`,
+		},
 	}
 
 	for _, tc := range testCases {
