@@ -22,19 +22,25 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 )
 
-func Create(g *d2graph.Graph, key string) (_ *d2graph.Graph, newKey string, err error) {
+func Create(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph, newKey string, err error) {
 	defer xdefer.Errorf(&err, "failed to create %#v", key)
 
-	newKey, edge, err := generateUniqueKey(g, key, nil, nil)
+	boardG := GetBoardGraph(g, boardPath)
+	if boardG == nil {
+		return nil, "", fmt.Errorf("board %v not found", boardPath)
+	}
+
+	newKey, edge, err := generateUniqueKey(boardG, key, nil, nil)
 	if err != nil {
 		return nil, "", err
 	}
 
 	if edge {
-		err = _set(g, key, nil, nil)
+		err = _set(boardG, key, nil, nil)
 	} else {
-		err = _set(g, newKey, nil, nil)
+		err = _set(boardG, newKey, nil, nil)
 	}
+	println(d2format.Format(boardG.AST))
 	if err != nil {
 		return nil, "", err
 	}

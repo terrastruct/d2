@@ -26,9 +26,10 @@ func TestCreate(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name string
-		text string
-		key  string
+		boardPath []string
+		name      string
+		text      string
+		key       string
 
 		expKey     string
 		expErr     string
@@ -457,6 +458,29 @@ rawr: {
 after
 `,
 		},
+		{
+			name: "layers-basic",
+
+			text: `a
+layers: {
+  x: {
+    a
+  }
+}
+`,
+			key:       `b`,
+			boardPath: []string{"root", "layers", "x"},
+
+			expKey: `b`,
+			exp: `a
+layers: {
+  x: {
+    a
+    b
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -469,7 +493,7 @@ after
 				text: tc.text,
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
 					var err error
-					g, newKey, err = d2oracle.Create(g, tc.key)
+					g, newKey, err = d2oracle.Create(g, tc.boardPath, tc.key)
 					return g, err
 				},
 

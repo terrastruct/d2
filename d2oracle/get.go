@@ -9,6 +9,48 @@ import (
 	"oss.terrastruct.com/d2/d2parser"
 )
 
+func GetBoardGraph(g *d2graph.Graph, boardPath []string) *d2graph.Graph {
+	if len(boardPath) == 0 {
+		return g
+	}
+	switch boardPath[0] {
+	case "root":
+		if g.Parent == nil {
+			return GetBoardGraph(g, boardPath[1:])
+		}
+		return nil
+	case "layers":
+		if len(boardPath) < 2 {
+			return nil
+		}
+		for i, b := range g.Layers {
+			if b.Name == boardPath[1] {
+				return GetBoardGraph(g.Layers[i], boardPath[2:])
+			}
+		}
+	case "scenarios":
+		if len(boardPath) < 2 {
+			return nil
+		}
+		for i, b := range g.Scenarios {
+			if b.Name == boardPath[1] {
+				return GetBoardGraph(g.Scenarios[i], boardPath[2:])
+			}
+		}
+	case "steps":
+		if len(boardPath) < 2 {
+			return nil
+		}
+		for i, b := range g.Steps {
+			if b.Name == boardPath[1] {
+				return GetBoardGraph(g.Steps[i], boardPath[2:])
+			}
+		}
+	}
+
+	return nil
+}
+
 func GetChildrenIDs(g *d2graph.Graph, absID string) (ids []string, _ error) {
 	mk, err := d2parser.ParseMapKey(absID)
 	if err != nil {
