@@ -250,6 +250,7 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 }
 
 func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
+	println("\033[1;31m--- DEBUG:", "=======================", "\033[m")
 	keyword := strings.ToLower(f.Name)
 	_, isStyleReserved := d2graph.StyleKeywords[keyword]
 	if isStyleReserved {
@@ -303,7 +304,13 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 		}
 	}
 
+	if f.Primary() != nil {
+		if _, ok := f.Primary().Value.(*d2ast.Null); ok {
+			return
+		}
+	}
 	obj = obj.EnsureChild(d2graphIDA([]string{f.Name}))
+
 	if f.Primary() != nil {
 		c.compileLabel(&obj.Attributes, f)
 	}
@@ -340,9 +347,6 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 	scalar := f.Primary().Value
 	switch scalar := scalar.(type) {
-	case *d2ast.Null:
-		// TODO: Delete instead.
-		attrs.Label.Value = scalar.ScalarString()
 	case *d2ast.BlockString:
 		if strings.TrimSpace(scalar.ScalarString()) == "" {
 			c.errorf(f.LastPrimaryKey(), "block string cannot be empty")

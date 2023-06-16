@@ -785,6 +785,39 @@ func (obj *Object) ensureChildEdge(ida []string) *Object {
 	return obj
 }
 
+// DeleteChild deletes a child from the graph.
+// If it has connections or children, those will also be deleted (recursively)
+// func (obj *Object) DeleteChild(ida []string) error {
+//   if len(ida) == 0 {
+//     return nil
+//   }
+//
+//   _, is := ReservedKeywordHolders[ida[0]]
+//   if len(ida) == 1 && !is {
+//     _, ok := ReservedKeywords[ida[0]]
+//     if ok {
+//       return obj
+//     }
+//   }
+//
+//   id := ida[0]
+//   ida = ida[1:]
+//
+//   if id == "_" {
+//     return obj.Parent.EnsureChild(ida)
+//   }
+//
+//   child, ok := obj.Children[strings.ToLower(id)]
+//   if !ok {
+//     child = obj.newObject(id)
+//   }
+//
+//   if len(ida) >= 1 {
+//     return child.EnsureChild(ida)
+//   }
+//   return child
+// }
+
 // EnsureChild grabs the child by ids or creates it if it does not exist including all
 // intermediate nodes.
 func (obj *Object) EnsureChild(ida []string) *Object {
