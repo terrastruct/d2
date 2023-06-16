@@ -516,6 +516,8 @@ func drawConnection(writer io.Writer, labelMaskID string, connection d2target.Co
 
 		if label.Position(connection.LabelPosition).IsOnEdge() {
 			labelMask = makeLabelMask(labelTL, connection.LabelWidth, connection.LabelHeight, 1)
+		} else {
+			labelMask = makeLabelMask(labelTL, connection.LabelWidth, connection.LabelHeight, 0.75)
 		}
 	}
 
