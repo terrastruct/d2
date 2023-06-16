@@ -347,67 +347,64 @@
         "name": "1",
         "isFolderOnly": false,
         "ast": {
-          "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-7:0:69",
+          "range": ",0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-0:6:6",
-                "edges": [
-                  {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-0:6:6",
-                    "src": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-0:1:1",
-                      "path": [
-                        {
-                          "unquoted_string": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:0:0-0:1:1",
-                            "value": [
-                              {
-                                "string": "a",
-                                "raw_string": "a"
-                              }
-                            ]
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "a"
                           }
-                        }
-                      ]
-                    },
-                    "src_arrow": "",
-                    "dst": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:5:5-0:6:6",
-                      "path": [
-                        {
-                          "unquoted_string": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,0:5:5-0:6:6",
-                            "value": [
-                              {
-                                "string": "x",
-                                "raw_string": "x"
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    },
-                    "dst_arrow": ">"
-                  }
-                ],
+                        ]
+                      }
+                    }
+                  ]
+                },
                 "primary": {},
                 "value": {}
               }
             },
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,2:0:8-6:1:68",
+                "range": ",0:0:0-0:0:0",
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,2:0:8-2:9:17",
+                  "range": ",0:0:0-0:0:0",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,2:0:8-2:9:17",
+                        "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "scenarios",
-                            "raw_string": "scenarios"
+                            "string": "x"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {}
+              }
+            },
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "scenarios"
                           }
                         ]
                       }
@@ -417,21 +414,20 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,2:11:19-6:1:68",
+                    "range": ",1:0:0-2:0:0",
                     "nodes": [
                       {
                         "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,3:2:23-5:3:66",
+                          "range": ",0:0:0-0:0:0",
                           "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,3:2:23-3:3:24",
+                            "range": ",0:0:0-0:0:0",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,3:2:23-3:3:24",
+                                  "range": ",0:0:0-0:0:0",
                                   "value": [
                                     {
-                                      "string": "1",
-                                      "raw_string": "1"
+                                      "string": "1"
                                     }
                                   ]
                                 }
@@ -441,24 +437,67 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,3:5:26-5:3:66",
+                              "range": ",1:0:0-2:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:4:32-4:34:62",
+                                    "range": ",0:0:0-0:0:0",
+                                    "key": {
+                                      "range": ",0:0:0-0:0:0",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": ",0:0:0-0:0:0",
+                                            "value": [
+                                              {
+                                                "string": "a"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {}
+                                  }
+                                },
+                                {
+                                  "map_key": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "key": {
+                                      "range": ",0:0:0-0:0:0",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": ",0:0:0-0:0:0",
+                                            "value": [
+                                              {
+                                                "string": "x"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {},
+                                    "value": {}
+                                  }
+                                },
+                                {
+                                  "map_key": {
+                                    "range": ",0:0:0-0:0:0",
                                     "edges": [
                                       {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:5:33-4:11:39",
+                                        "range": ",0:0:0-0:0:0",
                                         "src": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:5:33-4:6:34",
+                                          "range": ",0:0:0-0:0:0",
                                           "path": [
                                             {
                                               "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:5:33-4:6:34",
+                                                "range": ",0:0:0-0:0:0",
                                                 "value": [
                                                   {
-                                                    "string": "a",
-                                                    "raw_string": "a"
+                                                    "string": "a"
                                                   }
                                                 ]
                                               }
@@ -467,15 +506,14 @@
                                         },
                                         "src_arrow": "",
                                         "dst": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:10:38-4:11:39",
+                                          "range": ",0:0:0-0:0:0",
                                           "path": [
                                             {
                                               "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:10:38-4:11:39",
+                                                "range": ",0:0:0-0:0:0",
                                                 "value": [
                                                   {
-                                                    "string": "x",
-                                                    "raw_string": "x"
+                                                    "string": "x"
                                                   }
                                                 ]
                                               }
@@ -485,44 +523,68 @@
                                         "dst_arrow": ">"
                                       }
                                     ],
-                                    "edge_index": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:12:40-4:15:43",
-                                      "int": 0,
-                                      "glob": false
-                                    },
-                                    "edge_key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:16:44-4:29:57",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:16:44-4:21:49",
-                                            "value": [
-                                              {
-                                                "string": "style",
-                                                "raw_string": "style"
-                                              }
-                                            ]
-                                          }
-                                        },
-                                        {
-                                          "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:22:50-4:29:57",
-                                            "value": [
-                                              {
-                                                "string": "opacity",
-                                                "raw_string": "opacity"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
                                     "primary": {},
                                     "value": {
-                                      "number": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:31:59-4:34:62",
-                                        "raw": "0.1",
-                                        "value": "1/10"
+                                      "map": {
+                                        "range": ",1:0:0-2:0:0",
+                                        "nodes": [
+                                          {
+                                            "map_key": {
+                                              "range": ",0:0:0-0:0:0",
+                                              "key": {
+                                                "range": ",0:0:0-0:0:0",
+                                                "path": [
+                                                  {
+                                                    "unquoted_string": {
+                                                      "range": ",0:0:0-0:0:0",
+                                                      "value": [
+                                                        {
+                                                          "string": "style"
+                                                        }
+                                                      ]
+                                                    }
+                                                  }
+                                                ]
+                                              },
+                                              "primary": {},
+                                              "value": {
+                                                "map": {
+                                                  "range": ",1:0:0-2:0:0",
+                                                  "nodes": [
+                                                    {
+                                                      "map_key": {
+                                                        "range": ",0:0:0-0:0:0",
+                                                        "key": {
+                                                          "range": ",0:0:0-0:0:0",
+                                                          "path": [
+                                                            {
+                                                              "unquoted_string": {
+                                                                "range": ",0:0:0-0:0:0",
+                                                                "value": [
+                                                                  {
+                                                                    "string": "opacity"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          ]
+                                                        },
+                                                        "primary": {
+                                                          "number": {
+                                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/scenarios_edge_index.d2,4:31:59-4:34:62",
+                                                            "raw": "0.1",
+                                                            "value": "1/10"
+                                                          }
+                                                        },
+                                                        "value": {}
+                                                      }
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            }
+                                          }
+                                        ]
                                       }
                                     }
                                   }
@@ -535,6 +597,50 @@
                     ]
                   }
                 }
+              }
+            },
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "edges": [
+                  {
+                    "range": ",0:0:0-0:0:0",
+                    "src": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "a"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "src_arrow": "",
+                    "dst": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "dst_arrow": ">"
+                  }
+                ],
+                "primary": {},
+                "value": {}
               }
             }
           ]
