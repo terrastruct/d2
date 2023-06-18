@@ -318,7 +318,7 @@
         "name": "one",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": ",1:0:0-2:0:0",
           "nodes": [
             {
               "map_key": {
@@ -331,7 +331,7 @@
                         "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "layers"
+                            "string": "santa"
                           }
                         ]
                       }
@@ -339,301 +339,7 @@
                   ]
                 },
                 "primary": {},
-                "value": {
-                  "map": {
-                    "range": ",1:0:0-2:0:0",
-                    "nodes": [
-                      {
-                        "map_key": {
-                          "range": ",0:0:0-0:0:0",
-                          "key": {
-                            "range": ",0:0:0-0:0:0",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
-                                  "value": [
-                                    {
-                                      "string": "one"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "map": {
-                              "range": ",1:0:0-2:0:0",
-                              "nodes": [
-                                {
-                                  "map_key": {
-                                    "range": ",0:0:0-0:0:0",
-                                    "key": {
-                                      "range": ",0:0:0-0:0:0",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
-                                            "value": [
-                                              {
-                                                "string": "santa"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "primary": {},
-                                    "value": {}
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        }
-                      },
-                      {
-                        "map_key": {
-                          "range": ",0:0:0-0:0:0",
-                          "key": {
-                            "range": ",0:0:0-0:0:0",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
-                                  "value": [
-                                    {
-                                      "string": "two"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "map": {
-                              "range": ",1:0:0-2:0:0",
-                              "nodes": [
-                                {
-                                  "map_key": {
-                                    "range": ",0:0:0-0:0:0",
-                                    "key": {
-                                      "range": ",0:0:0-0:0:0",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
-                                            "value": [
-                                              {
-                                                "string": "clause"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "primary": {},
-                                    "value": {}
-                                  }
-                                },
-                                {
-                                  "map_key": {
-                                    "range": ",0:0:0-0:0:0",
-                                    "key": {
-                                      "range": ",0:0:0-0:0:0",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
-                                            "value": [
-                                              {
-                                                "string": "scenarios"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "primary": {},
-                                    "value": {
-                                      "map": {
-                                        "range": ",1:0:0-2:0:0",
-                                        "nodes": [
-                                          {
-                                            "map_key": {
-                                              "range": ",0:0:0-0:0:0",
-                                              "key": {
-                                                "range": ",0:0:0-0:0:0",
-                                                "path": [
-                                                  {
-                                                    "unquoted_string": {
-                                                      "range": ",0:0:0-0:0:0",
-                                                      "value": [
-                                                        {
-                                                          "string": "seinfeld"
-                                                        }
-                                                      ]
-                                                    }
-                                                  }
-                                                ]
-                                              },
-                                              "primary": {},
-                                              "value": {
-                                                "map": {
-                                                  "range": ",1:0:0-2:0:0",
-                                                  "nodes": [
-                                                    {
-                                                      "map_key": {
-                                                        "range": ",0:0:0-0:0:0",
-                                                        "key": {
-                                                          "range": ",0:0:0-0:0:0",
-                                                          "path": [
-                                                            {
-                                                              "unquoted_string": {
-                                                                "range": ",0:0:0-0:0:0",
-                                                                "value": [
-                                                                  {
-                                                                    "string": "clause"
-                                                                  }
-                                                                ]
-                                                              }
-                                                            }
-                                                          ]
-                                                        },
-                                                        "primary": {},
-                                                        "value": {}
-                                                      }
-                                                    }
-                                                  ]
-                                                }
-                                              }
-                                            }
-                                          },
-                                          {
-                                            "map_key": {
-                                              "range": ",0:0:0-0:0:0",
-                                              "key": {
-                                                "range": ",0:0:0-0:0:0",
-                                                "path": [
-                                                  {
-                                                    "unquoted_string": {
-                                                      "range": ",0:0:0-0:0:0",
-                                                      "value": [
-                                                        {
-                                                          "string": "missoula"
-                                                        }
-                                                      ]
-                                                    }
-                                                  }
-                                                ]
-                                              },
-                                              "primary": {},
-                                              "value": {
-                                                "map": {
-                                                  "range": ",1:0:0-2:0:0",
-                                                  "nodes": [
-                                                    {
-                                                      "map_key": {
-                                                        "range": ",0:0:0-0:0:0",
-                                                        "key": {
-                                                          "range": ",0:0:0-0:0:0",
-                                                          "path": [
-                                                            {
-                                                              "unquoted_string": {
-                                                                "range": ",0:0:0-0:0:0",
-                                                                "value": [
-                                                                  {
-                                                                    "string": "clause"
-                                                                  }
-                                                                ]
-                                                              }
-                                                            }
-                                                          ]
-                                                        },
-                                                        "primary": {},
-                                                        "value": {}
-                                                      }
-                                                    },
-                                                    {
-                                                      "map_key": {
-                                                        "range": ",0:0:0-0:0:0",
-                                                        "key": {
-                                                          "range": ",0:0:0-0:0:0",
-                                                          "path": [
-                                                            {
-                                                              "unquoted_string": {
-                                                                "range": ",0:0:0-0:0:0",
-                                                                "value": [
-                                                                  {
-                                                                    "string": "steps"
-                                                                  }
-                                                                ]
-                                                              }
-                                                            }
-                                                          ]
-                                                        },
-                                                        "primary": {},
-                                                        "value": {
-                                                          "map": {
-                                                            "range": ",1:0:0-2:0:0",
-                                                            "nodes": [
-                                                              {
-                                                                "map_key": {
-                                                                  "range": ",0:0:0-0:0:0",
-                                                                  "key": {
-                                                                    "range": ",0:0:0-0:0:0",
-                                                                    "path": [
-                                                                      {
-                                                                        "unquoted_string": {
-                                                                          "range": ",0:0:0-0:0:0",
-                                                                          "value": [
-                                                                            {
-                                                                              "string": "missus"
-                                                                            }
-                                                                          ]
-                                                                        }
-                                                                      }
-                                                                    ]
-                                                                  },
-                                                                  "primary": {
-                                                                    "unquoted_string": {
-                                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:13:130-12:26:143",
-                                                                      "value": [
-                                                                        {
-                                                                          "string": "one two three",
-                                                                          "raw_string": "one two three"
-                                                                        }
-                                                                      ]
-                                                                    }
-                                                                  },
-                                                                  "value": {}
-                                                                }
-                                                              }
-                                                            ]
-                                                          }
-                                                        }
-                                                      }
-                                                    }
-                                                  ]
-                                                }
-                                              }
-                                            }
-                                          }
-                                        ]
-                                      }
-                                    }
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
+                "value": {}
               }
             }
           ]
@@ -714,7 +420,7 @@
         "name": "two",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": ",1:0:0-2:0:0",
           "nodes": [
             {
               "map_key": {
@@ -727,7 +433,29 @@
                         "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "layers"
+                            "string": "clause"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {}
+              }
+            },
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "scenarios"
                           }
                         ]
                       }
@@ -750,7 +478,7 @@
                                   "range": ",0:0:0-0:0:0",
                                   "value": [
                                     {
-                                      "string": "one"
+                                      "string": "seinfeld"
                                     }
                                   ]
                                 }
@@ -773,7 +501,7 @@
                                             "range": ",0:0:0-0:0:0",
                                             "value": [
                                               {
-                                                "string": "santa"
+                                                "string": "clause"
                                               }
                                             ]
                                           }
@@ -800,7 +528,7 @@
                                   "range": ",0:0:0-0:0:0",
                                   "value": [
                                     {
-                                      "string": "two"
+                                      "string": "missoula"
                                     }
                                   ]
                                 }
@@ -845,7 +573,7 @@
                                             "range": ",0:0:0-0:0:0",
                                             "value": [
                                               {
-                                                "string": "scenarios"
+                                                "string": "steps"
                                               }
                                             ]
                                           }
@@ -868,153 +596,25 @@
                                                       "range": ",0:0:0-0:0:0",
                                                       "value": [
                                                         {
-                                                          "string": "seinfeld"
+                                                          "string": "missus"
                                                         }
                                                       ]
                                                     }
                                                   }
                                                 ]
                                               },
-                                              "primary": {},
-                                              "value": {
-                                                "map": {
-                                                  "range": ",1:0:0-2:0:0",
-                                                  "nodes": [
+                                              "primary": {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:13:130-12:26:143",
+                                                  "value": [
                                                     {
-                                                      "map_key": {
-                                                        "range": ",0:0:0-0:0:0",
-                                                        "key": {
-                                                          "range": ",0:0:0-0:0:0",
-                                                          "path": [
-                                                            {
-                                                              "unquoted_string": {
-                                                                "range": ",0:0:0-0:0:0",
-                                                                "value": [
-                                                                  {
-                                                                    "string": "clause"
-                                                                  }
-                                                                ]
-                                                              }
-                                                            }
-                                                          ]
-                                                        },
-                                                        "primary": {},
-                                                        "value": {}
-                                                      }
+                                                      "string": "one two three",
+                                                      "raw_string": "one two three"
                                                     }
                                                   ]
                                                 }
-                                              }
-                                            }
-                                          },
-                                          {
-                                            "map_key": {
-                                              "range": ",0:0:0-0:0:0",
-                                              "key": {
-                                                "range": ",0:0:0-0:0:0",
-                                                "path": [
-                                                  {
-                                                    "unquoted_string": {
-                                                      "range": ",0:0:0-0:0:0",
-                                                      "value": [
-                                                        {
-                                                          "string": "missoula"
-                                                        }
-                                                      ]
-                                                    }
-                                                  }
-                                                ]
                                               },
-                                              "primary": {},
-                                              "value": {
-                                                "map": {
-                                                  "range": ",1:0:0-2:0:0",
-                                                  "nodes": [
-                                                    {
-                                                      "map_key": {
-                                                        "range": ",0:0:0-0:0:0",
-                                                        "key": {
-                                                          "range": ",0:0:0-0:0:0",
-                                                          "path": [
-                                                            {
-                                                              "unquoted_string": {
-                                                                "range": ",0:0:0-0:0:0",
-                                                                "value": [
-                                                                  {
-                                                                    "string": "clause"
-                                                                  }
-                                                                ]
-                                                              }
-                                                            }
-                                                          ]
-                                                        },
-                                                        "primary": {},
-                                                        "value": {}
-                                                      }
-                                                    },
-                                                    {
-                                                      "map_key": {
-                                                        "range": ",0:0:0-0:0:0",
-                                                        "key": {
-                                                          "range": ",0:0:0-0:0:0",
-                                                          "path": [
-                                                            {
-                                                              "unquoted_string": {
-                                                                "range": ",0:0:0-0:0:0",
-                                                                "value": [
-                                                                  {
-                                                                    "string": "steps"
-                                                                  }
-                                                                ]
-                                                              }
-                                                            }
-                                                          ]
-                                                        },
-                                                        "primary": {},
-                                                        "value": {
-                                                          "map": {
-                                                            "range": ",1:0:0-2:0:0",
-                                                            "nodes": [
-                                                              {
-                                                                "map_key": {
-                                                                  "range": ",0:0:0-0:0:0",
-                                                                  "key": {
-                                                                    "range": ",0:0:0-0:0:0",
-                                                                    "path": [
-                                                                      {
-                                                                        "unquoted_string": {
-                                                                          "range": ",0:0:0-0:0:0",
-                                                                          "value": [
-                                                                            {
-                                                                              "string": "missus"
-                                                                            }
-                                                                          ]
-                                                                        }
-                                                                      }
-                                                                    ]
-                                                                  },
-                                                                  "primary": {
-                                                                    "unquoted_string": {
-                                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:13:130-12:26:143",
-                                                                      "value": [
-                                                                        {
-                                                                          "string": "one two three",
-                                                                          "raw_string": "one two three"
-                                                                        }
-                                                                      ]
-                                                                    }
-                                                                  },
-                                                                  "value": {}
-                                                                }
-                                                              }
-                                                            ]
-                                                          }
-                                                        }
-                                                      }
-                                                    }
-                                                  ]
-                                                }
-                                              }
+                                              "value": {}
                                             }
                                           }
                                         ]
@@ -1110,7 +710,7 @@
             "name": "seinfeld",
             "isFolderOnly": false,
             "ast": {
-              "range": ",0:0:0-1:0:0",
+              "range": ",1:0:0-2:0:0",
               "nodes": [
                 {
                   "map_key": {
@@ -1132,194 +732,6 @@
                     },
                     "primary": {},
                     "value": {}
-                  }
-                },
-                {
-                  "map_key": {
-                    "range": ",0:0:0-0:0:0",
-                    "key": {
-                      "range": ",0:0:0-0:0:0",
-                      "path": [
-                        {
-                          "unquoted_string": {
-                            "range": ",0:0:0-0:0:0",
-                            "value": [
-                              {
-                                "string": "scenarios"
-                              }
-                            ]
-                          }
-                        }
-                      ]
-                    },
-                    "primary": {},
-                    "value": {
-                      "map": {
-                        "range": ",1:0:0-2:0:0",
-                        "nodes": [
-                          {
-                            "map_key": {
-                              "range": ",0:0:0-0:0:0",
-                              "key": {
-                                "range": ",0:0:0-0:0:0",
-                                "path": [
-                                  {
-                                    "unquoted_string": {
-                                      "range": ",0:0:0-0:0:0",
-                                      "value": [
-                                        {
-                                          "string": "seinfeld"
-                                        }
-                                      ]
-                                    }
-                                  }
-                                ]
-                              },
-                              "primary": {},
-                              "value": {
-                                "map": {
-                                  "range": ",1:0:0-2:0:0",
-                                  "nodes": [
-                                    {
-                                      "map_key": {
-                                        "range": ",0:0:0-0:0:0",
-                                        "key": {
-                                          "range": ",0:0:0-0:0:0",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": ",0:0:0-0:0:0",
-                                                "value": [
-                                                  {
-                                                    "string": "clause"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "primary": {},
-                                        "value": {}
-                                      }
-                                    }
-                                  ]
-                                }
-                              }
-                            }
-                          },
-                          {
-                            "map_key": {
-                              "range": ",0:0:0-0:0:0",
-                              "key": {
-                                "range": ",0:0:0-0:0:0",
-                                "path": [
-                                  {
-                                    "unquoted_string": {
-                                      "range": ",0:0:0-0:0:0",
-                                      "value": [
-                                        {
-                                          "string": "missoula"
-                                        }
-                                      ]
-                                    }
-                                  }
-                                ]
-                              },
-                              "primary": {},
-                              "value": {
-                                "map": {
-                                  "range": ",1:0:0-2:0:0",
-                                  "nodes": [
-                                    {
-                                      "map_key": {
-                                        "range": ",0:0:0-0:0:0",
-                                        "key": {
-                                          "range": ",0:0:0-0:0:0",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": ",0:0:0-0:0:0",
-                                                "value": [
-                                                  {
-                                                    "string": "clause"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "primary": {},
-                                        "value": {}
-                                      }
-                                    },
-                                    {
-                                      "map_key": {
-                                        "range": ",0:0:0-0:0:0",
-                                        "key": {
-                                          "range": ",0:0:0-0:0:0",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": ",0:0:0-0:0:0",
-                                                "value": [
-                                                  {
-                                                    "string": "steps"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "primary": {},
-                                        "value": {
-                                          "map": {
-                                            "range": ",1:0:0-2:0:0",
-                                            "nodes": [
-                                              {
-                                                "map_key": {
-                                                  "range": ",0:0:0-0:0:0",
-                                                  "key": {
-                                                    "range": ",0:0:0-0:0:0",
-                                                    "path": [
-                                                      {
-                                                        "unquoted_string": {
-                                                          "range": ",0:0:0-0:0:0",
-                                                          "value": [
-                                                            {
-                                                              "string": "missus"
-                                                            }
-                                                          ]
-                                                        }
-                                                      }
-                                                    ]
-                                                  },
-                                                  "primary": {
-                                                    "unquoted_string": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:13:130-12:26:143",
-                                                      "value": [
-                                                        {
-                                                          "string": "one two three",
-                                                          "raw_string": "one two three"
-                                                        }
-                                                      ]
-                                                    }
-                                                  },
-                                                  "value": {}
-                                                }
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      }
-                                    }
-                                  ]
-                                }
-                              }
-                            }
-                          }
-                        ]
-                      }
-                    }
                   }
                 }
               ]
@@ -1400,7 +812,7 @@
             "name": "missoula",
             "isFolderOnly": false,
             "ast": {
-              "range": ",0:0:0-1:0:0",
+              "range": ",1:0:0-2:0:0",
               "nodes": [
                 {
                   "map_key": {
@@ -1435,7 +847,7 @@
                             "range": ",0:0:0-0:0:0",
                             "value": [
                               {
-                                "string": "scenarios"
+                                "string": "steps"
                               }
                             ]
                           }
@@ -1458,153 +870,25 @@
                                       "range": ",0:0:0-0:0:0",
                                       "value": [
                                         {
-                                          "string": "seinfeld"
+                                          "string": "missus"
                                         }
                                       ]
                                     }
                                   }
                                 ]
                               },
-                              "primary": {},
-                              "value": {
-                                "map": {
-                                  "range": ",1:0:0-2:0:0",
-                                  "nodes": [
+                              "primary": {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:13:130-12:26:143",
+                                  "value": [
                                     {
-                                      "map_key": {
-                                        "range": ",0:0:0-0:0:0",
-                                        "key": {
-                                          "range": ",0:0:0-0:0:0",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": ",0:0:0-0:0:0",
-                                                "value": [
-                                                  {
-                                                    "string": "clause"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "primary": {},
-                                        "value": {}
-                                      }
+                                      "string": "one two three",
+                                      "raw_string": "one two three"
                                     }
                                   ]
                                 }
-                              }
-                            }
-                          },
-                          {
-                            "map_key": {
-                              "range": ",0:0:0-0:0:0",
-                              "key": {
-                                "range": ",0:0:0-0:0:0",
-                                "path": [
-                                  {
-                                    "unquoted_string": {
-                                      "range": ",0:0:0-0:0:0",
-                                      "value": [
-                                        {
-                                          "string": "missoula"
-                                        }
-                                      ]
-                                    }
-                                  }
-                                ]
                               },
-                              "primary": {},
-                              "value": {
-                                "map": {
-                                  "range": ",1:0:0-2:0:0",
-                                  "nodes": [
-                                    {
-                                      "map_key": {
-                                        "range": ",0:0:0-0:0:0",
-                                        "key": {
-                                          "range": ",0:0:0-0:0:0",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": ",0:0:0-0:0:0",
-                                                "value": [
-                                                  {
-                                                    "string": "clause"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "primary": {},
-                                        "value": {}
-                                      }
-                                    },
-                                    {
-                                      "map_key": {
-                                        "range": ",0:0:0-0:0:0",
-                                        "key": {
-                                          "range": ",0:0:0-0:0:0",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": ",0:0:0-0:0:0",
-                                                "value": [
-                                                  {
-                                                    "string": "steps"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "primary": {},
-                                        "value": {
-                                          "map": {
-                                            "range": ",1:0:0-2:0:0",
-                                            "nodes": [
-                                              {
-                                                "map_key": {
-                                                  "range": ",0:0:0-0:0:0",
-                                                  "key": {
-                                                    "range": ",0:0:0-0:0:0",
-                                                    "path": [
-                                                      {
-                                                        "unquoted_string": {
-                                                          "range": ",0:0:0-0:0:0",
-                                                          "value": [
-                                                            {
-                                                              "string": "missus"
-                                                            }
-                                                          ]
-                                                        }
-                                                      }
-                                                    ]
-                                                  },
-                                                  "primary": {
-                                                    "unquoted_string": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:13:130-12:26:143",
-                                                      "value": [
-                                                        {
-                                                          "string": "one two three",
-                                                          "raw_string": "one two three"
-                                                        }
-                                                      ]
-                                                    }
-                                                  },
-                                                  "value": {}
-                                                }
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      }
-                                    }
-                                  ]
-                                }
-                              }
+                              "value": {}
                             }
                           }
                         ]
