@@ -372,21 +372,20 @@
         "name": "one",
         "isFolderOnly": false,
         "ast": {
-          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-18:0:145",
+          "range": ",0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-0:4:4",
+                "range": ",0:0:0-0:0:0",
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-0:4:4",
+                  "range": ",0:0:0-0:0:0",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-0:4:4",
+                        "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "base",
-                            "raw_string": "base"
+                            "string": "base"
                           }
                         ]
                       }
@@ -399,17 +398,16 @@
             },
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:0:6-17:1:144",
+                "range": ",0:0:0-0:0:0",
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:0:6-2:6:12",
+                  "range": ",0:0:0-0:0:0",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:0:6-2:6:12",
+                        "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "layers",
-                            "raw_string": "layers"
+                            "string": "layers"
                           }
                         ]
                       }
@@ -419,21 +417,20 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:8:14-17:1:144",
+                    "range": ",1:0:0-2:0:0",
                     "nodes": [
                       {
                         "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:2:18-5:3:38",
+                          "range": ",0:0:0-0:0:0",
                           "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:2:18-3:5:21",
+                            "range": ",0:0:0-0:0:0",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:2:18-3:5:21",
+                                  "range": ",0:0:0-0:0:0",
                                   "value": [
                                     {
-                                      "string": "one",
-                                      "raw_string": "one"
+                                      "string": "one"
                                     }
                                   ]
                                 }
@@ -443,21 +440,20 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:7:23-5:3:38",
+                              "range": ",1:0:0-2:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,4:4:29-4:9:34",
+                                    "range": ",0:0:0-0:0:0",
                                     "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,4:4:29-4:9:34",
+                                      "range": ",0:0:0-0:0:0",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,4:4:29-4:9:34",
+                                            "range": ",0:0:0-0:0:0",
                                             "value": [
                                               {
-                                                "string": "santa",
-                                                "raw_string": "santa"
+                                                "string": "santa"
                                               }
                                             ]
                                           }
@@ -475,17 +471,16 @@
                       },
                       {
                         "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:2:41-16:3:142",
+                          "range": ",0:0:0-0:0:0",
                           "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:2:41-6:5:44",
+                            "range": ",0:0:0-0:0:0",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:2:41-6:5:44",
+                                  "range": ",0:0:0-0:0:0",
                                   "value": [
                                     {
-                                      "string": "two",
-                                      "raw_string": "two"
+                                      "string": "two"
                                     }
                                   ]
                                 }
@@ -495,21 +490,20 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:7:46-16:3:142",
+                              "range": ",1:0:0-2:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
+                                    "range": ",0:0:0-0:0:0",
                                     "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
+                                      "range": ",0:0:0-0:0:0",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
+                                            "range": ",0:0:0-0:0:0",
                                             "value": [
                                               {
-                                                "string": "clause",
-                                                "raw_string": "clause"
+                                                "string": "clause"
                                               }
                                             ]
                                           }
@@ -522,17 +516,16 @@
                                 },
                                 {
                                   "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:2:61-15:3:138",
+                                    "range": ",0:0:0-0:0:0",
                                     "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:2:61-8:7:66",
+                                      "range": ",0:0:0-0:0:0",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:2:61-8:7:66",
+                                            "range": ",0:0:0-0:0:0",
                                             "value": [
                                               {
-                                                "string": "steps",
-                                                "raw_string": "steps"
+                                                "string": "steps"
                                               }
                                             ]
                                           }
@@ -542,21 +535,20 @@
                                     "primary": {},
                                     "value": {
                                       "map": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:9:68-15:3:138",
+                                        "range": ",1:0:0-2:0:0",
                                         "nodes": [
                                           {
                                             "map_key": {
-                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:3:73-11:4:102",
+                                              "range": ",0:0:0-0:0:0",
                                               "key": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:3:73-9:11:81",
+                                                "range": ",0:0:0-0:0:0",
                                                 "path": [
                                                   {
                                                     "unquoted_string": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:3:73-9:11:81",
+                                                      "range": ",0:0:0-0:0:0",
                                                       "value": [
                                                         {
-                                                          "string": "seinfeld",
-                                                          "raw_string": "seinfeld"
+                                                          "string": "seinfeld"
                                                         }
                                                       ]
                                                     }
@@ -566,21 +558,42 @@
                                               "primary": {},
                                               "value": {
                                                 "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:13:83-11:4:102",
+                                                  "range": ",1:0:0-2:0:0",
                                                   "nodes": [
                                                     {
                                                       "map_key": {
-                                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
+                                                        "range": ",0:0:0-0:0:0",
                                                         "key": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
+                                                          "range": ",0:0:0-0:0:0",
                                                           "path": [
                                                             {
                                                               "unquoted_string": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
+                                                                "range": ",0:0:0-0:0:0",
                                                                 "value": [
                                                                   {
-                                                                    "string": "reindeer",
-                                                                    "raw_string": "reindeer"
+                                                                    "string": "clause"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          ]
+                                                        },
+                                                        "primary": {},
+                                                        "value": {}
+                                                      }
+                                                    },
+                                                    {
+                                                      "map_key": {
+                                                        "range": ",0:0:0-0:0:0",
+                                                        "key": {
+                                                          "range": ",0:0:0-0:0:0",
+                                                          "path": [
+                                                            {
+                                                              "unquoted_string": {
+                                                                "range": ",0:0:0-0:0:0",
+                                                                "value": [
+                                                                  {
+                                                                    "string": "reindeer"
                                                                   }
                                                                 ]
                                                               }
@@ -598,17 +611,16 @@
                                           },
                                           {
                                             "map_key": {
-                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:3:106-14:4:134",
+                                              "range": ",0:0:0-0:0:0",
                                               "key": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:3:106-12:11:114",
+                                                "range": ",0:0:0-0:0:0",
                                                 "path": [
                                                   {
                                                     "unquoted_string": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:3:106-12:11:114",
+                                                      "range": ",0:0:0-0:0:0",
                                                       "value": [
                                                         {
-                                                          "string": "missoula",
-                                                          "raw_string": "missoula"
+                                                          "string": "missoula"
                                                         }
                                                       ]
                                                     }
@@ -618,21 +630,64 @@
                                               "primary": {},
                                               "value": {
                                                 "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:13:116-14:4:134",
+                                                  "range": ",1:0:0-2:0:0",
                                                   "nodes": [
                                                     {
                                                       "map_key": {
-                                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,13:4:122-13:11:129",
+                                                        "range": ",0:0:0-0:0:0",
                                                         "key": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,13:4:122-13:11:129",
+                                                          "range": ",0:0:0-0:0:0",
                                                           "path": [
                                                             {
                                                               "unquoted_string": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,13:4:122-13:11:129",
+                                                                "range": ",0:0:0-0:0:0",
                                                                 "value": [
                                                                   {
-                                                                    "string": "montana",
-                                                                    "raw_string": "montana"
+                                                                    "string": "clause"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          ]
+                                                        },
+                                                        "primary": {},
+                                                        "value": {}
+                                                      }
+                                                    },
+                                                    {
+                                                      "map_key": {
+                                                        "range": ",0:0:0-0:0:0",
+                                                        "key": {
+                                                          "range": ",0:0:0-0:0:0",
+                                                          "path": [
+                                                            {
+                                                              "unquoted_string": {
+                                                                "range": ",0:0:0-0:0:0",
+                                                                "value": [
+                                                                  {
+                                                                    "string": "reindeer"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          ]
+                                                        },
+                                                        "primary": {},
+                                                        "value": {}
+                                                      }
+                                                    },
+                                                    {
+                                                      "map_key": {
+                                                        "range": ",0:0:0-0:0:0",
+                                                        "key": {
+                                                          "range": ",0:0:0-0:0:0",
+                                                          "path": [
+                                                            {
+                                                              "unquoted_string": {
+                                                                "range": ",0:0:0-0:0:0",
+                                                                "value": [
+                                                                  {
+                                                                    "string": "montana"
                                                                   }
                                                                 ]
                                                               }
@@ -741,21 +796,20 @@
         "name": "two",
         "isFolderOnly": false,
         "ast": {
-          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-18:0:145",
+          "range": ",0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-0:4:4",
+                "range": ",0:0:0-0:0:0",
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-0:4:4",
+                  "range": ",0:0:0-0:0:0",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-0:4:4",
+                        "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "base",
-                            "raw_string": "base"
+                            "string": "base"
                           }
                         ]
                       }
@@ -768,17 +822,16 @@
             },
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:0:6-17:1:144",
+                "range": ",0:0:0-0:0:0",
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:0:6-2:6:12",
+                  "range": ",0:0:0-0:0:0",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:0:6-2:6:12",
+                        "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "layers",
-                            "raw_string": "layers"
+                            "string": "layers"
                           }
                         ]
                       }
@@ -788,21 +841,20 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:8:14-17:1:144",
+                    "range": ",1:0:0-2:0:0",
                     "nodes": [
                       {
                         "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:2:18-5:3:38",
+                          "range": ",0:0:0-0:0:0",
                           "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:2:18-3:5:21",
+                            "range": ",0:0:0-0:0:0",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:2:18-3:5:21",
+                                  "range": ",0:0:0-0:0:0",
                                   "value": [
                                     {
-                                      "string": "one",
-                                      "raw_string": "one"
+                                      "string": "one"
                                     }
                                   ]
                                 }
@@ -812,21 +864,20 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:7:23-5:3:38",
+                              "range": ",1:0:0-2:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,4:4:29-4:9:34",
+                                    "range": ",0:0:0-0:0:0",
                                     "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,4:4:29-4:9:34",
+                                      "range": ",0:0:0-0:0:0",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,4:4:29-4:9:34",
+                                            "range": ",0:0:0-0:0:0",
                                             "value": [
                                               {
-                                                "string": "santa",
-                                                "raw_string": "santa"
+                                                "string": "santa"
                                               }
                                             ]
                                           }
@@ -844,17 +895,16 @@
                       },
                       {
                         "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:2:41-16:3:142",
+                          "range": ",0:0:0-0:0:0",
                           "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:2:41-6:5:44",
+                            "range": ",0:0:0-0:0:0",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:2:41-6:5:44",
+                                  "range": ",0:0:0-0:0:0",
                                   "value": [
                                     {
-                                      "string": "two",
-                                      "raw_string": "two"
+                                      "string": "two"
                                     }
                                   ]
                                 }
@@ -864,21 +914,20 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:7:46-16:3:142",
+                              "range": ",1:0:0-2:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
+                                    "range": ",0:0:0-0:0:0",
                                     "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
+                                      "range": ",0:0:0-0:0:0",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
+                                            "range": ",0:0:0-0:0:0",
                                             "value": [
                                               {
-                                                "string": "clause",
-                                                "raw_string": "clause"
+                                                "string": "clause"
                                               }
                                             ]
                                           }
@@ -891,17 +940,16 @@
                                 },
                                 {
                                   "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:2:61-15:3:138",
+                                    "range": ",0:0:0-0:0:0",
                                     "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:2:61-8:7:66",
+                                      "range": ",0:0:0-0:0:0",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:2:61-8:7:66",
+                                            "range": ",0:0:0-0:0:0",
                                             "value": [
                                               {
-                                                "string": "steps",
-                                                "raw_string": "steps"
+                                                "string": "steps"
                                               }
                                             ]
                                           }
@@ -911,21 +959,20 @@
                                     "primary": {},
                                     "value": {
                                       "map": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:9:68-15:3:138",
+                                        "range": ",1:0:0-2:0:0",
                                         "nodes": [
                                           {
                                             "map_key": {
-                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:3:73-11:4:102",
+                                              "range": ",0:0:0-0:0:0",
                                               "key": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:3:73-9:11:81",
+                                                "range": ",0:0:0-0:0:0",
                                                 "path": [
                                                   {
                                                     "unquoted_string": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:3:73-9:11:81",
+                                                      "range": ",0:0:0-0:0:0",
                                                       "value": [
                                                         {
-                                                          "string": "seinfeld",
-                                                          "raw_string": "seinfeld"
+                                                          "string": "seinfeld"
                                                         }
                                                       ]
                                                     }
@@ -935,21 +982,42 @@
                                               "primary": {},
                                               "value": {
                                                 "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:13:83-11:4:102",
+                                                  "range": ",1:0:0-2:0:0",
                                                   "nodes": [
                                                     {
                                                       "map_key": {
-                                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
+                                                        "range": ",0:0:0-0:0:0",
                                                         "key": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
+                                                          "range": ",0:0:0-0:0:0",
                                                           "path": [
                                                             {
                                                               "unquoted_string": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
+                                                                "range": ",0:0:0-0:0:0",
                                                                 "value": [
                                                                   {
-                                                                    "string": "reindeer",
-                                                                    "raw_string": "reindeer"
+                                                                    "string": "clause"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          ]
+                                                        },
+                                                        "primary": {},
+                                                        "value": {}
+                                                      }
+                                                    },
+                                                    {
+                                                      "map_key": {
+                                                        "range": ",0:0:0-0:0:0",
+                                                        "key": {
+                                                          "range": ",0:0:0-0:0:0",
+                                                          "path": [
+                                                            {
+                                                              "unquoted_string": {
+                                                                "range": ",0:0:0-0:0:0",
+                                                                "value": [
+                                                                  {
+                                                                    "string": "reindeer"
                                                                   }
                                                                 ]
                                                               }
@@ -967,17 +1035,16 @@
                                           },
                                           {
                                             "map_key": {
-                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:3:106-14:4:134",
+                                              "range": ",0:0:0-0:0:0",
                                               "key": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:3:106-12:11:114",
+                                                "range": ",0:0:0-0:0:0",
                                                 "path": [
                                                   {
                                                     "unquoted_string": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:3:106-12:11:114",
+                                                      "range": ",0:0:0-0:0:0",
                                                       "value": [
                                                         {
-                                                          "string": "missoula",
-                                                          "raw_string": "missoula"
+                                                          "string": "missoula"
                                                         }
                                                       ]
                                                     }
@@ -987,21 +1054,64 @@
                                               "primary": {},
                                               "value": {
                                                 "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:13:116-14:4:134",
+                                                  "range": ",1:0:0-2:0:0",
                                                   "nodes": [
                                                     {
                                                       "map_key": {
-                                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,13:4:122-13:11:129",
+                                                        "range": ",0:0:0-0:0:0",
                                                         "key": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,13:4:122-13:11:129",
+                                                          "range": ",0:0:0-0:0:0",
                                                           "path": [
                                                             {
                                                               "unquoted_string": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,13:4:122-13:11:129",
+                                                                "range": ",0:0:0-0:0:0",
                                                                 "value": [
                                                                   {
-                                                                    "string": "montana",
-                                                                    "raw_string": "montana"
+                                                                    "string": "clause"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          ]
+                                                        },
+                                                        "primary": {},
+                                                        "value": {}
+                                                      }
+                                                    },
+                                                    {
+                                                      "map_key": {
+                                                        "range": ",0:0:0-0:0:0",
+                                                        "key": {
+                                                          "range": ",0:0:0-0:0:0",
+                                                          "path": [
+                                                            {
+                                                              "unquoted_string": {
+                                                                "range": ",0:0:0-0:0:0",
+                                                                "value": [
+                                                                  {
+                                                                    "string": "reindeer"
+                                                                  }
+                                                                ]
+                                                              }
+                                                            }
+                                                          ]
+                                                        },
+                                                        "primary": {},
+                                                        "value": {}
+                                                      }
+                                                    },
+                                                    {
+                                                      "map_key": {
+                                                        "range": ",0:0:0-0:0:0",
+                                                        "key": {
+                                                          "range": ",0:0:0-0:0:0",
+                                                          "path": [
+                                                            {
+                                                              "unquoted_string": {
+                                                                "range": ",0:0:0-0:0:0",
+                                                                "value": [
+                                                                  {
+                                                                    "string": "montana"
                                                                   }
                                                                 ]
                                                               }
@@ -1110,21 +1220,20 @@
             "name": "seinfeld",
             "isFolderOnly": false,
             "ast": {
-              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-18:0:145",
+              "range": ",0:0:0-1:0:0",
               "nodes": [
                 {
                   "map_key": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-0:4:4",
+                    "range": ",0:0:0-0:0:0",
                     "key": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-0:4:4",
+                      "range": ",0:0:0-0:0:0",
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-0:4:4",
+                            "range": ",0:0:0-0:0:0",
                             "value": [
                               {
-                                "string": "base",
-                                "raw_string": "base"
+                                "string": "clause"
                               }
                             ]
                           }
@@ -1137,17 +1246,16 @@
                 },
                 {
                   "map_key": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:0:6-17:1:144",
+                    "range": ",0:0:0-0:0:0",
                     "key": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:0:6-2:6:12",
+                      "range": ",0:0:0-0:0:0",
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:0:6-2:6:12",
+                            "range": ",0:0:0-0:0:0",
                             "value": [
                               {
-                                "string": "layers",
-                                "raw_string": "layers"
+                                "string": "steps"
                               }
                             ]
                           }
@@ -1157,21 +1265,20 @@
                     "primary": {},
                     "value": {
                       "map": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:8:14-17:1:144",
+                        "range": ",1:0:0-2:0:0",
                         "nodes": [
                           {
                             "map_key": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:2:18-5:3:38",
+                              "range": ",0:0:0-0:0:0",
                               "key": {
-                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:2:18-3:5:21",
+                                "range": ",0:0:0-0:0:0",
                                 "path": [
                                   {
                                     "unquoted_string": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:2:18-3:5:21",
+                                      "range": ",0:0:0-0:0:0",
                                       "value": [
                                         {
-                                          "string": "one",
-                                          "raw_string": "one"
+                                          "string": "seinfeld"
                                         }
                                       ]
                                     }
@@ -1181,21 +1288,42 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:7:23-5:3:38",
+                                  "range": ",1:0:0-2:0:0",
                                   "nodes": [
                                     {
                                       "map_key": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,4:4:29-4:9:34",
+                                        "range": ",0:0:0-0:0:0",
                                         "key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,4:4:29-4:9:34",
+                                          "range": ",0:0:0-0:0:0",
                                           "path": [
                                             {
                                               "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,4:4:29-4:9:34",
+                                                "range": ",0:0:0-0:0:0",
                                                 "value": [
                                                   {
-                                                    "string": "santa",
-                                                    "raw_string": "santa"
+                                                    "string": "clause"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {},
+                                        "value": {}
+                                      }
+                                    },
+                                    {
+                                      "map_key": {
+                                        "range": ",0:0:0-0:0:0",
+                                        "key": {
+                                          "range": ",0:0:0-0:0:0",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": ",0:0:0-0:0:0",
+                                                "value": [
+                                                  {
+                                                    "string": "reindeer"
                                                   }
                                                 ]
                                               }
@@ -1213,17 +1341,16 @@
                           },
                           {
                             "map_key": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:2:41-16:3:142",
+                              "range": ",0:0:0-0:0:0",
                               "key": {
-                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:2:41-6:5:44",
+                                "range": ",0:0:0-0:0:0",
                                 "path": [
                                   {
                                     "unquoted_string": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:2:41-6:5:44",
+                                      "range": ",0:0:0-0:0:0",
                                       "value": [
                                         {
-                                          "string": "two",
-                                          "raw_string": "two"
+                                          "string": "missoula"
                                         }
                                       ]
                                     }
@@ -1233,21 +1360,20 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:7:46-16:3:142",
+                                  "range": ",1:0:0-2:0:0",
                                   "nodes": [
                                     {
                                       "map_key": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
+                                        "range": ",0:0:0-0:0:0",
                                         "key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
+                                          "range": ",0:0:0-0:0:0",
                                           "path": [
                                             {
                                               "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
+                                                "range": ",0:0:0-0:0:0",
                                                 "value": [
                                                   {
-                                                    "string": "clause",
-                                                    "raw_string": "clause"
+                                                    "string": "clause"
                                                   }
                                                 ]
                                               }
@@ -1260,17 +1386,16 @@
                                     },
                                     {
                                       "map_key": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:2:61-15:3:138",
+                                        "range": ",0:0:0-0:0:0",
                                         "key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:2:61-8:7:66",
+                                          "range": ",0:0:0-0:0:0",
                                           "path": [
                                             {
                                               "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:2:61-8:7:66",
+                                                "range": ",0:0:0-0:0:0",
                                                 "value": [
                                                   {
-                                                    "string": "steps",
-                                                    "raw_string": "steps"
+                                                    "string": "reindeer"
                                                   }
                                                 ]
                                               }
@@ -1278,117 +1403,29 @@
                                           ]
                                         },
                                         "primary": {},
-                                        "value": {
-                                          "map": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:9:68-15:3:138",
-                                            "nodes": [
-                                              {
-                                                "map_key": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:3:73-11:4:102",
-                                                  "key": {
-                                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:3:73-9:11:81",
-                                                    "path": [
-                                                      {
-                                                        "unquoted_string": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:3:73-9:11:81",
-                                                          "value": [
-                                                            {
-                                                              "string": "seinfeld",
-                                                              "raw_string": "seinfeld"
-                                                            }
-                                                          ]
-                                                        }
-                                                      }
-                                                    ]
-                                                  },
-                                                  "primary": {},
-                                                  "value": {
-                                                    "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:13:83-11:4:102",
-                                                      "nodes": [
-                                                        {
-                                                          "map_key": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
-                                                            "key": {
-                                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
-                                                              "path": [
-                                                                {
-                                                                  "unquoted_string": {
-                                                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
-                                                                    "value": [
-                                                                      {
-                                                                        "string": "reindeer",
-                                                                        "raw_string": "reindeer"
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                }
-                                                              ]
-                                                            },
-                                                            "primary": {},
-                                                            "value": {}
-                                                          }
-                                                        }
-                                                      ]
-                                                    }
+                                        "value": {}
+                                      }
+                                    },
+                                    {
+                                      "map_key": {
+                                        "range": ",0:0:0-0:0:0",
+                                        "key": {
+                                          "range": ",0:0:0-0:0:0",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": ",0:0:0-0:0:0",
+                                                "value": [
+                                                  {
+                                                    "string": "montana"
                                                   }
-                                                }
-                                              },
-                                              {
-                                                "map_key": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:3:106-14:4:134",
-                                                  "key": {
-                                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:3:106-12:11:114",
-                                                    "path": [
-                                                      {
-                                                        "unquoted_string": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:3:106-12:11:114",
-                                                          "value": [
-                                                            {
-                                                              "string": "missoula",
-                                                              "raw_string": "missoula"
-                                                            }
-                                                          ]
-                                                        }
-                                                      }
-                                                    ]
-                                                  },
-                                                  "primary": {},
-                                                  "value": {
-                                                    "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:13:116-14:4:134",
-                                                      "nodes": [
-                                                        {
-                                                          "map_key": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,13:4:122-13:11:129",
-                                                            "key": {
-                                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,13:4:122-13:11:129",
-                                                              "path": [
-                                                                {
-                                                                  "unquoted_string": {
-                                                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,13:4:122-13:11:129",
-                                                                    "value": [
-                                                                      {
-                                                                        "string": "montana",
-                                                                        "raw_string": "montana"
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                }
-                                                              ]
-                                                            },
-                                                            "primary": {},
-                                                            "value": {}
-                                                          }
-                                                        }
-                                                      ]
-                                                    }
-                                                  }
-                                                }
+                                                ]
                                               }
-                                            ]
-                                          }
-                                        }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {},
+                                        "value": {}
                                       }
                                     }
                                   ]
@@ -1524,21 +1561,20 @@
             "name": "missoula",
             "isFolderOnly": false,
             "ast": {
-              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-18:0:145",
+              "range": ",0:0:0-1:0:0",
               "nodes": [
                 {
                   "map_key": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-0:4:4",
+                    "range": ",0:0:0-0:0:0",
                     "key": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-0:4:4",
+                      "range": ",0:0:0-0:0:0",
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,0:0:0-0:4:4",
+                            "range": ",0:0:0-0:0:0",
                             "value": [
                               {
-                                "string": "base",
-                                "raw_string": "base"
+                                "string": "clause"
                               }
                             ]
                           }
@@ -1551,17 +1587,16 @@
                 },
                 {
                   "map_key": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:0:6-17:1:144",
+                    "range": ",0:0:0-0:0:0",
                     "key": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:0:6-2:6:12",
+                      "range": ",0:0:0-0:0:0",
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:0:6-2:6:12",
+                            "range": ",0:0:0-0:0:0",
                             "value": [
                               {
-                                "string": "layers",
-                                "raw_string": "layers"
+                                "string": "steps"
                               }
                             ]
                           }
@@ -1571,21 +1606,20 @@
                     "primary": {},
                     "value": {
                       "map": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,2:8:14-17:1:144",
+                        "range": ",1:0:0-2:0:0",
                         "nodes": [
                           {
                             "map_key": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:2:18-5:3:38",
+                              "range": ",0:0:0-0:0:0",
                               "key": {
-                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:2:18-3:5:21",
+                                "range": ",0:0:0-0:0:0",
                                 "path": [
                                   {
                                     "unquoted_string": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:2:18-3:5:21",
+                                      "range": ",0:0:0-0:0:0",
                                       "value": [
                                         {
-                                          "string": "one",
-                                          "raw_string": "one"
+                                          "string": "seinfeld"
                                         }
                                       ]
                                     }
@@ -1595,21 +1629,42 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,3:7:23-5:3:38",
+                                  "range": ",1:0:0-2:0:0",
                                   "nodes": [
                                     {
                                       "map_key": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,4:4:29-4:9:34",
+                                        "range": ",0:0:0-0:0:0",
                                         "key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,4:4:29-4:9:34",
+                                          "range": ",0:0:0-0:0:0",
                                           "path": [
                                             {
                                               "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,4:4:29-4:9:34",
+                                                "range": ",0:0:0-0:0:0",
                                                 "value": [
                                                   {
-                                                    "string": "santa",
-                                                    "raw_string": "santa"
+                                                    "string": "clause"
+                                                  }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {},
+                                        "value": {}
+                                      }
+                                    },
+                                    {
+                                      "map_key": {
+                                        "range": ",0:0:0-0:0:0",
+                                        "key": {
+                                          "range": ",0:0:0-0:0:0",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": ",0:0:0-0:0:0",
+                                                "value": [
+                                                  {
+                                                    "string": "reindeer"
                                                   }
                                                 ]
                                               }
@@ -1627,17 +1682,16 @@
                           },
                           {
                             "map_key": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:2:41-16:3:142",
+                              "range": ",0:0:0-0:0:0",
                               "key": {
-                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:2:41-6:5:44",
+                                "range": ",0:0:0-0:0:0",
                                 "path": [
                                   {
                                     "unquoted_string": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:2:41-6:5:44",
+                                      "range": ",0:0:0-0:0:0",
                                       "value": [
                                         {
-                                          "string": "two",
-                                          "raw_string": "two"
+                                          "string": "missoula"
                                         }
                                       ]
                                     }
@@ -1647,21 +1701,20 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,6:7:46-16:3:142",
+                                  "range": ",1:0:0-2:0:0",
                                   "nodes": [
                                     {
                                       "map_key": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
+                                        "range": ",0:0:0-0:0:0",
                                         "key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
+                                          "range": ",0:0:0-0:0:0",
                                           "path": [
                                             {
                                               "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,7:4:52-7:10:58",
+                                                "range": ",0:0:0-0:0:0",
                                                 "value": [
                                                   {
-                                                    "string": "clause",
-                                                    "raw_string": "clause"
+                                                    "string": "clause"
                                                   }
                                                 ]
                                               }
@@ -1674,17 +1727,16 @@
                                     },
                                     {
                                       "map_key": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:2:61-15:3:138",
+                                        "range": ",0:0:0-0:0:0",
                                         "key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:2:61-8:7:66",
+                                          "range": ",0:0:0-0:0:0",
                                           "path": [
                                             {
                                               "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:2:61-8:7:66",
+                                                "range": ",0:0:0-0:0:0",
                                                 "value": [
                                                   {
-                                                    "string": "steps",
-                                                    "raw_string": "steps"
+                                                    "string": "reindeer"
                                                   }
                                                 ]
                                               }
@@ -1692,117 +1744,29 @@
                                           ]
                                         },
                                         "primary": {},
-                                        "value": {
-                                          "map": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,8:9:68-15:3:138",
-                                            "nodes": [
-                                              {
-                                                "map_key": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:3:73-11:4:102",
-                                                  "key": {
-                                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:3:73-9:11:81",
-                                                    "path": [
-                                                      {
-                                                        "unquoted_string": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:3:73-9:11:81",
-                                                          "value": [
-                                                            {
-                                                              "string": "seinfeld",
-                                                              "raw_string": "seinfeld"
-                                                            }
-                                                          ]
-                                                        }
-                                                      }
-                                                    ]
-                                                  },
-                                                  "primary": {},
-                                                  "value": {
-                                                    "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,9:13:83-11:4:102",
-                                                      "nodes": [
-                                                        {
-                                                          "map_key": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
-                                                            "key": {
-                                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
-                                                              "path": [
-                                                                {
-                                                                  "unquoted_string": {
-                                                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,10:4:89-10:12:97",
-                                                                    "value": [
-                                                                      {
-                                                                        "string": "reindeer",
-                                                                        "raw_string": "reindeer"
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                }
-                                                              ]
-                                                            },
-                                                            "primary": {},
-                                                            "value": {}
-                                                          }
-                                                        }
-                                                      ]
-                                                    }
+                                        "value": {}
+                                      }
+                                    },
+                                    {
+                                      "map_key": {
+                                        "range": ",0:0:0-0:0:0",
+                                        "key": {
+                                          "range": ",0:0:0-0:0:0",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": ",0:0:0-0:0:0",
+                                                "value": [
+                                                  {
+                                                    "string": "montana"
                                                   }
-                                                }
-                                              },
-                                              {
-                                                "map_key": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:3:106-14:4:134",
-                                                  "key": {
-                                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:3:106-12:11:114",
-                                                    "path": [
-                                                      {
-                                                        "unquoted_string": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:3:106-12:11:114",
-                                                          "value": [
-                                                            {
-                                                              "string": "missoula",
-                                                              "raw_string": "missoula"
-                                                            }
-                                                          ]
-                                                        }
-                                                      }
-                                                    ]
-                                                  },
-                                                  "primary": {},
-                                                  "value": {
-                                                    "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,12:13:116-14:4:134",
-                                                      "nodes": [
-                                                        {
-                                                          "map_key": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,13:4:122-13:11:129",
-                                                            "key": {
-                                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,13:4:122-13:11:129",
-                                                              "path": [
-                                                                {
-                                                                  "unquoted_string": {
-                                                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/recursive.d2,13:4:122-13:11:129",
-                                                                    "value": [
-                                                                      {
-                                                                        "string": "montana",
-                                                                        "raw_string": "montana"
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                }
-                                                              ]
-                                                            },
-                                                            "primary": {},
-                                                            "value": {}
-                                                          }
-                                                        }
-                                                      ]
-                                                    }
-                                                  }
-                                                }
+                                                ]
                                               }
-                                            ]
-                                          }
-                                        }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {},
+                                        "value": {}
                                       }
                                     }
                                   ]

@@ -331,21 +331,20 @@
         "name": "x",
         "isFolderOnly": false,
         "ast": {
-          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-11:1:121",
+          "range": ",0:0:0-1:0:0",
           "nodes": [
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-0:1:1",
+                "range": ",0:0:0-0:0:0",
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-0:1:1",
+                  "range": ",0:0:0-0:0:0",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-0:1:1",
+                        "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "x",
-                            "raw_string": "x"
+                            "string": "x"
                           }
                         ]
                       }
@@ -358,17 +357,16 @@
             },
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-11:1:121",
+                "range": ",0:0:0-0:0:0",
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-1:6:8",
+                  "range": ",0:0:0-0:0:0",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-1:6:8",
+                        "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "layers",
-                            "raw_string": "layers"
+                            "string": "layers"
                           }
                         ]
                       }
@@ -378,21 +376,20 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:8:10-11:1:121",
+                    "range": ",1:0:0-2:0:0",
                     "nodes": [
                       {
                         "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-10:3:119",
+                          "range": ",0:0:0-0:0:0",
                           "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-2:2:14",
+                            "range": ",0:0:0-0:0:0",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-2:2:14",
+                                  "range": ",0:0:0-0:0:0",
                                   "value": [
                                     {
-                                      "string": "x",
-                                      "raw_string": "x"
+                                      "string": "x"
                                     }
                                   ]
                                 }
@@ -402,21 +399,20 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:4:16-10:3:119",
+                              "range": ",1:0:0-2:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,3:3:21-3:5:23",
+                                    "range": ",0:0:0-0:0:0",
                                     "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,3:3:21-3:5:23",
+                                      "range": ",0:0:0-0:0:0",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,3:3:21-3:5:23",
+                                            "range": ",0:0:0-0:0:0",
                                             "value": [
                                               {
-                                                "string": "yo",
-                                                "raw_string": "yo"
+                                                "string": "yo"
                                               }
                                             ]
                                           }
@@ -429,17 +425,16 @@
                                 },
                                 {
                                   "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-9:5:115",
+                                    "range": ",0:0:0-0:0:0",
                                     "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-4:10:34",
+                                      "range": ",0:0:0-0:0:0",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-4:10:34",
+                                            "range": ",0:0:0-0:0:0",
                                             "value": [
                                               {
-                                                "string": "layers",
-                                                "raw_string": "layers"
+                                                "string": "layers"
                                               }
                                             ]
                                           }
@@ -449,21 +444,20 @@
                                     "primary": {},
                                     "value": {
                                       "map": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:12:36-9:5:115",
+                                        "range": ",1:0:0-2:0:0",
                                         "nodes": [
                                           {
                                             "map_key": {
-                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-8:7:109",
+                                              "range": ",0:0:0-0:0:0",
                                               "key": {
-                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-5:7:45",
+                                                "range": ",0:0:0-0:0:0",
                                                 "path": [
                                                   {
                                                     "unquoted_string": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-5:7:45",
+                                                      "range": ",0:0:0-0:0:0",
                                                       "value": [
                                                         {
-                                                          "string": "x",
-                                                          "raw_string": "x"
+                                                          "string": "x"
                                                         }
                                                       ]
                                                     }
@@ -473,32 +467,20 @@
                                               "primary": {},
                                               "value": {
                                                 "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:9:47-8:7:109",
+                                                  "range": ",1:0:0-2:0:0",
                                                   "nodes": [
                                                     {
                                                       "map_key": {
-                                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:8:57-6:32:81",
+                                                        "range": ",0:0:0-0:0:0",
                                                         "key": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:8:57-6:18:67",
+                                                          "range": ",0:0:0-0:0:0",
                                                           "path": [
                                                             {
                                                               "unquoted_string": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:8:57-6:13:62",
+                                                                "range": ",0:0:0-0:0:0",
                                                                 "value": [
                                                                   {
-                                                                    "string": "hello",
-                                                                    "raw_string": "hello"
-                                                                  }
-                                                                ]
-                                                              }
-                                                            },
-                                                            {
-                                                              "unquoted_string": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:14:63-6:18:67",
-                                                                "value": [
-                                                                  {
-                                                                    "string": "link",
-                                                                    "raw_string": "link"
+                                                                    "string": "hello"
                                                                   }
                                                                 ]
                                                               }
@@ -507,11 +489,39 @@
                                                         },
                                                         "primary": {},
                                                         "value": {
-                                                          "unquoted_string": {
-                                                            "range": ",0:0:0-0:0:0",
-                                                            "value": [
+                                                          "map": {
+                                                            "range": ",1:0:0-2:0:0",
+                                                            "nodes": [
                                                               {
-                                                                "string": "root.layers.x"
+                                                                "map_key": {
+                                                                  "range": ",0:0:0-0:0:0",
+                                                                  "key": {
+                                                                    "range": ",0:0:0-0:0:0",
+                                                                    "path": [
+                                                                      {
+                                                                        "unquoted_string": {
+                                                                          "range": ",0:0:0-0:0:0",
+                                                                          "value": [
+                                                                            {
+                                                                              "string": "link"
+                                                                            }
+                                                                          ]
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  "primary": {
+                                                                    "unquoted_string": {
+                                                                      "range": ",0:0:0-0:0:0",
+                                                                      "value": [
+                                                                        {
+                                                                          "string": "root.layers.x"
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "value": {}
+                                                                }
                                                               }
                                                             ]
                                                           }
@@ -520,28 +530,16 @@
                                                     },
                                                     {
                                                       "map_key": {
-                                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:90-7:19:101",
+                                                        "range": ",0:0:0-0:0:0",
                                                         "key": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:90-7:16:98",
+                                                          "range": ",0:0:0-0:0:0",
                                                           "path": [
                                                             {
                                                               "unquoted_string": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:90-7:11:93",
+                                                                "range": ",0:0:0-0:0:0",
                                                                 "value": [
                                                                   {
-                                                                    "string": "hey",
-                                                                    "raw_string": "hey"
-                                                                  }
-                                                                ]
-                                                              }
-                                                            },
-                                                            {
-                                                              "unquoted_string": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:12:94-7:16:98",
-                                                                "value": [
-                                                                  {
-                                                                    "string": "link",
-                                                                    "raw_string": "link"
+                                                                    "string": "hey"
                                                                   }
                                                                 ]
                                                               }
@@ -550,11 +548,39 @@
                                                         },
                                                         "primary": {},
                                                         "value": {
-                                                          "unquoted_string": {
-                                                            "range": ",0:0:0-0:0:0",
-                                                            "value": [
+                                                          "map": {
+                                                            "range": ",1:0:0-2:0:0",
+                                                            "nodes": [
                                                               {
-                                                                "string": "root.layers.x"
+                                                                "map_key": {
+                                                                  "range": ",0:0:0-0:0:0",
+                                                                  "key": {
+                                                                    "range": ",0:0:0-0:0:0",
+                                                                    "path": [
+                                                                      {
+                                                                        "unquoted_string": {
+                                                                          "range": ",0:0:0-0:0:0",
+                                                                          "value": [
+                                                                            {
+                                                                              "string": "link"
+                                                                            }
+                                                                          ]
+                                                                        }
+                                                                      }
+                                                                    ]
+                                                                  },
+                                                                  "primary": {
+                                                                    "unquoted_string": {
+                                                                      "range": ",0:0:0-0:0:0",
+                                                                      "value": [
+                                                                        {
+                                                                          "string": "root.layers.x"
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  },
+                                                                  "value": {}
+                                                                }
                                                               }
                                                             ]
                                                           }
@@ -659,21 +685,20 @@
             "name": "x",
             "isFolderOnly": false,
             "ast": {
-              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-11:1:121",
+              "range": ",0:0:0-1:0:0",
               "nodes": [
                 {
                   "map_key": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-0:1:1",
+                    "range": ",0:0:0-0:0:0",
                     "key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-0:1:1",
+                      "range": ",0:0:0-0:0:0",
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,0:0:0-0:1:1",
+                            "range": ",0:0:0-0:0:0",
                             "value": [
                               {
-                                "string": "x",
-                                "raw_string": "x"
+                                "string": "yo"
                               }
                             ]
                           }
@@ -686,17 +711,16 @@
                 },
                 {
                   "map_key": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-11:1:121",
+                    "range": ",0:0:0-0:0:0",
                     "key": {
-                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-1:6:8",
+                      "range": ",0:0:0-0:0:0",
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:0:2-1:6:8",
+                            "range": ",0:0:0-0:0:0",
                             "value": [
                               {
-                                "string": "layers",
-                                "raw_string": "layers"
+                                "string": "layers"
                               }
                             ]
                           }
@@ -706,21 +730,20 @@
                     "primary": {},
                     "value": {
                       "map": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,1:8:10-11:1:121",
+                        "range": ",1:0:0-2:0:0",
                         "nodes": [
                           {
                             "map_key": {
-                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-10:3:119",
+                              "range": ",0:0:0-0:0:0",
                               "key": {
-                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-2:2:14",
+                                "range": ",0:0:0-0:0:0",
                                 "path": [
                                   {
                                     "unquoted_string": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:1:13-2:2:14",
+                                      "range": ",0:0:0-0:0:0",
                                       "value": [
                                         {
-                                          "string": "x",
-                                          "raw_string": "x"
+                                          "string": "x"
                                         }
                                       ]
                                     }
@@ -730,44 +753,20 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,2:4:16-10:3:119",
+                                  "range": ",1:0:0-2:0:0",
                                   "nodes": [
                                     {
                                       "map_key": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,3:3:21-3:5:23",
+                                        "range": ",0:0:0-0:0:0",
                                         "key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,3:3:21-3:5:23",
+                                          "range": ",0:0:0-0:0:0",
                                           "path": [
                                             {
                                               "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,3:3:21-3:5:23",
+                                                "range": ",0:0:0-0:0:0",
                                                 "value": [
                                                   {
-                                                    "string": "yo",
-                                                    "raw_string": "yo"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "primary": {},
-                                        "value": {}
-                                      }
-                                    },
-                                    {
-                                      "map_key": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-9:5:115",
-                                        "key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-4:10:34",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:4:28-4:10:34",
-                                                "value": [
-                                                  {
-                                                    "string": "layers",
-                                                    "raw_string": "layers"
+                                                    "string": "hello"
                                                   }
                                                 ]
                                               }
@@ -777,121 +776,96 @@
                                         "primary": {},
                                         "value": {
                                           "map": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,4:12:36-9:5:115",
+                                            "range": ",1:0:0-2:0:0",
                                             "nodes": [
                                               {
                                                 "map_key": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-8:7:109",
+                                                  "range": ",0:0:0-0:0:0",
                                                   "key": {
-                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-5:7:45",
+                                                    "range": ",0:0:0-0:0:0",
                                                     "path": [
                                                       {
                                                         "unquoted_string": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:6:44-5:7:45",
+                                                          "range": ",0:0:0-0:0:0",
                                                           "value": [
                                                             {
-                                                              "string": "x",
-                                                              "raw_string": "x"
+                                                              "string": "link"
                                                             }
                                                           ]
                                                         }
                                                       }
                                                     ]
                                                   },
-                                                  "primary": {},
-                                                  "value": {
-                                                    "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,5:9:47-8:7:109",
-                                                      "nodes": [
+                                                  "primary": {
+                                                    "unquoted_string": {
+                                                      "range": ",0:0:0-0:0:0",
+                                                      "value": [
                                                         {
-                                                          "map_key": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:8:57-6:32:81",
-                                                            "key": {
-                                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:8:57-6:18:67",
-                                                              "path": [
-                                                                {
-                                                                  "unquoted_string": {
-                                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:8:57-6:13:62",
-                                                                    "value": [
-                                                                      {
-                                                                        "string": "hello",
-                                                                        "raw_string": "hello"
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                },
-                                                                {
-                                                                  "unquoted_string": {
-                                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,6:14:63-6:18:67",
-                                                                    "value": [
-                                                                      {
-                                                                        "string": "link",
-                                                                        "raw_string": "link"
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                }
-                                                              ]
-                                                            },
-                                                            "primary": {},
-                                                            "value": {
-                                                              "unquoted_string": {
-                                                                "range": ",0:0:0-0:0:0",
-                                                                "value": [
-                                                                  {
-                                                                    "string": "root.layers.x"
-                                                                  }
-                                                                ]
-                                                              }
-                                                            }
-                                                          }
-                                                        },
-                                                        {
-                                                          "map_key": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:90-7:19:101",
-                                                            "key": {
-                                                              "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:90-7:16:98",
-                                                              "path": [
-                                                                {
-                                                                  "unquoted_string": {
-                                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:8:90-7:11:93",
-                                                                    "value": [
-                                                                      {
-                                                                        "string": "hey",
-                                                                        "raw_string": "hey"
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                },
-                                                                {
-                                                                  "unquoted_string": {
-                                                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-underscore.d2,7:12:94-7:16:98",
-                                                                    "value": [
-                                                                      {
-                                                                        "string": "link",
-                                                                        "raw_string": "link"
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                }
-                                                              ]
-                                                            },
-                                                            "primary": {},
-                                                            "value": {
-                                                              "unquoted_string": {
-                                                                "range": ",0:0:0-0:0:0",
-                                                                "value": [
-                                                                  {
-                                                                    "string": "root.layers.x"
-                                                                  }
-                                                                ]
-                                                              }
-                                                            }
-                                                          }
+                                                          "string": "root.layers.x"
                                                         }
                                                       ]
                                                     }
+                                                  },
+                                                  "value": {}
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "map_key": {
+                                        "range": ",0:0:0-0:0:0",
+                                        "key": {
+                                          "range": ",0:0:0-0:0:0",
+                                          "path": [
+                                            {
+                                              "unquoted_string": {
+                                                "range": ",0:0:0-0:0:0",
+                                                "value": [
+                                                  {
+                                                    "string": "hey"
                                                   }
+                                                ]
+                                              }
+                                            }
+                                          ]
+                                        },
+                                        "primary": {},
+                                        "value": {
+                                          "map": {
+                                            "range": ",1:0:0-2:0:0",
+                                            "nodes": [
+                                              {
+                                                "map_key": {
+                                                  "range": ",0:0:0-0:0:0",
+                                                  "key": {
+                                                    "range": ",0:0:0-0:0:0",
+                                                    "path": [
+                                                      {
+                                                        "unquoted_string": {
+                                                          "range": ",0:0:0-0:0:0",
+                                                          "value": [
+                                                            {
+                                                              "string": "link"
+                                                            }
+                                                          ]
+                                                        }
+                                                      }
+                                                    ]
+                                                  },
+                                                  "primary": {
+                                                    "unquoted_string": {
+                                                      "range": ",0:0:0-0:0:0",
+                                                      "value": [
+                                                        {
+                                                          "string": "root.layers.x"
+                                                        }
+                                                      ]
+                                                    }
+                                                  },
+                                                  "value": {}
                                                 }
                                               }
                                             ]
