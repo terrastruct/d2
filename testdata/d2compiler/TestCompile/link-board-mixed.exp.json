@@ -420,7 +420,7 @@
         "name": "cat",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": ",1:0:0-2:0:0",
           "nodes": [
             {
               "map_key": {
@@ -433,401 +433,91 @@
                         "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "question"
+                            "string": "the cat"
                           }
                         ]
                       }
                     }
                   ]
                 },
+                "primary": {},
+                "value": {}
+              }
+            },
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "meeeowwww"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {}
+              }
+            },
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "edges": [
+                  {
+                    "range": ",0:0:0-0:0:0",
+                    "src": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "the cat"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "src_arrow": "",
+                    "dst": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "meeeowwww"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "dst_arrow": ">"
+                  }
+                ],
                 "primary": {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:10:10-0:30:30",
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:26:103-5:30:107",
                     "value": [
                       {
-                        "string": "How does the cat go?",
-                        "raw_string": "How does the cat go?"
+                        "string": "goes",
+                        "raw_string": "goes"
                       }
                     ]
                   }
                 },
-                "value": {
-                  "map": {
-                    "range": ",1:0:0-2:0:0",
-                    "nodes": [
-                      {
-                        "map_key": {
-                          "range": ",0:0:0-0:0:0",
-                          "key": {
-                            "range": ",0:0:0-0:0:0",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
-                                  "value": [
-                                    {
-                                      "string": "link"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {
-                            "unquoted_string": {
-                              "range": ",0:0:0-0:0:0",
-                              "value": [
-                                {
-                                  "string": "root.layers.cat"
-                                }
-                              ]
-                            }
-                          },
-                          "value": {}
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            },
-            {
-              "map_key": {
-                "range": ",0:0:0-0:0:0",
-                "key": {
-                  "range": ",0:0:0-0:0:0",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
-                        "value": [
-                          {
-                            "string": "layers"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "primary": {},
-                "value": {
-                  "map": {
-                    "range": ",1:0:0-2:0:0",
-                    "nodes": [
-                      {
-                        "map_key": {
-                          "range": ",0:0:0-0:0:0",
-                          "key": {
-                            "range": ",0:0:0-0:0:0",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
-                                  "value": [
-                                    {
-                                      "string": "cat"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "map": {
-                              "range": ",1:0:0-2:0:0",
-                              "nodes": [
-                                {
-                                  "map_key": {
-                                    "range": ",0:0:0-0:0:0",
-                                    "key": {
-                                      "range": ",0:0:0-0:0:0",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
-                                            "value": [
-                                              {
-                                                "string": "the cat"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "primary": {},
-                                    "value": {}
-                                  }
-                                },
-                                {
-                                  "map_key": {
-                                    "range": ",0:0:0-0:0:0",
-                                    "key": {
-                                      "range": ",0:0:0-0:0:0",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
-                                            "value": [
-                                              {
-                                                "string": "meeeowwww"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "primary": {},
-                                    "value": {}
-                                  }
-                                },
-                                {
-                                  "map_key": {
-                                    "range": ",0:0:0-0:0:0",
-                                    "edges": [
-                                      {
-                                        "range": ",0:0:0-0:0:0",
-                                        "src": {
-                                          "range": ",0:0:0-0:0:0",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": ",0:0:0-0:0:0",
-                                                "value": [
-                                                  {
-                                                    "string": "the cat"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "src_arrow": "",
-                                        "dst": {
-                                          "range": ",0:0:0-0:0:0",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": ",0:0:0-0:0:0",
-                                                "value": [
-                                                  {
-                                                    "string": "meeeowwww"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "dst_arrow": ">"
-                                      }
-                                    ],
-                                    "primary": {
-                                      "unquoted_string": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:26:103-5:30:107",
-                                        "value": [
-                                          {
-                                            "string": "goes",
-                                            "raw_string": "goes"
-                                          }
-                                        ]
-                                      }
-                                    },
-                                    "value": {}
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            },
-            {
-              "map_key": {
-                "range": ",0:0:0-0:0:0",
-                "key": {
-                  "range": ",0:0:0-0:0:0",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
-                        "value": [
-                          {
-                            "string": "scenarios"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "primary": {},
-                "value": {
-                  "map": {
-                    "range": ",1:0:0-2:0:0",
-                    "nodes": [
-                      {
-                        "map_key": {
-                          "range": ",0:0:0-0:0:0",
-                          "key": {
-                            "range": ",0:0:0-0:0:0",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
-                                  "value": [
-                                    {
-                                      "string": "green"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "map": {
-                              "range": ",1:0:0-2:0:0",
-                              "nodes": [
-                                {
-                                  "map_key": {
-                                    "range": ",0:0:0-0:0:0",
-                                    "key": {
-                                      "range": ",0:0:0-0:0:0",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
-                                            "value": [
-                                              {
-                                                "string": "question"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "primary": {
-                                      "unquoted_string": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:10:10-0:30:30",
-                                        "value": [
-                                          {
-                                            "string": "How does the cat go?",
-                                            "raw_string": "How does the cat go?"
-                                          }
-                                        ]
-                                      }
-                                    },
-                                    "value": {
-                                      "map": {
-                                        "range": ",1:0:0-2:0:0",
-                                        "nodes": [
-                                          {
-                                            "map_key": {
-                                              "range": ",0:0:0-0:0:0",
-                                              "key": {
-                                                "range": ",0:0:0-0:0:0",
-                                                "path": [
-                                                  {
-                                                    "unquoted_string": {
-                                                      "range": ",0:0:0-0:0:0",
-                                                      "value": [
-                                                        {
-                                                          "string": "link"
-                                                        }
-                                                      ]
-                                                    }
-                                                  }
-                                                ]
-                                              },
-                                              "primary": {
-                                                "unquoted_string": {
-                                                  "range": ",0:0:0-0:0:0",
-                                                  "value": [
-                                                    {
-                                                      "string": "root.layers.cat"
-                                                    }
-                                                  ]
-                                                }
-                                              },
-                                              "value": {}
-                                            }
-                                          },
-                                          {
-                                            "map_key": {
-                                              "range": ",0:0:0-0:0:0",
-                                              "key": {
-                                                "range": ",0:0:0-0:0:0",
-                                                "path": [
-                                                  {
-                                                    "unquoted_string": {
-                                                      "range": ",0:0:0-0:0:0",
-                                                      "value": [
-                                                        {
-                                                          "string": "style"
-                                                        }
-                                                      ]
-                                                    }
-                                                  }
-                                                ]
-                                              },
-                                              "primary": {},
-                                              "value": {
-                                                "map": {
-                                                  "range": ",1:0:0-2:0:0",
-                                                  "nodes": [
-                                                    {
-                                                      "map_key": {
-                                                        "range": ",0:0:0-0:0:0",
-                                                        "key": {
-                                                          "range": ",0:0:0-0:0:0",
-                                                          "path": [
-                                                            {
-                                                              "unquoted_string": {
-                                                                "range": ",0:0:0-0:0:0",
-                                                                "value": [
-                                                                  {
-                                                                    "string": "fill"
-                                                                  }
-                                                                ]
-                                                              }
-                                                            }
-                                                          ]
-                                                        },
-                                                        "primary": {
-                                                          "unquoted_string": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:25:164-11:30:169",
-                                                            "value": [
-                                                              {
-                                                                "string": "green",
-                                                                "raw_string": "green"
-                                                              }
-                                                            ]
-                                                          }
-                                                        },
-                                                        "value": {}
-                                                      }
-                                                    }
-                                                  ]
-                                                }
-                                              }
-                                            }
-                                          }
-                                        ]
-                                      }
-                                    }
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
+                "value": {}
               }
             }
           ]
@@ -986,7 +676,7 @@
         "name": "green",
         "isFolderOnly": false,
         "ast": {
-          "range": ",0:0:0-1:0:0",
+          "range": ",1:0:0-2:0:0",
           "nodes": [
             {
               "map_key": {
@@ -1051,35 +741,7 @@
                           },
                           "value": {}
                         }
-                      }
-                    ]
-                  }
-                }
-              }
-            },
-            {
-              "map_key": {
-                "range": ",0:0:0-0:0:0",
-                "key": {
-                  "range": ",0:0:0-0:0:0",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
-                        "value": [
-                          {
-                            "string": "layers"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "primary": {},
-                "value": {
-                  "map": {
-                    "range": ",1:0:0-2:0:0",
-                    "nodes": [
+                      },
                       {
                         "map_key": {
                           "range": ",0:0:0-0:0:0",
@@ -1091,7 +753,7 @@
                                   "range": ",0:0:0-0:0:0",
                                   "value": [
                                     {
-                                      "string": "cat"
+                                      "string": "style"
                                     }
                                   ]
                                 }
@@ -1114,161 +776,7 @@
                                             "range": ",0:0:0-0:0:0",
                                             "value": [
                                               {
-                                                "string": "the cat"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "primary": {},
-                                    "value": {}
-                                  }
-                                },
-                                {
-                                  "map_key": {
-                                    "range": ",0:0:0-0:0:0",
-                                    "key": {
-                                      "range": ",0:0:0-0:0:0",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
-                                            "value": [
-                                              {
-                                                "string": "meeeowwww"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "primary": {},
-                                    "value": {}
-                                  }
-                                },
-                                {
-                                  "map_key": {
-                                    "range": ",0:0:0-0:0:0",
-                                    "edges": [
-                                      {
-                                        "range": ",0:0:0-0:0:0",
-                                        "src": {
-                                          "range": ",0:0:0-0:0:0",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": ",0:0:0-0:0:0",
-                                                "value": [
-                                                  {
-                                                    "string": "the cat"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "src_arrow": "",
-                                        "dst": {
-                                          "range": ",0:0:0-0:0:0",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": ",0:0:0-0:0:0",
-                                                "value": [
-                                                  {
-                                                    "string": "meeeowwww"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "dst_arrow": ">"
-                                      }
-                                    ],
-                                    "primary": {
-                                      "unquoted_string": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:26:103-5:30:107",
-                                        "value": [
-                                          {
-                                            "string": "goes",
-                                            "raw_string": "goes"
-                                          }
-                                        ]
-                                      }
-                                    },
-                                    "value": {}
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            },
-            {
-              "map_key": {
-                "range": ",0:0:0-0:0:0",
-                "key": {
-                  "range": ",0:0:0-0:0:0",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
-                        "value": [
-                          {
-                            "string": "scenarios"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "primary": {},
-                "value": {
-                  "map": {
-                    "range": ",1:0:0-2:0:0",
-                    "nodes": [
-                      {
-                        "map_key": {
-                          "range": ",0:0:0-0:0:0",
-                          "key": {
-                            "range": ",0:0:0-0:0:0",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": ",0:0:0-0:0:0",
-                                  "value": [
-                                    {
-                                      "string": "green"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "map": {
-                              "range": ",1:0:0-2:0:0",
-                              "nodes": [
-                                {
-                                  "map_key": {
-                                    "range": ",0:0:0-0:0:0",
-                                    "key": {
-                                      "range": ",0:0:0-0:0:0",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": ",0:0:0-0:0:0",
-                                            "value": [
-                                              {
-                                                "string": "question"
+                                                "string": "fill"
                                               }
                                             ]
                                           }
@@ -1277,113 +785,16 @@
                                     },
                                     "primary": {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:10:10-0:30:30",
+                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:25:164-11:30:169",
                                         "value": [
                                           {
-                                            "string": "How does the cat go?",
-                                            "raw_string": "How does the cat go?"
+                                            "string": "green",
+                                            "raw_string": "green"
                                           }
                                         ]
                                       }
                                     },
-                                    "value": {
-                                      "map": {
-                                        "range": ",1:0:0-2:0:0",
-                                        "nodes": [
-                                          {
-                                            "map_key": {
-                                              "range": ",0:0:0-0:0:0",
-                                              "key": {
-                                                "range": ",0:0:0-0:0:0",
-                                                "path": [
-                                                  {
-                                                    "unquoted_string": {
-                                                      "range": ",0:0:0-0:0:0",
-                                                      "value": [
-                                                        {
-                                                          "string": "link"
-                                                        }
-                                                      ]
-                                                    }
-                                                  }
-                                                ]
-                                              },
-                                              "primary": {
-                                                "unquoted_string": {
-                                                  "range": ",0:0:0-0:0:0",
-                                                  "value": [
-                                                    {
-                                                      "string": "root.layers.cat"
-                                                    }
-                                                  ]
-                                                }
-                                              },
-                                              "value": {}
-                                            }
-                                          },
-                                          {
-                                            "map_key": {
-                                              "range": ",0:0:0-0:0:0",
-                                              "key": {
-                                                "range": ",0:0:0-0:0:0",
-                                                "path": [
-                                                  {
-                                                    "unquoted_string": {
-                                                      "range": ",0:0:0-0:0:0",
-                                                      "value": [
-                                                        {
-                                                          "string": "style"
-                                                        }
-                                                      ]
-                                                    }
-                                                  }
-                                                ]
-                                              },
-                                              "primary": {},
-                                              "value": {
-                                                "map": {
-                                                  "range": ",1:0:0-2:0:0",
-                                                  "nodes": [
-                                                    {
-                                                      "map_key": {
-                                                        "range": ",0:0:0-0:0:0",
-                                                        "key": {
-                                                          "range": ",0:0:0-0:0:0",
-                                                          "path": [
-                                                            {
-                                                              "unquoted_string": {
-                                                                "range": ",0:0:0-0:0:0",
-                                                                "value": [
-                                                                  {
-                                                                    "string": "fill"
-                                                                  }
-                                                                ]
-                                                              }
-                                                            }
-                                                          ]
-                                                        },
-                                                        "primary": {
-                                                          "unquoted_string": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:25:164-11:30:169",
-                                                            "value": [
-                                                              {
-                                                                "string": "green",
-                                                                "raw_string": "green"
-                                                              }
-                                                            ]
-                                                          }
-                                                        },
-                                                        "value": {}
-                                                      }
-                                                    }
-                                                  ]
-                                                }
-                                              }
-                                            }
-                                          }
-                                        ]
-                                      }
-                                    }
+                                    "value": {}
                                   }
                                 }
                               ]
