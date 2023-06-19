@@ -18,6 +18,7 @@ import (
 
 const TAB_SIZE = 4
 const SIZELESS_FONT_SIZE = 0
+const CODE_LINE_HEIGHT = 1.3
 
 // ASCII is a set of all ASCII runes. These runes are codepoints from 32 to 127 inclusive.
 var ASCII []rune

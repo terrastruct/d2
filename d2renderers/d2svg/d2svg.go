@@ -1272,9 +1272,9 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 				padding := float64(targetShape.FontSize) / 2.
 				fmt.Fprintf(writer, `<g transform="translate(%f %f)">`, padding, padding)
 
-				lineHeight := 1.3
+				lineHeight := textmeasure.CODE_LINE_HEIGHT
 				for index, tokens := range chroma.SplitTokensIntoLines(iterator.Tokens()) {
-					fmt.Fprintf(writer, "<text class=\"text-mono\" x=\"0\" y=\"%fem\">", 1+lineHeight*float64(index))
+					fmt.Fprintf(writer, "<text class=\"text-mono\" x=\"0\" y=\"%fem\">", 1+float64(index)*lineHeight)
 					for _, token := range tokens {
 						text := svgEscaper.Replace(token.String())
 						attr := styleAttr(svgStyles, token.Type)
