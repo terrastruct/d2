@@ -481,6 +481,56 @@ layers: {
 }
 `,
 		},
+		{
+			name: "scenarios-basic",
+
+			text: `a
+b
+scenarios: {
+  x: {
+    a
+  }
+}
+`,
+			key:       `c`,
+			boardPath: []string{"root", "scenarios", "x"},
+
+			expKey: `c`,
+			exp: `a
+b
+scenarios: {
+  x: {
+    a
+    c
+  }
+}
+`,
+		},
+		{
+			name: "steps-basic",
+
+			text: `a
+d
+steps: {
+  x: {
+    b
+  }
+}
+`,
+			key:       `c`,
+			boardPath: []string{"root", "steps", "x"},
+
+			expKey: `c`,
+			exp: `a
+d
+steps: {
+  x: {
+    b
+    c
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
