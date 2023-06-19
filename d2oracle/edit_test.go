@@ -553,6 +553,54 @@ scenarios: {
 `,
 		},
 		{
+			name: "scenarios-edge",
+
+			text: `a
+b
+scenarios: {
+  x: {
+    a
+  }
+}
+`,
+			key:       `a -> b`,
+			boardPath: []string{"root", "scenarios", "x"},
+
+			expKey: `(a -> b)[0]`,
+			exp: `a
+b
+scenarios: {
+  x: {
+    a
+    a -> b
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-edge-inherited",
+
+			text: `a -> b
+scenarios: {
+  x: {
+    a
+  }
+}
+`,
+			key:       `a -> b`,
+			boardPath: []string{"root", "scenarios", "x"},
+
+			expKey: `(a -> b)[1]`,
+			exp: `a -> b
+scenarios: {
+  x: {
+    a
+    a -> b
+  }
+}
+`,
+		},
+		{
 			name: "steps-basic",
 
 			text: `a
@@ -573,6 +621,31 @@ steps: {
   x: {
     b
     c
+  }
+}
+`,
+		},
+		{
+			name: "steps-edge",
+
+			text: `a
+d
+steps: {
+  x: {
+    b
+  }
+}
+`,
+			key:       `d -> b`,
+			boardPath: []string{"root", "steps", "x"},
+
+			expKey: `(d -> b)[0]`,
+			exp: `a
+d
+steps: {
+  x: {
+    b
+    d -> b
   }
 }
 `,
