@@ -111,6 +111,7 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 		g2 := d2graph.NewGraph()
 		g2.Parent = g
 		g2.AST = f.Map().AST().(*d2ast.Map)
+		g2.BaseAST = f.Map().BaseAST().(*d2ast.Map)
 		c.compileBoard(g2, f.Map())
 		g2.Name = f.Name
 		switch fieldName {

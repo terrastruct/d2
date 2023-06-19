@@ -153,6 +153,9 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 		return
 	}
+	if f.Inherited {
+		f.Inherited = false
+	}
 
 	if refctx.Key.Primary.Unbox() != nil {
 		f.Primary_ = &Scalar{

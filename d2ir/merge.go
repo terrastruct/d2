@@ -4,7 +4,9 @@ func OverlayMap(base, overlay *Map) {
 	for _, of := range overlay.Fields {
 		bf := base.GetField(of.Name)
 		if bf == nil {
-			base.Fields = append(base.Fields, of.Copy(base).(*Field))
+			f := of.Copy(base).(*Field)
+			f.Inherited = true
+			base.Fields = append(base.Fields, f)
 			continue
 		}
 		OverlayField(bf, of)
@@ -13,7 +15,9 @@ func OverlayMap(base, overlay *Map) {
 	for _, oe := range overlay.Edges {
 		bea := base.GetEdges(oe.ID)
 		if len(bea) == 0 {
-			base.Edges = append(base.Edges, oe.Copy(base).(*Edge))
+			e := oe.Copy(base).(*Edge)
+			e.Inherited = true
+			base.Edges = append(base.Edges, e)
 			continue
 		}
 		be := bea[0]

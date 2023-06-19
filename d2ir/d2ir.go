@@ -196,7 +196,25 @@ func (m *Map) CopyBase(newParent Node) *Map {
 	layers := m.DeleteField("layers")
 	scenarios := m.DeleteField("scenarios")
 	steps := m.DeleteField("steps")
+
+	had := make(map[string]struct{})
+	if parentM, ok := newParent.(*Map); ok {
+		for _, f := range parentM.Fields {
+			had[f.Name] = struct{}{}
+		}
+	}
+	// TODO pretty sure you don't need one for edges.
+	// Maybe if both boards had a (x -> y)[0]?
+
 	m2 := m.Copy(newParent).(*Map)
+	for i := range m2.Fields {
+		if _, ok := had[m2.Fields[i].Name]; !ok {
+			m2.Fields[i].Inherited = true
+		}
+	}
+	for i := range m2.Edges {
+		m2.Edges[i].Inherited = true
+	}
 	if layers != nil {
 		m.Fields = append(m.Fields, layers)
 	}
@@ -277,6 +295,9 @@ type Field struct {
 	Composite Composite `json:"composite,omitempty"`
 
 	References []*FieldReference `json:"references,omitempty"`
+
+	// Whether it's from a parent board or imported
+	Inherited bool `json:"inherited"`
 }
 
 func (f *Field) Copy(newParent Node) Node {
@@ -431,6 +452,8 @@ type Edge struct {
 	Map_     *Map    `json:"map,omitempty"`
 
 	References []*EdgeReference `json:"references,omitempty"`
+
+	Inherited bool `json:"inherited"`
 }
 
 func (e *Edge) Copy(newParent Node) Node {
@@ -913,6 +936,25 @@ func (a *Array) AST() d2ast.Node {
 		astArray.Nodes = append(astArray.Nodes, d2ast.MakeArrayNodeBox(av.AST().(d2ast.ArrayNode)))
 	}
 	return astArray
+}
+
+func (m *Map) BaseAST() d2ast.Node {
+	if m == nil {
+		return nil
+	}
+	astMap := &d2ast.Map{}
+	astMap.Range = d2ast.MakeRange(",0:0:0-1:0:0")
+	for _, f := range m.Fields {
+		if !f.Inherited {
+			astMap.Nodes = append(astMap.Nodes, d2ast.MakeMapNodeBox(f.AST().(d2ast.MapNode)))
+		}
+	}
+	for _, e := range m.Edges {
+		if !e.Inherited {
+			astMap.Nodes = append(astMap.Nodes, d2ast.MakeMapNodeBox(e.AST().(d2ast.MapNode)))
+		}
+	}
+	return astMap
 }
 
 func (m *Map) AST() d2ast.Node {
