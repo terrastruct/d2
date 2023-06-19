@@ -214,6 +214,14 @@ func (t *Ruler) scaleUnicode(w float64, font d2fonts.Font, s string) float64 {
 	return w
 }
 
+func (t *Ruler) MeasureMono(font d2fonts.Font, s string) (width, height int) {
+	originalBoundsWithDot := t.boundsWithDot
+	t.boundsWithDot = true
+	width, height = t.Measure(font, s)
+	t.boundsWithDot = originalBoundsWithDot
+	return width, height
+}
+
 func (t *Ruler) Measure(font d2fonts.Font, s string) (width, height int) {
 	w, h := t.MeasurePrecise(font, s)
 	w = t.scaleUnicode(w, font, s)

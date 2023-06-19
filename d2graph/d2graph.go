@@ -903,16 +903,21 @@ func (obj *Object) GetLabelSize(mtexts []*d2target.MText, ruler *textmeasure.Rul
 
 func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.Ruler, fontFamily *d2fonts.FontFamily, labelDims d2target.TextDimensions, withLabelPadding bool) (*d2target.TextDimensions, error) {
 	dims := d2target.TextDimensions{}
+	dslShape := strings.ToLower(obj.Shape.Value)
 
-	if withLabelPadding {
+	if dslShape == d2target.ShapeCode {
+		fontSize := obj.Text().FontSize
+		// 0.5em padding on each side
+		labelDims.Width += fontSize
+		labelDims.Height += fontSize
+	} else if withLabelPadding {
 		labelDims.Width += INNER_LABEL_PADDING
 		labelDims.Height += INNER_LABEL_PADDING
 	}
 
-	switch strings.ToLower(obj.Shape.Value) {
+	switch dslShape {
 	default:
 		return d2target.NewTextDimensions(labelDims.Width, labelDims.Height), nil
-
 	case d2target.ShapeText:
 		w := labelDims.Width
 		if w < MIN_SHAPE_SIZE {
@@ -1308,7 +1313,10 @@ func GetTextDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2
 		var w int
 		var h int
 		if t.Language != "" {
-			w, h = ruler.Measure(d2fonts.SourceCodePro.Font(t.FontSize, d2fonts.FONT_STYLE_REGULAR), t.Text)
+			originalLineHeight := ruler.LineHeightFactor
+			ruler.LineHeightFactor = 1.3
+			w, h = ruler.MeasureMono(d2fonts.SourceCodePro.Font(t.FontSize, d2fonts.FONT_STYLE_REGULAR), t.Text)
+			ruler.LineHeightFactor = originalLineHeight
 
 			// count empty leading and trailing lines since ruler will not be able to measure it
 			lines := strings.Split(t.Text, "\n")
@@ -1329,10 +1337,6 @@ func GetTextDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler, t *d2
 				}
 			}
 			h += t.FontSize * (leadingLines + trailingLines)
-
-			// padding
-			w += 12
-			h += 12
 		} else {
 			style := d2fonts.FONT_STYLE_REGULAR
 			if t.IsBold {
