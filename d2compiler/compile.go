@@ -111,7 +111,7 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 		g2 := d2graph.NewGraph()
 		g2.Parent = g
 		g2.AST = f.Map().AST().(*d2ast.Map)
-		g2.BaseAST = f.Map().BaseAST().(*d2ast.Map)
+		g2.BaseAST = findFieldAST(g.AST, f)
 		c.compileBoard(g2, f.Map())
 		g2.Name = f.Name
 		switch fieldName {
@@ -123,6 +123,48 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 			g.Steps = append(g.Steps, g2)
 		}
 	}
+}
+
+func findFieldAST(ast *d2ast.Map, f *d2ir.Field) *d2ast.Map {
+	path := []string{}
+	var curr *d2ir.Field = f
+	for {
+		path = append([]string{curr.Name}, path...)
+		boardKind := d2ir.NodeBoardKind(curr)
+		if boardKind == "" {
+			break
+		}
+		curr = d2ir.ParentField(curr)
+	}
+
+	currAST := ast
+	for len(path) > 0 {
+		head := path[0]
+		found := false
+		for _, n := range currAST.Nodes {
+			if n.MapKey == nil {
+				continue
+			}
+			if n.MapKey.Key == nil {
+				continue
+			}
+			if len(n.MapKey.Key.Path) != 1 {
+				continue
+			}
+			head2 := n.MapKey.Key.Path[0].Unbox().ScalarString()
+			if head == head2 {
+				currAST = n.MapKey.Value.Map
+				found = true
+				break
+			}
+		}
+		if !found {
+			return nil
+		}
+		path = path[1:]
+	}
+
+	return currAST
 }
 
 type compiler struct {

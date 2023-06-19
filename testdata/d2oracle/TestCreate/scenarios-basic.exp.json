@@ -349,20 +349,21 @@
           ]
         },
         "baseAST": {
-          "range": ",0:0:0-1:0:0",
+          "range": "d2/testdata/d2oracle/TestCreate/scenarios-basic.d2,3:5:22-6:3:39",
           "nodes": [
             {
               "map_key": {
-                "range": ",0:0:0-0:0:0",
+                "range": "d2/testdata/d2oracle/TestCreate/scenarios-basic.d2,4:4:28-4:5:29",
                 "key": {
-                  "range": ",0:0:0-0:0:0",
+                  "range": "d2/testdata/d2oracle/TestCreate/scenarios-basic.d2,4:4:28-4:5:29",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestCreate/scenarios-basic.d2,4:4:28-4:5:29",
                         "value": [
                           {
-                            "string": "a"
+                            "string": "a",
+                            "raw_string": "a"
                           }
                         ]
                       }
@@ -375,16 +376,17 @@
             },
             {
               "map_key": {
-                "range": ",0:0:0-0:0:0",
+                "range": "d2/testdata/d2oracle/TestCreate/scenarios-basic.d2,5:4:34-5:5:35",
                 "key": {
-                  "range": ",0:0:0-0:0:0",
+                  "range": "d2/testdata/d2oracle/TestCreate/scenarios-basic.d2,5:4:34-5:5:35",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": ",0:0:0-0:0:0",
+                        "range": "d2/testdata/d2oracle/TestCreate/scenarios-basic.d2,5:4:34-5:5:35",
                         "value": [
                           {
-                            "string": "c"
+                            "string": "c",
+                            "raw_string": "c"
                           }
                         ]
                       }

@@ -482,6 +482,52 @@ layers: {
 `,
 		},
 		{
+			name: "layers-edge",
+
+			text: `a
+layers: {
+  x: {
+    a
+  }
+}
+`,
+			key:       `a -> b`,
+			boardPath: []string{"root", "layers", "x"},
+
+			expKey: `(a -> b)[0]`,
+			exp: `a
+layers: {
+  x: {
+    a
+    a -> b
+  }
+}
+`,
+		},
+		{
+			name: "layers-edge-duplicate",
+
+			text: `a -> b
+layers: {
+  x: {
+    a -> b
+  }
+}
+`,
+			key:       `a -> b`,
+			boardPath: []string{"root", "layers", "x"},
+
+			expKey: `(a -> b)[1]`,
+			exp: `a -> b
+layers: {
+  x: {
+    a -> b
+    a -> b
+  }
+}
+`,
+		},
+		{
 			name: "scenarios-basic",
 
 			text: `a
