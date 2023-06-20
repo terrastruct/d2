@@ -331,10 +331,11 @@ func (p *printer) _map(m *d2ast.Map) {
 	// draw board nodes
 	for i := 0; i < len(boards); i++ {
 		n := boards[i].Unbox()
-		// if this board is the very first line of the file, don't add an extra indent
+		// if this board is the very first line of the file, don't add an extra newline
 		if n.GetRange().Start.Line != 0 {
 			p.newline()
 		}
+		// if scope only has boards, don't newline the first board
 		if i != 0 || len(m.Nodes) > len(boards) {
 			p.newline()
 		}
