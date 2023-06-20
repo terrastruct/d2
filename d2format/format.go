@@ -260,7 +260,7 @@ func (p *printer) _map(m *d2ast.Map) {
 	stepNodes := []d2ast.MapNodeBox{}
 	for i := 0; i < len(m.Nodes); i++ {
 		node := m.Nodes[i]
-		if node.MapKey != nil && node.MapKey.Key != nil {
+		if node.IsBoardNode() {
 			key := node.MapKey.Key
 			switch key.Path[0].Unbox().ScalarString() {
 			case "layers":
@@ -269,8 +269,6 @@ func (p *printer) _map(m *d2ast.Map) {
 				scenarioNodes = append(scenarioNodes, node)
 			case "steps":
 				stepNodes = append(stepNodes, node)
-			default:
-				nodes = append(nodes, node)
 			}
 		} else {
 			nodes = append(nodes, node)
@@ -309,7 +307,7 @@ func (p *printer) _map(m *d2ast.Map) {
 			p.sb.WriteString("; ")
 		}
 
-		if m.IsFileMap() && nb.IsSpecialBoard() {
+		if m.IsFileMap() && nb.IsBoardNode() {
 			currString := p.sb.String()
 			// if the the character before the special board is not a newline, we add one
 			if currString[len(currString)-2:] != "\n\n" {

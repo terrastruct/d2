@@ -760,8 +760,8 @@ func (mb MapNodeBox) Unbox() MapNode {
 	}
 }
 
-func (mb MapNodeBox) IsSpecialBoard() bool {
-	if mb.MapKey == nil || mb.MapKey.Key == nil {
+func (mb MapNodeBox) IsBoardNode() bool {
+	if mb.MapKey == nil || mb.MapKey.Key == nil || len(mb.MapKey.Key.Path) == 0 {
 		return false
 	}
 	switch mb.MapKey.Key.Path[0].Unbox().ScalarString() {
