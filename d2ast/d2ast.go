@@ -795,7 +795,7 @@ func (mb MapNodeBox) Unbox() MapNode {
 }
 
 func (mb MapNodeBox) IsBoardNode() bool {
-	if mb.MapKey == nil || mb.MapKey.Key == nil || len(mb.MapKey.Key.Path) == 0 {
+	if mb.MapKey == nil || mb.MapKey.Key == nil || len(mb.MapKey.Key.Path) != 1 {
 		return false
 	}
 	switch mb.MapKey.Key.Path[0].Unbox().ScalarString() {
