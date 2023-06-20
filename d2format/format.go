@@ -335,7 +335,7 @@ func (p *printer) _map(m *d2ast.Map) {
 		if n.GetRange().Start.Line != 0 {
 			p.newline()
 		}
-		if len(m.Nodes) > len(boards) {
+		if i != 0 || len(m.Nodes) > len(boards) {
 			p.newline()
 		}
 		p.node(n)

@@ -670,6 +670,9 @@ x: @"x/../file"
       }
     }
   }
+	steps: {
+		a
+	}
 }
 `,
 			exp: `layers: {
@@ -681,6 +684,10 @@ x: @"x/../file"
         x
       }
     }
+  }
+  
+  steps: {
+    a
   }
 }
 `,
@@ -740,6 +747,9 @@ only-layers: {
 		X
 		Y
 	}
+	layers: {
+		Z
+	}
 }
 `,
 			exp: `a
@@ -752,6 +762,10 @@ only-layers: {
   layers: {
     X
     Y
+  }
+  
+  layers: {
+    Z
   }
 }
 
