@@ -427,6 +427,108 @@ no leading: |python
 `,
 		},
 		{
+			name: "code_leading_newlines",
+			script: `
+5 leading: |python
+
+
+
+
+
+  def hello():
+
+    print "world"
+|
+8 total: |python
+  # 1 leading
+  # 2 leading
+  # 3 leading
+  # 4 leading
+  # 5 leading
+  def hello():
+
+    print "world"
+|
+1 leading: |python
+
+  def hello():
+
+    print "world"
+|
+4 total: |python
+  # 1 leading
+  def hello():
+
+    print "world"
+|
+2 leading: |python
+
+
+  def hello():
+
+    print "world"
+|
+5 total: |python
+  # 1 leading
+  # 2 leading
+  def hello():
+
+    print "world"
+|
+`,
+		},
+		{
+			name: "code_trailing_newlines",
+			script: `
+5 trailing: |python
+  def hello():
+
+    print "world"
+
+
+
+
+
+|
+8 total: |python
+  def hello():
+
+    print "world"
+  # 1 trailing
+  # 2 trailing
+  # 3 trailing
+  # 4 trailing
+  # 5 trailing
+|
+1 trailing: |python
+  def hello():
+
+    print "world"
+
+|
+4 total: |python
+  def hello():
+
+    print "world"
+  # 1 trailing
+|
+2 trailing: |python
+  def hello():
+
+    print "world"
+
+
+|
+5 total: |python
+  def hello():
+
+    print "world"
+  # 1 trailing
+  # 2 trailing
+|
+`,
+		},
+		{
 			name: "md_h1_li_li",
 			script: mdTestScript(`
 # hey

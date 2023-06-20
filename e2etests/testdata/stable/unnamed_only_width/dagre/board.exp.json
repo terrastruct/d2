@@ -270,7 +270,7 @@
         "y": 754
       },
       "width": 512,
-      "height": 65,
+      "height": 78,
       "opacity": 1,
       "strokeDash": 0,
       "strokeWidth": 2,
@@ -297,8 +297,8 @@
       "italic": false,
       "bold": true,
       "underline": false,
-      "labelWidth": 191,
-      "labelHeight": 65,
+      "labelWidth": 183,
+      "labelHeight": 62,
       "zIndex": 0,
       "level": 1
     },
@@ -307,7 +307,7 @@
       "type": "package",
       "pos": {
         "x": 0,
-        "y": 919
+        "y": 932
       },
       "width": 512,
       "height": 100,
@@ -347,7 +347,7 @@
       "type": "rectangle",
       "pos": {
         "x": 206,
-        "y": 1119
+        "y": 1132
       },
       "width": 100,
       "height": 100,
@@ -504,19 +504,19 @@
       "route": [
         {
           "x": 256,
-          "y": 819
+          "y": 832
         },
         {
           "x": 256,
-          "y": 859
+          "y": 872
         },
         {
           "x": 256,
-          "y": 883
+          "y": 896
         },
         {
           "x": 256,
-          "y": 939
+          "y": 952
         }
       ],
       "isCurve": true,
@@ -551,19 +551,19 @@
       "route": [
         {
           "x": 256,
-          "y": 1019
+          "y": 1032
         },
         {
           "x": 256,
-          "y": 1059
+          "y": 1072
         },
         {
           "x": 256,
-          "y": 1079
+          "y": 1092
         },
         {
           "x": 256,
-          "y": 1119
+          "y": 1132
         }
       ],
       "isCurve": true,

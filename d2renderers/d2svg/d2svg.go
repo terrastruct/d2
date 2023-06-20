@@ -1263,14 +1263,18 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 				rectEl.Height = float64(targetShape.Height)
 				rectEl.Stroke = targetShape.Stroke
 				rectEl.ClassName = "shape"
-				rectEl.Style = fmt.Sprintf(`fill:%s`, style.Get(chroma.Background).Background.String())
+				rectEl.Style = fmt.Sprintf(`fill:%s;stroke-width:%d;`,
+					style.Get(chroma.Background).Background.String(),
+					targetShape.StrokeWidth,
+				)
 				fmt.Fprint(writer, rectEl.Render())
-				// Padding
-				fmt.Fprint(writer, `<g transform="translate(6 6)">`)
+				// Padding = 0.5em
+				padding := float64(targetShape.FontSize) / 2.
+				fmt.Fprintf(writer, `<g transform="translate(%f %f)">`, padding, padding)
 
+				lineHeight := textmeasure.CODE_LINE_HEIGHT
 				for index, tokens := range chroma.SplitTokensIntoLines(iterator.Tokens()) {
-					// TODO mono font looks better with 1.2 em (use px equivalent), but textmeasure needs to account for it. Not obvious how that should be done
-					fmt.Fprintf(writer, "<text class=\"text-mono\" x=\"0\" y=\"%fem\" xml:space=\"preserve\">", 1*float64(index+1))
+					fmt.Fprintf(writer, "<text class=\"text-mono\" x=\"0\" y=\"%fem\">", 1+float64(index)*lineHeight)
 					for _, token := range tokens {
 						text := svgEscaper.Replace(token.String())
 						attr := styleAttr(svgStyles, token.Type)
