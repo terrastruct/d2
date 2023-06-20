@@ -18,6 +18,7 @@ import (
 
 const TAB_SIZE = 4
 const SIZELESS_FONT_SIZE = 0
+const CODE_LINE_HEIGHT = 1.3
 
 // ASCII is a set of all ASCII runes. These runes are codepoints from 32 to 127 inclusive.
 var ASCII []rune
@@ -212,6 +213,14 @@ func (t *Ruler) scaleUnicode(w float64, font d2fonts.Font, s string) float64 {
 		}
 	}
 	return w
+}
+
+func (t *Ruler) MeasureMono(font d2fonts.Font, s string) (width, height int) {
+	originalBoundsWithDot := t.boundsWithDot
+	t.boundsWithDot = true
+	width, height = t.Measure(font, s)
+	t.boundsWithDot = originalBoundsWithDot
+	return width, height
 }
 
 func (t *Ruler) Measure(font d2fonts.Font, s string) (width, height int) {

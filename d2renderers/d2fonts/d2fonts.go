@@ -199,6 +199,7 @@ func init() {
 		Family: SourceSansPro,
 		Style:  FONT_STYLE_REGULAR,
 	}] = b
+
 	b, err = fontFacesFS.ReadFile("ttf/SourceCodePro-Regular.ttf")
 	if err != nil {
 		panic(err)
@@ -207,6 +208,7 @@ func init() {
 		Family: SourceCodePro,
 		Style:  FONT_STYLE_REGULAR,
 	}] = b
+
 	b, err = fontFacesFS.ReadFile("ttf/SourceCodePro-Bold.ttf")
 	if err != nil {
 		panic(err)
@@ -215,6 +217,7 @@ func init() {
 		Family: SourceCodePro,
 		Style:  FONT_STYLE_BOLD,
 	}] = b
+
 	b, err = fontFacesFS.ReadFile("ttf/SourceCodePro-Semibold.ttf")
 	if err != nil {
 		panic(err)
@@ -223,6 +226,7 @@ func init() {
 		Family: SourceCodePro,
 		Style:  FONT_STYLE_SEMIBOLD,
 	}] = b
+
 	b, err = fontFacesFS.ReadFile("ttf/SourceCodePro-Italic.ttf")
 	if err != nil {
 		panic(err)
@@ -231,6 +235,7 @@ func init() {
 		Family: SourceCodePro,
 		Style:  FONT_STYLE_ITALIC,
 	}] = b
+
 	b, err = fontFacesFS.ReadFile("ttf/SourceSansPro-Bold.ttf")
 	if err != nil {
 		panic(err)
@@ -239,6 +244,7 @@ func init() {
 		Family: SourceSansPro,
 		Style:  FONT_STYLE_BOLD,
 	}] = b
+
 	b, err = fontFacesFS.ReadFile("ttf/SourceSansPro-Semibold.ttf")
 	if err != nil {
 		panic(err)
@@ -247,6 +253,7 @@ func init() {
 		Family: SourceSansPro,
 		Style:  FONT_STYLE_SEMIBOLD,
 	}] = b
+
 	b, err = fontFacesFS.ReadFile("ttf/SourceSansPro-Italic.ttf")
 	if err != nil {
 		panic(err)
@@ -255,6 +262,7 @@ func init() {
 		Family: SourceSansPro,
 		Style:  FONT_STYLE_ITALIC,
 	}] = b
+
 	b, err = fontFacesFS.ReadFile("ttf/ArchitectsDaughter-Regular.ttf")
 	if err != nil {
 		panic(err)
@@ -267,6 +275,7 @@ func init() {
 		Family: HandDrawn,
 		Style:  FONT_STYLE_ITALIC,
 	}] = b
+
 	b, err = fontFacesFS.ReadFile("ttf/FuzzyBubbles-Bold.ttf")
 	if err != nil {
 		panic(err)
