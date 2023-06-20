@@ -275,36 +275,15 @@ func (p *printer) _map(m *d2ast.Map) {
 		}
 	}
 
-	nodes := []d2ast.MapNodeBox{}
-	// extract out layer, scenario, and step nodes
-	layerNodes := []d2ast.MapNodeBox{}
-	scenarioNodes := []d2ast.MapNodeBox{}
-	stepNodes := []d2ast.MapNodeBox{}
-	for i := 0; i < len(m.Nodes); i++ {
-		node := m.Nodes[i]
-		if node.IsBoardNode() {
-			switch node.MapKey.Key.Path[0].Unbox().ScalarString() {
-			case "layers":
-				layerNodes = append(layerNodes, node)
-			case "scenarios":
-				scenarioNodes = append(scenarioNodes, node)
-			case "steps":
-				stepNodes = append(stepNodes, node)
-			}
-		} else {
-			nodes = append(nodes, node)
-		}
-	}
-
-	// append layers, scenarios, and steps at the end
-	nodes = append(nodes, layerNodes...)
-	nodes = append(nodes, scenarioNodes...)
-	nodes = append(nodes, stepNodes...)
-
 	prev := d2ast.Node(m)
-	for i := 0; i < len(nodes); i++ {
-		nb := nodes[i]
+	for i := 0; i < len(m.Nodes); i++ {
+		nb := m.Nodes[i]
 		n := nb.Unbox()
+		// skip board nodes as we'll write them at the end
+		if nb.IsBoardNode() {
+			prev = n
+			continue
+		}
 
 		// Handle inline comments.
 		if i > 0 && (nb.Comment != nil || nb.BlockComment != nil) {
@@ -328,12 +307,43 @@ func (p *printer) _map(m *d2ast.Map) {
 			p.sb.WriteString("; ")
 		}
 
-		if m.IsFileMap() && nb.IsBoardNode() {
-			currString := p.sb.String()
-			// if the two characters before the board node is not a double newline, we add one
-			if currString[len(currString)-2:] != "\n\n" {
-				p.newline()
-			}
+		p.node(n)
+		prev = n
+	}
+
+	// extract out layer, scenario, and step nodes
+	layerNodes := []d2ast.MapNodeBox{}
+	scenarioNodes := []d2ast.MapNodeBox{}
+	stepNodes := []d2ast.MapNodeBox{}
+	for i := 0; i < len(m.Nodes); i++ {
+		node := m.Nodes[i]
+		if !node.IsBoardNode() {
+			continue
+		}
+		switch node.MapKey.Key.Path[0].Unbox().ScalarString() {
+		case "layers":
+			layerNodes = append(layerNodes, node)
+		case "scenarios":
+			scenarioNodes = append(scenarioNodes, node)
+		case "steps":
+			stepNodes = append(stepNodes, node)
+		}
+	}
+
+	boards := []d2ast.MapNodeBox{}
+	boards = append(boards, layerNodes...)
+	boards = append(boards, scenarioNodes...)
+	boards = append(boards, stepNodes...)
+
+	// draw board nodes
+	for i := 0; i < len(boards); i++ {
+		n := boards[i].Unbox()
+		// if this board is the very first line of the file, don't add an extra indent
+		if n.GetRange().Start.Line != 0 {
+			p.newline()
+		}
+		if len(m.Nodes) > len(boards) {
+			p.newline()
 		}
 		p.node(n)
 		prev = n

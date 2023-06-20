@@ -152,8 +152,8 @@ meow
     representation: {type: jsonb}
     diagram: int {constraint: foreign_key}
   }
-
   meow <- diagrams.id
+  
   steps: {
     shape: sql_table
     id: {type: int; constraint: primary_key}
@@ -661,28 +661,21 @@ x: @"x/../file"
 		},
 		{
 			name: "layers_scenarios_steps_bottom_simple",
-			in: `a
-
-layers: {
+			in: `layers: {
   b: {
+		e
     scenarios: {
       p: { 
         x 
       }
     }
-    e
   }
 }
-
-g
 `,
-			exp: `a
-
-g
-
-layers: {
+			exp: `layers: {
   b: {
     e
+    
     scenarios: {
       p: {
         x
@@ -741,21 +734,35 @@ scenarios: {
 
 c
 d
+
+only-layers: {
+	layers: {
+		X
+		Y
+	}
+}
 `,
 			exp: `a
-
 b
 
 c
 d
 
+only-layers: {
+  layers: {
+    X
+    Y
+  }
+}
+
 layers: {
   Test super nested: {
     base-layer
-
     last-layer
+    
     layers: {
       layer-board
+      
       layers: {
         grand-child-layer: {
           grand-child-board
@@ -768,6 +775,7 @@ layers: {
 scenarios: {
   scenario-1: {
     non-step
+    
     steps: {
       step-1: {
         Test
