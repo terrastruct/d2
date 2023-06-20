@@ -253,9 +253,38 @@ func (p *printer) _map(m *d2ast.Map) {
 		}
 	}
 
-	prev := d2ast.Node(m)
+	nodes := []d2ast.MapNodeBox{}
+	// extract out layer, scenario, and step nodes
+	layerNodes := []d2ast.MapNodeBox{}
+	scenarioNodes := []d2ast.MapNodeBox{}
+	stepNodes := []d2ast.MapNodeBox{}
 	for i := 0; i < len(m.Nodes); i++ {
-		nb := m.Nodes[i]
+		node := m.Nodes[i]
+		if node.MapKey != nil && node.MapKey.Key != nil {
+			key := node.MapKey.Key
+			switch key.Path[0].Unbox().ScalarString() {
+			case "layers":
+				layerNodes = append(layerNodes, node)
+			case "scenarios":
+				scenarioNodes = append(scenarioNodes, node)
+			case "steps":
+				stepNodes = append(stepNodes, node)
+			default:
+				nodes = append(nodes, node)
+			}
+		} else {
+			nodes = append(nodes, node)
+		}
+	}
+
+	// append layers, scenarios, and steps at the end
+	nodes = append(nodes, layerNodes...)
+	nodes = append(nodes, scenarioNodes...)
+	nodes = append(nodes, stepNodes...)
+
+	prev := d2ast.Node(m)
+	for i := 0; i < len(nodes); i++ {
+		nb := nodes[i]
 		n := nb.Unbox()
 
 		// Handle inline comments.
@@ -280,6 +309,13 @@ func (p *printer) _map(m *d2ast.Map) {
 			p.sb.WriteString("; ")
 		}
 
+		if m.IsFileMap() && nb.IsSpecialBoard() {
+			currString := p.sb.String()
+			// if the the character before the special board is not a newline, we add one
+			if currString[len(currString)-2:] != "\n\n" {
+				p.newline()
+			}
+		}
 		p.node(n)
 		prev = n
 	}

@@ -760,6 +760,18 @@ func (mb MapNodeBox) Unbox() MapNode {
 	}
 }
 
+func (mb MapNodeBox) IsSpecialBoard() bool {
+	if mb.MapKey == nil || mb.MapKey.Key == nil {
+		return false
+	}
+	switch mb.MapKey.Key.Path[0].Unbox().ScalarString() {
+	case "layers", "scenarios", "steps":
+		return true
+	default:
+		return false
+	}
+}
+
 // ArrayNodeBox is used to box ArrayNode for JSON persistence.
 type ArrayNodeBox struct {
 	Comment            *Comment            `json:"comment,omitempty"`
