@@ -152,14 +152,14 @@ meow
     representation: {type: jsonb}
     diagram: int {constraint: foreign_key}
   }
-
+  meow <- diagrams.id
+  
   steps: {
     shape: sql_table
     id: {type: int; constraint: primary_key}
     representation: {type: jsonb}
     diagram: int {constraint: foreign_key}
   }
-  meow <- diagrams.id
 }
 
 D2 AST Parser: {
@@ -657,6 +657,159 @@ x: @../file
 x: @"x/../file"
 `,
 			exp: `x: @file
+`,
+		},
+		{
+			name: "layers_scenarios_steps_bottom_simple",
+			in: `layers: {
+  b: {
+		e
+    scenarios: {
+      p: { 
+        x 
+      }
+    }
+  }
+	steps: {
+		a
+	}
+}
+`,
+			exp: `layers: {
+  b: {
+    e
+    
+    scenarios: {
+      p: {
+        x
+      }
+    }
+  }
+  
+  steps: {
+    a
+  }
+}
+`,
+		},
+		{
+			name: "layers_scenarios_steps_bottom_complex",
+			in: `a
+
+scenarios: {
+
+
+
+	scenario-1: {
+		steps: {
+			step-1: {
+        Test
+			}
+			step-2
+		}
+		non-step
+	}
+}
+
+layers: {
+  Test super nested: {
+		base-layer
+		layers: {
+			layers: {
+				grand-child-layer: {
+					grand-child-board
+				}
+			}
+			layer-board
+		}
+		last-layer
+	}
+}
+b
+steps: {
+	1: {
+		step-1-content
+	}
+}
+
+
+scenarios: {
+	scenario-2: {
+		scenario-2-content
+	}
+}
+
+c
+d
+
+only-layers: {
+	layers: {
+		X
+		Y
+	}
+	layers: {
+		Z
+	}
+}
+`,
+			exp: `a
+b
+
+c
+d
+
+only-layers: {
+  layers: {
+    X
+    Y
+  }
+  
+  layers: {
+    Z
+  }
+}
+
+layers: {
+  Test super nested: {
+    base-layer
+    last-layer
+    
+    layers: {
+      layer-board
+      
+      layers: {
+        grand-child-layer: {
+          grand-child-board
+        }
+      }
+    }
+  }
+}
+
+scenarios: {
+  scenario-1: {
+    non-step
+    
+    steps: {
+      step-1: {
+        Test
+      }
+      step-2
+    }
+  }
+}
+
+scenarios: {
+  scenario-2: {
+    scenario-2-content
+  }
+}
+
+steps: {
+  1: {
+    step-1-content
+  }
+}
 `,
 		},
 	}

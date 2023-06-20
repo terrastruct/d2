@@ -275,10 +275,27 @@ func (p *printer) _map(m *d2ast.Map) {
 		}
 	}
 
+	layerNodes := []d2ast.MapNodeBox{}
+	scenarioNodes := []d2ast.MapNodeBox{}
+	stepNodes := []d2ast.MapNodeBox{}
+
 	prev := d2ast.Node(m)
 	for i := 0; i < len(m.Nodes); i++ {
 		nb := m.Nodes[i]
 		n := nb.Unbox()
+		// extract out layer, scenario, and step nodes and skip
+		if nb.IsBoardNode() {
+			switch nb.MapKey.Key.Path[0].Unbox().ScalarString() {
+			case "layers":
+				layerNodes = append(layerNodes, nb)
+			case "scenarios":
+				scenarioNodes = append(scenarioNodes, nb)
+			case "steps":
+				stepNodes = append(stepNodes, nb)
+			}
+			prev = n
+			continue
+		}
 
 		// Handle inline comments.
 		if i > 0 && (nb.Comment != nil || nb.BlockComment != nil) {
@@ -302,6 +319,26 @@ func (p *printer) _map(m *d2ast.Map) {
 			p.sb.WriteString("; ")
 		}
 
+		p.node(n)
+		prev = n
+	}
+
+	boards := []d2ast.MapNodeBox{}
+	boards = append(boards, layerNodes...)
+	boards = append(boards, scenarioNodes...)
+	boards = append(boards, stepNodes...)
+
+	// draw board nodes
+	for i := 0; i < len(boards); i++ {
+		n := boards[i].Unbox()
+		// if this board is the very first line of the file, don't add an extra newline
+		if n.GetRange().Start.Line != 0 {
+			p.newline()
+		}
+		// if scope only has boards, don't newline the first board
+		if i != 0 || len(m.Nodes) > len(boards) {
+			p.newline()
+		}
 		p.node(n)
 		prev = n
 	}
