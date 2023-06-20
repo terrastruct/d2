@@ -261,8 +261,7 @@ func (p *printer) _map(m *d2ast.Map) {
 	for i := 0; i < len(m.Nodes); i++ {
 		node := m.Nodes[i]
 		if node.IsBoardNode() {
-			key := node.MapKey.Key
-			switch key.Path[0].Unbox().ScalarString() {
+			switch node.MapKey.Key.Path[0].Unbox().ScalarString() {
 			case "layers":
 				layerNodes = append(layerNodes, node)
 			case "scenarios":
