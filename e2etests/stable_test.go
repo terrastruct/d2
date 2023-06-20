@@ -2319,6 +2319,23 @@ Listen <-> Talk: {
 `,
 		},
 		{
+			name: "dagre-container",
+			script: `a: {
+  a
+  b
+  c
+}
+
+b: {
+  a
+  b
+  c
+}
+
+a -> b
+`,
+		},
+		{
 			name: "sql_table_tooltip_animated",
 			script: `
 x: {
@@ -2384,6 +2401,40 @@ manager2: BatchManager {
   +getStatus(): Enum
   +getJobs(): "Job[]"
   +setTimeout(seconds int)
+}
+`,
+		},
+		{
+			name: "sql_table_constraints_width",
+			script: `
+a: {
+	shape: sql_table
+	x: INT {constraint: unique}
+}
+
+b: {
+	shape: sql_table
+	x: INT {constraint: [primary_key; foreign_key]}
+}
+
+c: {
+	shape: sql_table
+	x: INT {constraint: [foreign_key; unique]}
+}
+
+d: {
+	shape: sql_table
+	x: INT {constraint: [primary_key; foreign_key; unique]}
+}
+e: {
+	shape: sql_table
+	x: INT {constraint: [no_abbrev; foreign_key; hello]}
+	y: string
+	z: STRING {constraint: yo}
+}
+f: {
+	shape: sql_table
+	x: INT
 }
 `,
 		},
@@ -2726,6 +2777,8 @@ scenarios: {
 		loadFromFile(t, "grid_icon"),
 		loadFromFile(t, "multiple_offset"),
 		loadFromFile(t, "multiple_offset_left"),
+		loadFromFile(t, "multiple_box_selection"),
+		loadFromFile(t, "outside_bottom_labels"),
 	}
 
 	runa(t, tcs)

@@ -74,18 +74,12 @@ func tableHeader(diagramHash string, shape d2target.Shape, box *geo.Box, text st
 	return str
 }
 
-func tableRow(shape d2target.Shape, box *geo.Box, nameText, typeText, constraintText string, fontSize, longestNameWidth float64) string {
+func tableRow(shape d2target.Shape, box *geo.Box, nameText, typeText, constraintText string, fontSize, longestNameWidth, longestTypeWidth float64) string {
 	// Row is made up of name, type, and constraint
 	// e.g. | diagram   int   FK |
 	nameTL := label.InsideMiddleLeft.GetPointOnBox(
 		box,
 		d2target.NamePadding,
-		box.Width,
-		fontSize,
-	)
-	constraintTR := label.InsideMiddleRight.GetPointOnBox(
-		box,
-		d2target.TypePadding,
 		0,
 		fontSize,
 	)
@@ -99,15 +93,14 @@ func tableRow(shape d2target.Shape, box *geo.Box, nameText, typeText, constraint
 	textEl.Content = svg.EscapeText(nameText)
 	out := textEl.Render()
 
-	textEl.X = nameTL.X + longestNameWidth + 2*d2target.NamePadding
+	textEl.X += longestNameWidth + d2target.TypePadding
 	textEl.Fill = shape.NeutralAccentColor
 	textEl.Content = svg.EscapeText(typeText)
 	out += textEl.Render()
 
-	textEl.X = constraintTR.X
-	textEl.Y = constraintTR.Y + fontSize*3/4
+	textEl.X = box.TopLeft.X + (box.Width - d2target.NamePadding)
 	textEl.Fill = shape.SecondaryAccentColor
-	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx;letter-spacing:2px", "end", fontSize)
+	textEl.Style = fmt.Sprintf("text-anchor:%s;font-size:%vpx", "end", fontSize)
 	textEl.Content = constraintText
 	out += textEl.Render()
 
@@ -144,15 +137,17 @@ func drawTable(writer io.Writer, diagramHash string, targetShape d2target.Shape)
 	)
 
 	var longestNameWidth int
+	var longestTypeWidth int
 	for _, f := range targetShape.Columns {
 		longestNameWidth = go2.Max(longestNameWidth, f.Name.LabelWidth)
+		longestTypeWidth = go2.Max(longestTypeWidth, f.Type.LabelWidth)
 	}
 
 	rowBox := geo.NewBox(box.TopLeft.Copy(), box.Width, rowHeight)
 	rowBox.TopLeft.Y += headerBox.Height
 	for idx, f := range targetShape.Columns {
 		fmt.Fprint(writer,
-			tableRow(targetShape, rowBox, f.Name.Label, f.Type.Label, f.ConstraintAbbr(), float64(targetShape.FontSize), float64(longestNameWidth)),
+			tableRow(targetShape, rowBox, f.Name.Label, f.Type.Label, f.ConstraintAbbr(), float64(targetShape.FontSize), float64(longestNameWidth), float64(longestTypeWidth)),
 		)
 		rowBox.TopLeft.Y += rowHeight
 

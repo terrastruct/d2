@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/edge_column_index.d2,0:5:5-4:0:47",
+                "range": "d2/testdata/d2compiler/TestCompile/edge_column_index.d2,0:5:5-4:1:48",
                 "nodes": [
                   {
                     "map_key": {
@@ -155,7 +155,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/edge_column_index.d2,6:5:55-10:0:98",
+                "range": "d2/testdata/d2compiler/TestCompile/edge_column_index.d2,6:5:55-10:1:99",
                 "nodes": [
                   {
                     "map_key": {
@@ -350,9 +350,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -385,9 +383,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }
@@ -476,7 +472,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": "",
+              "constraint": null,
               "reference": ""
             },
             {
@@ -504,7 +500,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": "",
+              "constraint": null,
               "reference": ""
             }
           ]
@@ -525,9 +521,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -614,7 +608,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": "",
+              "constraint": null,
               "reference": ""
             },
             {
@@ -642,7 +636,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": "",
+              "constraint": null,
               "reference": ""
             }
           ]
@@ -663,9 +657,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

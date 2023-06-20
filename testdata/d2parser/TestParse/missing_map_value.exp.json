@@ -28,7 +28,6 @@
     ]
   },
   "err": {
-    "ioerr": null,
     "errs": [
       {
         "range": "d2/testdata/d2parser/TestParse/missing_map_value.d2,1:1:2-1:2:3",

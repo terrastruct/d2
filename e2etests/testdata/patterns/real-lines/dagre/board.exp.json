@@ -176,7 +176,7 @@
         "x": 401,
         "y": 100
       },
-      "width": 311,
+      "width": 294,
       "height": 180,
       "opacity": 1,
       "strokeDash": 0,
@@ -222,7 +222,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "primary_key",
+          "constraint": [
+            "primary_key"
+          ],
           "reference": ""
         },
         {
@@ -250,7 +252,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -278,7 +280,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -306,7 +308,7 @@
             "labelWidth": 91,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         }
       ],
@@ -333,7 +335,7 @@
         "x": 401,
         "y": 401
       },
-      "width": 311,
+      "width": 294,
       "height": 180,
       "opacity": 1,
       "strokeDash": 0,
@@ -379,7 +381,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "primary_key",
+          "constraint": [
+            "primary_key"
+          ],
           "reference": ""
         },
         {
@@ -407,7 +411,7 @@
             "labelWidth": 48,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -435,7 +439,7 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         },
         {
@@ -463,7 +467,7 @@
             "labelWidth": 91,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         }
       ],
@@ -651,19 +655,19 @@
       "labelPercentage": 0,
       "route": [
         {
-          "x": 556,
+          "x": 547.5,
           "y": 280
         },
         {
-          "x": 556,
+          "x": 547.5,
           "y": 328.3999938964844
         },
         {
-          "x": 556,
+          "x": 547.5,
           "y": 352.70001220703125
         },
         {
-          "x": 556,
+          "x": 547.5,
           "y": 401.5
         }
       ],

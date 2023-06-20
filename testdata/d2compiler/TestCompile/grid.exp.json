@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/grid.d2,0:5:5-3:0:42",
+                "range": "d2/testdata/d2compiler/TestCompile/grid.d2,0:5:5-3:1:43",
                 "nodes": [
                   {
                     "map_key": {
@@ -113,9 +113,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -162,9 +160,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          },
+          "constraint": null,
           "gridRows": {
             "value": "200"
           },

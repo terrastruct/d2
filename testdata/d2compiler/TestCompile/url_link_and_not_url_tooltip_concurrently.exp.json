@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/url_link_and_not_url_tooltip_concurrently.d2,0:3:3-0:50:50",
+                "range": "d2/testdata/d2compiler/TestCompile/url_link_and_not_url_tooltip_concurrently.d2,0:3:3-0:51:51",
                 "nodes": [
                   {
                     "map_key": {
@@ -121,9 +121,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -176,9 +174,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

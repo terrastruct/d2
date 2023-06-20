@@ -316,6 +316,20 @@ containers: {
 			expErr: `d2/testdata/d2compiler/TestCompile/image_children_Steps.d2:4:3: steps is only allowed at a board root`,
 		},
 		{
+			name: "name-with-dot-underscore",
+			text: `A: {
+  _.C
+}
+
+"D.E": {
+  _.C
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, 3, len(g.Objects))
+			},
+		},
+		{
 			name: "stroke-width",
 
 			text: `hey {
@@ -1506,6 +1520,11 @@ x -> y: {
 			expErr: `d2/testdata/d2compiler/TestCompile/no_url_link_and_url_tooltip_concurrently.d2:1:44: Tooltip cannot be set to URL when link is also set (for security)`,
 		},
 		{
+			name:   "url_link_non_url_tooltip_ok",
+			text:   `x: {link: https://not-google.com; tooltip: note: url.ParseRequestURI might see this as a URL}`,
+			expErr: ``,
+		},
+		{
 			name: "url_link_and_not_url_tooltip_concurrently",
 			text: `x: {link: https://google.com; tooltip: hello world}`,
 			assertions: func(t *testing.T, g *d2graph.Graph) {
@@ -2117,9 +2136,7 @@ ok: {
   label: bar
   constraint: BIZ
 }`,
-			assertions: func(t *testing.T, g *d2graph.Graph) {
-				assert.String(t, "bar", g.Objects[0].Label.Value)
-			},
+			expErr: `d2/testdata/d2compiler/TestCompile/constraint_label.d2:3:3: "constraint" keyword can only be used in "sql_table" shapes`,
 		},
 		{
 			name: "invalid_direction",
@@ -2170,13 +2187,17 @@ ok: {
 			},
 		},
 		{
-			name: "sql-panic",
-			text: `test {
-    shape: sql_table
-    test_id: varchar(64) {constraint: [primary_key, foreign_key]}
-}
-`,
-			expErr: `d2/testdata/d2compiler/TestCompile/sql-panic.d2:3:27: reserved field constraint does not accept composite`,
+			name: "sql-constraints",
+			text: `x: {
+  shape: sql_table
+  a: int {constraint: primary_key}
+  b: int {constraint: [primary_key; foreign_key]}
+}`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				table := g.Objects[0].SQLTable
+				tassert.Equal(t, []string{"primary_key"}, table.Columns[0].Constraint)
+				tassert.Equal(t, []string{"primary_key", "foreign_key"}, table.Columns[1].Constraint)
+			},
 		},
 		{
 			name: "wrong_column_index",
@@ -2479,6 +2500,23 @@ nostar -> 1star: { class: [path; path2] }
 			},
 		},
 		{
+			name: "comma-array-class",
+
+			text: `classes: {
+  dragon_ball: {
+    label: ""
+    shape: circle
+    style.fill: orange
+  }
+  path: {
+    label: "then"
+    style.stroke-width: 4
+  }
+}
+nostar: { class: [dragon_ball, path] }`,
+			expErr: `d2/testdata/d2compiler/TestCompile/comma-array-class.d2:12:11: class "dragon_ball, path" not found. Did you mean to use ";" to separate array items?`,
+		},
+		{
 			name: "reordered-classes",
 			text: `classes: {
   x: {
@@ -2575,6 +2613,15 @@ object: {
 }
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/classes-internal-edge.d2:8:3: classes cannot contain an edge`,
+		},
+		{
+			name: "reserved-composite",
+			text: `shape: sequence_diagram {
+  alice -> bob: What does it mean\nto be well-adjusted?
+  bob -> alice: The ability to play bridge or\ngolf as if they were games.
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/reserved-composite.d2:1:1: reserved field shape does not accept composite`,
 		},
 	}
 

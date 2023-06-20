@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io"
+	"io/fs"
 	"net/url"
 	"strconv"
 	"strings"
@@ -21,21 +22,27 @@ import (
 
 type CompileOptions struct {
 	UTF16 bool
+	// FS is the file system used for resolving imports in the d2 text.
+	// It should correspond to the root path.
+	FS fs.FS
 }
 
-func Compile(path string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph, error) {
+func Compile(p string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph, error) {
 	if opts == nil {
 		opts = &CompileOptions{}
 	}
 
-	ast, err := d2parser.Parse(path, r, &d2parser.ParseOptions{
+	ast, err := d2parser.Parse(p, r, &d2parser.ParseOptions{
 		UTF16: opts.UTF16,
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	ir, err := d2ir.Compile(ast)
+	ir, err := d2ir.Compile(ast, &d2ir.CompileOptions{
+		UTF16: opts.UTF16,
+		FS:    opts.FS,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +57,9 @@ func Compile(path string, r io.RuneReader, opts *CompileOptions) (*d2graph.Graph
 }
 
 func compileIR(ast *d2ast.Map, m *d2ir.Map) (*d2graph.Graph, error) {
-	c := &compiler{}
+	c := &compiler{
+		err: &d2parser.ParseError{},
+	}
 
 	g := d2graph.NewGraph()
 	g.AST = ast
@@ -101,7 +110,7 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 		}
 		g2 := d2graph.NewGraph()
 		g2.Parent = g
-		g2.AST = g.AST
+		g2.AST = f.Map().AST().(*d2ast.Map)
 		c.compileBoard(g2, f.Map())
 		g2.Name = f.Name
 		switch fieldName {
@@ -116,7 +125,7 @@ func (c *compiler) compileBoardsField(g *d2graph.Graph, ir *d2ir.Map, fieldName 
 }
 
 type compiler struct {
-	err d2parser.ParseError
+	err *d2parser.ParseError
 }
 
 func (c *compiler) errorf(n d2ast.Node, f string, v ...interface{}) {
@@ -147,12 +156,31 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 			classMap := m.GetClassMap(className)
 			if classMap != nil {
 				c.compileMap(obj, classMap)
+			} else {
+				if strings.Contains(className, ",") {
+					split := strings.Split(className, ",")
+					allFound := true
+					for _, maybeClassName := range split {
+						maybeClassName = strings.TrimSpace(maybeClassName)
+						if m.GetClassMap(maybeClassName) == nil {
+							allFound = false
+							break
+						}
+					}
+					if allFound {
+						c.errorf(class.LastRef().AST(), `class "%s" not found. Did you mean to use ";" to separate array items?`, className)
+					}
+				}
 			}
 		}
 	}
 	shape := m.GetField("shape")
 	if shape != nil {
-		c.compileField(obj, shape)
+		if shape.Composite != nil {
+			c.errorf(shape.LastPrimaryKey(), "reserved field shape does not accept composite")
+		} else {
+			c.compileField(obj, shape)
+		}
 	}
 	for _, f := range m.Fields {
 		if f.Name == "shape" {
@@ -249,17 +277,19 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 				obj.Map = fr.Context.Key.Value.Map
 			}
 		}
-		scopeObjIDA := d2ir.BoardIDA(fr.Context.ScopeMap)
-		scopeObj := obj.Graph.Root.EnsureChildIDVal(scopeObjIDA)
-		obj.References = append(obj.References, d2graph.Reference{
+		r := d2graph.Reference{
 			Key:          fr.KeyPath,
 			KeyPathIndex: fr.KeyPathIndex(),
 
 			MapKey:          fr.Context.Key,
 			MapKeyEdgeIndex: fr.Context.EdgeIndex(),
 			Scope:           fr.Context.Scope,
-			ScopeObj:        scopeObj,
-		})
+		}
+		if fr.Context.ScopeMap != nil {
+			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(fr.Context.ScopeMap))
+			r.ScopeObj = obj.Graph.Root.EnsureChild(scopeObjIDA)
+		}
+		obj.References = append(obj.References, r)
 	}
 }
 
@@ -310,8 +340,27 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 
 func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 	if f.Primary() == nil {
-		if f.Composite != nil && !strings.EqualFold(f.Name, "class") {
-			c.errorf(f.LastPrimaryKey(), "reserved field %v does not accept composite", f.Name)
+		if f.Composite != nil {
+			switch f.Name {
+			case "class":
+				if arr, ok := f.Composite.(*d2ir.Array); ok {
+					for _, class := range arr.Values {
+						if scalar, ok := class.(*d2ir.Scalar); ok {
+							attrs.Classes = append(attrs.Classes, scalar.Value.ScalarString())
+						}
+					}
+				}
+			case "constraint":
+				if arr, ok := f.Composite.(*d2ir.Array); ok {
+					for _, constraint := range arr.Values {
+						if scalar, ok := constraint.(*d2ir.Scalar); ok {
+							attrs.Constraint = append(attrs.Constraint, scalar.Value.ScalarString())
+						}
+					}
+				}
+			default:
+				c.errorf(f.LastPrimaryKey(), "reserved field %v does not accept composite", f.Name)
+			}
 		}
 		return
 	}
@@ -412,8 +461,7 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 			c.errorf(f.LastPrimaryKey(), "constraint value must be a string")
 			return
 		}
-		attrs.Constraint.Value = scalar.ScalarString()
-		attrs.Constraint.MapKey = f.LastPrimaryKey()
+		attrs.Constraint = append(attrs.Constraint, scalar.ScalarString())
 	case "grid-rows":
 		v, err := strconv.Atoi(scalar.ScalarString())
 		if err != nil {
@@ -480,23 +528,13 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.HorizontalGap.Value = scalar.ScalarString()
 		attrs.HorizontalGap.MapKey = f.LastPrimaryKey()
 	case "class":
-		if f.Primary() != nil {
-			attrs.Classes = append(attrs.Classes, scalar.ScalarString())
-		} else if f.Composite != nil {
-			if arr, ok := f.Composite.(*d2ir.Array); ok {
-				for _, class := range arr.Values {
-					if scalar, ok := class.(*d2ir.Scalar); ok {
-						attrs.Classes = append(attrs.Classes, scalar.Value.ScalarString())
-					}
-				}
-			}
-		}
+		attrs.Classes = append(attrs.Classes, scalar.ScalarString())
 	case "classes":
 	}
 
 	if attrs.Link != nil && attrs.Tooltip != nil {
-		_, err := url.ParseRequestURI(attrs.Tooltip.Value)
-		if err == nil {
+		u, err := url.ParseRequestURI(attrs.Tooltip.Value)
+		if err == nil && u.Host != "" {
 			c.errorf(scalar, "Tooltip cannot be set to URL when link is also set (for security)")
 		}
 	}
@@ -594,15 +632,17 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 
 	edge.Label.MapKey = e.LastPrimaryKey()
 	for _, er := range e.References {
-		scopeObjIDA := d2ir.BoardIDA(er.Context.ScopeMap)
-		scopeObj := edge.Src.Graph.Root.EnsureChildIDVal(scopeObjIDA)
-		edge.References = append(edge.References, d2graph.EdgeReference{
+		r := d2graph.EdgeReference{
 			Edge:            er.Context.Edge,
 			MapKey:          er.Context.Key,
 			MapKeyEdgeIndex: er.Context.EdgeIndex(),
 			Scope:           er.Context.Scope,
-			ScopeObj:        scopeObj,
-		})
+		}
+		if er.Context.ScopeMap != nil {
+			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(er.Context.ScopeMap))
+			r.ScopeObj = edge.Src.Graph.Root.EnsureChild(scopeObjIDA)
+		}
+		edge.References = append(edge.References, r)
 	}
 }
 
@@ -784,11 +824,9 @@ func (c *compiler) compileSQLTable(obj *d2graph.Object) {
 			typ = ""
 		}
 		d2Col := d2target.SQLColumn{
-			Name: d2target.Text{Label: col.IDVal},
-			Type: d2target.Text{Label: typ},
-		}
-		if col.Constraint.Value != "" {
-			d2Col.Constraint = col.Constraint.Value
+			Name:       d2target.Text{Label: col.IDVal},
+			Type:       d2target.Text{Label: typ},
+			Constraint: col.Constraint,
 		}
 		obj.SQLTable.Columns = append(obj.SQLTable.Columns, d2Col)
 	}
@@ -847,6 +885,10 @@ func (c *compiler) validateKey(obj *d2graph.Object, f *d2ir.Field) {
 			_, arrowheadIn := d2target.Arrowheads[obj.Shape.Value]
 			if !in && arrowheadIn {
 				c.errorf(f.LastPrimaryKey(), fmt.Sprintf(`invalid shape, can only set "%s" for arrowheads`, obj.Shape.Value))
+			}
+		case "constraint":
+			if obj.Shape.Value != d2target.ShapeSQLTable {
+				c.errorf(f.LastPrimaryKey(), `"constraint" keyword can only be used in "sql_table" shapes`)
 			}
 		}
 		return

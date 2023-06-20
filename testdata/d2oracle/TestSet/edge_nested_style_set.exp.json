@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestSet/edge_nested_style_set.d2,0:6:6-2:0:44",
+                "range": "d2/testdata/d2oracle/TestSet/edge_nested_style_set.d2,0:6:6-2:1:45",
                 "nodes": [
                   {
                     "map_key": {
@@ -84,7 +84,7 @@
                       },
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestSet/edge_nested_style_set.d2,1:15:23-1:34:42",
+                          "range": "d2/testdata/d2oracle/TestSet/edge_nested_style_set.d2,1:15:23-1:35:43",
                           "nodes": [
                             {
                               "map_key": {
@@ -157,9 +157,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -194,9 +192,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }
@@ -243,9 +239,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -290,9 +284,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -337,9 +329,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

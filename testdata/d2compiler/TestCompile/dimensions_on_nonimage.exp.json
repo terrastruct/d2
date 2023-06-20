@@ -32,7 +32,7 @@
             },
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,0:8:8-4:0:52",
+                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_nonimage.d2,0:8:8-4:1:53",
                 "nodes": [
                   {
                     "map_key": {
@@ -151,9 +151,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -206,9 +204,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

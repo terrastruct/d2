@@ -28,6 +28,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"path"
 	"strconv"
 	"strings"
 	"unicode"
@@ -63,6 +64,7 @@ var _ Node = &DoubleQuotedString{}
 var _ Node = &SingleQuotedString{}
 var _ Node = &BlockString{}
 var _ Node = &Substitution{}
+var _ Node = &Import{}
 
 var _ Node = &Array{}
 var _ Node = &Map{}
@@ -179,6 +181,10 @@ func (p Position) String() string {
 	return fmt.Sprintf("%d:%d", p.Line+1, p.Column+1)
 }
 
+func (p Position) Debug() string {
+	return fmt.Sprintf("%d:%d:%d", p.Line, p.Column, p.Byte)
+}
+
 // See docs on Range.
 func (p Position) MarshalText() ([]byte, error) {
 	return []byte(fmt.Sprintf("%d:%d:%d", p.Line, p.Column, p.Byte)), nil
@@ -256,6 +262,13 @@ func (p Position) Subtract(r rune, byUTF16 bool) Position {
 	return p
 }
 
+func (p Position) AdvanceString(s string, byUTF16 bool) Position {
+	for _, r := range s {
+		p = p.Advance(r, byUTF16)
+	}
+	return p
+}
+
 func (p Position) SubtractString(s string, byUTF16 bool) Position {
 	for _, r := range s {
 		p = p.Subtract(r, byUTF16)
@@ -277,6 +290,7 @@ var _ MapNode = &Comment{}
 var _ MapNode = &BlockComment{}
 var _ MapNode = &Key{}
 var _ MapNode = &Substitution{}
+var _ MapNode = &Import{}
 
 // ArrayNode is implemented by nodes that may be children of Arrays.
 type ArrayNode interface {
@@ -288,6 +302,7 @@ type ArrayNode interface {
 var _ ArrayNode = &Comment{}
 var _ ArrayNode = &BlockComment{}
 var _ ArrayNode = &Substitution{}
+var _ ArrayNode = &Import{}
 
 // Value is implemented by nodes that may be values of a key.
 type Value interface {
@@ -334,6 +349,7 @@ func (s *DoubleQuotedString) node() {}
 func (s *SingleQuotedString) node() {}
 func (s *BlockString) node()        {}
 func (s *Substitution) node()       {}
+func (i *Import) node()             {}
 func (a *Array) node()              {}
 func (m *Map) node()                {}
 func (k *Key) node()                {}
@@ -351,6 +367,7 @@ func (s *DoubleQuotedString) Type() string { return "double quoted string" }
 func (s *SingleQuotedString) Type() string { return "single quoted string" }
 func (s *BlockString) Type() string        { return s.Tag + " block string" }
 func (s *Substitution) Type() string       { return "substitution" }
+func (i *Import) Type() string             { return "import" }
 func (a *Array) Type() string              { return "array" }
 func (m *Map) Type() string                { return "map" }
 func (k *Key) Type() string                { return "map key" }
@@ -368,6 +385,7 @@ func (s *DoubleQuotedString) GetRange() Range { return s.Range }
 func (s *SingleQuotedString) GetRange() Range { return s.Range }
 func (s *BlockString) GetRange() Range        { return s.Range }
 func (s *Substitution) GetRange() Range       { return s.Range }
+func (i *Import) GetRange() Range             { return i.Range }
 func (a *Array) GetRange() Range              { return a.Range }
 func (m *Map) GetRange() Range                { return m.Range }
 func (k *Key) GetRange() Range                { return k.Range }
@@ -379,6 +397,7 @@ func (c *Comment) mapNode()      {}
 func (c *BlockComment) mapNode() {}
 func (k *Key) mapNode()          {}
 func (s *Substitution) mapNode() {}
+func (i *Import) mapNode()       {}
 
 func (c *Comment) arrayNode()            {}
 func (c *BlockComment) arrayNode()       {}
@@ -390,6 +409,7 @@ func (s *DoubleQuotedString) arrayNode() {}
 func (s *SingleQuotedString) arrayNode() {}
 func (s *BlockString) arrayNode()        {}
 func (s *Substitution) arrayNode()       {}
+func (i *Import) arrayNode()             {}
 func (a *Array) arrayNode()              {}
 func (m *Map) arrayNode()                {}
 
@@ -402,6 +422,7 @@ func (s *SingleQuotedString) value() {}
 func (s *BlockString) value()        {}
 func (a *Array) value()              {}
 func (m *Map) value()                {}
+func (i *Import) value()             {}
 
 func (n *Null) scalar()               {}
 func (b *Boolean) scalar()            {}
@@ -722,11 +743,20 @@ type Substitution struct {
 	Path   []*StringBox `json:"path"`
 }
 
+type Import struct {
+	Range Range `json:"range"`
+
+	Spread bool         `json:"spread"`
+	Pre    string       `json:"pre"`
+	Path   []*StringBox `json:"path"`
+}
+
 // MapNodeBox is used to box MapNode for JSON persistence.
 type MapNodeBox struct {
 	Comment      *Comment      `json:"comment,omitempty"`
 	BlockComment *BlockComment `json:"block_comment,omitempty"`
 	Substitution *Substitution `json:"substitution,omitempty"`
+	Import       *Import       `json:"import,omitempty"`
 	MapKey       *Key          `json:"map_key,omitempty"`
 }
 
@@ -739,6 +769,8 @@ func MakeMapNodeBox(n MapNode) MapNodeBox {
 		box.BlockComment = n
 	case *Substitution:
 		box.Substitution = n
+	case *Import:
+		box.Import = n
 	case *Key:
 		box.MapKey = n
 	}
@@ -753,6 +785,8 @@ func (mb MapNodeBox) Unbox() MapNode {
 		return mb.BlockComment
 	case mb.Substitution != nil:
 		return mb.Substitution
+	case mb.Import != nil:
+		return mb.Import
 	case mb.MapKey != nil:
 		return mb.MapKey
 	default:
@@ -777,6 +811,7 @@ type ArrayNodeBox struct {
 	Comment            *Comment            `json:"comment,omitempty"`
 	BlockComment       *BlockComment       `json:"block_comment,omitempty"`
 	Substitution       *Substitution       `json:"substitution,omitempty"`
+	Import             *Import             `json:"import,omitempty"`
 	Null               *Null               `json:"null,omitempty"`
 	Boolean            *Boolean            `json:"boolean,omitempty"`
 	Number             *Number             `json:"number,omitempty"`
@@ -797,6 +832,8 @@ func MakeArrayNodeBox(an ArrayNode) ArrayNodeBox {
 		ab.BlockComment = an
 	case *Substitution:
 		ab.Substitution = an
+	case *Import:
+		ab.Import = an
 	case *Null:
 		ab.Null = an
 	case *Boolean:
@@ -827,6 +864,8 @@ func (ab ArrayNodeBox) Unbox() ArrayNode {
 		return ab.BlockComment
 	case ab.Substitution != nil:
 		return ab.Substitution
+	case ab.Import != nil:
+		return ab.Import
 	case ab.Null != nil:
 		return ab.Null
 	case ab.Boolean != nil:
@@ -861,6 +900,7 @@ type ValueBox struct {
 	BlockString        *BlockString        `json:"block_string,omitempty"`
 	Array              *Array              `json:"array,omitempty"`
 	Map                *Map                `json:"map,omitempty"`
+	Import             *Import             `json:"import,omitempty"`
 }
 
 func (vb ValueBox) Unbox() Value {
@@ -883,6 +923,8 @@ func (vb ValueBox) Unbox() Value {
 		return vb.Array
 	case vb.Map != nil:
 		return vb.Map
+	case vb.Import != nil:
+		return vb.Import
 	default:
 		return nil
 	}
@@ -909,6 +951,8 @@ func MakeValueBox(v Value) ValueBox {
 		vb.Array = v
 	case *Map:
 		vb.Map = v
+	case *Import:
+		vb.Import = v
 	}
 	return vb
 }
@@ -1002,8 +1046,8 @@ type InterpolationBox struct {
 // & is only special if it begins a key.
 // - is only special if followed by another - in a key.
 // ' " and | are only special if they begin an unquoted key or value.
-var UnquotedKeySpecials = string([]rune{'#', ';', '\n', '\\', '{', '}', '[', ']', '\'', '"', '|', ':', '.', '-', '<', '>', '*', '&', '(', ')'})
-var UnquotedValueSpecials = string([]rune{'#', ';', '\n', '\\', '{', '}', '[', ']', '\'', '"', '|', '$'})
+var UnquotedKeySpecials = string([]rune{'#', ';', '\n', '\\', '{', '}', '[', ']', '\'', '"', '|', ':', '.', '-', '<', '>', '*', '&', '(', ')', '@'})
+var UnquotedValueSpecials = string([]rune{'#', ';', '\n', '\\', '{', '}', '[', ']', '\'', '"', '|', '$', '@'})
 
 // RawString returns s in a AST String node that can format s in the most aesthetically
 // pleasing way.
@@ -1052,8 +1096,33 @@ func RawString(s string, inKey bool) String {
 	return FlatUnquotedString(s)
 }
 
+func RawStringBox(s string, inKey bool) *StringBox {
+	return MakeValueBox(RawString(s, inKey)).StringBox()
+}
+
 func hasSurroundingWhitespace(s string) bool {
 	r, _ := utf8.DecodeRuneInString(s)
 	r2, _ := utf8.DecodeLastRuneInString(s)
 	return unicode.IsSpace(r) || unicode.IsSpace(r2)
+}
+
+func (s *Substitution) IDA() (ida []string) {
+	for _, el := range s.Path {
+		ida = append(ida, el.Unbox().ScalarString())
+	}
+	return ida
+}
+
+func (i *Import) IDA() (ida []string) {
+	for _, el := range i.Path[1:] {
+		ida = append(ida, el.Unbox().ScalarString())
+	}
+	return ida
+}
+
+func (i *Import) PathWithPre() string {
+	if len(i.Path) == 0 {
+		return ""
+	}
+	return path.Join(i.Pre, i.Path[0].Unbox().ScalarString())
 }

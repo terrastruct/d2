@@ -34,7 +34,7 @@
           },
           "value": {
             "map": {
-              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,1:25:26-44:0:1006",
+              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,1:25:26-44:1:1007",
               "nodes": [
                 {
                   "map_key": {
@@ -58,7 +58,7 @@
                     "primary": {},
                     "value": {
                       "map": {
-                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,2:9:37-11:2:310",
+                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,2:9:37-11:3:311",
                         "nodes": [
                           {
                             "map_key": {
@@ -125,7 +125,7 @@
                               },
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,4:12:72-4:36:96",
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,4:12:72-4:37:97",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -197,7 +197,7 @@
                               },
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,5:15:113-5:39:137",
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,5:15:113-5:40:138",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -269,7 +269,7 @@
                               },
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,6:17:156-6:41:180",
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,6:17:156-6:42:181",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -758,7 +758,7 @@
                     "primary": {},
                     "value": {
                       "map": {
-                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,23:12:516-27:2:620",
+                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,23:12:516-27:3:621",
                         "nodes": [
                           {
                             "map_key": {
@@ -815,7 +815,7 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,25:8:547-25:43:582",
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,25:8:547-25:44:583",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -877,7 +877,7 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,26:20:604-26:32:616",
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,26:20:604-26:33:617",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -944,7 +944,7 @@
                     "primary": {},
                     "value": {
                       "map": {
-                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,29:9:632-34:2:779",
+                        "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,29:9:632-34:3:780",
                         "nodes": [
                           {
                             "map_key": {
@@ -1001,7 +1001,7 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,31:8:663-31:43:698",
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,31:8:663-31:44:699",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -1063,7 +1063,7 @@
                               "primary": {},
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,32:20:720-32:32:732",
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,32:20:720-32:33:733",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -1135,7 +1135,7 @@
                               },
                               "value": {
                                 "map": {
-                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,33:17:751-33:41:775",
+                                  "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,33:17:751-33:42:776",
                                   "nodes": [
                                     {
                                       "map_key": {
@@ -1270,7 +1270,7 @@
           "primary": {},
           "value": {
             "map": {
-              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,46:15:1024-56:0:1178",
+              "range": "d2/testdata/d2parser/TestParse/table_and_class.d2,46:15:1024-56:1:1179",
               "nodes": [
                 {
                   "map_key": {

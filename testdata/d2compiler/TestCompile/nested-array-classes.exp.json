@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,0:9:9-7:0:110",
+                "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,0:9:9-7:1:111",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,1:14:25-3:2:57",
+                          "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,1:14:25-3:3:58",
                           "nodes": [
                             {
                               "map_key": {
@@ -120,7 +120,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,4:14:73-6:1:108",
+                          "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,4:14:73-6:2:109",
                           "nodes": [
                             {
                               "map_key": {
@@ -221,7 +221,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:8:121-9:43:156",
+                "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,9:8:121-9:44:157",
                 "nodes": [
                   {
                     "map_key": {
@@ -324,7 +324,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:8:166-10:43:201",
+                "range": "d2/testdata/d2compiler/TestCompile/nested-array-classes.d2,10:8:166-10:44:202",
                 "nodes": [
                   {
                     "map_key": {
@@ -403,9 +403,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -431,9 +429,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "references": [
           {
@@ -456,9 +452,11 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null,
+          "classes": [
+            "one target",
+            "association"
+          ]
         },
         "zIndex": 0
       },
@@ -483,9 +481,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "references": [
           {
@@ -508,9 +504,11 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null,
+          "classes": [
+            "association",
+            "one target"
+          ]
         },
         "zIndex": 0
       }
@@ -577,9 +575,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -644,9 +640,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

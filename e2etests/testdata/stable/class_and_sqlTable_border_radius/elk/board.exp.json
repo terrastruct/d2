@@ -10,7 +10,7 @@
         "x": 12,
         "y": 14
       },
-      "width": 439,
+      "width": 437,
       "height": 180,
       "opacity": 1,
       "strokeDash": 0,
@@ -55,7 +55,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "primary_key",
+          "constraint": [
+            "primary_key"
+          ],
           "reference": ""
         },
         {
@@ -83,7 +85,9 @@
             "labelWidth": 23,
             "labelHeight": 26
           },
-          "constraint": "foreign_key",
+          "constraint": [
+            "foreign_key"
+          ],
           "reference": ""
         },
         {
@@ -111,7 +115,9 @@
             "labelWidth": 48,
             "labelHeight": 26
           },
-          "constraint": "unique",
+          "constraint": [
+            "unique"
+          ],
           "reference": ""
         },
         {
@@ -139,7 +145,7 @@
             "labelWidth": 219,
             "labelHeight": 26
           },
-          "constraint": "",
+          "constraint": null,
           "reference": ""
         }
       ],
@@ -163,7 +169,7 @@
       "id": "b",
       "type": "class",
       "pos": {
-        "x": 471,
+        "x": 469,
         "y": 12
       },
       "width": 407,
@@ -218,7 +224,7 @@
       "id": "c",
       "type": "class",
       "pos": {
-        "x": 898,
+        "x": 896,
         "y": 58
       },
       "width": 117,
@@ -261,7 +267,7 @@
       "id": "d",
       "type": "sql_table",
       "pos": {
-        "x": 1035,
+        "x": 1033,
         "y": 86
       },
       "width": 50,

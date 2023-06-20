@@ -50,7 +50,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/edge_map_arrowhead.d2,0:8:8-4:0:55",
+                "range": "d2/testdata/d2compiler/TestCompile/edge_map_arrowhead.d2,0:8:8-4:1:56",
                 "nodes": [
                   {
                     "map_key": {
@@ -74,7 +74,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/edge_map_arrowhead.d2,1:20:30-3:2:53",
+                          "range": "d2/testdata/d2compiler/TestCompile/edge_map_arrowhead.d2,1:20:30-3:3:54",
                           "nodes": [
                             {
                               "map_key": {
@@ -140,9 +140,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -167,9 +165,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "dst_arrow": true,
         "references": [
@@ -193,9 +189,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }
@@ -242,9 +236,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -289,9 +281,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

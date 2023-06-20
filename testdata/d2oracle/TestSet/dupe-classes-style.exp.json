@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestSet/dupe-classes-style.d2,0:9:9-4:0:42",
+                "range": "d2/testdata/d2oracle/TestSet/dupe-classes-style.d2,0:9:9-4:1:43",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestSet/dupe-classes-style.d2,1:5:16-3:2:40",
+                          "range": "d2/testdata/d2oracle/TestSet/dupe-classes-style.d2,1:5:16-3:3:41",
                           "nodes": [
                             {
                               "map_key": {
@@ -227,9 +227,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -333,9 +331,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          },
+          "constraint": null,
           "classes": [
             "a"
           ]

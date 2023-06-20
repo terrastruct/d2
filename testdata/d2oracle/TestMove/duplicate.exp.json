@@ -73,7 +73,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestMove/duplicate.d2,3:3:8-5:0:28",
+                "range": "d2/testdata/d2oracle/TestMove/duplicate.d2,3:3:8-5:1:29",
                 "nodes": [
                   {
                     "map_key": {
@@ -134,9 +134,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -203,9 +201,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -250,9 +246,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

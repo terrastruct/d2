@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,0:7:7-8:0:123",
+                "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,0:7:7-8:1:124",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,1:9:18-4:2:81",
+                          "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,1:9:18-4:3:82",
                           "nodes": [
                             {
                               "map_key": {
@@ -118,7 +118,7 @@
                                 },
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,3:12:53-3:36:77",
+                                    "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,3:12:53-3:37:78",
                                     "nodes": [
                                       {
                                         "map_key": {
@@ -269,9 +269,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -302,9 +300,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }
@@ -351,9 +347,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -460,7 +454,9 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": "primary_key",
+              "constraint": [
+                "primary_key"
+              ],
               "reference": ""
             }
           ]
@@ -481,9 +477,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -528,9 +522,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

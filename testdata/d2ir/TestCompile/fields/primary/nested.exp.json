@@ -160,7 +160,7 @@
                     },
                     "value": {
                       "map": {
-                        "range": "TestCompile/fields/primary/nested.d2,0:9:9-0:16:16",
+                        "range": "TestCompile/fields/primary/nested.d2,0:9:9-0:17:17",
                         "nodes": [
                           {
                             "map_key": {
@@ -278,7 +278,7 @@
               },
               "value": {
                 "map": {
-                  "range": "TestCompile/fields/primary/nested.d2,0:9:9-0:16:16",
+                  "range": "TestCompile/fields/primary/nested.d2,0:9:9-0:17:17",
                   "nodes": [
                     {
                       "map_key": {

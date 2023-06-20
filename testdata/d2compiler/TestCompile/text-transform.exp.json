@@ -93,7 +93,7 @@
             },
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:11:28-5:0:76",
+                "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,1:11:28-5:1:77",
                 "nodes": [
                   {
                     "map_key": {
@@ -117,7 +117,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,2:9:39-4:2:74",
+                          "range": "d2/testdata/d2compiler/TestCompile/text-transform.d2,2:9:39-4:3:75",
                           "nodes": [
                             {
                               "map_key": {
@@ -293,9 +293,7 @@
         "direction": {
           "value": "right"
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -330,9 +328,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }
@@ -425,9 +421,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -518,9 +512,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

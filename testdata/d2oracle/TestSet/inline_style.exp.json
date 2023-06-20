@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestSet/inline_style.d2,0:8:8-3:0:49",
+                "range": "d2/testdata/d2oracle/TestSet/inline_style.d2,0:8:8-3:1:50",
                 "nodes": [
                   {
                     "map_key": {
@@ -139,9 +139,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -195,9 +193,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

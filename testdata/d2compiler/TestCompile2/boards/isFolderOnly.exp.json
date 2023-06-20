@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:8:9-17:0:163",
+                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:8:9-17:1:164",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:7:18-4:2:32",
+                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:7:18-4:3:33",
                           "nodes": [
                             {
                               "map_key": {
@@ -103,7 +103,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:7:41-16:2:161",
+                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:7:41-16:3:162",
                           "nodes": [
                             {
                               "map_key": {
@@ -150,7 +150,7 @@
                                 "primary": {},
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:13:67-15:2:157",
+                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:13:67-15:3:158",
                                     "nodes": [
                                       {
                                         "map_key": {
@@ -174,7 +174,7 @@
                                           "primary": {},
                                           "value": {
                                             "map": {
-                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:13:82-9:3:87",
+                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:13:82-9:4:88",
                                               "nodes": null
                                             }
                                           }
@@ -202,7 +202,7 @@
                                           "primary": {},
                                           "value": {
                                             "map": {
-                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:13:102-14:3:153",
+                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:13:102-14:4:154",
                                               "nodes": [
                                                 {
                                                   "map_key": {
@@ -226,7 +226,7 @@
                                                     "primary": {},
                                                     "value": {
                                                       "map": {
-                                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:11:115-13:4:148",
+                                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:11:115-13:5:149",
                                                         "nodes": [
                                                           {
                                                             "map_key": {
@@ -307,9 +307,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -320,21 +318,20 @@
         "name": "one",
         "isFolderOnly": false,
         "ast": {
-          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,0:0:0-18:0:165",
+          "range": ",1:0:0-2:0:0",
           "nodes": [
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:0:1-17:1:164",
+                "range": ",0:0:0-0:0:0",
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:0:1-1:6:7",
+                  "range": ",0:0:0-0:0:0",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:0:1-1:6:7",
+                        "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "layers",
-                            "raw_string": "layers"
+                            "string": "santa"
                           }
                         ]
                       }
@@ -342,265 +339,7 @@
                   ]
                 },
                 "primary": {},
-                "value": {
-                  "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:8:9-17:0:163",
-                    "nodes": [
-                      {
-                        "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:2:13-4:3:33",
-                          "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:2:13-2:5:16",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:2:13-2:5:16",
-                                  "value": [
-                                    {
-                                      "string": "one",
-                                      "raw_string": "one"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:7:18-4:2:32",
-                              "nodes": [
-                                {
-                                  "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,3:4:24-3:9:29",
-                                    "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,3:4:24-3:9:29",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,3:4:24-3:9:29",
-                                            "value": [
-                                              {
-                                                "string": "santa",
-                                                "raw_string": "santa"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "primary": {},
-                                    "value": {}
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        }
-                      },
-                      {
-                        "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:2:36-16:3:162",
-                          "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:2:36-5:5:39",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:2:36-5:5:39",
-                                  "value": [
-                                    {
-                                      "string": "two",
-                                      "raw_string": "two"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:7:41-16:2:161",
-                              "nodes": [
-                                {
-                                  "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
-                                    "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
-                                            "value": [
-                                              {
-                                                "string": "clause",
-                                                "raw_string": "clause"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "primary": {},
-                                    "value": {}
-                                  }
-                                },
-                                {
-                                  "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:2:56-15:3:158",
-                                    "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:2:56-7:11:65",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:2:56-7:11:65",
-                                            "value": [
-                                              {
-                                                "string": "scenarios",
-                                                "raw_string": "scenarios"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "primary": {},
-                                    "value": {
-                                      "map": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:13:67-15:2:157",
-                                        "nodes": [
-                                          {
-                                            "map_key": {
-                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:3:72-9:4:88",
-                                              "key": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:3:72-8:11:80",
-                                                "path": [
-                                                  {
-                                                    "unquoted_string": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:3:72-8:11:80",
-                                                      "value": [
-                                                        {
-                                                          "string": "seinfeld",
-                                                          "raw_string": "seinfeld"
-                                                        }
-                                                      ]
-                                                    }
-                                                  }
-                                                ]
-                                              },
-                                              "primary": {},
-                                              "value": {
-                                                "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:13:82-9:3:87",
-                                                  "nodes": null
-                                                }
-                                              }
-                                            }
-                                          },
-                                          {
-                                            "map_key": {
-                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:3:92-14:4:154",
-                                              "key": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:3:92-10:11:100",
-                                                "path": [
-                                                  {
-                                                    "unquoted_string": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:3:92-10:11:100",
-                                                      "value": [
-                                                        {
-                                                          "string": "missoula",
-                                                          "raw_string": "missoula"
-                                                        }
-                                                      ]
-                                                    }
-                                                  }
-                                                ]
-                                              },
-                                              "primary": {},
-                                              "value": {
-                                                "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:13:102-14:3:153",
-                                                  "nodes": [
-                                                    {
-                                                      "map_key": {
-                                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:4:108-13:5:149",
-                                                        "key": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:4:108-11:9:113",
-                                                          "path": [
-                                                            {
-                                                              "unquoted_string": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:4:108-11:9:113",
-                                                                "value": [
-                                                                  {
-                                                                    "string": "steps",
-                                                                    "raw_string": "steps"
-                                                                  }
-                                                                ]
-                                                              }
-                                                            }
-                                                          ]
-                                                        },
-                                                        "primary": {},
-                                                        "value": {
-                                                          "map": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:11:115-13:4:148",
-                                                            "nodes": [
-                                                              {
-                                                                "map_key": {
-                                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:5:122-12:26:143",
-                                                                  "key": {
-                                                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:5:122-12:11:128",
-                                                                    "path": [
-                                                                      {
-                                                                        "unquoted_string": {
-                                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:5:122-12:11:128",
-                                                                          "value": [
-                                                                            {
-                                                                              "string": "missus",
-                                                                              "raw_string": "missus"
-                                                                            }
-                                                                          ]
-                                                                        }
-                                                                      }
-                                                                    ]
-                                                                  },
-                                                                  "primary": {},
-                                                                  "value": {
-                                                                    "unquoted_string": {
-                                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:13:130-12:26:143",
-                                                                      "value": [
-                                                                        {
-                                                                          "string": "one two three",
-                                                                          "raw_string": "one two three"
-                                                                        }
-                                                                      ]
-                                                                    }
-                                                                  }
-                                                                }
-                                                              }
-                                                            ]
-                                                          }
-                                                        }
-                                                      }
-                                                    }
-                                                  ]
-                                                }
-                                              }
-                                            }
-                                          }
-                                        ]
-                                      }
-                                    }
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
+                "value": {}
               }
             }
           ]
@@ -624,9 +363,7 @@
             "direction": {
               "value": ""
             },
-            "constraint": {
-              "value": ""
-            }
+            "constraint": null
           },
           "zIndex": 0
         },
@@ -673,9 +410,7 @@
               "direction": {
                 "value": ""
               },
-              "constraint": {
-                "value": ""
-              }
+              "constraint": null
             },
             "zIndex": 0
           }
@@ -685,21 +420,42 @@
         "name": "two",
         "isFolderOnly": false,
         "ast": {
-          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,0:0:0-18:0:165",
+          "range": ",1:0:0-2:0:0",
           "nodes": [
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:0:1-17:1:164",
+                "range": ",0:0:0-0:0:0",
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:0:1-1:6:7",
+                  "range": ",0:0:0-0:0:0",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:0:1-1:6:7",
+                        "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "layers",
-                            "raw_string": "layers"
+                            "string": "clause"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {}
+              }
+            },
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "scenarios"
                           }
                         ]
                       }
@@ -709,21 +465,20 @@
                 "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:8:9-17:0:163",
+                    "range": ",1:0:0-2:0:0",
                     "nodes": [
                       {
                         "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:2:13-4:3:33",
+                          "range": ",0:0:0-0:0:0",
                           "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:2:13-2:5:16",
+                            "range": ",0:0:0-0:0:0",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:2:13-2:5:16",
+                                  "range": ",0:0:0-0:0:0",
                                   "value": [
                                     {
-                                      "string": "one",
-                                      "raw_string": "one"
+                                      "string": "seinfeld"
                                     }
                                   ]
                                 }
@@ -733,21 +488,20 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:7:18-4:2:32",
+                              "range": ",1:0:0-2:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,3:4:24-3:9:29",
+                                    "range": ",0:0:0-0:0:0",
                                     "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,3:4:24-3:9:29",
+                                      "range": ",0:0:0-0:0:0",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,3:4:24-3:9:29",
+                                            "range": ",0:0:0-0:0:0",
                                             "value": [
                                               {
-                                                "string": "santa",
-                                                "raw_string": "santa"
+                                                "string": "clause"
                                               }
                                             ]
                                           }
@@ -765,17 +519,16 @@
                       },
                       {
                         "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:2:36-16:3:162",
+                          "range": ",0:0:0-0:0:0",
                           "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:2:36-5:5:39",
+                            "range": ",0:0:0-0:0:0",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:2:36-5:5:39",
+                                  "range": ",0:0:0-0:0:0",
                                   "value": [
                                     {
-                                      "string": "two",
-                                      "raw_string": "two"
+                                      "string": "missoula"
                                     }
                                   ]
                                 }
@@ -785,21 +538,20 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:7:41-16:2:161",
+                              "range": ",1:0:0-2:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
+                                    "range": ",0:0:0-0:0:0",
                                     "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
+                                      "range": ",0:0:0-0:0:0",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
+                                            "range": ",0:0:0-0:0:0",
                                             "value": [
                                               {
-                                                "string": "clause",
-                                                "raw_string": "clause"
+                                                "string": "clause"
                                               }
                                             ]
                                           }
@@ -812,17 +564,16 @@
                                 },
                                 {
                                   "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:2:56-15:3:158",
+                                    "range": ",0:0:0-0:0:0",
                                     "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:2:56-7:11:65",
+                                      "range": ",0:0:0-0:0:0",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:2:56-7:11:65",
+                                            "range": ",0:0:0-0:0:0",
                                             "value": [
                                               {
-                                                "string": "scenarios",
-                                                "raw_string": "scenarios"
+                                                "string": "steps"
                                               }
                                             ]
                                           }
@@ -832,125 +583,38 @@
                                     "primary": {},
                                     "value": {
                                       "map": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:13:67-15:2:157",
+                                        "range": ",1:0:0-2:0:0",
                                         "nodes": [
                                           {
                                             "map_key": {
-                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:3:72-9:4:88",
+                                              "range": ",0:0:0-0:0:0",
                                               "key": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:3:72-8:11:80",
+                                                "range": ",0:0:0-0:0:0",
                                                 "path": [
                                                   {
                                                     "unquoted_string": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:3:72-8:11:80",
+                                                      "range": ",0:0:0-0:0:0",
                                                       "value": [
                                                         {
-                                                          "string": "seinfeld",
-                                                          "raw_string": "seinfeld"
+                                                          "string": "missus"
                                                         }
                                                       ]
                                                     }
                                                   }
                                                 ]
                                               },
-                                              "primary": {},
-                                              "value": {
-                                                "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:13:82-9:3:87",
-                                                  "nodes": null
-                                                }
-                                              }
-                                            }
-                                          },
-                                          {
-                                            "map_key": {
-                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:3:92-14:4:154",
-                                              "key": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:3:92-10:11:100",
-                                                "path": [
-                                                  {
-                                                    "unquoted_string": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:3:92-10:11:100",
-                                                      "value": [
-                                                        {
-                                                          "string": "missoula",
-                                                          "raw_string": "missoula"
-                                                        }
-                                                      ]
-                                                    }
-                                                  }
-                                                ]
-                                              },
-                                              "primary": {},
-                                              "value": {
-                                                "map": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:13:102-14:3:153",
-                                                  "nodes": [
+                                              "primary": {
+                                                "unquoted_string": {
+                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:13:130-12:26:143",
+                                                  "value": [
                                                     {
-                                                      "map_key": {
-                                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:4:108-13:5:149",
-                                                        "key": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:4:108-11:9:113",
-                                                          "path": [
-                                                            {
-                                                              "unquoted_string": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:4:108-11:9:113",
-                                                                "value": [
-                                                                  {
-                                                                    "string": "steps",
-                                                                    "raw_string": "steps"
-                                                                  }
-                                                                ]
-                                                              }
-                                                            }
-                                                          ]
-                                                        },
-                                                        "primary": {},
-                                                        "value": {
-                                                          "map": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:11:115-13:4:148",
-                                                            "nodes": [
-                                                              {
-                                                                "map_key": {
-                                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:5:122-12:26:143",
-                                                                  "key": {
-                                                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:5:122-12:11:128",
-                                                                    "path": [
-                                                                      {
-                                                                        "unquoted_string": {
-                                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:5:122-12:11:128",
-                                                                          "value": [
-                                                                            {
-                                                                              "string": "missus",
-                                                                              "raw_string": "missus"
-                                                                            }
-                                                                          ]
-                                                                        }
-                                                                      }
-                                                                    ]
-                                                                  },
-                                                                  "primary": {},
-                                                                  "value": {
-                                                                    "unquoted_string": {
-                                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:13:130-12:26:143",
-                                                                      "value": [
-                                                                        {
-                                                                          "string": "one two three",
-                                                                          "raw_string": "one two three"
-                                                                        }
-                                                                      ]
-                                                                    }
-                                                                  }
-                                                                }
-                                                              }
-                                                            ]
-                                                          }
-                                                        }
-                                                      }
+                                                      "string": "one two three",
+                                                      "raw_string": "one two three"
                                                     }
                                                   ]
                                                 }
-                                              }
+                                              },
+                                              "value": {}
                                             }
                                           }
                                         ]
@@ -989,9 +653,7 @@
             "direction": {
               "value": ""
             },
-            "constraint": {
-              "value": ""
-            }
+            "constraint": null
           },
           "zIndex": 0
         },
@@ -1038,9 +700,7 @@
               "direction": {
                 "value": ""
               },
-              "constraint": {
-                "value": ""
-              }
+              "constraint": null
             },
             "zIndex": 0
           }
@@ -1050,21 +710,20 @@
             "name": "seinfeld",
             "isFolderOnly": false,
             "ast": {
-              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,0:0:0-18:0:165",
+              "range": ",1:0:0-2:0:0",
               "nodes": [
                 {
                   "map_key": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:0:1-17:1:164",
+                    "range": ",0:0:0-0:0:0",
                     "key": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:0:1-1:6:7",
+                      "range": ",0:0:0-0:0:0",
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:0:1-1:6:7",
+                            "range": ",0:0:0-0:0:0",
                             "value": [
                               {
-                                "string": "layers",
-                                "raw_string": "layers"
+                                "string": "clause"
                               }
                             ]
                           }
@@ -1072,265 +731,7 @@
                       ]
                     },
                     "primary": {},
-                    "value": {
-                      "map": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:8:9-17:0:163",
-                        "nodes": [
-                          {
-                            "map_key": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:2:13-4:3:33",
-                              "key": {
-                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:2:13-2:5:16",
-                                "path": [
-                                  {
-                                    "unquoted_string": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:2:13-2:5:16",
-                                      "value": [
-                                        {
-                                          "string": "one",
-                                          "raw_string": "one"
-                                        }
-                                      ]
-                                    }
-                                  }
-                                ]
-                              },
-                              "primary": {},
-                              "value": {
-                                "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:7:18-4:2:32",
-                                  "nodes": [
-                                    {
-                                      "map_key": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,3:4:24-3:9:29",
-                                        "key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,3:4:24-3:9:29",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,3:4:24-3:9:29",
-                                                "value": [
-                                                  {
-                                                    "string": "santa",
-                                                    "raw_string": "santa"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "primary": {},
-                                        "value": {}
-                                      }
-                                    }
-                                  ]
-                                }
-                              }
-                            }
-                          },
-                          {
-                            "map_key": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:2:36-16:3:162",
-                              "key": {
-                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:2:36-5:5:39",
-                                "path": [
-                                  {
-                                    "unquoted_string": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:2:36-5:5:39",
-                                      "value": [
-                                        {
-                                          "string": "two",
-                                          "raw_string": "two"
-                                        }
-                                      ]
-                                    }
-                                  }
-                                ]
-                              },
-                              "primary": {},
-                              "value": {
-                                "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:7:41-16:2:161",
-                                  "nodes": [
-                                    {
-                                      "map_key": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
-                                        "key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
-                                                "value": [
-                                                  {
-                                                    "string": "clause",
-                                                    "raw_string": "clause"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "primary": {},
-                                        "value": {}
-                                      }
-                                    },
-                                    {
-                                      "map_key": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:2:56-15:3:158",
-                                        "key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:2:56-7:11:65",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:2:56-7:11:65",
-                                                "value": [
-                                                  {
-                                                    "string": "scenarios",
-                                                    "raw_string": "scenarios"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "primary": {},
-                                        "value": {
-                                          "map": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:13:67-15:2:157",
-                                            "nodes": [
-                                              {
-                                                "map_key": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:3:72-9:4:88",
-                                                  "key": {
-                                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:3:72-8:11:80",
-                                                    "path": [
-                                                      {
-                                                        "unquoted_string": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:3:72-8:11:80",
-                                                          "value": [
-                                                            {
-                                                              "string": "seinfeld",
-                                                              "raw_string": "seinfeld"
-                                                            }
-                                                          ]
-                                                        }
-                                                      }
-                                                    ]
-                                                  },
-                                                  "primary": {},
-                                                  "value": {
-                                                    "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:13:82-9:3:87",
-                                                      "nodes": null
-                                                    }
-                                                  }
-                                                }
-                                              },
-                                              {
-                                                "map_key": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:3:92-14:4:154",
-                                                  "key": {
-                                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:3:92-10:11:100",
-                                                    "path": [
-                                                      {
-                                                        "unquoted_string": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:3:92-10:11:100",
-                                                          "value": [
-                                                            {
-                                                              "string": "missoula",
-                                                              "raw_string": "missoula"
-                                                            }
-                                                          ]
-                                                        }
-                                                      }
-                                                    ]
-                                                  },
-                                                  "primary": {},
-                                                  "value": {
-                                                    "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:13:102-14:3:153",
-                                                      "nodes": [
-                                                        {
-                                                          "map_key": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:4:108-13:5:149",
-                                                            "key": {
-                                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:4:108-11:9:113",
-                                                              "path": [
-                                                                {
-                                                                  "unquoted_string": {
-                                                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:4:108-11:9:113",
-                                                                    "value": [
-                                                                      {
-                                                                        "string": "steps",
-                                                                        "raw_string": "steps"
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                }
-                                                              ]
-                                                            },
-                                                            "primary": {},
-                                                            "value": {
-                                                              "map": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:11:115-13:4:148",
-                                                                "nodes": [
-                                                                  {
-                                                                    "map_key": {
-                                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:5:122-12:26:143",
-                                                                      "key": {
-                                                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:5:122-12:11:128",
-                                                                        "path": [
-                                                                          {
-                                                                            "unquoted_string": {
-                                                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:5:122-12:11:128",
-                                                                              "value": [
-                                                                                {
-                                                                                  "string": "missus",
-                                                                                  "raw_string": "missus"
-                                                                                }
-                                                                              ]
-                                                                            }
-                                                                          }
-                                                                        ]
-                                                                      },
-                                                                      "primary": {},
-                                                                      "value": {
-                                                                        "unquoted_string": {
-                                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:13:130-12:26:143",
-                                                                          "value": [
-                                                                            {
-                                                                              "string": "one two three",
-                                                                              "raw_string": "one two three"
-                                                                            }
-                                                                          ]
-                                                                        }
-                                                                      }
-                                                                    }
-                                                                  }
-                                                                ]
-                                                              }
-                                                            }
-                                                          }
-                                                        }
-                                                      ]
-                                                    }
-                                                  }
-                                                }
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      }
-                                    }
-                                  ]
-                                }
-                              }
-                            }
-                          }
-                        ]
-                      }
-                    }
+                    "value": {}
                   }
                 }
               ]
@@ -1354,9 +755,7 @@
                 "direction": {
                   "value": ""
                 },
-                "constraint": {
-                  "value": ""
-                }
+                "constraint": null
               },
               "zIndex": 0
             },
@@ -1403,9 +802,7 @@
                   "direction": {
                     "value": ""
                   },
-                  "constraint": {
-                    "value": ""
-                  }
+                  "constraint": null
                 },
                 "zIndex": 0
               }
@@ -1415,21 +812,42 @@
             "name": "missoula",
             "isFolderOnly": false,
             "ast": {
-              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,0:0:0-18:0:165",
+              "range": ",1:0:0-2:0:0",
               "nodes": [
                 {
                   "map_key": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:0:1-17:1:164",
+                    "range": ",0:0:0-0:0:0",
                     "key": {
-                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:0:1-1:6:7",
+                      "range": ",0:0:0-0:0:0",
                       "path": [
                         {
                           "unquoted_string": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:0:1-1:6:7",
+                            "range": ",0:0:0-0:0:0",
                             "value": [
                               {
-                                "string": "layers",
-                                "raw_string": "layers"
+                                "string": "clause"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {}
+                  }
+                },
+                {
+                  "map_key": {
+                    "range": ",0:0:0-0:0:0",
+                    "key": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "steps"
                               }
                             ]
                           }
@@ -1439,258 +857,38 @@
                     "primary": {},
                     "value": {
                       "map": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,1:8:9-17:0:163",
+                        "range": ",1:0:0-2:0:0",
                         "nodes": [
                           {
                             "map_key": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:2:13-4:3:33",
+                              "range": ",0:0:0-0:0:0",
                               "key": {
-                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:2:13-2:5:16",
+                                "range": ",0:0:0-0:0:0",
                                 "path": [
                                   {
                                     "unquoted_string": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:2:13-2:5:16",
+                                      "range": ",0:0:0-0:0:0",
                                       "value": [
                                         {
-                                          "string": "one",
-                                          "raw_string": "one"
+                                          "string": "missus"
                                         }
                                       ]
                                     }
                                   }
                                 ]
                               },
-                              "primary": {},
-                              "value": {
-                                "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,2:7:18-4:2:32",
-                                  "nodes": [
+                              "primary": {
+                                "unquoted_string": {
+                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:13:130-12:26:143",
+                                  "value": [
                                     {
-                                      "map_key": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,3:4:24-3:9:29",
-                                        "key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,3:4:24-3:9:29",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,3:4:24-3:9:29",
-                                                "value": [
-                                                  {
-                                                    "string": "santa",
-                                                    "raw_string": "santa"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "primary": {},
-                                        "value": {}
-                                      }
+                                      "string": "one two three",
+                                      "raw_string": "one two three"
                                     }
                                   ]
                                 }
-                              }
-                            }
-                          },
-                          {
-                            "map_key": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:2:36-16:3:162",
-                              "key": {
-                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:2:36-5:5:39",
-                                "path": [
-                                  {
-                                    "unquoted_string": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:2:36-5:5:39",
-                                      "value": [
-                                        {
-                                          "string": "two",
-                                          "raw_string": "two"
-                                        }
-                                      ]
-                                    }
-                                  }
-                                ]
                               },
-                              "primary": {},
-                              "value": {
-                                "map": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,5:7:41-16:2:161",
-                                  "nodes": [
-                                    {
-                                      "map_key": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
-                                        "key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,6:4:47-6:10:53",
-                                                "value": [
-                                                  {
-                                                    "string": "clause",
-                                                    "raw_string": "clause"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "primary": {},
-                                        "value": {}
-                                      }
-                                    },
-                                    {
-                                      "map_key": {
-                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:2:56-15:3:158",
-                                        "key": {
-                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:2:56-7:11:65",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:2:56-7:11:65",
-                                                "value": [
-                                                  {
-                                                    "string": "scenarios",
-                                                    "raw_string": "scenarios"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "primary": {},
-                                        "value": {
-                                          "map": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,7:13:67-15:2:157",
-                                            "nodes": [
-                                              {
-                                                "map_key": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:3:72-9:4:88",
-                                                  "key": {
-                                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:3:72-8:11:80",
-                                                    "path": [
-                                                      {
-                                                        "unquoted_string": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:3:72-8:11:80",
-                                                          "value": [
-                                                            {
-                                                              "string": "seinfeld",
-                                                              "raw_string": "seinfeld"
-                                                            }
-                                                          ]
-                                                        }
-                                                      }
-                                                    ]
-                                                  },
-                                                  "primary": {},
-                                                  "value": {
-                                                    "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,8:13:82-9:3:87",
-                                                      "nodes": null
-                                                    }
-                                                  }
-                                                }
-                                              },
-                                              {
-                                                "map_key": {
-                                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:3:92-14:4:154",
-                                                  "key": {
-                                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:3:92-10:11:100",
-                                                    "path": [
-                                                      {
-                                                        "unquoted_string": {
-                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:3:92-10:11:100",
-                                                          "value": [
-                                                            {
-                                                              "string": "missoula",
-                                                              "raw_string": "missoula"
-                                                            }
-                                                          ]
-                                                        }
-                                                      }
-                                                    ]
-                                                  },
-                                                  "primary": {},
-                                                  "value": {
-                                                    "map": {
-                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,10:13:102-14:3:153",
-                                                      "nodes": [
-                                                        {
-                                                          "map_key": {
-                                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:4:108-13:5:149",
-                                                            "key": {
-                                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:4:108-11:9:113",
-                                                              "path": [
-                                                                {
-                                                                  "unquoted_string": {
-                                                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:4:108-11:9:113",
-                                                                    "value": [
-                                                                      {
-                                                                        "string": "steps",
-                                                                        "raw_string": "steps"
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                }
-                                                              ]
-                                                            },
-                                                            "primary": {},
-                                                            "value": {
-                                                              "map": {
-                                                                "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,11:11:115-13:4:148",
-                                                                "nodes": [
-                                                                  {
-                                                                    "map_key": {
-                                                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:5:122-12:26:143",
-                                                                      "key": {
-                                                                        "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:5:122-12:11:128",
-                                                                        "path": [
-                                                                          {
-                                                                            "unquoted_string": {
-                                                                              "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:5:122-12:11:128",
-                                                                              "value": [
-                                                                                {
-                                                                                  "string": "missus",
-                                                                                  "raw_string": "missus"
-                                                                                }
-                                                                              ]
-                                                                            }
-                                                                          }
-                                                                        ]
-                                                                      },
-                                                                      "primary": {},
-                                                                      "value": {
-                                                                        "unquoted_string": {
-                                                                          "range": "d2/testdata/d2compiler/TestCompile2/boards/isFolderOnly.d2,12:13:130-12:26:143",
-                                                                          "value": [
-                                                                            {
-                                                                              "string": "one two three",
-                                                                              "raw_string": "one two three"
-                                                                            }
-                                                                          ]
-                                                                        }
-                                                                      }
-                                                                    }
-                                                                  }
-                                                                ]
-                                                              }
-                                                            }
-                                                          }
-                                                        }
-                                                      ]
-                                                    }
-                                                  }
-                                                }
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      }
-                                    }
-                                  ]
-                                }
-                              }
+                              "value": {}
                             }
                           }
                         ]
@@ -1719,9 +917,7 @@
                 "direction": {
                   "value": ""
                 },
-                "constraint": {
-                  "value": ""
-                }
+                "constraint": null
               },
               "zIndex": 0
             },
@@ -1768,9 +964,7 @@
                   "direction": {
                     "value": ""
                   },
-                  "constraint": {
-                    "value": ""
-                  }
+                  "constraint": null
                 },
                 "zIndex": 0
               }

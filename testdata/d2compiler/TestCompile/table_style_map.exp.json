@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,0:17:17-7:0:111",
+                "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,0:17:17-7:1:112",
                 "nodes": [
                   {
                     "map_key": {
@@ -117,7 +117,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,3:9:67-6:2:109",
+                          "range": "d2/testdata/d2compiler/TestCompile/table_style_map.d2,3:9:67-6:3:110",
                           "nodes": [
                             {
                               "map_key": {
@@ -212,9 +212,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -272,7 +270,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": "",
+              "constraint": null,
               "reference": ""
             }
           ]
@@ -300,9 +298,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

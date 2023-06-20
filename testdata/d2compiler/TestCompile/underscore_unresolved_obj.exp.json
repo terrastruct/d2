@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/underscore_unresolved_obj.d2,1:3:4-3:0:11",
+                "range": "d2/testdata/d2compiler/TestCompile/underscore_unresolved_obj.d2,1:3:4-3:1:12",
                 "nodes": [
                   {
                     "map_key": {
@@ -89,9 +89,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -138,9 +136,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -196,9 +192,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

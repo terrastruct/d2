@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,0:3:3-9:0:85",
+                "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,0:3:3-9:1:86",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,1:9:14-3:2:41",
+                          "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,1:9:14-3:3:42",
                           "nodes": [
                             {
                               "map_key": {
@@ -113,7 +113,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,4:5:48-7:2:79",
+                          "range": "d2/testdata/d2compiler/TestCompile/sql-regression.d2,4:5:48-7:3:80",
                           "nodes": [
                             {
                               "map_key": {
@@ -225,9 +225,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -278,9 +276,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -336,7 +332,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": "",
+              "constraint": null,
               "reference": ""
             }
           ]
@@ -357,9 +353,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -404,9 +398,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

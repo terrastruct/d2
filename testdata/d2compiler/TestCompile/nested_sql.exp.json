@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/nested_sql.d2,0:7:7-7:0:83",
+                "range": "d2/testdata/d2compiler/TestCompile/nested_sql.d2,0:7:7-7:1:84",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/nested_sql.d2,1:9:18-6:2:81",
+                          "range": "d2/testdata/d2compiler/TestCompile/nested_sql.d2,1:9:18-6:3:82",
                           "nodes": [
                             {
                               "map_key": {
@@ -183,9 +183,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -232,9 +230,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -290,7 +286,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": "",
+              "constraint": null,
               "reference": ""
             },
             {
@@ -318,7 +314,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": "",
+              "constraint": null,
               "reference": ""
             }
           ]
@@ -339,9 +335,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

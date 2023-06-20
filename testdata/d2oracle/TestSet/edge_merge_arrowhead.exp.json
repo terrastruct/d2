@@ -50,7 +50,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestSet/edge_merge_arrowhead.d2,0:8:8-5:0:68",
+                "range": "d2/testdata/d2oracle/TestSet/edge_merge_arrowhead.d2,0:8:8-5:1:69",
                 "nodes": [
                   {
                     "map_key": {
@@ -74,7 +74,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestSet/edge_merge_arrowhead.d2,1:20:30-4:2:66",
+                          "range": "d2/testdata/d2oracle/TestSet/edge_merge_arrowhead.d2,1:20:30-4:3:67",
                           "nodes": [
                             {
                               "map_key": {
@@ -169,9 +169,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -197,9 +195,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "references": [
           {
@@ -222,9 +218,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }
@@ -271,9 +265,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -318,9 +310,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

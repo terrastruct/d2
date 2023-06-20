@@ -37,6 +37,7 @@ import (
 	"oss.terrastruct.com/d2/lib/png"
 	"oss.terrastruct.com/d2/lib/pptx"
 	"oss.terrastruct.com/d2/lib/textmeasure"
+	timelib "oss.terrastruct.com/d2/lib/time"
 	"oss.terrastruct.com/d2/lib/version"
 	"oss.terrastruct.com/d2/lib/xgif"
 
@@ -67,6 +68,10 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	imgCacheFlag, err := ms.Opts.Bool("IMG_CACHE", "img-cache", "", true, "in watch mode, images used in icons are cached for subsequent compilations. This should be disabled if images might change.")
+	if err != nil {
+		return err
+	}
 	layoutFlag := ms.Opts.String("D2_LAYOUT", "layout", "l", "dagre", `the layout engine used`)
 	themeFlag, err := ms.Opts.Int64("D2_THEME", "theme", "t", 0, "the diagram theme ID")
 	if err != nil {
@@ -84,6 +89,11 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
+	timeoutFlag, err := ms.Opts.Int64("D2_TIMEOUT", "timeout", "", 120, "the maximum number of seconds that D2 runs for before timing out and exiting. When rendering a large diagram, it is recommended to increase this value")
+	if err != nil {
+		return err
+	}
+
 	versionFlag, err := ms.Opts.Bool("", "version", "v", false, "get the version")
 	if err != nil {
 		return err
@@ -150,8 +160,14 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if *debugFlag {
 		ms.Env.Setenv("DEBUG", "1")
 	}
+	if *imgCacheFlag {
+		ms.Env.Setenv("IMG_CACHE", "1")
+	}
 	if *browserFlag != "" {
 		ms.Env.Setenv("BROWSER", *browserFlag)
+	}
+	if timeoutFlag != nil {
+		os.Setenv("D2_TIMEOUT", fmt.Sprintf("%d", *timeoutFlag))
 	}
 
 	var inputPath string
@@ -291,7 +307,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		return w.run()
 	}
 
-	ctx, cancel := context.WithTimeout(ctx, time.Minute*2)
+	ctx, cancel := timelib.WithTimeout(ctx, time.Minute*2)
 	defer cancel()
 
 	_, written, err := compile(ctx, ms, plugin, renderOpts, fontFamily, *animateIntervalFlag, inputPath, outputPath, *bundleFlag, *forceAppendixFlag, pw.Page)
@@ -322,6 +338,7 @@ func compile(ctx context.Context, ms *xmain.State, plugin d2plugin.Plugin, rende
 		Ruler:      ruler,
 		ThemeID:    renderOpts.ThemeID,
 		FontFamily: fontFamily,
+		InputPath:  inputPath,
 	}
 	if renderOpts.Sketch {
 		opts.FontFamily = go2.Pointer(d2fonts.HandDrawn)

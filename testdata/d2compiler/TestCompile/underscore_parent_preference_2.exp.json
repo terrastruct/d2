@@ -60,7 +60,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference_2.d2,2:3:85-4:0:172",
+                "range": "d2/testdata/d2compiler/TestCompile/underscore_parent_preference_2.d2,2:3:85-4:1:173",
                 "nodes": [
                   {
                     "map_key": {
@@ -132,9 +132,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -212,9 +210,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -259,9 +255,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

@@ -73,7 +73,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,2:3:11-8:0:67",
+                "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,2:3:11-8:1:68",
                 "nodes": [
                   {
                     "map_key": {
@@ -147,7 +147,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,3:18:31-7:1:65",
+                          "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,3:18:31-7:2:66",
                           "nodes": [
                             {
                               "map_key": {
@@ -171,7 +171,7 @@
                                 "primary": {},
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,4:9:42-6:2:62",
+                                    "range": "d2/testdata/d2compiler/TestCompile/edge_key_group_map_nested_underscore.d2,4:9:42-6:3:63",
                                     "nodes": [
                                       {
                                         "map_key": {
@@ -238,9 +238,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -278,9 +276,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }
@@ -327,9 +323,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -374,9 +368,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -421,9 +413,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

@@ -32,7 +32,7 @@
             },
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/single_dimension_on_circle.d2,0:8:8-3:0:38",
+                "range": "d2/testdata/d2compiler/TestCompile/single_dimension_on_circle.d2,0:8:8-3:1:39",
                 "nodes": [
                   {
                     "map_key": {
@@ -122,9 +122,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -174,9 +172,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

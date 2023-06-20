@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestSet/icon.d2,0:6:6-0:66:66",
+                "range": "d2/testdata/d2oracle/TestSet/icon.d2,0:6:6-0:67:67",
                 "nodes": [
                   {
                     "map_key": {
@@ -88,9 +88,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -150,9 +148,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

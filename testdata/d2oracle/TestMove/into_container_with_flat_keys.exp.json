@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestMove/into_container_with_flat_keys.d2,0:3:3-6:0:93",
+                "range": "d2/testdata/d2oracle/TestMove/into_container_with_flat_keys.d2,0:3:3-6:1:94",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestMove/into_container_with_flat_keys.d2,1:5:10-5:2:91",
+                          "range": "d2/testdata/d2oracle/TestMove/into_container_with_flat_keys.d2,1:5:10-5:3:92",
                           "nodes": [
                             {
                               "map_key": {
@@ -212,9 +212,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -261,9 +259,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -318,9 +314,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestMove/include_descendants_map_1.d2,0:3:3-4:0:22",
+                "range": "d2/testdata/d2oracle/TestMove/include_descendants_map_1.d2,0:3:3-4:1:23",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestMove/include_descendants_map_1.d2,1:5:10-3:2:20",
+                          "range": "d2/testdata/d2oracle/TestMove/include_descendants_map_1.d2,1:5:10-3:3:21",
                           "nodes": [
                             {
                               "map_key": {
@@ -107,9 +107,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -156,9 +154,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -203,9 +199,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -250,9 +244,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

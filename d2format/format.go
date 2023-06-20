@@ -1,6 +1,7 @@
 package d2format
 
 import (
+	"path"
 	"strconv"
 	"strings"
 
@@ -62,6 +63,8 @@ func (p *printer) node(n d2ast.Node) {
 		p.blockString(n)
 	case *d2ast.Substitution:
 		p.substitution(n)
+	case *d2ast.Import:
+		p._import(n)
 	case *d2ast.Array:
 		p.array(n)
 	case *d2ast.Map:
@@ -201,6 +204,25 @@ func (p *printer) substitution(s *d2ast.Substitution) {
 	p.sb.WriteString("${")
 	p.path(s.Path)
 	p.sb.WriteByte('}')
+}
+
+func (p *printer) _import(i *d2ast.Import) {
+	if i.Spread {
+		p.sb.WriteString("...")
+	}
+	p.sb.WriteString("@")
+	pre := path.Clean(i.Pre)
+	if pre != "." {
+		p.sb.WriteString(pre)
+		p.sb.WriteRune('/')
+	}
+	if len(i.Path) > 0 {
+		i2 := *i
+		i2.Path = append([]*d2ast.StringBox{}, i.Path...)
+		i2.Path[0] = d2ast.RawStringBox(path.Clean(i.Path[0].Unbox().ScalarString()), true)
+		i = &i2
+	}
+	p.path(i.Path)
 }
 
 func (p *printer) array(a *d2ast.Array) {

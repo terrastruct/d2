@@ -9,6 +9,8 @@ import (
 	"oss.terrastruct.com/d2/lib/shape"
 )
 
+const MIN_SEGMENT_LEN = 10
+
 func (obj *Object) MoveWithDescendants(dx, dy float64) {
 	obj.TopLeft.X += dx
 	obj.TopLeft.Y += dy
@@ -127,11 +129,23 @@ func (obj *Object) ShiftDescendants(dx, dy float64) {
 					p.Y += dy
 				}
 			} else if isSrc {
-				e.Route[0].X += dx
-				e.Route[0].Y += dy
+				if dx == 0 {
+					e.ShiftStart(dy, false)
+				} else if dy == 0 {
+					e.ShiftStart(dx, true)
+				} else {
+					e.Route[0].X += dx
+					e.Route[0].Y += dy
+				}
 			} else if isDst {
-				e.Route[len(e.Route)-1].X += dx
-				e.Route[len(e.Route)-1].Y += dy
+				if dx == 0 {
+					e.ShiftEnd(dy, false)
+				} else if dy == 0 {
+					e.ShiftEnd(dx, true)
+				} else {
+					e.Route[len(e.Route)-1].X += dx
+					e.Route[len(e.Route)-1].Y += dy
+				}
 			}
 
 			if isSrc || isDst {
@@ -139,6 +153,118 @@ func (obj *Object) ShiftDescendants(dx, dy float64) {
 			}
 		}
 	})
+}
+
+// ShiftStart moves the starting point of the route by delta either horizontally or vertically
+// if subsequent points are in line with the movement, they will be removed (unless it is the last point)
+// start                   end
+// . ├────┼────┼───┼────┼───┤   before
+// . ├──dx──►
+// .        ├──┼───┼────┼───┤   after
+func (edge *Edge) ShiftStart(delta float64, isHorizontal bool) {
+	position := func(p *geo.Point) float64 {
+		if isHorizontal {
+			return p.X
+		}
+		return p.Y
+	}
+
+	start := edge.Route[0]
+	next := edge.Route[1]
+	isIncreasing := position(start) < position(next)
+	if isHorizontal {
+		start.X += delta
+	} else {
+		start.Y += delta
+	}
+
+	if isIncreasing == (delta < 0) {
+		// nothing more to do when moving away from the next point
+		return
+	}
+
+	isAligned := func(p *geo.Point) bool {
+		if isHorizontal {
+			return p.Y == start.Y
+		}
+		return p.X == start.X
+	}
+	isPastStart := func(p *geo.Point) bool {
+		if delta > 0 {
+			return position(p) < position(start)
+		} else {
+			return position(p) > position(start)
+		}
+	}
+
+	needsRemoval := false
+	toRemove := make([]bool, len(edge.Route))
+	for i := 1; i < len(edge.Route)-1; i++ {
+		if !isAligned(edge.Route[i]) {
+			break
+		}
+		if isPastStart(edge.Route[i]) {
+			toRemove[i] = true
+			needsRemoval = true
+		}
+	}
+	if needsRemoval {
+		edge.Route = geo.RemovePoints(edge.Route, toRemove)
+	}
+}
+
+// ShiftEnd moves the ending point of the route by delta either horizontally or vertically
+// if prior points are in line with the movement, they will be removed (unless it is the first point)
+func (edge *Edge) ShiftEnd(delta float64, isHorizontal bool) {
+	position := func(p *geo.Point) float64 {
+		if isHorizontal {
+			return p.X
+		}
+		return p.Y
+	}
+
+	end := edge.Route[len(edge.Route)-1]
+	prev := edge.Route[len(edge.Route)-2]
+	isIncreasing := position(prev) < position(end)
+	if isHorizontal {
+		end.X += delta
+	} else {
+		end.Y += delta
+	}
+
+	if isIncreasing == (delta > 0) {
+		// nothing more to do when moving away from the next point
+		return
+	}
+
+	isAligned := func(p *geo.Point) bool {
+		if isHorizontal {
+			return p.Y == end.Y
+		}
+		return p.X == end.X
+	}
+	isPastEnd := func(p *geo.Point) bool {
+		if delta > 0 {
+			return position(p) < position(end)
+		} else {
+			return position(p) > position(end)
+		}
+	}
+
+	needsRemoval := false
+	toRemove := make([]bool, len(edge.Route))
+	for i := len(edge.Route) - 2; i > 0; i-- {
+		if !isAligned(edge.Route[i]) {
+			break
+		}
+		if isPastEnd(edge.Route[i]) {
+			toRemove[i] = true
+			needsRemoval = true
+		}
+	}
+	if needsRemoval {
+		edge.Route = geo.RemovePoints(edge.Route, toRemove)
+	}
 }
 
 // GetModifierElementAdjustments returns width/height adjustments to account for shapes with 3d or multiple
@@ -188,4 +314,73 @@ func (obj *Object) GetLabelTopLeft() *geo.Point {
 		float64(obj.LabelDimensions.Height),
 	)
 	return labelTL
+}
+
+func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (newStart, newEnd int) {
+	srcShape := edge.Src.ToShape()
+	dstShape := edge.Dst.ToShape()
+
+	// if an edge runs into an outside label, stop the edge at the label instead
+	overlapsOutsideLabel := false
+	if edge.Src.HasLabel() {
+		// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
+		labelPosition := label.Position(*edge.Src.LabelPosition)
+		if labelPosition.IsOutside() {
+			labelWidth := float64(edge.Src.LabelDimensions.Width)
+			labelHeight := float64(edge.Src.LabelDimensions.Height)
+			labelTL := labelPosition.GetPointOnBox(edge.Src.Box, label.PADDING, labelWidth, labelHeight)
+
+			startingSegment := geo.Segment{Start: points[startIndex+1], End: points[startIndex]}
+			labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
+			// add left/right padding to box
+			labelBox.TopLeft.X -= label.PADDING
+			labelBox.Width += 2 * label.PADDING
+			if intersections := labelBox.Intersections(startingSegment); len(intersections) > 0 {
+				overlapsOutsideLabel = true
+				// move starting segment to label intersection point
+				points[startIndex] = intersections[0]
+				startingSegment.End = intersections[0]
+				// if the segment becomes too short, just merge it with the next segment
+				if startIndex < len(points) && startingSegment.Length() < MIN_SEGMENT_LEN {
+					points[startIndex+1] = points[startIndex]
+					startIndex++
+				}
+			}
+		}
+	}
+	if !overlapsOutsideLabel {
+		// trace the edge to the specific shape's border
+		points[startIndex] = shape.TraceToShapeBorder(srcShape, points[startIndex], points[startIndex+1])
+	}
+	overlapsOutsideLabel = false
+	if edge.Dst.HasLabel() {
+		// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
+		labelPosition := label.Position(*edge.Dst.LabelPosition)
+		if labelPosition.IsOutside() {
+			labelWidth := float64(edge.Dst.LabelDimensions.Width)
+			labelHeight := float64(edge.Dst.LabelDimensions.Height)
+			labelTL := labelPosition.GetPointOnBox(edge.Dst.Box, label.PADDING, labelWidth, labelHeight)
+
+			endingSegment := geo.Segment{Start: points[endIndex-1], End: points[endIndex]}
+			labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
+			// add left/right padding to box
+			labelBox.TopLeft.X -= label.PADDING
+			labelBox.Width += 2 * label.PADDING
+			if intersections := labelBox.Intersections(endingSegment); len(intersections) > 0 {
+				overlapsOutsideLabel = true
+				// move ending segment to label intersection point
+				points[endIndex] = intersections[0]
+				endingSegment.End = intersections[0]
+				// if the segment becomes too short, just merge it with the previous segment
+				if endIndex-1 > 0 && endingSegment.Length() < MIN_SEGMENT_LEN {
+					points[endIndex-1] = points[endIndex]
+					endIndex--
+				}
+			}
+		}
+	}
+	if !overlapsOutsideLabel {
+		points[endIndex] = shape.TraceToShapeBorder(dstShape, points[endIndex], points[endIndex-1])
+	}
+	return startIndex, endIndex
 }

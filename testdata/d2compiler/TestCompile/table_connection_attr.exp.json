@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/table_connection_attr.d2,0:3:3-3:0:28",
+                "range": "d2/testdata/d2compiler/TestCompile/table_connection_attr.d2,0:3:3-3:1:29",
                 "nodes": [
                   {
                     "map_key": {
@@ -112,7 +112,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/table_connection_attr.d2,4:3:33-7:0:58",
+                "range": "d2/testdata/d2compiler/TestCompile/table_connection_attr.d2,4:3:33-7:1:59",
                 "nodes": [
                   {
                     "map_key": {
@@ -242,7 +242,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/table_connection_attr.d2,8:12:72-10:0:97",
+                "range": "d2/testdata/d2compiler/TestCompile/table_connection_attr.d2,8:12:72-10:1:98",
                 "nodes": [
                   {
                     "map_key": {
@@ -309,9 +309,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -348,9 +346,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }
@@ -439,7 +435,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": "",
+              "constraint": null,
               "reference": ""
             }
           ]
@@ -460,9 +456,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -549,7 +543,7 @@
                 "labelWidth": 0,
                 "labelHeight": 0
               },
-              "constraint": "",
+              "constraint": null,
               "reference": ""
             }
           ]
@@ -570,9 +564,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

@@ -50,7 +50,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,2:8:14-9:0:63",
+                "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,2:8:14-9:1:64",
                 "nodes": [
                   {
                     "map_key": {
@@ -74,7 +74,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,3:7:23-5:2:37",
+                          "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,3:7:23-5:3:38",
                           "nodes": [
                             {
                               "map_key": {
@@ -126,7 +126,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,6:7:46-8:2:61",
+                          "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,6:7:46-8:3:62",
                           "nodes": [
                             {
                               "map_key": {
@@ -182,9 +182,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -231,9 +229,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }
@@ -243,21 +239,20 @@
         "name": "one",
         "isFolderOnly": false,
         "ast": {
-          "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,0:0:0-10:0:65",
+          "range": ",1:0:0-2:0:0",
           "nodes": [
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,0:0:0-0:4:4",
+                "range": ",0:0:0-0:0:0",
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,0:0:0-0:4:4",
+                  "range": ",0:0:0-0:0:0",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,0:0:0-0:4:4",
+                        "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "base",
-                            "raw_string": "base"
+                            "string": "santa"
                           }
                         ]
                       }
@@ -266,139 +261,6 @@
                 },
                 "primary": {},
                 "value": {}
-              }
-            },
-            {
-              "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,2:0:6-9:1:64",
-                "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,2:0:6-2:6:12",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,2:0:6-2:6:12",
-                        "value": [
-                          {
-                            "string": "layers",
-                            "raw_string": "layers"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "primary": {},
-                "value": {
-                  "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,2:8:14-9:0:63",
-                    "nodes": [
-                      {
-                        "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,3:2:18-5:3:38",
-                          "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,3:2:18-3:5:21",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,3:2:18-3:5:21",
-                                  "value": [
-                                    {
-                                      "string": "one",
-                                      "raw_string": "one"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,3:7:23-5:2:37",
-                              "nodes": [
-                                {
-                                  "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,4:4:29-4:9:34",
-                                    "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,4:4:29-4:9:34",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,4:4:29-4:9:34",
-                                            "value": [
-                                              {
-                                                "string": "santa",
-                                                "raw_string": "santa"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "primary": {},
-                                    "value": {}
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        }
-                      },
-                      {
-                        "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,6:2:41-8:3:62",
-                          "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,6:2:41-6:5:44",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,6:2:41-6:5:44",
-                                  "value": [
-                                    {
-                                      "string": "two",
-                                      "raw_string": "two"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,6:7:46-8:2:61",
-                              "nodes": [
-                                {
-                                  "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,7:4:52-7:10:58",
-                                    "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,7:4:52-7:10:58",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,7:4:52-7:10:58",
-                                            "value": [
-                                              {
-                                                "string": "clause",
-                                                "raw_string": "clause"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "primary": {},
-                                    "value": {}
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
               }
             }
           ]
@@ -422,9 +284,7 @@
             "direction": {
               "value": ""
             },
-            "constraint": {
-              "value": ""
-            }
+            "constraint": null
           },
           "zIndex": 0
         },
@@ -471,9 +331,7 @@
               "direction": {
                 "value": ""
               },
-              "constraint": {
-                "value": ""
-              }
+              "constraint": null
             },
             "zIndex": 0
           }
@@ -483,21 +341,20 @@
         "name": "two",
         "isFolderOnly": false,
         "ast": {
-          "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,0:0:0-10:0:65",
+          "range": ",1:0:0-2:0:0",
           "nodes": [
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,0:0:0-0:4:4",
+                "range": ",0:0:0-0:0:0",
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,0:0:0-0:4:4",
+                  "range": ",0:0:0-0:0:0",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,0:0:0-0:4:4",
+                        "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "base",
-                            "raw_string": "base"
+                            "string": "clause"
                           }
                         ]
                       }
@@ -506,139 +363,6 @@
                 },
                 "primary": {},
                 "value": {}
-              }
-            },
-            {
-              "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,2:0:6-9:1:64",
-                "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,2:0:6-2:6:12",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,2:0:6-2:6:12",
-                        "value": [
-                          {
-                            "string": "layers",
-                            "raw_string": "layers"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "primary": {},
-                "value": {
-                  "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,2:8:14-9:0:63",
-                    "nodes": [
-                      {
-                        "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,3:2:18-5:3:38",
-                          "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,3:2:18-3:5:21",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,3:2:18-3:5:21",
-                                  "value": [
-                                    {
-                                      "string": "one",
-                                      "raw_string": "one"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,3:7:23-5:2:37",
-                              "nodes": [
-                                {
-                                  "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,4:4:29-4:9:34",
-                                    "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,4:4:29-4:9:34",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,4:4:29-4:9:34",
-                                            "value": [
-                                              {
-                                                "string": "santa",
-                                                "raw_string": "santa"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "primary": {},
-                                    "value": {}
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        }
-                      },
-                      {
-                        "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,6:2:41-8:3:62",
-                          "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,6:2:41-6:5:44",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,6:2:41-6:5:44",
-                                  "value": [
-                                    {
-                                      "string": "two",
-                                      "raw_string": "two"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,6:7:46-8:2:61",
-                              "nodes": [
-                                {
-                                  "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,7:4:52-7:10:58",
-                                    "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,7:4:52-7:10:58",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile2/boards/root.d2,7:4:52-7:10:58",
-                                            "value": [
-                                              {
-                                                "string": "clause",
-                                                "raw_string": "clause"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "primary": {},
-                                    "value": {}
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
               }
             }
           ]
@@ -662,9 +386,7 @@
             "direction": {
               "value": ""
             },
-            "constraint": {
-              "value": ""
-            }
+            "constraint": null
           },
           "zIndex": 0
         },
@@ -711,9 +433,7 @@
               "direction": {
                 "value": ""
               },
-              "constraint": {
-                "value": ""
-              }
+              "constraint": null
             },
             "zIndex": 0
           }

@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/classes.d2,0:9:9-10:0:145",
+                "range": "d2/testdata/d2compiler/TestCompile/classes.d2,0:9:9-10:1:146",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/classes.d2,1:15:26-5:2:85",
+                          "range": "d2/testdata/d2compiler/TestCompile/classes.d2,1:15:26-5:3:86",
                           "nodes": [
                             {
                               "map_key": {
@@ -185,7 +185,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/classes.d2,6:8:95-9:2:143",
+                          "range": "d2/testdata/d2compiler/TestCompile/classes.d2,6:8:95-9:3:144",
                           "nodes": [
                             {
                               "map_key": {
@@ -292,7 +292,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/classes.d2,11:8:155-11:29:176",
+                "range": "d2/testdata/d2compiler/TestCompile/classes.d2,11:8:155-11:30:177",
                 "nodes": [
                   {
                     "map_key": {
@@ -364,7 +364,7 @@
             },
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/classes.d2,12:11:189-12:49:227",
+                "range": "d2/testdata/d2compiler/TestCompile/classes.d2,12:11:189-12:50:228",
                 "nodes": [
                   {
                     "map_key": {
@@ -470,7 +470,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/classes.d2,13:7:236-13:41:270",
+                "range": "d2/testdata/d2compiler/TestCompile/classes.d2,13:7:236-13:42:271",
                 "nodes": [
                   {
                     "map_key": {
@@ -588,7 +588,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/classes.d2,15:17:290-15:31:304",
+                "range": "d2/testdata/d2compiler/TestCompile/classes.d2,15:17:290-15:32:305",
                 "nodes": [
                   {
                     "map_key": {
@@ -649,9 +649,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -686,9 +684,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          },
+          "constraint": null,
           "classes": [
             "path"
           ]
@@ -762,9 +758,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          },
+          "constraint": null,
           "classes": [
             "dragon_ball"
           ]
@@ -836,9 +830,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          },
+          "constraint": null,
           "classes": [
             "dragon_ball"
           ]
@@ -890,9 +882,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          },
+          "constraint": null,
           "classes": [
             "dragon_ball"
           ]

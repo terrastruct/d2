@@ -50,7 +50,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/edge_mixed_arrowhead.d2,0:8:8-2:0:44",
+                "range": "d2/testdata/d2compiler/TestCompile/edge_mixed_arrowhead.d2,0:8:8-2:1:45",
                 "nodes": [
                   {
                     "map_key": {
@@ -167,7 +167,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/edge_mixed_arrowhead.d2,3:30:76-5:0:95",
+                "range": "d2/testdata/d2compiler/TestCompile/edge_mixed_arrowhead.d2,3:30:76-5:1:96",
                 "nodes": [
                   {
                     "map_key": {
@@ -228,9 +228,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -255,9 +253,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "dst_arrow": true,
         "dstArrowhead": {
@@ -276,9 +272,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "references": [
           {
@@ -304,9 +298,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }
@@ -373,9 +365,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -440,9 +430,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

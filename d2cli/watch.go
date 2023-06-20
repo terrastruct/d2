@@ -403,7 +403,7 @@ func (w *watcher) goServe() error {
 	// TODO: Add standard debug/profiling routes
 	m.HandleFunc("/", w.handleRoot)
 	m.Handle("/static/", http.StripPrefix("/static", w.staticFileServer))
-	m.Handle("/watch", xhttp.HandlerFuncAdapter{w.ms.Log, w.handleWatch})
+	m.Handle("/watch", xhttp.HandlerFuncAdapter{Log: w.ms.Log, Func: w.handleWatch})
 
 	s := xhttp.NewServer(w.ms.Log.Warn, xhttp.Log(w.ms.Log, m))
 	w.goFunc(func(ctx context.Context) error {

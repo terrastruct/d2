@@ -32,7 +32,7 @@
             },
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/image_style.d2,0:8:8-4:0:116",
+                "range": "d2/testdata/d2compiler/TestCompile/image_style.d2,0:8:8-4:1:117",
                 "nodes": [
                   {
                     "map_key": {
@@ -170,9 +170,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -236,9 +234,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

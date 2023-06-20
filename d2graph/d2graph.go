@@ -132,8 +132,8 @@ type Attributes struct {
 	// TODO: default to ShapeRectangle instead of empty string
 	Shape Scalar `json:"shape"`
 
-	Direction  Scalar `json:"direction"`
-	Constraint Scalar `json:"constraint"`
+	Direction  Scalar   `json:"direction"`
+	Constraint []string `json:"constraint"`
 
 	GridRows      *Scalar `json:"gridRows,omitempty"`
 	GridColumns   *Scalar `json:"gridColumns,omitempty"`
@@ -584,7 +584,8 @@ func (obj *Object) Text() *d2target.MText {
 	}
 
 	if obj.OuterSequenceDiagram() == nil {
-		if obj.IsContainer() && obj.Shape.Value != "text" {
+		// Note: during grid layout when children are temporarily removed `IsContainer` is false
+		if (obj.IsContainer() || obj.IsGridDiagram()) && obj.Shape.Value != "text" {
 			fontSize = obj.Level().LabelSize()
 		}
 	} else {
@@ -669,38 +670,6 @@ func (obj *Object) HasChild(ids []string) (*Object, bool) {
 		return child.HasChild(ids)
 	}
 	return child, true
-}
-
-// Keep in sync with EnsureChild.
-func (obj *Object) EnsureChildIDVal(ids []string) *Object {
-	if len(ids) == 0 {
-		return obj
-	}
-	if len(ids) == 1 && ids[0] != "style" {
-		_, ok := ReservedKeywords[ids[0]]
-		if ok {
-			return obj
-		}
-	}
-
-	id := ids[0]
-	ids = ids[1:]
-
-	var child *Object
-	for _, ch2 := range obj.ChildrenArray {
-		if ch2.IDVal == id {
-			child = ch2
-			break
-		}
-	}
-	if child == nil {
-		child = obj.newObject(id)
-	}
-
-	if len(ids) >= 1 {
-		return child.EnsureChildIDVal(ids)
-	}
-	return child
 }
 
 func (obj *Object) HasEdge(mk *d2ast.Key) (*Edge, bool) {
@@ -1005,7 +974,7 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 	case d2target.ShapeSQLTable:
 		maxNameWidth := 0
 		maxTypeWidth := 0
-		constraintWidth := 0
+		maxConstraintWidth := 0
 
 		colFontSize := d2fonts.FONT_SIZE_L
 		if obj.Style.FontSize != nil {
@@ -1032,21 +1001,24 @@ func (obj *Object) GetDefaultSize(mtexts []*d2target.MText, ruler *textmeasure.R
 			}
 			c.Type.LabelWidth = typeDims.Width
 			c.Type.LabelHeight = typeDims.Height
-			if maxTypeWidth < typeDims.Width {
-				maxTypeWidth = typeDims.Width
-			}
 			maxTypeWidth = go2.Max(maxTypeWidth, typeDims.Width)
 
-			if c.Constraint != "" {
-				// covers UNQ constraint with padding
-				constraintWidth = 60
+			if l := len(c.Constraint); l > 0 {
+				constraintDims := GetTextDimensions(mtexts, ruler, ctexts[2], fontFamily)
+				if constraintDims == nil {
+					return nil, fmt.Errorf("dimensions for sql_table constraint %#v not found", ctexts[2].Text)
+				}
+				maxConstraintWidth = go2.Max(maxConstraintWidth, constraintDims.Width)
 			}
 		}
 
 		// The rows get padded a little due to header font being larger than row font
 		dims.Height = go2.Max(12, labelDims.Height*(len(obj.SQLTable.Columns)+1))
 		headerWidth := d2target.HeaderPadding + labelDims.Width + d2target.HeaderPadding
-		rowsWidth := d2target.NamePadding + maxNameWidth + d2target.TypePadding + maxTypeWidth + d2target.TypePadding + constraintWidth
+		rowsWidth := d2target.NamePadding + maxNameWidth + d2target.TypePadding + maxTypeWidth + d2target.TypePadding + maxConstraintWidth
+		if maxConstraintWidth != 0 {
+			rowsWidth += d2target.ConstraintPadding
+		}
 		dims.Width = go2.Max(12, go2.Max(headerWidth, rowsWidth))
 	}
 
@@ -1604,6 +1576,24 @@ func (g *Graph) Texts() []*d2target.MText {
 		if edge.DstArrowhead != nil && edge.DstArrowhead.Label.Value != "" {
 			t := edge.Text()
 			t.Text = edge.DstArrowhead.Label.Value
+			texts = appendTextDedup(texts, t)
+		}
+	}
+
+	for _, board := range g.Layers {
+		for _, t := range board.Texts() {
+			texts = appendTextDedup(texts, t)
+		}
+	}
+
+	for _, board := range g.Scenarios {
+		for _, t := range board.Texts() {
+			texts = appendTextDedup(texts, t)
+		}
+	}
+
+	for _, board := range g.Steps {
+		for _, t := range board.Texts() {
 			texts = appendTextDedup(texts, t)
 		}
 	}

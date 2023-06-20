@@ -103,27 +103,41 @@ Set the diagram layout engine to the passed string. For a list of available opti
 .Ar layout
 .Ns .
 .It Fl b , -bundle Ar true
-Bundle all assets and layers into the output svg.
+Bundle all assets and layers into the output svg
+.Ns .
 .It Fl -force-appendix Ar false
 An appendix for tooltips and links is added to PNG exports since they are not interactive. Setting this to true adds an appendix to SVG exports as well
 .Ns .
 .It Fl d , -debug
-Print debug logs.
+Print debug logs
+.Ns .
+.It Fl -img-cache Ar true
+In watch mode, images used in icons are cached for subsequent compilations. This should be disabled if images might change
+.Ns .
+.It Fl -timeout Ar 120
+The maximum number of seconds that D2 runs for before timing out and exiting. When rendering a large diagram, it is recommended to increase this value
+.Ns .
 .It Fl h , -help
-Print usage information and exit.
+Print usage information and exit
+.Ns .
 .It Fl v , -version
-Print version information and exit.
+Print version information and exit
+.Ns .
 .El
 .Sh SUBCOMMANDS
 .Bl -tag -width Fl
 .It Ar layout
-Lists available layout engine options with short help.
+Lists available layout engine options with short help
+.Ns .
 .It Ar layout Op Ar name
-Display long help for a particular layout engine, including its configuration options.
+Display long help for a particular layout engine, including its configuration options
+.Ns .
 .It Ar themes
-Lists available themes.
+Lists available themes
+.Ns .
 .It Ar fmt Ar file.d2 ...
-Format all passed files.
+Format all passed files
+.Ns .
 .El
 .Sh SEE ALSO
 .Xr d2plugin-tala 1

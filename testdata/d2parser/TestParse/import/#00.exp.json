@@ -1,0 +1,50 @@
+{
+  "ast": {
+    "range": "d2/testdata/d2parser/TestParse/import/#00.d2,0:0:0-0:8:8",
+    "nodes": [
+      {
+        "map_key": {
+          "range": "d2/testdata/d2parser/TestParse/import/#00.d2,0:0:0-0:8:8",
+          "key": {
+            "range": "d2/testdata/d2parser/TestParse/import/#00.d2,0:0:0-0:1:1",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "d2/testdata/d2parser/TestParse/import/#00.d2,0:0:0-0:1:1",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "primary": {},
+          "value": {
+            "import": {
+              "range": "d2/testdata/d2parser/TestParse/import/#00.d2,0:3:3-0:8:8",
+              "spread": false,
+              "pre": "",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2parser/TestParse/import/#00.d2,0:4:4-0:8:8",
+                    "value": [
+                      {
+                        "string": "file",
+                        "raw_string": "file"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "err": null
+}

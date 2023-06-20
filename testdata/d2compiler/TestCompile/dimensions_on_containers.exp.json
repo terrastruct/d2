@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,1:12:13-44:0:503",
+                "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,1:12:13-44:1:504",
                 "nodes": [
                   {
                     "map_key": {
@@ -51,7 +51,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,2:19:34-11:1:130",
+                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,2:19:34-11:2:131",
                           "nodes": [
                             {
                               "map_key": {
@@ -137,7 +137,7 @@
                                 "primary": {},
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,6:11:77-10:2:127",
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,6:11:77-10:3:128",
                                     "nodes": [
                                       {
                                         "map_key": {
@@ -262,7 +262,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,12:20:152-21:1:247",
+                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,12:20:152-21:2:248",
                           "nodes": [
                             {
                               "map_key": {
@@ -377,7 +377,7 @@
                                 "primary": {},
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,17:10:209-20:2:244",
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,17:10:209-20:3:245",
                                     "nodes": [
                                       {
                                         "map_key": {
@@ -473,7 +473,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,22:17:266-32:1:374",
+                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,22:17:266-32:2:375",
                           "nodes": [
                             {
                               "map_key": {
@@ -588,7 +588,7 @@
                                 "primary": {},
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,27:11:321-31:2:371",
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,27:11:321-31:3:372",
                                     "nodes": [
                                       {
                                         "map_key": {
@@ -713,7 +713,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,33:20:396-43:1:501",
+                          "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,33:20:396-43:2:502",
                           "nodes": [
                             {
                               "map_key": {
@@ -828,7 +828,7 @@
                                 "primary": {},
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,38:8:451-42:2:498",
+                                    "range": "d2/testdata/d2compiler/TestCompile/dimensions_on_containers.d2,38:8:451-42:3:499",
                                     "nodes": [
                                       {
                                         "map_key": {
@@ -957,9 +957,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -1006,9 +1004,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -1056,9 +1052,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -1109,9 +1103,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -1162,9 +1154,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -1212,9 +1202,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -1265,9 +1253,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -1318,9 +1304,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -1371,9 +1355,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -1424,9 +1406,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

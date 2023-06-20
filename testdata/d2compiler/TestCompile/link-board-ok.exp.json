@@ -37,7 +37,7 @@
             },
             "primary": {},
             "value": {
-              "double_quoted_string": {
+              "unquoted_string": {
                 "range": ",0:0:0-0:0:0",
                 "value": [
                   {
@@ -70,7 +70,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,1:8:25-5:0:41",
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,1:8:25-5:1:42",
                 "nodes": [
                   {
                     "map_key": {
@@ -94,7 +94,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,2:4:31-4:1:39",
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,2:4:31-4:2:40",
                           "nodes": [
                             {
                               "map_key": {
@@ -150,9 +150,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -213,9 +211,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }
@@ -225,32 +221,20 @@
         "name": "x",
         "isFolderOnly": false,
         "ast": {
-          "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,0:0:0-5:1:42",
+          "range": ",1:0:0-2:0:0",
           "nodes": [
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,0:0:0-0:16:16",
+                "range": ",0:0:0-0:0:0",
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,0:0:0-0:6:6",
+                  "range": ",0:0:0-0:0:0",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,0:0:0-0:1:1",
+                        "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "x",
-                            "raw_string": "x"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,0:2:2-0:6:6",
-                        "value": [
-                          {
-                            "string": "link",
-                            "raw_string": "link"
+                            "string": "y"
                           }
                         ]
                       }
@@ -258,97 +242,7 @@
                   ]
                 },
                 "primary": {},
-                "value": {
-                  "double_quoted_string": {
-                    "range": ",0:0:0-0:0:0",
-                    "value": [
-                      {
-                        "string": "root.layers.x"
-                      }
-                    ]
-                  }
-                }
-              }
-            },
-            {
-              "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,1:0:17-5:1:42",
-                "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,1:0:17-1:6:23",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,1:0:17-1:6:23",
-                        "value": [
-                          {
-                            "string": "layers",
-                            "raw_string": "layers"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "primary": {},
-                "value": {
-                  "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,1:8:25-5:0:41",
-                    "nodes": [
-                      {
-                        "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,2:1:28-4:2:40",
-                          "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,2:1:28-2:2:29",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,2:1:28-2:2:29",
-                                  "value": [
-                                    {
-                                      "string": "x",
-                                      "raw_string": "x"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,2:4:31-4:1:39",
-                              "nodes": [
-                                {
-                                  "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,3:3:36-3:4:37",
-                                    "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,3:3:36-3:4:37",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-ok.d2,3:3:36-3:4:37",
-                                            "value": [
-                                              {
-                                                "string": "y",
-                                                "raw_string": "y"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "primary": {},
-                                    "value": {}
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
+                "value": {}
               }
             }
           ]
@@ -372,9 +266,7 @@
             "direction": {
               "value": ""
             },
-            "constraint": {
-              "value": ""
-            }
+            "constraint": null
           },
           "zIndex": 0
         },
@@ -421,9 +313,7 @@
               "direction": {
                 "value": ""
               },
-              "constraint": {
-                "value": ""
-              }
+              "constraint": null
             },
             "zIndex": 0
           }

@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/dimension_with_style.d2,0:3:3-3:0:41",
+                "range": "d2/testdata/d2compiler/TestCompile/dimension_with_style.d2,0:3:3-3:1:42",
                 "nodes": [
                   {
                     "map_key": {
@@ -123,9 +123,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -179,9 +177,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

@@ -50,7 +50,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/nil_scope_obj_regression.d2,1:3:5-3:0:13",
+                "range": "d2/testdata/d2compiler/TestCompile/nil_scope_obj_regression.d2,1:3:5-3:1:14",
                 "nodes": [
                   {
                     "map_key": {
@@ -112,9 +112,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -192,9 +190,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -239,9 +235,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

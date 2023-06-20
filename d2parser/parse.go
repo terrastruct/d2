@@ -15,7 +15,8 @@ import (
 )
 
 type ParseOptions struct {
-	UTF16 bool
+	UTF16      bool
+	ParseError *ParseError
 }
 
 // Parse parses a .d2 Map in r.
@@ -42,6 +43,10 @@ func Parse(path string, r io.RuneReader, opts *ParseOptions) (*d2ast.Map, error)
 		reader: r,
 
 		utf16: opts.UTF16,
+		err:   opts.ParseError,
+	}
+	if p.err == nil {
+		p.err = &ParseError{}
 	}
 
 	m := p.parseMap(true)
@@ -54,6 +59,7 @@ func Parse(path string, r io.RuneReader, opts *ParseOptions) (*d2ast.Map, error)
 func ParseKey(key string) (*d2ast.KeyPath, error) {
 	p := &parser{
 		reader: strings.NewReader(key),
+		err:    &ParseError{},
 	}
 
 	k := p.parseKey()
@@ -69,6 +75,7 @@ func ParseKey(key string) (*d2ast.KeyPath, error) {
 func ParseMapKey(mapKey string) (*d2ast.Key, error) {
 	p := &parser{
 		reader: strings.NewReader(mapKey),
+		err:    &ParseError{},
 	}
 
 	mk := p.parseMapKey()
@@ -84,6 +91,7 @@ func ParseMapKey(mapKey string) (*d2ast.Key, error) {
 func ParseValue(value string) (d2ast.Value, error) {
 	p := &parser{
 		reader: strings.NewReader(value),
+		err:    &ParseError{},
 	}
 
 	v := p.parseValue()
@@ -117,18 +125,16 @@ type parser struct {
 	lookaheadPos d2ast.Position
 
 	ioerr bool
-	err   ParseError
+	err   *ParseError
 
 	inEdgeGroup bool
 
 	depth int
 }
 
-// TODO: remove ioerr, just sort (with Append) should be fine but filter non ast errors in API
 // TODO: rename to Error and make existing Error a private type errorWithRange
 type ParseError struct {
-	IOError *d2ast.Error  `json:"ioerr"`
-	Errors  []d2ast.Error `json:"errs"`
+	Errors []d2ast.Error `json:"errs"`
 }
 
 func Errorf(n d2ast.Node, f string, v ...interface{}) error {
@@ -140,17 +146,17 @@ func Errorf(n d2ast.Node, f string, v ...interface{}) error {
 	}
 }
 
-func (pe ParseError) Empty() bool {
-	return pe.IOError == nil && len(pe.Errors) == 0
+func (pe *ParseError) Empty() bool {
+	if pe == nil {
+		return true
+	}
+	return len(pe.Errors) == 0
 }
 
-func (pe ParseError) Error() string {
+func (pe *ParseError) Error() string {
 	var sb strings.Builder
-	if pe.IOError != nil {
-		sb.WriteString(pe.IOError.Error())
-	}
 	for i, err := range pe.Errors {
-		if pe.IOError != nil || i > 0 {
+		if i > 0 {
 			sb.WriteByte('\n')
 		}
 		sb.WriteString(err.Error())
@@ -191,14 +197,14 @@ func (p *parser) _readRune() (r rune, eof bool) {
 	if err != nil {
 		p.ioerr = true
 		if err != io.EOF {
-			p.err.IOError = &d2ast.Error{
+			p.err.Errors = append(p.err.Errors, d2ast.Error{
 				Range: d2ast.Range{
 					Path:  p.path,
 					Start: p.readerPos,
 					End:   p.readerPos,
 				},
 				Message: fmt.Sprintf("io error: %v", err),
-			}
+			})
 		}
 		p.rewind()
 		return 0, true
@@ -355,7 +361,7 @@ func (p *parser) parseMap(isFileMap bool) *d2ast.Map {
 			Start: p.pos,
 		},
 	}
-	defer m.Range.End.From(&p.readerPos)
+	defer m.Range.End.From(&p.pos)
 
 	if !isFileMap {
 		m.Range.Start = m.Range.Start.Subtract('{', p.utf16)
@@ -448,17 +454,30 @@ func (p *parser) parseMapNode(r rune) d2ast.MapNodeBox {
 		box.BlockComment = p.parseBlockComment()
 		return box
 	case '.':
-		s, eof := p.peekn(3)
+		s, eof := p.peekn(2)
 		if eof {
 			break
 		}
-		if s != "..$" {
+		if s != ".." {
 			p.rewind()
 			break
 		}
-		p.commit()
-		box.Substitution = p.parseSubstitution(true)
-		return box
+		r, eof := p.peek()
+		if eof {
+			break
+		}
+		if r == '$' {
+			p.commit()
+			box.Substitution = p.parseSubstitution(true)
+			return box
+		}
+		if r == '@' {
+			p.commit()
+			box.Import = p.parseImport(true)
+			return box
+		}
+		p.rewind()
+		break
 	}
 
 	p.replay(r)
@@ -614,7 +633,7 @@ func (p *parser) parseMapKey() (mk *d2ast.Key) {
 		}
 	}()
 
-	// Check for ampersand.
+	// Check for ampersand/@.
 	r, eof := p.peek()
 	if eof {
 		return mk
@@ -948,6 +967,9 @@ func (p *parser) parseKey() (k *d2ast.KeyPath) {
 		if s == nil {
 			return k
 		}
+		if sb.UnquotedString != nil && strings.HasPrefix(s.ScalarString(), "@") {
+			p.errorf(s.GetRange().Start, s.GetRange().End, "%s is not a valid import, did you mean ...%[2]s?", s.ScalarString())
+		}
 
 		if len(k.Path) == 0 {
 			k.Range.Start = s.GetRange().Start
@@ -1023,6 +1045,14 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 		}
 		s.Value = append(s.Value, d2ast.InterpolationBox{String: &sv, StringRaw: &rawv})
 	}()
+
+	_s, eof := p.peekn(4)
+	p.rewind()
+	if !eof {
+		if _s == "...@" {
+			p.errorf(p.pos, p.pos.AdvanceString("...@", p.utf16), "unquoted strings cannot begin with ...@ as that's import spread syntax")
+		}
+	}
 
 	for {
 		r, eof := p.peek()
@@ -1502,17 +1532,30 @@ func (p *parser) parseArrayNode(r rune) d2ast.ArrayNodeBox {
 		box.BlockComment = p.parseBlockComment()
 		return box
 	case '.':
-		s, eof := p.peekn(3)
+		s, eof := p.peekn(2)
 		if eof {
 			break
 		}
-		if s != "..$" {
+		if s != ".." {
 			p.rewind()
 			break
 		}
-		p.commit()
-		box.Substitution = p.parseSubstitution(true)
-		return box
+		r, eof := p.peek()
+		if eof {
+			break
+		}
+		if r == '$' {
+			p.commit()
+			box.Substitution = p.parseSubstitution(true)
+			return box
+		}
+		if r == '@' {
+			p.commit()
+			box.Import = p.parseImport(true)
+			return box
+		}
+		p.rewind()
+		break
 	}
 
 	p.replay(r)
@@ -1529,6 +1572,7 @@ func (p *parser) parseArrayNode(r rune) d2ast.ArrayNodeBox {
 	box.BlockString = vbox.BlockString
 	box.Array = vbox.Array
 	box.Map = vbox.Map
+	box.Import = vbox.Import
 	return box
 }
 
@@ -1548,6 +1592,9 @@ func (p *parser) parseValue() d2ast.ValueBox {
 		return box
 	case '{':
 		box.Map = p.parseMap(false)
+		return box
+	case '@':
+		box.Import = p.parseImport(false)
 		return box
 	}
 
@@ -1657,6 +1704,46 @@ func (p *parser) parseSubstitution(spread bool) *d2ast.Substitution {
 	p.commit()
 
 	return subst
+}
+
+func (p *parser) parseImport(spread bool) *d2ast.Import {
+	imp := &d2ast.Import{
+		Range: d2ast.Range{
+			Path:  p.path,
+			Start: p.pos.SubtractString("$", p.utf16),
+		},
+		Spread: spread,
+	}
+	defer imp.Range.End.From(&p.pos)
+
+	if imp.Spread {
+		imp.Range.Start = imp.Range.Start.SubtractString("...", p.utf16)
+	}
+
+	var pre strings.Builder
+	for {
+		r, eof := p.peek()
+		if eof {
+			break
+		}
+		if r != '.' && r != '/' {
+			p.rewind()
+			break
+		}
+		pre.WriteRune(r)
+		p.commit()
+	}
+	imp.Pre = pre.String()
+
+	k := p.parseKey()
+	if k == nil {
+		return imp
+	}
+	if k.Path[0].UnquotedString != nil && len(k.Path) > 1 && k.Path[1].UnquotedString != nil && k.Path[1].Unbox().ScalarString() == "d2" {
+		k.Path = append(k.Path[:1], k.Path[2:]...)
+	}
+	imp.Path = k.Path
+	return imp
 }
 
 // func marshalKey(k *d2ast.Key) string {

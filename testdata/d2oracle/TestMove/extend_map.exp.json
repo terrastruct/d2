@@ -27,7 +27,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestMove/extend_map.d2,0:3:3-2:0:9",
+                "range": "d2/testdata/d2oracle/TestMove/extend_map.d2,0:3:3-2:1:10",
                 "nodes": [
                   {
                     "map_key": {
@@ -79,7 +79,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestMove/extend_map.d2,3:3:14-7:0:33",
+                "range": "d2/testdata/d2oracle/TestMove/extend_map.d2,3:3:14-7:1:34",
                 "nodes": [
                   {
                     "map_key": {
@@ -103,7 +103,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestMove/extend_map.d2,4:5:21-6:2:31",
+                          "range": "d2/testdata/d2oracle/TestMove/extend_map.d2,4:5:21-6:3:32",
                           "nodes": [
                             {
                               "map_key": {
@@ -159,9 +159,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -228,9 +226,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -275,9 +271,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -322,9 +316,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       },
@@ -369,9 +361,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }

@@ -70,7 +70,7 @@
             },
             "primary": {},
             "value": {
-              "double_quoted_string": {
+              "unquoted_string": {
                 "range": ",0:0:0-0:0:0",
                 "value": [
                   {
@@ -103,7 +103,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:8:66-7:0:112",
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:8:66-7:1:113",
                 "nodes": [
                   {
                     "map_key": {
@@ -127,7 +127,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:7:75-6:2:110",
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:7:75-6:3:111",
                           "nodes": [
                             {
                               "map_key": {
@@ -217,7 +217,7 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:11:126-13:0:174",
+                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:11:126-13:1:175",
                 "nodes": [
                   {
                     "map_key": {
@@ -241,7 +241,7 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:9:137-12:2:172",
+                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:9:137-12:3:173",
                           "nodes": [
                             {
                               "map_key": {
@@ -329,9 +329,7 @@
         "direction": {
           "value": ""
         },
-        "constraint": {
-          "value": ""
-        }
+        "constraint": null
       },
       "zIndex": 0
     },
@@ -412,9 +410,7 @@
           "direction": {
             "value": ""
           },
-          "constraint": {
-            "value": ""
-          }
+          "constraint": null
         },
         "zIndex": 0
       }
@@ -424,21 +420,20 @@
         "name": "cat",
         "isFolderOnly": false,
         "ast": {
-          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-13:1:175",
+          "range": ",1:0:0-2:0:0",
           "nodes": [
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-0:30:30",
+                "range": ",0:0:0-0:0:0",
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-0:8:8",
+                  "range": ",0:0:0-0:0:0",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-0:8:8",
+                        "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "question",
-                            "raw_string": "question"
+                            "string": "the cat"
                           }
                         ]
                       }
@@ -446,43 +441,21 @@
                   ]
                 },
                 "primary": {},
-                "value": {
-                  "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:10:10-0:30:30",
-                    "value": [
-                      {
-                        "string": "How does the cat go?",
-                        "raw_string": "How does the cat go?"
-                      }
-                    ]
-                  }
-                }
+                "value": {}
               }
             },
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:0:31-1:25:56",
+                "range": ",0:0:0-0:0:0",
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:0:31-1:13:44",
+                  "range": ",0:0:0-0:0:0",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:0:31-1:8:39",
+                        "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "question",
-                            "raw_string": "question"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:9:40-1:13:44",
-                        "value": [
-                          {
-                            "string": "link",
-                            "raw_string": "link"
+                            "string": "meeeowwww"
                           }
                         ]
                       }
@@ -490,243 +463,61 @@
                   ]
                 },
                 "primary": {},
-                "value": {
-                  "double_quoted_string": {
+                "value": {}
+              }
+            },
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "edges": [
+                  {
                     "range": ",0:0:0-0:0:0",
+                    "src": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "the cat"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "src_arrow": "",
+                    "dst": {
+                      "range": ",0:0:0-0:0:0",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": ",0:0:0-0:0:0",
+                            "value": [
+                              {
+                                "string": "meeeowwww"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "dst_arrow": ">"
+                  }
+                ],
+                "primary": {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:26:103-5:30:107",
                     "value": [
                       {
-                        "string": "root.layers.cat"
+                        "string": "goes",
+                        "raw_string": "goes"
                       }
                     ]
                   }
-                }
-              }
-            },
-            {
-              "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:0:58-7:1:113",
-                "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:0:58-3:6:64",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:0:58-3:6:64",
-                        "value": [
-                          {
-                            "string": "layers",
-                            "raw_string": "layers"
-                          }
-                        ]
-                      }
-                    }
-                  ]
                 },
-                "primary": {},
-                "value": {
-                  "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:8:66-7:0:112",
-                    "nodes": [
-                      {
-                        "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:2:70-6:3:111",
-                          "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:2:70-4:5:73",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:2:70-4:5:73",
-                                  "value": [
-                                    {
-                                      "string": "cat",
-                                      "raw_string": "cat"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:7:75-6:2:110",
-                              "nodes": [
-                                {
-                                  "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:30:107",
-                                    "edges": [
-                                      {
-                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:24:101",
-                                        "src": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:11:88",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:11:88",
-                                                "value": [
-                                                  {
-                                                    "string": "the cat",
-                                                    "raw_string": "the cat"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "src_arrow": "",
-                                        "dst": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:15:92-5:24:101",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:15:92-5:24:101",
-                                                "value": [
-                                                  {
-                                                    "string": "meeeowwww",
-                                                    "raw_string": "meeeowwww"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "dst_arrow": ">"
-                                      }
-                                    ],
-                                    "primary": {},
-                                    "value": {
-                                      "unquoted_string": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:26:103-5:30:107",
-                                        "value": [
-                                          {
-                                            "string": "goes",
-                                            "raw_string": "goes"
-                                          }
-                                        ]
-                                      }
-                                    }
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            },
-            {
-              "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:0:115-13:1:175",
-                "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:0:115-9:9:124",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:0:115-9:9:124",
-                        "value": [
-                          {
-                            "string": "scenarios",
-                            "raw_string": "scenarios"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "primary": {},
-                "value": {
-                  "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:11:126-13:0:174",
-                    "nodes": [
-                      {
-                        "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:2:130-12:3:173",
-                          "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:2:130-10:7:135",
-                            "path": [
-                              {
-                                "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:2:130-10:7:135",
-                                  "value": [
-                                    {
-                                      "string": "green",
-                                      "raw_string": "green"
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          },
-                          "primary": {},
-                          "value": {
-                            "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:9:137-12:2:172",
-                              "nodes": [
-                                {
-                                  "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:4:143-11:30:169",
-                                    "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:4:143-11:23:162",
-                                      "path": [
-                                        {
-                                          "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:4:143-11:12:151",
-                                            "value": [
-                                              {
-                                                "string": "question",
-                                                "raw_string": "question"
-                                              }
-                                            ]
-                                          }
-                                        },
-                                        {
-                                          "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:13:152-11:18:157",
-                                            "value": [
-                                              {
-                                                "string": "style",
-                                                "raw_string": "style"
-                                              }
-                                            ]
-                                          }
-                                        },
-                                        {
-                                          "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:19:158-11:23:162",
-                                            "value": [
-                                              {
-                                                "string": "fill",
-                                                "raw_string": "fill"
-                                              }
-                                            ]
-                                          }
-                                        }
-                                      ]
-                                    },
-                                    "primary": {},
-                                    "value": {
-                                      "unquoted_string": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:25:164-11:30:169",
-                                        "value": [
-                                          {
-                                            "string": "green",
-                                            "raw_string": "green"
-                                          }
-                                        ]
-                                      }
-                                    }
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
+                "value": {}
               }
             }
           ]
@@ -750,9 +541,7 @@
             "direction": {
               "value": ""
             },
-            "constraint": {
-              "value": ""
-            }
+            "constraint": null
           },
           "zIndex": 0
         },
@@ -783,9 +572,7 @@
               "direction": {
                 "value": ""
               },
-              "constraint": {
-                "value": ""
-              }
+              "constraint": null
             },
             "zIndex": 0
           }
@@ -832,9 +619,7 @@
               "direction": {
                 "value": ""
               },
-              "constraint": {
-                "value": ""
-              }
+              "constraint": null
             },
             "zIndex": 0
           },
@@ -879,9 +664,7 @@
               "direction": {
                 "value": ""
               },
-              "constraint": {
-                "value": ""
-              }
+              "constraint": null
             },
             "zIndex": 0
           }
@@ -893,29 +676,27 @@
         "name": "green",
         "isFolderOnly": false,
         "ast": {
-          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-13:1:175",
+          "range": ",1:0:0-2:0:0",
           "nodes": [
             {
               "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-0:30:30",
+                "range": ",0:0:0-0:0:0",
                 "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-0:8:8",
+                  "range": ",0:0:0-0:0:0",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:0:0-0:8:8",
+                        "range": ",0:0:0-0:0:0",
                         "value": [
                           {
-                            "string": "question",
-                            "raw_string": "question"
+                            "string": "question"
                           }
                         ]
                       }
                     }
                   ]
                 },
-                "primary": {},
-                "value": {
+                "primary": {
                   "unquoted_string": {
                     "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,0:10:10-0:30:30",
                     "value": [
@@ -925,203 +706,54 @@
                       }
                     ]
                   }
-                }
-              }
-            },
-            {
-              "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:0:31-1:25:56",
-                "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:0:31-1:13:44",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:0:31-1:8:39",
-                        "value": [
-                          {
-                            "string": "question",
-                            "raw_string": "question"
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,1:9:40-1:13:44",
-                        "value": [
-                          {
-                            "string": "link",
-                            "raw_string": "link"
-                          }
-                        ]
-                      }
-                    }
-                  ]
                 },
-                "primary": {},
-                "value": {
-                  "double_quoted_string": {
-                    "range": ",0:0:0-0:0:0",
-                    "value": [
-                      {
-                        "string": "root.layers.cat"
-                      }
-                    ]
-                  }
-                }
-              }
-            },
-            {
-              "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:0:58-7:1:113",
-                "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:0:58-3:6:64",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:0:58-3:6:64",
-                        "value": [
-                          {
-                            "string": "layers",
-                            "raw_string": "layers"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "primary": {},
                 "value": {
                   "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,3:8:66-7:0:112",
+                    "range": ",1:0:0-2:0:0",
                     "nodes": [
                       {
                         "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:2:70-6:3:111",
+                          "range": ",0:0:0-0:0:0",
                           "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:2:70-4:5:73",
+                            "range": ",0:0:0-0:0:0",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:2:70-4:5:73",
+                                  "range": ",0:0:0-0:0:0",
                                   "value": [
                                     {
-                                      "string": "cat",
-                                      "raw_string": "cat"
+                                      "string": "link"
                                     }
                                   ]
                                 }
                               }
                             ]
                           },
-                          "primary": {},
-                          "value": {
-                            "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,4:7:75-6:2:110",
-                              "nodes": [
+                          "primary": {
+                            "unquoted_string": {
+                              "range": ",0:0:0-0:0:0",
+                              "value": [
                                 {
-                                  "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:30:107",
-                                    "edges": [
-                                      {
-                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:24:101",
-                                        "src": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:11:88",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:4:81-5:11:88",
-                                                "value": [
-                                                  {
-                                                    "string": "the cat",
-                                                    "raw_string": "the cat"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "src_arrow": "",
-                                        "dst": {
-                                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:15:92-5:24:101",
-                                          "path": [
-                                            {
-                                              "unquoted_string": {
-                                                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:15:92-5:24:101",
-                                                "value": [
-                                                  {
-                                                    "string": "meeeowwww",
-                                                    "raw_string": "meeeowwww"
-                                                  }
-                                                ]
-                                              }
-                                            }
-                                          ]
-                                        },
-                                        "dst_arrow": ">"
-                                      }
-                                    ],
-                                    "primary": {},
-                                    "value": {
-                                      "unquoted_string": {
-                                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,5:26:103-5:30:107",
-                                        "value": [
-                                          {
-                                            "string": "goes",
-                                            "raw_string": "goes"
-                                          }
-                                        ]
-                                      }
-                                    }
-                                  }
+                                  "string": "root.layers.cat"
                                 }
                               ]
                             }
-                          }
+                          },
+                          "value": {}
                         }
-                      }
-                    ]
-                  }
-                }
-              }
-            },
-            {
-              "map_key": {
-                "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:0:115-13:1:175",
-                "key": {
-                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:0:115-9:9:124",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:0:115-9:9:124",
-                        "value": [
-                          {
-                            "string": "scenarios",
-                            "raw_string": "scenarios"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "primary": {},
-                "value": {
-                  "map": {
-                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,9:11:126-13:0:174",
-                    "nodes": [
+                      },
                       {
                         "map_key": {
-                          "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:2:130-12:3:173",
+                          "range": ",0:0:0-0:0:0",
                           "key": {
-                            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:2:130-10:7:135",
+                            "range": ",0:0:0-0:0:0",
                             "path": [
                               {
                                 "unquoted_string": {
-                                  "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:2:130-10:7:135",
+                                  "range": ",0:0:0-0:0:0",
                                   "value": [
                                     {
-                                      "string": "green",
-                                      "raw_string": "green"
+                                      "string": "style"
                                     }
                                   ]
                                 }
@@ -1131,51 +763,27 @@
                           "primary": {},
                           "value": {
                             "map": {
-                              "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,10:9:137-12:2:172",
+                              "range": ",1:0:0-2:0:0",
                               "nodes": [
                                 {
                                   "map_key": {
-                                    "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:4:143-11:30:169",
+                                    "range": ",0:0:0-0:0:0",
                                     "key": {
-                                      "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:4:143-11:23:162",
+                                      "range": ",0:0:0-0:0:0",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:4:143-11:12:151",
+                                            "range": ",0:0:0-0:0:0",
                                             "value": [
                                               {
-                                                "string": "question",
-                                                "raw_string": "question"
-                                              }
-                                            ]
-                                          }
-                                        },
-                                        {
-                                          "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:13:152-11:18:157",
-                                            "value": [
-                                              {
-                                                "string": "style",
-                                                "raw_string": "style"
-                                              }
-                                            ]
-                                          }
-                                        },
-                                        {
-                                          "unquoted_string": {
-                                            "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:19:158-11:23:162",
-                                            "value": [
-                                              {
-                                                "string": "fill",
-                                                "raw_string": "fill"
+                                                "string": "fill"
                                               }
                                             ]
                                           }
                                         }
                                       ]
                                     },
-                                    "primary": {},
-                                    "value": {
+                                    "primary": {
                                       "unquoted_string": {
                                         "range": "d2/testdata/d2compiler/TestCompile/link-board-mixed.d2,11:25:164-11:30:169",
                                         "value": [
@@ -1185,7 +793,8 @@
                                           }
                                         ]
                                       }
-                                    }
+                                    },
+                                    "value": {}
                                   }
                                 }
                               ]
@@ -1219,9 +828,7 @@
             "direction": {
               "value": ""
             },
-            "constraint": {
-              "value": ""
-            }
+            "constraint": null
           },
           "zIndex": 0
         },
@@ -1348,9 +955,7 @@
               "direction": {
                 "value": ""
               },
-              "constraint": {
-                "value": ""
-              }
+              "constraint": null
             },
             "zIndex": 0
           }
