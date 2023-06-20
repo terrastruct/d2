@@ -179,7 +179,6 @@ func (a *Attributes) ToArrowhead() d2target.Arrowhead {
 	return d2target.ToArrowhead(a.Shape.Value, filled)
 }
 
-// TODO references at the root scope should have their Scope set to root graph AST
 type Reference struct {
 	Key          *d2ast.KeyPath `json:"key"`
 	KeyPathIndex int            `json:"key_path_index"`
@@ -188,6 +187,7 @@ type Reference struct {
 	MapKeyEdgeIndex int        `json:"map_key_edge_index"`
 	Scope           *d2ast.Map `json:"-"`
 	ScopeObj        *Object    `json:"-"`
+	ScopeAST        *d2ast.Map `json:"-"`
 }
 
 func (r Reference) MapKeyEdgeDest() bool {

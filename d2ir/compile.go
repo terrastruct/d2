@@ -44,13 +44,14 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, error) {
 	m := &Map{}
 	m.initRoot()
 	m.parent.(*Field).References[0].Context.Scope = ast
+	m.parent.(*Field).References[0].Context.ScopeAST = ast
 
 	c.pushImportStack(&d2ast.Import{
 		Path: []*d2ast.StringBox{d2ast.RawStringBox(ast.GetRange().Path, true)},
 	})
 	defer c.popImportStack()
 
-	c.compileMap(m, ast)
+	c.compileMap(m, ast, ast)
 	c.compileClasses(m)
 	if !c.err.Empty() {
 		return nil, c.err
@@ -105,7 +106,7 @@ func (c *compiler) overlay(base *Map, f *Field) {
 	f.Composite = base
 }
 
-func (c *compiler) compileMap(dst *Map, ast *d2ast.Map) {
+func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 	for _, n := range ast.Nodes {
 		switch {
 		case n.MapKey != nil:
@@ -113,6 +114,7 @@ func (c *compiler) compileMap(dst *Map, ast *d2ast.Map) {
 				Key:      n.MapKey,
 				Scope:    ast,
 				ScopeMap: dst,
+				ScopeAST: scopeAST,
 			})
 		case n.Import != nil:
 			impn, ok := c._import(n.Import)
@@ -167,7 +169,7 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		a := &Array{
 			parent: f,
 		}
-		c.compileArray(a, refctx.Key.Value.Array)
+		c.compileArray(a, refctx.Key.Value.Array, refctx.ScopeAST)
 		f.Composite = a
 	} else if refctx.Key.Value.Map != nil {
 		if f.Map() == nil {
@@ -175,6 +177,7 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 				parent: f,
 			}
 		}
+		scopeAST := refctx.Key.Value.Map
 		switch NodeBoardKind(f) {
 		case BoardScenario:
 			c.overlay(ParentBoard(f).Map(), f)
@@ -190,8 +193,12 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 					break
 				}
 			}
+		case BoardLayer:
+		default:
+			// If new board type, use that as the new scope AST, otherwise, carry on
+			scopeAST = refctx.ScopeAST
 		}
-		c.compileMap(f.Map(), refctx.Key.Value.Map)
+		c.compileMap(f.Map(), refctx.Key.Value.Map, scopeAST)
 		switch NodeBoardKind(f) {
 		case BoardScenario, BoardStep:
 			c.compileClasses(f.Map())
@@ -407,7 +414,7 @@ func (c *compiler) compileEdges(refctx *RefContext) {
 						parent: e,
 					}
 				}
-				c.compileMap(e.Map_, refctx.Key.Value.Map)
+				c.compileMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
 			} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 				e.Primary_ = &Scalar{
 					parent: e,
@@ -418,7 +425,7 @@ func (c *compiler) compileEdges(refctx *RefContext) {
 	}
 }
 
-func (c *compiler) compileArray(dst *Array, a *d2ast.Array) {
+func (c *compiler) compileArray(dst *Array, a *d2ast.Array, scopeAST *d2ast.Map) {
 	for _, an := range a.Nodes {
 		var irv Value
 		switch v := an.Unbox().(type) {
@@ -426,13 +433,13 @@ func (c *compiler) compileArray(dst *Array, a *d2ast.Array) {
 			ira := &Array{
 				parent: dst,
 			}
-			c.compileArray(ira, v)
+			c.compileArray(ira, v, scopeAST)
 			irv = ira
 		case *d2ast.Map:
 			irm := &Map{
 				parent: dst,
 			}
-			c.compileMap(irm, v)
+			c.compileMap(irm, v, scopeAST)
 			irv = irm
 		case d2ast.Scalar:
 			irv = &Scalar{

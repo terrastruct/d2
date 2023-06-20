@@ -650,6 +650,31 @@ steps: {
 }
 `,
 		},
+		{
+			name: "steps-conflict",
+
+			text: `a
+d
+steps: {
+  x: {
+    b
+  }
+}
+`,
+			key:       `d`,
+			boardPath: []string{"root", "steps", "x"},
+
+			expKey: `d 2`,
+			exp: `a
+d
+steps: {
+  x: {
+    b
+    d 2
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -686,11 +711,12 @@ func TestSet(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name  string
-		text  string
-		key   string
-		tag   *string
-		value *string
+		boardPath []string
+		name      string
+		text      string
+		key       string
+		tag       *string
+		value     *string
 
 		expErr     string
 		exp        string
@@ -1664,6 +1690,126 @@ six
 
 			expErr: `failed to set "x.icon" to "one two" "\"three\\nfour\\nfive\\nsix\\n\"": spaces are not allowed in blockstring tags`,
 		},
+		{
+			name: "layers-usable-ref-style",
+
+			text: `a
+layers: {
+  x: {
+    a
+  }
+}
+`,
+			key:       `a.style.opacity`,
+			value:     go2.Pointer(`0.2`),
+			boardPath: []string{"root", "layers", "x"},
+
+			exp: `a
+layers: {
+  x: {
+    a: {style.opacity: 0.2}
+  }
+}
+`,
+		},
+		{
+			name: "layers-unusable-ref-style",
+
+			text: `a
+layers: {
+  x: {
+    b
+  }
+}
+`,
+			key:       `a.style.opacity`,
+			value:     go2.Pointer(`0.2`),
+			boardPath: []string{"root", "layers", "x"},
+
+			exp: `a
+layers: {
+  x: {
+    b
+    a.style.opacity: 0.2
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-usable-ref-style",
+
+			text: `a: outer
+scenarios: {
+  x: {
+		a: inner
+  }
+}
+`,
+			key:       `a.style.opacity`,
+			value:     go2.Pointer(`0.2`),
+			boardPath: []string{"root", "scenarios", "x"},
+
+			exp: `a: outer
+scenarios: {
+  x: {
+    a: inner {style.opacity: 0.2}
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-nested-usable-ref-style",
+
+			text: `a: {
+  b: outer
+}
+scenarios: {
+  x: {
+    a: {
+      b: inner
+    }
+  }
+}
+`,
+			key:       `a.b.style.opacity`,
+			value:     go2.Pointer(`0.2`),
+			boardPath: []string{"root", "scenarios", "x"},
+
+			exp: `a: {
+  b: outer
+}
+scenarios: {
+  x: {
+    a: {
+      b: inner {style.opacity: 0.2}
+    }
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-unusable-ref-style",
+
+			text: `a
+scenarios: {
+  x: {
+    b
+  }
+}
+`,
+			key:       `a.style.opacity`,
+			value:     go2.Pointer(`0.2`),
+			boardPath: []string{"root", "scenarios", "x"},
+
+			exp: `a
+scenarios: {
+  x: {
+    b
+    a.style.opacity: 0.2
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -1674,7 +1820,7 @@ six
 			et := editTest{
 				text: tc.text,
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
-					return d2oracle.Set(g, tc.key, tc.tag, tc.value)
+					return d2oracle.Set(g, tc.boardPath, tc.key, tc.tag, tc.value)
 				},
 
 				exp:        tc.exp,

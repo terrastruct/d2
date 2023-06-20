@@ -208,9 +208,9 @@ func (m *Map) CopyBase(newParent Node) *Map {
 
 	m2 := m.Copy(newParent).(*Map)
 	for i := range m2.Fields {
-		if _, ok := had[m2.Fields[i].Name]; !ok {
-			m2.Fields[i].Inherited = true
-		}
+		// if _, ok := had[m2.Fields[i].Name]; !ok {
+		m2.Fields[i].Inherited = true
+		// }
 	}
 	for i := range m2.Edges {
 		m2.Edges[i].Inherited = true
@@ -572,6 +572,7 @@ type RefContext struct {
 	Key      *d2ast.Key  `json:"key"`
 	Scope    *d2ast.Map  `json:"-"`
 	ScopeMap *Map        `json:"-"`
+	ScopeAST *d2ast.Map  `json:"-"`
 }
 
 func (rc *RefContext) Copy() *RefContext {

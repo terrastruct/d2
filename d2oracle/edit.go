@@ -68,7 +68,7 @@ func Create(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 
 // TODO: update graph in place when compiler can accept single modifications
 // TODO: go through all references to decide best spot to insert something
-func Set(g *d2graph.Graph, key string, tag, value *string) (_ *d2graph.Graph, err error) {
+func Set(g *d2graph.Graph, boardPath []string, key string, tag, value *string) (_ *d2graph.Graph, err error) {
 	var valueHelp string
 	if value == nil {
 		valueHelp = fmt.Sprintf("%#v", value)
@@ -81,9 +81,29 @@ func Set(g *d2graph.Graph, key string, tag, value *string) (_ *d2graph.Graph, er
 		defer xdefer.Errorf(&err, "failed to set %#v to %#v", key, valueHelp)
 	}
 
-	err = _set(g, g.AST, key, tag, value)
+	boardG := g
+	baseAST := g.AST
+
+	if len(boardPath) > 0 {
+		// When compiling a nested board, we can read from boardG but only write to baseBoardG
+		boardG = GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return nil, fmt.Errorf("board %v not found", boardPath)
+		}
+		// TODO beter name
+		baseAST = boardG.BaseAST
+	}
+
+	err = _set(boardG, baseAST, key, tag, value)
 	if err != nil {
 		return nil, err
+	}
+
+	if len(boardPath) > 0 {
+		replaced := ReplaceBoardNode(g.AST, baseAST, boardPath)
+		if !replaced {
+			return nil, fmt.Errorf("board %v AST not found", boardPath)
+		}
 	}
 
 	return recompile(g.AST)
@@ -347,13 +367,39 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			}
 		}
 
-		if obj.Label.MapKey != nil && obj.Map == nil && (!found || reserved || len(mk.Edges) > 0) {
-			obj.Map = &d2ast.Map{
+		var objK *d2ast.Key
+		if baseAST != g.AST {
+			for i, ref := range obj.References {
+				if ref.ScopeAST == baseAST {
+					objK = obj.References[i].MapKey
+					break
+				}
+			}
+			if objK == nil {
+				appendMapKey(scope, mk)
+				return nil
+			}
+		}
+		var m *d2ast.Map
+		if objK != nil {
+			m = objK.Value.Map
+		} else {
+			m = obj.Map
+		}
+
+		if obj.Label.MapKey != nil && m == nil && (!found || reserved || len(mk.Edges) > 0) {
+			m2 := &d2ast.Map{
 				Range: d2ast.MakeRange(",1:0:0-1:0:0"),
 			}
-			obj.Label.MapKey.Primary = obj.Label.MapKey.Value.ScalarBox()
-			obj.Label.MapKey.Value = d2ast.MakeValueBox(obj.Map)
-			scope = obj.Map
+			if objK == nil {
+				obj.Map = m2
+				objK = obj.Label.MapKey
+			} else {
+				objK.Value.Map = m2
+			}
+			objK.Primary = objK.Value.ScalarBox()
+			objK.Value = d2ast.MakeValueBox(m2)
+			scope = m2
 
 			mk.Key.Path = mk.Key.Path[toSkip-1:]
 			toSkip = 1
@@ -367,7 +413,6 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			return nil
 		}
 	}
-
 	ir, err := d2ir.Compile(g.AST, nil)
 	if err != nil {
 		return err
