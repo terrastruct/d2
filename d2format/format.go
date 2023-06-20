@@ -275,12 +275,24 @@ func (p *printer) _map(m *d2ast.Map) {
 		}
 	}
 
+	layerNodes := []d2ast.MapNodeBox{}
+	scenarioNodes := []d2ast.MapNodeBox{}
+	stepNodes := []d2ast.MapNodeBox{}
+
 	prev := d2ast.Node(m)
 	for i := 0; i < len(m.Nodes); i++ {
 		nb := m.Nodes[i]
 		n := nb.Unbox()
-		// skip board nodes as we'll write them at the end
+		// extract out layer, scenario, and step nodes and skip
 		if nb.IsBoardNode() {
+			switch nb.MapKey.Key.Path[0].Unbox().ScalarString() {
+			case "layers":
+				layerNodes = append(layerNodes, nb)
+			case "scenarios":
+				scenarioNodes = append(scenarioNodes, nb)
+			case "steps":
+				stepNodes = append(stepNodes, nb)
+			}
 			prev = n
 			continue
 		}
@@ -309,25 +321,6 @@ func (p *printer) _map(m *d2ast.Map) {
 
 		p.node(n)
 		prev = n
-	}
-
-	// extract out layer, scenario, and step nodes
-	layerNodes := []d2ast.MapNodeBox{}
-	scenarioNodes := []d2ast.MapNodeBox{}
-	stepNodes := []d2ast.MapNodeBox{}
-	for i := 0; i < len(m.Nodes); i++ {
-		node := m.Nodes[i]
-		if !node.IsBoardNode() {
-			continue
-		}
-		switch node.MapKey.Key.Path[0].Unbox().ScalarString() {
-		case "layers":
-			layerNodes = append(layerNodes, node)
-		case "scenarios":
-			scenarioNodes = append(scenarioNodes, node)
-		case "steps":
-			stepNodes = append(stepNodes, node)
-		}
 	}
 
 	boards := []d2ast.MapNodeBox{}
