@@ -308,7 +308,7 @@ func (p *printer) _map(m *d2ast.Map) {
 
 		if m.IsFileMap() && nb.IsBoardNode() {
 			currString := p.sb.String()
-			// if the the character before the special board is not a newline, we add one
+			// if the two characters before the special board is not a double newline, we add one
 			if currString[len(currString)-2:] != "\n\n" {
 				p.newline()
 			}
