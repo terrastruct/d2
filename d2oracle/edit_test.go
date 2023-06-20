@@ -1810,6 +1810,63 @@ scenarios: {
 }
 `,
 		},
+		{
+			name: "scenarios-label-primary",
+
+			text: `a: {
+  style.opacity: 0.2
+}
+scenarios: {
+  x: {
+		a: {
+      style.opacity: 0.3
+    }
+  }
+}
+`,
+			key:       `a`,
+			value:     go2.Pointer(`b`),
+			boardPath: []string{"root", "scenarios", "x"},
+
+			exp: `a: {
+  style.opacity: 0.2
+}
+scenarios: {
+  x: {
+    a: b {
+      style.opacity: 0.3
+    }
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-label-primary-missing",
+
+			text: `a: {
+  style.opacity: 0.2
+}
+scenarios: {
+  x: {
+		b
+  }
+}
+`,
+			key:       `a`,
+			value:     go2.Pointer(`b`),
+			boardPath: []string{"root", "scenarios", "x"},
+
+			exp: `a: {
+  style.opacity: 0.2
+}
+scenarios: {
+  x: {
+    b
+    a: b
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {

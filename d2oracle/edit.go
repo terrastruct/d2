@@ -353,13 +353,25 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			}
 			obj = o
 
-			if obj.Map == nil {
+			var maybeNewScope *d2ast.Map
+			if baseAST != g.AST {
+				writeableRefs := getWriteableRefs(obj, baseAST)
+				for _, ref := range writeableRefs {
+					if ref.MapKey != nil && ref.MapKey.Value.Map != nil {
+						maybeNewScope = ref.MapKey.Value.Map
+					}
+				}
+			} else {
+				maybeNewScope = obj.Map
+			}
+
+			if maybeNewScope == nil {
 				// If we find a deeper obj.Map we need to skip this key too.
 				toSkip++
 				continue
 			}
 
-			scope = obj.Map
+			scope = maybeNewScope
 			mk.Key.Path = mk.Key.Path[toSkip:]
 			toSkip = 1
 			if len(mk.Key.Path) == 0 {
@@ -369,11 +381,9 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 
 		var objK *d2ast.Key
 		if baseAST != g.AST {
-			for i, ref := range obj.References {
-				if ref.ScopeAST == baseAST {
-					objK = obj.References[i].MapKey
-					break
-				}
+			writeableRefs := getWriteableRefs(obj, baseAST)
+			if len(writeableRefs) > 0 {
+				objK = writeableRefs[0].MapKey
 			}
 			if objK == nil {
 				appendMapKey(scope, mk)
@@ -2912,6 +2922,15 @@ func filterReservedPath(path []*d2ast.StringBox) (filtered []*d2ast.StringBox) {
 			return
 		}
 		filtered = append(filtered, box)
+	}
+	return
+}
+
+func getWriteableRefs(obj *d2graph.Object, writeableAST *d2ast.Map) (out []d2graph.Reference) {
+	for i, ref := range obj.References {
+		if ref.ScopeAST == writeableAST {
+			out = append(out, obj.References[i])
+		}
 	}
 	return
 }
