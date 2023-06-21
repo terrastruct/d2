@@ -3,7 +3,7 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,0:0:0-7:0:59",
+      "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,0:0:0-8:0:60",
       "nodes": [
         {
           "map_key": {
@@ -30,13 +30,13 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,1:0:2-6:1:58",
+            "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,2:0:3-7:1:59",
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,1:0:2-1:9:11",
+              "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,2:0:3-2:9:12",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,1:0:2-1:9:11",
+                    "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,2:0:3-2:9:12",
                     "value": [
                       {
                         "string": "scenarios",
@@ -50,17 +50,17 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,1:11:13-6:1:58",
+                "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,2:11:14-7:1:59",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,2:2:17-5:3:56",
+                      "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,3:2:18-6:3:57",
                       "key": {
-                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,2:2:17-2:3:18",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,3:2:18-3:3:19",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,2:2:17-2:3:18",
+                              "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,3:2:18-3:3:19",
                               "value": [
                                 {
                                   "string": "x",
@@ -74,17 +74,17 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,2:5:20-5:3:56",
+                          "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,3:5:21-6:3:57",
                           "nodes": [
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,3:4:26-3:5:27",
+                                "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,4:4:27-4:5:28",
                                 "key": {
-                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,3:4:26-3:5:27",
+                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,4:4:27-4:5:28",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,3:4:26-3:5:27",
+                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,4:4:27-4:5:28",
                                         "value": [
                                           {
                                             "string": "b",
@@ -101,13 +101,13 @@
                             },
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,4:4:32-4:24:52",
+                                "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,5:4:33-5:24:53",
                                 "key": {
-                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,4:4:32-4:19:47",
+                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,5:4:33-5:19:48",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,4:4:32-4:5:33",
+                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,5:4:33-5:5:34",
                                         "value": [
                                           {
                                             "string": "a",
@@ -118,7 +118,7 @@
                                     },
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,4:6:34-4:11:39",
+                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,5:6:35-5:11:40",
                                         "value": [
                                           {
                                             "string": "style",
@@ -129,7 +129,7 @@
                                     },
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,4:12:40-4:19:47",
+                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,5:12:41-5:19:48",
                                         "value": [
                                           {
                                             "string": "opacity",
@@ -143,7 +143,7 @@
                                 "primary": {},
                                 "value": {
                                   "number": {
-                                    "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,4:21:49-4:24:52",
+                                    "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,5:21:50-5:24:53",
                                     "raw": "0.2",
                                     "value": "1/5"
                                   }
@@ -306,7 +306,7 @@
                                     },
                                     "primary": {
                                       "number": {
-                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,4:21:49-4:24:52",
+                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,5:21:50-5:24:53",
                                         "raw": "0.2",
                                         "value": "1/5"
                                       }
@@ -399,11 +399,11 @@
               },
               {
                 "key": {
-                  "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,4:4:32-4:19:47",
+                  "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,5:4:33-5:19:48",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,4:4:32-4:5:33",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,5:4:33-5:5:34",
                         "value": [
                           {
                             "string": "a",
@@ -414,7 +414,7 @@
                     },
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,4:6:34-4:11:39",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,5:6:35-5:11:40",
                         "value": [
                           {
                             "string": "style",
@@ -425,7 +425,7 @@
                     },
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,4:12:40-4:19:47",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,5:12:41-5:19:48",
                         "value": [
                           {
                             "string": "opacity",
@@ -470,11 +470,11 @@
             "references": [
               {
                 "key": {
-                  "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,3:4:26-3:5:27",
+                  "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,4:4:27-4:5:28",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,3:4:26-3:5:27",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-unusable-ref-style.d2,4:4:27-4:5:28",
                         "value": [
                           {
                             "string": "b",

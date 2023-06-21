@@ -462,6 +462,7 @@ after
 			name: "layers-basic",
 
 			text: `a
+
 layers: {
   x: {
     a
@@ -473,6 +474,7 @@ layers: {
 
 			expKey: `b`,
 			exp: `a
+
 layers: {
   x: {
     a
@@ -485,6 +487,7 @@ layers: {
 			name: "layers-edge",
 
 			text: `a
+
 layers: {
   x: {
     a
@@ -496,6 +499,7 @@ layers: {
 
 			expKey: `(a -> b)[0]`,
 			exp: `a
+
 layers: {
   x: {
     a
@@ -508,6 +512,7 @@ layers: {
 			name: "layers-edge-duplicate",
 
 			text: `a -> b
+
 layers: {
   x: {
     a -> b
@@ -519,6 +524,7 @@ layers: {
 
 			expKey: `(a -> b)[1]`,
 			exp: `a -> b
+
 layers: {
   x: {
     a -> b
@@ -532,6 +538,7 @@ layers: {
 
 			text: `a
 b
+
 scenarios: {
   x: {
     a
@@ -544,6 +551,7 @@ scenarios: {
 			expKey: `c`,
 			exp: `a
 b
+
 scenarios: {
   x: {
     a
@@ -557,6 +565,7 @@ scenarios: {
 
 			text: `a
 b
+
 scenarios: {
   x: {
     a
@@ -569,6 +578,7 @@ scenarios: {
 			expKey: `(a -> b)[0]`,
 			exp: `a
 b
+
 scenarios: {
   x: {
     a
@@ -581,6 +591,7 @@ scenarios: {
 			name: "scenarios-edge-inherited",
 
 			text: `a -> b
+
 scenarios: {
   x: {
     a
@@ -592,6 +603,7 @@ scenarios: {
 
 			expKey: `(a -> b)[1]`,
 			exp: `a -> b
+
 scenarios: {
   x: {
     a
@@ -605,6 +617,7 @@ scenarios: {
 
 			text: `a
 d
+
 steps: {
   x: {
     b
@@ -617,6 +630,7 @@ steps: {
 			expKey: `c`,
 			exp: `a
 d
+
 steps: {
   x: {
     b
@@ -630,6 +644,7 @@ steps: {
 
 			text: `a
 d
+
 steps: {
   x: {
     b
@@ -642,6 +657,7 @@ steps: {
 			expKey: `(d -> b)[0]`,
 			exp: `a
 d
+
 steps: {
   x: {
     b
@@ -655,6 +671,7 @@ steps: {
 
 			text: `a
 d
+
 steps: {
   x: {
     b
@@ -667,6 +684,7 @@ steps: {
 			expKey: `d 2`,
 			exp: `a
 d
+
 steps: {
   x: {
     b
@@ -1694,6 +1712,7 @@ six
 			name: "layers-usable-ref-style",
 
 			text: `a
+
 layers: {
   x: {
     a
@@ -1705,6 +1724,7 @@ layers: {
 			boardPath: []string{"root", "layers", "x"},
 
 			exp: `a
+
 layers: {
   x: {
     a: {style.opacity: 0.2}
@@ -1716,6 +1736,7 @@ layers: {
 			name: "layers-unusable-ref-style",
 
 			text: `a
+
 layers: {
   x: {
     b
@@ -1727,6 +1748,7 @@ layers: {
 			boardPath: []string{"root", "layers", "x"},
 
 			exp: `a
+
 layers: {
   x: {
     b
@@ -1739,6 +1761,7 @@ layers: {
 			name: "scenarios-usable-ref-style",
 
 			text: `a: outer
+
 scenarios: {
   x: {
 		a: inner
@@ -1750,6 +1773,7 @@ scenarios: {
 			boardPath: []string{"root", "scenarios", "x"},
 
 			exp: `a: outer
+
 scenarios: {
   x: {
     a: inner {style.opacity: 0.2}
@@ -1763,6 +1787,7 @@ scenarios: {
 			text: `a: {
   b: outer
 }
+
 scenarios: {
   x: {
     a: {
@@ -1778,6 +1803,7 @@ scenarios: {
 			exp: `a: {
   b: outer
 }
+
 scenarios: {
   x: {
     a: {
@@ -1791,6 +1817,7 @@ scenarios: {
 			name: "scenarios-unusable-ref-style",
 
 			text: `a
+
 scenarios: {
   x: {
     b
@@ -1802,6 +1829,7 @@ scenarios: {
 			boardPath: []string{"root", "scenarios", "x"},
 
 			exp: `a
+
 scenarios: {
   x: {
     b
@@ -1816,6 +1844,7 @@ scenarios: {
 			text: `a: {
   style.opacity: 0.2
 }
+
 scenarios: {
   x: {
 		a: {
@@ -1831,6 +1860,7 @@ scenarios: {
 			exp: `a: {
   style.opacity: 0.2
 }
+
 scenarios: {
   x: {
     a: b {
@@ -1846,6 +1876,7 @@ scenarios: {
 			text: `a: {
   style.opacity: 0.2
 }
+
 scenarios: {
   x: {
 		b
@@ -1859,6 +1890,7 @@ scenarios: {
 			exp: `a: {
   style.opacity: 0.2
 }
+
 scenarios: {
   x: {
     b
@@ -4838,6 +4870,7 @@ a
 			name: "layers-basic",
 
 			text: `a
+
 layers: {
   x: {
     b
@@ -4850,6 +4883,7 @@ layers: {
 			boardPath: []string{"root", "layers", "x"},
 
 			exp: `a
+
 layers: {
   x: {
     b: {
@@ -4863,6 +4897,7 @@ layers: {
 			name: "scenarios-out-of-scope",
 
 			text: `a
+
 scenarios: {
   x: {
     b
@@ -6568,6 +6603,7 @@ cm
 			name: "layers-basic",
 
 			text: `a
+
 layers: {
   x: {
     b
@@ -6579,6 +6615,7 @@ layers: {
 			boardPath: []string{"root", "layers", "x"},
 
 			exp: `a
+
 layers: {
   x: {
     b
@@ -6590,6 +6627,7 @@ layers: {
 			name: "scenarios-basic",
 
 			text: `a
+
 scenarios: {
   x: {
     b
@@ -6601,6 +6639,7 @@ scenarios: {
 			boardPath: []string{"root", "scenarios", "x"},
 
 			exp: `a
+
 scenarios: {
   x: {
     b
@@ -6612,6 +6651,7 @@ scenarios: {
 			name: "scenarios-inherited",
 
 			text: `a
+
 scenarios: {
   x: {
     b

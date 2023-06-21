@@ -3,7 +3,7 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,0:0:0-6:0:69",
+      "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,0:0:0-7:0:70",
       "nodes": [
         {
           "map_key": {
@@ -40,13 +40,13 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,1:0:9-5:1:68",
+            "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,2:0:10-6:1:69",
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,1:0:9-1:9:18",
+              "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,2:0:10-2:9:19",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,1:0:9-1:9:18",
+                    "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,2:0:10-2:9:19",
                     "value": [
                       {
                         "string": "scenarios",
@@ -60,17 +60,17 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,1:11:20-5:1:68",
+                "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,2:11:21-6:1:69",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,2:2:24-4:3:66",
+                      "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:2:25-5:3:67",
                       "key": {
-                        "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,2:2:24-2:3:25",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:2:25-3:3:26",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,2:2:24-2:3:25",
+                              "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:2:25-3:3:26",
                               "value": [
                                 {
                                   "string": "x",
@@ -84,17 +84,17 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,2:5:27-4:3:66",
+                          "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:5:28-5:3:67",
                           "nodes": [
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:4:33-3:33:62",
+                                "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,4:4:34-4:33:63",
                                 "key": {
-                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:4:33-3:5:34",
+                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,4:4:34-4:5:35",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:4:33-3:5:34",
+                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,4:4:34-4:5:35",
                                         "value": [
                                           {
                                             "string": "a",
@@ -107,7 +107,7 @@
                                 },
                                 "primary": {
                                   "unquoted_string": {
-                                    "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:7:36-3:12:41",
+                                    "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,4:7:37-4:12:42",
                                     "value": [
                                       {
                                         "string": "inner",
@@ -118,17 +118,17 @@
                                 },
                                 "value": {
                                   "map": {
-                                    "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:13:42-3:33:62",
+                                    "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,4:13:43-4:33:63",
                                     "nodes": [
                                       {
                                         "map_key": {
-                                          "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:14:43-3:32:61",
+                                          "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,4:14:44-4:32:62",
                                           "key": {
-                                            "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:14:43-3:27:56",
+                                            "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,4:14:44-4:27:57",
                                             "path": [
                                               {
                                                 "unquoted_string": {
-                                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:14:43-3:19:48",
+                                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,4:14:44-4:19:49",
                                                   "value": [
                                                     {
                                                       "string": "style",
@@ -139,7 +139,7 @@
                                               },
                                               {
                                                 "unquoted_string": {
-                                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:20:49-3:27:56",
+                                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,4:20:50-4:27:57",
                                                   "value": [
                                                     {
                                                       "string": "opacity",
@@ -153,7 +153,7 @@
                                           "primary": {},
                                           "value": {
                                             "number": {
-                                              "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:29:58-3:32:61",
+                                              "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,4:29:59-4:32:62",
                                               "raw": "0.2",
                                               "value": "1/5"
                                             }
@@ -275,7 +275,7 @@
                 },
                 "primary": {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:7:36-3:12:41",
+                    "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,4:7:37-4:12:42",
                     "value": [
                       {
                         "string": "inner",
@@ -331,7 +331,7 @@
                                     },
                                     "primary": {
                                       "number": {
-                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:29:58-3:32:61",
+                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,4:29:59-4:32:62",
                                         "raw": "0.2",
                                         "value": "1/5"
                                       }
@@ -402,11 +402,11 @@
               },
               {
                 "key": {
-                  "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:4:33-3:5:34",
+                  "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,4:4:34-4:5:35",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,3:4:33-3:5:34",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-usable-ref-style.d2,4:4:34-4:5:35",
                         "value": [
                           {
                             "string": "a",

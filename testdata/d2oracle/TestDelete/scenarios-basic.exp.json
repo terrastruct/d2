@@ -3,7 +3,7 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,0:0:0-6:0:34",
+      "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,0:0:0-7:0:35",
       "nodes": [
         {
           "map_key": {
@@ -30,13 +30,13 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,1:0:2-5:1:33",
+            "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,2:0:3-6:1:34",
             "key": {
-              "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,1:0:2-1:9:11",
+              "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,2:0:3-2:9:12",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,1:0:2-1:9:11",
+                    "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,2:0:3-2:9:12",
                     "value": [
                       {
                         "string": "scenarios",
@@ -50,17 +50,17 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,1:11:13-5:1:33",
+                "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,2:11:14-6:1:34",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,2:2:17-4:3:31",
+                      "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,3:2:18-5:3:32",
                       "key": {
-                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,2:2:17-2:3:18",
+                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,3:2:18-3:3:19",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,2:2:17-2:3:18",
+                              "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,3:2:18-3:3:19",
                               "value": [
                                 {
                                   "string": "x",
@@ -74,17 +74,17 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,2:5:20-4:3:31",
+                          "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,3:5:21-5:3:32",
                           "nodes": [
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,3:4:26-3:5:27",
+                                "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,4:4:27-4:5:28",
                                 "key": {
-                                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,3:4:26-3:5:27",
+                                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,4:4:27-4:5:28",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,3:4:26-3:5:27",
+                                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,4:4:27-4:5:28",
                                         "value": [
                                           {
                                             "string": "b",
@@ -311,11 +311,11 @@
             "references": [
               {
                 "key": {
-                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,3:4:26-3:5:27",
+                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,4:4:27-4:5:28",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,3:4:26-3:5:27",
+                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,4:4:27-4:5:28",
                         "value": [
                           {
                             "string": "b",

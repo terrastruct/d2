@@ -3,7 +3,7 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,0:0:0-7:0:52",
+      "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,0:0:0-8:0:53",
       "nodes": [
         {
           "map_key": {
@@ -53,13 +53,13 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,1:0:7-6:1:51",
+            "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,2:0:8-7:1:52",
             "key": {
-              "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,1:0:7-1:6:13",
+              "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,2:0:8-2:6:14",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,1:0:7-1:6:13",
+                    "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,2:0:8-2:6:14",
                     "value": [
                       {
                         "string": "layers",
@@ -73,17 +73,17 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,1:8:15-6:1:51",
+                "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,2:8:16-7:1:52",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,2:2:19-5:3:49",
+                      "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,3:2:20-6:3:50",
                       "key": {
-                        "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,2:2:19-2:3:20",
+                        "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,3:2:20-3:3:21",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,2:2:19-2:3:20",
+                              "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,3:2:20-3:3:21",
                               "value": [
                                 {
                                   "string": "x",
@@ -97,20 +97,20 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,2:5:22-5:3:49",
+                          "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,3:5:23-6:3:50",
                           "nodes": [
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,3:4:28-3:10:34",
+                                "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:4:29-4:10:35",
                                 "edges": [
                                   {
-                                    "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,3:4:28-3:10:34",
+                                    "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:4:29-4:10:35",
                                     "src": {
-                                      "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,3:4:28-3:5:29",
+                                      "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:4:29-4:5:30",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,3:4:28-3:5:29",
+                                            "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:4:29-4:5:30",
                                             "value": [
                                               {
                                                 "string": "a",
@@ -123,11 +123,11 @@
                                     },
                                     "src_arrow": "",
                                     "dst": {
-                                      "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,3:9:33-3:10:34",
+                                      "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:9:34-4:10:35",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,3:9:33-3:10:34",
+                                            "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:9:34-4:10:35",
                                             "value": [
                                               {
                                                 "string": "b",
@@ -147,16 +147,16 @@
                             },
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:4:39-4:10:45",
+                                "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,5:4:40-5:10:46",
                                 "edges": [
                                   {
-                                    "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:4:39-4:10:45",
+                                    "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,5:4:40-5:10:46",
                                     "src": {
-                                      "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:4:39-4:5:40",
+                                      "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,5:4:40-5:5:41",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:4:39-4:5:40",
+                                            "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,5:4:40-5:5:41",
                                             "value": [
                                               {
                                                 "string": "a",
@@ -169,11 +169,11 @@
                                     },
                                     "src_arrow": "",
                                     "dst": {
-                                      "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:9:44-4:10:45",
+                                      "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,5:9:45-5:10:46",
                                       "path": [
                                         {
                                           "unquoted_string": {
-                                            "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:9:44-4:10:45",
+                                            "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,5:9:45-5:10:46",
                                             "value": [
                                               {
                                                 "string": "b",
@@ -583,11 +583,11 @@
             "references": [
               {
                 "key": {
-                  "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,3:4:28-3:5:29",
+                  "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:4:29-4:5:30",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,3:4:28-3:5:29",
+                        "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:4:29-4:5:30",
                         "value": [
                           {
                             "string": "a",
@@ -603,11 +603,11 @@
               },
               {
                 "key": {
-                  "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:4:39-4:5:40",
+                  "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,5:4:40-5:5:41",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:4:39-4:5:40",
+                        "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,5:4:40-5:5:41",
                         "value": [
                           {
                             "string": "a",
@@ -648,11 +648,11 @@
             "references": [
               {
                 "key": {
-                  "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,3:9:33-3:10:34",
+                  "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:9:34-4:10:35",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,3:9:33-3:10:34",
+                        "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:9:34-4:10:35",
                         "value": [
                           {
                             "string": "b",
@@ -668,11 +668,11 @@
               },
               {
                 "key": {
-                  "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:9:44-4:10:45",
+                  "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,5:9:45-5:10:46",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,4:9:44-4:10:45",
+                        "range": "d2/testdata/d2oracle/TestCreate/layers-edge-duplicate.d2,5:9:45-5:10:46",
                         "value": [
                           {
                             "string": "b",

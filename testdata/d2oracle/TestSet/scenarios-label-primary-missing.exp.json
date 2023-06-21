@@ -3,7 +3,7 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,0:0:0-9:0:69",
+      "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,0:0:0-10:0:70",
       "nodes": [
         {
           "map_key": {
@@ -76,13 +76,13 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,3:0:28-8:1:68",
+            "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,4:0:29-9:1:69",
             "key": {
-              "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,3:0:28-3:9:37",
+              "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,4:0:29-4:9:38",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,3:0:28-3:9:37",
+                    "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,4:0:29-4:9:38",
                     "value": [
                       {
                         "string": "scenarios",
@@ -96,17 +96,17 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,3:11:39-8:1:68",
+                "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,4:11:40-9:1:69",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,4:2:43-7:3:66",
+                      "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,5:2:44-8:3:67",
                       "key": {
-                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,4:2:43-4:3:44",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,5:2:44-5:3:45",
                         "path": [
                           {
                             "unquoted_string": {
-                              "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,4:2:43-4:3:44",
+                              "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,5:2:44-5:3:45",
                               "value": [
                                 {
                                   "string": "x",
@@ -120,17 +120,17 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,4:5:46-7:3:66",
+                          "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,5:5:47-8:3:67",
                           "nodes": [
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,5:4:52-5:5:53",
+                                "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:4:53-6:5:54",
                                 "key": {
-                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,5:4:52-5:5:53",
+                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:4:53-6:5:54",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,5:4:52-5:5:53",
+                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:4:53-6:5:54",
                                         "value": [
                                           {
                                             "string": "b",
@@ -147,13 +147,13 @@
                             },
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:4:58-6:8:62",
+                                "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,7:4:59-7:8:63",
                                 "key": {
-                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:4:58-6:5:59",
+                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,7:4:59-7:5:60",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:4:58-6:5:59",
+                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,7:4:59-7:5:60",
                                         "value": [
                                           {
                                             "string": "a",
@@ -167,7 +167,7 @@
                                 "primary": {},
                                 "value": {
                                   "unquoted_string": {
-                                    "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:7:61-6:8:62",
+                                    "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,7:7:62-7:8:63",
                                     "value": [
                                       {
                                         "string": "b",
@@ -292,7 +292,7 @@
                 },
                 "primary": {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:7:61-6:8:62",
+                    "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,7:7:62-7:8:63",
                     "value": [
                       {
                         "string": "b",
@@ -441,11 +441,11 @@
               },
               {
                 "key": {
-                  "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:4:58-6:5:59",
+                  "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,7:4:59-7:5:60",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:4:58-6:5:59",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,7:4:59-7:5:60",
                         "value": [
                           {
                             "string": "a",
@@ -490,11 +490,11 @@
             "references": [
               {
                 "key": {
-                  "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,5:4:52-5:5:53",
+                  "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:4:53-6:5:54",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,5:4:52-5:5:53",
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:4:53-6:5:54",
                         "value": [
                           {
                             "string": "b",
