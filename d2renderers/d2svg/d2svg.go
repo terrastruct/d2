@@ -1743,6 +1743,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 	// generate style elements that will be appended to the SVG tag
 	upperBuf := &bytes.Buffer{}
 	if opts.MasterID == "" {
+		println("\033[1;31m--- DEBUG:", "=======================", "\033[m")
 		EmbedFonts(upperBuf, diagramHash, buf.String(), diagram.FontFamily, diagram.GetCorpus()) // EmbedFonts *must* run before `d2sketch.DefineFillPatterns`, but after all elements are appended to `buf`
 		themeStylesheet, err := ThemeCSS(diagramHash, themeID, darkThemeID)
 		if err != nil {
