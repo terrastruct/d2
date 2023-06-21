@@ -22,6 +22,12 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 )
 
+type OutsideScopeError struct{}
+
+func (e OutsideScopeError) Error() string {
+	return "operation would modify AST outside of given scope"
+}
+
 func Create(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph, newKey string, err error) {
 	defer xdefer.Errorf(&err, "failed to create %#v", key)
 
@@ -763,7 +769,7 @@ func appendMapKey(m *d2ast.Map, mk *d2ast.Key) {
 	}
 }
 
-func Delete(g *d2graph.Graph, key string) (_ *d2graph.Graph, err error) {
+func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph, err error) {
 	defer xdefer.Errorf(&err, "failed to delete %#v", key)
 
 	mk, err := d2parser.ParseMapKey(key)
@@ -777,6 +783,19 @@ func Delete(g *d2graph.Graph, key string) (_ *d2graph.Graph, err error) {
 
 	if len(mk.Edges) == 1 {
 		edgeTrimCommon(mk)
+	}
+
+	boardG := g
+	baseAST := g.AST
+
+	if len(boardPath) > 0 {
+		// When compiling a nested board, we can read from boardG but only write to baseBoardG
+		boardG = GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return nil, fmt.Errorf("board %v not found", boardPath)
+		}
+		// TODO beter name
+		baseAST = boardG.BaseAST
 	}
 
 	g2, err := deleteReserved(g, mk)
@@ -831,28 +850,44 @@ func Delete(g *d2graph.Graph, key string) (_ *d2graph.Graph, err error) {
 		return recompile(g.AST)
 	}
 
-	prevG, _ := recompile(g.AST)
+	prevG, _ := recompile(boardG.AST)
 
-	g, err = renameConflictsToParent(g, mk.Key)
+	boardG, err = renameConflictsToParent(boardG, mk.Key)
 	if err != nil {
 		return nil, err
 	}
 
-	obj, ok := g.Root.HasChild(d2graph.Key(mk.Key))
+	obj, ok := boardG.Root.HasChild(d2graph.Key(mk.Key))
 	if !ok {
 		return g, nil
 	}
 
-	g, err = deleteObject(g, mk.Key, obj)
+	if len(boardPath) > 0 {
+		// TODO null
+		writeableRefs := getWriteableRefs(obj, baseAST)
+		if len(writeableRefs) != len(obj.References) {
+			return nil, OutsideScopeError{}
+		}
+	}
+
+	boardG, err = deleteObject(boardG, baseAST, mk.Key, obj)
 	if err != nil {
 		return nil, err
 	}
 
-	if err := updateNear(prevG, g, &key, nil, false); err != nil {
+	if err := updateNear(prevG, boardG, &key, nil, false); err != nil {
 		return nil, err
 	}
 
-	return recompile(g.AST)
+	if len(boardPath) > 0 {
+		replaced := ReplaceBoardNode(g.AST, baseAST, boardPath)
+		if !replaced {
+			return nil, fmt.Errorf("board %v AST not found", boardPath)
+		}
+		return recompile(g.AST)
+	}
+
+	return recompile(boardG.AST)
 }
 
 func bumpChildrenUnderscores(m *d2ast.Map) {
@@ -1210,7 +1245,7 @@ func deleteObjField(g *d2graph.Graph, obj *d2graph.Object, field string) error {
 	return nil
 }
 
-func deleteObject(g *d2graph.Graph, key *d2ast.KeyPath, obj *d2graph.Object) (*d2graph.Graph, error) {
+func deleteObject(g *d2graph.Graph, baseAST *d2ast.Map, key *d2ast.KeyPath, obj *d2graph.Object) (*d2graph.Graph, error) {
 	var refEdges []*d2ast.Edge
 	for _, ref := range obj.References {
 		if ref.InEdge() {

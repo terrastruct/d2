@@ -4872,7 +4872,8 @@ func TestDelete(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name string
+		name      string
+		boardPath []string
 
 		text string
 		key  string
@@ -6520,6 +6521,66 @@ cdpdxz
 cm
 `,
 		},
+		{
+			name: "layers-basic",
+
+			text: `a
+layers: {
+  x: {
+    b
+    c
+  }
+}
+`,
+			key:       `c`,
+			boardPath: []string{"root", "layers", "x"},
+
+			exp: `a
+layers: {
+  x: {
+    b
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-basic",
+
+			text: `a
+scenarios: {
+  x: {
+    b
+    c
+  }
+}
+`,
+			key:       `c`,
+			boardPath: []string{"root", "scenarios", "x"},
+
+			exp: `a
+scenarios: {
+  x: {
+    b
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-inherited",
+
+			text: `a
+scenarios: {
+  x: {
+    b
+    c
+  }
+}
+`,
+			key:       `a`,
+			boardPath: []string{"root", "scenarios", "x"},
+
+			expErr: `failed to delete "a": operation would modify AST outside of given scope`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -6530,7 +6591,7 @@ cm
 			et := editTest{
 				text: tc.text,
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
-					return d2oracle.Delete(g, tc.key)
+					return d2oracle.Delete(g, tc.boardPath, tc.key)
 				},
 
 				exp:        tc.exp,
