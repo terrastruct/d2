@@ -197,24 +197,7 @@ func (m *Map) CopyBase(newParent Node) *Map {
 	scenarios := m.DeleteField("scenarios")
 	steps := m.DeleteField("steps")
 
-	had := make(map[string]struct{})
-	if parentM, ok := newParent.(*Map); ok {
-		for _, f := range parentM.Fields {
-			had[f.Name] = struct{}{}
-		}
-	}
-	// TODO pretty sure you don't need one for edges.
-	// Maybe if both boards had a (x -> y)[0]?
-
 	m2 := m.Copy(newParent).(*Map)
-	for i := range m2.Fields {
-		// if _, ok := had[m2.Fields[i].Name]; !ok {
-		m2.Fields[i].Inherited = true
-		// }
-	}
-	for i := range m2.Edges {
-		m2.Edges[i].Inherited = true
-	}
 	if layers != nil {
 		m.Fields = append(m.Fields, layers)
 	}
@@ -295,9 +278,6 @@ type Field struct {
 	Composite Composite `json:"composite,omitempty"`
 
 	References []*FieldReference `json:"references,omitempty"`
-
-	// Whether it's from a parent board or imported
-	Inherited bool `json:"inherited"`
 }
 
 func (f *Field) Copy(newParent Node) Node {
@@ -452,8 +432,6 @@ type Edge struct {
 	Map_     *Map    `json:"map,omitempty"`
 
 	References []*EdgeReference `json:"references,omitempty"`
-
-	Inherited bool `json:"inherited"`
 }
 
 func (e *Edge) Copy(newParent Node) Node {
