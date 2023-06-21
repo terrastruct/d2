@@ -470,7 +470,7 @@ layers: {
 }
 `,
 			key:       `b`,
-			boardPath: []string{"root", "layers", "x"},
+			boardPath: []string{"x"},
 
 			expKey: `b`,
 			exp: `a
@@ -495,7 +495,7 @@ layers: {
 }
 `,
 			key:       `a -> b`,
-			boardPath: []string{"root", "layers", "x"},
+			boardPath: []string{"x"},
 
 			expKey: `(a -> b)[0]`,
 			exp: `a
@@ -520,7 +520,7 @@ layers: {
 }
 `,
 			key:       `a -> b`,
-			boardPath: []string{"root", "layers", "x"},
+			boardPath: []string{"x"},
 
 			expKey: `(a -> b)[1]`,
 			exp: `a -> b
@@ -546,7 +546,7 @@ scenarios: {
 }
 `,
 			key:       `c`,
-			boardPath: []string{"root", "scenarios", "x"},
+			boardPath: []string{"x"},
 
 			expKey: `c`,
 			exp: `a
@@ -573,7 +573,7 @@ scenarios: {
 }
 `,
 			key:       `a -> b`,
-			boardPath: []string{"root", "scenarios", "x"},
+			boardPath: []string{"x"},
 
 			expKey: `(a -> b)[0]`,
 			exp: `a
@@ -599,7 +599,7 @@ scenarios: {
 }
 `,
 			key:       `a -> b`,
-			boardPath: []string{"root", "scenarios", "x"},
+			boardPath: []string{"x"},
 
 			expKey: `(a -> b)[1]`,
 			exp: `a -> b
@@ -625,7 +625,7 @@ steps: {
 }
 `,
 			key:       `c`,
-			boardPath: []string{"root", "steps", "x"},
+			boardPath: []string{"x"},
 
 			expKey: `c`,
 			exp: `a
@@ -652,7 +652,7 @@ steps: {
 }
 `,
 			key:       `d -> b`,
-			boardPath: []string{"root", "steps", "x"},
+			boardPath: []string{"x"},
 
 			expKey: `(d -> b)[0]`,
 			exp: `a
@@ -679,7 +679,7 @@ steps: {
 }
 `,
 			key:       `d`,
-			boardPath: []string{"root", "steps", "x"},
+			boardPath: []string{"x"},
 
 			expKey: `d 2`,
 			exp: `a
@@ -1721,7 +1721,7 @@ layers: {
 `,
 			key:       `a.style.opacity`,
 			value:     go2.Pointer(`0.2`),
-			boardPath: []string{"root", "layers", "x"},
+			boardPath: []string{"x"},
 
 			exp: `a
 
@@ -1745,7 +1745,7 @@ layers: {
 `,
 			key:       `a.style.opacity`,
 			value:     go2.Pointer(`0.2`),
-			boardPath: []string{"root", "layers", "x"},
+			boardPath: []string{"x"},
 
 			exp: `a
 
@@ -1770,7 +1770,7 @@ scenarios: {
 `,
 			key:       `a.style.opacity`,
 			value:     go2.Pointer(`0.2`),
-			boardPath: []string{"root", "scenarios", "x"},
+			boardPath: []string{"x"},
 
 			exp: `a: outer
 
@@ -1798,7 +1798,7 @@ scenarios: {
 `,
 			key:       `a.b.style.opacity`,
 			value:     go2.Pointer(`0.2`),
-			boardPath: []string{"root", "scenarios", "x"},
+			boardPath: []string{"x"},
 
 			exp: `a: {
   b: outer
@@ -1826,7 +1826,7 @@ scenarios: {
 `,
 			key:       `a.style.opacity`,
 			value:     go2.Pointer(`0.2`),
-			boardPath: []string{"root", "scenarios", "x"},
+			boardPath: []string{"x"},
 
 			exp: `a
 
@@ -1855,7 +1855,7 @@ scenarios: {
 `,
 			key:       `a`,
 			value:     go2.Pointer(`b`),
-			boardPath: []string{"root", "scenarios", "x"},
+			boardPath: []string{"x"},
 
 			exp: `a: {
   style.opacity: 0.2
@@ -1885,7 +1885,7 @@ scenarios: {
 `,
 			key:       `a`,
 			value:     go2.Pointer(`b`),
-			boardPath: []string{"root", "scenarios", "x"},
+			boardPath: []string{"x"},
 
 			exp: `a: {
   style.opacity: 0.2
@@ -4880,7 +4880,7 @@ layers: {
 `,
 			key:       `c`,
 			newKey:    `b.c`,
-			boardPath: []string{"root", "layers", "x"},
+			boardPath: []string{"x"},
 
 			exp: `a
 
@@ -4907,7 +4907,7 @@ scenarios: {
 `,
 			key:       `a`,
 			newKey:    `b.a`,
-			boardPath: []string{"root", "scenarios", "x"},
+			boardPath: []string{"x"},
 
 			expErr: `failed to move: "a" to "b.a": operation would modify AST outside of given scope`,
 		},
@@ -6612,7 +6612,7 @@ layers: {
 }
 `,
 			key:       `c`,
-			boardPath: []string{"root", "layers", "x"},
+			boardPath: []string{"x"},
 
 			exp: `a
 
@@ -6636,7 +6636,7 @@ scenarios: {
 }
 `,
 			key:       `c`,
-			boardPath: []string{"root", "scenarios", "x"},
+			boardPath: []string{"x"},
 
 			exp: `a
 
@@ -6660,7 +6660,7 @@ scenarios: {
 }
 `,
 			key:       `a`,
-			boardPath: []string{"root", "scenarios", "x"},
+			boardPath: []string{"x"},
 
 			expErr: `failed to delete "a": operation would modify AST outside of given scope`,
 		},
