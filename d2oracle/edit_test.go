@@ -2651,8 +2651,9 @@ func TestMove(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		skip bool
-		name string
+		skip      bool
+		name      string
+		boardPath []string
 
 		text               string
 		key                string
@@ -4833,6 +4834,48 @@ a
 }
 `,
 		},
+		{
+			name: "layers-basic",
+
+			text: `a
+layers: {
+  x: {
+    b
+    c
+  }
+}
+`,
+			key:       `c`,
+			newKey:    `b.c`,
+			boardPath: []string{"root", "layers", "x"},
+
+			exp: `a
+layers: {
+  x: {
+    b: {
+      c
+    }
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-out-of-scope",
+
+			text: `a
+scenarios: {
+  x: {
+    b
+    c
+  }
+}
+`,
+			key:       `a`,
+			newKey:    `b.a`,
+			boardPath: []string{"root", "scenarios", "x"},
+
+			expErr: `failed to move: "a" to "b.a": operation would modify AST outside of given scope`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -4848,7 +4891,7 @@ a
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
 					objectsBefore := len(g.Objects)
 					var err error
-					g, err = d2oracle.Move(g, tc.key, tc.newKey, tc.includeDescendants)
+					g, err = d2oracle.Move(g, tc.boardPath, tc.key, tc.newKey, tc.includeDescendants)
 					if err == nil {
 						objectsAfter := len(g.Objects)
 						if objectsBefore != objectsAfter {
