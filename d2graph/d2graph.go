@@ -43,7 +43,7 @@ type Graph struct {
 	IsFolderOnly bool       `json:"isFolderOnly"`
 	AST          *d2ast.Map `json:"ast"`
 	// BaseAST is the AST of the original graph without inherited fields and edges
-	BaseAST *d2ast.Map `json:"baseAST,omitempty"`
+	BaseAST *d2ast.Map `json:"-"`
 
 	Root    *Object   `json:"root"`
 	Edges   []*Edge   `json:"edges"`

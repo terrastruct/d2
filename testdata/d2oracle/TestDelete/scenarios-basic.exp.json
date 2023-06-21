@@ -235,34 +235,6 @@
             }
           ]
         },
-        "baseAST": {
-          "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,2:5:20-4:3:31",
-          "nodes": [
-            {
-              "map_key": {
-                "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,3:4:26-3:5:27",
-                "key": {
-                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,3:4:26-3:5:27",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-basic.d2,3:4:26-3:5:27",
-                        "value": [
-                          {
-                            "string": "b",
-                            "raw_string": "b"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "primary": {},
-                "value": {}
-              }
-            }
-          ]
-        },
         "root": {
           "id": "",
           "id_val": "",

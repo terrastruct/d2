@@ -370,57 +370,6 @@
             }
           ]
         },
-        "baseAST": {
-          "range": "d2/testdata/d2oracle/TestCreate/steps-basic.d2,3:5:18-6:3:35",
-          "nodes": [
-            {
-              "map_key": {
-                "range": "d2/testdata/d2oracle/TestCreate/steps-basic.d2,4:4:24-4:5:25",
-                "key": {
-                  "range": "d2/testdata/d2oracle/TestCreate/steps-basic.d2,4:4:24-4:5:25",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestCreate/steps-basic.d2,4:4:24-4:5:25",
-                        "value": [
-                          {
-                            "string": "b",
-                            "raw_string": "b"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "primary": {},
-                "value": {}
-              }
-            },
-            {
-              "map_key": {
-                "range": "d2/testdata/d2oracle/TestCreate/steps-basic.d2,5:4:30-5:5:31",
-                "key": {
-                  "range": "d2/testdata/d2oracle/TestCreate/steps-basic.d2,5:4:30-5:5:31",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestCreate/steps-basic.d2,5:4:30-5:5:31",
-                        "value": [
-                          {
-                            "string": "c",
-                            "raw_string": "c"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "primary": {},
-                "value": {}
-              }
-            }
-          ]
-        },
         "root": {
           "id": "",
           "id_val": "",

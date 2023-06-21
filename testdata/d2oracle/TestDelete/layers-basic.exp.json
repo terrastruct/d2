@@ -213,34 +213,6 @@
             }
           ]
         },
-        "baseAST": {
-          "range": "d2/testdata/d2oracle/TestDelete/layers-basic.d2,2:5:17-4:3:28",
-          "nodes": [
-            {
-              "map_key": {
-                "range": "d2/testdata/d2oracle/TestDelete/layers-basic.d2,3:4:23-3:5:24",
-                "key": {
-                  "range": "d2/testdata/d2oracle/TestDelete/layers-basic.d2,3:4:23-3:5:24",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestDelete/layers-basic.d2,3:4:23-3:5:24",
-                        "value": [
-                          {
-                            "string": "b",
-                            "raw_string": "b"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "primary": {},
-                "value": {}
-              }
-            }
-          ]
-        },
         "root": {
           "id": "",
           "id_val": "",
