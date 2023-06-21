@@ -111,7 +111,7 @@ func (c *compiler) __import(imp *d2ast.Import) (*Map, bool) {
 	ir.initRoot()
 	ir.parent.(*Field).References[0].Context.Scope = ast
 
-	c.compileMap(ir, ast)
+	c.compileMap(ir, ast, ast)
 
 	c.importCache[impPath] = ir
 

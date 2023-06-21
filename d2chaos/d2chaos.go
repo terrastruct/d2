@@ -73,7 +73,7 @@ func (gs *dslGenState) genNode(containerID string) (string, error) {
 		nodeID = containerID + "." + nodeID
 	}
 	var err error
-	gs.g, nodeID, err = d2oracle.Create(gs.g, nodeID)
+	gs.g, nodeID, err = d2oracle.Create(gs.g, nil, nodeID)
 	if err != nil {
 		return "", err
 	}
@@ -105,7 +105,7 @@ func (gs *dslGenState) node() error {
 		if complexIDs {
 			maxLen = 256
 		}
-		gs.g, err = d2oracle.Set(gs.g, nodeID, nil, go2.Pointer(gs.randStr(maxLen, false)))
+		gs.g, err = d2oracle.Set(gs.g, nil, nodeID, nil, go2.Pointer(gs.randStr(maxLen, false)))
 		if err != nil {
 			return err
 		}
@@ -114,7 +114,7 @@ func (gs *dslGenState) node() error {
 	if gs.roll(25, 75) == 1 {
 		// 75% chance of adding a shape.
 		randShape := gs.randShape()
-		gs.g, err = d2oracle.Set(gs.g, nodeID+".shape", nil, go2.Pointer(randShape))
+		gs.g, err = d2oracle.Set(gs.g, nil, nodeID+".shape", nil, go2.Pointer(randShape))
 		if err != nil {
 			return err
 		}
@@ -159,7 +159,7 @@ func (gs *dslGenState) edge() error {
 	}
 
 	key := fmt.Sprintf("%s %s%s %s", src, srcArrow, dstArrow, dst)
-	gs.g, key, err = d2oracle.Create(gs.g, key)
+	gs.g, key, err = d2oracle.Create(gs.g, nil, key)
 	if err != nil {
 		return err
 	}
@@ -168,7 +168,7 @@ func (gs *dslGenState) edge() error {
 		if complexIDs {
 			maxLen = 128
 		}
-		gs.g, err = d2oracle.Set(gs.g, key, nil, go2.Pointer(gs.randStr(maxLen, false)))
+		gs.g, err = d2oracle.Set(gs.g, nil, key, nil, go2.Pointer(gs.randStr(maxLen, false)))
 		if err != nil {
 			return err
 		}

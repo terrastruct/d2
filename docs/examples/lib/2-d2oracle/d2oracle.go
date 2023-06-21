@@ -21,14 +21,14 @@ func main() {
 	})
 
 	// Create a shape with the ID, "meow"
-	graph, _, _ = d2oracle.Create(graph, "meow")
+	graph, _, _ = d2oracle.Create(graph, nil, "meow")
 	// Style the shape green
 	color := "green"
-	graph, _ = d2oracle.Set(graph, "meow.style.fill", nil, &color)
+	graph, _ = d2oracle.Set(graph, nil, "meow.style.fill", nil, &color)
 	// Create a shape with the ID, "cat"
-	graph, _, _ = d2oracle.Create(graph, "cat")
+	graph, _, _ = d2oracle.Create(graph, nil, "cat")
 	// Move the shape "meow" inside the container "cat"
-	graph, _ = d2oracle.Move(graph, "meow", "cat.meow", false)
+	graph, _ = d2oracle.Move(graph, nil, "meow", "cat.meow", false)
 	// Prints formatted D2 script
 	fmt.Print(d2format.Format(graph.AST))
 }

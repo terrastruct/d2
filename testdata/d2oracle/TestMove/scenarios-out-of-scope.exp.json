@@ -1,0 +1,4 @@
+{
+  "graph": null,
+  "err": "failed to move: \"a\" to \"b.a\": operation would modify AST outside of given scope"
+}

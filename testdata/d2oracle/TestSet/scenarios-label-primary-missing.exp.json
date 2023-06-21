@@ -1,0 +1,537 @@
+{
+  "graph": {
+    "name": "",
+    "isFolderOnly": false,
+    "ast": {
+      "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,0:0:0-10:0:70",
+      "nodes": [
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,0:0:0-2:1:27",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,0:3:3-2:1:27",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,1:2:7-1:20:25",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,1:2:7-1:15:20",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,1:2:7-1:7:12",
+                              "value": [
+                                {
+                                  "string": "style",
+                                  "raw_string": "style"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,1:8:13-1:15:20",
+                              "value": [
+                                {
+                                  "string": "opacity",
+                                  "raw_string": "opacity"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "number": {
+                          "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,1:17:22-1:20:25",
+                          "raw": "0.2",
+                          "value": "1/5"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,4:0:29-9:1:69",
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,4:0:29-4:9:38",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,4:0:29-4:9:38",
+                    "value": [
+                      {
+                        "string": "scenarios",
+                        "raw_string": "scenarios"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {
+              "map": {
+                "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,4:11:40-9:1:69",
+                "nodes": [
+                  {
+                    "map_key": {
+                      "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,5:2:44-8:3:67",
+                      "key": {
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,5:2:44-5:3:45",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,5:2:44-5:3:45",
+                              "value": [
+                                {
+                                  "string": "x",
+                                  "raw_string": "x"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "primary": {},
+                      "value": {
+                        "map": {
+                          "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,5:5:47-8:3:67",
+                          "nodes": [
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:4:53-6:5:54",
+                                "key": {
+                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:4:53-6:5:54",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:4:53-6:5:54",
+                                        "value": [
+                                          {
+                                            "string": "b",
+                                            "raw_string": "b"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {}
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,7:4:59-7:8:63",
+                                "key": {
+                                  "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,7:4:59-7:5:60",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,7:4:59-7:5:60",
+                                        "value": [
+                                          {
+                                            "string": "a",
+                                            "raw_string": "a"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "unquoted_string": {
+                                    "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,7:7:62-7:8:63",
+                                    "value": [
+                                      {
+                                        "string": "b",
+                                        "raw_string": "b"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "root": {
+      "id": "",
+      "id_val": "",
+      "attributes": {
+        "label": {
+          "value": ""
+        },
+        "labelDimensions": {
+          "width": 0,
+          "height": 0
+        },
+        "style": {},
+        "near_key": null,
+        "shape": {
+          "value": ""
+        },
+        "direction": {
+          "value": ""
+        },
+        "constraint": null
+      },
+      "zIndex": 0
+    },
+    "edges": null,
+    "objects": [
+      {
+        "id": "a",
+        "id_val": "a",
+        "references": [
+          {
+            "key": {
+              "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,0:0:0-0:1:1",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,0:0:0-0:1:1",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "key_path_index": 0,
+            "map_key_edge_index": -1
+          }
+        ],
+        "attributes": {
+          "label": {
+            "value": "a"
+          },
+          "labelDimensions": {
+            "width": 0,
+            "height": 0
+          },
+          "style": {
+            "opacity": {
+              "value": "0.2"
+            }
+          },
+          "near_key": null,
+          "shape": {
+            "value": "rectangle"
+          },
+          "direction": {
+            "value": ""
+          },
+          "constraint": null
+        },
+        "zIndex": 0
+      }
+    ],
+    "scenarios": [
+      {
+        "name": "x",
+        "isFolderOnly": false,
+        "ast": {
+          "range": ",1:0:0-2:0:0",
+          "nodes": [
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "a"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,7:7:62-7:8:63",
+                    "value": [
+                      {
+                        "string": "b",
+                        "raw_string": "b"
+                      }
+                    ]
+                  }
+                },
+                "value": {
+                  "map": {
+                    "range": ",1:0:0-2:0:0",
+                    "nodes": [
+                      {
+                        "map_key": {
+                          "range": ",0:0:0-0:0:0",
+                          "key": {
+                            "range": ",0:0:0-0:0:0",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": ",0:0:0-0:0:0",
+                                  "value": [
+                                    {
+                                      "string": "style"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "map": {
+                              "range": ",1:0:0-2:0:0",
+                              "nodes": [
+                                {
+                                  "map_key": {
+                                    "range": ",0:0:0-0:0:0",
+                                    "key": {
+                                      "range": ",0:0:0-0:0:0",
+                                      "path": [
+                                        {
+                                          "unquoted_string": {
+                                            "range": ",0:0:0-0:0:0",
+                                            "value": [
+                                              {
+                                                "string": "opacity"
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "primary": {
+                                      "number": {
+                                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,1:17:22-1:20:25",
+                                        "raw": "0.2",
+                                        "value": "1/5"
+                                      }
+                                    },
+                                    "value": {}
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "map_key": {
+                "range": ",0:0:0-0:0:0",
+                "key": {
+                  "range": ",0:0:0-0:0:0",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "b"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "primary": {},
+                "value": {}
+              }
+            }
+          ]
+        },
+        "root": {
+          "id": "",
+          "id_val": "",
+          "attributes": {
+            "label": {
+              "value": ""
+            },
+            "labelDimensions": {
+              "width": 0,
+              "height": 0
+            },
+            "style": {},
+            "near_key": null,
+            "shape": {
+              "value": ""
+            },
+            "direction": {
+              "value": ""
+            },
+            "constraint": null
+          },
+          "zIndex": 0
+        },
+        "edges": null,
+        "objects": [
+          {
+            "id": "a",
+            "id_val": "a",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,0:0:0-0:1:1",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,0:0:0-0:1:1",
+                        "value": [
+                          {
+                            "string": "a",
+                            "raw_string": "a"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              },
+              {
+                "key": {
+                  "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,7:4:59-7:5:60",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,7:4:59-7:5:60",
+                        "value": [
+                          {
+                            "string": "a",
+                            "raw_string": "a"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "b"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {
+                "opacity": {
+                  "value": "0.2"
+                }
+              },
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          },
+          {
+            "id": "b",
+            "id_val": "b",
+            "references": [
+              {
+                "key": {
+                  "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:4:53-6:5:54",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "d2/testdata/d2oracle/TestSet/scenarios-label-primary-missing.d2,6:4:53-6:5:54",
+                        "value": [
+                          {
+                            "string": "b",
+                            "raw_string": "b"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "key_path_index": 0,
+                "map_key_edge_index": -1
+              }
+            ],
+            "attributes": {
+              "label": {
+                "value": "b"
+              },
+              "labelDimensions": {
+                "width": 0,
+                "height": 0
+              },
+              "style": {},
+              "near_key": null,
+              "shape": {
+                "value": "rectangle"
+              },
+              "direction": {
+                "value": ""
+              },
+              "constraint": null
+            },
+            "zIndex": 0
+          }
+        ]
+      }
+    ]
+  },
+  "err": "<nil>"
+}

@@ -9,6 +9,97 @@ import (
 	"oss.terrastruct.com/d2/d2parser"
 )
 
+func GetBoardGraph(g *d2graph.Graph, boardPath []string) *d2graph.Graph {
+	if len(boardPath) == 0 {
+		return g
+	}
+	switch boardPath[0] {
+	case "root":
+		if g.Parent == nil {
+			return GetBoardGraph(g, boardPath[1:])
+		}
+		return nil
+	case "layers":
+		if len(boardPath) < 2 {
+			return nil
+		}
+		for i, b := range g.Layers {
+			if b.Name == boardPath[1] {
+				return GetBoardGraph(g.Layers[i], boardPath[2:])
+			}
+		}
+	case "scenarios":
+		if len(boardPath) < 2 {
+			return nil
+		}
+		for i, b := range g.Scenarios {
+			if b.Name == boardPath[1] {
+				return GetBoardGraph(g.Scenarios[i], boardPath[2:])
+			}
+		}
+	case "steps":
+		if len(boardPath) < 2 {
+			return nil
+		}
+		for i, b := range g.Steps {
+			if b.Name == boardPath[1] {
+				return GetBoardGraph(g.Steps[i], boardPath[2:])
+			}
+		}
+	}
+
+	return nil
+}
+
+func ReplaceBoardNode(ast, ast2 *d2ast.Map, boardPath []string) bool {
+	if len(boardPath) == 0 {
+		return false
+	}
+	switch boardPath[0] {
+	case "root":
+		return ReplaceBoardNode(ast, ast2, boardPath[1:])
+	case "layers":
+		if len(boardPath) < 2 {
+			return false
+		}
+		for _, n := range ast.Nodes {
+			if n.MapKey != nil && n.MapKey.Key != nil && n.MapKey.Key.Path[0].Unbox().ScalarString() == "layers" {
+				return ReplaceBoardNode(n.MapKey.Value.Map, ast2, boardPath[1:])
+			}
+		}
+	case "scenarios":
+		if len(boardPath) < 2 {
+			return false
+		}
+		for _, n := range ast.Nodes {
+			if n.MapKey != nil && n.MapKey.Key != nil && n.MapKey.Key.Path[0].Unbox().ScalarString() == "scenarios" {
+				return ReplaceBoardNode(n.MapKey.Value.Map, ast2, boardPath[1:])
+			}
+		}
+	case "steps":
+		if len(boardPath) < 2 {
+			return false
+		}
+		for _, n := range ast.Nodes {
+			if n.MapKey != nil && n.MapKey.Key != nil && n.MapKey.Key.Path[0].Unbox().ScalarString() == "steps" {
+				return ReplaceBoardNode(n.MapKey.Value.Map, ast2, boardPath[1:])
+			}
+		}
+	default:
+		for _, n := range ast.Nodes {
+			if n.MapKey != nil && n.MapKey.Key != nil && n.MapKey.Key.Path[0].Unbox().ScalarString() == boardPath[0] {
+				if len(boardPath) == 1 {
+					n.MapKey.Value.Map.Nodes = ast2.Nodes
+					return true
+				}
+				return ReplaceBoardNode(n.MapKey.Value.Map, ast2, boardPath[1:])
+			}
+		}
+	}
+
+	return false
+}
+
 func GetChildrenIDs(g *d2graph.Graph, absID string) (ids []string, _ error) {
 	mk, err := d2parser.ParseMapKey(absID)
 	if err != nil {

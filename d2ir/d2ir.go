@@ -196,6 +196,7 @@ func (m *Map) CopyBase(newParent Node) *Map {
 	layers := m.DeleteField("layers")
 	scenarios := m.DeleteField("scenarios")
 	steps := m.DeleteField("steps")
+
 	m2 := m.Copy(newParent).(*Map)
 	if layers != nil {
 		m.Fields = append(m.Fields, layers)
@@ -549,6 +550,7 @@ type RefContext struct {
 	Key      *d2ast.Key  `json:"key"`
 	Scope    *d2ast.Map  `json:"-"`
 	ScopeMap *Map        `json:"-"`
+	ScopeAST *d2ast.Map  `json:"-"`
 }
 
 func (rc *RefContext) Copy() *RefContext {

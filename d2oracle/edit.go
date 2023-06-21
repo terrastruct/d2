@@ -22,23 +22,50 @@ import (
 	"oss.terrastruct.com/d2/d2target"
 )
 
-func Create(g *d2graph.Graph, key string) (_ *d2graph.Graph, newKey string, err error) {
+type OutsideScopeError struct{}
+
+func (e OutsideScopeError) Error() string {
+	return "operation would modify AST outside of given scope"
+}
+
+func Create(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph, newKey string, err error) {
 	defer xdefer.Errorf(&err, "failed to create %#v", key)
 
-	newKey, edge, err := generateUniqueKey(g, key, nil, nil)
+	boardG := g
+	baseAST := g.AST
+
+	if len(boardPath) > 0 {
+		// When compiling a nested board, we can read from boardG but only write to baseBoardG
+		boardG = GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return nil, "", fmt.Errorf("board %v not found", boardPath)
+		}
+		// TODO beter name
+		baseAST = boardG.BaseAST
+	}
+
+	newKey, edge, err := generateUniqueKey(boardG, key, nil, nil)
 	if err != nil {
 		return nil, "", err
 	}
 
 	if edge {
-		err = _set(g, key, nil, nil)
+		err = _set(boardG, baseAST, key, nil, nil)
 	} else {
-		err = _set(g, newKey, nil, nil)
+		err = _set(boardG, baseAST, newKey, nil, nil)
 	}
+
+	if len(boardPath) > 0 {
+		replaced := ReplaceBoardNode(g.AST, baseAST, boardPath)
+		if !replaced {
+			return nil, "", fmt.Errorf("board %v AST not found", boardPath)
+		}
+	}
+
 	if err != nil {
 		return nil, "", err
 	}
-	g, err = recompile(g)
+	g, err = recompile(g.AST)
 	if err != nil {
 		return nil, "", err
 	}
@@ -47,7 +74,7 @@ func Create(g *d2graph.Graph, key string) (_ *d2graph.Graph, newKey string, err 
 
 // TODO: update graph in place when compiler can accept single modifications
 // TODO: go through all references to decide best spot to insert something
-func Set(g *d2graph.Graph, key string, tag, value *string) (_ *d2graph.Graph, err error) {
+func Set(g *d2graph.Graph, boardPath []string, key string, tag, value *string) (_ *d2graph.Graph, err error) {
 	var valueHelp string
 	if value == nil {
 		valueHelp = fmt.Sprintf("%#v", value)
@@ -60,12 +87,32 @@ func Set(g *d2graph.Graph, key string, tag, value *string) (_ *d2graph.Graph, er
 		defer xdefer.Errorf(&err, "failed to set %#v to %#v", key, valueHelp)
 	}
 
-	err = _set(g, key, tag, value)
+	boardG := g
+	baseAST := g.AST
+
+	if len(boardPath) > 0 {
+		// When compiling a nested board, we can read from boardG but only write to baseBoardG
+		boardG = GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return nil, fmt.Errorf("board %v not found", boardPath)
+		}
+		// TODO beter name
+		baseAST = boardG.BaseAST
+	}
+
+	err = _set(boardG, baseAST, key, tag, value)
 	if err != nil {
 		return nil, err
 	}
 
-	return recompile(g)
+	if len(boardPath) > 0 {
+		replaced := ReplaceBoardNode(g.AST, baseAST, boardPath)
+		if !replaced {
+			return nil, fmt.Errorf("board %v AST not found", boardPath)
+		}
+	}
+
+	return recompile(g.AST)
 }
 
 func ReconnectEdge(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (_ *d2graph.Graph, err error) {
@@ -202,7 +249,7 @@ func ReconnectEdge(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (_ 
 		}
 	}
 
-	return recompile(g)
+	return recompile(g.AST)
 }
 
 func pathFromScopeKey(g *d2graph.Graph, key *d2ast.Key, scopeak []string) ([]*d2ast.StringBox, error) {
@@ -234,9 +281,9 @@ func pathFromScopeObj(g *d2graph.Graph, key *d2ast.Key, fromScope *d2graph.Objec
 	return pathFromScopeKey(g, key, scopeak)
 }
 
-func recompile(g *d2graph.Graph) (*d2graph.Graph, error) {
-	s := d2format.Format(g.AST)
-	g, err := d2compiler.Compile(g.AST.Range.Path, strings.NewReader(s), nil)
+func recompile(ast *d2ast.Map) (*d2graph.Graph, error) {
+	s := d2format.Format(ast)
+	g, err := d2compiler.Compile(ast.Range.Path, strings.NewReader(s), nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to recompile:\n%s\n%w", s, err)
 	}
@@ -244,7 +291,7 @@ func recompile(g *d2graph.Graph) (*d2graph.Graph, error) {
 }
 
 // TODO merge flat styles
-func _set(g *d2graph.Graph, key string, tag, value *string) error {
+func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) error {
 	if tag != nil {
 		if hasSpace(*tag) {
 			return fmt.Errorf("spaces are not allowed in blockstring tags")
@@ -272,7 +319,7 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 		})
 	}
 
-	scope := g.AST
+	scope := baseAST
 	edgeTrimCommon(mk)
 	obj := g.Root
 	toSkip := 1
@@ -312,13 +359,25 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 			}
 			obj = o
 
-			if obj.Map == nil {
+			var maybeNewScope *d2ast.Map
+			if baseAST != g.AST {
+				writeableRefs := getWriteableRefs(obj, baseAST)
+				for _, ref := range writeableRefs {
+					if ref.MapKey != nil && ref.MapKey.Value.Map != nil {
+						maybeNewScope = ref.MapKey.Value.Map
+					}
+				}
+			} else {
+				maybeNewScope = obj.Map
+			}
+
+			if maybeNewScope == nil {
 				// If we find a deeper obj.Map we need to skip this key too.
 				toSkip++
 				continue
 			}
 
-			scope = obj.Map
+			scope = maybeNewScope
 			mk.Key.Path = mk.Key.Path[toSkip:]
 			toSkip = 1
 			if len(mk.Key.Path) == 0 {
@@ -326,13 +385,37 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 			}
 		}
 
-		if obj.Label.MapKey != nil && obj.Map == nil && (!found || reserved || len(mk.Edges) > 0) {
-			obj.Map = &d2ast.Map{
+		var objK *d2ast.Key
+		if baseAST != g.AST {
+			writeableRefs := getWriteableRefs(obj, baseAST)
+			if len(writeableRefs) > 0 {
+				objK = writeableRefs[0].MapKey
+			}
+			if objK == nil {
+				appendMapKey(scope, mk)
+				return nil
+			}
+		}
+		var m *d2ast.Map
+		if objK != nil {
+			m = objK.Value.Map
+		} else {
+			m = obj.Map
+		}
+
+		if obj.Label.MapKey != nil && m == nil && (!found || reserved || len(mk.Edges) > 0) {
+			m2 := &d2ast.Map{
 				Range: d2ast.MakeRange(",1:0:0-1:0:0"),
 			}
-			obj.Label.MapKey.Primary = obj.Label.MapKey.Value.ScalarBox()
-			obj.Label.MapKey.Value = d2ast.MakeValueBox(obj.Map)
-			scope = obj.Map
+			if objK == nil {
+				obj.Map = m2
+				objK = obj.Label.MapKey
+			} else {
+				objK.Value.Map = m2
+			}
+			objK.Primary = objK.Value.ScalarBox()
+			objK.Value = d2ast.MakeValueBox(m2)
+			scope = m2
 
 			mk.Key.Path = mk.Key.Path[toSkip-1:]
 			toSkip = 1
@@ -346,7 +429,6 @@ func _set(g *d2graph.Graph, key string, tag, value *string) error {
 			return nil
 		}
 	}
-
 	ir, err := d2ir.Compile(g.AST, nil)
 	if err != nil {
 		return err
@@ -687,7 +769,7 @@ func appendMapKey(m *d2ast.Map, mk *d2ast.Key) {
 	}
 }
 
-func Delete(g *d2graph.Graph, key string) (_ *d2graph.Graph, err error) {
+func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph, err error) {
 	defer xdefer.Errorf(&err, "failed to delete %#v", key)
 
 	mk, err := d2parser.ParseMapKey(key)
@@ -701,6 +783,19 @@ func Delete(g *d2graph.Graph, key string) (_ *d2graph.Graph, err error) {
 
 	if len(mk.Edges) == 1 {
 		edgeTrimCommon(mk)
+	}
+
+	boardG := g
+	baseAST := g.AST
+
+	if len(boardPath) > 0 {
+		// When compiling a nested board, we can read from boardG but only write to baseBoardG
+		boardG = GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return nil, fmt.Errorf("board %v not found", boardPath)
+		}
+		// TODO beter name
+		baseAST = boardG.BaseAST
 	}
 
 	g2, err := deleteReserved(g, mk)
@@ -752,31 +847,47 @@ func Delete(g *d2graph.Graph, key string) (_ *d2graph.Graph, err error) {
 				}
 			}
 		}
-		return recompile(g)
+		return recompile(g.AST)
 	}
 
-	prevG, _ := recompile(g)
+	prevG, _ := recompile(boardG.AST)
 
-	g, err = renameConflictsToParent(g, mk.Key)
+	boardG, err = renameConflictsToParent(boardG, mk.Key)
 	if err != nil {
 		return nil, err
 	}
 
-	obj, ok := g.Root.HasChild(d2graph.Key(mk.Key))
+	obj, ok := boardG.Root.HasChild(d2graph.Key(mk.Key))
 	if !ok {
 		return g, nil
 	}
 
-	g, err = deleteObject(g, mk.Key, obj)
+	if len(boardPath) > 0 {
+		// TODO null
+		writeableRefs := getWriteableRefs(obj, baseAST)
+		if len(writeableRefs) != len(obj.References) {
+			return nil, OutsideScopeError{}
+		}
+	}
+
+	boardG, err = deleteObject(boardG, baseAST, mk.Key, obj)
 	if err != nil {
 		return nil, err
 	}
 
-	if err := updateNear(prevG, g, &key, nil, false); err != nil {
+	if err := updateNear(prevG, boardG, &key, nil, false); err != nil {
 		return nil, err
 	}
 
-	return recompile(g)
+	if len(boardPath) > 0 {
+		replaced := ReplaceBoardNode(g.AST, baseAST, boardPath)
+		if !replaced {
+			return nil, fmt.Errorf("board %v AST not found", boardPath)
+		}
+		return recompile(g.AST)
+	}
+
+	return recompile(boardG.AST)
 }
 
 func bumpChildrenUnderscores(m *d2ast.Map) {
@@ -975,7 +1086,8 @@ func renameConflictsToParent(g *d2graph.Graph, key *d2ast.KeyPath) (*d2graph.Gra
 		}
 		for _, k := range renameOrder {
 			var err error
-			g, err = move(g, k, renames[k], false)
+			// TODO boardPath
+			g, err = move(g, nil, k, renames[k], false)
 			if err != nil {
 				return nil, err
 			}
@@ -1015,7 +1127,7 @@ func deleteReserved(g *d2graph.Graph, mk *d2ast.Key) (*d2graph.Graph, error) {
 		if err := deleteEdgeField(g, e, targetKey.Path[len(targetKey.Path)-1].Unbox().ScalarString()); err != nil {
 			return nil, err
 		}
-		return recompile(g)
+		return recompile(g.AST)
 	}
 
 	isStyleKey := false
@@ -1054,7 +1166,7 @@ func deleteReserved(g *d2graph.Graph, mk *d2ast.Key) (*d2graph.Graph, error) {
 		}
 	}
 
-	return recompile(g)
+	return recompile(g.AST)
 }
 
 func deleteMapField(m *d2ast.Map, field string) {
@@ -1118,7 +1230,7 @@ func deleteObjField(g *d2graph.Graph, obj *d2graph.Object, field string) error {
 			copy(tmpNodes, ref.Scope.Nodes)
 			// If I delete this, will the object still exist?
 			deleteFromMap(ref.Scope, ref.MapKey)
-			g2, err := recompile(g)
+			g2, err := recompile(g.AST)
 			if err != nil {
 				return err
 			}
@@ -1134,7 +1246,7 @@ func deleteObjField(g *d2graph.Graph, obj *d2graph.Object, field string) error {
 	return nil
 }
 
-func deleteObject(g *d2graph.Graph, key *d2ast.KeyPath, obj *d2graph.Object) (*d2graph.Graph, error) {
+func deleteObject(g *d2graph.Graph, baseAST *d2ast.Map, key *d2ast.KeyPath, obj *d2graph.Object) (*d2graph.Graph, error) {
 	var refEdges []*d2ast.Edge
 	for _, ref := range obj.References {
 		if ref.InEdge() {
@@ -1347,7 +1459,8 @@ func Rename(g *d2graph.Graph, key, newName string) (_ *d2graph.Graph, newKey str
 		mk.Key.Path[len(mk.Key.Path)-1] = d2ast.MakeValueBox(d2ast.RawString(newName, true)).StringBox()
 	}
 
-	g, err = move(g, key, d2format.Format(mk), false)
+	// TODO
+	g, err = move(g, nil, key, d2format.Format(mk), false)
 	return g, newName, err
 }
 
@@ -1361,16 +1474,30 @@ func trimReservedSuffix(path []*d2ast.StringBox) []*d2ast.StringBox {
 }
 
 // Does not handle edge keys, on account of edge keys can only be reserved, e.g. (a->b).style.color: red
-func Move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (_ *d2graph.Graph, err error) {
+func Move(g *d2graph.Graph, boardPath []string, key, newKey string, includeDescendants bool) (_ *d2graph.Graph, err error) {
 	defer xdefer.Errorf(&err, "failed to move: %#v to %#v", key, newKey)
-	return move(g, key, newKey, includeDescendants)
+	return move(g, boardPath, key, newKey, includeDescendants)
 }
 
-func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2graph.Graph, error) {
+func move(g *d2graph.Graph, boardPath []string, key, newKey string, includeDescendants bool) (*d2graph.Graph, error) {
 	if key == newKey {
 		return g, nil
 	}
-	newKey, _, err := generateUniqueKey(g, newKey, nil, nil)
+
+	boardG := g
+	baseAST := g.AST
+
+	if len(boardPath) > 0 {
+		// When compiling a nested board, we can read from boardG but only write to baseBoardG
+		boardG = GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return nil, fmt.Errorf("board %v not found", boardPath)
+		}
+		// TODO beter name
+		baseAST = boardG.BaseAST
+	}
+
+	newKey, _, err := generateUniqueKey(boardG, newKey, nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -1386,6 +1513,7 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 	}
 	edgeTrimCommon(mk)
 	edgeTrimCommon(mk2)
+
 	if len(mk.Edges) > 0 && mk.EdgeKey == nil {
 		if d2format.Format(mk.Key) != d2format.Format(mk2.Key) {
 			// TODO just prevent moving edges at all
@@ -1413,10 +1541,10 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 			ref.MapKey.Edges[ref.MapKeyEdgeIndex].SrcArrow = mk2.Edges[0].SrcArrow
 			ref.MapKey.Edges[ref.MapKeyEdgeIndex].DstArrow = mk2.Edges[0].DstArrow
 		}
-		return recompile(g)
+		return recompile(g.AST)
 	}
 
-	prevG, _ := recompile(g)
+	prevG, _ := recompile(boardG.AST)
 
 	ak := d2graph.Key(mk.Key)
 	ak2 := d2graph.Key(mk2.Key)
@@ -1424,20 +1552,27 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 	isCrossScope := strings.Join(ak[:len(ak)-1], ".") != strings.Join(ak2[:len(ak2)-1], ".")
 
 	if isCrossScope && !includeDescendants {
-		g, err = renameConflictsToParent(g, mk.Key)
+		boardG, err = renameConflictsToParent(boardG, mk.Key)
 		if err != nil {
 			return nil, err
 		}
 	}
 
-	obj, ok := g.Root.HasChild(ak)
+	obj, ok := boardG.Root.HasChild(ak)
 	if !ok {
 		return nil, fmt.Errorf("key referenced by from does not exist")
 	}
 
-	toParent := g.Root
+	if len(boardPath) > 0 {
+		writeableRefs := getWriteableRefs(obj, baseAST)
+		if len(writeableRefs) != len(obj.References) {
+			return nil, OutsideScopeError{}
+		}
+	}
+
+	toParent := boardG.Root
 	if isCrossScope && len(ak2) > 1 {
-		toParent, ok = g.Root.HasChild(ak2[:len(ak2)-1])
+		toParent, ok = boardG.Root.HasChild(ak2[:len(ak2)-1])
 		if !ok {
 			return nil, fmt.Errorf("key referenced by to parent does not exist")
 		}
@@ -1507,7 +1642,7 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 
 	// 2. Ensure parent node Key has a map to accept moved node.
 	// This map will be what MOVE will append the new key to
-	toScope := g.AST
+	toScope := boardG.AST
 	if isCrossScope && len(ak2) > 1 && needsLandingMap {
 		mostNestedParentRefs := getMostNestedRefs(toParent)
 		mapExists := false
@@ -1599,7 +1734,7 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 				}
 				absKey.Path = append(absKey.Path, ref.Key.Path...)
 				if !includeDescendants {
-					hoistRefChildren(g, absKey, ref)
+					hoistRefChildren(boardG, absKey, ref)
 				}
 				deleteFromMap(ref.Scope, ref.MapKey)
 				detachedMK := &d2ast.Key{Primary: ref.MapKey.Primary, Key: cloneKey(ref.MapKey.Key)}
@@ -1641,7 +1776,7 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 										return nil, err
 									}
 
-									newPath, err := pathFromScopeKey(g, &d2ast.Key{Key: d2ast.MakeKeyPath(append(resolvedParent.AbsIDArray(), resolvedScopeKey...))}, ak2)
+									newPath, err := pathFromScopeKey(boardG, &d2ast.Key{Key: d2ast.MakeKeyPath(append(resolvedParent.AbsIDArray(), resolvedScopeKey...))}, ak2)
 									if err != nil {
 										return nil, err
 									}
@@ -1655,7 +1790,7 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 										return nil, err
 									}
 
-									newPath, err := pathFromScopeKey(g, &d2ast.Key{Key: d2ast.MakeKeyPath(append(resolvedParent.AbsIDArray(), resolvedScopeKey...))}, ak2)
+									newPath, err := pathFromScopeKey(boardG, &d2ast.Key{Key: d2ast.MakeKeyPath(append(resolvedParent.AbsIDArray(), resolvedScopeKey...))}, ak2)
 									if err != nil {
 										return nil, err
 									}
@@ -1667,7 +1802,7 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 										return nil, err
 									}
 
-									newPath, err := pathFromScopeKey(g, &d2ast.Key{Key: d2ast.MakeKeyPath(append(resolvedParent.AbsIDArray(), resolvedScopeKey...))}, ak2)
+									newPath, err := pathFromScopeKey(boardG, &d2ast.Key{Key: d2ast.MakeKeyPath(append(resolvedParent.AbsIDArray(), resolvedScopeKey...))}, ak2)
 									if err != nil {
 										return nil, err
 									}
@@ -1765,11 +1900,11 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 			detachedMK := &d2ast.Key{
 				Key: cloneKey(ref.Key),
 			}
-			oldPath, err := pathFromScopeObj(g, mk, ref.ScopeObj)
+			oldPath, err := pathFromScopeObj(boardG, mk, ref.ScopeObj)
 			if err != nil {
 				return nil, err
 			}
-			newPath, err := pathFromScopeObj(g, mk2, ref.ScopeObj)
+			newPath, err := pathFromScopeObj(boardG, mk2, ref.ScopeObj)
 			if err != nil {
 				return nil, err
 			}
@@ -1800,14 +1935,14 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 			// When moving a node connected to an edge, we have to ensure parents continue to exist
 			// e.g. the `c` out of `a.b.c -> ...`
 			// `a.b` needs to exist
-			newPath, err := pathFromScopeObj(g, mk2, ref.ScopeObj)
+			newPath, err := pathFromScopeObj(boardG, mk2, ref.ScopeObj)
 			if err != nil {
 				return nil, err
 			}
 			if len(go2.Filter(ref.Key.Path, func(x *d2ast.StringBox) bool { return x.Unbox().ScalarString() != "_" })) > 1 {
 				detachedK := cloneKey(ref.Key)
 				detachedK.Path = detachedK.Path[:len(detachedK.Path)-1]
-				ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, detachedK, false)
+				ensureNode(boardG, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, detachedK, false)
 			}
 
 			if includeDescendants {
@@ -1818,11 +1953,19 @@ func move(g *d2graph.Graph, key, newKey string, includeDescendants bool) (*d2gra
 		}
 	}
 
-	if err := updateNear(prevG, g, &key, &newKey, includeDescendants); err != nil {
+	if err := updateNear(prevG, boardG, &key, &newKey, includeDescendants); err != nil {
 		return nil, err
 	}
 
-	return recompile(g)
+	if len(boardPath) > 0 {
+		replaced := ReplaceBoardNode(g.AST, baseAST, boardPath)
+		if !replaced {
+			return nil, fmt.Errorf("board %v AST not found", boardPath)
+		}
+		return recompile(g.AST)
+	}
+
+	return recompile(boardG.AST)
 }
 
 // filterReserved takes a Value and splits it into 2
@@ -1934,7 +2077,7 @@ func updateNear(prevG, g *d2graph.Graph, from, to *string, includeDescendants bo
 					if err != nil {
 						return err
 					}
-					tmpG, _ := recompile(prevG)
+					tmpG, _ := recompile(prevG.AST)
 					appendMapKey(tmpG.AST, valueMK)
 					if to == nil {
 						deltas, err := DeleteIDDeltas(tmpG, *from)
@@ -1979,7 +2122,7 @@ func updateNear(prevG, g *d2graph.Graph, from, to *string, includeDescendants bo
 					if err != nil {
 						return err
 					}
-					tmpG, _ := recompile(prevG)
+					tmpG, _ := recompile(prevG.AST)
 					appendMapKey(tmpG.AST, valueMK)
 					if to == nil {
 						deltas, err := DeleteIDDeltas(tmpG, *from)
@@ -2846,6 +2989,15 @@ func filterReservedPath(path []*d2ast.StringBox) (filtered []*d2ast.StringBox) {
 			return
 		}
 		filtered = append(filtered, box)
+	}
+	return
+}
+
+func getWriteableRefs(obj *d2graph.Object, writeableAST *d2ast.Map) (out []d2graph.Reference) {
+	for i, ref := range obj.References {
+		if ref.ScopeAST == writeableAST {
+			out = append(out, obj.References[i])
+		}
 	}
 	return
 }

@@ -26,9 +26,10 @@ func TestCreate(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name string
-		text string
-		key  string
+		boardPath []string
+		name      string
+		text      string
+		key       string
 
 		expKey     string
 		expErr     string
@@ -457,6 +458,241 @@ rawr: {
 after
 `,
 		},
+		{
+			name: "layers-basic",
+
+			text: `a
+
+layers: {
+  x: {
+    a
+  }
+}
+`,
+			key:       `b`,
+			boardPath: []string{"root", "layers", "x"},
+
+			expKey: `b`,
+			exp: `a
+
+layers: {
+  x: {
+    a
+    b
+  }
+}
+`,
+		},
+		{
+			name: "layers-edge",
+
+			text: `a
+
+layers: {
+  x: {
+    a
+  }
+}
+`,
+			key:       `a -> b`,
+			boardPath: []string{"root", "layers", "x"},
+
+			expKey: `(a -> b)[0]`,
+			exp: `a
+
+layers: {
+  x: {
+    a
+    a -> b
+  }
+}
+`,
+		},
+		{
+			name: "layers-edge-duplicate",
+
+			text: `a -> b
+
+layers: {
+  x: {
+    a -> b
+  }
+}
+`,
+			key:       `a -> b`,
+			boardPath: []string{"root", "layers", "x"},
+
+			expKey: `(a -> b)[1]`,
+			exp: `a -> b
+
+layers: {
+  x: {
+    a -> b
+    a -> b
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-basic",
+
+			text: `a
+b
+
+scenarios: {
+  x: {
+    a
+  }
+}
+`,
+			key:       `c`,
+			boardPath: []string{"root", "scenarios", "x"},
+
+			expKey: `c`,
+			exp: `a
+b
+
+scenarios: {
+  x: {
+    a
+    c
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-edge",
+
+			text: `a
+b
+
+scenarios: {
+  x: {
+    a
+  }
+}
+`,
+			key:       `a -> b`,
+			boardPath: []string{"root", "scenarios", "x"},
+
+			expKey: `(a -> b)[0]`,
+			exp: `a
+b
+
+scenarios: {
+  x: {
+    a
+    a -> b
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-edge-inherited",
+
+			text: `a -> b
+
+scenarios: {
+  x: {
+    a
+  }
+}
+`,
+			key:       `a -> b`,
+			boardPath: []string{"root", "scenarios", "x"},
+
+			expKey: `(a -> b)[1]`,
+			exp: `a -> b
+
+scenarios: {
+  x: {
+    a
+    a -> b
+  }
+}
+`,
+		},
+		{
+			name: "steps-basic",
+
+			text: `a
+d
+
+steps: {
+  x: {
+    b
+  }
+}
+`,
+			key:       `c`,
+			boardPath: []string{"root", "steps", "x"},
+
+			expKey: `c`,
+			exp: `a
+d
+
+steps: {
+  x: {
+    b
+    c
+  }
+}
+`,
+		},
+		{
+			name: "steps-edge",
+
+			text: `a
+d
+
+steps: {
+  x: {
+    b
+  }
+}
+`,
+			key:       `d -> b`,
+			boardPath: []string{"root", "steps", "x"},
+
+			expKey: `(d -> b)[0]`,
+			exp: `a
+d
+
+steps: {
+  x: {
+    b
+    d -> b
+  }
+}
+`,
+		},
+		{
+			name: "steps-conflict",
+
+			text: `a
+d
+
+steps: {
+  x: {
+    b
+  }
+}
+`,
+			key:       `d`,
+			boardPath: []string{"root", "steps", "x"},
+
+			expKey: `d 2`,
+			exp: `a
+d
+
+steps: {
+  x: {
+    b
+    d 2
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -469,7 +705,7 @@ after
 				text: tc.text,
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
 					var err error
-					g, newKey, err = d2oracle.Create(g, tc.key)
+					g, newKey, err = d2oracle.Create(g, tc.boardPath, tc.key)
 					return g, err
 				},
 
@@ -493,11 +729,12 @@ func TestSet(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name  string
-		text  string
-		key   string
-		tag   *string
-		value *string
+		boardPath []string
+		name      string
+		text      string
+		key       string
+		tag       *string
+		value     *string
 
 		expErr     string
 		exp        string
@@ -1471,6 +1708,197 @@ six
 
 			expErr: `failed to set "x.icon" to "one two" "\"three\\nfour\\nfive\\nsix\\n\"": spaces are not allowed in blockstring tags`,
 		},
+		{
+			name: "layers-usable-ref-style",
+
+			text: `a
+
+layers: {
+  x: {
+    a
+  }
+}
+`,
+			key:       `a.style.opacity`,
+			value:     go2.Pointer(`0.2`),
+			boardPath: []string{"root", "layers", "x"},
+
+			exp: `a
+
+layers: {
+  x: {
+    a: {style.opacity: 0.2}
+  }
+}
+`,
+		},
+		{
+			name: "layers-unusable-ref-style",
+
+			text: `a
+
+layers: {
+  x: {
+    b
+  }
+}
+`,
+			key:       `a.style.opacity`,
+			value:     go2.Pointer(`0.2`),
+			boardPath: []string{"root", "layers", "x"},
+
+			exp: `a
+
+layers: {
+  x: {
+    b
+    a.style.opacity: 0.2
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-usable-ref-style",
+
+			text: `a: outer
+
+scenarios: {
+  x: {
+		a: inner
+  }
+}
+`,
+			key:       `a.style.opacity`,
+			value:     go2.Pointer(`0.2`),
+			boardPath: []string{"root", "scenarios", "x"},
+
+			exp: `a: outer
+
+scenarios: {
+  x: {
+    a: inner {style.opacity: 0.2}
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-nested-usable-ref-style",
+
+			text: `a: {
+  b: outer
+}
+
+scenarios: {
+  x: {
+    a: {
+      b: inner
+    }
+  }
+}
+`,
+			key:       `a.b.style.opacity`,
+			value:     go2.Pointer(`0.2`),
+			boardPath: []string{"root", "scenarios", "x"},
+
+			exp: `a: {
+  b: outer
+}
+
+scenarios: {
+  x: {
+    a: {
+      b: inner {style.opacity: 0.2}
+    }
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-unusable-ref-style",
+
+			text: `a
+
+scenarios: {
+  x: {
+    b
+  }
+}
+`,
+			key:       `a.style.opacity`,
+			value:     go2.Pointer(`0.2`),
+			boardPath: []string{"root", "scenarios", "x"},
+
+			exp: `a
+
+scenarios: {
+  x: {
+    b
+    a.style.opacity: 0.2
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-label-primary",
+
+			text: `a: {
+  style.opacity: 0.2
+}
+
+scenarios: {
+  x: {
+		a: {
+      style.opacity: 0.3
+    }
+  }
+}
+`,
+			key:       `a`,
+			value:     go2.Pointer(`b`),
+			boardPath: []string{"root", "scenarios", "x"},
+
+			exp: `a: {
+  style.opacity: 0.2
+}
+
+scenarios: {
+  x: {
+    a: b {
+      style.opacity: 0.3
+    }
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-label-primary-missing",
+
+			text: `a: {
+  style.opacity: 0.2
+}
+
+scenarios: {
+  x: {
+		b
+  }
+}
+`,
+			key:       `a`,
+			value:     go2.Pointer(`b`),
+			boardPath: []string{"root", "scenarios", "x"},
+
+			exp: `a: {
+  style.opacity: 0.2
+}
+
+scenarios: {
+  x: {
+    b
+    a: b
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -1481,7 +1909,7 @@ six
 			et := editTest{
 				text: tc.text,
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
-					return d2oracle.Set(g, tc.key, tc.tag, tc.value)
+					return d2oracle.Set(g, tc.boardPath, tc.key, tc.tag, tc.value)
 				},
 
 				exp:        tc.exp,
@@ -2255,8 +2683,9 @@ func TestMove(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		skip bool
-		name string
+		skip      bool
+		name      string
+		boardPath []string
 
 		text               string
 		key                string
@@ -4437,6 +4866,51 @@ a
 }
 `,
 		},
+		{
+			name: "layers-basic",
+
+			text: `a
+
+layers: {
+  x: {
+    b
+    c
+  }
+}
+`,
+			key:       `c`,
+			newKey:    `b.c`,
+			boardPath: []string{"root", "layers", "x"},
+
+			exp: `a
+
+layers: {
+  x: {
+    b: {
+      c
+    }
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-out-of-scope",
+
+			text: `a
+
+scenarios: {
+  x: {
+    b
+    c
+  }
+}
+`,
+			key:       `a`,
+			newKey:    `b.a`,
+			boardPath: []string{"root", "scenarios", "x"},
+
+			expErr: `failed to move: "a" to "b.a": operation would modify AST outside of given scope`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -4452,7 +4926,7 @@ a
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
 					objectsBefore := len(g.Objects)
 					var err error
-					g, err = d2oracle.Move(g, tc.key, tc.newKey, tc.includeDescendants)
+					g, err = d2oracle.Move(g, tc.boardPath, tc.key, tc.newKey, tc.includeDescendants)
 					if err == nil {
 						objectsAfter := len(g.Objects)
 						if objectsBefore != objectsAfter {
@@ -4476,7 +4950,8 @@ func TestDelete(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name string
+		name      string
+		boardPath []string
 
 		text string
 		key  string
@@ -6124,6 +6599,71 @@ cdpdxz
 cm
 `,
 		},
+		{
+			name: "layers-basic",
+
+			text: `a
+
+layers: {
+  x: {
+    b
+    c
+  }
+}
+`,
+			key:       `c`,
+			boardPath: []string{"root", "layers", "x"},
+
+			exp: `a
+
+layers: {
+  x: {
+    b
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-basic",
+
+			text: `a
+
+scenarios: {
+  x: {
+    b
+    c
+  }
+}
+`,
+			key:       `c`,
+			boardPath: []string{"root", "scenarios", "x"},
+
+			exp: `a
+
+scenarios: {
+  x: {
+    b
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-inherited",
+
+			text: `a
+
+scenarios: {
+  x: {
+    b
+    c
+  }
+}
+`,
+			key:       `a`,
+			boardPath: []string{"root", "scenarios", "x"},
+
+			expErr: `failed to delete "a": operation would modify AST outside of given scope`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -6134,7 +6674,7 @@ cm
 			et := editTest{
 				text: tc.text,
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
-					return d2oracle.Delete(g, tc.key)
+					return d2oracle.Delete(g, tc.boardPath, tc.key)
 				},
 
 				exp:        tc.exp,
