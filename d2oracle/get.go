@@ -88,7 +88,12 @@ func ReplaceBoardNode(ast, ast2 *d2ast.Map, boardPath []string) bool {
 	return false
 }
 
-func GetChildrenIDs(g *d2graph.Graph, absID string) (ids []string, _ error) {
+func GetChildrenIDs(g *d2graph.Graph, boardPath []string, absID string) (ids []string, _ error) {
+	g = GetBoardGraph(g, boardPath)
+	if g == nil {
+		return nil, fmt.Errorf("board at path %v not found", boardPath)
+	}
+
 	mk, err := d2parser.ParseMapKey(absID)
 	if err != nil {
 		return nil, err
@@ -105,7 +110,12 @@ func GetChildrenIDs(g *d2graph.Graph, absID string) (ids []string, _ error) {
 	return ids, nil
 }
 
-func GetParentID(g *d2graph.Graph, absID string) (string, error) {
+func GetParentID(g *d2graph.Graph, boardPath []string, absID string) (string, error) {
+	g = GetBoardGraph(g, boardPath)
+	if g == nil {
+		return "", fmt.Errorf("board at path %v not found", boardPath)
+	}
+
 	mk, err := d2parser.ParseMapKey(absID)
 	if err != nil {
 		return "", err
@@ -118,13 +128,23 @@ func GetParentID(g *d2graph.Graph, absID string) (string, error) {
 	return obj.Parent.AbsID(), nil
 }
 
-func GetObj(g *d2graph.Graph, absID string) *d2graph.Object {
+func GetObj(g *d2graph.Graph, boardPath []string, absID string) *d2graph.Object {
+	g = GetBoardGraph(g, boardPath)
+	if g == nil {
+		return nil
+	}
+
 	mk, _ := d2parser.ParseMapKey(absID)
 	obj, _ := g.Root.HasChild(d2graph.Key(mk.Key))
 	return obj
 }
 
-func GetEdge(g *d2graph.Graph, absID string) *d2graph.Edge {
+func GetEdge(g *d2graph.Graph, boardPath []string, absID string) *d2graph.Edge {
+	g = GetBoardGraph(g, boardPath)
+	if g == nil {
+		return nil
+	}
+
 	for _, e := range g.Edges {
 		if e.AbsID() == absID {
 			return e
@@ -133,7 +153,12 @@ func GetEdge(g *d2graph.Graph, absID string) *d2graph.Edge {
 	return nil
 }
 
-func GetObjOrder(g *d2graph.Graph) []string {
+func GetObjOrder(g *d2graph.Graph, boardPath []string) ([]string, error) {
+	g = GetBoardGraph(g, boardPath)
+	if g == nil {
+		return nil, fmt.Errorf("board at path %v not found", boardPath)
+	}
+
 	var order []string
 
 	queue := []*d2graph.Object{g.Root}
@@ -148,7 +173,7 @@ func GetObjOrder(g *d2graph.Graph) []string {
 		}
 	}
 
-	return order
+	return order, nil
 }
 
 func IsLabelKeyID(key, label string) bool {
