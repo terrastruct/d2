@@ -143,6 +143,9 @@ type Attributes struct {
 	VerticalGap   *Scalar `json:"verticalGap,omitempty"`
 	HorizontalGap *Scalar `json:"horizontalGap,omitempty"`
 
+	LabelPosition *Scalar `json:"labelPosition,omitempty"`
+	IconPosition  *Scalar `json:"iconPosition,omitempty"`
+
 	// These names are attached to the rendered elements in SVG
 	// so that users can target them however they like outside of D2
 	Classes []string `json:"classes,omitempty"`
@@ -1645,7 +1648,10 @@ var ReservedKeywordHolders = map[string]struct{}{
 
 // CompositeReservedKeywords are reserved keywords that can hold composites
 var CompositeReservedKeywords = map[string]struct{}{
-	"classes": {},
+	"classes":    {},
+	"constraint": {},
+	"label":      {},
+	"icon":       {},
 }
 
 // StyleKeywords are reserved keywords which cannot exist outside of the "style" keyword
@@ -1696,6 +1702,38 @@ var NearConstantsArray = []string{
 }
 var NearConstants map[string]struct{}
 
+// LabelPositionsArray are the values that labels and icons can set `near` to
+var LabelPositionsArray = []string{
+	"top-left",
+	"top-center",
+	"top-right",
+
+	"center-left",
+	"center-center",
+	"center-right",
+
+	"bottom-left",
+	"bottom-center",
+	"bottom-right",
+
+	"outside-top-left",
+	"outside-top-center",
+	"outside-top-right",
+
+	"outside-left-top",
+	"outside-left-center",
+	"outside-left-bottom",
+
+	"outside-right-top",
+	"outside-right-center",
+	"outside-right-bottom",
+
+	"outside-bottom-left",
+	"outside-bottom-center",
+	"outside-bottom-right",
+}
+var LabelPositions map[string]struct{}
+
 var FillPatterns = []string{
 	"dots",
 	"lines",
@@ -1733,6 +1771,11 @@ func init() {
 	NearConstants = make(map[string]struct{}, len(NearConstantsArray))
 	for _, k := range NearConstantsArray {
 		NearConstants[k] = struct{}{}
+	}
+
+	LabelPositions = make(map[string]struct{}, len(LabelPositionsArray))
+	for _, k := range LabelPositionsArray {
+		LabelPositions[k] = struct{}{}
 	}
 }
 

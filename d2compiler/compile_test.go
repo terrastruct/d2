@@ -2372,6 +2372,77 @@ obj {
 			expErr: `d2/testdata/d2compiler/TestCompile/near_near_const.d2:7:8: near keys cannot be set to an object with a constant near key`,
 		},
 		{
+			name: "label-near-parent",
+			text: `hey: sushi {
+	label.near: outside-top-left
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "sushi", g.Objects[0].Attributes.Label.Value)
+				tassert.Equal(t, "outside-top-left", g.Objects[0].Attributes.LabelPosition.Value)
+			},
+		},
+		{
+			name: "label-near-composite-separate",
+			text: `hey: {
+	label: sushi
+	label.near: outside-top-left
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "sushi", g.Objects[0].Attributes.Label.Value)
+				tassert.Equal(t, "outside-top-left", g.Objects[0].Attributes.LabelPosition.Value)
+			},
+		},
+		{
+			name: "label-near-composite-together",
+			text: `hey: {
+  label: sushi {
+		near: outside-top-left
+  }
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "sushi", g.Objects[0].Attributes.Label.Value)
+				tassert.Equal(t, "outside-top-left", g.Objects[0].Attributes.LabelPosition.Value)
+			},
+		},
+		{
+			name: "icon-near-composite-together",
+			text: `hey: {
+	icon: https://asdf.com {
+		near: outside-top-left
+  }
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "asdf.com", g.Objects[0].Attributes.Icon.Host)
+				tassert.Equal(t, "outside-top-left", g.Objects[0].Attributes.IconPosition.Value)
+			},
+		},
+		{
+			name: "label-near-invalid-edge",
+			text: `hey: {
+  label: sushi {
+		near: outside-top-left
+		a -> b
+  }
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/label-near-invalid-edge.d2:2:3: unexpected edges in map`,
+		},
+		{
+			name: "label-near-invalid-field",
+			text: `hey: {
+  label: sushi {
+		near: outside-top-left
+		a
+  }
+}
+`,
+			expErr: `d2/testdata/d2compiler/TestCompile/label-near-invalid-field.d2:4:3: unexpected field a`,
+		},
+		{
 			name: "grid",
 			text: `hey: {
 	grid-rows: 200
