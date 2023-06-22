@@ -382,6 +382,47 @@ func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 	attrs.Label.MapKey = f.LastPrimaryKey()
 }
 
+func (c *compiler) compilePosition(attrs *d2graph.Attributes, f *d2ir.Field) {
+	name := f.Name
+	if f.Map() != nil {
+		for _, f := range f.Map().Fields {
+			if f.Name == "near" {
+				if f.Primary() == nil {
+					c.errorf(f.LastPrimaryKey(), `invalid "near" field`)
+				} else {
+					scalar := f.Primary().Value
+					switch scalar := scalar.(type) {
+					case *d2ast.Null:
+						attrs.LabelPosition = nil
+					default:
+						if _, ok := d2graph.LabelPositions[scalar.ScalarString()]; !ok {
+							c.errorf(f.LastPrimaryKey(), `invalid "near" field`)
+						} else {
+							switch name {
+							case "label":
+								attrs.LabelPosition = &d2graph.Scalar{}
+								attrs.LabelPosition.Value = scalar.ScalarString()
+								attrs.LabelPosition.MapKey = f.LastPrimaryKey()
+							case "icon":
+								attrs.IconPosition = &d2graph.Scalar{}
+								attrs.IconPosition.Value = scalar.ScalarString()
+								attrs.IconPosition.MapKey = f.LastPrimaryKey()
+							}
+						}
+					}
+				}
+			} else {
+				if f.LastPrimaryKey() != nil {
+					c.errorf(f.LastPrimaryKey(), `unexpected field %s`, f.Name)
+				}
+			}
+		}
+		if len(f.Map().Edges) > 0 {
+			c.errorf(f.LastPrimaryKey(), "unexpected edges in map")
+		}
+	}
+}
+
 func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 	if f.Primary() == nil {
 		if f.Composite != nil {
@@ -402,6 +443,8 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 						}
 					}
 				}
+			case "label", "icon":
+				c.compilePosition(attrs, f)
 			default:
 				c.errorf(f.LastPrimaryKey(), "reserved field %v does not accept composite", f.Name)
 			}
@@ -412,6 +455,7 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 	switch f.Name {
 	case "label":
 		c.compileLabel(attrs, f)
+		c.compilePosition(attrs, f)
 	case "shape":
 		in := d2target.IsShape(scalar.ScalarString())
 		_, isArrowhead := d2target.Arrowheads[scalar.ScalarString()]
@@ -432,6 +476,7 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 			return
 		}
 		attrs.Icon = iconURL
+		c.compilePosition(attrs, f)
 	case "near":
 		nearKey, err := d2parser.ParseKey(scalar.ScalarString())
 		if err != nil {
