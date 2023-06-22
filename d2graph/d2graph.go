@@ -26,6 +26,7 @@ import (
 	"oss.terrastruct.com/d2/d2themes/d2themescatalog"
 	"oss.terrastruct.com/d2/lib/color"
 	"oss.terrastruct.com/d2/lib/geo"
+	"oss.terrastruct.com/d2/lib/label"
 	"oss.terrastruct.com/d2/lib/shape"
 	"oss.terrastruct.com/d2/lib/textmeasure"
 )
@@ -1381,6 +1382,18 @@ func (g *Graph) SetDimensions(mtexts []*d2target.MText, ruler *textmeasure.Ruler
 	for _, obj := range g.Objects {
 		obj.Box = &geo.Box{}
 
+		// user-specified label/icon positions
+		if obj.HasLabel() && obj.Attributes.LabelPosition != nil {
+			scalar := *obj.Attributes.LabelPosition
+			position := LabelPositionsMapping[scalar.Value]
+			obj.LabelPosition = go2.Pointer(string(position))
+		}
+		if obj.Icon != nil && obj.Attributes.IconPosition != nil {
+			scalar := *obj.Attributes.IconPosition
+			position := LabelPositionsMapping[scalar.Value]
+			obj.IconPosition = go2.Pointer(string(position))
+		}
+
 		var desiredWidth int
 		var desiredHeight int
 		if obj.WidthAttr != nil {
@@ -1733,6 +1746,37 @@ var LabelPositionsArray = []string{
 	"outside-bottom-right",
 }
 var LabelPositions map[string]struct{}
+
+// convert to label.Position
+var LabelPositionsMapping = map[string]label.Position{
+	"top-left":   label.InsideTopLeft,
+	"top-center": label.InsideTopCenter,
+	"top-right":  label.InsideTopRight,
+
+	"center-left":   label.InsideMiddleLeft,
+	"center-center": label.InsideMiddleCenter,
+	"center-right":  label.InsideMiddleRight,
+
+	"bottom-left":   label.InsideBottomLeft,
+	"bottom-center": label.InsideBottomCenter,
+	"bottom-right":  label.InsideBottomRight,
+
+	"outside-top-left":   label.OutsideTopLeft,
+	"outside-top-center": label.OutsideTopCenter,
+	"outside-top-right":  label.OutsideTopRight,
+
+	"outside-left-top":    label.OutsideLeftTop,
+	"outside-left-center": label.OutsideLeftMiddle,
+	"outside-left-bottom": label.OutsideLeftBottom,
+
+	"outside-right-top":    label.OutsideRightTop,
+	"outside-right-center": label.OutsideRightMiddle,
+	"outside-right-bottom": label.OutsideRightBottom,
+
+	"outside-bottom-left":   label.OutsideBottomLeft,
+	"outside-bottom-center": label.OutsideBottomCenter,
+	"outside-bottom-right":  label.OutsideBottomRight,
+}
 
 var FillPatterns = []string{
 	"dots",
