@@ -11,6 +11,8 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/dop251/goja"
@@ -223,6 +225,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			width = go2.Max(width, float64(obj.LabelDimensions.Width))
 		}
 
+		padTop, padLeft, padBottom, padRight, err := parsePadding(opts.Padding)
+		if err != nil {
+			panic(err)
+		}
+
 		// reserve spacing for outside labels
 		if obj.HasLabel() && obj.LabelPosition != nil && !obj.HasOutsideBottomLabel() {
 			position := label.Position(*obj.LabelPosition)
@@ -236,6 +243,57 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
 					label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
 					width += float64(obj.LabelDimensions.Width) + label.PADDING
+				}
+
+				// Inside padding
+				paddingX := obj.LabelDimensions.Width + 2*label.PADDING
+				paddingY := obj.LabelDimensions.Height + 2*label.PADDING
+				switch position {
+				case label.InsideTopLeft:
+					// TODO: consider only adding Y padding for labels in corners, and just ensure the total width fits
+					if paddingY > padTop {
+						padTop = paddingY
+					}
+					if paddingX > padLeft {
+						padLeft = paddingX
+					}
+				case label.InsideTopCenter:
+					if paddingY > padTop {
+						padTop = paddingY
+					}
+				case label.InsideTopRight:
+					if paddingY > padTop {
+						padTop = paddingY
+					}
+					if paddingX > padRight {
+						padRight = paddingX
+					}
+				case label.InsideBottomLeft:
+					if paddingY > padBottom {
+						padBottom = paddingY
+					}
+					if paddingX > padLeft {
+						padLeft = paddingX
+					}
+				case label.InsideBottomCenter:
+					if paddingY > padBottom {
+						padBottom = paddingY
+					}
+				case label.InsideBottomRight:
+					if paddingY > padBottom {
+						padBottom = paddingY
+					}
+					if paddingX > padRight {
+						padRight = paddingX
+					}
+				case label.InsideMiddleLeft:
+					if paddingX > padLeft {
+						padLeft = paddingX
+					}
+				case label.InsideMiddleRight:
+					if paddingX > padRight {
+						padRight = paddingX
+					}
 				}
 			}
 		}
@@ -304,16 +362,16 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 				paddingTop += float64(go2.Max(labelHeight, iconHeight))
 
-				n.LayoutOptions.Padding = fmt.Sprintf("[top=%d,left=50,bottom=50,right=50]",
-					// Default padding
-					go2.Max(int(math.Ceil(paddingTop)), 50),
-				)
+				padTop = go2.Max(int(math.Ceil(paddingTop)), padTop)
 			}
 		} else {
 			n.LayoutOptions = &elkOpts{
 				SelfLoopDistribution: "EQUALLY",
 			}
 		}
+
+		n.LayoutOptions.Padding = fmt.Sprintf("[top=%d,left=%d,bottom=%d,right=%d]",
+			padTop, padLeft, padBottom, padRight)
 
 		if obj.HasLabel() {
 			n.Labels = append(n.Labels, &ELKLabel{
@@ -863,4 +921,37 @@ func childrenMaxSelfLoop(parent *d2graph.Object, isWidth bool) int {
 	}
 
 	return max
+}
+
+// parse out values from elk padding string. e.g. "[top=50,left=50,bottom=50,right=50]"
+func parsePadding(padding string) (top, left, bottom, right int, err error) {
+	r := regexp.MustCompile(`top=(\d+),left=(\d+),bottom=(\d+),right=(\d+)`)
+	submatches := r.FindStringSubmatch(padding)
+
+	var i int64
+	i, err = strconv.ParseInt(submatches[1], 10, 64)
+	if err != nil {
+		return
+	}
+	top = int(i)
+
+	i, err = strconv.ParseInt(submatches[2], 10, 64)
+	if err != nil {
+		return
+	}
+	left = int(i)
+
+	i, err = strconv.ParseInt(submatches[3], 10, 64)
+	bottom = int(i)
+	if err != nil {
+		return
+	}
+
+	i, err = strconv.ParseInt(submatches[4], 10, 64)
+	if err != nil {
+		return
+	}
+	right = int(i)
+
+	return
 }
