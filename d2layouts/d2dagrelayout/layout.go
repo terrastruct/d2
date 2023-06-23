@@ -236,8 +236,17 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		obj.Width = math.Ceil(dn.Width)
 		obj.Height = math.Ceil(dn.Height)
 
-		hasLabelPosition := obj.LabelPosition != nil
-		if obj.HasLabel() && !hasLabelPosition {
+		if obj.Icon != nil && obj.IconPosition == nil {
+			if len(obj.ChildrenArray) > 0 {
+				obj.IconPosition = go2.Pointer(string(label.OutsideTopLeft))
+				if obj.LabelPosition == nil {
+					obj.LabelPosition = go2.Pointer(string(label.OutsideTopRight))
+				}
+			} else {
+				obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
+		}
+		if obj.HasLabel() && obj.LabelPosition == nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.LabelPosition = go2.Pointer(string(label.OutsideTopCenter))
 			} else if obj.HasOutsideBottomLabel() {
@@ -248,17 +257,6 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 			} else {
 				obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
-			}
-		}
-		if obj.Icon != nil && obj.IconPosition == nil {
-			if len(obj.ChildrenArray) > 0 {
-				obj.IconPosition = go2.Pointer(string(label.OutsideTopLeft))
-				if !hasLabelPosition {
-					// overwrite LabelPosition if we just set it above
-					obj.LabelPosition = go2.Pointer(string(label.OutsideTopRight))
-				}
-			} else {
-				obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			}
 		}
 	}
