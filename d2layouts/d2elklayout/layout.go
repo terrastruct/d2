@@ -222,6 +222,24 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 			width = go2.Max(width, float64(obj.LabelDimensions.Width))
 		}
+
+		// reserve spacing for outside labels
+		if obj.HasLabel() && obj.LabelPosition != nil && !obj.HasOutsideBottomLabel() {
+			position := label.Position(*obj.LabelPosition)
+			if position.IsShapePosition() {
+				switch position {
+				case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
+					label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+					height += float64(obj.LabelDimensions.Height) + label.PADDING
+				}
+				switch position {
+				case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
+					label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+					width += float64(obj.LabelDimensions.Width) + label.PADDING
+				}
+			}
+		}
+
 		// reserve extra space for 3d/multiple by providing elk the larger dimensions
 		dx, dy := obj.GetModifierElementAdjustments()
 		width += dx
@@ -432,6 +450,44 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		byID[obj.AbsID()] = obj
 	})
+
+	for _, obj := range g.Objects {
+		// adjust size and position to account for space reserved for labels
+		if obj.HasLabel() && obj.LabelPosition != nil && !obj.HasOutsideBottomLabel() {
+			position := label.Position(*obj.LabelPosition)
+			if position.IsShapePosition() {
+				var dx, dy float64
+				switch position {
+				case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
+					label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+					dy = float64(obj.LabelDimensions.Height) + label.PADDING
+					obj.Height -= dy
+				}
+				switch position {
+				case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
+					label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+					dx = float64(obj.LabelDimensions.Width) + label.PADDING
+					obj.Width -= dx
+				}
+				switch position {
+				case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
+					obj.TopLeft.X += dx / 2
+					obj.MoveWithDescendants(dx/2, 0)
+				case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+					obj.TopLeft.X += dx / 2
+					obj.MoveWithDescendants(-dx/2, 0)
+				}
+				switch position {
+				case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+					obj.TopLeft.Y += dy / 2
+					obj.MoveWithDescendants(0, dy/2)
+				case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+					obj.TopLeft.Y += dy / 2
+					obj.MoveWithDescendants(0, -dy/2)
+				}
+			}
+		}
+	}
 
 	for _, edge := range g.Edges {
 		e := elkEdges[edge]
