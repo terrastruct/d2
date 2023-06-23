@@ -1,0 +1,159 @@
+{
+  "fields": [
+    {
+      "name": "animal",
+      "primary": {
+        "value": {
+          "range": "TestCompile/patterns/suffix.d2,2:4:30-2:11:37",
+          "value": [
+            {
+              "string": "globbed",
+              "raw_string": "globbed"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/suffix.d2,0:0:0-0:6:6",
+            "value": [
+              {
+                "string": "animal",
+                "raw_string": "animal"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/suffix.d2,0:0:0-0:6:6",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/suffix.d2,0:0:0-0:6:6",
+                  "value": [
+                    {
+                      "string": "animal",
+                      "raw_string": "animal"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/suffix.d2,0:0:0-0:12:12",
+              "key": {
+                "range": "TestCompile/patterns/suffix.d2,0:0:0-0:6:6",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/suffix.d2,0:0:0-0:6:6",
+                      "value": [
+                        {
+                          "string": "animal",
+                          "raw_string": "animal"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/suffix.d2,0:8:8-0:12:12",
+                  "value": [
+                    {
+                      "string": "meow",
+                      "raw_string": "meow"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "jingle",
+      "primary": {
+        "value": {
+          "range": "TestCompile/patterns/suffix.d2,2:4:30-2:11:37",
+          "value": [
+            {
+              "string": "globbed",
+              "raw_string": "globbed"
+            }
+          ]
+        }
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/suffix.d2,1:0:13-1:6:19",
+            "value": [
+              {
+                "string": "jingle",
+                "raw_string": "jingle"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/suffix.d2,1:0:13-1:6:19",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/suffix.d2,1:0:13-1:6:19",
+                  "value": [
+                    {
+                      "string": "jingle",
+                      "raw_string": "jingle"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/suffix.d2,1:0:13-1:12:25",
+              "key": {
+                "range": "TestCompile/patterns/suffix.d2,1:0:13-1:6:19",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/suffix.d2,1:0:13-1:6:19",
+                      "value": [
+                        {
+                          "string": "jingle",
+                          "raw_string": "jingle"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/suffix.d2,1:8:21-1:12:25",
+                  "value": [
+                    {
+                      "string": "loud",
+                      "raw_string": "loud"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

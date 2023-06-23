@@ -404,12 +404,31 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 			return
 		}
 	}
+
+	us, ok := kp.Path[0].Unbox().(*d2ast.UnquotedString)
+	if ok && us.Pattern != nil {
+		for _, f := range dst.Fields {
+			if matchPattern(f.Name, us.Pattern) {
+				if len(kp.Path) == 1 {
+					c._compileField(f, refctx)
+				} else {
+					// TODO: recurse
+				}
+			}
+		}
+		return
+	}
+
 	f, err := dst.EnsureField(kp, refctx)
 	if err != nil {
 		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 		return
 	}
 
+	c._compileField(f, refctx)
+}
+
+func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 	if refctx.Key.Primary.Unbox() != nil {
 		f.Primary_ = &Scalar{
 			parent: f,

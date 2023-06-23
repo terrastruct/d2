@@ -500,6 +500,8 @@ type Number struct {
 type UnquotedString struct {
 	Range Range              `json:"range"`
 	Value []InterpolationBox `json:"value"`
+	// Pattern holds the parsed glob pattern if in a key and the unquoted string represents a valid pattern.
+	Pattern []string `json:"pattern,omitempty"`
 }
 
 func (s *UnquotedString) Coalesce() {
@@ -1054,6 +1056,10 @@ func (sb *StringBox) Unbox() String {
 	default:
 		return nil
 	}
+}
+
+func (sb *StringBox) ScalarString() string {
+	return sb.Unbox().ScalarString()
 }
 
 // InterpolationBox is used to select between strings and substitutions in unquoted and

@@ -1046,6 +1046,15 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 		s.Value = append(s.Value, d2ast.InterpolationBox{String: &sv, StringRaw: &rawv})
 	}()
 
+	lastPatternIndex := 0
+	defer func() {
+		if s.Pattern != nil {
+			if lastPatternIndex < sb.Len() {
+				s.Pattern = append(s.Pattern, sb.String()[lastPatternIndex:])
+			}
+		}
+	}()
+
 	_s, eof := p.peekn(4)
 	p.rewind()
 	if !eof {
@@ -1118,18 +1127,12 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 				rawb.WriteRune(r)
 				r = r2
 			case '*':
-				// TODO: need a peekNotSpace across escaped newlines
-				r2, eof := p.peek()
-				if eof {
-					return s
+				if sb.Len() == 0 {
+					s.Pattern = append(s.Pattern, "*")
+				} else {
+					s.Pattern = append(s.Pattern, sb.String()[lastPatternIndex:], "*")
 				}
-				if r2 == '-' {
-					p.rewind()
-					return s
-				}
-				sb.WriteRune(r)
-				rawb.WriteRune(r)
-				r = r2
+				lastPatternIndex = len(sb.String()) + 1
 			}
 		}
 
