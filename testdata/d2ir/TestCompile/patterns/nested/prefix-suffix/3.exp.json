@@ -1,0 +1,997 @@
+{
+  "fields": [
+    {
+      "name": "animate",
+      "composite": {
+        "fields": [
+          {
+            "name": "constant",
+            "composite": {
+              "fields": [
+                {
+                  "name": "tinkertinker",
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:33:108-2:40:115",
+                      "value": [
+                        {
+                          "string": "globbed",
+                          "raw_string": "globbed"
+                        }
+                      ]
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:17:17-0:29:29",
+                        "value": [
+                          {
+                            "string": "tinkertinker",
+                            "raw_string": "tinkertinker"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:0:0-0:29:29",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:0:0-0:7:7",
+                              "value": [
+                                {
+                                  "string": "animate",
+                                  "raw_string": "animate"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:8:8-0:16:16",
+                              "value": [
+                                {
+                                  "string": "constant",
+                                  "raw_string": "constant"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:17:17-0:29:29",
+                              "value": [
+                                {
+                                  "string": "tinkertinker",
+                                  "raw_string": "tinkertinker"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:0:0-0:35:35",
+                          "key": {
+                            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:0:0-0:29:29",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:0:0-0:7:7",
+                                  "value": [
+                                    {
+                                      "string": "animate",
+                                      "raw_string": "animate"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:8:8-0:16:16",
+                                  "value": [
+                                    {
+                                      "string": "constant",
+                                      "raw_string": "constant"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:17:17-0:29:29",
+                                  "value": [
+                                    {
+                                      "string": "tinkertinker",
+                                      "raw_string": "tinkertinker"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:31:31-0:35:35",
+                              "value": [
+                                {
+                                  "string": "meow",
+                                  "raw_string": "meow"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:8:8-0:16:16",
+                  "value": [
+                    {
+                      "string": "constant",
+                      "raw_string": "constant"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:0:0-0:29:29",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:0:0-0:7:7",
+                        "value": [
+                          {
+                            "string": "animate",
+                            "raw_string": "animate"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:8:8-0:16:16",
+                        "value": [
+                          {
+                            "string": "constant",
+                            "raw_string": "constant"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:17:17-0:29:29",
+                        "value": [
+                          {
+                            "string": "tinkertinker",
+                            "raw_string": "tinkertinker"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:0:0-0:35:35",
+                    "key": {
+                      "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:0:0-0:29:29",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:0:0-0:7:7",
+                            "value": [
+                              {
+                                "string": "animate",
+                                "raw_string": "animate"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:8:8-0:16:16",
+                            "value": [
+                              {
+                                "string": "constant",
+                                "raw_string": "constant"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:17:17-0:29:29",
+                            "value": [
+                              {
+                                "string": "tinkertinker",
+                                "raw_string": "tinkertinker"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:31:31-0:35:35",
+                        "value": [
+                          {
+                            "string": "meow",
+                            "raw_string": "meow"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "string": {
+                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:7:82-2:15:90",
+                  "value": [
+                    {
+                      "string": "constant",
+                      "raw_string": "constant"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:0:75-2:31:106",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:0:75-2:6:81",
+                        "value": [
+                          {
+                            "string": "a*n*t*",
+                            "raw_string": "a*n*t*"
+                          }
+                        ],
+                        "pattern": [
+                          "a",
+                          "*",
+                          "n",
+                          "*",
+                          "t",
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:7:82-2:15:90",
+                        "value": [
+                          {
+                            "string": "constant",
+                            "raw_string": "constant"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:16:91-2:31:106",
+                        "value": [
+                          {
+                            "string": "t*ink*r*t*inke*",
+                            "raw_string": "t*ink*r*t*inke*"
+                          }
+                        ],
+                        "pattern": [
+                          "t",
+                          "*",
+                          "ink",
+                          "*",
+                          "r",
+                          "*",
+                          "t",
+                          "*",
+                          "inke",
+                          "*"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:0:75-2:40:115",
+                    "key": {
+                      "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:0:75-2:31:106",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:0:75-2:6:81",
+                            "value": [
+                              {
+                                "string": "a*n*t*",
+                                "raw_string": "a*n*t*"
+                              }
+                            ],
+                            "pattern": [
+                              "a",
+                              "*",
+                              "n",
+                              "*",
+                              "t",
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:7:82-2:15:90",
+                            "value": [
+                              {
+                                "string": "constant",
+                                "raw_string": "constant"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:16:91-2:31:106",
+                            "value": [
+                              {
+                                "string": "t*ink*r*t*inke*",
+                                "raw_string": "t*ink*r*t*inke*"
+                              }
+                            ],
+                            "pattern": [
+                              "t",
+                              "*",
+                              "ink",
+                              "*",
+                              "r",
+                              "*",
+                              "t",
+                              "*",
+                              "inke",
+                              "*"
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:33:108-2:40:115",
+                        "value": [
+                          {
+                            "string": "globbed",
+                            "raw_string": "globbed"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:0:0-0:7:7",
+            "value": [
+              {
+                "string": "animate",
+                "raw_string": "animate"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:0:0-0:29:29",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:0:0-0:7:7",
+                  "value": [
+                    {
+                      "string": "animate",
+                      "raw_string": "animate"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:8:8-0:16:16",
+                  "value": [
+                    {
+                      "string": "constant",
+                      "raw_string": "constant"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:17:17-0:29:29",
+                  "value": [
+                    {
+                      "string": "tinkertinker",
+                      "raw_string": "tinkertinker"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:0:0-0:35:35",
+              "key": {
+                "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:0:0-0:29:29",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:0:0-0:7:7",
+                      "value": [
+                        {
+                          "string": "animate",
+                          "raw_string": "animate"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:8:8-0:16:16",
+                      "value": [
+                        {
+                          "string": "constant",
+                          "raw_string": "constant"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:17:17-0:29:29",
+                      "value": [
+                        {
+                          "string": "tinkertinker",
+                          "raw_string": "tinkertinker"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,0:31:31-0:35:35",
+                  "value": [
+                    {
+                      "string": "meow",
+                      "raw_string": "meow"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "astronaut",
+      "composite": {
+        "fields": [
+          {
+            "name": "constant",
+            "composite": {
+              "fields": [
+                {
+                  "name": "thinkerthinker",
+                  "primary": {
+                    "value": {
+                      "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:33:108-2:40:115",
+                      "value": [
+                        {
+                          "string": "globbed",
+                          "raw_string": "globbed"
+                        }
+                      ]
+                    }
+                  },
+                  "references": [
+                    {
+                      "string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:19:55-1:33:69",
+                        "value": [
+                          {
+                            "string": "thinkerthinker",
+                            "raw_string": "thinkerthinker"
+                          }
+                        ]
+                      },
+                      "key_path": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:0:36-1:33:69",
+                        "path": [
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:0:36-1:9:45",
+                              "value": [
+                                {
+                                  "string": "astronaut",
+                                  "raw_string": "astronaut"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:10:46-1:18:54",
+                              "value": [
+                                {
+                                  "string": "constant",
+                                  "raw_string": "constant"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:19:55-1:33:69",
+                              "value": [
+                                {
+                                  "string": "thinkerthinker",
+                                  "raw_string": "thinkerthinker"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      "context": {
+                        "edge": null,
+                        "key": {
+                          "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:0:36-1:38:74",
+                          "key": {
+                            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:0:36-1:33:69",
+                            "path": [
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:0:36-1:9:45",
+                                  "value": [
+                                    {
+                                      "string": "astronaut",
+                                      "raw_string": "astronaut"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:10:46-1:18:54",
+                                  "value": [
+                                    {
+                                      "string": "constant",
+                                      "raw_string": "constant"
+                                    }
+                                  ]
+                                }
+                              },
+                              {
+                                "unquoted_string": {
+                                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:19:55-1:33:69",
+                                  "value": [
+                                    {
+                                      "string": "thinkerthinker",
+                                      "raw_string": "thinkerthinker"
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          },
+                          "primary": {},
+                          "value": {
+                            "unquoted_string": {
+                              "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:35:71-1:38:74",
+                              "value": [
+                                {
+                                  "string": "yes",
+                                  "raw_string": "yes"
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              ],
+              "edges": null
+            },
+            "references": [
+              {
+                "string": {
+                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:10:46-1:18:54",
+                  "value": [
+                    {
+                      "string": "constant",
+                      "raw_string": "constant"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:0:36-1:33:69",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:0:36-1:9:45",
+                        "value": [
+                          {
+                            "string": "astronaut",
+                            "raw_string": "astronaut"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:10:46-1:18:54",
+                        "value": [
+                          {
+                            "string": "constant",
+                            "raw_string": "constant"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:19:55-1:33:69",
+                        "value": [
+                          {
+                            "string": "thinkerthinker",
+                            "raw_string": "thinkerthinker"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:0:36-1:38:74",
+                    "key": {
+                      "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:0:36-1:33:69",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:0:36-1:9:45",
+                            "value": [
+                              {
+                                "string": "astronaut",
+                                "raw_string": "astronaut"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:10:46-1:18:54",
+                            "value": [
+                              {
+                                "string": "constant",
+                                "raw_string": "constant"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:19:55-1:33:69",
+                            "value": [
+                              {
+                                "string": "thinkerthinker",
+                                "raw_string": "thinkerthinker"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:35:71-1:38:74",
+                        "value": [
+                          {
+                            "string": "yes",
+                            "raw_string": "yes"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "string": {
+                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:7:82-2:15:90",
+                  "value": [
+                    {
+                      "string": "constant",
+                      "raw_string": "constant"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:0:75-2:31:106",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:0:75-2:6:81",
+                        "value": [
+                          {
+                            "string": "a*n*t*",
+                            "raw_string": "a*n*t*"
+                          }
+                        ],
+                        "pattern": [
+                          "a",
+                          "*",
+                          "n",
+                          "*",
+                          "t",
+                          "*"
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:7:82-2:15:90",
+                        "value": [
+                          {
+                            "string": "constant",
+                            "raw_string": "constant"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:16:91-2:31:106",
+                        "value": [
+                          {
+                            "string": "t*ink*r*t*inke*",
+                            "raw_string": "t*ink*r*t*inke*"
+                          }
+                        ],
+                        "pattern": [
+                          "t",
+                          "*",
+                          "ink",
+                          "*",
+                          "r",
+                          "*",
+                          "t",
+                          "*",
+                          "inke",
+                          "*"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": null,
+                  "key": {
+                    "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:0:75-2:40:115",
+                    "key": {
+                      "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:0:75-2:31:106",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:0:75-2:6:81",
+                            "value": [
+                              {
+                                "string": "a*n*t*",
+                                "raw_string": "a*n*t*"
+                              }
+                            ],
+                            "pattern": [
+                              "a",
+                              "*",
+                              "n",
+                              "*",
+                              "t",
+                              "*"
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:7:82-2:15:90",
+                            "value": [
+                              {
+                                "string": "constant",
+                                "raw_string": "constant"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:16:91-2:31:106",
+                            "value": [
+                              {
+                                "string": "t*ink*r*t*inke*",
+                                "raw_string": "t*ink*r*t*inke*"
+                              }
+                            ],
+                            "pattern": [
+                              "t",
+                              "*",
+                              "ink",
+                              "*",
+                              "r",
+                              "*",
+                              "t",
+                              "*",
+                              "inke",
+                              "*"
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "primary": {},
+                    "value": {
+                      "unquoted_string": {
+                        "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,2:33:108-2:40:115",
+                        "value": [
+                          {
+                            "string": "globbed",
+                            "raw_string": "globbed"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "edges": null
+      },
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:0:36-1:9:45",
+            "value": [
+              {
+                "string": "astronaut",
+                "raw_string": "astronaut"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:0:36-1:33:69",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:0:36-1:9:45",
+                  "value": [
+                    {
+                      "string": "astronaut",
+                      "raw_string": "astronaut"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:10:46-1:18:54",
+                  "value": [
+                    {
+                      "string": "constant",
+                      "raw_string": "constant"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:19:55-1:33:69",
+                  "value": [
+                    {
+                      "string": "thinkerthinker",
+                      "raw_string": "thinkerthinker"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:0:36-1:38:74",
+              "key": {
+                "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:0:36-1:33:69",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:0:36-1:9:45",
+                      "value": [
+                        {
+                          "string": "astronaut",
+                          "raw_string": "astronaut"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:10:46-1:18:54",
+                      "value": [
+                        {
+                          "string": "constant",
+                          "raw_string": "constant"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:19:55-1:33:69",
+                      "value": [
+                        {
+                          "string": "thinkerthinker",
+                          "raw_string": "thinkerthinker"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/nested/prefix-suffix/3.d2,1:35:71-1:38:74",
+                  "value": [
+                    {
+                      "string": "yes",
+                      "raw_string": "yes"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": null
+}

@@ -1030,9 +1030,15 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 
 	var sb strings.Builder
 	var rawb strings.Builder
+	lastPatternIndex := 0
 	defer func() {
 		sv := strings.TrimRightFunc(sb.String(), unicode.IsSpace)
 		rawv := strings.TrimRightFunc(rawb.String(), unicode.IsSpace)
+		if s.Pattern != nil {
+			if lastPatternIndex < len(sv) {
+				s.Pattern = append(s.Pattern, sv[lastPatternIndex:])
+			}
+		}
 		if sv == "" {
 			if len(s.Value) > 0 {
 				return
@@ -1044,15 +1050,6 @@ func (p *parser) parseUnquotedString(inKey bool) (s *d2ast.UnquotedString) {
 			return
 		}
 		s.Value = append(s.Value, d2ast.InterpolationBox{String: &sv, StringRaw: &rawv})
-	}()
-
-	lastPatternIndex := 0
-	defer func() {
-		if s.Pattern != nil {
-			if lastPatternIndex < sb.Len() {
-				s.Pattern = append(s.Pattern, sb.String()[lastPatternIndex:])
-			}
-		}
 	}()
 
 	_s, eof := p.peekn(4)

@@ -396,27 +396,15 @@ func (c *compiler) compileKey(refctx *RefContext) {
 }
 
 func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext) {
-	us, ok := kp.Path[0].Unbox().(*d2ast.UnquotedString)
-	if ok && us.Pattern != nil {
-		for _, f := range dst.Fields {
-			if matchPattern(f.Name, us.Pattern) {
-				if len(kp.Path) == 1 {
-					c._compileField(f, refctx)
-				} else {
-					// TODO: recurse
-				}
-			}
-		}
-		return
-	}
-
-	f, err := dst.EnsureField(kp, refctx)
+	fa, err := dst.EnsureField(kp, refctx)
 	if err != nil {
 		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 		return
 	}
 
-	c._compileField(f, refctx)
+	for _, f := range fa {
+		c._compileField(f, refctx)
+	}
 }
 
 func (c *compiler) _compileField(f *Field, refctx *RefContext) {
@@ -424,7 +412,7 @@ func (c *compiler) _compileField(f *Field, refctx *RefContext) {
 		// For vars, if we delete the field, it may just resolve to an outer scope var of the same name
 		// Instead we keep it around, so that resolveSubstitutions can find it
 		if !IsVar(ParentMap(f)) {
-			dst.DeleteField(f.Name)
+			ParentMap(f).DeleteField(f.Name)
 			return
 		}
 	}
@@ -621,12 +609,17 @@ func (c *compiler) compileLink(refctx *RefContext) {
 }
 
 func (c *compiler) compileEdges(refctx *RefContext) {
-	if refctx.Key.Key != nil {
-		f, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx)
-		if err != nil {
-			c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
-			return
-		}
+	if refctx.Key.Key == nil {
+		c._compileEdges(refctx)
+		return
+	}
+
+	fa, err := refctx.ScopeMap.EnsureField(refctx.Key.Key, refctx)
+	if err != nil {
+		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
+		return
+	}
+	for _, f := range fa {
 		if _, ok := f.Composite.(*Array); ok {
 			c.errorf(refctx.Key.Key, "cannot index into array")
 			return
@@ -636,9 +629,13 @@ func (c *compiler) compileEdges(refctx *RefContext) {
 				parent: f,
 			}
 		}
-		refctx.ScopeMap = f.Map()
+		refctx2 := *refctx
+		refctx2.ScopeMap = f.Map()
+		c._compileEdges(&refctx2)
 	}
+}
 
+func (c *compiler) _compileEdges(refctx *RefContext) {
 	eida := NewEdgeIDs(refctx.Key)
 	for i, eid := range eida {
 		if refctx.Key != nil && refctx.Key.Value.Null != nil {
@@ -649,19 +646,20 @@ func (c *compiler) compileEdges(refctx *RefContext) {
 		refctx = refctx.Copy()
 		refctx.Edge = refctx.Key.Edges[i]
 
-		var e *Edge
+		var ea []*Edge
 		if eid.Index != nil {
-			ea := refctx.ScopeMap.GetEdges(eid)
+			ea = refctx.ScopeMap.GetEdges(eid)
 			if len(ea) == 0 {
 				c.errorf(refctx.Edge, "indexed edge does not exist")
 				continue
 			}
-			e = ea[0]
-			e.References = append(e.References, &EdgeReference{
-				Context: refctx,
-			})
-			refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Src, refctx)
-			refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Dst, refctx)
+			for _, e := range ea {
+				e.References = append(e.References, &EdgeReference{
+					Context: refctx,
+				})
+				refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Src, refctx)
+				refctx.ScopeMap.appendFieldReferences(0, refctx.Edge.Dst, refctx)
+			}
 		} else {
 			_, err := refctx.ScopeMap.EnsureField(refctx.Edge.Src, refctx)
 			if err != nil {
@@ -674,41 +672,43 @@ func (c *compiler) compileEdges(refctx *RefContext) {
 				continue
 			}
 
-			e, err = refctx.ScopeMap.CreateEdge(eid, refctx)
+			ea, err = refctx.ScopeMap.CreateEdge(eid, refctx)
 			if err != nil {
 				c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
 				continue
 			}
 		}
 
-		if refctx.Key.EdgeKey != nil {
-			if e.Map_ == nil {
-				e.Map_ = &Map{
-					parent: e,
-				}
-			}
-			c.compileField(e.Map_, refctx.Key.EdgeKey, refctx)
-		} else {
-			if refctx.Key.Primary.Unbox() != nil {
-				e.Primary_ = &Scalar{
-					parent: e,
-					Value:  refctx.Key.Primary.Unbox(),
-				}
-			}
-			if refctx.Key.Value.Array != nil {
-				c.errorf(refctx.Key.Value.Unbox(), "edges cannot be assigned arrays")
-				continue
-			} else if refctx.Key.Value.Map != nil {
+		for _, e := range ea {
+			if refctx.Key.EdgeKey != nil {
 				if e.Map_ == nil {
 					e.Map_ = &Map{
 						parent: e,
 					}
+					c.compileField(e.Map_, refctx.Key.EdgeKey, refctx)
 				}
-				c.compileMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
-			} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
-				e.Primary_ = &Scalar{
-					parent: e,
-					Value:  refctx.Key.Value.ScalarBox().Unbox(),
+			} else {
+				if refctx.Key.Primary.Unbox() != nil {
+					e.Primary_ = &Scalar{
+						parent: e,
+						Value:  refctx.Key.Primary.Unbox(),
+					}
+				}
+				if refctx.Key.Value.Array != nil {
+					c.errorf(refctx.Key.Value.Unbox(), "edges cannot be assigned arrays")
+					continue
+				} else if refctx.Key.Value.Map != nil {
+					if e.Map_ == nil {
+						e.Map_ = &Map{
+							parent: e,
+						}
+					}
+					c.compileMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
+				} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
+					e.Primary_ = &Scalar{
+						parent: e,
+						Value:  refctx.Key.Value.ScalarBox().Unbox(),
+					}
 				}
 			}
 		}

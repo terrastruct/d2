@@ -1,0 +1,582 @@
+{
+  "fields": [
+    {
+      "name": "animate",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge/1.d2,0:0:0-0:7:7",
+            "value": [
+              {
+                "string": "animate",
+                "raw_string": "animate"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge/1.d2,0:0:0-0:7:7",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge/1.d2,0:0:0-0:7:7",
+                  "value": [
+                    {
+                      "string": "animate",
+                      "raw_string": "animate"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/edge/1.d2,0:0:0-0:7:7",
+              "key": {
+                "range": "TestCompile/patterns/edge/1.d2,0:0:0-0:7:7",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge/1.d2,0:0:0-0:7:7",
+                      "value": [
+                        {
+                          "string": "animate",
+                          "raw_string": "animate"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "animal",
+      "references": [
+        {
+          "string": {
+            "range": "TestCompile/patterns/edge/1.d2,1:0:8-1:6:14",
+            "value": [
+              {
+                "string": "animal",
+                "raw_string": "animal"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/patterns/edge/1.d2,1:0:8-1:6:14",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/patterns/edge/1.d2,1:0:8-1:6:14",
+                  "value": [
+                    {
+                      "string": "animal",
+                      "raw_string": "animal"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": null,
+            "key": {
+              "range": "TestCompile/patterns/edge/1.d2,1:0:8-1:6:14",
+              "key": {
+                "range": "TestCompile/patterns/edge/1.d2,1:0:8-1:6:14",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge/1.d2,1:0:8-1:6:14",
+                      "value": [
+                        {
+                          "string": "animal",
+                          "raw_string": "animal"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": {
+        "src_path": [
+          "animate"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "animate"
+        ],
+        "dst_arrow": true,
+        "index": 0
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:10:25",
+              "src": {
+                "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:3:18",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:3:18",
+                      "value": [
+                        {
+                          "string": "an*",
+                          "raw_string": "an*"
+                        }
+                      ],
+                      "pattern": [
+                        "an",
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge/1.d2,2:7:22-2:10:25",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge/1.d2,2:7:22-2:10:25",
+                      "value": [
+                        {
+                          "string": "an*",
+                          "raw_string": "an*"
+                        }
+                      ],
+                      "pattern": [
+                        "an",
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:10:25",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:10:25",
+                  "src": {
+                    "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:3:18",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:3:18",
+                          "value": [
+                            {
+                              "string": "an*",
+                              "raw_string": "an*"
+                            }
+                          ],
+                          "pattern": [
+                            "an",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge/1.d2,2:7:22-2:10:25",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge/1.d2,2:7:22-2:10:25",
+                          "value": [
+                            {
+                              "string": "an*",
+                              "raw_string": "an*"
+                            }
+                          ],
+                          "pattern": [
+                            "an",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "animate"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "animal"
+        ],
+        "dst_arrow": true,
+        "index": 0
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:10:25",
+              "src": {
+                "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:3:18",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:3:18",
+                      "value": [
+                        {
+                          "string": "an*",
+                          "raw_string": "an*"
+                        }
+                      ],
+                      "pattern": [
+                        "an",
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge/1.d2,2:7:22-2:10:25",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge/1.d2,2:7:22-2:10:25",
+                      "value": [
+                        {
+                          "string": "an*",
+                          "raw_string": "an*"
+                        }
+                      ],
+                      "pattern": [
+                        "an",
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:10:25",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:10:25",
+                  "src": {
+                    "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:3:18",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:3:18",
+                          "value": [
+                            {
+                              "string": "an*",
+                              "raw_string": "an*"
+                            }
+                          ],
+                          "pattern": [
+                            "an",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge/1.d2,2:7:22-2:10:25",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge/1.d2,2:7:22-2:10:25",
+                          "value": [
+                            {
+                              "string": "an*",
+                              "raw_string": "an*"
+                            }
+                          ],
+                          "pattern": [
+                            "an",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "animal"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "animate"
+        ],
+        "dst_arrow": true,
+        "index": 0
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:10:25",
+              "src": {
+                "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:3:18",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:3:18",
+                      "value": [
+                        {
+                          "string": "an*",
+                          "raw_string": "an*"
+                        }
+                      ],
+                      "pattern": [
+                        "an",
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge/1.d2,2:7:22-2:10:25",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge/1.d2,2:7:22-2:10:25",
+                      "value": [
+                        {
+                          "string": "an*",
+                          "raw_string": "an*"
+                        }
+                      ],
+                      "pattern": [
+                        "an",
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:10:25",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:10:25",
+                  "src": {
+                    "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:3:18",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:3:18",
+                          "value": [
+                            {
+                              "string": "an*",
+                              "raw_string": "an*"
+                            }
+                          ],
+                          "pattern": [
+                            "an",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge/1.d2,2:7:22-2:10:25",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge/1.d2,2:7:22-2:10:25",
+                          "value": [
+                            {
+                              "string": "an*",
+                              "raw_string": "an*"
+                            }
+                          ],
+                          "pattern": [
+                            "an",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    },
+    {
+      "edge_id": {
+        "src_path": [
+          "animal"
+        ],
+        "src_arrow": false,
+        "dst_path": [
+          "animal"
+        ],
+        "dst_arrow": true,
+        "index": 0
+      },
+      "references": [
+        {
+          "context": {
+            "edge": {
+              "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:10:25",
+              "src": {
+                "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:3:18",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:3:18",
+                      "value": [
+                        {
+                          "string": "an*",
+                          "raw_string": "an*"
+                        }
+                      ],
+                      "pattern": [
+                        "an",
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/patterns/edge/1.d2,2:7:22-2:10:25",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/patterns/edge/1.d2,2:7:22-2:10:25",
+                      "value": [
+                        {
+                          "string": "an*",
+                          "raw_string": "an*"
+                        }
+                      ],
+                      "pattern": [
+                        "an",
+                        "*"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:10:25",
+              "edges": [
+                {
+                  "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:10:25",
+                  "src": {
+                    "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:3:18",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge/1.d2,2:0:15-2:3:18",
+                          "value": [
+                            {
+                              "string": "an*",
+                              "raw_string": "an*"
+                            }
+                          ],
+                          "pattern": [
+                            "an",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/patterns/edge/1.d2,2:7:22-2:10:25",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/patterns/edge/1.d2,2:7:22-2:10:25",
+                          "value": [
+                            {
+                              "string": "an*",
+                              "raw_string": "an*"
+                            }
+                          ],
+                          "pattern": [
+                            "an",
+                            "*"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

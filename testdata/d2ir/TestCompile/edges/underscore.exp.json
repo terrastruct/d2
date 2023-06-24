@@ -138,6 +138,148 @@
                     "value": {}
                   }
                 }
+              },
+              {
+                "string": {
+                  "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+                  "value": [
+                    {
+                      "string": "z",
+                      "raw_string": "z"
+                    }
+                  ]
+                },
+                "key_path": {
+                  "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+                  "path": [
+                    {
+                      "unquoted_string": {
+                        "range": ",0:0:0-0:0:0",
+                        "value": [
+                          {
+                            "string": "p"
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "unquoted_string": {
+                        "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+                        "value": [
+                          {
+                            "string": "z",
+                            "raw_string": "z"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "context": {
+                  "edge": {
+                    "range": "TestCompile/edges/underscore.d2,0:5:5-0:13:13",
+                    "src": {
+                      "range": "TestCompile/edges/underscore.d2,0:5:5-0:8:8",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/edges/underscore.d2,0:5:5-0:6:6",
+                            "value": [
+                              {
+                                "string": "_",
+                                "raw_string": "_"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/edges/underscore.d2,0:7:7-0:8:8",
+                            "value": [
+                              {
+                                "string": "x",
+                                "raw_string": "x"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "src_arrow": "",
+                    "dst": {
+                      "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+                      "path": [
+                        {
+                          "unquoted_string": {
+                            "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+                            "value": [
+                              {
+                                "string": "z",
+                                "raw_string": "z"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    "dst_arrow": ">"
+                  },
+                  "key": {
+                    "range": "TestCompile/edges/underscore.d2,0:5:5-0:14:14",
+                    "edges": [
+                      {
+                        "range": "TestCompile/edges/underscore.d2,0:5:5-0:13:13",
+                        "src": {
+                          "range": "TestCompile/edges/underscore.d2,0:5:5-0:8:8",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/edges/underscore.d2,0:5:5-0:6:6",
+                                "value": [
+                                  {
+                                    "string": "_",
+                                    "raw_string": "_"
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/edges/underscore.d2,0:7:7-0:8:8",
+                                "value": [
+                                  {
+                                    "string": "x",
+                                    "raw_string": "x"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "src_arrow": "",
+                        "dst": {
+                          "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+                          "path": [
+                            {
+                              "unquoted_string": {
+                                "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+                                "value": [
+                                  {
+                                    "string": "z",
+                                    "raw_string": "z"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        "dst_arrow": ">"
+                      }
+                    ],
+                    "primary": {},
+                    "value": {}
+                  }
+                }
               }
             ]
           }
@@ -258,6 +400,147 @@
               }
             }
           }
+        },
+        {
+          "string": {
+            "range": ",0:0:0-0:0:0",
+            "value": [
+              {
+                "string": "p"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+            "path": [
+              {
+                "unquoted_string": {
+                  "range": ",0:0:0-0:0:0",
+                  "value": [
+                    {
+                      "string": "p"
+                    }
+                  ]
+                }
+              },
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+                  "value": [
+                    {
+                      "string": "z",
+                      "raw_string": "z"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/edges/underscore.d2,0:5:5-0:13:13",
+              "src": {
+                "range": "TestCompile/edges/underscore.d2,0:5:5-0:8:8",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/underscore.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "_",
+                          "raw_string": "_"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/underscore.d2,0:7:7-0:8:8",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+                      "value": [
+                        {
+                          "string": "z",
+                          "raw_string": "z"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/edges/underscore.d2,0:5:5-0:14:14",
+              "edges": [
+                {
+                  "range": "TestCompile/edges/underscore.d2,0:5:5-0:13:13",
+                  "src": {
+                    "range": "TestCompile/edges/underscore.d2,0:5:5-0:8:8",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/underscore.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "_",
+                              "raw_string": "_"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/underscore.d2,0:7:7-0:8:8",
+                          "value": [
+                            {
+                              "string": "x",
+                              "raw_string": "x"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+                          "value": [
+                            {
+                              "string": "z",
+                              "raw_string": "z"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
         }
       ]
     },
@@ -288,6 +571,138 @@
                   ]
                 }
               },
+              {
+                "unquoted_string": {
+                  "range": "TestCompile/edges/underscore.d2,0:7:7-0:8:8",
+                  "value": [
+                    {
+                      "string": "x",
+                      "raw_string": "x"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "context": {
+            "edge": {
+              "range": "TestCompile/edges/underscore.d2,0:5:5-0:13:13",
+              "src": {
+                "range": "TestCompile/edges/underscore.d2,0:5:5-0:8:8",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/underscore.d2,0:5:5-0:6:6",
+                      "value": [
+                        {
+                          "string": "_",
+                          "raw_string": "_"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/underscore.d2,0:7:7-0:8:8",
+                      "value": [
+                        {
+                          "string": "x",
+                          "raw_string": "x"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "src_arrow": "",
+              "dst": {
+                "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+                "path": [
+                  {
+                    "unquoted_string": {
+                      "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+                      "value": [
+                        {
+                          "string": "z",
+                          "raw_string": "z"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              },
+              "dst_arrow": ">"
+            },
+            "key": {
+              "range": "TestCompile/edges/underscore.d2,0:5:5-0:14:14",
+              "edges": [
+                {
+                  "range": "TestCompile/edges/underscore.d2,0:5:5-0:13:13",
+                  "src": {
+                    "range": "TestCompile/edges/underscore.d2,0:5:5-0:8:8",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/underscore.d2,0:5:5-0:6:6",
+                          "value": [
+                            {
+                              "string": "_",
+                              "raw_string": "_"
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/underscore.d2,0:7:7-0:8:8",
+                          "value": [
+                            {
+                              "string": "x",
+                              "raw_string": "x"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "src_arrow": "",
+                  "dst": {
+                    "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+                    "path": [
+                      {
+                        "unquoted_string": {
+                          "range": "TestCompile/edges/underscore.d2,0:12:12-0:13:13",
+                          "value": [
+                            {
+                              "string": "z",
+                              "raw_string": "z"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "dst_arrow": ">"
+                }
+              ],
+              "primary": {},
+              "value": {}
+            }
+          }
+        },
+        {
+          "string": {
+            "range": "TestCompile/edges/underscore.d2,0:7:7-0:8:8",
+            "value": [
+              {
+                "string": "x",
+                "raw_string": "x"
+              }
+            ]
+          },
+          "key_path": {
+            "range": "TestCompile/edges/underscore.d2,0:5:5-0:8:8",
+            "path": [
               {
                 "unquoted_string": {
                   "range": "TestCompile/edges/underscore.d2,0:7:7-0:8:8",

@@ -740,6 +740,13 @@ func (kp *KeyPath) IDA() (ida []string) {
 	return ida
 }
 
+func (kp *KeyPath) Copy() *KeyPath {
+	kp2 := *kp
+	kp2.Path = nil
+	kp2.Path = append(kp2.Path, kp.Path...)
+	return &kp2
+}
+
 type Edge struct {
 	Range Range `json:"range"`
 

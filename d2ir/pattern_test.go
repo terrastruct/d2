@@ -11,6 +11,19 @@ func testCompilePatterns(t *testing.T) {
 
 	tca := []testCase{
 		{
+			name: "escaped",
+			run: func(t testing.TB) {
+				m, err := compile(t, `animal: meow
+action: yes
+a\*: globbed`)
+				assert.Success(t, err)
+				assertQuery(t, m, 3, 0, nil, "")
+				assertQuery(t, m, 0, 0, "meow", "animal")
+				assertQuery(t, m, 0, 0, "yes", "action")
+				assertQuery(t, m, 0, 0, "globbed", `a\*`)
+			},
+		},
+		{
 			name: "prefix",
 			run: func(t testing.TB) {
 				m, err := compile(t, `animal: meow
@@ -71,16 +84,67 @@ t*ink*r*t*inke*: globbed`)
 			},
 		},
 		{
-			name: "escaped",
+			name: "nested/prefix-suffix/3",
 			run: func(t testing.TB) {
-				m, err := compile(t, `animal: meow
-action: yes
-a\*: globbed`)
+				m, err := compile(t, `animate.constant.tinkertinker: meow
+astronaut.constant.thinkerthinker: yes
+a*n*t*.constant.t*ink*r*t*inke*: globbed`)
 				assert.Success(t, err)
-				assertQuery(t, m, 3, 0, nil, "")
-				assertQuery(t, m, 0, 0, "meow", "animal")
-				assertQuery(t, m, 0, 0, "yes", "action")
-				assertQuery(t, m, 0, 0, "globbed", `a\*`)
+				assertQuery(t, m, 6, 0, nil, "")
+				assertQuery(t, m, 0, 0, "globbed", "animate.constant.tinkertinker")
+				assertQuery(t, m, 0, 0, "globbed", "astronaut.constant.thinkerthinker")
+			},
+		},
+		{
+			name: "edge/1",
+			run: func(t testing.TB) {
+				m, err := compile(t, `animate
+animal
+an* -> an*`)
+				assert.Success(t, err)
+				assertQuery(t, m, 2, 4, nil, "")
+				assertQuery(t, m, 0, 0, nil, "(animate -> animal)[0]")
+				assertQuery(t, m, 0, 0, nil, "(animal -> animal)[0]")
+			},
+		},
+		{
+			name: "edge/2",
+			run: func(t testing.TB) {
+				m, err := compile(t, `shared.animate
+shared.animal
+sh*.(an* -> an*)`)
+				assert.Success(t, err)
+				assertQuery(t, m, 3, 4, nil, "")
+				assertQuery(t, m, 2, 4, nil, "shared")
+				assertQuery(t, m, 0, 0, nil, "shared.(animate -> animal)[0]")
+				assertQuery(t, m, 0, 0, nil, "shared.(animal -> animal)[0]")
+			},
+		},
+		{
+			name: "edge/3",
+			run: func(t testing.TB) {
+				m, err := compile(t, `shared.animate
+shared.animal
+sh*.an* -> sh*.an*`)
+				assert.Success(t, err)
+				assertQuery(t, m, 3, 4, nil, "")
+				assertQuery(t, m, 2, 4, nil, "shared")
+				assertQuery(t, m, 0, 0, nil, "shared.(animate -> animal)[0]")
+				assertQuery(t, m, 0, 0, nil, "shared.(animal -> animal)[0]")
+			},
+		},
+		{
+			name: "double-glob",
+			run: func(t testing.TB) {
+				m, err := compile(t, `shared.animate
+shared.animal
+**.style.fill: red`)
+				assert.Success(t, err)
+				assertQuery(t, m, 9, 0, nil, "")
+				assertQuery(t, m, 8, 0, nil, "shared")
+				assertQuery(t, m, 2, 0, nil, "shared.style")
+				assertQuery(t, m, 2, 0, nil, "shared.animate")
+				assertQuery(t, m, 2, 0, nil, "shared.animal")
 			},
 		},
 	}
