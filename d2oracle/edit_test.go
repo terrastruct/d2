@@ -7933,9 +7933,10 @@ func TestRenameIDDeltas(t *testing.T) {
 	testCases := []struct {
 		name string
 
-		text    string
-		key     string
-		newName string
+		boardPath []string
+		text      string
+		key       string
+		newName   string
 
 		exp    string
 		expErr string
@@ -8063,6 +8064,44 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
   "x.y.z.(w.e.p.l -> 1.2.3.4)[1]": "x.y.z.(w.e.p.l <-> 1.2.3.4)[1]"
 }`,
 		},
+		{
+			name: "layers-basic",
+
+			text: `x
+
+layers: {
+  y: {
+    a
+  }
+}
+`,
+			boardPath: []string{"y"},
+			key:       "a",
+			newName:   "b",
+
+			exp: `{
+  "a": "b"
+}`,
+		},
+		{
+			name: "scenarios-conflict",
+
+			text: `x
+
+scenarios: {
+  y: {
+    a
+  }
+}
+`,
+			boardPath: []string{"y"},
+			key:       "a",
+			newName:   "x",
+
+			exp: `{
+  "a": "x 2"
+}`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -8076,7 +8115,7 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
 				t.Fatal(err)
 			}
 
-			deltas, err := d2oracle.RenameIDDeltas(g, tc.key, tc.newName)
+			deltas, err := d2oracle.RenameIDDeltas(g, tc.boardPath, tc.key, tc.newName)
 			if tc.expErr != "" {
 				if err == nil {
 					t.Fatalf("expected error with: %q", tc.expErr)

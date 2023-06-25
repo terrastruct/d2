@@ -1436,16 +1436,12 @@ func Rename(g *d2graph.Graph, boardPath []string, key, newName string) (_ *d2gra
 	}
 
 	boardG := g
-	// baseAST := g.AST
 
 	if len(boardPath) > 0 {
-		// When compiling a nested board, we can read from boardG but only write to baseBoardG
 		boardG = GetBoardGraph(g, boardPath)
 		if boardG == nil {
 			return nil, "", fmt.Errorf("board %v not found", boardPath)
 		}
-		// TODO beter name
-		// baseAST = boardG.BaseAST
 	}
 
 	if len(mk.Edges) > 0 && mk.EdgeKey == nil {
@@ -2845,7 +2841,7 @@ func DeleteIDDeltas(g *d2graph.Graph, key string) (deltas map[string]string, err
 	return deltas, nil
 }
 
-func RenameIDDeltas(g *d2graph.Graph, key, newName string) (deltas map[string]string, err error) {
+func RenameIDDeltas(g *d2graph.Graph, boardPath []string, key, newName string) (deltas map[string]string, err error) {
 	defer xdefer.Errorf(&err, "failed to get deltas for renaming of %#v to %#v", key, newName)
 	deltas = make(map[string]string)
 
@@ -2854,11 +2850,19 @@ func RenameIDDeltas(g *d2graph.Graph, key, newName string) (deltas map[string]st
 		return nil, err
 	}
 
+	boardG := g
+	if len(boardPath) > 0 {
+		boardG = GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return nil, fmt.Errorf("board %v not found", boardPath)
+		}
+	}
+
 	edgeTrimCommon(mk)
-	obj := g.Root
+	obj := boardG.Root
 	if mk.Key != nil {
 		var ok bool
-		obj, ok = g.Root.HasChild(d2graph.Key(mk.Key))
+		obj, ok = boardG.Root.HasChild(d2graph.Key(mk.Key))
 		if !ok {
 			return nil, nil
 		}
@@ -2896,7 +2900,7 @@ func RenameIDDeltas(g *d2graph.Graph, key, newName string) (deltas map[string]st
 	}
 
 	mk.Key.Path[len(mk.Key.Path)-1].Unbox().SetString(newName)
-	uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(mk.Key), "."), obj, nil)
+	uniqueKeyStr, _, err := generateUniqueKey(boardG, strings.Join(d2graph.Key(mk.Key), "."), obj, nil)
 	if err != nil {
 		return nil, err
 	}
