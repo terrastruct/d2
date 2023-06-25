@@ -1899,6 +1899,93 @@ scenarios: {
 }
 `,
 		},
+		{
+			name: "scenarios-edge-set",
+
+			text: `a -> b
+
+scenarios: {
+  x: {
+		c
+  }
+}
+`,
+			key:       `(a -> b)[0].style.opacity`,
+			value:     go2.Pointer(`0.2`),
+			boardPath: []string{"x"},
+
+			exp: `a -> b
+
+scenarios: {
+  x: {
+    c
+    (a -> b)[0].style.opacity: 0.2
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-existing-edge-set",
+
+			text: `a -> b
+
+scenarios: {
+  x: {
+    a -> b
+		c
+  }
+}
+`,
+			key:       `(a -> b)[1].style.opacity`,
+			value:     go2.Pointer(`0.2`),
+			boardPath: []string{"x"},
+
+			exp: `a -> b
+
+scenarios: {
+  x: {
+    a -> b: {style.opacity: 0.2}
+    c
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-arrowhead",
+
+			text: `a -> b: {
+  target-arrowhead.shape: triangle
+}
+x -> y
+
+scenarios: {
+  x: {
+    (a -> b)[0]: {
+       target-arrowhead.shape: circle
+    }
+		c -> d
+  }
+}
+`,
+			key:       `(a -> b)[0].target-arrowhead.shape`,
+			value:     go2.Pointer(`diamond`),
+			boardPath: []string{"x"},
+
+			exp: `a -> b: {
+  target-arrowhead.shape: triangle
+}
+x -> y
+
+scenarios: {
+  x: {
+    (a -> b)[0]: {
+      target-arrowhead.shape: diamond
+    }
+    c -> d
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {

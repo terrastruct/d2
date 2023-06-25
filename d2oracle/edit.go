@@ -445,14 +445,20 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 		if !ok {
 			return errors.New("edge not found")
 		}
+		refs := edge.References
+		if baseAST != g.AST {
+			refs = getWriteablEdgeRefs(edge, baseAST)
+		}
 		onlyInChain := true
-		for _, ref := range edge.References {
+		for _, ref := range refs {
 			// TODO merge flat edgekeys
 			// E.g. this can group into a map
 			// (y -> z)[0].style.opacity: 0.4
 			// (y -> z)[0].style.animated: true
-			if len(ref.MapKey.Edges) == 1 && ref.MapKey.EdgeIndex == nil {
-				onlyInChain = false
+			if len(ref.MapKey.Edges) == 1 {
+				if ref.MapKey.EdgeIndex == nil || ref.MapKey.Value.Map != nil {
+					onlyInChain = false
+				}
 			}
 			// If a ref has an exact match on this key, just change the value
 			tmp1 := *ref.MapKey
@@ -485,7 +491,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			}
 
 			foundMap := false
-			for _, ref := range edge.References {
+			for _, ref := range refs {
 				// TODO get the most nested one
 				if ref.MapKey.Value.Map != nil {
 					foundMap = true
@@ -2997,6 +3003,15 @@ func getWriteableRefs(obj *d2graph.Object, writeableAST *d2ast.Map) (out []d2gra
 	for i, ref := range obj.References {
 		if ref.ScopeAST == writeableAST {
 			out = append(out, obj.References[i])
+		}
+	}
+	return
+}
+
+func getWriteablEdgeRefs(edge *d2graph.Edge, writeableAST *d2ast.Map) (out []d2graph.EdgeReference) {
+	for i, ref := range edge.References {
+		if ref.ScopeAST == writeableAST {
+			out = append(out, edge.References[i])
 		}
 	}
 	return

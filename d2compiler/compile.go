@@ -726,6 +726,7 @@ func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 			MapKey:          er.Context.Key,
 			MapKeyEdgeIndex: er.Context.EdgeIndex(),
 			Scope:           er.Context.Scope,
+			ScopeAST:        er.Context.ScopeAST,
 		}
 		if er.Context.ScopeMap != nil {
 			scopeObjIDA := d2graphIDA(d2ir.BoardIDA(er.Context.ScopeMap))
