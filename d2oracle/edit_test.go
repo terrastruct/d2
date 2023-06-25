@@ -2317,7 +2317,8 @@ func TestRename(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name string
+		name      string
+		boardPath []string
 
 		text    string
 		key     string
@@ -2733,6 +2734,95 @@ more.(ok.q.z -> p.k): "furbling, v.:"
 			newName: "near",
 			expErr:  `failed to rename "x.icon" to "near": cannot rename to reserved keyword: "near"`,
 		},
+		{
+			name: "layers-basic",
+
+			text: `x
+
+layers: {
+  y: {
+    a
+  }
+}
+`,
+			boardPath: []string{"y"},
+			key:       "a",
+			newName:   "b",
+
+			exp: `x
+
+layers: {
+  y: {
+    b
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-basic",
+
+			text: `x
+
+scenarios: {
+  y: {
+    a
+  }
+}
+`,
+			boardPath: []string{"y"},
+			key:       "a",
+			newName:   "b",
+
+			exp: `x
+
+scenarios: {
+  y: {
+    b
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-conflict",
+
+			text: `x
+
+scenarios: {
+  y: {
+    a
+  }
+}
+`,
+			boardPath: []string{"y"},
+			key:       "a",
+			newName:   "x",
+
+			exp: `x
+
+scenarios: {
+  y: {
+    x 2
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-scope-err",
+
+			text: `x
+
+scenarios: {
+  y: {
+    a
+  }
+}
+`,
+			boardPath: []string{"y"},
+			key:       "x",
+			newName:   "b",
+
+			expErr: `failed to rename "x" to "b": operation would modify AST outside of given scope`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -2745,7 +2835,7 @@ more.(ok.q.z -> p.k): "furbling, v.:"
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
 					objectsBefore := len(g.Objects)
 					var err error
-					g, _, err = d2oracle.Rename(g, tc.key, tc.newName)
+					g, _, err = d2oracle.Rename(g, tc.boardPath, tc.key, tc.newName)
 					if err == nil {
 						objectsAfter := len(g.Objects)
 						if objectsBefore != objectsAfter {

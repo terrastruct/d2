@@ -1427,12 +1427,25 @@ func ensureNode(g *d2graph.Graph, excludedEdges []*d2ast.Edge, scopeObj *d2graph
 	}
 }
 
-func Rename(g *d2graph.Graph, key, newName string) (_ *d2graph.Graph, newKey string, err error) {
+func Rename(g *d2graph.Graph, boardPath []string, key, newName string) (_ *d2graph.Graph, newKey string, err error) {
 	defer xdefer.Errorf(&err, "failed to rename %#v to %#v", key, newName)
 
 	mk, err := d2parser.ParseMapKey(key)
 	if err != nil {
 		return nil, "", err
+	}
+
+	boardG := g
+	// baseAST := g.AST
+
+	if len(boardPath) > 0 {
+		// When compiling a nested board, we can read from boardG but only write to baseBoardG
+		boardG = GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return nil, "", fmt.Errorf("board %v not found", boardPath)
+		}
+		// TODO beter name
+		// baseAST = boardG.BaseAST
 	}
 
 	if len(mk.Edges) > 0 && mk.EdgeKey == nil {
@@ -1451,12 +1464,12 @@ func Rename(g *d2graph.Graph, key, newName string) (_ *d2graph.Graph, newKey str
 			return nil, "", fmt.Errorf("cannot rename to reserved keyword: %#v", newName)
 		}
 		if mk.Key != nil {
-			obj, ok := g.Root.HasChild(d2graph.Key(mk.Key))
+			obj, ok := boardG.Root.HasChild(d2graph.Key(mk.Key))
 			if !ok {
 				return nil, "", fmt.Errorf("key does not exist")
 			}
 			// If attempt to name something "x", but "x" already exists, rename it "x 2" instead
-			generatedName, _, err := generateUniqueKey(g, newName, obj, nil)
+			generatedName, _, err := generateUniqueKey(boardG, newName, obj, nil)
 			if err == nil {
 				newName = generatedName
 			}
@@ -1465,8 +1478,7 @@ func Rename(g *d2graph.Graph, key, newName string) (_ *d2graph.Graph, newKey str
 		mk.Key.Path[len(mk.Key.Path)-1] = d2ast.MakeValueBox(d2ast.RawString(newName, true)).StringBox()
 	}
 
-	// TODO
-	g, err = move(g, nil, key, d2format.Format(mk), false)
+	g, err = move(g, boardPath, key, d2format.Format(mk), false)
 	return g, newName, err
 }
 
