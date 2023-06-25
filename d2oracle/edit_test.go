@@ -2012,11 +2012,12 @@ func TestReconnectEdge(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name    string
-		text    string
-		edgeKey string
-		newSrc  string
-		newDst  string
+		name      string
+		boardPath []string
+		text      string
+		edgeKey   string
+		newSrc    string
+		newDst    string
 
 		expErr     string
 		exp        string
@@ -2283,6 +2284,96 @@ x
 			newDst:  "x",
 			expErr:  "newDst not found",
 		},
+		{
+			name: "layers-basic",
+			text: `a
+
+layers: {
+  x: {
+    b
+    c
+    a -> b
+  }
+}
+`,
+			boardPath: []string{"x"},
+			edgeKey:   `(a -> b)[0]`,
+			newDst:    "c",
+			exp: `a
+
+layers: {
+  x: {
+    b
+    c
+    a -> c
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-basic",
+			text: `a
+
+scenarios: {
+  x: {
+    b
+    c
+    a -> b
+  }
+}
+`,
+			boardPath: []string{"x"},
+			edgeKey:   `(a -> b)[0]`,
+			newDst:    "c",
+			exp: `a
+
+scenarios: {
+  x: {
+    b
+    c
+    a -> c
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-outer-scope",
+			text: `a
+
+scenarios: {
+  x: {
+    d -> b
+  }
+}
+`,
+			boardPath: []string{"x"},
+			edgeKey:   `(d -> b)[0]`,
+			newDst:    "a",
+			exp: `a
+
+scenarios: {
+  x: {
+    d -> a
+    b
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-chain",
+			text: `a -> b -> c
+
+scenarios: {
+  x: {
+    d
+  }
+}
+`,
+			boardPath: []string{"x"},
+			edgeKey:   `(a -> b)[0]`,
+			newDst:    "d",
+			expErr:    `operation would modify AST outside of given scope`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -2301,7 +2392,7 @@ x
 					if tc.newDst != "" {
 						newDst = &tc.newDst
 					}
-					return d2oracle.ReconnectEdge(g, tc.edgeKey, newSrc, newDst)
+					return d2oracle.ReconnectEdge(g, tc.boardPath, tc.edgeKey, newSrc, newDst)
 				},
 
 				exp:        tc.exp,
