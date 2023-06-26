@@ -2196,23 +2196,34 @@ func deleteFromMap(m *d2ast.Map, mk *d2ast.Key) bool {
 	return false
 }
 
-func ReparentIDDelta(g *d2graph.Graph, key, parentKey string) (string, error) {
+func ReparentIDDelta(g *d2graph.Graph, boardPath []string, key, parentKey string) (string, error) {
 	mk, err := d2parser.ParseMapKey(key)
 	if err != nil {
 		return "", err
 	}
-	obj, ok := g.Root.HasChild(d2graph.Key(mk.Key))
+
+	boardG := g
+
+	if len(boardPath) > 0 {
+		// When compiling a nested board, we can read from boardG but only write to baseBoardG
+		boardG = GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return "", fmt.Errorf("board %v not found", boardPath)
+		}
+	}
+
+	obj, ok := boardG.Root.HasChild(d2graph.Key(mk.Key))
 	if !ok {
 		return "", errors.New("not found")
 	}
 
-	parent := g.Root
+	parent := boardG.Root
 	if parentKey != "" {
 		mk2, err := d2parser.ParseMapKey(parentKey)
 		if err != nil {
 			return "", err
 		}
-		parent, ok = g.Root.HasChild(d2graph.Key(mk2.Key))
+		parent, ok = boardG.Root.HasChild(d2graph.Key(mk2.Key))
 		if !ok {
 			return "", errors.New("not found")
 		}
