@@ -156,18 +156,12 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 		return
 	}
 
-	if f.Primary() != nil {
-		// null only applies if it's the appearance
-		if _, ok := f.Primary().Value.(*d2ast.Null); ok {
-			f.Primary_ = nil
-		}
-	}
-
 	if refctx.Key.Primary.Unbox() != nil {
 		f.Primary_ = &Scalar{
 			parent: f,
 			Value:  refctx.Key.Primary.Unbox(),
 		}
+
 	}
 	if refctx.Key.Value.Array != nil {
 		a := &Array{

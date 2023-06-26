@@ -78,6 +78,7 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 	ir = ir.Copy(nil).(*d2ir.Map)
 	// c.preprocessSeqDiagrams(ir)
 	c.compileMap(g.Root, ir)
+	c.nullify(g)
 	if len(c.err.Errors) == 0 {
 		c.validateKeys(g.Root, ir)
 	}
@@ -244,7 +245,7 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 		}
 
 		for _, e := range m.Edges {
-			c.compileEdge(obj, e)
+			c.compileEdge(obj, e, m)
 		}
 	}
 }
@@ -303,11 +304,6 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 		}
 	}
 
-	if f.Primary() != nil {
-		if _, ok := f.Primary().Value.(*d2ast.Null); ok {
-			return
-		}
-	}
 	obj = obj.EnsureChild(d2graphIDA([]string{f.Name}))
 
 	if f.Primary() != nil {
@@ -708,12 +704,13 @@ func compileStyleFieldInit(attrs *d2graph.Attributes, f *d2ir.Field) {
 	}
 }
 
-func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
+func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge, m *d2ir.Map) {
 	if e.Primary() != nil {
 		if _, ok := e.Primary().Value.(*d2ast.Null); ok {
 			return
 		}
 	}
+
 	edge, err := obj.Connect(d2graphIDA(e.ID.SrcPath), d2graphIDA(e.ID.DstPath), e.ID.SrcArrow, e.ID.DstArrow, "")
 	if err != nil {
 		c.errorf(e.References[0].AST(), err.Error())
@@ -840,6 +837,14 @@ func (c *compiler) compileArrowheads(edge *d2graph.Edge, f *d2ir.Field) {
 				c.errorf(f2.LastRef().AST(), `source-arrowhead/target-arrowhead map keys must be reserved keywords`)
 				continue
 			}
+		}
+	}
+}
+
+func (c *compiler) nullify(g *d2graph.Graph) {
+	for _, obj := range g.Objects {
+		if len(obj.References) > 0 && obj.References[len(obj.References)-1].Nulled() {
+			g.DeleteObject(obj)
 		}
 	}
 }

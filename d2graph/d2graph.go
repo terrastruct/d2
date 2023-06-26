@@ -73,6 +73,28 @@ func (g *Graph) RootBoard() *Graph {
 	return g
 }
 
+// DeleteObject deletes an object along with all its descendants.
+// It also deletes all edges connected to it or a descendant.
+func (g *Graph) DeleteObject(obj *Object) {
+	for i, obj2 := range g.Objects {
+		if obj == obj2 {
+			g.Objects = append(g.Objects[:i], g.Objects[i+1:]...)
+			i--
+		}
+	}
+	obj.Parent.removeChild(obj)
+
+	for i, e := range g.Edges {
+		if e.Src == obj || e.Dst == obj {
+			g.Edges = append(g.Edges[:i], g.Edges[i+1:]...)
+		}
+	}
+
+	for _, ch := range obj.ChildrenArray {
+		g.DeleteObject(ch)
+	}
+}
+
 type LayoutGraph func(context.Context, *Graph) error
 
 // TODO consider having different Scalar types
@@ -191,6 +213,10 @@ type Reference struct {
 	Scope           *d2ast.Map `json:"-"`
 	ScopeObj        *Object    `json:"-"`
 	ScopeAST        *d2ast.Map `json:"-"`
+}
+
+func (r *Reference) Nulled() bool {
+	return r.MapKey != nil && r.MapKey.Value.Null != nil
 }
 
 func (r Reference) MapKeyEdgeDest() bool {
@@ -784,39 +810,6 @@ func (obj *Object) ensureChildEdge(ida []string) *Object {
 	}
 	return obj
 }
-
-// DeleteChild deletes a child from the graph.
-// If it has connections or children, those will also be deleted (recursively)
-// func (obj *Object) DeleteChild(ida []string) error {
-//   if len(ida) == 0 {
-//     return nil
-//   }
-//
-//   _, is := ReservedKeywordHolders[ida[0]]
-//   if len(ida) == 1 && !is {
-//     _, ok := ReservedKeywords[ida[0]]
-//     if ok {
-//       return obj
-//     }
-//   }
-//
-//   id := ida[0]
-//   ida = ida[1:]
-//
-//   if id == "_" {
-//     return obj.Parent.EnsureChild(ida)
-//   }
-//
-//   child, ok := obj.Children[strings.ToLower(id)]
-//   if !ok {
-//     child = obj.newObject(id)
-//   }
-//
-//   if len(ida) >= 1 {
-//     return child.EnsureChild(ida)
-//   }
-//   return child
-// }
 
 // EnsureChild grabs the child by ids or creates it if it does not exist including all
 // intermediate nodes.

@@ -786,6 +786,20 @@ func (m *Map) GetEdges(eid *EdgeID) []*Edge {
 	return ea
 }
 
+func (m *Map) DeleteEdge(eid *EdgeID) *Edge {
+	if eid == nil {
+		return nil
+	}
+
+	for i, e := range m.Edges {
+		if e.ID.Match(eid) {
+			m.Edges = append(m.Edges[:i], m.Edges[i+1:]...)
+			return e
+		}
+	}
+	return nil
+}
+
 func (m *Map) CreateEdge(eid *EdgeID, refctx *RefContext) (*Edge, error) {
 	if ParentEdge(m) != nil {
 		return nil, d2parser.Errorf(refctx.Edge, "cannot create edge inside edge")

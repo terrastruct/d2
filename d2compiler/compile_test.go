@@ -3001,6 +3001,39 @@ a
 			})
 		}
 	})
+
+	t.Run("implicit", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "connection",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+x -> y
+y: null
+`, "")
+					assert.Equal(t, 1, len(g.Objects))
+					assert.Equal(t, 0, len(g.Edges))
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
 }
 
 func assertCompile(t *testing.T, text string, expErr string) *d2graph.Graph {
