@@ -161,7 +161,6 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 			parent: f,
 			Value:  refctx.Key.Primary.Unbox(),
 		}
-
 	}
 	if refctx.Key.Value.Array != nil {
 		a := &Array{

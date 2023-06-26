@@ -245,7 +245,7 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 		}
 
 		for _, e := range m.Edges {
-			c.compileEdge(obj, e, m)
+			c.compileEdge(obj, e)
 		}
 	}
 }
@@ -305,7 +305,6 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 	}
 
 	obj = obj.EnsureChild(d2graphIDA([]string{f.Name}))
-
 	if f.Primary() != nil {
 		c.compileLabel(&obj.Attributes, f)
 	}
@@ -704,13 +703,7 @@ func compileStyleFieldInit(attrs *d2graph.Attributes, f *d2ir.Field) {
 	}
 }
 
-func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge, m *d2ir.Map) {
-	if e.Primary() != nil {
-		if _, ok := e.Primary().Value.(*d2ast.Null); ok {
-			return
-		}
-	}
-
+func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
 	edge, err := obj.Connect(d2graphIDA(e.ID.SrcPath), d2graphIDA(e.ID.DstPath), e.ID.SrcArrow, e.ID.DstArrow, "")
 	if err != nil {
 		c.errorf(e.References[0].AST(), err.Error())
