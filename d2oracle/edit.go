@@ -2117,7 +2117,7 @@ func updateNear(prevG, g *d2graph.Graph, from, to *string, includeDescendants bo
 					tmpG, _ := recompile(prevG.AST)
 					appendMapKey(tmpG.AST, valueMK)
 					if to == nil {
-						deltas, err := DeleteIDDeltas(tmpG, *from)
+						deltas, err := DeleteIDDeltas(tmpG, nil, *from)
 						if err != nil {
 							return err
 						}
@@ -2162,7 +2162,7 @@ func updateNear(prevG, g *d2graph.Graph, from, to *string, includeDescendants bo
 					tmpG, _ := recompile(prevG.AST)
 					appendMapKey(tmpG.AST, valueMK)
 					if to == nil {
-						deltas, err := DeleteIDDeltas(tmpG, *from)
+						deltas, err := DeleteIDDeltas(tmpG, nil, *from)
 						if err != nil {
 							return err
 						}
@@ -2693,7 +2693,7 @@ func MoveIDDeltas(g *d2graph.Graph, key, newKey string, includeDescendants bool)
 	return deltas, nil
 }
 
-func DeleteIDDeltas(g *d2graph.Graph, key string) (deltas map[string]string, err error) {
+func DeleteIDDeltas(g *d2graph.Graph, boardPath []string, key string) (deltas map[string]string, err error) {
 	defer xdefer.Errorf(&err, "failed to get deltas for deletion of %#v", key)
 	deltas = make(map[string]string)
 
@@ -2703,7 +2703,16 @@ func DeleteIDDeltas(g *d2graph.Graph, key string) (deltas map[string]string, err
 	}
 
 	edgeTrimCommon(mk)
-	obj := g.Root
+
+	boardG := g
+	if len(boardPath) > 0 {
+		boardG = GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return nil, fmt.Errorf("board %v not found", boardPath)
+		}
+	}
+
+	obj := boardG.Root
 	conflictNewIDs := make(map[*d2graph.Object]string)
 	conflictOldIDs := make(map[*d2graph.Object]string)
 	var newIDs []string
@@ -2715,7 +2724,7 @@ func DeleteIDDeltas(g *d2graph.Graph, key string) (deltas map[string]string, err
 		}
 
 		var ok bool
-		obj, ok = g.Root.HasChild(d2graph.Key(mk.Key))
+		obj, ok = boardG.Root.HasChild(d2graph.Key(mk.Key))
 		if !ok {
 			return nil, nil
 		}
@@ -2742,7 +2751,7 @@ func DeleteIDDeltas(g *d2graph.Graph, key string) (deltas map[string]string, err
 						continue
 					}
 					hoistedAbsID := ch2.ID
-					if obj.Parent != g.Root {
+					if obj.Parent != boardG.Root {
 						hoistedAbsID = obj.Parent.AbsID() + "." + ch2.ID
 					}
 					siblingsToBeHoisted = append(siblingsToBeHoisted, hoistedAbsID)
@@ -2757,7 +2766,7 @@ func DeleteIDDeltas(g *d2graph.Graph, key string) (deltas map[string]string, err
 				continue
 			}
 			hoistedAbsID := ch.ID
-			if obj.Parent != g.Root {
+			if obj.Parent != boardG.Root {
 				hoistedAbsID = obj.Parent.AbsID() + "." + ch.ID
 			}
 			hoistedMK, err := d2parser.ParseMapKey(hoistedAbsID)
@@ -2773,8 +2782,8 @@ func DeleteIDDeltas(g *d2graph.Graph, key string) (deltas map[string]string, err
 				}
 			}
 
-			if conflictingObj, ok := g.Root.HasChild(d2graph.Key(hoistedMK.Key)); (ok && conflictingObj != obj) || conflictsWithNewID {
-				newKey, _, err := generateUniqueKey(g, hoistedAbsID, ignored, append(newIDs, siblingsToBeHoisted...))
+			if conflictingObj, ok := boardG.Root.HasChild(d2graph.Key(hoistedMK.Key)); (ok && conflictingObj != obj) || conflictsWithNewID {
+				newKey, _, err := generateUniqueKey(boardG, hoistedAbsID, ignored, append(newIDs, siblingsToBeHoisted...))
 				if err != nil {
 					return nil, err
 				}
