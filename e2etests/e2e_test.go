@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/xml"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -228,7 +227,7 @@ func run(t *testing.T, tc testCase) {
 
 		err = os.MkdirAll(dataPath, 0755)
 		assert.Success(t, err)
-		err = ioutil.WriteFile(pathGotSVG, svgBytes, 0600)
+		err = os.WriteFile(pathGotSVG, svgBytes, 0600)
 		assert.Success(t, err)
 
 		// Check that it's valid SVG
@@ -246,16 +245,6 @@ func run(t *testing.T, tc testCase) {
 	}
 }
 
-func getShape(t *testing.T, diagram *d2target.Diagram, id string) d2target.Shape {
-	for _, shape := range diagram.Shapes {
-		if shape.ID == id {
-			return shape
-		}
-	}
-	t.Fatalf(`Shape "%s" not found`, id)
-	return d2target.Shape{}
-}
-
 func mdTestScript(md string) string {
 	return fmt.Sprintf(`
 md: |md
@@ -267,7 +256,7 @@ a -> md -> b
 
 func loadFromFile(t *testing.T, name string) testCase {
 	fn := filepath.Join("testdata", "files", fmt.Sprintf("%s.d2", name))
-	d2Text, err := ioutil.ReadFile(fn)
+	d2Text, err := os.ReadFile(fn)
 	if err != nil {
 		t.Fatalf("failed to load test from file:%s. %s", name, err.Error())
 	}

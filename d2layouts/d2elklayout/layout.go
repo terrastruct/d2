@@ -407,6 +407,16 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		obj.Width = math.Ceil(n.Width)
 		obj.Height = math.Ceil(n.Height)
 
+		if obj.Icon != nil && obj.IconPosition == nil {
+			if len(obj.ChildrenArray) > 0 {
+				obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
+				if obj.LabelPosition == nil {
+					obj.LabelPosition = go2.Pointer(string(label.InsideTopRight))
+				}
+			} else {
+				obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
+			}
+		}
 		if obj.HasLabel() && obj.LabelPosition == nil {
 			if len(obj.ChildrenArray) > 0 {
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
@@ -417,14 +427,6 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 			} else {
 				obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
-			}
-		}
-		if obj.Icon != nil && obj.IconPosition == nil {
-			if len(obj.ChildrenArray) > 0 {
-				obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
-				obj.LabelPosition = go2.Pointer(string(label.InsideTopRight))
-			} else {
-				obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
 			}
 		}
 

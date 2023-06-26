@@ -50,6 +50,34 @@ const (
 	UnlockedBottom Position = "UNLOCKED_BOTTOM"
 )
 
+func (position Position) IsShapePosition() bool {
+	switch position {
+	case OutsideTopLeft, OutsideTopCenter, OutsideTopRight,
+		OutsideBottomLeft, OutsideBottomCenter, OutsideBottomRight,
+		OutsideLeftTop, OutsideLeftMiddle, OutsideLeftBottom,
+		OutsideRightTop, OutsideRightMiddle, OutsideRightBottom,
+
+		InsideTopLeft, InsideTopCenter, InsideTopRight,
+		InsideMiddleLeft, InsideMiddleCenter, InsideMiddleRight,
+		InsideBottomLeft, InsideBottomCenter, InsideBottomRight:
+		return true
+	default:
+		return false
+	}
+}
+
+func (position Position) IsEdgePosition() bool {
+	switch position {
+	case OutsideTopLeft, OutsideTopCenter, OutsideTopRight,
+		InsideMiddleLeft, InsideMiddleCenter, InsideMiddleRight,
+		OutsideBottomLeft, OutsideBottomCenter, OutsideBottomRight,
+		UnlockedTop, UnlockedMiddle, UnlockedBottom:
+		return true
+	default:
+		return false
+	}
+}
+
 func (position Position) IsOutside() bool {
 	switch position {
 	case OutsideTopLeft, OutsideTopCenter, OutsideTopRight,
