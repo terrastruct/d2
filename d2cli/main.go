@@ -107,7 +107,7 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
-	scaleFlag, err := ms.Opts.Float64("SCALE", "scale", "", -1, "set a fixed render scale (e.g. 0.5 to halve rendered size). If none provided, SVG will fit to screen.")
+	scaleFlag, err := ms.Opts.Float64("SCALE", "scale", "", -1, "scale the output. E.g., 0.5 to halve the default size. Default -1 means that SVG's will fit to screen and all others will use their default render size. Setting to 1 turns off SVG fitting to screen.")
 	if err != nil {
 		return err
 	}
