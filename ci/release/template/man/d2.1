@@ -80,6 +80,9 @@ Renders the diagram to look like it was sketched by hand
 .It Fl -center Ar flag
 Center the SVG in the containing viewbox, such as your browser screen
 .Ns .
+.It Fl -scale Ar -1
+Scale the output. E.g., 0.5 to halve the default size. Default -1 means that SVG's will fit to screen and all others will use their default render size. Setting to 1 turns off SVG fitting to screen
+.Ns .
 .It Fl -font-regular
 Path to .ttf file to use for the regular font. If none provided, Source Sans Pro Regular is used
 .Ns .
