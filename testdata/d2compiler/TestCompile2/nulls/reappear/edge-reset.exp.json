@@ -3,20 +3,20 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,0:0:0-3:0:26",
+      "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,0:0:0-4:0:18",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,1:0:1-1:6:7",
+            "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,1:0:1-1:6:7",
             "edges": [
               {
-                "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,1:0:1-1:6:7",
+                "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,1:0:1-1:6:7",
                 "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,1:0:1-1:1:2",
+                  "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,1:0:1-1:1:2",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,1:0:1-1:1:2",
+                        "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,1:0:1-1:1:2",
                         "value": [
                           {
                             "string": "a",
@@ -29,11 +29,11 @@
                 },
                 "src_arrow": "",
                 "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,1:5:6-1:6:7",
+                  "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,1:5:6-1:6:7",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,1:5:6-1:6:7",
+                        "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,1:5:6-1:6:7",
                         "value": [
                           {
                             "string": "b",
@@ -53,57 +53,52 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,2:0:8-2:17:25",
-            "edges": [
-              {
-                "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,2:1:9-2:7:15",
-                "src": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,2:1:9-2:2:10",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,2:1:9-2:2:10",
-                        "value": [
-                          {
-                            "string": "a",
-                            "raw_string": "a"
-                          }
-                        ]
+            "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,2:0:8-2:7:15",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,2:0:8-2:1:9",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,2:0:8-2:1:9",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
                       }
-                    }
-                  ]
-                },
-                "src_arrow": "",
-                "dst": {
-                  "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,2:6:14-2:7:15",
-                  "path": [
-                    {
-                      "unquoted_string": {
-                        "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,2:6:14-2:7:15",
-                        "value": [
-                          {
-                            "string": "b",
-                            "raw_string": "b"
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "dst_arrow": ">"
-              }
-            ],
-            "edge_index": {
-              "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,2:8:16-2:11:19",
-              "int": 0,
-              "glob": false
+                    ]
+                  }
+                }
+              ]
             },
             "primary": {},
             "value": {
               "null": {
-                "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,2:13:21-2:17:25"
+                "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,2:3:11-2:7:15"
               }
             }
+          }
+        },
+        {
+          "map_key": {
+            "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,3:0:16-3:1:17",
+            "key": {
+              "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,3:0:16-3:1:17",
+              "path": [
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,3:0:16-3:1:17",
+                    "value": [
+                      {
+                        "string": "a",
+                        "raw_string": "a"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "primary": {},
+            "value": {}
           }
         }
       ]
@@ -134,20 +129,20 @@
     "edges": null,
     "objects": [
       {
-        "id": "a",
-        "id_val": "a",
+        "id": "b",
+        "id_val": "b",
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,1:0:1-1:1:2",
+              "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,1:5:6-1:6:7",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,1:0:1-1:1:2",
+                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,1:5:6-1:6:7",
                     "value": [
                       {
-                        "string": "a",
-                        "raw_string": "a"
+                        "string": "b",
+                        "raw_string": "b"
                       }
                     ]
                   }
@@ -160,7 +155,7 @@
         ],
         "attributes": {
           "label": {
-            "value": "a"
+            "value": "b"
           },
           "labelDimensions": {
             "width": 0,
@@ -179,20 +174,20 @@
         "zIndex": 0
       },
       {
-        "id": "b",
-        "id_val": "b",
+        "id": "a",
+        "id_val": "a",
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,1:5:6-1:6:7",
+              "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,3:0:16-3:1:17",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/basic/edge.d2,1:5:6-1:6:7",
+                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/edge-reset.d2,3:0:16-3:1:17",
                     "value": [
                       {
-                        "string": "b",
-                        "raw_string": "b"
+                        "string": "a",
+                        "raw_string": "a"
                       }
                     ]
                   }
@@ -200,12 +195,12 @@
               ]
             },
             "key_path_index": 0,
-            "map_key_edge_index": 0
+            "map_key_edge_index": -1
           }
         ],
         "attributes": {
           "label": {
-            "value": "b"
+            "value": "a"
           },
           "labelDimensions": {
             "width": 0,

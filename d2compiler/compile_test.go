@@ -2956,6 +2956,16 @@ a -> b
 					assert.Equal(t, 0, len(g.Edges))
 				},
 			},
+			//       {
+			//         name: "attribute",
+			//         run: func(t *testing.T) {
+			//           g := assertCompile(t, `
+			// a.style.opacity: 0.2
+			// a.style.opacity: null
+			// `, "")
+			//           assert.Equal(t, "0.2", g.Objects[0].Attributes.Style.Opacity.Value)
+			//         },
+			//       },
 		}
 
 		for _, tc := range tca {
@@ -2999,6 +3009,41 @@ a -> b
 `, "")
 					assert.Equal(t, 2, len(g.Objects))
 					assert.Equal(t, 1, len(g.Edges))
+				},
+			},
+			{
+				name: "attribute-reset",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+a.style.opacity: 0.2
+a: null
+a
+`, "")
+					assert.Equal(t, 1, len(g.Objects))
+					assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Attributes.Style.Opacity)
+				},
+			},
+			{
+				name: "edge-reset",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+a -> b
+a: null
+a
+`, "")
+					assert.Equal(t, 2, len(g.Objects))
+					assert.Equal(t, 0, len(g.Edges))
+				},
+			},
+			{
+				name: "children-reset",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+a.b.c
+a.b: null
+a.b
+`, "")
+					assert.Equal(t, 2, len(g.Objects))
 				},
 			},
 		}
@@ -3056,6 +3101,43 @@ x: null
 a.b: null
 `, "")
 					assert.Equal(t, 1, len(g.Objects))
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
+
+	t.Run("multiboard", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "scenario",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+x
+
+scenarios: {
+  a: {
+    x: null
+  }
+}
+`, "")
+					assert.Equal(t, 0, len(g.Scenarios[0].Objects))
 				},
 			},
 		}

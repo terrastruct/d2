@@ -78,7 +78,6 @@ func (c *compiler) compileBoard(g *d2graph.Graph, ir *d2ir.Map) *d2graph.Graph {
 	ir = ir.Copy(nil).(*d2ir.Map)
 	// c.preprocessSeqDiagrams(ir)
 	c.compileMap(g.Root, ir)
-	c.nullify(g)
 	if len(c.err.Errors) == 0 {
 		c.validateKeys(g.Root, ir)
 	}
@@ -830,19 +829,6 @@ func (c *compiler) compileArrowheads(edge *d2graph.Edge, f *d2ir.Field) {
 				c.errorf(f2.LastRef().AST(), `source-arrowhead/target-arrowhead map keys must be reserved keywords`)
 				continue
 			}
-		}
-	}
-}
-
-func (c *compiler) nullify(g *d2graph.Graph) {
-	for _, obj := range g.Objects {
-		if len(obj.References) > 0 && obj.References[len(obj.References)-1].Nulled() {
-			g.DeleteObject(obj)
-		}
-	}
-	for _, e := range g.Edges {
-		if len(e.References) > 0 && e.References[len(e.References)-1].Nulled() {
-			g.DeleteEdge(e)
 		}
 	}
 }

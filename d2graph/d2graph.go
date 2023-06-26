@@ -224,10 +224,6 @@ type Reference struct {
 	ScopeAST        *d2ast.Map `json:"-"`
 }
 
-func (r *Reference) Nulled() bool {
-	return r.MapKey != nil && len(r.MapKey.Edges) == 0 && r.MapKey.Value.Null != nil
-}
-
 func (r Reference) MapKeyEdgeDest() bool {
 	return r.Key == r.MapKey.Edges[r.MapKeyEdgeIndex].Dst
 }
@@ -1153,10 +1149,6 @@ type EdgeReference struct {
 	Scope           *d2ast.Map `json:"-"`
 	ScopeObj        *Object    `json:"-"`
 	ScopeAST        *d2ast.Map `json:"-"`
-}
-
-func (er *EdgeReference) Nulled() bool {
-	return er.MapKey != nil && er.MapKey.Value.Null != nil
 }
 
 func (e *Edge) GetAstEdge() *d2ast.Edge {

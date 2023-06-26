@@ -738,6 +738,20 @@ func (m *Map) ensureField(i int, kp *d2ast.KeyPath, refctx *RefContext) (*Field,
 	return f.Map().ensureField(i+1, kp, refctx)
 }
 
+func (m *Map) DeleteEdge(eid *EdgeID) *Edge {
+	if eid == nil {
+		return nil
+	}
+
+	for i, e := range m.Edges {
+		if e.ID.Match(eid) {
+			m.Edges = append(m.Edges[:i], m.Edges[i+1:]...)
+			return e
+		}
+	}
+	return nil
+}
+
 func (m *Map) DeleteField(ida ...string) *Field {
 	if len(ida) == 0 {
 		return nil
@@ -751,6 +765,17 @@ func (m *Map) DeleteField(ida ...string) *Field {
 			continue
 		}
 		if len(rest) == 0 {
+			for _, fr := range f.References {
+				for i, e := range m.Edges {
+					for _, er := range e.References {
+						if er.Context == fr.Context {
+							m.DeleteEdge(e.ID)
+							i--
+							break
+						}
+					}
+				}
+			}
 			m.Fields = append(m.Fields[:i], m.Fields[i+1:]...)
 			return f
 		}

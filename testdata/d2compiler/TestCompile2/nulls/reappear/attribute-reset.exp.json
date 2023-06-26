@@ -3,17 +3,17 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/shape.d2,0:0:0-4:0:13",
+      "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/attribute-reset.d2,0:0:0-4:0:32",
       "nodes": [
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/shape.d2,1:0:1-1:1:2",
+            "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/attribute-reset.d2,1:0:1-1:20:21",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/shape.d2,1:0:1-1:1:2",
+              "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/attribute-reset.d2,1:0:1-1:15:16",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/shape.d2,1:0:1-1:1:2",
+                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/attribute-reset.d2,1:0:1-1:1:2",
                     "value": [
                       {
                         "string": "a",
@@ -21,22 +21,50 @@
                       }
                     ]
                   }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/attribute-reset.d2,1:2:3-1:7:8",
+                    "value": [
+                      {
+                        "string": "style",
+                        "raw_string": "style"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "unquoted_string": {
+                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/attribute-reset.d2,1:8:9-1:15:16",
+                    "value": [
+                      {
+                        "string": "opacity",
+                        "raw_string": "opacity"
+                      }
+                    ]
+                  }
                 }
               ]
             },
             "primary": {},
-            "value": {}
+            "value": {
+              "number": {
+                "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/attribute-reset.d2,1:17:18-1:20:21",
+                "raw": "0.2",
+                "value": "1/5"
+              }
+            }
           }
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/shape.d2,2:0:3-2:7:10",
+            "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/attribute-reset.d2,2:0:22-2:7:29",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/shape.d2,2:0:3-2:1:4",
+              "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/attribute-reset.d2,2:0:22-2:1:23",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/shape.d2,2:0:3-2:1:4",
+                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/attribute-reset.d2,2:0:22-2:1:23",
                     "value": [
                       {
                         "string": "a",
@@ -50,20 +78,20 @@
             "primary": {},
             "value": {
               "null": {
-                "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/shape.d2,2:3:6-2:7:10"
+                "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/attribute-reset.d2,2:3:25-2:7:29"
               }
             }
           }
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/shape.d2,3:0:11-3:1:12",
+            "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/attribute-reset.d2,3:0:30-3:1:31",
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/shape.d2,3:0:11-3:1:12",
+              "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/attribute-reset.d2,3:0:30-3:1:31",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/shape.d2,3:0:11-3:1:12",
+                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/attribute-reset.d2,3:0:30-3:1:31",
                     "value": [
                       {
                         "string": "a",
@@ -111,11 +139,11 @@
         "references": [
           {
             "key": {
-              "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/shape.d2,3:0:11-3:1:12",
+              "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/attribute-reset.d2,3:0:30-3:1:31",
               "path": [
                 {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/shape.d2,3:0:11-3:1:12",
+                    "range": "d2/testdata/d2compiler/TestCompile2/nulls/reappear/attribute-reset.d2,3:0:30-3:1:31",
                     "value": [
                       {
                         "string": "a",
