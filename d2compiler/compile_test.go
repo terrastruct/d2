@@ -2952,6 +2952,7 @@ a: null
 a -> b
 (a -> b)[0]: null
 `, "")
+					assert.Equal(t, 2, len(g.Objects))
 					assert.Equal(t, 0, len(g.Edges))
 				},
 			},
@@ -2986,6 +2987,18 @@ a: null
 a
 `, "")
 					assert.Equal(t, 1, len(g.Objects))
+				},
+			},
+			{
+				name: "edge",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+a -> b
+(a -> b)[0]: null
+a -> b
+`, "")
+					assert.Equal(t, 2, len(g.Objects))
+					assert.Equal(t, 1, len(g.Edges))
 				},
 			},
 		}
@@ -3030,6 +3043,19 @@ x -> y
 `, "")
 					assert.Equal(t, 2, len(g.Objects))
 					assert.Equal(t, 1, len(g.Edges))
+				},
+			},
+			{
+				name: "delete-children",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+x.y.z
+a.b.c
+
+x: null
+a.b: null
+`, "")
+					assert.Equal(t, 1, len(g.Objects))
 				},
 			},
 		}
