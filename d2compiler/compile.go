@@ -250,7 +250,6 @@ func (c *compiler) compileMap(obj *d2graph.Object, m *d2ir.Map) {
 }
 
 func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
-	println("\033[1;31m--- DEBUG:", "=======================", "\033[m")
 	keyword := strings.ToLower(f.Name)
 	_, isStyleReserved := d2graph.StyleKeywords[keyword]
 	if isStyleReserved {
