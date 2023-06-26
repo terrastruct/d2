@@ -73,37 +73,6 @@ func (g *Graph) RootBoard() *Graph {
 	return g
 }
 
-// DeleteObject deletes an object along with all its descendants.
-// It also deletes all edges connected to it or a descendant.
-func (g *Graph) DeleteObject(obj *Object) {
-	for i, obj2 := range g.Objects {
-		if obj == obj2 {
-			g.Objects = append(g.Objects[:i], g.Objects[i+1:]...)
-			i--
-		}
-	}
-	obj.Parent.removeChild(obj)
-
-	for i, e := range g.Edges {
-		if e.Src == obj || e.Dst == obj {
-			g.Edges = append(g.Edges[:i], g.Edges[i+1:]...)
-		}
-	}
-
-	for _, ch := range obj.ChildrenArray {
-		g.DeleteObject(ch)
-	}
-}
-
-func (g *Graph) DeleteEdge(e *Edge) {
-	for i, e2 := range g.Edges {
-		if e == e2 {
-			g.Edges = append(g.Edges[:i], g.Edges[i+1:]...)
-			i--
-		}
-	}
-}
-
 type LayoutGraph func(context.Context, *Graph) error
 
 // TODO consider having different Scalar types
