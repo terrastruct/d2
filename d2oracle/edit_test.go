@@ -7730,8 +7730,9 @@ func TestDeleteIDDeltas(t *testing.T) {
 	testCases := []struct {
 		name string
 
-		text string
-		key  string
+		boardPath []string
+		text      string
+		key       string
 
 		exp    string
 		expErr string
@@ -8000,6 +8001,55 @@ Square
   "x.Square 3": "Square 3"
 }`,
 		},
+		{
+			name: "scenarios-basic",
+			text: `x
+
+scenarios: {
+  y: {
+    a
+  }
+}
+`,
+			boardPath: []string{"y"},
+			key:       `a`,
+
+			exp: `{}`,
+		},
+		{
+			name: "scenarios-parent",
+			text: `x
+
+scenarios: {
+  y: {
+    a.x
+  }
+}
+`,
+			boardPath: []string{"y"},
+			key:       `a`,
+
+			exp: `{
+  "a.x": "x 2"
+}`,
+		},
+		{
+			name: "layers-parent",
+			text: `x
+
+layers: {
+  y: {
+    a.x
+  }
+}
+`,
+			boardPath: []string{"y"},
+			key:       `a`,
+
+			exp: `{
+  "a.x": "x"
+}`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -8013,7 +8063,7 @@ Square
 				t.Fatal(err)
 			}
 
-			deltas, err := d2oracle.DeleteIDDeltas(g, tc.key)
+			deltas, err := d2oracle.DeleteIDDeltas(g, tc.boardPath, tc.key)
 			if tc.expErr != "" {
 				if err == nil {
 					t.Fatalf("expected error with: %q", tc.expErr)
