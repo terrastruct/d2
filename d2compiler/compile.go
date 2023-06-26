@@ -840,6 +840,11 @@ func (c *compiler) nullify(g *d2graph.Graph) {
 			g.DeleteObject(obj)
 		}
 	}
+	for _, e := range g.Edges {
+		if len(e.References) > 0 && e.References[len(e.References)-1].Nulled() {
+			g.DeleteEdge(e)
+		}
+	}
 }
 
 // TODO add more, e.g. C, bash

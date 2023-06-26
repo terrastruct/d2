@@ -95,6 +95,15 @@ func (g *Graph) DeleteObject(obj *Object) {
 	}
 }
 
+func (g *Graph) DeleteEdge(e *Edge) {
+	for i, e2 := range g.Edges {
+		if e == e2 {
+			g.Edges = append(g.Edges[:i], g.Edges[i+1:]...)
+			i--
+		}
+	}
+}
+
 type LayoutGraph func(context.Context, *Graph) error
 
 // TODO consider having different Scalar types
@@ -216,7 +225,7 @@ type Reference struct {
 }
 
 func (r *Reference) Nulled() bool {
-	return r.MapKey != nil && r.MapKey.Value.Null != nil
+	return r.MapKey != nil && len(r.MapKey.Edges) == 0 && r.MapKey.Value.Null != nil
 }
 
 func (r Reference) MapKeyEdgeDest() bool {
@@ -1144,6 +1153,10 @@ type EdgeReference struct {
 	Scope           *d2ast.Map `json:"-"`
 	ScopeObj        *Object    `json:"-"`
 	ScopeAST        *d2ast.Map `json:"-"`
+}
+
+func (er *EdgeReference) Nulled() bool {
+	return er.MapKey != nil && er.MapKey.Value.Null != nil
 }
 
 func (e *Edge) GetAstEdge() *d2ast.Edge {
