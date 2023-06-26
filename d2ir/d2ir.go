@@ -777,6 +777,21 @@ func (m *Map) DeleteField(ida ...string) *Field {
 				}
 			}
 			m.Fields = append(m.Fields[:i], m.Fields[i+1:]...)
+
+			// If a field was deleted from a keyword-holder keyword and that holder is empty,
+			// then that holder becomes meaningless and should be deleted too
+			parent := ParentField(f)
+			for keyword := range d2graph.ReservedKeywordHolders {
+				if parent != nil && parent.Name == keyword && len(parent.Map().Fields) == 0 {
+					styleParentMap := ParentMap(parent)
+					for i, f := range styleParentMap.Fields {
+						if f.Name == keyword {
+							styleParentMap.Fields = append(styleParentMap.Fields[:i], styleParentMap.Fields[i+1:]...)
+							break
+						}
+					}
+				}
+			}
 			return f
 		}
 		if f.Map() != nil {

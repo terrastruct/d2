@@ -2956,16 +2956,16 @@ a -> b
 					assert.Equal(t, 0, len(g.Edges))
 				},
 			},
-			//       {
-			//         name: "attribute",
-			//         run: func(t *testing.T) {
-			//           g := assertCompile(t, `
-			// a.style.opacity: 0.2
-			// a.style.opacity: null
-			// `, "")
-			//           assert.Equal(t, "0.2", g.Objects[0].Attributes.Style.Opacity.Value)
-			//         },
-			//       },
+			{
+				name: "attribute",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+a.style.opacity: 0.2
+a.style.opacity: null
+			`, "")
+					assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Attributes.Style.Opacity)
+				},
+			},
 		}
 
 		for _, tc := range tca {
