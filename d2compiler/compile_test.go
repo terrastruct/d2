@@ -2945,6 +2945,16 @@ a: null
 					assert.Equal(t, 0, len(g.Objects))
 				},
 			},
+			{
+				name: "edge",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+a -> b
+(a -> b)[0]: null
+`, "")
+					assert.Equal(t, 0, len(g.Edges))
+				},
+			},
 		}
 
 		for _, tc := range tca {

@@ -709,6 +709,11 @@ func compileStyleFieldInit(attrs *d2graph.Attributes, f *d2ir.Field) {
 }
 
 func (c *compiler) compileEdge(obj *d2graph.Object, e *d2ir.Edge) {
+	if e.Primary() != nil {
+		if _, ok := e.Primary().Value.(*d2ast.Null); ok {
+			return
+		}
+	}
 	edge, err := obj.Connect(d2graphIDA(e.ID.SrcPath), d2graphIDA(e.ID.DstPath), e.ID.SrcArrow, e.ID.DstArrow, "")
 	if err != nil {
 		c.errorf(e.References[0].AST(), err.Error())
