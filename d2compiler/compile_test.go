@@ -3011,7 +3011,7 @@ a
 			run  func(t *testing.T)
 		}{
 			{
-				name: "connection",
+				name: "delete-connection",
 				run: func(t *testing.T) {
 					g := assertCompile(t, `
 x -> y
@@ -3019,6 +3019,17 @@ y: null
 `, "")
 					assert.Equal(t, 1, len(g.Objects))
 					assert.Equal(t, 0, len(g.Edges))
+				},
+			},
+			{
+				name: "no-delete-connection",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+y: null
+x -> y
+`, "")
+					assert.Equal(t, 2, len(g.Objects))
+					assert.Equal(t, 1, len(g.Edges))
 				},
 			},
 		}
