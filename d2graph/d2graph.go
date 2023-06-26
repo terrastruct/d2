@@ -1117,6 +1117,7 @@ type EdgeReference struct {
 	MapKeyEdgeIndex int        `json:"map_key_edge_index"`
 	Scope           *d2ast.Map `json:"-"`
 	ScopeObj        *Object    `json:"-"`
+	ScopeAST        *d2ast.Map `json:"-"`
 }
 
 func (e *Edge) GetAstEdge() *d2ast.Edge {

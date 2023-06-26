@@ -115,7 +115,7 @@ func Set(g *d2graph.Graph, boardPath []string, key string, tag, value *string) (
 	return recompile(g.AST)
 }
 
-func ReconnectEdge(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (_ *d2graph.Graph, err error) {
+func ReconnectEdge(g *d2graph.Graph, boardPath []string, edgeKey string, srcKey, dstKey *string) (_ *d2graph.Graph, err error) {
 	mk, err := d2parser.ParseMapKey(edgeKey)
 	if err != nil {
 		return nil, err
@@ -130,10 +130,24 @@ func ReconnectEdge(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (_ 
 	}
 
 	edgeTrimCommon(mk)
-	obj := g.Root
+
+	boardG := g
+	baseAST := g.AST
+
+	if len(boardPath) > 0 {
+		// When compiling a nested board, we can read from boardG but only write to baseBoardG
+		boardG = GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return nil, fmt.Errorf("board %v not found", boardPath)
+		}
+		// TODO beter name
+		baseAST = boardG.BaseAST
+	}
+
+	obj := boardG.Root
 	if mk.Key != nil {
 		var ok bool
-		obj, ok = g.Root.HasChild(d2graph.Key(mk.Key))
+		obj, ok = boardG.Root.HasChild(d2graph.Key(mk.Key))
 		if !ok {
 			return nil, errors.New("edge not found")
 		}
@@ -167,7 +181,7 @@ func ReconnectEdge(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (_ 
 		if err != nil {
 			return nil, err
 		}
-		src, ok = g.Root.HasChild(d2graph.Key(srcmk.Key))
+		src, ok = boardG.Root.HasChild(d2graph.Key(srcmk.Key))
 		if !ok {
 			return nil, errors.New("newSrc not found")
 		}
@@ -177,18 +191,26 @@ func ReconnectEdge(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (_ 
 		if err != nil {
 			return nil, err
 		}
-		dst, ok = g.Root.HasChild(d2graph.Key(dstmk.Key))
+		dst, ok = boardG.Root.HasChild(d2graph.Key(dstmk.Key))
 		if !ok {
 			return nil, errors.New("newDst not found")
 		}
 	}
 
-	ref := edge.References[0]
+	refs := edge.References
+	if baseAST != g.AST {
+		refs = getWriteableEdgeRefs(edge, baseAST)
+		if len(refs) == 0 || refs[0].ScopeAST != baseAST {
+			// TODO null
+			return nil, OutsideScopeError{}
+		}
+	}
+	ref := refs[0]
 
 	// for loops where only one end is changing, node is always ensured
 	if edge.Src != edge.Dst && (srcKey == nil || dstKey == nil) {
 		var refEdges []*d2ast.Edge
-		for _, ref := range edge.References {
+		for _, ref := range refs {
 			refEdges = append(refEdges, ref.Edge)
 		}
 
@@ -200,8 +222,8 @@ func ReconnectEdge(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (_ 
 		}
 	}
 
-	for i := range edge.References {
-		ref := edge.References[i]
+	for i := range refs {
+		ref := refs[i]
 		// it's a chain
 		if len(ref.MapKey.Edges) > 1 && ref.MapKey.EdgeIndex == nil {
 			splitChain := true
@@ -232,7 +254,7 @@ func ReconnectEdge(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (_ 
 		if src != nil {
 			srcmk, _ := d2parser.ParseMapKey(*srcKey)
 			ref.Edge.Src = srcmk.Key
-			newPath, err := pathFromScopeObj(g, srcmk, ref.ScopeObj)
+			newPath, err := pathFromScopeObj(boardG, srcmk, ref.ScopeObj)
 			if err != nil {
 				return nil, err
 			}
@@ -241,7 +263,7 @@ func ReconnectEdge(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (_ 
 		if dst != nil {
 			dstmk, _ := d2parser.ParseMapKey(*dstKey)
 			ref.Edge.Dst = dstmk.Key
-			newPath, err := pathFromScopeObj(g, dstmk, ref.ScopeObj)
+			newPath, err := pathFromScopeObj(boardG, dstmk, ref.ScopeObj)
 			if err != nil {
 				return nil, err
 			}
@@ -445,14 +467,20 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 		if !ok {
 			return errors.New("edge not found")
 		}
+		refs := edge.References
+		if baseAST != g.AST {
+			refs = getWriteableEdgeRefs(edge, baseAST)
+		}
 		onlyInChain := true
-		for _, ref := range edge.References {
+		for _, ref := range refs {
 			// TODO merge flat edgekeys
 			// E.g. this can group into a map
 			// (y -> z)[0].style.opacity: 0.4
 			// (y -> z)[0].style.animated: true
-			if len(ref.MapKey.Edges) == 1 && ref.MapKey.EdgeIndex == nil {
-				onlyInChain = false
+			if len(ref.MapKey.Edges) == 1 {
+				if ref.MapKey.EdgeIndex == nil || ref.MapKey.Value.Map != nil {
+					onlyInChain = false
+				}
 			}
 			// If a ref has an exact match on this key, just change the value
 			tmp1 := *ref.MapKey
@@ -485,7 +513,7 @@ func _set(g *d2graph.Graph, baseAST *d2ast.Map, key string, tag, value *string) 
 			}
 
 			foundMap := false
-			for _, ref := range edge.References {
+			for _, ref := range refs {
 				// TODO get the most nested one
 				if ref.MapKey.Value.Map != nil {
 					foundMap = true
@@ -1374,6 +1402,7 @@ func deleteEdge(g *d2graph.Graph, scope *d2ast.Map, mk *d2ast.Key, i int) {
 	}
 }
 
+// ensureNode ensures that `k` exists in `scope` if `excludedEdges` were removed
 func ensureNode(g *d2graph.Graph, excludedEdges []*d2ast.Edge, scopeObj *d2graph.Object, scope *d2ast.Map, cursor *d2ast.Key, k *d2ast.KeyPath, before bool) {
 	if k == nil || len(k.Path) == 0 {
 		return
@@ -1421,12 +1450,21 @@ func ensureNode(g *d2graph.Graph, excludedEdges []*d2ast.Edge, scopeObj *d2graph
 	}
 }
 
-func Rename(g *d2graph.Graph, key, newName string) (_ *d2graph.Graph, newKey string, err error) {
+func Rename(g *d2graph.Graph, boardPath []string, key, newName string) (_ *d2graph.Graph, newKey string, err error) {
 	defer xdefer.Errorf(&err, "failed to rename %#v to %#v", key, newName)
 
 	mk, err := d2parser.ParseMapKey(key)
 	if err != nil {
 		return nil, "", err
+	}
+
+	boardG := g
+
+	if len(boardPath) > 0 {
+		boardG = GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return nil, "", fmt.Errorf("board %v not found", boardPath)
+		}
 	}
 
 	if len(mk.Edges) > 0 && mk.EdgeKey == nil {
@@ -1445,12 +1483,12 @@ func Rename(g *d2graph.Graph, key, newName string) (_ *d2graph.Graph, newKey str
 			return nil, "", fmt.Errorf("cannot rename to reserved keyword: %#v", newName)
 		}
 		if mk.Key != nil {
-			obj, ok := g.Root.HasChild(d2graph.Key(mk.Key))
+			obj, ok := boardG.Root.HasChild(d2graph.Key(mk.Key))
 			if !ok {
 				return nil, "", fmt.Errorf("key does not exist")
 			}
 			// If attempt to name something "x", but "x" already exists, rename it "x 2" instead
-			generatedName, _, err := generateUniqueKey(g, newName, obj, nil)
+			generatedName, _, err := generateUniqueKey(boardG, newName, obj, nil)
 			if err == nil {
 				newName = generatedName
 			}
@@ -1459,8 +1497,7 @@ func Rename(g *d2graph.Graph, key, newName string) (_ *d2graph.Graph, newKey str
 		mk.Key.Path[len(mk.Key.Path)-1] = d2ast.MakeValueBox(d2ast.RawString(newName, true)).StringBox()
 	}
 
-	// TODO
-	g, err = move(g, nil, key, d2format.Format(mk), false)
+	g, err = move(g, boardPath, key, d2format.Format(mk), false)
 	return g, newName, err
 }
 
@@ -2188,7 +2225,7 @@ func ReparentIDDelta(g *d2graph.Graph, key, parentKey string) (string, error) {
 	return id, nil
 }
 
-func ReconnectEdgeIDDeltas(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (deltas map[string]string, err error) {
+func ReconnectEdgeIDDeltas(g *d2graph.Graph, boardPath []string, edgeKey string, srcKey, dstKey *string) (deltas map[string]string, err error) {
 	defer xdefer.Errorf(&err, "failed to get deltas for reconnect edge %#v", edgeKey)
 	deltas = make(map[string]string)
 	// Reconnection: nothing is created or destroyed, the edge just gets a new ID
@@ -2214,10 +2251,21 @@ func ReconnectEdgeIDDeltas(g *d2graph.Graph, edgeKey string, srcKey, dstKey *str
 	}
 
 	edgeTrimCommon(mk)
-	obj := g.Root
+
+	boardG := g
+
+	if len(boardPath) > 0 {
+		// When compiling a nested board, we can read from boardG but only write to baseBoardG
+		boardG = GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return nil, fmt.Errorf("board %v not found", boardPath)
+		}
+	}
+
+	obj := boardG.Root
 	if mk.Key != nil {
 		var ok bool
-		obj, ok = g.Root.HasChild(d2graph.Key(mk.Key))
+		obj, ok = boardG.Root.HasChild(d2graph.Key(mk.Key))
 		if !ok {
 			return nil, errors.New("edge not found")
 		}
@@ -2252,7 +2300,7 @@ func ReconnectEdgeIDDeltas(g *d2graph.Graph, edgeKey string, srcKey, dstKey *str
 		if err != nil {
 			return nil, err
 		}
-		src, ok = g.Root.HasChild(d2graph.Key(srcmk.Key))
+		src, ok = boardG.Root.HasChild(d2graph.Key(srcmk.Key))
 		if !ok {
 			return nil, errors.New("newSrc not found")
 		}
@@ -2263,7 +2311,7 @@ func ReconnectEdgeIDDeltas(g *d2graph.Graph, edgeKey string, srcKey, dstKey *str
 		if err != nil {
 			return nil, err
 		}
-		dst, ok = g.Root.HasChild(d2graph.Key(dstmk.Key))
+		dst, ok = boardG.Root.HasChild(d2graph.Key(dstmk.Key))
 		if !ok {
 			return nil, errors.New("newDst not found")
 		}
@@ -2276,7 +2324,7 @@ func ReconnectEdgeIDDeltas(g *d2graph.Graph, edgeKey string, srcKey, dstKey *str
 	newIndex := 0
 
 	// For the edge's own delta, it just needs to know how many edges came before it with the same src and dst
-	for _, otherEdge := range g.Edges {
+	for _, otherEdge := range boardG.Edges {
 		if otherEdge.Src == newSrc && otherEdge.Dst == newDst {
 			firstRef := otherEdge.References[0]
 			if firstRef.MapKey.Range.Start.Line <= line {
@@ -2827,7 +2875,7 @@ func DeleteIDDeltas(g *d2graph.Graph, key string) (deltas map[string]string, err
 	return deltas, nil
 }
 
-func RenameIDDeltas(g *d2graph.Graph, key, newName string) (deltas map[string]string, err error) {
+func RenameIDDeltas(g *d2graph.Graph, boardPath []string, key, newName string) (deltas map[string]string, err error) {
 	defer xdefer.Errorf(&err, "failed to get deltas for renaming of %#v to %#v", key, newName)
 	deltas = make(map[string]string)
 
@@ -2836,11 +2884,19 @@ func RenameIDDeltas(g *d2graph.Graph, key, newName string) (deltas map[string]st
 		return nil, err
 	}
 
+	boardG := g
+	if len(boardPath) > 0 {
+		boardG = GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return nil, fmt.Errorf("board %v not found", boardPath)
+		}
+	}
+
 	edgeTrimCommon(mk)
-	obj := g.Root
+	obj := boardG.Root
 	if mk.Key != nil {
 		var ok bool
-		obj, ok = g.Root.HasChild(d2graph.Key(mk.Key))
+		obj, ok = boardG.Root.HasChild(d2graph.Key(mk.Key))
 		if !ok {
 			return nil, nil
 		}
@@ -2878,7 +2934,7 @@ func RenameIDDeltas(g *d2graph.Graph, key, newName string) (deltas map[string]st
 	}
 
 	mk.Key.Path[len(mk.Key.Path)-1].Unbox().SetString(newName)
-	uniqueKeyStr, _, err := generateUniqueKey(g, strings.Join(d2graph.Key(mk.Key), "."), obj, nil)
+	uniqueKeyStr, _, err := generateUniqueKey(boardG, strings.Join(d2graph.Key(mk.Key), "."), obj, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -2997,6 +3053,15 @@ func getWriteableRefs(obj *d2graph.Object, writeableAST *d2ast.Map) (out []d2gra
 	for i, ref := range obj.References {
 		if ref.ScopeAST == writeableAST {
 			out = append(out, obj.References[i])
+		}
+	}
+	return
+}
+
+func getWriteableEdgeRefs(edge *d2graph.Edge, writeableAST *d2ast.Map) (out []d2graph.EdgeReference) {
+	for i, ref := range edge.References {
+		if ref.ScopeAST == writeableAST {
+			out = append(out, edge.References[i])
 		}
 	}
 	return

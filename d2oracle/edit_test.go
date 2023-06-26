@@ -1899,6 +1899,93 @@ scenarios: {
 }
 `,
 		},
+		{
+			name: "scenarios-edge-set",
+
+			text: `a -> b
+
+scenarios: {
+  x: {
+		c
+  }
+}
+`,
+			key:       `(a -> b)[0].style.opacity`,
+			value:     go2.Pointer(`0.2`),
+			boardPath: []string{"x"},
+
+			exp: `a -> b
+
+scenarios: {
+  x: {
+    c
+    (a -> b)[0].style.opacity: 0.2
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-existing-edge-set",
+
+			text: `a -> b
+
+scenarios: {
+  x: {
+    a -> b
+		c
+  }
+}
+`,
+			key:       `(a -> b)[1].style.opacity`,
+			value:     go2.Pointer(`0.2`),
+			boardPath: []string{"x"},
+
+			exp: `a -> b
+
+scenarios: {
+  x: {
+    a -> b: {style.opacity: 0.2}
+    c
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-arrowhead",
+
+			text: `a -> b: {
+  target-arrowhead.shape: triangle
+}
+x -> y
+
+scenarios: {
+  x: {
+    (a -> b)[0]: {
+       target-arrowhead.shape: circle
+    }
+		c -> d
+  }
+}
+`,
+			key:       `(a -> b)[0].target-arrowhead.shape`,
+			value:     go2.Pointer(`diamond`),
+			boardPath: []string{"x"},
+
+			exp: `a -> b: {
+  target-arrowhead.shape: triangle
+}
+x -> y
+
+scenarios: {
+  x: {
+    (a -> b)[0]: {
+      target-arrowhead.shape: diamond
+    }
+    c -> d
+  }
+}
+`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -1925,11 +2012,12 @@ func TestReconnectEdge(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name    string
-		text    string
-		edgeKey string
-		newSrc  string
-		newDst  string
+		name      string
+		boardPath []string
+		text      string
+		edgeKey   string
+		newSrc    string
+		newDst    string
 
 		expErr     string
 		exp        string
@@ -2196,6 +2284,96 @@ x
 			newDst:  "x",
 			expErr:  "newDst not found",
 		},
+		{
+			name: "layers-basic",
+			text: `a
+
+layers: {
+  x: {
+    b
+    c
+    a -> b
+  }
+}
+`,
+			boardPath: []string{"x"},
+			edgeKey:   `(a -> b)[0]`,
+			newDst:    "c",
+			exp: `a
+
+layers: {
+  x: {
+    b
+    c
+    a -> c
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-basic",
+			text: `a
+
+scenarios: {
+  x: {
+    b
+    c
+    a -> b
+  }
+}
+`,
+			boardPath: []string{"x"},
+			edgeKey:   `(a -> b)[0]`,
+			newDst:    "c",
+			exp: `a
+
+scenarios: {
+  x: {
+    b
+    c
+    a -> c
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-outer-scope",
+			text: `a
+
+scenarios: {
+  x: {
+    d -> b
+  }
+}
+`,
+			boardPath: []string{"x"},
+			edgeKey:   `(d -> b)[0]`,
+			newDst:    "a",
+			exp: `a
+
+scenarios: {
+  x: {
+    d -> a
+    b
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-chain",
+			text: `a -> b -> c
+
+scenarios: {
+  x: {
+    d
+  }
+}
+`,
+			boardPath: []string{"x"},
+			edgeKey:   `(a -> b)[0]`,
+			newDst:    "d",
+			expErr:    `operation would modify AST outside of given scope`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -2214,7 +2392,7 @@ x
 					if tc.newDst != "" {
 						newDst = &tc.newDst
 					}
-					return d2oracle.ReconnectEdge(g, tc.edgeKey, newSrc, newDst)
+					return d2oracle.ReconnectEdge(g, tc.boardPath, tc.edgeKey, newSrc, newDst)
 				},
 
 				exp:        tc.exp,
@@ -2230,7 +2408,8 @@ func TestRename(t *testing.T) {
 	t.Parallel()
 
 	testCases := []struct {
-		name string
+		name      string
+		boardPath []string
 
 		text    string
 		key     string
@@ -2646,6 +2825,95 @@ more.(ok.q.z -> p.k): "furbling, v.:"
 			newName: "near",
 			expErr:  `failed to rename "x.icon" to "near": cannot rename to reserved keyword: "near"`,
 		},
+		{
+			name: "layers-basic",
+
+			text: `x
+
+layers: {
+  y: {
+    a
+  }
+}
+`,
+			boardPath: []string{"y"},
+			key:       "a",
+			newName:   "b",
+
+			exp: `x
+
+layers: {
+  y: {
+    b
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-basic",
+
+			text: `x
+
+scenarios: {
+  y: {
+    a
+  }
+}
+`,
+			boardPath: []string{"y"},
+			key:       "a",
+			newName:   "b",
+
+			exp: `x
+
+scenarios: {
+  y: {
+    b
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-conflict",
+
+			text: `x
+
+scenarios: {
+  y: {
+    a
+  }
+}
+`,
+			boardPath: []string{"y"},
+			key:       "a",
+			newName:   "x",
+
+			exp: `x
+
+scenarios: {
+  y: {
+    x 2
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-scope-err",
+
+			text: `x
+
+scenarios: {
+  y: {
+    a
+  }
+}
+`,
+			boardPath: []string{"y"},
+			key:       "x",
+			newName:   "b",
+
+			expErr: `failed to rename "x" to "b": operation would modify AST outside of given scope`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -2658,7 +2926,7 @@ more.(ok.q.z -> p.k): "furbling, v.:"
 				testFunc: func(g *d2graph.Graph) (*d2graph.Graph, error) {
 					objectsBefore := len(g.Objects)
 					var err error
-					g, _, err = d2oracle.Rename(g, tc.key, tc.newName)
+					g, _, err = d2oracle.Rename(g, tc.boardPath, tc.key, tc.newName)
 					if err == nil {
 						objectsAfter := len(g.Objects)
 						if objectsBefore != objectsAfter {
@@ -6753,10 +7021,11 @@ func TestReconnectEdgeIDDeltas(t *testing.T) {
 	testCases := []struct {
 		name string
 
-		text   string
-		edge   string
-		newSrc string
-		newDst string
+		boardPath []string
+		text      string
+		edge      string
+		newSrc    string
+		newDst    string
 
 		exp    string
 		expErr string
@@ -6915,6 +7184,42 @@ b
   "(a -> c)[1]": "(a -> c)[0]"
 }`,
 		},
+		{
+			name: "scenarios-outer-scope",
+			text: `a
+
+scenarios: {
+  x: {
+    d -> b
+  }
+}
+`,
+			boardPath: []string{"x"},
+			edge:      `(d -> b)[0]`,
+			newDst:    "a",
+			exp: `{
+  "(d -> b)[0]": "(d -> a)[0]"
+}`,
+		},
+		{
+			name: "scenarios-second",
+			text: `g
+a -> b
+d
+
+scenarios: {
+  x: {
+    d -> b
+  }
+}
+`,
+			boardPath: []string{"x"},
+			edge:      `(d -> b)[0]`,
+			newSrc:    "a",
+			exp: `{
+  "(d -> b)[0]": "(a -> b)[1]"
+}`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -6937,7 +7242,7 @@ b
 				newDst = &tc.newDst
 			}
 
-			deltas, err := d2oracle.ReconnectEdgeIDDeltas(g, tc.edge, newSrc, newDst)
+			deltas, err := d2oracle.ReconnectEdgeIDDeltas(g, tc.boardPath, tc.edge, newSrc, newDst)
 			if tc.expErr != "" {
 				if err == nil {
 					t.Fatalf("expected error with: %q", tc.expErr)
@@ -7756,9 +8061,10 @@ func TestRenameIDDeltas(t *testing.T) {
 	testCases := []struct {
 		name string
 
-		text    string
-		key     string
-		newName string
+		boardPath []string
+		text      string
+		key       string
+		newName   string
 
 		exp    string
 		expErr string
@@ -7886,6 +8192,44 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
   "x.y.z.(w.e.p.l -> 1.2.3.4)[1]": "x.y.z.(w.e.p.l <-> 1.2.3.4)[1]"
 }`,
 		},
+		{
+			name: "layers-basic",
+
+			text: `x
+
+layers: {
+  y: {
+    a
+  }
+}
+`,
+			boardPath: []string{"y"},
+			key:       "a",
+			newName:   "b",
+
+			exp: `{
+  "a": "b"
+}`,
+		},
+		{
+			name: "scenarios-conflict",
+
+			text: `x
+
+scenarios: {
+  y: {
+    a
+  }
+}
+`,
+			boardPath: []string{"y"},
+			key:       "a",
+			newName:   "x",
+
+			exp: `{
+  "a": "x 2"
+}`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -7899,7 +8243,7 @@ x.y.z.w.e.p.l -> x.y.z.1.2.3.4
 				t.Fatal(err)
 			}
 
-			deltas, err := d2oracle.RenameIDDeltas(g, tc.key, tc.newName)
+			deltas, err := d2oracle.RenameIDDeltas(g, tc.boardPath, tc.key, tc.newName)
 			if tc.expErr != "" {
 				if err == nil {
 					t.Fatalf("expected error with: %q", tc.expErr)
