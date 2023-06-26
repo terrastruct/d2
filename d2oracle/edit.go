@@ -2225,7 +2225,7 @@ func ReparentIDDelta(g *d2graph.Graph, key, parentKey string) (string, error) {
 	return id, nil
 }
 
-func ReconnectEdgeIDDeltas(g *d2graph.Graph, edgeKey string, srcKey, dstKey *string) (deltas map[string]string, err error) {
+func ReconnectEdgeIDDeltas(g *d2graph.Graph, boardPath []string, edgeKey string, srcKey, dstKey *string) (deltas map[string]string, err error) {
 	defer xdefer.Errorf(&err, "failed to get deltas for reconnect edge %#v", edgeKey)
 	deltas = make(map[string]string)
 	// Reconnection: nothing is created or destroyed, the edge just gets a new ID
@@ -2251,10 +2251,21 @@ func ReconnectEdgeIDDeltas(g *d2graph.Graph, edgeKey string, srcKey, dstKey *str
 	}
 
 	edgeTrimCommon(mk)
-	obj := g.Root
+
+	boardG := g
+
+	if len(boardPath) > 0 {
+		// When compiling a nested board, we can read from boardG but only write to baseBoardG
+		boardG = GetBoardGraph(g, boardPath)
+		if boardG == nil {
+			return nil, fmt.Errorf("board %v not found", boardPath)
+		}
+	}
+
+	obj := boardG.Root
 	if mk.Key != nil {
 		var ok bool
-		obj, ok = g.Root.HasChild(d2graph.Key(mk.Key))
+		obj, ok = boardG.Root.HasChild(d2graph.Key(mk.Key))
 		if !ok {
 			return nil, errors.New("edge not found")
 		}
@@ -2289,7 +2300,7 @@ func ReconnectEdgeIDDeltas(g *d2graph.Graph, edgeKey string, srcKey, dstKey *str
 		if err != nil {
 			return nil, err
 		}
-		src, ok = g.Root.HasChild(d2graph.Key(srcmk.Key))
+		src, ok = boardG.Root.HasChild(d2graph.Key(srcmk.Key))
 		if !ok {
 			return nil, errors.New("newSrc not found")
 		}
@@ -2300,7 +2311,7 @@ func ReconnectEdgeIDDeltas(g *d2graph.Graph, edgeKey string, srcKey, dstKey *str
 		if err != nil {
 			return nil, err
 		}
-		dst, ok = g.Root.HasChild(d2graph.Key(dstmk.Key))
+		dst, ok = boardG.Root.HasChild(d2graph.Key(dstmk.Key))
 		if !ok {
 			return nil, errors.New("newDst not found")
 		}
@@ -2313,7 +2324,7 @@ func ReconnectEdgeIDDeltas(g *d2graph.Graph, edgeKey string, srcKey, dstKey *str
 	newIndex := 0
 
 	// For the edge's own delta, it just needs to know how many edges came before it with the same src and dst
-	for _, otherEdge := range g.Edges {
+	for _, otherEdge := range boardG.Edges {
 		if otherEdge.Src == newSrc && otherEdge.Dst == newDst {
 			firstRef := otherEdge.References[0]
 			if firstRef.MapKey.Range.Start.Line <= line {

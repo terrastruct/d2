@@ -7021,10 +7021,11 @@ func TestReconnectEdgeIDDeltas(t *testing.T) {
 	testCases := []struct {
 		name string
 
-		text   string
-		edge   string
-		newSrc string
-		newDst string
+		boardPath []string
+		text      string
+		edge      string
+		newSrc    string
+		newDst    string
 
 		exp    string
 		expErr string
@@ -7183,6 +7184,42 @@ b
   "(a -> c)[1]": "(a -> c)[0]"
 }`,
 		},
+		{
+			name: "scenarios-outer-scope",
+			text: `a
+
+scenarios: {
+  x: {
+    d -> b
+  }
+}
+`,
+			boardPath: []string{"x"},
+			edge:      `(d -> b)[0]`,
+			newDst:    "a",
+			exp: `{
+  "(d -> b)[0]": "(d -> a)[0]"
+}`,
+		},
+		{
+			name: "scenarios-second",
+			text: `g
+a -> b
+d
+
+scenarios: {
+  x: {
+    d -> b
+  }
+}
+`,
+			boardPath: []string{"x"},
+			edge:      `(d -> b)[0]`,
+			newSrc:    "a",
+			exp: `{
+  "(d -> b)[0]": "(a -> b)[1]"
+}`,
+		},
 	}
 
 	for _, tc := range testCases {
@@ -7205,7 +7242,7 @@ b
 				newDst = &tc.newDst
 			}
 
-			deltas, err := d2oracle.ReconnectEdgeIDDeltas(g, tc.edge, newSrc, newDst)
+			deltas, err := d2oracle.ReconnectEdgeIDDeltas(g, tc.boardPath, tc.edge, newSrc, newDst)
 			if tc.expErr != "" {
 				if err == nil {
 					t.Fatalf("expected error with: %q", tc.expErr)
