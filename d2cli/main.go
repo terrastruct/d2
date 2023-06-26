@@ -107,7 +107,10 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 	if err != nil {
 		return err
 	}
-	scaleFlag := ms.Opts.String("SCALE", "scale", "", "fit", "set a fixed render scale (e.g. 0.5 to halve rendered size). If none provided, SVG will fit to screen.")
+	scaleFlag, err := ms.Opts.Float64("SCALE", "scale", "", -1, "set a fixed render scale (e.g. 0.5 to halve rendered size). If none provided, SVG will fit to screen.")
+	if err != nil {
+		return err
+	}
 
 	fontRegularFlag := ms.Opts.String("D2_FONT_REGULAR", "font-regular", "", "", "path to .ttf file to use for the regular font. If none provided, Source Sans Pro Regular is used.")
 	fontItalicFlag := ms.Opts.String("D2_FONT_ITALIC", "font-italic", "", "", "path to .ttf file to use for the italic font. If none provided, Source Sans Pro Regular-Italic is used.")
@@ -234,12 +237,8 @@ func Run(ctx context.Context, ms *xmain.State) (err error) {
 		ms.Log.Debug.Printf("using dark theme %s (ID: %d)", match.Name, *darkThemeFlag)
 	}
 	var scale *float64
-	if scaleFlag != nil && *scaleFlag != "fit" {
-		f, err := strconv.ParseFloat(*scaleFlag, 64)
-		if err != nil || f <= 0. {
-			return xmain.UsageErrorf("-scale must a positive floating point number or \"fit\".")
-		}
-		scale = &f
+	if scaleFlag != nil && *scaleFlag > 0. {
+		scale = scaleFlag
 	}
 
 	plugin, err := d2plugin.FindPlugin(ctx, ps, *layoutFlag)
