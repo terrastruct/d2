@@ -892,85 +892,78 @@ func (padding shapePadding) mergePadding(position label.Position, width, height 
 }
 
 func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadding) shapePadding {
-	if obj.IsContainer() || obj.Icon != nil {
-		contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(width), float64(height))
-		shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[obj.Shape.Value]
-		s := shape.NewShape(shapeType, contentBox)
-
-		innerBox := s.GetInnerBox()
-		// base padding
-		padding.top = go2.Max(padding.top,
-			int(math.Ceil(innerBox.TopLeft.Y)),
-		)
-		padding.bottom = go2.Max(padding.bottom,
-			int(math.Ceil(height-(innerBox.TopLeft.Y+innerBox.Height))),
-		)
-		padding.left = go2.Max(padding.left,
-			int(math.Ceil(innerBox.TopLeft.X)),
-		)
-		padding.right = go2.Max(padding.right,
-			int(math.Ceil(width-(innerBox.TopLeft.X+innerBox.Width))),
-		)
-
-		// additional padding for label/icon
-		labelHeight := 0
-		if obj.HasLabel() {
-			labelHeight = obj.LabelDimensions.Height + 2*label.PADDING
-		}
-		iconHeight := 0
-		if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
-			iconHeight = d2target.GetIconSize(innerBox, string(label.InsideTopLeft)) + 2*label.PADDING
-		}
-
-		var extraTop, extraBottom int
-		if obj.LabelPosition != nil {
-			switch label.Position(*obj.LabelPosition) {
-			case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
-				extraTop = labelHeight
-			case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
-				extraBottom = labelHeight
-			}
-		}
-		if obj.IconPosition != nil {
-			switch label.Position(*obj.IconPosition) {
-			case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
-				extraTop = go2.Max(extraTop, iconHeight)
-			case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
-				extraBottom = go2.Max(extraBottom, iconHeight)
-			}
-		}
-		padding.top += extraTop
-		padding.bottom += extraBottom
-
-		// TODO find better solution to handle attempts to adjust diamond inner box with padding
-		if shapeType == shape.DIAMOND_TYPE {
-			padding.top += go2.Max(labelHeight/2, iconHeight/2)
-		}
+	// TODO don't need to check Icon?
+	if !obj.IsContainer() && obj.Icon == nil {
+		return padding
 	}
+	contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(width), float64(height))
+	shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[obj.Shape.Value]
+	s := shape.NewShape(shapeType, contentBox)
+	innerBox := s.GetInnerBox()
 
+	// If the shape inner box + label/icon height becomes greater than the default padding, we want to use that
+	//
+	// ┌OUTER───────────────────────────┬────────────────────────────────────────────┐
+	// │                                │                                            │
+	// │  ┌INNER──────── ┬ ─────────────│───────────────────────────────────────┐    │
+	// │  │              │Label Padding │                                       │    │
+	// │  │      ┌LABEL─ ┴ ─────────────│───────┐┬             ┌ICON── ┬ ────┐  │    │
+	// │  │      │                      │       ││             │       │     │  │    │
+	// │  │      │                      │       ││Label Height │   Icon│     │  │    │
+	// │  │      │                      │       ││             │ Height│     │  │    │
+	// │  │      └──────────────────────│───────┘┴             │       │     │  │    │
+	// │  │                             │                      └────── ┴ ────┘  │    │
+	// │  │                             │                                       │    │
+	// │  │                             ┴Default ELK Padding                    │    │
+	// │  │   ┌CHILD────────────────────────────────────────────────────────┐   │    │
+	// │  │   │                                                             │   │    │
+	// │  │   │                                                             │   │    │
+	// │  │   │                                                             │   │    │
+	// │  │   └─────────────────────────────────────────────────────────────┘   │    │
+	// │  │                                                                     │    │
+	// │  └─────────────────────────────────────────────────────────────────────┘    │
+	// │                                                                             │
+	// └─────────────────────────────────────────────────────────────────────────────┘
+
+	// base padding
+	innerTop := int(math.Ceil(innerBox.TopLeft.Y))
+	innerBottom := int(math.Ceil(height - (innerBox.TopLeft.Y + innerBox.Height)))
+	innerLeft := int(math.Ceil(innerBox.TopLeft.X))
+	innerRight := int(math.Ceil(width - (innerBox.TopLeft.X + innerBox.Width)))
+
+	// additional padding for label/icon
+	labelHeight := 0
 	if obj.HasLabel() {
-		position := label.Position(*obj.LabelPosition)
-		if !position.IsOutside() {
-			// Inside padding
-			padding = padding.mergePadding(
-				position,
-				obj.LabelDimensions.Width+2*label.PADDING,
-				obj.LabelDimensions.Height+2*label.PADDING,
-			)
+		labelHeight = obj.LabelDimensions.Height + 2*label.PADDING
+	}
+	iconHeight := 0
+	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
+		iconHeight = d2target.GetIconSize(innerBox, string(label.InsideTopLeft)) + 2*label.PADDING
+	}
+
+	var extraTop, extraBottom int
+	// TODO left right
+	if obj.LabelPosition != nil {
+		switch label.Position(*obj.LabelPosition) {
+		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
+			extraTop = labelHeight
+		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
+			extraBottom = labelHeight
+		}
+	}
+	if obj.IconPosition != nil {
+		switch label.Position(*obj.IconPosition) {
+		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
+			extraTop = go2.Max(extraTop, iconHeight)
+		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
+			extraBottom = go2.Max(extraBottom, iconHeight)
 		}
 	}
 
-	if obj.Icon != nil {
-		position := label.Position(*obj.IconPosition)
-		if !position.IsOutside() {
-			// Inside padding
-			padding = padding.mergePadding(
-				position,
-				d2target.MAX_ICON_SIZE+2*label.PADDING,
-				d2target.MAX_ICON_SIZE+2*label.PADDING,
-			)
-		}
-	}
+	padding.top = go2.Max(padding.top, innerTop+extraTop)
+	padding.bottom = go2.Max(padding.bottom, innerBottom+extraBottom)
+	padding.left = go2.Max(padding.left, innerLeft)
+	padding.right = go2.Max(padding.right, innerRight)
 
 	return padding
 }
