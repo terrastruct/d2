@@ -896,7 +896,52 @@ func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadd
 	if !obj.IsContainer() && obj.Icon == nil {
 		return padding
 	}
-	contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(width), float64(height))
+
+	// compute extra space padding for label/icon
+	var extraTop, extraBottom, extraLeft, extraRight int
+	if obj.HasLabel() && obj.LabelPosition != nil {
+		labelHeight := obj.LabelDimensions.Height + 2*label.PADDING
+		labelWidth := obj.LabelDimensions.Width + 2*label.PADDING
+		switch label.Position(*obj.LabelPosition) {
+		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
+			// TODO for corners we only add height, but need to confirm there is enough width
+			extraTop = labelHeight
+		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
+			extraBottom = labelHeight
+		case label.InsideMiddleLeft:
+			extraLeft = labelWidth
+		case label.InsideMiddleRight:
+			extraRight = labelWidth
+		}
+	}
+	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage && obj.IconPosition != nil {
+		iconSize := d2target.MAX_ICON_SIZE + 2*label.PADDING
+		switch label.Position(*obj.IconPosition) {
+		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
+			extraTop = go2.Max(extraTop, iconSize)
+		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
+			extraBottom = go2.Max(extraBottom, iconSize)
+		case label.InsideMiddleLeft:
+			extraLeft = go2.Max(extraLeft, iconSize)
+		case label.InsideMiddleRight:
+			extraRight = go2.Max(extraRight, iconSize)
+		}
+	}
+
+	maxChildWidth, maxChildHeight := math.Inf(-1), math.Inf(-1)
+	for _, c := range obj.ChildrenArray {
+		if c.Width > maxChildWidth {
+			maxChildWidth = c.Width
+		}
+		if c.Height > maxChildHeight {
+			maxChildHeight = c.Height
+		}
+	}
+	// We don't know exactly what the shape dimensions will be after layout, but for more accurate innerBox dimensions,
+	// we add the maxChildWidth and maxChildHeight with computed additions for the innerBox calculation
+	width += maxChildWidth + float64(extraLeft+extraRight)
+	height += maxChildHeight + float64(extraTop+extraBottom)
+	contentBox := geo.NewBox(geo.NewPoint(0, 0), width, height)
 	shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[obj.Shape.Value]
 	s := shape.NewShape(shapeType, contentBox)
 	innerBox := s.GetInnerBox()
@@ -925,43 +970,11 @@ func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadd
 	// │                                                                             │
 	// └─────────────────────────────────────────────────────────────────────────────┘
 
-	// base padding
+	// estimated shape innerBox padding
 	innerTop := int(math.Ceil(innerBox.TopLeft.Y))
 	innerBottom := int(math.Ceil(height - (innerBox.TopLeft.Y + innerBox.Height)))
 	innerLeft := int(math.Ceil(innerBox.TopLeft.X))
 	innerRight := int(math.Ceil(width - (innerBox.TopLeft.X + innerBox.Width)))
-
-	// additional padding for label/icon
-	var extraTop, extraBottom, extraLeft, extraRight int
-	if obj.HasLabel() && obj.LabelPosition != nil {
-		labelHeight := obj.LabelDimensions.Height + 2*label.PADDING
-		labelWidth := obj.LabelDimensions.Width + 2*label.PADDING
-		switch label.Position(*obj.LabelPosition) {
-		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
-			// TODO for corners we only add height, but need to confirm there is enough width
-			extraTop = labelHeight
-		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
-			extraBottom = labelHeight
-		case label.InsideMiddleLeft:
-			extraLeft = labelWidth
-		case label.InsideMiddleRight:
-			extraRight = labelWidth
-		}
-	}
-	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage && obj.IconPosition != nil {
-		iconSize := d2target.GetIconSize(innerBox, string(label.InsideTopLeft)) + 2*label.PADDING
-
-		switch label.Position(*obj.IconPosition) {
-		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
-			extraTop = go2.Max(extraTop, iconSize)
-		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
-			extraBottom = go2.Max(extraBottom, iconSize)
-		case label.InsideMiddleLeft:
-			extraLeft = go2.Max(extraLeft, iconSize)
-		case label.InsideMiddleRight:
-			extraRight = go2.Max(extraRight, iconSize)
-		}
-	}
 
 	padding.top = go2.Max(padding.top, innerTop+extraTop)
 	padding.bottom = go2.Max(padding.bottom, innerBottom+extraBottom)
