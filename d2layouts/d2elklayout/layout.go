@@ -1009,8 +1009,8 @@ func adjustDimensions(obj *d2graph.Object) (width, height float64) {
 			}
 		}
 
-		// reserve extra if there's also an icon
-		if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
+		// special handling
+		if obj.HasOutsideBottomLabel() || obj.Icon != nil {
 			height += float64(obj.LabelDimensions.Height) + label.PADDING
 		}
 	}
@@ -1082,6 +1082,11 @@ func cleanupAdjustment(obj *d2graph.Object) {
 		}
 	}
 
+	// special handling to start/end connections below label
+	if obj.HasOutsideBottomLabel() {
+		obj.Height -= float64(obj.LabelDimensions.Height) + label.PADDING
+	}
+
 	// remove the extra width/height we added for 3d/multiple after all objects/connections are placed
 	// and shift the shapes down accordingly
 	dx, dy := obj.GetModifierElementAdjustments()
@@ -1096,17 +1101,18 @@ func cleanupAdjustment(obj *d2graph.Object) {
 }
 
 func positionLabelsIcons(obj *d2graph.Object) {
-	if obj.Icon != nil && obj.Attributes.IconPosition == nil {
+	if obj.Icon != nil && obj.IconPosition == nil {
 		if len(obj.ChildrenArray) > 0 {
 			obj.IconPosition = go2.Pointer(string(label.InsideTopLeft))
 			if obj.LabelPosition == nil {
 				obj.LabelPosition = go2.Pointer(string(label.InsideTopRight))
+				return
 			}
 		} else {
 			obj.IconPosition = go2.Pointer(string(label.InsideMiddleCenter))
 		}
 	}
-	if obj.HasLabel() && obj.Attributes.LabelPosition == nil {
+	if obj.HasLabel() && obj.LabelPosition == nil {
 		if len(obj.ChildrenArray) > 0 {
 			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 		} else if obj.HasOutsideBottomLabel() {
