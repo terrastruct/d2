@@ -292,6 +292,47 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		elkNodes[obj] = n
 	})
 
+	for _, obj := range g.Objects {
+		if !obj.IsContainer() {
+			continue
+		}
+
+		var hasTop, hasBottom bool
+
+		for _, child := range obj.ChildrenArray {
+			if child.Shape.Value == d2target.ShapeImage || child.IconPosition == nil {
+				continue
+			}
+
+			position := label.Position(*child.IconPosition)
+
+			switch position {
+			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+				hasTop = true
+			case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+				hasBottom = true
+			}
+		}
+
+		if hasTop || hasBottom {
+			padding, err := parsePadding(elkNodes[obj].LayoutOptions.Padding)
+			if err != nil {
+				// TODO add validation to plugin option
+				panic(err)
+			}
+
+			if hasTop {
+				padding.top = go2.Max(padding.top, d2target.MAX_ICON_SIZE+2*label.PADDING)
+			}
+			if hasBottom {
+				padding.bottom = go2.Max(padding.bottom, d2target.MAX_ICON_SIZE+2*label.PADDING)
+			}
+
+			elkNodes[obj].LayoutOptions.Padding = padding.String()
+		}
+
+	}
+
 	for _, edge := range g.Edges {
 		e := &ELKEdge{
 			ID:      edge.AbsID(),
