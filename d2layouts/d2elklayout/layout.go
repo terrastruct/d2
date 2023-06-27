@@ -893,33 +893,59 @@ func (padding shapePadding) mergePadding(position label.Position, width, height 
 
 func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadding) shapePadding {
 	if obj.IsContainer() || obj.Icon != nil {
-		labelHeight := 0
-		if obj.HasLabel() {
-			labelHeight = obj.LabelDimensions.Height + 2*label.PADDING
-		}
-
 		contentBox := geo.NewBox(geo.NewPoint(0, 0), float64(width), float64(height))
 		shapeType := d2target.DSL_SHAPE_TO_SHAPE_TYPE[obj.Shape.Value]
 		s := shape.NewShape(shapeType, contentBox)
 
 		innerBox := s.GetInnerBox()
-		paddingTop := innerBox.TopLeft.Y
-		paddingBottom := height - (innerBox.TopLeft.Y + innerBox.Height)
-		paddingLeft := innerBox.TopLeft.X
-		paddingRight := width - (innerBox.TopLeft.X + innerBox.Width)
+		// base padding
+		padding.top = go2.Max(padding.top,
+			int(math.Ceil(innerBox.TopLeft.Y)),
+		)
+		padding.bottom = go2.Max(padding.bottom,
+			int(math.Ceil(height-(innerBox.TopLeft.Y+innerBox.Height))),
+		)
+		padding.left = go2.Max(padding.left,
+			int(math.Ceil(innerBox.TopLeft.X)),
+		)
+		padding.right = go2.Max(padding.right,
+			int(math.Ceil(width-(innerBox.TopLeft.X+innerBox.Width))),
+		)
 
+		// additional padding for label/icon
+		labelHeight := 0
+		if obj.HasLabel() {
+			labelHeight = obj.LabelDimensions.Height + 2*label.PADDING
+		}
 		iconHeight := 0
 		if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
-			iconHeight = d2target.GetIconSize(s.GetInnerBox(), string(label.InsideTopLeft)) + label.PADDING*2
+			iconHeight = d2target.GetIconSize(innerBox, string(label.InsideTopLeft)) + 2*label.PADDING
 		}
 
-		paddingTop += float64(go2.Max(labelHeight, iconHeight))
+		var extraTop, extraBottom int
+		if obj.LabelPosition != nil {
+			switch label.Position(*obj.LabelPosition) {
+			case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
+				extraTop = labelHeight
+			case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
+				extraBottom = labelHeight
+			}
+		}
+		if obj.IconPosition != nil {
+			switch label.Position(*obj.IconPosition) {
+			case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
+				extraTop = go2.Max(extraTop, iconHeight)
+			case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
+				extraBottom = go2.Max(extraBottom, iconHeight)
+			}
+		}
+		padding.top += extraTop
+		padding.bottom += extraBottom
 
-		padding.top = go2.Max(padding.top, int(math.Ceil(paddingTop)))
-		padding.bottom = go2.Max(padding.bottom, int(math.Ceil(paddingBottom)))
-
-		padding.left = go2.Max(padding.left, int(math.Ceil(paddingLeft)))
-		padding.right = go2.Max(padding.right, int(math.Ceil(paddingRight)))
+		// TODO find better solution to handle attempts to adjust diamond inner box with padding
+		if shapeType == shape.DIAMOND_TYPE {
+			padding.top += go2.Max(labelHeight/2, iconHeight/2)
+		}
 	}
 
 	if obj.HasLabel() {
