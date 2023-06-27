@@ -190,11 +190,7 @@ func testCompileFields(t *testing.T) {
 				m, err := compile(t, `pq: pq
 pq: null`)
 				assert.Success(t, err)
-				assertQuery(t, m, 1, 0, nil, "")
-				// null doesn't delete pq from *Map so that for language tooling
-				// we maintain the references.
-				// Instead d2compiler will ensure it doesn't get rendered.
-				assertQuery(t, m, 0, 0, nil, "pq")
+				assertQuery(t, m, 0, 0, nil, "")
 			},
 		},
 	}
