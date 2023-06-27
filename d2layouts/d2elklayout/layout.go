@@ -932,38 +932,41 @@ func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadd
 	innerRight := int(math.Ceil(width - (innerBox.TopLeft.X + innerBox.Width)))
 
 	// additional padding for label/icon
-	labelHeight := 0
-	if obj.HasLabel() {
-		labelHeight = obj.LabelDimensions.Height + 2*label.PADDING
-	}
-	iconHeight := 0
-	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
-		iconHeight = d2target.GetIconSize(innerBox, string(label.InsideTopLeft)) + 2*label.PADDING
-	}
-
-	var extraTop, extraBottom int
-	// TODO left right
-	if obj.LabelPosition != nil {
+	var extraTop, extraBottom, extraLeft, extraRight int
+	if obj.HasLabel() && obj.LabelPosition != nil {
+		labelHeight := obj.LabelDimensions.Height + 2*label.PADDING
+		labelWidth := obj.LabelDimensions.Width + 2*label.PADDING
 		switch label.Position(*obj.LabelPosition) {
 		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
+			// TODO for corners we only add height, but need to confirm there is enough width
 			extraTop = labelHeight
 		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
 			extraBottom = labelHeight
+		case label.InsideMiddleLeft:
+			extraLeft = labelWidth
+		case label.InsideMiddleRight:
+			extraRight = labelWidth
 		}
 	}
-	if obj.IconPosition != nil {
+	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage && obj.IconPosition != nil {
+		iconSize := d2target.GetIconSize(innerBox, string(label.InsideTopLeft)) + 2*label.PADDING
+
 		switch label.Position(*obj.IconPosition) {
 		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
-			extraTop = go2.Max(extraTop, iconHeight)
+			extraTop = go2.Max(extraTop, iconSize)
 		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
-			extraBottom = go2.Max(extraBottom, iconHeight)
+			extraBottom = go2.Max(extraBottom, iconSize)
+		case label.InsideMiddleLeft:
+			extraLeft = go2.Max(extraLeft, iconSize)
+		case label.InsideMiddleRight:
+			extraRight = go2.Max(extraRight, iconSize)
 		}
 	}
 
 	padding.top = go2.Max(padding.top, innerTop+extraTop)
 	padding.bottom = go2.Max(padding.bottom, innerBottom+extraBottom)
-	padding.left = go2.Max(padding.left, innerLeft)
-	padding.right = go2.Max(padding.right, innerRight)
+	padding.left = go2.Max(padding.left, innerLeft+extraLeft)
+	padding.right = go2.Max(padding.right, innerRight+extraRight)
 
 	return padding
 }
