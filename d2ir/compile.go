@@ -150,6 +150,10 @@ func (c *compiler) compileKey(refctx *RefContext) {
 }
 
 func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext) {
+	if refctx.Key != nil && len(refctx.Key.Edges) == 0 && refctx.Key.Value.Null != nil {
+		dst.DeleteField(kp.IDA()...)
+		return
+	}
 	f, err := dst.EnsureField(kp, refctx)
 	if err != nil {
 		c.err.Errors = append(c.err.Errors, err.(d2ast.Error))
@@ -353,6 +357,11 @@ func (c *compiler) compileEdges(refctx *RefContext) {
 
 	eida := NewEdgeIDs(refctx.Key)
 	for i, eid := range eida {
+		if refctx.Key != nil && refctx.Key.Value.Null != nil {
+			refctx.ScopeMap.DeleteEdge(eid)
+			continue
+		}
+
 		refctx = refctx.Copy()
 		refctx.Edge = refctx.Key.Edges[i]
 

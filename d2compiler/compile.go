@@ -340,9 +340,6 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 func (c *compiler) compileLabel(attrs *d2graph.Attributes, f d2ir.Node) {
 	scalar := f.Primary().Value
 	switch scalar := scalar.(type) {
-	case *d2ast.Null:
-		// TODO: Delete instead.
-		attrs.Label.Value = scalar.ScalarString()
 	case *d2ast.BlockString:
 		if strings.TrimSpace(scalar.ScalarString()) == "" {
 			c.errorf(f.LastPrimaryKey(), "block string cannot be empty")

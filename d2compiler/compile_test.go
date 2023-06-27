@@ -2743,6 +2743,7 @@ func TestCompile2(t *testing.T) {
 
 	t.Run("boards", testBoards)
 	t.Run("seqdiagrams", testSeqDiagrams)
+	t.Run("nulls", testNulls)
 }
 
 func testBoards(t *testing.T) {
@@ -2906,6 +2907,237 @@ Office chatter: {
   awkward small talk.icebreaker attempt.alice -> awkward small talk.unfortunate outcome.bob
 }
 `, "d2/testdata/d2compiler/TestCompile2/seqdiagrams/errs/sequence_diagram_edge_between_edge_groups.d2:16:3: edges between edge groups are not allowed")
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
+}
+
+func testNulls(t *testing.T) {
+	t.Parallel()
+
+	t.Run("basic", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "shape",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+a
+a: null
+`, "")
+					assert.Equal(t, 0, len(g.Objects))
+				},
+			},
+			{
+				name: "edge",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+a -> b
+(a -> b)[0]: null
+`, "")
+					assert.Equal(t, 2, len(g.Objects))
+					assert.Equal(t, 0, len(g.Edges))
+				},
+			},
+			{
+				name: "attribute",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+a.style.opacity: 0.2
+a.style.opacity: null
+			`, "")
+					assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Attributes.Style.Opacity)
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
+
+	t.Run("reappear", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "shape",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+a
+a: null
+a
+`, "")
+					assert.Equal(t, 1, len(g.Objects))
+				},
+			},
+			{
+				name: "edge",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+a -> b
+(a -> b)[0]: null
+a -> b
+`, "")
+					assert.Equal(t, 2, len(g.Objects))
+					assert.Equal(t, 1, len(g.Edges))
+				},
+			},
+			{
+				name: "attribute-reset",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+a.style.opacity: 0.2
+a: null
+a
+`, "")
+					assert.Equal(t, 1, len(g.Objects))
+					assert.Equal(t, (*d2graph.Scalar)(nil), g.Objects[0].Attributes.Style.Opacity)
+				},
+			},
+			{
+				name: "edge-reset",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+a -> b
+a: null
+a
+`, "")
+					assert.Equal(t, 2, len(g.Objects))
+					assert.Equal(t, 0, len(g.Edges))
+				},
+			},
+			{
+				name: "children-reset",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+a.b.c
+a.b: null
+a.b
+`, "")
+					assert.Equal(t, 2, len(g.Objects))
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
+
+	t.Run("implicit", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "delete-connection",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+x -> y
+y: null
+`, "")
+					assert.Equal(t, 1, len(g.Objects))
+					assert.Equal(t, 0, len(g.Edges))
+				},
+			},
+			{
+				name: "no-delete-connection",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+y: null
+x -> y
+`, "")
+					assert.Equal(t, 2, len(g.Objects))
+					assert.Equal(t, 1, len(g.Edges))
+				},
+			},
+			{
+				name: "delete-children",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+x.y.z
+a.b.c
+
+x: null
+a.b: null
+`, "")
+					assert.Equal(t, 1, len(g.Objects))
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
+
+	t.Run("multiboard", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "scenario",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+x
+
+scenarios: {
+  a: {
+    x: null
+  }
+}
+`, "")
+					assert.Equal(t, 0, len(g.Scenarios[0].Objects))
 				},
 			},
 		}
