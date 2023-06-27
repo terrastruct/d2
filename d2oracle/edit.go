@@ -835,10 +835,10 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 	}
 
 	if len(mk.Edges) == 1 {
-		obj := g.Root
+		obj := boardG.Root
 		if mk.Key != nil {
 			var ok bool
-			obj, ok = g.Root.HasChild(d2graph.Key(mk.Key))
+			obj, ok = boardG.Root.HasChild(d2graph.Key(mk.Key))
 			if !ok {
 				return g, nil
 			}
@@ -848,34 +848,53 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 			return g, nil
 		}
 
-		ref := e.References[0]
-		var refEdges []*d2ast.Edge
-		for _, ref := range e.References {
-			refEdges = append(refEdges, ref.Edge)
-		}
-		ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, ref.MapKey.Edges[ref.MapKeyEdgeIndex].Src, true)
-		ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, ref.MapKey.Edges[ref.MapKeyEdgeIndex].Dst, false)
-
-		for i := len(e.References) - 1; i >= 0; i-- {
-			ref := e.References[i]
-			deleteEdge(g, ref.Scope, ref.MapKey, ref.MapKeyEdgeIndex)
+		refs := e.References
+		if len(boardPath) > 0 {
+			refs := getWriteableEdgeRefs(e, baseAST)
+			if len(refs) != len(e.References) {
+				mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
+			}
 		}
 
-		edges, ok := obj.FindEdges(mk)
-		if ok {
-			for _, e2 := range edges {
-				if e2.Index <= e.Index {
-					continue
-				}
-				for i := len(e2.References) - 1; i >= 0; i-- {
-					ref := e2.References[i]
-					if ref.MapKey.EdgeIndex != nil {
-						*ref.MapKey.EdgeIndex.Int--
+		if _, ok := mk.Value.Unbox().(*d2ast.Null); !ok {
+			ref := refs[0]
+			var refEdges []*d2ast.Edge
+			for _, ref := range refs {
+				refEdges = append(refEdges, ref.Edge)
+			}
+			ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, ref.MapKey.Edges[ref.MapKeyEdgeIndex].Src, true)
+			ensureNode(g, refEdges, ref.ScopeObj, ref.Scope, ref.MapKey, ref.MapKey.Edges[ref.MapKeyEdgeIndex].Dst, false)
+
+			for i := len(e.References) - 1; i >= 0; i-- {
+				ref := e.References[i]
+				deleteEdge(g, ref.Scope, ref.MapKey, ref.MapKeyEdgeIndex)
+			}
+
+			edges, ok := obj.FindEdges(mk)
+			if ok {
+				for _, e2 := range edges {
+					if e2.Index <= e.Index {
+						continue
+					}
+					for i := len(e2.References) - 1; i >= 0; i-- {
+						ref := e2.References[i]
+						if ref.MapKey.EdgeIndex != nil {
+							*ref.MapKey.EdgeIndex.Int--
+						}
 					}
 				}
 			}
+		} else {
+			appendUniqueMapKey(baseAST, mk)
 		}
-		return recompile(g.AST)
+		if len(boardPath) > 0 {
+			replaced := ReplaceBoardNode(g.AST, baseAST, boardPath)
+			if !replaced {
+				return nil, fmt.Errorf("board %v AST not found", boardPath)
+			}
+			return recompile(g.AST)
+		}
+		return recompile(boardG.AST)
 	}
 
 	prevG, _ := recompile(boardG.AST)
@@ -891,20 +910,23 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 	}
 
 	if len(boardPath) > 0 {
-		// TODO null
 		writeableRefs := getWriteableRefs(obj, baseAST)
 		if len(writeableRefs) != len(obj.References) {
-			return nil, OutsideScopeError{}
+			mk.Value = d2ast.MakeValueBox(&d2ast.Null{})
 		}
 	}
 
-	boardG, err = deleteObject(boardG, baseAST, mk.Key, obj)
-	if err != nil {
-		return nil, err
-	}
+	if _, ok := mk.Value.Unbox().(*d2ast.Null); !ok {
+		boardG, err = deleteObject(boardG, baseAST, mk.Key, obj)
+		if err != nil {
+			return nil, err
+		}
 
-	if err := updateNear(prevG, boardG, &key, nil, false); err != nil {
-		return nil, err
+		if err := updateNear(prevG, boardG, &key, nil, false); err != nil {
+			return nil, err
+		}
+	} else {
+		appendUniqueMapKey(baseAST, mk)
 	}
 
 	if len(boardPath) > 0 {
