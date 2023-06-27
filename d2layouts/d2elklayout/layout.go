@@ -264,17 +264,11 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			}
 		}
 
-		padding, err := parsePadding(opts.Padding)
-		if err != nil {
-			// TODO
-			panic(err)
-		}
-
-		if len(obj.ChildrenArray) > 0 && opts.Padding == DefaultOpts.Padding {
+		if obj.IsContainer() {
+			padding := parsePadding(opts.Padding)
 			padding = adjustPadding(obj, width, height, padding)
+			n.LayoutOptions.Padding = padding.String()
 		}
-
-		n.LayoutOptions.Padding = padding.String()
 
 		if obj.HasLabel() {
 			n.Labels = append(n.Labels, &ELKLabel{
@@ -292,45 +286,39 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		elkNodes[obj] = n
 	})
 
+	// adjust parent padding for children with outside positioned icons
 	for _, obj := range g.Objects {
 		if !obj.IsContainer() {
 			continue
 		}
 
 		var hasTop, hasBottom bool
-
 		for _, child := range obj.ChildrenArray {
 			if child.Shape.Value == d2target.ShapeImage || child.IconPosition == nil {
 				continue
 			}
 
-			position := label.Position(*child.IconPosition)
-
-			switch position {
+			switch label.Position(*child.IconPosition) {
 			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
 				hasTop = true
 			case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
 				hasBottom = true
 			}
+			if hasTop && hasBottom {
+				break
+			}
 		}
 
 		if hasTop || hasBottom {
-			padding, err := parsePadding(elkNodes[obj].LayoutOptions.Padding)
-			if err != nil {
-				// TODO add validation to plugin option
-				panic(err)
-			}
-
+			padding := parsePadding(elkNodes[obj].LayoutOptions.Padding)
 			if hasTop {
 				padding.top = go2.Max(padding.top, d2target.MAX_ICON_SIZE+2*label.PADDING)
 			}
 			if hasBottom {
 				padding.bottom = go2.Max(padding.bottom, d2target.MAX_ICON_SIZE+2*label.PADDING)
 			}
-
 			elkNodes[obj].LayoutOptions.Padding = padding.String()
 		}
-
 	}
 
 	for _, edge := range g.Edges {
@@ -801,99 +789,55 @@ type shapePadding struct {
 }
 
 // parse out values from elk padding string. e.g. "[top=50,left=50,bottom=50,right=50]"
-func parsePadding(in string) (padding shapePadding, err error) {
-	r := regexp.MustCompile(`top=(\d+),left=(\d+),bottom=(\d+),right=(\d+)`)
-	submatches := r.FindStringSubmatch(in)
+func parsePadding(in string) shapePadding {
+	reTop := regexp.MustCompile(`top=(\d+)`)
+	reLeft := regexp.MustCompile(`left=(\d+)`)
+	reBottom := regexp.MustCompile(`bottom=(\d+)`)
+	reRight := regexp.MustCompile(`right=(\d+)`)
 
-	padding = shapePadding{top: 50, left: 50, right: 50, bottom: 50}
+	padding := shapePadding{}
 
-	var i int64
-	i, err = strconv.ParseInt(submatches[1], 10, 64)
-	if err != nil {
-		return
-	}
-	padding.top = int(i)
-
-	i, err = strconv.ParseInt(submatches[2], 10, 64)
-	if err != nil {
-		return
-	}
-	padding.left = int(i)
-
-	i, err = strconv.ParseInt(submatches[3], 10, 64)
-	padding.bottom = int(i)
-	if err != nil {
-		return
+	submatches := reTop.FindStringSubmatch(in)
+	if len(submatches) == 2 {
+		i, err := strconv.ParseInt(submatches[1], 10, 64)
+		if err == nil {
+			padding.top = int(i)
+		}
 	}
 
-	i, err = strconv.ParseInt(submatches[4], 10, 64)
-	if err != nil {
-		return
+	submatches = reLeft.FindStringSubmatch(in)
+	if len(submatches) == 2 {
+		i, err := strconv.ParseInt(submatches[1], 10, 64)
+		if err == nil {
+			padding.left = int(i)
+		}
 	}
-	padding.right = int(i)
 
-	return padding, nil
-}
+	submatches = reBottom.FindStringSubmatch(in)
+	if len(submatches) == 2 {
+		i, err := strconv.ParseInt(submatches[1], 10, 64)
+		if err == nil {
+			padding.bottom = int(i)
+		}
+	}
 
-func (padding shapePadding) String() string {
-	return fmt.Sprintf("[top=%d,left=%d,bottom=%d,right=%d]", padding.top, padding.left, padding.bottom, padding.right)
-}
-
-func (padding shapePadding) mergePadding(position label.Position, width, height int) shapePadding {
-	switch position {
-	case label.InsideTopLeft:
-		// TODO: consider only adding Y padding for labels in corners, and just ensure the total width fits
-		if height > padding.top {
-			padding.top = height
-		}
-		if width > padding.left {
-			padding.left = width
-		}
-	case label.InsideTopCenter:
-		if height > padding.top {
-			padding.top = height
-		}
-	case label.InsideTopRight:
-		if height > padding.top {
-			padding.top = height
-		}
-		if width > padding.right {
-			padding.right = width
-		}
-	case label.InsideBottomLeft:
-		if height > padding.bottom {
-			padding.bottom = height
-		}
-		if width > padding.left {
-			padding.left = width
-		}
-	case label.InsideBottomCenter:
-		if height > padding.bottom {
-			padding.bottom = height
-		}
-	case label.InsideBottomRight:
-		if height > padding.bottom {
-			padding.bottom = height
-		}
-		if width > padding.right {
-			padding.right = width
-		}
-	case label.InsideMiddleLeft:
-		if width > padding.left {
-			padding.left = width
-		}
-	case label.InsideMiddleRight:
-		if width > padding.right {
-			padding.right = width
+	submatches = reRight.FindStringSubmatch(in)
+	i, err := strconv.ParseInt(submatches[1], 10, 64)
+	if len(submatches) == 2 {
+		if err == nil {
+			padding.right = int(i)
 		}
 	}
 
 	return padding
 }
 
+func (padding shapePadding) String() string {
+	return fmt.Sprintf("[top=%d,left=%d,bottom=%d,right=%d]", padding.top, padding.left, padding.bottom, padding.right)
+}
+
 func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadding) shapePadding {
-	// TODO don't need to check Icon?
-	if !obj.IsContainer() && obj.Icon == nil {
+	if !obj.IsContainer() {
 		return padding
 	}
 
@@ -904,7 +848,7 @@ func adjustPadding(obj *d2graph.Object, width, height float64, padding shapePadd
 		labelWidth := obj.LabelDimensions.Width + 2*label.PADDING
 		switch label.Position(*obj.LabelPosition) {
 		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
-			// TODO for corners we only add height, but need to confirm there is enough width
+			// Note: for corners we only add height
 			extraTop = labelHeight
 		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
 			extraBottom = labelHeight
@@ -999,13 +943,12 @@ func adjustDimensions(obj *d2graph.Object) (width, height float64) {
 
 		if position.IsShapePosition() {
 			switch position {
-			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
-				label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-				// TODO labelWidth+2*label.PADDING
-				width = go2.Max(width, float64(obj.LabelDimensions.Width))
 			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
 				label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
 				width += float64(obj.LabelDimensions.Width) + label.PADDING
+			default:
+				// TODO labelWidth+2*label.PADDING
+				width = go2.Max(width, float64(obj.LabelDimensions.Width))
 			}
 		}
 
@@ -1023,12 +966,11 @@ func adjustDimensions(obj *d2graph.Object) (width, height float64) {
 
 		if position.IsShapePosition() {
 			switch position {
-			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
-				label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-				width = go2.Max(width, d2target.MAX_ICON_SIZE+2*label.PADDING)
 			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
 				label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
 				width += d2target.MAX_ICON_SIZE + label.PADDING
+			default:
+				width = go2.Max(width, d2target.MAX_ICON_SIZE+2*label.PADDING)
 			}
 		}
 	}
