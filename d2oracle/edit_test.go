@@ -6930,7 +6930,44 @@ scenarios: {
 			key:       `a`,
 			boardPath: []string{"x"},
 
-			expErr: `failed to delete "a": operation would modify AST outside of given scope`,
+			exp: `a
+
+scenarios: {
+  x: {
+    a: null
+
+    b
+    c
+  }
+}
+`,
+		},
+		{
+			name: "scenarios-edge-inherited",
+
+			text: `a -> b
+
+scenarios: {
+  x: {
+    b
+    c
+  }
+}
+`,
+			key:       `(a -> b)[0]`,
+			boardPath: []string{"x"},
+
+			exp: `a -> b
+
+scenarios: {
+  x: {
+    (a -> b)[0]: null
+
+    b
+    c
+  }
+}
+`,
 		},
 	}
 
