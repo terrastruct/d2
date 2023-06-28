@@ -3,7 +3,7 @@
     "name": "",
     "isFolderOnly": false,
     "ast": {
-      "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,0:0:0-9:0:53",
+      "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,0:0:0-10:0:54",
       "nodes": [
         {
           "map_key": {
@@ -30,7 +30,7 @@
         },
         {
           "map_key": {
-            "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,2:0:3-8:1:52",
+            "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,2:0:3-9:1:53",
             "key": {
               "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,2:0:3-2:9:12",
               "path": [
@@ -50,11 +50,11 @@
             "primary": {},
             "value": {
               "map": {
-                "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,2:11:14-8:1:52",
+                "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,2:11:14-9:1:53",
                 "nodes": [
                   {
                     "map_key": {
-                      "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,3:2:18-7:3:50",
+                      "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,3:2:18-8:3:51",
                       "key": {
                         "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,3:2:18-3:3:19",
                         "path": [
@@ -74,17 +74,44 @@
                       "primary": {},
                       "value": {
                         "map": {
-                          "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,3:5:21-7:3:50",
+                          "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,3:5:21-8:3:51",
                           "nodes": [
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,4:4:27-4:5:28",
+                                "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,4:4:27-4:11:34",
                                 "key": {
                                   "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,4:4:27-4:5:28",
                                   "path": [
                                     {
                                       "unquoted_string": {
                                         "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,4:4:27-4:5:28",
+                                        "value": [
+                                          {
+                                            "string": "a",
+                                            "raw_string": "a"
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ]
+                                },
+                                "primary": {},
+                                "value": {
+                                  "null": {
+                                    "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,4:7:30-4:11:34"
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "map_key": {
+                                "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,6:4:40-6:5:41",
+                                "key": {
+                                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,6:4:40-6:5:41",
+                                  "path": [
+                                    {
+                                      "unquoted_string": {
+                                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,6:4:40-6:5:41",
                                         "value": [
                                           {
                                             "string": "b",
@@ -101,13 +128,13 @@
                             },
                             {
                               "map_key": {
-                                "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,5:4:33-5:5:34",
+                                "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,7:4:46-7:5:47",
                                 "key": {
-                                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,5:4:33-5:5:34",
+                                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,7:4:46-7:5:47",
                                   "path": [
                                     {
                                       "unquoted_string": {
-                                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,5:4:33-5:5:34",
+                                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,7:4:46-7:5:47",
                                         "value": [
                                           {
                                             "string": "c",
@@ -120,33 +147,6 @@
                                 },
                                 "primary": {},
                                 "value": {}
-                              }
-                            },
-                            {
-                              "map_key": {
-                                "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,6:4:39-6:11:46",
-                                "key": {
-                                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,6:4:39-6:5:40",
-                                  "path": [
-                                    {
-                                      "unquoted_string": {
-                                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,6:4:39-6:5:40",
-                                        "value": [
-                                          {
-                                            "string": "a",
-                                            "raw_string": "a"
-                                          }
-                                        ]
-                                      }
-                                    }
-                                  ]
-                                },
-                                "primary": {},
-                                "value": {
-                                  "null": {
-                                    "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,6:7:42-6:11:46"
-                                  }
-                                }
                               }
                             }
                           ]
@@ -316,11 +316,11 @@
             "references": [
               {
                 "key": {
-                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,4:4:27-4:5:28",
+                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,6:4:40-6:5:41",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,4:4:27-4:5:28",
+                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,6:4:40-6:5:41",
                         "value": [
                           {
                             "string": "b",
@@ -361,11 +361,11 @@
             "references": [
               {
                 "key": {
-                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,5:4:33-5:5:34",
+                  "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,7:4:46-7:5:47",
                   "path": [
                     {
                       "unquoted_string": {
-                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,5:4:33-5:5:34",
+                        "range": "d2/testdata/d2oracle/TestDelete/scenarios-inherited.d2,7:4:46-7:5:47",
                         "value": [
                           {
                             "string": "c",

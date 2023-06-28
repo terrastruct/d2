@@ -790,11 +790,17 @@ func appendMapKey(m *d2ast.Map, mk *d2ast.Key) {
 		}
 	}
 	if !m.IsFileMap() && m.Range.OneLine() {
+		println("\033[1;31m--- DEBUG:", "=======================", "\033[m")
 		// This doesn't require any shenanigans to prevent consuming sibling spacing because
 		// d2format will use the mapkey's range to determine whether to insert extra newlines.
 		// See TestCreate/make_scope_multiline_spacing_2
 		m.Range.End.Line++
 	}
+}
+
+func prependMapKey(m *d2ast.Map, mk *d2ast.Key) {
+	appendMapKey(m, mk)
+	m.Nodes = append([]d2ast.MapNodeBox{m.Nodes[len(m.Nodes)-1]}, m.Nodes[:len(m.Nodes)-1]...)
 }
 
 func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph, err error) {
@@ -885,7 +891,7 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 				}
 			}
 		} else {
-			appendUniqueMapKey(baseAST, mk)
+			prependMapKey(baseAST, mk)
 		}
 		if len(boardPath) > 0 {
 			replaced := ReplaceBoardNode(g.AST, baseAST, boardPath)
@@ -926,7 +932,7 @@ func Delete(g *d2graph.Graph, boardPath []string, key string) (_ *d2graph.Graph,
 			return nil, err
 		}
 	} else {
-		appendUniqueMapKey(baseAST, mk)
+		prependMapKey(baseAST, mk)
 	}
 
 	if len(boardPath) > 0 {
