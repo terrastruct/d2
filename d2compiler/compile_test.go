@@ -2694,6 +2694,25 @@ object: {
 `,
 			expErr: `d2/testdata/d2compiler/TestCompile/reserved-composite.d2:1:1: reserved field shape does not accept composite`,
 		},
+		{
+			name: "portal",
+
+			text: `x: {
+  link: layers.y {
+    portal: true
+  }
+}
+
+layers: {
+  y: {
+    a
+  }
+}
+`,
+			assertions: func(t *testing.T, g *d2graph.Graph) {
+				tassert.Equal(t, "true", g.Objects[0].Attributes.Portal.Value)
+			},
+		},
 	}
 
 	for _, tc := range testCases {
