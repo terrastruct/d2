@@ -790,7 +790,6 @@ func appendMapKey(m *d2ast.Map, mk *d2ast.Key) {
 		}
 	}
 	if !m.IsFileMap() && m.Range.OneLine() {
-		println("\033[1;31m--- DEBUG:", "=======================", "\033[m")
 		// This doesn't require any shenanigans to prevent consuming sibling spacing because
 		// d2format will use the mapkey's range to determine whether to insert extra newlines.
 		// See TestCreate/make_scope_multiline_spacing_2
