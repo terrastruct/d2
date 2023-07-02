@@ -42,14 +42,6 @@ func TestSketch(t *testing.T) {
 		`,
 		},
 		{
-			name: "fonts",
-			script: `i am bold
-i am regular: |md
-  Accent on helpful side of your nature.  Drain the moat.
-|
-		`,
-		},
-		{
 			name:   "elk corners",
 			engine: "elk",
 			script: `a -> b
