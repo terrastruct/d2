@@ -420,36 +420,6 @@ func (c *compiler) compilePosition(attrs *d2graph.Attributes, f *d2ir.Field) {
 	}
 }
 
-func (c *compiler) compilePortal(attrs *d2graph.Attributes, f *d2ir.Field) {
-	if f.Map() != nil {
-		for _, f := range f.Map().Fields {
-			if f.Name == "portal" {
-				if f.Primary() == nil {
-					c.errorf(f.LastPrimaryKey(), `invalid "portal" field`)
-				} else {
-					scalar := f.Primary().Value
-					b, err := strconv.ParseBool(strings.ToLower(scalar.ScalarString()))
-					if err != nil {
-						c.errorf(f.LastPrimaryKey(), `invalid "portal" field`)
-					}
-					if b {
-						attrs.Portal = &d2graph.Scalar{}
-						attrs.Portal.Value = scalar.ScalarString()
-						attrs.Portal.MapKey = f.LastPrimaryKey()
-					}
-				}
-			} else {
-				if f.LastPrimaryKey() != nil {
-					c.errorf(f.LastPrimaryKey(), `unexpected field %s`, f.Name)
-				}
-			}
-		}
-		if len(f.Map().Edges) > 0 {
-			c.errorf(f.LastPrimaryKey(), "unexpected edges in map")
-		}
-	}
-}
-
 func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 	if f.Primary() == nil {
 		if f.Composite != nil {
@@ -472,8 +442,6 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 				}
 			case "label", "icon":
 				c.compilePosition(attrs, f)
-			case "link":
-				c.compilePortal(attrs, f)
 			default:
 				c.errorf(f.LastPrimaryKey(), "reserved field %v does not accept composite", f.Name)
 			}
@@ -566,7 +534,6 @@ func (c *compiler) compileReserved(attrs *d2graph.Attributes, f *d2ir.Field) {
 		attrs.Link = &d2graph.Scalar{}
 		attrs.Link.Value = scalar.ScalarString()
 		attrs.Link.MapKey = f.LastPrimaryKey()
-		c.compilePortal(attrs, f)
 	case "direction":
 		dirs := []string{"up", "down", "right", "left"}
 		if !go2.Contains(dirs, scalar.ScalarString()) {

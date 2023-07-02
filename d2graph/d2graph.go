@@ -147,8 +147,6 @@ type Attributes struct {
 	LabelPosition *Scalar `json:"labelPosition,omitempty"`
 	IconPosition  *Scalar `json:"iconPosition,omitempty"`
 
-	Portal *Scalar `json:"portal,omitempty"`
-
 	// These names are attached to the rendered elements in SVG
 	// so that users can target them however they like outside of D2
 	Classes []string `json:"classes,omitempty"`
@@ -1668,7 +1666,6 @@ var CompositeReservedKeywords = map[string]struct{}{
 	"constraint": {},
 	"label":      {},
 	"icon":       {},
-	"link":       {},
 }
 
 // StyleKeywords are reserved keywords which cannot exist outside of the "style" keyword
