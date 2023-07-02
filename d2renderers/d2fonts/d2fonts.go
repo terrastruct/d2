@@ -120,8 +120,8 @@ var sourceCodeProSemiboldBase64 string
 //go:embed encoded/SourceCodePro-Italic.txt
 var sourceCodeProItalicBase64 string
 
-//go:embed encoded/ArchitectsDaughter-Regular.txt
-var architectsDaughterRegularBase64 string
+//go:embed encoded/FuzzyBubbles-Regular.txt
+var fuzzyBubblesRegularBase64 string
 
 //go:embed encoded/FuzzyBubbles-Bold.txt
 var fuzzyBubblesBoldBase64 string
@@ -169,12 +169,12 @@ func init() {
 		{
 			Family: HandDrawn,
 			Style:  FONT_STYLE_REGULAR,
-		}: architectsDaughterRegularBase64,
+		}: fuzzyBubblesRegularBase64,
 		{
 			Family: HandDrawn,
 			Style:  FONT_STYLE_ITALIC,
 			// This font has no italic, so just reuse regular
-		}: architectsDaughterRegularBase64,
+		}: fuzzyBubblesRegularBase64,
 		{
 			Family: HandDrawn,
 			Style:  FONT_STYLE_BOLD,
@@ -263,7 +263,7 @@ func init() {
 		Style:  FONT_STYLE_ITALIC,
 	}] = b
 
-	b, err = fontFacesFS.ReadFile("ttf/ArchitectsDaughter-Regular.ttf")
+	b, err = fontFacesFS.ReadFile("ttf/FuzzyBubbles-Regular.ttf")
 	if err != nil {
 		panic(err)
 	}

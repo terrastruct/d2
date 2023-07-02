@@ -11,6 +11,7 @@
 - Error message when `shape` is given a composite [#1415](https://github.com/terrastruct/d2/pull/1415)
 - Improved rendering and text measurement for code shapes [#1425](https://github.com/terrastruct/d2/pull/1425)
 - The autoformatter moves board declarations to the bottom of its scope [#1424](https://github.com/terrastruct/d2/pull/1424)
+- All font styles in sketch mode use a consistent font-family [#1463](https://github.com/terrastruct/d2/pull/1463)
 
 #### Bugfixes ⛑️
 
