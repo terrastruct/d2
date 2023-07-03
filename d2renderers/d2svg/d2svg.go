@@ -936,7 +936,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 		} else {
 			drawClass(writer, diagramHash, targetShape)
 		}
-		addAppendixItems(writer, targetShape)
+		addAppendixItems(writer, targetShape, s)
 		fmt.Fprint(writer, `</g>`)
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
@@ -950,7 +950,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 		} else {
 			drawTable(writer, diagramHash, targetShape)
 		}
-		addAppendixItems(writer, targetShape)
+		addAppendixItems(writer, targetShape, s)
 		fmt.Fprint(writer, `</g>`)
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
@@ -1341,28 +1341,62 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 		}
 	}
 
-	addAppendixItems(writer, targetShape)
+	addAppendixItems(writer, targetShape, s)
 
 	fmt.Fprint(writer, closingTag)
 	return labelMask, nil
 }
 
-func addAppendixItems(writer io.Writer, shape d2target.Shape) {
-	rightPadForTooltip := 0
-	if shape.Tooltip != "" {
-		rightPadForTooltip = 2 * appendixIconRadius
-		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
-			shape.Pos.X+shape.Width-appendixIconRadius,
-			shape.Pos.Y-appendixIconRadius,
-			TooltipIcon,
+func addAppendixItems(writer io.Writer, targetShape d2target.Shape, s shape.Shape) {
+	var p1, p2 *geo.Point
+	if targetShape.Tooltip != "" || targetShape.Link != "" {
+		corner := geo.NewPoint(float64(targetShape.Pos.X+targetShape.Width), float64(targetShape.Pos.Y))
+		center := geo.NewPoint(
+			float64(targetShape.Pos.X)+float64(targetShape.Width)/2.,
+			float64(targetShape.Pos.Y)+float64(targetShape.Height)/2.,
 		)
-		fmt.Fprintf(writer, `<title>%s</title>`, svg.EscapeText(shape.Tooltip))
+		v1 := center.VectorTo(corner)
+		p1 = shape.TraceToShapeBorder(s, corner, corner.AddVector(v1))
+		if targetShape.Tooltip != "" && targetShape.Link != "" {
+			//.    \\                 corner
+			//.    │  \\
+			//.    │     \\p2
+			//.    │        \\p1
+			//.    │           \\
+			//.    │              \\
+			//.    └─────────────────\\
+			//. center
+			// we use the offset corner to find a 2nd point on the shape to estimate the tangent
+			// we use the tangent to find p2 on the shape at the correct distance from p1 (according to estimated tangent)
+			offset := geo.Vector{-2 * appendixIconRadius, 0}
+			offsetCorner := corner.AddVector(offset)
+			offsetP1 := shape.TraceToShapeBorder(s, offsetCorner, offsetCorner.AddVector(v1))
+			tangent := p1.VectorTo(offsetP1).Unit().Multiply(2 * appendixIconRadius)
+			// 2nd point traced to shape from p1 shifted by icon diameter along tangent
+			p2 = shape.TraceToShapeBorder(s, p1.AddVector(tangent), corner.AddVector(tangent))
+		}
 	}
 
-	if shape.Link != "" {
+	if targetShape.Tooltip != "" {
+		x := int(math.Ceil(p1.X))
+		y := int(math.Ceil(p1.Y))
+
 		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
-			shape.Pos.X+shape.Width-appendixIconRadius-rightPadForTooltip,
-			shape.Pos.Y-appendixIconRadius,
+			x-appendixIconRadius,
+			y-appendixIconRadius,
+			TooltipIcon,
+		)
+		fmt.Fprintf(writer, `<title>%s</title>`, svg.EscapeText(targetShape.Tooltip))
+	}
+	if targetShape.Link != "" {
+		if p2 == nil {
+			p2 = p1
+		}
+		x := int(math.Ceil(p2.X))
+		y := int(math.Ceil(p2.Y))
+		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
+			x-appendixIconRadius,
+			y-appendixIconRadius,
 			LinkIcon,
 		)
 	}
