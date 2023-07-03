@@ -1,0 +1,141 @@
+linked: {
+  rectangle.shape: rectangle
+  square.shape: square
+  page.shape: page
+  parallelogram.shape: parallelogram
+  document.shape: document
+  cylinder.shape: cylinder
+  queue.shape: queue
+  package.shape: package
+  step.shape: step
+  callout.shape: callout
+  stored_data.shape: stored_data
+  person.shape: person
+  diamond.shape: diamond
+  oval.shape: oval
+  circle.shape: circle
+  hexagon.shape: hexagon
+  cloud.shape: cloud
+
+  rectangle -> square -> page
+  parallelogram -> document -> cylinder
+  queue -> package -> step
+  callout -> stored_data -> person
+  diamond -> oval -> circle
+  hexagon -> cloud
+
+  rectangle.class: linked
+  square.class: linked
+  page.class: linked
+  parallelogram.class: linked
+  document.class: linked
+  cylinder.class: linked
+  queue.class: linked
+  package.class: linked
+  step.class: linked
+  callout.class: linked
+  stored_data.class: linked
+  person.class: linked
+  diamond.class: linked
+  oval.class: linked
+  circle.class: linked
+  hexagon.class: linked
+  cloud.class: linked
+}
+
+tooltipped: {
+  rectangle.shape: rectangle
+  square.shape: square
+  page.shape: page
+  parallelogram.shape: parallelogram
+  document.shape: document
+  cylinder.shape: cylinder
+  queue.shape: queue
+  package.shape: package
+  step.shape: step
+  callout.shape: callout
+  stored_data.shape: stored_data
+  person.shape: person
+  diamond.shape: diamond
+  oval.shape: oval
+  circle.shape: circle
+  hexagon.shape: hexagon
+  cloud.shape: cloud
+
+  rectangle -> square -> page
+  parallelogram -> document -> cylinder
+  queue -> package -> step
+  callout -> stored_data -> person
+  diamond -> oval -> circle
+  hexagon -> cloud
+
+  rectangle.class: tooltipped
+  square.class: tooltipped
+  page.class: tooltipped
+  parallelogram.class: tooltipped
+  document.class: tooltipped
+  cylinder.class: tooltipped
+  queue.class: tooltipped
+  package.class: tooltipped
+  step.class: tooltipped
+  callout.class: tooltipped
+  stored_data.class: tooltipped
+  person.class: tooltipped
+  diamond.class: tooltipped
+  oval.class: tooltipped
+  circle.class: tooltipped
+  hexagon.class: tooltipped
+  cloud.class: tooltipped
+}
+
+both: {
+  rectangle.shape: rectangle
+  square.shape: square
+  page.shape: page
+  parallelogram.shape: parallelogram
+  document.shape: document
+  cylinder.shape: cylinder
+  queue.shape: queue
+  package.shape: package
+  step.shape: step
+  callout.shape: callout
+  stored_data.shape: stored_data
+  person.shape: person
+  diamond.shape: diamond
+  oval.shape: oval
+  circle.shape: circle
+  hexagon.shape: hexagon
+  cloud.shape: cloud
+
+  rectangle -> square -> page
+  parallelogram -> document -> cylinder
+  queue -> package -> step
+  callout -> stored_data -> person
+  diamond -> oval -> circle
+  hexagon -> cloud
+
+  rectangle.class: [linked; tooltipped]
+  square.class: [linked; tooltipped]
+  page.class: [linked; tooltipped]
+  parallelogram.class: [linked; tooltipped]
+  document.class: [linked; tooltipped]
+  cylinder.class: [linked; tooltipped]
+  queue.class: [linked; tooltipped]
+  package.class: [linked; tooltipped]
+  step.class: [linked; tooltipped]
+  callout.class: [linked; tooltipped]
+  stored_data.class: [linked; tooltipped]
+  person.class: [linked; tooltipped]
+  diamond.class: [linked; tooltipped]
+  oval.class: [linked; tooltipped]
+  circle.class: [linked; tooltipped]
+  hexagon.class: [linked; tooltipped]
+  cloud.class: [linked; tooltipped]
+}
+
+linked -> tooltipped -> both
+
+classes: {
+  linked.link: example.com
+  tooltipped.tooltip: example
+}
