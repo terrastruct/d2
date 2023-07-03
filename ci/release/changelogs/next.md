@@ -13,6 +13,7 @@
 - The autoformatter moves board declarations to the bottom of its scope [#1424](https://github.com/terrastruct/d2/pull/1424)
 - All font styles in sketch mode use a consistent font-family [#1463](https://github.com/terrastruct/d2/pull/1463)
 - Tooltip and link icons are now positioned on shape border [#1466](https://github.com/terrastruct/d2/pull/1466)
+- Tooltip and link icons are always rendered over shapes [#1467](https://github.com/terrastruct/d2/pull/1467)
 
 #### Bugfixes ⛑️
 
