@@ -1876,17 +1876,17 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			case "paper":
 				patternDefs += paper
 			}
-			fmt.Fprint(upperBuf, fmt.Sprintf(`
+			fmt.Fprintf(upperBuf, `
 .%s-overlay {
 	fill: url(#%s);
 	mix-blend-mode: multiply;
-}`, pattern, pattern))
+}`, pattern, pattern)
 		}
 	}
 	if patternDefs != "" {
 		fmt.Fprint(upperBuf, `]]></style>`)
 		fmt.Fprint(upperBuf, "<defs>")
-		fmt.Fprintf(upperBuf, patternDefs)
+		fmt.Fprint(upperBuf, patternDefs)
 		fmt.Fprint(upperBuf, "</defs>")
 	}
 
@@ -2135,11 +2135,11 @@ func singleThemeRulesets(diagramHash string, themeID int64) (rulesets string, er
 	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N7, lc, blendMode(lc))
 
 	if theme.IsDark() {
-		out += fmt.Sprintf(".light-code{display: none}")
-		out += fmt.Sprintf(".dark-code{display: block}")
+		out += ".light-code{display: none}"
+		out += ".dark-code{display: block}"
 	} else {
-		out += fmt.Sprintf(".light-code{display: block}")
-		out += fmt.Sprintf(".dark-code{display: none}")
+		out += ".light-code{display: block}"
+		out += ".dark-code{display: none}"
 	}
 
 	return out, nil
