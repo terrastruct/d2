@@ -1355,25 +1355,19 @@ func addAppendixItems(writer io.Writer, targetShape d2target.Shape, s shape.Shap
 			float64(targetShape.Pos.X)+float64(targetShape.Width)/2.,
 			float64(targetShape.Pos.Y)+float64(targetShape.Height)/2.,
 		)
+		switch s.GetType() {
+		case shape.STEP_TYPE, shape.HEXAGON_TYPE:
+			// trace straight left for these
+			center.Y = float64(targetShape.Pos.Y)
+		case shape.PACKAGE_TYPE:
+			// trace straight down
+			center.X = float64(targetShape.Pos.X + targetShape.Width)
+		}
 		v1 := center.VectorTo(corner)
 		p1 = shape.TraceToShapeBorder(s, corner, corner.AddVector(v1))
 		if targetShape.Tooltip != "" && targetShape.Link != "" {
-			//.    \\                 corner
-			//.    │  \\
-			//.    │     \\p2
-			//.    │        \\p1
-			//.    │           \\
-			//.    │              \\
-			//.    └─────────────────\\
-			//. center
-			// we use the offset corner to find a 2nd point on the shape to estimate the tangent
-			// we use the tangent to find p2 on the shape at the correct distance from p1 (according to estimated tangent)
 			offset := geo.Vector{-2 * appendixIconRadius, 0}
-			offsetCorner := corner.AddVector(offset)
-			offsetP1 := shape.TraceToShapeBorder(s, offsetCorner, offsetCorner.AddVector(v1))
-			tangent := p1.VectorTo(offsetP1).Unit().Multiply(2 * appendixIconRadius)
-			// 2nd point traced to shape from p1 shifted by icon diameter along tangent
-			p2 = shape.TraceToShapeBorder(s, p1.AddVector(tangent), corner.AddVector(tangent))
+			p2 = p1.AddVector(offset)
 		}
 	}
 
