@@ -1350,24 +1350,38 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 func addAppendixItems(writer io.Writer, targetShape d2target.Shape, s shape.Shape) {
 	var p1, p2 *geo.Point
 	if targetShape.Tooltip != "" || targetShape.Link != "" {
+		bothIcons := targetShape.Tooltip != "" && targetShape.Link != ""
 		corner := geo.NewPoint(float64(targetShape.Pos.X+targetShape.Width), float64(targetShape.Pos.Y))
 		center := geo.NewPoint(
 			float64(targetShape.Pos.X)+float64(targetShape.Width)/2.,
 			float64(targetShape.Pos.Y)+float64(targetShape.Height)/2.,
 		)
+		offset := geo.Vector{-2 * appendixIconRadius, 0}
+		var leftOnShape bool
 		switch s.GetType() {
-		case shape.STEP_TYPE, shape.HEXAGON_TYPE:
+		case shape.STEP_TYPE, shape.HEXAGON_TYPE, shape.QUEUE_TYPE, shape.PAGE_TYPE:
 			// trace straight left for these
 			center.Y = float64(targetShape.Pos.Y)
 		case shape.PACKAGE_TYPE:
 			// trace straight down
 			center.X = float64(targetShape.Pos.X + targetShape.Width)
+		case shape.CIRCLE_TYPE, shape.OVAL_TYPE, shape.DIAMOND_TYPE,
+			shape.PERSON_TYPE, shape.CLOUD_TYPE, shape.CYLINDER_TYPE:
+			if bothIcons {
+				leftOnShape = true
+				corner = corner.AddVector(offset)
+			}
 		}
 		v1 := center.VectorTo(corner)
 		p1 = shape.TraceToShapeBorder(s, corner, corner.AddVector(v1))
-		if targetShape.Tooltip != "" && targetShape.Link != "" {
-			offset := geo.Vector{-2 * appendixIconRadius, 0}
-			p2 = p1.AddVector(offset)
+		if bothIcons {
+			if leftOnShape {
+				// these shapes should have p1 on shape border
+				p2 = p1.AddVector(offset.Reverse())
+				p1, p2 = p2, p1
+			} else {
+				p2 = p1.AddVector(offset)
+			}
 		}
 	}
 
