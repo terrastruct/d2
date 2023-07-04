@@ -1,0 +1,15 @@
+classes: {
+  GREEN: {style.stroke: "#2b9464"; style.fill: "#2b9464"}
+  RED: {style.stroke: "#d14d28"; style.fill: "#d14d28"}
+  YELLOW: {style.stroke: "#f5df65"; style.fill: "#f5df65"}
+  BLUE: {style.stroke: "#59c8df"; style.fill: "#59c8df"}
+}
+
+grid-rows: 2
+grid-columns: 2
+grid-gap: 0
+
+1: "link" {class: RED; link: "example.com"}
+2: "none" {class: YELLOW}
+3: "link, tooltip" {class: BLUE; link: "example.com"; tooltip: tooltip}
+4: "none" {class: GREEN}

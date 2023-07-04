@@ -870,7 +870,7 @@ func render3DHexagon(targetShape d2target.Shape) string {
 	return borderMask + mainShapeRendered + renderedSides + renderedBorder
 }
 
-func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, err error) {
+func drawShape(writer, appendixWriter io.Writer, diagramHash string, targetShape d2target.Shape, sketchRunner *d2sketch.Runner) (labelMask string, err error) {
 	closingTag := "</g>"
 	if targetShape.Link != "" {
 
@@ -936,7 +936,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 		} else {
 			drawClass(writer, diagramHash, targetShape)
 		}
-		addAppendixItems(writer, targetShape, s)
+		addAppendixItems(appendixWriter, targetShape, s)
 		fmt.Fprint(writer, `</g>`)
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
@@ -950,7 +950,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 		} else {
 			drawTable(writer, diagramHash, targetShape)
 		}
-		addAppendixItems(writer, targetShape, s)
+		addAppendixItems(appendixWriter, targetShape, s)
 		fmt.Fprint(writer, `</g>`)
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
@@ -1341,7 +1341,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 		}
 	}
 
-	addAppendixItems(writer, targetShape, s)
+	addAppendixItems(appendixWriter, targetShape, s)
 
 	fmt.Fprint(writer, closingTag)
 	return labelMask, nil
@@ -1746,6 +1746,8 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 
 	sortObjects(allObjects)
 
+	appendixItemBuf := &bytes.Buffer{}
+
 	var labelMasks []string
 	markers := map[string]struct{}{}
 	for _, obj := range allObjects {
@@ -1758,7 +1760,7 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 				labelMasks = append(labelMasks, labelMask)
 			}
 		} else if s, is := obj.(d2target.Shape); is {
-			labelMask, err := drawShape(buf, diagramHash, s, sketchRunner)
+			labelMask, err := drawShape(buf, appendixItemBuf, diagramHash, s, sketchRunner)
 			if err != nil {
 				return nil, err
 			} else if labelMask != "" {
@@ -1768,6 +1770,8 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			return nil, fmt.Errorf("unknown object of type %T", obj)
 		}
 	}
+	// add all appendix items afterwards so they are always on top
+	fmt.Fprint(buf, appendixItemBuf)
 
 	// Note: we always want this since we reference it on connections even if there end up being no masked labels
 	left, top, w, h := dimensions(diagram, pad)

@@ -1037,6 +1037,7 @@ cf many required: {
 		loadFromFile(t, "grid_oom"),
 		loadFromFile(t, "cylinder_grid_label"),
 		loadFromFile(t, "grid_with_latex"),
+		loadFromFile(t, "icons_on_top"),
 	}
 
 	runa(t, tcs)
