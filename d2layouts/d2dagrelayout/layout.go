@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"math"
 	"regexp"
+	"sort"
 	"strings"
 
 	"cdr.dev/slog"
@@ -162,7 +163,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		id := obj.AbsID()
 		idToObj[id] = obj
 
-		width, height := adjustDimensions(obj)
+		// width, height := adjustDimensions(obj)
+		width, height := obj.Width, obj.Height
 
 		idToWidth[id] = width
 		idToHeight[id] = height
@@ -172,58 +174,68 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 			loadScript += generateAddParentLine(id, obj.Parent.AbsID())
 		}
 	}
-	for _, obj := range g.Objects {
-		if !obj.IsContainer() {
-			continue
-		}
-		id := obj.AbsID()
-		// add phantom children to adjust container dimensions
-		phantomID := id + "___phantom"
-		widthDelta := int(math.Ceil(idToWidth[id] - obj.Width))
-		height := int(math.Ceil(idToHeight[id]))
-		// when a container has nodes with no connections, the layout will be in a row
-		// adding a node will add NodeSep width in addition to the node's width
-		// to add a specific amount of space we need to subtract this from the desired width
-		// if we add the phantom node at rank 0 it should be at the far right and top
-		xSpace := rootAttrs.NodeSep
-		ySpace := rootAttrs.ranksep
+	// for _, obj := range g.Objects {
+	// 	if !obj.IsContainer() {
+	// 		continue
+	// 	}
+	// 	id := obj.AbsID()
+	// 	// add phantom children to adjust container dimensions
+	// 	// phantomID := id + "___phantom"
+	// 	// widthDelta := int(math.Ceil(idToWidth[id] - obj.Width))
+	// 	height := int(math.Ceil(idToHeight[id]))
+	// 	// when a container has nodes with no connections, the layout will be in a row
+	// 	// adding a node will add NodeSep width in addition to the node's width
+	// 	// to add a specific amount of space we need to subtract this from the desired width
+	// 	// if we add the phantom node at rank 0 it should be at the far right and top
+	// 	// xSpace := rootAttrs.NodeSep
+	// 	ySpace := rootAttrs.ranksep
 
-		maxChildHeight := math.Inf(-1)
-		for _, c := range obj.ChildrenArray {
-			if c.Height > maxChildHeight {
-				maxChildHeight = c.Height
-			}
-		}
+	// 	if false {
 
-		// adjust for children with outside positioned icons
-		var hasTop, hasBottom bool
-		for _, child := range obj.ChildrenArray {
-			if child.Shape.Value == d2target.ShapeImage || child.IconPosition == nil {
-				continue
-			}
+	// 		maxChildHeight := math.Inf(-1)
+	// 		for _, c := range obj.ChildrenArray {
+	// 			if c.Height > maxChildHeight {
+	// 				maxChildHeight = c.Height
+	// 			}
 
-			switch label.Position(*child.IconPosition) {
-			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
-				hasTop = true
-			case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-				hasBottom = true
-			}
-			if hasTop && hasBottom {
-				break
-			}
-		}
-		if hasTop || hasBottom {
-			// TODO ranksep is already accounting for maxLabelHeight
-			maxChildHeight += d2target.MAX_ICON_SIZE + 2*label.PADDING
-		}
+	// 			if c.Shape.Value == d2target.ShapeImage || c.IconPosition == nil {
+	// 				continue
+	// 			}
+	// 			h := c.Height
+	// 			switch label.Position(*c.IconPosition) {
+	// 			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
+	// 				label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+	// 				h += d2target.MAX_ICON_SIZE + 2*label.PADDING
+	// 			}
+	// 			if h > maxChildHeight {
+	// 				maxChildHeight = h
+	// 			}
+	// 		}
 
-		height = go2.Max(height, ySpace+int(maxChildHeight))
+	// 		// adjust for children with outside positioned icons
+	// 		var hasTop, hasBottom bool
+	// 		for _, child := range obj.ChildrenArray {
+	// 			if child.Shape.Value == d2target.ShapeImage || child.IconPosition == nil {
+	// 				continue
+	// 			}
 
-		// TODO after layout remove extra height and shift downwards
-
-		loadScript += generateAddNodeLine(phantomID, widthDelta-xSpace, height-ySpace)
-		loadScript += generateAddParentLine(phantomID, id)
-	}
+	// 			switch label.Position(*child.IconPosition) {
+	// 			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+	// 				hasTop = true
+	// 			case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+	// 				hasBottom = true
+	// 			}
+	// 			if hasTop && hasBottom {
+	// 				break
+	// 			}
+	// 		}
+	// 		if hasTop || hasBottom {
+	// 			// TODO ranksep is already accounting for maxLabelHeight
+	// 			// maxChildHeight += d2target.MAX_ICON_SIZE + 2*label.PADDING
+	// 		}
+	// 		height = go2.Max(height, ySpace+int(maxChildHeight))
+	// 	}
+	// }
 
 	for _, edge := range g.Edges {
 		src, dst := getEdgeEndpoints(g, edge)
@@ -288,6 +300,33 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		obj.Height = math.Ceil(dn.Height)
 	}
 
+	ranks, objectRanks := getRanks(g, isHorizontal)
+	if ranks != nil && objectRanks != nil {
+		fmt.Printf("got ranks: %v\n", ranks)
+	}
+
+	tops, centers, bottoms := getPositions(ranks, isHorizontal)
+
+	if tops != nil {
+		fmt.Printf("got tops: %v\ncenters: %v\nbottoms: %v\n", tops, centers, bottoms)
+		fmt.Printf("spacing: ")
+		for i := 1; i < len(tops); i++ {
+			fmt.Printf("%v, ", tops[i]-bottoms[i-1])
+		}
+		fmt.Printf("\n")
+	}
+	fmt.Printf("ranksep %v, nodesep %v\n", rootAttrs.ranksep, rootAttrs.NodeSep)
+
+	// TODO
+	// 1. Compute all current spacings
+	// 2. Compute desired spacings
+	// 3. Apply changes (shifting anything below)
+	//
+	// Two kinds of spacing, 1. rank spacing, 2. rank alignment spacing
+	// all objects at a rank are center aligned, if one is much taller, then the rest will have more spacing to align with the taller node
+	// if there is extra spacing due to rank alignment, we may not need to increase rank spacing
+	// for now, just applying spacing increase for whole rank
+
 	for i, edge := range g.Edges {
 		val, err := vm.RunString(fmt.Sprintf("JSON.stringify(g.edge(g.edges()[%d]))", i))
 		if err != nil {
@@ -336,7 +375,22 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		edge.Route = points
 	}
 
-	for _, obj := range g.Objects {
+	// shifting bottom rank down first, then moving up to next rank
+	for i := len(ranks) - 1; i >= 0; i-- {
+		objects := ranks[i]
+		topSpacing := 0.
+		for _, obj := range objects {
+			_, adjustedHeight := adjustDimensions(obj)
+			// TODO width
+			topSpacing = math.Max(topSpacing, adjustedHeight-obj.Height)
+		}
+		fmt.Printf("rank %d topSpacing %v\n", i, topSpacing)
+		// shiftDown(g, tops[i], topSpacing)
+		// TODO: Testing
+		shiftDown(g, tops[i], float64(100))
+	}
+
+	for _, obj := range []*d2graph.Object{} {
 		if !obj.HasLabel() || len(obj.ChildrenArray) == 0 {
 			continue
 		}
@@ -437,7 +491,8 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		}
 	}
 
-	for _, obj := range g.Objects {
+	// for _, obj := range g.Objects {
+	for _, obj := range []*d2graph.Object{} {
 		cleanupAdjustment(obj)
 	}
 
@@ -778,13 +833,9 @@ func adjustDimensions(obj *d2graph.Object) (width, height float64) {
 				}
 			}
 		}
-
-		// special handling
-		if obj.HasOutsideBottomLabel() || obj.Icon != nil {
-			height += float64(obj.LabelDimensions.Height) + label.PADDING
-		}
 	}
 
+	hasIconAboveBelow := false
 	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
 		var position label.Position
 		if obj.IconPosition != nil {
@@ -810,6 +861,19 @@ func adjustDimensions(obj *d2graph.Object) (width, height float64) {
 					width = go2.Max(width, d2target.MAX_ICON_SIZE+2*label.PADDING)
 				}
 			}
+
+			switch position {
+			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
+				label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+				hasIconAboveBelow = true
+			}
+		}
+	}
+
+	if true {
+		// special handling
+		if obj.HasOutsideBottomLabel() || hasIconAboveBelow {
+			height += float64(obj.LabelDimensions.Height) + label.PADDING
 		}
 	}
 
@@ -843,6 +907,7 @@ func cleanupAdjustment(obj *d2graph.Object) {
 			}
 		}
 	}
+	hasIconAboveBelow := false
 	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
 		position := label.Position(*obj.IconPosition)
 		if position.IsShapePosition() {
@@ -861,12 +926,23 @@ func cleanupAdjustment(obj *d2graph.Object) {
 					obj.ShiftDescendants(iconWidth, 0)
 				}
 			}
+			switch position {
+			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
+				label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+				hasIconAboveBelow = true
+			}
 		}
 	}
 
 	// special handling to start/end connections below label
-	if obj.HasOutsideBottomLabel() {
-		obj.Height -= float64(obj.LabelDimensions.Height) + label.PADDING
+	if true {
+		if obj.HasOutsideBottomLabel() || hasIconAboveBelow {
+			dy := float64(obj.LabelDimensions.Height) + label.PADDING
+			obj.Height -= dy
+			if obj.IsContainer() {
+				obj.ShiftDescendants(0, -dy/2)
+			}
+		}
 	}
 
 	// remove the extra width/height we added for 3d/multiple after all objects/connections are placed
@@ -903,6 +979,90 @@ func positionLabelsIcons(obj *d2graph.Object) {
 			obj.LabelPosition = go2.Pointer(string(label.InsideTopCenter))
 		} else {
 			obj.LabelPosition = go2.Pointer(string(label.InsideMiddleCenter))
+		}
+	}
+}
+
+func getRanks(g *d2graph.Graph, isHorizontal bool) ([][]*d2graph.Object, map[*d2graph.Object]int) {
+	alignedObjects := make(map[float64][]*d2graph.Object)
+	for _, obj := range g.Objects {
+		if !obj.IsContainer() {
+			if !isHorizontal {
+				y := obj.TopLeft.Y + obj.Height/2
+				alignedObjects[y] = append(alignedObjects[y], obj)
+			} else {
+				x := obj.TopLeft.X + obj.Width/2
+				alignedObjects[x] = append(alignedObjects[x], obj)
+			}
+		}
+	}
+
+	levels := make([]float64, 0, len(alignedObjects))
+	for l := range alignedObjects {
+		levels = append(levels, l)
+	}
+	sort.Slice(levels, func(i, j int) bool {
+		return levels[i] < levels[j]
+	})
+
+	ranks := make([][]*d2graph.Object, 0, len(levels))
+	objectRanks := make(map[*d2graph.Object]int)
+	for i, l := range levels {
+		for _, obj := range alignedObjects[l] {
+			objectRanks[obj] = i
+		}
+		ranks = append(ranks, alignedObjects[l])
+	}
+	for _, obj := range g.Objects {
+		if rank, has := objectRanks[obj]; has {
+			fmt.Printf("%v rank: %d\n", obj.AbsID(), rank)
+		} else {
+			fmt.Printf("%v rank: none\n", obj.AbsID())
+		}
+	}
+
+	return ranks, objectRanks
+}
+
+func getPositions(ranks [][]*d2graph.Object, isHorizontal bool) (tops, centers, bottoms []float64) {
+	for _, objects := range ranks {
+		min := math.Inf(1)
+		max := math.Inf(-1)
+		for _, obj := range objects {
+			if isHorizontal {
+				min = math.Min(min, obj.TopLeft.X)
+				max = math.Max(max, obj.TopLeft.X+obj.Width)
+			} else {
+				min = math.Min(min, obj.TopLeft.Y)
+				max = math.Max(max, obj.TopLeft.Y+obj.Height)
+			}
+		}
+		tops = append(tops, min)
+		if isHorizontal {
+			centers = append(centers, objects[0].TopLeft.X+objects[0].Width/2.)
+		} else {
+			centers = append(centers, objects[0].TopLeft.Y+objects[0].Height/2.)
+		}
+		bottoms = append(bottoms, max)
+	}
+	return
+}
+
+// shift everything down by distance if it is at or below startY
+func shiftDown(g *d2graph.Graph, startY, distance float64) {
+	for _, obj := range g.Objects {
+		if obj.TopLeft.Y < startY {
+			continue
+		}
+		obj.TopLeft.Y += distance
+	}
+	for _, edge := range g.Edges {
+		for _, p := range edge.Route {
+			// Note: == so incoming edge shifts down with object at startY
+			if p.Y <= startY {
+				continue
+			}
+			p.Y += distance
 		}
 	}
 }
