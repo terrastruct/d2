@@ -3080,6 +3080,19 @@ y: null
 				},
 			},
 			{
+				name: "delete-multiple-connections",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+x -> y
+z -> y
+y -> a
+y: null
+`, "")
+					assert.Equal(t, 3, len(g.Objects))
+					assert.Equal(t, 0, len(g.Edges))
+				},
+			},
+			{
 				name: "no-delete-connection",
 				run: func(t *testing.T) {
 					g := assertCompile(t, `
