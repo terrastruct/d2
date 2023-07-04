@@ -168,9 +168,7 @@ func GetObjOrder(g *d2graph.Graph, boardPath []string) ([]string, error) {
 		if curr != g.Root {
 			order = append(order, curr.AbsID())
 		}
-		for _, ch := range curr.ChildrenArray {
-			queue = append(queue, ch)
-		}
+		queue = append(queue, curr.ChildrenArray...)
 	}
 
 	return order, nil
