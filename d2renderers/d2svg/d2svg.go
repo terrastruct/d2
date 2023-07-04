@@ -936,7 +936,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 		} else {
 			drawClass(writer, diagramHash, targetShape)
 		}
-		addAppendixItems(writer, targetShape)
+		addAppendixItems(writer, targetShape, s)
 		fmt.Fprint(writer, `</g>`)
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
@@ -950,7 +950,7 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 		} else {
 			drawTable(writer, diagramHash, targetShape)
 		}
-		addAppendixItems(writer, targetShape)
+		addAppendixItems(writer, targetShape, s)
 		fmt.Fprint(writer, `</g>`)
 		fmt.Fprint(writer, closingTag)
 		return labelMask, nil
@@ -1341,28 +1341,70 @@ func drawShape(writer io.Writer, diagramHash string, targetShape d2target.Shape,
 		}
 	}
 
-	addAppendixItems(writer, targetShape)
+	addAppendixItems(writer, targetShape, s)
 
 	fmt.Fprint(writer, closingTag)
 	return labelMask, nil
 }
 
-func addAppendixItems(writer io.Writer, shape d2target.Shape) {
-	rightPadForTooltip := 0
-	if shape.Tooltip != "" {
-		rightPadForTooltip = 2 * appendixIconRadius
-		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
-			shape.Pos.X+shape.Width-appendixIconRadius,
-			shape.Pos.Y-appendixIconRadius,
-			TooltipIcon,
+func addAppendixItems(writer io.Writer, targetShape d2target.Shape, s shape.Shape) {
+	var p1, p2 *geo.Point
+	if targetShape.Tooltip != "" || targetShape.Link != "" {
+		bothIcons := targetShape.Tooltip != "" && targetShape.Link != ""
+		corner := geo.NewPoint(float64(targetShape.Pos.X+targetShape.Width), float64(targetShape.Pos.Y))
+		center := geo.NewPoint(
+			float64(targetShape.Pos.X)+float64(targetShape.Width)/2.,
+			float64(targetShape.Pos.Y)+float64(targetShape.Height)/2.,
 		)
-		fmt.Fprintf(writer, `<title>%s</title>`, svg.EscapeText(shape.Tooltip))
+		offset := geo.Vector{-2 * appendixIconRadius, 0}
+		var leftOnShape bool
+		switch s.GetType() {
+		case shape.STEP_TYPE, shape.HEXAGON_TYPE, shape.QUEUE_TYPE, shape.PAGE_TYPE:
+			// trace straight left for these
+			center.Y = float64(targetShape.Pos.Y)
+		case shape.PACKAGE_TYPE:
+			// trace straight down
+			center.X = float64(targetShape.Pos.X + targetShape.Width)
+		case shape.CIRCLE_TYPE, shape.OVAL_TYPE, shape.DIAMOND_TYPE,
+			shape.PERSON_TYPE, shape.CLOUD_TYPE, shape.CYLINDER_TYPE:
+			if bothIcons {
+				leftOnShape = true
+				corner = corner.AddVector(offset)
+			}
+		}
+		v1 := center.VectorTo(corner)
+		p1 = shape.TraceToShapeBorder(s, corner, corner.AddVector(v1))
+		if bothIcons {
+			if leftOnShape {
+				// these shapes should have p1 on shape border
+				p2 = p1.AddVector(offset.Reverse())
+				p1, p2 = p2, p1
+			} else {
+				p2 = p1.AddVector(offset)
+			}
+		}
 	}
 
-	if shape.Link != "" {
+	if targetShape.Tooltip != "" {
+		x := int(math.Ceil(p1.X))
+		y := int(math.Ceil(p1.Y))
+
 		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
-			shape.Pos.X+shape.Width-appendixIconRadius-rightPadForTooltip,
-			shape.Pos.Y-appendixIconRadius,
+			x-appendixIconRadius,
+			y-appendixIconRadius,
+			TooltipIcon,
+		)
+		fmt.Fprintf(writer, `<title>%s</title>`, svg.EscapeText(targetShape.Tooltip))
+	}
+	if targetShape.Link != "" {
+		if p2 == nil {
+			p2 = p1
+		}
+		x := int(math.Ceil(p2.X))
+		y := int(math.Ceil(p2.Y))
+		fmt.Fprintf(writer, `<g transform="translate(%d %d)" class="appendix-icon">%s</g>`,
+			x-appendixIconRadius,
+			y-appendixIconRadius,
 			LinkIcon,
 		)
 	}
@@ -1842,17 +1884,17 @@ func Render(diagram *d2target.Diagram, opts *RenderOpts) ([]byte, error) {
 			case "paper":
 				patternDefs += paper
 			}
-			fmt.Fprint(upperBuf, fmt.Sprintf(`
+			fmt.Fprintf(upperBuf, `
 .%s-overlay {
 	fill: url(#%s);
 	mix-blend-mode: multiply;
-}`, pattern, pattern))
+}`, pattern, pattern)
 		}
 	}
 	if patternDefs != "" {
 		fmt.Fprint(upperBuf, `]]></style>`)
 		fmt.Fprint(upperBuf, "<defs>")
-		fmt.Fprintf(upperBuf, patternDefs)
+		fmt.Fprint(upperBuf, patternDefs)
 		fmt.Fprint(upperBuf, "</defs>")
 	}
 
@@ -2101,11 +2143,11 @@ func singleThemeRulesets(diagramHash string, themeID int64) (rulesets string, er
 	out += fmt.Sprintf(".sketch-overlay-%s{fill:url(#streaks-%s);mix-blend-mode:%s}", color.N7, lc, blendMode(lc))
 
 	if theme.IsDark() {
-		out += fmt.Sprintf(".light-code{display: none}")
-		out += fmt.Sprintf(".dark-code{display: block}")
+		out += ".light-code{display: none}"
+		out += ".dark-code{display: block}"
 	} else {
-		out += fmt.Sprintf(".light-code{display: block}")
-		out += fmt.Sprintf(".dark-code{display: none}")
+		out += ".light-code{display: block}"
+		out += ".dark-code{display: none}"
 	}
 
 	return out, nil

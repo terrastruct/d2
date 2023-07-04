@@ -2781,6 +2781,7 @@ scenarios: {
 		loadFromFile(t, "outside_bottom_labels"),
 		loadFromFile(t, "label_positions"),
 		loadFromFile(t, "icon_positions"),
+		loadFromFile(t, "all_shapes_link"),
 	}
 
 	runa(t, tcs)
