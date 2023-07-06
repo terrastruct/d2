@@ -300,33 +300,6 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		obj.Height = math.Ceil(dn.Height)
 	}
 
-	ranks, objectRanks := getRanks(g, isHorizontal)
-	if ranks != nil && objectRanks != nil {
-		fmt.Printf("got ranks: %v\n", ranks)
-	}
-
-	tops, centers, bottoms := getPositions(ranks, isHorizontal)
-
-	if tops != nil {
-		fmt.Printf("got tops: %v\ncenters: %v\nbottoms: %v\n", tops, centers, bottoms)
-		fmt.Printf("spacing: ")
-		for i := 1; i < len(tops); i++ {
-			fmt.Printf("%v, ", tops[i]-bottoms[i-1])
-		}
-		fmt.Printf("\n")
-	}
-	fmt.Printf("ranksep %v, nodesep %v\n", rootAttrs.ranksep, rootAttrs.NodeSep)
-
-	// TODO
-	// 1. Compute all current spacings
-	// 2. Compute desired spacings
-	// 3. Apply changes (shifting anything below)
-	//
-	// Two kinds of spacing, 1. rank spacing, 2. rank alignment spacing
-	// all objects at a rank are center aligned, if one is much taller, then the rest will have more spacing to align with the taller node
-	// if there is extra spacing due to rank alignment, we may not need to increase rank spacing
-	// for now, just applying spacing increase for whole rank
-
 	for i, edge := range g.Edges {
 		val, err := vm.RunString(fmt.Sprintf("JSON.stringify(g.edge(g.edges()[%d]))", i))
 		if err != nil {
@@ -374,6 +347,32 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 
 		edge.Route = points
 	}
+
+	ranks, objectRanks := getRanks(g, isHorizontal)
+	if ranks != nil && objectRanks != nil {
+		fmt.Printf("got ranks: %v\n", ranks)
+	}
+
+	tops, centers, bottoms := getPositions(ranks, isHorizontal)
+	if tops != nil {
+		fmt.Printf("got tops: %v\ncenters: %v\nbottoms: %v\n", tops, centers, bottoms)
+		fmt.Printf("spacing: ")
+		for i := 1; i < len(tops); i++ {
+			fmt.Printf("%v, ", tops[i]-bottoms[i-1])
+		}
+		fmt.Printf("\n")
+	}
+	fmt.Printf("ranksep %v, nodesep %v\n", rootAttrs.ranksep, rootAttrs.NodeSep)
+
+	// TODO
+	// 1. Compute all current spacings
+	// 2. Compute desired spacings
+	// 3. Apply changes (shifting anything below)
+	//
+	// Two kinds of spacing, 1. rank spacing, 2. rank alignment spacing
+	// all objects at a rank are center aligned, if one is much taller, then the rest will have more spacing to align with the taller node
+	// if there is extra spacing due to rank alignment, we may not need to increase rank spacing
+	// for now, just applying spacing increase for whole rank
 
 	// shifting bottom rank down first, then moving up to next rank
 	for i := len(ranks) - 1; i >= 0; i-- {
@@ -983,7 +982,7 @@ func positionLabelsIcons(obj *d2graph.Object) {
 	}
 }
 
-func getRanks(g *d2graph.Graph, isHorizontal bool) ([][]*d2graph.Object, map[*d2graph.Object]int) {
+func getRanks(g *d2graph.Graph, isHorizontal bool) (ranks [][]*d2graph.Object, objectRanks map[*d2graph.Object]int) {
 	alignedObjects := make(map[float64][]*d2graph.Object)
 	for _, obj := range g.Objects {
 		if !obj.IsContainer() {
@@ -1005,8 +1004,8 @@ func getRanks(g *d2graph.Graph, isHorizontal bool) ([][]*d2graph.Object, map[*d2
 		return levels[i] < levels[j]
 	})
 
-	ranks := make([][]*d2graph.Object, 0, len(levels))
-	objectRanks := make(map[*d2graph.Object]int)
+	ranks = make([][]*d2graph.Object, 0, len(levels))
+	objectRanks = make(map[*d2graph.Object]int)
 	for i, l := range levels {
 		for _, obj := range alignedObjects[l] {
 			objectRanks[obj] = i
@@ -1019,6 +1018,27 @@ func getRanks(g *d2graph.Graph, isHorizontal bool) ([][]*d2graph.Object, map[*d2
 		} else {
 			fmt.Printf("%v rank: none\n", obj.AbsID())
 		}
+	}
+
+	startingParentRanks := make(map[*d2graph.Object]int)
+	endingParentRanks := make(map[*d2graph.Object]int)
+	for _, obj := range g.Objects {
+		if obj.IsContainer() {
+			continue
+		}
+		r := objectRanks[obj]
+		// update all ancestor's min/max ranks
+		for parent := obj.Parent; parent != nil && parent != g.Root; parent = parent.Parent {
+			if start, has := startingParentRanks[parent]; !has || r < start {
+				startingParentRanks[parent] = r
+			}
+			if end, has := endingParentRanks[parent]; !has || r > end {
+				endingParentRanks[parent] = r
+			}
+		}
+	}
+	for parent, start := range startingParentRanks {
+		fmt.Printf("parent %v start %v end %v\n", parent.AbsID(), start, endingParentRanks[parent])
 	}
 
 	return ranks, objectRanks
