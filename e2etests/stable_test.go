@@ -2784,6 +2784,7 @@ scenarios: {
 		loadFromFile(t, "icon_positions"),
 		loadFromFile(t, "all_shapes_link"),
 		loadFromFile(t, "nested_shape_labels"),
+		loadFromFile(t, "dagre_spacing"),
 	}
 
 	runa(t, tcs)
