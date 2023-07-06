@@ -33,6 +33,7 @@ var dagreJS string
 const (
 	MIN_RANK_SEP   = 60
 	EDGE_LABEL_GAP = 20
+	MIN_MARGIN     = 10.
 )
 
 type ConfigurableOpts struct {
@@ -112,24 +113,6 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		positionLabelsIcons(obj)
 	}
 
-	maxContainerLabelHeight := 0
-	for _, obj := range g.Objects {
-		// TODO count root level container label sizes for ranksep
-		if len(obj.ChildrenArray) == 0 || obj.Parent == g.Root {
-			continue
-		}
-		if obj.HasLabel() {
-			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, obj.LabelDimensions.Height+label.PADDING)
-		}
-
-		if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
-			s := obj.ToShape()
-			iconSize := d2target.GetIconSize(s.GetInnerBox(), string(label.InsideTopLeft))
-			// Since dagre container labels are pushed up, we don't want a child container to collide
-			maxContainerLabelHeight = go2.Max(maxContainerLabelHeight, (iconSize+label.PADDING*2)*2)
-		}
-	}
-
 	maxLabelWidth := 0
 	maxLabelHeight := 0
 	for _, edge := range g.Edges {
@@ -140,13 +123,13 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 	}
 
 	if !isHorizontal {
-		rootAttrs.ranksep = go2.Max(go2.Max(100, maxLabelHeight+40), maxContainerLabelHeight)
+		rootAttrs.ranksep = go2.Max(100, maxLabelHeight+40)
 	} else {
 		rootAttrs.ranksep = go2.Max(100, maxLabelWidth+40)
 		// use existing config
-		rootAttrs.NodeSep = rootAttrs.EdgeSep
-		// configure vertical padding
-		rootAttrs.EdgeSep = go2.Max(maxLabelHeight+40, maxContainerLabelHeight)
+		// rootAttrs.NodeSep = rootAttrs.EdgeSep
+		// // configure vertical padding
+		// rootAttrs.EdgeSep = maxLabelHeight + 40
 		// Note: non-containers have both of these as padding (rootAttrs.NodeSep + rootAttrs.EdgeSep)
 	}
 
@@ -163,79 +146,49 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		id := obj.AbsID()
 		idToObj[id] = obj
 
-		// width, height := adjustDimensions(obj)
+		// Note: we handle vertical spacing adjustments separately after layout,
+		// but for horizontal adjustments we change the width we pass to dagre.
+		// For containers, we use phantom nodes to adjust container widths
 		width, height := obj.Width, obj.Height
-
-		idToWidth[id] = width
-		idToHeight[id] = height
+		// if isHorizontal {
+		// 	height = adjustHeight(obj)
+		// 	idToHeight[id] = height
+		// } else {
+		// 	width = adjustWidth(obj)
+		// 	idToWidth[id] = width
+		// }
+		// TODO update to work with direction: right/left (in that case we need to adjust heights here,
+		// and horizontal spacing will be adjusted separately after layout
 
 		loadScript += generateAddNodeLine(id, int(width), int(height))
 		if obj.Parent != g.Root {
 			loadScript += generateAddParentLine(id, obj.Parent.AbsID())
 		}
 	}
-	// for _, obj := range g.Objects {
-	// 	if !obj.IsContainer() {
-	// 		continue
-	// 	}
-	// 	id := obj.AbsID()
-	// 	// add phantom children to adjust container dimensions
-	// 	// phantomID := id + "___phantom"
-	// 	// widthDelta := int(math.Ceil(idToWidth[id] - obj.Width))
-	// 	height := int(math.Ceil(idToHeight[id]))
-	// 	// when a container has nodes with no connections, the layout will be in a row
-	// 	// adding a node will add NodeSep width in addition to the node's width
-	// 	// to add a specific amount of space we need to subtract this from the desired width
-	// 	// if we add the phantom node at rank 0 it should be at the far right and top
-	// 	// xSpace := rootAttrs.NodeSep
-	// 	ySpace := rootAttrs.ranksep
 
-	// 	if false {
+	for _, obj := range g.Objects {
+		if !obj.IsContainer() || true {
+			continue
+		}
+		id := obj.AbsID()
+		phantomWidth, phantomHeight := 1, 1
+		// when a container has nodes with no connections, the layout will be in a row
+		// adding a node will add NodeSep width in addition to the node's width
+		// to add a specific amount of space we need to subtract this from the desired width
+		// if we add the phantom node at rank 0 it should be at the far right and top
+		if isHorizontal {
+			heightDelta := int(math.Ceil(idToHeight[id] - obj.Height))
+			phantomWidth = heightDelta - rootAttrs.NodeSep
+		} else {
+			widthDelta := int(math.Ceil(idToWidth[id] - obj.Width))
+			phantomWidth = widthDelta - rootAttrs.NodeSep
+		}
 
-	// 		maxChildHeight := math.Inf(-1)
-	// 		for _, c := range obj.ChildrenArray {
-	// 			if c.Height > maxChildHeight {
-	// 				maxChildHeight = c.Height
-	// 			}
-
-	// 			if c.Shape.Value == d2target.ShapeImage || c.IconPosition == nil {
-	// 				continue
-	// 			}
-	// 			h := c.Height
-	// 			switch label.Position(*c.IconPosition) {
-	// 			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
-	// 				label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-	// 				h += d2target.MAX_ICON_SIZE + 2*label.PADDING
-	// 			}
-	// 			if h > maxChildHeight {
-	// 				maxChildHeight = h
-	// 			}
-	// 		}
-
-	// 		// adjust for children with outside positioned icons
-	// 		var hasTop, hasBottom bool
-	// 		for _, child := range obj.ChildrenArray {
-	// 			if child.Shape.Value == d2target.ShapeImage || child.IconPosition == nil {
-	// 				continue
-	// 			}
-
-	// 			switch label.Position(*child.IconPosition) {
-	// 			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
-	// 				hasTop = true
-	// 			case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-	// 				hasBottom = true
-	// 			}
-	// 			if hasTop && hasBottom {
-	// 				break
-	// 			}
-	// 		}
-	// 		if hasTop || hasBottom {
-	// 			// TODO ranksep is already accounting for maxLabelHeight
-	// 			// maxChildHeight += d2target.MAX_ICON_SIZE + 2*label.PADDING
-	// 		}
-	// 		height = go2.Max(height, ySpace+int(maxChildHeight))
-	// 	}
-	// }
+		// add phantom children to adjust container widths
+		phantomID := id + "___phantom"
+		loadScript += generateAddNodeLine(phantomID, phantomWidth, phantomHeight)
+		loadScript += generateAddParentLine(phantomID, id)
+	}
 
 	for _, edge := range g.Edges {
 		src, dst := getEdgeEndpoints(g, edge)
@@ -348,152 +301,10 @@ func Layout(ctx context.Context, g *d2graph.Graph, opts *ConfigurableOpts) (err 
 		edge.Route = points
 	}
 
-	ranks, objectRanks := getRanks(g, isHorizontal)
-	if ranks != nil && objectRanks != nil {
-		fmt.Printf("got ranks: %v\n", ranks)
-	}
-
-	tops, centers, bottoms := getPositions(ranks, isHorizontal)
-	if tops != nil {
-		fmt.Printf("got tops: %v\ncenters: %v\nbottoms: %v\n", tops, centers, bottoms)
-		fmt.Printf("spacing: ")
-		for i := 1; i < len(tops); i++ {
-			fmt.Printf("%v, ", tops[i]-bottoms[i-1])
-		}
-		fmt.Printf("\n")
-	}
-	fmt.Printf("ranksep %v, nodesep %v\n", rootAttrs.ranksep, rootAttrs.NodeSep)
-
-	// TODO
-	// 1. Compute all current spacings
-	// 2. Compute desired spacings
-	// 3. Apply changes (shifting anything below)
-	//
-	// Two kinds of spacing, 1. rank spacing, 2. rank alignment spacing
-	// all objects at a rank are center aligned, if one is much taller, then the rest will have more spacing to align with the taller node
-	// if there is extra spacing due to rank alignment, we may not need to increase rank spacing
-	// for now, just applying spacing increase for whole rank
-
-	// shifting bottom rank down first, then moving up to next rank
-	for i := len(ranks) - 1; i >= 0; i-- {
-		objects := ranks[i]
-		topSpacing := 0.
-		for _, obj := range objects {
-			_, adjustedHeight := adjustDimensions(obj)
-			// TODO width
-			topSpacing = math.Max(topSpacing, adjustedHeight-obj.Height)
-		}
-		fmt.Printf("rank %d topSpacing %v\n", i, topSpacing)
-		// shiftDown(g, tops[i], topSpacing)
-		// TODO: Testing
-		shiftDown(g, tops[i], float64(100))
-	}
-
-	for _, obj := range []*d2graph.Object{} {
-		if !obj.HasLabel() || len(obj.ChildrenArray) == 0 {
-			continue
-		}
-
-		// usually you don't want to take away here more than what was added, which is the label height
-		// however, if the label height is more than the ranksep/2, we'll have no padding around children anymore
-		// so cap the amount taken off at ranksep/2
-		subtract := float64(go2.Min(rootAttrs.ranksep/2, obj.LabelDimensions.Height+label.PADDING))
-
-		obj.Height -= subtract
-
-		// If the edge is connected to two descendants that are about to be downshifted, their whole route gets downshifted
-		movedEdges := make(map[*d2graph.Edge]struct{})
-		for _, e := range g.Edges {
-			isSrcDesc := e.Src.IsDescendantOf(obj)
-			isDstDesc := e.Dst.IsDescendantOf(obj)
-
-			if isSrcDesc && isDstDesc {
-				stepSize := subtract
-				if e.Src != obj || e.Dst != obj {
-					stepSize /= 2.
-				}
-				movedEdges[e] = struct{}{}
-				for _, p := range e.Route {
-					p.Y += stepSize
-				}
-			}
-		}
-
-		q := []*d2graph.Object{obj}
-		// Downshift descendants and edges that have one endpoint connected to a descendant
-		for len(q) > 0 {
-			curr := q[0]
-			q = q[1:]
-
-			stepSize := subtract
-			// The object itself needs to move down the height it was just subtracted
-			// all descendants move half, to maintain vertical padding
-			if curr != obj {
-				stepSize /= 2.
-			}
-			curr.TopLeft.Y += stepSize
-			almostEqual := func(a, b float64) bool {
-				return b-1 <= a && a <= b+1
-			}
-			shouldMove := func(p *geo.Point) bool {
-				if curr != obj {
-					return true
-				}
-				if isHorizontal {
-					// Only move horizontal edges if they are connected to the top side of the shrinking container
-					return almostEqual(p.Y, obj.TopLeft.Y-stepSize)
-				} else {
-					// Edge should only move if it's not connected to the bottom side of the shrinking container
-					return !almostEqual(p.Y, obj.TopLeft.Y+obj.Height)
-				}
-			}
-			for _, e := range g.Edges {
-				if _, ok := movedEdges[e]; ok {
-					continue
-				}
-				moveWholeEdge := false
-				if e.Src == curr {
-					// Don't move src points on side of container
-					if almostEqual(e.Route[0].X, obj.TopLeft.X) || almostEqual(e.Route[0].X, obj.TopLeft.X+obj.Width) {
-						// Unless the dst is also on a container
-						if !e.Dst.HasLabel() || len(e.Dst.ChildrenArray) <= 0 {
-							continue
-						}
-					}
-					if shouldMove(e.Route[0]) {
-						if isHorizontal && e.Src.Parent != g.Root && e.Dst.Parent != g.Root {
-							moveWholeEdge = true
-						} else {
-							e.ShiftStart(stepSize, false)
-						}
-					}
-				}
-				if !moveWholeEdge && e.Dst == curr {
-					if shouldMove(e.Route[len(e.Route)-1]) {
-						if isHorizontal && e.Dst.Parent != g.Root && e.Src.Parent != g.Root {
-							moveWholeEdge = true
-						} else {
-							e.ShiftEnd(stepSize, false)
-						}
-					}
-				}
-
-				if moveWholeEdge {
-					for _, p := range e.Route {
-						p.Y += stepSize / 2.
-					}
-					movedEdges[e] = struct{}{}
-				}
-
-			}
-			q = append(q, curr.ChildrenArray...)
-		}
-	}
-
+	adjustSpacing(g, float64(rootAttrs.ranksep), isHorizontal)
 	// for _, obj := range g.Objects {
-	for _, obj := range []*d2graph.Object{} {
-		cleanupAdjustment(obj)
-	}
+	// 	cleanupAdjustment(obj, isHorizontal)
+	// }
 
 	for _, edge := range g.Edges {
 		points := edge.Route
@@ -799,10 +610,11 @@ func inContainer(obj, container *d2graph.Object) *d2graph.Object {
 	return inContainer(obj.Parent, container)
 }
 
-func adjustDimensions(obj *d2graph.Object) (width, height float64) {
-	width = obj.Width
-	height = obj.Height
+type spacing struct {
+	top, bottom, left, right float64
+}
 
+func getSpacing(obj *d2graph.Object) (margin, padding spacing) {
 	// reserve spacing for labels
 	if obj.HasLabel() {
 		var position label.Position
@@ -812,149 +624,62 @@ func adjustDimensions(obj *d2graph.Object) (width, height float64) {
 			position = label.OutsideBottomCenter
 		}
 
-		if position.IsShapePosition() {
-			adjustedWidth := false
-			if obj.IsContainer() {
-				switch position {
-				case label.InsideMiddleLeft, label.InsideMiddleRight:
-					width += float64(obj.LabelDimensions.Width) + label.PADDING
-					adjustedWidth = true
-				}
-			}
-			if !adjustedWidth {
-				switch position {
-				case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
-					label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
-					width += float64(obj.LabelDimensions.Width) + label.PADDING
-				default:
-					// TODO labelWidth+2*label.PADDING
-					width = go2.Max(width, float64(obj.LabelDimensions.Width))
-				}
-			}
+		labelWidth := float64(obj.LabelDimensions.Width) + 2*label.PADDING
+		labelHeight := float64(obj.LabelDimensions.Height) + 2*label.PADDING
+
+		switch position {
+		case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+			margin.top = labelHeight
+		case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+			margin.bottom = labelHeight
+		case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
+			margin.left = labelWidth
+		case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+			margin.right = labelWidth
+		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
+			padding.top = labelHeight
+		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
+			padding.bottom = labelHeight
+		case label.InsideMiddleLeft:
+			padding.left = labelWidth
+		case label.InsideMiddleRight:
+			padding.right = labelWidth
 		}
 	}
 
-	hasIconAboveBelow := false
 	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
 		var position label.Position
 		if obj.IconPosition != nil {
 			position = label.Position(*obj.IconPosition)
 		}
 
-		if position.IsShapePosition() {
-			adjustedWidth := false
-			if obj.IsContainer() {
-				switch position {
-				case label.InsideMiddleLeft, label.InsideMiddleRight:
-					width += d2target.MAX_ICON_SIZE + label.PADDING
-					adjustedWidth = true
-				}
-			}
-			if !adjustedWidth {
-				switch position {
-				case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
-					label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom,
-					label.InsideMiddleLeft, label.InsideMiddleRight:
-					width += d2target.MAX_ICON_SIZE + label.PADDING
-				default:
-					width = go2.Max(width, d2target.MAX_ICON_SIZE+2*label.PADDING)
-				}
-			}
-
-			switch position {
-			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
-				label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-				hasIconAboveBelow = true
-			}
-		}
-	}
-
-	if true {
-		// special handling
-		if obj.HasOutsideBottomLabel() || hasIconAboveBelow {
-			height += float64(obj.LabelDimensions.Height) + label.PADDING
+		iconSize := float64(d2target.MAX_ICON_SIZE + 2*label.PADDING)
+		switch position {
+		case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight:
+			margin.top = math.Max(margin.top, iconSize)
+		case label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
+			margin.bottom = math.Max(margin.bottom, iconSize)
+		case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
+			margin.left = math.Max(margin.left, iconSize)
+		case label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
+			margin.right = math.Max(margin.right, iconSize)
+		case label.InsideTopLeft, label.InsideTopCenter, label.InsideTopRight:
+			padding.top = math.Max(padding.top, iconSize)
+		case label.InsideBottomLeft, label.InsideBottomCenter, label.InsideBottomRight:
+			padding.bottom = math.Max(padding.bottom, iconSize)
+		case label.InsideMiddleLeft:
+			padding.left = math.Max(padding.left, iconSize)
+		case label.InsideMiddleRight:
+			padding.right = math.Max(padding.right, iconSize)
 		}
 	}
 
 	// reserve extra space for 3d/multiple by providing dagre the larger dimensions
 	dx, dy := obj.GetModifierElementAdjustments()
-	width += dx
-	height += dy
+	margin.right += dx
+	margin.top += dy
 
 	return
-}
-
-func cleanupAdjustment(obj *d2graph.Object) {
-	// adjust size and position to account for space reserved for labels
-	if obj.HasLabel() {
-		position := label.Position(*obj.LabelPosition)
-		if position.IsShapePosition() {
-			labelWidth := float64(obj.LabelDimensions.Width) + label.PADDING
-			switch position {
-			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
-				label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
-				obj.Width -= labelWidth
-			}
-			switch position {
-			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
-				obj.TopLeft.X += labelWidth
-				obj.ShiftDescendants(labelWidth, 0)
-			case label.InsideMiddleLeft:
-				if obj.IsContainer() || obj.Icon != nil {
-					obj.ShiftDescendants(labelWidth, 0)
-				}
-			}
-		}
-	}
-	hasIconAboveBelow := false
-	if obj.Icon != nil && obj.Shape.Value != d2target.ShapeImage {
-		position := label.Position(*obj.IconPosition)
-		if position.IsShapePosition() {
-			iconWidth := float64(d2target.MAX_ICON_SIZE + label.PADDING)
-			switch position {
-			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom,
-				label.OutsideRightTop, label.OutsideRightMiddle, label.OutsideRightBottom:
-				obj.Width -= iconWidth
-			}
-			switch position {
-			case label.OutsideLeftTop, label.OutsideLeftMiddle, label.OutsideLeftBottom:
-				obj.TopLeft.X += iconWidth
-				obj.ShiftDescendants(iconWidth, 0)
-			case label.InsideMiddleLeft:
-				if obj.IsContainer() || obj.Icon != nil {
-					obj.ShiftDescendants(iconWidth, 0)
-				}
-			}
-			switch position {
-			case label.OutsideTopLeft, label.OutsideTopCenter, label.OutsideTopRight,
-				label.OutsideBottomLeft, label.OutsideBottomCenter, label.OutsideBottomRight:
-				hasIconAboveBelow = true
-			}
-		}
-	}
-
-	// special handling to start/end connections below label
-	if true {
-		if obj.HasOutsideBottomLabel() || hasIconAboveBelow {
-			dy := float64(obj.LabelDimensions.Height) + label.PADDING
-			obj.Height -= dy
-			if obj.IsContainer() {
-				obj.ShiftDescendants(0, -dy/2)
-			}
-		}
-	}
-
-	// remove the extra width/height we added for 3d/multiple after all objects/connections are placed
-	// and shift the shapes down accordingly
-	dx, dy := obj.GetModifierElementAdjustments()
-	if dx != 0 || dy != 0 {
-		obj.TopLeft.Y += dy
-		obj.ShiftDescendants(0, dy)
-		if !obj.IsContainer() {
-			obj.Width -= dx
-			obj.Height -= dy
-		}
-	}
 }
 
 func positionLabelsIcons(obj *d2graph.Object) {
@@ -982,7 +707,7 @@ func positionLabelsIcons(obj *d2graph.Object) {
 	}
 }
 
-func getRanks(g *d2graph.Graph, isHorizontal bool) (ranks [][]*d2graph.Object, objectRanks map[*d2graph.Object]int) {
+func getRanks(g *d2graph.Graph, isHorizontal bool) (ranks [][]*d2graph.Object, objectRanks, startingParentRanks, endingParentRanks map[*d2graph.Object]int) {
 	alignedObjects := make(map[float64][]*d2graph.Object)
 	for _, obj := range g.Objects {
 		if !obj.IsContainer() {
@@ -1012,16 +737,16 @@ func getRanks(g *d2graph.Graph, isHorizontal bool) (ranks [][]*d2graph.Object, o
 		}
 		ranks = append(ranks, alignedObjects[l])
 	}
-	for _, obj := range g.Objects {
-		if rank, has := objectRanks[obj]; has {
-			fmt.Printf("%v rank: %d\n", obj.AbsID(), rank)
-		} else {
-			fmt.Printf("%v rank: none\n", obj.AbsID())
-		}
-	}
+	// for _, obj := range g.Objects {
+	// 	if rank, has := objectRanks[obj]; has {
+	// 		fmt.Printf("%v rank: %d\n", obj.AbsID(), rank)
+	// 	} else {
+	// 		fmt.Printf("%v rank: none\n", obj.AbsID())
+	// 	}
+	// }
 
-	startingParentRanks := make(map[*d2graph.Object]int)
-	endingParentRanks := make(map[*d2graph.Object]int)
+	startingParentRanks = make(map[*d2graph.Object]int)
+	endingParentRanks = make(map[*d2graph.Object]int)
 	for _, obj := range g.Objects {
 		if obj.IsContainer() {
 			continue
@@ -1037,52 +762,554 @@ func getRanks(g *d2graph.Graph, isHorizontal bool) (ranks [][]*d2graph.Object, o
 			}
 		}
 	}
-	for parent, start := range startingParentRanks {
-		fmt.Printf("parent %v start %v end %v\n", parent.AbsID(), start, endingParentRanks[parent])
-	}
+	// for parent, start := range startingParentRanks {
+	// 	fmt.Printf("parent %v start %v end %v\n", parent.AbsID(), start, endingParentRanks[parent])
+	// }
 
-	return ranks, objectRanks
+	return ranks, objectRanks, startingParentRanks, endingParentRanks
 }
 
-func getPositions(ranks [][]*d2graph.Object, isHorizontal bool) (tops, centers, bottoms []float64) {
-	for _, objects := range ranks {
-		min := math.Inf(1)
-		max := math.Inf(-1)
-		for _, obj := range objects {
-			if isHorizontal {
-				min = math.Min(min, obj.TopLeft.X)
-				max = math.Max(max, obj.TopLeft.X+obj.Width)
-			} else {
-				min = math.Min(min, obj.TopLeft.Y)
-				max = math.Max(max, obj.TopLeft.Y+obj.Height)
-			}
+func getRankRange(rank []*d2graph.Object, isHorizontal bool) (min, max float64) {
+	min = math.Inf(1)
+	max = math.Inf(-1)
+	for _, obj := range rank {
+		if isHorizontal {
+			min = math.Min(min, obj.TopLeft.X)
+			max = math.Max(max, obj.TopLeft.X+obj.Width)
+		} else {
+			min = math.Min(min, obj.TopLeft.Y)
+			max = math.Max(max, obj.TopLeft.Y+obj.Height)
 		}
-		tops = append(tops, min)
+	}
+	return
+}
+
+func getPositions(ranks [][]*d2graph.Object, isHorizontal bool) (starts, centers, ends []float64) {
+	for _, objects := range ranks {
+		min, max := getRankRange(objects, isHorizontal)
+		starts = append(starts, min)
 		if isHorizontal {
 			centers = append(centers, objects[0].TopLeft.X+objects[0].Width/2.)
 		} else {
 			centers = append(centers, objects[0].TopLeft.Y+objects[0].Height/2.)
 		}
-		bottoms = append(bottoms, max)
+		ends = append(ends, max)
 	}
 	return
 }
 
-// shift everything down by distance if it is at or below startY
-func shiftDown(g *d2graph.Graph, startY, distance float64) {
-	for _, obj := range g.Objects {
-		if obj.TopLeft.Y < startY {
-			continue
-		}
-		obj.TopLeft.Y += distance
-	}
-	for _, edge := range g.Edges {
-		for _, p := range edge.Route {
-			// Note: == so incoming edge shifts down with object at startY
-			if p.Y <= startY {
+// shift everything down by distance if it is at or below start position
+func shiftDown(g *d2graph.Graph, start, distance float64, isHorizontal bool) {
+	if isHorizontal {
+		for _, obj := range g.Objects {
+			if obj.TopLeft.X < start {
 				continue
 			}
-			p.Y += distance
+			obj.TopLeft.X += distance
+		}
+		for _, edge := range g.Edges {
+			for _, p := range edge.Route {
+				// Note: == so incoming edge shifts down with object at startY
+				// +1 in case it is off by 1
+				if p.X+1 <= start {
+					continue
+				}
+				p.X += distance
+			}
+		}
+	} else {
+		for _, obj := range g.Objects {
+			if obj.TopLeft.Y < start {
+				continue
+			}
+			obj.TopLeft.Y += distance
+		}
+		for _, edge := range g.Edges {
+			for _, p := range edge.Route {
+				// Note: == so incoming edge shifts down with object at startY
+				// +1 in case it is off by 1
+				if p.Y+1 <= start {
+					continue
+				}
+				p.Y += distance
+			}
+		}
+	}
+}
+
+// shift down everything that is below start
+// shift all nodes that are reachable via an edge or being directly below a shifting node or expanding container
+// expand containers to wrap shifted nodes
+func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance float64, isHorizontal, isMargin bool) {
+	fmt.Printf("shifting %v at %v by %v\n", obj.AbsID(), start, distance)
+	// if obj.ID == "s" || obj.ID == "k" || true {
+	// 	return
+	// }
+	q := []*d2graph.Object{obj}
+
+	seen := make(map[*d2graph.Object]struct{})
+	shifted := make(map[*d2graph.Object]struct{})
+	shiftedEdges := make(map[*d2graph.Edge]struct{})
+	queue := func(o *d2graph.Object) {
+		if _, in := seen[o]; in {
+			return
+		}
+		fmt.Printf("queue %v\n", o.AbsID())
+		q = append(q, o)
+	}
+
+	checkBelow := func(curr *d2graph.Object) {
+		fmt.Printf("checking below %v\n", curr.AbsID())
+		currBottom := curr.TopLeft.Y + curr.Height
+		currRight := curr.TopLeft.X + curr.Width
+		// if object below is within this distance after shifting, also shift it
+		threshold := 100.
+		if isHorizontal {
+			originalRight := currRight
+			if _, in := shifted[curr]; in {
+				originalRight -= distance
+			}
+			for _, other := range g.Objects {
+				if other == curr || curr.IsDescendantOf(other) {
+					continue
+				}
+				// fmt.Printf("%#v && %#v original right %v currRight %v other left %v\n\t%v\n", curr.AbsID(), other.AbsID(),
+				// 	originalRight, currRight, other.TopLeft.X,
+				// 	other.TopLeft.X-originalRight,
+				// )
+				if originalRight < other.TopLeft.X &&
+					other.TopLeft.X < originalRight+distance+threshold &&
+					curr.TopLeft.Y < other.TopLeft.Y+other.Height &&
+					other.TopLeft.Y < currBottom {
+					queue(other)
+				}
+			}
+		} else {
+			originalBottom := currBottom
+			if _, in := shifted[curr]; in {
+				originalBottom -= distance
+			}
+			for _, other := range g.Objects {
+				if other == curr || curr.IsDescendantOf(other) {
+					continue
+				}
+				if originalBottom < other.TopLeft.Y &&
+					other.TopLeft.Y < originalBottom+distance+threshold &&
+					curr.TopLeft.X < other.TopLeft.X+other.Width &&
+					other.TopLeft.X < currRight {
+					queue(other)
+				}
+			}
+		}
+	}
+
+	processQueue := func() {
+		for len(q) > 0 {
+			curr := q[0]
+			q = q[1:]
+			if _, was := seen[curr]; was {
+				fmt.Printf("\twas seen %v\n", curr.AbsID())
+				continue
+			}
+			// skip other objects behind start
+			if curr != obj {
+				if isHorizontal {
+					if curr.TopLeft.X < start {
+						continue
+					}
+				} else {
+					if curr.TopLeft.Y < start {
+						continue
+					}
+				}
+			}
+
+			if isHorizontal {
+				shift := false
+				if !isMargin {
+					shift = start < curr.TopLeft.X
+				} else {
+					shift = start <= curr.TopLeft.X
+				}
+
+				if shift {
+					curr.TopLeft.X += distance
+					fmt.Printf("\tshifted %v\n", curr.AbsID())
+					shifted[curr] = struct{}{}
+				}
+			} else {
+				shift := false
+				if !isMargin {
+					shift = start < curr.TopLeft.Y
+				} else {
+					shift = start <= curr.TopLeft.Y
+				}
+				if shift {
+					curr.TopLeft.Y += distance
+					fmt.Printf("\tshifted %v\n", curr.AbsID())
+					shifted[curr] = struct{}{}
+				}
+			}
+			seen[curr] = struct{}{}
+
+			if curr.Parent != g.Root && !curr.IsDescendantOf(obj) {
+				queue(curr.Parent)
+			}
+
+			for _, child := range curr.ChildrenArray {
+				queue(child)
+			}
+
+			for _, e := range g.Edges {
+				if _, in := shiftedEdges[e]; in {
+					continue
+				}
+				if e.Src == curr && e.Dst == curr {
+					// shift the whole self-loop with object
+					if isHorizontal {
+						for _, p := range e.Route {
+							p.X += distance
+						}
+					} else {
+						for _, p := range e.Route {
+							p.Y += distance
+						}
+					}
+					shiftedEdges[e] = struct{}{}
+					fmt.Printf("\tshifted %v\n", e.AbsID())
+					continue
+				} else if e.Src == curr {
+					queue(e.Dst)
+					if isHorizontal {
+						for _, p := range e.Route {
+							if start <= p.X {
+								p.X += distance
+							}
+						}
+					} else {
+						for _, p := range e.Route {
+							if start <= p.Y {
+								p.Y += distance
+							}
+						}
+					}
+					shiftedEdges[e] = struct{}{}
+				} else if e.Dst == curr {
+					queue(e.Src)
+					if isHorizontal {
+						for _, p := range e.Route {
+							if start <= p.X {
+								p.X += distance
+							}
+						}
+					} else {
+						for _, p := range e.Route {
+							if start <= p.Y {
+								p.Y += distance
+							}
+						}
+					}
+					shiftedEdges[e] = struct{}{}
+				}
+			}
+
+			// check for nodes below that need to move from the shift
+			checkBelow(curr)
+		}
+	}
+
+	processQueue()
+
+	grown := make(map[*d2graph.Object]struct{})
+	for o := range seen {
+		if o.Parent == g.Root {
+			continue
+		}
+		if _, in := shifted[o.Parent]; in {
+			continue
+		}
+		if _, in := grown[o.Parent]; in {
+			continue
+		}
+
+		for parent := o.Parent; parent != g.Root; parent = parent.Parent {
+			if _, in := shifted[parent]; in {
+				break
+			}
+			if _, in := grown[parent]; in {
+				break
+			}
+
+			if isHorizontal {
+				if parent.TopLeft.X < start {
+					parent.Width += distance
+					grown[parent] = struct{}{}
+					fmt.Printf("grow %v\n", parent.AbsID())
+
+					checkBelow(parent)
+					processQueue()
+				}
+			} else {
+				if parent.TopLeft.Y < start {
+					parent.Height += distance
+					grown[parent] = struct{}{}
+					fmt.Printf("grow %v\n", parent.AbsID())
+
+					checkBelow(parent)
+					processQueue()
+				}
+			}
+
+		}
+
+	}
+}
+
+func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
+	ranks, _, startingParentRanks, endingParentRanks := getRanks(g, isHorizontal)
+	starts, _, ends := getPositions(ranks, isHorizontal)
+
+	// shifting bottom rank down first, then moving up to next rank
+	for rank := len(ranks) - 1; rank >= 0; rank-- {
+		objects := ranks[rank]
+		rankMin := starts[rank]
+		rankMax := ends[rank]
+		var topMargin, bottomMargin, leftMargin, rightMargin float64
+		var topPadding, bottomPadding, leftPadding, rightPadding float64
+		for _, obj := range objects {
+			margin, padding := getSpacing(obj)
+
+			if isHorizontal {
+				// if this object isn't the widest in the rank, the actual margin for the rank may be smaller
+				// so we compute how much margin goes past the rankMin
+				rankMarginLeft := obj.TopLeft.X - rankMin + margin.left
+				rankMarginRight := obj.TopLeft.X + obj.Width + margin.right - rankMax
+				leftMargin = math.Max(leftMargin, rankMarginLeft)
+				rightMargin = math.Max(rightMargin, rankMarginRight)
+
+				topMargin = math.Max(topMargin, margin.top)
+				bottomMargin = math.Max(bottomMargin, margin.bottom)
+			} else {
+				rankMarginTop := obj.TopLeft.Y - rankMin + margin.top
+				rankMarginBottom := obj.TopLeft.Y + obj.Height + margin.bottom - rankMax
+				topMargin = math.Max(topMargin, rankMarginTop)
+				bottomMargin = math.Max(bottomMargin, rankMarginBottom)
+
+				leftMargin = math.Max(leftMargin, margin.left)
+				rightMargin = math.Max(rightMargin, margin.right)
+			}
+
+			padTopDelta := padding.top - obj.Height/2.
+			padBottomDelta := padding.bottom - obj.Height/2.
+			padLeftDelta := padding.left - obj.Width/2.
+			padRightDelta := padding.right - obj.Width/2.
+			// if padTopDelta > 0 {
+			// 	obj.Height += padTopDelta
+			// }
+			// if padBottomDelta > 0 {
+			// 	obj.Height += padBottomDelta
+			// }
+			// if padLeftDelta > 0 {
+			// 	obj.Width += padLeftDelta
+			// }
+			// if padRightDelta > 0 {
+			// 	obj.Width += padRightDelta
+			// }
+
+			topPadding = math.Max(topPadding, padTopDelta)
+			bottomPadding = math.Max(bottomPadding, padBottomDelta)
+			leftPadding = math.Max(leftPadding, padLeftDelta)
+			rightPadding = math.Max(rightPadding, padRightDelta)
+		}
+
+		var startDelta, endDelta float64
+		var startPaddingDelta, endPaddingDelta float64
+		if isHorizontal {
+			startDelta = math.Max(0, MIN_MARGIN+leftMargin-rankSep/2.)
+			endDelta = math.Max(0, MIN_MARGIN+rightMargin-rankSep/2.)
+
+			// startPaddingDelta = leftPadding
+			// endPaddingDelta = rightPadding
+		} else {
+			startDelta = math.Max(0, MIN_MARGIN+topMargin-rankSep/2.)
+			endDelta = math.Max(0, MIN_MARGIN+bottomMargin-rankSep/2.)
+
+			// startPaddingDelta = topPadding
+			// endPaddingDelta = bottomPadding
+		}
+
+		fmt.Printf("r%v start %v sp %v ep %v end %v\n", rank, startDelta, startPaddingDelta, endPaddingDelta, endDelta)
+		// +1 to not include edges at bottom
+		if endDelta > 0 {
+			shiftDown(g, ends[rank]+1, endDelta, isHorizontal)
+		}
+		// TODO each ancestor container of rank may need its own padding shift
+		if endPaddingDelta > 0 {
+			shiftDown(g, ends[rank]-endPaddingDelta, endPaddingDelta, isHorizontal)
+		}
+		if startPaddingDelta > 0 {
+			shiftDown(g, starts[rank]+startPaddingDelta, startPaddingDelta, isHorizontal)
+		}
+		if startDelta > 0 {
+			shiftDown(g, starts[rank], startDelta, isHorizontal)
+		}
+
+		additionalStarts := make(map[float64]float64)
+		additionalEnds := make(map[float64]float64)
+		var startCoords, endCoords []float64
+		for _, obj := range g.Objects {
+			if !obj.IsContainer() {
+				continue
+			}
+			start := startingParentRanks[obj]
+			end := endingParentRanks[obj]
+			if start != rank && end != rank {
+				continue
+			}
+			// check to see if container needs additional margin to parent
+			margin, _ := getSpacing(obj)
+
+			addStart := func(k, v float64) {
+				if _, has := additionalStarts[k]; !has {
+					additionalStarts[k] = v
+					startCoords = append(startCoords, k)
+				} else {
+					additionalStarts[k] = math.Max(additionalStarts[k], v)
+				}
+			}
+			addEnd := func(k, v float64) {
+				if _, has := additionalEnds[k]; !has {
+					additionalEnds[k] = v
+					endCoords = append(endCoords, k)
+				} else {
+					additionalEnds[k] = math.Max(additionalEnds[k], v)
+				}
+			}
+
+			if start == rank {
+				if isHorizontal && margin.left > 0 {
+					addStart(obj.TopLeft.X, margin.left)
+				} else if !isHorizontal && margin.top > 0 {
+					addStart(obj.TopLeft.Y, margin.top)
+				}
+			}
+			if end == rank {
+				if isHorizontal && margin.right > 0 {
+					addEnd(obj.TopLeft.X+obj.Width, margin.right)
+				} else if !isHorizontal && margin.bottom > 0 {
+					addEnd(obj.TopLeft.Y+obj.Height, margin.bottom)
+				}
+			}
+		}
+		// bottom up
+		sort.Slice(startCoords, func(i, j int) bool {
+			return startCoords[i] > startCoords[j]
+		})
+		sort.Slice(endCoords, func(i, j int) bool {
+			return endCoords[i] > endCoords[j]
+		})
+		for _, coord := range endCoords {
+			delta := MIN_MARGIN + additionalEnds[coord] - rankSep/2
+			if delta <= 0 {
+				continue
+			}
+			for _, obj := range g.Objects {
+				if !obj.IsContainer() {
+					continue
+				}
+				start := startingParentRanks[obj]
+				end := endingParentRanks[obj]
+				if start <= rank && rank <= end {
+					// don't want to grow the container that is shifting
+					if isHorizontal && obj.TopLeft.X+obj.Width > coord {
+						obj.Width += delta
+					} else if !isHorizontal && obj.TopLeft.Y+obj.Height > coord {
+						obj.Height += delta
+					}
+				}
+			}
+			shiftDown(g, coord+delta, delta, isHorizontal)
+		}
+		for _, coord := range startCoords {
+			delta := MIN_MARGIN + additionalStarts[coord] - rankSep/2
+			if delta <= 0 {
+				continue
+			}
+			for _, obj := range g.Objects {
+				if !obj.IsContainer() {
+					continue
+				}
+				start := startingParentRanks[obj]
+				end := endingParentRanks[obj]
+				// expand all containers that pass this rank, except the ones that are moving down to fit the icon
+				if start <= rank && rank <= end {
+					// expand the containers that contain the ones moving down
+					if isHorizontal && obj.TopLeft.X < coord {
+						obj.Width += delta
+					} else if !isHorizontal && obj.TopLeft.Y < coord {
+						obj.Height += delta
+					}
+				}
+			}
+			shiftDown(g, coord, delta, isHorizontal)
+		}
+
+		// We need to expand parents when shifting descendants downwards
+		for _, obj := range g.Objects {
+			if !obj.IsContainer() {
+				continue
+			}
+			start := startingParentRanks[obj]
+			end := endingParentRanks[obj]
+			if start <= rank && rank <= end {
+				if isHorizontal {
+					obj.Width += startDelta + endDelta + startPaddingDelta + endPaddingDelta
+				} else {
+					obj.Height += startDelta + endDelta + startPaddingDelta + endPaddingDelta
+				}
+			}
+		}
+	}
+
+}
+
+func adjustSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
+	adjustRankSpacing(g, rankSep, isHorizontal)
+
+	// adjust cross-rank spacing
+	crossRankIsHorizontal := !isHorizontal
+	for _, obj := range g.Objects {
+		margin, padding := getSpacing(obj)
+		if isHorizontal {
+			if margin.bottom > 0 {
+				shiftReachableDown(g, obj, obj.TopLeft.Y+obj.Height, margin.bottom, crossRankIsHorizontal, true)
+			}
+			if padding.bottom > 0 {
+				shiftReachableDown(g, obj, obj.TopLeft.Y+obj.Height, padding.bottom, crossRankIsHorizontal, false)
+				obj.Height += padding.bottom
+			}
+			if margin.top > 0 {
+				shiftReachableDown(g, obj, obj.TopLeft.Y, margin.top, crossRankIsHorizontal, true)
+			}
+			if padding.top > 0 {
+				shiftReachableDown(g, obj, obj.TopLeft.Y, padding.top, crossRankIsHorizontal, false)
+				obj.Height += padding.top
+			}
+		} else {
+			if margin.right > 0 {
+				shiftReachableDown(g, obj, obj.TopLeft.X+obj.Width, margin.right, crossRankIsHorizontal, true)
+			}
+			if padding.right > 0 {
+				shiftReachableDown(g, obj, obj.TopLeft.X+obj.Width, padding.right, crossRankIsHorizontal, false)
+				obj.Width += padding.right
+			}
+			if margin.left > 0 {
+				shiftReachableDown(g, obj, obj.TopLeft.X, margin.left, crossRankIsHorizontal, true)
+			}
+			if padding.left > 0 {
+				shiftReachableDown(g, obj, obj.TopLeft.X, padding.left, crossRankIsHorizontal, false)
+				obj.Width += padding.left
+			}
 		}
 	}
 }
