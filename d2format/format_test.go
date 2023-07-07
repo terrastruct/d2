@@ -812,6 +812,21 @@ steps: {
 }
 `,
 		},
+		{
+			name: "shebang",
+			in: `#!shebang
+x -> y
+
+#!notShebang
+#another comment
+			`,
+			exp: `#!shebang
+x -> y
+
+# !notShebang
+# another comment
+`,
+		},
 	}
 
 	for _, tc := range testCases {

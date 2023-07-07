@@ -84,7 +84,8 @@ func (p *printer) comment(c *d2ast.Comment) {
 	lines := strings.Split(c.Value, "\n")
 	for i, line := range lines {
 		p.sb.WriteString("#")
-		if line != "" {
+		isShebang := c.Range.Start.Line == 0 && c.Value[0] == '!'
+		if line != "" && !isShebang {
 			p.sb.WriteByte(' ')
 		}
 		p.sb.WriteString(line)
