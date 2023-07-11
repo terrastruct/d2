@@ -320,6 +320,7 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 	srcShape := edge.Src.ToShape()
 	dstShape := edge.Dst.ToShape()
 
+	startingSegment := geo.Segment{Start: points[startIndex+1], End: points[startIndex]}
 	// if an edge runs into an outside label, stop the edge at the label instead
 	overlapsOutsideLabel := false
 	if edge.Src.HasLabel() {
@@ -330,7 +331,6 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 			labelHeight := float64(edge.Src.LabelDimensions.Height)
 			labelTL := labelPosition.GetPointOnBox(edge.Src.Box, label.PADDING, labelWidth, labelHeight)
 
-			startingSegment := geo.Segment{Start: points[startIndex+1], End: points[startIndex]}
 			labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
 			// add left/right padding to box
 			labelBox.TopLeft.X -= label.PADDING
@@ -349,9 +349,20 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 		}
 	}
 	if !overlapsOutsideLabel {
+		if intersections := edge.Src.Intersections(startingSegment); len(intersections) > 0 {
+			// move starting segment to intersection point
+			points[startIndex] = intersections[0]
+			startingSegment.End = intersections[0]
+			// if the segment becomes too short, just merge it with the next segment
+			if startIndex < len(points) && startingSegment.Length() < MIN_SEGMENT_LEN {
+				points[startIndex+1] = points[startIndex]
+				startIndex++
+			}
+		}
 		// trace the edge to the specific shape's border
 		points[startIndex] = shape.TraceToShapeBorder(srcShape, points[startIndex], points[startIndex+1])
 	}
+	endingSegment := geo.Segment{Start: points[endIndex-1], End: points[endIndex]}
 	overlapsOutsideLabel = false
 	if edge.Dst.HasLabel() {
 		// assumes LabelPosition, LabelWidth, LabelHeight are all set if there is a label
@@ -361,7 +372,6 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 			labelHeight := float64(edge.Dst.LabelDimensions.Height)
 			labelTL := labelPosition.GetPointOnBox(edge.Dst.Box, label.PADDING, labelWidth, labelHeight)
 
-			endingSegment := geo.Segment{Start: points[endIndex-1], End: points[endIndex]}
 			labelBox := geo.NewBox(labelTL, labelWidth, labelHeight)
 			// add left/right padding to box
 			labelBox.TopLeft.X -= label.PADDING
@@ -380,6 +390,16 @@ func (edge *Edge) TraceToShape(points []*geo.Point, startIndex, endIndex int) (n
 		}
 	}
 	if !overlapsOutsideLabel {
+		if intersections := edge.Dst.Intersections(endingSegment); len(intersections) > 0 {
+			// move ending segment to intersection point
+			points[endIndex] = intersections[0]
+			endingSegment.End = intersections[0]
+			// if the segment becomes too short, just merge it with the previous segment
+			if endIndex-1 > 0 && endingSegment.Length() < MIN_SEGMENT_LEN {
+				points[endIndex-1] = points[endIndex]
+				endIndex--
+			}
+		}
 		points[endIndex] = shape.TraceToShapeBorder(dstShape, points[endIndex], points[endIndex-1])
 	}
 	return startIndex, endIndex
