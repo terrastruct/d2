@@ -3349,6 +3349,37 @@ layers: {
 					assert.Equal(t, "im y var", g.Layers[0].Objects[1].Label.Value)
 				},
 			},
+			{
+				name: "replace",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  x: im x var
+}
+
+scenarios: {
+  l: {
+    vars: {
+      x: im replaced x var
+    }
+    x: ${x}
+  }
+}
+layers: {
+  l2: {
+    vars: {
+      x: im replaced x var
+    }
+    x: ${x}
+  }
+}
+`, "")
+					assert.Equal(t, 1, len(g.Scenarios[0].Objects))
+					assert.Equal(t, "im replaced x var", g.Scenarios[0].Objects[0].Label.Value)
+					assert.Equal(t, 1, len(g.Layers[0].Objects))
+					assert.Equal(t, "im replaced x var", g.Layers[0].Objects[0].Label.Value)
+				},
+			},
 		}
 
 		for _, tc := range tca {
