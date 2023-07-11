@@ -437,8 +437,7 @@
                           "range": "d2/testdata/d2oracle/TestRename/container.d2,3:5:108-3:10:113",
                           "value": [
                             {
-                              "string": "label",
-                              "raw_string": "label"
+                              "string": "label"
                             }
                           ]
                         }
@@ -617,8 +616,7 @@
                 "range": "d2/testdata/d2oracle/TestRename/container.d2,10:30:181-10:45:196",
                 "value": [
                   {
-                    "string": "furbling, v.:",
-                    "raw_string": "furbling, v.:"
+                    "string": "furbling, v.:"
                   }
                 ]
               }
@@ -722,8 +720,7 @@
                 "range": "d2/testdata/d2oracle/TestRename/container.d2,11:22:219-11:37:234",
                 "value": [
                   {
-                    "string": "furbling, v.:",
-                    "raw_string": "furbling, v.:"
+                    "string": "furbling, v.:"
                   }
                 ]
               }

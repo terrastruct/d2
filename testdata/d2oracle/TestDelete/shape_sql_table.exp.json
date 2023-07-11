@@ -78,8 +78,7 @@
                                     "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,2:11:31-2:20:40",
                                     "value": [
                                       {
-                                        "string": "sql_table",
-                                        "raw_string": "sql_table"
+                                        "string": "sql_table"
                                       }
                                     ]
                                   }
@@ -145,8 +144,7 @@
                                               "range": "d2/testdata/d2oracle/TestDelete/shape_sql_table.d2,3:25:66-3:36:77",
                                               "value": [
                                                 {
-                                                  "string": "primary_key",
-                                                  "raw_string": "primary_key"
+                                                  "string": "primary_key"
                                                 }
                                               ]
                                             }

@@ -28,7 +28,11 @@
             "value": {
               "double_quoted_string": {
                 "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,0:10:10-0:12:12",
-                "value": null
+                "value": [
+                  {
+                    "string": ""
+                  }
+                ]
               }
             }
           }
@@ -56,7 +60,11 @@
             "value": {
               "double_quoted_string": {
                 "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,2:8:22-2:10:24",
-                "value": null
+                "value": [
+                  {
+                    "string": ""
+                  }
+                ]
               }
             }
           }
@@ -108,7 +116,11 @@
                       "value": {
                         "double_quoted_string": {
                           "range": "d2/testdata/d2oracle/TestMove/container_conflicts_generated.d2,4:12:49-4:14:51",
-                          "value": null
+                          "value": [
+                            {
+                              "string": ""
+                            }
+                          ]
                         }
                       }
                     }

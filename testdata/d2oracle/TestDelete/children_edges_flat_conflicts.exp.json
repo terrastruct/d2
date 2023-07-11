@@ -159,8 +159,7 @@
                 "range": "d2/testdata/d2oracle/TestDelete/children_edges_flat_conflicts.d2,4:5:26-4:9:30",
                 "value": [
                   {
-                    "string": "hi",
-                    "raw_string": "hi"
+                    "string": "hi"
                   }
                 ]
               }
@@ -192,8 +191,7 @@
                 "range": "d2/testdata/d2oracle/TestDelete/children_edges_flat_conflicts.d2,5:5:36-5:9:40",
                 "value": [
                   {
-                    "string": "ey",
-                    "raw_string": "ey"
+                    "string": "ey"
                   }
                 ]
               }

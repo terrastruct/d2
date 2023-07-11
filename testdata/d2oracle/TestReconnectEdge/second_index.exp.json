@@ -88,8 +88,7 @@
                           "range": "d2/testdata/d2oracle/TestReconnectEdge/second_index.d2,1:16:26-1:20:30",
                           "value": [
                             {
-                              "string": "blue",
-                              "raw_string": "blue"
+                              "string": "blue"
                             }
                           ]
                         }
@@ -184,8 +183,7 @@
                           "range": "d2/testdata/d2oracle/TestReconnectEdge/second_index.d2,4:16:59-4:19:62",
                           "value": [
                             {
-                              "string": "red",
-                              "raw_string": "red"
+                              "string": "red"
                             }
                           ]
                         }

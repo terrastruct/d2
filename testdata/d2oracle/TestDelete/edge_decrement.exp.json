@@ -242,8 +242,7 @@
                 "range": "d2/testdata/d2oracle/TestDelete/edge_decrement.d2,5:13:42-5:17:46",
                 "value": [
                   {
-                    "string": "zero",
-                    "raw_string": "zero"
+                    "string": "zero"
                   }
                 ]
               }
@@ -303,8 +302,7 @@
                 "range": "d2/testdata/d2oracle/TestDelete/edge_decrement.d2,6:13:60-6:16:63",
                 "value": [
                   {
-                    "string": "one",
-                    "raw_string": "one"
+                    "string": "one"
                   }
                 ]
               }
@@ -364,8 +362,7 @@
                 "range": "d2/testdata/d2oracle/TestDelete/edge_decrement.d2,8:13:78-8:18:83",
                 "value": [
                   {
-                    "string": "three",
-                    "raw_string": "three"
+                    "string": "three"
                   }
                 ]
               }
@@ -425,8 +422,7 @@
                 "range": "d2/testdata/d2oracle/TestDelete/edge_decrement.d2,9:13:97-9:17:101",
                 "value": [
                   {
-                    "string": "four",
-                    "raw_string": "four"
+                    "string": "four"
                   }
                 ]
               }

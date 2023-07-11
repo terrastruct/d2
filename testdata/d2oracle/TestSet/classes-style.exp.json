@@ -89,8 +89,7 @@
                                     "range": "d2/testdata/d2oracle/TestSet/classes-style.d2,2:16:34-2:19:37",
                                     "value": [
                                       {
-                                        "string": "red",
-                                        "raw_string": "red"
+                                        "string": "red"
                                       }
                                     ]
                                   }
@@ -143,8 +142,7 @@
                 "range": "d2/testdata/d2oracle/TestSet/classes-style.d2,5:9:53-5:10:54",
                 "value": [
                   {
-                    "string": "a",
-                    "raw_string": "a"
+                    "string": "a"
                   }
                 ]
               }
@@ -198,8 +196,7 @@
                 "range": "d2/testdata/d2oracle/TestSet/classes-style.d2,6:14:69-6:19:74",
                 "value": [
                   {
-                    "string": "green",
-                    "raw_string": "green"
+                    "string": "green"
                   }
                 ]
               }

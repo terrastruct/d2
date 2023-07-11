@@ -54,8 +54,7 @@
                           "range": "d2/testdata/d2oracle/TestDelete/table_refs.d2,1:9:14-1:18:23",
                           "value": [
                             {
-                              "string": "sql_table",
-                              "raw_string": "sql_table"
+                              "string": "sql_table"
                             }
                           ]
                         }

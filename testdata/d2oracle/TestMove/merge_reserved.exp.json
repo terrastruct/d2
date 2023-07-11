@@ -99,8 +99,7 @@
                           "range": "d2/testdata/d2oracle/TestMove/merge_reserved.d2,2:11:22-2:15:26",
                           "value": [
                             {
-                              "string": "yo",
-                              "raw_string": "yo"
+                              "string": "yo"
                             }
                           ]
                         }
@@ -143,8 +142,7 @@
                           "range": "d2/testdata/d2oracle/TestMove/merge_reserved.d2,3:11:38-3:15:42",
                           "value": [
                             {
-                              "string": "hi",
-                              "raw_string": "hi"
+                              "string": "hi"
                             }
                           ]
                         }

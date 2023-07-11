@@ -11,8 +11,7 @@
                 "range": "x.d2,0:7:7-0:13:13",
                 "value": [
                   {
-                    "string": "circle",
-                    "raw_string": "circle"
+                    "string": "circle"
                   }
                 ]
               }
@@ -70,8 +69,7 @@
                         "range": "x.d2,0:7:7-0:13:13",
                         "value": [
                           {
-                            "string": "circle",
-                            "raw_string": "circle"
+                            "string": "circle"
                           }
                         ]
                       }
@@ -88,8 +86,7 @@
                 "range": "x.d2,1:7:21-1:11:25",
                 "value": [
                   {
-                    "string": "meow",
-                    "raw_string": "meow"
+                    "string": "meow"
                   }
                 ]
               }
@@ -147,8 +144,7 @@
                         "range": "x.d2,1:7:21-1:11:25",
                         "value": [
                           {
-                            "string": "meow",
-                            "raw_string": "meow"
+                            "string": "meow"
                           }
                         ]
                       }

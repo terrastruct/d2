@@ -144,8 +144,7 @@
                           "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,2:5:25-2:9:29",
                           "value": [
                             {
-                              "string": "meow",
-                              "raw_string": "meow"
+                              "string": "meow"
                             }
                           ]
                         }
@@ -182,8 +181,7 @@
                 "range": "d2/testdata/d2oracle/TestMove/gnarly_1.d2,4:3:35-4:8:40",
                 "value": [
                   {
-                    "string": "eyy",
-                    "raw_string": "eyy"
+                    "string": "eyy"
                   }
                 ]
               }
