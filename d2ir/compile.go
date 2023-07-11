@@ -204,6 +204,7 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 }
 
 func (c *compiler) compileKey(refctx *RefContext) {
+	// resolve substitutions here
 	if len(refctx.Key.Edges) == 0 {
 		c.compileField(refctx.ScopeMap, refctx.Key.Key, refctx)
 	} else {
@@ -325,6 +326,8 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 			parent: f,
 			Value:  refctx.Key.Value.ScalarBox().Unbox(),
 		}
+
+		// InterpolationBox within any of these values can be substitutions too
 	}
 }
 

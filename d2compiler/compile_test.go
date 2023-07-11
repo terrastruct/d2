@@ -3242,9 +3242,7 @@ hi: {
 				},
 			},
 			{
-				// TODO: text before/after substitutions
 				name: "combined",
-				skip: true,
 				run: func(t *testing.T) {
 					g := assertCompile(t, `
 vars: {
