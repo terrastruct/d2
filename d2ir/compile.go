@@ -153,9 +153,12 @@ func (c *compiler) resolveSubstitution(vars *Map, mk *d2ast.Key, substitution *d
 		resolved = r
 	}
 	if resolved == nil {
-		c.errorf(mk, "could not resolve variable %s", strings.Join(substitution.IDA(), "."))
+		c.errorf(mk, `could not resolve variable "%s"`, strings.Join(substitution.IDA(), "."))
 	} else {
-		// TODO maps
+		if resolved.Composite != nil {
+			c.errorf(mk, `cannot reference map variable "%s"`, strings.Join(substitution.IDA(), "."))
+			return nil
+		}
 		return resolved
 	}
 	return nil
@@ -211,9 +214,6 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 	}
 	for _, n := range ast.Nodes {
 		switch {
-		case n.Substitution != nil:
-			println("\033[1;31m--- DEBUG:", "=======================", "\033[m")
-			c.errorf(n.Substitution, "only values can use substitutions")
 		case n.MapKey != nil:
 			c.compileKey(&RefContext{
 				Key:      n.MapKey,
@@ -350,15 +350,6 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 				c.overlayClasses(f.Map())
 			}
 		}
-		// } else if refctx.Key.Value.Substitution != nil {
-		//   vars := ParentBoard(f).Map().GetField("vars")
-		//   resolved := c.resolveSubstitution(vars.Map(), refctx.Key, refctx.Key.Value.Substitution)
-		//   if resolved != nil {
-		//     f.Primary_ = &Scalar{
-		//       parent: f,
-		//       Value:  resolved,
-		//     }
-		//   }
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 		// If the link is a board, we need to transform it into an absolute path.
 		if f.Name == "link" {
@@ -368,8 +359,6 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 			parent: f,
 			Value:  refctx.Key.Value.ScalarBox().Unbox(),
 		}
-
-		// InterpolationBox within any of these values can be substitutions too
 	}
 }
 
@@ -538,15 +527,6 @@ func (c *compiler) compileEdges(refctx *RefContext) {
 					}
 				}
 				c.compileMap(e.Map_, refctx.Key.Value.Map, refctx.ScopeAST)
-				// } else if refctx.Key.Value.Substitution != nil {
-				//   vars := ParentBoard(e).Map().GetField("vars")
-				//   resolved := c.resolveSubstitution(vars.Map(), refctx.Key, refctx.Key.Value.Substitution)
-				//   if resolved != nil {
-				//     e.Primary_ = &Scalar{
-				//       parent: e,
-				//       Value:  resolved,
-				//     }
-				//   }
 			} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 				e.Primary_ = &Scalar{
 					parent: e,

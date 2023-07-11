@@ -3470,7 +3470,31 @@ vars: {
   x: hey
 }
 hi: ${z}
-`, "d2/testdata/d2compiler/TestCompile2/vars/errors/missing.d2:5:1: could not resolve variable z")
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/missing.d2:5:1: could not resolve variable "z"`)
+				},
+			},
+			{
+				name: "edge",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  x -> a
+}
+hi
+`, "d2/testdata/d2compiler/TestCompile2/vars/errors/edge.d2:3:3: vars cannot contain an edge")
+				},
+			},
+			{
+				name: "map",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  colors: {
+    button: red
+  }
+}
+hi: ${colors}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/map.d2:7:1: cannot reference map variable "colors"`)
 				},
 			},
 		}

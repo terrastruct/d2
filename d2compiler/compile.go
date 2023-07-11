@@ -282,19 +282,6 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 			if len(f.Map().Edges) > 0 {
 				c.errorf(f.Map().Edges[0].LastRef().AST(), "vars cannot contain an edge")
 			}
-			// for _, varField := range f.Map().Fields {
-			//   if varField.Map() != nil {
-			//     c.errorf(varField.LastRef().AST(), "vars must be simple")
-			//   }
-			//   for _, cf := range classesField.Map().Fields {
-			//     if _, ok := d2graph.ReservedKeywords[cf.Name]; !ok {
-			//       c.errorf(cf.LastRef().AST(), "%s is an invalid class field, must be reserved keyword", cf.Name)
-			//     }
-			//     if cf.Name == "class" {
-			//       c.errorf(cf.LastRef().AST(), `"class" cannot appear within "classes"`)
-			//     }
-			//   }
-			// }
 		}
 		return
 	} else if isReserved {
