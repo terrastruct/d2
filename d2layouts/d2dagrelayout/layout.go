@@ -786,7 +786,7 @@ func shiftDown(g *d2graph.Graph, start, distance float64, isHorizontal bool) {
 // shift down everything that is below start
 // shift all nodes that are reachable via an edge or being directly below a shifting node or expanding container
 // expand containers to wrap shifted nodes
-func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance float64, isHorizontal, isMargin bool) {
+func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance float64, isHorizontal, isMargin bool) map[*d2graph.Object]struct{} {
 	q := []*d2graph.Object{obj}
 
 	seen := make(map[*d2graph.Object]struct{})
@@ -799,11 +799,11 @@ func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance f
 		q = append(q, o)
 	}
 
+	// if object below is within this distance after shifting, also shift it
+	threshold := 100.
 	checkBelow := func(curr *d2graph.Object) {
 		currBottom := curr.TopLeft.Y + curr.Height
 		currRight := curr.TopLeft.X + curr.Width
-		// if object below is within this distance after shifting, also shift it
-		threshold := 100.
 		if isHorizontal {
 			originalRight := currRight
 			if _, in := shifted[curr]; in {
@@ -990,6 +990,53 @@ func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance f
 			}
 		}
 	}
+
+	increasedMargins := make(map[*d2graph.Object]struct{})
+	shiftedObjects := make([]*d2graph.Object, 0, len(shifted))
+	for obj := range shifted {
+		shiftedObjects = append(shiftedObjects, obj)
+	}
+	for _, shifted := range shiftedObjects {
+		counts := true
+		// check if any other shifted is directly above
+		for _, other := range shiftedObjects {
+			if other == shifted || shifted.IsDescendantOf(other) {
+				continue
+			}
+			if isHorizontal {
+				if other.TopLeft.Y+other.Height < shifted.TopLeft.Y ||
+					shifted.TopLeft.Y+shifted.Height < other.TopLeft.Y {
+					// doesn't line up vertically
+					continue
+				}
+
+				// above and within threshold
+				if other.TopLeft.X+other.Width < shifted.TopLeft.X &&
+					shifted.TopLeft.X < other.TopLeft.X+other.Width+threshold {
+					counts = false
+					break
+				}
+			} else {
+				if other.TopLeft.X+other.Width < shifted.TopLeft.X ||
+					shifted.TopLeft.X+shifted.Width < other.TopLeft.X {
+					// doesn't line up horizontally
+					continue
+				}
+
+				// above and within threshold
+				if other.TopLeft.Y+other.Height < shifted.TopLeft.Y &&
+					shifted.TopLeft.Y < other.TopLeft.Y+other.Height+threshold {
+					counts = false
+					break
+				}
+			}
+		}
+		if counts {
+			increasedMargins[shifted] = struct{}{}
+		}
+	}
+
+	return increasedMargins
 }
 
 func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
@@ -1138,33 +1185,65 @@ func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
 }
 
 func adjustCrossRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
+	var prevMarginTop, prevMarginBottom, prevMarginLeft, prevMarginRight map[*d2graph.Object]float64
+	if isHorizontal {
+		prevMarginLeft = make(map[*d2graph.Object]float64)
+		prevMarginRight = make(map[*d2graph.Object]float64)
+	} else {
+		prevMarginTop = make(map[*d2graph.Object]float64)
+		prevMarginBottom = make(map[*d2graph.Object]float64)
+	}
 	for _, obj := range g.Objects {
 		margin, padding := getSpacing(obj)
 		if !isHorizontal {
+			if prevShift, has := prevMarginBottom[obj]; has {
+				margin.bottom -= prevShift
+			}
 			if margin.bottom > 0 {
-				shiftReachableDown(g, obj, obj.TopLeft.Y+obj.Height, margin.bottom, isHorizontal, true)
+				increased := shiftReachableDown(g, obj, obj.TopLeft.Y+obj.Height, margin.bottom, isHorizontal, true)
+				for o := range increased {
+					prevMarginBottom[o] = math.Max(prevMarginBottom[o], margin.bottom)
+				}
 			}
 			if padding.bottom > 0 {
 				shiftReachableDown(g, obj, obj.TopLeft.Y+obj.Height, padding.bottom, isHorizontal, false)
 				obj.Height += padding.bottom
 			}
+			if prevShift, has := prevMarginTop[obj]; has {
+				margin.top -= prevShift
+			}
 			if margin.top > 0 {
-				shiftReachableDown(g, obj, obj.TopLeft.Y, margin.top, isHorizontal, true)
+				increased := shiftReachableDown(g, obj, obj.TopLeft.Y, margin.top, isHorizontal, true)
+				for o := range increased {
+					prevMarginTop[o] = math.Max(prevMarginTop[o], margin.top)
+				}
 			}
 			if padding.top > 0 {
 				shiftReachableDown(g, obj, obj.TopLeft.Y, padding.top, isHorizontal, false)
 				obj.Height += padding.top
 			}
 		} else {
+			if prevShift, has := prevMarginRight[obj]; has {
+				margin.right -= prevShift
+			}
 			if margin.right > 0 {
-				shiftReachableDown(g, obj, obj.TopLeft.X+obj.Width, margin.right, isHorizontal, true)
+				increased := shiftReachableDown(g, obj, obj.TopLeft.X+obj.Width, margin.right, isHorizontal, true)
+				for o := range increased {
+					prevMarginRight[o] = math.Max(prevMarginRight[o], margin.right)
+				}
 			}
 			if padding.right > 0 {
 				shiftReachableDown(g, obj, obj.TopLeft.X+obj.Width, padding.right, isHorizontal, false)
 				obj.Width += padding.right
 			}
+			if prevShift, has := prevMarginLeft[obj]; has {
+				margin.left -= prevShift
+			}
 			if margin.left > 0 {
-				shiftReachableDown(g, obj, obj.TopLeft.X, margin.left, isHorizontal, true)
+				increased := shiftReachableDown(g, obj, obj.TopLeft.X, margin.left, isHorizontal, true)
+				for o := range increased {
+					prevMarginLeft[o] = math.Max(prevMarginLeft[o], margin.left)
+				}
 			}
 			if padding.left > 0 {
 				shiftReachableDown(g, obj, obj.TopLeft.X, padding.left, isHorizontal, false)
