@@ -1596,9 +1596,6 @@ func (p *parser) parseValue() d2ast.ValueBox {
 	case '@':
 		box.Import = p.parseImport(false)
 		return box
-	case '$':
-		box.Substitution = p.parseSubstitution(false)
-		return box
 	}
 
 	p.replay(r)

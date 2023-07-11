@@ -109,11 +109,6 @@ func (c *compiler) resolveSubstitutions(refctx *RefContext) {
 	}
 
 	switch {
-	case refctx.Key.Value.Substitution != nil:
-		resolvedField := c.resolveSubstitution(varsMap, refctx.Key, refctx.Key.Value.Substitution)
-		if resolvedField != nil {
-			refctx.Key.Value = d2ast.MakeValueBox(resolvedField.Primary().Value)
-		}
 	case refctx.Key.Value.UnquotedString != nil:
 		for i, box := range refctx.Key.Value.UnquotedString.Value {
 			if box.Substitution != nil {
@@ -245,7 +240,6 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 }
 
 func (c *compiler) compileKey(refctx *RefContext) {
-	// resolve substitutions here
 	c.resolveSubstitutions(refctx)
 	if len(refctx.Key.Edges) == 0 {
 		c.compileField(refctx.ScopeMap, refctx.Key.Key, refctx)

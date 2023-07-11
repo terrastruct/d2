@@ -108,10 +108,13 @@
                       },
                       "primary": {},
                       "value": {
-                        "number": {
-                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/number.d2,2:10:19-2:11:20",
-                          "raw": "2",
-                          "value": "2"
+                        "unquoted_string": {
+                          "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/number.d2,5:15:44-5:16:45",
+                          "value": [
+                            {
+                              "string": "2"
+                            }
+                          ]
                         }
                       }
                     }

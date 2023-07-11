@@ -423,7 +423,6 @@ func (s *BlockString) value()        {}
 func (a *Array) value()              {}
 func (m *Map) value()                {}
 func (i *Import) value()             {}
-func (i *Substitution) value()       {}
 
 func (n *Null) scalar()               {}
 func (b *Boolean) scalar()            {}
@@ -924,7 +923,6 @@ type ValueBox struct {
 	Array              *Array              `json:"array,omitempty"`
 	Map                *Map                `json:"map,omitempty"`
 	Import             *Import             `json:"import,omitempty"`
-	Substitution       *Substitution       `json:"substitution,omitempty"`
 }
 
 func (vb ValueBox) Unbox() Value {
@@ -949,8 +947,6 @@ func (vb ValueBox) Unbox() Value {
 		return vb.Map
 	case vb.Import != nil:
 		return vb.Import
-	case vb.Substitution != nil:
-		return vb.Substitution
 	default:
 		return nil
 	}
@@ -979,8 +975,6 @@ func MakeValueBox(v Value) ValueBox {
 		vb.Map = v
 	case *Import:
 		vb.Import = v
-	case *Substitution:
-		vb.Substitution = v
 	}
 	return vb
 }

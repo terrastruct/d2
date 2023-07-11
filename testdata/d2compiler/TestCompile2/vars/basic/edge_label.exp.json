@@ -111,7 +111,7 @@
             "primary": {},
             "value": {
               "unquoted_string": {
-                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,2:5:14-2:13:22",
+                "range": "d2/testdata/d2compiler/TestCompile2/vars/basic/edge_label.d2,4:8:33-4:9:34",
                 "value": [
                   {
                     "string": "im a var"
