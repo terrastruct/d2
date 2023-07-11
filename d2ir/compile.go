@@ -53,6 +53,8 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, error) {
 
 	c.compileMap(m, ast, ast)
 	c.compileClasses(m)
+	c.compileVars(m)
+	c.compileSubstitutions(m)
 	if !c.err.Empty() {
 		return nil, c.err
 	}
@@ -93,6 +95,81 @@ func (c *compiler) compileClasses(m *Map) {
 		}
 
 		c.compileClasses(l)
+	}
+}
+
+func (c *compiler) compileSubstitutions(m *Map) {
+	vars := m.GetField("vars")
+	for _, f := range m.Fields {
+		// No substitutions within vars itself
+		if f.Name == "vars" {
+			continue
+		}
+		for _, ref := range f.References {
+			if ref.Context.Key != nil && ref.Context.Key.Value.Substitution != nil {
+				var resolved *Field
+				m := vars
+				for _, p := range ref.Context.Key.Value.Substitution.Path {
+					r := m.Map().GetField(p.Unbox().ScalarString())
+					if r == nil {
+						resolved = nil
+						break
+					}
+					m = r
+					resolved = r
+				}
+				if resolved == nil {
+					c.errorf(ref.Context.Key, "could not resolve variable %s", strings.Join(ref.Context.Key.Value.Substitution.IDA(), "."))
+				} else {
+					// TODO do i need this
+					// ref.Context.Key.Value = d2ast.MakeValueBox(resolved.Primary().Value)
+
+					// TODO maps
+					f.Primary_ = &Scalar{
+						parent: f,
+						Value:  resolved.Primary().Value,
+					}
+				}
+				ref.Context.Key.Value.Substitution = nil
+			}
+		}
+	}
+}
+
+func (c *compiler) compileVars(m *Map) {
+	vars := m.GetField("vars")
+	if vars == nil || vars.Map() == nil {
+		return
+	}
+
+	layersField := m.GetField("layers")
+	if layersField == nil {
+		return
+	}
+	layers := layersField.Map()
+	if layers == nil {
+		return
+	}
+
+	for _, lf := range layers.Fields {
+		if lf.Map() == nil || lf.Primary() != nil {
+			c.errorf(lf.References[0].Context.Key, "invalid layer")
+			continue
+		}
+		l := lf.Map()
+		lVars := l.GetField("vars")
+
+		if lVars == nil {
+			lVars = vars.Copy(l).(*Field)
+			l.Fields = append(l.Fields, lVars)
+		} else {
+			base := vars.Copy(l).(*Field)
+			OverlayMap(base.Map(), lVars.Map())
+			l.DeleteField("vars")
+			l.Fields = append(l.Fields, base)
+		}
+
+		c.compileVars(l)
 	}
 }
 
@@ -244,6 +321,10 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 				c.compileClasses(f.Map())
 			}
 		}
+	} else if refctx.Key.Value.Substitution != nil {
+		// b, _ := json.MarshalIndent(refctx.Key.Value.Substitution.IDA(), "", "  ")
+		// println("\033[1;31m--- DEBUG:", string(b), "\033[m")
+		// println("\033[1;31m--- DEBUG:", "=======what===============", "\033[m")
 	} else if refctx.Key.Value.ScalarBox().Unbox() != nil {
 		// If the link is a board, we need to transform it into an absolute path.
 		if f.Name == "link" {

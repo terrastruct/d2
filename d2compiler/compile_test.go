@@ -2744,6 +2744,7 @@ func TestCompile2(t *testing.T) {
 	t.Run("boards", testBoards)
 	t.Run("seqdiagrams", testSeqDiagrams)
 	t.Run("nulls", testNulls)
+	t.Run("vars", testVars)
 }
 
 func testBoards(t *testing.T) {
@@ -3151,6 +3152,78 @@ scenarios: {
 }
 `, "")
 					assert.Equal(t, 0, len(g.Scenarios[0].Objects))
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
+}
+
+func testVars(t *testing.T) {
+	t.Parallel()
+
+	t.Run("basic", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "label",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  x: im a var
+}
+hi: ${x}
+`, "")
+					assert.Equal(t, 1, len(g.Objects))
+					assert.Equal(t, "im a var", g.Objects[0].Label.Value)
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
+
+	t.Run("errors", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "missing",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  x: hey
+}
+hi: ${z}
+`, "d2/testdata/d2compiler/TestCompile2/vars/errors/missing.d2:5:1: could not resolve variable z")
 				},
 			},
 		}

@@ -1,6 +1,7 @@
 package d2compiler
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io"
@@ -64,6 +65,8 @@ func compileIR(ast *d2ast.Map, m *d2ir.Map) (*d2graph.Graph, error) {
 	g := d2graph.NewGraph()
 	g.AST = ast
 	c.compileBoard(g, m)
+	b, _ := json.MarshalIndent(m, "", "  ")
+	println("\033[1;31m--- DEBUG:", string(b), "\033[m")
 	if len(c.err.Errors) > 0 {
 		return nil, c.err
 	}
@@ -275,6 +278,26 @@ func (c *compiler) compileField(obj *d2graph.Object, f *d2ir.Field) {
 					}
 				}
 			}
+		}
+		return
+	} else if f.Name == "vars" {
+		if f.Map() != nil {
+			if len(f.Map().Edges) > 0 {
+				c.errorf(f.Map().Edges[0].LastRef().AST(), "vars cannot contain an edge")
+			}
+			// for _, varField := range f.Map().Fields {
+			//   if varField.Map() != nil {
+			//     c.errorf(varField.LastRef().AST(), "vars must be simple")
+			//   }
+			//   for _, cf := range classesField.Map().Fields {
+			//     if _, ok := d2graph.ReservedKeywords[cf.Name]; !ok {
+			//       c.errorf(cf.LastRef().AST(), "%s is an invalid class field, must be reserved keyword", cf.Name)
+			//     }
+			//     if cf.Name == "class" {
+			//       c.errorf(cf.LastRef().AST(), `"class" cannot appear within "classes"`)
+			//     }
+			//   }
+			// }
 		}
 		return
 	} else if isReserved {
