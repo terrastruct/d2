@@ -98,11 +98,12 @@ func (c *compiler) overlayClasses(m *Map) {
 }
 
 func (c *compiler) resolveSubstitutions(refctx *RefContext) {
-	varsMap := &Map{}
 	boardScope := refctx.ScopeMap
 	if NodeBoardKind(refctx.ScopeMap) == "" {
 		boardScope = ParentBoard(refctx.ScopeMap).Map()
 	}
+
+	varsMap := &Map{}
 	vars := boardScope.GetField("vars")
 	if vars != nil {
 		varsMap = vars.Map()
@@ -154,13 +155,12 @@ func (c *compiler) resolveSubstitution(vars *Map, mk *d2ast.Key, substitution *d
 		vars = r.Map()
 		resolved = r
 	}
+
 	if resolved == nil {
 		c.errorf(mk, `could not resolve variable "%s"`, strings.Join(substitution.IDA(), "."))
+	} else if resolved.Composite != nil {
+		c.errorf(mk, `cannot reference map variable "%s"`, strings.Join(substitution.IDA(), "."))
 	} else {
-		if resolved.Composite != nil {
-			c.errorf(mk, `cannot reference map variable "%s"`, strings.Join(substitution.IDA(), "."))
-			return nil
-		}
 		return resolved
 	}
 	return nil

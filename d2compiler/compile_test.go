@@ -3474,6 +3474,19 @@ hi: ${z}
 				},
 			},
 			{
+				name: "nested-missing",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  x: {
+    y: hey
+  }
+}
+hi: ${x.z}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/nested-missing.d2:7:1: could not resolve variable "x.z"`)
+				},
+			},
+			{
 				name: "edge",
 				run: func(t *testing.T) {
 					assertCompile(t, `
