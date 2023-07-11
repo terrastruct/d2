@@ -3270,6 +3270,46 @@ hi: not a var
 		}
 	})
 
+	t.Run("boards", func(t *testing.T) {
+		t.Parallel()
+
+		tca := []struct {
+			name string
+			skip bool
+			run  func(t *testing.T)
+		}{
+			{
+				name: "layer",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  x: im a var
+}
+
+layers: {
+  l: {
+    hi: ${x}
+  }
+}
+`, "")
+					assert.Equal(t, 1, len(g.Layers[0].Objects))
+					assert.Equal(t, "im a var", g.Layers[0].Objects[0].Label.Value)
+				},
+			},
+		}
+
+		for _, tc := range tca {
+			tc := tc
+			t.Run(tc.name, func(t *testing.T) {
+				t.Parallel()
+				if tc.skip {
+					t.SkipNow()
+				}
+				tc.run(t)
+			})
+		}
+	})
+
 	t.Run("errors", func(t *testing.T) {
 		t.Parallel()
 

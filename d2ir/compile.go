@@ -53,7 +53,6 @@ func Compile(ast *d2ast.Map, opts *CompileOptions) (*Map, error) {
 
 	c.compileMap(m, ast, ast)
 	c.overlayClasses(m)
-	c.overlayVars(m)
 	if !c.err.Empty() {
 		return nil, c.err
 	}
@@ -135,40 +134,22 @@ func (c *compiler) compileVars(m *Map, ast *d2ast.Map) {
 	}
 }
 
-func (c *compiler) overlayVars(m *Map) {
-	vars := m.GetField("vars")
-	if vars == nil || vars.Map() == nil {
+func (c *compiler) overlayVars(base, overlay *Map) {
+	vars := overlay.GetField("vars")
+	if vars == nil {
 		return
 	}
 
-	layersField := m.GetField("layers")
-	if layersField == nil {
-		return
-	}
-	layers := layersField.Map()
-	if layers == nil {
-		return
-	}
+	lVars := base.GetField("vars")
 
-	for _, lf := range layers.Fields {
-		if lf.Map() == nil || lf.Primary() != nil {
-			c.errorf(lf.References[0].Context.Key, "invalid layer")
-			continue
-		}
-		l := lf.Map()
-		lVars := l.GetField("vars")
-
-		if lVars == nil {
-			lVars = vars.Copy(l).(*Field)
-			l.Fields = append(l.Fields, lVars)
-		} else {
-			base := vars.Copy(l).(*Field)
-			OverlayMap(base.Map(), lVars.Map())
-			l.DeleteField("vars")
-			l.Fields = append(l.Fields, base)
-		}
-
-		c.overlayVars(l)
+	if lVars == nil {
+		lVars = vars.Copy(base).(*Field)
+		base.Fields = append(base.Fields, lVars)
+	} else {
+		overlayed := vars.Copy(base).(*Field)
+		OverlayMap(overlayed.Map(), lVars.Map())
+		base.DeleteField("vars")
+		base.Fields = append(base.Fields, overlayed)
 	}
 }
 
@@ -275,6 +256,7 @@ func (c *compiler) compileField(dst *Map, kp *d2ast.KeyPath, refctx *RefContext)
 				}
 			}
 		case BoardLayer:
+			c.overlayVars(f.Map(), ParentBoard(f).Map())
 		default:
 			// If new board type, use that as the new scope AST, otherwise, carry on
 			scopeAST = refctx.ScopeAST
