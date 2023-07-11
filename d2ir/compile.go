@@ -116,8 +116,13 @@ func (c *compiler) resolveSubstitutions(refctx *RefContext) {
 			if box.Substitution != nil {
 				resolvedField := c.resolveSubstitution(varsMap, refctx.Key, box.Substitution)
 				if resolvedField != nil {
-					refctx.Key.Value.UnquotedString.Value[i].String = go2.Pointer(resolvedField.Primary().String())
-					subbed = true
+					// If lone and unquoted, replace with value of sub
+					if len(refctx.Key.Value.UnquotedString.Value) == 1 {
+						refctx.Key.Value = d2ast.MakeValueBox(resolvedField.Primary().Value)
+					} else {
+						refctx.Key.Value.UnquotedString.Value[i].String = go2.Pointer(resolvedField.Primary().String())
+						subbed = true
+					}
 				}
 			}
 		}

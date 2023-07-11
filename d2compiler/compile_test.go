@@ -3290,6 +3290,41 @@ a -> b: ${x}
 					assert.Equal(t, "im a var", g.Edges[0].Label.Value)
 				},
 			},
+			{
+				name: "quoted-var",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  primaryColors: {
+    button: {
+      active: "#4baae5"
+    }
+  }
+}
+
+button: {
+  style: {
+    border-radius: 5
+    fill: ${primaryColors.button.active}
+  }
+}
+`, "")
+					assert.Equal(t, `#4baae5`, g.Objects[0].Style.Fill.Value)
+				},
+			},
+			{
+				name: "quoted-var-quoted-sub",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  x: "hi"
+}
+
+y: "hey ${x}"
+`, "")
+					assert.Equal(t, `hey "hi"`, g.Objects[0].Label.Value)
+				},
+			},
 		}
 
 		for _, tc := range tca {

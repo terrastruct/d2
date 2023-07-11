@@ -137,10 +137,11 @@
                                 "primary": {},
                                 "value": {
                                   "unquoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/scenario.d2,7:8:54-7:9:55",
+                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/scenario.d2,2:5:14-2:13:22",
                                     "value": [
                                       {
-                                        "string": "im a var"
+                                        "string": "im a var",
+                                        "raw_string": "im a var"
                                       }
                                     ]
                                   }
@@ -271,10 +272,11 @@
                 },
                 "primary": {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/scenario.d2,7:8:54-7:9:55",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/scenario.d2,2:5:14-2:13:22",
                     "value": [
                       {
-                        "string": "im a var"
+                        "string": "im a var",
+                        "raw_string": "im a var"
                       }
                     ]
                   }

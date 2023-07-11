@@ -199,10 +199,11 @@
                                 "primary": {},
                                 "value": {
                                   "unquoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,10:7:89-10:8:90",
+                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,2:5:14-2:13:22",
                                     "value": [
                                       {
-                                        "string": "im x var"
+                                        "string": "im x var",
+                                        "raw_string": "im x var"
                                       }
                                     ]
                                   }
@@ -231,10 +232,11 @@
                                 "primary": {},
                                 "value": {
                                   "unquoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,11:7:101-11:8:102",
+                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,8:9:67-8:17:75",
                                     "value": [
                                       {
-                                        "string": "im y var"
+                                        "string": "im y var",
+                                        "raw_string": "im y var"
                                       }
                                     ]
                                   }
@@ -383,10 +385,11 @@
                                 "primary": {},
                                 "value": {
                                   "unquoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,19:7:173-19:8:174",
+                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,2:5:14-2:13:22",
                                     "value": [
                                       {
-                                        "string": "im x var"
+                                        "string": "im x var",
+                                        "raw_string": "im x var"
                                       }
                                     ]
                                   }
@@ -415,10 +418,11 @@
                                 "primary": {},
                                 "value": {
                                   "unquoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,20:7:185-20:8:186",
+                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,17:9:151-17:17:159",
                                     "value": [
                                       {
-                                        "string": "im y var"
+                                        "string": "im y var",
+                                        "raw_string": "im y var"
                                       }
                                     ]
                                   }
@@ -581,10 +585,11 @@
                 },
                 "primary": {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,19:7:173-19:8:174",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,2:5:14-2:13:22",
                     "value": [
                       {
-                        "string": "im x var"
+                        "string": "im x var",
+                        "raw_string": "im x var"
                       }
                     ]
                   }
@@ -612,10 +617,11 @@
                 },
                 "primary": {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,20:7:185-20:8:186",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,17:9:151-17:17:159",
                     "value": [
                       {
-                        "string": "im y var"
+                        "string": "im y var",
+                        "raw_string": "im y var"
                       }
                     ]
                   }
@@ -862,10 +868,11 @@
                 },
                 "primary": {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,10:7:89-10:8:90",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,2:5:14-2:13:22",
                     "value": [
                       {
-                        "string": "im x var"
+                        "string": "im x var",
+                        "raw_string": "im x var"
                       }
                     ]
                   }
@@ -893,10 +900,11 @@
                 },
                 "primary": {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,11:7:101-11:8:102",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/overlay.d2,8:9:67-8:17:75",
                     "value": [
                       {
-                        "string": "im y var"
+                        "string": "im y var",
+                        "raw_string": "im y var"
                       }
                     ]
                   }

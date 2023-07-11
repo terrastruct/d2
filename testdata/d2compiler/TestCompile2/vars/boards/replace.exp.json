@@ -199,10 +199,11 @@
                                 "primary": {},
                                 "value": {
                                   "unquoted_string": {
-                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/replace.d2,10:7:98-10:8:99",
+                                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/replace.d2,8:9:67-8:26:84",
                                     "value": [
                                       {
-                                        "string": "im replaced x var"
+                                        "string": "im replaced x var",
+                                        "raw_string": "im replaced x var"
                                       }
                                     ]
                                   }
@@ -333,10 +334,11 @@
                 },
                 "primary": {
                   "unquoted_string": {
-                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/replace.d2,10:7:98-10:8:99",
+                    "range": "d2/testdata/d2compiler/TestCompile2/vars/boards/replace.d2,8:9:67-8:26:84",
                     "value": [
                       {
-                        "string": "im replaced x var"
+                        "string": "im replaced x var",
+                        "raw_string": "im replaced x var"
                       }
                     ]
                   }
