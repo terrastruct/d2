@@ -3296,6 +3296,59 @@ layers: {
 					assert.Equal(t, "im a var", g.Layers[0].Objects[0].Label.Value)
 				},
 			},
+			{
+				name: "scenario",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  x: im a var
+}
+
+scenarios: {
+  l: {
+    hi: ${x}
+  }
+}
+`, "")
+					assert.Equal(t, 1, len(g.Scenarios[0].Objects))
+					assert.Equal(t, "im a var", g.Scenarios[0].Objects[0].Label.Value)
+				},
+			},
+			{
+				name: "overlay",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  x: im x var
+}
+
+scenarios: {
+  l: {
+    vars: {
+      y: im y var
+    }
+    x: ${x}
+    y: ${y}
+  }
+}
+layers: {
+  l2: {
+    vars: {
+      y: im y var
+    }
+    x: ${x}
+    y: ${y}
+  }
+}
+`, "")
+					assert.Equal(t, 2, len(g.Scenarios[0].Objects))
+					assert.Equal(t, "im x var", g.Scenarios[0].Objects[0].Label.Value)
+					assert.Equal(t, "im y var", g.Scenarios[0].Objects[1].Label.Value)
+					assert.Equal(t, 2, len(g.Layers[0].Objects))
+					assert.Equal(t, "im x var", g.Layers[0].Objects[0].Label.Value)
+					assert.Equal(t, "im y var", g.Layers[0].Objects[1].Label.Value)
+				},
+			},
 		}
 
 		for _, tc := range tca {
