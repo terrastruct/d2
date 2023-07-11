@@ -138,6 +138,17 @@ label: meow`,
 				assertQuery(t, m, 0, 0, nil, "q.jon")
 			},
 		},
+		{
+			name: "vars/1",
+			run: func(t testing.TB) {
+				m, err := compileFS(t, "index.d2", map[string]string{
+					"index.d2": "vars: { ...@x }; q: ${meow}",
+					"x.d2":     "meow: var replaced",
+				})
+				assert.Success(t, err)
+				assertQuery(t, m, 0, 0, "var replaced", "q")
+			},
+		},
 	}
 
 	runa(t, tca)

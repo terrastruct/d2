@@ -3461,6 +3461,17 @@ hi: ${z}
 `, "d2/testdata/d2compiler/TestCompile2/vars/errors/missing.d2:5:1: could not resolve variable z")
 				},
 			},
+			{
+				name: "key",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+vars: {
+  x: hey
+}
+${x}
+`, "d2/testdata/d2compiler/TestCompile2/vars/errors/missing.d2:5:1: could not resolve variable z")
+				},
+			},
 		}
 
 		for _, tc := range tca {

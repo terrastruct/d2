@@ -170,6 +170,9 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 	}
 	for _, n := range ast.Nodes {
 		switch {
+		case n.Substitution != nil:
+			println("\033[1;31m--- DEBUG:", "=======================", "\033[m")
+			c.errorf(n.Substitution, "only values can use substitutions")
 		case n.MapKey != nil:
 			c.compileKey(&RefContext{
 				Key:      n.MapKey,
@@ -196,8 +199,6 @@ func (c *compiler) compileMap(dst *Map, ast, scopeAST *d2ast.Map) {
 					}
 				}
 			}
-		case n.Substitution != nil:
-			panic("TODO")
 		}
 	}
 }
