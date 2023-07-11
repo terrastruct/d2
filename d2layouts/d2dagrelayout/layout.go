@@ -670,10 +670,10 @@ func getRanks(g *d2graph.Graph, isHorizontal bool) (ranks [][]*d2graph.Object, o
 	for _, obj := range g.Objects {
 		if !obj.IsContainer() {
 			if !isHorizontal {
-				y := obj.TopLeft.Y + obj.Height/2
+				y := math.Ceil(obj.TopLeft.Y + obj.Height/2)
 				alignedObjects[y] = append(alignedObjects[y], obj)
 			} else {
-				x := obj.TopLeft.X + obj.Width/2
+				x := math.Ceil(obj.TopLeft.X + obj.Width/2)
 				alignedObjects[x] = append(alignedObjects[x], obj)
 			}
 		}
@@ -715,35 +715,6 @@ func getRanks(g *d2graph.Graph, isHorizontal bool) (ranks [][]*d2graph.Object, o
 	}
 
 	return ranks, objectRanks, startingParentRanks, endingParentRanks
-}
-
-func getRankRange(rank []*d2graph.Object, isHorizontal bool) (min, max float64) {
-	min = math.Inf(1)
-	max = math.Inf(-1)
-	for _, obj := range rank {
-		if isHorizontal {
-			min = math.Min(min, obj.TopLeft.X)
-			max = math.Max(max, obj.TopLeft.X+obj.Width)
-		} else {
-			min = math.Min(min, obj.TopLeft.Y)
-			max = math.Max(max, obj.TopLeft.Y+obj.Height)
-		}
-	}
-	return
-}
-
-func getPositions(ranks [][]*d2graph.Object, isHorizontal bool) (starts, centers, ends []float64) {
-	for _, objects := range ranks {
-		min, max := getRankRange(objects, isHorizontal)
-		starts = append(starts, min)
-		if isHorizontal {
-			centers = append(centers, objects[0].TopLeft.X+objects[0].Width/2.)
-		} else {
-			centers = append(centers, objects[0].TopLeft.Y+objects[0].Height/2.)
-		}
-		ends = append(ends, max)
-	}
-	return
 }
 
 // shift everything down by distance if it is at or below start position
@@ -992,47 +963,50 @@ func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance f
 	}
 
 	increasedMargins := make(map[*d2graph.Object]struct{})
-	shiftedObjects := make([]*d2graph.Object, 0, len(shifted))
+	movedObjects := make([]*d2graph.Object, 0, len(shifted))
 	for obj := range shifted {
-		shiftedObjects = append(shiftedObjects, obj)
+		movedObjects = append(movedObjects, obj)
 	}
-	for _, shifted := range shiftedObjects {
+	for obj := range grown {
+		movedObjects = append(movedObjects, obj)
+	}
+	for _, moved := range movedObjects {
 		counts := true
 		// check if any other shifted is directly above
-		for _, other := range shiftedObjects {
-			if other == shifted || shifted.IsDescendantOf(other) {
+		for _, other := range movedObjects {
+			if other == moved {
 				continue
 			}
 			if isHorizontal {
-				if other.TopLeft.Y+other.Height < shifted.TopLeft.Y ||
-					shifted.TopLeft.Y+shifted.Height < other.TopLeft.Y {
+				if other.TopLeft.Y+other.Height < moved.TopLeft.Y ||
+					moved.TopLeft.Y+moved.Height < other.TopLeft.Y {
 					// doesn't line up vertically
 					continue
 				}
 
 				// above and within threshold
-				if other.TopLeft.X+other.Width < shifted.TopLeft.X &&
-					shifted.TopLeft.X < other.TopLeft.X+other.Width+threshold {
+				if other.TopLeft.X < moved.TopLeft.X &&
+					moved.TopLeft.X < other.TopLeft.X+other.Width+threshold {
 					counts = false
 					break
 				}
 			} else {
-				if other.TopLeft.X+other.Width < shifted.TopLeft.X ||
-					shifted.TopLeft.X+shifted.Width < other.TopLeft.X {
+				if other.TopLeft.X+other.Width < moved.TopLeft.X ||
+					moved.TopLeft.X+moved.Width < other.TopLeft.X {
 					// doesn't line up horizontally
 					continue
 				}
 
 				// above and within threshold
-				if other.TopLeft.Y+other.Height < shifted.TopLeft.Y &&
-					shifted.TopLeft.Y < other.TopLeft.Y+other.Height+threshold {
+				if other.TopLeft.Y < moved.TopLeft.Y &&
+					moved.TopLeft.Y < other.TopLeft.Y+other.Height+threshold {
 					counts = false
 					break
 				}
 			}
 		}
 		if counts {
-			increasedMargins[shifted] = struct{}{}
+			increasedMargins[moved] = struct{}{}
 		}
 	}
 
@@ -1041,7 +1015,6 @@ func shiftReachableDown(g *d2graph.Graph, obj *d2graph.Object, start, distance f
 
 func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
 	ranks, objectRanks, startingParentRanks, endingParentRanks := getRanks(g, isHorizontal)
-	starts, _, ends := getPositions(ranks, isHorizontal)
 
 	// shifting bottom rank down first, then moving up to next rank
 	for rank := len(ranks) - 1; rank >= 0; rank-- {
@@ -1059,16 +1032,18 @@ func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
 			}
 		}
 
-		var startingAncestorDeltas []float64
+		startingAncestorPositions := make(map[*d2graph.Object]float64)
 		for len(startingParents) > 0 {
-			var delta float64
 			var ancestors []*d2graph.Object
 			for _, parent := range startingParents {
 				_, padding := getSpacing(parent)
+				if _, has := startingAncestorPositions[parent]; !has {
+					startingAncestorPositions[parent] = math.Inf(1)
+				}
 				if isHorizontal {
-					delta = math.Max(delta, padding.left)
+					startingAncestorPositions[parent] = math.Min(startingAncestorPositions[parent], parent.TopLeft.X+rankSep/2.-MIN_MARGIN-padding.left)
 				} else {
-					delta = math.Max(delta, padding.top)
+					startingAncestorPositions[parent] = math.Min(startingAncestorPositions[parent], parent.TopLeft.Y+rankSep/2.-MIN_MARGIN-padding.top)
 				}
 				for _, child := range parent.ChildrenArray {
 					if r, has := objectRanks[child]; has {
@@ -1084,30 +1059,33 @@ func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
 					}
 					margin, _ := getSpacing(child)
 					if isHorizontal {
-						delta = math.Max(delta, margin.left)
+						startingAncestorPositions[parent] = math.Min(startingAncestorPositions[parent], child.TopLeft.X-margin.left-MIN_MARGIN)
 					} else {
-						delta = math.Max(delta, margin.top)
+						startingAncestorPositions[parent] = math.Min(startingAncestorPositions[parent], child.TopLeft.Y-margin.top-MIN_MARGIN)
 					}
 				}
 				if parent.Parent != g.Root {
 					ancestors = append(ancestors, parent.Parent)
 				}
 			}
-
-			startingAncestorDeltas = append(startingAncestorDeltas, delta)
 			startingParents = ancestors
 		}
 
-		var endingAncestorDeltas []float64
+		endingAncestorPositions := make(map[*d2graph.Object]float64)
 		for len(endingParents) > 0 {
-			var delta float64
+			delta := 0.
 			var ancestors []*d2graph.Object
 			for _, parent := range endingParents {
 				_, padding := getSpacing(parent)
+				if _, has := endingAncestorPositions[parent]; !has {
+					endingAncestorPositions[parent] = math.Inf(-1)
+				}
 				if isHorizontal {
 					delta = math.Max(delta, padding.right)
+					endingAncestorPositions[parent] = math.Max(endingAncestorPositions[parent], parent.TopLeft.X+parent.Width-rankSep/2+MIN_MARGIN+padding.right)
 				} else {
 					delta = math.Max(delta, padding.bottom)
+					endingAncestorPositions[parent] = math.Max(endingAncestorPositions[parent], parent.TopLeft.Y+parent.Height-rankSep/2+MIN_MARGIN+padding.bottom)
 				}
 				for _, child := range parent.ChildrenArray {
 					if r, has := objectRanks[child]; has {
@@ -1124,24 +1102,42 @@ func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
 					margin, _ := getSpacing(child)
 					if isHorizontal {
 						delta = math.Max(delta, margin.right)
+						endingAncestorPositions[parent] = math.Max(endingAncestorPositions[parent], child.TopLeft.X+child.Width+margin.right+MIN_MARGIN)
 					} else {
 						delta = math.Max(delta, margin.bottom)
+						endingAncestorPositions[parent] = math.Max(endingAncestorPositions[parent], child.TopLeft.Y+child.Height+margin.bottom+MIN_MARGIN)
 					}
 				}
 				if parent.Parent != g.Root {
 					ancestors = append(ancestors, parent.Parent)
 				}
 			}
-
-			endingAncestorDeltas = append(endingAncestorDeltas, delta)
 			endingParents = ancestors
 		}
-		for i := len(endingAncestorDeltas) - 1; i >= 0; i-- {
-			endDelta := math.Max(0, MIN_MARGIN+endingAncestorDeltas[i]-rankSep/2.)
+
+		endingAncestorPositionOrder := make([]*d2graph.Object, 0, len(endingAncestorPositions))
+		for ancestor := range endingAncestorPositions {
+			endingAncestorPositionOrder = append(endingAncestorPositionOrder, ancestor)
+		}
+		// adjust rank ancestors bottom-up
+		sort.Slice(endingAncestorPositionOrder, func(i, j int) bool {
+			return endingAncestorPositions[endingAncestorPositionOrder[i]] > endingAncestorPositions[endingAncestorPositionOrder[j]]
+		})
+
+		for _, ancestor := range endingAncestorPositionOrder {
+			var endDelta float64
+			if isHorizontal {
+				endDelta = endingAncestorPositions[ancestor] - (ancestor.TopLeft.X + ancestor.Width)
+			} else {
+				endDelta = endingAncestorPositions[ancestor] - (ancestor.TopLeft.Y + ancestor.Height)
+			}
 			if endDelta > 0 {
-				// each nested container adds rankSep/2. space in rank direction
-				// +1 to not include edges at bottom
-				position := ends[rank] + float64(i)*rankSep/2. + 1
+				var position float64
+				if isHorizontal {
+					position = ancestor.TopLeft.X + ancestor.Width - 1
+				} else {
+					position = ancestor.TopLeft.Y + ancestor.Height - 1
+				}
 				for _, obj := range g.Objects {
 					if !obj.IsContainer() {
 						continue
@@ -1159,11 +1155,30 @@ func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
 				shiftDown(g, position, endDelta, isHorizontal)
 			}
 		}
-		for i := 0; i < len(startingAncestorDeltas); i++ {
-			startDelta := math.Max(0, MIN_MARGIN+startingAncestorDeltas[i]-rankSep/2.)
-			if startDelta > 0 {
-				// each nested container adds rankSep/2. space in rank direction
-				position := starts[rank] - float64(i)*rankSep/2.
+
+		startingAncestorPositionOrder := make([]*d2graph.Object, 0, len(startingAncestorPositions))
+		for ancestor := range startingAncestorPositions {
+			startingAncestorPositionOrder = append(startingAncestorPositionOrder, ancestor)
+		}
+		// adjust rank ancestors bottom-up
+		sort.Slice(startingAncestorPositionOrder, func(i, j int) bool {
+			return startingAncestorPositions[startingAncestorPositionOrder[i]] > startingAncestorPositions[startingAncestorPositionOrder[j]]
+		})
+
+		for _, ancestor := range startingAncestorPositionOrder {
+			var endDelta float64
+			if isHorizontal {
+				endDelta = ancestor.TopLeft.X - startingAncestorPositions[ancestor]
+			} else {
+				endDelta = ancestor.TopLeft.Y - startingAncestorPositions[ancestor]
+			}
+			if endDelta > 0 {
+				var position float64
+				if isHorizontal {
+					position = ancestor.TopLeft.X + 1
+				} else {
+					position = ancestor.TopLeft.Y + 1
+				}
 				for _, obj := range g.Objects {
 					if !obj.IsContainer() {
 						continue
@@ -1171,14 +1186,14 @@ func adjustRankSpacing(g *d2graph.Graph, rankSep float64, isHorizontal bool) {
 					start := startingParentRanks[obj]
 					end := endingParentRanks[obj]
 					if start <= rank && rank <= end {
-						if isHorizontal && obj.TopLeft.X < position {
-							obj.Width += startDelta
-						} else if !isHorizontal && obj.TopLeft.Y < position {
-							obj.Height += startDelta
+						if isHorizontal && obj.TopLeft.X+obj.Width > position {
+							obj.Width += endDelta
+						} else if !isHorizontal && obj.TopLeft.Y+obj.Height > position {
+							obj.Height += endDelta
 						}
 					}
 				}
-				shiftDown(g, position, startDelta, isHorizontal)
+				shiftDown(g, position, endDelta, isHorizontal)
 			}
 		}
 	}
