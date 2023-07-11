@@ -3545,6 +3545,18 @@ hi: ${colors}
 `, `d2/testdata/d2compiler/TestCompile2/vars/errors/map.d2:7:1: cannot reference map variable "colors"`)
 				},
 			},
+			{
+				name: "non-root",
+				run: func(t *testing.T) {
+					assertCompile(t, `
+x: {
+  vars: {
+    x: hey
+  }
+}
+`, `d2/testdata/d2compiler/TestCompile2/vars/errors/non-root.d2:3:3: vars must be defined at the root of a board`)
+				},
+			},
 		}
 
 		for _, tc := range tca {
