@@ -3194,6 +3194,54 @@ hi: ${x}
 				},
 			},
 			{
+				name: "style",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+  primary-color: red
+}
+hi: {
+  style.fill: ${primary-color}
+}
+`, "")
+					assert.Equal(t, 1, len(g.Objects))
+					assert.Equal(t, "red", g.Objects[0].Style.Fill.Value)
+				},
+			},
+			{
+				name: "number",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+	columns: 2
+}
+hi: {
+	grid-columns: ${columns}
+	x
+}
+`, "")
+					assert.Equal(t, "2", g.Objects[0].GridColumns.Value)
+				},
+			},
+			{
+				name: "nested",
+				run: func(t *testing.T) {
+					g := assertCompile(t, `
+vars: {
+	colors: {
+    primary: {
+      button: red
+    }
+  }
+}
+hi: {
+  style.fill: ${colors.primary.button}
+}
+`, "")
+					assert.Equal(t, "red", g.Objects[0].Style.Fill.Value)
+				},
+			},
+			{
 				// TODO: text before/after substitutions
 				name: "combined",
 				skip: true,
